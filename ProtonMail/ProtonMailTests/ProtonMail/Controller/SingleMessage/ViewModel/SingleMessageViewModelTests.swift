@@ -290,6 +290,7 @@ final class SingleMessageViewModelTests: XCTestCase {
             coordinator: coordinatorMock,
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
             dependencies: components.contentViewModelDependencies(user: fakeUser, senderImageStatusProvider: mockSenderImageStatusProvider),
+            highlightedKeywords: [],
             goToDraft: { _, _ in },
             notificationCenter: notificationCenterMock
         )

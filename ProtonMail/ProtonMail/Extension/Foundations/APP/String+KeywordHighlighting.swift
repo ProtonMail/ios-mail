@@ -17,36 +17,46 @@
 
 import ProtonCore_UIFoundations
 import SwiftSoup
+import class ProtonCore_DataModel.UserInfo
 
 extension String {
     struct KeywordHighlightingStringUtils {
         private let originalString: String
+        private let isHighlightKeywordEnabled: Bool
 
         private let highlightColor: UIColor = {
-            let color: UIColor = ColorProvider.BrandLighten20
-            return color.withAlphaComponent(0.3)
+            let color: UIColor
+            if #available(iOS 13.0, *) {
+                let trait = UITraitCollection(userInterfaceStyle: .dark)
+                color = ColorProvider.NotificationWarning.resolvedColor(with: trait)
+            } else {
+                color = ColorProvider.NotificationWarning
+            }
+            return color
         }()
 
         // swiftlint:disable:next strict_fileprivate
-        fileprivate init(originalString: String) {
+        fileprivate init(originalString: String, isHighlightKeywordEnabled: Bool) {
             self.originalString = originalString
+            self.isHighlightKeywordEnabled = isHighlightKeywordEnabled
         }
 
-        func asAttributedString(keywords: [String]) -> NSAttributedString {
+        func asAttributedString(keywords: [String]) -> NSMutableAttributedString {
             let stringToHighlight = NSMutableAttributedString(string: originalString)
-            let highlightColor: UIColor = UIColor.dynamic(light: highlightColor, dark: highlightColor)
+            guard isHighlightKeywordEnabled else { return stringToHighlight }
             let ranges = nonIntersectingRanges(of: keywords, in: originalString)
 
             for range in ranges {
                 let nsRange = NSRange(range, in: stringToHighlight.string)
                 stringToHighlight.addAttribute(.backgroundColor, value: highlightColor, range: nsRange)
+                stringToHighlight.addAttribute(.foregroundColor, value: String.highlightTextColor, range: nsRange)
             }
 
             return stringToHighlight
         }
 
         func usingCSS(keywords: [String]) -> String {
-            guard !keywords.isEmpty else {
+            guard !keywords.isEmpty && isHighlightKeywordEnabled else {
                 return originalString
             }
 
@@ -99,7 +109,7 @@ extension String {
                 span = try span.appendChild(TextNode(String(text[lastIndex ..< range.lowerBound]), ""))
 
                 var markNode = SwiftSoup.Element(Tag("mark"), "")
-                try markNode.attr("style", "background-color: #\(highlightColor.rrggbbaa)")
+                try markNode.attr("style", "background-color: #\(highlightColor.rrggbbaa); color: #\(String.highlightTextColor.rrggbbaa)")
                 try markNode.attr("id", "es-autoscroll")
 
                 markNode = try markNode.appendChild(TextNode(String(text[range]), ""))
@@ -155,7 +165,10 @@ extension String {
     }
 
     var keywordHighlighting: KeywordHighlightingStringUtils {
-        KeywordHighlightingStringUtils(originalString: self)
+        KeywordHighlightingStringUtils(
+            originalString: self,
+            isHighlightKeywordEnabled: UserInfo.isHighlightKeywordEnabled
+        )
     }
 }
 

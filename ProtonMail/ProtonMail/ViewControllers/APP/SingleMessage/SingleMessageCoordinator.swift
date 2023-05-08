@@ -32,6 +32,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     let message: MessageEntity
     private let coreDataService: CoreDataService
     private let user: UserManager
+    private let highlightedKeywords: [String]
     private weak var navigationController: UINavigationController?
     private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
@@ -46,7 +47,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         coreDataService: CoreDataService =
         sharedServices.get(by: CoreDataService.self),
-        internetStatusProvider: InternetConnectionStatusProvider = sharedServices.get()
+        internetStatusProvider: InternetConnectionStatusProvider = sharedServices.get(),
+        highlightedKeywords: [String] = []
     ) {
         self.navigationController = navigationController
         self.labelId = labelId
@@ -55,6 +57,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.coreDataService = coreDataService
         self.internetStatusProvider = internetStatusProvider
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
+        self.highlightedKeywords = highlightedKeywords
     }
 
     func start() {
@@ -78,6 +81,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             user: user,
             systemUpTime: userCachedStatus,
             internetStatusProvider: internetStatusProvider,
+            highlightedKeywords: highlightedKeywords,
             imageProxy: .init(dependencies: .init(apiService: user.apiService)),
             coordinator: self,
             senderImageStatusProvider: userCachedStatus,

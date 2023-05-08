@@ -94,7 +94,7 @@ class SingleMessageContentViewModel {
     var isSenderCurrentlyBlocked: Bool {
         do {
             let incomingDefaultsForSenderEmail = try dependencies.incomingDefaultService.listLocal(
-                query: .email(messageInfoProvider.senderEmail)
+                query: .email(messageInfoProvider.senderEmail.string)
             )
 
             return incomingDefaultsForSenderEmail.map(\.location).contains(.blocked)
@@ -112,6 +112,7 @@ class SingleMessageContentViewModel {
          systemUpTime: SystemUpTimeProtocol,
          shouldOpenHistory: Bool = false,
          dependencies: Dependencies,
+         highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) {
         self.context = context
         self.user = user
@@ -138,8 +139,9 @@ class SingleMessageContentViewModel {
             user: user,
             systemUpTime: systemUpTime,
             labelID: context.labelId,
-            shouldOpenHistory: shouldOpenHistory,
-            dependencies: messageInfoProviderDependencies
+            dependencies: messageInfoProviderDependencies,
+            highlightedKeywords: highlightedKeywords,
+            shouldOpenHistory: shouldOpenHistory
         )
         imageProxy.set(delegate: messageInfoProvider)
         messageInfoProvider.initialize()
@@ -241,7 +243,7 @@ class SingleMessageContentViewModel {
     /// - param blocked: whether to block or unblock the sender
     /// - returns: true if action was successful (errors are handled by the view model)
     func updateSenderBlockedStatus(blocked: Bool) -> Bool {
-        let senderEmail = messageInfoProvider.senderEmail
+        let senderEmail = messageInfoProvider.senderEmail.string
 
         defer {
             updateBannerStatus()

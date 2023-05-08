@@ -4,9 +4,9 @@ import UIKit
 class ConversationMessageCellPresenter {
     private let tagsPresenter = TagsPresenter()
 
-    func present(model: ConversationMessageModel, in view: ConversationMessageView) {
+    func present(model: ConversationMessageModel, in view: ConversationMessageView, highlightedKeywords: [String]) {
         presentInitialsView(model: model, in: view)
-        presentTexts(model: model, in: view)
+        presentTexts(model: model, in: view, highlightedKeywords: highlightedKeywords)
         presentIcons(model: model, in: view)
         presentOrigin(model: model, in: view)
         presentSentLocation(model: model, in: view)
@@ -41,7 +41,11 @@ class ConversationMessageCellPresenter {
         }
     }
 
-    private func presentTexts(model: ConversationMessageModel, in view: ConversationMessageView) {
+    private func presentTexts(
+        model: ConversationMessageModel,
+        in view: ConversationMessageView,
+        highlightedKeywords: [String]
+    ) {
         let color: UIColor = model.isRead ? ColorProvider.TextWeak : ColorProvider.TextNorm
         let weight: UIFont.Weight = model.isRead ? .regular : .semibold
         view.timeLabel.set(text: model.time,
@@ -49,7 +53,13 @@ class ConversationMessageCellPresenter {
                            weight: weight,
                            textColor: color)
 
-        view.configureSenderRow(components: model.sender, preferredFont: .subheadline, weight: weight, textColor: color)
+        view.configureSenderRow(
+            components: model.sender,
+            highlightedKeywords: highlightedKeywords,
+            preferredFont: .subheadline,
+            weight: weight,
+            textColor: color
+        )
     }
 
     private func presentIcons(model: ConversationMessageModel, in view: ConversationMessageView) {

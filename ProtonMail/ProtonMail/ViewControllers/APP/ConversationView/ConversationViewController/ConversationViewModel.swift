@@ -40,8 +40,12 @@ class ConversationViewModel {
     }
 
     var detailedNavigationViewType: NavigationViewType {
-        .detailed(
-            subject: conversation.subject.apply(style: FontManager.DefaultSmallStrong.lineBreakMode(.byTruncatingTail)),
+        let subjectStyle = FontManager.DefaultSmallStrong.lineBreakMode(.byTruncatingTail)
+        let subject = conversation.subject.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
+        subject.addAttributes(subjectStyle, range: NSRange(location: 0, length: conversation.subject.count))
+
+        return .detailed(
+            subject: subject,
             numberOfMessages: messagesTitle.apply(style: FontManager.OverlineRegularTextWeak)
         )
     }
@@ -131,6 +135,7 @@ class ConversationViewModel {
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
     private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
+    let highlightedKeywords: [String]
     let dependencies: Dependencies
 
     init(labelId: LabelID,
@@ -146,6 +151,7 @@ class ConversationViewModel {
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
+         highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void,
          dependencies: Dependencies) {
         self.labelId = labelId
@@ -155,6 +161,7 @@ class ConversationViewModel {
         self.contactService = user.contactService
         self.eventsService = user.eventsService
         self.contextProvider = contextProvider
+        self.highlightedKeywords = highlightedKeywords
         self.user = user
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation,
                                                                          contextProvider: contextProvider)
@@ -252,6 +259,7 @@ class ConversationViewModel {
             replacingEmailsMap: sharedReplacingEmailsMap,
             contactGroups: sharedContactGroups,
             internetStatusProvider: connectionStatusProvider,
+            highlightedKeywords: highlightedKeywords,
             senderImageStatusProvider: dependencies.senderImageStatusProvider,
             goToDraft: goToDraft
         )

@@ -1,4 +1,6 @@
 import Foundation
+import UIKit
+import ProtonCore_UIFoundations
 
 extension String {
 
@@ -32,5 +34,16 @@ extension String {
 
     static var rebrandingReadMoreLink: String {
         "https://proton.me/news/updated-proton"
+    }
+
+    static var highlightTextColor: UIColor {
+        let color: UIColor
+        if #available(iOS 13.0, *) {
+            let trait = UITraitCollection(userInterfaceStyle: .dark)
+            color = ColorProvider.Shade0.resolvedColor(with: trait)
+        } else {
+            color = .black
+        }
+        return color
     }
 }

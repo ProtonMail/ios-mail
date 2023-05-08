@@ -203,7 +203,8 @@ class BannerViewModelTests: XCTestCase {
                             senderImageStatusProvider: mockSenderImageStatusProvider,
                             mailSettings: userManagerMock.mailSettings)
                     )
-                )
+                ),
+                highlightedKeywords: []
             )
         )
     }

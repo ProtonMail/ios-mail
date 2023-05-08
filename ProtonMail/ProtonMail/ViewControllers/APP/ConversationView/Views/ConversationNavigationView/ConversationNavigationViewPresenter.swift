@@ -52,7 +52,7 @@ extension NavigationViewType {
         case let .detailed(subject, numberOfMessages):
             let titleView = ConversationNavigationDetailView()
             titleView.topLabel.attributedText = numberOfMessages
-            titleView.bottomLabel.attributedText = subject
+            titleView.bottomLabel.set(text: subject, preferredFont: .subheadline)
             return titleView
         }
     }

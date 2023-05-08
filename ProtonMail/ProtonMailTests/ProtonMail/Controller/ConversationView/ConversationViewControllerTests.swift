@@ -78,6 +78,7 @@ class ConversationViewControllerTests: XCTestCase {
                                                   toolbarActionProvider: toolbarActionProviderMock,
                                                   saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                                   toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
+                                                  highlightedKeywords: [],
                                                   goToDraft: { _, _  in },
                                                   dependencies: dependencies)
         applicationStateMock = MockApplicationStateProvider(state: .background)
