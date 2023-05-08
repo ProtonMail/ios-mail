@@ -20,6 +20,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let targetID: MessageID?
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
+    private let highlightedKeywords: [String]
     private let contextProvider: CoreDataContextProviderProtocol
     var pendingActionAfterDismissal: (() -> Void)?
     var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
@@ -30,6 +31,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
          infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
+         highlightedKeywords: [String] = [],
          contextProvider: CoreDataContextProviderProtocol,
          targetID: MessageID? = nil) {
         self.labelId = labelId
@@ -39,6 +41,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.targetID = targetID
         self.internetStatusProvider = internetStatusProvider
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
+        self.highlightedKeywords = highlightedKeywords
         self.contextProvider = contextProvider
     }
 
@@ -99,6 +102,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                 dependencies: .init(user: user)
             ),
             toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
+            highlightedKeywords: highlightedKeywords,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.navigationController?.popViewController(animated: false)
                 self?.goToDraft?(msgID, originalScheduledTime)

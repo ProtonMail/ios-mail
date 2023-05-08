@@ -263,7 +263,10 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         customView.tableView.register(cellType: ConversationViewTrashedHintCell.self)
 
         let headerView = ConversationViewHeaderView()
-        headerView.titleTextView.set(text: viewModel.conversation.subject, preferredFont: .title3)
+        let subject = viewModel.conversation.subject
+            .keywordHighlighting
+            .asAttributedString(keywords: viewModel.highlightedKeywords)
+        headerView.titleTextView.set(text: subject, preferredFont: .title3)
         headerView.titleTextView.textAlignment = .center
         customView.tableView.tableHeaderView = headerView
     }
@@ -561,16 +564,22 @@ private extension ConversationViewController {
             }
             let customView = cell.customView
             collapsedViewModel.reloadView = { [weak self] model in
-                self?.conversationMessageCellPresenter.present(model: model, in: customView)
+                self?.conversationMessageCellPresenter.present(
+                    model: model,
+                    in: customView,
+                    highlightedKeywords: self?.viewModel.highlightedKeywords ?? []
+                )
             }
             cell.cellReuse = { [weak collapsedViewModel] in
                 collapsedViewModel?.reloadView = nil
             }
             let model = collapsedViewModel.model(customFolderLabels: self.viewModel.customFolders)
-            conversationMessageCellPresenter.present(model: model, in: cell.customView)
-
+            conversationMessageCellPresenter.present(
+                model: model,
+                in: cell.customView,
+                highlightedKeywords: viewModel.highlightedKeywords
+            )
             showSenderImageIfNeeded(in: cell, message: viewModel.message)
-
             return cell
         case .expanded(let expandedViewModel):
             let cell = tableView.dequeue(cellType: ConversationExpandedMessageCell.self)

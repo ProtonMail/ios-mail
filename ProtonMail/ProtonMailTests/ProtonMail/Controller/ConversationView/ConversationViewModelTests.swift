@@ -87,6 +87,7 @@ class ConversationViewModelTests: XCTestCase {
                                     toolbarActionProvider: toolbarActionProviderMock,
                                     saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                     toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
+                                    highlightedKeywords: [],
                                     goToDraft: { _, _ in },
                                     dependencies: dependencies)
 
@@ -874,6 +875,7 @@ class ConversationViewModelTests: XCTestCase {
                                     toolbarActionProvider: toolbarActionProviderMock,
                                     saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                     toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
+                                    highlightedKeywords: [],
                                     goToDraft: { _, _ in },
                                     dependencies: dependencies)
     }
@@ -898,6 +900,7 @@ class ConversationViewModelTests: XCTestCase {
             replacingEmailsMap: [:],
             contactGroups: [],
             internetStatusProvider: fakeInternetProvider,
+            highlightedKeywords: [],
             senderImageStatusProvider: mockSenderImageStatusProvider,
             goToDraft: { _, _ in })
         if isExpanded {

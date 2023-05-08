@@ -86,7 +86,7 @@ final class MessageInfoProvider {
     private weak var delegate: MessageInfoProviderDelegate?
     private var pgpChecker: MessageSenderPGPChecker?
     private let dependencies: Dependencies
-
+    private var highlightedKeywords: [String]
     private var shouldApplyImageProxy: Bool {
         let messageNotSentByUs = !message.isSent
         let remoteContentAllowed = remoteContentPolicy == .allowed
@@ -99,8 +99,9 @@ final class MessageInfoProvider {
         user: UserManager,
         systemUpTime: SystemUpTimeProtocol,
         labelID: LabelID,
-        shouldOpenHistory: Bool = false,
-        dependencies: Dependencies
+        dependencies: Dependencies,
+        highlightedKeywords: [String],
+        shouldOpenHistory: Bool = false
     ) {
         self.message = message
         let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
@@ -124,6 +125,7 @@ final class MessageInfoProvider {
         self.systemUpTime = systemUpTime
         self.labelID = labelID
         self.dependencies = dependencies
+        self.highlightedKeywords = highlightedKeywords
 
         if shouldOpenHistory {
             displayMode = .expanded
@@ -141,20 +143,21 @@ final class MessageInfoProvider {
         self.checkSenderPGP()
     }
 
-    lazy var senderName: String = {
+    lazy var senderName: NSAttributedString = {
         let sender: Sender
 
         do {
             sender = try message.parseSender()
         } catch {
             assertionFailure("\(error)")
-            return ""
+            return .init(string: "")
         }
 
         guard let contactName = contactService.getName(of: sender.address) else {
-            return sender.name.isEmpty ? sender.address : sender.name
+            let name = sender.name.isEmpty ? sender.address : sender.name
+            return name.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
         }
-        return contactName
+        return contactName.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
     }()
 
     private(set) var checkedSenderContact: CheckedSenderContact? {
@@ -163,15 +166,15 @@ final class MessageInfoProvider {
         }
     }
 
-    var initials: String { senderName.initials() }
+    var initials: String { senderName.string.initials() }
 
-    var senderEmail: String {
+    var senderEmail: NSAttributedString {
         do {
             let sender = try message.parseSender()
-            return sender.address
+            return sender.address.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
         } catch {
             assertionFailure("\(error)")
-            return ""
+            return .init(string: "")
         }
     }
 
@@ -234,7 +237,7 @@ final class MessageInfoProvider {
         contactService.allContactVOs()
     }
 
-    var simpleRecipient: String? {
+    var simpleRecipient: NSAttributedString? {
         let lists = ContactPickerModelHelper.contacts(from: message.rawCCList)
         + ContactPickerModelHelper.contacts(from: message.rawBCCList)
         + ContactPickerModelHelper.contacts(from: message.rawTOList)
@@ -243,7 +246,7 @@ final class MessageInfoProvider {
         let result = groupNames + receiver
         let name = result.isEmpty ? "" : result.asCommaSeparatedList(trailingSpace: true)
         let recipients = name.isEmpty ? LocalString._undisclosed_recipients : name
-        return recipients
+        return recipients.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
     }
 
     lazy var toData: ExpandedHeaderRecipientsRowViewModel? = {
@@ -494,8 +497,8 @@ extension MessageInfoProvider {
             let name = nameFromContact.isEmpty ? email : nameFromContact
             let contact = ContactVO(name: name, email: recipient.email)
             return ExpandedHeaderRecipientRowViewModel(
-                name: name,
-                address: emailToDisplay,
+                name: name.keywordHighlighting.asAttributedString(keywords: highlightedKeywords),
+                address: emailToDisplay.keywordHighlighting.asAttributedString(keywords: highlightedKeywords),
                 contact: contact
             )
         }
@@ -631,7 +634,7 @@ extension MessageInfoProvider {
 
         let css = bodyParts?.darkModeCSS(body: body)
         contents = WebContents(
-            body: body,
+            body: body.keywordHighlighting.usingCSS(keywords: highlightedKeywords),
             remoteContentMode: remoteContentPolicy,
             messageDisplayMode: displayMode,
             contentLoadingType: contentLoadingType,

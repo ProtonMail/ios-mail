@@ -63,6 +63,13 @@ extension UserInfo {
         #endif
     }
 
+    static var isHighlightKeywordEnabled: Bool {
+        #if DEBUG_ENTERPRISE
+            return true
+        #endif
+            return false
+    }
+
     static var isEncryptedSearchEnabled: Bool {
 //        #if DEBUG_ENTERPRISE
 //        return true

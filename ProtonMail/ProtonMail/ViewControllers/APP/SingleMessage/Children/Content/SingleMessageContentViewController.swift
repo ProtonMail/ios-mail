@@ -382,7 +382,7 @@ class SingleMessageContentViewController: UIViewController {
             showOfficialBadge = false
             senderBlockStatus = .notApplicable
         case .sender(let sender):
-            title = viewModel.messageInfoProvider.senderName
+            title = viewModel.messageInfoProvider.senderName.string
             showOfficialBadge = sender.isFromProton
             senderBlockStatus = viewModel.isSenderCurrentlyBlocked ? .blocked : .notBlocked
         }

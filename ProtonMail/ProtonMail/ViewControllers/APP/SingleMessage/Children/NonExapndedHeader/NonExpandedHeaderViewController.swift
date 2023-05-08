@@ -83,7 +83,11 @@ class NonExpandedHeaderViewController: UIViewController {
         customView.timeLabel.set(text: viewModel.infoProvider.time,
                                  preferredFont: .footnote,
                                  textColor: ColorProvider.TextWeak)
-        customView.recipientLabel.text = viewModel.infoProvider.simpleRecipient
+        customView.recipientLabel.set(
+            text: viewModel.infoProvider.simpleRecipient ?? .init(string: ""),
+            preferredFont: .footnote,
+            textColor: ColorProvider.TextWeak
+        )
         updateTrackerDetectionStatus()
         customView.expandView = { [weak self] in
             self?.showDetailsAction?()

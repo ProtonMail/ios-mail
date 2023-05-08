@@ -236,6 +236,8 @@ class NewMessageBodyViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
                 self?.updateViewHeight(to: webView.scrollView.contentSize.height)
                 self?.viewModel.recalculateCellHeight?(true)
+                // Scroll the highlighted keyword in ES to the center of the webview.
+                self?.scrollTo(anchor: "es-autoscroll", in: webView)
                 self?.webViewIsLoaded?()
             }
         }
@@ -453,9 +455,11 @@ extension NewMessageBodyViewController {
 
     private func scrollTo(anchor: String, in webView: WKWebView) {
         let script = """
-anchor = document.getElementById('\(anchor)')
-anchor.offsetTop
-"""
+        var anchor = document.getElementById('\(anchor)')
+        if (anchor != undefined) {
+          window.pageYOffset + anchor.getBoundingClientRect().top
+        }
+        """
 
         let javaScriptEnabledBefore = webView.configuration.preferences.javaScriptEnabled
         webView.configuration.preferences.javaScriptEnabled = true

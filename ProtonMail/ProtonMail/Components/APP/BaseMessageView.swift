@@ -29,6 +29,7 @@ class BaseMessageView: UIView {
 
     func configureSenderRow(
         components: [SenderRowComponent],
+        highlightedKeywords: [String],
         preferredFont: UIFont.TextStyle,
         weight: UIFont.Weight,
         textColor: UIColor
@@ -40,7 +41,8 @@ class BaseMessageView: UIView {
             case .string(let string):
                 let label = UILabel()
                 label.lineBreakMode = .byTruncatingTail
-                label.set(text: string, preferredFont: preferredFont, weight: weight, textColor: textColor)
+                let text = string.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
+                label.set(text: text, preferredFont: preferredFont, weight: weight, textColor: textColor)
                 return label
             case .officialBadge:
                 return OfficialBadge()

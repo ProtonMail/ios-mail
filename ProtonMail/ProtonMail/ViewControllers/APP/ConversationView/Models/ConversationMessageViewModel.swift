@@ -30,6 +30,7 @@ class ConversationMessageViewModel {
     private let replacingEmailsMap: [String: EmailEntity]
     private let contactGroups: [ContactGroupVO]
     private let internetStatusProvider: InternetConnectionStatusProvider
+    let highlightedKeywords: [String]
     private let goToDraft: (MessageID, OriginalScheduleDate?) -> Void
     private let senderImageStatusProvider: SenderImageStatusProvider
 
@@ -39,6 +40,7 @@ class ConversationMessageViewModel {
          replacingEmailsMap: [String: EmailEntity],
          contactGroups: [ContactGroupVO],
          internetStatusProvider: InternetConnectionStatusProvider,
+         highlightedKeywords: [String],
          senderImageStatusProvider: SenderImageStatusProvider,
          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) {
@@ -50,6 +52,7 @@ class ConversationMessageViewModel {
         self.internetStatusProvider = internetStatusProvider
         self.senderImageStatusProvider = senderImageStatusProvider
         self.goToDraft = goToDraft
+        self.highlightedKeywords = highlightedKeywords
         let collapsedViewModel = ConversationCollapsedMessageViewModel(
             message: message,
             weekStart: user.userInfo.weekStartValue,
@@ -94,6 +97,7 @@ class ConversationMessageViewModel {
             user: user,
             internetStatusProvider: internetStatusProvider,
             systemUpTime: userCachedStatus,
+            highlightedKeywords: highlightedKeywords,
             shouldOpenHistory: shouldOpenHistory,
             senderImageStatusProvider: senderImageStatusProvider,
             goToDraft: goToDraft

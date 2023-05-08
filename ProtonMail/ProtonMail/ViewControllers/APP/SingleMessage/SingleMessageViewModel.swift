@@ -56,6 +56,7 @@ class SingleMessageViewModel {
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
     private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
+    let highlightedKeywords: [String]
     private let nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
 
     let coordinator: SingleMessageCoordinator
@@ -75,6 +76,7 @@ class SingleMessageViewModel {
          coordinator: SingleMessageCoordinator,
          nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider,
          dependencies: SingleMessageContentViewModel.Dependencies,
+         highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void,
          notificationCenter: NotificationCenter = .default
     ) {
@@ -83,6 +85,7 @@ class SingleMessageViewModel {
         self.messageService = user.messageService
         self.user = user
         self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
+        self.highlightedKeywords = highlightedKeywords
         let contentContext = SingleMessageContentViewContext(
             labelId: labelId,
             message: message,
@@ -96,6 +99,7 @@ class SingleMessageViewModel {
             internetStatusProvider: internetStatusProvider,
             systemUpTime: systemUpTime,
             dependencies: dependencies,
+            highlightedKeywords: highlightedKeywords,
             goToDraft: goToDraft
         )
         self.coordinator = coordinator
@@ -108,7 +112,11 @@ class SingleMessageViewModel {
     }
 
     var messageTitle: NSAttributedString {
-        message.title.apply(style: FontManager.MessageHeader.alignment(.center))
+        let style = FontManager.MessageHeader.alignment(.center)
+        let attributed = message.title.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
+        let range = NSRange(location: 0, length: message.title.count)
+        attributed.addAttributes(style, range: range)
+        return attributed
     }
 
     func viewDidLoad() {
