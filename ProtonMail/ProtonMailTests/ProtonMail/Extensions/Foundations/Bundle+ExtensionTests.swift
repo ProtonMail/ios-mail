@@ -21,10 +21,10 @@ import XCTest
 final class Bundle_ExtensionTests: XCTestCase {
 
     func testLoadResource() throws {
-        _ = try Bundle.loadResource(named: "HtmlEditor", ofType: "html")
-        _ = try Bundle.loadResource(named: "HtmlEditor", ofType: "css")
-        _ = try Bundle.loadResource(named: "HtmlEditor", ofType: "js")
-        _ = try Bundle.loadResource(named: "purify.min", ofType: "js")
-        _ = try Bundle.loadResource(named: "QuoteBreaker", ofType: "js")
+        _ = Bundle.loadResource(named: "HtmlEditor", ofType: "html")
+        _ = Bundle.loadResource(named: "HtmlEditor", ofType: "css")
+        _ = Bundle.loadResource(named: "HtmlEditor", ofType: "js")
+        _ = Bundle.loadResource(named: "purify.min", ofType: "js")
+        _ = Bundle.loadResource(named: "QuoteBreaker", ofType: "js")
     }
 }

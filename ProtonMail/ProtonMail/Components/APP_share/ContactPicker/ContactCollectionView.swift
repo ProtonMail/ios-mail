@@ -69,13 +69,6 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         self.setup()
     }
 
-    func setFrame(frame: CGRect) {
-        let origWidth = self.frame.width
-        self.collectionViewLayout.invalidateLayout()
-        self.frame = frame
-        self.handleWidthChangeFrom(oldWidth: origWidth, to: frame.width)
-    }
-
     func setup() {
         self.selectedContacts = [ContactPickerModelProtocol]()
 

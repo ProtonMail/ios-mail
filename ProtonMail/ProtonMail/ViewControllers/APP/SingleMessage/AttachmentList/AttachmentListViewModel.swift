@@ -44,9 +44,6 @@ final class AttachmentListViewModel {
     private var downloadingTask: [AttachmentID: URLSessionDownloadTask] = [:]
     let user: UserManager
 
-    var attachmentCount: Int {
-        return inlineAttachments.count + normalAttachments.count
-    }
     /// (attachmentID, tempClearFileURL)
     var attachmentDownloaded: ((AttachmentID, URL) -> Void)?
     private let dependencies: Dependencies

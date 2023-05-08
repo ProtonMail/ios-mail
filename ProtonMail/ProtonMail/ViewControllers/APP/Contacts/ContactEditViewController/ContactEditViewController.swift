@@ -345,13 +345,6 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
         self.tableView.endUpdates()
         UIView.setAnimationsEnabled(true)
     }
-
-    func synced(_ lock: Any, closure: () -> Void) {
-        objc_sync_enter(lock)
-        closure()
-        objc_sync_exit(lock)
-    }
-
 }
 
 //
