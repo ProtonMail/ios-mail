@@ -99,11 +99,13 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
                     .addAction(key: .type, value: .ignorePreviousRules)
             )
         let blockRules = builder.export() ?? ""
-        WKContentRuleListStore.default().compileContentRuleList(forIdentifier: "ContentBlockingRules", encodedContentRuleList: blockRules) { contentRuleList, error in
+        WKContentRuleListStore.default().compileContentRuleList(forIdentifier: "ContentBlockingRules-\(urlString)", encodedContentRuleList: blockRules) { contentRuleList, error in
             guard error == nil, let compiledRule = contentRuleList else {
                 assert(error == nil, "Error compiling content blocker rules: \(error!.localizedDescription)")
                 return
             }
+            guard let latestRequest = self.schemeHandler.latestRequest,
+                  compiledRule.identifier.hasSuffix(latestRequest) else { return }
             self.blockRules = compiledRule
             self.prepareRendering(contents, into: webView.configuration)
             webView.load(request)
