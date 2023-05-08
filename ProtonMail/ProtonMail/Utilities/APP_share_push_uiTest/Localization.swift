@@ -1434,6 +1434,7 @@ enum L11n {
         static let blockActionTitleShort = NSLocalizedString("Block", comment: "Button to block a sender, keep it short to fit in the UI")
         static let blockListSettingsItem = NSLocalizedString("Block list", comment: "Settings item to open blocked sender list")
         static let blockListScreenTitle = NSLocalizedString("Blocked Senders", comment: "Title of the blocked sender list screen")
+        static let cannotRefreshWhileOffline = NSLocalizedString("Update queued, awaiting connectivity...", comment: "Shown when the user attempts to manually refresh the list of blocked senders while offline")
         static let emptyList = NSLocalizedString("No blocked senders", comment: "Placeholder for empty sender list")
         static let explanation = NSLocalizedString("New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings.", comment: "")
         static let senderIsBlockedBanner = NSLocalizedString("Sender has been blocked", comment: "Banner in the message view")

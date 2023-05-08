@@ -47,6 +47,8 @@ final class BlockedSendersViewModel {
         switch cacheUpdaterState {
         case .idle:
             fetchBlockedSendersFromCoreData()
+        case .waitingToBecomeOnline:
+            uiDelegate?.showOfflineToast()
         default:
             state = .fetchInProgress
         }
