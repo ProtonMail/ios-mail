@@ -527,7 +527,10 @@ extension MessageInfoProvider {
                 // If embedded images haven't prepared
                 // Display content first
                 // Reload view after preparing
-                self.updateWebContents()
+                // If embedded images are cached, doesn't need to show blank content
+                if self.needsToDownloadEmbeddedImage() {
+                    self.updateWebContents()
+                }
                 self.downloadEmbedImage(self.message)
                 return
             }
@@ -721,6 +724,22 @@ extension MessageInfoProvider {
             self.updateBodyParts(with: updatedBody)
             self.updateWebContents()
         }
+    }
+
+    private func needsToDownloadEmbeddedImage() -> Bool {
+        guard let inlines = inlineAttachments,
+              !inlines.isEmpty else {
+            return false
+        }
+        var needsDownload = false
+        for inline in inlines {
+            let path = FileManager.default.attachmentDirectory.appendingPathComponent(inline.id.rawValue)
+            if !FileManager.default.fileExists(atPath: path.relativePath) {
+                needsDownload = true
+                break
+            }
+        }
+        return needsDownload
     }
 
     private func checkBannerStatus(_ bodyToCheck: String) {
