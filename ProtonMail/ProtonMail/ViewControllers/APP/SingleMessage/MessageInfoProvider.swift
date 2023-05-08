@@ -521,7 +521,8 @@ extension MessageInfoProvider {
 
             self.checkBannerStatus(decryptedBody)
 
-            guard self.embeddedContentPolicy == .allowed else {
+            guard self.embeddedContentPolicy == .allowed,
+                  !(self.inlineAttachments ?? []).isEmpty else {
                 self.updateWebContents()
                 return
             }
