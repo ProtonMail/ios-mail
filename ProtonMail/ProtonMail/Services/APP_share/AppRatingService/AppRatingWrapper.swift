@@ -31,10 +31,8 @@ struct AppRatingManager: AppRatingWrapper {
             return
         }
         #if !APP_EXTENSION
-        if #available(iOS 14.0, *), let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
             SKStoreReviewController.requestReview(in: windowScene)
-        } else {
-            SKStoreReviewController.requestReview()
         }
         #endif
     }

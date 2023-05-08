@@ -526,7 +526,7 @@ class UserDataService: Service {
                             userInfo.userKeys = resultOfKeyUpdate.updatedUserKeys + resultOfKeyUpdate.originalUserKeys
                             userInfo.userAddresses = resultOfKeyUpdate.updatedAddresses ?? []
                         }
-                        oldAuthCredential.udpate(password: resultOfKeyUpdate.hashedNewPassword.value)
+                        oldAuthCredential.update(password: resultOfKeyUpdate.hashedNewPassword.value)
 
                         forceRetry = false
                     } catch let error as NSError {

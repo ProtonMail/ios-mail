@@ -332,7 +332,7 @@ final class BannerViewController: UIViewController {
                 guard let view = view.subviews.first as? EditScheduledBanner else { return }
                 view.refreshFontSize()
             case .spam:
-                guard let view = view.subviews.first as? SpamBannerView,
+                guard view.subviews.first is SpamBannerView,
                       let spamType = viewModel.spamType else { return }
                 spamBanner.infoTextView.attributedText = spamType.text
                 spamBanner.button.setAttributedTitle(spamType.buttonTitle, for: .normal)

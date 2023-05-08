@@ -58,7 +58,6 @@ class MoveToActionSheetPresenter {
             let iconColor = viewModel.getColor(of: menuLabel)
 
             let markType = viewModel.initialLabelSelectionStatus[menuLabel] ?? .none
-            let isOn = markType != .none
             let item = PMActionSheetItem(
                 components: [
                     PMActionSheetIconComponent(

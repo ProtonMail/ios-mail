@@ -913,7 +913,7 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
             return
         }
         DispatchQueue.main.async { [weak self] in
-            let userInfo = ["expectation": PagesSwipeAction.forward, "reload": true]
+            let userInfo: [String: Any] = ["expectation": PagesSwipeAction.forward, "reload": true]
             self?.dependencies.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
         }
     }

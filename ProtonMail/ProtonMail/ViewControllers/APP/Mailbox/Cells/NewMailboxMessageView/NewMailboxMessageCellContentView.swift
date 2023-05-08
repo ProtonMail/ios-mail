@@ -89,7 +89,7 @@ class NewMailboxMessageCellContentView: UIView {
         [
             initialsLabel.leadingAnchor.constraint(equalTo: initialsContainer.leadingAnchor, constant: 2),
             initialsLabel.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: -2),
-            initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor),
+            initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor)
         ].activate()
 
         senderImageView.fillSuperview()

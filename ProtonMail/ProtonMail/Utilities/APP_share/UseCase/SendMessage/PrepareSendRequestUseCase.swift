@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonMailAnalytics
-import Foundation
 import PromiseKit
 import enum ProtonCore_Crypto.Based64
 import struct ProtonCore_Crypto.Password

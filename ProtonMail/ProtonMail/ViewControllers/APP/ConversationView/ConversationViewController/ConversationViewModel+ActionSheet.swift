@@ -10,7 +10,7 @@ extension ConversationViewModel {
         guard let messageLocation = message.orderedLocation?.labelID else { return }
         switch action {
         case .markUnread:
-            guard let index = messagesDataSource.firstIndex(where: { $0.message?.messageID == message.messageID }) else {
+            guard messagesDataSource.contains(where: { $0.message?.messageID == message.messageID }) else {
                 return
             }
             messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: messageLocation, unRead: true)

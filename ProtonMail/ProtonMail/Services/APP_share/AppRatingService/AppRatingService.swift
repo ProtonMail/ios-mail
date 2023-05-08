@@ -22,7 +22,7 @@ final class AppRatingService {
         static let inboxNavigation = 2
         static let inboxNavigationWhenSignedIn = 4
     }
-    
+
     private var userSignedIn: Bool = false
     private var inboxNavigationCounter = 0
     private var isInboxNavigationConditionMet: Bool {

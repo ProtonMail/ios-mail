@@ -55,7 +55,10 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
                 currentSubscriptions.update(setting, toState: .notReported)
             }
         }
-        didSet { self.deviceTokenSaver.set(newValue: latestDeviceToken) } // but we have to save one for PushNotificationDecryptor
+        didSet {
+            // but we have to save one for PushNotificationDecryptor
+            self.deviceTokenSaver.set(newValue: latestDeviceToken)
+        }
     }
 
     init(

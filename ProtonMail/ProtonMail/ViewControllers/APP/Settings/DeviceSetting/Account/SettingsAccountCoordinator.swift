@@ -235,7 +235,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case .sessionForkingError(let errorMessage):
             message = errorMessage
         case .cannotDeleteYourself(let reason):
-            message = reason.networkResponseMessageForTheUser
+            message = reason.localizedDescription
         case .deletionFailure(let errorMessage):
             message = errorMessage
         case .closedByUser:

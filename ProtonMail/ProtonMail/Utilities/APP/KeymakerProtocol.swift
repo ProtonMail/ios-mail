@@ -21,7 +21,9 @@ import ProtonCore_Keymaker
 // sourcery: mock
 protocol KeymakerProtocol {
     func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void)
-    @discardableResult func deactivate(_ protector: ProtectionStrategy) -> Bool
+
+    @discardableResult
+    func deactivate(_ protector: ProtectionStrategy) -> Bool
 }
 
 extension Keymaker: KeymakerProtocol {}
