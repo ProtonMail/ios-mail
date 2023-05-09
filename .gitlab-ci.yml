@@ -97,6 +97,8 @@ linting:
   stage: linting
   before_script:
     - *setup_basic_tools
+  variables:
+    GIT_DEPTH: 1
   script:
     - pip3 install -r Scripts/requirements.txt
     - python3 Scripts/linkAvailabilityCheck.py
@@ -217,7 +219,7 @@ test:ui:feature:
   dependencies:
     - deploy:review
   stage: test
-  rules: 
+  rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
   variables:
     GIT_DEPTH: 1
@@ -242,7 +244,7 @@ test:ui:feature:
 test:ui:monkey:
   timeout: 2 hours
   stage: test
-  rules: 
+  rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "monkey"'
   artifacts:
     when: always

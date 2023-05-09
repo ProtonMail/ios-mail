@@ -753,6 +753,7 @@ struct LocalizationList {
         "L11n.BlockSender.blockActionTitleShort": L11n.BlockSender.blockActionTitleShort,
         "L11n.BlockSender.blockListSettingsItem": L11n.BlockSender.blockListSettingsItem,
         "L11n.BlockSender.blockListScreenTitle": L11n.BlockSender.blockListScreenTitle,
+        "L11n.BlockSender.cannotRefreshWhileOffline": L11n.BlockSender.cannotRefreshWhileOffline,
         "L11n.BlockSender.emptyList": L11n.BlockSender.emptyList,
         "L11n.BlockSender.explanation": L11n.BlockSender.explanation,
         "L11n.BlockSender.senderIsBlockedBanner": L11n.BlockSender.senderIsBlockedBanner,

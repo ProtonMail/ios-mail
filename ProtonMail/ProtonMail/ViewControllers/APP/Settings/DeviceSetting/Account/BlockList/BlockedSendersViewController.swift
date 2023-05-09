@@ -142,6 +142,10 @@ extension BlockedSendersViewController: BlockedSendersViewModelUIDelegate {
         tableView.backgroundView = backgroundView
         tableView.reloadData()
     }
+
+    func showOfflineToast() {
+        showBanner(message: L11n.BlockSender.cannotRefreshWhileOffline, style: .info)
+    }
 }
 
 extension BlockedSendersViewController: LifetimeTrackable {

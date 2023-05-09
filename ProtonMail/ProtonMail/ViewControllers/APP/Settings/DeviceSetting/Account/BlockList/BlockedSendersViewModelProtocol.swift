@@ -36,4 +36,5 @@ protocol BlockedSendersViewModelOutput {
 
 protocol BlockedSendersViewModelUIDelegate: AnyObject {
     func refreshView(state: BlockedSendersViewModel.State)
+    func showOfflineToast()
 }
