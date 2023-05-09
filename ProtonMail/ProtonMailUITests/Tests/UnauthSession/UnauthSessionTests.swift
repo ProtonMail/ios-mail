@@ -39,7 +39,7 @@ private enum CommonUnauthSessionTests {
     }
 }
 
-final class NoUnauthSessionTests: CleanAuthenticatedTestCase {
+final class NoUnauthSessionTests: FixtureAuthenticatedTestCase {
 
     override func setUp() {
         launchArguments.append("-testNoUnauthSessions")
@@ -47,19 +47,19 @@ final class NoUnauthSessionTests: CleanAuthenticatedTestCase {
     }
 
     func testRefreshingAndOpeningMailWorks() {
-        CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user, environment: env)
+        CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user!, environment: env)
     }
 
 }
 
-final class UnauthSessionTests: CleanAuthenticatedTestCase {
+final class UnauthSessionTests: FixtureAuthenticatedTestCase {
 
     override func setUp() {
         launchArguments.append("-testUnauthSessionsWithHeader")
         super.setUp()
     }
-
+    
     func testRefreshingAndOpeningMailWorks() {
-        CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user, environment: env)
+        CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user!, environment: env)
     }
 }

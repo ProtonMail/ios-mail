@@ -35,6 +35,7 @@ internal struct Predicate {
     static let enabled = NSPredicate(format: "isEnabled == true")
     static let disabled = NSPredicate(format: "isEnabled == false")
     static let hittable = NSPredicate(format: "hittable == true")
+    static let doesNotHittable = NSPredicate(format: "hittable == false")
     static let doesNotExist = NSPredicate(format: "exists == false")
     static let exists = NSPredicate(format: "exists == true")
     static let hasKeyboardFocus = NSPredicate(format: "hasKeyboardFocus == true")

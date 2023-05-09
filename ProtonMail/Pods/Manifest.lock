@@ -34,7 +34,7 @@ PODS:
     - SDWebImage
     - SwiftyGif
   - EllipticCurveKeyPair (2.0)
-  - fusion (2.0.0)
+  - fusion (2.0.1)
   - Groot (3.0.1):
     - Groot/Swift (= 3.0.1)
   - Groot/Swift (3.0.1)
@@ -349,7 +349,7 @@ PODS:
 DEPENDENCIES:
   - AwaitKit (from `https://github.com/yannickl/AwaitKit.git`, commit `4b725f40dd189f40c0962cba792f06a2073bd977`)
   - DKImagePickerController/PhotoGallery (= 4.3.4)
-  - "fusion (from `git@gitlab.protontech.ch:tpe/apple-fusion.git`, commit `83c1dfb4`)"
+  - "fusion (from `git@gitlab.protontech.ch:tpe/apple-fusion.git`, commit `82ddf41`)"
   - Groot (= 3.0.1)
   - "iosMonkey (from `git@gitlab.protontech.ch:tpe/ios-monkey.git`, commit `fa348f33`)"
   - MBProgressHUD (= 1.1.0)
@@ -432,7 +432,7 @@ EXTERNAL SOURCES:
     :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
     :git: https://github.com/yannickl/AwaitKit.git
   fusion:
-    :commit: 83c1dfb4
+    :commit: 82ddf41
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
   iosMonkey:
     :commit: fa348f33
@@ -551,7 +551,7 @@ CHECKOUT OPTIONS:
     :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
     :git: https://github.com/yannickl/AwaitKit.git
   fusion:
-    :commit: 83c1dfb4
+    :commit: 82ddf41
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
   iosMonkey:
     :commit: fa348f33
@@ -671,7 +671,7 @@ SPEC CHECKSUMS:
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
-  fusion: 094ff868fc1bc12ad68c403ff7be7af2da49a315
+  fusion: 4ce692b0bd8030d952dde9b4ceae3ab9fd3d2b72
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
   iosMonkey: bd2945d2c34f43236124bb1692923cd4aaa664b7
   lottie-ios: 9ae750cdc7820fecbd3c2f0cfc493038208fcdc4
@@ -722,6 +722,6 @@ SPEC CHECKSUMS:
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
 
-PODFILE CHECKSUM: 7ecc4083b7dd163a6721759b9c799d349e7cd2d1
+PODFILE CHECKSUM: 9586fa0943ba54c9ab34646646a361fa7a3a8afb
 
 COCOAPODS: 1.12.0

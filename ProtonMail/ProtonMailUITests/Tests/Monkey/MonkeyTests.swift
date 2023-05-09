@@ -33,26 +33,21 @@ class MonkeyTests : BaseMonkey, QuarkTestable  {
     private var isSubscriptionIncluded: Bool { true }
     private let apiDomainKey = "MAIL_APP_API_DOMAIN"
 
-    override func setUp() async throws {
-        try await super.setUp()
-
-        await setupTest()
-        let user = try await createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
+    override func setUpWithError()  throws {
+        setupTest()
+        let user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
         self.user = user
     }
 
-    override func tearDown() async throws {
-        await terminateApp()
-        try await deleteUser(domain: dynamicDomain, user)
-        try await super.tearDown()
+    override func tearDownWithError()  throws {
+        terminateApp()
+        try deleteUser(domain: dynamicDomain, user)
     }
 
-    @MainActor
     func terminateApp() {
         app.terminate()
     }
 
-    @MainActor
     func setupTest() {
         app.launch()
 

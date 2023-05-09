@@ -85,6 +85,18 @@ open class Wait {
     }
 
     /**
+     Waits for the element to be not hittable and fails the test when condition is not met.
+     */
+    @discardableResult
+    open func forElementToBeNotHittable(
+        _ element: XCUIElement,
+        _ file: StaticString = #file,
+        _ line: UInt = #line
+    ) -> XCUIElement {
+        waitForCondition(element, Predicate.doesNotHittable, file, line)
+    }
+
+    /**
      Waits for the element to disappear and fails the test when condition is not met.
      */
     @discardableResult

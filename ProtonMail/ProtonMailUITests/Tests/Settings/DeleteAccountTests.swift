@@ -21,7 +21,7 @@ import ProtonCore_Environment
 import ProtonCore_TestingToolkit
 import ProtonCore_QuarkCommands
 
-final class DeleteAccountTests: CleanAuthenticatedTestCase {
+final class DeleteAccountTests: FixtureAuthenticatedTestCase {
 
 
     private let accountDeletionRobot = AccountDeletionButtonRobot()
@@ -38,7 +38,7 @@ final class DeleteAccountTests: CleanAuthenticatedTestCase {
 
     func testDeleteAccountExists()  {
 
-        openAccountSettings(user: user)
+        openAccountSettings(user: user!)
 
         accountDeletionRobot
             .verify.accountDeletionButtonIsDisplayed(type: .staticText)
@@ -46,7 +46,7 @@ final class DeleteAccountTests: CleanAuthenticatedTestCase {
     
     func testDeleteAccountCanBeClosed() {
 
-        openAccountSettings(user: user)
+        openAccountSettings(user: user!)
 
         accountDeletionRobot
             .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
@@ -59,7 +59,7 @@ final class DeleteAccountTests: CleanAuthenticatedTestCase {
     
     func testLoginScreenIsShownAfterSuccessfulDeletion() {
 
-        openAccountSettings(user: user)
+        openAccountSettings(user: user!)
 
         accountDeletionRobot
             .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
@@ -68,7 +68,7 @@ final class DeleteAccountTests: CleanAuthenticatedTestCase {
             .setDeletionReason()
             .fillInDeletionExplaination()
             .fillInDeletionEmail()
-            .fillInDeletionPassword(user.password)
+            .fillInDeletionPassword(user!.password)
             .confirmBeingAwareAccountDeletionIsPermanent()
             .tapDeleteAccountButton(to: LoginRobot.self)
             .verify.loginScreenIsShown()
@@ -79,7 +79,7 @@ final class DeleteAccountTests: CleanAuthenticatedTestCase {
         let user2: User = User(name: StringUtils().randomAlphanumericString(length: 8), password: StringUtils().randomAlphanumericString(length: 8), mailboxPassword: "", twoFASecurityKey: "")
         quarkCommands.createUser(username: user2.email, password: user2.password, protonPlanName: UserPlan.free.rawValue)
 
-        openAccountSettings(user: user)
+        openAccountSettings(user: user!)
             .navigateBackToSettings()
             .close()
             .menuDrawer()
@@ -104,6 +104,6 @@ final class DeleteAccountTests: CleanAuthenticatedTestCase {
             .tapDeleteAccountButton(to: InboxRobot.self)
             .verify.inboxShown()
             .menuDrawer()
-            .verify.currentAccount(user)
+            .verify.currentAccount(user!)
     }
 }
