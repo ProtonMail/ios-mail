@@ -17,7 +17,7 @@
     ],
     "targetForVariableExpansion" : {
       "containerPath" : "container:ProtonMail.xcodeproj",
-      "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+      "identifier" : "67596B012358FAE8B0782EE2",
       "name" : "ProtonMailUITests"
     }
   },

@@ -42,12 +42,6 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
     func terminateApp() {
         app.terminate()
     }
-    
-    override func setUp() async throws {
-        try await super.setUp()
-        env = Environment.custom(dynamicDomain)
-        quarkCommands = QuarkCommands(doh: env.doh)
-    }
 
     override func setUp() {
         super.setUp()
@@ -71,6 +65,9 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
             app.launchEnvironment["ExtAccountNotSupportedStub"] = "1"
         }
         app.launch()
+
+        env = Environment.custom(dynamicDomain)
+        quarkCommands = QuarkCommands(doh: env.doh)
 
         handleInterruption()
     }
@@ -117,58 +114,25 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
 }
 
 @available(iOS 16.0, *)
-class CleanAuthenticatedTestCase: BaseTestCase {
-    
-    var user = User(name: StringUtils().randomAlphanumericString(length: 8), password: StringUtils().randomAlphanumericString(length: 8), mailboxPassword: "", twoFASecurityKey: "")
-
-    override func setUp() async throws {
-        try await super.setUp()
-
-        _ = try await withCheckedThrowingContinuation { continuation in
-            quarkCommands.createUser(username: user.name, password: user.password, protonPlanName: UserPlan.mailpro2022.rawValue) { result in
-                switch result {
-                case .success(_):
-                    continuation.resume(returning: result)
-                case .failure(let error):
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
-
-        login(user: user)
-    }
-
-	override func setUp() {
-		super.setUp()
-		login(user: user)
-	}
-
-    override func tearDown() async throws {
-        try await deleteUser(domain: dynamicDomain, user)
-        try await super.tearDown()
-    }
-}
-
-@available(iOS 16.0, *)
 class FixtureAuthenticatedTestCase: BaseTestCase {
 
     var scenario: MailScenario { .qaMail001 }
+    var plan: UserPlan { .mailpro2022 }
     var isSubscriptionIncluded: Bool { true }
     var user: User?
 
-    override func setUp() async throws {
-        user = try await createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
-        try await super.setUp()
-    }
-    
     override func setUp() {
         super.setUp()
+
         login(user: user!)
     }
 
-    override func tearDown() async throws {
-        try await deleteUser(domain: dynamicDomain, user)
-        try await super.tearDown()
+    override func setUpWithError() throws {
+        user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+    }
+
+    override func tearDownWithError() throws {
+        try deleteUser(domain: dynamicDomain, user)
     }
 
     open override func record(_ issue: XCTIssue) {

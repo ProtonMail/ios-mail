@@ -103,7 +103,7 @@ class PinRobot: CoreElements {
             super.init()
             staticText(id.setPinStaticTextLabel).waitUntilExists().checkExists()
         }
-        
+
         func enterPin(_ pin: String) -> setPinRobot {
             secureTextField(id.addPinTextFieldIdentifier).typeText(pin)
             return self
@@ -127,7 +127,7 @@ class PinRobot: CoreElements {
             super.init()
             staticText(id.repeatPinStaticTextLabel).waitUntilExists().checkExists()
         }
-        
+
         func enterPin(_ pin: String) -> RepeatPinRobot {
             secureTextField(id.confirmPinTextFieldIdentifier).tap().typeText(pin)
             return self
@@ -157,8 +157,9 @@ class PinRobot: CoreElements {
             return PinRobot()
         }
         
-        func appUnlockSuccessfully() {
+        func appUnlockSuccessfully() -> PinRobot {
             staticText(id.pinStaticTextLabel).waitUntilExists().checkExists()
+            return PinRobot()
         }
     }
 }

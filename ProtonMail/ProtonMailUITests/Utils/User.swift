@@ -23,6 +23,15 @@ class User {
     var twoFARecoveryCodes: [String]?
     var numberOfImportedMails: Int?
     var quarkURL: URL?
+
+    init() {
+        self.name = StringUtils().randomAlphanumericString(length: 8)
+        self.password = StringUtils().randomAlphanumericString(length: 8)
+        self.email = "\(name)@\(dynamicDomain)"
+        self.mailboxPassword = ""
+        self.twoFASecurityKey = ""
+        self.pmMeEmail = "\(name)@pm.me"
+    }
     
     init(name: String, password: String, mailboxPassword: String, twoFASecurityKey: String) {
         self.email = "\(name)@\(dynamicDomain)"

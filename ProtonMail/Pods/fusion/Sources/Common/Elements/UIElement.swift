@@ -613,6 +613,16 @@ open class UIElement {
     }
 
     @discardableResult
+    public func waitForNotHittable(
+        time: TimeInterval = 10.0,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> UIElement {
+        Wait(time: time).forElementToBeNotHittable(uiElement()!, file, line)
+        return self
+    }
+
+    @discardableResult
     public func waitForEnabled(
         time: TimeInterval = 10.0,
         file: StaticString = #filePath,

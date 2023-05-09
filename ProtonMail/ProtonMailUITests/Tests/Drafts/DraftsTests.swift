@@ -8,7 +8,7 @@
 
 import ProtonCore_TestingToolkit
 
-class DraftsTests: CleanAuthenticatedTestCase {
+class DraftsTests: FixtureAuthenticatedTestCase {
     private var subject = String()
     private var body = String()
     private var to = String()

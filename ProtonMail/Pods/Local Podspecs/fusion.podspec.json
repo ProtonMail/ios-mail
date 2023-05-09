@@ -1,6 +1,6 @@
 {
   "name": "fusion",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "summary": "UI test library that simplifies XCTest syntax, reduces test flakiness and improves test code readability.",
   "homepage": "https://github.com/protonmail",
   "license": "Proton Mail",

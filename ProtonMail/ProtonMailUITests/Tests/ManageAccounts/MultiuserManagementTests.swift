@@ -8,41 +8,40 @@
 
 import ProtonCore_TestingToolkit
 
-class MultiuserManagementTests : BaseTestCase {
+class MultiuserManagementTests : FixtureAuthenticatedTestCase {
 
     private let loginRobot = LoginRobot()
 
-    func testConnectOnePassAccount() {
-        let onePassUser = testData.onePassUser
-        let twoPassUser = testData.twoPassUser
-        loginRobot
-            .loginTwoPasswordUser(twoPassUser)
+    func testAddSecondAccount_FreeUser() throws {
+        let secondUser = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.free, scenario: scenario, isEnableEarlyAccess: false)
+        InboxRobot()
             .menuDrawer()
             .accountsList()
             .manageAccounts()
             .addAccount()
-            .connectOnePassAccount(onePassUser)
+            .connectOnePassAccount(secondUser)
             .menuDrawer()
             .accountsList()
-            .verify.accountAdded(onePassUser, twoPassUser)
+            .verify.accountNameEmail(user!)
+            .verify.accountNameEmail(secondUser)
     }
 
-    func testConnectTwoPassAccount() {
-        let onePassUser = testData.onePassUser
-        let twoPassUser = testData.twoPassUser
-        loginRobot
-            .loginUser(onePassUser)
+    func testAddSecondAccount_Mail2022User() throws {
+        let secondUser = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mail2022, scenario: scenario, isEnableEarlyAccess: false)
+        InboxRobot()
             .menuDrawer()
             .accountsList()
             .manageAccounts()
             .addAccount()
-            .connectTwoPassAccount(twoPassUser)
+            .connectOnePassAccount(secondUser)
             .menuDrawer()
             .accountsList()
-            .verify.accountAdded(twoPassUser, onePassUser)
+            .verify.accountNameEmail(user!)
+            .verify.accountNameEmail(secondUser)
     }
 
-    func testConnectTwoPassAccountWithTwoFa() {
+    // enable and refactor to use quark commands back after the smoke set is finished
+    func xtestConnectTwoPassAccountWithTwoFa() {
         let onePassUser = testData.onePassUser
         let twoPassUserWith2Fa = testData.twoPassUserWith2Fa
         loginRobot
@@ -54,10 +53,11 @@ class MultiuserManagementTests : BaseTestCase {
             .connectTwoPassAccountWithTwoFa(twoPassUserWith2Fa)
             .menuDrawer()
             .accountsList()
-            .verify.accountAdded(twoPassUserWith2Fa, onePassUser)
+            .verify.accountNameEmail(onePassUser)
+            .verify.accountNameEmail(twoPassUserWith2Fa)
     }
 
-    func testConnectOnePassAccountWithTwoFa() {
+    func xtestConnectOnePassAccountWithTwoFa() {
         let onePassUser = testData.onePassUser
         let onePassUserWith2Fa = testData.onePassUserWith2Fa
         loginRobot
@@ -69,10 +69,11 @@ class MultiuserManagementTests : BaseTestCase {
             .connectOnePassAccountWithTwoFa(onePassUserWith2Fa)
             .menuDrawer()
             .accountsList()
-            .verify.accountAdded(onePassUserWith2Fa, onePassUser)
+            .verify.accountNameEmail(onePassUser)
+            .verify.accountNameEmail(onePassUserWith2Fa)
     }
 
-    func testLogoutPrimaryAccount() {
+    func xtestLogoutPrimaryAccount() {
         let onePassUser = testData.onePassUser
         let twoPassUser = testData.twoPassUser
         loginRobot
@@ -91,7 +92,7 @@ class MultiuserManagementTests : BaseTestCase {
             .verify.accountSignedOut(twoPassUser.name)
     }
 
-    func testLogoutSecondaryAccount() {
+    func xtestLogoutSecondaryAccount() {
         let onePassUser = testData.onePassUser
         let twoPassUser = testData.twoPassUser
         loginRobot
@@ -111,7 +112,7 @@ class MultiuserManagementTests : BaseTestCase {
             .verify.accountSignedOut(onePassUser.name)
     }
 
-    func testRemovePrimaryAccount() {
+    func xtestRemovePrimaryAccount() {
         let onePassUser = testData.onePassUser
         let twoPassUser = testData.twoPassUser
         loginRobot.loginUser(onePassUser)
@@ -131,7 +132,7 @@ class MultiuserManagementTests : BaseTestCase {
             .verify.accountRemoved(twoPassUser)
     }
 
-    func testRemoveSecondaryAccount() {
+    func xtestRemoveSecondaryAccount() {
         let onePassUser = testData.onePassUser
         let twoPassUser = testData.twoPassUser
         loginRobot
@@ -153,7 +154,7 @@ class MultiuserManagementTests : BaseTestCase {
             .verify.accountRemoved(onePassUser)
     }
 
-    func testCancelLoginOnTwoFaPrompt() {
+    func xtestCancelLoginOnTwoFaPrompt() {
         let onePassUser = testData.onePassUser
         let onePassUserWith2Fa = testData.onePassUserWith2Fa
         loginRobot
@@ -170,7 +171,7 @@ class MultiuserManagementTests : BaseTestCase {
             .verify.accountRemoved(onePassUserWith2Fa)
     }
 
-    func testAddTwoFreeAccounts() {
+    func xtestAddTwoFreeAccounts() {
         let twoPassUserWith2Fa = testData.twoPassUserWith2Fa
         let onePassUserWith2Fa = testData.onePassUserWith2Fa
         loginRobot

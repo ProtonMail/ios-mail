@@ -9,7 +9,7 @@
 import XCTest
 import ProtonCore_TestingToolkit
 
-class PinTests: CleanAuthenticatedTestCase {
+class PinTests: FixtureAuthenticatedTestCase {
 
     private let correctPin = "0000"
     private let pinRobot: PinRobot = PinRobot()

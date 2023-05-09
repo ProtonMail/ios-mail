@@ -25,6 +25,8 @@
     {
       "parallelizable" : true,
       "selectedTests" : [
+        "MultiuserManagementTests\/testAddSecondAccount_FreeUser()",
+        "MultiuserManagementTests\/testAddSecondAccount_Mail2022User()",
         "MultiuserManagementTests\/testAddTwoFreeAccounts()",
         "MultiuserManagementTests\/testConnectOnePassAccount()",
         "MultiuserManagementTests\/testConnectTwoPassAccount()",

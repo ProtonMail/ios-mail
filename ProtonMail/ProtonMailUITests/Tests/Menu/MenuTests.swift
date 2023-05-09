@@ -8,7 +8,7 @@
 
 import ProtonCore_TestingToolkit
 
-class MenuTests: CleanAuthenticatedTestCase {
+class MenuTests: FixtureAuthenticatedTestCase {
 
     private let loginRobot = LoginRobot()
     
@@ -20,7 +20,7 @@ class MenuTests: CleanAuthenticatedTestCase {
       InboxRobot()
             .menuDrawer()
             .settings()
-            .selectAccount(user.email)
+            .selectAccount(user!.email)
             .displayName()
             .setDisplayNameTextTo(newDisplayName)
             .save()
@@ -39,7 +39,7 @@ class MenuTests: CleanAuthenticatedTestCase {
         let menuAccountListRobot = InboxRobot()
             .menuDrawer()
             .settings()
-            .selectAccount(user.email)
+            .selectAccount(user!.email)
             .displayName()
             .setDisplayNameTextTo(newDisplayName)
             .save()
@@ -54,14 +54,14 @@ class MenuTests: CleanAuthenticatedTestCase {
         menuAccountListRobot
             .dismiss()
             .settings()
-            .selectAccount(user.email)
+            .selectAccount(user!.email)
             .displayName()
-            .setDisplayNameTextTo(user.name)
+            .setDisplayNameTextTo(user!.name)
             .save()
             .navigateBackToSettings()
             .close()
             .menuDrawer()
             .accountsList()
-            .verify.accountShortNameIsCorrect(user.name)
+            .verify.accountShortNameIsCorrect(user!.name)
     }
 }
