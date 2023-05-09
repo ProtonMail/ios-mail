@@ -1230,11 +1230,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     } else {
                         // Debug info
                         status.insert(SendStatus.doneWithError)
-                        if error?.responseCode == 9001 {
-                            // here need let user to show the human check.
-                            self.queueManager?.isRequiredHumanCheck = true
-                            error?.toNSError.alertSentErrorToast()
-                        } else if error?.responseCode == 15198 {
+                        if error?.responseCode == 15198 {
                             error?.toNSError.alertSentErrorToast()
                         } else {
                             error?.toNSError.alertErrorToast()
@@ -1293,11 +1289,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             title = message.title
         }
 
-        if responseCode == APIErrorCode.humanVerificationRequired {
-            // here need let user to show the human check.
-            self.queueManager?.isRequiredHumanCheck = true
-            NSError.alertMessageSentError(details: err.localizedDescription)
-        } else if responseCode == 15198 {
+        if responseCode == 15198 {
             NSError.alertMessageSentError(details: err.localizedDescription)
         } else if responseCode == APIErrorCode.alreadyExist || responseCode == 15004 {
             // The error means "Message has already been sent"

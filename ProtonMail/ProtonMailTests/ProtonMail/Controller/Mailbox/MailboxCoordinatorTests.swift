@@ -35,7 +35,6 @@ class MailboxCoordinatorTests: XCTestCase {
         let dummyUser = UserManager(api: dummyAPIService, role: .none)
 
         let conversationStateProviderMock = MockConversationStateProviderProtocol()
-        let humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
         let lastUpdatedStoreMock = MockLastUpdatedStore()
         let pushServiceMock = MockPushNotificationService()
         let contextProviderMock = MockCoreDataContextProvider()
@@ -72,7 +71,6 @@ class MailboxCoordinatorTests: XCTestCase {
                                              pushService: pushServiceMock,
                                              coreDataContextProvider: contextProviderMock,
                                              lastUpdatedStore: lastUpdatedStoreMock,
-                                             humanCheckStatusProvider: humanCheckStatusProviderMock,
                                              conversationStateProvider: conversationStateProviderMock,
                                              contactGroupProvider: contactGroupProviderMock,
                                              labelProvider: labelProviderMock,

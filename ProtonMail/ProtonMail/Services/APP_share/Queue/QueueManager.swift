@@ -35,8 +35,8 @@ protocol QueueHandlerRegister {
     func unregisterHandler(for userID: UserID)
 }
 
-/// This manager is used to handle the queue opeartions of all users.
-final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusInQueueProtocol, QueueHandlerRegister {
+/// This manager is used to handle the queue operations of all users.
+final class QueueManager: Service, UserStatusInQueueProtocol, QueueHandlerRegister {
 
     enum QueueStatus {
         case idle
@@ -68,7 +68,6 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
     private var readQueue: [ReadBlock] = []
     private var handlers: [UserID: QueueHandler] = [:]
     private var hasDequeued = false
-    var isRequiredHumanCheck = false
 
     // These two variables are used to prevent concurrent call of dequeue=
     private var isMessageRunning: Bool = false
@@ -324,10 +323,6 @@ extension QueueManager {
     }
 
     private func nextTask(from queue: PMPersistentQueueProtocol) -> Task? {
-        if isRequiredHumanCheck {
-            return nil
-        }
-
         // TODO: check dependency id, to skip or continue
         guard let next = queue.next() else {
             return nil

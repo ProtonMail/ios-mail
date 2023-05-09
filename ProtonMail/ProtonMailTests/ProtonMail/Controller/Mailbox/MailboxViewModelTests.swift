@@ -28,7 +28,6 @@ class MailboxViewModelTests: XCTestCase {
     var sut: MailboxViewModel!
     var apiServiceMock: APIServiceMock!
     var coreDataService: CoreDataService!
-    var humanCheckStatusProviderMock: HumanCheckStatusProviderProtocol!
     var userManagerMock: UserManager!
     var conversationStateProviderMock: MockConversationStateProviderProtocol!
     var contactGroupProviderMock: MockContactGroupsProviderProtocol!
@@ -82,7 +81,6 @@ class MailboxViewModelTests: XCTestCase {
                                       mailSettings: nil,
                                       parent: nil)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
-        humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
         labelProviderMock = MockLabelProviderProtocol()
@@ -145,7 +143,6 @@ class MailboxViewModelTests: XCTestCase {
         contactProviderMock = nil
         coreDataService = nil
         eventsServiceMock = nil
-        humanCheckStatusProviderMock = nil
         userManagerMock = nil
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
@@ -290,23 +287,6 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
         conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .conversation)
-    }
-
-    func testGetIsRequiredHumanCheck() {
-        humanCheckStatusProviderMock.isRequiredHumanCheck = false
-        XCTAssertFalse(sut.isRequiredHumanCheck)
-
-        humanCheckStatusProviderMock.isRequiredHumanCheck = true
-        XCTAssertTrue(sut.isRequiredHumanCheck)
-    }
-
-    func testSetIsRequiredHumanCheck() {
-        humanCheckStatusProviderMock.isRequiredHumanCheck = false
-        sut.isRequiredHumanCheck = true
-        XCTAssertTrue(humanCheckStatusProviderMock.isRequiredHumanCheck)
-
-        sut.isRequiredHumanCheck = false
-        XCTAssertFalse(humanCheckStatusProviderMock.isRequiredHumanCheck)
     }
 
     func testGetIsCurrentUserSelectedUnreadFilterInInbox() {
@@ -1320,7 +1300,6 @@ extension MailboxViewModelTests {
                                pushService: MockPushNotificationService(),
                                coreDataContextProvider: coreDataService,
                                lastUpdatedStore: MockLastUpdatedStore(),
-                               humanCheckStatusProvider: humanCheckStatusProviderMock,
                                conversationStateProvider: conversationStateProviderMock,
                                contactGroupProvider: contactGroupProviderMock,
                                labelProvider: labelProviderMock,

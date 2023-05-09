@@ -204,27 +204,6 @@ final class SendMessageTaskTests: XCTestCase {
         waitForExpectations(timeout: waitTimeout)
     }
 
-    func testRun_whenSendRequestFails_forHumanVerification_queueManagerIsFlagged() {
-        let expect = expectation(description: "")
-        mockSendMessageUseCase.result = .failure(makeAPIError(with: APIErrorCode.humanVerificationRequired))
-        sut.run(params: makeDummyParams()) { [unowned self] error in
-            XCTAssert(self.mockQueueManager.isRequiredHumanCheck == true)
-            XCTAssertNotNil(error)
-            expect.fulfill()
-        }
-        waitForExpectations(timeout: waitTimeout)
-    }
-
-    func testRun_whenSendRequestFails_forHumanVerification_failNotificationIsSent() {
-        let expect = expectation(description: "")
-        mockNotificationCenter.addObserver(forName: .sendMessageTaskFail, object: nil, queue: nil) { _ in
-            expect.fulfill()
-        }
-        mockSendMessageUseCase.result = .failure(makeAPIError(with: APIErrorCode.humanVerificationRequired))
-        sut.run(params: makeDummyParams()) { _ in }
-        waitForExpectations(timeout: waitTimeout)
-    }
-
     func testRun_whenSendRequestFails_withAlreadyExistsError_noErrorIsReturned() {
         let expect = expectation(description: "")
         mockSendMessageUseCase.result = .failure(makeAPIError(with: APIErrorCode.alreadyExist))

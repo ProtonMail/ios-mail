@@ -32,7 +32,6 @@ final class MailboxViewControllerTests: XCTestCase {
     var userID: UserID!
     var apiServiceMock: APIServiceMock!
     var coreDataService: CoreDataService!
-    var humanCheckStatusProviderMock: HumanCheckStatusProviderProtocol!
     var userManagerMock: UserManager!
     var conversationStateProviderMock: MockConversationStateProviderProtocol!
     var contactGroupProviderMock: MockContactGroupsProviderProtocol!
@@ -87,7 +86,6 @@ final class MailboxViewControllerTests: XCTestCase {
                                       mailSettings: nil,
                                       parent: nil)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
-        humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
         labelProviderMock = MockLabelProviderProtocol()
@@ -143,7 +141,6 @@ final class MailboxViewControllerTests: XCTestCase {
         contactProviderMock = nil
         coreDataService = nil
         eventsServiceMock = nil
-        humanCheckStatusProviderMock = nil
         userManagerMock = nil
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
@@ -249,7 +246,6 @@ extension MailboxViewControllerTests {
             pushService: MockPushNotificationService(),
             coreDataContextProvider: coreDataService,
             lastUpdatedStore: MockLastUpdatedStore(),
-            humanCheckStatusProvider: humanCheckStatusProviderMock,
             conversationStateProvider: conversationStateProviderMock,
             contactGroupProvider: contactGroupProviderMock,
             labelProvider: labelProviderMock,
