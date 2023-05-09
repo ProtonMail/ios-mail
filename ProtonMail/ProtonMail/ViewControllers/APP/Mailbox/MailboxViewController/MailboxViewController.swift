@@ -84,8 +84,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private var fetchingOlder: Bool = false
 
-    private var isCheckingHuman: Bool = false
-
     private var needToShowNewMessage: Bool = false
     private var newMessageCount = 0
     private var hasNetworking = true
@@ -362,8 +360,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         FileManager.default.cleanCachedAttsLegacy()
 
-        checkHuman()
-
         showFeedbackViewIfNeeded()
         showDropVersionsAlertIfNeeded()
     }
@@ -567,9 +563,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     // MARK: - Button Targets
 
     @objc func composeButtonTapped() {
-        if checkHuman() {
-            self.coordinator?.go(to: .composer, sender: nil)
-        }
+        coordinator?.go(to: .composer, sender: nil)
     }
 
     @objc func storageExceededButtonTapped() {
@@ -652,7 +646,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                     self?.handleRequestError(error as NSError)
                 }
             } completion: { [weak self] in
-                _ = self?.checkHuman()
                 self?.checkContact()
                 DispatchQueue.main.async {
                     self?.showNoResultLabelIfNeeded()
@@ -716,17 +709,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private func checkContact() {
         self.viewModel.fetchContacts()
-    }
-
-    @discardableResult
-    private func checkHuman() -> Bool {
-        if self.viewModel.isRequiredHumanCheck && isCheckingHuman == false {
-            // show human check view with warning
-            isCheckingHuman = true
-            self.coordinator?.go(to: .humanCheck, sender: nil)
-            return false
-        }
-        return true
     }
 
     private func checkDoh(_ error: NSError) -> Bool {
@@ -904,7 +886,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 self?.handleRequestError(error as NSError)
             }
         } completion: { [weak self] in
-            _ = self?.checkHuman()
             self?.checkContact()
             DispatchQueue.main.async {
                 self?.showNoResultLabelIfNeeded()
@@ -1030,10 +1011,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 return
             }
             guard !message.messageID.rawValue.isEmpty else {
-                if self.checkHuman() {
-                    // TODO::QA
-                    self.coordinator?.go(to: .composeShow, sender: nil)
-                }
+                coordinator?.go(to: .composeShow, sender: nil)
                 self.updateTapped(status: false)
                 return
             }
@@ -1083,11 +1061,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                         guard let message = self?.viewModel.object(by: objectID),
                               message.body.isEmpty == false else { return }
                         timer.invalidate()
-                        if self?.checkHuman() == true {
-                            self?.coordinator?.go(to: .composeShow, sender: message)
-                            self?.tableView.indexPathsForSelectedRows?.forEach {
-                                self?.tableView.deselectRow(at: $0, animated: true)
-                            }
+                        self?.coordinator?.go(to: .composeShow, sender: message)
+                        self?.tableView.indexPathsForSelectedRows?.forEach {
+                            self?.tableView.deselectRow(at: $0, animated: true)
                         }
                         self?.updateTapped(status: false)
                     }
@@ -1996,19 +1972,6 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
     }
 }
 
-// MARK: - MailboxCaptchaVCDelegate
-extension MailboxViewController: MailboxCaptchaVCDelegate {
-
-    func cancel() {
-        isCheckingHuman = false
-    }
-
-    func done() {
-        isCheckingHuman = false
-        self.viewModel.isRequiredHumanCheck = false
-    }
-}
-
 // MARK: - Show banner or alert
 extension MailboxViewController {
     private func showErrorMessage(_ error: NSError) {
@@ -2342,7 +2305,6 @@ extension MailboxViewController: UITableViewDelegate {
                             self.showNoResultLabelIfNeeded()
                         }
                         self.fetchingOlder = false
-                        self.checkHuman()
                     }
                 }
             }

@@ -62,7 +62,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
 
     private let lastUpdatedStore: LastUpdatedStoreProtocol
-    private let humanCheckStatusProvider: HumanCheckStatusProviderProtocol
     let coreDataContextProvider: CoreDataContextProviderProtocol
     private let conversationStateProvider: ConversationStateProviderProtocol
     private let contactGroupProvider: ContactGroupsProviderProtocol
@@ -105,7 +104,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
          pushService: PushNotificationServiceProtocol,
          coreDataContextProvider: CoreDataContextProviderProtocol,
          lastUpdatedStore: LastUpdatedStoreProtocol,
-         humanCheckStatusProvider: HumanCheckStatusProviderProtocol,
          conversationStateProvider: ConversationStateProviderProtocol,
          contactGroupProvider: ContactGroupsProviderProtocol,
          labelProvider: LabelProviderProtocol,
@@ -128,7 +126,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         self.coreDataContextProvider = coreDataContextProvider
         self.pushService = pushService
         self.lastUpdatedStore = lastUpdatedStore
-        self.humanCheckStatusProvider = humanCheckStatusProvider
         self.conversationStateProvider = conversationStateProvider
         self.contactGroupProvider = contactGroupProvider
         self.contactProvider = contactProvider
@@ -173,11 +170,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
             LabelLocation.spam.labelID
         ]
         return ids.contains(self.labelID)
-    }
-
-    var isRequiredHumanCheck: Bool {
-        get { return self.humanCheckStatusProvider.isRequiredHumanCheck }
-        set { self.humanCheckStatusProvider.isRequiredHumanCheck = newValue }
     }
 
     var isCurrentUserSelectedUnreadFilterInInbox: Bool {

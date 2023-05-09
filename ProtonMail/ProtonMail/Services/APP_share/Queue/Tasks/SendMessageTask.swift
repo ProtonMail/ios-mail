@@ -182,10 +182,7 @@ extension SendMessageTask {
 
     private func handleApiError(message: MessageEntity, error: ResponseError) -> Error? {
         var hasErrorBeenProcessed: Bool = false
-        if error.responseCode == APIErrorCode.humanVerificationRequired {
-            dependencies.queueManager.isRequiredHumanCheck = true
-            notifySendMessageError(error, message: message)
-        } else if error.responseCode == APIErrorCode.alreadyExist {
+        if error.responseCode == APIErrorCode.alreadyExist {
             hasErrorBeenProcessed = true
             unscheduleNotification(messageID: message.messageID)
         } else if error.responseCode == APIErrorCode.invalidRequirements {

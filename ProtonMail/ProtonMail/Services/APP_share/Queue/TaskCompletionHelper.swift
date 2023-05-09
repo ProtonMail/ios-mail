@@ -129,8 +129,6 @@ struct TaskCompletionHelper {
             } else {
                 result.action = .removeRelated
             }
-        case HTTPStatusCode.ok.rawValue where errorCode == APIErrorCode.humanVerificationRequired:
-            fallthrough
         case HTTPStatusCode.ok.rawValue where errorCode > 1000:
             result.action = .removeRelated
         case HTTPStatusCode.ok.rawValue where errorCode < 200:

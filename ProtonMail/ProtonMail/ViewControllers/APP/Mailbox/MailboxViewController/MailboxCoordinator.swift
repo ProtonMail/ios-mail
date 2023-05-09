@@ -88,7 +88,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         case details = "SingleMessageViewController"
         case onboardingForNew = "to_onboardingForNew_segue"
         case onboardingForUpdate = "to_onboardingForUpdate_segue"
-        case humanCheck = "toHumanCheckView"
         case troubleShoot = "toTroubleShootSegue"
         case newFolder = "toNewFolder"
         case newLabel = "toNewLabel"
@@ -111,8 +110,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                 self = .onboardingForNew
             case "to_onboardingForUpdate_segue":
                 self = .onboardingForUpdate
-            case "toHumanCheckView":
-                self = .humanCheck
             case "toTroubleShootSegue":
                 self = .troubleShoot
             case "composeScheduledMessage":
@@ -164,8 +161,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             presentTroubleShootView()
         case .search:
             presentSearch()
-        case .humanCheck:
-            presentCaptcha()
         }
     }
 
@@ -324,14 +319,6 @@ extension MailboxCoordinator {
         navigationController.modalTransitionStyle = .coverVertical
         navigationController.modalPresentationStyle = .fullScreen
         self.viewController?.present(navigationController, animated: true)
-    }
-
-    private func presentCaptcha() {
-        let next = MailboxCaptchaViewController()
-        let user = self.viewModel.user
-        next.viewModel = CaptchaViewModelImpl(api: user.apiService)
-        next.delegate = self.viewController
-        self.viewController?.present(next, animated: true)
     }
 
     func fetchConversationFromBEIfNeeded(conversationID: ConversationID, goToDetailPage: @escaping () -> Void) {

@@ -426,7 +426,6 @@ extension MenuCoordinator {
             pushService: pushService,
             coreDataContextProvider: coreDataService,
             lastUpdatedStore: lastUpdatedStore,
-            humanCheckStatusProvider: services.get(by: QueueManager.self),
             conversationStateProvider: userManager.conversationStateService,
             contactGroupProvider: userManager.contactGroupService,
             labelProvider: userManager.labelService,
