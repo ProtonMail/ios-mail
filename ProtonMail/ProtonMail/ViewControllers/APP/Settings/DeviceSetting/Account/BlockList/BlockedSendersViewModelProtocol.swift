@@ -29,8 +29,6 @@ protocol BlockedSendersViewModelInput {
 }
 
 protocol BlockedSendersViewModelOutput {
-    var state: BlockedSendersViewModel.State { get }
-
     func numberOfRows() -> Int
     func setUIDelegate(_ delegate: BlockedSendersViewModelUIDelegate)
     func modelForCell(at indexPath: IndexPath) -> BlockedSendersViewModel.BlockedSenderCellModel
