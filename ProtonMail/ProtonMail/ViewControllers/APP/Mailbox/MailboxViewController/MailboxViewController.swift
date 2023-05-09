@@ -164,13 +164,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         NotificationCenter.default.removeObserver(self)
     }
 
-    func inactiveViewModel() {
-        guard self.viewModel != nil else {
-            return
-        }
-        self.viewModel.resetFetchedController()
-    }
-
     @objc func doEnterForeground() {
         if viewModel.reloadTable() {
             resetTableView()

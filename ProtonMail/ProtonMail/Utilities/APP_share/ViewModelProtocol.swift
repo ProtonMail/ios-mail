@@ -30,7 +30,6 @@ import Foundation
 
 protocol ViewModelProtocolBase: AnyObject {
     func setModel(vm: Any)
-    func inactiveViewModel()
 }
 
 protocol ViewModelProtocol: ViewModelProtocolBase {
@@ -46,10 +45,5 @@ extension ViewModelProtocol {
             fatalError("This view model type doesn't match") // this shouldn't happend
         }
         self.set(viewModel: viewModel)
-    }
-
-    /// optional
-    func inactiveViewModel() {
-
     }
 }
