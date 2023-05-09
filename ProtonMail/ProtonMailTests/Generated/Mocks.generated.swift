@@ -515,8 +515,8 @@ class MockIncomingDefaultServiceProtocol: IncomingDefaultServiceProtocol {
     }
 
     @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.hardDelete) var hardDeleteStub
-    func hardDelete(query: IncomingDefaultService.Query?) throws {
-        try hardDeleteStub(query)
+    func hardDelete(query: IncomingDefaultService.Query?, includeSoftDeleted: Bool) throws {
+        try hardDeleteStub(query, includeSoftDeleted)
     }
 
     @FuncStub(MockIncomingDefaultServiceProtocol.performRemoteDeletion) var performRemoteDeletionStub

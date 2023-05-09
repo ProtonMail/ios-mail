@@ -819,7 +819,7 @@ extension EventsService {
             return
         }
         do {
-            try dependencies.incomingDefaultService.hardDelete(query: .id(incomingDefaultId))
+            try dependencies.incomingDefaultService.hardDelete(query: .id(incomingDefaultId), includeSoftDeleted: true)
         } catch {
             assertionFailure()
         }
