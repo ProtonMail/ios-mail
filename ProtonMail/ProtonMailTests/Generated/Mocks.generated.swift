@@ -108,7 +108,7 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
     }
 
     @FuncStub(MockCacheServiceProtocol.updateContactDetail) var updateContactDetailStub
-    func updateContactDetail(serverResponse: [String: Any], completion: ((Contact?, NSError?) -> Void)?) {
+    func updateContactDetail(serverResponse: [String: Any], completion: ((ContactEntity?, NSError?) -> Void)?) {
         updateContactDetailStub(serverResponse, completion)
     }
 

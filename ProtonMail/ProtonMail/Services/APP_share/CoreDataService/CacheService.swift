@@ -31,7 +31,7 @@ protocol CacheServiceProtocol: Service {
     func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?)
     func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?)
     func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?)
-    func updateContactDetail(serverResponse: [String: Any], completion: ((Contact?, NSError?) -> Void)?)
+    func updateContactDetail(serverResponse: [String: Any], completion: ((ContactEntity?, NSError?) -> Void)?)
     func parseMessagesResponse(
         labelID: LabelID,
         isUnread: Bool,
@@ -725,7 +725,7 @@ extension CacheService {
         }
     }
 
-    func updateContactDetail(serverResponse: [String: Any], completion: ((Contact?, NSError?) -> Void)?) {
+    func updateContactDetail(serverResponse: [String: Any], completion: ((ContactEntity?, NSError?) -> Void)?) {
         coreDataService.performOnRootSavingContext { context in
             do {
                 if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: serverResponse, in: context) as? Contact {
@@ -734,7 +734,7 @@ extension CacheService {
                     if let error = context.saveUpstreamIfNeeded() {
                         completion?(nil, error)
                     } else {
-                        completion?(contact, nil)
+                        completion?(ContactEntity(contact: contact), nil)
                     }
                 } else {
                     completion?(nil, NSError.unableToParseResponse(serverResponse))

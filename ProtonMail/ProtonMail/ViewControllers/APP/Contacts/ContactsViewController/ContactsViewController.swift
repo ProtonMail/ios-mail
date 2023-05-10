@@ -204,7 +204,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     private func showContactDetailView(contact: ContactEntity) {
         let viewModel = ContactDetailsViewModelImpl(contact: contact,
                                                     user: viewModel.user,
-                                                    coreDateService: viewModel.coreDataService)
+                                                    coreDataService: viewModel.coreDataService)
         let newView = ContactDetailViewController(viewModel: viewModel)
         self.show(newView, sender: nil)
         isOnMainView = false

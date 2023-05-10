@@ -420,7 +420,7 @@ class ContactDataService: Service {
                         if let err = error {
                             seal.reject(err)
                         } else if let c = contact {
-                            seal.fulfill(ContactEntity(contact: c))
+                            seal.fulfill(c)
                         } else {
                             fatalError()
                         }
