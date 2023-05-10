@@ -52,6 +52,7 @@ final class BlockedSendersViewController: ProtonMailTableViewController {
         view.backgroundColor = ColorProvider.BackgroundDeep
 
         viewModel.output.setUIDelegate(self)
+        viewModel.input.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {

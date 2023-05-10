@@ -42,7 +42,7 @@ final class BlockedSenderCacheUpdater {
             guard oldValue != state else {
                 let errorMessage = "Setting \(oldValue) twice"
                 SystemLogger.log(message: errorMessage, category: .blockSender, isError: true)
-                assertionFailure(errorMessage)
+                PMAssertionFailure(errorMessage)
                 return
             }
 

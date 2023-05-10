@@ -143,11 +143,12 @@ class SingleMessageComponentsFactory {
             )
         )
 
+        let isSenderBlockedPublisher = IsSenderBlockedPublisher(contextProvider: contextProvider, userID: user.userID)
+
         return .init(
             blockSender: blockSender,
-            blockedSenderCacheUpdater: user.blockedSenderCacheUpdater,
             fetchMessageDetail: fetchMessageDetail,
-            incomingDefaultService: incomingDefaultService,
+            isSenderBlockedPublisher: isSenderBlockedPublisher,
             senderImageStatusProvider: senderImageStatusProvider,
             unblockSender: unblockSender
         )

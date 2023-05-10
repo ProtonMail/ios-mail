@@ -1,3 +1,4 @@
+import Combine
 import ProtonCore_DataModel
 import ProtonCore_Networking
 
@@ -91,18 +92,13 @@ class SingleMessageContentViewModel {
 
     var webContentIsUpdated: (() -> Void)?
 
-    var isSenderCurrentlyBlocked: Bool {
-        do {
-            let incomingDefaultsForSenderEmail = try dependencies.incomingDefaultService.listLocal(
-                query: .email(messageInfoProvider.senderEmail.string)
-            )
-
-            return incomingDefaultsForSenderEmail.map(\.location).contains(.blocked)
-        } catch {
-            assertionFailure("\(error)")
-            return false
+    private(set) var isSenderCurrentlyBlocked = false {
+        didSet {
+            updateBannerStatus()
         }
     }
+
+    private var cancellables = Set<AnyCancellable>()
 
     init(context: SingleMessageContentViewContext,
          imageProxy: ImageProxy,
@@ -193,16 +189,16 @@ class SingleMessageContentViewModel {
     }
 
     func viewDidLoad() {
-        becomeBlockedSenderCacheUpdaterDelegate()
+        setupBinding()
         downloadDetails()
     }
 
-    func viewWillAppear() {
-        becomeBlockedSenderCacheUpdaterDelegate()
-    }
+    private func setupBinding() {
+        dependencies.isSenderBlockedPublisher.isBlocked(senderEmailAddress: messageInfoProvider.senderEmail.string)
+            .sink { [weak self] in self?.isSenderCurrentlyBlocked = $0 }
+            .store(in: &cancellables)
 
-    private func becomeBlockedSenderCacheUpdaterDelegate() {
-        dependencies.blockedSenderCacheUpdater.delegate = self
+        dependencies.isSenderBlockedPublisher.start()
     }
 
     func downloadDetails() {
@@ -342,14 +338,6 @@ class SingleMessageContentViewModel {
     }
 }
 
-extension SingleMessageContentViewModel: BlockedSenderCacheUpdaterDelegate {
-    func blockedSenderCacheUpdater(_ blockedSenderCacheUpdater: BlockedSenderCacheUpdater, didEnter newState: BlockedSenderCacheUpdater.State) {
-        if newState == .idle {
-            updateBannerStatus()
-        }
-    }
-}
-
 extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
     func update(renderStyle: MessageRenderStyle) {
         DispatchQueue.main.async {
@@ -421,9 +409,8 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
 extension SingleMessageContentViewModel {
     struct Dependencies {
         let blockSender: BlockSender
-        let blockedSenderCacheUpdater: BlockedSenderCacheUpdater
         let fetchMessageDetail: FetchMessageDetailUseCase
-        let incomingDefaultService: IncomingDefaultService
+        let isSenderBlockedPublisher: IsSenderBlockedPublisher
         let senderImageStatusProvider: SenderImageStatusProvider
         let unblockSender: UnblockSender
     }
