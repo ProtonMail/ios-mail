@@ -60,19 +60,6 @@ extension NSError {
         hud.hide(animated: true, afterDelay: delay)
     }
 
-    func alertHumanCheckErrorToast() {
-        guard let window = UIApplication.shared.topMostWindow else {
-            return
-        }
-        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = "\(LocalString._error_human_check_failed): \(self.localizedDescription)"
-        hud.removeFromSuperViewOnHide = true
-        hud.margin = 10
-        hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 3)
-    }
-
     class func alertMessageSentErrorToast() {
         guard let window = UIApplication.shared.topMostWindow else {
             return
