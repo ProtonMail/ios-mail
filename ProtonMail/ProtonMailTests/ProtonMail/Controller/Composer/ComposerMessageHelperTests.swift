@@ -208,14 +208,17 @@ final class ComposerMessageHelperTests: XCTestCase {
     func testUpdateAddressID() throws {
         let e = expectation(description: "Closure is called")
         let newAddressID = String.randomString(40)
+        let newAddress = String.randomString(20)
         sut.setNewMessage(objectID: testMessage.objectID)
 
-        sut.updateAddressID(addressID: newAddressID) {
+        sut.updateAddressID(addressID: newAddressID, emailAddress: newAddress) {
             e.fulfill()
         }
         waitForExpectations(timeout: 1)
 
         XCTAssertEqual(testMessage.nextAddressID, newAddressID)
+        let sender: [String: String] = try XCTUnwrap(testMessage.sender?.parseJSON())
+        XCTAssertEqual(sender["Address"], newAddress)
         XCTAssertTrue(messageDataServiceMock.callUpdateAttKeyPacket.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(messageDataServiceMock.callUpdateAttKeyPacket.lastArguments)
         XCTAssertEqual(argument.a1, MessageEntity(testMessage))
@@ -482,6 +485,28 @@ final class ComposerMessageHelperTests: XCTestCase {
                         attachment2.order,
                         attachment3.order
                        ])
+    }
+
+    func testOriginalTo() throws {
+        let parentMessage = createTestMessage()
+        sut.setNewMessage(objectID: testMessage.objectID)
+        contextProviderMock.performAndWaitOnRootSavingContext() { context in
+            parentMessage.parsedHeaders = "{\"X-Original-To\": \"tester@pm.me\"}"
+            self.testMessage.orginalMessageID = parentMessage.messageID
+            try? context.save()
+        }
+        let originalTo = try XCTUnwrap(sut.originalTo())
+        XCTAssertEqual(originalTo, "tester@pm.me")
+    }
+
+    func testOriginalFrom() throws {
+        sut.setNewMessage(objectID: testMessage.objectID)
+        contextProviderMock.performAndWaitOnRootSavingContext { context in
+            self.testMessage.parsedHeaders = "{\"From\": \"嘟嘟 嘟嘟åöä 嘟大大大Pär⚾️🥎🏉🪀🥢🥡🍴🍽🍾🧊 <tester+a+b@protonmail.com>\"}"
+            try? context.save()
+        }
+        let originalFrom = try XCTUnwrap(sut.originalFrom())
+        XCTAssertEqual(originalFrom, "tester+a+b@protonmail.com")
     }
 }
 

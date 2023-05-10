@@ -155,7 +155,7 @@ final class ComposerMessageHelper {
         }
     }
 
-    func updateAddressID(addressID: String, completion: @escaping () -> Void) {
+    func updateAddressID(addressID: String, emailAddress: String, completion: @escaping () -> Void) {
         dependencies.contextProvider.performOnRootSavingContext { context in
             defer {
                 self.updateDraft()
@@ -164,6 +164,9 @@ final class ComposerMessageHelper {
             }
             guard let msg = self.rawMessage else { return }
             msg.nextAddressID = addressID
+            var sender: [String: Any] = msg.sender?.parseJSON() ?? [:]
+            sender["Address"] = emailAddress
+            msg.sender = sender.toString()
             _ = context.saveUpstreamIfNeeded()
             self.dependencies.messageDataService.updateAttKeyPacket(message: MessageEntity(msg), addressID: addressID)
         }
@@ -247,6 +250,46 @@ final class ComposerMessageHelper {
             message = MessageEntity(rawMessage)
         }
         return message
+    }
+
+    func originalTo() -> String? {
+        var originalTo: String?
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            guard let rawMessage = self.rawMessage,
+                  let originalID = rawMessage.orginalMessageID else {
+                return
+            }
+            let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, originalID)
+            fetchRequest.sortDescriptors = [
+                NSSortDescriptor(key: Message.Attributes.time, ascending: false),
+                NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
+            ]
+            guard
+                let originalMessage = try? fetchRequest.execute().first,
+                let parsedHeader = originalMessage.parsedHeaders,
+                let dict: [String: Any] = parsedHeader.parseJSON()
+            else { return }
+            originalTo = dict[MessageHeaderKey.originalTo] as? String
+        }
+        return originalTo
+    }
+
+    func originalFrom() -> String? {
+        var originalFrom: String?
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            guard let parsedHeader = self.rawMessage?.parsedHeaders,
+                  let headerDict: [String: Any] = parsedHeader.parseJSON(),
+                  let from = headerDict[MessageHeaderKey.from] as? String,
+                  let regex = try? NSRegularExpression(pattern: ".*<(.*)>"),
+                  let match = regex.firstMatch(in: from, range: NSRange(from.startIndex..<from.endIndex, in:from)),
+                  match.numberOfRanges == 2
+            else { return }
+            // from = "name <address>"
+            let range = match.range(at: 1)
+            originalFrom = (from as NSString).substring(with: range)
+        }
+        return originalFrom
     }
 }
 
