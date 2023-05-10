@@ -500,15 +500,13 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetCustomFolders() {
-        let testData = Label(context: testContext)
-        testData.labelID = "1"
-        testData.name = "name1"
+        let testData = LabelEntity.make(labelID: "1", name: "name1")
         labelProviderMock.getCustomFoldersStub.bodyIs { _ in
-            [testData].map(LabelEntity.init(label:))
+            [testData]
         }
         createSut(labelID: "1", labelType: .folder, isCustom: false, labelName: nil)
 
-        XCTAssertEqual(sut.customFolders, [LabelEntity(label: testData)])
+        XCTAssertEqual(sut.customFolders, [testData])
     }
 
     func testFetchContacts() {
@@ -748,10 +746,8 @@ class MailboxViewModelTests: XCTestCase {
                                       notify: false)
         // select the folder to move
         sut.updateSelectedMoveToDestination(menuLabel: labelToMoveTo, isOn: true)
-        let conversationObject = Conversation(context: testContext)
-        conversationObject.conversationID = "1"
         let expectation1 = expectation(description: "Closure called")
-        let conversationToMove = ConversationEntity(conversationObject)
+        let conversationToMove = ConversationEntity.make(conversationID: "1")
 
         sut.handleMoveToAction(conversations: [conversationToMove], isFromSwipeAction: false) {
             XCTAssertTrue(self.conversationProviderMock.moveStub.wasCalledExactlyOnce)
@@ -774,10 +770,8 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testHandleConversationMoveToAction_withNoDestination() {
-        let conversationObject = Conversation(context: testContext)
-        conversationObject.conversationID = "1"
         let expectation1 = expectation(description: "Closure called")
-        let conversationToMove = ConversationEntity(conversationObject)
+        let conversationToMove = ConversationEntity.make(conversationID: "1")
 
         XCTAssertNil(self.sut.selectedMoveToFolder)
         sut.handleMoveToAction(conversations: [conversationToMove], isFromSwipeAction: false) {
@@ -799,13 +793,11 @@ class MailboxViewModelTests: XCTestCase {
                                       order: 0,
                                       notify: false)
         let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
-        let conversationObject = Conversation(context: testContext)
-        conversationObject.conversationID = "1234"
         let label = LabelLocation(id: "label1", name: nil)
         // select label1
         sut.selectedLabelAsLabels.insert(label)
         let expectation1 = expectation(description: "Closure called")
-        let conversationToAddLabel = ConversationEntity(conversationObject)
+        let conversationToAddLabel = ConversationEntity.make(conversationID: "1234")
 
         sut.handleLabelAsAction(conversations: [conversationToAddLabel],
                                 shouldArchive: true,
