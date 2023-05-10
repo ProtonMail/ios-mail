@@ -184,7 +184,12 @@ class CreateDraftRequest: Request {
 
         let fromAddress = fromAddress
         let name = fromAddress?.displayName ?? "unknown"
-        let address = fromAddress?.email ?? "unknown"
+        var address = fromAddress?.email ?? "unknown"
+
+        let entity = MessageEntity(message)
+        if let sender = try? entity.parseSender() {
+            address = sender.address
+        }
 
         messageDict["Sender"] = [
             "Name": name,

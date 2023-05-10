@@ -259,7 +259,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         self.headerView.updateFromValue(addr.email, pickerEnabled: true)
         if let origAddr = self.viewModel.fromAddress() {
             if origAddr.send == .inactive {
-                self.viewModel.updateAddressID(addr.addressID).done {
+                self.viewModel.updateAddressID(addr.addressID, emailAddress: addr.email).done {
                     //
                 }.catch { _ in
                     if self.viewModel.messageAction != .openDraft {
@@ -283,6 +283,8 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
                     )
                     self.present(alertController, animated: true, completion: nil)
                 }
+            } else if origAddr.addressID == addr.addressID {
+                viewModel.updateAddressID(addr.addressID, emailAddress: addr.email).cauterize()
             }
         }
         // update draft if first time create
@@ -869,7 +871,7 @@ extension ComposeContentViewController: ComposeViewDelegate {
 
     private func updateSenderMail(addr: Address, complete: (() -> Void)?) {
         self.queue.sync { [weak self] in
-            self?.viewModel.updateAddressID(addr.addressID)
+            self?.viewModel.updateAddressID(addr.addressID, emailAddress: addr.email)
                 .done { _ in
                     self?.headerView.updateFromValue(addr.email, pickerEnabled: true)
                 }

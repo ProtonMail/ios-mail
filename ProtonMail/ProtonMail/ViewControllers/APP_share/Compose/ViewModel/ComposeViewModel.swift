@@ -228,6 +228,9 @@ class ComposeViewModel: NSObject {
     }
 
     func getAddresses() -> [Address] {
+        if let referenceAddress = composerMessageHelper.originalTo() ?? composerMessageHelper.originalFrom() {
+            return getFromAddressList(originalTo: referenceAddress)
+        }
         return self.user.addresses
     }
 
@@ -238,18 +241,62 @@ class ComposeViewModel: NSObject {
     }
 
     func getDefaultSendAddress() -> Address? {
-        if let draft = self.composerMessageHelper.draft {
-            var address: Address?
-            if let id = draft.nextAddressID {
-                address = self.user.userInfo.userAddresses.first(where: { $0.addressID == id })
-            }
-            return address ?? self.messageService.defaultUserAddress(of: draft.sendAddressID)
-        } else {
-            if let addr = self.user.userInfo.userAddresses.defaultSendAddress() {
-                return addr
-            }
+        guard let draft = composerMessageHelper.draft else {
+            return user.userInfo.userAddresses.defaultSendAddress()
         }
-        return nil
+
+        if let id = draft.nextAddressID,
+           let entity = composerMessageHelper.getMessageEntity(),
+           let sender = try? entity.parseSender(),
+           let address = user.userInfo.userAddresses.first(where: { $0.addressID == id && $0.email == sender.address }) {
+            return address
+        }
+        let referenceAddress = composerMessageHelper.originalTo() ?? composerMessageHelper.originalFrom() ?? ""
+        if let aliasAddress = getAddressFromPlusAlias(userAddress: user.addresses, originalAddress: referenceAddress) {
+            return aliasAddress
+        }
+        return messageService.defaultUserAddress(of: draft.sendAddressID)
+    }
+
+    private func getFromAddressList(originalTo: String?) -> [Address] {
+        var validUserAddress = user.addresses
+            .filter { $0.status == .enabled && $0.receive == .active && $0.send == .active }
+            .sorted(by: { $0.order >= $1.order })
+
+        if let aliasAddress = getAddressFromPlusAlias(
+            userAddress: validUserAddress,
+            originalAddress: originalTo ?? ""
+        ) {
+            validUserAddress.insert(aliasAddress, at: 0)
+        }
+        return validUserAddress
+    }
+
+    private func getAddressFromPlusAlias(userAddress: [Address], originalAddress: String) -> Address? {
+        guard let _ = originalAddress.firstIndex(of: "+"),
+              let _ = originalAddress.firstIndex(of: "@") else { return nil }
+        let normalizedAddress = originalAddress.canonicalizeEmail(scheme: .proton)
+        guard let address = userAddress
+            .first(where: { $0.email.canonicalizeEmail(scheme: .proton) == normalizedAddress })
+        else { return nil }
+        if address.email == originalAddress {
+            return nil
+        } else {
+            return Address(
+                addressID: address.addressID,
+                domainID: address.domainID,
+                email: originalAddress,
+                send: address.send,
+                receive: address.receive,
+                status: address.status,
+                type: address.type,
+                order: address.order,
+                displayName: address.displayName,
+                signature: address.signature,
+                hasKeys: address.hasKeys,
+                keys: address.keys
+            )
+        }
     }
 
     func fromAddress() -> Address? {
@@ -482,7 +529,7 @@ extension ComposeViewModel {
         }
     }
 
-    func updateAddressID(_ addressId: String) -> Promise<Void> {
+    func updateAddressID(_ addressId: String, emailAddress: String) -> Promise<Void> {
         return Promise { [weak self] seal in
             guard self?.composerMessageHelper.draft != nil else {
                 let error = NSError(domain: "",
@@ -493,7 +540,7 @@ extension ComposeViewModel {
             }
             if self?.user.userInfo.userAddresses
                 .contains(where: { $0.addressID == addressId }) == true {
-                composerMessageHelper.updateAddressID(addressID: addressId) {
+                self?.composerMessageHelper.updateAddressID(addressID: addressId, emailAddress: emailAddress) {
                     seal.fulfill_()
                 }
             } else {
@@ -1013,7 +1060,7 @@ extension ComposeViewModel {
 
     func shouldShowScheduleSendConfirmationAlert() -> Bool {
         return isEditingScheduleMsg && deliveryTime == nil
-	}
+    }
 
     func fetchContacts() {
         let service = user.contactService

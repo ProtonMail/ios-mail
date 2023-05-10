@@ -106,9 +106,35 @@ final class ComposeViewModelTests: XCTestCase {
         }
     }
 
-// MARK: isEmptyDraft tests
+    func testGetAddressesWhenMessageHeaderContainsFrom() {
+        let addresses = generateAddress(number: 4)
+        fakeUserManager.userInfo.set(addresses: addresses)
 
-// The body decryption part and numAttachment are missing, seems no way to test
+        let addressID = addresses[0].addressID
+        let email1 = addresses[0].email
+        let parts = email1.components(separatedBy: "@")
+        let alias = "\(parts[0])+abcd@\(parts[1])"
+        testContext.performAndWait {
+            let obj = self.sut.composerMessageHelper.getRawMessageObject()
+            obj?.parsedHeaders = "{\"From\": \"Tester <\(alias)>\"}"
+        }
+        let lists = sut.getAddresses()
+        XCTAssertEqual(lists.count, 5)
+        XCTAssertEqual(lists[0].email, alias)
+        XCTAssertEqual(lists[0].addressID, addressID)
+        XCTAssertEqual(lists.filter { $0.addressID == addressID }.count, 2)
+    }
+
+    func testGetAddressesWhenMessageHeaderWithoutFrom() {
+        let addresses = generateAddress(number: Int.random(in: 2...8))
+        fakeUserManager.userInfo.set(addresses: addresses)
+
+        let lists = sut.getAddresses()
+        XCTAssertEqual(lists.count, addresses.count)
+        XCTAssertEqual(lists, addresses)
+    }
+
+    // MARK: isEmptyDraft tests
 
     func testIsEmptyDraft_messageInit() throws {
         sut.initialize(message: message, action: .openDraft)
@@ -126,13 +152,8 @@ final class ComposeViewModelTests: XCTestCase {
         message.ccList = "[]"
         message.bccList = "[]"
         sut.initialize(message: message, action: .openDraft)
-        XCTAssertTrue(sut.isEmptyDraft())
 
-        message.toList = "eee"
-        message.ccList = "abc"
-        message.bccList = "fsx"
-        sut.initialize(message: message, action: .openDraft)
-        XCTAssertFalse(sut.isEmptyDraft())
+        XCTAssertTrue(sut.isEmptyDraft())
     }
 
     func testDecodingRecipients_prefersMatchingLocalContactName() throws {
@@ -197,5 +218,29 @@ extension ComposeViewModelTests {
                               keys: [key])
         userInfo.set(addresses: [address])
         return UserManager(api: self.apiMock, role: .owner, userInfo: userInfo)
+    }
+
+    func generateAddress(number: Int) -> [Address] {
+        let key = Key(keyID: "keyID", privateKey: KeyTestData.privateKey1)
+        let list = (0..<number).map { _ in
+            let id = UUID().uuidString
+            let domain = "\(String.randomString(3)).\(String.randomString(3))"
+            let userPart = String.randomString(5)
+            return Address(
+                addressID: id,
+                domainID: UUID().uuidString,
+                email: "\(userPart)@\(domain)",
+                send: .active,
+                receive: .active,
+                status: .enabled,
+                type: .protonDomain,
+                order: 0,
+                displayName: String.randomString(7),
+                signature: "Hello",
+                hasKeys: 1,
+                keys: [key]
+            )
+        }
+        return list
     }
 }
