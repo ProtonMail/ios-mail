@@ -97,8 +97,6 @@ linting:
   stage: linting
   before_script:
     - *setup_basic_tools
-  variables:
-    GIT_DEPTH: 1
   script:
     - pip3 install -r Scripts/requirements.txt
     - python3 Scripts/linkAvailabilityCheck.py
@@ -141,8 +139,6 @@ test:unit:
     - merge_requests
   except:
     - schedules
-  variables:
-    GIT_DEPTH: 1
   artifacts:
     reports:
       coverage_report:
@@ -172,8 +168,6 @@ test:ui:smoke:
       - develop
       - /^release\/.*$/
       - merge_requests
-  variables:
-    GIT_DEPTH: 1
   artifacts:
     when: always
     name: "test-report"
@@ -221,8 +215,6 @@ test:ui:feature:
   stage: test
   rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
-  variables:
-    GIT_DEPTH: 1
   artifacts:
     when: always
     name: "test-report"
@@ -266,8 +258,6 @@ test:ui:monkey:
 report:slack:feature:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
-  variables:
-    GIT_DEPTH: 1
   rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
       when: always
@@ -317,8 +307,6 @@ appetize:start:
     name: review/$CI_COMMIT_REF_NAME
     on_stop: appetize:stop
     url: $APPETIZE_APP_URL?osVersion=16.2&device=iphone14
-  variables:
-    GIT_DEPTH: 1
   rules:
     - if: $CI_MERGE_REQUEST_ID
       when: manual
@@ -361,6 +349,7 @@ testflight:build:upload:
   stage: testflight
   variables:
     GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
   rules:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: manual
@@ -403,8 +392,6 @@ nightly-build-and-upload:
 enterprise:test:
   dependencies: []
   stage: enterprise
-  variables:
-    GIT_DEPTH: 1
   rules:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: manual
