@@ -74,7 +74,7 @@ version: 2.0
 
 name: fusion, nameSpecified: 
 body: The MIT License (MIT…
-version: 2.0.0
+version: 2.0.1
 
 name: Groot, nameSpecified: 
 body: **Groot**
