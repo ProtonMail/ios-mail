@@ -121,6 +121,11 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func openBlockList() {
+        let blockedSendersPublisher = BlockedSendersPublisher(
+            contextProvider: sharedServices.get(by: CoreDataService.self),
+            userID: user.userID
+        )
+
         let incomingDefaultService = user.incomingDefaultService
 
         let unblockSender = UnblockSender(
@@ -133,8 +138,8 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
 
         let viewModel = BlockedSendersViewModel(
             dependencies: .init(
+                blockedSendersPublisher: blockedSendersPublisher,
                 cacheUpdater: user.blockedSenderCacheUpdater,
-                incomingDefaultService: incomingDefaultService,
                 unblockSender: unblockSender
             )
         )

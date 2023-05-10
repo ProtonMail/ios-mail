@@ -15,12 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import CoreData
 import LifetimeTracker
 
 final class MailboxLabelPublisher {
     private var dataPublisher: DataPublisher<Label>?
     private let contextProvider: CoreDataContextProviderProtocol
+    private var cancellable: AnyCancellable?
 
     init(contextProvider: CoreDataContextProviderProtocol) {
         self.contextProvider = contextProvider
@@ -46,9 +48,10 @@ final class MailboxLabelPublisher {
             entityName: Label.Attributes.entityName,
             predicate: predicate,
             sortDescriptors: sortDescriptors,
-            contextProvider: contextProvider,
-            onContentChanged: onContentChanged
+            contextProvider: contextProvider
         )
+        cancellable = dataPublisher?.contentDidChange.sink(receiveValue: onContentChanged)
+        dataPublisher?.start()
     }
 }
 

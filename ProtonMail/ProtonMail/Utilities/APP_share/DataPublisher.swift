@@ -15,21 +15,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import CoreData
 
 class DataPublisher<T: NSFetchRequestResult>: NSObject, NSFetchedResultsControllerDelegate {
     private let fetchedResultsController: NSFetchedResultsController<T>
+    private let contentDidChangeSubject = PassthroughSubject<[T], Never>()
 
-    var onContentChanged: (([T]) -> Void)?
+    var contentDidChange: AnyPublisher<[T], Never> {
+        contentDidChangeSubject.eraseToAnyPublisher()
+    }
 
     init(
         entityName: String,
         predicate: NSPredicate,
         sortDescriptors: [NSSortDescriptor],
-        contextProvider: CoreDataContextProviderProtocol,
-        onContentChanged: (([T]) -> Void)?
+        contextProvider: CoreDataContextProviderProtocol
     ) {
-        self.onContentChanged = onContentChanged
         let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = sortDescriptors
@@ -40,15 +42,28 @@ class DataPublisher<T: NSFetchRequestResult>: NSObject, NSFetchedResultsControll
             cacheName: nil
         )
         super.init()
-        self.fetchedResultsController.delegate = self
-        try? self.fetchedResultsController.performFetch()
+    }
+
+    func start() {
+        fetchedResultsController.delegate = self
+
+        do {
+            try fetchedResultsController.performFetch()
+            publishFetchedObjects()
+        } catch {
+            PMAssertionFailure(error)
+        }
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard let fetchedDatas = controller.fetchedObjects as? [T] else {
-            assertionFailure("NSFetchedResultController is misconfigured.")
+        publishFetchedObjects()
+    }
+
+    private func publishFetchedObjects() {
+        guard let fetchedObjects = fetchedResultsController.fetchedObjects else {
+            PMAssertionFailure("fetchedObjects accessed before performFetch")
             return
         }
-        onContentChanged?(fetchedDatas)
+        contentDidChangeSubject.send(fetchedObjects)
     }
 }

@@ -108,12 +108,6 @@ class SingleMessageContentViewController: UIViewController {
         viewModel.viewDidLoad()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        viewModel.viewWillAppear()
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if #available(iOS 12.0, *) {
             let isDarkModeStyle = traitCollection.userInterfaceStyle == .dark

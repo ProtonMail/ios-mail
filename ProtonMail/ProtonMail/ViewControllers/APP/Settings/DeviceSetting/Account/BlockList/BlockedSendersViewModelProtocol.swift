@@ -24,6 +24,7 @@ protocol BlockedSendersViewModelProtocol: AnyObject {
 
 protocol BlockedSendersViewModelInput {
     func deleteRow(at indexPath: IndexPath) throws
+    func viewDidLoad()
     func viewWillAppear()
     func userDidPullToRefresh()
 }
