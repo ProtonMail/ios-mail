@@ -26,6 +26,7 @@ import PromiseKit
 import ProtonCore_DataModel
 import UIKit
 
+// sourcery: mock
 protocol LastUpdatedStoreProtocol {
     func cleanUp(userId: UserID) -> Promise<Void>
 

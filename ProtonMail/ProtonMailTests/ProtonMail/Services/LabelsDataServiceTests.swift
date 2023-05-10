@@ -30,13 +30,12 @@ final class LabelsDataServiceTests: XCTestCase {
         super.setUp()
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
-        let mockLastUpdatedStore = MockLastUpdatedStore()
         let mockCacheService = MockCacheServiceProtocol()
 
         sut = LabelsDataService(api: mockApiService,
                                 userID: UserID(userID),
                                 contextProvider: mockContextProvider,
-                                lastUpdatedStore: mockLastUpdatedStore,
+                                lastUpdatedStore: MockLastUpdatedStoreProtocol(),
                                 cacheService: mockCacheService)
     }
 

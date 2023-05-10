@@ -22,12 +22,12 @@ class FetchLatestEventIdTests: XCTestCase {
     var sut: FetchLatestEventId!
 
     var mockEventsService: MockEventsService!
-    var mockLastUpdatedStore: MockLastUpdatedStore!
+    var mockLastUpdatedStore: MockLastUpdatedStoreProtocol!
 
     override func setUp() {
         super.setUp()
         mockEventsService = MockEventsService()
-        mockLastUpdatedStore = MockLastUpdatedStore()
+        mockLastUpdatedStore = MockLastUpdatedStoreProtocol()
 
         sut = FetchLatestEventId(
             userId: "dummy_user_id",
@@ -56,7 +56,7 @@ class FetchLatestEventIdTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
 
         XCTAssert(mockEventsService.wasFetchLatestEventIDCalled == true)
-        XCTAssert(mockLastUpdatedStore.updateEventIDWasCalled == true)
+        XCTAssert(mockLastUpdatedStore.updateEventIDStub.wasCalledExactlyOnce == true)
     }
 
     func testExecute_whenEventsService_doesNotReturnAnEvent() {
@@ -68,14 +68,14 @@ class FetchLatestEventIdTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
 
         XCTAssert(mockEventsService.wasFetchLatestEventIDCalled == true)
-        XCTAssert(mockLastUpdatedStore.updateEventIDWasCalled == false)
+        XCTAssert(mockLastUpdatedStore.updateEventIDStub.wasCalled == false)
     }
 
 }
 
 private func makeDependencies(
     mockEventsService: EventsServiceProtocol,
-    mockLastUpdatedStore: MockLastUpdatedStore
+    mockLastUpdatedStore: MockLastUpdatedStoreProtocol
 ) -> FetchLatestEventId.Dependencies {
 
     FetchLatestEventId.Dependencies(

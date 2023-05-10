@@ -8,6 +8,7 @@ import ProtonCore_Keymaker
 import ProtonCore_PaymentsUI
 import ProtonCore_TestingToolkit
 
+import class PromiseKit.Promise
 import class ProtonCore_DataModel.UserInfo
 
 @testable import ProtonMail
@@ -689,6 +690,69 @@ class MockLabelPublisherProtocol: LabelPublisherProtocol {
     @FuncStub(MockLabelPublisherProtocol.fetchLabels) var fetchLabelsStub
     func fetchLabels(labelType: LabelFetchType) {
         fetchLabelsStub(labelType)
+    }
+
+}
+
+class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
+    @FuncStub(MockLastUpdatedStoreProtocol.cleanUp, initialReturn: Promise<Void>()) var cleanUpStub
+    func cleanUp(userId: UserID) -> Promise<Void> {
+        cleanUpStub(userId)
+    }
+
+    @FuncStub(MockLastUpdatedStoreProtocol.updateEventID, initialReturn: Promise<Void>()) var updateEventIDStub
+    func updateEventID(by userID: UserID, eventID: String) -> Promise<Void> {
+        updateEventIDStub(userID, eventID)
+    }
+
+    @FuncStub(MockLastUpdatedStoreProtocol.lastEventID, initialReturn: String()) var lastEventIDStub
+    func lastEventID(userID: UserID) -> String {
+        lastEventIDStub(userID)
+    }
+
+    @FuncStub(MockLastUpdatedStoreProtocol.lastEventUpdateTime, initialReturn: nil) var lastEventUpdateTimeStub
+    func lastEventUpdateTime(userID: UserID) -> Date? {
+        lastEventUpdateTimeStub(userID)
+    }
+
+    @FuncStub(MockLastUpdatedStoreProtocol.lastUpdate, initialReturn: nil) var lastUpdateStub
+    func lastUpdate(by labelID: LabelID, userID: UserID, type: ViewMode) -> LabelCountEntity? {
+        lastUpdateStub(labelID, userID, type)
+    }
+
+    @FuncStub(MockLastUpdatedStoreProtocol.unreadCount, initialReturn: Int()) var unreadCountStub
+    func unreadCount(by labelID: LabelID, userID: UserID, type: ViewMode) -> Int {
+        unreadCountStub(labelID, userID, type)
+    }
+
+    @FuncStub(MockLastUpdatedStoreProtocol.updateUnreadCount) var updateUnreadCountStub
+    func updateUnreadCount(by labelID: LabelID, userID: UserID, unread: Int, total: Int?, type: ViewMode, shouldSave: Bool) {
+        updateUnreadCountStub(labelID, userID, unread, total, type, shouldSave)
+    }
+
+    @FuncStub(MockLastUpdatedStoreProtocol.removeUpdateTime) var removeUpdateTimeStub
+    func removeUpdateTime(by userID: UserID, type: ViewMode) {
+        removeUpdateTimeStub(userID, type)
+    }
+
+    @FuncStub(MockLastUpdatedStoreProtocol.resetCounter) var resetCounterStub
+    func resetCounter(labelID: LabelID, userID: UserID, type: ViewMode?) {
+        resetCounterStub(labelID, userID, type)
+    }
+
+    @FuncStub(MockLastUpdatedStoreProtocol.removeUpdateTimeExceptUnread) var removeUpdateTimeExceptUnreadStub
+    func removeUpdateTimeExceptUnread(by userID: UserID) {
+        removeUpdateTimeExceptUnreadStub(userID)
+    }
+
+    @FuncStub(MockLastUpdatedStoreProtocol.getUnreadCounts) var getUnreadCountsStub
+    func getUnreadCounts(by labelIDs: [LabelID], userID: UserID, type: ViewMode, completion: @escaping ([String: Int]) -> Void) {
+        getUnreadCountsStub(labelIDs, userID, type, completion)
+    }
+
+    @FuncStub(MockLastUpdatedStoreProtocol.updateLastUpdatedTime) var updateLastUpdatedTimeStub
+    func updateLastUpdatedTime(labelID: LabelID, isUnread: Bool, startTime: Date, endTime: Date?, msgCount: Int, userID: UserID, type: ViewMode) {
+        updateLastUpdatedTimeStub(labelID, isUnread, startTime, endTime, msgCount, userID, type)
     }
 
 }

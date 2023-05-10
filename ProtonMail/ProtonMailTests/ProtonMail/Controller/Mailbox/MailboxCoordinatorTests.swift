@@ -35,7 +35,7 @@ class MailboxCoordinatorTests: XCTestCase {
         let dummyUser = UserManager(api: dummyAPIService, role: .none)
 
         let conversationStateProviderMock = MockConversationStateProviderProtocol()
-        let lastUpdatedStoreMock = MockLastUpdatedStore()
+        let lastUpdatedStoreMock = MockLastUpdatedStoreProtocol()
         let pushServiceMock = MockPushNotificationService()
         let contextProviderMock = MockCoreDataContextProvider()
         let mailboxViewControllerMock = MailboxViewController()
