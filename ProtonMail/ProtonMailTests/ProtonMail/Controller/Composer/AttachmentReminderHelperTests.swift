@@ -22,7 +22,9 @@ final class AttachmentReminderHelperTests: XCTestCase {
 
     func testHasAttachKeyword() {
         var content = "Hi please see the attachment and see included"
-        XCTAssertTrue(AttachReminderHelper.hasAttachKeyword(content: content, language: .english))
+        XCTAssertTrue(AttachReminderHelper.hasAttachKeyword(content: content, language: "en"))
+        XCTAssertTrue(AttachReminderHelper.hasAttachKeyword(content: content, language: "en-US"))
+        XCTAssertTrue(AttachReminderHelper.hasAttachKeyword(content: content, language: "Base"))
 
         content = "dsield voir fichier joint eiflsfpe "
         XCTAssertTrue(AttachReminderHelper.hasAttachKeyword(content: content, language: .french))
@@ -43,7 +45,7 @@ final class AttachmentReminderHelperTests: XCTestCase {
         XCTAssertTrue(AttachReminderHelper.hasAttachKeyword(content: content, language: .portuguese))
 
         content = "dsield ver anexado eiflsfpe "
-        XCTAssertTrue(AttachReminderHelper.hasAttachKeyword(content: content, language: .portugueseBrazil))
+        XCTAssertTrue(AttachReminderHelper.hasAttachKeyword(content: content, language: .portuguese, region: .brazil))
 
         content = "dsield ver zie bijlage eiflsfpe "
         XCTAssertTrue(AttachReminderHelper.hasAttachKeyword(content: content, language: .dutch))

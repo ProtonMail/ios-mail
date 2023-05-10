@@ -29,28 +29,33 @@ struct AttachReminderHelper {
     static let NL_REGEX = "zie bijgevoegd|zie bijlage|zie toegevoegd|is bijgevoegd|bijgevoegd is|zijn bijgevoegd|bijgevoegd zijn|toegevoegd aan dit e-mailbericht|toegevoegd aan dit bericht|Ik voeg bij|Ik heb bijgevoegd|Ik voeg een bijlage bij|Ik heb een bijlage bijgevoegd|bijlage bijvoegen|bijlagen bijvoegen|bijlage opgenomen|opgenomen bijlage|bijgevoegd bestand|zie de bijlage|zie bijlagen|bijgevoegde bestanden|de bijlage bekijken"
     static let PL_REGEX = "patrz w za\u{0142}\u{0105}czeniu|patrz za\u{0142}\u{0105}cznik|patrz do\u{0142}\u{0105}czony|jest do\u{0142}\u{0105}czony|w za\u{0142}\u{0105}czeniu|s\u{0105} za\u{0142}\u{0105}czone|za\u{0142}\u{0105}czone s\u{0105}|za\u{0142}\u{0105}czone do tego e-maila|do\u{0142}\u{0105}czone do tej wiadomo\u{015b}ci|do\u{0142}\u{0105}czam|za\u{0142}\u{0105}czam|za\u{0142}\u{0105}czy\u{0142}em|za\u{0142}\u{0105}czy\u{0142}am|dodaj\u{0119}|wysy\u{0142}am|do\u{0142}\u{0105}czy\u{0142}em|do\u{0142}\u{0105}czy\u{0142}am|patrz za\u{0142}\u{0105}czniki|w za\u{0142}\u{0105}czniku|patrz za\u{0142}\u{0105}czony|patrz za\u{0142}\u{0105}czone|masz w za\u{0142}\u{0105}czeniu|za\u{0142}\u{0105}czony plik|zobacz za\u{0142}\u{0105}cznik|zobacz za\u{0142}\u{0105}czniki|za\u{0142}\u{0105}czone pliki"
 
-    static func hasAttachKeyword(content: String,
-                                 language: ELanguage) -> Bool {
+    @available(iOS 16, *)
+    static func hasAttachKeyword(content: String, language languageCode: Locale.LanguageCode, region: Locale.Region? = nil) -> Bool {
+        let identifier = languageCode.identifier.appending(region.map { "-\($0.identifier)"} ?? "")
+        return hasAttachKeyword(content: content, language: identifier)
+    }
+
+    static func hasAttachKeyword(content: String, language: String) -> Bool {
         switch language {
-        case .english:
+        case "Base", "en", "en-US":
             return content.preg_match(AttachReminderHelper.EN_REGEX)
-        case .german:
+        case "de":
             return content.preg_match(AttachReminderHelper.DE_REGEX)
-        case .french:
+        case "fr":
             return content.preg_match(AttachReminderHelper.FR_REGEX)
-        case .russian:
+        case "ru":
             return content.preg_match(AttachReminderHelper.RU_REGEX)
-        case .spanish:
+        case "es":
             return content.preg_match(AttachReminderHelper.ES_REGEX)
-        case .polish:
+        case "pl":
             return content.preg_match(AttachReminderHelper.PL_REGEX)
-        case .dutch:
+        case "nl":
             return content.preg_match(AttachReminderHelper.NL_REGEX)
-        case .italian:
+        case "it":
             return content.preg_match(AttachReminderHelper.IT_REGEX)
-        case .portugueseBrazil:
+        case "pt-BR":
             return content.preg_match(AttachReminderHelper.PT_BR_REGEX)
-        case .portuguese:
+        case "pt":
             return content.preg_match(AttachReminderHelper.PT_PT_REGEX)
         default:
             return false

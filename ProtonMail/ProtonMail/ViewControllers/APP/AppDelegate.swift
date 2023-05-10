@@ -511,14 +511,7 @@ extension AppDelegate {
     }
 
     private func configureLanguage() {
-        // setup language: iOS 13 allows setting language per-app in Settings.app, so we trust that value
-        // we still use LanguageManager because Bundle.main of Share extension will take the value from host application :(
-        if #available(iOS 13.0, *),
-            let code = Bundle.main.preferredLocalizations.first {
-            LanguageManager().saveLanguage(by: code)
-        }
-        //setup language
-        LanguageManager().setupCurrentLanguage()
+        LanguageManager().storePreferredLanguageToBeUsedByExtensions()
     }
 
     private func configurePushService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {

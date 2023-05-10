@@ -19,62 +19,76 @@
 import XCTest
 
 class LanguageManagerTests: XCTestCase {
-    var sut: LanguageManager!
-    var userDefaultMock: UserDefaults!
-    var randomSuiteName = String.randomString(10)
-    var language: ELanguage!
+    private var sut: LanguageManager!
+    private var bundle: MockBundleType!
+    private var userDefaultMock: UserDefaults!
+    private let randomSuiteName = String.randomString(10)
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        language = try XCTUnwrap(ELanguage.allCases.randomElement())
+
+        bundle = MockBundleType()
         userDefaultMock = .init(suiteName: randomSuiteName)
-        sut = .init(userDefault: userDefaultMock)
+        sut = .init(bundle: bundle, userDefaults: userDefaultMock)
+
+        // use something different than "en" which happens to be SUT's fallback language
+        // this is to better expose some behavior
+        bundle.preferredLocalizationsStub.fixture = ["es", "ja"]
     }
 
     override func tearDown() {
-        super.tearDown()
         sut = nil
+        bundle = nil
         userDefaultMock.removePersistentDomain(forName: randomSuiteName)
         userDefaultMock = nil
-        language = nil
+
+        super.tearDown()
     }
 
-    func testSetupCurrentLanguage_languageSaveKeyIsNil_saveValueFromAppleLanguages() throws {
-        userDefaultMock.set(["en"], forKey: "AppleLanguages")
+    func testStorePreferredLanguage_overwritesPreviousUserDefaultsEntry() {
+        XCTAssertNil(userDefaultMock.string(forKey: LanguageManager.Constants.languageSaveKey))
 
-        sut.setupCurrentLanguage()
+        sut.storePreferredLanguageToBeUsedByExtensions()
 
-        let value = try XCTUnwrap(
-            userDefaultMock.string(forKey: LanguageManager.Constant.languageSaveKey)
-        )
-        XCTAssertEqual(value, "en")
+        XCTAssertEqual(userDefaultMock.string(forKey: LanguageManager.Constants.languageSaveKey), "es")
+
+        userDefaultMock.set("de", forKey: LanguageManager.Constants.languageSaveKey)
+
+        sut.storePreferredLanguageToBeUsedByExtensions()
+
+        XCTAssertEqual(userDefaultMock.string(forKey: LanguageManager.Constants.languageSaveKey), "es")
     }
 
-    func testCurrentLanguageIndex() {
-        userDefaultMock.set(language.languageCode, forKey: LanguageManager.Constant.languageSaveKey)
+    func testTranslateBundle_whenStoredLanguageIsDifferentThanSelectedLanguage_proceedsWithTranslating() throws {
+        userDefaultMock.set("pl", forKey: LanguageManager.Constants.languageSaveKey)
 
-        let result = sut.currentLanguageIndex()
-        let index = ELanguage.languageCodes.firstIndex(of: language.languageCode)
-        XCTAssertEqual(result, index)
+        sut.translateBundleToPreferredLanguageOfTheMainApp()
+
+        XCTAssertEqual(bundle.setLanguageStub.callCounter, 1)
+        let arguments = try XCTUnwrap(bundle.setLanguageStub.lastArguments)
+        XCTAssertEqual(arguments.a1, "pl")
+        XCTAssertEqual(arguments.a2, false)
     }
 
-    func testCurrentLanguage() {
-        userDefaultMock.set(language.languageCode, forKey: LanguageManager.Constant.languageSaveKey)
+    func testTranslateBundle_whenStoredAndSelectedLanguagesAreTheSame_doesNothing() {
+        userDefaultMock.set(bundle.preferredLocalizations[0], forKey: LanguageManager.Constants.languageSaveKey)
+        sut.translateBundleToPreferredLanguageOfTheMainApp()
 
-        XCTAssertEqual(sut.currentLanguage(), language)
+        XCTAssertEqual(bundle.setLanguageStub.callCounter, 0)
     }
 
-    func testSaveLanguageByCode() throws {
-        sut.saveLanguage(by: language.languageCode)
+    func testCurrentLanguageCode_returnValuePriority() {
+        bundle.preferredLocalizationsStub.fixture = []
+        userDefaultMock.removeObject(forKey: LanguageManager.Constants.languageSaveKey)
 
-        let value = try XCTUnwrap(userDefaultMock.string(forKey: LanguageManager.Constant.languageSaveKey))
-        XCTAssertEqual(value, language.languageCode)
-    }
+        XCTAssertEqual(sut.currentLanguageCode(), "en")
 
-    func testSaveLauguageByCode_withUnSupportedCode_languageIsSetToEnglish() throws {
-        sut.saveLanguage(by: String.randomString(10))
+        bundle.preferredLocalizationsStub.fixture = ["it"]
 
-        let value = try XCTUnwrap(userDefaultMock.string(forKey: LanguageManager.Constant.languageSaveKey))
-        XCTAssertEqual(value, ELanguage.english.languageCode)
+        XCTAssertEqual(sut.currentLanguageCode(), "it")
+
+        userDefaultMock.set("nl", forKey: LanguageManager.Constants.languageSaveKey)
+
+        XCTAssertEqual(sut.currentLanguageCode(), "nl")
     }
 }

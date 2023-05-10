@@ -25,8 +25,6 @@
 #import <UIKit/UIKit.h>
 #import <objc/runtime.h>
 
-#ifdef USE_ON_FLY_LOCALIZATION
-
 static const char kBundleKey = 0;
 
 @interface BundleEx : NSBundle
@@ -75,5 +73,3 @@ static const char kBundleKey = 0;
 }
 
 @end
-
-#endif

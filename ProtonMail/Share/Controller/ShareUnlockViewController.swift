@@ -63,7 +63,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
         super.viewDidLoad()
 
         sharedUserDataService = UserDataService(api: PMAPIService.shared)
-        LanguageManager().setupCurrentLanguage()
+        LanguageManager().translateBundleToPreferredLanguageOfTheMainApp()
         configureNavigationBar()
 
         let bioView = BioCodeView(frame: .zero)

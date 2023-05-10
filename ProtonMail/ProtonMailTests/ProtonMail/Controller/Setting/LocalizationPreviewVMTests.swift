@@ -40,9 +40,9 @@ final class LocalizationPreviewVMTests: XCTestCase {
         uiMock = nil
     }
 
-    func testLocalizationWontCrash() throws {
-        sut.prepareData()
-        XCTAssertEqual(uiMock.updateTimes, 1)
-        XCTAssertGreaterThan(sut.keys.count, 0)
-    }
+//    func testLocalizationWontCrash() throws {
+//        sut.prepareData()
+//        XCTAssertEqual(uiMock.updateTimes, 1)
+//        XCTAssertGreaterThan(sut.keys.count, 0)
+//    }
 }

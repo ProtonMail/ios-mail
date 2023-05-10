@@ -77,6 +77,19 @@ class MockBlockedSenderFetchStatusProviderProtocol: BlockedSenderFetchStatusProv
 
 }
 
+class MockBundleType: BundleType {
+    @PropertyStub(\MockBundleType.preferredLocalizations, initialGet: [String]()) var preferredLocalizationsStub
+    var preferredLocalizations: [String] {
+        preferredLocalizationsStub()
+    }
+
+    @FuncStub(MockBundleType.setLanguage) var setLanguageStub
+    func setLanguage(with code: String, isLanguageRTL: Bool) {
+        setLanguageStub(code, isLanguageRTL)
+    }
+
+}
+
 class MockCacheServiceProtocol: CacheServiceProtocol {
     @FuncStub(MockCacheServiceProtocol.addNewLabel) var addNewLabelStub
     func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?) {
