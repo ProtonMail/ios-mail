@@ -19,7 +19,7 @@ struct MailScenario: Hashable {
     public let name: String
     public let description: String
     public let subject: String
-
+    
     public init(name: String, description: String, subject: String = "") {
         self.name = name
         self.description = description
@@ -51,4 +51,18 @@ extension MailScenario {
     static let qaMail020 = MailScenario(name: "qa-mail-web-020", description: "1 message with rich text in Starred", subject: "020_message_with_rich_text_in_starred")
     static let qaMail021 = MailScenario(name: "qa-mail-web-021", description: "1 message with Unsubscribe in Inbox", subject: "021_messages_with_one_click_list_unsubscribe_mailto")
     static let qaMail022 = MailScenario(name: "qa-mail-web-022", description: "1 message with BCC in Inbox", subject: "022_message_with_BCC_in_inbox")
+    
+    //ios
+    static let autoReply = MailScenario(name: "auto.reply", description: "", subject: "")
+    static let customSwipe = MailScenario(name: "custom.swipe", description: "", subject: "")
+    static let manyMessages = MailScenario(name: "many.messages", description: "", subject: "")
+    static let onepassMailpro2022 = MailScenario(name: "onepass.mailpro2022", description: "", subject: "")
+    static let pgpinline = MailScenario(name: "pgpinline", description: "", subject: "")
+    static let pgpinlineDrafts = MailScenario(name: "pgpinline.drafts", description: "", subject: "")
+    static let pgpinlineUntrusted = MailScenario(name: "pgpinline.untrusted", description: "", subject: "")
+    static let pgpmime = MailScenario(name: "pgpmime.untrusted", description: "", subject: "")
+    static let pgpmimeUntrusted = MailScenario(name: "pgpmime.untrusted", description: "", subject: "")
+    static let revokeSession = MailScenario(name: "revoke.session", description: "", subject: "")
+    static let trashMultipleMessages = MailScenario(name: "trash.multiple.messages", description: "", subject: "")
+    static let trashOneMessage = MailScenario(name: "trash.one.message", description: "", subject: "")
 }
