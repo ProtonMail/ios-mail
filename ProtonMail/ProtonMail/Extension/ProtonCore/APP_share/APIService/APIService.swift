@@ -141,11 +141,7 @@ extension PMAPIService {
         }
 
         var locale: String {
-            if let local = LanguageManager().currentLanguageCode() {
-                return local
-            } else {
-                return Constants.defaultLocale
-            }
+            LanguageManager().currentLanguageCode()
         }
 
         var additionalHeaders: [String : String]? {

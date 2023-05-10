@@ -75,7 +75,7 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
 enum GeneralSectionItem: Int, CustomStringConvertible {
     case notification = 0
     case language = 1
-    case LocalizationPreview = 2
+    case localizationPreview = 2
 
     var description: String {
         switch self {
@@ -83,7 +83,7 @@ enum GeneralSectionItem: Int, CustomStringConvertible {
             return LocalString._push_notification
         case .language:
             return LocalString._app_language
-        case .LocalizationPreview:
+        case .localizationPreview:
             return "Localization Preview"
         }
     }
@@ -115,8 +115,6 @@ final class SettingsDeviceViewModel {
         return name.isEmpty ? self.email : name
     }
 
-    let languages: [ELanguage] = ELanguage.allCases
-
     var isDohOn: Bool {
         BackendConfiguration.shared.doh.status == .on
     }
@@ -141,7 +139,7 @@ final class SettingsDeviceViewModel {
         }
 
         #if DEBUG_ENTERPRISE
-        generalSettings.append(.LocalizationPreview)
+        generalSettings.append(.localizationPreview)
         #endif
 
         if UserInfo.isToolbarCustomizationEnable {

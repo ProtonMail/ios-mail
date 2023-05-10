@@ -31,7 +31,7 @@ class SettingsDeviceCoordinator {
         case alternativeRouting = "settings_alternative_routing"
         case swipeAction = "settings_swipe_action"
         case darkMode = "settings_dark_mode"
-        case LocalizationPreview = "languageDebug"
+        case localizationPreview = "languageDebug"
     }
 
     private let usersManager: UsersManager
@@ -73,7 +73,7 @@ class SettingsDeviceCoordinator {
             openGesture()
         case .darkMode:
             openDarkMode()
-        case .LocalizationPreview:
+        case .localizationPreview:
             openLocalizationPreview()
         }
     }

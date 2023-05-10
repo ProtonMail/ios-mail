@@ -23,15 +23,8 @@
 
 #import <Foundation/Foundation.h>
 
-#define USE_ON_FLY_LOCALIZATION
-
-
-#ifdef USE_ON_FLY_LOCALIZATION
-
 @interface NSBundle (Language)
 
 + (void)setLanguage:(NSString *)language isLanguageRTL:(BOOL)isLanguageRTL;
 
 @end
-
-#endif
