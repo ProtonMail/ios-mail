@@ -523,8 +523,8 @@ extension ContactDataService {
     func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], importedFromDevice: Bool) -> NSError? {
         let userID = self.userID
         var error: NSError?
-        coreDataService.performAndWaitOnRootSavingContext { [weak self] context in
-            guard let self = self else { return }
+        var objectID: String?
+        coreDataService.performAndWaitOnRootSavingContext { context in
             do {
                 let contact = try Contact.makeTempContact(context: context,
                                                           userID: userID.rawValue,
@@ -535,27 +535,29 @@ extension ContactDataService {
                     error = err
                     return
                 }
-                let objectID = contact.objectID.uriRepresentation().absoluteString
-                let action: MessageAction = .addContact(objectID: objectID,
-                                                        cardDatas: cardDatas,
-                                                        importFromDevice: importedFromDevice)
-                let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
-                self.queueManager?.addTask(task)
+                objectID = contact.objectID.uriRepresentation().absoluteString
             } catch {
                 return
             }
+        }
+        if let objectID = objectID {
+            let action: MessageAction = .addContact(objectID: objectID,
+                                                    cardDatas: cardDatas,
+                                                    importFromDevice: importedFromDevice)
+            let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
+            _ = self.queueManager?.addTask(task)
         }
         return error
     }
 
     func queueUpdate(objectID: NSManagedObjectID, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?) {
-        coreDataService.performOnRootSavingContext { [weak self] context in
-            guard let self = self else { return }
+        var result: Swift.Result<Void, NSError>!
+        coreDataService.performAndWaitOnRootSavingContext { context in
             do {
                 guard let contactInContext = try context.existingObject(with: objectID) as? Contact else {
                     let error = NSError(domain: "", code: -1,
                                         localizedDescription: LocalString._error_no_object)
-                    completion?(error)
+                    result = .failure(error)
                     return
                 }
                 contactInContext.cardData = try cardDatas.toJSONString()
@@ -569,43 +571,62 @@ extension ContactDataService {
                 // CacheService > updateContact(contactID:...)
                 _ = emails.map { $0.makeTempEmail(context: context, contact: contactInContext) }
                 if let error = context.saveUpstreamIfNeeded() {
-                    completion?(error)
+                    result = .failure(error)
                 } else {
-                    let idString = objectID.uriRepresentation().absoluteString
-                    let action: MessageAction = .updateContact(objectID: idString,
-                                                               cardDatas: cardDatas)
-                    let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
-                    self.queueManager?.addTask(task)
-                    completion?(nil)
+                    result = .success(())
                 }
             } catch {
-                completion?(error as NSError)
+                result = .failure(error as NSError)
             }
+        }
+
+        switch result {
+        case .failure(let error):
+            completion?(error)
+        case .success(_):
+            let idString = objectID.uriRepresentation().absoluteString
+            let action: MessageAction = .updateContact(objectID: idString,
+                                                       cardDatas: cardDatas)
+            let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+            _ = self.queueManager?.addTask(task)
+            completion?(nil)
+        case .none:
+            break
         }
     }
 
     func queueDelete(objectID: NSManagedObjectID, completion: ContactDeleteComplete?) {
-        coreDataService.performOnRootSavingContext { context in
+        var result: Swift.Result<Void, NSError>!
+        coreDataService.performAndWaitOnRootSavingContext { context in
             do {
                 guard let contactInContext = try context.existingObject(with: objectID) as? Contact else {
                     let error = NSError(domain: "", code: -1,
                                         localizedDescription: LocalString._error_no_object)
-                    completion?(error)
+                    result = .failure(error)
                     return
                 }
                 contactInContext.isSoftDeleted = true
                 if let error = context.saveUpstreamIfNeeded() {
-                    completion?(error as NSError)
-                    return
+                    result = .failure(error as NSError)
+                } else {
+                    result = .success(())
                 }
-                let idString = objectID.uriRepresentation().absoluteString
-                let action: MessageAction = .deleteContact(objectID: idString)
-                let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
-                self.queueManager?.addTask(task)
-                completion?(nil)
             } catch {
-                completion?(error as NSError)
+                result = .failure(error as NSError)
             }
+        }
+
+        switch result {
+        case .failure(let error):
+            completion?(error)
+        case .success(_):
+            let idString = objectID.uriRepresentation().absoluteString
+            let action: MessageAction = .deleteContact(objectID: idString)
+            let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+            _ = self.queueManager?.addTask(task)
+            completion?(nil)
+        case .none:
+            break
         }
     }
     #endif

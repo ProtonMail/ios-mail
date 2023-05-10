@@ -287,14 +287,12 @@ class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
 // MAKR: Queue
 extension ContactGroupsDataService {
     func queueCreate(name: String, color: String, emailIDs: [String]) -> Promise<Void> {
-        return Promise<Void> { [weak self] seal in
+        return Promise<String> { [weak self] seal in
             guard let self = self else { return }
-            let userID = self.userID
-            let queue = self.queueManager
-            self.coreDataService.performOnRootSavingContext { context in
+            self.coreDataService.performAndWaitOnRootSavingContext { context in
                 // Create a temporary label for display, the label will be removed after getting response
                 let groupLabel = Label.makeGroupLabel(context: context,
-                                                      userID: userID.rawValue,
+                                                      userID: self.userID.rawValue,
                                                       color: color,
                                                       name: name,
                                                       emailIDs: emailIDs)
@@ -302,23 +300,23 @@ extension ContactGroupsDataService {
                     seal.reject(error)
                 } else {
                     let objectID = groupLabel.objectID.uriRepresentation().absoluteString
-                    let action: MessageAction = .addContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs)
-                    let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
-                    queue?.addTask(task)
-                    seal.fulfill_()
+                    seal.fulfill(objectID)
                 }
             }
+        }.then { objectID -> Promise<Void> in
+            let action: MessageAction = .addContactGroup(objectID: objectID, name: name, color: color, emailIDs: emailIDs)
+            let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+            _ = self.queueManager?.addTask(task)
+            return Promise()
         }
     }
 
     func queueUpdate(groupID: String, name: String, color: String, addedEmailIDs: [String], removedEmailIDs: [String]) -> Promise<Void> {
-        return Promise<Void> { [weak self] seal in
+        return Promise<String> { [weak self] seal in
             guard let self = self else { return }
-            let userID = self.userID
-            let queue = self.queueManager
             self.coreDataService.performOnRootSavingContext { context in
                 guard let label = Label.labelGroup(byID: groupID, inManagedObjectContext: context) else {
-                    seal.fulfill_()
+                    seal.reject(NSError(domain: "No Label is found", code: 999))
                     return
                 }
                 label.name = name
@@ -341,13 +339,15 @@ extension ContactGroupsDataService {
                 if let error = context.saveUpstreamIfNeeded() {
                     seal.reject(error)
                 } else {
-                    let objectID = label.objectID.uriRepresentation().absoluteString
-                    let action: MessageAction = .updateContactGroup(objectID: objectID, name: name, color: color, addedEmailIDs: addedEmailIDs, removedEmailIDs: removedEmailIDs)
-                    let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
-                    queue?.addTask(task)
-                    seal.fulfill_()
+                    let objectID: String = label.objectID.uriRepresentation().absoluteString
+                    seal.fulfill(objectID)
                 }
             }
+        }.then { objectID -> Promise<Void> in
+            let action: MessageAction = .updateContactGroup(objectID: objectID, name: name, color: color, addedEmailIDs: addedEmailIDs, removedEmailIDs: removedEmailIDs)
+            let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+            _ = self.queueManager?.addTask(task)
+            return Promise()
         }
     }
 
