@@ -717,6 +717,7 @@ extension MainQueueHandler {
     }
 
     fileprivate func messageAction(_ managedObjectIds: [String], action: String, UID: String, completion: @escaping Completion) {
+        var messageIds: [String] = []
         coreDataService.performAndWaitOnRootSavingContext { context in
             let messages = managedObjectIds.compactMap { (id: String) -> Message? in
                 if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
@@ -725,21 +726,19 @@ extension MainQueueHandler {
                 }
                 return nil
             }
-
-            guard self.user?.userInfo.userId == UID else {
-                completion(NSError.userLoggedOut())
-                return
-            }
-
-            let messageIds = messages.map { $0.messageID }
-            guard messageIds.count > 0 else {
-                completion(nil)
-                return
-            }
-            let api = MessageActionRequest(action: action, ids: messageIds)
-            self.apiService.perform(request: api, response: VoidResponse()) { _, response in
-                completion(response.error)
-            }
+            messageIds = messages.map { $0.messageID }
+        }
+        guard user?.userInfo.userId == UID else {
+            completion(NSError.userLoggedOut())
+            return
+        }
+        guard messageIds.count > 0 else {
+            completion(nil)
+            return
+        }
+        let api = MessageActionRequest(action: action, ids: messageIds)
+        self.apiService.perform(request: api, response: VoidResponse()) { _, response in
+            completion(response.error)
         }
     }
 
