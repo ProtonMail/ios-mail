@@ -483,7 +483,7 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
 
 class MockFeatureFlagsDownloadServiceProtocol: FeatureFlagsDownloadServiceProtocol {
     @FuncStub(MockFeatureFlagsDownloadServiceProtocol.updateFeatureFlag) var updateFeatureFlagStub
-    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping FeatureFlagsDownloadCompletion) {
+    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping (Error?) -> Void) {
         updateFeatureFlagStub(key, value, completion)
     }
 

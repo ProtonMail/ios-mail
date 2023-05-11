@@ -80,8 +80,8 @@ final class AppRatingService {
         dependencies.appRatingStatusProvider.setIsAppRatingEnabled(false)
         dependencies.appRatingStatusProvider.setAppRatingAsShownInCurrentVersion()
         let featureFlagKey: FeatureFlagKey = .appRating
-        dependencies.featureFlagService.updateFeatureFlag(featureFlagKey, value: false) { result in
-            if let error = result.error {
+        dependencies.featureFlagService.updateFeatureFlag(featureFlagKey, value: false) { error in
+            if let error = error {
                 /** Because there is an internet connection check before showing the rating prompt it's unlikely
                  the request fails for that reason. There is no need to do anything else if the update fails. Worse case
                  scenario the app would try to show the rating prompt again in the next app version,

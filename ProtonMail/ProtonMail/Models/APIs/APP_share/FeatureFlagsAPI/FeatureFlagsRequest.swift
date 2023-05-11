@@ -18,35 +18,13 @@
 import ProtonCore_Networking
 
 struct FetchFeatureFlagsRequest: Request {
-    private(set) var keysToFetch: [FeatureFlagKey] = []
-
     var path: String {
         "/core/v4/features"
     }
 
-    var method: HTTPMethod {
-        .get
-    }
-
-    init(keys: [FeatureFlagKey]? = nil) {
-        if let keys = keys, !keys.isEmpty {
-            keysToFetch = keys
-        } else {
-            keysToFetch = FeatureFlagKey.allCases
-        }
-    }
-
     var parameters: [String: Any]? {
-        guard !keysToFetch.isEmpty else {
-            return nil
-        }
-        var result: [String: Any] = [:]
-        let queryString = keysToFetch
-            .map { $0.rawValue }
-            .joined(separator: ",")
-        // Code=XXX,XXX
-        result["Code"] = queryString
-        return result
+        let queryString = FeatureFlagKey.allCases.map(\.rawValue).joined(separator: ",")
+        return ["Code": queryString]
     }
 }
 
