@@ -418,7 +418,7 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func blockSenderTapped() {
-        let senderEmail = viewModel.messageInfoProvider.senderEmail
+        let senderEmail = viewModel.messageInfoProvider.senderEmail.string
 
         let alert = UIAlertController(
             title: L11n.BlockSender.blockActionTitleLong,
@@ -446,11 +446,18 @@ class SingleMessageContentViewController: UIViewController {
     private func showBottomToast(message: String) {
         let banner = PMBanner(message: message, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
 
-        if let parent = parent {
-            banner.show(at: .bottom, on: parent)
+        let toastPresenter: UIViewController
+
+        if let singleMessageViewController = parent as? SingleMessageViewController {
+            toastPresenter = singleMessageViewController
+        } else if let conversationViewController = parent?.parent as? ConversationViewController {
+            toastPresenter = conversationViewController
         } else {
-            PMAssertionFailure("Not attached to a parent")
+            PMAssertionFailure("Cannot find a suitable parent")
+            toastPresenter = parent ?? self
         }
+
+        banner.show(at: .bottom, on: toastPresenter)
     }
 
     @objc
@@ -575,7 +582,7 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
         showBottomToast(
             message: String(
                 format: L11n.BlockSender.successfulUnblockConfirmation,
-                viewModel.messageInfoProvider.senderEmail
+                viewModel.messageInfoProvider.senderEmail.string
             )
         )
     }
