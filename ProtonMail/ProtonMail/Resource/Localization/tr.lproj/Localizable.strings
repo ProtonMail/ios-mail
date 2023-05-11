@@ -313,9 +313,6 @@
 "Breeze through threaded messages in conversation mode." = "Yazışma kipinde, ileti dizileri arasında hızla gezinin.";
 
 /* Title */
-"Bug Description" = "Hata açıklaması";
-
-/* Title */
 "Bug Report Received" = "Hata raporu alındı";
 
 /* The title of cached data in local storage settings */
@@ -2387,3 +2384,4 @@
 /* contact placeholder */
 "ZIP" = "Posta kodu";
 
+"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

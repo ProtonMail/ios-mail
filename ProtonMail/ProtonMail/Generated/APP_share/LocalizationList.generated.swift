@@ -345,7 +345,6 @@ struct LocalizationList {
         "LocalizedString._sending_message": LocalString._sending_message,
         "LocalizedString._closing_draft": LocalString._closing_draft,
         "LocalizedString._please_wait_in_foreground": LocalString._please_wait_in_foreground,
-        "LocalizedString._bug_description": LocalString._bug_description,
         "LocalizedString._bug_report_received": LocalString._bug_report_received,
         "LocalizedString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system": LocalString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system,
         "LocalizedString._offline_bug_report": LocalString._offline_bug_report,

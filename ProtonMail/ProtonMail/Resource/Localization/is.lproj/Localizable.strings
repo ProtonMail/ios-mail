@@ -304,9 +304,6 @@
 "Breeze through threaded messages in conversation mode." = "Farðu í gegnum skilaboðaþráð í samtalsham.";
 
 /* Title */
-"Bug Description" = "Lýsing á villu";
-
-/* Title */
 "Bug Report Received" = "Villuskýrsla móttekin";
 
 /* The title of cached data in local storage settings */
@@ -2318,3 +2315,4 @@
 /* contact placeholder */
 "ZIP" = "Póstnúmer";
 
+"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";
