@@ -30,4 +30,35 @@ final class MessageIDTests: XCTestCase {
 
         XCTAssertFalse(sut.hasLocalFormat)
     }
+
+    func testMessageID_below9Characters_hasNoNotificationID() {
+        for length in 1..<9 {
+            let rawMessageID = String.randomString(length)
+            let messageID = MessageID(rawMessageID)
+            let generatedUUID = messageID.notificationId
+            XCTAssertNil(generatedUUID, "Expected nil for \(rawMessageID) (\(length) characters)")
+        }
+    }
+
+    func testMessageID_ofAtLeast10Characters_hasNotificationID() {
+        for length in 10...100 {
+            let rawMessageID = String.randomString(length)
+            let messageID = MessageID(rawMessageID)
+            let generatedUUID = messageID.notificationId
+            XCTAssertNotNil(generatedUUID, "Expected a value for \(rawMessageID) (\(length) characters)")
+        }
+    }
+
+    func testNotificationID_specificExamplesToCompareAgainstBackendCalculation() {
+        let pairs: [(messageId: String, uuid: String)] = [
+            ("l8vWAXHBQmv0u7OVtPbcqMa4iwQaBqowINSQjPrxAr-Da8fVPKUkUcqAq30_BCxj1X0nW70HQRmAa-rIvzmKUA==",
+             "6c387657-4158-4842-516d"),
+            ("uRA-Yxg_D1aU_WssF71zbN2Cd_FVkmhu2PdvNnt6Fz4fiMJhXTjTVqDJJBxcetoX8ja6qRCzRdMLw65AiPbgRA==",
+             "7552412d-5978-675f-4431")
+        ]
+        pairs.forEach { messageId, expectedUUID in
+            let notificationId = MessageID(messageId).notificationId
+            XCTAssertEqual(notificationId, expectedUUID)
+        }
+    }
 }
