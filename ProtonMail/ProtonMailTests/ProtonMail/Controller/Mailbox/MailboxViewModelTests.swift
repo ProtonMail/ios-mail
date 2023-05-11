@@ -1299,7 +1299,7 @@ extension MailboxViewModelTests {
                                userManager: userManagerMock,
                                pushService: MockPushNotificationService(),
                                coreDataContextProvider: coreDataService,
-                               lastUpdatedStore: MockLastUpdatedStore(),
+                               lastUpdatedStore: MockLastUpdatedStoreProtocol(),
                                conversationStateProvider: conversationStateProviderMock,
                                contactGroupProvider: contactGroupProviderMock,
                                labelProvider: labelProviderMock,

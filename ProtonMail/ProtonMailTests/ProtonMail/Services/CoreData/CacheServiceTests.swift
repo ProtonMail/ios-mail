@@ -25,7 +25,7 @@ import Groot
 
 class CacheServiceTest: XCTestCase {
     var testMessage: Message!
-    var lastUpdatedStore: MockLastUpdatedStore!
+    var lastUpdatedStore: LastUpdatedStore!
     var sut: CacheService!
     var contextProviderMock: MockCoreDataContextProvider!
     var testContext: NSManagedObjectContext!
@@ -44,9 +44,7 @@ class CacheServiceTest: XCTestCase {
         
         try testContext.save()
 
-        let mock = MockLastUpdatedStore()
-        mock.testContext = testContext
-        lastUpdatedStore = mock
+        lastUpdatedStore = LastUpdatedStore(contextProvider: contextProviderMock)
 
         let dependencies = CacheService.Dependencies(
             coreDataService: contextProviderMock,
@@ -59,7 +57,6 @@ class CacheServiceTest: XCTestCase {
         testMessage = nil
         sut = nil
         testContext = nil
-        lastUpdatedStore.resetUnreadCounts()
         lastUpdatedStore = nil
         contextProviderMock = nil
     }
@@ -256,9 +253,7 @@ class CacheServiceTest: XCTestCase {
 
 extension CacheServiceTest {
     func loadTestDataOfUnreadCount(defaultUnreadCount: Int, labelID: LabelID) {
-        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID, type: .singleMessage)
         lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID, unread: defaultUnreadCount, total: nil, type: .singleMessage, shouldSave: true)
-        _ = lastUpdatedStore.lastUpdateDefault(by: labelID, userID: sut.userID, type: .conversation)
         lastUpdatedStore.updateUnreadCount(by: labelID, userID: sut.userID, unread: defaultUnreadCount, total: nil, type: .conversation, shouldSave: true)
     }
 }
