@@ -1754,11 +1754,16 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
     }
 
     private func showMoveToActionSheet(messages: [MessageEntity], isEnableColor: Bool, isInherit: Bool, isFromSwipeAction: Bool = false) {
-        let moveToViewModel =
-            MoveToActionSheetViewModelMessages(menuLabels: moveToActionHandler.getFolderMenuItems(),
-                                               messages: messages,
-                                               isEnableColor: isEnableColor,
-                                               isInherit: isInherit)
+        var menuLabels = moveToActionHandler.getFolderMenuItems()
+        if viewModel.messageLocation == .sent {
+            menuLabels.removeAll(where: { $0.location == .inbox })
+        }
+        let moveToViewModel = MoveToActionSheetViewModelMessages(
+            menuLabels: menuLabels,
+            messages: messages,
+            isEnableColor: isEnableColor,
+            isInherit: isInherit
+        )
         moveToActionSheetPresenter
             .present(on: self.navigationController ?? self,
                      viewModel: moveToViewModel,

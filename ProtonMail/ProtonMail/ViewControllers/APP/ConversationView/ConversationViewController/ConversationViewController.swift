@@ -1319,8 +1319,12 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
     private func showMoveToActionSheet(for message: MessageEntity) {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
+        var menuLabels = viewModel.getFolderMenuItems()
+        if message.isSent {
+            menuLabels.removeAll(where: { $0.location == .inbox })
+        }
         let moveToViewModel = MoveToActionSheetViewModelMessages(
-            menuLabels: viewModel.getFolderMenuItems(),
+            menuLabels: menuLabels,
             messages: [message],
             isEnableColor: isEnableColor,
             isInherit: isInherit

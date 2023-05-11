@@ -582,11 +582,16 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
     func showMoveToActionSheet() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
-        let moveToViewModel =
-            MoveToActionSheetViewModelMessages(menuLabels: viewModel.getFolderMenuItems(),
-                                               messages: [viewModel.message],
-                                               isEnableColor: isEnableColor,
-                                               isInherit: isInherit)
+        var menuLabels = viewModel.getFolderMenuItems()
+        if viewModel.message.isSent {
+            menuLabels.removeAll(where: { $0.location == .inbox })
+        }
+        let moveToViewModel = MoveToActionSheetViewModelMessages(
+            menuLabels: menuLabels,
+            messages: [viewModel.message],
+            isEnableColor: isEnableColor,
+            isInherit: isInherit
+        )
         moveToActionSheetPresenter.present(
             on: self.navigationController ?? self,
             listener: self,
