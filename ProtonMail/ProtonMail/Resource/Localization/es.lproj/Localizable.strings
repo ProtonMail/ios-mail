@@ -313,9 +313,6 @@
 "Breeze through threaded messages in conversation mode." = "Consulta rápidamente los mensajes hilados en el modo de conversación.";
 
 /* Title */
-"Bug Description" = "Descripción del error";
-
-/* Title */
 "Bug Report Received" = "Informe de error recibido";
 
 /* The title of cached data in local storage settings */
@@ -2387,3 +2384,4 @@
 /* contact placeholder */
 "ZIP" = "CP";
 
+"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

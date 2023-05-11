@@ -313,9 +313,6 @@
 "Breeze through threaded messages in conversation mode." = "Переглядайте ланцюжки повідомлень у режимі розмови.";
 
 /* Title */
-"Bug Description" = "Опис помилки";
-
-/* Title */
 "Bug Report Received" = "Звіт про помилку отримано";
 
 /* The title of cached data in local storage settings */
@@ -2387,3 +2384,4 @@
 /* contact placeholder */
 "ZIP" = "Поштовий індекс";
 
+"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

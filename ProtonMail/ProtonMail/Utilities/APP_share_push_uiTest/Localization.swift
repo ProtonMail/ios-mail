@@ -809,9 +809,6 @@ class LocalizedString {
     // "This can take a while, please do not dismiss the app"
     lazy var _please_wait_in_foreground = NSLocalizedString("Please keep Proton Mail open until the operation is done.", comment: "Alert message")
 
-    /// "Bug Description"
-    lazy var _bug_description = NSLocalizedString("Bug Description", comment: "Title")
-
     /// "Bug Report Received"
     lazy var _bug_report_received = NSLocalizedString("Bug Report Received", comment: "Title")
 

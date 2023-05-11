@@ -304,9 +304,6 @@
 "Breeze through threaded messages in conversation mode." = "Περάστε τα μηνύματα με νήματα στη λειτουργία συνομιλίας.";
 
 /* Title */
-"Bug Description" = "Περιγραφή Σφάλματος";
-
-/* Title */
 "Bug Report Received" = "Η αναφορά σφάλματος ελήφθη";
 
 /* The title of cached data in local storage settings */
@@ -2318,3 +2315,4 @@
 /* contact placeholder */
 "ZIP" = "T.K";
 
+"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

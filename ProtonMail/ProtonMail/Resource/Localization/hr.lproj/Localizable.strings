@@ -210,9 +210,6 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Rođendan";
 
-/* Title */
-"Bug Description" = "Opis pogreške";
-
 /* Call the contact (button title text) */
 "Call contact" = "Nazovi kontakta";
 
@@ -1718,3 +1715,4 @@
 /* contact placeholder */
 "ZIP" = "Poštanski broj";
 
+"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

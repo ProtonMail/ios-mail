@@ -77,7 +77,6 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         if cachedBugReport.cachedBug.isEmpty {
             addPlaceholder()
         } else {
-            removePlaceholder()
             textView.set(text: cachedBugReport.cachedBug, preferredFont: .body)
         }
         self.title = LocalString._menu_bugs_title
@@ -109,7 +108,6 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         self.textView.backgroundColor = ColorProvider.BackgroundNorm
         self.textView.textContainer.lineFragmentPadding = 0
         self.textView.textContainerInset = .init(all: textViewInset)
-        textView.text = L11n.BugReport.placeHolder
         setUpSideMenuMethods()
 
         self.view.addSubview(self.textView)
@@ -178,15 +176,11 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
     // MARK: - Private methods
 
     fileprivate func addPlaceholder() {
-        textView.set(text: LocalString._bug_description, preferredFont: .body, textColor: ColorProvider.TextHint)
-    }
-
-    fileprivate func removePlaceholder() {
-        textView.set(text: .empty, preferredFont: .body)
+        textView.set(text: L11n.BugReport.placeHolder, preferredFont: .body)
     }
 
     fileprivate func reset() {
-        removePlaceholder()
+        addPlaceholder()
         cachedBugReport.cachedBug = ""
         updateSendButtonForText(textView.text)
         resizeHeightIfNeeded()
@@ -194,7 +188,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
     }
 
     fileprivate func updateSendButtonForText(_ text: String?) {
-        sendButton.isEnabled = (text != nil) && !text!.isEmpty && !(text! == LocalString._bug_description)
+        sendButton.isEnabled = (text != nil) && !text!.isEmpty && !(text! == L11n.BugReport.placeHolder)
     }
 
     @objc
@@ -314,12 +308,6 @@ extension ReportBugsViewController: UITextViewDelegate {
         cachedBugReport.cachedBug = changedText
         resizeHeightIfNeeded()
         return true
-    }
-
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == LocalString._bug_description {
-            removePlaceholder()
-        }
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {

@@ -310,9 +310,6 @@
 "Breeze through threaded messages in conversation mode." = "Bläddra igenom trådade meddelanden i konversationsläge.";
 
 /* Title */
-"Bug Description" = "Felbeskrivning";
-
-/* Title */
 "Bug Report Received" = "Felrapport mottagen";
 
 /* The title of cached data in local storage settings */
@@ -2366,3 +2363,4 @@
 /* contact placeholder */
 "ZIP" = "Postnummer";
 
+"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";
