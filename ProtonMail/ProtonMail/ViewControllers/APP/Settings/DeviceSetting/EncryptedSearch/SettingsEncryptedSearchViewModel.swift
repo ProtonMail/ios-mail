@@ -141,18 +141,15 @@ extension SettingsEncryptedSearchViewModel {
         let userID: UserID
         let esUserCache: EncryptedSearchUserCache
         let esService: EncryptedSearchServiceProtocol
-        let internetStatus: InternetConnectionStatusProvider
 
         init(
             userID: UserID,
             esUserCache: EncryptedSearchUserCache = sharedServices.get(by: EncryptedSearchUserDefaultCache.self),
-            esService: EncryptedSearchServiceProtocol = EncryptedSearchService.shared,
-            internetStatus: InternetConnectionStatusProvider = InternetConnectionStatusProvider()
+            esService: EncryptedSearchServiceProtocol = EncryptedSearchService.shared
         ) {
             self.userID = userID
             self.esUserCache = esUserCache
             self.esService = esService
-            self.internetStatus = internetStatus
         }
     }
 }

@@ -18,6 +18,10 @@
 import Foundation
 
 enum EncryptedSearchIndexState: Equatable {
+    init() {
+        self = .undetermined
+    }
+
     static var allCases: [EncryptedSearchIndexState] = [
         .disabled,
         .partial,

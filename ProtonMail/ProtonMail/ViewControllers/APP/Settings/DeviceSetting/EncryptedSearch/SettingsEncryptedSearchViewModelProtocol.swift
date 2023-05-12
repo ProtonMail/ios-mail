@@ -42,6 +42,7 @@ protocol SettingsEncryptedSearchViewModelOutput {
     func setUIDelegate(_ delegate: SettingsEncryptedSearchUIProtocol)
 }
 
+// sourcery: mock
 protocol SettingsEncryptedSearchUIProtocol: AnyObject {
     func reloadData()
     func updateDownloadState(state: EncryptedSearchIndexState)
