@@ -37,12 +37,7 @@ struct BodyParts {
     let bodyHasHistory: Bool
 
     init(originalBody: String) {
-        // Remove color related `!important`
         self.originalBody = originalBody
-            .preg_replace(
-                "((color|bgcolor|background-color|background|border): .*) (!important);?",
-                replaceto: "$1;"
-            )
         var bodyHasHistory = false
 
         do {
