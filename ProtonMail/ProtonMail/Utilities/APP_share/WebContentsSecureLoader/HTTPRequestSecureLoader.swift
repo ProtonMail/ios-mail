@@ -157,10 +157,34 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         }
 
         css = css.replacingOccurrences(of: "{{screen-width}}", with: "\(Int(screenWidth))px")
+        var loggerCode: String = .empty
+        #if DEBUG
+        loggerCode = """
+            // Print log on console
+            var console = {};
+            console.log = function(message){window.webkit.messageHandlers['logger'].postMessage(message)};
+        """
+        #endif
+
         let sanitizeRaw = """
+        \(loggerCode)
+        // Remove color related `!important`
+        let targetDOMs = document.querySelectorAll('*:not(html):not(head):not(body):not(script):not(meta):not(title)')
+        for (var i = 0, max = targetDOMs.length; i < max; i++) {
+            let dom = targetDOMs[i]
+            if (!dom.style.cssText.includes('!important')) { continue }
+            let css = dom.style.cssText.replace(/((color|bgcolor|background-color|background|border): .*?) (!important)/i, "$1")
+            dom.style.cssText = css
+        }
+
+        // Purify message head
         var dirty = document.documentElement.outerHTML.toString();
+        DOMPurify.addHook('beforeSanitizeElements', escapeForbiddenStyleInElement);
         let protonizer = DOMPurify.sanitize(dirty, \(DomPurifyConfig.protonizer.value));
+        DOMPurify.removeHook('beforeSanitizeElements');
         let messageHead = protonizer.querySelector('head').innerHTML.trim()
+
+        // Purify message body
         var clean0 = DOMPurify.sanitize(dirty, \(DomPurifyConfig.imageCache.value));
         \(imageProxyCodeBlock)
         var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
@@ -191,6 +215,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
                 items[i].style.height = "auto";
             };
         };
+
         window.webkit.messageHandlers.loaded.postMessage({'preheight': ratio * rects.height, 'clearBody': document.documentElement.outerHTML.toString()});
         """
 
@@ -200,13 +225,25 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         config.userContentController.addUserScript(WebContents.escapeJS)
         config.userContentController.addUserScript(WebContents.loaderJS)
         config.userContentController.addUserScript(sanitize)
+        #if DEBUG
+        config.userContentController.removeScriptMessageHandler(forName: "logger")
+        config.userContentController.add(self, name: "logger")
+        #endif
 
         config.userContentController.add(self.blockRules!)
     }
 
+    private func handleConsoleLogFromJS(message: WKScriptMessage) {
+        guard let body = message.body as? String, message.name == "logger" else {
+            assertionFailure("Unexpected message sent from JS")
+            return
+        }
+        print("WebView log:\(body)")
+    }
+
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let dict = message.body as? [String: Any] else {
-            assertionFailure("Unexpected message sent from JS")
+            handleConsoleLogFromJS(message: message)
             return
         }
 
