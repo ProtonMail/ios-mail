@@ -123,16 +123,24 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
 
     override func setUp() {
         super.setUp()
+        do {
+            user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
 
         login(user: user!)
     }
 
-    override func setUpWithError() throws {
-        user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
-    }
-
-    override func tearDownWithError() throws {
-        try deleteUser(domain: dynamicDomain, user)
+    override func tearDown() {
+        do {
+            try deleteUser(domain: dynamicDomain, user)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
+        super.tearDown()
     }
 
     open override func record(_ issue: XCTIssue) {
@@ -150,3 +158,47 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
     }
 }
 
+@available(iOS 16.0, *)
+class NewFixtureAuthenticatedTestCase: BaseTestCase {
+
+    var scenario: MailScenario { .trashOneMessage }
+    var plan: UserPlan { .mailpro2022 }
+    var isSubscriptionIncluded: Bool { true }
+    var user: User?
+
+    override func setUp() {
+        super.setUp()
+        do {
+            user = try createUserWithiOSFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
+
+        login(user: user!)
+    }
+
+    override func tearDown() {
+        do {
+            try deleteUser(domain: dynamicDomain, user)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
+        super.tearDown()
+    }
+
+    open override func record(_ issue: XCTIssue) {
+        var myIssue = issue
+        var issueDescription: String = "\n"
+        issueDescription.append("User:")
+        issueDescription.append("\n")
+        issueDescription.append(user.debugDescription)
+        issueDescription.append("\n\n")
+        issueDescription.append("Failure:")
+        issueDescription.append("\n\(myIssue.compactDescription)")
+
+        myIssue.compactDescription = issueDescription
+        super.record(myIssue)
+    }
+}

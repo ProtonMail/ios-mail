@@ -49,39 +49,45 @@ extension QuarkTestable where Self: XCTestCase {
         self.add(attachement)
     }
     
+    func createUserWithiOSFixturesLoad(domain: String, plan: UserPlan, scenario: MailScenario, isEnableEarlyAccess: Bool) throws -> User {
+        
+        let request = try URLRequest(domain: domain, quark: "raw::qa:fixtures:load?definition-path=/var/www/apps/Mail/resources/qa/ios/\(scenario.name)&--output-format=json")
+        
+        ConsoleLogger.shared?.log("🕸 URL: \(request.url!)", osLogType: UITest.self)
+        
+        let createData = try performRequest(with: request)
+        
+        guard let response = String(data: createData, encoding: .utf8) else {
+            throw QuarkError(url: request.url!, message: "Failed parse response 👼")
+        }
+        
+        ConsoleLogger.shared?.log("\n🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧\n\(NSString(string: response))🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧", osLogType: UITest.self)
+        
+        let html = XCTAttachment(data: createData, uniformTypeIdentifier: "public.json")
+        html.name = "Quark user creation json response"
+        // Keep the HTML attachment even when the test succeeds.
+        html.lifetime = .keepAlways
+        record(html)
+        
+        let jsonData = Data(response.utf8)
+        
+        let usersResponse = try JSONDecoder().decode(QuarkUserResponse.self, from: jsonData)
+        let currentUser = usersResponse.users.first!
+        
+        let user = User(id: currentUser.ID.raw, name: currentUser.name, email: "\(currentUser.name)@\(dynamicDomain)", password: currentUser.password, userPlan: plan, mailboxPassword: "", twoFASecurityKey: "", twoFARecoveryCodes: [""], numberOfImportedMails: 0, quarkURL: request.url!)
+        
+        plan != UserPlan.free ? try enableSubscription(for: user, domain: domain, plan: plan.rawValue) : ()
+        isEnableEarlyAccess ? try enableEarlyAccess(for: user, domain: domain) : ()
+        
+        return user
+    }
+    
     func createUserWithFixturesLoad(domain: String, plan: UserPlan, scenario: MailScenario, isEnableEarlyAccess: Bool) throws -> User {
         let request = try URLRequest(domain: domain, quark: "doctrine:fixtures:load?--append=1&--group[]=\(scenario.name)")
         
         ConsoleLogger.shared?.log("🕸 URL: \(request.url!)", osLogType: UITest.self)
         
-        var createData: Data?
-        var response: URLResponse?
-        var responseError: Error?
-        let semaphore = DispatchSemaphore(value: 0)
-        let task = URLSession.shared.dataTask(with: request) { (data, urlResponse, error) in
-            if let error = error {
-                responseError = error
-            } else {
-                createData = data
-                response = urlResponse
-            }
-            semaphore.signal()
-        }
-        task.resume()
-        semaphore.wait()
-        
-        if let error = responseError {
-            throw error
-        }
-        
-        guard let createData = createData else {
-            throw QuarkError(url: request.url!, message: "Failed to create user 👼")
-        }
-        
-        let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
-        guard statusCode == 200 else {
-            throw QuarkError(url: request.url!, message: "Failed creation of user: \(name) 🌐, code: \(statusCode)")
-        }
+        let createData = try performRequest(with: request)
         
         guard let htmlResponse = String(data: createData, encoding: .utf8) else {
             throw QuarkError(url: request.url!, message: "Failed parse response 👼")
@@ -175,8 +181,8 @@ extension QuarkTestable where Self: XCTestCase {
         }
         
         
-        let user = User(id: id, name: name, email: email, password: password, userPlan: UserPlan.mail2022, mailboxPassword: "", twoFASecurityKey: "", twoFARecoveryCodes: [""], numberOfImportedMails: numberOfImportedMails, quarkURL: request.url!)
-
+        let user = User(id: id, name: name, email: email, password: password, userPlan: plan, mailboxPassword: "", twoFASecurityKey: "", twoFARecoveryCodes: [""], numberOfImportedMails: numberOfImportedMails, quarkURL: request.url!)
+        
         plan != UserPlan.free ? try enableSubscription(for: user, domain: domain, plan: plan.rawValue) : ()
         isEnableEarlyAccess ? try enableEarlyAccess(for: user, domain: domain) : ()
         
@@ -186,40 +192,55 @@ extension QuarkTestable where Self: XCTestCase {
     func deleteUser(domain: String, _ user: User?) throws {
         guard let user = user else { throw NSError(domain: "User does no exist 👻", code: 0) }
         let request = try URLRequest(domain: domain, quark: "user:delete?-u=\(user.id!)&-s")
-        try performDataTask(with: request)
+        try performRequest(with: request)
         ConsoleLogger.shared?.log("🪦 \(user.name) deleted", osLogType: UITest.self)
     }
     
     private func enableSubscription(for user: User, domain: String, plan: String) throws {
         let request = try URLRequest(domain: domain, quark: "user:create:subscription?userID=\(user.id!)&--planID=\(plan)")
-        try performDataTask(with: request)
+        try performRequest(with: request)
         ConsoleLogger.shared?.log("💸🧾 \(user.name) enabled subscription", osLogType: UITest.self)
     }
     
     private func enableEarlyAccess(for user: User, domain: String) throws {
         let request = try URLRequest(domain: domain, quark: "core:user:settings:update?--user=\(user.name)&--EarlyAccess=1")
-        try performDataTask(with: request)
+        try performRequest(with: request)
         ConsoleLogger.shared?.log("💸👶 \(user.name) enabled early access", osLogType: UITest.self)
     }
     
-    private func performDataTask(with request: URLRequest) throws {
+    @discardableResult
+    private func performRequest(with request: URLRequest) throws -> Data {
+        var responseData: Data?
         var response: URLResponse?
         var responseError: Error?
+        
         let semaphore = DispatchSemaphore(value: 0)
         let task = URLSession.shared.dataTask(with: request) { (data, urlResponse, error) in
             if let error = error {
                 responseError = error
             } else {
+                responseData = data
                 response = urlResponse
             }
             semaphore.signal()
         }
         task.resume()
         semaphore.wait()
+        
+        if let error = responseError {
+            throw error
+        }
+        
+        guard let data = responseData else {
+            throw QuarkError(url: request.url!, message: "Failed to create user 👼")
+        }
+        
         let statusCode = (response as? HTTPURLResponse)?.statusCode ?? 0
         guard statusCode == 200 else {
-            throw QuarkError(url: request.url!, message: "Failed request, code: \(statusCode) \(String(describing: responseError))")
+            throw QuarkError(url: request.url!, message: "Failed creation of user: \(name) 🌐, code: \(statusCode)")
         }
+        
+        return data
     }
 }
 

@@ -8,12 +8,12 @@
 
 import ProtonCore_TestingToolkit
 
-class MultiuserManagementTests : FixtureAuthenticatedTestCase {
+class MultiuserManagementTests : NewFixtureAuthenticatedTestCase {
 
     private let loginRobot = LoginRobot()
 
     func testAddSecondAccount_FreeUser() throws {
-        let secondUser = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.free, scenario: scenario, isEnableEarlyAccess: false)
+        let secondUser = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.free, scenario: .qaMail001, isEnableEarlyAccess: false)
         InboxRobot()
             .menuDrawer()
             .accountsList()
@@ -27,7 +27,7 @@ class MultiuserManagementTests : FixtureAuthenticatedTestCase {
     }
 
     func testAddSecondAccount_Mail2022User() throws {
-        let secondUser = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mail2022, scenario: scenario, isEnableEarlyAccess: false)
+        let secondUser = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mail2022, scenario: .qaMail001, isEnableEarlyAccess: false)
         InboxRobot()
             .menuDrawer()
             .accountsList()
