@@ -66,11 +66,11 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
 
     private let contactFetchedController: NSFetchedResultsController<Contact>
 
-    init(contact: ContactEntity, user: UserManager, coreDateService: CoreDataService) {
+    init(contact: ContactEntity, user: UserManager, coreDataService: CoreDataService) {
         self.contactService = user.contactService
         contactFetchedController = contactService.contactFetchedController(by: contact.contactID)
 
-        super.init(user: user, coreDataService: coreDateService, contact: contact)
+        super.init(user: user, coreDataService: coreDataService, contact: contact)
         self.contactParser = ContactParser(resultDelegate: self)
 
         contactFetchedController.delegate = self

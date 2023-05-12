@@ -146,8 +146,7 @@ extension FetchAndVerifyContacts {
     private func updateContact(response: [String: Any], callback: @escaping (Result<ContactEntity, NSError>) -> Void) {
         dependencies.cacheService.updateContactDetail(serverResponse: response) { contact, error in
             if let contact = contact {
-                let contactEntity = ContactEntity(contact: contact)
-                callback(.success(contactEntity))
+                callback(.success(contact))
             } else if let error = error {
                 callback(.failure(error))
             } else {

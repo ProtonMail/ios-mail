@@ -178,7 +178,7 @@ extension FetchAndVerifyContactsTests {
     private func makeMockCacheService() -> MockCacheServiceProtocol {
         let mockCacheService = MockCacheServiceProtocol()
         mockCacheService.updateContactDetailStub.bodyIs { _, _, completion in
-            let contactToReturn = Contact(context: self.mockContext)
+            let contactToReturn = ContactEntity.make()
             completion?(contactToReturn, nil)
         }
         return mockCacheService
