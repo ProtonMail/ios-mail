@@ -205,22 +205,24 @@ extension CopyMessage {
     ) throws -> CopyOutput {
         let newMessage = duplicate(message, context: context)
 
-            if let conversation = Conversation.conversationForConversationID(
-                message.conversationID,
-                inManagedObjectContext: context
-            ) {
-                let newCount = conversation.numMessages.intValue + 1
-                conversation.numMessages = NSNumber(value: newCount)
-            }
+        if let conversation = Conversation.conversationForConversationID(
+            message.conversationID,
+            inManagedObjectContext: context
+        ) {
+            let newCount = conversation.numMessages.intValue + 1
+            conversation.numMessages = NSNumber(value: newCount)
+        }
 
-            let decryptionOutput = try dependencies.messageDecrypter.decrypt(messageObject: newMessage)
-            let mimeAttachments = decryptionOutput.attachments
+        let decryptionOutput = try? dependencies.messageDecrypter.decrypt(messageObject: newMessage)
+        let mimeAttachments = decryptionOutput?.attachments ?? []
+        // When we reply a message that can not be decrypted, we should use the raw body as the body of the new draft.
+        let decryptedBody = decryptionOutput?.body ?? newMessage.body
 
-             try copy(attachments: message.attachments,
-                      to: newMessage,
-                      copyAttachment: copyAttachments,
-                      decryptedBody: decryptionOutput.body,
-                      context: context)
+        try copy(attachments: message.attachments,
+                 to: newMessage,
+                 copyAttachment: copyAttachments,
+                 decryptedBody: decryptedBody,
+                 context: context)
 
         if let error = context.saveUpstreamIfNeeded() {
             throw error

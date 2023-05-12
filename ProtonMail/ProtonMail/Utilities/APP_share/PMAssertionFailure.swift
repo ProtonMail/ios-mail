@@ -32,7 +32,8 @@ func PMAssertionFailure(
 
     SystemLogger.log(message: message, category: .assertionFailure, isError: true)
 
-    assertionFailure(message, file: file, line: line)
+    // The `Swift.` is needed here since there is a compiler bug that will make it crash on release build.
+    Swift.assertionFailure(message, file: file, line: line)
 }
 
 func PMAssertionFailure(

@@ -413,12 +413,10 @@ extension MessageInfoProvider {
             return
         }
         remoteContentPolicy = policy
-        prepareDisplayBody()
     }
 
     func reloadImagesWithoutProtection() {
         remoteContentPolicy = .allowedAll
-        prepareDisplayBody()
 	}
 
     func fetchSenderImageIfNeeded(
