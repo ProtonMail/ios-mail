@@ -97,7 +97,7 @@ final class SearchIndexDBTests: XCTestCase {
         createDB()
         XCTAssertThrowsError(try sut.removeEntryFromSearchIndex(
             isEncryptedSearchOn: false,
-            currentState: .downloading,
+            currentState: .creatingIndex,
             messageID: MessageID("r")
         ))
         XCTAssertThrowsError(try sut.removeEntryFromSearchIndex(
@@ -127,14 +127,14 @@ final class SearchIndexDBTests: XCTestCase {
         for id in messages.reversed() {
             let isDeleted = try sut.removeEntryFromSearchIndex(
                 isEncryptedSearchOn: true,
-                currentState: .downloading,
+                currentState: .creatingIndex,
                 messageID: id
             )
             XCTAssertTrue(isDeleted)
         }
         let isDeleted = try sut.removeEntryFromSearchIndex(
             isEncryptedSearchOn: true,
-            currentState: .downloading,
+            currentState: .creatingIndex,
             messageID: MessageID("unknown")
         )
         XCTAssertFalse(isDeleted)
@@ -216,7 +216,7 @@ final class SearchIndexDBTests: XCTestCase {
             let id = messages[index]
             let isDeleted = try sut.removeEntryFromSearchIndex(
                 isEncryptedSearchOn: true,
-                currentState: .downloading,
+                currentState: .creatingIndex,
                 messageID: id
             )
             XCTAssertTrue(isDeleted)

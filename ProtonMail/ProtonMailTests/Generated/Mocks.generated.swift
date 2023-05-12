@@ -547,8 +547,8 @@ class MockInternetConnectionStatusProviderProtocol: InternetConnectionStatusProv
     }
 
     @FuncStub(MockInternetConnectionStatusProviderProtocol.registerConnectionStatus) var registerConnectionStatusStub
-    func registerConnectionStatus(observerID: UUID, callback: @escaping (ConnectionStatus) -> Void) {
-        registerConnectionStatusStub(observerID, callback)
+    func registerConnectionStatus(observerID: UUID, fireAfterRegister: Bool, callback: @escaping (ConnectionStatus) -> Void) {
+        registerConnectionStatusStub(observerID, fireAfterRegister, callback)
     }
 
     @FuncStub(MockInternetConnectionStatusProviderProtocol.unregisterObserver) var unregisterObserverStub

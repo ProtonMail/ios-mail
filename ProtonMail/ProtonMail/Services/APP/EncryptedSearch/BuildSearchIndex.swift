@@ -38,7 +38,7 @@ final class BuildSearchIndex {
         didSet { interruptReasonHasUpdated() }
     }
     private var pageSize: Int = 150 {
-        didSet { log(message: "Page size is updated to \(pageSize)")}
+        didSet { log(message: "Page size is updated to \(pageSize)") }
     }
     private var indexingSpeed = OperationQueue.defaultMaxConcurrentOperationCount
     /// Sleep 2 seconds between each API when memory resource tight
@@ -56,7 +56,9 @@ final class BuildSearchIndex {
 
     private(set) var currentState: EncryptedSearchIndexState?
     private var processedMessagesCount: Int = 0
+    private var preexistingIndexedMessagesCount: Int = 0
     private let observerID = UUID()
+    private var connectionStatus: ConnectionStatus?
 
     init(
         dependencies: Dependencies,
@@ -79,14 +81,8 @@ final class BuildSearchIndex {
     }
 
     var isBuildingIndexInProgress: Bool {
-        // TODO: No computed variable should be changing the state of the indexing.
-        // Should have a way to observe user disable encrypted search
-//        guard isEncryptedSearchEnabled else {
-//            updateCurrentState(to: .disabled)
-//            return false
-//        }
         guard let state = currentState else { return false }
-        let expectedStatus: [EncryptedSearchIndexState] = [.background, .downloading, .refresh]
+        let expectedStatus: [EncryptedSearchIndexState] = [.background, .creatingIndex, .downloadingNewMessage]
         return expectedStatus.containsCase(state)
     }
 
@@ -111,10 +107,8 @@ final class BuildSearchIndex {
         initializeCurrentState { [weak self] in
             guard let self = self else { return }
             switch self.currentState {
-            case .downloading:
+            case .creatingIndex, .downloadingNewMessage:
                 self.downloadAndProcessPage()
-            case .refresh:
-                self.refreshSearchIndex()
             case .complete:
                 self.cleanupAfterIndexing()
             default:
@@ -131,17 +125,26 @@ final class BuildSearchIndex {
         updateCurrentState(to: .paused(nil))
     }
 
+    func resume() {
+        start()
+    }
+
+    func disable() {
+        stopAndClearOperationQueue()
+        cleanupAfterIndexing()
+        timerFireTimes = 0
+        guard isBuildingIndexInProgress else { return }
+        updateCurrentState(to: .disabled)
+        try? dependencies.searchIndexDB.deleteSearchIndex()
+    }
+
     func update(delegate: BuildSearchIndexDelegate?) {
         self.delegate = delegate
     }
 
-    func signOut() {
-        pause()
-        try? dependencies.searchIndexDB.deleteSearchIndex()
-    }
-
     /// Update build index state if the value haven't been initialized
     /// Receive updated value from delegate
+    // TODO provide more information for state recovery, e.g. message numbers
     func updateCurrentState() {
         initializeCurrentState(completion: nil)
     }
@@ -255,16 +258,8 @@ extension BuildSearchIndex {
             return
         }
         timerFireTimes += 1
-        switch currentState {
-        case .downloading:
-            guard let result = estimateDownloadingIndexingTime() else { return }
-            updateEstimatedResultIfNeeded(result: result)
-            // TODO case .refresh:
-        default:
-            break
-        }
-        stopIndexIfNoEnoughStorage()
-        stopIndexIfExceedStorageLimit()
+        guard let result = estimateDownloadingIndexingTime() else { return }
+        updateEstimatedResultIfNeeded(result: result)
         adaptIndexingSpeedByMemoryUsage()
     }
 
@@ -274,12 +269,14 @@ extension BuildSearchIndex {
               let startingTime = startingTime else {
             return nil
         }
-        //TODO consider previous processed message when implement refresh build
-        let remainingMessagesCount = Double(totalMessagesCount) - Double(processedMessagesCount)
+        let remainingMessagesCount = Double(
+            totalMessagesCount - processedMessagesCount + preexistingIndexedMessagesCount
+        )
         let currentTime = CFAbsoluteTimeGetCurrent()
         let timeDifference = Double(currentTime - startingTime)
         let estimatedTime = (timeDifference / Double(processedMessagesCount)) * remainingMessagesCount
-        let currentProgress = Double(processedMessagesCount) / Double(totalMessagesCount)
+        let totalCount = Double(processedMessagesCount + preexistingIndexedMessagesCount)
+        let currentProgress = totalCount / Double(totalMessagesCount)
         return EstimatedProgress(
             estimatedTimeString: timeToDate(timeInSecond: estimatedTime),
             estimatedTime: estimatedTime,
@@ -308,36 +305,13 @@ extension BuildSearchIndex {
 
 // MARK: - Device capability
 extension BuildSearchIndex {
-    /// Stop if device has no enough storage
-    /// - Returns: true: stop process
-    @discardableResult
-    private func stopIndexIfNoEnoughStorage() -> Bool {
-        guard isBuildingIndexInProgress else { return false }
-
-        if dependencies.diskUsage.isLowOnFreeSpace {
-            interruptReason = .lowStorage
-            return true
-        }
-        return false
-    }
-
-    /// Stop if saved data exceeds given storage limit
-    /// - Returns: true: stop processing
-    @discardableResult
-    private func stopIndexIfExceedStorageLimit() -> Bool {
-        guard isBuildingIndexInProgress else { return false }
-
+    private func isUserAllowedStorageExceeded() -> Bool {
         let storageLimit = dependencies.esDeviceCache.storageLimit
         // Int.max means user didn't set limitation
         if storageLimit == Int.max { return false }
 
         let sizeOfDB = dependencies.searchIndexDB.size ?? 0
-        if sizeOfDB > (storageLimit - 2_000) {
-            updateCurrentState(to: .partial)
-            pause()
-            return true
-        }
-        return false
+        return sizeOfDB > (storageLimit - 2_000)
     }
 
     private func adaptIndexingSpeedByMemoryUsage() {
@@ -358,12 +332,17 @@ extension BuildSearchIndex {
     }
 
     private func registerForNetworkChange() {
-        dependencies.connectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
+        dependencies.connectionStatusProvider.registerConnectionStatus(observerID: observerID, fireAfterRegister: false) { [weak self] status in
             self?.networkStatusChanged(to: status)
         }
     }
 
     private func networkStatusChanged(to status: ConnectionStatus) {
+        if connectionStatus == nil {
+            connectionStatus = status
+            return
+        }
+        connectionStatus = status
         guard status.isConnected else {
             interruptReason.insert(.noConnection)
             return
@@ -376,10 +355,8 @@ extension BuildSearchIndex {
                 return
             }
             interruptReason.remove(.noWiFi)
-            resumeSearchIndex()
         case .connected, .connectedViaWiFi, .connectedViaEthernet:
             interruptReason.remove(.noWiFi)
-            resumeSearchIndex()
         case .connectedViaCellularWithoutInternet,
                 .connectedViaEthernetWithoutInternet,
                 .connectedViaWiFiWithoutInternet,
@@ -442,7 +419,7 @@ extension BuildSearchIndex {
 // MARK: - Start build index
 extension BuildSearchIndex {
     private func initializeCurrentState(completion: (() -> Void)?) {
-        guard currentState == nil else {
+        guard !isBuildingIndexInProgress else {
             completion?()
             return
         }
@@ -468,11 +445,12 @@ extension BuildSearchIndex {
                 do {
                     let numOfMessageInIndex = try self.dependencies.searchIndexDB.numberOfEntries()
                     if numOfMessageInIndex <= 0 {
-                        self.updateCurrentState(to: .downloading)
+                        self.updateCurrentState(to: .creatingIndex)
                     } else if numOfMessageInIndex == messageCount {
                         self.updateCurrentState(to: .complete)
                     } else {
-                        self.updateCurrentState(to: .refresh)
+                        self.preexistingIndexedMessagesCount = numOfMessageInIndex
+                        self.updateCurrentState(to: .downloadingNewMessage)
                     }
                 } catch {
                     self.log(message: "Fetch local cache messages count failed \(error)")
@@ -495,13 +473,32 @@ extension BuildSearchIndex {
     }
 
     private func downloadPage() {
+        guard isEncryptedSearchEnabled else {
+            updateCurrentState(to: .disabled)
+            return
+        }
         guard isBuildingIndexInProgress else { return }
         adaptIndexingSpeedByMemoryUsage()
+        var endTime: Int?
+        var beginTime: Int?
+        switch currentState {
+        case .creatingIndex:
+            endTime = dependencies.searchIndexDB.oldestMessageTime() ?? 0
+        case .downloadingNewMessage:
+            if let newestTime = dependencies.searchIndexDB.newestMessageTime() {
+                beginTime = newestTime + 1
+            } else {
+                beginTime = 0
+            }
+        default:
+            break
+        }
         let time = dependencies.searchIndexDB.oldestMessageTime() ?? 0
 
         let operation = DownloadPageOperation(
             apiService: dependencies.apiService,
-            endTime: time,
+            endTime: endTime,
+            beginTime: beginTime,
             labelID: params.labelID,
             pageSize: pageSize,
             userID: params.userID
@@ -519,12 +516,18 @@ extension BuildSearchIndex {
     }
 
     private func downloadDetail(for messages: [ESMessage]) {
-        guard isBuildingIndexInProgress else {
+        guard isEncryptedSearchEnabled else {
+            updateCurrentState(to: .disabled)
             return
         }
+        guard isBuildingIndexInProgress else { return }
 
         guard !messages.isEmpty else {
-            updateCurrentState(to: .complete)
+            if currentState == .downloadingNewMessage {
+                updateCurrentState(to: .creatingIndex)
+            } else {
+                updateCurrentState(to: .complete)
+            }
             return
         }
         messageIndexingQueue.maxConcurrentOperationCount = indexingSpeed
@@ -546,9 +549,9 @@ extension BuildSearchIndex {
         var processedCount = 0
         for operation in indexOperations {
             guard let result = operation.result else { continue }
+            processedCount += 1
             switch result {
             case .failure(let error):
-                // TODO discussion error handling
                 log(message: "Index single message detail failed \(error)", isError: true)
             case .success(let esMessage):
                 let canContinue = decryptAndExtractDataSingleMessage(
@@ -558,56 +561,9 @@ extension BuildSearchIndex {
                 if !canContinue {
                     break
                 }
-                processedCount += 1
             }
         }
         processedMessagesCount += processedCount
-        // TODO discussion update progress, there is a timer to update UI every 2 seconds
-        // Really need this one?
-    }
-
-    /// - Returns: isSuccess
-    private func addMessageToSearchIndex(
-        message: MessageEntity,
-        encryptedContent: EncryptedsearchEncryptedMessageContent?
-    ) -> Bool {
-        guard isBuildingIndexInProgress else { return false }
-        let cipherText = encryptedContent?.ciphertext
-        let encryptedContentSize: Int = Data(base64Encoded: cipherText ?? "")?.count ?? 0
-
-        do {
-            if stopIndexIfExceedStorageLimit() || stopIndexIfNoEnoughStorage() {
-                log(message: "Shrink search index to fix message")
-                let size = dependencies.searchIndexDB.size ?? 0
-                let expectedSize = size - encryptedContentSize
-                try dependencies.searchIndexDB.shrinkSearchIndex(expectedSize: expectedSize)
-                // TOOD: if the space is not enough
-                // Do we need to delete existing cache to save older message?
-                // Or just abandon it
-            }
-
-            let rowID = try dependencies.searchIndexDB.addNewEntryToSearchIndex(
-                messageID: message.messageID,
-                time: Int(message.time?.timeIntervalSince1970 ?? 0),
-                order: message.order,
-                labelIDs: message.labels.map { $0.labelID },
-                encryptionIV: encryptedContent?.iv,
-                encryptedContent: cipherText,
-                encryptedContentFile: "",
-                encryptedContentSize: encryptedContentSize
-            )
-            if rowID == nil {
-                log(
-                    message: "Error-Insert: message \(message.messageID.rawValue) couldn't be inserted to search index.",
-                    isError: true
-                )
-                return false
-            }
-            return true
-        } catch {
-            log(message: "Error-Insert: \(error)", isError: true)
-            return false
-        }
     }
 
     // - Returns: can continue?
@@ -621,7 +577,6 @@ extension BuildSearchIndex {
             let result = try dependencies.messageDataService.messageDecrypter.decrypt(message: message)
             body = result.body
         } catch {
-            // TODO error handling
             log(message: "Decrypt and extract data failed \(error)")
         }
         let emailContent = body.isEmpty ? "" : EmailparserExtractData(body, true)
@@ -650,6 +605,61 @@ extension BuildSearchIndex {
         }
     }
 
+    /// - Returns: isSuccess
+    private func addMessageToSearchIndex(
+        message: MessageEntity,
+        encryptedContent: EncryptedsearchEncryptedMessageContent?
+    ) -> Bool {
+        guard isBuildingIndexInProgress else { return false }
+        let cipherText = encryptedContent?.ciphertext
+        let encryptedContentSize: Int = Data(base64Encoded: cipherText ?? "")?.count ?? 0
+
+        do {
+
+            let isLowOnFreeSpace = dependencies.diskUsage.isLowOnFreeSpace
+            let isUserAllowedStorageExceeded = isUserAllowedStorageExceeded()
+            if isLowOnFreeSpace || isUserAllowedStorageExceeded {
+                guard let state = currentState else { return false }
+                switch state {
+                case .downloadingNewMessage:
+                    log(message: "Shrink search index to save new coming message")
+                    let size = dependencies.searchIndexDB.size ?? 0
+                    let expectedSize = size - encryptedContentSize
+                    try dependencies.searchIndexDB.shrinkSearchIndex(expectedSize: expectedSize)
+                default:
+                    if isLowOnFreeSpace {
+                        interruptReason.insert(.lowStorage)
+                    } else if isUserAllowedStorageExceeded {
+                        updateCurrentState(to: .partial)
+                    }
+                    return false
+                }
+            }
+
+            let rowID = try dependencies.searchIndexDB.addNewEntryToSearchIndex(
+                messageID: message.messageID,
+                time: Int(message.time?.timeIntervalSince1970 ?? 0),
+                order: message.order,
+                labelIDs: message.labels.map { $0.labelID },
+                encryptionIV: encryptedContent?.iv,
+                encryptedContent: cipherText,
+                encryptedContentFile: "",
+                encryptedContentSize: encryptedContentSize
+            )
+            if rowID == nil {
+                log(
+                    message: "Error-Insert: message \(message.messageID.rawValue) couldn't be inserted to search index.",
+                    isError: true
+                )
+                return false
+            }
+            return true
+        } catch {
+            log(message: "Error-Insert: \(error)", isError: true)
+            return false
+        }
+    }
+
     private func cleanupAfterIndexing() {
         log(message: "Clean up after indexing")
         invalidateProgressUpdateTimer()
@@ -673,22 +683,11 @@ extension BuildSearchIndex {
     }
 }
 
-// MARK: - Refresh
-extension BuildSearchIndex {
-    private func refreshSearchIndex() {
-        // TODO todo
-    }
-
-    private func resumeSearchIndex() {
-        // TODO todo
-    }
-}
-
 // MARK: - Delegate transfer
 extension BuildSearchIndex {
     private func interruptReasonHasUpdated() {
         if interruptReason == .none {
-            // TODO resume
+            start()
         } else if interruptReason.contains(.unExpectedError) {
             updateCurrentState(to: .undetermined)
             pause()

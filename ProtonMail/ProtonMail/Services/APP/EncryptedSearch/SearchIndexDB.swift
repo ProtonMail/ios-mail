@@ -218,21 +218,29 @@ final class SearchIndexDB {
     }
 
     /// - Returns: timestamp
-    func oldestMessageTime() -> Int? {
-        var timeStamp: Int?
-        do {
-            let time: Expression<CLong> = databaseSchema.time
-            let query = messagesTable.select(time).order(time.asc).limit(1)
-            let connection = try connectionToDB()
-            for result in try connection.prepare(query) {
-                timeStamp = result[time]
-                break
-            }
-        } catch {
-            log(message: "Get oldest message time failed: \(error)", isError: true)
-        }
-        return timeStamp
-    }
+    func newestMessageTime() -> Int? {
+         firstMessageTime(order: databaseSchema.time.desc)
+     }
+
+     func oldestMessageTime() -> Int? {
+         firstMessageTime(order: databaseSchema.time.asc)
+     }
+
+    private func firstMessageTime(order: Expressible) -> Int? {
+         var timeStamp: Int?
+         do {
+             let time: Expression<CLong> = databaseSchema.time
+             let query = messagesTable.select(time).order(order).limit(1)
+             let connection = try connectionToDB()
+             for result in try connection.prepare(query) {
+                 timeStamp = result[time]
+                 break
+             }
+         } catch {
+             log(message: "Get message time failed for order \(order): \(error)", isError: true)
+         }
+         return timeStamp
+     }
 
     func deleteSearchIndex() throws {
         forceCloseConnection()
