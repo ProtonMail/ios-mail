@@ -17,6 +17,7 @@
 
 import UIKit
 
+// sourcery: mock
 protocol SettingsEncryptedSearchRouterProtocol {
     func navigateToDownloadedMessages()
 }

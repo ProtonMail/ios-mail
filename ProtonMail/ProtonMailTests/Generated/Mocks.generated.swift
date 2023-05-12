@@ -318,6 +318,59 @@ class MockCopyMessageUseCase: CopyMessageUseCase {
 
 }
 
+class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
+    @FuncStub(MockEncryptedSearchServiceProtocol.setBuildSearchIndexDelegate) var setBuildSearchIndexDelegateStub
+    func setBuildSearchIndexDelegate(for userID: UserID, delegate: BuildSearchIndexDelegate?) {
+        setBuildSearchIndexDelegateStub(userID, delegate)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.indexBuildingState, initialReturn: EncryptedSearchIndexState()) var indexBuildingStateStub
+    func indexBuildingState(for userID: UserID) -> EncryptedSearchIndexState {
+        indexBuildingStateStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.indexBuildingEstimatedProgress, initialReturn: nil) var indexBuildingEstimatedProgressStub
+    func indexBuildingEstimatedProgress(for userID: UserID) -> BuildSearchIndexEstimatedProgress? {
+        indexBuildingEstimatedProgressStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.isIndexBuildingInProgress, initialReturn: Bool()) var isIndexBuildingInProgressStub
+    func isIndexBuildingInProgress(for userID: UserID) -> Bool {
+        isIndexBuildingInProgressStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.isIndexBuildingComplete, initialReturn: Bool()) var isIndexBuildingCompleteStub
+    func isIndexBuildingComplete(for userID: UserID) -> Bool {
+        isIndexBuildingCompleteStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.startBuildingIndex) var startBuildingIndexStub
+    func startBuildingIndex(for userID: UserID) {
+        startBuildingIndexStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.pauseBuildingIndex) var pauseBuildingIndexStub
+    func pauseBuildingIndex(for userID: UserID) {
+        pauseBuildingIndexStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.resumeBuildingIndex) var resumeBuildingIndexStub
+    func resumeBuildingIndex(for userID: UserID) {
+        resumeBuildingIndexStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.stopBuildingIndex) var stopBuildingIndexStub
+    func stopBuildingIndex(for userID: UserID) {
+        stopBuildingIndexStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.didChangeDownloadViaMobileData) var didChangeDownloadViaMobileDataStub
+    func didChangeDownloadViaMobileData(for userID: UserID) {
+        didChangeDownloadViaMobileDataStub(userID)
+    }
+
+}
+
 class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
     @FuncStub(MockEncryptedSearchUserCache.isEncryptedSearchOn, initialReturn: Bool()) var isEncryptedSearchOnStub
     func isEncryptedSearchOn(of userID: UserID) -> Bool {
@@ -998,6 +1051,32 @@ class MockSettingsAccountCoordinatorProtocol: SettingsAccountCoordinatorProtocol
     @FuncStub(MockSettingsAccountCoordinatorProtocol.go) var goStub
     func go(to dest: SettingsAccountCoordinator.Destination) {
         goStub(dest)
+    }
+
+}
+
+class MockSettingsEncryptedSearchRouterProtocol: SettingsEncryptedSearchRouterProtocol {
+    @FuncStub(MockSettingsEncryptedSearchRouterProtocol.navigateToDownloadedMessages) var navigateToDownloadedMessagesStub
+    func navigateToDownloadedMessages() {
+        navigateToDownloadedMessagesStub()
+    }
+
+}
+
+class MockSettingsEncryptedSearchUIProtocol: SettingsEncryptedSearchUIProtocol {
+    @FuncStub(MockSettingsEncryptedSearchUIProtocol.reloadData) var reloadDataStub
+    func reloadData() {
+        reloadDataStub()
+    }
+
+    @FuncStub(MockSettingsEncryptedSearchUIProtocol.updateDownloadState) var updateDownloadStateStub
+    func updateDownloadState(state: EncryptedSearchIndexState) {
+        updateDownloadStateStub(state)
+    }
+
+    @FuncStub(MockSettingsEncryptedSearchUIProtocol.updateDownloadProgress) var updateDownloadProgressStub
+    func updateDownloadProgress(progress: EncryptedSearchDownloadProgress) {
+        updateDownloadProgressStub(progress)
     }
 
 }

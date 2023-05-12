@@ -17,6 +17,7 @@
 
 import Foundation
 
+// sourcery: mock
 protocol EncryptedSearchServiceProtocol {
     func setBuildSearchIndexDelegate(for userID: UserID, delegate: BuildSearchIndexDelegate?)
     func indexBuildingState(for userID: UserID) -> EncryptedSearchIndexState
