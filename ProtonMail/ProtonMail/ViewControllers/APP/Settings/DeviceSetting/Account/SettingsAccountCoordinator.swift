@@ -194,7 +194,10 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     func openSearchContent() {
         guard let navController = navigationController else { return }
         let router = SettingsEncryptedSearchRouter(navigationController: navController)
-        let viewModel = SettingsEncryptedSearchViewModel(router: router, dependencies: .init())
+        let viewModel = SettingsEncryptedSearchViewModel(
+            router: router,
+            dependencies: .init(userID: user.userID)
+        )
         let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
         navController.pushViewController(viewController, animated: true)
     }

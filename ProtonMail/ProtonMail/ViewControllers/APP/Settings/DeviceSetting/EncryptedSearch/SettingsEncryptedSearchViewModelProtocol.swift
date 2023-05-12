@@ -36,12 +36,15 @@ protocol SettingsEncryptedSearchViewModelOutput {
     var isEncryptedSearchEnabled: Bool { get }
     var isUseMobileDataEnabled: Bool { get }
     var isDownloadInProgress: Bool { get }
+    var searchIndexState: EncryptedSearchIndexState { get }
+    var searchIndexDownloadProgress: EncryptedSearchDownloadProgress? { get }
 
     func setUIDelegate(_ delegate: SettingsEncryptedSearchUIProtocol)
 }
 
 protocol SettingsEncryptedSearchUIProtocol: AnyObject {
     func reloadData()
+    func updateDownloadState(state: EncryptedSearchIndexState)
     func updateDownloadProgress(progress: EncryptedSearchDownloadProgress)
 }
 
