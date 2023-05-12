@@ -24,36 +24,52 @@ final class SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelPr
     private let router: SettingsEncryptedSearchRouterProtocol
     private let dependencies: Dependencies
 
-    // TODO: read/write from userCacheStatus
-    var isEncryptedSearchEnabled: Bool = false
-
+    private var userID: UserID {
+        dependencies.userID
+    }
     private(set) var sections: [SettingsEncryptedSearchSection] = [.encryptedSearchFeature]
 
     init(router: SettingsEncryptedSearchRouterProtocol, dependencies: Dependencies) {
         self.router = router
         self.dependencies = dependencies
     }
-}
 
-extension SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelInput {
-
-    func viewWillAppear() {
-        // TODO: use the dependencies
-    }
-
-    func didChangeEncryptedSearchValue(isNewStatusEnabled: Bool) {
-        // TODO: This logic is just for demo purposes
-        isEncryptedSearchEnabled = isNewStatusEnabled
-        if isNewStatusEnabled {
-            sections = [.encryptedSearchFeature, .downloadViaMobileData, .downloadProgress]
+    private func refreshEnabledStatusUI() {
+        if isEncryptedSearchEnabled {
+            sections = [.encryptedSearchFeature, .downloadViaMobileData]
+            if isDownloadInProgress {
+                sections.append(.downloadProgress)
+            } else {
+                sections.append(.downloadedMessages)
+            }
         } else {
             sections = [.encryptedSearchFeature]
         }
         uiDelegate?.reloadData()
     }
+}
+
+extension SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelInput {
+
+    func viewWillAppear() {
+        dependencies.esService.setBuildSearchIndexDelegate(for: userID, delegate: self)
+        let state = dependencies.esService.indexBuildingState(for: userID)
+        uiDelegate?.updateDownloadState(state: state)
+    }
+
+    func didChangeEncryptedSearchValue(isNewStatusEnabled: Bool) {
+        dependencies.esUserCache.setIsEncryptedSearchOn(of: userID, value: isNewStatusEnabled)
+        if isNewStatusEnabled {
+            dependencies.esService.startBuildingIndex(for: userID)
+        } else {
+            dependencies.esService.stopBuildingIndex(for: userID)
+        }
+        refreshEnabledStatusUI()
+    }
 
     func didChangeUseMobileDataValue(isNewStatusEnabled: Bool) {
-        // TODO: use the dependencies
+        dependencies.esUserCache.setCanDownloadViaMobileData(of: userID, value: isNewStatusEnabled)
+        dependencies.esService.didChangeDownloadViaMobileData(for: userID)
     }
 
     func didTapDownloadedMessages() {
@@ -61,26 +77,33 @@ extension SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelInpu
     }
 
     func didTapPauseMessagesDownload() {
-        // TODO: use the dependencies
+        dependencies.esService.pauseBuildingIndex(for: userID)
     }
 
     func didTapResumeMessagesDownload() {
-        // TODO: use the dependencies
+        dependencies.esService.resumeBuildingIndex(for: userID)
     }
 }
 
 extension SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelOutput {
+    var searchIndexState: EncryptedSearchIndexState {
+        dependencies.esService.indexBuildingState(for: userID)
+    }
 
-//    var isEncryptedSearchEnabled: Bool {
-//        return true // TODO: use the dependencies
-//    }
+    var isEncryptedSearchEnabled: Bool {
+        dependencies.esUserCache.isEncryptedSearchOn(of: userID)
+    }
 
     var isUseMobileDataEnabled: Bool {
-        return true // TODO: use the dependencies
+        dependencies.esUserCache.canDownloadViaMobileData(of: userID)
     }
 
     var isDownloadInProgress: Bool {
-        return true // TODO: use the dependencies
+        dependencies.esService.isIndexBuildingInProgress(for: userID)
+    }
+
+    var searchIndexDownloadProgress: EncryptedSearchDownloadProgress? {
+        dependencies.esService.indexBuildingEstimatedProgress(for: userID)?.toEncryptedSearchDownloadProgress()
     }
 
     func setUIDelegate(_ delegate: SettingsEncryptedSearchUIProtocol) {
@@ -88,9 +111,48 @@ extension SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelOutp
     }
 }
 
+extension SettingsEncryptedSearchViewModel: BuildSearchIndexDelegate {
+
+    func indexBuildingStateDidChange(state: EncryptedSearchIndexState) {
+        refreshEnabledStatusUI()
+        uiDelegate?.updateDownloadState(state: state)
+    }
+
+    func indexBuildingProgressUpdate(progress: BuildSearchIndexEstimatedProgress) {
+        uiDelegate?.updateDownloadProgress(progress: progress.toEncryptedSearchDownloadProgress())
+    }
+}
+
+private extension BuildSearchIndexEstimatedProgress {
+
+    func toEncryptedSearchDownloadProgress() -> EncryptedSearchDownloadProgress {
+        .init(
+            numMessagesDownloaded: indexedMessages,
+            totalMessages: totalMessages,
+            timeRemaining: estimatedTimeString ?? "",
+            percentageDownloaded: Int(floor(currentProgress))
+        )
+    }
+}
+
 extension SettingsEncryptedSearchViewModel {
 
     struct Dependencies {
-        // TODO: Add dependencies
+        let userID: UserID
+        let esUserCache: EncryptedSearchUserCache
+        let esService: EncryptedSearchServiceProtocol
+        let internetStatus: InternetConnectionStatusProvider
+
+        init(
+            userID: UserID,
+            esUserCache: EncryptedSearchUserCache = sharedServices.get(by: EncryptedSearchUserDefaultCache.self),
+            esService: EncryptedSearchServiceProtocol = EncryptedSearchService.shared,
+            internetStatus: InternetConnectionStatusProvider = InternetConnectionStatusProvider()
+        ) {
+            self.userID = userID
+            self.esUserCache = esUserCache
+            self.esService = esService
+            self.internetStatus = internetStatus
+        }
     }
 }

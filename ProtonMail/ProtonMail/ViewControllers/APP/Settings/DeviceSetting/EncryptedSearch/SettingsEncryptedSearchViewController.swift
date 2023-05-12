@@ -145,12 +145,8 @@ extension SettingsEncryptedSearchViewController {
     private func cellForDownloadProgress() -> EncryptedSearchDownloadProgressCell {
         let cell = tableView.dequeue(cellType: EncryptedSearchDownloadProgressCell.self)
         cell.delegate = self
-
-        // TODO: Pending. It depends on how the information is obtained in the VM and how it's exposed to the VC
-        // let downloadState = viewModel.ouput.downloadState
-        // cell.configureWith(state: downloadState.toDownloadingState())
-        cell.configureWith(state: .fetchingNewMessages) // for sample purposes
-
+        let searchIndexState = viewModel.output.searchIndexState
+        cell.configureWith(state: downloadingState(from: searchIndexState))
         downloadProgressCell = cell
         return cell
     }
@@ -224,11 +220,25 @@ extension SettingsEncryptedSearchViewController {
 extension SettingsEncryptedSearchViewController: SettingsEncryptedSearchUIProtocol {
 
     func reloadData() {
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+
+    func updateDownloadState(state: EncryptedSearchIndexState) {
+        DispatchQueue.main.async {
+            self.downloadProgressCell?.configureWith(state: self.downloadingState(from: state))
+        }
     }
 
     func updateDownloadProgress(progress: EncryptedSearchDownloadProgress) {
-        downloadProgressCell?.updateDownloadingProgress(progress: progress.toDownloadingProgress())
+        DispatchQueue.main.async {
+            self.downloadProgressCell?.updateDownloadingProgress(progress: progress.toDownloadingProgress())
+            if let index = self.viewModel.output.sections.firstIndex(of: .downloadProgress) {
+                let downloadProgressCellIndex = IndexPath(item: 0, section: index)
+                self.tableView.reloadRows(at: [downloadProgressCellIndex], with: .none)
+            }
+        }
     }
 }
 
@@ -239,6 +249,67 @@ extension SettingsEncryptedSearchViewController: EncryptedSearchDownloadProgress
 
     func didTapResume() {
         viewModel.input.didTapResumeMessagesDownload()
+    }
+}
+
+extension SettingsEncryptedSearchViewController {
+
+    private func downloadProgress() -> EncryptedSearchDownloadProgress {
+        guard let progress = viewModel.output.searchIndexDownloadProgress else {
+            return EncryptedSearchDownloadProgress(
+                numMessagesDownloaded: 0,
+                totalMessages: 0,
+                timeRemaining: "",
+                percentageDownloaded: 0
+            )
+        }
+        return progress
+    }
+
+    private func downloadingState(
+        from state: EncryptedSearchIndexState
+    ) -> EncryptedSearchDownloadProgressCell.DownloadingState {
+        let downloadProgress = downloadProgress()
+        let result: EncryptedSearchDownloadProgressCell.DownloadingState?
+        switch state {
+        case .partial:
+            result = .error(
+                error: .init(
+                    message: L11n.EncryptedSearch.download_paused_low_storage,
+                    instructions: L11n.EncryptedSearch.download_paused_low_storage_advice,
+                    percentageDownloaded: downloadProgress.percentageDownloaded,
+                    showResumeButton: false
+                )
+            )
+        case .paused(let reason):
+            if let reason = reason {
+                result = reason.toDownloadingState(percentageDownloaded: downloadProgress.percentageDownloaded)
+            } else {
+                result = .manuallyPaused(progress: downloadProgress.toDownloadingProgress())
+            }
+        case .downloadingNewMessage:
+            result = .fetchingNewMessages
+        case .creatingIndex:
+            result = .downloading(progress: downloadProgress.toDownloadingProgress())
+        case .disabled, .complete, .undetermined, .background, .backgroundStopped:
+            result = nil
+        }
+        return result ?? .fetchingNewMessages
+    }
+}
+
+private extension BuildSearchIndex.InterruptReason {
+
+    func toDownloadingState(percentageDownloaded: Int) -> EncryptedSearchDownloadProgressCell.DownloadingState {
+        let showButton = contains(.noConnection) || contains(.noWiFi)
+        return .error(
+            error: .init(
+                message: stateDescription,
+                instructions: adviceDescription,
+                percentageDownloaded: percentageDownloaded,
+                showResumeButton: showButton
+            )
+        )
     }
 }
 

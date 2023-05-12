@@ -21,8 +21,7 @@ import ProtonCore_Services
 
 protocol BuildSearchIndexDelegate: AnyObject {
     func indexBuildingStateDidChange(state: EncryptedSearchIndexState)
-    func indexBuildingProgressUpdate(progress: Double)
-    func indexBuildingEstimatedTimeUpdate(estimatedTime: String)
+    func indexBuildingProgressUpdate(progress: BuildSearchIndexEstimatedProgress)
 }
 
 final class BuildSearchIndex {
@@ -55,6 +54,9 @@ final class BuildSearchIndex {
     private var downloadPageQueue: OperationQueue
 
     private(set) var currentState: EncryptedSearchIndexState?
+    var estimatedProgress: BuildSearchIndexEstimatedProgress? {
+        estimateDownloadingIndexingTime()
+    }
     private var processedMessagesCount: Int = 0
     private var preexistingIndexedMessagesCount: Int = 0
     private let observerID = UUID()
@@ -136,6 +138,11 @@ final class BuildSearchIndex {
         guard isBuildingIndexInProgress else { return }
         updateCurrentState(to: .disabled)
         try? dependencies.searchIndexDB.deleteSearchIndex()
+    }
+
+    func didChangeDownloadViaMobileDataConfiguration() {
+        let networkStatus = dependencies.connectionStatusProvider.currentStatus
+        networkConditionsChanged(internetStatus: networkStatus)
     }
 
     func update(delegate: BuildSearchIndexDelegate?) {
@@ -258,12 +265,12 @@ extension BuildSearchIndex {
             return
         }
         timerFireTimes += 1
-        guard let result = estimateDownloadingIndexingTime() else { return }
-        updateEstimatedResultIfNeeded(result: result)
+
+        notifyEstimatedProgress()
         adaptIndexingSpeedByMemoryUsage()
     }
 
-    private func estimateDownloadingIndexingTime() -> EstimatedProgress? {
+    private func estimateDownloadingIndexingTime() -> BuildSearchIndexEstimatedProgress? {
         guard totalMessagesCount > 0,
               processedMessagesCount > 0,
               let startingTime = startingTime else {
@@ -275,11 +282,12 @@ extension BuildSearchIndex {
         let currentTime = CFAbsoluteTimeGetCurrent()
         let timeDifference = Double(currentTime - startingTime)
         let estimatedTime = (timeDifference / Double(processedMessagesCount)) * remainingMessagesCount
-        let totalCount = Double(processedMessagesCount + preexistingIndexedMessagesCount)
-        let currentProgress = totalCount / Double(totalMessagesCount)
-        return EstimatedProgress(
+        let totalIndexedMessages = processedMessagesCount + preexistingIndexedMessagesCount
+        let currentProgress = Double(totalIndexedMessages) / Double(totalMessagesCount)
+        return BuildSearchIndexEstimatedProgress(
+            totalMessages: totalMessagesCount,
+            indexedMessages: processedMessagesCount,
             estimatedTimeString: timeToDate(timeInSecond: estimatedTime),
-            estimatedTime: estimatedTime,
             currentProgress: max(0, min(1, currentProgress)) * 100
         )
     }
@@ -291,15 +299,20 @@ extension BuildSearchIndex {
         return formatter.string(from: timeInSecond) ?? L11n.EncryptedSearch.estimating_time_remaining
     }
 
-    private func updateEstimatedResultIfNeeded(result: EstimatedProgress) {
-        delegate?.indexBuildingProgressUpdate(progress: result.currentProgress)
-
-        guard totalMessagesCount > 0 else { return }
-        // Just show an time estimate after a few rounds (to have a more stable estimate)
+    private func notifyEstimatedProgress() {
+        guard var progress = estimateDownloadingIndexingTime() else { return }
+        // Just show a time estimate after a few rounds (to have a more stable estimate)
         let waitRoundsBeforeShowingTimeEstimate: Int = 5
-        if timerFireTimes >= waitRoundsBeforeShowingTimeEstimate {
-            delegate?.indexBuildingEstimatedTimeUpdate(estimatedTime: result.estimatedTimeString)
+        if timerFireTimes < waitRoundsBeforeShowingTimeEstimate {
+            // we set the time estimation to nil
+            progress = BuildSearchIndexEstimatedProgress(
+                totalMessages: progress.totalMessages,
+                indexedMessages: progress.indexedMessages,
+                estimatedTimeString: nil,
+                currentProgress: progress.currentProgress
+            )
         }
+        delegate?.indexBuildingProgressUpdate(progress: progress)
     }
 }
 
@@ -333,22 +346,23 @@ extension BuildSearchIndex {
 
     private func registerForNetworkChange() {
         dependencies.connectionStatusProvider.registerConnectionStatus(observerID: observerID, fireAfterRegister: false) { [weak self] status in
-            self?.networkStatusChanged(to: status)
+            self?.networkConditionsChanged(internetStatus: status)
         }
     }
 
-    private func networkStatusChanged(to status: ConnectionStatus) {
+    /// Either the internet connection or the user network configuration has changed
+    private func networkConditionsChanged(internetStatus: ConnectionStatus) {
         if connectionStatus == nil {
-            connectionStatus = status
+            connectionStatus = internetStatus
             return
         }
-        connectionStatus = status
-        guard status.isConnected else {
+        connectionStatus = internetStatus
+        guard internetStatus.isConnected else {
             interruptReason.insert(.noConnection)
             return
         }
         interruptReason.remove(.noConnection)
-        switch status {
+        switch internetStatus {
         case .connectedViaCellular:
             guard dependencies.esUserCache.canDownloadViaMobileData(of: params.userID) else {
                 interruptReason.insert(.noWiFi)
@@ -666,7 +680,6 @@ extension BuildSearchIndex {
         let finishStates: [EncryptedSearchIndexState] = [.complete, .partial]
         guard let state = currentState,
               finishStates.contains(state) else { return }
-        delegate?.indexBuildingProgressUpdate(progress: 100)
 
         // TODO cancel background task
         // TODO sendIndexingMetrics
@@ -808,13 +821,15 @@ extension BuildSearchIndex {
             self.searchIndexDB = searchIndexDB
         }
     }
+}
 
-    struct EstimatedProgress {
-        /// Time that human readable, e.g. 3 days 2 hour
-        let estimatedTimeString: String
-        /// Time in second
-        let estimatedTime: Double
-        /// Download progress, 0 ~ 100
-        let currentProgress: Double
-    }
+struct BuildSearchIndexEstimatedProgress {
+    /// Total number of messages
+    let totalMessages: Int
+    /// Number of messages already indexed
+    let indexedMessages: Int
+    /// Time that is human readable, e.g. 3 days 2 hour
+    let estimatedTimeString: String?
+    /// Download progress, 0 ~ 100
+    let currentProgress: Double
 }

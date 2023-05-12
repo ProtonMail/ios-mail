@@ -76,7 +76,7 @@ extension UserInfo {
 //        #else
 //        return false
 //        #endif
-        return false // uncomment code above when the feature is functional
+        return false
     }
 
     static var isSenderImageEnabled: Bool {

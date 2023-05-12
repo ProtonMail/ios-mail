@@ -50,6 +50,16 @@ enum EncryptedSearchIndexState: Equatable {
     /// The index has been built in the background but has not yet finished
     case backgroundStopped
 
+    /// Returns `true` is the index is being created even if it's on pause
+    var isIndexing: Bool {
+        switch self {
+        case .disabled, .complete:
+            return false
+        case .partial, .creatingIndex, .paused, .downloadingNewMessage, .undetermined, .background, .backgroundStopped:
+            return true
+        }
+    }
+
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
         case (.disabled, .disabled):
