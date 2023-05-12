@@ -61,20 +61,6 @@ protocol UnlockManagerDelegate: AnyObject {
 }
 
 // sourcery: mock
-protocol KeyMakerProtocol: AnyObject {
-    func mainKey(by protection: RandomPinProtection?) -> MainKey?
-    func obtainMainKey(
-        with protector: ProtectionStrategy,
-        handler: @escaping (MainKey?) -> Void
-    )
-    func deactivate(_ protector: ProtectionStrategy) -> Bool
-    func lockTheApp()
-    func mainKeyExists() -> Bool
-}
-
-extension Keymaker: KeyMakerProtocol {}
-
-// sourcery: mock
 protocol LAContextProtocol: AnyObject {
     func canEvaluatePolicy(_ policy: LAPolicy, error: NSErrorPointer) -> Bool
 }
@@ -220,7 +206,7 @@ final class UnlockManager: Service {
                     unlockFailed: {
                         self.notificationCenter.post(
                             name: Notification.Name.didSignOut,
-                            object: self
+                            object: nil
                         )
                     }
                 )

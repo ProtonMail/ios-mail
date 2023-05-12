@@ -192,8 +192,10 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
     }
 
+    var coreKeyMaker: KeyMakerProtocol!
+
     func migrateLegacy() {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
             case let locked = Locked<String>(encryptedValue: cypherData),
             let customSignature = try? locked.lagcyUnlock(with: mainKey) else {
@@ -282,13 +284,13 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     }
 
     func getMobileSignature(by uid: String) -> String {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
             let signatureData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignature),
             let encryptedSignature = signatureData[uid] as? Data ,
             case let locked = Locked<String>(encryptedValue: encryptedSignature),
             let customSignature = try? locked.unlock(with: mainKey) else {
             // Get data from legacy
-            if let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+            if let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
                 let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
                 case let locked = Locked<String>(encryptedValue: cypherData),
                 let customSignature = try? locked.unlock(with: mainKey) {
@@ -306,7 +308,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     }
 
     func setMobileSignature(uid: String, signature: String) {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
             let locked = try? Locked<String>(clearValue: signature, with: mainKey) else {
             return
         }
@@ -434,15 +436,15 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 // touch id part
 extension UserCachedStatus: CacheStatusInject {
     var isTouchIDEnabled: Bool {
-        return keymaker.isProtectorActive(BioProtection.self)
+        return coreKeyMaker.isProtectorActive(BioProtection.self)
     }
 
     var isPinCodeEnabled: Bool {
-        return keymaker.isProtectorActive(PinProtection.self)
+        return coreKeyMaker.isProtectorActive(PinProtection.self)
     }
 
     var isAppKeyEnabled: Bool {
-        return keymaker.isProtectorActive(RandomPinProtection.self) == false
+        return coreKeyMaker.isProtectorActive(RandomPinProtection.self) == false
     }
 
     var pinFailedCount: Int {
@@ -476,7 +478,7 @@ extension UserCachedStatus: CacheStatusInject {
         }
         set {
             KeychainWrapper.keychain.set("\(newValue.rawValue)", forKey: Key.autoLockTime)
-            keymaker.resetAutolock()
+            coreKeyMaker.resetAutolock()
         }
     }
 }

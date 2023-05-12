@@ -40,4 +40,8 @@ final class KeychainWrapper: Keychain {
 
         super.init(service: service, accessGroup: group)
     }
+
+    override init(service: String, accessGroup: String) {
+        super.init(service: service, accessGroup: accessGroup)
+    }
 }

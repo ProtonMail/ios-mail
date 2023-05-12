@@ -44,7 +44,7 @@ class AppDelegate: UIResponder {
     var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
         return self.coordinator.currentWindow
     }
-    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices, darkModeCache: userCachedStatus)
+    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(factory: sharedServices)
     private var currentState: UIApplication.State = .active
     private var purgeOldMessages: PurgeOldMessagesUseCase?
 }
@@ -95,6 +95,7 @@ extension AppDelegate: UIApplicationDelegate {
         SystemLogger.log(message: message, category: .appLifeCycle)
 
         let usersManager = UsersManager(doh: BackendConfiguration.shared.doh)
+        userCachedStatus.coreKeyMaker = keymaker
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
@@ -111,6 +112,8 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
         sharedServices.add(EncryptedSearchUserDefaultCache.self, for: EncryptedSearchUserDefaultCache())
+        sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
+        sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
 
 #if DEBUG
         if !ProcessInfo.isRunningUnitTests {
@@ -314,6 +317,9 @@ extension AppDelegate: UIApplicationDelegate {
 
     // MARK: Notification methods
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        if ProcessInfo.isRunningUnitTests {
+            return
+        }
         let pushService: PushNotificationService = sharedServices.get()
         pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }
@@ -386,6 +392,10 @@ extension AppDelegate: UIApplicationDelegate {
 }
 
 extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
+    func currentApplicationState() -> UIApplication.State {
+        UIApplication.shared.applicationState
+    }
+
     func isUserStored() -> Bool {
         let users = sharedServices.get(by: UsersManager.self)
         if users.hasUserName() || users.hasUsers() {
@@ -412,9 +422,11 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     }
 
     func setupCoreData() {
+        sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        sharedServices.add(LastUpdatedStore.self,
-                           for: LastUpdatedStore(contextProvider: sharedServices.get(by: CoreDataService.self)))
+        let lastUpdatedStore = LastUpdatedStore(contextProvider: CoreDataService.shared)
+        sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
+        sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
     }
 
     func loadUserDataAfterUnlock() {

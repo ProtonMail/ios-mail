@@ -28,7 +28,7 @@ class SettingsLockViewModelTests: XCTestCase {
     var sut: SettingsLockViewModel!
     var mockRouter: MockSettingsLockRouterProtocol!
     var biometricStub: BioMetricStatusStub!
-    var mockKeymaker: MockKeymakerProtocol!
+    var mockKeymaker: MockKeyMakerProtocol!
     var mockLockPreferences: MockLockPreferences!
     var mockNotificationCenter: NotificationCenter!
     var isAppKeyEnabled: Bool = false
@@ -39,7 +39,7 @@ class SettingsLockViewModelTests: XCTestCase {
         mockRouter = MockSettingsLockRouterProtocol()
         biometricStub = BioMetricStatusStub()
         biometricStub.biometricTypeStub = .faceID
-        mockKeymaker = MockKeymakerProtocol()
+        mockKeymaker = MockKeyMakerProtocol()
         mockKeymaker.activateStub.bodyIs { _, _, completion in completion(true) }
         mockKeymaker.deactivateStub.bodyIs { _, _ in return true }
         mockLockPreferences = MockLockPreferences()
@@ -50,7 +50,7 @@ class SettingsLockViewModelTests: XCTestCase {
             dependencies: .init(
                 biometricStatus: biometricStub,
                 userPreferences: mockLockPreferences,
-                coreKeymaker: mockKeymaker,
+                coreKeyMaker: mockKeymaker,
                 notificationCenter: mockNotificationCenter,
                 enableAppKeyFeature: isAppKeyFeatureEnabled
             )

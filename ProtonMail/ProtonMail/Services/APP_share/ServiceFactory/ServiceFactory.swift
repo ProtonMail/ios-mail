@@ -26,10 +26,8 @@ import ProtonCore_Services
 
 protocol Service: AnyObject {}
 
-/// temporary here: device level service
 let sharedServices: ServiceFactory = {
     let helper = ServiceFactory()
-    // app cache service
     let appCache = AppCacheService()
     helper.add(AppCacheService.self, for: appCache)
     appCache.restoreCacheWhenAppStart()
@@ -47,11 +45,17 @@ let sharedServices: ServiceFactory = {
 }()
 
 final class ServiceFactory {
-
-    /// this is the a tempary.
     static let `default`: ServiceFactory = sharedServices
 
     private var servicesDictionary: [String: Service] = [:]
+
+    var isEmpty: Bool {
+        servicesDictionary.isEmpty
+    }
+
+    var count: Int {
+        servicesDictionary.count
+    }
 
     func add<T>(_ protocolType: T.Type, for instance: Service, with name: String? = nil) {
         let name = name ?? String(reflecting: protocolType)
@@ -68,4 +72,10 @@ final class ServiceFactory {
         }
         return service
     }
+
+    func removeAll() {
+        servicesDictionary.removeAll()
+    }
 }
+
+extension NotificationCenter: Service {}
