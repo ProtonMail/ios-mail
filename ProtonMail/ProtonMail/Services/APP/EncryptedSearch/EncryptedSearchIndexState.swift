@@ -21,9 +21,9 @@ enum EncryptedSearchIndexState: Equatable {
     static var allCases: [EncryptedSearchIndexState] = [
         .disabled,
         .partial,
-        .downloading,
+        .creatingIndex,
         .paused(nil),
-        .refresh,
+        .downloadingNewMessage,
         .complete,
         .undetermined,
         .background,
@@ -33,13 +33,14 @@ enum EncryptedSearchIndexState: Equatable {
     /// Content search has not yet been enabled, or is actively disabled by the user
     case disabled
     /// Indexing has been stopped because the size of the search index has hit the storage limit
+    // TODO remove this state, introduce new interrupt reason instead 
     case partial
-    /// The search index is currently being build and downloading is in progress
-    case downloading
+    /// Downloading messages older than local db 
+    case creatingIndex
     /// The index building is paused, either actively by the user or due to an interrupt
     case paused(BuildSearchIndex.InterruptReason?)
-    /// The search index has been completed, and new messages are added to the search index
-    case refresh
+    /// Downloading all messages newer than local db
+    case downloadingNewMessage
     /// The search index is completely built and there are no newer messages on the server
     case complete
     /// There has been an error and the current state cannot be determined
@@ -55,11 +56,11 @@ enum EncryptedSearchIndexState: Equatable {
             return true
         case (.partial, .partial):
             return true
-        case (.downloading, .downloading):
+        case (.creatingIndex, .creatingIndex):
             return true
         case let (.paused(reasonL), .paused(reasonR)):
             return reasonL == reasonR
-        case (.refresh, .refresh):
+        case (.downloadingNewMessage, .downloadingNewMessage):
             return true
         case (.complete, .complete):
             return true

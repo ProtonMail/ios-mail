@@ -223,6 +223,7 @@ extension DownloadPageOperationTests {
         let operation = DownloadPageOperation(
             apiService: apiService,
             endTime: endTime,
+            beginTime: nil,
             labelID: labelID,
             pageSize: pageSize,
             userID: userID

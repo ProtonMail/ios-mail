@@ -22,7 +22,8 @@ import ProtonCore_Services
 final class DownloadPageOperation: AsyncOperation {
 
     private let apiService: APIService
-    private let endTime: Int
+    private let endTime: Int?
+    private let beginTime: Int?
     private let labelID: LabelID
     private let pageSize: Int
     private let userID: UserID
@@ -30,13 +31,15 @@ final class DownloadPageOperation: AsyncOperation {
 
     init(
         apiService: APIService,
-        endTime: Int,
+        endTime: Int?,
+        beginTime: Int?,
         labelID: LabelID,
         pageSize: Int,
         userID: UserID
     ) {
         self.apiService = apiService
         self.endTime = endTime
+        self.beginTime = beginTime
         self.labelID = labelID
         self.pageSize = pageSize
         self.userID = userID
@@ -48,6 +51,7 @@ final class DownloadPageOperation: AsyncOperation {
         let request = FetchMessagesByLabelRequest(
             labelID: labelID.rawValue,
             endTime: endTime,
+            beginTime: beginTime,
             isUnread: false,
             pageSize: pageSize,
             priority: .lowestPriority
@@ -68,8 +72,14 @@ final class DownloadPageOperation: AsyncOperation {
     }
 
     private func parseDownloadMessagePage(response dict: JSONDictionary) -> Result<[ESMessage], Error> {
+        var timeInfo: String = "No time information"
+        if let beginTime {
+            timeInfo = "beginTime \(beginTime)"
+        } else if let endTime {
+            timeInfo = "endTime \(endTime)"
+        }
         guard var messagesArray = dict["Messages"] as? [[String: Any]] else {
-            log(message: "Parse message list (endTime \(endTime)) response failed, due to no Messages in dictionary")
+            log(message: "Parse message list (\(timeInfo)) response failed, due to no Messages in dictionary")
             return .failure(NSError.unableToParseResponse(dict))
         }
         for index in messagesArray.indices {
@@ -84,10 +94,10 @@ final class DownloadPageOperation: AsyncOperation {
                 messages[index].isDetailsDownloaded = false
             }
             let esMessages = messages.sorted(by: { $0.time > $1.time })
-            log(message: "Parse message list (endTime \(endTime)) success, messages count \(esMessages.count)")
+            log(message: "Parse message list (\(timeInfo)) success, messages count \(esMessages.count)")
             return .success(esMessages)
         } catch {
-            log(message: "Parse message list (endTime \(endTime)) response json failed \(error)")
+            log(message: "Parse message list (\(timeInfo)) response json failed \(error)")
             return .failure(error)
         }
     }

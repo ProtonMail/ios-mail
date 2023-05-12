@@ -114,7 +114,8 @@ final class BlockedSenderCacheUpdater {
 
     private func registerForConnectivityUpdates() {
         dependencies.internetConnectionStatusProvider.registerConnectionStatus(
-            observerID: observerID
+            observerID: observerID,
+            fireAfterRegister: true
         ) { [weak self] status in
             if status.isConnected {
                 self?.state = .updateInProgress

@@ -178,7 +178,7 @@ extension ESBannerStyle {
         var text: String = ""
         var link: String = ""
         switch state {
-        case .downloading, .refresh:
+        case .creatingIndex, .downloadingNewMessage:
             text = L11n.EncryptedSearch.searchInfo_downloading
             link = L11n.EncryptedSearch.searchInfo_downloading_link
         case .paused(let reason):

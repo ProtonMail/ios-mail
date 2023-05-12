@@ -42,7 +42,7 @@ final class EncryptedSearchService {
 
     func userSignOut(userID: UserID) {
         guard let build = buildSearchIndex[userID] else { return }
-        build.signOut()
+        build.disable()
         buildSearchIndex[userID] = nil
     }
 
@@ -70,9 +70,6 @@ extension EncryptedSearchService {
             ),
             params: .init(userID: user.userID)
         )
-        // TODO workaround, since build index doesn't support resume function
-        // Delete searchIndexDB every time to make sure app won't crash
-        try? searchIndexDB.deleteSearchIndex()
         buildSearchIndex[user.userID] = build
         return build
     }
