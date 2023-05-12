@@ -34,7 +34,7 @@ protocol FeatureFlagsDownloadServiceProtocol {
     typealias FeatureFlagsDownloadCompletion =
         (Result<FeatureFlagsResponse, FeatureFlagsDownloadService.FeatureFlagFetchingError>) -> Void
 
-    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping FeatureFlagsDownloadCompletion)
+    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping (Error?) -> Void)
 }
 
 /// This class is used to download the feature flags from the BE and send the flags to the subscribed objects.
@@ -155,18 +155,13 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         }
     }
 
-    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping FeatureFlagsDownloadCompletion) {
-        let request = UpdateFeatureFlagsRequest(featureFlagName: FeatureFlagKey.appRating.rawValue, value: value)
+    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping (Error?) -> Void) {
+        let request = UpdateFeatureFlagsRequest(featureFlagName: key.rawValue, value: value)
         apiService.perform(
             request: request,
-            response: FeatureFlagsResponse(),
             callCompletionBlockUsing: .immediateExecutor
-        ) { task, response in
-            if let error = task?.error {
-                completion(.failure(.networkError(error)))
-            } else {
-                completion(.success(response))
-            }
+        ) { task, _ in
+            completion(task?.error)
         }
     }
 
