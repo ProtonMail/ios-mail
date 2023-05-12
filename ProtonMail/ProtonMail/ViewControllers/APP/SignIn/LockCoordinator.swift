@@ -23,9 +23,7 @@ final class LockCoordinator: LifetimeTrackable {
         .init(maxCount: 1)
     }
 
-    let unlockManager: UnlockManager
-    let usersManager: UsersManager
-    var startedOrSheduledForAStart: Bool = false
+    var startedOrScheduledForAStart: Bool = false
 
     weak var viewController: VC?
 
@@ -33,10 +31,10 @@ final class LockCoordinator: LifetimeTrackable {
 
     let finishLockFlow: (FlowResult) -> Void
 
-    init(services: ServiceFactory, finishLockFlow: @escaping (FlowResult) -> Void) {
-        self.unlockManager = services.get(by: UnlockManager.self)
-        self.usersManager = services.get(by: UsersManager.self)
+    private let dependencies: Dependencies
 
+    init(dependencies: Dependencies, finishLockFlow: @escaping (FlowResult) -> Void) {
+        self.dependencies = dependencies
         // explanation: boxing stopClosure to avoid referencing self before initialization is finished
         var stopClosure = { }
         self.finishLockFlow = { result in
@@ -57,9 +55,9 @@ final class LockCoordinator: LifetimeTrackable {
 
     func start() {
         Breadcrumbs.shared.add(message: "LockCoordinator.start", to: .randomLogout)
-        startedOrSheduledForAStart = true
+        startedOrScheduledForAStart = true
         self.actualViewController.presentedViewController?.dismiss(animated: true)
-        let unlockFlow = unlockManager.getUnlockFlow()
+        let unlockFlow = dependencies.unlockManager.getUnlockFlow()
         switch unlockFlow {
         case .requirePin:
             goToPin()
@@ -71,7 +69,7 @@ final class LockCoordinator: LifetimeTrackable {
     }
 
     private func stop() {
-        startedOrSheduledForAStart = false
+        startedOrScheduledForAStart = false
     }
 
     private func goToPin() {
@@ -97,7 +95,7 @@ final class LockCoordinator: LifetimeTrackable {
 extension LockCoordinator: PinCodeViewControllerDelegate {
 
     func next() {
-        unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { [weak self] in
+        dependencies.unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { [weak self] in
             self?.finishLockFlow(.mailboxPassword)
         }, unlockFailed: { [weak self] in
             self?.finishLockFlow(.signIn(reason: "unlock failed"))
@@ -115,11 +113,18 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
 
          Note: calling `setupCoreData` before the main key is available might break the migration process, but it doesn't matter in this particular case, because we're going to clean the DB anyway.
          */
-        unlockManager.delegate.setupCoreData()
+        dependencies.unlockManager.delegate.setupCoreData()
 
-        _ = self.usersManager.clean().done { [weak self] in
+        _ = dependencies.usersManager.clean().done { [weak self] in
             completion()
             self?.finishLockFlow(.signIn(reason: "PinCodeViewControllerDelegate.cancel"))
         }
+    }
+}
+
+extension LockCoordinator {
+    struct Dependencies {
+        let unlockManager: UnlockManager
+        let usersManager: UsersManager
     }
 }

@@ -326,8 +326,6 @@ extension UsersManager: UserManagerSave {
 
 /// cache login check
 extension UsersManager {
-    func launchCleanUpIfNeeded() {}
-
     func logout(user: UserManager,
                 shouldShowAccountSwitchAlert: Bool = false,
                 completion: (() -> Void)?) {

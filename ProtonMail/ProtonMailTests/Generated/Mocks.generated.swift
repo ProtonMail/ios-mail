@@ -558,47 +558,6 @@ class MockInternetConnectionStatusProviderProtocol: InternetConnectionStatusProv
 
 }
 
-class MockKeyMakerProtocol: KeyMakerProtocol {
-    @FuncStub(MockKeyMakerProtocol.mainKey, initialReturn: nil) var mainKeyStub
-    func mainKey(by protection: RandomPinProtection?) -> MainKey? {
-        mainKeyStub(protection)
-    }
-
-    @FuncStub(MockKeyMakerProtocol.obtainMainKey) var obtainMainKeyStub
-    func obtainMainKey(with protector: ProtectionStrategy, handler: @escaping (MainKey?) -> Void) {
-        obtainMainKeyStub(protector, handler)
-    }
-
-    @FuncStub(MockKeyMakerProtocol.deactivate, initialReturn: Bool()) var deactivateStub
-    func deactivate(_ protector: ProtectionStrategy) -> Bool {
-        deactivateStub(protector)
-    }
-
-    @FuncStub(MockKeyMakerProtocol.lockTheApp) var lockTheAppStub
-    func lockTheApp() {
-        lockTheAppStub()
-    }
-
-    @FuncStub(MockKeyMakerProtocol.mainKeyExists, initialReturn: Bool()) var mainKeyExistsStub
-    func mainKeyExists() -> Bool {
-        mainKeyExistsStub()
-    }
-
-}
-
-class MockKeymakerProtocol: KeymakerProtocol {
-    @FuncStub(MockKeymakerProtocol.activate) var activateStub
-    func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void) {
-        activateStub(protector, completion)
-    }
-
-    @FuncStub(MockKeymakerProtocol.deactivate, initialReturn: Bool()) var deactivateStub
-    func deactivate(_ protector: ProtectionStrategy) -> Bool {
-        deactivateStub(protector)
-    }
-
-}
-
 class MockLAContextProtocol: LAContextProtocol {
     @FuncStub(MockLAContextProtocol.canEvaluatePolicy, initialReturn: Bool()) var canEvaluatePolicyStub
     func canEvaluatePolicy(_ policy: LAPolicy, error: NSErrorPointer) -> Bool {
@@ -874,6 +833,49 @@ class MockNextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
         set {
             shouldMoveToNextMessageAfterMoveStub(newValue)
         }
+    }
+
+}
+
+class MockPMPersistentQueueProtocol: PMPersistentQueueProtocol {
+    @PropertyStub(\MockPMPersistentQueueProtocol.count, initialGet: Int()) var countStub
+    var count: Int {
+        countStub()
+    }
+
+    @FuncStub(MockPMPersistentQueueProtocol.queueArray, initialReturn: [Any]()) var queueArrayStub
+    func queueArray() -> [Any] {
+        queueArrayStub()
+    }
+
+    @FuncStub(MockPMPersistentQueueProtocol.add, initialReturn: UUID()) var addStub
+    func add(_ uuid: UUID, object: NSCoding) -> UUID {
+        addStub(uuid, object)
+    }
+
+    @FuncStub(MockPMPersistentQueueProtocol.insert, initialReturn: UUID()) var insertStub
+    func insert(uuid: UUID, object: NSCoding, index: Int) -> UUID {
+        insertStub(uuid, object, index)
+    }
+
+    @FuncStub(MockPMPersistentQueueProtocol.update) var updateStub
+    func update(uuid: UUID, object: NSCoding) {
+        updateStub(uuid, object)
+    }
+
+    @FuncStub(MockPMPersistentQueueProtocol.clearAll) var clearAllStub
+    func clearAll() {
+        clearAllStub()
+    }
+
+    @FuncStub(MockPMPersistentQueueProtocol.next, initialReturn: nil) var nextStub
+    func next() -> (elementID: UUID, object: Any)? {
+        nextStub()
+    }
+
+    @FuncStub(MockPMPersistentQueueProtocol.remove, initialReturn: Bool()) var removeStub
+    func remove(_ elementID: UUID) -> Bool {
+        removeStub(elementID)
     }
 
 }

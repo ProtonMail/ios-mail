@@ -22,6 +22,7 @@
 
 import Foundation
 
+// sourcery: mock
 protocol PMPersistentQueueProtocol {
     var count: Int { get }
     func queueArray() -> [Any]

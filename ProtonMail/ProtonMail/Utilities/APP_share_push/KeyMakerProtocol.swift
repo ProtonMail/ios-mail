@@ -15,15 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import ProtonCore_Keymaker
 
-// sourcery: mock
-protocol KeymakerProtocol {
-    func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void)
-
+protocol KeyMakerProtocol: AnyObject {
+    func mainKey(by protection: RandomPinProtection?) -> MainKey?
+    func obtainMainKey(
+        with protector: ProtectionStrategy,
+        handler: @escaping (MainKey?) -> Void
+    )
     @discardableResult
     func deactivate(_ protector: ProtectionStrategy) -> Bool
+    func lockTheApp()
+    func mainKeyExists() -> Bool
+    func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type) -> Bool
+    func resetAutolock()
+    func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void)
 }
 
-extension Keymaker: KeymakerProtocol {}
+extension Keymaker: KeyMakerProtocol {}

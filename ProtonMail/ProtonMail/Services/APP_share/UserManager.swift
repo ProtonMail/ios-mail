@@ -237,7 +237,13 @@ class UserManager: Service {
     }()
 
     lazy var cacheService: CacheService = { [unowned self] in
-        let service = CacheService(userID: self.userID)
+        let service = CacheService(
+            userID: self.userID,
+            dependencies: .init(
+                coreDataService: coreDataService,
+                lastUpdatedStore: lastUpdatedStore
+            )
+        )
         return service
     }()
 
