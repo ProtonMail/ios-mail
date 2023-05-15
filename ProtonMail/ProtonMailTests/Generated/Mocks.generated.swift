@@ -6,6 +6,7 @@ import ProtonCore_Crypto
 import ProtonCore_Environment
 import ProtonCore_Keymaker
 import ProtonCore_PaymentsUI
+import ProtonCore_Services
 import ProtonCore_TestingToolkit
 
 import class PromiseKit.Promise
@@ -959,6 +960,19 @@ class MockPaymentsUIProtocol: PaymentsUIProtocol {
 
 }
 
+class MockQueueHandlerRegister: QueueHandlerRegister {
+    @FuncStub(MockQueueHandlerRegister.registerHandler) var registerHandlerStub
+    func registerHandler(_ handler: QueueHandler) {
+        registerHandlerStub(handler)
+    }
+
+    @FuncStub(MockQueueHandlerRegister.unregisterHandler) var unregisterHandlerStub
+    func unregisterHandler(for userID: UserID) {
+        unregisterHandlerStub(userID)
+    }
+
+}
+
 class MockQueueManagerProtocol: QueueManagerProtocol {
     @FuncStub(MockQueueManagerProtocol.addTask) var addTaskStub
     func addTask(_ task: QueueManager.Task, autoExecute: Bool, completion: ((Bool) -> Void)?) {
@@ -1188,6 +1202,14 @@ class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
     @FuncStub(MockUnsubscribeActionHandler.markAsUnsubscribed) var markAsUnsubscribedStub
     func markAsUnsubscribed(messageId: MessageID, finish: @escaping () -> Void) {
         markAsUnsubscribedStub(messageId, finish)
+    }
+
+}
+
+class MockUpdateSwipeActionDuringLoginUseCase: UpdateSwipeActionDuringLoginUseCase {
+    @FuncStub(MockUpdateSwipeActionDuringLoginUseCase.execute) var executeStub
+    func execute(activeUserInfo: UserInfo, newUserInfo: UserInfo, newUserApiService: APIService, completion: (() -> Void)?) {
+        executeStub(activeUserInfo, newUserInfo, newUserApiService, completion)
     }
 
 }

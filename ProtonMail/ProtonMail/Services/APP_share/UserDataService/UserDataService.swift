@@ -89,15 +89,12 @@ class UserDataService: Service {
     }
 
     func fetchSettings(
-        userInfo: UserInfo,
-        auth: AuthCredential
+        userInfo: UserInfo
     ) -> Promise<(UserInfo, MailSettings)> {
         return async {
 
             let userSettingsApi = GetUserSettings()
-            userSettingsApi.auth = auth
             let mailSettingsApi = GetMailSettings()
-            mailSettingsApi.auth = auth
 
             let userSettingsRes: SettingsResponse = try AwaitKit.await(self.apiService.run(route: userSettingsApi))
             let mailSettingsRes: MailSettingsResponse = try AwaitKit.await(self.apiService.run(route: mailSettingsApi))

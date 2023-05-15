@@ -30,6 +30,7 @@ protocol QueueHandler {
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void)
 }
 
+// sourcery: mock
 protocol QueueHandlerRegister {
     func registerHandler(_ handler: QueueHandler)
     func unregisterHandler(for userID: UserID)

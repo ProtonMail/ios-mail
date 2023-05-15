@@ -4,6 +4,7 @@ import ProtonCore_Crypto
 import ProtonCore_Environment
 import ProtonCore_Keymaker
 import ProtonCore_PaymentsUI
+import ProtonCore_Services
 import ProtonCore_TestingToolkit
 
 import class PromiseKit.Promise
