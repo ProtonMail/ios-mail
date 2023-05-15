@@ -456,7 +456,7 @@ extension MessageInfoProvider {
                 let groupName = recipient.contactTitle
                 let group = groupContacts.first(where: { $0.contactTitle == groupName })
                 let total = group?.contactCount ?? 0
-                let count = recipient.contactCount
+                let count = recipient.getSelectedEmailAddresses().count
                 let name = "\(groupName) (\(count)/\(total))"
                 return name
             }

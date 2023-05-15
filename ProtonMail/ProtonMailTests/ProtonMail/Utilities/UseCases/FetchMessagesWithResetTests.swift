@@ -162,7 +162,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalled)
     }
 
-    func testExecute_whenFetchMessagesFails() {
+    func testExecute_whenFetchMessagesFails_andRefreshContacts() {
         let expectation = expectation(description: "callback is called")
 
         mockFetchMessages.result = .failure(NSError.badResponse())
@@ -170,7 +170,36 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let params = FetchMessagesWithReset.Params(
             endTime: 0,
             fetchOnlyUnreadMessages: Bool.random(),
-            refetchContacts: Bool.random(),
+            refetchContacts: true,
+            removeAllDrafts: Bool.random()
+        )
+        sut.execute(params: params) { _ in
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: timeout)
+
+        XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertTrue(mockFetchMessages.executeWasCalled)
+
+        XCTAssertFalse(mockLocalMessagesService.wasCleanMessageCalled)
+
+        XCTAssertTrue(mockContactProvider.wasCleanUpCalled)
+        XCTAssertTrue(mockContactProvider.isFetchContactsCalled)
+
+        XCTAssertEqual(mockLabelProvider.fetchV4LabelsStub.callCounter, 1)
+
+        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalled)
+    }
+
+    func testExecute_whenFetchMessagesFails_andDoNotRefreshContacts() {
+        let expectation = expectation(description: "callback is called")
+
+        mockFetchMessages.result = .failure(NSError.badResponse())
+
+        let params = FetchMessagesWithReset.Params(
+            endTime: 0,
+            fetchOnlyUnreadMessages: Bool.random(),
+            refetchContacts: false,
             removeAllDrafts: Bool.random()
         )
         sut.execute(params: params) { _ in
