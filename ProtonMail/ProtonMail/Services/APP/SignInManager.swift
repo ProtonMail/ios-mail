@@ -81,7 +81,6 @@ class SignInManager: Service {
         self.usersManager.firstUser?.appRatingService.preconditionEventDidOccur(.userSignIn)
 
         self.usersManager.loggedIn()
-        self.usersManager.active(by: auth.sessionID)
         self.contactCacheStatus.contactsCached = 0
 
         return .success
@@ -101,37 +100,35 @@ class SignInManager: Service {
             return
         }
 
+        usersManager.active(by: auth.sessionID)
+
         showSkeleton()
 
         if UserInfo.isBlockSenderEnabled {
             user.blockedSenderCacheUpdater.requestUpdate()
         }
 
+        guard user.userInfo.delinquentParsed.isAvailable else {
+            queueHandlerRegister.unregisterHandler(for: user.userID)
+            usersManager.logout(user: user, shouldShowAccountSwitchAlert: false) {
+                onError(NSError(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
+            }
+            return
+        }
+
         let userDataService = user.userService
         userDataService.fetchSettings(
-            userInfo: userInfo,
-            auth: auth
+            userInfo: userInfo
         ).done(on: .main) { [weak self] result in
             guard let self = self else { return }
-            let userInfo = result.0
-            let mailSettings = result.1
+            user.mailSettings = result.1
+            self.usersManager.update(userInfo: result.0, for: auth.sessionID)
+
             self.updateSwipeAction.execute(
                 activeUserInfo: activeUser.userInfo,
                 newUserInfo: user.userInfo,
                 newUserApiService: user.apiService
-            ) { [weak self] in
-                guard let self = self else { return }
-                user.mailSettings = mailSettings
-                self.usersManager.update(userInfo: userInfo, for: auth.sessionID)
-
-                guard userInfo.delinquentParsed.isAvailable else {
-                    self.queueHandlerRegister.unregisterHandler(for: user.userID)
-                    self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false) {
-                        onError(NSError(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
-                    }
-                    return
-                }
-
+            ) {
                 tryUnlock()
             }
         }.catch(on: .main) { [weak self] error in
