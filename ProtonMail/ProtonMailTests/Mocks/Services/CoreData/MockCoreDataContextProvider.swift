@@ -116,6 +116,14 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         }
     }
 
+    func performAndWaitOnRootSavingContext<T>(block: (_ context: NSManagedObjectContext) throws -> T) throws -> T {
+        let context = rootSavingContext
+
+        return try context.performAndWait {
+            try block(context)
+        }
+    }
+
     func read<T>(block: (NSManagedObjectContext) -> T) -> T {
         rethrowingRead(block: block)
     }

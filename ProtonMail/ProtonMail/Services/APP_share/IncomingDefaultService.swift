@@ -184,24 +184,14 @@ extension IncomingDefaultService {
 // MARK: internals
 
 extension IncomingDefaultService {
-    private func writeToDatabase(block: @escaping (NSManagedObjectContext) throws -> Void) throws {
-        var result: Result<Void, Error>!
+    private func writeToDatabase(block: (NSManagedObjectContext) throws -> Void) throws {
+        try dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            try block(context)
 
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            do {
-                try block(context)
-
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-
-                result = .success(())
-            } catch {
-                result = .failure(error)
+            if let error = context.saveUpstreamIfNeeded() {
+                throw error
             }
         }
-
-        try result.get()
     }
 
     private func fetchAndStoreRecursively(

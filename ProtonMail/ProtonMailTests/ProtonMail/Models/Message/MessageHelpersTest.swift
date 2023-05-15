@@ -63,8 +63,8 @@ class MessageHelpersTest: XCTestCase {
     }
 
     private func prepareMessage(with data: [String: Any]) -> MessageEntity {
-        coreDataService.enqueue { context in
-            guard let fakeMsg = try? GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: data, in: context) as? Message else {
+        try! coreDataService.performAndWaitOnRootSavingContext { context in
+            guard let fakeMsg = try GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: data, in: context) as? Message else {
                 fatalError("The fake data initialize failed")
             }
             return MessageEntity(fakeMsg)
@@ -72,8 +72,8 @@ class MessageHelpersTest: XCTestCase {
     }
 
     private func prepareEmail(with data: [String: Any]) -> EmailEntity {
-        coreDataService.enqueue { context in
-            guard let fakeEmail = try? GRTJSONSerialization.object(withEntityName: "Email", fromJSONDictionary: data, in: context) as? Email else {
+        try! coreDataService.performAndWaitOnRootSavingContext { context in
+            guard let fakeEmail = try GRTJSONSerialization.object(withEntityName: "Email", fromJSONDictionary: data, in: context) as? Email else {
                 fatalError("The fake data initialize failed")
             }
             return EmailEntity(email: fakeEmail)

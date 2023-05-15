@@ -60,7 +60,7 @@ final class PurgeOldMessagesTests: XCTestCase {
         let messageID = MessageID(UUID().uuidString)
         parsedObject["ID"] = messageID.rawValue
 
-        try coreDataService.enqueue { context in
+        try coreDataService.performAndWaitOnRootSavingContext { context in
             let testMessage = try GRTJSONSerialization.object(withEntityName: "Message",
                                                               fromJSONDictionary: parsedObject, in: context) as? Message
             testMessage?.messageStatus = NSNumber(value: 0)
