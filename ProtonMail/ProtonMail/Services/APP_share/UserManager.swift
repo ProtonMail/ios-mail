@@ -227,7 +227,7 @@ class UserManager: Service {
     }()
 
     lazy var userService: UserDataService = { [unowned self] in
-        let service = UserDataService(check: false, api: self.apiService)
+        let service = UserDataService(api: self.apiService)
         return service
     }()
 

@@ -38,9 +38,7 @@ class UserDataService: Service {
 
     struct CoderKey {// Conflict with Key object
         static let roleSwitchCache           = "roleSwitchCache"
-        static let defaultSignatureStatus    = "defaultSignatureStatus"
-
-        static let firstRunKey = "FirstRunKey"
+        static let defaultSignatureStatus    = "defaultSignatureStatus" 
     }
 
     var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: CoderKey.roleSwitchCache) {
@@ -58,11 +56,8 @@ class UserDataService: Service {
     }
 
     // MARK: - methods
-    init(check: Bool = true, api: APIService) {  // Add interface for data agent
+    init(api: APIService) {  // Add interface for data agent
         self.apiService = api
-        if check {
-            cleanUpIfFirstRun()
-        }
     }
 
     func fetchUserInfo(auth: AuthCredential? = nil) -> Promise<(UserInfo?, MailSettings)> {
@@ -685,17 +680,6 @@ class UserDataService: Service {
         self.apiService.perform(request: signatureSetting, response: VoidResponse()) { _, response in
             completion(response.error?.toNSError)
         }
-    }
-
-    // MARK: - Private methods
-
-    func cleanUpIfFirstRun() {
-        #if !APP_EXTENSION
-        if AppCache.isFirstRun() {
-            SharedCacheBase.getDefault().set(Date(), forKey: CoderKey.firstRunKey)
-            SharedCacheBase.getDefault().synchronize()
-        }
-        #endif
     }
 
     func fetchUserAddresses(completion: ((Swift.Result<AddressesResponse, Error>) -> Void)?) {
