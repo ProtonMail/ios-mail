@@ -110,6 +110,7 @@ class SkeletonViewController: ProtonMailTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         cell.showAnimatedGradientSkeleton()
         cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        cell.backgroundColor = ColorProvider.BackgroundNorm
         return cell
     }
 

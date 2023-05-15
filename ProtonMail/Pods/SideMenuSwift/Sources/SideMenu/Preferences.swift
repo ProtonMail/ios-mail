@@ -13,65 +13,65 @@ extension SideMenuController {
     public struct Preferences {
 
         /// The animation that will apply to the status bar when the menu is revealed/hidden.
-        ///
-        /// - none: Nothing will happen to the status bar.
-        /// - slide: The status bar will slide up when revealed and slide down when hidden.
-        /// - fade: The status bar will fade out when revealed and show up when hidden.
-        /// - hideOnMenu: The status bar on the side menu will be hidden (without animation),
-        ///               while the one the on content view will still show.
-        @available(iOS, deprecated: 13.0, message: "Status bar animation not longer work after iOS 13")
+        @available(iOS, deprecated: 13.0, message: "Status bar animation no longer work after iOS 13")
         public enum StatusBarBehavior {
+            /// Nothing will happen to the status bar.
             case none
+            /// The status bar will slide up when revealed and slide down when hidden.
             case slide
+            /// The status bar will fade out when revealed and show up when hidden.
             case fade
+            /// The status bar on the side menu will be hidden (without animation),
+            ///               while the one the on content view will still show.
             case hideOnMenu
         }
 
         /// The direction where menu will show up from.
-        ///
-        /// - left: Side menu will reveal from the left side.
-        /// - right: Side menu will reveal from the right side.
         public enum MenuDirection {
+            /// Side menu will reveal from the left side.
             case left
+            /// Side menu will reveal from the right side.
             case right
         }
 
         /// The menu view position compared to the content view.
-        ///
-        /// - above: Menu view is placed above the content view.
-        /// - under: Menu view is placed below the content view.
-        /// - sideBySide: Menu view is placed in the same layer with the content view.
         public enum MenuPosition {
+            /// Menu view is placed above the content view.
             case above
+            /// Menu view is placed below the content view.
             case under
+            /// Menu view is placed in the same layer with the content view.
             case sideBySide
         }
 
         public struct Animation {
-            // The animation interval of revealing side menu. Default is 0.4.
+            /// The animation interval of revealing side menu. Default is 0.4.
             public var revealDuration: TimeInterval = 0.4
 
-            // The animation interval of hiding side menu. Default is 0.4.
+            /// The animation interval of hiding side menu. Default is 0.4.
             public var hideDuration: TimeInterval = 0.4
 
-            // The animation option of reveal/hide. Default is `.curveEaseInOut`.
+            /// The animation option of reveal/hide. Default is `.curveEaseInOut`.
             public var options: UIView.AnimationOptions = .curveEaseInOut
 
-            // The amping ratio option used in the revealing and hiding animation of the menu. The default is 1.
+            /// The amping ratio option used in the revealing and hiding animation of the menu. The default is 1.
             public var dampingRatio: CGFloat = 1
 
-            // The `initialSpringVelocity` option used in the revealing and hiding animation of the menu. The default is 1.
+            /// The ``initialSpringVelocity`` option used in the revealing and hiding animation of the menu. The default is 1.
             public var initialSpringVelocity: CGFloat = 1
 
-            // Whether a shadow effect should be added on content view when revealing the menu. The default is true.
-            // If the position is `.under`, the shadow effect will not be added even if this value is set to `true`.
+            /// Whether a shadow effect should be added on content view when revealing the menu. The default is true.
+            /// If the position is `.under`, the shadow effect will not be added even if this value is set to `true`.
             public var shouldAddShadowWhenRevealing = true
 
-            // The shadow's alpha when showing on the content view. Default is 0.2.
+            /// The shadow's alpha when showing on the content view. Default is 0.2.
             public var shadowAlpha: CGFloat = 0.2
 
-            // The shadow's color when showing on the content view. Default is black.
+            /// The shadow's color when showing on the content view. Default is black.
             public var shadowColor: UIColor = .black
+
+            /// Whether we should add a blurr effect on shadow when revealing
+            public var shouldAddBlurWhenRevealing = false
         }
 
         public struct Configuration {
@@ -83,9 +83,9 @@ extension SideMenuController {
             /// Note that you should only modify this property before the side menu controller is initialized.
             public var position: MenuPosition = .above
 
-            // Whether the direction of side menu should be reversed when the user interaction layout direction is RTL.
-            // More specific, when the app is using a right to left (RTL) language, the direction of side menu will be
-            // reversed
+            /// Whether the direction of side menu should be reversed when the user interaction layout direction is RTL.
+            /// More specific, when the app is using a right to left (RTL) language, the direction of side menu will be
+            /// reversed
             public var shouldRespectLanguageDirection = true
 
             /// The direction of side menu. Default is `.left`.
@@ -93,7 +93,7 @@ extension SideMenuController {
             public var direction: MenuDirection = .left
 
             /// The status bar behavior when menu revealed / hidden. Default is `.none`.
-            @available(iOS, deprecated: 13.0, message: "Status bar animation not longer work after iOS 13")
+            @available(iOS, deprecated: 13.0, message: "Status bar animation no longer work after iOS 13")
             public var statusBarBehavior: StatusBarBehavior = .none
 
             /// Whether the pan gesture should be enabled. The default is true.
@@ -116,6 +116,12 @@ extension SideMenuController {
             
             /// The side menu shouldAutorotate. Default is `true`.
             public var shouldAutorotate: Bool = true
+            
+            /// The sensitivity of the pan gesture recognizer revealing menu view controller.
+            public var panGestureSensitivity: CGFloat = 0.25
+
+            /// If the side menu should keep open on rotation. Default is false.
+            public var shouldKeepMenuOpen: Bool = false
         }
 
         /// The basic configuration of side menu

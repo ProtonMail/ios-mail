@@ -79,6 +79,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         SideMenuController.preferences.basic.position = .sideBySide
         SideMenuController.preferences.basic.enablePanGesture = true
         SideMenuController.preferences.basic.enableRubberEffectWhenPanning = false
+        SideMenuController.preferences.basic.shouldKeepMenuOpen = true
         SideMenuController.preferences.animation.shouldAddShadowWhenRevealing = true
         SideMenuController.preferences.animation.shadowColor = .black
         SideMenuController.preferences.animation.shadowAlpha = 0.52

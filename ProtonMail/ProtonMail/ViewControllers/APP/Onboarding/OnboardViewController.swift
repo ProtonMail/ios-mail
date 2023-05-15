@@ -23,7 +23,10 @@
 import UIKit
 
 final class OnboardViewController: UIViewController, UIScrollViewDelegate {
-    private let pageWidth: CGFloat = UIScreen.main.bounds.size.width
+    private var pageWidth: CGFloat {
+        UIScreen.main.bounds.size.width
+    }
+    private var viewDidRotate = false
     private(set) lazy var customView = OnboardView()
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -53,6 +56,17 @@ final class OnboardViewController: UIViewController, UIScrollViewDelegate {
         customView.scrollView.delegate = self
         setupView()
         addOnboardViews()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        viewDidRotate = true
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard viewDidRotate else { return }
+        viewDidRotate = false
+        scrollTo(page: customView.pageControl.currentPage)
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -85,12 +99,13 @@ final class OnboardViewController: UIViewController, UIScrollViewDelegate {
         guard currentPage != onboardingList.endIndex - 1 else {
             return
         }
+        scrollTo(page: currentPage + 1)
+    }
 
+    private func scrollTo(page: Int) {
         UIView.animate(withDuration: 0.3) {
-            let page = currentPage + 1
             self.customView.scrollView
-                .contentOffset = CGPoint(x: Int(self.pageWidth) * page,
-                                         y: 0)
+                .contentOffset = CGPoint(x: Int(self.pageWidth) * page, y: 0)
         }
     }
 
@@ -106,7 +121,7 @@ final class OnboardViewController: UIViewController, UIScrollViewDelegate {
                 view.topAnchor.constraint(equalTo: customView.scrollView.contentLayoutGuide.topAnchor),
                 view.bottomAnchor.constraint(equalTo: customView.scrollView.contentLayoutGuide.bottomAnchor),
                 view.leadingAnchor.constraint(equalTo: leadingTarget),
-                view.widthAnchor.constraint(equalToConstant: pageWidth),
+                view.widthAnchor.constraint(equalTo: customView.scrollView.widthAnchor),
                 view.heightAnchor.constraint(equalTo: customView.scrollView.heightAnchor)
             ]
             if index == (onboardingList.endIndex - 1) {

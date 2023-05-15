@@ -223,6 +223,7 @@ extension LabelManagerViewController {
         }
         cell.selectionStyle = .none
         cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        cell.backgroundColor = ColorProvider.BackgroundNorm
         if tableView.isEditing {
             cell.switchView.isEnabled = false
             cell.switchView.onTintColor = ColorProvider.IconDisabled
@@ -245,6 +246,7 @@ extension LabelManagerViewController {
                                 textColor: ColorProvider.TextHint)
         instance.imageView?.image = IconProvider.plus
         instance.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        instance.backgroundColor = ColorProvider.BackgroundNorm
 
         if tableView.isEditing {
             instance.imageView?.tintColor = ColorProvider.IconDisabled

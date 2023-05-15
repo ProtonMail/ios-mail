@@ -23,10 +23,14 @@
 import ProtonCore_UIFoundations
 
 class NewOnboardView: UIView {
+    let scrollView = SubviewFactory.scrollView
+    let container = SubviewFactory.container
+    let greyView = SubviewFactory.greyView
     let upperSpace = SubviewFactory.upperSpace
     let titleLabel = SubviewFactory.titleLabel
     let contentLabel = SubviewFactory.contentLabel
     let imageView = SubviewFactory.imageView
+    private let maximumWidth: CGFloat = 375
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -39,42 +43,23 @@ class NewOnboardView: UIView {
     }
 
     private func addSubviews() {
-        addSubview(upperSpace)
+        addSubview(greyView)
+        addSubview(scrollView)
+        scrollView.addSubview(container)
+        container.addSubview(upperSpace)
         upperSpace.addSubview(imageView)
-        addSubview(titleLabel)
-        addSubview(contentLabel)
+        container.addSubview(titleLabel)
+        container.addSubview(contentLabel)
     }
 
     private func setupViews() {
-        let ratio: CGFloat = 398.0 / 656.0
-        [
-            upperSpace.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            upperSpace.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
-            upperSpace.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
-            upperSpace.heightAnchor.constraint(equalTo: heightAnchor, multiplier: ratio)
-        ].activate()
-
-        [
-            imageView.topAnchor.constraint(equalTo: upperSpace.topAnchor, constant: 40.0),
-            imageView.bottomAnchor.constraint(equalTo: upperSpace.bottomAnchor, constant: -32.0),
-            imageView.leadingAnchor.constraint(equalTo: upperSpace.leadingAnchor, constant: 16.0),
-            imageView.trailingAnchor.constraint(equalTo: upperSpace.trailingAnchor, constant: -16.0)
-        ].activate()
-
-        [
-            titleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 32.0),
-            titleLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -32.0),
-            titleLabel.heightAnchor.constraint(equalToConstant: 28),
-            titleLabel.topAnchor.constraint(equalTo: upperSpace.bottomAnchor, constant: 64)
-        ].activate()
-
-        [
-            contentLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            contentLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 32.0),
-            contentLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -32.0),
-            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12)
-        ].activate()
+        setUpGreyViewConstraints()
+        setUpScrollViewConstraints()
+        setUpContainerConstraints()
+        setUpUpperSpaceConstraints()
+        setUpImageViewConstraints()
+        setUpTitleLabelConstraints()
+        setUpContentLabelConstraints()
     }
 
     func config(_ data: Onboarding) {
@@ -86,11 +71,102 @@ class NewOnboardView: UIView {
         defaultAttr[.font] = UIFont.systemFont(ofSize: 17)
         contentLabel.attributedText = data.description.apply(style: defaultAttr.alignment(.center))
     }
+
+    private func setUpGreyViewConstraints() {
+        [
+            greyView.topAnchor.constraint(equalTo: topAnchor),
+            greyView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            greyView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            greyView.heightAnchor.constraint(equalToConstant: 50)
+        ].activate()
+    }
+
+    private func setUpScrollViewConstraints() {
+        [
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
+        ].activate()
+    }
+
+    private func setUpContainerConstraints() {
+        [
+            container.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            container.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            container.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            container.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            container.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            container.heightAnchor.constraint(equalTo: scrollView.heightAnchor).setPriority(as: .init(999))
+        ].activate()
+    }
+
+    private func setUpUpperSpaceConstraints() {
+        let ratio: CGFloat = 398.0 / 656.0
+        [
+            upperSpace.topAnchor.constraint(equalTo: container.topAnchor),
+            upperSpace.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            upperSpace.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            upperSpace.heightAnchor.constraint(equalTo: heightAnchor, multiplier: ratio)
+        ].activate()
+    }
+
+    private func setUpImageViewConstraints() {
+        [
+            imageView.topAnchor.constraint(equalTo: upperSpace.topAnchor, constant: 40.0),
+            imageView.bottomAnchor.constraint(equalTo: upperSpace.bottomAnchor, constant: -32.0),
+            imageView.leadingAnchor.constraint(equalTo: upperSpace.leadingAnchor, constant: 16.0),
+            imageView.trailingAnchor.constraint(equalTo: upperSpace.trailingAnchor, constant: -16.0)
+        ].activate()
+    }
+
+    private func setUpTitleLabelConstraints() {
+        [
+            titleLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            titleLabel.leadingAnchor.constraint(greaterThanOrEqualTo: container.leadingAnchor, constant: 32.0),
+            titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -32.0),
+            titleLabel.widthAnchor.constraint(lessThanOrEqualToConstant: maximumWidth),
+            titleLabel.heightAnchor.constraint(equalToConstant: 28),
+            titleLabel.topAnchor.constraint(equalTo: upperSpace.bottomAnchor, constant: 16)
+        ].activate()
+    }
+
+    private func setUpContentLabelConstraints() {
+        [
+            contentLabel.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            contentLabel.leadingAnchor.constraint(greaterThanOrEqualTo: container.leadingAnchor, constant: 32.0),
+            contentLabel.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -32.0),
+            contentLabel.widthAnchor.constraint(lessThanOrEqualToConstant: maximumWidth),
+            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
+            contentLabel.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -8)
+        ].activate()
+    }
 }
 
 private enum SubviewFactory {
+    static var scrollView: UIScrollView {
+        let scrollView = UIScrollView(frame: .zero)
+        scrollView.isPagingEnabled = true
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.contentInsetAdjustmentBehavior = .never
+        return scrollView
+    }
+
+    static var container: UIView {
+        let container = UIView(frame: .zero)
+        container.backgroundColor = .clear
+        return container
+    }
+
+    static var greyView: UIView {
+        let view = UIView()
+        view.backgroundColor = UIColor.ProtonMail.onboardingImageBackgroundColor
+        return view
+    }
+
     static var upperSpace: UIView {
         let view = UIView()
+        view.backgroundColor = UIColor.ProtonMail.onboardingImageBackgroundColor
         return view
     }
 
@@ -99,6 +175,7 @@ private enum SubviewFactory {
         label.numberOfLines = 1
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
         return label
     }
 
@@ -107,6 +184,7 @@ private enum SubviewFactory {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.adjustsFontSizeToFitWidth = true
+        label.setContentCompressionResistancePriority(.required, for: .vertical)
         return label
     }
 

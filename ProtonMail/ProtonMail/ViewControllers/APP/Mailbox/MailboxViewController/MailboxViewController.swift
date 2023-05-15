@@ -645,7 +645,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                     if self?.refreshControl.isRefreshing ?? false {
                         self?.refreshControl.endRefreshing()
                     }
-                    self?.tableView.contentOffset = .zero
+                    self?.tableView.isScrollEnabled = false
+                    self?.tableView.setContentOffset(.zero, animated: false)
+                    self?.tableView.isScrollEnabled = true
                 }
             }
         self.viewModel.isCurrentUserSelectedUnreadFilterInInbox = isSelected

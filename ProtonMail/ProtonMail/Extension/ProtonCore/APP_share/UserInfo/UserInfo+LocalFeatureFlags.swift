@@ -94,4 +94,12 @@ extension UserInfo {
         return false
         #endif
     }
+
+    static var isRotateScreenEnabled: Bool {
+#if DEBUG_ENTERPRISE
+        true
+#else
+        false
+#endif
+    }
 }
