@@ -509,8 +509,7 @@ extension SearchViewController {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: sharedServices.get(by: CoreDataService.self),
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus
+            userIntroductionProgressProvider: userCachedStatus
         )
         navigationController.present(composer, animated: true)
     }
@@ -523,8 +522,7 @@ extension SearchViewController {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: sharedServices.get(by: CoreDataService.self),
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus
+            userIntroductionProgressProvider: userCachedStatus
         )
         navigationController.present(composer, animated: true)
     }

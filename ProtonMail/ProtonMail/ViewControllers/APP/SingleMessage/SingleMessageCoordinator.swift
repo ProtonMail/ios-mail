@@ -256,8 +256,7 @@ extension SingleMessageCoordinator {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: coreDataService,
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus
+            userIntroductionProgressProvider: userCachedStatus
         )
         viewController?.present(composer, animated: true)
     }

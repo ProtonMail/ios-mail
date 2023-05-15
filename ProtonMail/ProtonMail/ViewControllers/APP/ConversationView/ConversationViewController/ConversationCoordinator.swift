@@ -222,8 +222,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: contextProvider,
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus)
+            userIntroductionProgressProvider: userCachedStatus)
         viewController?.present(composer, animated: true)
     }
 

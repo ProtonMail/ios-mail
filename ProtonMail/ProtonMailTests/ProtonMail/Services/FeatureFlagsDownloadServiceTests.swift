@@ -24,7 +24,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     var apiServiceMock: APIServiceMock!
     var appRatingStatusProvider: MockAppRatingStatusProvider!
     var featureFlagCache: MockFeatureFlagCache!
-    var scheduleSendEnableStatusMock: MockScheduleSendEnableStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
     var referralPromptProvider: MockReferralPromptProvider!
     var sut: FeatureFlagsDownloadService!
@@ -35,7 +34,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         apiServiceMock = APIServiceMock()
         appRatingStatusProvider = .init()
         featureFlagCache = .init()
-        scheduleSendEnableStatusMock = .init()
         userIntroductionProgressProviderMock = .init()
         referralPromptProvider = .init()
         sut = FeatureFlagsDownloadService(
@@ -44,7 +42,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
             apiService: apiServiceMock,
             sessionID: "",
             appRatingStatusProvider: appRatingStatusProvider,
-            scheduleSendEnableStatusProvider: scheduleSendEnableStatusMock,
             userIntroductionProgressProvider: userIntroductionProgressProviderMock,
             referralPromptProvider: referralPromptProvider
         )
@@ -55,7 +52,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         apiServiceMock = nil
         appRatingStatusProvider = nil
         featureFlagCache = nil
-        scheduleSendEnableStatusMock = nil
         userIntroductionProgressProviderMock = nil
         sut = nil
     }
@@ -90,10 +86,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         }
         waitForExpectations(timeout: 2, handler: nil)
         XCTAssertNotNil(sut.lastFetchingTime)
-        XCTAssertTrue(scheduleSendEnableStatusMock.callSetScheduleSendStatus.wasCalledExactlyOnce)
-        let argument = try XCTUnwrap(scheduleSendEnableStatusMock.callSetScheduleSendStatus.lastArguments)
-        XCTAssertTrue(argument.a1)
-        XCTAssertEqual(argument.a2, userID)
 
         XCTAssertTrue(featureFlagCache.storeFeatureFlagsStub.wasCalledExactlyOnce)
         let argument2 = try XCTUnwrap(featureFlagCache.storeFeatureFlagsStub.lastArguments)
@@ -122,8 +114,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     }
 
     func testWhenRemoteFlagIsChangedFromOffToOn_spotlightIsResetForCurrentUser() throws {
-        userIntroductionProgressProviderMock.markSpotlight(for: .scheduledSend, asSeen: false, byUserWith: userID)
-
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/core/v4/features") {
                 let response = FeatureFlagTestData.data

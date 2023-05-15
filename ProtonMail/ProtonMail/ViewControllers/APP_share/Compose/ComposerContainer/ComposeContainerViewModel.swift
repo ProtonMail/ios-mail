@@ -30,6 +30,8 @@ protocol ComposeContainerUIProtocol: AnyObject {
 class ComposeContainerViewModel: TableContainerViewModel {
     var childViewModel: ComposeViewModel
 
+    private let dependencies: Dependencies
+
     // for FileImporter
     lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
     lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
@@ -39,7 +41,6 @@ class ComposeContainerViewModel: TableContainerViewModel {
     let coreDataContextProvider: CoreDataContextProviderProtocol
 
     private var userIntroductionProgressProvider: UserIntroductionProgressProvider
-    private let scheduleSendStatusProvider: ScheduleSendEnableStatusProvider
 
     var isScheduleSendIntroViewShown: Bool {
         !userIntroductionProgressProvider.shouldShowSpotlight(for: .scheduledSend, toUserWith: user.userID)
@@ -48,21 +49,22 @@ class ComposeContainerViewModel: TableContainerViewModel {
     private let router: ComposerRouter
     var isSendButtonTapped: Bool = false
     var currentAttachmentSize = 0
+
     var isScheduleSendEnable: Bool {
-        scheduleSendStatusProvider.isScheduleSendEnabled(userID: user.userID) == .enabled
+        dependencies.featureFlagCache.featureFlags(for: user.userID)[.scheduleSend]
     }
 
     init(
+        dependencies: Dependencies = .init(),
         router: ComposerRouter,
         editorViewModel: ComposeViewModel,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        scheduleSendStatusProvider: ScheduleSendEnableStatusProvider,
         contextProvider: CoreDataContextProviderProtocol
     ) {
+        self.dependencies = dependencies
         self.router = router
         self.childViewModel = editorViewModel
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
-        self.scheduleSendStatusProvider = scheduleSendStatusProvider
         self.coreDataContextProvider = contextProvider
         super.init()
         self.contactChanged = observeRecipients()
@@ -198,5 +200,17 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
     func sendAction(deliveryTime: Date?) {
         childViewModel.deliveryTime = deliveryTime
         // TODO: handle sending message here.
+    }
+}
+
+extension ComposeContainerViewModel {
+    struct Dependencies {
+        let featureFlagCache: FeatureFlagCache
+
+        init(
+            featureFlagCache: FeatureFlagCache = userCachedStatus
+        ) {
+            self.featureFlagCache = featureFlagCache
+        }
     }
 }

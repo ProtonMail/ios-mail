@@ -227,8 +227,7 @@ extension MailboxCoordinator {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: contextProvider,
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus)
+            userIntroductionProgressProvider: userCachedStatus)
         navigationVC.present(composer, animated: true)
     }
 
@@ -271,7 +270,6 @@ extension MailboxCoordinator {
             contextProvider: contextProvider,
             isEditingScheduleMsg: isEditingScheduleMsg,
             userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus,
             internetStatusProvider: internetStatusProvider,
             coreKeyMaker: services.get()
         )
@@ -385,7 +383,6 @@ extension MailboxCoordinator {
                 contextProvider: contextProvider,
                 isEditingScheduleMsg: false,
                 userIntroductionProgressProvider: userCachedStatus,
-                scheduleSendEnableStatusProvider: userCachedStatus,
                 internetStatusProvider: internetStatusProvider,
                 coreKeyMaker: services.get(),
                 mailToUrl: mailToURL
