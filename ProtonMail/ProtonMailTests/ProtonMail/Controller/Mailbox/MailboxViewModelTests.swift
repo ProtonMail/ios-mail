@@ -28,6 +28,7 @@ class MailboxViewModelTests: XCTestCase {
     var sut: MailboxViewModel!
     var apiServiceMock: APIServiceMock!
     var coreDataService: CoreDataService!
+    var featureFlagCache: MockFeatureFlagCache!
     var userManagerMock: UserManager!
     var conversationStateProviderMock: MockConversationStateProviderProtocol!
     var contactGroupProviderMock: MockContactGroupsProviderProtocol!
@@ -39,7 +40,6 @@ class MailboxViewModelTests: XCTestCase {
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
     var imageTempUrl: URL!
     var mockFetchMessageDetail: MockFetchMessageDetail!
 
@@ -81,6 +81,7 @@ class MailboxViewModelTests: XCTestCase {
                                       mailSettings: nil,
                                       parent: nil,
                                       coreKeyMaker: MockKeyMakerProtocol())
+        featureFlagCache = .init()
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
@@ -92,7 +93,6 @@ class MailboxViewModelTests: XCTestCase {
         welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        mockSenderImageStatusProvider = .init()
         try loadTestMessage() // one message
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
@@ -144,11 +144,11 @@ class MailboxViewModelTests: XCTestCase {
         contactProviderMock = nil
         coreDataService = nil
         eventsServiceMock = nil
+        featureFlagCache = nil
         userManagerMock = nil
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
-        mockSenderImageStatusProvider = nil
         apiServiceMock = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
@@ -1054,9 +1054,6 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_featureFlagIsOff_getNil() {
         userManagerMock.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return false
-        }
         let e = expectation(description: "Closure is called")
 
         sut.fetchSenderImageIfNeeded(item: .message(MessageEntity.make()),
@@ -1073,8 +1070,8 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_hideSenderImageInMailSettingTrue_getNil() {
         userManagerMock.mailSettings = .init(hideSenderImages: true)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
 
@@ -1092,8 +1089,8 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_msgHasNoSenderThatIsEligible_getNil() {
         userManagerMock.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
         let e2 = expectation(description: "Closure is called")
@@ -1119,8 +1116,8 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_msgHasEligibleSender_getImageData() {
         userManagerMock.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
         let msg = MessageEntity.createSenderImageEligibleMessage()
@@ -1292,13 +1289,13 @@ extension MailboxViewModelTests {
             fetchMessageDetail: mockFetchMessageDetail,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: featureFlagCache,
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: userManagerMock.apiService,
                             internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
                         )
                     ),
-                    senderImageStatusProvider: mockSenderImageStatusProvider,
                     mailSettings: userManagerMock.mailSettings
                 )
             )

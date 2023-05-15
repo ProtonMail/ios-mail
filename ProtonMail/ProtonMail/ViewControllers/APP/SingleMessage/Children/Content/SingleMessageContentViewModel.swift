@@ -124,7 +124,6 @@ class SingleMessageContentViewModel {
                             internetStatusProvider: internetStatusProvider
                         )
                     ),
-                    senderImageStatusProvider: dependencies.senderImageStatusProvider,
                     mailSettings: user.mailSettings
                 )
             )
@@ -413,7 +412,6 @@ extension SingleMessageContentViewModel {
         let blockSender: BlockSender
         let fetchMessageDetail: FetchMessageDetailUseCase
         let isSenderBlockedPublisher: IsSenderBlockedPublisher
-        let senderImageStatusProvider: SenderImageStatusProvider
         let unblockSender: UnblockSender
     }
 }

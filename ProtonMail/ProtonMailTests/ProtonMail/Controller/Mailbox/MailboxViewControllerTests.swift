@@ -43,7 +43,6 @@ final class MailboxViewControllerTests: XCTestCase {
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
     var mockFetchMessageDetail: MockFetchMessageDetail!
     var fakeCoordinator: MockMailboxCoordinatorProtocol!
 
@@ -97,7 +96,6 @@ final class MailboxViewControllerTests: XCTestCase {
         welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        mockSenderImageStatusProvider = .init()
         try loadTestMessage() // one message
 
         conversationProviderMock.fetchConversationStub.bodyIs { [unowned self] _, _, _, _, completion in
@@ -146,7 +144,6 @@ final class MailboxViewControllerTests: XCTestCase {
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
-        mockSenderImageStatusProvider = nil
         apiServiceMock = nil
     }
 
@@ -260,7 +257,6 @@ extension MailboxViewControllerTests {
                             internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
                         )
                     ),
-                    senderImageStatusProvider: mockSenderImageStatusProvider,
                     mailSettings: userManagerMock.mailSettings
                 )
             )
