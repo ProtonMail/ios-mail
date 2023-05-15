@@ -88,11 +88,7 @@ extension UserInfo {
     }
 
     static var isBlockSenderEnabled: Bool {
-        #if DEBUG_ENTERPRISE
-        return true
-        #else
-        return false
-        #endif
+        true
     }
 
     static var isRotateScreenEnabled: Bool {
