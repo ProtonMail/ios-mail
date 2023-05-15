@@ -110,7 +110,12 @@ final class MenuViewController: UIViewController, AccessibleView {
         self.viewModel.set(menuWidth: properWidth)
     }
 
-    static func calcProperMenuWidth(keyWindow: UIWindow? = UIApplication.shared.keyWindow, referenceWidth: CGFloat? = nil, expectedMenuWidth: CGFloat = 327) -> CGFloat {
+    static func calcProperMenuWidth(
+        keyWindow: UIWindow? = UIApplication.shared.keyWindow,
+        referenceWidth: CGFloat? = nil,
+        expectedMenuWidth: CGFloat = 327
+    ) -> CGFloat {
+
         let windowWidth = referenceWidth ?? keyWindow?.bounds.width ?? expectedMenuWidth
         let menuWidth = min(expectedMenuWidth, windowWidth)
         return menuWidth

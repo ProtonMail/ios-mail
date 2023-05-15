@@ -335,7 +335,7 @@ PODS:
   - Sentry (7.31.2):
     - Sentry/Core (= 7.31.2)
   - Sentry/Core (7.31.2)
-  - SideMenuSwift (2.0.6)
+  - SideMenuSwift (2.0.9)
   - SkeletonView (1.30.4)
   - SQLite.swift (0.13.3):
     - SQLite.swift/standard (= 0.13.3)
@@ -400,7 +400,7 @@ DEPENDENCIES:
   - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `7.31.2.fork`)"
-  - SideMenuSwift (= 2.0.6)
+  - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.landscape`)"
   - SkeletonView (= 1.30.4)
   - SQLite.swift (~> 0.13.3)
   - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
@@ -421,7 +421,6 @@ SPEC REPOS:
     - PromiseKit
     - ReachabilitySwift
     - SDWebImage
-    - SideMenuSwift
     - SkeletonView
     - SQLite.swift
     - SwiftSoup
@@ -536,6 +535,9 @@ EXTERNAL SOURCES:
   Sentry:
     :git: "git@gitlab.protontech.ch:jchen/sentry-cocoa.git"
     :tag: 7.31.2.fork
+  SideMenuSwift:
+    :git: "git@gitlab.protontech.ch:jchen/SideMenu.git"
+    :tag: v2.0.9.landscape
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
@@ -655,6 +657,9 @@ CHECKOUT OPTIONS:
   Sentry:
     :git: "git@gitlab.protontech.ch:jchen/sentry-cocoa.git"
     :tag: 7.31.2.fork
+  SideMenuSwift:
+    :git: "git@gitlab.protontech.ch:jchen/SideMenu.git"
+    :tag: v2.0.9.landscape
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
@@ -713,7 +718,7 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: af5bbffef2cde09f148d826f9733dcde1a9414cd
   Sentry: b15765d11769852fe78c9add942f7df60ed5dbf5
-  SideMenuSwift: f12ca1b11faad909bfc2878df37e0a1c40fa4570
+  SideMenuSwift: 39f1922e225da4aaa8b16591037a929defe960c9
   SkeletonView: 5a050f6411e697abd4cda0a8d767013399dccd69
   SQLite.swift: 903bfa3bc9ab06345fdfbb578e34f47cfcf417da
   swift-snapshot-testing: d388c9ff71363d8572312dcb45704bb5df021c8f
@@ -722,6 +727,6 @@ SPEC CHECKSUMS:
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
 
-PODFILE CHECKSUM: 9586fa0943ba54c9ab34646646a361fa7a3a8afb
+PODFILE CHECKSUM: 539aa01edc447dcf1f1bb4727a817ed12f9de073
 
 COCOAPODS: 1.12.0

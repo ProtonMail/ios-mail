@@ -62,6 +62,7 @@ class PlainTextViewerViewController: UIViewController {
         dropShadowView.backgroundColor = ColorProvider.IconWeak.withAlphaComponent(0.2)
         buildLayout()
         textView.isEditable = false
+        textView.backgroundColor = .clear
         textView.attributedText = text.apply(style: FontManager.Default)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: IconProvider.arrowUpFromSquare, style: .plain, target: self, action: #selector(share))
         textView.textContainerInset = .init(top: 44, left: 0, bottom: 0, right: 0)
@@ -78,8 +79,8 @@ class PlainTextViewerViewController: UIViewController {
         ].activate()
         [
             textView.topAnchor.constraint(equalTo: dropShadowView.bottomAnchor, constant: 0),
-            textView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            textView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            textView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            textView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             textView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ].activate()
     }

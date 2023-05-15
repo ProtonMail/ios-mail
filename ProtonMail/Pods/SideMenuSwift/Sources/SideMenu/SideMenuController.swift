@@ -47,16 +47,15 @@ open class SideMenuController: UIViewController {
     /// The side menu controller's delegate object.
     public weak var delegate: SideMenuControllerDelegate?
 
-    /// Tell whether `setContentViewController` setter should call the delegate.
-    /// Work as a workaround when switching content view controller from other animation approach which also change the
-    /// `contentViewController`.
     // swiftlint:disable:next weak_delegate
+    /// Tell whether ``contentViewController`` setter should call the delegate.
+    /// Work as a workaround when switching content view controller from other animation approach which also change the
     private var shouldCallSwitchingDelegate = true
 
+    // swiftlint:disable:next implicitly_unwrapped_optional
     /// The content view controller. Changes its value will change the display immediately.
     /// If the new value is already one of the side menu controller's child controllers, nothing will happen beside value change.
-    /// If you want a caching approach, use `setContentViewController(with)`. Its value should not be nil.
-    // swiftlint:disable:next implicitly_unwrapped_optional
+    /// If you want a caching approach, use ``setContentViewController(with:animated:completion:)``. Its value should not be nil.
     open var contentViewController: UIViewController! {
         didSet {
             guard contentViewController !== oldValue &&
@@ -81,8 +80,8 @@ open class SideMenuController: UIViewController {
         }
     }
 
-    /// The menu view controller. Its value should not be nil.
     // swiftlint:disable:next implicitly_unwrapped_optional
+    /// The menu view controller. Its value should not be nil.
     open var menuViewController: UIViewController! {
         didSet {
             guard menuViewController !== oldValue && isViewLoaded else {
@@ -149,9 +148,9 @@ open class SideMenuController: UIViewController {
 
     // MARK: Life Cycle
 
-    // `SideMenu` may be initialized from Storyboard, thus we shouldn't load the view in `loadView()`.
-    // As mentioned by Apple, "If you use Interface Builder to create your views and initialize the view controller,
-    // you must not override this method."
+    /// `SideMenu` may be initialized from Storyboard, thus we shouldn't load the view in `loadView()`.
+    /// As mentioned by Apple, "If you use Interface Builder to create your views and initialize the view controller,
+    /// you must not override this method."
     open override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -345,7 +344,13 @@ open class SideMenuController: UIViewController {
             return
         }
 
-        let overlay = UIView(frame: contentContainerView.bounds)
+        var overlay:UIView
+        if SideMenuController.preferences.animation.shouldAddBlurWhenRevealing {
+            let blurEffect = UIBlurEffect(style: .light)
+            overlay = UIVisualEffectView(effect: blurEffect)
+        } else {
+            overlay = UIView(frame: contentContainerView.bounds)
+        }
         overlay.autoresizingMask = [.flexibleHeight, .flexibleWidth]
 
         if !shouldShowShadowOnContent {
@@ -669,11 +674,20 @@ open class SideMenuController: UIViewController {
 
     private func sideMenuFrame(visibility: Bool, targetSize: CGSize? = nil) -> CGRect {
         let position = preferences.basic.position
+        var safeGuide: CGFloat = 0
+        if #available(iOS 11, *) {
+            if adjustedDirection == .left {
+                safeGuide = view.safeAreaInsets.left
+            } else {
+                safeGuide = -1 * view.safeAreaInsets.right
+            }
+        }
+
         switch position {
         case .above, .sideBySide:
             var baseFrame = CGRect(origin: view.frame.origin, size: targetSize ?? view.frame.size)
             if visibility {
-                baseFrame.origin.x = preferences.basic.menuWidth - baseFrame.width
+                baseFrame.origin.x = preferences.basic.menuWidth - baseFrame.width + safeGuide
             } else {
                 baseFrame.origin.x = -baseFrame.width
             }
@@ -687,6 +701,15 @@ open class SideMenuController: UIViewController {
 
     private func contentFrame(visibility: Bool, targetSize: CGSize? = nil) -> CGRect {
         let position = preferences.basic.position
+        var safeGuide: CGFloat = 0
+        if #available(iOS 11, *) {
+            if adjustedDirection == .left {
+                safeGuide = view.safeAreaInsets.left
+            } else {
+                safeGuide = -1 * view.safeAreaInsets.right
+            }
+        }
+
         switch position {
         case .above:
             return CGRect(origin: view.frame.origin, size: targetSize ?? view.frame.size)
@@ -694,11 +717,30 @@ open class SideMenuController: UIViewController {
             var baseFrame = CGRect(origin: view.frame.origin, size: targetSize ?? view.frame.size)
             if visibility {
                 let factor: CGFloat = adjustedDirection == .left ? 1 : -1
-                baseFrame.origin.x = preferences.basic.menuWidth * factor
+                baseFrame.origin.x = preferences.basic.menuWidth * factor + safeGuide
             } else {
                 baseFrame.origin.x = 0
             }
             return CGRect(origin: baseFrame.origin, size: targetSize ?? baseFrame.size)
+        }
+    }
+
+    private func keepSideMenuOpenOnRotation() {
+        if menuViewController != nil {
+            if self.isMenuRevealed {
+                self.hideMenu(animated: false, completion: nil)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                        self.revealMenu(animated: false, completion: nil)
+                    })
+                })
+            } else {
+                self.revealMenu(animated: false) { _ in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                        self.hideMenu(animated: false, completion: nil)
+                    })
+                }
+            }
         }
     }
 
@@ -719,16 +761,20 @@ open class SideMenuController: UIViewController {
     }
 
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        hideMenu(animated: false, completion: { _ in
-            // Temporally hide the menu container view for smooth animation
-            self.menuContainerView.isHidden = true
-            coordinator.animate(alongsideTransition: { _ in
-                self.contentContainerView.frame = self.contentFrame(visibility: self.isMenuRevealed, targetSize: size)
-            }, completion: { (_) in
-                self.menuContainerView.isHidden = false
-                self.menuContainerView.frame = self.sideMenuFrame(visibility: self.isMenuRevealed, targetSize: size)
+        if preferences.basic.shouldKeepMenuOpen {
+            self.keepSideMenuOpenOnRotation()
+        } else {
+            hideMenu(animated: false, completion: { _ in
+                // Temporally hide the menu container view for smooth animation
+                self.menuContainerView.isHidden = true
+                coordinator.animate(alongsideTransition: { _ in
+                    self.contentContainerView.frame = self.contentFrame(visibility: self.isMenuRevealed, targetSize: size)
+                }, completion: { (_) in
+                    self.menuContainerView.isHidden = false
+                    self.menuContainerView.frame = self.sideMenuFrame(visibility: self.isMenuRevealed, targetSize: size)
+                })
             })
-        })
+        }
 
         super.viewWillTransition(to: size, with: coordinator)
     }
@@ -792,6 +838,6 @@ extension SideMenuController: UIGestureRecognizerDelegate {
         guard velocity.x * factor > 0 else {
             return false
         }
-        return abs(velocity.y / velocity.x) < 0.25
+        return abs(velocity.y / velocity.x) < preferences.basic.panGestureSensitivity
     }
 }

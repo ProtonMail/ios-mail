@@ -99,7 +99,7 @@ final class InAppFeedbackActionSheetView: UIView {
             separator.trailingAnchor.constraint(equalTo: trailingAnchor),
             separator.bottomAnchor.constraint(equalTo: header.bottomAnchor),
             separator.heightAnchor.constraint(equalToConstant: 1),
-            closeButton.leadingAnchor.constraint(equalTo: header.leadingAnchor, constant: 20),
+            closeButton.leadingAnchor.constraint(equalTo: header.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             closeButton.centerYAnchor.constraint(equalTo: header.centerYAnchor),
             promptLabel.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 16),
             promptLabel.leadingAnchor.constraint(greaterThanOrEqualTo: container.leadingAnchor, constant: 24),

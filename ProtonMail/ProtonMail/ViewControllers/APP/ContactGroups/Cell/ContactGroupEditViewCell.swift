@@ -61,7 +61,7 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-
+        contentView.backgroundColor = ColorProvider.BackgroundNorm
         shortNameLabel.layer.cornerRadius = shortNameLabel.frame.size.width / 2
     }
 

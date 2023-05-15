@@ -38,8 +38,9 @@ final class PMDatePicker: UIView {
     private var backgroundView: UIView
     private var container: UIView!
     private var containerBottom: NSLayoutConstraint!
+    private let pickerScrollView = UIScrollView(frame: .zero)
     private var datePicker: UIDatePicker
-    private let pickerHeight: CGFloat
+    private let hiddenConstant: CGFloat = 450
     private let cancelTitle: String
     private let saveTitle: String
     private weak var delegate: PMDatePickerDelegate?
@@ -52,7 +53,6 @@ final class PMDatePicker: UIView {
         self.datePicker = UIDatePicker(frame: .zero)
         self.cancelTitle = cancelTitle
         self.saveTitle = saveTitle
-        self.pickerHeight = 450
         super.init(frame: .zero)
         self.setUpView()
     }
@@ -100,7 +100,7 @@ extension PMDatePicker {
             self.delegate?.cancel()
         }
         self.delegate?.datePickerWillDisappear()
-        self.containerBottom.constant = self.pickerHeight
+        self.containerBottom.constant = hiddenConstant
         UIView.animate(
             withDuration: 0.25,
             animations: {
@@ -119,7 +119,8 @@ extension PMDatePicker {
         self.setUpBackgroundView()
         let container = self.setUpContainer()
         let toolBar = self.setUpToolBar(in: container)
-        self.setUpDatePicker(in: container, toolBar: toolBar)
+        setUpPickerScrollView(toolBar: toolBar)
+        self.setUpDatePicker(in: pickerScrollView, toolBar: toolBar)
     }
 
     private func setUpBackgroundView() {
@@ -134,12 +135,13 @@ extension PMDatePicker {
         self.addSubview(container)
 
         [
-            container.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            container.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+            container.topAnchor.constraint(greaterThanOrEqualTo: safeAreaLayoutGuide.topAnchor, constant: 10),
+            container.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            container.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor)
         ].activate()
         self.containerBottom = container.bottomAnchor.constraint(
             equalTo: self.bottomAnchor,
-            constant: self.pickerHeight
+            constant: hiddenConstant
         )
         self.containerBottom.isActive = true
         self.container = container
@@ -167,12 +169,26 @@ extension PMDatePicker {
         [
             toolBar.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             toolBar.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            toolBar.topAnchor.constraint(equalTo: container.topAnchor)
+            toolBar.topAnchor.constraint(equalTo: container.topAnchor),
+            toolBar.heightAnchor.constraint(equalToConstant: 44)
         ].activate()
+        toolBar.setContentCompressionResistancePriority(.required, for: .vertical)
         return toolBar
     }
 
-    private func setUpDatePicker(in container: UIView, toolBar: UIToolbar) {
+    private func setUpPickerScrollView(toolBar: UIToolbar) {
+        container.addSubview(pickerScrollView)
+        [
+            pickerScrollView.topAnchor.constraint(equalTo: toolBar.bottomAnchor),
+            pickerScrollView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            pickerScrollView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            pickerScrollView.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+            pickerScrollView.widthAnchor.constraint(equalTo: container.widthAnchor),
+            pickerScrollView.heightAnchor.constraint(lessThanOrEqualTo: container.heightAnchor, constant: -44)
+        ].activate()
+    }
+
+    private func setUpDatePicker(in container: UIScrollView, toolBar: UIToolbar) {
         self.delegate?.datePickerWillAppear()
         self.datePicker.datePickerMode = .dateAndTime
         self.datePicker.minuteInterval = Constants.ScheduleSend.minNumberOfMinutes
@@ -184,16 +200,16 @@ extension PMDatePicker {
         self.datePicker.tintColor = ColorProvider.BrandNorm
         datePicker.addTarget(self, action: #selector(self.pickerDateIsChanged), for: .valueChanged)
 
-        let height = self.pickerHeight
         self.datePicker.preferredDatePickerStyle = .inline
 
         container.addSubview(self.datePicker)
         [
-            self.datePicker.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            self.datePicker.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            self.datePicker.bottomAnchor.constraint(equalTo: container.bottomAnchor),
-            self.datePicker.topAnchor.constraint(equalTo: toolBar.bottomAnchor),
-            self.datePicker.heightAnchor.constraint(equalToConstant: height)
+            datePicker.leadingAnchor.constraint(equalTo: container.contentLayoutGuide.leadingAnchor),
+            datePicker.trailingAnchor.constraint(equalTo: container.contentLayoutGuide.trailingAnchor),
+            datePicker.bottomAnchor.constraint(equalTo: container.contentLayoutGuide.bottomAnchor),
+            datePicker.topAnchor.constraint(equalTo: container.contentLayoutGuide.topAnchor),
+            datePicker.widthAnchor.constraint(equalTo: container.widthAnchor),
+            container.heightAnchor.constraint(equalTo: datePicker.heightAnchor).setPriority(as: .defaultLow)
         ].activate()
     }
 

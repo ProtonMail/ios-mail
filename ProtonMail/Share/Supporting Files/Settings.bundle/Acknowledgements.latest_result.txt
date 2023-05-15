@@ -602,13 +602,13 @@ name: SideMenuSwift, nameSpecified:
 body: MIT License
 
 Copyrig…
-version: 2.0.6
+version: 2.0.9
 
 name: SideMenuSwift, nameSpecified: 
 body: MIT License
 
 Copyrig…
-version: 2.0.6
+version: 2.0.9
 
 name: SkeletonView, nameSpecified: 
 body: The MIT License (MIT…

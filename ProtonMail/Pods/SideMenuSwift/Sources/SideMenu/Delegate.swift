@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 // Delegate Methods
-public protocol SideMenuControllerDelegate: class {
+public protocol SideMenuControllerDelegate: AnyObject {
 
     // MARK: Animation
 

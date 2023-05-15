@@ -10,12 +10,19 @@ class ConversationNavigationDetailView: UIView {
         super.init(frame: .zero)
         addSubviews()
         setUpLayout()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(rotate(notification:)),
+            name: UIDevice.orientationDidChangeNotification,
+            object: nil
+        )
     }
 
     private func addSubviews() {
         addSubview(stackView)
         stackView.addArrangedSubview(topLabel)
         stackView.addArrangedSubview(bottomLabel)
+        updateTopLabelVisibility()
     }
 
     private func setUpLayout() {
@@ -31,4 +38,12 @@ class ConversationNavigationDetailView: UIView {
         nil
     }
 
+    @objc
+    func rotate(notification: Notification) {
+        updateTopLabelVisibility()
+    }
+
+    private func updateTopLabelVisibility() {
+        topLabel.isHidden = UIDevice.current.orientation.isLandscape
+    }
 }

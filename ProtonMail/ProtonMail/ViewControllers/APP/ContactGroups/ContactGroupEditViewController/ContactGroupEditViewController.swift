@@ -235,6 +235,7 @@ extension ContactGroupEditViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: ID.contactGroupManageCell, for: indexPath)
             cell.textLabel?.attributedText = LocalString._contact_groups_manage_addresses.apply(style: FontManager.Default.foregroundColor(ColorProvider.InteractionNorm))
             cell.addSeparator(padding: 0)
+            cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
             return cell
         case .email:
             let cell = tableView.dequeueReusableCell(withIdentifier: ID.contactGroupEditCell,
@@ -254,6 +255,7 @@ extension ContactGroupEditViewController: UITableViewDataSource {
             cell.textLabel?.text = LocalString._contact_groups_delete
             cell.addSeparator(padding: 0)
             cell.textLabel?.textColor = ColorProvider.NotificationError
+            cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
             return cell
         }
     }
