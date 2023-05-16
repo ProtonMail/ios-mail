@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Snadné procházení zpráv ve vláknech v režimu konverzace.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "--Abychom vám mohli pomoci, uveďte prosím co nejvíce podrobností--\n\nShrnutí:\n\nDošlo k problému více než jednou: ano/ne\nKroky k reprodukci problému:\nOčekávaný výsledek:\nSoučasný výsledek:\nKomentáře:";
+
 /* Title */
 "Bug Report Received" = "Chybová zpráva obdržena";
 
@@ -830,6 +833,9 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Zadejte nový PIN kód";
+
+/* The title of the pin code view. */
+"Enter PIN" = "Zadejte PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Zadejte své heslo pro provedení změn";
@@ -1517,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Popište prosím váš problém.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Přihlaste se prosím do aplikace Proton Mail.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Chcete-li používat více než 3 složky, přejděte prosím na placený tarif";
 
@@ -2192,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "Úprava e-mailu pro upozornění";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Aktualizace zařazena do fronty, čeká se na připojení...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Aktualizováno >před 1 hodinou";
 
@@ -2384,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "PSČ";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

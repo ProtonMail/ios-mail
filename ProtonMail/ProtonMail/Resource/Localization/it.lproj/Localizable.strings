@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Scorri velocemente i messaggi nei thread in modalità conversazione.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Per permetterci di aiutarti, per favore fornisci più dettagli possibili---\n\nSommario:\n\nIl problema è accaduto più di una volta: sì/no\nPassaggi per riprodurre il problema:\nRisultato atteso:\nRisultato ottenuto:\nCommenti:";
+
 /* Title */
 "Bug Report Received" = "Segnalazione di bug ricevuta";
 
@@ -831,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Inserisci il nuovo codice PIN";
 
+/* The title of the pin code view. */
+"Enter PIN" = "Inserisci il PIN";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Inserisci la tua password per apportare le modifiche";
 
@@ -1260,6 +1266,9 @@
 
 /* Contacts add new contact */
 "New contact" = "Nuovo contatto";
+
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Le nuove email da %@ non saranno consegnate e saranno eliminate permanentemente. Gestisci gli indirizzi email bloccati nelle impostazioni.";
 
 /* The title of create folder page */
 "New folder" = "Nuova cartella";
@@ -2190,7 +2199,7 @@
 "Update Notification Email" = "Email di notifica di aggiornamento";
 
 /* The title of last update status of more than 1 hour */
-"Updated >1 hour ago" = "Aggiornato > ora fa";
+"Updated >1 hour ago" = "Aggiornato >1 ora fa";
 
 /* The title of last update status of updated just now */
 "Updated just now" = "Aggiornato proprio ora";
@@ -2372,10 +2381,12 @@
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "I tuoi messaggi sono in fase di scaricamento...";
 
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "La tua privacy è meglio protetta se anche i tuoi contatti utilizzassero Proton Mail. Invita i tuoi amici a utilizzare Proton ed entrambi otterrete gratuitamente dei benefici premium.";
+
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "La tua sessione è scaduta perché sei stato inattivo per un po' di tempo o perché è stata revocata. Effettua di nuovo il login.";
 
 /* contact placeholder */
 "ZIP" = "CAP";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

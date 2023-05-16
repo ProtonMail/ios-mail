@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Snel scrollen door berichten in een thread in conversatiemodus.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "----Geef zoveel mogelijk gegevens op om ons u te kunnen laten helpen----\n\nSamenvatting:\n\nHeeft het probleem zich meer dan één keer voorgedaan: ja/nee\nStappen om het probleem te reproduceren:\nVerwacht resultaat:\nDaadwerkelijk resultaat:\nOpmerkingen:";
+
 /* Title */
 "Bug Report Received" = "Bugmelding ontvangen";
 
@@ -831,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Voer nieuwe PIN-code in";
 
+/* The title of the pin code view. */
+"Enter PIN" = "PIN Invoeren";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Voer uw wachtwoord in om wijzigingen aan te brengen";
 
@@ -1261,6 +1267,9 @@
 /* Contacts add new contact */
 "New contact" = "Nieuw contactpersoon";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Nieuwe e-mails van %@ worden niet afgeleverd en worden permanent verwijderd. Beheer geblokkeerde e-mailadressen in de instellingen.";
+
 /* The title of create folder page */
 "New folder" = "Nieuwe map";
 
@@ -1301,7 +1310,7 @@
 "No attachment found" = "Geen bijlage gevonden";
 
 /* Placeholder for empty sender list */
-"No blocked senders" = "Geen geblokkeerd afzenders";
+"No blocked senders" = "Geen geblokkeerde afzenders";
 
 /* Title */
 "No connectivity detected…" = "Geen netwerkverbinding gedetecteerd…";
@@ -1513,6 +1522,9 @@
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Deel uw probleem.";
+
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Log in op de Proton Mail-app";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Gelieve te upgraden naar een betaald abonnement om meer dan 3 mappen te gebruiken";
@@ -1729,8 +1741,11 @@
 /* Toast confirming the block */
 "Sender %@ blocked" = "Afzender %@ geblokkeerd";
 
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Afzender %@ gedeblokkeerd";
+
 /* Banner in the message view */
-"Sender has been blocked" = "De afzender is geblokkeerd.";
+"Sender has been blocked" = "Afzender is geblokkeerd";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verificatie van afzender is mislukt";
@@ -2129,6 +2144,9 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Deblokkeer";
 
+/* Button to unblock a sender */
+"Unblock sender" = "Afzender deblokkeren";
+
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Niet-openbaar gemaakte ontvangers";
 
@@ -2182,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Notificatie-e-mailadres bijwerken";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Update in de wachtrij gezet, wachten op netwerkverbinding...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Bijgewerkt >1 uur geleden";
@@ -2366,10 +2387,12 @@
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Uw berichten worden gedownload...";
 
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "Uw privacy is beter beschermd als u uw contacten ook Proton Mail gebruiken. Nodig uw vrienden uit voor Proton en ontvang allebei gratis premium voordelen.";
+
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Uw sessie is verlopen omdat u al een tijdje inactief bent of omdat deze is ingetrokken. Log opnieuw in.";
 
 /* contact placeholder */
 "ZIP" = "Postcode";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

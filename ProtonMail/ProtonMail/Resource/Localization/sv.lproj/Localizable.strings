@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "All e-post";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Alla skyddsinställningar återställs och raderas när du loggar ut från appen.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Alla dina meddelanden laddas ner";
 
@@ -308,6 +311,9 @@
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Bläddra igenom trådade meddelanden i konversationsläge.";
+
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---För att hjälpa oss att hjälpa dig, ange så många detaljer som möjligt---\n\nSammanfattning:\n\nHar problemet hänt mer än en gång: ja/nej\nSteg för att återskapa problemet:\nFörväntat resultat:\nFaktiskt resultat:\nkommentarer:";
 
 /* Title */
 "Bug Report Received" = "Felrapport mottagen";
@@ -828,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Ange ny PIN-kod";
 
+/* The title of the pin code view. */
+"Enter PIN" = "Ange PIN";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Ange ditt lösenord för att göra ändringar";
 
@@ -1258,6 +1267,9 @@
 /* Contacts add new contact */
 "New contact" = "Ny kontakt";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Nya e-postmeddelanden från %@ kommer inte att levereras och kommer att raderas permanent. Hantera blockerade e-postadresser i settings.";
+
 /* The title of create folder page */
 "New folder" = "Ny mapp";
 
@@ -1510,6 +1522,9 @@
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Dela ditt problem.";
+
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Logga in på Proton Mail appen.";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Uppgradera till ett betalt paket för att använda mer än 3 mappar";
@@ -2011,6 +2026,12 @@
 "This conversation contains trashed messages" = "Denna konversation innehåller kastade meddelanden";
 
 /* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Det här e-postmeddelandet har misslyckats med domänens autentiseringskrav. Det kan vara förfalskat eller felaktigt vidarebefordrat.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Det här e-postmeddelandet har misslyckats med domänens autentiseringskrav. Det kan vara förfalskat eller felaktigt vidarebefordrat.";
+
+/* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en Proton Mail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
 
 /* Description for undo send */
@@ -2099,6 +2120,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Försök att ansluta till Proton från ett annat nätverk (eller använd %1$@ eller %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktivera den här funktionen för att automatiskt fylla i e-postadresser med kontakter från alla dina inloggade konton.";
+
 /* Placeholder */
 "Two Factor Code" = "Tvåfaktorskod";
 
@@ -2176,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Uppdatera e-postavisering";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Uppdatering köad, inväntar anslutning...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Uppdaterad >1 timme sedan";
@@ -2297,6 +2324,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Du kan inte ställa in %@-adress som standard eftersom det är en betald funktion.";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Du inaktiverade %@ i dina systeminställningar. %@ har använts för att skydda viktig kontoinformation. För att komma åt ditt konto, gå till inställningar och återaktivera %@, eller logga in igen.";
+
 /* Message */
 "You have %d new emails!" = "Du har %d nya e-postmeddelanden!";
 
@@ -2357,10 +2387,12 @@
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Dina meddelanden laddas ner …";
 
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "Din integritet skyddas bättre om dina kontakter också använder Proton Mail. Bjud in dina vänner till Proton, så får ni båda premiumförmåner gratis.";
+
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session har löpt ut eftersom du har varit inaktiv ett tag eller för att den har återkallats. Logga in igen.";
 
 /* contact placeholder */
 "ZIP" = "Postnummer";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

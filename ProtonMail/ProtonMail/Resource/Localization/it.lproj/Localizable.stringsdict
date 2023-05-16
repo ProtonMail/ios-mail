@@ -403,7 +403,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Questo messaggio verrà spostato nelle Bozze e la sua programmazione sarà rimossa.</string>
+			<string>%d messaggio verrà spostato nelle Bozze e la sua programmazione sarà rimossa.</string>
 			<key>other</key>
 			<string>Questi %d messaggi verranno spostati nelle Bozze e la loro programmazione verrà rimossa.</string>
 		</dict>

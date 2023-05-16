@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Blättere im Unterhaltungsmodus durch zusammenhängende Nachrichten.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Um uns zu helfen, dir zu helfen, gib bitte so viele Details wie möglich an---\n\nZusammenfassung:\n\nIst das Problem mehr als einmal aufgetreten: ja/nein\nSchritte zur Reproduktion des Problems:\nErwartetes Ergebnis:\nTatsächliches Ergebnis:\nKommentare:";
+
 /* Title */
 "Bug Report Received" = "Fehlerbericht erhalten";
 
@@ -830,6 +833,9 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Neuen PIN-Code eingeben";
+
+/* The title of the pin code view. */
+"Enter PIN" = "PIN eingeben";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Gib dein Passwort ein, um Änderungen vornehmen zu können";
@@ -1517,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Bitte schildere uns dein Problem.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Bitte melde dich in der Proton Mail-App an.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Bitte wechsle zu einem kostenpflichtigen Abonnement, um mehr als 3 Ordner zu verwenden";
 
@@ -2192,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "Benachrichtigungs-E-Mail-Adresse aktualisieren";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Aktualisierung eingereiht, warte auf Verbindung...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Vor >1 Stunde aktualisiert";
 
@@ -2384,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "PLZ";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

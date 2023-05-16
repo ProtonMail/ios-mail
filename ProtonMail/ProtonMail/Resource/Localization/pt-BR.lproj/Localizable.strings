@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Navegue pelas mensagens encadeadas no modo de conversa.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "Para que possamos te ajudar, por favor forneça a maior quantidade de detalhes possível";
+
 /* Title */
 "Bug Report Received" = "Relatório do problema recebido";
 
@@ -831,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Digite o novo código PIN";
 
+/* The title of the pin code view. */
+"Enter PIN" = "Inserir PIN";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Digite sua senha para fazer alterações";
 
@@ -964,7 +970,7 @@
 "Human Check Warning" = "Aviso de verificação humana";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Estou usando o Proton Mail e pensei que você poderia gostar. É um serviço de e-mail seguro que protege sua privacidade. Inscreva-se com este link para obter 1 mês de recursos premium de graça:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Estou usando o Proton Mail e achei que você poderia gostar. É um serviço de e-mail seguro que protege sua privacidade. Inscreva-se com este link para obter 1 mês de recursos premium de graça:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Se você perder sua conexão Wi-Fi, continuará baixando por dados móveis.";
@@ -1516,6 +1522,9 @@
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Compartilhe o seu problema.";
+
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Inicie sessão no aplicativo do Proton Mail.";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Atualize para um plano pago para usar mais de 3 pastas.";
@@ -2192,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "Atualizar e-mail de notificação";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Atualização em fila, aguardando conexão...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Atualizado há > 1 hora atrás";
 
@@ -2313,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Você não pode definir o endereço %@ como padrão, porque este é um recurso pago.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Você desativou %@ nas configurações do sistema. %@ foi usado para proteger informações importantes da conta. Para acessar sua conta, vá para as configurações e reative %@ ou realize o login novamente.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Você desativou %@ nas configurações do sistema. %@ foi usado para proteger informações importantes da conta. Para acessar sua conta, vá para as configurações e reative %@ ou realize o início de sessão novamente.";
 
 /* Message */
 "You have %d new emails!" = "Você tem %d novos e-mails.";
@@ -2384,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "CEP";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

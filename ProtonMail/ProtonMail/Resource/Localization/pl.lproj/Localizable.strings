@@ -198,7 +198,7 @@
 /* menu title
    Push notification action to archive
    The title of the archive action in action sheet */
-"Archive" = "Archiwum";
+"Archive" = "Archiwizuj";
 
 /* Push notification action archive */
 "Archive (verb)" = "Archiwizuj";
@@ -311,6 +311,9 @@
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Przeglądaj wiadomości w trybie wątku.";
+
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Opisz szczegółowo problem, aby nam pomóc---\n\nPodsumowanie:\n\nCzy problem wystąpił więcej niż raz: tak / nie\nKroki do otworzenia problemu:\nOczekiwany rezultat:\nRzeczywisty rezultat:\nKomentarze:";
 
 /* Title */
 "Bug Report Received" = "Raport błędu został odebrany";
@@ -582,7 +585,7 @@
 "Decryption of this message's encrypted content failed." = "Odszyfrowanie tej wiadomości nie powiodło się.";
 
 /* Title */
-"Default" = "Domyślna";
+"Default" = "Domyślny";
 
 /* Settings row */
 "Default browser" = "Domyślna przeglądarka";
@@ -802,7 +805,7 @@
 "Enable signature" = "Włącz podpis";
 
 /* The footer shown when there is not result in the inbox */
-"Encrypted by Proton" = "Zaszyfrowana przez Proton";
+"Encrypted by Proton" = "Zaszyfrowane przez Proton";
 
 /* contact section title */
 "Encrypted contact details" = "Zaszyfrowane szczegóły kontaktu";
@@ -830,6 +833,9 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Wpisz nowy kod PIN";
+
+/* The title of the pin code view. */
+"Enter PIN" = "Wpisz kod PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Wpisz hasło";
@@ -1143,7 +1149,7 @@
 "Mark as read" = "Oznacz jako przeczytane";
 
 /* Action */
-"Mark as read/unread" = "Oznacz jako przeczytane/nieprzeczytane";
+"Mark as read/unread" = "Oznacz jako przeczytane / nieprzeczytane";
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Oznacz jako nieprzeczytane";
@@ -1517,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Opisz swój problem.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Zaloguj się do aplikacji Proton Mail.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Ulepsz do płatnego planu, aby używać więcej niż 3 folderów";
 
@@ -1560,7 +1569,7 @@
 "Proton Status" = "Status usług Proton";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Konflikt z zaporą sieciową/serwerem proxy";
+"Proxy/Firewall interference" = "Konflikt z zaporą sieciową / serwerem proxy";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Uwierzytelnij ponownie";
@@ -1915,7 +1924,7 @@
 "Switch selection mode" = "Zmień tryb zaznaczania";
 
 /* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "nieprzeczytane/przeczytane";
+"Switch unread filter" = "nieprzeczytane / przeczytane";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Przełączono na konto '%@'";
@@ -2192,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "Zaktualizuj adres powiadomień";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Aktualizacja w kolejce. Oczekiwanie na połączenie...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Zaktualizowano ponad godzinę temu";
 
@@ -2384,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "Kod pocztowy";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";
