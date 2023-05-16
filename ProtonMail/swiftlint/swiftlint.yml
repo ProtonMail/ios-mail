@@ -140,14 +140,14 @@ excluded:
   - ${PWD}/ProtonMail/Models/APP_share/CoreData/Contact+Extension.swift
   - ${PWD}/ProtonMail/Models/APP_share/MessageAction.swift
   - ${PWD}/ProtonMail/Models/APP/ContactsDefined.swift
-  - ${PWD}/ProtonMail/Utilities/APP_share_push/LocalCache/UserCachedStatus.swift
+  - ${PWD}/ProtonMail/Utilities/APP_share/LocalCache/UserCachedStatus.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push/LocalCache/SharedCacheBase.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push/String+Parse+Extension.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push_siri/BackendConfiguration.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push/OpenPGP+String+Extension.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push/MailCrypto.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push/Constant+App.swift
-  - ${PWD}/ProtonMail/Utilities/APP_share_push/Keymaker+SharedKeychain.swift
+  - ${PWD}/ProtonMail/Utilities/APP_share/Keymaker+SharedKeychain.swift
   - ${PWD}/ProtonMail/Utilities/APP_share_push_uiTest/Localization.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/MimeParser/Header.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/MimeParser/QuotedPrintable.swift

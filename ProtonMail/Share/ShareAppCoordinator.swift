@@ -31,7 +31,7 @@ final class ShareAppCoordinator {
     private var nextCoordinator: ShareUnlockCoordinator?
 
     func start() {
-        self.loadUnlockCheckView()
+        userCachedStatus.coreKeyMaker = keymaker
 
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
@@ -42,6 +42,8 @@ final class ShareAppCoordinator {
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
+
+        self.loadUnlockCheckView()
     }
 
     init(navigation: UINavigationController?) {

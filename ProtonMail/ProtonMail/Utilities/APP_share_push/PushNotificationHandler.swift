@@ -167,7 +167,7 @@ private extension PushNotificationHandler {
         pushData: PushData,
         userId: String
     ) {
-        if userCachedStatus.primaryUserSessionId == userId {
+        if dependencies.cacheStatus.primaryUserSessionId == userId {
             if payload.viewMode == 0, let unread = payload.unreadConversations { // conversation
                 content.badge = NSNumber(value: unread)
             } else if payload.viewMode == 1, let unread = payload.unreadMessages { // single message
@@ -190,9 +190,33 @@ private extension PushNotificationHandler {
 extension PushNotificationHandler {
     struct Dependencies {
         let encryptionKitProvider: EncryptionKitProvider
+        let cacheStatus: PushCacheStatus
 
-        init(encryptionKitProvider: EncryptionKitProvider = PushNotificationDecryptor()) {
+        init(
+            encryptionKitProvider: EncryptionKitProvider = PushNotificationDecryptor(),
+            cacheStatus: PushCacheStatus = PushCacheStatus()
+        ) {
             self.encryptionKitProvider = encryptionKitProvider
+            self.cacheStatus = cacheStatus
+        }
+    }
+
+    final class PushCacheStatus: SharedCacheBase {
+        // swiftlint:disable nesting
+        enum Key {
+            static let primaryUserSessionId = "primary_user_session_id"
+        }
+
+        var primaryUserSessionId: String? {
+            get {
+                if getShared().object(forKey: Key.primaryUserSessionId) == nil {
+                    return nil
+                }
+                return getShared().string(forKey: Key.primaryUserSessionId)
+            }
+            set {
+                setValue(newValue, forKey: Key.primaryUserSessionId)
+            }
         }
     }
 }
