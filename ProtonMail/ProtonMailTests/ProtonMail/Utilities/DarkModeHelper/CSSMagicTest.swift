@@ -95,14 +95,14 @@ final class CSSMagicTest: XCTestCase {
         """
         var document = CSSMagic.parse(htmlString: html)
         css = CSSMagic.generateCSSForDarkMode(document: document)
-        XCTAssertEqual(css, "@media (prefers-color-scheme: dark) {  }")
+        XCTAssertEqual(css, "@media (prefers-color-scheme: dark) { div.a[style*=\"background-color: black\"][style*=\"color: black\"] { background-color: hsla(230, 12%, 10%, 1.0) !important;color: hsla(0, 0%, 100%, 1.0) !important } }")
 
         html = """
         <html> </head> <body> <div class="a" style="background-color: black"></div></body></html>
         """
         document = CSSMagic.parse(htmlString: html)
         css = CSSMagic.generateCSSForDarkMode(document: document)
-        XCTAssertEqual(css, "@media (prefers-color-scheme: dark) {  }")
+        XCTAssertEqual(css, "@media (prefers-color-scheme: dark) { div.a[style*=\"background-color: black\"] { background-color: hsla(230, 12%, 10%, 1.0) !important } }")
 
         html = """
         <html> </head> <body> <div class="a" style="background-color: white"></div></body></html>
@@ -178,7 +178,7 @@ extension CSSMagicTest {
         XCTAssertNotNil(document)
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
-        result = try XCTUnwrap(CSSMagic.getDarkModeCSSDict(for: nodes), "Should have value")
+        result = try XCTUnwrap(CSSMagic.getDarkModeCSSDict(for: nodes, startTime: Date().timeIntervalSinceReferenceDate), "Should have value")
         key = "div.a[style*=\"background-color: hsl(120, 30%, 70%)\"][style*=\"color: black\"]"
         XCTAssertEqual(Array(result.keys), [key])
         XCTAssertEqual(result[key]?.count, 2)
@@ -190,18 +190,21 @@ extension CSSMagicTest {
         XCTAssertNotNil(document)
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
-        result = try XCTUnwrap(CSSMagic.getDarkModeCSSDict(for: nodes), "Should have value")
+        result = try XCTUnwrap(CSSMagic.getDarkModeCSSDict(for: nodes, startTime: Date().timeIntervalSinceReferenceDate), "Should have value")
         XCTAssertEqual(Array(result.keys).count, 0)
 
         html = """
-        <html> </head> <body> <div style="height: auto; width: 100%; color: aqua"></div></body></html>
+        <html> </head> <body> <div style="height: auto; width: 100%; COLOR: aqua"></div></body></html>
         """
         document = CSSMagic.parse(htmlString: html)
         XCTAssertNotNil(document)
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
-        result = try XCTUnwrap(CSSMagic.getDarkModeCSSDict(for: nodes), "Should have value")
-        XCTAssertEqual(Array(result.keys).count, 0)
+        result = try XCTUnwrap(CSSMagic.getDarkModeCSSDict(for: nodes, startTime: Date().timeIntervalSinceReferenceDate), "Should have value")
+        print("a")
+        XCTAssertEqual(Array(result.keys).count, 1)
+        let value = try XCTUnwrap(result["div[style*=\"COLOR: aqua\"]"])
+        XCTAssertEqual(value.first, "COLOR: hsla(180, 100%, 100%, 1.0) !important")
     }
 
     func testGetDarkModeCSSFromNode() throws {
@@ -283,29 +286,6 @@ extension CSSMagicTest {
         result = CSSMagic.getDarkModeColor(from: "#fff", isForeground: false)
         XCTAssertNotNil(result)
         XCTAssertEqual(result, "hsla(230, 12%, 10%, 1.0)")
-    }
-
-    func testHasGoodContrast() {
-        // https://coolors.co/contrast-checker/112a46-acc8e5
-        XCTAssertTrue(CSSMagic.hasGoodContrast(attributes: [
-            ("color", "rgb(128,128,128)"),
-            ("background-color", "#FFF")
-        ]))
-
-        XCTAssertFalse(CSSMagic.hasGoodContrast(attributes: [
-            ("color", "#7A4545"),
-            ("background-color", "#5F2A2A")
-        ]))
-
-        XCTAssertTrue(CSSMagic.hasGoodContrast(attributes: [
-            ("color", "#91C258"),
-            ("background-color", "#333690")
-        ]))
-
-        XCTAssertTrue(CSSMagic.hasGoodContrast(attributes: [
-            ("color", "#A21294"),
-            ("background-color", "#00F7CD")
-        ]))
     }
 }
 
@@ -638,6 +618,16 @@ extension CSSMagicTest {
         XCTAssertEqual(nodes.count, 1)
         anchor = CSSMagic.getCSSAnchor(of: nodes[0])
         XCTAssertEqual(anchor, "html > body > div:nth-child(1)")
+
+        html = """
+        <html><body><div itemprop="description" style="color:#252525;padding:2px 0 0 0;font-size:12px;line-height:18px">....some contents</div></body></html>
+        """
+        document = CSSMagic.parse(htmlString: html)
+        XCTAssertNotNil(document)
+        nodes = CSSMagic.getColorNodes(from: document!)
+        XCTAssertEqual(nodes.count, 1)
+        anchor = CSSMagic.getCSSAnchor(of: nodes[0])
+        XCTAssertEqual(anchor, "div[style*=\"color:#252525\"]")
     }
 
     func testAssembleCSSDict() {
