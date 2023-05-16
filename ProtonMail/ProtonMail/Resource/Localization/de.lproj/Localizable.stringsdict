@@ -403,7 +403,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Diese Nachricht wird in den Ordner „Entwürfe“ verschoben und ihr Zeitplan wird entfernt.</string>
+			<string>%d Nachricht wird in den Ordner „Entwürfe“ verschoben und ihr Zeitplan wird entfernt.</string>
 			<key>other</key>
 			<string>Diese %d Nachrichten werden in den Ordner „Entwürfe“ verschoben und ihr Zeitplan wird entfernt.</string>
 		</dict>

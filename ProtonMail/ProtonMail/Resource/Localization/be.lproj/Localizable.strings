@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Праглядайце ланцужкі паведамленняў у рэжыме размовы.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Каб мы маглі дапамагчы вам, дадайце як мага больш падрабязнасцей---\n\nПадсумаванне:\n\nЦі сутыкаліся вы з праблемай больш за адзін раз: так/не\nКрокі пры выкананні якіх узнікае праблема:\nВынік, які чакаўся:\nАтрыманы вынік:\nКаментарыі:";
+
 /* Title */
 "Bug Report Received" = "Справаздача пра памылку атрымана";
 
@@ -830,6 +833,9 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Увядзіце новы PIN-код";
+
+/* The title of the pin code view. */
+"Enter PIN" = "Увядзіце PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Увядзіце пароль для выканання змен";
@@ -1517,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Абагуліце сваю праблему.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Увайдзіце ў праграму Proton Mail.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Перайдзіце на платны тарыфны план, каб выкарыстоўваць больш за 3 папкі";
 
@@ -2192,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "Абнавіць адрас электроннай пошты для апавяшчэнняў";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Абнаўленне пастаўлена ў чаргу, чаканне падключэння...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Абноўлена >1 гадзіну таму";
 
@@ -2384,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "Паштовы індэкс";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

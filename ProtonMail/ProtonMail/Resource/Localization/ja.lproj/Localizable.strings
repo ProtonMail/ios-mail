@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "会話モードでスレッドのメッセージを読み進めることができます。";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---お役に立てるように、できるだけ多くの詳細をお知らせください---\n\n概要:\n\n問題は複数回発生したか: はい/いいえ\n問題を再現する手順:\n期待された結果:\n実際の結果:\nコメント:";
+
 /* Title */
 "Bug Report Received" = "バグレポートを受け取りました";
 
@@ -830,6 +833,9 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "新しいPIN コードの入力";
+
+/* The title of the pin code view. */
+"Enter PIN" = "PINコードを入力";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "変更するためにはパスワードを入力してください。";
@@ -1517,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "問題をシェアしてください。";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Proton Mailアプリへサインインしてください。";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "3 つ以上のフォルダーを使うには有料プランにアップグレードしてください";
 
@@ -1845,7 +1854,7 @@
 "Snooze" = "通知の休止";
 
 /* The banner shown in case of proxy failure */
-"Some images could not be loaded with tracking protection." = "一部の画像はトラッキング防止により読み込まれませんでした。";
+"Some images could not be loaded with tracking protection." = "トラッキング防止が一部の画像の読み込みをブロックしました。";
 
 /* menu title */
 "Spam" = "迷惑メール";
@@ -2192,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "通知用メールアドレスを更新してください";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "更新は予約され、接続するまで待機中です...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "1 時間前に更新";
 
@@ -2384,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "郵便番号";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

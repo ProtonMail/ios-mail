@@ -403,7 +403,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Ce message sera déplacé dans le dossier Brouillons et sa programmation sera supprimée.</string>
+			<string>%d message sera déplacé dans le dossier Brouillons et sa programmation sera supprimée.</string>
 			<key>other</key>
 			<string>Ces %d messages seront déplacés dans le dossier Brouillons et leur programmation sera supprimée.</string>
 		</dict>

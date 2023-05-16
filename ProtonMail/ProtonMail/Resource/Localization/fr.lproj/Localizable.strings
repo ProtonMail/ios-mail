@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Consultez les messages en mode conversation.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Pour mieux vous aider, nous avons besoin d'autant de détails que possible---\n\nRésumé :\n\nLe problème s'est-il produit plus d'une fois : oui/non\nÉtapes pour reproduire le problème :\nRésultat attendu :\nRésultat actuel : \nCommentaires :";
+
 /* Title */
 "Bug Report Received" = "Rapport de bug reçu";
 
@@ -707,10 +710,10 @@
 "Downloading message %1d out of %2d" = "Téléchargement du message %1$d sur %2$d";
 
 /* The text when metadata indexing is in progress. */
-"Downloading metadata ..." = "Téléchargement des métadonnées en cours...";
+"Downloading metadata ..." = "Téléchargement des métadonnées en cours";
 
 /* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Téléchargement des nouveaux messages...";
+"Downloading new messages..." = "Téléchargement des nouveaux messages en cours";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Télécharge les messages pour que vous puissiez y effectuer des recherches. Les messages sont chiffrés et stockés localement. %1$@";
@@ -831,11 +834,14 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Saisir le nouveau code PIN";
 
+/* The title of the pin code view. */
+"Enter PIN" = "Saisir le PIN";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Saisissez votre mot de passe pour effectuer ces changements.";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Saisissez votre code PIN pour déverrouiller votre Boîte de réception.";
+"Enter your PIN to unlock your inbox." = "Saisissez votre code PIN pour déverrouiller votre Boite de réception.";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "Saisissez votre signature ici.";
@@ -847,7 +853,7 @@
 "Error sending" = "Erreur lors de l'envoi";
 
 /* The default text while estimating the time remaining */
-"Estimating time remaining ..." = "Estimation du temps restant...";
+"Estimating time remaining ..." = "Estimation du temps restant en cours";
 
 /* lock app option */
 "Every time enter app" = "À chaque ouverture de l'application";
@@ -995,7 +1001,7 @@
 "In the morning" = "Le matin";
 
 /* menu title */
-"Inbox" = "Boîte de réception";
+"Inbox" = "Boite de réception";
 
 /* Error */
 "Incorrect PIN." = "Le code PIN n'est pas correct.";
@@ -1236,7 +1242,7 @@
 "Move to archive" = "Déplacer dans le dossier Archives";
 
 /* The title of the remove action in action sheet */
-"Move to inbox" = "Déplacer dans le dossier Boîte de réception";
+"Move to inbox" = "Déplacer dans le dossier Boite de réception";
 
 /* Action title of move to spam
    The title of the spam action in action sheet */
@@ -1346,7 +1352,7 @@
 "normal attachments" = "pièces jointes normales";
 
 /* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Non indésirable/spam (déplacer dans Boîte de réception)";
+"Not a spam (move to inbox)" = "Non indésirable/spam (déplacer dans Boite de réception)";
 
 /* The status text of message history in downloaded messages if the device is out of memory. */
 "Not all messages were downloaded. To download them, free up storage on the device." = "Certains messages n'ont pas été téléchargés. Pour les télécharger, libérez de l'espace de stockage sur l'appareil.";
@@ -1517,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Faites-nous part de votre problème.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Connectez-vous à l'application Proton Mail.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Nous vous invitons à passer à un abonnement payant pour utiliser plus de 3 dossiers.";
 
@@ -1683,7 +1692,7 @@
 "Scheduled" = "Programmé";
 
 /* The title of the banner that will be shown when you schedule a message. */
-"Scheduling message..." = "Programmation du message...";
+"Scheduling message..." = "Programmation du message en cours";
 
 /* Springboard (3D Touch) shortcuts action
    Title */
@@ -1902,7 +1911,7 @@
 "Subject:" = "Objet :";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject..." = "Objet...";
+"Subject..." = "Objet…";
 
 /* menu title
    The title of a subscription plans screen */
@@ -2053,7 +2062,7 @@
 "This preference will fallback to Safari if the browser of choice is uninstalled." = "Cette préférence permet de revenir à Safari si le navigateur choisi est désinstallé.";
 
 /* The title of the info label in the second segment of the Customize toolbar setting view. */
-"This toolbar appears when selecting multiple messages in your inbox." = "Cette barre d'outils apparaît quand vous sélectionnez plusieurs messages dans votre boîte de réception.";
+"This toolbar appears when selecting multiple messages in your inbox." = "Cette barre d'outils apparaît quand vous sélectionnez plusieurs messages dans votre boite de réception.";
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Cette barre d'outils est visible lors de la lecture d'un message.";
@@ -2191,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Mettre à jour l'adresse e-mail de notification";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Mise à jour en file d'attente, en attente de connexion…";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Mis à jour il y a plus d’une heure";
@@ -2373,7 +2385,7 @@
 "Your labels" = "Vos labels";
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Vos messages sont en cours de téléchargement...";
+"Your messages are being downloaded..." = "Vos messages sont en cours de téléchargement.";
 
 /* The content of the referral prompt view. */
 "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "Votre vie privée est mieux protégée si vos contacts utilisent aussi Proton Mail. Invitez vos amis à utiliser Proton et chacun d'entre vous bénéficiera gratuitement des fonctionnalités premium.";
@@ -2384,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "Code postal";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

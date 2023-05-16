@@ -403,7 +403,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Esta %d mensagem será movida para Rascunhos e seu agendamento será removido.</string>
+			<string>%d mensagem será movida para Rascunhos e seu agendamento será removido.</string>
 			<key>other</key>
 			<string>Estas %d mensagens serão movidas para Rascunhos e seus agendamentos serão removidos.</string>
 		</dict>

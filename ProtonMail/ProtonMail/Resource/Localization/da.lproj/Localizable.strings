@@ -831,6 +831,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Indtast ny pinkode";
 
+/* The title of the pin code view. */
+"Enter PIN" = "Indtast PIN";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Angiv din adgangskode for at foretage ændringer";
 
@@ -1517,6 +1520,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Del dit problem.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Log venligst ind i Proton Mail Appen.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Opgradér til et betalt abonnement for at bruge mere end 3 mapper";
 
@@ -1729,6 +1735,12 @@
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Send læsekvittering";
 
+/* Toast confirming the block */
+"Sender %@ blocked" = "Afsender %@ blokeret";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Afsender %@ blokering fjernet";
+
 /* Banner in the message view */
 "Sender has been blocked" = "Afsender er blevet blokeret";
 
@@ -1828,6 +1840,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Logget ud fra %1$@ og logget ind med %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Logget ud af %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Spring over";
@@ -2126,6 +2141,9 @@
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Fjern blokering";
 
+/* Button to unblock a sender */
+"Unblock sender" = "Fjern blokering af afsender";
+
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Oplyste modtagere";
 
@@ -2359,6 +2377,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Din beskeder bliver downloadet...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "Dir privatliv er bedre beskyttet, hvis dine kontakter også bruger Proton Mail. Inviter dine venner til at bruge Proton, så får I begge gratis premium fordele.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session er udløbet, fordi du har været inaktiv i et stykke tid, eller fordi den er blevet tilbagekaldt. Log venligst ind igen.";

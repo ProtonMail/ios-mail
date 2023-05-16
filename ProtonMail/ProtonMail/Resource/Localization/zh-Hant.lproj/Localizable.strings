@@ -831,6 +831,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "輸入新的 PIN 碼";
 
+/* The title of the pin code view. */
+"Enter PIN" = "輸入 PIN 碼";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "輸入您的密碼以作變更";
 
@@ -1517,6 +1520,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "請詳述您遇到的問題。";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "請登入 Proton Mail";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "請升級至付費方案以使用超過 3 個資料夾";
 
@@ -2109,7 +2115,7 @@
 "Trusted keys are not valid for sending" = "已信任的密鑰用於寄送時無效";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用ProtonVPN and Tor）。";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用 %1$@ 或 %2$@）。";
 
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "啟用此功能，以使用已登入帳號中的聯絡人，自動填入電子郵件地址。";

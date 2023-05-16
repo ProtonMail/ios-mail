@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Parcurgeți rapid mesajele înșiruite în modul conversație.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Pentru a putea să vă ajutăm, vă rugăm să furnizați cât mai multe detalii posibile---\n\nRezumat:\n\nS-a întâmplat mai mult de o dată această problemă: da/nu\nPași pentru a reproduce problema:\nRezultat așteptat:\nRezultat actual:\nComentarii:";
+
 /* Title */
 "Bug Report Received" = "Raport eroare primit";
 
@@ -830,6 +833,9 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Introduceți noul cod PIN";
+
+/* The title of the pin code view. */
+"Enter PIN" = "Introduceți codul PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Introduceți parola pentru a efectua modificările";
@@ -1517,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Spuneți-ne care este problema.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Autentificați-vă în aplicația Proton Mail.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Treceți la un plan cu plată pentru a folosi mai mult de 3 foldere.";
 
@@ -2192,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "Actualizare e-mail de notificare.";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Actualizare în așteptare, se așteaptă conexiunea...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Actualizat în urmă cu peste o oră";
 
@@ -2384,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "Cod Poștal";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

@@ -166,13 +166,13 @@
 "API Server not reachable…" = "API 服务器无法访问...";
 
 /* security title in settings */
-"App PIN" = "App PIN码";
+"App PIN" = "应用口令";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN码 & Face ID";
+"App PIN & Face ID" = "应用口令与 Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN码 & Touch ID";
+"App PIN & Touch ID" = "应用口令与 Touch ID";
 
 /* section title in settings */
 "App settings" = "应用设置";
@@ -229,7 +229,7 @@
 "At least one email address in the group could not be found." = "群组中部分邮箱地址未找到。";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "部分收件人的电子邮件地址格式不正确，请重新检查。";
+"At least one recipient email address is improperly formatted, please double check them." = "部分收件人的邮箱地址格式不正确，请重新检查。";
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "部分收件人的邮箱地址/域名不存在或格式不正确，因此邮件已被存为草稿。";
@@ -397,7 +397,7 @@
 "Change Password" = "更改密码";
 
 /* The title of change PIN code option in security settings */
-"Change PIN code" = "更改 PIN 码";
+"Change PIN code" = "更改口令";
 
 /* Title */
 "Change sender address to…" = "将发件人地址改为…";
@@ -423,7 +423,7 @@
 "Clear" = "清除";
 
 /* cell title in device setting */
-"Clear local cache" = "清除本地缓存";
+"Clear local cache" = "清除本机缓存";
 
 /* Menu action to remove text formatting */
 "Clear Style" = "清除格式";
@@ -588,7 +588,7 @@
 "Default browser" = "默认浏览器";
 
 /* Placeholder */
-"Define Hint (Optional)" = "密码提示（选填）";
+"Define Hint (Optional)" = "密码提示（非必填）";
 
 /* general delete action
    The title of the delete action in action sheet
@@ -826,16 +826,19 @@
 "Enter" = "进入";
 
 /* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "请输入 4-21 个字符的 PIN 码。";
+"Enter a PIN code with min 4 characters and max 21 characters." = "请输入 4 至 21 个字符的口令，用于打开应用时验证身份。";
 
 /* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "输入新 PIN 码";
+"Enter new PIN code" = "输入新口令";
+
+/* The title of the pin code view. */
+"Enter PIN" = "输入口令";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "请输入您的密码以进行更改";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "输入 PIN 码解锁收件箱。";
+"Enter your PIN to unlock your inbox." = "输入口令即可解锁邮箱。";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "请在此处输入您的签名";
@@ -998,7 +1001,7 @@
 "Inbox" = "收件箱";
 
 /* Error */
-"Incorrect PIN." = "PIN 码不正确。";
+"Incorrect PIN." = "口令不正确。";
 
 /* The foot of downloaded messages in local storage settings */
 "Information about how much storage space this Proton Mail account is using on your device." = "关于此 Proton Mail 账户在你的设备上使用多少存储空间的信息。";
@@ -1109,7 +1112,7 @@
 "Loading…" = "加载中...";
 
 /* The title of local storage in settings */
-"Local storage" = "本地储存";
+"Local storage" = "本机存储空间";
 
 /* cell title in device settings */
 "Local storage limit" = "本机存储限制";
@@ -1476,10 +1479,10 @@
 "Phone number" = "电话号码";
 
 /* The protection title of PIN code protection */
-"PIN code" = "PIN 码";
+"PIN code" = "口令";
 
 /* Description */
-"PIN code can't be empty." = "PIN 码不能为空。";
+"PIN code can't be empty." = "口令不能为空。";
 
 /* The error message of entering a long pin */
 "PIN is too long" = "口令太长";
@@ -1516,6 +1519,9 @@
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "请说明您的问题。";
+
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "请先登录 Proton Mail 账户。";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "请开通付费账户以使用 3 个以上文件夹";
@@ -1613,7 +1619,7 @@
 
 /* The title of PIN code setup2 view
    The title of textfield of PIN code setup2 */
-"Repeat PIN code" = "确认 PIN 码";
+"Repeat PIN code" = "确认口令";
 
 /* reply action */
 "Reply" = "回复";
@@ -1715,7 +1721,7 @@
 "Send anyway" = "仍然发送";
 
 /* Title of menu action to trigger feedback viewTitle of button to send feedback */
-"Send feedback" = "发送反馈";
+"Send feedback" = "评价应用";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
 "Send immediately" = "立即发送";
@@ -1793,7 +1799,7 @@
 "Set Password" = "设置密码";
 
 /* The title of PIN code setup1 view */
-"Set PIN code" = "设置 PIN 码";
+"Set PIN code" = "设置口令";
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "设置滑动手势来执行常用操作。";
@@ -1906,7 +1912,7 @@
 
 /* menu title
    The title of a subscription plans screen */
-"Subscription" = "订购";
+"Subscription" = "账户等级";
 
 /* cell title in app settings */
 "Swipe actions" = "滑动操作";
@@ -1978,7 +1984,7 @@
 "The password must be between 8 and 21 characters long" = "密码长度必须介于 8 到 21 个字符之间";
 
 /* The error message of entering an invalid password */
-"The PIN codes must match!" = "两次输入的 PIN 码必须一致！";
+"The PIN codes must match!" = "两次输入的口令必须一致！";
 
 /* update password error */
 "The private key update failed." = "私钥更新失败。";
@@ -2035,7 +2041,7 @@
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "此链接指向的网站可能会窃取您的密码、信用卡等信息。\n%@\n\n出于安全考虑，请不要打开此链接。";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "此邮件已取消定时发送。如果仍需稍后发送， 可以再次点击“定时发送”。";
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "此邮件已取消定时发送。如果仍需稍后发送，可以再次点击“定时发送”。";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "此邮件可能具有欺诈性质，请检查发件人身份和邮件内容，确认信息真实性。";
@@ -2191,6 +2197,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "更改通知邮箱";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "正在等待网络连接完成更新...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "更新于 >1 小时前";

@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Navegueu ràpidament a través dels missatges encadenats en el mode conversa.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Per ajudar-nos a ajudar-vos, proporcioneu tants detalls com pugueu---\n\nResum:\n\nEl problema ha passat més d'una vegada: sí/no\nPassos per reproduir el problema:\nResultat esperat:\nResultat real:\nComentaris:";
+
 /* Title */
 "Bug Report Received" = "Informe d'error rebut";
 
@@ -831,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Introduïu el codi PIN nou";
 
+/* The title of the pin code view. */
+"Enter PIN" = "Introdueix el PIN";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Introduïu la vostra contrasenya per fer canvis";
 
@@ -1212,7 +1218,7 @@
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Els missatges d'abans de %@, no seràn cercats. Per cercar entre els missatges antics allibera espai a aquest dispositiu.";
 
 /* Text for the alert to enable encrypted search */
-"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Els missatges es descarregaran a través de WiFi. Això pot trigar força temps i el vostre dispositiu es mpot escalfar lleugerament. Podeu pausar l'acció en qualsevol moment.";
+"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Els missatges es descarregaran a través de WiFi. Això pot trigar força temps i el vostre dispositiu pot escalfar-se lleugerament. Podeu aturar l'acció en qualsevol moment.";
 
 /* default vcard types */
 "Mobile" = "Mòbil";
@@ -1517,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Compartiu el problema.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Si us plau, inicieu la sessió a l'aplicació de Proton Mail.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Actualitzeu-vos a un pla de pagament per utilitzar més de 3 carpetes";
 
@@ -1781,7 +1790,7 @@
 "Set" = "Establir";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Definiu una contrasenya per xifrar aquest missatge per a usuaris que no siguin de Proton Mail.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Definiu una contrasenya per xifrar aquest missatge per a usuaris que no siguin de Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Estableix l'expiració del correu";
@@ -1884,7 +1893,7 @@
 "Storage used" = "Emmagatzematge utilitzat";
 
 /* The text for determining the size of the encrypted search index */
-"Storage used: " = "Emmagatzematge utilitzat:";
+"Storage used: " = "Emmagatzematge utilitzat: ";
 
 /* Title */
 "Storage Warning" = "Avís d'emmagatzematge";
@@ -2192,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "Actualitza el correu electrònic de notificació";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Actualització en cua, esperant conexió...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Actualitzat fa >1 hora";
 
@@ -2384,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "Codi postal";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

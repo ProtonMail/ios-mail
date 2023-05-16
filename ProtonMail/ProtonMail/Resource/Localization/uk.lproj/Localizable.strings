@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Переглядайте ланцюжки повідомлень у режимі розмови.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Допоможіть нам усунути вашу проблему, надавши якомога більше подробиць---\n\nПідсумок:\n\nЧи траплялася проблема більше одного разу: так/ні \nКроки для відтворення проблеми: \nОчікуваний результат: \nФактичний результат: \nКоментарі:";
+
 /* Title */
 "Bug Report Received" = "Звіт про помилку отримано";
 
@@ -830,6 +833,9 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Введіть ПІН-код";
+
+/* The title of the pin code view. */
+"Enter PIN" = "Введіть PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Введіть свій пароль для виконання змін";
@@ -1517,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Будь ласка, розкажіть про свою проблему.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Увійдіть до застосунку Proton Mail.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Передплатіть тарифний план, щоб використовувати більше ніж 3 теки";
 
@@ -2192,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "Оновити адресу для сповіщень";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Очікується з'єднання для чергового оновлення...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Оновлено >1 годину тому";
 
@@ -2384,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "Поштовий індекс";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

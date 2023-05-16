@@ -91,7 +91,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d tentativa restante</string>
+			<string>%d tentativas restantes</string>
 			<key>other</key>
 			<string>%d tentativas restantes</string>
 		</dict>
@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Esta mensagem (%d) será transferida para a pasta Rascunhos e o seu calendário será removido.</string>
+			<string>%d mensagem será transferida para a pasta Rascunhos e o seu calendário será removido.</string>
 			<key>other</key>
-			<string>Estas mensagens (%d) serão transferidas para a pasta Rascunhos e o seu calendário será removido.</string>
+			<string>Estas %d mensagens serão transferidas para a pasta Rascunhos e o seu calendário será removido.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>

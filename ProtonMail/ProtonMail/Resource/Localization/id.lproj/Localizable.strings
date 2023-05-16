@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Baca pesan berutas dengan mudah dalam mode percakapan.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Untuk membantu kami dalam menangani masalah Anda, mohon berikan informasi yang lengkap---\n\nRincian:\nMasalah terjadi lebih dari sekali: ya/tidak\nLangkah-langkah untuk mereproduksi masalah:\nHasil yang diharapkan:\nHasil yang terjadi:\nKomentar:";
+
 /* Title */
 "Bug Report Received" = "Laporan Bug Diterima";
 
@@ -830,6 +833,9 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Masukkan kode PIN baru";
+
+/* The title of the pin code view. */
+"Enter PIN" = "Masukkan PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Masukkan kata sandi Anda untuk menerapkan perubahan";
@@ -1517,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Mohon ceritakan masalah yang Anda hadapi.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Silakan masuk ke aplikasi Proton Mail.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Mohon tingkatkan ke paket berbayar untuk dapat menggunakan lebih dari 3 folder";
 
@@ -2154,7 +2163,7 @@
 "Unknown Error" = "Kesalahan yang Tidak Diketahui";
 
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
-"Unlimited" = "Tidak terbatas";
+"Unlimited" = "Tak terbatas";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Unlimited folders and labels" = "Tanpa batasan jumlah folder dan label";
@@ -2191,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Perbarui Email Notifikasi";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Pembaruan diantrekan, menunggu konektivitas...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Diperbarui >1 jam yang lalu";
@@ -2384,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "Kode pos";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";
