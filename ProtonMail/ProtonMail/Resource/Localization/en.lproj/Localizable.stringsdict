@@ -209,9 +209,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d message moved to %@</string>
+			<string>%1$d message moved to %2$@</string>
 			<key>other</key>
-			<string>%d messages moved to %@</string>
+			<string>%1$d messages moved to %2$@</string>
 		</dict>
 	</dict>
 	<key>%d conversation labeled</key>
@@ -257,9 +257,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d conversation moved to %@</string>
+			<string>%1$d conversation moved to %2$@</string>
 			<key>other</key>
-			<string>%d conversations moved to %@</string>
+			<string>%1$d conversations moved to %2$@</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
