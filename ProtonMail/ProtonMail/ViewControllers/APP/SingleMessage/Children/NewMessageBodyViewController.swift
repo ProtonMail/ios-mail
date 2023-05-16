@@ -375,6 +375,15 @@ extension NewMessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
             completionHandler(.performDefaultHandling, challenge.proposedCredential)
         }
     }
+
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        webView.removeFromSuperview()
+        webView.stopLoading()
+        webView.uiDelegate = nil
+        webView.navigationDelegate = nil
+        self.webView = nil
+        reloadWebView(forceRecreate: true)
+    }
 }
 
 extension NewMessageBodyViewController {

@@ -604,6 +604,9 @@ extension MessageInfoProvider {
     }
 
     private func updateBodyParts(with newBody: String) {
+        guard newBody != bodyParts?.originalBody else {
+            return
+        }
         bodyParts = BodyParts(originalBody: newBody)
     }
 
@@ -631,7 +634,7 @@ extension MessageInfoProvider {
             contentLoadingType = .none
         }
 
-        let css = bodyParts?.darkModeCSS(body: body)
+        let css = bodyParts?.darkModeCSS()
         contents = WebContents(
             body: body.keywordHighlighting.usingCSS(keywords: highlightedKeywords),
             remoteContentMode: remoteContentPolicy,
