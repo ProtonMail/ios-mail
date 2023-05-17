@@ -92,6 +92,14 @@ final class BuildSearchIndex {
         dependencies.esUserCache.isEncryptedSearchOn(of: params.userID)
     }
 
+    var oldestMessageTime: Int? {
+        dependencies.searchIndexDB.oldestMessageTime()
+    }
+
+    var indexSize: ByteCount? {
+        dependencies.searchIndexDB.size
+    }
+
     func start() {
         guard canBuildSearchIndex(),
               !isBuildingIndexInProgress else { return }
@@ -135,7 +143,6 @@ final class BuildSearchIndex {
         stopAndClearOperationQueue()
         cleanupAfterIndexing()
         timerFireTimes = 0
-        guard isBuildingIndexInProgress else { return }
         updateCurrentState(to: .disabled)
         try? dependencies.searchIndexDB.deleteSearchIndex()
     }
@@ -286,7 +293,7 @@ extension BuildSearchIndex {
         let currentProgress = Double(totalIndexedMessages) / Double(totalMessagesCount)
         return BuildSearchIndexEstimatedProgress(
             totalMessages: totalMessagesCount,
-            indexedMessages: processedMessagesCount,
+            indexedMessages: totalIndexedMessages,
             estimatedTimeString: timeToDate(timeInSecond: estimatedTime),
             currentProgress: max(0, min(1, currentProgress)) * 100
         )

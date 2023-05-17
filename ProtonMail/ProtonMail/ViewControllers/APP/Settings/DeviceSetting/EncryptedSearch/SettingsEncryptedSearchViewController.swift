@@ -153,19 +153,15 @@ extension SettingsEncryptedSearchViewController {
 
     private func cellForDownloadedMessages() -> EncryptedSearchDownloadedMessagesCell {
         let cell = tableView.dequeue(cellType: EncryptedSearchDownloadedMessagesCell.self)
-
-        // TODO: Pending. It depends on how the information is obtained in the VM and how it's exposed to the VC
-        // let downloadedMessages = viewModel.ouput.downloadedMessages
-        // cell.configure(info: downloadedMessages.toDownloadedMessagesInfo())
+        let info = viewModel.output.downloadedMessagesInfo
         cell.configure(
             info: .init(
                 icon: .success,
                 title: .downlodedMessages,
-                oldestMessage: .init(date: "Jan 1st, 2023", highlight: false),
-                additionalInfo: .storageUsed(valueInMB: "145 MB")
+                oldestMessage: .init(date: info.oldesMessageTime, highlight: !info.isDownloadComplete),
+                additionalInfo: .storageUsed(valueInMB: info.indexSize)
             )
-        ) // for sample purposes
-
+        )
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -189,25 +185,21 @@ extension SettingsEncryptedSearchViewController {
     }
 
     private func showDisableEncryptedSearchAlertIfNeeded(for cellSwitch: UISwitch) {
-        if viewModel.output.isDownloadInProgress {
-            let alert = UIAlertController(
-                title: L11n.EncryptedSearch.disable_feature_alert_title,
-                message: L11n.EncryptedSearch.disable_feature_alert_message,
-                preferredStyle: .alert
-            )
-            let disable = LocalString._general_ok_action
-            let cancelTitle = L11n.EncryptedSearch.disable_feature_alert_button_cancel
-            let enable = UIAlertAction(title: disable, style: .destructive) { [weak self] _ in
-                self?.viewModel.input.didChangeEncryptedSearchValue(isNewStatusEnabled: false)
-            }
-            let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
-                cellSwitch.setOn(true, animated: true)
-            }
-            [enable, cancel].forEach(alert.addAction)
-            present(alert, animated: true, completion: nil)
-        } else {
-            viewModel.input.didChangeEncryptedSearchValue(isNewStatusEnabled: false)
+        let alert = UIAlertController(
+            title: L11n.EncryptedSearch.disable_feature_alert_title,
+            message: L11n.EncryptedSearch.disable_feature_alert_message,
+            preferredStyle: .alert
+        )
+        let disable = LocalString._general_ok_action
+        let cancelTitle = L11n.EncryptedSearch.disable_feature_alert_button_cancel
+        let enable = UIAlertAction(title: disable, style: .destructive) { [weak self] _ in
+            self?.viewModel.input.didChangeEncryptedSearchValue(isNewStatusEnabled: false)
         }
+        let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
+            cellSwitch.setOn(true, animated: true)
+        }
+        [enable, cancel].forEach(alert.addAction)
+        present(alert, animated: true, completion: nil)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

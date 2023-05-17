@@ -20,6 +20,7 @@ import Foundation
 final class SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelProtocol {
     var input: SettingsEncryptedSearchViewModelInput { self }
     var output: SettingsEncryptedSearchViewModelOutput { self }
+    let dateFormatter: DateFormatter
     private weak var uiDelegate: SettingsEncryptedSearchUIProtocol?
     private let router: SettingsEncryptedSearchRouterProtocol
     private let dependencies: Dependencies
@@ -30,6 +31,11 @@ final class SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelPr
     private(set) var sections: [SettingsEncryptedSearchSection] = [.encryptedSearchFeature]
 
     init(router: SettingsEncryptedSearchRouterProtocol, dependencies: Dependencies) {
+        dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .none
+        dateFormatter.locale = dependencies.locale
+        dateFormatter.timeZone = dependencies.timeZone
         self.router = router
         self.dependencies = dependencies
     }
@@ -37,15 +43,27 @@ final class SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelPr
     private func refreshEnabledStatusUI() {
         if isEncryptedSearchEnabled {
             sections = [.encryptedSearchFeature, .downloadViaMobileData]
-            if isDownloadInProgress {
-                sections.append(.downloadProgress)
-            } else {
-                sections.append(.downloadedMessages)
+            let indexBuildingState = dependencies.esService.indexBuildingState(for: userID)
+            if indexBuildingState != .undetermined { // TODO: we should get rid of the .undeterminate state
+                if shouldShowDownlodingProgress(for: indexBuildingState) {
+                    sections.append(.downloadProgress)
+                } else {
+                    sections.append(.downloadedMessages)
+                }
             }
         } else {
             sections = [.encryptedSearchFeature]
         }
         uiDelegate?.reloadData()
+    }
+
+    private func shouldShowDownlodingProgress(for state: EncryptedSearchIndexState) -> Bool {
+        switch state {
+        case .disabled, .partial, .complete:
+            return false
+        case .creatingIndex, .paused, .downloadingNewMessage, .undetermined, .background, .backgroundStopped:
+            return true
+        }
     }
 }
 
@@ -53,8 +71,7 @@ extension SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelInpu
 
     func viewWillAppear() {
         dependencies.esService.setBuildSearchIndexDelegate(for: userID, delegate: self)
-        let state = dependencies.esService.indexBuildingState(for: userID)
-        uiDelegate?.updateDownloadState(state: state)
+        refreshEnabledStatusUI()
     }
 
     func didChangeEncryptedSearchValue(isNewStatusEnabled: Bool) {
@@ -98,12 +115,21 @@ extension SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelOutp
         dependencies.esUserCache.canDownloadViaMobileData(of: userID)
     }
 
-    var isDownloadInProgress: Bool {
-        dependencies.esService.isIndexBuildingInProgress(for: userID)
-    }
-
     var searchIndexDownloadProgress: EncryptedSearchDownloadProgress? {
         dependencies.esService.indexBuildingEstimatedProgress(for: userID)?.toEncryptedSearchDownloadProgress()
+    }
+
+    var downloadedMessagesInfo: EncryptedSearchDownloadedMessagesInfo {
+        var indexSize: String = "-"
+        if let bytes = dependencies.esService.indexSize(for: userID) {
+            indexSize = bytes.toByteCount
+        }
+        var oldestTime: String = "-"
+        if let time = dependencies.esService.oldesMessageTime(for: userID) {
+            oldestTime = dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(time)))
+        }
+        let isDownloadComplete = dependencies.esService.indexBuildingState(for: userID) == .complete
+        return .init(isDownloadComplete: isDownloadComplete, indexSize: indexSize, oldesMessageTime: oldestTime)
     }
 
     func setUIDelegate(_ delegate: SettingsEncryptedSearchUIProtocol) {
@@ -141,15 +167,21 @@ extension SettingsEncryptedSearchViewModel {
         let userID: UserID
         let esUserCache: EncryptedSearchUserCache
         let esService: EncryptedSearchServiceProtocol
+        let locale: Locale
+        let timeZone: TimeZone
 
         init(
             userID: UserID,
             esUserCache: EncryptedSearchUserCache = sharedServices.get(by: EncryptedSearchUserDefaultCache.self),
-            esService: EncryptedSearchServiceProtocol = EncryptedSearchService.shared
+            esService: EncryptedSearchServiceProtocol = EncryptedSearchService.shared,
+            locale: Locale = .current,
+            timeZone: TimeZone = .current
         ) {
             self.userID = userID
             self.esUserCache = esUserCache
             self.esService = esService
+            self.locale = locale
+            self.timeZone = timeZone
         }
     }
 }

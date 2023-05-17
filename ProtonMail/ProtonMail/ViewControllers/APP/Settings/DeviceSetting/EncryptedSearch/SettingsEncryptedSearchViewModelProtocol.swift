@@ -35,9 +35,9 @@ protocol SettingsEncryptedSearchViewModelOutput {
     var sections: [SettingsEncryptedSearchSection] { get }
     var isEncryptedSearchEnabled: Bool { get }
     var isUseMobileDataEnabled: Bool { get }
-    var isDownloadInProgress: Bool { get }
     var searchIndexState: EncryptedSearchIndexState { get }
     var searchIndexDownloadProgress: EncryptedSearchDownloadProgress? { get }
+    var downloadedMessagesInfo: EncryptedSearchDownloadedMessagesInfo { get }
 
     func setUIDelegate(_ delegate: SettingsEncryptedSearchUIProtocol)
 }
@@ -61,4 +61,10 @@ struct EncryptedSearchDownloadProgress {
     let totalMessages: Int
     let timeRemaining: String
     let percentageDownloaded: Int
+}
+
+struct EncryptedSearchDownloadedMessagesInfo {
+    let isDownloadComplete: Bool
+    let indexSize: String
+    let oldesMessageTime: String
 }
