@@ -814,7 +814,7 @@ extension ComposeViewModel {
             switch contact.modelType {
             case .contact:
                 let contact = contact as! ContactVO
-                let recipient = EncodableRecipient(address: contact.email, group: nil)
+                let recipient = EncodableRecipient(name: contact.name, address: contact.email, group: nil)
                 return [recipient]
             case .contactGroup:
                 let contactGroup = contact as! ContactGroupVO
@@ -1121,10 +1121,12 @@ extension ComposeViewModel {
 
     struct EncodableRecipient: Encodable {
         enum CodingKeys: String, CodingKey {
+            case name = "Name"
             case address = "Address"
             case group = "Group"
         }
 
+        let name: String
         let address: String
         let group: String?
     }

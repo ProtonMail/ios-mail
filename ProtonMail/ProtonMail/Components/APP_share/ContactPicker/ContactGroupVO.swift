@@ -90,7 +90,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
 
     func getSelectedEmailsWithDetail() -> [ComposeViewModel.EncodableRecipient] {
         selectedMembers.map { member in
-            ComposeViewModel.EncodableRecipient(address: member.key.email, group: contactTitle)
+            ComposeViewModel.EncodableRecipient(name: member.key.name, address: member.key.email, group: contactTitle)
         }
     }
 
