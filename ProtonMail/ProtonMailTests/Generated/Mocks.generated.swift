@@ -548,6 +548,14 @@ class MockFeatureFlagsDownloadServiceProtocol: FeatureFlagsDownloadServiceProtoc
 
 }
 
+class MockFeatureFlagsSubscribeProtocol: FeatureFlagsSubscribeProtocol {
+    @FuncStub(MockFeatureFlagsSubscribeProtocol.handleNewFeatureFlags) var handleNewFeatureFlagsStub
+    func handleNewFeatureFlags(_ featureFlags: [String: Any]) {
+        handleNewFeatureFlagsStub(featureFlags)
+    }
+
+}
+
 class MockImageProxyDelegate: ImageProxyDelegate {
     @FuncStub(MockImageProxyDelegate.imageProxy) var imageProxyStub
     func imageProxy(_ imageProxy: ImageProxy, output: ImageProxyOutput) {

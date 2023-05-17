@@ -62,14 +62,14 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     }
 
     func testRegisterNewSubscriber() {
-        let mock = SubscriberMock()
+        let mock = MockFeatureFlagsSubscribeProtocol()
         sut.register(newSubscriber: mock)
 
         XCTAssertEqual(sut.subscribers.count, 1)
     }
 
     func testGetFeatureFlag() throws {
-        let subscriberMock = SubscriberMock()
+        let subscriberMock = MockFeatureFlagsSubscribeProtocol()
         sut.register(newSubscriber: subscriberMock)
 
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
@@ -83,15 +83,9 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         }
 
         let expectation1 = expectation(description: "Closure is called")
-        sut.getFeatureFlags { result in
-            switch result {
-            case .failure:
-                XCTFail("Should not get here")
-            case .success(let response):
-                XCTAssertFalse(response.result.isEmpty)
-            }
-            XCTAssertTrue(subscriberMock.isHandleNewFeatureFlagsCalled)
-            XCTAssertFalse(subscriberMock.receivedFeatureFlags.isEmpty)
+        sut.getFeatureFlags { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(subscriberMock.handleNewFeatureFlagsStub.callCounter, 1)
 
             expectation1.fulfill()
         }
@@ -114,16 +108,14 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         let date5minsBefore = Date(timeIntervalSince1970: (Date().timeIntervalSince1970 - 300))
         sut.setLastFetchedTime(date: date5minsBefore)
         let expectation1 = expectation(description: "Closure called")
-        sut.getFeatureFlags { result in
-            switch result {
-            case .success:
-                XCTFail("Should not reach here")
-            case .failure(let error):
-                if case .fetchingTooOften = error {
-                    break
-                } else {
-                    XCTFail("Should not reach here")
-                }
+        sut.getFeatureFlags { error in
+            switch error {
+            case .some(FeatureFlagsDownloadService.FeatureFlagFetchingError.fetchingTooOften):
+                break
+            case .none:
+                XCTFail("Expected an error")
+            case .some(let otherError):
+                XCTFail("Unexpected error: \(otherError)")
             }
             expectation1.fulfill()
         }
@@ -156,15 +148,5 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         XCTAssertEqual(lastCallArguments.first, .scheduledSend)
         XCTAssertEqual(lastCallArguments.second, false)
         XCTAssertEqual(lastCallArguments.third, userID)
-    }
-}
-
-class SubscriberMock: FeatureFlagsSubscribeProtocol {
-    var isHandleNewFeatureFlagsCalled = false
-    var receivedFeatureFlags: [String: Any] = [:]
-
-    func handleNewFeatureFlags(_ featureFlags: [String: Any]) {
-        isHandleNewFeatureFlagsCalled = true
-        receivedFeatureFlags = featureFlags
     }
 }
