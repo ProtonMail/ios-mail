@@ -49,4 +49,26 @@ final class ContactVOTests: XCTestCase {
         XCTAssertEqual(contact2.getName(in: [contact1]), "name1")
         XCTAssertEqual(contact1.getName(in: [contact5]), nil)
     }
+
+    func testExtractMailAddress() {
+        var value = "abc@test.com"
+        var (name, address) = ContactVO.extractMailAddress(from: value)
+        XCTAssertEqual(name, "abc@test.com")
+        XCTAssertEqual(address, "abc@test.com")
+
+        value = "John Smith <john.smith@example.org>"
+        (name, address) = ContactVO.extractMailAddress(from: value)
+        XCTAssertEqual(name, "John Smith")
+        XCTAssertEqual(address, "john.smith@example.org")
+
+        value = "John Smith <sayHi>"
+        (name, address) = ContactVO.extractMailAddress(from: value)
+        XCTAssertEqual(name, "John Smith <sayHi>")
+        XCTAssertEqual(address, "John Smith <sayHi>")
+
+        value = "\"💫 aaa | tester at protonmail.com\" <abcde@simplelogin.co>"
+        (name, address) = ContactVO.extractMailAddress(from: value)
+        XCTAssertEqual(name, "\"💫 aaa | tester at protonmail.com\"")
+        XCTAssertEqual(address, "abcde@simplelogin.co")
+    }
 }
