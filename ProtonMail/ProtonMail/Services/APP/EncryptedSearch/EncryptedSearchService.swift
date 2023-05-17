@@ -22,13 +22,14 @@ protocol EncryptedSearchServiceProtocol {
     func setBuildSearchIndexDelegate(for userID: UserID, delegate: BuildSearchIndexDelegate?)
     func indexBuildingState(for userID: UserID) -> EncryptedSearchIndexState
     func indexBuildingEstimatedProgress(for userID: UserID) -> BuildSearchIndexEstimatedProgress?
-    func isIndexBuildingInProgress(for userID: UserID) -> Bool
     func isIndexBuildingComplete(for userID: UserID) -> Bool
     func startBuildingIndex(for userID: UserID)
     func pauseBuildingIndex(for userID: UserID)
     func resumeBuildingIndex(for userID: UserID)
     func stopBuildingIndex(for userID: UserID)
     func didChangeDownloadViaMobileData(for userID: UserID)
+    func indexSize(for userID: UserID) -> ByteCount?
+    func oldesMessageTime(for userID: UserID) -> Int?
 }
 
 final class EncryptedSearchService: EncryptedSearchServiceProtocol {
@@ -55,10 +56,6 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol {
         buildSearchIndex(for: userID)?.estimatedProgress
     }
 
-    func isIndexBuildingInProgress(for userID: UserID) -> Bool {
-        buildSearchIndex(for: userID)?.currentState?.isIndexing ?? false
-    }
-
     func isIndexBuildingComplete(for userID: UserID) -> Bool {
         buildSearchIndex(for: userID)?.currentState == .complete
     }
@@ -72,15 +69,23 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol {
     }
 
     func resumeBuildingIndex(for userID: UserID) {
-        // TODO: missing BuildSearchIndex API to resume
+        buildSearchIndex(for: userID)?.resume()
     }
 
     func stopBuildingIndex(for userID: UserID) {
-        // TODO: missing BuildSearchIndex API to stop and set `disabled`
+        buildSearchIndex(for: userID)?.disable()
     }
 
     func didChangeDownloadViaMobileData(for userID: UserID) {
         buildSearchIndex(for: userID)?.didChangeDownloadViaMobileDataConfiguration()
+    }
+
+    func indexSize(for userID: UserID) -> ByteCount? {
+        buildSearchIndex(for: userID)?.indexSize
+    }
+
+    func oldesMessageTime(for userID: UserID) -> Int? {
+        buildSearchIndex(for: userID)?.oldestMessageTime
     }
 
     func userAuthenticated(_ user: UserManager) {

@@ -335,11 +335,6 @@ class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
         indexBuildingEstimatedProgressStub(userID)
     }
 
-    @FuncStub(MockEncryptedSearchServiceProtocol.isIndexBuildingInProgress, initialReturn: Bool()) var isIndexBuildingInProgressStub
-    func isIndexBuildingInProgress(for userID: UserID) -> Bool {
-        isIndexBuildingInProgressStub(userID)
-    }
-
     @FuncStub(MockEncryptedSearchServiceProtocol.isIndexBuildingComplete, initialReturn: Bool()) var isIndexBuildingCompleteStub
     func isIndexBuildingComplete(for userID: UserID) -> Bool {
         isIndexBuildingCompleteStub(userID)
@@ -368,6 +363,16 @@ class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
     @FuncStub(MockEncryptedSearchServiceProtocol.didChangeDownloadViaMobileData) var didChangeDownloadViaMobileDataStub
     func didChangeDownloadViaMobileData(for userID: UserID) {
         didChangeDownloadViaMobileDataStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.indexSize, initialReturn: nil) var indexSizeStub
+    func indexSize(for userID: UserID) -> ByteCount? {
+        indexSizeStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.oldesMessageTime, initialReturn: nil) var oldesMessageTimeStub
+    func oldesMessageTime(for userID: UserID) -> Int? {
+        oldesMessageTimeStub(userID)
     }
 
 }

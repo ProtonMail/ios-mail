@@ -251,6 +251,7 @@ final class SearchIndexDB {
         }
         do {
             try fileManager.removeItem(atPath: path.relativePath)
+            log(message: "Search index database deleted")
         } catch {
             log(message: "Error when deleting the search index: \(error)", isError: true)
             throw IndexError.databaseDeleteError(error)

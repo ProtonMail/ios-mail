@@ -25,6 +25,8 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
     private var mockUserCache: MockEncryptedSearchUserCache!
     private var mockEncryptedSearchService: MockEncryptedSearchServiceProtocol!
     private var mockUIDelegate: MockSettingsEncryptedSearchUIProtocol!
+    private let dummyLocale = Locale.enUS
+    private let dummyTimeZone = TimeZone.init(secondsFromGMT: 0)!
 
     private let dummyUserID: UserID = UserID(rawValue: UUID().uuidString)
 
@@ -36,7 +38,13 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
         mockUIDelegate = MockSettingsEncryptedSearchUIProtocol()
         sut = SettingsEncryptedSearchViewModel(
             router: mockRouter,
-            dependencies: .init(userID: dummyUserID, esUserCache: mockUserCache, esService: mockEncryptedSearchService)
+            dependencies: .init(
+                userID: dummyUserID,
+                esUserCache: mockUserCache,
+                esService: mockEncryptedSearchService,
+                locale: dummyLocale,
+                timeZone: dummyTimeZone
+            )
         )
         sut.setUIDelegate(mockUIDelegate)
     }
@@ -51,15 +59,9 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
     }
 
     func testInput_viewWillAppear() {
-        let dummyState = EncryptedSearchIndexState.allCases.randomElement()!
-        mockEncryptedSearchService.indexBuildingStateStub.bodyIs { _, _ in
-            dummyState
-        }
-
         sut.input.viewWillAppear()
         XCTAssertEqual(mockEncryptedSearchService.setBuildSearchIndexDelegateStub.callCounter, 1)
-        XCTAssertEqual(mockUIDelegate.updateDownloadStateStub.callCounter, 1)
-        XCTAssert(mockUIDelegate.updateDownloadStateStub.lastArguments?.value == dummyState)
+        XCTAssertEqual(mockUIDelegate.reloadDataStub.callCounter, 1)
     }
 
     func testInput_didChangeEncryptedSearchValue_whenEncryptedSearchIsEnabled_andDownloadIsInProgress() {
@@ -67,8 +69,8 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
         mockUserCache.isEncryptedSearchOnStub.bodyIs { _, _ in
             isESEnabled
         }
-        mockEncryptedSearchService.isIndexBuildingInProgressStub.bodyIs { _, _ in
-            true
+        mockEncryptedSearchService.indexBuildingStateStub.bodyIs { _, _ in
+            [EncryptedSearchIndexState.downloadingNewMessage, EncryptedSearchIndexState.creatingIndex].randomElement()!
         }
 
         sut.input.didChangeEncryptedSearchValue(isNewStatusEnabled: isESEnabled)
@@ -82,8 +84,8 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
         mockUserCache.isEncryptedSearchOnStub.bodyIs { _, _ in
             isESEnabled
         }
-        mockEncryptedSearchService.isIndexBuildingInProgressStub.bodyIs { _, _ in
-            false
+        mockEncryptedSearchService.indexBuildingStateStub.bodyIs { _, _ in
+            EncryptedSearchIndexState.complete
         }
 
         sut.input.didChangeEncryptedSearchValue(isNewStatusEnabled: isESEnabled)
@@ -97,8 +99,8 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
         mockUserCache.isEncryptedSearchOnStub.bodyIs { _, _ in
             isESEnabled
         }
-        mockEncryptedSearchService.isIndexBuildingInProgressStub.bodyIs { _, _ in
-            Bool.random()
+        mockEncryptedSearchService.indexBuildingStateStub.bodyIs { _, _ in
+            EncryptedSearchIndexState.allCases.randomElement()!
         }
 
         sut.input.didChangeEncryptedSearchValue(isNewStatusEnabled: isESEnabled)
@@ -160,11 +162,16 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
         XCTAssert(sut.output.isUseMobileDataEnabled == dummyValue)
     }
 
-    func testOutput_isDownloadInProgress() {
-        let dummyValue = Bool.random()
-        mockEncryptedSearchService.isIndexBuildingInProgressStub.bodyIs { _, _ in
-            dummyValue
+    func testOutput_downloadMessageInfo_itParsesTheDataCorrectly() {
+        mockEncryptedSearchService.oldesMessageTimeStub.bodyIs { _, _ in
+            1644858210
         }
-        XCTAssert(sut.output.isDownloadInProgress == dummyValue)
+        mockEncryptedSearchService.indexSizeStub.bodyIs { _, _ in
+            3080192 
+        }
+        let result = sut.downloadedMessagesInfo
+        let expectedSizeResult = String(format: "3%@1 MB", Locale.current.decimalSeparator!)
+        XCTAssertEqual(result.indexSize, expectedSizeResult)
+        XCTAssertEqual(result.oldesMessageTime, "Feb 14, 2022")
     }
 }
