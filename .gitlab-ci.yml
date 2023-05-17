@@ -3,13 +3,11 @@
 stages:
   - i18n
   - linting
-  - deploy
   - build
+  - deploy
   - test
   - report
   - cleanup
-  - testflight
-  - enterprise
   - distribute
   - bot
 
@@ -110,9 +108,6 @@ build:debug:for-testing:
   stage: build
   allow_failure: false
   interruptible: true
-  needs:
-    - job: deploy:review
-      artifacts: false
   artifacts:
     untracked: true
     when: on_success
@@ -326,8 +321,6 @@ appetize:start:
 
 appetize:stop:
   stage: distribute
-  needs:
-    - appetize:start
   environment:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
@@ -344,9 +337,10 @@ appetize:stop:
     - iOS_ARM_TAIPEI
 
 # --- Build app and send to testflight
-testflight:build:upload:
+testflight:alpha:
   dependencies: []
-  stage: testflight
+  needs: []
+  stage: distribute
   variables:
     GIT_STRATEGY: clone
     GIT_DEPTH: "0"
@@ -370,7 +364,7 @@ testflight:build:upload:
 # TODO: this is almost identical to testflight:build:upload:, perhaps we can combine them
 nightly-build-and-upload:
   dependencies: []
-  stage: testflight
+  stage: distribute
   only:
     refs:
       - schedules
@@ -389,9 +383,10 @@ nightly-build-and-upload:
     - iOS_ARM_TAIPEI
 
 # --- Build enterprise app for test and upload
-enterprise:test:
+firebase:qa:
   dependencies: []
-  stage: enterprise
+  needs: []
+  stage: distribute
   rules:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: manual
