@@ -30,14 +30,6 @@ extension UserInfo {
         return true
     }
 
-    static var isDiffableDataSourceEnabled: Bool {
-        if #available(iOS 13, *) {
-            return true
-        } else {
-            return false
-        }
-    }
-
     static var isToolbarCustomizationEnable: Bool {
         if ProcessInfo.isRunningUnitTests {
             return true

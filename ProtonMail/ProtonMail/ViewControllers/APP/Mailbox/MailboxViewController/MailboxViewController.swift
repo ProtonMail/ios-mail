@@ -141,10 +141,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private var customUnreadFilterElement: UIAccessibilityElement?
     private var diffableDataSource: MailboxDataSource?
 
-    private var isDiffableDataSourceEnabled: Bool {
-        UserInfo.isDiffableDataSourceEnabled
-    }
-
     let connectionStatusProvider = InternetConnectionStatusProvider()
     private let observerID = UUID()
 
@@ -240,11 +236,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             self.tableView.isPrefetchingEnabled = false
         }
 
-        if self.isDiffableDataSourceEnabled, #available(iOS 13, *) {
             self.loadDiffableDataSource()
-        } else {
-            self.tableView.dataSource = self
-        }
 
         self.updateNavigationController(listEditing)
 
@@ -414,7 +406,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         )
     }
 
-    @available(iOS 13.0, *)
     private func loadDiffableDataSource() {
         let cellConfigurator = { [weak self] (tableView: UITableView, indexPath: IndexPath, rowItem: MailboxRow) -> UITableViewCell in
 #if DEBUG
@@ -674,9 +665,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         viewModel.setupFetchController(self,
                                        isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
-        if self.isDiffableDataSourceEnabled, #available(iOS 13, *) {
             self.loadDiffableDataSource()
-        }
         self.reloadTableViewDataSource(animate: false)
 
         if viewModel.countOfFetchedObjects == 0 {
@@ -1259,21 +1248,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func updateScheduledMessageTimeLabel() {
-        guard viewModel.labelID.rawValue == Message.Location.scheduled.rawValue,
-              let indexPaths = tableView.indexPathsForVisibleRows
-        else {
+        guard viewModel.labelID.rawValue == Message.Location.scheduled.rawValue else {
             return
         }
 
-        if isDiffableDataSourceEnabled {
             reloadTableViewDataSource(animate: false)
-        } else {
-            if #available(iOS 15.0, *) {
-                tableView.reconfigureRows(at: indexPaths)
-            } else {
-                tableView.reloadRows(at: indexPaths, with: .none)
-            }
-        }
     }
 
     private func fetchEventInScheduledSend() {
@@ -2139,11 +2118,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 
         self.refreshActionBarItems()
 
-        if !self.isDiffableDataSourceEnabled {
-            self.tableView.endUpdates()
-        } else {
             self.reloadTableViewDataSource(animate: false)
-        }
         if self.refreshControl.isRefreshing {
             self.refreshControl.endRefreshing()
         }
@@ -2156,12 +2131,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         if controller == self.viewModel.unreadFetchedResult {
             return
         }
-
-        if !shouldKeepSkeletonUntilManualDismissal {
-            if !self.isDiffableDataSourceEnabled {
-                self.tableView.beginUpdates()
-            }
-        }
     }
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
@@ -2169,42 +2138,10 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
 
-		guard !self.isDiffableDataSourceEnabled && diffableDataSource == nil else {
             if type == .delete {
                 popPresentedItemIfNeeded(anObject)
                 hideActionBarIfNeeded(anObject)
             }
-            return
-        }
-
-        switch type {
-        case .delete:
-            if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-            }
-            popPresentedItemIfNeeded(anObject)
-            hideActionBarIfNeeded(anObject)
-        case .insert:
-            guard let newIndexPath = newIndexPath else { return }
-            tableView.insertRows(at: [newIndexPath], with: .fade)
-            guard self.needToShowNewMessage,
-                  let newMsg = anObject as? Message,
-                  let msgTime = newMsg.time, newMsg.unRead,
-                  let updateTime = viewModel.lastUpdateTime(),
-                  msgTime.compare(updateTime.startTime) != ComparisonResult.orderedAscending else { return }
-            self.newMessageCount += 1
-        case .update:
-            if let indexPath = indexPath {
-                self.tableView.reloadRows(at: [indexPath], with: .none)
-            }
-        case .move:
-            if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                tableView.deleteRows(at: [indexPath], with: .fade)
-                tableView.insertRows(at: [newIndexPath], with: .fade)
-            }
-        default:
-            return
-        }
     }
 }
 
@@ -2506,15 +2443,13 @@ extension MailboxViewController {
 // MARK: Data Source Refresh
 extension MailboxViewController {
     private func reloadTableViewDataSource(animate: Bool) {
-        if self.isDiffableDataSourceEnabled, let diffableDataSource = diffableDataSource {
+        if let diffableDataSource = diffableDataSource {
             diffableDataSource.reloadSnapshot(shouldAnimateSkeletonLoading: self.shouldAnimateSkeletonLoading,
                                               animate: animate)
             // Using diffable data source triggers an issue that make
             // refresh control dismiss only after a couple of seconds
             // so we dismiss it manually
             self.refreshControl.endRefreshing()
-        } else {
-            self.tableView.reloadData()
         }
     }
 }
