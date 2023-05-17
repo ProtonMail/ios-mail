@@ -56,8 +56,6 @@ class MoveToActionSheetPresenter {
             }
 
             let iconColor = viewModel.getColor(of: menuLabel)
-
-            let markType = viewModel.initialLabelSelectionStatus[menuLabel] ?? .none
             let item = PMActionSheetItem(
                 components: [
                     PMActionSheetIconComponent(
@@ -68,7 +66,7 @@ class MoveToActionSheetPresenter {
                     PMActionSheetTextComponent(text: .left(menuLabel.name), edge: [nil, 16, nil, 12])
                 ],
                 indentationLevel: menuLabel.indentationLevel,
-                markType: markType,
+                markType: .none,
                 handler: { item in
                     let isSelected = item.markType != .none
                     selected(menuLabel, isSelected)
@@ -82,20 +80,10 @@ class MoveToActionSheetPresenter {
             rightItem: .left(LocalString._move_to_done_button_title),
             leftItemHandler: { [weak self] in
                 guard let self = self else { return }
-                let currentMarkTypes = self.currentMarkTypes(
-                    viewModel: viewModel,
-                    folderSelectionActionSheet: folderSelectionActionSheet
-                )
-
-                cancel(currentMarkTypes != viewModel.initialLabelSelectionStatus)
+                cancel(self.hasSelected(folderSelectionActionSheet: folderSelectionActionSheet))
             }, rightItemHandler: { [weak self] in
                 guard let self = self else { return }
-                let currentMarkTypes = self.currentMarkTypes(
-                    viewModel: viewModel,
-                    folderSelectionActionSheet: folderSelectionActionSheet
-                )
-
-                done(currentMarkTypes != viewModel.initialLabelSelectionStatus)
+                done(self.hasSelected(folderSelectionActionSheet: folderSelectionActionSheet))
             }
         )
 
@@ -132,30 +120,8 @@ class MoveToActionSheetPresenter {
         }
     }
 
-    private func currentMarkTypes(
-        viewModel: MoveToActionSheetViewModel,
-        folderSelectionActionSheet: PMActionSheet?
-    ) -> [MenuLabel : PMActionSheetItem.MarkType] {
-        // Collect current label markType status of all options in the action sheet
-        var currentMarkTypes = viewModel.initialLabelSelectionStatus
-
-        folderSelectionActionSheet?.itemGroups.last?.items
-            .forEach { item in
-                for component in item.components {
-                    guard let textComponent = component as? PMActionSheetTextComponent else { continue }
-                    var title = ""
-                    switch textComponent.text {
-                    case .left(let text):
-                        title = text
-                    case .right(let attributed):
-                        title = attributed.string
-                    }
-                    if let option = currentMarkTypes.first(where: { $0.key.name == title }) {
-                        currentMarkTypes[option.key] = item.markType
-                    }
-                }
-            }
-
-        return currentMarkTypes
+    private func hasSelected(folderSelectionActionSheet: PMActionSheet?) -> Bool {
+        folderSelectionActionSheet?.itemGroups.last?.items.first(where: { $0.markType != .none }) != nil
     }
+
 }
