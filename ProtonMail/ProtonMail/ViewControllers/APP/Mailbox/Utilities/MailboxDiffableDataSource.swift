@@ -27,7 +27,6 @@ enum MailboxRow: Hashable {
     case skeleton(Int)
 }
 
-@available(iOS 13.0, *)
 final class MailboxDiffableDataSource: MailboxDataSource {
     private let diffableDataSource: UITableViewDiffableDataSource<Int, MailboxRow>
     private let viewModel: MailboxViewModel
@@ -90,7 +89,14 @@ final class MailboxDiffableDataSource: MailboxDataSource {
                     itemsToReload.append(rowItem)
                 }
             }
-            realSnapshot.appendItems(items, toSection: section)
+
+            do {
+                try ObjC.catchException {
+                    realSnapshot.appendItems(items, toSection: section)
+                }
+            } catch {
+                PMAssertionFailure(error)
+            }
         }
 
         realSnapshot.reloadItems(itemsToReload)
