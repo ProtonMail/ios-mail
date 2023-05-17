@@ -199,7 +199,16 @@ class ConversationViewModel {
             with: conversation.conversationID,
             includeBodyOf: nil,
             callOrigin: "ConversationViewModel"
-        ) { _ in
+        ) { [weak self] _ in
+            if let self {
+                let ids = self.messagesDataSource
+                    .filter { source in
+                        guard let id = source.message?.messageID else { return false }
+                        return self.messageIDsOfMarkedAsRead.contains(id)
+                    }
+                    .compactMap{ $0.message?.objectID.rawValue }
+                self.messageService.markLocally(messageObjectIDs: ids, labelID: self.labelId, unRead: false)
+            }
             if let completion = completion {
                 DispatchQueue.main.async(execute: completion)
             }
@@ -234,6 +243,7 @@ class ConversationViewModel {
             if case .didUpdate = update {
                 self?.checkTrashedHintBanner()
                 self?.reloadRowsIfNeeded()
+                self?.markMessagesReadIfNeeded()
             }
         } storedMessages: { [weak self] messages in
             var messageDataModels = messages.compactMap { self?.messageType(with: $0) }
@@ -242,6 +252,7 @@ class ConversationViewModel {
                 _ = self?.expandSpecificMessage(dataModels: &messageDataModels)
             }
             self?.messagesDataSource = messageDataModels
+            self?.markMessagesReadIfNeeded()
             self?.checkTrashedHintBanner()
         }
     }
@@ -449,6 +460,18 @@ class ConversationViewModel {
                     case .failure:
                         completion(nil)
                     }
+            }
+    }
+
+    private func markMessagesReadIfNeeded() {
+        messagesDataSource
+            .compactMap { $0.messageViewModel?.state.expandedViewModel?.messageContent }
+            .forEach { model in
+                if messageIDsOfMarkedAsRead.contains(model.message.messageID) { return }
+                if model.message.unRead {
+                    messageIDsOfMarkedAsRead.append(model.message.messageID)
+                }
+                model.markReadIfNeeded()
             }
     }
 

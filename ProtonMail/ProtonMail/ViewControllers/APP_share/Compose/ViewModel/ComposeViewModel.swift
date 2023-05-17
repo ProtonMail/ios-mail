@@ -409,7 +409,14 @@ class ComposeViewModel: NSObject {
 
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
+
+            var css: String?
+            let document = CSSMagic.parse(htmlString: result)
+            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+                css = CSSMagic.generateCSSForDarkMode(document: document)
+            }
+
+            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
         case .newDraft:
             if !self.body.isEmpty {
                 let newHTMLString = "\(head) \(self.body) \(signatureHtml) \(foot)"

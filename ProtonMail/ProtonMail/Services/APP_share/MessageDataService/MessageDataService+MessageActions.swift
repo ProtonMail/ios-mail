@@ -143,6 +143,13 @@ extension MessageDataService: MessageDataActionProtocol {
         return true
     }
 
+    func markLocally(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) {
+        if messageObjectIDs.isEmpty { return }
+        for id in messageObjectIDs {
+           _ = self.cacheService.mark(messageObjectID: id, labelID: labelID, unRead: unRead)
+        }
+    }
+
     @discardableResult
     func label(messages: [MessageEntity], label: LabelID, apply: Bool, isSwipeAction: Bool = false, shouldFetchEvent: Bool = true) -> Bool {
         guard !messages.isEmpty else {
