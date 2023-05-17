@@ -91,17 +91,6 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
 
         viewModel.fetchConversationDetails { [weak self] in
             self?.viewModel.isInitialDataFetchCalled = true
-            delay(0.5) { // wait a bit for the UI to update
-                self?.viewModel.messagesDataSource
-                    .compactMap {
-                        $0.messageViewModel?.state.expandedViewModel?.messageContent
-                    }.forEach { model in
-                        if model.message.unRead {
-                            self?.viewModel.messageIDsOfMarkedAsRead.append(model.message.messageID)
-                        }
-                        model.markReadIfNeeded()
-                    }
-            }
         }
 
         registerNotification()
