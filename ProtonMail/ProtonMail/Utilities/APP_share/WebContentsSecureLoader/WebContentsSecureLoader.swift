@@ -42,6 +42,9 @@ protocol WebContentsSecureLoader {
 extension WebContentsSecureLoader {
     func eject(from config: WKWebViewConfiguration) {
         config.userContentController.removeScriptMessageHandler(forName: "loaded")
+        #if DEBUG
+        config.userContentController.removeScriptMessageHandler(forName: "logger")
+        #endif
     }
 }
 
