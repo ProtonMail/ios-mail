@@ -125,8 +125,8 @@ class MessageEncryptionIconHelperTests: XCTestCase {
 
     private func loadTestMessageData(type: PGPTypeTestData) {
         let testData = type.rawValue.parseObjectAny()!
-        self.testMsg = mockCoreDataContextProvider.enqueue { context in
-            guard let testMsg = try? GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: testData, in: context) as? Message else {
+        self.testMsg = try! mockCoreDataContextProvider.performAndWaitOnRootSavingContext { context in
+            guard let testMsg = try GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: testData, in: context) as? Message else {
                 XCTFail("The fake data initialize failed")
                 return nil
             }

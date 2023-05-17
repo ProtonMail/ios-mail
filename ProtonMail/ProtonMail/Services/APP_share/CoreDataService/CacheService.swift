@@ -456,10 +456,7 @@ extension CacheService {
             }
         }
 
-        var result: Result<(Date, Date)?, Error>!
-
-        coreDataService.performAndWaitOnRootSavingContext { context in
-            do {
+        let timeRange: (Date, Date)? = try coreDataService.performAndWaitOnRootSavingContext { context in
                 if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                     for msg in messages {
                         // mark the status of metadata being set
@@ -468,20 +465,16 @@ extension CacheService {
                     _ = context.saveUpstreamIfNeeded()
 
                     if let lastMsg = messages.last, let firstMsg = messages.first {
-                        result = .success((firstMsg.time ?? Date(), lastMsg.time ?? Date()))
+                        return (firstMsg.time ?? Date(), lastMsg.time ?? Date())
                     } else {
-                        result = .success(nil)
+                        return nil
                     }
                 } else {
-                    result = .success(nil)
+                    return nil
                 }
-            } catch {
-                result = .failure(error)
-            }
         }
 
-            switch result {
-            case let .success(.some((startTime, endTime))):
+            if let (startTime, endTime) = timeRange {
                 self.lastUpdatedStore.updateLastUpdatedTime(
                     labelID: labelID,
                     isUnread: isUnread,
@@ -491,12 +484,6 @@ extension CacheService {
                     userID: self.userID,
                     type: .singleMessage
                 )
-            case .success(.none):
-                break
-            case .failure(let error):
-                throw error
-            case .none:
-                fatalError("result should have been set by now!")
             }
     }
 }

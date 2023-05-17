@@ -34,27 +34,17 @@ class CopyMessage: CopyMessageUseCase {
     }
 
     func execute(parameters: Parameters) throws -> CopyOutput {
-        var result: Result<CopyOutput, Error>!
-
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+        try dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             guard let originalMessage = Message.messageForMessageID(parameters.messageID.rawValue, in: context) else {
-                result = .failure(CopyMessageError.messageNotFoundForGivenMessageID)
-                return
+                throw CopyMessageError.messageNotFoundForGivenMessageID
             }
 
-            do {
-                let copyOutput = try self.copy(
-                    message: originalMessage,
-                    copyAttachments: parameters.copyAttachments,
-                    context: context
-                )
-                result = .success(copyOutput)
-            } catch {
-                result = .failure(error)
-            }
+            return try self.copy(
+                message: originalMessage,
+                copyAttachments: parameters.copyAttachments,
+                context: context
+            )
         }
-
-        return try result.get()
     }
 }
 

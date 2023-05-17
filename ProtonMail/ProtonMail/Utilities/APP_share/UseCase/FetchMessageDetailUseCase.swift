@@ -93,10 +93,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         ignoreDownloaded: Bool,
         userID: UserID
     ) throws -> MessageEntity {
-        var result: Result<MessageEntity, Error>!
-
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            do {
+        try dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
                 guard let message = context.object(with: messageObjectID.rawValue) as? Message else {
                     throw Errors.coreDataObjectNotExist
                 }
@@ -107,8 +104,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                    case let responseInterval = TimeInterval(responseTime),
                    let cacheTime = message.time?.timeIntervalSince1970,
                    cacheTime > responseInterval {
-                    result = .success(MessageEntity(message))
-                    return
+                    return MessageEntity(message)
                 }
 
                 let uploadingAttachments = self.uploadingAttachment(from: message)
@@ -124,15 +120,9 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                 if let error = context.saveUpstreamIfNeeded() {
                     throw error
                 } else {
-                    result = .success(MessageEntity(message))
+                    return MessageEntity(message)
                 }
-            } catch {
-                result = .failure(error)
-            }
         }
-
-        let messageEntity = try result.get()
-        return messageEntity
     }
 
     private func uploadingAttachment(from message: Message) -> [Attachment] {

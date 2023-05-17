@@ -34,7 +34,7 @@ final class MenuLabelTests: XCTestCase {
 
         let parsedLabel = testV4LabelData.parseJson()!
 
-        try coreDataService.enqueue { testContext in
+        try coreDataService.performAndWaitOnRootSavingContext { testContext in
             let labels = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: parsedLabel, in: testContext)
             guard let rawData = labels as? [Label] else {
                 XCTAssert(false, "Initialization failed")
