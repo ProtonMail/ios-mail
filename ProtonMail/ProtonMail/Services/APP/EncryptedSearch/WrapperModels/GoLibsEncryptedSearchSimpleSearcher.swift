@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -18,12 +18,8 @@
 import Foundation
 import GoLibs
 
-final class EncryptedSearchRecipientList: EncryptedsearchRecipientList {
-    func add(user: EncryptedSearchRecipient?) {
-        super.add(user)
-    }
-
-    func get(index: Int) -> EncryptedSearchRecipient? {
-        return super.get(index) as? EncryptedSearchRecipient
+class GoLibsEncryptedSearchSimpleSearcher: EncryptedsearchSimpleSearcher {
+    init?(_ keywords: GoLibsEncryptedSearchStringList, contextSize: Int) {
+        super.init(keywords, contextSize: contextSize)
     }
 }

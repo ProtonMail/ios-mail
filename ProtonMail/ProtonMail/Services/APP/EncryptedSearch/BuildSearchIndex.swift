@@ -162,6 +162,14 @@ final class BuildSearchIndex {
     func updateCurrentState() {
         initializeCurrentState(completion: nil)
     }
+
+    func numberOfEntriesInSearchIndex() -> Int {
+        return dependencies.searchIndexDB.numberOfEntries()
+    }
+
+    func getDBParams() -> GoLibsEncryptedSearchDBParams? {
+        dependencies.searchIndexDB.getDBParams()
+    }
 }
 
 // MARK: - prerequisite

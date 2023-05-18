@@ -29,8 +29,8 @@ final class EncryptedSearchCacheService {
     }
 
     private let maxCacheSize: Int
-    private let batchSize: Int
-    private var cache: EncryptedSearchGolangCacheProtocol
+    private(set) var batchSize: Int
+    private(set) var cache: GoLibsEncryptedSearchCache
     private let userID: UserID
 
     init?(userID: UserID, memoryUsage: MemoryUsageProtocol = DeviceCapacity.Memory()) {
@@ -39,7 +39,7 @@ final class EncryptedSearchCacheService {
         let maxCacheSizeDouble = Double(maxMemory) * Constant.searchCacheHeapPercent
         self.maxCacheSize = Int(maxCacheSizeDouble)
         self.batchSize = Int(maxCacheSizeDouble / Constant.searchMsgSize)
-        if let cache = EncryptedSearchGolangCacheService(Int64(self.maxCacheSize)) {
+        if let cache = GoLibsEncryptedSearchCache(Int64(self.maxCacheSize)) {
             self.cache = cache
         } else {
             return nil
@@ -47,9 +47,9 @@ final class EncryptedSearchCacheService {
     }
 
     func buildCacheForUser(
-        dbParams: EncryptedSearchDBParams,
-        cipher: EncryptedSearchAESGCMCipher
-    ) -> EncryptedSearchGolangCacheProtocol? {
+        dbParams: GoLibsEncryptedSearchDBParams,
+        cipher: GoLibsEncryptedSearchAESGCMCipher
+    ) -> GoLibsEncryptedSearchCache? {
         self.cache.deleteAll()
         do {
             try self.cache.cacheIndexIntoDB(
@@ -68,7 +68,7 @@ final class EncryptedSearchCacheService {
     }
 
     func updateCachedMessage(message: MessageEntity, decryptedBody: String) {
-        let msgToInsert: EncryptedSearchMessage? = self.messageToEncryptedSearchMessage(
+        let msgToInsert: GoLibsEncryptedSearchMessage? = self.messageToEncryptedSearchMessage(
             msg: message,
             decryptedBody: decryptedBody
         )
@@ -86,7 +86,7 @@ final class EncryptedSearchCacheService {
     private func messageToEncryptedSearchMessage(
         msg: MessageEntity,
         decryptedBody: String?
-    ) -> EncryptedSearchMessage? {
+    ) -> GoLibsEncryptedSearchMessage? {
         let emailContent = EmailparserExtractData(decryptedBody, true)
         let encryptedContent = EncryptedSearchHelper.createEncryptedMessageContent(
             from: msg,
@@ -98,14 +98,13 @@ final class EncryptedSearchCacheService {
             return nil
         }
 
-        let sender = EncryptedSearchRecipient(msgSender.name,
-                                              email: msgSender.address)
+        let sender = GoLibsEncryptedSearchRecipient(msgSender.name, email: msgSender.address)
 
         let toList = transferToESRecipientList(rawRecipientList: msg.rawTOList, type: .to)
         let ccList = transferToESRecipientList(rawRecipientList: msg.rawCCList, type: .cc)
         let bccList = transferToESRecipientList(rawRecipientList: msg.rawBCCList, type: .bcc)
 
-        let decryptedMessageContent = EncryptedSearchDecryptedMessageContent(
+        let decryptedMessageContent = GoLibsEncryptedSearchDecryptedMessageContent(
             msg.title,
             bodyValue: emailContent,
             senderValue: sender,
@@ -124,7 +123,7 @@ final class EncryptedSearchCacheService {
             expirationTime: Int(msg.expirationTime?.timeIntervalSince1970 ?? 0)
         )
 
-        return EncryptedSearchMessage(
+        return GoLibsEncryptedSearchMessage(
             msg.messageID.rawValue,
             timeValue: Int(msg.time?.timeIntervalSince1970 ?? 0),
             orderValue: msg.order,
@@ -152,15 +151,15 @@ final class EncryptedSearchCacheService {
     private func transferToESRecipientList(
         rawRecipientList: String,
         type: RecipientType
-    ) -> EncryptedSearchRecipientList {
-        let esRecipientList = EncryptedSearchRecipientList()
+    ) -> GoLibsEncryptedSearchRecipientList {
+        let esRecipientList = GoLibsEncryptedSearchRecipientList()
         guard let listData: Data = rawRecipientList.data(using: .utf8) else { return esRecipientList }
         do {
             let decoder = JSONDecoder()
             let esSenderList = try decoder.decode([Sender].self, from: listData)
 
             esSenderList.forEach { recipient in
-                esRecipientList.add(user: EncryptedSearchRecipient(recipient.name, email: recipient.address))
+                esRecipientList.add(user: GoLibsEncryptedSearchRecipient(recipient.name, email: recipient.address))
             }
             return esRecipientList
         } catch {
@@ -170,7 +169,7 @@ final class EncryptedSearchCacheService {
     }
 
     #if DEBUG
-    func setCache(_ cache: EncryptedSearchGolangCacheProtocol) {
+    func setCache(_ cache: GoLibsEncryptedSearchCache) {
         self.cache = cache
     }
     #endif

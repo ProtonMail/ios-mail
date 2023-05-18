@@ -82,6 +82,7 @@ protocol MessageDataServiceProtocol: Service {
 
 protocol LocalMessageDataServiceProtocol: Service {
     func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) -> Promise<Void>
+    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message]
 }
 
 /// Message data service

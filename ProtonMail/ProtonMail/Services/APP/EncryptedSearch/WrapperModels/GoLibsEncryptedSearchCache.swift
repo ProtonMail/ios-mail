@@ -18,18 +18,35 @@
 import Foundation
 import GoLibs
 
-final class EncryptedSearchGolangCacheService: EncryptedsearchCache,
-    EncryptedSearchGolangCacheProtocol {
+ class GoLibsEncryptedSearchCache: EncryptedsearchCache {
     func cacheIndexIntoDB(
-        dbParams: EncryptedSearchDBParams?,
-        cipher: EncryptedSearchAESGCMCipher?,
+        dbParams: GoLibsEncryptedSearchDBParams?,
+        cipher: GoLibsEncryptedSearchAESGCMCipher?,
         batchSize: Int
     ) throws {
         try super.cacheIndex(dbParams, cipher: cipher, batchSize: batchSize)
     }
 
     @objc
-    func updateCache(messageToInsert: EncryptedSearchMessage?) {
+    func updateCache(messageToInsert: GoLibsEncryptedSearchMessage?) {
         super.update(messageToInsert)
+    }
+
+    @objc
+    override func search(
+        _ state: EncryptedsearchSearchState?,
+        searcher: EncryptedsearchSearcherProtocol?,
+        batchSize: Int
+    ) throws -> GoLibsEncryptedSearchResultList {
+        let searchResult = try super.search(state, searcher: searcher, batchSize: batchSize)
+        if let newResult = GoLibsEncryptedSearchResultList(resultList: searchResult) {
+            return newResult
+        } else {
+            throw EncryptedSearchGolangCacheServiceError.failToCreateSearchResultList
+        }
+    }
+
+    enum EncryptedSearchGolangCacheServiceError: Error {
+        case failToCreateSearchResultList
     }
 }

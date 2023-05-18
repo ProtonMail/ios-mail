@@ -18,11 +18,12 @@
 import Foundation
 import GoLibs
 
-class EncryptedSearchEncryptedMessageContent: EncryptedsearchEncryptedMessageContent {
-    init?(_ ivBase64: String?, cipherTextBase64: String?) {
-        guard let ivValue = ivBase64, let cipher = cipherTextBase64 else {
-            return nil
-        }
-        super.init(ivValue, ciphertextBase64: cipher)
+final class GoLibsEncryptedSearchRecipientList: EncryptedsearchRecipientList {
+    func add(user: GoLibsEncryptedSearchRecipient?) {
+        super.add(user)
+    }
+
+    func get(index: Int) -> GoLibsEncryptedSearchRecipient? {
+        return super.get(index) as? GoLibsEncryptedSearchRecipient
     }
 }

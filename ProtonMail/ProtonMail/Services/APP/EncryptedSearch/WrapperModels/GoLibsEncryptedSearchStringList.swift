@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -18,24 +18,4 @@
 import Foundation
 import GoLibs
 
-@objc protocol EncryptedSearchGolangCacheProtocol {
-    func deleteAll()
-
-    @objc
-    func cacheIndexIntoDB(
-        dbParams: EncryptedSearchDBParams?,
-        cipher: EncryptedSearchAESGCMCipher?,
-        batchSize: Int
-    ) throws
-
-    @objc
-    func deleteMessage(_ id: String?) -> Bool
-
-    @objc
-    func isBuilt() -> Bool
-
-    @objc
-    func updateCache(messageToInsert: EncryptedSearchMessage?)
-}
-
-
+class GoLibsEncryptedSearchStringList: EncryptedsearchStringList {}

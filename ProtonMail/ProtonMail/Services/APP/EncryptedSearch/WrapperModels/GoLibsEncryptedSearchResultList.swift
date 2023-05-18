@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,14 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import GoLibs
 
-class EncryptedSearchRecipient: EncryptedsearchRecipient {
-    override init?(_ name: String?, email: String?) {
-        guard let name = name, let email = email else {
-            return nil
+class GoLibsEncryptedSearchResultList: EncryptedsearchResultList {
+    convenience init?(resultList: EncryptedsearchResultList) {
+        self.init()
+        for index in 0..<resultList.length() {
+            let searchResult = resultList.get(index)
+            add(searchResult)
         }
-        super.init(name, email: email)
     }
 }
