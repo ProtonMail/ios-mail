@@ -27,25 +27,3 @@ struct FetchFeatureFlagsRequest: Request {
         return ["Code": queryString]
     }
 }
-
-struct UpdateFeatureFlagsRequest: Request {
-    private let featureFlagName: String
-    private let value: Any
-
-    var path: String {
-        "/core/v4/features/\(featureFlagName)/value"
-    }
-
-    var method: HTTPMethod {
-        .put
-    }
-
-    init(featureFlagName: String, value: Any) {
-        self.featureFlagName = featureFlagName
-        self.value = value
-    }
-
-    var parameters: [String: Any]? {
-        ["Value": value]
-    }
-}

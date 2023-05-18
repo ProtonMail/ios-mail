@@ -25,15 +25,13 @@ enum FeatureFlagKey: String, CaseIterable {
     case senderImage = "ShowSenderImages"
 }
 
+// sourcery: mock
 protocol FeatureFlagsSubscribeProtocol: AnyObject {
     func handleNewFeatureFlags(_ featureFlags: [String: Any])
 }
 
 // sourcery: mock
 protocol FeatureFlagsDownloadServiceProtocol {
-    typealias FeatureFlagsDownloadCompletion =
-        (Result<FeatureFlagsResponse, FeatureFlagsDownloadService.FeatureFlagFetchingError>) -> Void
-
     func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping (Error?) -> Void)
 }
 
@@ -79,25 +77,24 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
 
     enum FeatureFlagFetchingError: Error {
         case fetchingTooOften
-        case networkError(Error)
         case selfIsReleased
     }
 
-    func getFeatureFlags(completion: (FeatureFlagsDownloadCompletion)?) {
+    func getFeatureFlags(completion: ((Error?) -> Void)?) {
         if let time = self.lastFetchingTime,
             Date().timeIntervalSince1970 - time.timeIntervalSince1970 > 300.0 {
-            completion?(.failure(.fetchingTooOften))
+            completion?(FeatureFlagFetchingError.fetchingTooOften)
             return
         }
 
         let request = FetchFeatureFlagsRequest()
         apiService.perform(request: request, response: FeatureFlagsResponse()) { [weak self] task, response in
             guard let self = self else {
-                completion?(.failure(.selfIsReleased))
+                completion?(FeatureFlagFetchingError.selfIsReleased)
                 return
             }
             if let error = task?.error {
-                completion?(.failure(.networkError(error)))
+                completion?(error)
                 return
             }
 
@@ -151,7 +148,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
                 )
             }
 
-            completion?(.success(response))
+            completion?(nil)
         }
     }
 

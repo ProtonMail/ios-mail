@@ -18,7 +18,7 @@
 import ProtonCore_Networking
 
 class FeatureFlagsResponse: Response {
-    var result: [String: Any] = [:]
+    private(set) var result: [String: Any] = [:]
 
     override func ParseResponse(_ response: [String: Any]) -> Bool {
         guard let features = response["Features"] as? [[String: Any]] else {
