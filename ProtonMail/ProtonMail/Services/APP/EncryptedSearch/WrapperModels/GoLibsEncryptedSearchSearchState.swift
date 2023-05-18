@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -18,15 +18,4 @@
 import Foundation
 import GoLibs
 
-class EncryptedSearchAESGCMCipher: EncryptedsearchAESGCMCipher {
-    init?(_ key: Data) {
-        super.init(key)
-    }
-
-    func encrypt(
-        _ plainMsg: EncryptedSearchDecryptedMessageContent?
-    ) throws -> EncryptedSearchEncryptedMessageContent? {
-        let result = try super.encrypt(plainMsg)
-        return .init(result.iv, cipherTextBase64: result.ciphertext)
-    }
-}
+class GoLibsEncryptedSearchSearchState: EncryptedsearchSearchState {}

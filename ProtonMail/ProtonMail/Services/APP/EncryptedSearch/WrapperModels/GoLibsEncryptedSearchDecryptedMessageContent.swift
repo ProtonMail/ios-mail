@@ -18,14 +18,14 @@
 import Foundation
 import GoLibs
 
-class EncryptedSearchDecryptedMessageContent: EncryptedsearchDecryptedMessageContent {
+class GoLibsEncryptedSearchDecryptedMessageContent: EncryptedsearchDecryptedMessageContent {
     init?(
         _ subjectValue: String?,
         bodyValue: String?,
-        senderValue: EncryptedSearchRecipient?,
-        toListValue: EncryptedSearchRecipientList?,
-        ccListValue: EncryptedSearchRecipientList?,
-        bccListValue: EncryptedSearchRecipientList?,
+        senderValue: GoLibsEncryptedSearchRecipient?,
+        toListValue: GoLibsEncryptedSearchRecipientList?,
+        ccListValue: GoLibsEncryptedSearchRecipientList?,
+        bccListValue: GoLibsEncryptedSearchRecipientList?,
         addressID: String?,
         conversationID: String?,
         flags: Int,

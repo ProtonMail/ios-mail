@@ -18,25 +18,11 @@
 import Foundation
 import GoLibs
 
-class EncryptedSearchMessage: EncryptedsearchMessage {
-    let messageID: String?
-    let labelIDs: String?
-
-    init?(
-        _ idValue: String?,
-        timeValue: Int,
-        orderValue: Int,
-        labelIDsValue: String?,
-        encryptedValue: EncryptedSearchEncryptedMessageContent?,
-        decryptedValue: EncryptedSearchDecryptedMessageContent?
-    ) {
-        self.messageID = idValue
-        self.labelIDs = labelIDsValue
-        super.init(idValue,
-                   timeValue: Int64(timeValue),
-                   orderValue: Int64(orderValue),
-                   labelidsValue: labelIDsValue,
-                   encryptedValue: encryptedValue,
-                   decryptedValue: decryptedValue)
+class GoLibsEncryptedSearchRecipient: EncryptedsearchRecipient {
+    override init?(_ name: String?, email: String?) {
+        guard let name = name, let email = email else {
+            return nil
+        }
+        super.init(name, email: email)
     }
 }

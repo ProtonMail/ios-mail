@@ -18,7 +18,7 @@
 import Foundation
 import GoLibs
 
-class EncryptedSearchDBParams: EncryptedsearchDBParams {
+class GoLibsEncryptedSearchDBParams: EncryptedsearchDBParams {
     /// The DB parameters that Crypto library needs.
     /// - Parameters:
     ///   - file: file path of the db

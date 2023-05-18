@@ -95,10 +95,15 @@ final class SearchIndexDB {
         return fileManager.fileExists(atPath: path.relativePath)
     }
 
-    func numberOfEntries() throws -> Int {
-        let connection = try connectionToDB()
-        let numberOfEntries = try connection.scalar(messagesTable.count)
-        return numberOfEntries
+    func numberOfEntries() -> Int {
+        do {
+            let connection = try connectionToDB()
+            let numberOfEntries = try connection.scalar(messagesTable.count)
+            return numberOfEntries
+        } catch {
+            PMAssertionFailure(error)
+            return 0
+        }
     }
 
     func shrinkSearchIndex(expectedSize: ByteCount) throws {
@@ -202,9 +207,9 @@ final class SearchIndexDB {
         }
     }
 
-    func getDBParams() -> EncryptedSearchDBParams? {
+    func getDBParams() -> GoLibsEncryptedSearchDBParams? {
         guard let path = dbPath else { return nil }
-        return EncryptedSearchDBParams(
+        return GoLibsEncryptedSearchDBParams(
             path.relativePath,
             table: DatabaseConstants.TableSearchableMessages,
             id: DatabaseConstants.messageID,

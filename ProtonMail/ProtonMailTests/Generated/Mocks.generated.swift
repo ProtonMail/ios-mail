@@ -375,6 +375,11 @@ class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
         oldesMessageTimeStub(userID)
     }
 
+    @FuncStub(MockEncryptedSearchServiceProtocol.search) var searchStub
+    func search(userID: UserID, query: String, page: UInt, completion: @escaping (Result<EncryptedSearchService.SearchResult, Error>) -> Void) {
+        searchStub(userID, query, page, completion)
+    }
+
 }
 
 class MockEncryptedSearchUserCache: EncryptedSearchUserCache {

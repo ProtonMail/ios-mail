@@ -46,9 +46,9 @@ final class EncryptedSearchCacheServiceTests: XCTestCase {
     }
 
     func testBuildCacheForUser() {
-        let params = EncryptedSearchDBParams(nil, table: nil, id: nil, time: nil, order: nil, labels: nil, initVector: nil, content: nil, contentFile: nil)
+        let params = GoLibsEncryptedSearchDBParams(nil, table: nil, id: nil, time: nil, order: nil, labels: nil, initVector: nil, content: nil, contentFile: nil)
         let key = EncryptedSearchHelper.generateSearchIndexKey(userID: .init(String.randomString(10)))!
-        let cipher = EncryptedSearchAESGCMCipher(key)
+        let cipher = GoLibsEncryptedSearchAESGCMCipher(key)
 
         let result = sut.buildCacheForUser(dbParams: params!,
                                            cipher: cipher!)

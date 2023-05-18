@@ -15,20 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import Foundation
-@testable import ProtonMail
 import PromiseKit
+import ProtonCore_TestingToolkit
+@testable import ProtonMail
 
 final class MockLocalMessageDataService: LocalMessageDataServiceProtocol {
     private(set) var wasCleanMessageCalled: Bool = false
 
-    private(set) var removeAllDraftValue: Bool = Bool.random()
-    private(set) var cleanBadgeAndNotificationsValue: Bool = Bool.random()
+    private(set) var removeAllDraftValue: Bool = .random()
+    private(set) var cleanBadgeAndNotificationsValue: Bool = .random()
 
     func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
         wasCleanMessageCalled = true
         removeAllDraftValue = removeAllDraft
         cleanBadgeAndNotificationsValue = cleanBadgeAndNotifications
         return Promise<Void>()
+    }
+
+    @FuncStub(MockLocalMessageDataService.fetchMessages, initialReturn: [Message]()) var fetchMessagesStub
+    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message] {
+        fetchMessagesStub(selected, context)
     }
 }

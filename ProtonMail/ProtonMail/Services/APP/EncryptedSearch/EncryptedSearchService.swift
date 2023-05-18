@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Crypto
 
 // sourcery: mock
 protocol EncryptedSearchServiceProtocol {
@@ -30,6 +30,12 @@ protocol EncryptedSearchServiceProtocol {
     func didChangeDownloadViaMobileData(for userID: UserID)
     func indexSize(for userID: UserID) -> ByteCount?
     func oldesMessageTime(for userID: UserID) -> Int?
+    func search(
+        userID: UserID,
+        query: String,
+        page: UInt,
+        completion: @escaping (Result<EncryptedSearchService.SearchResult, Error>) -> Void
+    )
 }
 
 final class EncryptedSearchService: EncryptedSearchServiceProtocol {
@@ -37,10 +43,12 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol {
 
     private var buildSearchIndexes: [UserID: BuildSearchIndex] = [:]
     private let serial = DispatchQueue(label: "me.proton.EncryptedSearchService")
+    private var searchCacheServiceMap: [UserID: EncryptedSearchCacheService] = [:]
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies = Dependencies()) {
         self.dependencies = dependencies
+        observeMemoryWarningNotification()
     }
 
     func setBuildSearchIndexDelegate(for userID: UserID, delegate: BuildSearchIndexDelegate?) {
@@ -101,6 +109,256 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol {
     }
 }
 
+// MARK: - Search related functions
+extension EncryptedSearchService {
+    struct SearchResult {
+        let resultFromCache: [GoLibsEncryptedSearchResultList]
+        let resultFromIndex: [GoLibsEncryptedSearchResultList]
+    }
+
+    func search(
+        userID: UserID,
+        query: String,
+        page: UInt,
+        completion: @escaping (Result<SearchResult, Error>) -> Void
+    ) {
+        guard !query.isEmpty,
+              dependencies.esDefaultCache.isEncryptedSearchOn(of: userID) else {
+            completion(.failure(EncryptedSearchServiceError.notEnable))
+            return
+        }
+        let processedQuery = SearchQueryHelper().sanitizeAndExtractKeywords(query: query)
+        guard let indexCipher = EncryptedSearchHelper.getEncryptedCipher(userID: userID),
+              let searcher = EncryptedSearchHelper.createSearcher(processedQuery: processedQuery) else {
+            return
+        }
+        guard let searchState = GoLibsEncryptedSearchSearchState(),
+              let buildIndex = buildSearchIndexes[userID],
+              let dbParams = buildIndex.getDBParams() else {
+            completion(.failure(EncryptedSearchServiceError.noIndexFound))
+            return
+        }
+
+        searchInCache(
+            searcher: searcher,
+            page: page,
+            userID: userID,
+            searchState: searchState,
+            cipher: indexCipher,
+            dbParameters: dbParams,
+            batchSize: Constant.searchResultPageSize
+        ) { result in
+            switch result {
+            case .failure(let error):
+                SystemLogger.logTemporarily(message: "Cache Search error: \(error)", category: .encryptedSearch, isError: true)
+            case .success(let searchResultFromCache):
+                let cachedSearchResultCount = searchResultFromCache.reduce(0) { partialResult, resultList in
+                    return partialResult + resultList.length()
+                }
+                self.performSearchInIndexIfNeeded(
+                    cachedSearchResultCount,
+                    searchResultFromCache,
+                    numberOfMessagesInSearchIndex: buildIndex.numberOfEntriesInSearchIndex(),
+                    searcher: searcher,
+                    cipher: indexCipher,
+                    userID: userID,
+                    page: page,
+                    searchState: searchState,
+                    dbParameters: dbParams,
+                    completion: completion
+                )
+            }
+        }
+    }
+
+    // swiftlint:disable function_parameter_count
+    private func performSearchInIndexIfNeeded(
+        _ cachedSearchResultCount: Int,
+        _ searchResultFromCache: [GoLibsEncryptedSearchResultList],
+        numberOfMessagesInSearchIndex: Int,
+        searcher: GoLibsEncryptedSearchSimpleSearcher,
+        cipher: GoLibsEncryptedSearchAESGCMCipher,
+        userID: UserID,
+        page: UInt,
+        searchState: GoLibsEncryptedSearchSearchState,
+        dbParameters: GoLibsEncryptedSearchDBParams,
+        completion: @escaping (Result<SearchResult, Error>) -> Void
+    ) {
+        // Perform search in index if needed
+        if searchState.isComplete == false && cachedSearchResultCount <= Constant.searchResultPageSize {
+            self.searchInIndex(
+                searcher: searcher,
+                cipher: cipher,
+                userID: userID,
+                page: page,
+                numberOfMessagesInSearchIndex: numberOfMessagesInSearchIndex,
+                searchState: searchState,
+                dbParameters: dbParameters
+            ) { result in
+                switch result {
+                case .success(let searchResultFromIndex):
+                    completion(.success(.init(
+                        resultFromCache: searchResultFromCache,
+                        resultFromIndex: searchResultFromIndex
+                    )))
+                case .failure(let error):
+                    SystemLogger.logTemporarily(message: "Cache Search error: \(error)", category: .encryptedSearch, isError: true)
+                    completion(.failure(error))
+                }
+            }
+        } else {
+            completion(.success(.init(
+                resultFromCache: searchResultFromCache,
+                resultFromIndex: []
+            )))
+        }
+    }
+
+    // swiftlint:disable function_parameter_count
+    private func searchInIndex(
+        searcher: GoLibsEncryptedSearchSimpleSearcher,
+        cipher: GoLibsEncryptedSearchAESGCMCipher,
+        userID: UserID,
+        page: UInt,
+        numberOfMessagesInSearchIndex: Int,
+        searchState: GoLibsEncryptedSearchSearchState,
+        dbParameters: GoLibsEncryptedSearchDBParams,
+        completion: @escaping (Result<[GoLibsEncryptedSearchResultList], Error>) -> Void
+    ) {
+        guard let index = GoLibsEncryptedSearchIndex(dbParameters) else {
+            completion(.failure(EncryptedSearchServiceError.indexFailedToCreate))
+            return
+        }
+        do {
+            try index.openDBConnection()
+        } catch {
+            completion(.failure(error))
+            return
+        }
+
+        var searchResults: [GoLibsEncryptedSearchResultList] = []
+        var resultCount = 0
+        var batchCount = 0
+        while searchState.isComplete == false && resultCount < Constant.searchResultPageSize {
+            // fix infinity loop caused by errors - prevent app from crashing
+            if batchCount > numberOfMessagesInSearchIndex {
+                searchState.isComplete = true
+                break
+            }
+
+            // Percentage of heap that can be used to load messages from the index
+            let searchBatchHeapPercent: Double = 0.1
+            // An estimation of how many bytes take a search message in memory
+            let searchMsgSize: Double = 14_000
+            let batchSize = Int(DeviceCapacity.Memory().availableMemory * searchBatchHeapPercent / searchMsgSize)
+
+            do {
+                let result = try index.searchNewBatch(
+                    fromDB: searcher,
+                    cipher: cipher,
+                    state: searchState,
+                    batchSize: batchSize
+                )
+                resultCount += result.length()
+                if result.length() > 0 {
+                    searchResults.append(result)
+                }
+            } catch {
+                completion(.failure(error))
+                return
+            }
+            batchCount += 1
+        }
+
+        do {
+            try index.closeDBConnection()
+        } catch {
+            assertionFailure("Index DB close failed: \(error)")
+        }
+
+        completion(.success(searchResults))
+    }
+
+    // swiftlint:disable function_parameter_count
+    private func searchInCache(
+        searcher: GoLibsEncryptedSearchSimpleSearcher,
+        page: UInt,
+        userID: UserID,
+        searchState: GoLibsEncryptedSearchSearchState,
+        cipher: GoLibsEncryptedSearchAESGCMCipher,
+        dbParameters: GoLibsEncryptedSearchDBParams,
+        batchSize: Int,
+        completion: @escaping (Result<[GoLibsEncryptedSearchResultList], Error>) -> Void
+    ) {
+        guard let cache = buildCacheIfNeeded(userID: userID,
+                                             cipher: cipher,
+                                             dbParameters: dbParameters),
+            cache.getLength() > 0 else {
+            completion(.success([]))
+            return
+        }
+
+        var found = 0
+        var batchCount = 0
+        var searchResults: [GoLibsEncryptedSearchResultList] = []
+
+        while searchState.cachedSearchDone == false && found < Constant.searchResultPageSize {
+            do {
+                let result = try cache.search(
+                    searchState,
+                    searcher: searcher,
+                    batchSize: batchSize
+                )
+                found += result.length()
+                if result.length() > 0 {
+                    searchResults.append(result)
+                }
+            } catch {
+                completion(.failure(error))
+                return
+            }
+            batchCount += 1
+        }
+
+        SystemLogger.logTemporarily(message: "Cache search found: \(found) results.\nBatch count: \(batchCount)\nBatch size: \(batchSize)", category: .encryptedSearch)
+        completion(.success(searchResults))
+    }
+
+    private func buildCacheIfNeeded(
+        userID: UserID,
+        cipher: GoLibsEncryptedSearchAESGCMCipher,
+        dbParameters: GoLibsEncryptedSearchDBParams
+    ) -> GoLibsEncryptedSearchCache? {
+        if let cacheService = searchCacheServiceMap[userID], cacheService.isCacheBuilt() {
+            return cacheService.cache
+        } else {
+            let cacheService = EncryptedSearchCacheService(userID: userID)
+            searchCacheServiceMap[userID] = cacheService
+            return cacheService?.buildCacheForUser(
+                dbParams: dbParameters,
+                cipher: cipher
+            )
+        }
+    }
+
+    private func observeMemoryWarningNotification() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleMemoryWarning),
+            name: UIApplication.didReceiveMemoryWarningNotification,
+            object: nil
+        )
+    }
+
+    @objc
+    private func handleMemoryWarning() {
+        for cacheService in searchCacheServiceMap {
+            cacheService.value.deleteCache()
+        }
+        searchCacheServiceMap.removeAll()
+    }
+}
+
 extension EncryptedSearchService {
 
     private func createBuildSearchIndexIfNeeded(for userID: UserID) {
@@ -146,6 +404,17 @@ extension EncryptedSearchService {
             return nil
         }
         return build
+    }
+
+    enum Constant {
+        static let searchResultPageSize = 50
+    }
+
+    enum EncryptedSearchServiceError: Error {
+        case noSearchResult
+        case indexFailedToCreate
+        case noIndexFound
+        case notEnable
     }
 }
 

@@ -162,7 +162,7 @@ final class SearchIndexDBTests: XCTestCase {
         }
         let oldestTime = try XCTUnwrap(sut.oldestMessageTime())
         XCTAssertEqual(oldestTime, 2)
-        let number = try sut.numberOfEntries()
+        let number = sut.numberOfEntries()
         XCTAssertEqual(number, 6)
     }
 
