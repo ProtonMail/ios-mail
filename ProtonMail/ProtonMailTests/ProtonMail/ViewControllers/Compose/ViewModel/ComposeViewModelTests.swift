@@ -157,13 +157,7 @@ final class ComposeViewModelTests: XCTestCase {
     }
 
     func testDecodingRecipients_prefersMatchingLocalContactName() throws {
-        let email = CoreDataService.shared.read { context in
-            let email = Email(context: context)
-            let contact = Contact(context: context)
-            contact.name = "My friend I don't like"
-            email.contact = contact
-            return EmailEntity(email: email)
-        }
+        let email = EmailEntity.make(contactName: "My friend I don't like")
 
         contactProvider.getEmailsByAddressStub.bodyIs { _, _, _ in
             [email]

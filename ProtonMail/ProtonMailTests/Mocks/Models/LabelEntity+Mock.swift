@@ -20,50 +20,36 @@
 extension LabelEntity {
 
     static func makeMock() -> LabelEntity {
-        let contextProviderMock = MockCoreDataContextProvider()
+        let userID = UserID(String.randomString(100))
 
-        return contextProviderMock.enqueue { context in
-            let label = Label(context: context)
-            label.userID = String.randomString(100)
-            label.labelID = String.randomString(100)
-            label.name = String.randomString(100)
-            label.parentID = String.randomString(100)
-            label.path = String.randomString(100)
-            label.color = String.randomString(100)
-            label.type = NSNumber(value: Int.random(in: 1...3))
-            label.sticky = NSNumber(value: Bool.random())
-            label.notify = NSNumber(value: Bool.random())
-            label.order = NSNumber(value: 100)
-            label.isSoftDeleted = Bool.random()
-
-            let email = Email(context: context)
-            email.userID = label.userID
-            email.contactID = String.randomString(100)
-            email.emailID = String.randomString(100)
-            email.email = String.randomString(100)
-            email.name = String.randomString(100)
-            email.defaults = NSNumber(value: 100)
-            email.order = NSNumber(value: 1000)
-            email.type = String.randomString(100)
-            email.lastUsedTime = Date()
-
-            let email2 = Email(context: context)
-            email2.userID = label.userID
-            email2.contactID = String.randomString(100)
-            email2.emailID = String.randomString(100)
-            email2.email = String.randomString(100)
-            email2.name = String.randomString(100)
-            email2.defaults = NSNumber(value: 100)
-            email2.order = NSNumber(value: 2000)
-            email2.type = String.randomString(100)
-            email2.lastUsedTime = Date()
-
-            let mutableSet = label.mutableSetValue(forKey: Label.Attributes.emails)
-            mutableSet.add(email)
-            mutableSet.add(email2)
-
-            return LabelEntity(label: label)
+        let emails: [EmailEntity] = [1000, 2000].map { order in
+            EmailEntity.make(
+                contactID: ContactID(String.randomString(100)),
+                userID: userID,
+                emailID: EmailID(String.randomString(100)),
+                email: .randomString(100),
+                name: .randomString(100),
+                defaults: .random(),
+                order: order,
+                type: .randomString(100),
+                lastUsedTime: Date()
+            )
         }
+
+        return LabelEntity.make(
+            userID: userID,
+            labelID: LabelID(String.randomString(100)),
+            parentID: LabelID(String.randomString(100)),
+            name: .randomString(100),
+            color: .randomString(100),
+            type: LabelType.allCases[Int.random(in: 0..<LabelType.allCases.count)],
+            sticky: .random(),
+            order: 100,
+            path: .randomString(100),
+            notify: .random(),
+            emailRelations: emails,
+            isSoftDeleted: .random()
+        )
     }
 
     static func makeMocks(num: Int) -> [LabelEntity] {
