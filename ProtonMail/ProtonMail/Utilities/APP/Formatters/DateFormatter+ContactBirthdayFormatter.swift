@@ -7,5 +7,4 @@ extension DateFormatter {
         formatter.locale = LocaleEnvironment.locale()
         return formatter
     }
-
 }

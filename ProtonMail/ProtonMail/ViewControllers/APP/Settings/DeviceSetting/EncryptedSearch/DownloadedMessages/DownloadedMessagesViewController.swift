@@ -125,19 +125,9 @@ extension DownloadedMessagesViewController {
 
     private func cellForMessageHistory() -> EncryptedSearchDownloadedMessagesCell {
         let cell = tableView.dequeue(cellType: EncryptedSearchDownloadedMessagesCell.self)
-
-        // TODO: Pending. It depends on how the information is obtained in the VM and how it's exposed to the VC
-        // let messagesHistory = viewModel.ouput.messagesHistory
-        // cell.configure(info: messagesHistory.toDownloadedMessagesInfo())
-        cell.configure(
-            info: .init(
-                icon: .warning,
-                title: .messageHistory,
-                oldestMessage: .init(date: "Jan 27, 2023", highlight: true),
-                additionalInfo: .errorLowStorage
-            )
-        ) // for sample purposes
-
+        let searchIndexState = viewModel.output.searchIndexState
+        let cellInfo = searchIndexState.toDownloadedMessagesInfo(oldestMessageTime: viewModel.output.oldestMessageTime)
+        cell.configure( info: cellInfo)
         return cell
     }
 
@@ -194,5 +184,46 @@ extension DownloadedMessagesViewController: StorageLimitCellDelegate {
 extension DownloadedMessagesViewController: LocalStorageCellDelegate {
     func didTapClear(sender: LocalStorageCell) {
         showDeleteMessagesAlert()
+    }
+}
+
+private extension EncryptedSearchIndexState {
+
+    func toDownloadedMessagesInfo(
+        oldestMessageTime: String?
+    ) -> EncryptedSearchDownloadedMessagesCell.DownloadedMessagesInfo {
+        let oldestMessageInfo = oldestMessageTime ?? ""
+        switch self {
+        case .complete:
+            return EncryptedSearchDownloadedMessagesCell.DownloadedMessagesInfo(
+                icon: .success,
+                title: .downlodedMessages,
+                oldestMessage: .init(date: oldestMessageInfo, highlight: false),
+                additionalInfo: .allMessagesDownloaded
+            )
+        case .partial:
+            return .init(
+                icon: .warning,
+                title: .messageHistory,
+                oldestMessage: .init(date: oldestMessageInfo, highlight: true),
+                additionalInfo: .errorOutOfMemory
+            )
+        case .paused(let reason) where reason == .lowStorage:
+            return .init(
+                icon: .warning,
+                title: .messageHistory,
+                oldestMessage: .init(date: oldestMessageInfo, highlight: true),
+                additionalInfo: .errorLowStorage
+            )
+        default:
+            PMAssertionFailure("invalid state \(self)")
+            // returning a dummy state
+            return .init(
+                icon: .warning,
+                title: .messageHistory,
+                oldestMessage: .init(date: nil, highlight: true),
+                additionalInfo: .errorLowStorage
+            )
+        }
     }
 }

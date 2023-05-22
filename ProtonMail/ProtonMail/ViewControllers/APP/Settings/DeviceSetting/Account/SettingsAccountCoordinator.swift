@@ -205,7 +205,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     func openLocalStorage() {
         guard let navController = navigationController else { return }
         let router = SettingsLocalStorageRouter(navigationController: navController)
-        let viewModel = SettingsLocalStorageViewModel(router: router, dependencies: .init())
+        let viewModel = SettingsLocalStorageViewModel(router: router, dependencies: .init(userID: user.userID))
         let viewController = SettingsLocalStorageViewController(viewModel: viewModel)
         navController.pushViewController(viewController, animated: true)
     }

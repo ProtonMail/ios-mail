@@ -18,26 +18,18 @@
 import UIKit
 
 // sourcery: mock
-protocol SettingsEncryptedSearchRouterProtocol {
-    func navigateToDownloadedMessages(userID: UserID, state: EncryptedSearchIndexState)
+protocol DownloadedMessagesRouterProtocol {
+    func closeView()
 }
 
-final class SettingsEncryptedSearchRouter: SettingsEncryptedSearchRouterProtocol {
+final class DownloadedMessagesRouter: DownloadedMessagesRouterProtocol {
     private weak var navigationController: UINavigationController?
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
 
-    func navigateToDownloadedMessages(userID: UserID, state: EncryptedSearchIndexState) {
-        guard let navController = navigationController else { return }
-        let router = DownloadedMessagesRouter(navigationController: navController)
-        let viewModel = DownloadedMessagesViewModel(
-            router: router,
-            searchIndexState: state,
-            dependencies: .init(userID: userID)
-        )
-        let viewController = DownloadedMessagesViewController(viewModel: viewModel)
-        navController.pushViewController(viewController, animated: true)
+    func closeView() {
+        navigationController?.popViewController(animated: true)
     }
 }
