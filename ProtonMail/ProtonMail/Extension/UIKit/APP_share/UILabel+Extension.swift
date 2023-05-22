@@ -59,7 +59,7 @@ extension UILabel {
         lineBreakMode: NSLineBreakMode = .byTruncatingTail
     ) {
         let copiedText = NSMutableAttributedString(attributedString: text)
-        let wholeRange = NSRange(location: 0, length: text.string.count)
+        let wholeRange = NSRange(location: 0, length: (text.string as NSString).length)
         copiedText.addAttribute(.foregroundColor, value: textColor, range: wholeRange)
         text.enumerateAttribute(.backgroundColor, in: wholeRange) { value, range, _ in
             if value == nil { return }
