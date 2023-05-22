@@ -72,11 +72,7 @@ extension UserInfo {
     }
 
     static var isSenderImageEnabled: Bool {
-        #if DEBUG_ENTERPRISE
         return true
-        #else
-        return false
-        #endif
     }
 
     static var isBlockSenderEnabled: Bool {
