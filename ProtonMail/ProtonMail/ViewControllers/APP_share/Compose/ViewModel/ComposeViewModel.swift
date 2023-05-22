@@ -348,13 +348,14 @@ class ComposeViewModel: NSObject {
 
         switch messageAction {
         case .openDraft:
-            var css: String?
             let body = composerMessageHelper.decryptBody()
-            let document = CSSMagic.parse(htmlString: body)
-            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(document: document)
-            }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
+            let supplementCSS = supplementCSS(from: body)
+            return .init(
+                body: body,
+                remoteContentMode: globalRemoteContentMode,
+                messageDisplayMode: .expanded,
+                supplementCSS: supplementCSS
+            )
         case .reply, .replyAll:
             let msg = composerMessageHelper.draft!
             let body = composerMessageHelper.decryptBody()
@@ -373,12 +374,13 @@ class ComposeViewModel: NSObject {
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
 
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
-            var css: String?
-            let document = CSSMagic.parse(htmlString: result)
-            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(document: document)
-            }
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
+            let supplementCSS = supplementCSS(from: result)
+            return .init(
+                body: result,
+                remoteContentMode: globalRemoteContentMode,
+                messageDisplayMode: .expanded,
+                supplementCSS: supplementCSS
+            )
         case .forward:
             let msg = composerMessageHelper.draft!
             let clockFormat = using12hClockFormat() ? Constants.k12HourMinuteFormat : Constants.k24HourMinuteFormat
@@ -410,13 +412,13 @@ class ComposeViewModel: NSObject {
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
 
-            var css: String?
-            let document = CSSMagic.parse(htmlString: result)
-            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(document: document)
-            }
-
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
+            let supplementCSS = supplementCSS(from: result)
+            return .init(
+                body: result,
+                remoteContentMode: globalRemoteContentMode,
+                messageDisplayMode: .expanded,
+                supplementCSS: supplementCSS
+            )
         case .newDraft:
             if !self.body.isEmpty {
                 let newHTMLString = "\(head) \(self.body) \(signatureHtml) \(foot)"
@@ -424,12 +426,13 @@ class ComposeViewModel: NSObject {
                 return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
             }
             let body: String = signatureHtml.trim().isEmpty ? .empty : signatureHtml
-            var css: String?
-            let document = CSSMagic.parse(htmlString: body)
-            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(document: document)
-            }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
+            let supplementCSS = supplementCSS(from: body)
+            return .init(
+                body: body,
+                remoteContentMode: globalRemoteContentMode,
+                messageDisplayMode: .expanded,
+                supplementCSS: supplementCSS
+            )
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newHTMLString = """
@@ -444,6 +447,15 @@ class ComposeViewModel: NSObject {
             }
             return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
         }
+    }
+
+    private func supplementCSS(from html: String) -> String? {
+        var supplementCSS: String?
+        let document = CSSMagic.parse(htmlString: html)
+        if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+            supplementCSS = CSSMagic.generateCSSForDarkMode(document: document)
+        }
+        return supplementCSS
     }
 
     func getNormalAttachmentNum() -> Int {
