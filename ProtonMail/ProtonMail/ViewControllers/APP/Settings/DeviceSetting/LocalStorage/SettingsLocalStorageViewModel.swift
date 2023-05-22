@@ -43,7 +43,8 @@ extension SettingsLocalStorageViewModel: SettingsLocalStorageViewModelInput {
     }
 
     func didTapDownloadedMessages() {
-        router.navigateToDownloadedMessages()
+        // TODO: pass the correct state
+        router.navigateToDownloadedMessages(userID: dependencies.userId, state: .complete)
     }
 }
 
@@ -78,6 +79,11 @@ extension SettingsLocalStorageViewModel: SettingsLocalStorageViewModelOutput {
 extension SettingsLocalStorageViewModel {
 
     struct Dependencies {
+        let userId: UserID
+
+        init(userID: UserID) {
+            self.userId = userID
+        }
         // TODO: use the dependency
 //        let localStorageProvider: LocalStorageProvider
     }

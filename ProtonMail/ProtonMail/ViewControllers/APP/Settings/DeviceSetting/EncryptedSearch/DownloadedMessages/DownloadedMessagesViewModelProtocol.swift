@@ -32,6 +32,8 @@ protocol DownloadedMessagesViewModelOutput {
     var sections: [DownloadedMessagesSection] { get }
     var storageLimitSelected: ByteCount { get }
     var localStorageUsed: ByteCount { get }
+    var searchIndexState: EncryptedSearchIndexState { get }
+    var oldestMessageTime: String { get }
 
     func setUIDelegate(_ delegate: DownloadedMessagesUIProtocol)
 }

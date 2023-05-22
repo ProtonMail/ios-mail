@@ -20,10 +20,24 @@ import Foundation
 final class DownloadedMessagesViewModel: DownloadedMessagesViewModelProtocol {
     var input: DownloadedMessagesViewModelInput { self }
     var output: DownloadedMessagesViewModelOutput { self }
+    private let router: DownloadedMessagesRouterProtocol
+    let searchIndexState: EncryptedSearchIndexState
+    let dateFormatter: DateFormatter
     private weak var uiDelegate: DownloadedMessagesUIProtocol?
-    private let dependencies: Dependencies
+    private var dependencies: Dependencies
 
-    init(dependencies: Dependencies) {
+    private var userID: UserID {
+        dependencies.userID
+    }
+
+    init(
+        router: DownloadedMessagesRouterProtocol,
+        searchIndexState: EncryptedSearchIndexState,
+        dependencies: Dependencies
+    ) {
+        self.dateFormatter = DateFormatter.EncryptedSearch.formatterForOldestMessage()
+        self.router = router
+        self.searchIndexState = searchIndexState
         self.dependencies = dependencies
     }
 }
@@ -34,11 +48,13 @@ extension DownloadedMessagesViewModel: DownloadedMessagesViewModelInput {
     }
 
     func didChangeStorageLimitValue(newValue: ByteCount) {
-        // TODO: use the dependencies
+        dependencies.esDeviceCache.storageLimit = newValue
     }
 
     func didTapClearStorageUsed() {
-        // TODO: use the dependencies
+        dependencies.esUserCache.setIsEncryptedSearchOn(of: userID, value: false)
+        dependencies.esService.stopBuildingIndex(for: userID)
+        router.closeView()
     }
 }
 
@@ -48,13 +64,19 @@ extension DownloadedMessagesViewModel: DownloadedMessagesViewModelOutput {
     }
 
     var storageLimitSelected: ByteCount {
-        // TODO: use the dependencies
-        return 600_000_000
+        dependencies.esDeviceCache.storageLimit
     }
 
     var localStorageUsed: ByteCount {
-        // TODO: use the dependencies
-        return 150_000_000
+        dependencies.esService.indexSize(for: userID) ?? 0
+    }
+
+    var oldestMessageTime: String {
+        var oldestTime: String = "-"
+        if let time = dependencies.esService.oldesMessageTime(for: userID) {
+            oldestTime = dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(time)))
+        }
+        return oldestTime
     }
 
     func setUIDelegate(_ delegate: DownloadedMessagesUIProtocol) {
@@ -65,6 +87,21 @@ extension DownloadedMessagesViewModel: DownloadedMessagesViewModelOutput {
 extension DownloadedMessagesViewModel {
 
     struct Dependencies {
-        // TODO: Add dependencies
+        let userID: UserID
+        var esDeviceCache: EncryptedSearchDeviceCache
+        let esUserCache: EncryptedSearchUserCache
+        let esService: EncryptedSearchServiceProtocol
+
+        init(
+            userID: UserID,
+            esDeviceCache: EncryptedSearchDeviceCache = sharedServices.get(by: EncryptedSearchUserDefaultCache.self),
+            esUserCache: EncryptedSearchUserCache = sharedServices.get(by: EncryptedSearchUserDefaultCache.self),
+            esService: EncryptedSearchServiceProtocol = EncryptedSearchService.shared
+        ) {
+            self.userID = userID
+            self.esDeviceCache = esDeviceCache
+            self.esUserCache = esUserCache
+            self.esService = esService
+        }
     }
 }

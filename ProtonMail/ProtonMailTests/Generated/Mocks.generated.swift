@@ -319,6 +319,14 @@ class MockCopyMessageUseCase: CopyMessageUseCase {
 
 }
 
+class MockDownloadedMessagesRouterProtocol: DownloadedMessagesRouterProtocol {
+    @FuncStub(MockDownloadedMessagesRouterProtocol.closeView) var closeViewStub
+    func closeView() {
+        closeViewStub()
+    }
+
+}
+
 class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
     @FuncStub(MockEncryptedSearchServiceProtocol.setBuildSearchIndexDelegate) var setBuildSearchIndexDelegateStub
     func setBuildSearchIndexDelegate(for userID: UserID, delegate: BuildSearchIndexDelegate?) {
@@ -1089,8 +1097,8 @@ class MockSettingsAccountCoordinatorProtocol: SettingsAccountCoordinatorProtocol
 
 class MockSettingsEncryptedSearchRouterProtocol: SettingsEncryptedSearchRouterProtocol {
     @FuncStub(MockSettingsEncryptedSearchRouterProtocol.navigateToDownloadedMessages) var navigateToDownloadedMessagesStub
-    func navigateToDownloadedMessages() {
-        navigateToDownloadedMessagesStub()
+    func navigateToDownloadedMessages(userID: UserID, state: EncryptedSearchIndexState) {
+        navigateToDownloadedMessagesStub(userID, state)
     }
 
 }

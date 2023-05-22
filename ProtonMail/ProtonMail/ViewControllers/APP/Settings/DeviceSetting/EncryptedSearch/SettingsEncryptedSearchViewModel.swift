@@ -31,11 +31,9 @@ final class SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelPr
     private(set) var sections: [SettingsEncryptedSearchSection] = [.encryptedSearchFeature]
 
     init(router: SettingsEncryptedSearchRouterProtocol, dependencies: Dependencies) {
-        dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-        dateFormatter.locale = dependencies.locale
-        dateFormatter.timeZone = dependencies.timeZone
+        dateFormatter = DateFormatter
+            .EncryptedSearch
+            .formatterForOldestMessage(locale: dependencies.locale, timeZone: dependencies.timeZone)
         self.router = router
         self.dependencies = dependencies
     }
@@ -45,7 +43,7 @@ final class SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelPr
             sections = [.encryptedSearchFeature, .downloadViaMobileData]
             let indexBuildingState = dependencies.esService.indexBuildingState(for: userID)
             if indexBuildingState != .undetermined { // TODO: we should get rid of the .undeterminate state
-                if shouldShowDownlodingProgress(for: indexBuildingState) {
+                if shouldShowDownloadingProgress(for: indexBuildingState) {
                     sections.append(.downloadProgress)
                 } else {
                     sections.append(.downloadedMessages)
@@ -57,7 +55,7 @@ final class SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelPr
         uiDelegate?.reloadData()
     }
 
-    private func shouldShowDownlodingProgress(for state: EncryptedSearchIndexState) -> Bool {
+    private func shouldShowDownloadingProgress(for state: EncryptedSearchIndexState) -> Bool {
         switch state {
         case .disabled, .partial, .complete:
             return false
@@ -90,7 +88,8 @@ extension SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelInpu
     }
 
     func didTapDownloadedMessages() {
-        router.navigateToDownloadedMessages()
+        let state = dependencies.esService.indexBuildingState(for: userID)
+        router.navigateToDownloadedMessages(userID: userID, state: state)
     }
 
     func didTapPauseMessagesDownload() {
