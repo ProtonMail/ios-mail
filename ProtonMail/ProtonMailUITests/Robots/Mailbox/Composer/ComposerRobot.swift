@@ -175,13 +175,13 @@ class ComposerRobot: CoreElements {
     
     @discardableResult
     func send() -> InboxRobot {
-        button(id.sendButtonIdentifier).firstMatch().tap()
+        button(id.sendButtonIdentifier).waitForHittable().tap()
         return InboxRobot()
     }
     
     @discardableResult
-    func sendReplyMessage() -> MessageRobot {
-        button(id.sendButtonIdentifier).waitForHittable().tap()
+    func sendMessageFromMessageRobot() -> MessageRobot {
+        send()
         return MessageRobot()
     }
 
@@ -209,11 +209,11 @@ class ComposerRobot: CoreElements {
         button(email).waitForHittable().tap()
         return ComposerRobot()
     }
-    
+
     func changeSubjectTo(_ subjectText: String) -> ComposerRobot {
         textField(id.subjectTextFieldIdentifier)
             .firstMatch()
-            .waitForHittable().tap()
+            .waitForHittable().tapOnCoordinate(withOffset: CGVector(dx: 0.99, dy: 0.99))
             .clearText().typeText(subjectText)
         return ComposerRobot()
     }

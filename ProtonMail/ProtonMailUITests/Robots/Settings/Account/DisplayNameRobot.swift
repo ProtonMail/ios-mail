@@ -18,7 +18,7 @@ fileprivate struct id {
 class DisplayNameRobot: CoreElements {
 
     func setDisplayNameTextTo(_ text: String) -> DisplayNameRobot {
-        textField().byIndex(0).tap().clearText().typeText(text)
+        textField().byIndex(0).tapOnCoordinate(withOffset: CGVector(dx: 0.99, dy: 0.99)).clearText().typeText(text)
         return self
     }
     

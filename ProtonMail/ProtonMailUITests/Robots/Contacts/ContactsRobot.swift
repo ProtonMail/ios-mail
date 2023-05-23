@@ -94,7 +94,7 @@ class ContactsRobot: CoreElements {
         }
         
         private func clickDeleteButton() -> ContactsView {
-            button(id.deleteButtonText).tap()
+            button(id.deleteButtonText).waitForHittable().tap()
             return ContactsView()
         }
         

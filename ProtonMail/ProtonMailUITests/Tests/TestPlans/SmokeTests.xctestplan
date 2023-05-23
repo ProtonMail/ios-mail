@@ -52,6 +52,7 @@
         "NoUnauthSessionTests\/testRefreshingAndOpeningMailWorks()",
         "PinTests\/testEnableAutoLockPin()",
         "PinTests\/testTurnOnAndOffPin()",
+        "ReplyToMessageTests\/testReplyTextMessage()",
         "SpamTests\/testSwipeToSpamMessage()",
         "UnauthSessionTests\/testRefreshingAndOpeningMailWorks()"
       ],
