@@ -7,5 +7,25 @@
 //
 
 import Foundation
+import XCTest
 
-//TODO
+import ProtonCore_TestingToolkit
+
+class ForwardMessageTests: FixtureAuthenticatedTestCase {
+    
+    override var scenario: MailScenario { .qaMail002 }
+    
+    func testForwardTextMessage() {
+        let subject = "Fw: \(scenario.subject)"
+        
+        InboxRobot()
+            .clickMessageByIndex(0)
+            .forward()
+            .recipients(user!.email)
+            .sendMessageFromMessageRobot()
+            .navigateBackToInbox()
+            .menuDrawer()
+            .sent()
+            .verify.messageExists(subject)
+    }
+}

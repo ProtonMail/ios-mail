@@ -124,7 +124,7 @@ class MailboxRobotInterface: CoreElements {
 class MailboxRobotVerifyInterface: CoreElements {
     
     func messageExists(_ subject: String) {
-        cell(id.mailboxMessageCellIdentifier(subject)).onChild(staticText(subject)).firstMatch().checkExists()
+        cell(id.mailboxMessageCellIdentifier(subject.replaceSpaces())).onChild(staticText(subject)).firstMatch().waitUntilExists().checkExists()
     }
     
     func messageIsEmpty() {
