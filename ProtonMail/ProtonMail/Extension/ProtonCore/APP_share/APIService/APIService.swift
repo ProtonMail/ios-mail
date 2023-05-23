@@ -21,10 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import Foundation
-import TrustKit
 import ProtonCore_Authentication
 import ProtonCore_Challenge
+import ProtonCore_Environment
 import ProtonCore_Log
 import ProtonCore_Keymaker
 import ProtonCore_Networking
@@ -76,7 +75,10 @@ extension PMAPIService {
         guard PMAPIService.trustKit == nil else { return }
         #if !APP_EXTENSION
         // For the extension, please check ShareExtensionEntry
-        let delegate = UIApplication.shared.delegate as? AppDelegate
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            assertionFailure("\(UIApplication.shared.delegate) is not an instance of AppDelegate!")
+            return
+        }
         TrustKitWrapper.start(delegate: delegate)
         #endif
     }

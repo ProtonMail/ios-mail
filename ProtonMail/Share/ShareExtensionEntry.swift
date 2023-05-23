@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import ProtonCore_Environment
 import ProtonCore_FeatureSwitch
 import ProtonCore_Services
 import ProtonCore_UIFoundations
