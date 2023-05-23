@@ -27,16 +27,18 @@ import XCTest
 class SettingsGestureViewModelTests: XCTestCase {
     var sut: SettingsGestureViewModelImpl!
     var swipeActionCacheStub: SwipeActionCacheStub!
+    var swipeActionInfoStub: MockSwipeActionInfo!
 
     override func setUp() {
         swipeActionCacheStub = SwipeActionCacheStub()
-        let swipeActionInfoStub = MockSwipeActionInfo()
+        swipeActionInfoStub = MockSwipeActionInfo()
         sut = SettingsGestureViewModelImpl(cache: swipeActionCacheStub, swipeActionInfo: swipeActionInfoStub)
     }
 
     override func tearDown() {
         sut = nil
         swipeActionCacheStub = nil
+        swipeActionInfoStub = nil
     }
 
     func testGetLeftToRightSwipeAction() {
@@ -45,8 +47,22 @@ class SettingsGestureViewModelTests: XCTestCase {
         XCTAssertEqual(sut.leftToRightAction, .archive)
     }
 
+    func testGetLeftToRightSwipeAction_withInvalidServerValue_returnArchiveAsDefaultAction() {
+        swipeActionCacheStub.leftToRightSwipeActionType = nil
+        swipeActionInfoStub.swipeRightStub.fixture = Int.random(in: 5...Int.max)
+
+        XCTAssertEqual(sut.leftToRightAction, .archive)
+    }
+
     func testGetRightToLeftSwipeAction() {
         swipeActionCacheStub.rightToLeftSwipeActionType = .archive
+
+        XCTAssertEqual(sut.rightToLeftAction, .archive)
+    }
+
+    func testGetRightToLeftSwipeAction_withInvalidServerValue_returnArchiveAsDefaultAction() {
+        swipeActionCacheStub.rightToLeftSwipeActionType = nil
+        swipeActionInfoStub.swipeLeftStub.fixture = Int.random(in: 5...Int.max)
 
         XCTAssertEqual(sut.rightToLeftAction, .archive)
     }

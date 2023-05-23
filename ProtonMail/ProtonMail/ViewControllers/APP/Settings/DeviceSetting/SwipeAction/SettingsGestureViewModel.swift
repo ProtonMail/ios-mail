@@ -41,7 +41,7 @@ final class SettingsGestureViewModelImpl: SettingsGestureViewModel {
         if let action = swipeActionsCache.leftToRightSwipeActionType {
             return action
         } else {
-            return SwipeActionSettingType.convertFromServer(rawValue: self.swipeActionInfo.swipeRight) ?? .trash
+            return SwipeActionSettingType.convertFromServer(rawValue: self.swipeActionInfo.swipeRight) ?? .archive
         }
     }
 
