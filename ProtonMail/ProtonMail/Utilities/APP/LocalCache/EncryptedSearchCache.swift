@@ -68,6 +68,7 @@ protocol EncryptedSearchUserCache {
     func cleanGlobal()
 }
 
+// sourcery: mock
 protocol EncryptedSearchDeviceCache {
     var storageLimit: Int { get set }
     var pauseIndexingDueToNetworkIssues: Bool { get set }
