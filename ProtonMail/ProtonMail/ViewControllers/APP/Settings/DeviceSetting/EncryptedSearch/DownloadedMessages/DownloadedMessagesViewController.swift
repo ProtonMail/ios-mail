@@ -45,11 +45,6 @@ final class DownloadedMessagesViewController: UITableViewController, AccessibleV
         viewModel.output.setUIDelegate(self)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.input.viewWillAppear()
-    }
-
     private func setUpUI() {
         title = L11n.EncryptedSearch.downloaded_messages
         view.backgroundColor = ColorProvider.BackgroundSecondary

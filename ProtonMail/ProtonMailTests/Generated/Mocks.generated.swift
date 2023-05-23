@@ -327,6 +327,87 @@ class MockDownloadedMessagesRouterProtocol: DownloadedMessagesRouterProtocol {
 
 }
 
+class MockDownloadedMessagesUIProtocol: DownloadedMessagesUIProtocol {
+    @FuncStub(MockDownloadedMessagesUIProtocol.reloadData) var reloadDataStub
+    func reloadData() {
+        reloadDataStub()
+    }
+
+}
+
+class MockEncryptedSearchDeviceCache: EncryptedSearchDeviceCache {
+    @PropertyStub(\MockEncryptedSearchDeviceCache.storageLimit, initialGet: Int()) var storageLimitStub
+    var storageLimit: Int {
+        get {
+            storageLimitStub()
+        }
+        set {
+            storageLimitStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockEncryptedSearchDeviceCache.pauseIndexingDueToNetworkIssues, initialGet: Bool()) var pauseIndexingDueToNetworkIssuesStub
+    var pauseIndexingDueToNetworkIssues: Bool {
+        get {
+            pauseIndexingDueToNetworkIssuesStub()
+        }
+        set {
+            pauseIndexingDueToNetworkIssuesStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockEncryptedSearchDeviceCache.pauseIndexingDueToWifiNotDetected, initialGet: Bool()) var pauseIndexingDueToWifiNotDetectedStub
+    var pauseIndexingDueToWifiNotDetected: Bool {
+        get {
+            pauseIndexingDueToWifiNotDetectedStub()
+        }
+        set {
+            pauseIndexingDueToWifiNotDetectedStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockEncryptedSearchDeviceCache.pauseIndexingDueToOverHeating, initialGet: Bool()) var pauseIndexingDueToOverHeatingStub
+    var pauseIndexingDueToOverHeating: Bool {
+        get {
+            pauseIndexingDueToOverHeatingStub()
+        }
+        set {
+            pauseIndexingDueToOverHeatingStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockEncryptedSearchDeviceCache.pauseIndexingDueToLowBattery, initialGet: Bool()) var pauseIndexingDueToLowBatteryStub
+    var pauseIndexingDueToLowBattery: Bool {
+        get {
+            pauseIndexingDueToLowBatteryStub()
+        }
+        set {
+            pauseIndexingDueToLowBatteryStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockEncryptedSearchDeviceCache.interruptStatus, initialGet: nil) var interruptStatusStub
+    var interruptStatus: String? {
+        get {
+            interruptStatusStub()
+        }
+        set {
+            interruptStatusStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockEncryptedSearchDeviceCache.interruptAdvice, initialGet: nil) var interruptAdviceStub
+    var interruptAdvice: String? {
+        get {
+            interruptAdviceStub()
+        }
+        set {
+            interruptAdviceStub(newValue)
+        }
+    }
+
+}
+
 class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
     @FuncStub(MockEncryptedSearchServiceProtocol.setBuildSearchIndexDelegate) var setBuildSearchIndexDelegateStub
     func setBuildSearchIndexDelegate(for userID: UserID, delegate: BuildSearchIndexDelegate?) {

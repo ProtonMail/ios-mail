@@ -23,7 +23,6 @@ protocol DownloadedMessagesViewModelProtocol {
 }
 
 protocol DownloadedMessagesViewModelInput {
-    func viewWillAppear()
     func didChangeStorageLimitValue(newValue: ByteCount)
     func didTapClearStorageUsed()
 }
@@ -38,6 +37,7 @@ protocol DownloadedMessagesViewModelOutput {
     func setUIDelegate(_ delegate: DownloadedMessagesUIProtocol)
 }
 
+// sourcery: mock
 protocol DownloadedMessagesUIProtocol: AnyObject {
     func reloadData()
 }

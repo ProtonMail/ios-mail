@@ -43,11 +43,12 @@ final class DownloadedMessagesViewModel: DownloadedMessagesViewModelProtocol {
 }
 
 extension DownloadedMessagesViewModel: DownloadedMessagesViewModelInput {
-    func viewWillAppear() {
-        // TODO: use the dependencies
-    }
 
     func didChangeStorageLimitValue(newValue: ByteCount) {
+        guard newValue > 0 else {
+            uiDelegate?.reloadData()
+            return
+        }
         dependencies.esDeviceCache.storageLimit = newValue
     }
 
