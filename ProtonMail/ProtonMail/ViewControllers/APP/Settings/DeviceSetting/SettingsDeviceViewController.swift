@@ -252,8 +252,6 @@ extension SettingsDeviceViewController {
                     } else {
                         PMAssertionFailure("Locale \(locale.identifier) has no localized string for \(languageCode)")
                     }
-                case .localizationPreview:
-                    cellToConfig.configure(right: "Test only", imageType: .system)
                 }
             }
             return cell
@@ -362,8 +360,6 @@ extension SettingsDeviceViewController {
                 }
             case .language:
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            case .localizationPreview:
-                coordinator?.go(to: .localizationPreview)
             }
         case .clearCache:
             cleanCache()
