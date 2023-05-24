@@ -79,9 +79,11 @@ final class ShareAppCoordinator {
 
 extension ShareAppCoordinator: UnlockManagerDelegate {
     func setupCoreData() {
+        sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        sharedServices.add(LastUpdatedStore.self,
-                           for: LastUpdatedStore(contextProvider: sharedServices.get(by: CoreDataService.self)))
+        let lastUpdatedStore = LastUpdatedStore(contextProvider: CoreDataService.shared)
+        sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
+        sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
     }
 
     func isUserStored() -> Bool {

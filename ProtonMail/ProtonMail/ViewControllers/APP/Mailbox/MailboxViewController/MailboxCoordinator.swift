@@ -55,6 +55,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private var messageIDsOpenedFromNotification: [MessageID] = []
 
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
+    private let composeViewModelFactory: ComposeViewModelDependenciesFactory
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
@@ -77,6 +78,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         self.internetStatusProvider = internetStatusProvider
         self.getApplicationState = getApplicationState
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
+        self.composeViewModelFactory = services.makeComposeViewModelDependenciesFactory()
     }
 
     enum Destination: String {
@@ -190,8 +192,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                     action: existingMessage == nil ? .newDraft : .openDraft,
                     msgService: user.messageService,
                     user: user,
-                    coreDataContextProvider: contextProvider,
-                    internetStatusProvider: internetStatusProvider
+                    dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
                 )
                 showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
             }
@@ -272,7 +273,8 @@ extension MailboxCoordinator {
             isEditingScheduleMsg: isEditingScheduleMsg,
             userIntroductionProgressProvider: userCachedStatus,
             scheduleSendEnableStatusProvider: userCachedStatus,
-            internetStatusProvider: internetStatusProvider
+            internetStatusProvider: internetStatusProvider,
+            coreKeyMaker: services.get()
         )
         navigationVC.present(composer, animated: true)
     }
@@ -280,10 +282,12 @@ extension MailboxCoordinator {
     private func presentSearch() {
         let coreDataService = services.get(by: CoreDataService.self)
         let viewModel = SearchViewModel(
+            serviceFactory: services,
             user: viewModel.user,
             coreDataContextProvider: coreDataService,
             internetStatusProvider: services.get(),
             dependencies: .init(
+                coreKeyMaker: services.get(),
                 fetchMessageDetail: FetchMessageDetail(
                     dependencies: .init(
                         queueManager: services.get(by: QueueManager.self),
@@ -313,7 +317,7 @@ extension MailboxCoordinator {
                 )
             )
         )
-        let viewController = SearchViewController(viewModel: viewModel)
+        let viewController = SearchViewController(viewModel: viewModel, serviceFactory: services)
         viewModel.uiDelegate = viewController
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalTransitionStyle = .coverVertical
@@ -362,6 +366,7 @@ extension MailboxCoordinator {
                 userIntroductionProgressProvider: userCachedStatus,
                 scheduleSendEnableStatusProvider: userCachedStatus,
                 internetStatusProvider: internetStatusProvider,
+                coreKeyMaker: services.get(),
                 mailToUrl: mailToURL
             )
             nav.present(composer, animated: true)
@@ -559,6 +564,7 @@ extension MailboxCoordinator {
     private func present(message: MessageEntity) {
         guard let navigationController = viewController?.navigationController else { return }
         let coordinator = SingleMessageCoordinator(
+            serviceFactory: services,
             navigationController: navigationController,
             labelId: viewModel.labelID,
             message: message,
@@ -582,7 +588,8 @@ extension MailboxCoordinator {
             internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             contextProvider: contextProvider,
-            targetID: targetID
+            targetID: targetID,
+            serviceFactory: services
         )
         conversationCoordinator = coordinator
         coordinator.goToDraft = { [weak self] msgID, originalScheduledTime in

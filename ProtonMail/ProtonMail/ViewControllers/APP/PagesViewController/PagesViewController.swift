@@ -166,6 +166,7 @@ extension PagesViewController {
         }
         guard let navigationController = self.navigationController else { return nil }
         let coordinator = SingleMessageCoordinator(
+            serviceFactory: services,
             navigationController: navigationController,
             labelId: viewModel.labelID,
             message: message,
@@ -225,7 +226,8 @@ extension PagesViewController {
             internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
             infoBubbleViewStatusProvider: viewModel.infoBubbleViewStatusProvider,
             contextProvider: services.get(by: CoreDataService.self),
-            targetID: targetMessageID
+            targetID: targetMessageID,
+            serviceFactory: services
         )
         coordinator.goToDraft = viewModel.goToDraft
         let controller = coordinator.makeConversationVC()

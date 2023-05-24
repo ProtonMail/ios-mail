@@ -66,6 +66,7 @@ class ShareUnlockCoordinator {
 
         let coreDataService = self.services.get(by: CoreDataService.self)
         let internetStatusProvider = self.services.get(by: InternetConnectionStatusProvider.self)
+        let coreKeyMaker: KeyMakerProtocol = services.get()
         let composer = ComposerViewFactory.makeComposer(
             subject: controller.inputSubject,
             body: controller.inputContent,
@@ -75,6 +76,7 @@ class ShareUnlockCoordinator {
             userIntroductionProgressProvider: userCachedStatus,
             scheduleSendStatusProvider: userCachedStatus,
             internetStatusProvider: internetStatusProvider,
+            coreKeyMaker: coreKeyMaker,
             navigationViewController: navigationController
         )
         navigationController.setViewControllers([composer], animated: true)

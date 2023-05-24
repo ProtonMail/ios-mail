@@ -25,7 +25,7 @@ import Foundation
 protocol SettingDetailsViewModel {
     var userManager: UserManager { get }
     var sectionTitle2: String { get }
-    init(user: UserManager)
+    init(user: UserManager, coreKeyMaker: KeyMakerProtocol)
     func getNavigationTitle() -> String
     func isDisplaySwitch() -> Bool
     func getSwitchText() -> String
@@ -44,7 +44,7 @@ protocol SettingDetailsViewModel {
 class ChangeDisplayNameViewModel: SettingDetailsViewModel {
     let userManager: UserManager
 
-    required init(user: UserManager) {
+    required init(user: UserManager, coreKeyMaker: KeyMakerProtocol) {
         self.userManager = user
     }
 
@@ -129,7 +129,7 @@ class ChangeDisplayNameViewModel: SettingDetailsViewModel {
 class ChangeSignatureViewModel: SettingDetailsViewModel {
     let userManager: UserManager
 
-    required init(user: UserManager) {
+    required init(user: UserManager, coreKeyMaker: KeyMakerProtocol) {
         self.userManager = user
     }
 
@@ -222,9 +222,15 @@ class ChangeSignatureViewModel: SettingDetailsViewModel {
 
 class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
     let userManager: UserManager
+    let dependencies: Dependencies
 
-    required init(user: UserManager) {
+    required init(user: UserManager, coreKeyMaker: KeyMakerProtocol) {
         self.userManager = user
+        self.dependencies = .init(
+            userManager: user,
+            updateMobileSignatureUseCase: UpdateMobileSignature(dependencies: .init(coreKeyMaker: coreKeyMaker, cache: userCachedStatus)),
+            fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: coreKeyMaker, cache: userCachedStatus))
+        )
     }
 
     var sectionTitle2: String {
@@ -260,7 +266,9 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
     }
 
     func getCurrentValue() -> String {
-        return userManager.mobileSignature
+        return dependencies.fetchMobileSignatureUseCase.execute(
+            params: .init(userID: userManager.userID, isPaidUser: userManager.isPaid)
+        )
     }
 
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
@@ -268,9 +276,17 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
             complete(true, nil)
         } else {
             let newValueToSave = new_value.trim().ln2br()
-            userManager.mobileSignature = newValueToSave
-            userManager.save()
-            complete(true, nil)
+            dependencies.updateMobileSignatureUseCase
+                .callbackOn(.main)
+                .execute(
+                params: .init(signature: newValueToSave, userID: userManager.userID)) { result in
+                    switch result {
+                    case .success:
+                        complete(true, nil)
+                    case .failure(let error):
+                        complete(false, error as NSError)
+                    }
+                }
         }
     }
 
@@ -304,12 +320,18 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
     func needAsk2FA() -> Bool {
         return false
     }
+
+    struct Dependencies {
+        let userManager: UserManager
+        let updateMobileSignatureUseCase: UpdateMobileSignatureUseCase
+        let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
+    }
 }
 
 class ChangeNotificationEmailViewModel: SettingDetailsViewModel {
     let userManager: UserManager
 
-    required init(user: UserManager) {
+    required init(user: UserManager, coreKeyMaker: KeyMakerProtocol) {
         self.userManager = user
     }
 

@@ -33,11 +33,13 @@ final class ConversationDataServiceTests: XCTestCase {
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
         mockEventsService = MockEventsService()
-        fakeUndoActionManager = UndoActionManager(apiService: mockApiService,
-                                                  internetStatusProvider: .init(),
-                                                  contextProvider: mockContextProvider,
-                                                  getEventFetching: {return nil},
-                                                  getUserManager: {return nil})
+        let factory = sharedServices.makeUndoActionManagerDependenciesFactory()
+        fakeUndoActionManager = UndoActionManager(
+            factory: factory,
+            dependencies: factory.makeDependencies(apiService: mockApiService),
+            getEventFetching: { nil },
+            getUserManager: { nil }
+        )
         let mockContactCacheStatus = MockContactCacheStatusProtocol()
         sut = ConversationDataService(api: mockApiService,
                                       userID: userID,

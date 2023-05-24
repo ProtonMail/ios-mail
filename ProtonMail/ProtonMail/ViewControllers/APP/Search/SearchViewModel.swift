@@ -106,14 +106,17 @@ final class SearchViewModel: NSObject {
     private let internetStatusProvider: InternetConnectionStatusProvider
     private var currentFetchedSearchResultPage: UInt = 0
     /// use this flag to stop the search query being triggered by `loadMoreDataIfNeeded`.
-    private(set) var searchIsDone = false 
+    private(set) var searchIsDone = false
+    private let composeViewModelFactory: ComposeViewModelDependenciesFactory
 
     init(
+        serviceFactory: ServiceFactory,
         user: UserManager,
         coreDataContextProvider: CoreDataContextProviderProtocol,
         internetStatusProvider: InternetConnectionStatusProvider,
         dependencies: Dependencies
     ) {
+        self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
         self.internetStatusProvider = internetStatusProvider
@@ -213,8 +216,7 @@ extension SearchViewModel: SearchVMProtocol {
             action: .openDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: coreDataContextProvider,
-            internetStatusProvider: internetStatusProvider
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
     }
 
@@ -228,9 +230,8 @@ extension SearchViewModel: SearchVMProtocol {
             action: .openDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: coreDataContextProvider,
-            internetStatusProvider: internetStatusProvider,
-            isEditingScheduleMsg: isEditingScheduleMsg
+            isEditingScheduleMsg: isEditingScheduleMsg,
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
     }
 
@@ -663,6 +664,7 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
 
 extension SearchViewModel {
     struct Dependencies {
+        let coreKeyMaker: KeyMakerProtocol
         let fetchMessageDetail: FetchMessageDetailUseCase
         let fetchSenderImage: FetchSenderImageUseCase
         let backendSearch: BackendSearchUseCase

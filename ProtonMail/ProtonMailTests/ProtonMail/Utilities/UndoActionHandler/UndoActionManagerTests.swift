@@ -26,19 +26,22 @@ class UndoActionManagerTests: XCTestCase {
     var eventService: EventsServiceMock!
     var contextProviderMock: CoreDataContextProviderProtocol!
     var userManagerMock: UserManager!
+    var serviceFactory: ServiceFactory!
 
     override func setUp() {
         super.setUp()
+        serviceFactory = .init()
         handlerMock = UndoActionHandlerBaseMock()
         apiServiceMock = APIServiceMock()
         eventService = EventsServiceMock()
         contextProviderMock = MockCoreDataContextProvider()
         userManagerMock = UserManager(api: apiServiceMock, role: .member)
+        serviceFactory.add(CoreDataContextProviderProtocol.self, for: contextProviderMock)
+        let factory = serviceFactory.makeUndoActionManagerDependenciesFactory()
 
         sut = UndoActionManager(
-            apiService: apiServiceMock,
-            internetStatusProvider: .init(),
-            contextProvider: contextProviderMock,
+            factory: factory,
+            dependencies: factory.makeDependencies(apiService: apiServiceMock),
             getEventFetching: { [weak self] in
                 self?.eventService
             },
