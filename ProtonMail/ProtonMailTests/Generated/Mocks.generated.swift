@@ -130,44 +130,6 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
 
 }
 
-class MockCacheStatusInject: CacheStatusInject {
-    @PropertyStub(\MockCacheStatusInject.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub
-    var isPinCodeEnabled: Bool {
-        isPinCodeEnabledStub()
-    }
-
-    @PropertyStub(\MockCacheStatusInject.isTouchIDEnabled, initialGet: Bool()) var isTouchIDEnabledStub
-    var isTouchIDEnabled: Bool {
-        isTouchIDEnabledStub()
-    }
-
-    @PropertyStub(\MockCacheStatusInject.pinFailedCount, initialGet: Int()) var pinFailedCountStub
-    var pinFailedCount: Int {
-        get {
-            pinFailedCountStub()
-        }
-        set {
-            pinFailedCountStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockCacheStatusInject.isAppKeyEnabled, initialGet: Bool()) var isAppKeyEnabledStub
-    var isAppKeyEnabled: Bool {
-        isAppKeyEnabledStub()
-    }
-
-    @PropertyStub(\MockCacheStatusInject.isAppLockedAndAppKeyDisabled, initialGet: Bool()) var isAppLockedAndAppKeyDisabledStub
-    var isAppLockedAndAppKeyDisabled: Bool {
-        isAppLockedAndAppKeyDisabledStub()
-    }
-
-    @PropertyStub(\MockCacheStatusInject.isAppLockedAndAppKeyEnabled, initialGet: Bool()) var isAppLockedAndAppKeyEnabledStub
-    var isAppLockedAndAppKeyEnabled: Bool {
-        isAppLockedAndAppKeyEnabledStub()
-    }
-
-}
-
 class MockCachedUserDataProvider: CachedUserDataProvider {
     @FuncStub(MockCachedUserDataProvider.set) var setStub
     func set(disconnectedUsers: [UsersManager.DisconnectedUserHandle]) {
@@ -877,22 +839,35 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
 
 }
 
-class MockLockPreferences: LockPreferences {
-    @PropertyStub(\MockLockPreferences.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub
+class MockLockCacheStatus: LockCacheStatus {
+    @PropertyStub(\MockLockCacheStatus.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub
     var isPinCodeEnabled: Bool {
         isPinCodeEnabledStub()
     }
 
-    @PropertyStub(\MockLockPreferences.isTouchIDEnabled, initialGet: Bool()) var isTouchIDEnabledStub
+    @PropertyStub(\MockLockCacheStatus.isTouchIDEnabled, initialGet: Bool()) var isTouchIDEnabledStub
     var isTouchIDEnabled: Bool {
         isTouchIDEnabledStub()
     }
 
-    @PropertyStub(\MockLockPreferences.isAppKeyEnabled, initialGet: Bool()) var isAppKeyEnabledStub
+    @PropertyStub(\MockLockCacheStatus.isAppKeyEnabled, initialGet: Bool()) var isAppKeyEnabledStub
     var isAppKeyEnabled: Bool {
         isAppKeyEnabledStub()
     }
 
+    @PropertyStub(\MockLockCacheStatus.isAppLockedAndAppKeyDisabled, initialGet: Bool()) var isAppLockedAndAppKeyDisabledStub
+    var isAppLockedAndAppKeyDisabled: Bool {
+        isAppLockedAndAppKeyDisabledStub()
+    }
+
+    @PropertyStub(\MockLockCacheStatus.isAppLockedAndAppKeyEnabled, initialGet: Bool()) var isAppLockedAndAppKeyEnabledStub
+    var isAppLockedAndAppKeyEnabled: Bool {
+        isAppLockedAndAppKeyEnabledStub()
+    }
+
+}
+
+class MockLockPreferences: LockPreferences {
     @FuncStub(MockLockPreferences.setKeymakerRandomkey) var setKeymakerRandomkeyStub
     func setKeymakerRandomkey(key: String?) {
         setKeymakerRandomkeyStub(key)
@@ -1096,6 +1071,19 @@ class MockPaymentsUIProtocol: PaymentsUIProtocol {
     @FuncStub(MockPaymentsUIProtocol.showCurrentPlan) var showCurrentPlanStub
     func showCurrentPlan(presentationType: PaymentsUIPresentationType, backendFetch: Bool, completionHandler: @escaping (PaymentsUIResultReason) -> Void) {
         showCurrentPlanStub(presentationType, backendFetch, completionHandler)
+    }
+
+}
+
+class MockPinFailedCountCache: PinFailedCountCache {
+    @PropertyStub(\MockPinFailedCountCache.pinFailedCount, initialGet: Int()) var pinFailedCountStub
+    var pinFailedCount: Int {
+        get {
+            pinFailedCountStub()
+        }
+        set {
+            pinFailedCountStub(newValue)
+        }
     }
 
 }

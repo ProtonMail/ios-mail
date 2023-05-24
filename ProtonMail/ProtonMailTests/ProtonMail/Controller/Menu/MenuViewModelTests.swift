@@ -45,7 +45,7 @@ class MenuViewModelTests: XCTestCase {
             userStatusInQueueProvider: userStatusInQueueProviderMock,
             coreDataContextProvider: coreDataContextProviderMock,
             coreKeyMaker: MockKeyMakerProtocol(),
-            unlockManager: .init(cacheStatus: CacheStatusStub(), delegate: MockUnlockManagerDelegate(), keyMaker: MockKeyMakerProtocol()))
+            unlockManager: .init(cacheStatus: CacheStatusStub(), delegate: MockUnlockManagerDelegate(), keyMaker: MockKeyMakerProtocol(), pinFailedCountCache: MockPinFailedCountCache()))
         sut.setUserEnableColorClosure {
             return self.enableColorStub
         }
@@ -76,7 +76,7 @@ class MenuViewModelTests: XCTestCase {
                             userStatusInQueueProvider: userStatusInQueueProviderMock,
                             coreDataContextProvider: coreDataContextProviderMock,
                             coreKeyMaker: MockKeyMakerProtocol(),
-                            unlockManager: .init(cacheStatus: CacheStatusStub(), delegate: MockUnlockManagerDelegate(), keyMaker: MockKeyMakerProtocol())
+                            unlockManager: .init(cacheStatus: CacheStatusStub(), delegate: MockUnlockManagerDelegate(), keyMaker: MockKeyMakerProtocol(), pinFailedCountCache: MockPinFailedCountCache())
         )
         XCTAssertEqual(sut.sections, [.inboxes, .folders, .labels, .more])
 

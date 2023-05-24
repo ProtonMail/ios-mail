@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_Common
+import ProtonCore_Keymaker
 import UIKit
 
 class SettingsDeviceCoordinator {
@@ -53,7 +54,8 @@ class SettingsDeviceCoordinator {
     func start() {
         let viewModel = SettingsDeviceViewModel(user: userManager,
                                                 users: usersManager,
-                                                biometricStatus: UIDevice.current)
+                                                biometricStatus: UIDevice.current,
+                                                lockCacheStatus: services.get(by: Keymaker.self))
 
         let viewController = SettingsDeviceViewController(viewModel: viewModel, coordinator: self)
         navigationController?.pushViewController(viewController, animated: false)

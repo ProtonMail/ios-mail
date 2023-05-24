@@ -82,7 +82,8 @@ class PushNotificationServiceTests: XCTestCase {
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
                                                    signInProvider: SignInMock(),
-                                                   unlockProvider: UnlockMock())
+                                                   unlockProvider: UnlockMock(),
+                                                   lockCacheStatus: MockLockCacheStatus())
         NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: Optional.none)
 
@@ -125,7 +126,8 @@ class PushNotificationServiceTests: XCTestCase {
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
                                                    signInProvider: SignInMock(),
-                                                   unlockProvider: UnlockMock())
+                                                   unlockProvider: UnlockMock(),
+                                                   lockCacheStatus: MockLockCacheStatus())
         NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: Optional.none)
 
@@ -173,7 +175,8 @@ class PushNotificationServiceTests: XCTestCase {
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
                                                    signInProvider: SignInMock(),
-                                                   unlockProvider: UnlockMock())
+                                                   unlockProvider: UnlockMock(),
+                                                   lockCacheStatus: MockLockCacheStatus())
         NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: Set([SubscriptionWithSettings(settings: .init(token: oldToken, UID: session.sessionIDs.first!), state: .reported)])) // already have some reported subscription
 
@@ -260,7 +263,8 @@ class PushNotificationServiceTests: XCTestCase {
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
                                                    signInProvider: SignInMock(),
-                                                   unlockProvider: UnlockMock())
+                                                   unlockProvider: UnlockMock(),
+                                                   lockCacheStatus: MockLockCacheStatus())
         NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: Set([SubscriptionWithSettings(settings:.init(token: oldToken, UID: session.sessionIDs.first!), state: .notReported)])) // already have some reported subscription
 
@@ -353,7 +357,8 @@ extension PushNotificationServiceTests {
             deviceRegistrator: mockDeviceRegistrator,
             signInProvider: SignInMock(),
             unlockProvider: UnlockMock(),
-            notificationCenter: notificationCenter
+            notificationCenter: notificationCenter,
+            lockCacheStatus: MockLockCacheStatus()
         )
         return service
     }

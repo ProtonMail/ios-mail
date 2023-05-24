@@ -59,7 +59,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         // Global Cache
         static let lastSplashVersion = "last_splash_viersion" // global cache
         static let lastTourVersion = "last_tour_viersion" // global cache
-        static let lastLocalMobileSignature = "last_local_mobile_signature_mainkeyProtected" // user cache but could restore
         static let UserWithLocalMobileSignature = "user_with_local_mobile_signature_mainKeyProtected"
         static let UserWithLocalMobileSignatureStatus = "user_with_local_mobile_signature_status"
         static let UserWithDefaultSignatureStatus = "user_with_default_signature_status"
@@ -192,35 +191,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
     }
 
-    var coreKeyMaker: KeyMakerProtocol!
-
-    func migrateLegacy() {
-        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
-            let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
-            case let locked = Locked<String>(encryptedValue: cypherData),
-            let customSignature = try? locked.lagcyUnlock(with: mainKey) else {
-            return
-        }
-        guard let lockedNew = try? Locked<String>(clearValue: customSignature, with: mainKey) else {
-            return
-        }
-        SharedCacheBase.getDefault()?.set(lockedNew.encryptedValue, forKey: Key.lastLocalMobileSignature)
-        SharedCacheBase.getDefault().synchronize()
-
-        if var signatureData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignature) {
-            signatureData.keys.forEach {
-                if let encryptedSignature = signatureData[$0] as? Data, case let locked = Locked<String>(encryptedValue: encryptedSignature),
-                    let customSignature = try? locked.lagcyUnlock(with: mainKey) {
-                    if let lockedSign = try? Locked<String>(clearValue: customSignature, with: mainKey) {
-                        signatureData[$0] = lockedSign.encryptedValue
-                    }
-                }
-            }
-            SharedCacheBase.getDefault()?.set(signatureData, forKey: Key.UserWithLocalMobileSignature)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
-
     func getDefaultSignaureSwitchStatus(uid: String) -> Bool? {
         guard let switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithDefaultSignatureStatus),
         let switchStatus = switchData[uid] as? Bool else {
@@ -335,8 +305,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         getShared().removeObject(forKey: Key.autoLogoutTime)
         getShared().removeObject(forKey: Key.askEnableTouchID)
 
-        getShared().removeObject(forKey: Key.lastLocalMobileSignature)
-
         getShared().removeObject(forKey: Key.leftToRightSwipeAction)
         getShared().removeObject(forKey: Key.rightToLeftSwipeAction)
 
@@ -352,41 +320,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     }
 }
 
-// touch id part
-extension UserCachedStatus: CacheStatusInject {
-    var isTouchIDEnabled: Bool {
-        return coreKeyMaker.isProtectorActive(BioProtection.self)
-    }
-
-    var isPinCodeEnabled: Bool {
-        return coreKeyMaker.isProtectorActive(PinProtection.self)
-    }
-
-    var isAppKeyEnabled: Bool {
-        return coreKeyMaker.isProtectorActive(RandomPinProtection.self) == false
-    }
-
-    var pinFailedCount: Int {
-        get {
-            return getShared().integer(forKey: Key.lastPinFailedTimes)
-        }
-        set {
-            setValue(newValue, forKey: Key.lastPinFailedTimes)
-        }
-    }
-
-    private var isAppLockEnabled: Bool {
-        return (isTouchIDEnabled || isPinCodeEnabled)
-    }
-
-    var isAppLockedAndAppKeyEnabled: Bool {
-        return isAppLockEnabled && isAppKeyEnabled
-    }
-
-    var isAppLockedAndAppKeyDisabled: Bool {
-        return isAppLockEnabled && !isAppKeyEnabled
-    }
-
+extension UserCachedStatus {
     var lockTime: AutolockTimeout { // historically, it was saved as String
         get {
             guard let string = KeychainWrapper.keychain.string(forKey: Key.autoLockTime),
@@ -397,7 +331,17 @@ extension UserCachedStatus: CacheStatusInject {
         }
         set {
             KeychainWrapper.keychain.set("\(newValue.rawValue)", forKey: Key.autoLockTime)
-            coreKeyMaker.resetAutolock()
+        }
+    }
+}
+
+extension UserCachedStatus: PinFailedCountCache {
+    var pinFailedCount: Int {
+        get {
+            return getShared().integer(forKey: Key.lastPinFailedTimes)
+        }
+        set {
+            setValue(newValue, forKey: Key.lastPinFailedTimes)
         }
     }
 }

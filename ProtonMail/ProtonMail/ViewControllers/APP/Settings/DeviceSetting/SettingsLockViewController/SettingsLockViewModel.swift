@@ -76,21 +76,21 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
 
                 if !oldStatus.contains(.changePin) {
                     // just set pin protection
-                    dependencies.userPreferences.setLockTime(value: AutolockTimeout(rawValue: 15))
+                    didPickAutoLockTime(value: 15)
                 }
             }
 
-            if dependencies.userPreferences.isPinCodeEnabled || dependencies.userPreferences.isTouchIDEnabled {
+            if dependencies.coreKeyMaker.isPinCodeEnabled || dependencies.coreKeyMaker.isTouchIDEnabled {
                 if dependencies.enableAppKeyFeature() {
                     sections.append(.appKeyProtection)
                 }
                 sections.append(.autoLockTime)
             }
         } else {
-            if dependencies.userPreferences.isPinCodeEnabled {
+            if dependencies.coreKeyMaker.isPinCodeEnabled {
                 dependencies.coreKeyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
             }
-            if dependencies.userPreferences.isTouchIDEnabled {
+            if dependencies.coreKeyMaker.isTouchIDEnabled {
                 dependencies.coreKeyMaker.deactivate(BioProtection())
             }
         }
@@ -108,10 +108,10 @@ final class SettingsLockViewModel: SettingsLockViewModelProtocol {
     }
 
     private func disableProtection() {
-        if dependencies.userPreferences.isPinCodeEnabled {
+        if dependencies.coreKeyMaker.isPinCodeEnabled {
             dependencies.coreKeyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
         }
-        if dependencies.userPreferences.isTouchIDEnabled {
+        if dependencies.coreKeyMaker.isTouchIDEnabled {
             dependencies.coreKeyMaker.deactivate(BioProtection())
         }
         if let randomProtection = RandomPinProtection.randomPin {
@@ -159,15 +159,15 @@ extension SettingsLockViewModel: SettingsLockViewModelOutput {
     }
 
     var isPinCodeEnabled: Bool {
-        return dependencies.userPreferences.isPinCodeEnabled
+        return dependencies.coreKeyMaker.isPinCodeEnabled
     }
 
     var isBiometricEnabled: Bool {
-        return dependencies.userPreferences.isTouchIDEnabled
+        return dependencies.coreKeyMaker.isTouchIDEnabled
     }
 
     var isAppKeyEnabled: Bool {
-        return dependencies.userPreferences.isAppKeyEnabled
+        return dependencies.coreKeyMaker.isAppKeyEnabled
     }
 }
 
@@ -205,6 +205,7 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
 
     func didPickAutoLockTime(value: Int) {
         dependencies.userPreferences.setLockTime(value: AutolockTimeout(rawValue: value))
+        dependencies.coreKeyMaker.resetAutolock()
     }
 }
 

@@ -197,7 +197,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
             queue: mockQueueManager,
             actionRequest: mockExecuteNotificationAction,
             isNetworkAvailable: { self.mockIsNetworkAvailable },
-            cacheStatusInject: mockCacheStatusInject,
+            lockCacheStatus: mockCacheStatusInject,
             notificationCenter: mockNotificationCenter,
             userNotificationCenter: mockUserNotificationCenter,
             isNotificationActionsFeatureEnabled: true

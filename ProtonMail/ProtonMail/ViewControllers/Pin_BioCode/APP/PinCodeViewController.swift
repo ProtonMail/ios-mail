@@ -41,7 +41,7 @@ final class PinCodeViewController: UIViewController, AccessibleView, LifetimeTra
 
     private lazy var pinCodeView: PinCodeView = .init()
     private let contentView = UIView()
-    private let unlockManager: UnlockManager
+    let unlockManager: UnlockManager
 
     init(unlockManager: UnlockManager,
          viewModel: PinCodeViewModel,
@@ -91,7 +91,7 @@ final class PinCodeViewController: UIViewController, AccessibleView, LifetimeTra
         self.view.layoutIfNeeded()
 
         if self.viewModel.checkTouchID() {
-            if userCachedStatus.isTouchIDEnabled {
+            if unlockManager.cacheStatus.isTouchIDEnabled {
                 self.decideOnBioAuthentication()
             }
         }

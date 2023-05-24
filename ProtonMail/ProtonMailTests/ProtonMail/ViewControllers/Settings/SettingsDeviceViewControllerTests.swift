@@ -40,7 +40,8 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         stubBioStatus = BioMetricStatusStub()
         viewModel = SettingsDeviceViewModel(user: mockUser,
                                             users: mockUsers,
-                                            biometricStatus: stubBioStatus)
+                                            biometricStatus: stubBioStatus,
+                                            lockCacheStatus: MockLockCacheStatus())
         settingsDeviceCoordinatorMock = MockSettingsDeviceCoordinator(
             navigationController: nil,
             user: mockUser,

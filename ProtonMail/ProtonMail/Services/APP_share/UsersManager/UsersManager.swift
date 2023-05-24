@@ -691,7 +691,6 @@ extension UsersManager {
         if let legacyName = oldUserNameLegacy(), let locked = try? Locked(clearValue: legacyName, with: mainKey) {
             keychain.set(locked.encryptedValue, forKey: CoderKey.username)
         }
-        userCachedStatus.migrateLegacy()
 
         // check the older auth and older user format first
         if let oldAuth = oldAuthFetchLegacy(), let user = oldUserInfoLegacy() {
