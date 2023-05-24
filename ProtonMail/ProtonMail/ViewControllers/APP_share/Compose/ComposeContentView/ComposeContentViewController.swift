@@ -211,7 +211,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             return
         }
         let messageService = self.viewModel.user.messageService
-        let coreDataContextProvider = viewModel.coreDataContextProvider
+        let coreDataContextProvider = viewModel.dependencies.coreDataContextProvider
         if self.dismissBySending {
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()

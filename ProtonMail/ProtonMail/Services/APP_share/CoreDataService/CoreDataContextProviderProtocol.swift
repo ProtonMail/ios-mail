@@ -18,7 +18,7 @@
 import CoreData
 import Foundation
 
-protocol CoreDataContextProviderProtocol {
+protocol CoreDataContextProviderProtocol: Service {
     var mainContext: NSManagedObjectContext { get }
 
     func enqueueOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)

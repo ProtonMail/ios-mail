@@ -69,7 +69,7 @@ final class ServiceFactory {
 
     func get<T>(by name: String) -> T {
         guard let service = servicesDictionary[name] as? T else {
-            fatalError("firstly you have to add the service")
+            fatalError("firstly you have to add the service. Missing: \(name)")
         }
         return service
     }

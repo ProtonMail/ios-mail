@@ -89,4 +89,6 @@ struct Constants {
         .markUnread, .trash, .moveTo, .labelAs
     ]
     #endif
+
+    static let defaultMobileSignature = "Sent from Proton Mail for iOS"
 }

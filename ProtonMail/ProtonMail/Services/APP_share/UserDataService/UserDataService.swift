@@ -38,15 +38,7 @@ class UserDataService: Service {
     private let userDataServiceQueue = DispatchQueue.init(label: "UserDataServiceQueue", qos: .utility)
 
     struct CoderKey {// Conflict with Key object
-        static let roleSwitchCache           = "roleSwitchCache"
         static let defaultSignatureStatus    = "defaultSignatureStatus" 
-    }
-
-    var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: CoderKey.roleSwitchCache) {
-        didSet {
-            SharedCacheBase.getDefault().setValue(switchCacheOff, forKey: CoderKey.roleSwitchCache)
-            SharedCacheBase.getDefault().synchronize()
-        }
     }
 
     var defaultSignatureStauts: Bool = SharedCacheBase.getDefault().bool(forKey: CoderKey.defaultSignatureStatus) {

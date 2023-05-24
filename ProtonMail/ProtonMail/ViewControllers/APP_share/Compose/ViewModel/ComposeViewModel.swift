@@ -38,10 +38,9 @@ class ComposeViewModel: NSObject {
     private(set) var shareOverLimitationAttachment = false
     let composerMessageHelper: ComposerMessageHelper
     let messageService: MessageDataService
-    let coreDataContextProvider: CoreDataContextProviderProtocol
     let isEditingScheduleMsg: Bool
     let originalScheduledTime: OriginalScheduleDate?
-    private let dependencies: Dependencies
+    let dependencies: Dependencies
     var urlSchemesToBeHandle: Set<String> {
         let schemes: [HTTPRequestSecureLoader.ProtonScheme] = [.http, .https, .noProtocol]
         return Set(schemes.map(\.rawValue))
@@ -85,36 +84,16 @@ class ComposeViewModel: NSObject {
         action: ComposeMessageAction,
         msgService: MessageDataService,
         user: UserManager,
-        coreDataContextProvider: CoreDataContextProviderProtocol,
-        internetStatusProvider: InternetConnectionStatusProvider,
         originalScheduledTime: OriginalScheduleDate? = nil,
-        dependencies: Dependencies? = nil
+        dependencies: Dependencies
     ) {
         self.user = user
         self.messageService = msgService
-        self.coreDataContextProvider = coreDataContextProvider
         self.isEditingScheduleMsg = false
 
         // We have dependencies as an optional input parameter to avoid making
         // a huge refactor but allowing the dependencies injection open for testing.
-        self.dependencies = dependencies ?? Dependencies(
-            fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
-            internetStatusProvider: internetStatusProvider,
-            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
-            contactProvider: user.contactService,
-            helperDependencies: .init(
-                messageDataService: user.messageService,
-                cacheService: user.cacheService,
-                contextProvider: coreDataContextProvider,
-                copyMessage: CopyMessage(
-                    dependencies: .init(
-                        contextProvider: coreDataContextProvider,
-                        messageDecrypter: user.messageService.messageDecrypter
-                    ),
-                    userDataSource: user
-                )
-            )
-        )
+        self.dependencies = dependencies
 
         composerMessageHelper = ComposerMessageHelper(dependencies: self.dependencies.helperDependencies, user: user)
 
@@ -154,36 +133,18 @@ class ComposeViewModel: NSObject {
         action: ComposeMessageAction,
         msgService: MessageDataService,
         user: UserManager,
-        coreDataContextProvider: CoreDataContextProviderProtocol,
-        internetStatusProvider: InternetConnectionStatusProvider,
         isEditingScheduleMsg: Bool = false,
         originalScheduledTime: OriginalScheduleDate? = nil,
-        dependencies: Dependencies? = nil
+        dependencies: Dependencies
     ) {
         self.user = user
         self.messageService = msgService
-        self.coreDataContextProvider = coreDataContextProvider
         self.isEditingScheduleMsg = isEditingScheduleMsg
         self.originalScheduledTime = originalScheduledTime
 
         // We have dependencies as an optional input parameter to avoid making
         // a huge refactor but allowing the dependencies injection open for testing.
-        self.dependencies = dependencies ?? Dependencies(
-            helperDependencies: .init(
-                messageDataService: user.messageService,
-                cacheService: user.cacheService,
-                contextProvider: coreDataContextProvider,
-                copyMessage: CopyMessage(
-                    dependencies: .init(
-                        contextProvider: coreDataContextProvider,
-                        messageDecrypter: user.messageService.messageDecrypter
-                    ),
-                    userDataSource: user
-                )
-            ),
-            internetStatusProvider: internetStatusProvider,
-            user: user
-        )
+        self.dependencies = dependencies
 
         composerMessageHelper = ComposerMessageHelper(dependencies: self.dependencies.helperDependencies, user: user)
 
@@ -618,9 +579,14 @@ extension ComposeViewModel {
         var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
         signature = signature.ln2br()
 
-        var mobileSignature = self.user.showMobileSignature ?
-        "<div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
-        mobileSignature = mobileSignature.ln2br()
+        var userMobileSignature = String.empty
+        if user.showMobileSignature {
+            userMobileSignature = dependencies.fetchMobileSignatureUseCase.execute(
+                params: .init(userID: user.userID, isPaidUser: user.isPaid)
+            )
+        }
+
+        let mobileSignature = "<div id=\"protonmail_mobile_signature_block\"><div>\(userMobileSignature)</div></div>".ln2br()
 
         let defaultSignature = self.user.defaultSignatureStatus ?
         "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
@@ -1131,11 +1097,14 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     struct Dependencies {
+        let coreDataContextProvider: CoreDataContextProviderProtocol
+        let coreKeyMaker: KeyMakerProtocol
         let fetchAndVerifyContacts: FetchAndVerifyContactsUseCase
         let internetStatusProvider: InternetConnectionStatusProvider
         let fetchAttachment: FetchAttachmentUseCase
         let contactProvider: ContactProviderProtocol
         let helperDependencies: ComposerMessageHelper.Dependencies
+        let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
     }
 
     struct EncodableRecipient: Encodable {
@@ -1167,14 +1136,22 @@ extension ComposeViewModel.Dependencies {
     init(
         helperDependencies: ComposerMessageHelper.Dependencies,
         internetStatusProvider: InternetConnectionStatusProvider,
-        user: UserManager
+        user: UserManager,
+        coreKeyMaker: KeyMakerProtocol,
+        coreDataContextProvider: CoreDataContextProviderProtocol
     ) {
         self.init(
+            coreDataContextProvider: coreDataContextProvider,
+            coreKeyMaker: coreKeyMaker,
             fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
             internetStatusProvider: internetStatusProvider,
             fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
             contactProvider: user.contactService,
-            helperDependencies: helperDependencies
+            helperDependencies: helperDependencies,
+            fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(
+                coreKeyMaker: coreKeyMaker,
+                cache: userCachedStatus)
+            )
         )
     }
 }

@@ -22,18 +22,22 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     private let highlightedKeywords: [String]
     private let contextProvider: CoreDataContextProviderProtocol
+    private let composeViewModelFactory: ComposeViewModelDependenciesFactory
     var pendingActionAfterDismissal: (() -> Void)?
     var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
 
-    init(labelId: LabelID,
-         navigationController: UINavigationController,
-         conversation: ConversationEntity,
-         user: UserManager,
-         internetStatusProvider: InternetConnectionStatusProvider,
-         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-         highlightedKeywords: [String] = [],
-         contextProvider: CoreDataContextProviderProtocol,
-         targetID: MessageID? = nil) {
+    init(
+        labelId: LabelID,
+        navigationController: UINavigationController,
+        conversation: ConversationEntity,
+        user: UserManager,
+        internetStatusProvider: InternetConnectionStatusProvider,
+        infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
+        highlightedKeywords: [String] = [],
+        contextProvider: CoreDataContextProviderProtocol,
+        targetID: MessageID? = nil,
+        serviceFactory: ServiceFactory
+    ) {
         self.labelId = labelId
         self.navigationController = navigationController
         self.conversation = conversation
@@ -43,6 +47,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.highlightedKeywords = highlightedKeywords
         self.contextProvider = contextProvider
+        self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
     }
 
     func start(openFromNotification: Bool = false) {
@@ -181,8 +186,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
-            internetStatusProvider: internetStatusProvider
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
         viewModel.addToContacts(contact)
 
@@ -195,8 +199,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
-            internetStatusProvider: internetStatusProvider
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
         viewModel.parse(mailToURL: mailToURL)
 
@@ -213,8 +216,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             action: action,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: contextProvider,
-            internetStatusProvider: internetStatusProvider
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
 
         presentCompose(viewModel: viewModel)

@@ -269,7 +269,8 @@ final class SingleMessageViewModelTests: XCTestCase {
             attachments: .init()
         )
 
-        coordinatorMock = SingleMessageCoordinator(navigationController: UINavigationController(),
+        coordinatorMock = SingleMessageCoordinator(serviceFactory: sharedServices,
+                                                   navigationController: UINavigationController(),
                                                    labelId: labelID,
                                                    message: message,
                                                    user: fakeUser,

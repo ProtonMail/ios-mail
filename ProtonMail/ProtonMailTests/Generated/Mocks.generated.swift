@@ -972,6 +972,39 @@ class MockMessageDataActionProtocol: MessageDataActionProtocol {
 
 }
 
+class MockMobileSignatureCacheProtocol: MobileSignatureCacheProtocol {
+    @FuncStub(MockMobileSignatureCacheProtocol.getMobileSignatureSwitchStatus, initialReturn: nil) var getMobileSignatureSwitchStatusStub
+    func getMobileSignatureSwitchStatus(by uid: String) -> Bool? {
+        getMobileSignatureSwitchStatusStub(uid)
+    }
+
+    @FuncStub(MockMobileSignatureCacheProtocol.setMobileSignatureSwitchStatus) var setMobileSignatureSwitchStatusStub
+    func setMobileSignatureSwitchStatus(uid: String, value: Bool) {
+        setMobileSignatureSwitchStatusStub(uid, value)
+    }
+
+    @FuncStub(MockMobileSignatureCacheProtocol.removeMobileSignatureSwitchStatus) var removeMobileSignatureSwitchStatusStub
+    func removeMobileSignatureSwitchStatus(uid: String) {
+        removeMobileSignatureSwitchStatusStub(uid)
+    }
+
+    @FuncStub(MockMobileSignatureCacheProtocol.getEncryptedMobileSignature, initialReturn: nil) var getEncryptedMobileSignatureStub
+    func getEncryptedMobileSignature(userID: String) -> Data? {
+        getEncryptedMobileSignatureStub(userID)
+    }
+
+    @FuncStub(MockMobileSignatureCacheProtocol.setEncryptedMobileSignature) var setEncryptedMobileSignatureStub
+    func setEncryptedMobileSignature(userID: String, signatureData: Data) {
+        setEncryptedMobileSignatureStub(userID, signatureData)
+    }
+
+    @FuncStub(MockMobileSignatureCacheProtocol.removeEncryptedMobileSignature) var removeEncryptedMobileSignatureStub
+    func removeEncryptedMobileSignature(userID: String) {
+        removeEncryptedMobileSignatureStub(userID)
+    }
+
+}
+
 class MockNewMessageBodyViewModelDelegate: NewMessageBodyViewModelDelegate {
     @FuncStub(MockNewMessageBodyViewModelDelegate.reloadWebView) var reloadWebViewStub
     func reloadWebView(forceRecreate: Bool) {

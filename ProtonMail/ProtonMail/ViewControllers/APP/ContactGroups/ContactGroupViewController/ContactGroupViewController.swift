@@ -499,6 +499,7 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
             userIntroductionProgressProvider: userCachedStatus,
             scheduleSendEnableStatusProvider: userCachedStatus,
             internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+            coreKeyMaker: sharedServices.get(),
             toContact: contactGroupVO
         )
 

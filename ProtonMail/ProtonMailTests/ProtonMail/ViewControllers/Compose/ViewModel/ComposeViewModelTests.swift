@@ -54,11 +54,14 @@ final class ComposeViewModelTests: XCTestCase {
         )
 
         let dependencies = ComposeViewModel.Dependencies(
+            coreDataContextProvider: mockCoreDataService,
+            coreKeyMaker: MockKeyMakerProtocol(),
             fetchAndVerifyContacts: .init(),
             internetStatusProvider: .init(),
             fetchAttachment: .init(),
             contactProvider: contactProvider,
-            helperDependencies: helperDependencies
+            helperDependencies: helperDependencies,
+            fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: MockKeyMakerProtocol(), cache: MockMobileSignatureCacheProtocol()))
         )
 
         self.message = testContext.performAndWait {
@@ -70,8 +73,6 @@ final class ComposeViewModelTests: XCTestCase {
             action: .openDraft,
             msgService: fakeUserManager.messageService,
             user: fakeUserManager,
-            coreDataContextProvider: mockCoreDataService,
-            internetStatusProvider: .init(),
             dependencies: dependencies
         )
     }

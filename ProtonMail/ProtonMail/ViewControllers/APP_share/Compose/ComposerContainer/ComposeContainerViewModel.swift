@@ -36,9 +36,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
     private var contactChanged: NSKeyValueObservation?
     weak var uiDelegate: ComposeContainerUIProtocol?
     var user: UserManager { self.childViewModel.user }
-    var coreDataContextProvider: CoreDataContextProviderProtocol {
-        self.childViewModel.coreDataContextProvider
-    }
+    let coreDataContextProvider: CoreDataContextProviderProtocol
 
     private var userIntroductionProgressProvider: UserIntroductionProgressProvider
     private let scheduleSendStatusProvider: ScheduleSendEnableStatusProvider
@@ -58,12 +56,14 @@ class ComposeContainerViewModel: TableContainerViewModel {
         router: ComposerRouter,
         editorViewModel: ComposeViewModel,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        scheduleSendStatusProvider: ScheduleSendEnableStatusProvider
+        scheduleSendStatusProvider: ScheduleSendEnableStatusProvider,
+        contextProvider: CoreDataContextProviderProtocol
     ) {
         self.router = router
         self.childViewModel = editorViewModel
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.scheduleSendStatusProvider = scheduleSendStatusProvider
+        self.coreDataContextProvider = contextProvider
         super.init()
         self.contactChanged = observeRecipients()
     }

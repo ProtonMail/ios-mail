@@ -155,7 +155,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
 
     private func openSettingDetail<T: SettingDetailsViewModel>(ofType viewModelType: T.Type) {
         let sdvc = SettingDetailViewController(nibName: nil, bundle: nil)
-        sdvc.setViewModel(viewModelType.init(user: user))
+        sdvc.setViewModel(viewModelType.init(user: user, coreKeyMaker: sharedServices.get()))
         self.navigationController?.show(sdvc, sender: nil)
     }
 

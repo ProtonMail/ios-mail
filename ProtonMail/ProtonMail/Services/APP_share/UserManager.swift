@@ -30,6 +30,7 @@ import ProtonCore_Networking
 import ProtonCore_Payments
 #endif
 import ProtonCore_Services
+import ProtonCore_Keymaker
 
 /// TODO:: this is temp
 protocol UserDataSource: AnyObject {
@@ -87,7 +88,7 @@ class UserManager: Service {
                 })
             }
             wait.done {
-                userCachedStatus.removeMobileSignature(uid: self.userID.rawValue)
+                userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
@@ -270,10 +271,10 @@ class UserManager: Service {
     }()
 
     lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
+        let factory = sharedServices.makeUndoActionManagerDependenciesFactory()
         let manager = UndoActionManager(
-            apiService: self.apiService,
-            internetStatusProvider: sharedServices.get(),
-            contextProvider: coreDataService,
+            factory: factory,
+            dependencies: factory.makeDependencies(apiService: apiService),
             getEventFetching: { [weak self] in
                 self?.eventsService
             },
@@ -666,37 +667,15 @@ extension UserManager {
                 if let status = userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) {
                     return status
                 } else {
-                    // Migrate from local cache
-                    let status = self.userService.switchCacheOff == false
-                    userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: status)
-                    return status
+                    return false
                 }
             } else {
                 userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: true)
                 return true
-            } }
-        set {
-            userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
-        }
-    }
-
-    var mobileSignature: String {
-        get {
-            #if Enterprise
-            let isEnterprise = true
-            #else
-            let isEnterprise = false
-            #endif
-            let role = userInfo.role
-            if role > 0 || isEnterprise {
-                return userCachedStatus.getMobileSignature(by: userID.rawValue)
-            } else {
-                userCachedStatus.removeMobileSignature(uid: userID.rawValue)
-                return userCachedStatus.getMobileSignature(by: userID.rawValue)
             }
         }
         set {
-            userCachedStatus.setMobileSignature(uid: userID.rawValue, signature: newValue)
+            userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
         }
     }
 
