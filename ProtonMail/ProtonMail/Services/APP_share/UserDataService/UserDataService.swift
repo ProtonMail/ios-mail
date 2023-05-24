@@ -33,7 +33,8 @@ import ProtonCore_Keymaker
 
 /// Stores information related to the user
 class UserDataService: Service {
-    let apiService: APIService
+    private let apiService: APIService
+    private let coreKeyMaker: KeyMakerProtocol
     private let userDataServiceQueue = DispatchQueue.init(label: "UserDataServiceQueue", qos: .utility)
 
     struct CoderKey {// Conflict with Key object
@@ -56,8 +57,9 @@ class UserDataService: Service {
     }
 
     // MARK: - methods
-    init(api: APIService) {  // Add interface for data agent
-        self.apiService = api
+    init(apiService: APIService, coreKeyMaker: KeyMakerProtocol) {
+        self.apiService = apiService
+        self.coreKeyMaker = coreKeyMaker
     }
 
     func fetchUserInfo(auth: AuthCredential? = nil) -> Promise<(UserInfo?, MailSettings)> {
@@ -165,7 +167,7 @@ class UserDataService: Service {
                        displayName: String,
                        signature: String,
                        completion: @escaping (NSError?) -> Void) {
-        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(NSError.lockError())
             return
         }
@@ -192,7 +194,7 @@ class UserDataService: Service {
         setting: UpdateImageAutoloadSetting.Setting,
         completion: @escaping (NSError?) -> Void
     ) {
-        guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
+        guard coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
             completion(NSError.lockError())
             return
         }
@@ -212,7 +214,7 @@ class UserDataService: Service {
         action: UpdateImageProxy.Action,
         completion: @escaping (NSError?) -> Void
     ) {
-        guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
+        guard coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
             completion(NSError.lockError())
             return
         }
@@ -241,7 +243,7 @@ class UserDataService: Service {
                             delaySeconds: Int,
                             completion: @escaping (Error?) -> Void) {
         let userInfo = userInfo
-        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(NSError.lockError())
             return
         }
@@ -261,7 +263,7 @@ class UserDataService: Service {
                                 _ status: LinkOpeningMode, completion: @escaping (NSError?) -> Void) {
         let authCredential = currentAuth
         let userInfo = user
-        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(NSError.lockError())
             return
         }
@@ -388,7 +390,7 @@ class UserDataService: Service {
                 _username = addr.email
             }
         }
-        guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
+        guard coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
             completion(NSError.lockError())
             return
         }
@@ -554,7 +556,7 @@ class UserDataService: Service {
         let authCredential = currentAuth
         let userInfo = user
 
-        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(NSError.lockError())
             return
         }
@@ -582,7 +584,7 @@ class UserDataService: Service {
             }
         }
 
-        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(NSError.lockError())
             return
         }
@@ -656,7 +658,7 @@ class UserDataService: Service {
         let oldAuthCredential = currentAuth
         let userInfo = user
 
-        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(NSError.lockError())
             return
         }
@@ -671,7 +673,7 @@ class UserDataService: Service {
 
     func updateSignature(auth currentAuth: AuthCredential,
                          _ signature: String, completion: @escaping (NSError?) -> Void) {
-        guard let _ = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let _ = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             completion(NSError.lockError())
             return
         }

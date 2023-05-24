@@ -81,7 +81,7 @@ final class UnlockManager: Service {
     init(
         cacheStatus: CacheStatusInject,
         delegate: UnlockManagerDelegate,
-        keyMaker: KeyMakerProtocol = keymaker,
+        keyMaker: KeyMakerProtocol,
         localAuthenticationContext: LAContextProtocol = LAContext(),
         notificationCenter: NotificationCenter = .default
     ) {

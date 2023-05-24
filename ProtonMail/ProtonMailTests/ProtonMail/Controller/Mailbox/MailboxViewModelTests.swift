@@ -79,7 +79,8 @@ class MailboxViewModelTests: XCTestCase {
                                       userInfo: stubUserInfo,
                                       authCredential: fakeAuth,
                                       mailSettings: nil,
-                                      parent: nil)
+                                      parent: nil,
+                                      coreKeyMaker: MockKeyMakerProtocol())
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()

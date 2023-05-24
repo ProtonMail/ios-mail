@@ -23,17 +23,20 @@ extension EventsService {
         let contactCacheStatus: ContactCacheStatusProtocol
         let incomingDefaultService: IncomingDefaultServiceProtocol
         let coreDataProvider: CoreDataContextProviderProtocol
+        let queueManager: QueueManagerProtocol
 
         init(
             fetchMessageMetaData: FetchMessageMetaDataUseCase,
             contactCacheStatus: ContactCacheStatusProtocol,
             incomingDefaultService: IncomingDefaultService,
+            queueManager: QueueManagerProtocol = sharedServices.get(by: QueueManager.self),
             coreDataProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
         ) {
             self.fetchMessageMetaData = fetchMessageMetaData
             self.contactCacheStatus = contactCacheStatus
             self.incomingDefaultService = incomingDefaultService
             self.coreDataProvider = coreDataProvider
+            self.queueManager = queueManager
         }
     }
 }

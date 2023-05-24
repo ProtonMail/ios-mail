@@ -1091,6 +1091,11 @@ class MockQueueManagerProtocol: QueueManagerProtocol {
         addBlockStub(block)
     }
 
+    @FuncStub(MockQueueManagerProtocol.queue) var queueStub
+    func queue(_ readBlock: @escaping () -> Void) {
+        queueStub(readBlock)
+    }
+
 }
 
 class MockReceiptActionHandler: ReceiptActionHandler {

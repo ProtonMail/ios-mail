@@ -23,9 +23,6 @@
 import Foundation
 import ProtonCore_Keymaker
 
-var keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: userCachedStatus),
-                        keychain: KeychainWrapper.keychain)
-
 extension UserCachedStatus: SettingsProvider {}
 
 extension PinProtection {

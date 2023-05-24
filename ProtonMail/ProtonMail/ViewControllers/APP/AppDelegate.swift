@@ -94,14 +94,28 @@ extension AppDelegate: UIApplicationDelegate {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
         SystemLogger.log(message: message, category: .appLifeCycle)
 
-        let usersManager = UsersManager(doh: BackendConfiguration.shared.doh)
-        userCachedStatus.coreKeyMaker = keymaker
+        let coreKeyMaker = Keymaker(autolocker: Autolocker(lockTimeProvider: userCachedStatus),
+                                keychain: KeychainWrapper.keychain)
+        sharedServices.add(Keymaker.self, for: coreKeyMaker)
+        sharedServices.add(KeyMakerProtocol.self, for: coreKeyMaker)
+
+        if ProcessInfo.isRunningUnitTests {
+            coreKeyMaker.wipeMainKey()
+            coreKeyMaker.activate(NoneProtection()) { _ in }
+        }
+
+        let usersManager = UsersManager(
+            doh: BackendConfiguration.shared.doh,
+            userDataCache: UserDataCache(keyMaker: coreKeyMaker),
+            coreKeyMaker: coreKeyMaker
+        )
+        userCachedStatus.coreKeyMaker = coreKeyMaker
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
         sharedServices.add(PushNotificationService.self, for: PushNotificationService())
-        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
+        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self, keyMaker: coreKeyMaker))
         sharedServices.add(UsersManager.self, for: usersManager)
         let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: userCachedStatus))
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager,
@@ -391,15 +405,16 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     private func startAutoLockCountDownIfNeeded() {
+        let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
         // When the app is launched without a lock set, the lock counter will immediately remove the mainKey, which triggers the app to display the lock screen.
         // However, this behavior is not necessary if there is no lock set.
         // We should only start the countdown when a lock has been set.
-        guard keymaker.isProtectorActive(PinProtection.self) ||
-            keymaker.isProtectorActive(BioProtection.self)
+        guard coreKeyMaker.isProtectorActive(PinProtection.self) ||
+                coreKeyMaker.isProtectorActive(BioProtection.self)
         else {
             return
         }
-        keymaker.updateAutolockCountdownStart()
+        coreKeyMaker.updateAutolockCountdownStart()
     }
 }
 
@@ -427,8 +442,9 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     func cleanAll(completion: @escaping () -> Void) {
         Breadcrumbs.shared.add(message: "AppDelegate.cleanAll called", to: .randomLogout)
         sharedServices.get(by: UsersManager.self).clean().ensure {
-            keymaker.wipeMainKey()
-            keymaker.mainKeyExists()
+            let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
+            coreKeyMaker.wipeMainKey()
+            coreKeyMaker.mainKeyExists()
             completion()
         }.cauterize()
     }
@@ -571,7 +587,8 @@ extension AppDelegate {
                 #endif
 
                 if self.currentState != .active {
-                    keymaker.updateAutolockCountdownStart()
+                    let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
+                    coreKeyMaker.updateAutolockCountdownStart()
                 }
             }
     }

@@ -39,7 +39,8 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
                                     userInfo: firstUserInfo,
                                     authCredential: .none,
                                     mailSettings: nil,
-                                    parent: nil
+                                    parent: nil,
+                                    coreKeyMaker: MockKeyMakerProtocol()
                                 ))
         )
     }

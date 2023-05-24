@@ -107,7 +107,7 @@ class WindowsCoordinator {
 
         if showPlaceHolderViewOnly {
             // While running the unit test, call this to generate the main key.
-            keymaker.mainKeyExists()
+            _ = dependencies.coreKeyMaker.mainKeyExists()
             return
         }
 
@@ -686,6 +686,7 @@ extension WindowsCoordinator: MenuCoordinatorDelegate {
         let darkModeCache: DarkModeCacheProtocol
         let lockCache: CacheStatusInject
         let notificationCenter: NotificationCenter
+        let coreKeyMaker: KeyMakerProtocol
     }
 }
 

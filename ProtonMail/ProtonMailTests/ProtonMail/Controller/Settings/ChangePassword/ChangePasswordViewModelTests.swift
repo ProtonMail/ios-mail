@@ -17,15 +17,18 @@
 
 import ProtonCore_Crypto
 import ProtonCore_DataModel
+import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_TestingToolkit
-import XCTest
 @testable import ProtonMail
+import XCTest
 
 final class ChangePasswordViewModelTests: XCTestCase {
     private var sut: ChangePasswordViewModel!
     private var user: UserManager!
     private var apiService: APIServiceMock!
+    private var keyMaker: Keymaker!
+    private var keyChain: KeychainWrapper!
     private let modulesResponse: [String: Any] = [
         "Code": 1000,
         "Modulus": "-----BEGIN PGP SIGNED MESSAGE-----\nHash: SHA256\n\nu5O8KKH2VYWS0O7JWCYdjGKvO3hTNq1IxJRoExdv2gOdV1x6rp+9PLYetZkc60YmI1A4M6FOaCqpCtdfUrt+diuZGfaWSG8AnbPVQ7ZDsLb2Hp351QTfHqZjGrmrN/u9XMgI/2SSqa6Jrd8hLA0bjqAa4LX9FFlLJABN1h4leeTq5R0cSJSg0F+PsWgKAkMBoIrunDWZFCrByEj2mmieMGYdl11+YZOrRjT7kJbr4xYiSsQUehhI4/JLjVeCNGJ5Z96KuKELuWk5smapKakZ5+2i9NKovzKujJJvmNK6hFku7amWTbiMc+UaoAVjmoWDmquc7lhTrrSrz6+5ZIY28A==\n-----BEGIN PGP SIGNATURE-----\nVersion: ProtonMail\nComment: https://protonmail.com\n\nwl4EARYIABAFAlwB1j0JEDUFhcTpUY8mAAC2+wD9EmUDnJ7gH5ygqwkyQGqL\nTFioFwZDLb7sEW3/bzZXgR0A/0nEhySjl5C0TgpAFuaucGgv//XjstJM8eEa\nNxMJG6cF\n=RP0d\n-----END PGP SIGNATURE-----\n",
@@ -41,7 +44,7 @@ final class ChangePasswordViewModelTests: XCTestCase {
           "SRPSession": "272f888f68c49da7ccb42cc4f5a21b92"
     ]
 
-    class func mockUser(apiService: APIServiceMock) -> UserManager {
+    class func mockUser(apiService: APIServiceMock, keyMaker: KeyMakerProtocol) -> UserManager {
         let userInfo = UserInfo.getDefault()
         let key = Key(keyID: "123", privateKey: KeyTestData.privateKey1, signature: "aa")
         userInfo.userKeys = [key]
@@ -63,19 +66,22 @@ final class ChangePasswordViewModelTests: XCTestCase {
             authCredential: auth,
             mailSettings: nil,
             parent: nil,
-            appTelemetry: MailAppTelemetry()
+            appTelemetry: MailAppTelemetry(),
+            coreKeyMaker: keyMaker
         )
     }
 
     override func setUpWithError() throws {
         apiService = APIServiceMock()
-        user = ChangePasswordViewModelTests.mockUser(apiService: apiService)
+        keyMaker = sharedServices.get(by: Keymaker.self)
+        user = ChangePasswordViewModelTests.mockUser(apiService: apiService, keyMaker: keyMaker)
     }
-    
+
     override func tearDownWithError() throws {
         sut = nil
         user = nil
         apiService = nil
+        keyMaker = nil
     }
 }
 

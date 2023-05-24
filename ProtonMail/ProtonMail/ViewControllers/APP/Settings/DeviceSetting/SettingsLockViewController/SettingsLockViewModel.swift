@@ -220,7 +220,7 @@ extension SettingsLockViewModel {
         init(
             biometricStatus: BiometricStatusProvider,
             userPreferences: LockPreferences = userCachedStatus,
-            coreKeyMaker: KeyMakerProtocol = keymaker,
+            coreKeyMaker: KeyMakerProtocol,
             notificationCenter: NotificationCenter = NotificationCenter.default,
             enableAppKeyFeature: @escaping () -> Bool = { true }
         ) {

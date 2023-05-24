@@ -62,7 +62,12 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        sharedUserDataService = UserDataService(api: PMAPIService.shared)
+        // TODO: Refactor the view to pass the dependency from init
+        let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
+        sharedUserDataService = UserDataService(
+            apiService: PMAPIService.shared,
+            coreKeyMaker: keyMaker
+        )
         LanguageManager().translateBundleToPreferredLanguageOfTheMainApp()
         configureNavigationBar()
 

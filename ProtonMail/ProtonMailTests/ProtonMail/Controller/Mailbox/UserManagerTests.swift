@@ -47,7 +47,8 @@ class UserManagerTests: XCTestCase {
             userInfo: userInfo,
             authCredential: fakeAuth,
             mailSettings: nil,
-            parent: nil
+            parent: nil,
+            coreKeyMaker: MockKeyMakerProtocol()
         )
         XCTAssertEqual(sut.userID, userID)
     }
@@ -74,7 +75,8 @@ class UserManagerTests: XCTestCase {
             authCredential: fakeAuth,
             mailSettings: nil,
             parent: nil,
-            appTelemetry: mockAppTelemetry
+            appTelemetry: mockAppTelemetry,
+            coreKeyMaker: MockKeyMakerProtocol()
         )
 
         sut.becomeActiveUser()
@@ -96,7 +98,8 @@ class UserManagerTests: XCTestCase {
             authCredential: fakeAuth,
             mailSettings: nil,
             parent: nil,
-            appTelemetry: mockAppTelemetry
+            appTelemetry: mockAppTelemetry,
+            coreKeyMaker: MockKeyMakerProtocol()
         )
 
         sut.becomeActiveUser()
@@ -138,7 +141,8 @@ private extension UserManagerTests {
             userInfo: userInfo,
             authCredential: fakeAuth,
             mailSettings: nil,
-            parent: nil
+            parent: nil,
+            coreKeyMaker: MockKeyMakerProtocol()
         )
     }
 

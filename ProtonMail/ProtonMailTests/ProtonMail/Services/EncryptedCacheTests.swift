@@ -24,11 +24,13 @@ import XCTest
 class EncryptedCacheTests: XCTestCase {
     private var internalCache: SDDiskCache!
     private var mainKey: MainKey!
+    private var keyMaker: Keymaker!
     private var sut: EncryptedCache!
     private let cacheFolderName = "EncryptedCacheTests"
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        keyMaker = sharedServices.get(by: Keymaker.self)
 
         let config = SDImageCacheConfig()
         config.diskCacheWritingOptions = [.atomic, .completeFileProtection]
@@ -38,9 +40,9 @@ class EncryptedCacheTests: XCTestCase {
             .appendingPathComponent(cacheFolderName, isDirectory: true)
         internalCache = SDDiskCache(cachePath: cacheDir.path, config: config)
 
-        mainKey = try XCTUnwrap(keymaker.mainKey(by: RandomPinProtection.randomPin))
+        mainKey = try XCTUnwrap(keyMaker.mainKey(by: RandomPinProtection.randomPin))
 
-        sut = EncryptedCache(internalCache: internalCache)
+        sut = EncryptedCache(internalCache: internalCache, coreKeyMaker: keyMaker)
         sut.purge()
     }
 
@@ -48,6 +50,7 @@ class EncryptedCacheTests: XCTestCase {
         sut.purge()
         sut = nil
         mainKey = nil
+        keyMaker = nil
 
         try super.tearDownWithError()
     }

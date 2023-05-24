@@ -175,7 +175,8 @@ private extension WindowsCoordinatorTests {
         )
         usersManager = UsersManager(
             doh: DohInterfaceMock(),
-            userDataCache: UserDataCache(keyMaker: keyMaker, keychain: keyChain)
+            userDataCache: UserDataCache(keyMaker: keyMaker, keychain: keyChain),
+            coreKeyMaker: MockKeyMakerProtocol()
         )
         let pushService = PushNotificationService(notificationCenter: notificationCenter)
         let queueManager = QueueManager(messageQueue: MockPMPersistentQueueProtocol(), miscQueue: MockPMPersistentQueueProtocol())
@@ -195,6 +196,7 @@ private extension WindowsCoordinatorTests {
         serviceFactory.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
         serviceFactory.add(UnlockManager.self, for: unlockManager)
         serviceFactory.add(NotificationCenter.self, for: notificationCenter)
+        serviceFactory.add(KeyMakerProtocol.self, for: keyMaker)
     }
 }
 

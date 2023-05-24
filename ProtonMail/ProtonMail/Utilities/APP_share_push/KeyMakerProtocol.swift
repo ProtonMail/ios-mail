@@ -30,6 +30,8 @@ protocol KeyMakerProtocol: AnyObject {
     func isProtectorActive<T: ProtectionStrategy>(_ protectionType: T.Type) -> Bool
     func resetAutolock()
     func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void)
+    func wipeMainKey()
+    func updateAutolockCountdownStart()
 }
 
 extension Keymaker: KeyMakerProtocol {}

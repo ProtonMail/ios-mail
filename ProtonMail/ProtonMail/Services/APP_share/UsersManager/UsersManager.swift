@@ -101,6 +101,7 @@ class UsersManager: Service {
     private let userDefaultCache: SharedCacheBase
     private let keychain: Keychain
     private let notificationCenter: NotificationCenter
+    private let coreKeyMaker: KeyMakerProtocol
 
     #if !APP_EXTENSION
     private var encryptedSearchCache: EncryptedSearchUserCache {
@@ -110,11 +111,12 @@ class UsersManager: Service {
 
     init(
         doh: DoHInterface,
-        userDataCache: CachedUserDataProvider = UserDataCache(),
+        userDataCache: CachedUserDataProvider,
         internetConnectionStatusProvider: InternetConnectionStatusProvider = .init(),
         userDefaultCache: SharedCacheBase = .init(),
         keychain: Keychain = KeychainWrapper.keychain,
-        notificationCenter: NotificationCenter = .default
+        notificationCenter: NotificationCenter = .default,
+        coreKeyMaker: KeyMakerProtocol
     ) {
         self.doh = doh
         self.doh.status = userCachedStatus.isDohOn ? .on : .off
@@ -126,6 +128,7 @@ class UsersManager: Service {
         self.userDefaultCache = userDefaultCache
         self.keychain = keychain
         self.notificationCenter = notificationCenter
+        self.coreKeyMaker = coreKeyMaker
         setupValueTransforms()
         #if !APP_EXTENSION
         trackLifetime()
@@ -160,7 +163,8 @@ class UsersManager: Service {
             userInfo: user,
             authCredential: auth,
             mailSettings: mailSettings,
-            parent: self
+            parent: self,
+            coreKeyMaker: coreKeyMaker
         )
         self.add(newUser: newUser)
     }
@@ -235,7 +239,7 @@ class UsersManager: Service {
 
     func tryRestore() {
         // try new version first
-        guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
+        guard coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
             return
         }
 
@@ -268,7 +272,8 @@ class UsersManager: Service {
                     userInfo: cachedUserData.userInfo,
                     authCredential: cachedUserData.authCredentials,
                     mailSettings: cachedUserData.mailSettings,
-                    parent: self
+                    parent: self,
+                    coreKeyMaker: coreKeyMaker
                 )
                 newUser.delegate = self
                 self.users.append(newUser)
@@ -281,7 +286,7 @@ class UsersManager: Service {
     }
 
     func save() {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             return
         }
 
@@ -435,7 +440,7 @@ extension UsersManager {
             #endif
 
             if !ProcessInfo.isRunningUnitTests {
-                keymaker.wipeMainKey()
+                self.coreKeyMaker.wipeMainKey()
             }
             // good opportunity to remove all temp folders
             FileManager.default.cleanTemporaryDirectory()
@@ -498,7 +503,7 @@ extension UsersManager {
     }
 
     private func loadUserDataFromCache() -> [CachedUserData]? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             return nil
         }
         let authDataInUserDefault = userDefaultCache.getShared().data(forKey: CoderKey.authKeychainStore)
@@ -613,7 +618,8 @@ extension UsersManager {
             userInfo: userInfo,
             authCredential: auth,
             mailSettings: nil,
-            parent: self
+            parent: self,
+            coreKeyMaker: coreKeyMaker
         )
         user.delegate = self
         return user
@@ -637,7 +643,7 @@ extension UsersManager {
     }
 
     private func oldUserInfo() -> UserInfo? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let cypherData = userDefaultCache.getShared().data(forKey: CoderKey.userInfo)
         else {
             return nil
@@ -648,7 +654,7 @@ extension UsersManager {
     }
 
     private func oldAuthFetch() -> AuthCredential? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let encryptedData = keychain.data(forKey: CoderKey.keychainStore),
               case let locked = Locked<Data>(encryptedValue: encryptedData),
               let data = try? locked.unlock(with: mainKey),
@@ -661,7 +667,7 @@ extension UsersManager {
 
     private func oldMailboxPassword() -> String? {
         guard let cypherBits = keychain.data(forKey: CoderKey.mailboxPassword),
-              let key = keymaker.mainKey(by: RandomPinProtection.randomPin)
+              let key = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin)
         else {
             return nil
         }
@@ -674,7 +680,7 @@ extension UsersManager {
 extension UsersManager {
     // swiftlint:disable cyclomatic_complexity function_body_length
     func migrate_0_1() -> Bool {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             return false
         }
 
@@ -703,7 +709,8 @@ extension UsersManager {
                 userInfo: user,
                 authCredential: oldAuth,
                 mailSettings: nil,
-                parent: self
+                parent: self,
+                coreKeyMaker: coreKeyMaker
             )
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
@@ -761,7 +768,8 @@ extension UsersManager {
                     userInfo: user,
                     authCredential: auth,
                     mailSettings: nil,
-                    parent: self
+                    parent: self,
+                    coreKeyMaker: coreKeyMaker
                 )
                 newUser.delegate = self
                 self.users.append(newUser)
@@ -781,7 +789,7 @@ extension UsersManager {
     }
 
     func oldAuthFetchLegacy() -> AuthCredential? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let encryptedData = keychain.data(forKey: CoderKey.keychainStore),
               case let locked = Locked<Data>(encryptedValue: encryptedData),
               let data = try? locked.lagcyUnlock(with: mainKey),
@@ -793,7 +801,7 @@ extension UsersManager {
     }
 
     private func oldUserInfoLegacy() -> UserInfo? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let cypherData = userDefaultCache.getShared().data(forKey: CoderKey.userInfo)
         else {
             return nil
@@ -804,7 +812,7 @@ extension UsersManager {
 
     private func oldMailboxPasswordLegacy() -> String? {
         guard let cypherBits = keychain.data(forKey: CoderKey.mailboxPassword),
-              let key = keymaker.mainKey(by: RandomPinProtection.randomPin)
+              let key = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin)
         else {
             return nil
         }
@@ -813,7 +821,7 @@ extension UsersManager {
     }
 
     private func oldUserNameLegacy() -> String? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let cypherData = userDefaultCache.getShared().data(forKey: CoderKey.username)
         else {
             return nil
@@ -825,7 +833,7 @@ extension UsersManager {
 
     func disconnectedUsersLegacy() -> [DisconnectedUserHandle] {
         // this locking/unlocking can be refactored to be @propertyWrapper on Swift 5.1
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let encryptedData = keychain.data(forKey: CoderKey.disconnectedUsers),
               case let locked = Locked<Data>(encryptedValue: encryptedData),
               let data = try? locked.lagcyUnlock(with: mainKey),
@@ -847,7 +855,7 @@ extension UsersManager {
               !self.users.isEmpty
         else {
             if let randomProtection = RandomPinProtection.randomPin {
-                keymaker.deactivate(randomProtection)
+                coreKeyMaker.deactivate(randomProtection)
             }
             userCachedStatus.keymakerRandomkey = nil
             RandomPinProtection.removeCyphertext(from: keychain)

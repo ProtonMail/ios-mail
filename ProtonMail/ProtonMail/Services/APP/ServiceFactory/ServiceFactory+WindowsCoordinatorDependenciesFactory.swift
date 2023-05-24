@@ -39,7 +39,8 @@ extension ServiceFactory {
                 unlockManager: factory.get(),
                 darkModeCache: factory.get(by: UserCachedStatus.self),
                 lockCache: factory.get(by: UserCachedStatus.self),
-                notificationCenter: factory.get()
+                notificationCenter: factory.get(),
+                coreKeyMaker: factory.get()
             )
         }
 
