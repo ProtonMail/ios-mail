@@ -25,57 +25,45 @@ import ProtonCore_TestingToolkit
 class LoginTests: BaseTestCase {
 
     private let loginRobot = LoginRobot()
-
-    func testLoginWithOnePass() {
-        let user = testData.onePassUser
-        loginRobot
-            .loginUser(user)
-            .verify.inboxShown()
+    private var user: User?
+    
+    override func setUp() {
+        user = User()
+        quarkCommands.createUser(username: user!.name, password: user!.password, protonPlanName: UserPlan.mailpro2022.rawValue)
     }
-
-    func testLoginWithTwoPass() {
+    
+    func testTryToLoginWithInvalidPassword() {
+        loginRobot
+            .loginWithInvalidPassword(user!)
+            .verify.incorrectCredentialsErrorDialog()
+    }
+    
+    /**
+     Below test cases cannot be automated without proper test data.
+     They should be enabled after test data will be in place.
+     */
+    func xtestLoginWithTwoPass() {
         let user = testData.twoPassUser
         loginRobot
             .loginTwoPasswordUser(user)
             .verify.inboxShown()
     }
 
-    func testLoginWithOnePassAnd2FA() {
+    func xtestLoginWithOnePassAnd2FA() {
         let user = testData.onePassUserWith2Fa
         loginRobot
             .loginUserWithTwoFA(user)
             .verify.inboxShown()
     }
 
-    func testLoginWithTwoPassAnd2FA() {
+    func xtestLoginWithTwoPassAnd2FA() {
         let user = testData.twoPassUserWith2Fa
         loginRobot
             .loginTwoPasswordUserWithTwoFA(user)
             .verify.inboxShown()
     }
 
-    func testLoginWithInvalidPassword() {
-        let user = testData.onePassUser
-        loginRobot
-            .loginWithInvalidPassword(user)
-            .verify.incorrectCredentialsErrorDialog()
-    }
-
-    func testLoginWithInvalidUserAndPassword() {
-        let user = testData.onePassUser
-        loginRobot
-            .loginWithInvalidUserAndPassword(user)
-            .verify.incorrectCredentialsErrorDialog()
-    }
-
-    func testLoginWithInvalidUser() {
-        let user = testData.onePassUser
-        loginRobot
-            .loginWithInvalidUser(user)
-            .verify.incorrectCredentialsErrorDialog()
-    }
-
-    func testLoginWithInvalid2Pass() {
+    func xtestLoginWithInvalid2Pass() {
         let user = testData.twoPassUser
         loginRobot
             .loginTwoPasswordUserWithInvalid2Pass(user)

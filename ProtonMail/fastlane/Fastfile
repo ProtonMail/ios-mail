@@ -372,10 +372,11 @@ platform :ios do
     )
 
     run_tests(
-      device: UNIT_TEST_DEVICE,
+      device: UI_TEST_DEVICE,
       scheme: UNIT_TEST_SCHEME,
       app_identifier: APP_IDENTIFIER,
       reset_simulator: true,
+      test_without_building: true,
       output_directory: "../test_output/"
     )
 
@@ -394,9 +395,9 @@ platform :ios do
       scheme: UI_TEST_SCHEME,
       skip_build: true,
       prelaunch_simulator: true,
+      test_without_building: true,
       parallel_testing: true,
       concurrent_workers: options[:concurrent_workers],
-      derived_data_path: "./outputs/",
       device: UI_TEST_DEVICE,
       testplan: options[:testplan],
       app_identifier: APP_IDENTIFIER,
@@ -419,6 +420,7 @@ platform :ios do
      run_tests(
       device: "iPhone 14",
       reset_simulator: true,
+      test_without_building: true,
       concurrent_workers: ENV["NUMBER_OF_DEVICES"],
       scheme: "ProtonMailUITests",
       testplan: "MonkeyTests",

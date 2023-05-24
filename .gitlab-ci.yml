@@ -1,5 +1,13 @@
 # See https://confluence.protontech.ch/pages/viewpage.action?pageId=121918293
 
+variables:
+  LANG: "en_US.UTF-8"
+  GEM_HOME: "$CI_PROJECT_DIR/gem"
+  ATLAS_DEPLOY_LIST: ""
+  ATLAS_LINK_APP: mail
+  ATLAS_DEPLOY_ENV: "true"
+  TEST_DATA_URL: "https://$GIT_CI_USERNAME:$PRIVATE_TOKEN_GITLAB_API_PROTON_CI@$GITLAB_HTTPS"
+
 stages:
   - i18n
   - linting
@@ -23,6 +31,8 @@ stages:
 .setup_project: &setup_project
   - *setup_basic_tools
   - *setup_ruby
+
+  - git config --global url."$TEST_DATA_URL".insteadOf "testdata-repo:"
 
   - git submodule init
   - git submodule update --init --recursive
@@ -72,13 +82,6 @@ include:
   - project: "tpe/testmo-reporter"
     file: '/scenarios/testmo-script.yml'
 
-variables:
-  LANG: "en_US.UTF-8"
-  GEM_HOME: "$CI_PROJECT_DIR/gem"
-  ATLAS_DEPLOY_LIST: ""
-  ATLAS_LINK_APP: mail
-  ATLAS_DEPLOY_ENV: "true"
-
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
@@ -120,10 +123,9 @@ build:debug:for-testing:
     - cd ProtonMail
     - bundle exec fastlane build_for_testing
   tags:
-    - iOS_ARM_TAIPEI
+    - iOS_BUILD
 
 test:unit:
-  dependencies: []
   stage: test
   coverage: '/Test Coverage: \d*.\d*%/'
   only:
@@ -153,6 +155,7 @@ test:unit:
 test:ui:smoke:
   dependencies:
     - deploy:review
+    - build:debug:for-testing
   stage: test
   except:
     - schedules
@@ -177,10 +180,10 @@ test:ui:smoke:
         - test_output/TestResults/report.xml
   before_script:
     - *setup_project
-    - *prepare_users_for_ui_tests
   script:
-    - cd ProtonMail
     - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
+    - cd ProtonMail
+    - bundle install
     - bundle exec fastlane ui_test testplan:"SmokeTests" concurrent_workers:"2"
   tags:
     - iOS_UITEST
@@ -207,6 +210,7 @@ report:slack:smoke:
 test:ui:feature:
   dependencies:
     - deploy:review
+    - build:debug:for-testing
   stage: test
   rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
@@ -219,8 +223,6 @@ test:ui:feature:
     reports:
       junit: test_output/TestResults/report.xml
   before_script:
-    - *setup_project
-    - *prepare_users_for_ui_tests
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
   script:
     - cd ProtonMail
@@ -229,6 +231,9 @@ test:ui:feature:
     - iOS_UITEST
 
 test:ui:monkey:
+  dependencies:
+    - deploy:review
+    - build:debug:for-testing
   timeout: 2 hours
   stage: test
   rules:
@@ -246,6 +251,7 @@ test:ui:monkey:
     - *prepare_users_for_ui_tests
   script:
     - cd ProtonMail
+    - bundle install
     - bundle exec fastlane monkey_tests
   tags:
     - iOS_UITEST
