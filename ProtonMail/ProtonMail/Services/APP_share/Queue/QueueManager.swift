@@ -672,6 +672,7 @@ private extension Collection where Element == Any {
 protocol QueueManagerProtocol {
     func addTask(_ task: QueueManager.Task, autoExecute: Bool, completion: ((Bool) -> Void)?)
     func addBlock(_ block: @escaping () -> Void)
+    func queue(_ readBlock: @escaping () -> Void)
 }
 
 extension QueueManager: QueueManagerProtocol {

@@ -227,7 +227,7 @@ class UserManager: Service {
     }()
 
     lazy var userService: UserDataService = { [unowned self] in
-        let service = UserDataService(api: self.apiService)
+        let service = UserDataService(apiService: apiService, coreKeyMaker: coreKeyMaker)
         return service
     }()
 
@@ -348,6 +348,7 @@ class UserManager: Service {
     }
 
     var mailSettings: MailSettings
+    private let coreKeyMaker: KeyMakerProtocol
 
     init(
         api: APIService,
@@ -356,6 +357,7 @@ class UserManager: Service {
         mailSettings: MailSettings?,
         parent: UsersManager?,
         appTelemetry: AppTelemetry = MailAppTelemetry(),
+        coreKeyMaker: KeyMakerProtocol,
         coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
     ) {
         self.userInfo = userInfo
@@ -364,6 +366,7 @@ class UserManager: Service {
         self.authCredential = authCredential
         self.mailSettings = mailSettings ?? .init()
         self.appTelemetry = appTelemetry
+        self.coreKeyMaker = coreKeyMaker
         self.authHelper = AuthHelper(authCredential: authCredential)
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
         self.apiService.authDelegate = authHelper
@@ -382,6 +385,7 @@ class UserManager: Service {
         userInfo: UserInfo = UserInfo.getDefault(),
         mailSettings: MailSettings = .init(),
         appTelemetry: AppTelemetry = MailAppTelemetry(),
+        coreKeyMaker: KeyMakerProtocol,
         coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
     ) {
         guard ProcessInfo.isRunningUnitTests || ProcessInfo.isRunningUITests else {
@@ -392,6 +396,7 @@ class UserManager: Service {
         self.coreDataService = coreDataService
         self.apiService = api
         self.appTelemetry = appTelemetry
+        self.coreKeyMaker = coreKeyMaker
         self.authCredential = AuthCredential.none
         self.mailSettings = mailSettings
         self.authHelper = AuthHelper(authCredential: authCredential)

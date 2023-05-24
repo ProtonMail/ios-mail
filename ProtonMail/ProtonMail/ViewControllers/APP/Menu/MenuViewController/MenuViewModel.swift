@@ -74,13 +74,21 @@ final class MenuViewModel: NSObject {
     }
 
     weak var coordinator: MenuCoordinator?
+    private let coreKeyMaker: KeyMakerProtocol
+    private let unlockManager: UnlockManager
 
-    init(usersManager: UsersManager,
-         userStatusInQueueProvider: UserStatusInQueueProtocol,
-         coreDataContextProvider: CoreDataContextProviderProtocol) {
+    init(
+        usersManager: UsersManager,
+        userStatusInQueueProvider: UserStatusInQueueProtocol,
+        coreDataContextProvider: CoreDataContextProviderProtocol,
+        coreKeyMaker: KeyMakerProtocol,
+        unlockManager: UnlockManager
+    ) {
         self.usersManager = usersManager
         self.userStatusInQueueProvider = userStatusInQueueProvider
         self.coreDataContextProvider = coreDataContextProvider
+        self.coreKeyMaker = coreKeyMaker
+        self.unlockManager = unlockManager
 
         self.sections = [.inboxes, .folders, .labels, .more]
         self.inboxItems = Self.inboxItems()
@@ -355,8 +363,10 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func lockTheScreen() {
-        keymaker.lockTheApp() // remove mainKey from memory
-        _ = sharedServices.get(by: UnlockManager.self).isUnlocked() // provoke mainKey obtaining
+        // remove mainKey from memory
+        coreKeyMaker.lockTheApp()
+        // provoke mainKey obtaining
+        _ = unlockManager.isUnlocked()
         coordinator?.lockTheScreen()
     }
 }

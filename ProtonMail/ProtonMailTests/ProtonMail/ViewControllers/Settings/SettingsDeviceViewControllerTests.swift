@@ -34,8 +34,8 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         super.setUp()
         mockDoh = DohMock()
         mockApiService = APIServiceMock()
-        mockUser = UserManager(api: mockApiService, role: .none)
-        mockUsers = UsersManager(doh: mockDoh)
+        mockUser = UserManager(api: mockApiService, role: .none, coreKeyMaker: MockKeyMakerProtocol())
+        mockUsers = UsersManager(doh: mockDoh, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
         mockUsers.add(newUser: mockUser)
         stubBioStatus = BioMetricStatusStub()
         viewModel = SettingsDeviceViewModel(user: mockUser,

@@ -21,7 +21,6 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Keymaker
 
 /// core data related cache versioning. when clean or rebuild. should also rebuild the counter and queue
 class CoreDataCache: Migrate {

@@ -16,10 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_Hash
-import ProtonCore_Keymaker
 
 final class SenderImageCache {
-    static let shared = SenderImageCache()
+    static let shared = SenderImageCache(coreKeyMaker: sharedServices.get())
 
     struct CacheKey {
         let rawValue: String
@@ -27,10 +26,11 @@ final class SenderImageCache {
 
     private let encryptedCache: EncryptedCache
 
-    private init() {
+    private init(coreKeyMaker: KeyMakerProtocol) {
         encryptedCache = .init(
             maxDiskSize: Constants.SenderImage.cacheDiskSizeLimitInBytes,
-            subdirectory: "me.proton.senderImage"
+            subdirectory: "me.proton.senderImage",
+            coreKeyMaker: coreKeyMaker
         )
     }
 

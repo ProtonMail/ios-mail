@@ -21,7 +21,6 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import ProtonCore_Keymaker
 
 extension UIDevice {
     enum StateRestorationPolicy {

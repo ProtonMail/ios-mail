@@ -22,6 +22,7 @@
 
 import Foundation
 import PromiseKit
+import ProtonCore_Keymaker
 import ProtonCore_Services
 
 protocol Service: AnyObject {}
@@ -79,3 +80,4 @@ final class ServiceFactory {
 }
 
 extension NotificationCenter: Service {}
+extension Keymaker: Service {}

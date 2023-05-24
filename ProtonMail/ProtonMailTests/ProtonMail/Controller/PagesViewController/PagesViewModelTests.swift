@@ -54,7 +54,8 @@ final class PagesViewModelTests: XCTestCase {
             authCredential: auth,
             mailSettings: nil,
             parent: nil,
-            appTelemetry: MailAppTelemetry()
+            appTelemetry: MailAppTelemetry(),
+            coreKeyMaker: MockKeyMakerProtocol()
         )
         userIntroduction = MockUserIntroductionProgressProvider()
         toolbarStatusProvider = MockToolbarCustomizationInfoBubbleViewStatusProvider()

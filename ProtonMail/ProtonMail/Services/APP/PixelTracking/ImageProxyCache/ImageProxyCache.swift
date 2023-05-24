@@ -16,10 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_Hash
-import ProtonCore_Keymaker
 
 class ImageProxyCache {
-    static let shared = ImageProxyCache()
+    static let shared = ImageProxyCache(coreKeyMaker: sharedServices.get())
 
     struct CacheKey {
         let rawValue: String
@@ -27,10 +26,11 @@ class ImageProxyCache {
 
     private let encryptedCache: EncryptedCache
 
-    private init() {
+    private init(coreKeyMaker: KeyMakerProtocol) {
         encryptedCache = EncryptedCache(
             maxDiskSize: Constants.ImageProxy.cacheDiskSizeLimitInBytes,
-            subdirectory: "me.proton.imageproxy"
+            subdirectory: "me.proton.imageproxy",
+            coreKeyMaker: coreKeyMaker
         )
     }
 

@@ -93,9 +93,13 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         self.pushService = pushService
         self.lastUpdatedStore = lastUpdatedStore
         self.usersManager = usersManager
-        let viewModel = MenuViewModel(usersManager: usersManager,
-                                      userStatusInQueueProvider: queueManager,
-                                      coreDataContextProvider: coreDataService)
+        let viewModel = MenuViewModel(
+            usersManager: usersManager,
+            userStatusInQueueProvider: queueManager,
+            coreDataContextProvider: coreDataService,
+            coreKeyMaker: services.get(),
+            unlockManager: services.get()
+        )
         self.viewModel = viewModel
         viewModel.coordinator = self
     }

@@ -324,7 +324,7 @@ extension MessageDataServiceTests {
         let userID = UUID().uuidString
         let userInfo = UserInfo.getDefault()
         userInfo.userId = userID
-        let user = UserManager(api: APIServiceMock(), role: .member, userInfo: userInfo, coreDataService: contextProvider)
+        let user = UserManager(api: APIServiceMock(), role: .member, userInfo: userInfo, coreKeyMaker: sharedServices.get(), coreDataService: contextProvider)
         user.mailSettings = MailSettings(showMoved: showMoved)
         return user
     }

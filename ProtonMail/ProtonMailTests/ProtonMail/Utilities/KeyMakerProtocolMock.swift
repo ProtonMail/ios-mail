@@ -58,4 +58,14 @@ class MockKeyMakerProtocol: KeyMakerProtocol {
     func activate(_ protector: ProtectionStrategy, completion: @escaping (Bool) -> Void) {
         activateStub(protector, completion)
     }
+
+    @FuncStub(MockKeyMakerProtocol.wipeMainKey) var wipeMainKeyStub
+    func wipeMainKey() {
+        wipeMainKeyStub()
+    }
+
+    @FuncStub(MockKeyMakerProtocol.updateAutolockCountdownStart) var updateAutolockCountdownStartStub
+    func updateAutolockCountdownStart() {
+        updateAutolockCountdownStartStub()
+    }
 }

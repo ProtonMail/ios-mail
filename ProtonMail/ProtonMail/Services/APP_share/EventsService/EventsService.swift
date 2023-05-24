@@ -74,7 +74,6 @@ final class EventsService: Service, EventsFetching {
     private var timer: Timer?
     private lazy var lastUpdatedStore = ServiceFactory.default.get(by: LastUpdatedStore.self)
     private weak var userManager: UserManager!
-    private lazy var queueManager = ServiceFactory.default.get(by: QueueManager.self)
     private let dependencies: Dependencies
 
     init(userManager: UserManager, dependencies: Dependencies) {
@@ -146,7 +145,7 @@ extension EventsService {
             completion?(.failure(EventError.notRunning))
             return
         }
-        self.queueManager.queue {
+        dependencies.queueManager.queue {
             let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: self.userManager.userID))
             self.userManager.apiService.perform(request: eventAPI, response: EventCheckResponse()) { _, response in
 

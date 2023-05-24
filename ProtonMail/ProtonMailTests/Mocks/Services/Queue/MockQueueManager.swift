@@ -33,4 +33,11 @@ final class MockQueueManager: QueueManagerProtocol {
             block()
         }
     }
+
+    func queue(_ readBlock: @escaping () -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.executeTimes += 1
+            readBlock()
+        }
+    }
 }

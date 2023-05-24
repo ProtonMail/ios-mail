@@ -36,9 +36,9 @@ class UsersManagerHelperTest: XCTestCase {
     }
 
     func testNumberOfFreeAccounts_allFreeUsers() throws {
-        let user1 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none)
-        let user2 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none)
-        let users = UsersManager(doh: doh)
+        let user1 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none, coreKeyMaker: MockKeyMakerProtocol())
+        let user2 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none, coreKeyMaker: MockKeyMakerProtocol())
+        let users = UsersManager(doh: doh, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
         users.add(newUser: user1)
         users.add(newUser: user2)
         XCTAssertEqual(users.numberOfFreeAccounts, 2)
@@ -48,7 +48,7 @@ class UsersManagerHelperTest: XCTestCase {
         let user1 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none)
         let user2 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.owner)
         let user3 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.member)
-        let users = UsersManager(doh: doh)
+        let users = UsersManager(doh: doh, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
         users.add(newUser: user1)
         users.add(newUser: user2)
         users.add(newUser: user3)
@@ -58,11 +58,11 @@ class UsersManagerHelperTest: XCTestCase {
     func testIsAllowedNewUser_allowed() {
         let user1 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none)
         let user2 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.owner)
-        let users = UsersManager(doh: doh)
+        let users = UsersManager(doh: doh, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
         let userInfo = user1.userInfo
         XCTAssertTrue(users.isAllowedNewUser(userInfo: userInfo))
 
-        let users2 = UsersManager(doh: doh)
+        let users2 = UsersManager(doh: doh, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
         users2.add(newUser: user2)
         XCTAssertTrue(users2.isAllowedNewUser(userInfo: userInfo))
     }
@@ -70,7 +70,7 @@ class UsersManagerHelperTest: XCTestCase {
     func testIsAllowedNewUser_notAllowed() {
         let user1 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none)
         let user2 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none)
-        let users = UsersManager(doh: doh)
+        let users = UsersManager(doh: doh, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
         users.add(newUser: user1)
         let userInfo = user2.userInfo
         XCTAssertFalse(users.isAllowedNewUser(userInfo: userInfo))

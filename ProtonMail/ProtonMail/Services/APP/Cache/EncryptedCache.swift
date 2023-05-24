@@ -20,12 +20,14 @@ import SDWebImage
 
 class EncryptedCache {
     private let internalCache: SDDiskCache
+    private let coreKeyMaker: KeyMakerProtocol
 
-    init(internalCache: SDDiskCache) {
+    init(internalCache: SDDiskCache, coreKeyMaker: KeyMakerProtocol) {
         self.internalCache = internalCache
+        self.coreKeyMaker = coreKeyMaker
     }
 
-    convenience init(maxDiskSize: UInt, subdirectory: String) {
+    convenience init(maxDiskSize: UInt, subdirectory: String, coreKeyMaker: KeyMakerProtocol) {
         let config = SDImageCacheConfig()
         config.maxDiskAge = -1
         config.maxDiskSize = maxDiskSize
@@ -37,7 +39,7 @@ class EncryptedCache {
             fatalError("Cannot initialize SDDiskCache")
         }
 
-        self.init(internalCache: internalCache)
+        self.init(internalCache: internalCache, coreKeyMaker: coreKeyMaker)
     }
 
     func purge() {
@@ -68,7 +70,7 @@ class EncryptedCache {
     }
 
     private func prepareMainKey() throws -> MainKey {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             throw EncryptedCacheError.cannotObtainMainKey
         }
 

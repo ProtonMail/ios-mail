@@ -95,7 +95,7 @@ class SettingsDeviceCoordinator {
     }
 
     private func openAutoLock() {
-        let lockSetting = SettingsLockRouter(navigationController: self.navigationController)
+        let lockSetting = SettingsLockRouter(navigationController: self.navigationController, coreKeyMaker: services.get())
         lockSetting.start()
     }
 

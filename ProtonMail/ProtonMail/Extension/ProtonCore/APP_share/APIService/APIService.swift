@@ -31,7 +31,7 @@ import ProtonCore_Services
 
 extension PMAPIService {
 
-    private static var authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService()
+    private static var authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService(coreKeyMaker: sharedServices.get())
 
     static var unauthorized: PMAPIService = {
         PMAPIService.setupTrustIfNeeded()
@@ -91,15 +91,16 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
     let initialSessionUID: String?
 
     let authDelegateForUnauthorized: AuthHelper
+    let coreKeyMaker: KeyMakerProtocol
 
-    init() {
-
+    init(coreKeyMaker: KeyMakerProtocol) {
+        self.coreKeyMaker = coreKeyMaker
         defer {
             let dispatchQueue = DispatchQueue(label: "me.proton.mail.queue.unauth-session-auth-helper-delegate")
             authDelegateForUnauthorized.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: dispatchQueue))
         }
 
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let data = SharedCacheBase.getDefault()?.data(forKey: key) else {
             self.authDelegateForUnauthorized = AuthHelper()
             self.initialSessionUID = nil
@@ -120,7 +121,7 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
     }
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential _: Credential, for _: String) {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let lockedAuth = try? Locked<[AuthCredential]>(clearValue: [authCredential], with: mainKey) else { return }
         SharedCacheBase.getDefault()?.setValue(lockedAuth.encryptedValue, forKey: key)
     }

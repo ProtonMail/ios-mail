@@ -257,7 +257,9 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
                 }
             }
             self.stepAlert = nil
-            keymaker.lockTheApp()
+            // TODO: Refactor the view to pass the dependency from init
+            let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
+            keyMaker.lockTheApp()
             UIView.animate(withDuration: 0.25, animations: animationBlock) { _ in
                 self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             }

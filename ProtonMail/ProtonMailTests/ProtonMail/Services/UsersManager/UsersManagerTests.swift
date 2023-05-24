@@ -32,6 +32,7 @@ class UsersManagerTests: XCTestCase {
     var customCache: SharedCacheBase!
     var customKeyChain: Keychain!
     var notificationCenter: NotificationCenter!
+    var keyMaker: Keymaker!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -42,12 +43,14 @@ class UsersManagerTests: XCTestCase {
         self.customKeyChain = .init(service: String.randomString(10),
                                     accessGroup: "2SB5Z68H26.ch.protonmail.protonmail")
         self.notificationCenter = NotificationCenter()
+        self.keyMaker = .init(autolocker: nil, keychain: customKeyChain)
         sut = UsersManager(
             doh: doh,
             userDataCache: cachedUserDataProviderMock,
             userDefaultCache: customCache,
             keychain: customKeyChain,
-            notificationCenter: notificationCenter
+            notificationCenter: notificationCenter,
+            coreKeyMaker: keyMaker
         )
     }
 
@@ -66,6 +69,7 @@ class UsersManagerTests: XCTestCase {
         self.customKeyChain.removeEverything()
         self.customKeyChain = nil
         notificationCenter = nil
+        keyMaker = nil
     }
 
     func testNumberOfFreeAccounts() {
@@ -390,7 +394,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     private func prepareUserDataInCacheWithDifferentOrder(userIDs: [String]) throws {
-        let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
         var userInfos: [UserInfo] = []
         var auths: [AuthCredential] = []
         for userID in userIDs {
@@ -407,7 +411,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     private func prepareUserDataInCache(userID: String, hasMailSetting: Bool) throws {
-        let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
         let auth = createAuth(userID: userID)
         let userInfo = createUserInfo(userID: userID)
 
@@ -424,7 +428,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     private func prepareLegacyUserData(userID: String) throws {
-        let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
         let auth = createAuth(userID: userID)
         let userInfo = createUserInfo(userID: userID)
         let archived = auth.archive()
@@ -478,6 +482,7 @@ class UsersManagerTests: XCTestCase {
                            userInfo: userInfo,
                            authCredential: auth,
                            mailSettings: .init(),
-                           parent: sut)
+                           parent: sut,
+                           coreKeyMaker: MockKeyMakerProtocol())
     }
 }

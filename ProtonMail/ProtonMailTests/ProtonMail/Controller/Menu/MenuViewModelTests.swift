@@ -36,14 +36,16 @@ class MenuViewModelTests: XCTestCase {
         userStatusInQueueProviderMock = UserStatusInQueueProviderMock()
         coreDataContextProviderMock = MockCoreDataContextProvider()
         dohMock = DohMock()
-        usersManagerMock = UsersManager(doh: dohMock)
+        usersManagerMock = UsersManager(doh: dohMock, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
         apiMock = APIServiceMock()
         testUser = UserManager(api: apiMock, role: .none)
         usersManagerMock.add(newUser: testUser)
         sut = MenuViewModel(
             usersManager: usersManagerMock,
             userStatusInQueueProvider: userStatusInQueueProviderMock,
-            coreDataContextProvider: coreDataContextProviderMock)
+            coreDataContextProvider: coreDataContextProviderMock,
+            coreKeyMaker: MockKeyMakerProtocol(),
+            unlockManager: .init(cacheStatus: CacheStatusStub(), delegate: MockUnlockManagerDelegate(), keyMaker: MockKeyMakerProtocol()))
         sut.setUserEnableColorClosure {
             return self.enableColorStub
         }
@@ -72,7 +74,10 @@ class MenuViewModelTests: XCTestCase {
         testUser.inAppFeedbackStateService.handleNewFeatureFlags([FeatureFlagKey.inAppFeedback.rawValue: 1])
         sut = MenuViewModel(usersManager: usersManagerMock,
                             userStatusInQueueProvider: userStatusInQueueProviderMock,
-                            coreDataContextProvider: coreDataContextProviderMock)
+                            coreDataContextProvider: coreDataContextProviderMock,
+                            coreKeyMaker: MockKeyMakerProtocol(),
+                            unlockManager: .init(cacheStatus: CacheStatusStub(), delegate: MockUnlockManagerDelegate(), keyMaker: MockKeyMakerProtocol())
+        )
         XCTAssertEqual(sut.sections, [.inboxes, .folders, .labels, .more])
 
         XCTAssertTrue(sut.moreItems.contains(where: { $0.location == .sendFeedback }))

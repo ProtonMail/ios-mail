@@ -29,11 +29,11 @@ class UserDataCache: CachedUserDataProvider {
         static let disconnectedUsers = "disconnectedUsers"
     }
 
-    private let keyMaker: Keymaker
+    private let keyMaker: KeyMakerProtocol
     private let keychain: KeychainWrapper
 
     init(
-        keyMaker: Keymaker = keymaker,
+        keyMaker: KeyMakerProtocol,
         keychain: KeychainWrapper = KeychainWrapper.keychain
     ) {
         self.keyMaker = keyMaker

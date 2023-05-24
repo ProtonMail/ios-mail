@@ -25,8 +25,9 @@ class ConversationMigrationPolicy: NSEntityMigrationPolicy {
         in mapping: NSEntityMapping,
         manager: NSMigrationManager
     ) throws {
+        let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
         guard sInstance.entity.name == Conversation.Attributes.entityName,
-              keymaker.mainKeyExists() else {
+              keyMaker.mainKeyExists() else {
             return
         }
 

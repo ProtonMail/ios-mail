@@ -50,6 +50,7 @@ final class EventsServiceTests: XCTestCase {
             fetchMessageMetaData: mockFetchMessageMetaData,
             contactCacheStatus: mockContactCacheStatus,
             incomingDefaultService: incomingDefaultService,
+            queueManager: MockQueueManager(),
             coreDataProvider: mockContextProvider
         )
         sut = EventsService(userManager: mockUserManager, dependencies: dependencies)
@@ -237,7 +238,7 @@ final class EventsServiceTests: XCTestCase {
 extension EventsServiceTests {
 
     private func makeUserManager(apiMock: APIServiceMock) -> UserManager {
-        let user = UserManager(api: apiMock, role: .member)
+        let user = UserManager(api: apiMock, role: .member, coreKeyMaker: MockKeyMakerProtocol())
         user.userInfo.userId = dummyUserID
         return user
     }
