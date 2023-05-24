@@ -36,19 +36,8 @@ enum SignInUIFlow: Int {
 }
 
 // sourcery: mock
-protocol CacheStatusInject {
-    var isPinCodeEnabled: Bool { get }
-    var isTouchIDEnabled: Bool { get }
-    var isAppKeyEnabled: Bool { get }
+protocol PinFailedCountCache {
     var pinFailedCount: Int { get set }
-
-    /// Returns `true` if there is some kind of protection to access the app, but
-    /// the main key is accessible without the user having to interact to unlock the app.
-    var isAppLockedAndAppKeyDisabled: Bool { get }
-
-    /// Returns `true` if there is some kind of protection to access the app, and
-    /// the main key is only accessible if user interacts to unlock the app (e.g. enters pin, uses FaceID,...)
-    var isAppLockedAndAppKeyEnabled: Bool { get }
 }
 
 // sourcery: mock
@@ -68,26 +57,30 @@ protocol LAContextProtocol: AnyObject {
 extension LAContext: LAContextProtocol {}
 
 final class UnlockManager: Service {
-    private var cacheStatus: CacheStatusInject
+    private(set) var cacheStatus: LockCacheStatus
     unowned let delegate: UnlockManagerDelegate
     private let keyMaker: KeyMakerProtocol
     private let localAuthenticationContext: LAContextProtocol
     private let notificationCenter: NotificationCenter
+    private var pinFailedCountCache: PinFailedCountCache
 
     static var shared: UnlockManager {
         return sharedServices.get(by: UnlockManager.self)
     }
 
     init(
-        cacheStatus: CacheStatusInject,
+        cacheStatus: LockCacheStatus,
         delegate: UnlockManagerDelegate,
         keyMaker: KeyMakerProtocol,
+        pinFailedCountCache: PinFailedCountCache,
         localAuthenticationContext: LAContextProtocol = LAContext(),
         notificationCenter: NotificationCenter = .default
     ) {
         self.cacheStatus = cacheStatus
         self.delegate = delegate
         self.keyMaker = keyMaker
+        self.pinFailedCountCache = pinFailedCountCache
+
         self.localAuthenticationContext = localAuthenticationContext
         self.notificationCenter = notificationCenter
 
@@ -113,7 +106,7 @@ final class UnlockManager: Service {
 
     func match(userInputPin: String, completion: @escaping (Bool) -> Void) {
         guard !userInputPin.isEmpty else {
-            cacheStatus.pinFailedCount += 1
+            pinFailedCountCache.pinFailedCount += 1
             completion(false)
             return
         }
@@ -123,7 +116,7 @@ final class UnlockManager: Service {
                 completion(false)
                 return
             }
-            self.cacheStatus.pinFailedCount = 0
+            self.pinFailedCountCache.pinFailedCount = 0
             completion(true)
         }
     }
@@ -237,7 +230,7 @@ final class UnlockManager: Service {
 
         delegate.setupCoreData()
 
-        cacheStatus.pinFailedCount = 0
+        pinFailedCountCache.pinFailedCount = 0
 
         delegate.loadUserDataAfterUnlock()
 

@@ -109,13 +109,17 @@ extension AppDelegate: UIApplicationDelegate {
             userDataCache: UserDataCache(keyMaker: coreKeyMaker),
             coreKeyMaker: coreKeyMaker
         )
-        userCachedStatus.coreKeyMaker = coreKeyMaker
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
-        sharedServices.add(PushNotificationService.self, for: PushNotificationService())
-        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self, keyMaker: coreKeyMaker))
+        sharedServices.add(PushNotificationService.self, for: PushNotificationService(lockCacheStatus: coreKeyMaker))
+        sharedServices.add(UnlockManager.self, for: UnlockManager(
+            cacheStatus: coreKeyMaker,
+            delegate: self,
+            keyMaker: coreKeyMaker,
+            pinFailedCountCache: userCachedStatus
+        ))
         sharedServices.add(UsersManager.self, for: usersManager)
         let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: userCachedStatus))
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager,

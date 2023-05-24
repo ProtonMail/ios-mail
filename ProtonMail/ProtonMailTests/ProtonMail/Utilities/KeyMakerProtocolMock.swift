@@ -20,6 +20,31 @@ import ProtonCore_Keymaker
 import ProtonCore_TestingToolkit
 
 class MockKeyMakerProtocol: KeyMakerProtocol {
+    @PropertyStub(\MockLockCacheStatus.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub
+    var isPinCodeEnabled: Bool {
+        isPinCodeEnabledStub()
+    }
+
+    @PropertyStub(\MockLockCacheStatus.isTouchIDEnabled, initialGet: Bool()) var isTouchIDEnabledStub
+    var isTouchIDEnabled: Bool {
+        isTouchIDEnabledStub()
+    }
+
+    @PropertyStub(\MockLockCacheStatus.isAppKeyEnabled, initialGet: Bool()) var isAppKeyEnabledStub
+    var isAppKeyEnabled: Bool {
+        isAppKeyEnabledStub()
+    }
+
+    @PropertyStub(\MockLockCacheStatus.isAppLockedAndAppKeyDisabled, initialGet: Bool()) var isAppLockedAndAppKeyDisabledStub
+    var isAppLockedAndAppKeyDisabled: Bool {
+        isAppLockedAndAppKeyDisabledStub()
+    }
+
+    @PropertyStub(\MockLockCacheStatus.isAppLockedAndAppKeyEnabled, initialGet: Bool()) var isAppLockedAndAppKeyEnabledStub
+    var isAppLockedAndAppKeyEnabled: Bool {
+        isAppLockedAndAppKeyEnabledStub()
+    }
+
     @FuncStub(MockKeyMakerProtocol.mainKey, initialReturn: nil) var mainKeyStub
     func mainKey(by protection: RandomPinProtection?) -> MainKey? {
         mainKeyStub(protection)

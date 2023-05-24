@@ -88,27 +88,27 @@ class SettingsLockViewModelTests: XCTestCase {
     }
 
     func testViewWillAppear_whenPinEnabledAndAppKeyDisabled() {
-        mockLockPreferences.isPinCodeEnabledStub.fixture = true
+        mockKeymaker.isPinCodeEnabledStub.fixture = true
         sut.viewWillAppear()
         XCTAssert(sut.sections == [.protection, .changePin, .autoLockTime])
     }
 
     func testViewWillAppear_whenPinEnabledAndAppKeyEnabled() {
         isAppKeyEnabled = true
-        mockLockPreferences.isPinCodeEnabledStub.fixture = true
+        mockKeymaker.isPinCodeEnabledStub.fixture = true
         sut.viewWillAppear()
         XCTAssert(sut.sections == [.protection, .changePin, .appKeyProtection, .autoLockTime])
     }
 
     func testViewWillAppear_whenBiometricLockEnabledAndAppKeyDisabled() {
-        mockLockPreferences.isTouchIDEnabledStub.fixture = true
+        mockKeymaker.isTouchIDEnabledStub.fixture = true
         sut.viewWillAppear()
         XCTAssert(sut.sections == [.protection, .autoLockTime])
     }
 
     func testViewWillAppear_whenBiometricLockEnabledAndAppKeyEnabled() {
         isAppKeyEnabled = true
-        mockLockPreferences.isTouchIDEnabledStub.fixture = true
+        mockKeymaker.isTouchIDEnabledStub.fixture = true
         sut.viewWillAppear()
         XCTAssert(sut.sections == [.protection, .appKeyProtection, .autoLockTime])
     }

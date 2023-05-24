@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_Keymaker
 
 protocol WindowsCoordinatorDependenciesFactory {
     func makeWindowsCoordinatorDependencies() -> WindowsCoordinator.Dependencies
@@ -38,7 +39,7 @@ extension ServiceFactory {
                 queueManager: factory.get(),
                 unlockManager: factory.get(),
                 darkModeCache: factory.get(by: UserCachedStatus.self),
-                lockCache: factory.get(by: UserCachedStatus.self),
+                lockCache: factory.get(by: KeyMakerProtocol.self),
                 notificationCenter: factory.get(),
                 coreKeyMaker: factory.get()
             )

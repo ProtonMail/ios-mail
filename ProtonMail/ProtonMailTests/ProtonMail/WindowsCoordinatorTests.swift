@@ -170,7 +170,7 @@ private extension WindowsCoordinatorTests {
         let unlockManager = UnlockManager(
             cacheStatus: cacheStatusStub,
             delegate: unlockManagerDelegateMock,
-            keyMaker: keyMaker,
+            keyMaker: keyMaker, pinFailedCountCache: MockPinFailedCountCache(),
             notificationCenter: notificationCenter
         )
         usersManager = UsersManager(
@@ -178,11 +178,10 @@ private extension WindowsCoordinatorTests {
             userDataCache: UserDataCache(keyMaker: keyMaker, keychain: keyChain),
             coreKeyMaker: MockKeyMakerProtocol()
         )
-        let pushService = PushNotificationService(notificationCenter: notificationCenter)
+        let pushService = PushNotificationService(notificationCenter: notificationCenter, lockCacheStatus: keyMaker)
         let queueManager = QueueManager(messageQueue: MockPMPersistentQueueProtocol(), miscQueue: MockPMPersistentQueueProtocol())
         userDefaultMock = .init(suiteName: randomSuiteName)!
         let darkModeCache = UserCachedStatus(userDefaults: userDefaultMock)
-        darkModeCache.coreKeyMaker = keyMaker
         let coreDataService = MockCoreDataContextProvider()
         let lastUpdatedStore = LastUpdatedStore(contextProvider: coreDataService)
 

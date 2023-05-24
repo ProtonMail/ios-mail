@@ -97,9 +97,10 @@ final class SettingsDeviceViewModel {
     private(set) var userManager: UserManager
     private let users: UsersManager
     private let biometricStatus: BiometricStatusProvider
+    private let lockCacheStatus: LockCacheStatus
 
     var lockOn: Bool {
-        return userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled
+        return lockCacheStatus.isPinCodeEnabled || lockCacheStatus.isTouchIDEnabled
     }
 
     var combineContactOn: Bool {
@@ -130,10 +131,11 @@ final class SettingsDeviceViewModel {
         }
     }
 
-    init(user: UserManager, users: UsersManager, biometricStatus: BiometricStatusProvider) {
+    init(user: UserManager, users: UsersManager, biometricStatus: BiometricStatusProvider, lockCacheStatus: LockCacheStatus) {
         self.userManager = user
         self.users = users
         self.biometricStatus = biometricStatus
+        self.lockCacheStatus = lockCacheStatus
         if #available(iOS 13, *) {
             appSettings.insert(.darkMode, at: 0)
         }

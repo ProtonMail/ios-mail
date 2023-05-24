@@ -72,7 +72,8 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         signInProvider: SignInProvider = SignInManagerProvider(),
         deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
         unlockProvider: UnlockProvider = UnlockManagerProvider(),
-        notificationCenter: NotificationCenter = NotificationCenter.default
+        notificationCenter: NotificationCenter = NotificationCenter.default,
+        lockCacheStatus: LockCacheStatus
     ) {
         self.currentSubscriptions = SubscriptionsPack(subscriptionSaver, encryptionKitSaver, outdatedSaver)
         self.sessionIDProvider = sessionIDProvider
@@ -84,7 +85,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         self.navigationResolver = PushNavigationResolver(
             dependencies: PushNavigationResolver.Dependencies(subscriptionsPack: currentSubscriptions)
         )
-        self.notificationActions = PushNotificationActionsHandler()
+        self.notificationActions = PushNotificationActionsHandler(dependencies: .init(lockCacheStatus: lockCacheStatus))
 
         super.init()
 

@@ -45,8 +45,6 @@ final class ShareAppCoordinator {
         sharedServices.add(Keymaker.self, for: keyMaker)
         sharedServices.add(KeyMakerProtocol.self, for: keyMaker)
 
-        userCachedStatus.coreKeyMaker = keyMaker
-
         let usersManager = UsersManager(
             doh: BackendConfiguration.shared.doh,
             userDataCache: UserDataCache(keyMaker: keyMaker),
@@ -55,9 +53,10 @@ final class ShareAppCoordinator {
         sharedServices.add(
             UnlockManager.self,
             for: UnlockManager(
-                cacheStatus: userCachedStatus,
+                cacheStatus: keyMaker,
                 delegate: self,
-                keyMaker: keyMaker
+                keyMaker: keyMaker,
+                pinFailedCountCache: userCachedStatus
             )
         )
         sharedServices.add(UsersManager.self, for: usersManager)

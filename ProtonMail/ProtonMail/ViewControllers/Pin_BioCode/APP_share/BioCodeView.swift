@@ -128,10 +128,7 @@ final class BioCodeView: UIView {
     func loginCheck(_ flow: SignInUIFlow) {
         switch flow {
         case .requirePin:
-            if userCachedStatus.isTouchIDEnabled {
-                bioButton.alpha = 1.0
-                bioButton.isEnabled = true
-            }
+            PMAssertionFailure("Should not show the bioCodeView to the user while requesting the PIN code.")
         case .requireTouchID:
             bioButton.alpha = 1.0
             bioButton.isEnabled = true

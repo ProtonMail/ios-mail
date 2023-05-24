@@ -17,7 +17,7 @@
 
 import ProtonCore_Keymaker
 
-protocol KeyMakerProtocol: AnyObject {
+protocol KeyMakerProtocol: AnyObject, LockCacheStatus {
     func mainKey(by protection: RandomPinProtection?) -> MainKey?
     func obtainMainKey(
         with protector: ProtectionStrategy,

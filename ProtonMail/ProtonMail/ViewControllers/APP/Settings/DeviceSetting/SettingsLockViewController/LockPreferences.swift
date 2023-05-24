@@ -20,10 +20,6 @@ import ProtonCore_Keymaker
 
 // sourcery: mock
 protocol LockPreferences {
-    var isPinCodeEnabled: Bool { get }
-    var isTouchIDEnabled: Bool { get }
-    var isAppKeyEnabled: Bool { get }
-
     func setKeymakerRandomkey(key: String?)
     func setLockTime(value: AutolockTimeout)
 }

@@ -684,7 +684,7 @@ extension WindowsCoordinator: MenuCoordinatorDelegate {
         let queueManager: QueueManager
         let unlockManager: UnlockManager
         let darkModeCache: DarkModeCacheProtocol
-        let lockCache: CacheStatusInject
+        let lockCache: LockCacheStatus
         let notificationCenter: NotificationCenter
         let coreKeyMaker: KeyMakerProtocol
     }
