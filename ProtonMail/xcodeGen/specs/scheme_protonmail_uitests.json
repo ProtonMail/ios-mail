@@ -10,6 +10,10 @@
                "ProtonMail": [
                   "test",
                   "run"
+               ],
+               "ProtonMailTests": [
+                  "test",
+                  "run"
                ]
             }
          },
@@ -18,6 +22,14 @@
          },
          "test": {
             "config": "Debug",
+            "targets": [
+               "ProtonMailTests",
+               "ProtonMailUITests"
+            ],
+            "gatherCoverageData": true,
+            "coverageTargets": [
+               "ProtonMail"
+            ],
             "testPlans": [
                {
                   "path": "ProtonMailUITests/Tests/TestPlans/RegressionTests.xctestplan"

@@ -25,6 +25,8 @@
     {
       "parallelizable" : true,
       "selectedTests" : [
+        "LoginExtAccountsTests\/testLoginExtAcountNotSupported()",
+        "LoginNonExistingUserTests\/testLoginWithNonExistingUser()",
         "LoginTests\/testLoginWithInvalid2Pass()",
         "LoginTests\/testLoginWithInvalidPassword()",
         "LoginTests\/testLoginWithInvalidUser()",
@@ -33,6 +35,7 @@
         "LoginTests\/testLoginWithOnePassAnd2FA()",
         "LoginTests\/testLoginWithTwoPass()",
         "LoginTests\/testLoginWithTwoPassAnd2FA()",
+        "LoginTests\/testTryToLoginWithInvalidPassword()",
         "LoginTests2\/testLoginWithOnePass()"
       ],
       "target" : {

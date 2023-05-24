@@ -17,6 +17,13 @@ extension LoginRobot {
             .insertPassword(password: user.password)
             .signIn(robot: InboxRobot.self)
     }
+    
+    @discardableResult
+    func loginUser(_ testData: TestUser) -> InboxRobot {
+        return fillUsername(username: testData.user.name)
+            .insertPassword(password: testData.user.password)
+            .signIn(robot: InboxRobot.self)
+    }
 
     func loginUserWithTwoFA(_ user: User) -> InboxRobot {
         return fillUsername(username: user.name)

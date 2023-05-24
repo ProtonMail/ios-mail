@@ -24,6 +24,10 @@
   "testTargets" : [
     {
       "selectedTests" : [
+        "AccountDeletionOptionTests\/testDeleteAccountCanBeClosed()",
+        "AccountDeletionOptionTests\/testDeleteAccountOptionExists()",
+        "AccountDeletionSuccessfulTests\/testLoginScreenIsShownAfterSuccessfulDeletion()",
+        "AccountDeletionSuccessfulTests\/testSecondUserInboxIsShownAfterSuccessfulDeletionOfFirstUser()",
         "SettingsTests\/testDarkModeDisabled()",
         "SettingsTests\/testDarkModeEnable()",
         "SettingsTests\/testEditAutoLockTime()",

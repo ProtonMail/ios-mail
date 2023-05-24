@@ -13,12 +13,14 @@ import fusion
 import ProtonCore_Environment
 import ProtonCore_QuarkCommands
 import ProtonCore_TestingToolkit
+import Yams
 
 let apiDomainKey = "MAIL_APP_API_DOMAIN"
 var environmentFileName = "environment"
 var credentialsFileName = "credentials"
 let credentialsBlackFileName = "credentials_black"
 let testData = TestData()
+var users: [String: TestUser] = [:]
 
 var dynamicDomain: String {
     ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] ?? ""
@@ -43,6 +45,12 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         app.terminate()
     }
 
+    /// Runs only once per test run.
+    override class func setUp() {
+        getTestUsersFromYamlFiles()
+    }
+
+    /// Runs before eact test case.
     override func setUp() {
         super.setUp()
 
@@ -110,6 +118,43 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
             fatalError("Unable to parse credentials.plist file while running UI tests.")
         }
         return params[key]
+    }
+    
+    private static func getYamlFiles(in folderURL: URL) -> [URL] {
+        var files: [URL] = []
+
+        let fileManager = FileManager.default
+        if let enumerator = fileManager.enumerator(at: folderURL, includingPropertiesForKeys: nil) {
+            for case let fileURL as URL in enumerator {
+                if fileURL.lastPathComponent == "user.yml" {
+                    files.append(fileURL)
+                }
+            }
+        }
+
+        return files
+    }
+    
+    private static func getTestUsersFromYamlFiles() {
+        // Get "protonmail-ios/ProtonMail/" path to later locate "protonmail-ios/ProtonMail/TestData".
+        let uiTestsFolderPath = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().path
+        let folderUrl = URL(fileURLWithPath: "\(uiTestsFolderPath)/TestData")
+        var userYamlFiles: [URL]
+
+        userYamlFiles = getYamlFiles(in: folderUrl)
+        
+        XCTAssertTrue(userYamlFiles.count > 0, "Attempted to parse user.yml files from TestData repository but was not able to find any.")
+
+        for file in userYamlFiles {
+            do {
+                if let data = try String(contentsOf: file).data(using: .utf8) {
+                    let user = try YAMLDecoder().decode(TestUser.self, from: data)
+                    users[user.user.name] = user
+                }
+            } catch {
+                print("Error deserializing YAML: \(error.localizedDescription)")
+            }
+        }
     }
 }
 

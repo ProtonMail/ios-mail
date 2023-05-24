@@ -139,6 +139,7 @@ target 'ProtonMailUITests' do
   pod 'ProtonCore-TestingToolkit/UITests/PaymentsUI', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
+  pod 'Yams', '5.0.5'
 end
 
 target 'Share' do
