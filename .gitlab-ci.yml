@@ -246,13 +246,9 @@ test:ui:monkey:
     expire_in: 10 days
     reports:
       junit: test_output/TestResults/report.xml
-  before_script:
-    - *setup_project
-    - *prepare_users_for_ui_tests
   script:
     - cd ProtonMail
-    - bundle install
-    - bundle exec fastlane monkey_tests
+    - bundle exec fastlane ui_test testplan:MonkeyTests concurrent_workers:1
   tags:
     - iOS_UITEST
 
