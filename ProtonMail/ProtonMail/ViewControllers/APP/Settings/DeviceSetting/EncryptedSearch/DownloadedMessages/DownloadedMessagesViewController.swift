@@ -210,6 +210,13 @@ private extension EncryptedSearchIndexState {
                 oldestMessage: .init(date: oldestMessageInfo, highlight: true),
                 additionalInfo: .errorLowStorage
             )
+        case .creatingIndex, .paused, .downloadingNewMessage, .background, .backgroundStopped:
+            return .init(
+                icon: .success,
+                title: .messageHistory,
+                oldestMessage: .init(date: oldestMessageInfo, highlight: false),
+                additionalInfo: .downloadingInProgress
+            )
         default:
             PMAssertionFailure("invalid state \(self)")
             // returning a dummy state

@@ -1568,6 +1568,7 @@ enum L11n {
 
     struct Settings {
         static let passwordUpdated = NSLocalizedString("Password updated", comment: "Message to show to user after updating password.")
+        static let local_storage_clearing_cache = NSLocalizedString("Clearing cache…", comment: "Alert message when local cache is deleted")
     }
 
     struct NextMsgAfterMove {

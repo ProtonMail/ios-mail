@@ -52,10 +52,12 @@ class SettingsDeviceCoordinator {
     }
 
     func start() {
-        let viewModel = SettingsDeviceViewModel(user: userManager,
-                                                users: usersManager,
-                                                biometricStatus: UIDevice.current,
-                                                lockCacheStatus: services.get(by: Keymaker.self))
+        let viewModel = SettingsDeviceViewModel(
+            user: userManager,
+            biometricStatus: UIDevice.current,
+            lockCacheStatus: services.get(by: Keymaker.self),
+            dependencies: .init(cleanCache: CleanCache(dependencies: .init(usersManager: usersManager)))
+        )
 
         let viewController = SettingsDeviceViewController(viewModel: viewModel, coordinator: self)
         navigationController?.pushViewController(viewController, animated: false)

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import MBProgressHUD
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
@@ -42,6 +43,10 @@ final class SettingsLocalStorageViewController: UITableViewController, Accessibl
         super.viewDidLoad()
         setUpUI()
         viewModel.output.setUIDelegate(self)
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.input.viewWillAppear()
     }
 
     private func setUpUI() {
@@ -117,9 +122,15 @@ extension SettingsLocalStorageViewController {
 
     private func cellForDownloadedMessages() -> DownloadedMessagesInfoCell {
         let cell = tableView.dequeue(cellType: DownloadedMessagesInfoCell.self)
-        cell.accessoryType = .disclosureIndicator
-        cell.selectionStyle = .gray
-        cell.configure(info: .storage(viewModel.output.downloadedMessagesStorage))
+        if viewModel.output.searchIndexState.allowsToShowDownloadedMessagesInfo {
+            cell.selectionStyle = .gray
+            cell.accessoryType = .disclosureIndicator
+            cell.configure(info: .storage(viewModel.output.downloadedMessagesStorage))
+        } else {
+            cell.selectionStyle = .none
+            cell.accessoryType = .none
+            cell.configure(info: .disabled)
+        }
         return cell
     }
 
@@ -167,7 +178,30 @@ extension SettingsLocalStorageViewController {
 extension SettingsLocalStorageViewController: SettingsLocalStorageUIProtocol {
 
     func reloadData() {
-        tableView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+        }
+    }
+
+    func clearingCacheDidStart() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+            hud.label.text = L11n.Settings.local_storage_clearing_cache
+            hud.removeFromSuperViewOnHide = true
+        }
+    }
+
+    func clearingCacheDidEnd(error: Error?) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.reloadData()
+            if let error {
+                (error as NSError).alertToast()
+            }
+        }
     }
 }
 
@@ -176,7 +210,7 @@ extension SettingsLocalStorageViewController: LocalStorageCellDelegate {
     func didTapClear(sender: LocalStorageCell) {
         switch SettingsLocalStorageSection(rawValue: sender.tag) {
         case .cachedData:
-            viewModel.input.didTapClearData()
+            viewModel.input.didTapClearCachedData()
         case .attachments:
             viewModel.input.didTapClearAttachments()
         case .none, .downloadedMessages:

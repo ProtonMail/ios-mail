@@ -27,6 +27,7 @@ class SettingsDeviceViewControllerTests: XCTestCase {
     var mockApiService: APIServiceMock!
     var mockUsers: UsersManager!
     var mockDoh: DohMock!
+    var mockCleanCache: MockCleanCacheUseCase!
     var stubBioStatus: BioMetricStatusStub!
     var settingsDeviceCoordinatorMock: MockSettingsDeviceCoordinator!
 
@@ -37,11 +38,15 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         mockUser = UserManager(api: mockApiService, role: .none, coreKeyMaker: MockKeyMakerProtocol())
         mockUsers = UsersManager(doh: mockDoh, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
         mockUsers.add(newUser: mockUser)
+        mockCleanCache = MockCleanCacheUseCase()
         stubBioStatus = BioMetricStatusStub()
-        viewModel = SettingsDeviceViewModel(user: mockUser,
-                                            users: mockUsers,
-                                            biometricStatus: stubBioStatus,
-                                            lockCacheStatus: MockLockCacheStatus())
+
+        viewModel = SettingsDeviceViewModel(
+            user: mockUser,
+            biometricStatus: stubBioStatus,
+            lockCacheStatus: MockLockCacheStatus(),
+            dependencies: .init(cleanCache: mockCleanCache)
+        )
         settingsDeviceCoordinatorMock = MockSettingsDeviceCoordinator(
             navigationController: nil,
             user: mockUser,
@@ -62,6 +67,7 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         mockUser = nil
         mockApiService = nil
         mockDoh = nil
+        mockCleanCache = nil
         stubBioStatus = nil
         settingsDeviceCoordinatorMock = nil
     }

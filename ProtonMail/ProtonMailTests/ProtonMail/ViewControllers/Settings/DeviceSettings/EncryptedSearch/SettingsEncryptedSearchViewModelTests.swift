@@ -124,6 +124,9 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
     }
 
     func testInput_didTapDownloadedMessages() {
+        mockEncryptedSearchService.indexBuildingStateStub.bodyIs { _, _ in
+            [EncryptedSearchIndexState.complete, .downloadingNewMessage, .creatingIndex].randomElement()!
+        }
         sut.input.didTapDownloadedMessages()
         XCTAssertEqual(mockRouter.navigateToDownloadedMessagesStub.callCounter, 1)
     }

@@ -148,6 +148,7 @@ extension EncryptedSearchDownloadedMessagesCell {
     enum AdditionalInfo {
         case storageUsed(valueInMB: String)
         case allMessagesDownloaded
+        case downloadingInProgress
         case errorOutOfMemory
         case errorLowStorage
 
@@ -157,6 +158,8 @@ extension EncryptedSearchDownloadedMessagesCell {
                 return valueInMB
             case .allMessagesDownloaded:
                 return LocalString._settings_message_history_status_all_downloaded
+            case .downloadingInProgress:
+                return LocalString._settings_message_history_status_download_in_progress
             case .errorOutOfMemory:
                 return LocalString._settings_message_history_status_partial_index
             case .errorLowStorage:
@@ -168,14 +171,14 @@ extension EncryptedSearchDownloadedMessagesCell {
             switch self {
             case .storageUsed(let valueInMB):
                 return storageUsed(valueInMB: valueInMB)
-            case .allMessagesDownloaded:
-                return allMessagesDownloaded(message: string)
+            case .allMessagesDownloaded, .downloadingInProgress:
+                return applyStyle(to: string)
             case .errorOutOfMemory, .errorLowStorage:
                 return errorMessage(string)
             }
         }
 
-        private func allMessagesDownloaded(message: String) -> NSAttributedString {
+        private func applyStyle(to message: String) -> NSAttributedString {
             let messageAttrString = NSMutableAttributedString(string: message)
             let rangeOfPrefix = NSRange(location: 0, length: message.count)
             messageAttrString.addAttribute(
