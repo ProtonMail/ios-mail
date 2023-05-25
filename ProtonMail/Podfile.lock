@@ -345,6 +345,7 @@ PODS:
   - SwiftyGif (5.4.3)
   - SwipyCell (4.1.1)
   - TrustKit (2.0.0)
+  - Yams (5.0.5)
 
 DEPENDENCIES:
   - AwaitKit (from `https://github.com/yannickl/AwaitKit.git`, commit `4b725f40dd189f40c0962cba792f06a2073bd977`)
@@ -407,6 +408,7 @@ DEPENDENCIES:
   - SwiftSoup (~> 2.3)
   - "SwipyCell (from `git@gitlab.protontech.ch:jchen/SwipyCell.git`, commit `923310a`)"
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `release/1.0.3`)
+  - Yams (= 5.0.5)
 
 SPEC REPOS:
   trunk:
@@ -425,6 +427,7 @@ SPEC REPOS:
     - SQLite.swift
     - SwiftSoup
     - SwiftyGif
+    - Yams
 
 EXTERNAL SOURCES:
   AwaitKit:
@@ -726,7 +729,8 @@ SPEC CHECKSUMS:
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
+  Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: 539aa01edc447dcf1f1bb4727a817ed12f9de073
+PODFILE CHECKSUM: ca9f5c4cc09211ac1c74d8d197b4cda9632cc39e
 
 COCOAPODS: 1.12.0

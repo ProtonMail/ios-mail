@@ -466,6 +466,14 @@
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>
+		<dict>
+			<key>File</key>
+			<string>Acknowledgements/Yams</string>
+			<key>Title</key>
+			<string>Yams</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
 	</array>
 </dict>
 </plist>
