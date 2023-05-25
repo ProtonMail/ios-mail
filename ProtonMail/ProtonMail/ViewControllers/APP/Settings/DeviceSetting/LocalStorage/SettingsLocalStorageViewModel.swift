@@ -24,27 +24,53 @@ final class SettingsLocalStorageViewModel: SettingsLocalStorageViewModelProtocol
     private let router: SettingsLocalStorageRouterProtocol
     private let dependencies: Dependencies
 
+    private var userID: UserID {
+        dependencies.userID
+    }
+
     init(router: SettingsLocalStorageRouterProtocol, dependencies: Dependencies) {
         self.router = router
         self.dependencies = dependencies
+
+        /* TODO:
+         This is a workaround to indirectly create the build index to have index data
+         available. The delegate is not needed
+        **/
+        dependencies.esService.setBuildSearchIndexDelegate(for: userID, delegate: nil)
     }
 }
 
 extension SettingsLocalStorageViewModel: SettingsLocalStorageViewModelInput {
 
-    func didTapClearData() {
-        // TODO: use the dependency
-//        dependencies.localStorageProvider.clearCacheData()
+    func viewWillAppear() {
+        uiDelegate?.reloadData()
+    }
+
+    func didTapClearCachedData() {
+        uiDelegate?.clearingCacheDidStart()
+        dependencies
+            .cleanCache
+            .execute(params: Void()) { [weak self] result in
+                self?.uiDelegate?.clearingCacheDidEnd(error: result.error)
+            }
     }
 
     func didTapClearAttachments() {
-        // TODO: use the dependency
-//        dependencies.localStorageProvider.clearAttachments()
+        var resultingError: Error?
+        uiDelegate?.clearingCacheDidStart()
+        let attachmentDirectory = dependencies.fileManager.attachmentDirectory
+        do {
+            try dependencies.fileManager.removeItem(at: attachmentDirectory)
+        } catch {
+            resultingError = error
+        }
+        uiDelegate?.clearingCacheDidEnd(error: resultingError)
     }
 
     func didTapDownloadedMessages() {
-        // TODO: pass the correct state
-        router.navigateToDownloadedMessages(userID: dependencies.userId, state: .complete)
+        let state = searchIndexState
+        guard state.allowsToShowDownloadedMessagesInfo else { return }
+        router.navigateToDownloadedMessages(userID: dependencies.userID, state: state)
     }
 }
 
@@ -53,22 +79,28 @@ extension SettingsLocalStorageViewModel: SettingsLocalStorageViewModelOutput {
         [.cachedData, .attachments, .downloadedMessages]
     }
 
+    var searchIndexState: EncryptedSearchIndexState {
+        dependencies.esService.indexBuildingState(for: userID)
+    }
+
     var cachedDataStorage: ByteCount {
-        // TODO: use the dependency
-//        return dependencies.localStorageProvider.cacheDataStorageUsed
-        return 100_000_000
+        /*
+         We only read the sqlite file size (and not the WAL or SMH files) because
+         sequential clear actions could return bigger sizes. This is because
+         the WAL file could grow a little depending on whether it reached it's
+         size limit when the data is cleared.
+
+         More info: https://www.sqlite.org/wal.html
+         **/
+        return ByteCount(dependencies.coreDataMetadata.sqliteFileSize ?? 0)
     }
 
     var attachmentsStorage: ByteCount {
-        // TODO: use the dependency
-//        return dependencies.localStorageProvider.attachmentsStorageUsed
-        return 338_000_000
+        dependencies.fileManager.sizeOfDirectory(url: dependencies.fileManager.attachmentDirectory)
     }
 
     var downloadedMessagesStorage: ByteCount {
-        // TODO: use the dependency
-//        return dependencies.localStorageProvider.encryptedSearchStorageUsedActiveAccount
-        return 72_000_000
+        dependencies.esService.indexSize(for: userID) ?? 0
     }
 
     func setUIDelegate(_ delegate: SettingsLocalStorageUIProtocol) {
@@ -79,12 +111,24 @@ extension SettingsLocalStorageViewModel: SettingsLocalStorageViewModelOutput {
 extension SettingsLocalStorageViewModel {
 
     struct Dependencies {
-        let userId: UserID
+        let userID: UserID
+        let cleanCache: CleanCacheUseCase
+        let coreDataMetadata: CoreDataMetadata
+        let esService: EncryptedSearchServiceProtocol
+        let fileManager: FileManager
 
-        init(userID: UserID) {
-            self.userId = userID
+        init(
+            userID: UserID,
+            cleanCache: CleanCacheUseCase = CleanCache(dependencies: .init()),
+            coreDataMetada: CoreDataMetadata = CoreDataStore.shared,
+            esService: EncryptedSearchServiceProtocol = EncryptedSearchService.shared,
+            fileManager: FileManager = .default
+        ) {
+            self.userID = userID
+            self.cleanCache = cleanCache
+            self.coreDataMetadata = coreDataMetada
+            self.esService = esService
+            self.fileManager = fileManager
         }
-        // TODO: use the dependency
-//        let localStorageProvider: LocalStorageProvider
     }
 }

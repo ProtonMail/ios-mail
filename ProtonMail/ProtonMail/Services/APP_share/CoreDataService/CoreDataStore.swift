@@ -105,3 +105,15 @@ final class CoreDataStore {
         Analytics.shared.sendError(.coreDataInitialisation(error: message))
     }
 }
+
+extension CoreDataStore: CoreDataMetadata {
+    var sqliteFileSize: UInt? {
+        do {
+            let dbValues = try CoreDataStore.databaseUrl.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
+            return dbValues.totalFileAllocatedSize!.magnitude
+        } catch let error {
+            PMAssertionFailure("CoreDataStore databaseSize error: \(error)")
+            return nil
+        }
+    }
+}

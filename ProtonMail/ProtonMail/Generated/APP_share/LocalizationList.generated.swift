@@ -867,6 +867,7 @@ struct LocalizationList {
         "L11n.EncryptedSearch.estimating_time_remaining": L11n.EncryptedSearch.estimating_time_remaining,
         // L11n.Settings
         "L11n.Settings.passwordUpdated": L11n.Settings.passwordUpdated,
+        "L11n.Settings.local_storage_clearing_cache": L11n.Settings.local_storage_clearing_cache,
         // L11n.NextMsgAfterMove
         "L11n.NextMsgAfterMove.settingTitle": L11n.NextMsgAfterMove.settingTitle,
         "L11n.NextMsgAfterMove.rowTitle": L11n.NextMsgAfterMove.rowTitle,

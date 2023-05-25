@@ -95,9 +95,9 @@ final class SettingsDeviceViewModel {
     private(set) var generalSettings: [GeneralSectionItem] = [.notification, .language]
 
     private(set) var userManager: UserManager
-    private let users: UsersManager
     private let biometricStatus: BiometricStatusProvider
     private let lockCacheStatus: LockCacheStatus
+    private let dependencies: Dependencies
 
     var lockOn: Bool {
         return lockCacheStatus.isPinCodeEnabled || lockCacheStatus.isTouchIDEnabled
@@ -131,11 +131,17 @@ final class SettingsDeviceViewModel {
         }
     }
 
-    init(user: UserManager, users: UsersManager, biometricStatus: BiometricStatusProvider, lockCacheStatus: LockCacheStatus) {
+    init(
+        user: UserManager,
+        biometricStatus: BiometricStatusProvider,
+        lockCacheStatus: LockCacheStatus,
+        dependencies: Dependencies
+    ) {
         self.userManager = user
-        self.users = users
         self.biometricStatus = biometricStatus
         self.lockCacheStatus = lockCacheStatus
+        self.dependencies = dependencies
+
         if #available(iOS 13, *) {
             appSettings.insert(.darkMode, at: 0)
         }
@@ -161,33 +167,27 @@ final class SettingsDeviceViewModel {
     }
 
     func cleanCache(completion: ((Result<Void, NSError>) -> Void)?) {
-        var lastError: NSError?
-        let group = DispatchGroup()
-        for user in users.users {
-            group.enter()
-            user.messageService.cleanLocalMessageCache { error in
-                user.conversationService.cleanAll()
-                user.conversationService.fetchConversations(for: Message.Location.inbox.labelID,
-                                                            before: 0,
-                                                            unreadOnly: false,
-                                                            shouldReset: false) { result in
-                    switch result {
-                    case .failure(let error):
-                        lastError = error as NSError
-                    case .success:
-                        break
-                    }
-                    group.leave()
-                }
+        dependencies
+            .cleanCache
+            .callbackOn(.main)
+            .execute(params: Void()) { result in
+            switch result {
+            case .success:
+                completion?(.success(()))
+            case .failure(let error):
+                completion?(.failure(error as NSError))
             }
         }
-        group.notify(queue: .main) {
-            ImageProxyCache.shared.purge()
-            if let error = lastError {
-                completion?(.failure(error))
-            } else {
-                completion?(.success(()))
-            }
+    }
+}
+
+extension SettingsDeviceViewModel {
+
+    struct Dependencies {
+        let cleanCache: CleanCacheUseCase
+
+        init(cleanCache: CleanCacheUseCase) {
+            self.cleanCache = cleanCache
         }
     }
 }

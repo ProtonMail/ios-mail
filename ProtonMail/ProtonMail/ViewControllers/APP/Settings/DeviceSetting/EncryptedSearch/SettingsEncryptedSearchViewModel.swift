@@ -43,7 +43,7 @@ final class SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelPr
             sections = [.encryptedSearchFeature, .downloadViaMobileData]
             let indexBuildingState = dependencies.esService.indexBuildingState(for: userID)
             if indexBuildingState != .undetermined { // TODO: we should get rid of the .undeterminate state
-                if shouldShowDownloadingProgress(for: indexBuildingState) {
+                if indexBuildingState.allowsToShowDownloadingProgress {
                     sections.append(.downloadProgress)
                 } else {
                     sections.append(.downloadedMessages)
@@ -53,15 +53,6 @@ final class SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelPr
             sections = [.encryptedSearchFeature]
         }
         uiDelegate?.reloadData()
-    }
-
-    private func shouldShowDownloadingProgress(for state: EncryptedSearchIndexState) -> Bool {
-        switch state {
-        case .disabled, .partial, .complete:
-            return false
-        case .creatingIndex, .paused, .downloadingNewMessage, .undetermined, .background, .backgroundStopped:
-            return true
-        }
     }
 }
 
@@ -89,6 +80,7 @@ extension SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelInpu
 
     func didTapDownloadedMessages() {
         let state = dependencies.esService.indexBuildingState(for: userID)
+        guard state.allowsToShowDownloadedMessagesInfo else { return }
         router.navigateToDownloadedMessages(userID: userID, state: state)
     }
 

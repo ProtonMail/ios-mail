@@ -16,12 +16,18 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+@testable import ProtonMail
+import ProtonCore_TestingToolkit
 
-protocol LocalStorageProvider {
-    var cacheDataStorageUsed: ByteCount { get }
-    var attachmentsStorageUsed: ByteCount { get }
-    var encryptedSearchStorageUsedActiveAccount: ByteCount { get }
+final class MockCleanCacheUseCase: CleanCacheUseCase {
+    var result: Result<Void, Error>
 
-    func clearCacheData()
-    func clearAttachments()
+    init(stubbedResult: Result<Void, Error> = .success(())) {
+        self.result = stubbedResult
+    }
+
+    @FuncStub(MockCleanCacheUseCase.executionBlock(params:callback:)) var callExecutionBlock
+    override func executionBlock(params: Void, callback: @escaping Callback) {
+        callback(result)
+    }
 }

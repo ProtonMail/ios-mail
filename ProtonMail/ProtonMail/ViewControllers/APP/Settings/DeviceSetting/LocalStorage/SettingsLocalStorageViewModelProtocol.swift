@@ -23,13 +23,15 @@ protocol SettingsLocalStorageViewModelProtocol {
 }
 
 protocol SettingsLocalStorageViewModelInput {
-    func didTapClearData()
+    func viewWillAppear()
+    func didTapClearCachedData()
     func didTapClearAttachments()
     func didTapDownloadedMessages()
 }
 
 protocol SettingsLocalStorageViewModelOutput {
     var sections: [SettingsLocalStorageSection] { get }
+    var searchIndexState: EncryptedSearchIndexState { get }
     var cachedDataStorage: ByteCount { get }
     var attachmentsStorage: ByteCount { get }
     var downloadedMessagesStorage: ByteCount { get }
@@ -39,6 +41,8 @@ protocol SettingsLocalStorageViewModelOutput {
 
 protocol SettingsLocalStorageUIProtocol: AnyObject {
     func reloadData()
+    func clearingCacheDidStart()
+    func clearingCacheDidEnd(error: Error?)
 }
 
 enum SettingsLocalStorageSection: Int {
