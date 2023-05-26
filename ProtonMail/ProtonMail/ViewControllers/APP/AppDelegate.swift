@@ -200,16 +200,15 @@ extension AppDelegate: UIApplicationDelegate {
           _ application: UIApplication,
           supportedInterfaceOrientationsFor window: UIWindow?
       ) -> UIInterfaceOrientationMask {
-          return .portrait
-//          guard UserInfo.isRotateScreenEnabled else { return .portrait }
-//          let viewController = window?.rootViewController
-//          if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
-//              return UIInterfaceOrientationMask.all
-//          }
-//          if viewController as? CoordinatorKeepingViewController<LockCoordinator> != nil {
-//              return .portrait
-//          }
-//          return .all
+          guard UserInfo.isRotateScreenEnabled else { return .portrait }
+          let viewController = window?.rootViewController
+          if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
+              return UIInterfaceOrientationMask.all
+          }
+          if viewController as? CoordinatorKeepingViewController<LockCoordinator> != nil {
+              return .portrait
+          }
+          return .all
       }
 
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
