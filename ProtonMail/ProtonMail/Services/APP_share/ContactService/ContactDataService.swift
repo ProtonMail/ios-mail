@@ -237,10 +237,11 @@ class ContactDataService: Service {
         self.apiService.perform(request: api, response: VoidResponse()) { [weak self] _, response in
             guard let self = self else { return }
             if let error = response.error {
-                if error.responseCode == 13043 { // doesn't exist
+                if error.responseCode == 13043 ||
+                    error.responseCode == APIErrorCode.resourceDoesNotExist { // doesn't exist
                     self.cacheService.deleteContact(by: contactID) { _ in
                         DispatchQueue.main.async {
-                            completion(error.toNSError)
+                            completion(nil)
                         }
                     }
                 } else {
