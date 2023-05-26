@@ -22,6 +22,7 @@ private enum CSSKeys: String {
     case style, color, transparent, background, border
     case bgColor = "bgcolor"
     case backgroundColor = "background-color"
+    case borderColor = "border-color"
 
     case target, id, `class`
 }
@@ -343,7 +344,9 @@ extension CSSMagic {
                   let selectorValue = data.last else { continue }
             let attributes = CSSMagic.splitInline(attributes: selectorValue)
             let newAttributes = CSSMagic.switchToDarkModeStyle(attributes: attributes)
-            result[selectorKey] = newAttributes
+            if newAttributes.isEmpty { continue }
+            let previousResult = result[selectorKey] ?? []
+            result[selectorKey] = previousResult + newAttributes
         }
         return result
     }
@@ -398,7 +401,9 @@ extension CSSMagic {
                         CSSKeys.backgroundColor.rawValue,
                         CSSKeys.bgColor.rawValue,
                         CSSKeys.background.rawValue,
-                        CSSKeys.border.rawValue]
+                        CSSKeys.border.rawValue,
+                        CSSKeys.borderColor.rawValue
+        ]
         for attribute in attributes {
             guard keywords.contains(attribute.key.lowercased()) else { continue }
             let color = attribute.value
@@ -452,6 +457,7 @@ extension CSSMagic {
     /// - Returns: HSLA representation, e.g. hsla(100, 50%, 62%, 0.5). Depends on the given value, return value is not always has alpha
     static func getDarkModeColor(from color: String, isForeground: Bool) -> String? {
         guard var (colorAttribute, index, others) = parseAttribute(attribute: color) else { return nil }
+        others.removeAll(where: { $0 == "!important"})
         guard let hsla = getHSLA(attribute: colorAttribute) else { return nil }
         let darkModeHSLA = CSSMagic.hslaForDarkMode(hsla: hsla, isForeground: isForeground)
         others.insert(darkModeHSLA, at: index)
