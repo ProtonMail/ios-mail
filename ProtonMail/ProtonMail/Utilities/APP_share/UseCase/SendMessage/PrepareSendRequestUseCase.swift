@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonMailAnalytics
 import PromiseKit
 import enum ProtonCore_Crypto.Based64
 import struct ProtonCore_Crypto.Password
 import class ProtonCore_Networking.AuthCredential
+import ProtonCore_Services
+import ProtonMailAnalytics
 
 typealias PrepareSendRequestUseCase = NewUseCase<SendMessageRequest, PrepareSendRequest.Params>
 
@@ -28,9 +29,9 @@ final class PrepareSendRequest: PrepareSendRequestUseCase {
     override func executionBlock(params: Params, callback: @escaping Callback) {
         do {
             // Using an empty UseCase for fetchAttachment because it is not needed here
-            // since we alredy have the attachments at this point in `params.metadata.attachments`.
+            // since we already have the attachments at this point in `params.metadata.attachments`.
             let emptyUseCase: FetchAttachmentUseCase = NewUseCase()
-            let sendBuilder = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: emptyUseCase))
+            let sendBuilder = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: emptyUseCase, apiService: params.apiService))
             sendBuilder.update(with: params.sendMetadata)
 
             try prepareMimeFormatIfNeeded(sendBuilder: sendBuilder, params: params)
@@ -143,6 +144,7 @@ extension PrepareSendRequest {
         let sendMetadata: SendMessageMetadata
         let scheduleSendDeliveryTime: Date?
         let undoSendDelay: Int
+        let apiService: APIService
     }
 }
 

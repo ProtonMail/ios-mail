@@ -17,17 +17,19 @@
 
 import CoreData
 import GoLibs
-import XCTest
-@testable import ProtonMail
+import PromiseKit
 import ProtonCore_Crypto
 import ProtonCore_DataModel
-import PromiseKit
+import ProtonCore_TestingToolkit
+@testable import ProtonMail
+import XCTest
 
 class MessageSendingRequestBuilderTests: XCTestCase {
 
     var sut: MessageSendingRequestBuilder!
     private var mockFetchAttachment: MockFetchAttachment!
     private var context: NSManagedObjectContext!
+    private var mockApi: APIServiceMock!
 
     let testBody = "body".data(using: .utf8)!
     let testSession = "session".data(using: .utf8)!
@@ -38,7 +40,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         mockFetchAttachment = MockFetchAttachment()
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
+        mockApi = .init()
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
         testPublicKey = try XCTUnwrap(CryptoKey(fromArmored: OpenPGPDefines.publicKey))
     }
 
@@ -112,7 +115,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testContains() throws {
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
         XCTAssertTrue(sut.addressSendPreferences.isEmpty)
         XCTAssertFalse(sut.contains(type: .pgpMIME))
         let testPreferences = SendPreferences(encrypt: true,
@@ -341,7 +344,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testGeneratePackageBuilder_EOAddress() throws {
         let testEOPassword = Passphrase(value: "EO PWD")
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
         sut.set(password: testEOPassword, hint: nil)
 
         let eoPreference = SendPreferences(encrypt: false,
@@ -369,7 +372,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testGeneratePackageBuilder_ClearAddress() throws {
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
 
         let clearPreference = SendPreferences(encrypt: false,
                                               sign: false,
