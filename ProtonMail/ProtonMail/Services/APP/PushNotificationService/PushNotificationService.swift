@@ -251,7 +251,7 @@ extension PushNotificationService {
                 case .success:
                     tokenDeleted = true
                 case .failure(let error):
-                    tokenUnrecognized = (error.code == APIErrorCode.deviceTokenDoesNotExist
+                    tokenUnrecognized = (error.code == APIErrorCode.resourceDoesNotExist
                         || error.code == APIErrorCode.deviceTokenIsInvalid)
                 }
                 if tokenDeleted || tokenUnrecognized {
