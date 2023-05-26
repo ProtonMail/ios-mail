@@ -20,6 +20,7 @@ import PromiseKit
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Hash
+import ProtonCore_Services
 import SwiftSoup
 
 /// A sending message request builder
@@ -436,7 +437,8 @@ extension MessageSendingRequestBuilder {
                                             algo: algo,
                                             password: self.password ?? Passphrase(value: ""),
                                             atts: self.preAttachments,
-                                            passwordHint: self.hint))
+                                            passwordHint: self.hint,
+                                            apiService: dependencies.apiService))
             case .cleartextInline:
                 out.append(ClearAddressBuilder(type: .cleartextInline,
                                                email: email,
@@ -492,6 +494,7 @@ extension MessageSendingRequestBuilder {
 extension MessageSendingRequestBuilder {
     struct Dependencies {
         let fetchAttachment: FetchAttachmentUseCase
+        let apiService: APIService
     }
 }
 

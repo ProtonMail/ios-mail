@@ -27,8 +27,6 @@ import ProtonCore_Services
 import ProtonCore_UIFoundations
 import UIKit
 
-var sharedUserDataService: UserDataService!
-
 class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     private weak var coordinator: ShareUnlockCoordinator?
 
@@ -64,10 +62,6 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
 
         // TODO: Refactor the view to pass the dependency from init
         let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
-        sharedUserDataService = UserDataService(
-            apiService: PMAPIService.shared,
-            coreKeyMaker: keyMaker
-        )
         LanguageManager().translateBundleToPreferredLanguageOfTheMainApp()
         configureNavigationBar()
 

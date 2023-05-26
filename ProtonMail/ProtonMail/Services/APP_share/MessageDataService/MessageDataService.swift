@@ -979,7 +979,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             // create builder
             let dependencies = MessageSendingRequestBuilder.Dependencies(
-                fetchAttachment: FetchAttachment(dependencies: .init(apiService: userManager.apiService))
+                fetchAttachment: FetchAttachment(dependencies: .init(apiService: userManager.apiService)),
+                apiService: userManager.apiService
             )
             let sendBuilder = MessageSendingRequestBuilder(dependencies: dependencies)
 

@@ -67,7 +67,8 @@ final class SendMessage: SendMessageUseCase {
                 authCredential: dependencies.userDataSource.authCredential,
                 sendMetadata: metadata,
                 scheduleSendDeliveryTime: params.scheduleSendDeliveryTime,
-                undoSendDelay: params.undoSendDelay
+                undoSendDelay: params.undoSendDelay,
+                apiService: dependencies.apiService
             ),
             callback: completion
         )

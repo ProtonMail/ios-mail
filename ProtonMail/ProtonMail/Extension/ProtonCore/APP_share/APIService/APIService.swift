@@ -58,15 +58,6 @@ extension PMAPIService {
         return unauthorized
     }()
 
-    static var shared: APIService {
-        // TODO:: fix me -- shouldn't have gloabl access
-        if let user = sharedServices.get(by: UsersManager.self).users.first {
-            return user.apiService
-        } else {
-            return unauthorized
-        }
-    }
-
     static func setupTrustIfNeeded() {
 //        #if DEBUG
 //        PMAPIService.noTrustKit = true
