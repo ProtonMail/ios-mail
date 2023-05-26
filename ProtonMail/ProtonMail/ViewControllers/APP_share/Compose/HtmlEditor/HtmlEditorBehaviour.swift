@@ -127,7 +127,9 @@ class HtmlEditorBehaviour: NSObject {
 
     private func updateFontSize() {
         let font = UIFont.preferredFont(for: .callout, weight: .regular)
-        run(with: "html_editor.update_font_size(\(font.pointSize));").cauterize()
+        let temp = UILabel(font: font, text: "temp", textColor: .black)
+        temp.adjustsFontForContentSizeCategory = true
+        run(with: "html_editor.update_font_size(\(temp.font.pointSize));").cauterize()
     }
 
     /// try to hide the input accessory from the wkwebview when keyboard appear
