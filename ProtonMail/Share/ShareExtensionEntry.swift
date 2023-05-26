@@ -47,6 +47,7 @@ class ShareExtensionEntry: UINavigationController {
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true
         TrustKitWrapper.start(delegate: self)
+        sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
         configureCoreFeatureFlags()
         appCoordinator = ShareAppCoordinator(navigation: self)
         if #available(iOSApplicationExtension 15.0, *) {
