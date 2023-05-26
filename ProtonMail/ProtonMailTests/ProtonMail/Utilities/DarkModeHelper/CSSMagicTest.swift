@@ -124,23 +124,36 @@ extension CSSMagicTest {
     }
 
     func testGetStyleNodes() throws {
-        let html = """
+        var html = """
         <html> <head> <style>/*ignore me*/.a{color: #336635;/*ignore me*/}span{font-size: large;}</style> <style>span{background-color: rgb(151, 202, 153);}</style> </head> <body> <div class="a">a</div><span>abc</span> </body></html>
         """
-        let document = CSSMagic.parse(htmlString: html)
-        XCTAssertNotNil(document)
-        let styleCSS = CSSMagic.getStyleCSS(from: document!)
-        let expected = [".a{color: #336635;}span{font-size: large;}",
+        var document = try XCTUnwrap(CSSMagic.parse(htmlString: html))
+        var styleCSS = CSSMagic.getStyleCSS(from: document)
+        var expected = [".a{color: #336635;}span{font-size: large;}",
                         "span{background-color: rgb(151, 202, 153);}"]
         XCTAssertEqual(styleCSS, expected)
 
-        let newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
+        var newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
         let aSelector = newStyleCSS[".a"]
         XCTAssertNotNil(aSelector)
         XCTAssertEqual(aSelector, ["color: hsla(122, 33%, 100%, 1.0) !important"])
         let spanSelector = newStyleCSS["span"]
         XCTAssertNotNil("span")
         XCTAssertEqual(spanSelector, ["background-color: hsla(122, 32%, 30%, 1.0) !important"])
+
+        html = """
+        <html><head><style>.email{background-color:#ffffff}</style><style>.email{width:100px}</style></head><body></body></html>
+        """
+        document = try XCTUnwrap(CSSMagic.parse(htmlString: html))
+        styleCSS = CSSMagic.getStyleCSS(from: document)
+        expected = [
+            ".email{background-color:#ffffff}",
+            ".email{width:100px}"
+        ]
+        XCTAssertEqual(styleCSS, expected)
+        newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
+        let result = try XCTUnwrap(newStyleCSS[".email"])
+        XCTAssertEqual(result, ["background-color: hsla(230, 12%, 10%, 1.0) !important"])
     }
 
     func testGetColorNodes() {
