@@ -177,7 +177,7 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
 
     func cellTapped(
         messageId: MessageID,
-		caller: StaticString = #function,
+        caller: StaticString = #function,
         reloadCompletion: (() -> Void)? = nil
     ) {
         // this method sometimes appears in the stack trace for this crash
@@ -1150,57 +1150,53 @@ extension ConversationViewController {
         let convMessages = viewModel.messagesDataSource.compactMap(\.message)
         let labelAsViewModel = LabelAsActionSheetViewModelConversationMessages(menuLabels: labels,
                                                                                conversationMessages: convMessages)
-
-        labelAsActionSheetPresenter
-            .present(
-                on: self.navigationController ?? self,
-                listener: self,
-                viewModel: labelAsViewModel,
-                addNewLabel: { [weak self] in
-                    guard let self = self else { return }
-                    if self.allowToCreateLabels(existingLabels: labelAsViewModel.menuLabels.count) {
-                        self.viewModel.coordinator.pendingActionAfterDismissal = { [weak self] in
-                            self?.showLabelAsActionSheetForConversation()
-                        }
-                        self.viewModel.handleNavigationAction(.addNewLabel)
-                    } else {
-                        self.showAlertLabelCreationNotAllowed()
+        
+        labelAsActionSheetPresenter.present(
+            on: self.navigationController ?? self,
+            listener: self,
+            viewModel: labelAsViewModel,
+            addNewLabel: { [weak self] in
+                guard let self = self else { return }
+                if self.allowToCreateLabels(existingLabels: labelAsViewModel.menuLabels.count) {
+                    self.viewModel.coordinator.pendingActionAfterDismissal = { [weak self] in
+                        self?.showLabelAsActionSheetForConversation()
                     }
-                },
-                selected: { [weak self] menuLabel, isOn in
-                    self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
-                },
-                cancel: { [weak self] isHavingUnsavedChanges in
-                    if isHavingUnsavedChanges {
-                        self?.showDiscardAlert(handleDiscard: {
-                            self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
-                            self?.dismissActionSheet()
-                        })
-                    } else {
-                        self?.dismissActionSheet()
-                    }
-                },
-                done: { [weak self] isArchive, currentOptionsStatus in
-                    if let conversation = self?.viewModel.conversation {
-                        self?.labelAsActionHandler
-                            .handleLabelAsAction(conversations: [conversation],
-                                                 shouldArchive: isArchive,
-                                                 currentOptionsStatus: currentOptionsStatus,
-                                                 completion: nil)
-                    }
-                    self?.dismissActionSheet()
-                    if isArchive {
-                        self?.viewModel.navigateToNextConversation(
-                            isInPageView: self?.isInPageView ?? false,
-                            popCurrentView: nil
-                        )
-                        self?.showMessageMoved(
-                            title: LocalString._messages_has_been_moved,
-                            undoActionType: .archive
-                        )
-                    }
+                    self.viewModel.handleNavigationAction(.addNewLabel)
+                } else {
+                    self.showAlertLabelCreationNotAllowed()
                 }
-            )
+            },
+            selected: { [weak self] menuLabel, isOn in
+                self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
+            },
+            cancel: { [weak self] isHavingUnsavedChanges in
+                if isHavingUnsavedChanges {
+                    self?.showDiscardAlert(handleDiscard: {
+                        self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
+                        self?.dismissActionSheet()
+                    })
+                } else {
+                    self?.dismissActionSheet()
+                }
+            },
+            done: { [weak self] isArchive, currentOptionsStatus in
+                if let conversation = self?.viewModel.conversation {
+                    self?.labelAsActionHandler
+                        .handleLabelAsAction(conversations: [conversation],
+                                             shouldArchive: isArchive,
+                                             currentOptionsStatus: currentOptionsStatus,
+                                             completion: nil)
+                }
+                self?.dismissActionSheet()
+                if isArchive {
+                    self?.viewModel.navigateToNextConversation(
+                        isInPageView: self?.isInPageView ?? false,
+                        popCurrentView: nil
+                    )
+                    self?.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .archive)
+                }
+            }
+        )
     }
 
     private func showLabelAsActionSheet(for message: MessageEntity) {
@@ -1360,8 +1356,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                 guard isHavingUnsavedChanges else {
                     return
                 }
-                self?.moveToActionHandler
-                    .handleMoveToAction(messages: [message], isFromSwipeAction: false)
+                self?.moveToActionHandler.handleMoveToAction(messages: [message], isFromSwipeAction: false)
             }
         )
     }
@@ -1435,7 +1430,10 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                 if self?.moveToActionHandler.selectedMoveToFolder?.location == .trash {
                     self?.viewModel.searchForScheduled(conversation: conversation,
                                                        displayAlert: { scheduledNum in
-                                                           self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
+                                                           self?.displayScheduledAlert(
+                                                            scheduledNum: scheduledNum,
+                                                            continueAction: continueAction
+                                                           )
                                                        }, continueAction: continueAction)
                 } else {
                     continueAction()

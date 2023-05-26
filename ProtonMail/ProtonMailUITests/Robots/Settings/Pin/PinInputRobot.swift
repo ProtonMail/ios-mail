@@ -176,7 +176,6 @@ class PinInputRobot: CoreElements {
             return PinInputRobot()
         }
         
-        @discardableResult
         func pinInputScreenIsShown() {
             otherElement(id.pinCodeViewIdentifier).waitUntilExists().checkExists()
 		}

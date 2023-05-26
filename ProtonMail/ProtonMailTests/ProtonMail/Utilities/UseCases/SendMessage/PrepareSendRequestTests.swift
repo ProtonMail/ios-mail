@@ -312,7 +312,6 @@ extension PrepareSendRequestTests {
             sessionID: "",
             accessToken: "",
             refreshToken: "",
-            expiration: Date(),
             userName: "",
             userID: "",
             privateKey: nil,

@@ -342,11 +342,7 @@ class CacheService: CacheServiceProtocol {
 
     func deleteExpiredMessage(completion: (() -> Void)?) {
         coreDataService.performOnRootSavingContext { context in
-            #if !APP_EXTENSION
             let processInfo = userCachedStatus
-            #else
-            let processInfo = userCachedStatus as? SystemUpTimeProtocol
-            #endif
             let date = Date.getReferenceDate(processInfo: processInfo)
             let fetch = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
             fetch.predicate = NSPredicate(format: "%K != NULL AND %K < %@",
@@ -390,11 +386,7 @@ class CacheService: CacheServiceProtocol {
             conversation.expirationTime = nil
             return
         }
-        #if !APP_EXTENSION
         let processInfo = userCachedStatus
-        #else
-        let processInfo = userCachedStatus as? SystemUpTimeProtocol
-        #endif
         let sorted = messages
             .filter({ $0 != expiredMessage && ($0.expirationTime ?? .distantPast) > Date.getReferenceDate(processInfo: processInfo) })
             .sorted(by: { ($0.expirationTime ?? .distantPast) > ($1.expirationTime ?? .distantPast) })

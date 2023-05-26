@@ -63,7 +63,6 @@ extension String {
     func emailAddressParts() -> (localPart: String, domain: String?) {
         guard isValidEmail(),
               let atIndex = lastIndex(of: "@") else { return (self, nil) }
-        let start = startIndex
         let localPart = String(self[startIndex..<atIndex])
         let domainIndex = self.index(after: atIndex)
         let domain = String(self[domainIndex..<endIndex])

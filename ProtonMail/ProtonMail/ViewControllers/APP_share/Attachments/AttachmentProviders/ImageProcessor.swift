@@ -115,7 +115,7 @@ extension ImageProcessor where Self: AttachmentProvider {
                     (LocalString._importing + " \(Int(progress * 100))%").alertToastBottom()
                 }
             }
-            PHImageManager.default().requestImageData(for: asset, options: options) { imagedata, dataUTI, orientation, info in
+            PHImageManager.default().requestImageDataAndOrientation(for: asset, options: options) { imagedata, dataUTI, orientation, info in
                 guard var image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
                     DispatchQueue.main.async {
                         self.controller?.error(LocalString._cant_open_the_file)

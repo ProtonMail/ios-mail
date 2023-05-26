@@ -26,7 +26,7 @@ struct UserKeys: Equatable {
     let mailboxPassphrase: Passphrase
 }
 
-extension UserManager {
+extension UserDataSource {
     func toUserKeys() -> UserKeys {
         UserKeys(
             privateKeys: userInfo.userPrivateKeys,

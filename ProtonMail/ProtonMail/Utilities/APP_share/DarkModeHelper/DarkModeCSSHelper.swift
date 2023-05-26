@@ -502,12 +502,12 @@ extension CSSMagic {
     /// - Parameter color: CSS color representation, could be rgba, hex...etc
     /// - Returns: HSLA representation, e.g. hsla(100, 50%, 62%, 0.5). Depends on the given value, return value is not always has alpha
     static func getDarkModeColor(from color: String, isForeground: Bool) -> String? {
-        guard var (colorAttribute, index, others) = parseAttribute(attribute: color) else { return nil }
-        others.removeAll(where: { $0 == "!important"})
+        guard let (colorAttribute, index, others) = parseAttribute(attribute: color) else { return nil }
+        var mutableOthers = others.removing("!important")
         guard let hsla = getHSLA(attribute: colorAttribute) else { return nil }
         let darkModeHSLA = CSSMagic.hslaForDarkMode(hsla: hsla, isForeground: isForeground)
-        others.insert(darkModeHSLA, at: index)
-        return others.joined(separator: " ")
+        mutableOthers.insert(darkModeHSLA, at: index)
+        return mutableOthers.joined(separator: " ")
     }
 }
 

@@ -28,18 +28,15 @@ enum SettingTestData {
             "Shortcuts": 1,
             "KT": 0,
             "SwipeLeft": 4,
-            "FontSize": nil,
             "RightToLeft": 0,
             "ShowImages": 2,
             "TLS": 0,
             "HideEmbeddedImages": 0,
-            "FontFace": nil,
             "ThemeType": 0,
             "AutoWildcardSearch": 1,
             "PGPScheme": 16,
             "AutoSaveContacts": 0,
             "MessageButtons": 0,
-            "ThemeVersion": nil,
             "EnableFolderColor": 1,
             "ComposerMode": 0,
             "AttachPublicKey": 0,
@@ -48,13 +45,11 @@ enum SettingTestData {
             "Hotkeys": 0,
             "AlmostAllMail": 0,
             "ViewLayout": 0,
-            "SpamAction": nil,
             "HideSenderImages": 0,
             "Signature": "",
             "ImageProxy": 0,
             "PromptPin": 0,
             "SwipeRight": 4,
-            "BlockSenderConfirmation": nil,
             "InheritParentFolderColor": 0,
             "Sign": 0,
             "ExpandFolders": 0,
@@ -75,13 +70,12 @@ enum SettingTestData {
                     "Actions": [
                         "trash"
                     ]
-                ],
+                ] as [String : Any],
                 "ConversationToolbar": [
                     "IsCustom": false,
                     "Actions": []
                 ]
             ],
-            "AutoDeleteSpamAndTrashDays": nil,
             "AutoResponder": [
                 "StartTime": 0,
                 "EndTime": 0,
@@ -91,7 +85,7 @@ enum SettingTestData {
                 "Message": "",
                 "IsEnabled": false,
                 "Zone": "Europe/Zurich"
-            ],
+            ] as [String : Any],
             "NumMessagePerPage": 50,
             "RecipientLimit": 100,
             "DraftMIMEType": "text/plain",
@@ -99,7 +93,7 @@ enum SettingTestData {
             "ShowMIMEType": "text/html",
             "PMSignatureReferralLink": 0,
             "SubmissionAccess": 0
-        ]
+        ] as [String : Any]
     ]
 
     static let userSettings: [String: Any] = [
@@ -110,32 +104,28 @@ enum SettingTestData {
                 "Status": 1,
                 "Notify": 0,
                 "Reset": 1
-            ],
+            ] as [String : Any],
             "Phone": [
-                "Value": nil,
                 "Status": 0,
                 "Notify": 0,
                 "Reset": 0
             ],
             "Password": [
                 "Mode": 1,
-                "ExpirationTime": nil
             ],
             "PasswordMode": 1,
             "2FA": [
                 "Enabled": 0,
                 "Allowed": 3,
-                "ExpirationTime": nil,
                 "U2FKeys": [],
                 "RegisteredKeys": []
-            ],
+            ] as [String : Any],
             "TOTP": 0,
             "News": 174,
             "Locale": "en_US",
             "LogAuth": 1,
             "InvoiceText": "",
             "Density": 0,
-            "Theme": nil,
             "ThemeType": 1,
             "WeekStart": 0,
             "DateFormat": 0,
@@ -154,7 +144,7 @@ enum SettingTestData {
             "Referral": [
                 "Link": "https://pr.tn/ref/XXX",
                 "Eligible": false
-            ],
+            ] as [String : Any],
             "HideSidePanel": 0,
             "TwoFactor": 0,
             "Welcome": 0,
@@ -178,7 +168,6 @@ enum SettingTestData {
                 ]
             ],
             "EarlyAccess": 0,
-            "Checklists": []
-        ]
+        ] as [String : Any]
     ]
 }

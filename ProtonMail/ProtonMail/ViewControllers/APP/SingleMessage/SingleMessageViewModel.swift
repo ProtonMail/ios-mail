@@ -158,8 +158,7 @@ class SingleMessageViewModel {
         }
     }
 
-    func handleActionSheetAction(_ action: MessageViewActionSheetAction,
-                                 completion: @escaping () -> Void) {
+    func handleActionSheetAction(_ action: MessageViewActionSheetAction, completion: @escaping () -> Void) {
         switch action {
         case .markUnread:
             messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: true)
@@ -179,8 +178,7 @@ class SingleMessageViewModel {
                                 to: Message.Location.spam.labelID,
                                 queue: true)
         case .delete:
-            messageService.delete(messages: [message],
-                                  label: labelId)
+            messageService.delete(messages: [message], label: labelId)
         case .reportPhishing:
             reportPhishing(completion)
             return
@@ -303,7 +301,7 @@ class SingleMessageViewModel {
             return
         }
         DispatchQueue.main.async { [weak self] in
-            let userInfo = ["expectation": PagesSwipeAction.forward, "reload": true]
+            let userInfo: [String: Any] = ["expectation": PagesSwipeAction.forward, "reload": true]
             self?.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
         }
     }

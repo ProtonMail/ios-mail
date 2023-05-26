@@ -33,10 +33,10 @@ import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 final class PMLoginStubFactory {
-    var makeArgs: (name: String, accountType: AccountType, signupMode: SignupMode, passwordRestrictions: SignupPasswordRestrictions, isCloseButton: Bool)?
+    var makeArgs: (name: String, accountType: AccountType, passwordRestrictions: SignupPasswordRestrictions, isCloseButton: Bool)?
     var instance: LoginInterfaceMock?
-    lazy var make: (String, AccountType, SignupMode, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface = { [weak self] name, accountType, signupMode, passwordRestrictions, isCloseButton in
-        self?.makeArgs = (name, accountType, signupMode, passwordRestrictions, isCloseButton)
+    lazy var make: (String, AccountType, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface = { [weak self] name, accountType, passwordRestrictions, isCloseButton in
+        self?.makeArgs = (name, accountType, passwordRestrictions, isCloseButton)
         let login = LoginInterfaceMock()
         self?.instance = login
         return login
@@ -106,7 +106,7 @@ final class SignInCoordinatorTests: XCTestCase {
         let loginStubFactory = PMLoginStubFactory()
         let testUserInfo = UserInfo.dummy
         let testAuth = AuthCredential(sessionID: "test session id", accessToken: "test access token", refreshToken: "test refresh token",
-                                      expiration: .distantFuture, userName: "test user name", userID: "test user id", privateKey: "test private key", passwordKeySalt: "test password key salt")
+                                      userName: "test user name", userID: "test user id", privateKey: "test private key", passwordKeySalt: "test password key salt")
         var loginData: LoginData?
         let environment: SignInCoordinatorEnvironment = .test(login: loginStubFactory.make,
                                                               finalizeSignIn: { _, _, _, _ in

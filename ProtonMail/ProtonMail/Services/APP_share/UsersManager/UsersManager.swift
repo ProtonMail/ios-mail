@@ -142,7 +142,10 @@ class UsersManager: Service {
         self.cleanRandomKeyIfNeeded()
         let session = auth.sessionID
         let apiService = PMAPIService.createAPIService(
-            doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+            doh: doh,
+            sessionUID: session,
+            challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge()
+                                                       )
         )
         apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
         #if !APP_EXTENSION
@@ -692,7 +695,9 @@ extension UsersManager {
         if let oldAuth = oldAuthFetchLegacy(), let user = oldUserInfoLegacy() {
             let session = oldAuth.sessionID
             let apiService = PMAPIService.createAPIService(
-                doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+                doh: doh,
+                sessionUID: session,
+                challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
             )
             apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
             #if !APP_EXTENSION
