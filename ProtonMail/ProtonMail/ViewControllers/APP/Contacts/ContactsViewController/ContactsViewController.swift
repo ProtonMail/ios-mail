@@ -408,8 +408,6 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
     }
 }
 
-// detect view dismiss above iOS 13
-@available(iOS 13, *)
 extension ContactsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         self.isOnMainView = true

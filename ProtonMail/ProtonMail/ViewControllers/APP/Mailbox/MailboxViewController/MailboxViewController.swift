@@ -1564,7 +1564,7 @@ extension MailboxViewController {
     }
 }
 
-extension MailboxViewController: LabelAsActionSheetPresentProtocol {
+extension MailboxViewController {
     var labelAsActionHandler: LabelAsActionSheetProtocol {
         return viewModel
     }
@@ -1704,7 +1704,7 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
     }
 }
 
-extension MailboxViewController: MoveToActionSheetPresentProtocol {
+extension MailboxViewController {
     var moveToActionHandler: MoveToActionSheetProtocol {
         return viewModel
     }

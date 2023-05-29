@@ -392,7 +392,6 @@ extension MenuCoordinator {
                 queueManager: services.get(by: QueueManager.self),
                 apiService: user.apiService,
                 contextProvider: coreDataService,
-                messageDataAction: user.messageService,
                 cacheService: user.cacheService
             )
         )
@@ -441,10 +440,6 @@ extension MenuCoordinator {
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)
-            ),
-            senderImageService: .init(
-                dependencies: .init(apiService: userManager.apiService,
-                                    internetStatusProvider: InternetConnectionStatusProvider())
             ),
             totalUserCountClosure: { [weak self] in
                 return self?.usersManager.count ?? 0

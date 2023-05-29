@@ -95,7 +95,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
 
     let toolbarActionProvider: ToolbarActionProvider
     let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
-    private let senderImageService: SenderImageService
 
     init(labelID: LabelID,
          label: LabelInfo?,
@@ -114,7 +113,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
          welcomeCarrouselCache: WelcomeCarrouselCacheProtocol = userCachedStatus,
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
-         senderImageService: SenderImageService,
          totalUserCountClosure: @escaping () -> Int
     ) {
         self.labelID = labelID
@@ -136,7 +134,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         self.welcomeCarrouselCache = welcomeCarrouselCache
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
-        self.senderImageService = senderImageService
         super.init()
         self.conversationStateProvider.add(delegate: self)
         self.dependencies.updateMailbox.setup(source: self)
@@ -377,8 +374,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         return MessageEntity(msg)
     }
 
-    func itemOfConversation(index: IndexPath, collectBreadcrumbs: Bool = false) -> ConversationEntity? {
-        guard let conversation = itemOfRawConversation(indexPath: index, collectBreadcrumbs: collectBreadcrumbs) else {
+    func itemOfConversation(index: IndexPath) -> ConversationEntity? {
+        guard let conversation = itemOfRawConversation(indexPath: index) else {
             return nil
         }
         return ConversationEntity(conversation)
@@ -394,7 +391,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         }
     }
 
-    private func itemOfRawConversation(indexPath: IndexPath, collectBreadcrumbs: Bool) -> Conversation? {
+    private func itemOfRawConversation(indexPath: IndexPath) -> Conversation? {
         guard !indexPath.isEmpty else { return nil }
 
         guard let frc = fetchedResultsController else { return nil }
@@ -554,14 +551,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     /// - Returns: bool
     func reloadTable() -> Bool {
         return labelID.rawValue == Message.Location.draft.rawValue
-    }
-
-    func mark(messages: [MessageEntity], unread: Bool = true) {
-        messageService.mark(messageObjectIDs: messages.map(\.objectID.rawValue), labelID: self.labelID, unRead: unread)
-    }
-
-    func label(msg message: MessageEntity, with labelID: LabelID, apply: Bool = true) {
-        messageService.label(messages: [message], label: labelID, apply: apply, shouldFetchEvent: false)
     }
 
     func deleteSelectedIDs() {

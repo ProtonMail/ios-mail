@@ -20,7 +20,6 @@ import Foundation
 enum CanonicalizeScheme {
     case proton
     case gmail
-    case plus
     case `default`
 
     var regex: String? {

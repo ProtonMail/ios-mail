@@ -33,9 +33,6 @@ class ExpandedHeaderViewController: UIViewController {
 
     var contactTapped: ((MessageHeaderContactContext) -> Void)?
 
-    // storing this for spotlight purposes
-    private weak var trackerProtectionRow: ExpandedHeaderRowView?
-
     init(viewModel: ExpandedHeaderViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -306,7 +303,6 @@ class ExpandedHeaderViewController: UIViewController {
         button.fillSuperview()
 
         customView.contentStackView.addArrangedSubview(row)
-        trackerProtectionRow = row
     }
 
     private func presentLockIconRow(icon: UIImage, iconColor: UIColor, reason: String) {

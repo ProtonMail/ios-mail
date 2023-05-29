@@ -145,9 +145,3 @@ class MockMessageDataService: MessageDataServiceProtocol {
         callUpload(att)
     }
 }
-
-final class MockMessageDataAction: MessageDataActionProtocol {
-    func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool {
-        return true
-    }
-}

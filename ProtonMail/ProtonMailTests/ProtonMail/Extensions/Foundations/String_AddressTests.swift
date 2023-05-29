@@ -165,26 +165,4 @@ final class String_AddressTests: XCTestCase {
         result = address.canonicalizeEmail(scheme: .gmail)
         XCTAssertEqual(result, "jovan@a")
     }
-
-    func testCanonicalizeEmailWhenSchemeIsPlus() {
-        var address = "tester+unit@pm.me"
-        var result = address.canonicalizeEmail(scheme: .plus)
-        XCTAssertEqual(result, "tester@pm.me")
-
-        address = "TESTER+UNIT+TEST@PM.ME"
-        result = address.canonicalizeEmail(scheme: .plus)
-        XCTAssertEqual(result, "tester@pm.me")
-
-        address = "test.er_unit-test@pm.me"
-        result = address.canonicalizeEmail(scheme: .plus)
-        XCTAssertEqual(result, "test.er_unit-test@pm.me")
-
-        address = "IAmNotAddress"
-        result = address.canonicalizeEmail(scheme: .plus)
-        XCTAssertEqual(result, "iamnotaddress")
-
-        address = "jovan@a"
-        result = address.canonicalizeEmail(scheme: .plus)
-        XCTAssertEqual(result, "jovan@a")
-    }
 }

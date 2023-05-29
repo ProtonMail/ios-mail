@@ -185,13 +185,11 @@ extension FetchMessageDetail {
         let queueManager: QueueManagerProtocol?
         let apiService: APIService
         let contextProvider: CoreDataContextProviderProtocol
-        let messageDataAction: MessageDataActionProtocol
         let cacheService: CacheServiceProtocol
     }
 
     enum Errors: Error {
         case selfIsReleased
-        case emptyResponse
         case coreDataObjectNotExist
     }
 }

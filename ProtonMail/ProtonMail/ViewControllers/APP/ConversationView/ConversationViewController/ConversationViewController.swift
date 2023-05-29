@@ -1140,7 +1140,7 @@ enum ActionSheetDataSource {
 
 extension ConversationViewController: ContentPrintable {}
 
-extension ConversationViewController: LabelAsActionSheetPresentProtocol {
+extension ConversationViewController {
     var labelAsActionHandler: LabelAsActionSheetProtocol {
         return viewModel
     }

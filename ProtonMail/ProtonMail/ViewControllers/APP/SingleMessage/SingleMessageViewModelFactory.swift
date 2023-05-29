@@ -130,7 +130,6 @@ class SingleMessageComponentsFactory {
                 queueManager: queueManager,
                 apiService: user.apiService,
                 contextProvider: contextProvider,
-                messageDataAction: user.messageService,
                 cacheService: user.cacheService
             )
         )

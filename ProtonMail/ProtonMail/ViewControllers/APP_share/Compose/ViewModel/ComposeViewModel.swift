@@ -73,10 +73,6 @@ class ComposeViewModel: NSObject {
         return composerMessageHelper.attachmentSize
     }
 
-    var imageProxyEnabled: Bool {
-        return UserInfo.isImageProxyAvailable && user.userInfo.imageProxy.contains(.imageProxy)
-    }
-
     init(
         subject: String,
         body: String,
@@ -1129,30 +1125,6 @@ extension ComposeViewModel {
         let address: String
         let group: String?
         let name: String?
-    }
-}
-
-extension ComposeViewModel.Dependencies {
-    init(
-        helperDependencies: ComposerMessageHelper.Dependencies,
-        internetStatusProvider: InternetConnectionStatusProvider,
-        user: UserManager,
-        coreKeyMaker: KeyMakerProtocol,
-        coreDataContextProvider: CoreDataContextProviderProtocol
-    ) {
-        self.init(
-            coreDataContextProvider: coreDataContextProvider,
-            coreKeyMaker: coreKeyMaker,
-            fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
-            internetStatusProvider: internetStatusProvider,
-            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
-            contactProvider: user.contactService,
-            helperDependencies: helperDependencies,
-            fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(
-                coreKeyMaker: coreKeyMaker,
-                cache: userCachedStatus)
-            )
-        )
     }
 }
 

@@ -42,7 +42,6 @@ final class MainQueueHandler: QueueHandler {
     private let contactGroupService: ContactGroupsDataService
     private let undoActionManager: UndoActionManagerProtocol
     private weak var user: UserManager?
-    private let sendMessageResultHandler = SendMessageResultNotificationHandler()
     private let sendMessageTask: SendMessageTask
     private let dependencies: Dependencies
 
@@ -72,7 +71,6 @@ final class MainQueueHandler: QueueHandler {
                 queueManager: ServiceFactory.default.get(by: QueueManager.self),
                 apiService: apiService,
                 contextProvider: coreDataService,
-                messageDataAction: messageDataService,
                 cacheService: user.cacheService
             )
         )

@@ -179,7 +179,7 @@ final class Date_ExtensionTests: XCTestCase {
         let processInfo = SystemUpTimeMock(localServerTime: serverTime, localSystemUpTime: localSystemUpTime, systemUpTime: systemUpTime)
 
         let time = Date(timeIntervalSince1970: Double(interval) + 120.0)
-        let result = time.countExpirationTime(processInfo: processInfo, reachability: self.reachabilityStub)
+        let result = time.countExpirationTime(processInfo: processInfo)
         XCTAssertEqual(result, "3 mins")
     }
 
@@ -193,7 +193,7 @@ final class Date_ExtensionTests: XCTestCase {
         let processInfo = SystemUpTimeMock(localServerTime: serverTime, localSystemUpTime: localSystemUpTime, systemUpTime: systemUpTime)
 
         let time = Date(timeIntervalSince1970: Double(interval) + 7200.0)
-        let result = time.countExpirationTime(processInfo: processInfo, reachability: self.reachabilityStub)
+        let result = time.countExpirationTime(processInfo: processInfo)
         XCTAssertEqual(result, "2 hours")
     }
 
@@ -207,7 +207,7 @@ final class Date_ExtensionTests: XCTestCase {
         let processInfo = SystemUpTimeMock(localServerTime: serverTime, localSystemUpTime: localSystemUpTime, systemUpTime: systemUpTime)
 
         let time = Date(timeIntervalSince1970: Double(interval) + 86500.0)
-        let result = time.countExpirationTime(processInfo: processInfo, reachability: self.reachabilityStub)
+        let result = time.countExpirationTime(processInfo: processInfo)
         XCTAssertEqual(result, "1 day")
     }
 
@@ -223,16 +223,7 @@ final class Date_ExtensionTests: XCTestCase {
         XCTAssertEqual(dateInterval - timeInterval, 60 * 60)
     }
 
-    func testIs12H() {
-        // Seems like there is no way to set up 12H or 24H for simulator
-        // The only way is Locale
-        // France is 24-hour time as a standard
-        XCTAssertTrue(Date.is12H(locale: Locale(identifier: "en_US")))
-        XCTAssertFalse(Date.is12H(locale: Locale(identifier: "fr_GP")))
-    }
-
     func testFormat_12H() {
-        XCTAssertTrue(Date.is12H())
         let date = Date(timeIntervalSince1970: 1671187872)
         XCTAssertEqual(date.localizedString(withTemplate: nil), "Dec 16 at 10:51 AM")
         XCTAssertEqual(date.localizedString(withTemplate: "yy.MM.dd jj mm"), "12/16/22, 10:51 AM")
@@ -242,7 +233,6 @@ final class Date_ExtensionTests: XCTestCase {
 
     func testFormat_24H_with_template() {
         LocaleEnvironment.locale = { .frGP }
-        XCTAssertFalse(Date.is12H())
         let date = Date(timeIntervalSince1970: 1671187872)
         XCTAssertEqual(date.localizedString(withTemplate: nil), "16 déc. à 10:51")
         XCTAssertEqual(date.localizedString(withTemplate: "yyyy MM dd jj: mm"), "16/12/2022 10:51")

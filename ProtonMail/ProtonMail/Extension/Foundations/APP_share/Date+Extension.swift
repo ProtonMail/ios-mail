@@ -28,13 +28,6 @@ extension Date {
         case monday, tuesday, wednesday, thursday, friday, saturday
       }
 
-    static func is12H(locale: Locale = LocaleEnvironment.locale()) -> Bool {
-        let format = DateFormatter.dateFormat(fromTemplate: "j", options: 0, locale: locale)
-        // 12H: format = "h a"
-        // 24H: format = "HH \'h\'"
-        return format?.contains(check: "a") ?? false
-    }
-
     // or an extension function to format your date
     func formattedWith(_ format: String, timeZone: TimeZone = .autoupdatingCurrent) -> String {
         let formatter = DateFormatter()
@@ -108,8 +101,7 @@ extension Date {
 // MARK: Count expiration time
 extension Date {
 
-    static func getReferenceDate(processInfo: SystemUpTimeProtocol?,
-                                 reachability: Reachability? = sharedInternetReachability) -> Date {
+    static func getReferenceDate(processInfo: SystemUpTimeProtocol?) -> Date {
         #if APP_EXTENSION
             return Date.getReferenceDate(reachability: nil,
                                          processInfo: processInfo)
@@ -153,10 +145,9 @@ extension Date {
         return serverDate >= deviceDate ? serverDate : deviceDate
     }
 
-    func countExpirationTime(processInfo: SystemUpTimeProtocol?,
-                             reachability: Reachability? = sharedInternetReachability) -> String {
+    func countExpirationTime(processInfo: SystemUpTimeProtocol?) -> String {
         let distance: TimeInterval
-        let unixTime = Date.getReferenceDate(processInfo: processInfo, reachability: reachability)
+        let unixTime = Date.getReferenceDate(processInfo: processInfo)
         if #available(iOS 13.0, *) {
             distance = unixTime.distance(to: self) + 60
         } else {

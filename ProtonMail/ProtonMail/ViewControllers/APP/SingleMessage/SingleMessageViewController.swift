@@ -475,7 +475,7 @@ private extension SingleMessageViewController {
     }
 }
 
-extension SingleMessageViewController: LabelAsActionSheetPresentProtocol {
+extension SingleMessageViewController {
     var labelAsActionHandler: LabelAsActionSheetProtocol {
         return viewModel
     }

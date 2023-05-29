@@ -23,12 +23,7 @@
 import Foundation
 import CoreData
 
-// sourcery: mock
-protocol MessageDataActionProtocol {
-    func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool
-}
-
-extension MessageDataService: MessageDataActionProtocol {
+extension MessageDataService {
 
     static func findMessagesWithSourceIds(messages: [MessageEntity], customFolderIds: [LabelID], to tLabel: LabelID) -> [(MessageEntity, LabelID)] {
         let defaultFoldersLocations: [Message.Location] = [.inbox, .archive, .spam, .trash, .sent, .draft, .scheduled]

@@ -80,7 +80,7 @@ class MailboxCoordinatorTests: XCTestCase {
                                              dependencies: dependencies,
                                              toolbarActionProvider: toolbarActionProviderMock,
                                              saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                                             senderImageService: .init(dependencies: .init(apiService: dummyUser.apiService, internetStatusProvider: MockInternetConnectionStatusProviderProtocol())), totalUserCountClosure: {
+                                             totalUserCountClosure: {
                                                  0
                                              })
 
