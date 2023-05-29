@@ -57,13 +57,13 @@ final class DownloadedMessagesViewModelTests: XCTestCase {
     }
 
     func testInput_didChangeStorageLimitValue_whenValueIsPositive_itStoresTheValue() {
-        let newValue = Int.random(in: 0...Int.max)
+        let newValue = Measurement<UnitInformationStorage>.randomBytesPositiveValue
         sut.input.didChangeStorageLimitValue(newValue: newValue)
         XCTAssertEqual(mockSearchDeviceCache.storageLimitStub.setLastArguments?.value, newValue)
     }
 
     func testInput_didChangeStorageLimitValue_whenValueIsNegative_itDoesNotStoreTheNewValue() {
-        let newValue = Int.random(in: Int.min..<0)
+        let newValue = Measurement<UnitInformationStorage>.randomBytesNegativeValue
         sut.input.didChangeStorageLimitValue(newValue: newValue)
         XCTAssertEqual(mockSearchDeviceCache.storageLimitStub.setCallCounter, 0)
     }
@@ -78,13 +78,13 @@ final class DownloadedMessagesViewModelTests: XCTestCase {
     }
 
     func testOutput_storageLimitSelected() {
-        let value = Int.random(in: 0...Int.max)
+        let value = Measurement<UnitInformationStorage>.randomBytesPositiveValue
         mockSearchDeviceCache.storageLimitStub.fixture = value
         XCTAssertEqual(sut.output.storageLimitSelected, value)
     }
 
     func testOutput_localStorageUsed() {
-        let value = Int.random(in: 0...Int.max)
+        let value = Measurement<UnitInformationStorage>.randomBytesPositiveValue
         mockEncryptedSearchService.indexSizeStub.bodyIs { _, _ in
             value
         }

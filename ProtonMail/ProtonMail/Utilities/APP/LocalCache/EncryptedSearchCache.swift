@@ -70,7 +70,7 @@ protocol EncryptedSearchUserCache {
 
 // sourcery: mock
 protocol EncryptedSearchDeviceCache {
-    var storageLimit: Int { get set }
+    var storageLimit: Measurement<UnitInformationStorage> { get set }
     var pauseIndexingDueToNetworkIssues: Bool { get set }
     var pauseIndexingDueToWifiNotDetected: Bool { get set }
     var pauseIndexingDueToOverHeating: Bool { get set }
@@ -280,16 +280,16 @@ final class EncryptedSearchUserDefaultCache: SharedCacheBase, EncryptedSearchUse
 
 // MARK: - EncryptedSearchDeviceCache
 extension EncryptedSearchUserDefaultCache: EncryptedSearchDeviceCache {
-    var storageLimit: Int {
+    var storageLimit: Measurement<UnitInformationStorage> {
         get {
             if let value = getShared().int(forKey: Key.encryptedSearchStorageLimit) {
-                return value
+                return Measurement(value: Double(value), unit: .bytes)
             } else {
                 return Constants.EncryptedSearch.defaultStorageLimit
             }
         }
         set {
-            setValue(newValue, forKey: Key.encryptedSearchStorageLimit)
+            setValue(Int(newValue.converted(to: .bytes).value), forKey: Key.encryptedSearchStorageLimit)
         }
     }
 

@@ -84,10 +84,10 @@ final class SearchIndexDB {
         }
     }
 
-    var size: ByteCount? {
+    var size: Measurement<UnitInformationStorage>? {
         guard let path = dbPath,
               fileManager.fileExists(atPath: path.relativePath) else { return nil }
-        return path.fileSize as ByteCount
+        return path.fileSize
     }
 
     var dbExists: Bool {
@@ -106,13 +106,14 @@ final class SearchIndexDB {
         }
     }
 
-    func shrinkSearchIndex(expectedSize: ByteCount) throws {
-        guard expectedSize > 0, let size = size, size > expectedSize else { return }
-        var sizeOfDeletedMessages: ByteCount = 0
+    func shrinkSearchIndex(expectedSize: Measurement<UnitInformationStorage>) throws {
+        guard expectedSize > .zero, let size = size, size > expectedSize else { return }
+        var sizeOfDeletedMessages: Measurement<UnitInformationStorage> = .zero
         var continueShrinking = true
         while continueShrinking {
             let messageSize = try estimateSizeOfOldestRowInSearchIndex()
-            sizeOfDeletedMessages += messageSize
+            // swiftlint:disable:next shorthand_operator
+            sizeOfDeletedMessages = sizeOfDeletedMessages + messageSize
             let deletedRowID = try removeOldestRowInSearchIndex()
             let isDatabaseStillTooBig = size - sizeOfDeletedMessages > expectedSize
             continueShrinking = deletedRowID > 0 && isDatabaseStillTooBig
@@ -340,7 +341,7 @@ extension SearchIndexDB {
 // MARK: - Shrink the size of the local db
 extension SearchIndexDB {
     /// - Returns: row size
-    private func estimateSizeOfOldestRowInSearchIndex() throws -> Int {
+    private func estimateSizeOfOldestRowInSearchIndex() throws -> Measurement<UnitInformationStorage> {
         var sizeOfRow: Int = 0
         let time: Expression<CLong> = databaseSchema.time
         let size: Expression<Int> = databaseSchema.encryptedContentSize
@@ -350,7 +351,7 @@ extension SearchIndexDB {
         for result in try connection.prepare(query) {
             sizeOfRow = result[size]
         }
-        return sizeOfRow
+        return Measurement<UnitInformationStorage>(value: Double(sizeOfRow), unit: .bytes)
     }
 
     /// - Returns: number of delete rows

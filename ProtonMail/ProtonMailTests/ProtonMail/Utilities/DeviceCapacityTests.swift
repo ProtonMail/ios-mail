@@ -53,9 +53,10 @@ class DeviceCapacityTests: XCTestCase {
         let freeSpaceAfterWrite = SUT.Disk().availableCapacity
 
         let reductionInFreeSpace = freeSpaceBeforeWrite - freeSpaceAfterWrite
+        let bytes = Int(reductionInFreeSpace.value)
         // Some systems sometimes report different values
-        guard [testData.count, 4096, 8192, 12288].contains(reductionInFreeSpace) else {
-            XCTFail("Unexpected value: \(reductionInFreeSpace)")
+        guard [testData.count, 4096, 8192, 12288].contains(bytes) else {
+            XCTFail("Unexpected value: \(bytes)")
             return
         }
     }

@@ -18,7 +18,7 @@
 import Foundation
 
 protocol DiskUsageProtocol {
-    var availableCapacity: ByteCount { get }
+    var availableCapacity: Measurement<UnitInformationStorage> { get }
     var isLowOnFreeSpace: Bool { get }
 }
 
@@ -30,13 +30,17 @@ protocol MemoryUsageProtocol {
 
 enum DeviceCapacity {
     struct Disk: DiskUsageProtocol {
-        var availableCapacity: ByteCount {
+        var availableCapacity: Measurement<UnitInformationStorage> {
             let homeDirectoryURL = URL(fileURLWithPath: NSHomeDirectory())
-            return homeDirectoryURL.value(forKey: .volumeAvailableCapacityKey, keyPath: \.volumeAvailableCapacity) ?? 0
+            let bytes = homeDirectoryURL.value(
+                forKey: .volumeAvailableCapacityKey,
+                keyPath: \.volumeAvailableCapacity
+            ) ?? 0
+            return .init(value: Double(bytes), unit: .bytes)
         }
 
         var isLowOnFreeSpace: Bool {
-            let lowStorageLimit = 100_000_000
+            let lowStorageLimit = Measurement<UnitInformationStorage>(value: 100, unit: .megabytes)
             return availableCapacity < lowStorageLimit
         }
     }

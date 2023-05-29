@@ -62,8 +62,8 @@ final class DownloadedMessagesInfoCell: UITableViewCell {
     func configure(info: Info) {
         [storageLabel, disabledLabel].forEach { $0.isHidden = true }
         switch info {
-        case .storage(let value):
-            storageLabel.text = value.toByteCount
+        case .storage(let storageValue):
+            storageLabel.text = storageValue.stringFormatted
             storageLabel.isHidden = false
         case .disabled:
             disabledLabel.isHidden = false
@@ -74,7 +74,7 @@ final class DownloadedMessagesInfoCell: UITableViewCell {
 extension DownloadedMessagesInfoCell {
 
     enum Info {
-        case storage(ByteCount)
+        case storage(Measurement<UnitInformationStorage>)
         case disabled
     }
 }

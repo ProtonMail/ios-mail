@@ -32,9 +32,9 @@ protocol SettingsLocalStorageViewModelInput {
 protocol SettingsLocalStorageViewModelOutput {
     var sections: [SettingsLocalStorageSection] { get }
     var searchIndexState: EncryptedSearchIndexState { get }
-    var cachedDataStorage: ByteCount { get }
-    var attachmentsStorage: ByteCount { get }
-    var downloadedMessagesStorage: ByteCount { get }
+    var cachedDataStorage: Measurement<UnitInformationStorage> { get }
+    var attachmentsStorage: Measurement<UnitInformationStorage> { get }
+    var downloadedMessagesStorage: Measurement<UnitInformationStorage> { get }
 
     func setUIDelegate(_ delegate: SettingsLocalStorageUIProtocol)
 }

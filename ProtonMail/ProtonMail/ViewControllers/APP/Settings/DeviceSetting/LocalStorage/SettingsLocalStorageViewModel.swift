@@ -83,7 +83,7 @@ extension SettingsLocalStorageViewModel: SettingsLocalStorageViewModelOutput {
         dependencies.esService.indexBuildingState(for: userID)
     }
 
-    var cachedDataStorage: ByteCount {
+    var cachedDataStorage: Measurement<UnitInformationStorage> {
         /*
          We only read the sqlite file size (and not the WAL or SMH files) because
          sequential clear actions could return bigger sizes. This is because
@@ -92,15 +92,15 @@ extension SettingsLocalStorageViewModel: SettingsLocalStorageViewModelOutput {
 
          More info: https://www.sqlite.org/wal.html
          **/
-        return ByteCount(dependencies.coreDataMetadata.sqliteFileSize ?? 0)
+        return dependencies.coreDataMetadata.sqliteFileSize ?? .zero
     }
 
-    var attachmentsStorage: ByteCount {
+    var attachmentsStorage: Measurement<UnitInformationStorage> {
         dependencies.fileManager.sizeOfDirectory(url: dependencies.fileManager.attachmentDirectory)
     }
 
-    var downloadedMessagesStorage: ByteCount {
-        dependencies.esService.indexSize(for: userID) ?? 0
+    var downloadedMessagesStorage: Measurement<UnitInformationStorage> {
+        dependencies.esService.indexSize(for: userID) ?? .zero
     }
 
     func setUIDelegate(_ delegate: SettingsLocalStorageUIProtocol) {

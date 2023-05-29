@@ -107,10 +107,10 @@ final class CoreDataStore {
 }
 
 extension CoreDataStore: CoreDataMetadata {
-    var sqliteFileSize: UInt? {
+    var sqliteFileSize: Measurement<UnitInformationStorage>? {
         do {
             let dbValues = try CoreDataStore.databaseUrl.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
-            return dbValues.totalFileAllocatedSize!.magnitude
+            return Measurement(value: Double(dbValues.totalFileAllocatedSize!), unit: .bytes)
         } catch let error {
             PMAssertionFailure("CoreDataStore databaseSize error: \(error)")
             return nil

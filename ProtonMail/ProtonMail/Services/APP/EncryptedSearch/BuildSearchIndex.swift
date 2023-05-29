@@ -96,7 +96,7 @@ final class BuildSearchIndex {
         dependencies.searchIndexDB.oldestMessageTime()
     }
 
-    var indexSize: ByteCount? {
+    var indexSize: Measurement<UnitInformationStorage>? {
         dependencies.searchIndexDB.size
     }
 
@@ -335,11 +335,12 @@ extension BuildSearchIndex {
 extension BuildSearchIndex {
     private func isUserAllowedStorageExceeded() -> Bool {
         let storageLimit = dependencies.esDeviceCache.storageLimit
-        // Int.max means user didn't set limitation
-        if storageLimit == Int.max { return false }
+        // Measurement<UnitInformationStorage>.max means user didn't set limitation
+        if storageLimit == Measurement<UnitInformationStorage>.max { return false }
 
-        let sizeOfDB = dependencies.searchIndexDB.size ?? 0
-        return sizeOfDB > (storageLimit - 2_000)
+        let sizeOfDB = dependencies.searchIndexDB.size ?? .zero
+        let safetyBuffer = Measurement<UnitInformationStorage>(value: 2.0, unit: .kilobytes)
+        return sizeOfDB > (storageLimit - safetyBuffer)
     }
 
     private func adaptIndexingSpeedByMemoryUsage() {
@@ -641,7 +642,8 @@ extension BuildSearchIndex {
     ) -> Bool {
         guard isBuildingIndexInProgress else { return false }
         let cipherText = encryptedContent?.ciphertext
-        let encryptedContentSize: Int = Data(base64Encoded: cipherText ?? "")?.count ?? 0
+        let encryptedContentSizeInBytes: Double = Double(Data(base64Encoded: cipherText ?? "")?.count ?? 0)
+        let encryptedContentSize = Measurement<UnitInformationStorage>(value: encryptedContentSizeInBytes, unit: .bytes)
 
         do {
 
@@ -652,7 +654,7 @@ extension BuildSearchIndex {
                 switch state {
                 case .downloadingNewMessage:
                     log(message: "Shrink search index to save new coming message")
-                    let size = dependencies.searchIndexDB.size ?? 0
+                    let size = dependencies.searchIndexDB.size ?? .zero
                     let expectedSize = size - encryptedContentSize
                     try dependencies.searchIndexDB.shrinkSearchIndex(expectedSize: expectedSize)
                 default:
@@ -673,7 +675,7 @@ extension BuildSearchIndex {
                 encryptionIV: encryptedContent?.iv,
                 encryptedContent: cipherText,
                 encryptedContentFile: "",
-                encryptedContentSize: encryptedContentSize
+                encryptedContentSize: Int(encryptedContentSize.converted(to: .bytes).value)
             )
             if rowID == nil {
                 log(

@@ -96,7 +96,7 @@ final class StorageLimitCell: UITableViewCell {
         ].activate()
     }
 
-    func configure(storageLimit: ByteCount) {
+    func configure(storageLimit: Int) {
         setSliderValue(Float(storageLimit))
     }
 }
@@ -155,5 +155,5 @@ extension StorageLimitCell {
 }
 
 protocol StorageLimitCellDelegate: AnyObject {
-    func didChangeStorageLimit(newLimit: ByteCount)
+    func didChangeStorageLimit(newLimit: Int)
 }

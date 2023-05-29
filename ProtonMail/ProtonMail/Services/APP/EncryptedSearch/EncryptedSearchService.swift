@@ -28,7 +28,7 @@ protocol EncryptedSearchServiceProtocol {
     func resumeBuildingIndex(for userID: UserID)
     func stopBuildingIndex(for userID: UserID)
     func didChangeDownloadViaMobileData(for userID: UserID)
-    func indexSize(for userID: UserID) -> ByteCount?
+    func indexSize(for userID: UserID) -> Measurement<UnitInformationStorage>?
     func oldesMessageTime(for userID: UserID) -> Int?
     func search(
         userID: UserID,
@@ -88,7 +88,7 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol {
         buildSearchIndex(for: userID)?.didChangeDownloadViaMobileDataConfiguration()
     }
 
-    func indexSize(for userID: UserID) -> ByteCount? {
+    func indexSize(for userID: UserID) -> Measurement<UnitInformationStorage>? {
         buildSearchIndex(for: userID)?.indexSize
     }
 
