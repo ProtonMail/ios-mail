@@ -453,7 +453,15 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     ///
     /// - Returns: location cache info
     func lastUpdateTime() -> LabelCountEntity? {
-        lastUpdatedStore.lastUpdate(by: labelID, userID: user.userID, type: locationViewMode)
+        // handle the message update in the draft location since the `FetchMessage` UseCase uses the following labelID to update the time info
+        var id = labelID
+        if id == LabelLocation.draft.labelID {
+            id = LabelLocation.hiddenDraft.labelID
+        } else if id == LabelLocation.sent.labelID {
+            id = LabelLocation.hiddenSent.labelID
+        }
+
+        return lastUpdatedStore.lastUpdate(by: id, userID: user.userID, type: locationViewMode)
     }
 
     func getLastUpdateTimeText() -> String {
