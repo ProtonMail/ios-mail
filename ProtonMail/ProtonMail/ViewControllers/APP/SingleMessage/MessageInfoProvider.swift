@@ -77,8 +77,7 @@ final class MessageInfoProvider {
 
     private let contactService: ContactDataService
     private let contactGroupService: ContactGroupsDataService
-    private let messageDecrypter: MessageDecrypterProtocol
-    private let messageService: MessageDataService
+    private let messageDecrypter: MessageDecrypter
     private let userAddressUpdater: UserAddressUpdaterProtocol
     private let systemUpTime: SystemUpTimeProtocol
     private let user: UserManager
@@ -95,7 +94,7 @@ final class MessageInfoProvider {
 
     init(
         message: MessageEntity,
-        messageDecrypter: MessageDecrypterProtocol? = nil,
+        messageDecrypter: MessageDecrypter? = nil,
         user: UserManager,
         systemUpTime: SystemUpTimeProtocol,
         labelID: LabelID,
@@ -110,8 +109,7 @@ final class MessageInfoProvider {
         self.user = user
         self.contactService = user.contactService
         self.contactGroupService = user.contactGroupService
-        self.messageService = user.messageService
-        self.messageDecrypter = messageDecrypter ?? messageService.messageDecrypter
+        self.messageDecrypter = messageDecrypter ?? user.messageService.messageDecrypter
 
         // If the message is sent by us, we do not use the image proxy to load the content.
         let imageProxyEnabled = UserInfo.isImageProxyAvailable &&

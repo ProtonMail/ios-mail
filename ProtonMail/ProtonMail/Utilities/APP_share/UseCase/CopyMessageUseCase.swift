@@ -98,8 +98,8 @@ class CopyMessage: CopyMessageUseCase {
 
         do {
             let symmetricKey = try attachment.getSession(
-                userKeys: userData.userPrivateKeys,
-                keys: userData.addressKeys,
+                userKeys: userData.userInfo.userPrivateKeys,
+                keys: userData.userInfo.addressKeys,
                 mailboxPassword: userData.mailboxPassword
             )
 
@@ -211,7 +211,7 @@ class CopyMessage: CopyMessageUseCase {
 extension CopyMessage {
     struct Dependencies {
         let contextProvider: CoreDataContextProviderProtocol
-        let messageDecrypter: MessageDecrypterProtocol
+        let messageDecrypter: MessageDecrypter
     }
 
     struct Parameters {

@@ -64,7 +64,7 @@ final class MessageDecrypterTests: XCTestCase {
         let address = Address(addressID: "aaa", domainID: nil, email: "test@abc.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 2, keys: [key1, key2])
 
         self.mockUserData.userInfo.userAddresses = [address]
-        let keys = self.decrypter.getAddressKeys(for: nil)
+        let keys = self.decrypter.getAddressKeys(for: "")
         XCTAssertEqual(keys.count, 2)
         XCTAssertEqual(keys[0].keyID, "key1")
         XCTAssertEqual(keys[1].keyID, "key2")
@@ -148,7 +148,7 @@ final class MessageDecrypterTests: XCTestCase {
 
     private func prepareEncryptedMessage(body: String, mimeType: Message.MimeType) throws -> MessageEntity {
         let encryptedBody = try Encryptor.encrypt(
-            publicKey: mockUserData.addressKeys.toArmoredPrivateKeys[0],
+            publicKey: mockUserData.userInfo.addressKeys.toArmoredPrivateKeys[0],
             cleartext: body
         ).value
 

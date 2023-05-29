@@ -137,7 +137,7 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
 
     private func prepareEncryptedMessage(body: String, mimeType: Message.MimeType) throws -> Message {
         let encryptedBody = try Encryptor.encrypt(
-            publicKey: user.addressKeys.toArmoredPrivateKeys[0],
+            publicKey: user.userInfo.addressKeys.toArmoredPrivateKeys[0],
             cleartext: body
         ).value
 

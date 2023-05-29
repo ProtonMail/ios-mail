@@ -103,7 +103,7 @@ final class EncryptedSearchCacheServiceTests: XCTestCase {
         user: UserManager
     ) throws -> MessageEntity {
         let encryptedBody = try Encryptor.encrypt(
-            publicKey: user.addressKeys.toArmoredPrivateKeys[0],
+            publicKey: user.userInfo.addressKeys.toArmoredPrivateKeys[0],
             cleartext: plaintextBody
         ).value
 

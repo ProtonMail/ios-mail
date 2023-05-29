@@ -554,7 +554,7 @@ extension MainQueueHandler {
 
             let addressID = attachment.message.cachedAddress?.addressID ?? self.messageDataService.getUserAddressID(for: attachment.message)
             guard
-                let key = attachment.message.cachedAddress?.keys.first ?? self.user?.getAddressKey(address_id: addressID),
+                let key = attachment.message.cachedAddress?.keys.first ?? self.user?.userInfo.getAddressKey(address_id: addressID),
                 let passphrase = attachment.message.cachedPassphrase ?? self.user?.mailboxPassword,
                 let userKeys = (attachment.message.cachedUser ?? self.user?.userInfo)?.userPrivateKeys else {
                 completion(NSError.encryptionError())
@@ -678,8 +678,8 @@ extension MainQueueHandler {
 
                 for attachment in attachments where !attachment.isSoftDeleted && attachment.attachmentID != "0" {
                     guard let sessionPack = try attachment.getSession(
-                        userKeys: user.userPrivateKeys,
-                        keys: user.addressKeys,
+                        userKeys: user.userInfo.userPrivateKeys,
+                        keys: user.userInfo.addressKeys,
                         mailboxPassword: user.mailboxPassword
                     ) else {
                         continue
