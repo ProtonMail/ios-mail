@@ -112,8 +112,8 @@ extension SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelOutp
 
     var downloadedMessagesInfo: EncryptedSearchDownloadedMessagesInfo {
         var indexSize: String = "-"
-        if let bytes = dependencies.esService.indexSize(for: userID) {
-            indexSize = bytes.toByteCount
+        if let storage = dependencies.esService.indexSize(for: userID) {
+            indexSize = storage.stringFormatted
         }
         var oldestTime: String = "-"
         if let time = dependencies.esService.oldesMessageTime(for: userID) {

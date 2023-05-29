@@ -125,7 +125,7 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
 
     func testInput_didTapDownloadedMessages() {
         mockEncryptedSearchService.indexBuildingStateStub.bodyIs { _, _ in
-            [EncryptedSearchIndexState.complete, .downloadingNewMessage, .creatingIndex].randomElement()!
+            [EncryptedSearchIndexState.complete, .creatingIndex, .downloadingNewMessage].randomElement()!
         }
         sut.input.didTapDownloadedMessages()
         XCTAssertEqual(mockRouter.navigateToDownloadedMessagesStub.callCounter, 1)
@@ -170,7 +170,7 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
             1644858210
         }
         mockEncryptedSearchService.indexSizeStub.bodyIs { _, _ in
-            3080192 
+            Measurement<UnitInformationStorage>(value: 3080192.0, unit: .bytes) 
         }
         let result = sut.downloadedMessagesInfo
         let expectedSizeResult = String(format: "3%@1 MB", Locale.current.decimalSeparator!)

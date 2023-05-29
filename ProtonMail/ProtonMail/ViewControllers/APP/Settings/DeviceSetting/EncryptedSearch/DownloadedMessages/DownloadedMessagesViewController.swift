@@ -127,9 +127,10 @@ extension DownloadedMessagesViewController {
     }
 
     private func cellForStorageLimitCell() -> StorageLimitCell {
+        let bytes = Int(viewModel.output.storageLimitSelected.converted(to: .bytes).value)
         let cell = tableView.dequeue(cellType: StorageLimitCell.self)
         cell.delegate = self
-        cell.configure(storageLimit: viewModel.output.storageLimitSelected)
+        cell.configure(storageLimit: bytes)
         return cell
     }
 
@@ -171,8 +172,9 @@ extension DownloadedMessagesViewController: DownloadedMessagesUIProtocol {
 }
 
 extension DownloadedMessagesViewController: StorageLimitCellDelegate {
-    func didChangeStorageLimit(newLimit: ByteCount) {
-        viewModel.input.didChangeStorageLimitValue(newValue: newLimit)
+    func didChangeStorageLimit(newLimit: Int) {
+        let value = Measurement<UnitInformationStorage>(value: Double(newLimit), unit: .bytes)
+        viewModel.input.didChangeStorageLimitValue(newValue: value)
     }
 }
 

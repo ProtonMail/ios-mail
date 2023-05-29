@@ -298,8 +298,8 @@ class MockDownloadedMessagesUIProtocol: DownloadedMessagesUIProtocol {
 }
 
 class MockEncryptedSearchDeviceCache: EncryptedSearchDeviceCache {
-    @PropertyStub(\MockEncryptedSearchDeviceCache.storageLimit, initialGet: Int()) var storageLimitStub
-    var storageLimit: Int {
+    @PropertyStub(\MockEncryptedSearchDeviceCache.storageLimit, initialGet: Measurement<UnitInformationStorage>()) var storageLimitStub
+    var storageLimit: Measurement<UnitInformationStorage> {
         get {
             storageLimitStub()
         }
@@ -417,7 +417,7 @@ class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
     }
 
     @FuncStub(MockEncryptedSearchServiceProtocol.indexSize, initialReturn: nil) var indexSizeStub
-    func indexSize(for userID: UserID) -> ByteCount? {
+    func indexSize(for userID: UserID) -> Measurement<UnitInformationStorage>? {
         indexSizeStub(userID)
     }
 

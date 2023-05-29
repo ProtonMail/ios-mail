@@ -60,7 +60,7 @@ class FileManager_ExtensionTests: XCTestCase {
         try testData.write(to: subdirectoryThree.appendingPathComponent(testFileName))
 
         let testDataSize = testData.count
-        let expectedTotalSize = testDataSize * 4
+        let expectedTotalSize = Measurement<UnitInformationStorage>(value: Double(testDataSize * 4), unit: .bytes)
         XCTAssertEqual(sut.sizeOfDirectory(url: testDirectory), expectedTotalSize)
     }
 }

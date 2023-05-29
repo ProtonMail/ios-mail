@@ -187,8 +187,8 @@ final class SearchIndexDBTests: XCTestCase {
             XCTAssertEqual(rowID, index + 1)
         }
         // Default size on my mac is 12288, not sure if it changes on the other mac
-        let defaultDBSize: ByteCount = 12_288
-        let expectedSize: ByteCount = defaultDBSize + 30
+        let defaultDBSize: Measurement<UnitInformationStorage> = .init(value: 12.288, unit: .kilobytes)
+        let expectedSize: Measurement<UnitInformationStorage> = defaultDBSize + .init(value: 30, unit: .bytes)
         try sut.shrinkSearchIndex(expectedSize: expectedSize)
         let dbSize = try XCTUnwrap(sut.size)
         XCTAssertLessThanOrEqual(dbSize, expectedSize)

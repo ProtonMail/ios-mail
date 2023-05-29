@@ -18,8 +18,9 @@
 import Foundation
 
 extension URL {
-    var fileSize: Int {
-        value(forKey: .fileSizeKey, keyPath: \.fileSize) ?? 0
+    var fileSize: Measurement<UnitInformationStorage> {
+        guard let value = value(forKey: .fileSizeKey, keyPath: \.fileSize) else { return .zero }
+        return Measurement(value: Double(value), unit: .bytes)
     }
 
     func value<T>(forKey key: URLResourceKey, keyPath: KeyPath<URLResourceValues, T?>) -> T? {

@@ -44,8 +44,8 @@ final class DownloadedMessagesViewModel: DownloadedMessagesViewModelProtocol {
 
 extension DownloadedMessagesViewModel: DownloadedMessagesViewModelInput {
 
-    func didChangeStorageLimitValue(newValue: ByteCount) {
-        guard newValue > 0 else {
+    func didChangeStorageLimitValue(newValue: Measurement<UnitInformationStorage>) {
+        guard newValue > .zero else {
             uiDelegate?.reloadData()
             return
         }
@@ -64,12 +64,12 @@ extension DownloadedMessagesViewModel: DownloadedMessagesViewModelOutput {
         [.messageHistory, .storageLimit, .localStorageUsed]
     }
 
-    var storageLimitSelected: ByteCount {
+    var storageLimitSelected: Measurement<UnitInformationStorage> {
         dependencies.esDeviceCache.storageLimit
     }
 
-    var localStorageUsed: ByteCount {
-        dependencies.esService.indexSize(for: userID) ?? 0
+    var localStorageUsed: Measurement<UnitInformationStorage> {
+        dependencies.esService.indexSize(for: userID) ?? .zero
     }
 
     var oldestMessageTime: String {

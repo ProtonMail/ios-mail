@@ -73,7 +73,7 @@ final class LocalStorageCell: UITableViewCell {
     func configure(info: LocalStorageInfo) {
         titleLabel.text = info.title
         infoLabel.text = info.message
-        storageLabel.text = info.localStorageUsed.toByteCount
+        storageLabel.text = info.localStorageUsed.stringFormatted
         clearButton.isHidden = info.isClearButtonHidden
     }
 }
@@ -83,7 +83,7 @@ extension LocalStorageCell {
     struct LocalStorageInfo {
         let title: String
         let message: String?
-        let localStorageUsed: ByteCount
+        let localStorageUsed: Measurement<UnitInformationStorage>
         let isClearButtonHidden: Bool
     }
 }

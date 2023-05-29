@@ -1,5 +1,3 @@
-// swiftlint:disable:this file_name
-
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -17,7 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+@testable import ProtonMail
 
-@available(iOS, deprecated: 13.0, message: "When minimum iOS version is 13+, consider using UnitInformationStorage")
-typealias ByteCount = Int
+extension Measurement where UnitType: UnitInformationStorage {
+
+    init() {
+        self = .zero
+    }
+
+    static var randomBytesPositiveValue: Measurement<UnitInformationStorage> {
+        let value = Double.random(in: 0...Double.greatestFiniteMagnitude)
+        return .init(value: value, unit: .bytes)
+    }
+
+    static var randomBytesNegativeValue: Measurement<UnitInformationStorage> {
+        let value = Double.random(in: -Double.greatestFiniteMagnitude..<0)
+        return .init(value: value, unit: .bytes)
+    }
+}

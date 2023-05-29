@@ -68,7 +68,7 @@ struct Constants {
     }
 
     enum EncryptedSearch {
-        static let defaultStorageLimit: Int = 1_000_000_000 // 1000 MB
+        static let defaultStorageLimit = Measurement<UnitInformationStorage>(value: 1.0, unit: .gigabytes)
     }
 
     static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",

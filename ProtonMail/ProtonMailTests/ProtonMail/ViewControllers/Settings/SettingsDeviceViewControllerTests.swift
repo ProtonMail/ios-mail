@@ -40,7 +40,6 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         mockUsers.add(newUser: mockUser)
         mockCleanCache = MockCleanCacheUseCase()
         stubBioStatus = BioMetricStatusStub()
-
         viewModel = SettingsDeviceViewModel(
             user: mockUser,
             biometricStatus: stubBioStatus,

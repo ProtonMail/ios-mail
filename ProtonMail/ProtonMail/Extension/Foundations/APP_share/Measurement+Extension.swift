@@ -17,6 +17,20 @@
 
 import Foundation
 
-protocol CoreDataMetadata {
-    var sqliteFileSize: Measurement<UnitInformationStorage>? { get }
+extension Measurement where UnitType: Dimension {
+    static var zero: Measurement<UnitType> {
+        .init(value: 0.0, unit: UnitType.baseUnit())
+    }
+
+    static var max: Measurement<UnitType> {
+        .init(value: .greatestFiniteMagnitude, unit: UnitType.baseUnit())
+    }
+}
+
+extension Measurement where UnitType == UnitInformationStorage {
+
+    /// Returns a localised string represenation with units: KB, MB, GB ...
+    var stringFormatted: String {
+        ByteCountFormatter.string(from: self, countStyle: .file)
+    }
 }

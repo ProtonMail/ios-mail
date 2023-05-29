@@ -18,13 +18,13 @@
 import Foundation
 
 extension FileManager {
-    func sizeOfDirectory(url: URL) -> Int {
+    func sizeOfDirectory(url: URL) -> Measurement<UnitInformationStorage> {
         guard let directoryEnumerator = enumerator(at: url, includingPropertiesForKeys: [.fileSizeKey]) else {
             assertionFailure("What causes enumerator to be nil?")
-            return 0
+            return .zero
         }
 
-        return directoryEnumerator.reduce(into: 0) { totalSize, element in
+        let result = directoryEnumerator.reduce(into: 0.0) { totalSize, element in
             guard let url = element as? URL else {
                 assertionFailure("\(element) is not a URL")
                 return
@@ -34,8 +34,9 @@ extension FileManager {
                 return
             }
 
-            totalSize += url.fileSize
+            totalSize += url.fileSize.converted(to: .bytes).value
         }
+        return Measurement(value: result, unit: .bytes)
     }
 }
 
