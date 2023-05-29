@@ -43,7 +43,7 @@ public final class LoginService: Login {
     public private(set) var minimumAccountType: AccountType
     var username: String?
 
-    var defaultSignUpDomain = "protonmail.com"
+    var defaultSignUpDomain = "proton.me"
     var updatedSignUpDomains: [String]?
     var chosenSignUpDomain: String?
     public var currentlyChosenSignUpDomain: String {

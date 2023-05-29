@@ -35,6 +35,7 @@ open class SnapshotTestCase: XCTestCase {
     public func checkSnapshots(controller: UIViewController,
                                wait: TimeInterval? = nil,
                                size: CGSize = CGSize(width: 750, height: 1334),
+                               device: ViewImageConfig = .iPhoneSe,
                                traits: UITraitCollection = .iPhoneSe(.portrait),
                                perceptualPrecision: Float = 1,
                                name: String = #function,
@@ -45,7 +46,7 @@ open class SnapshotTestCase: XCTestCase {
         [UIUserInterfaceStyle.light, .dark].forEach {
 
             var strategy: Snapshotting<UIViewController, UIImage> = .image(
-                on: .iPhoneSe, perceptualPrecision: perceptualPrecision, traits: .init(userInterfaceStyle: $0)
+                on: device, perceptualPrecision: perceptualPrecision, traits: .init(userInterfaceStyle: $0)
             )
             if let wait {
                 strategy = .wait(for: wait, on: strategy)

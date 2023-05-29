@@ -159,7 +159,7 @@
 			<key>one</key>
 			<string>%d utilizador</string>
 			<key>other</key>
-			<string>%d users</string>
+			<string>%d utilizadores</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d VPN connections per user</key>
@@ -232,9 +232,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d endereço de e-mail</string>
+			<string>%d endereço de correio electrónico</string>
 			<key>other</key>
-			<string>%d endereços de email</string>
+			<string>%d endereços de correio electrónico</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d of %d personal calendars</key>
@@ -259,9 +259,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d agenda pessoal</string>
+			<string>%d calendário pessoal</string>
 			<key>other</key>
-			<string>%d agendas pessoais</string>
+			<string>%d calendários pessoais</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d of %d users</key>
@@ -288,7 +288,7 @@
 			<key>one</key>
 			<string>%d utilizador</string>
 			<key>other</key>
-			<string>%d users</string>
+			<string>%d utilizadores</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d personal calendars</key>
@@ -302,9 +302,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d agenda pessoal</string>
+			<string>%d calendário pessoal</string>
 			<key>other</key>
-			<string>%d agendas pessoais</string>
+			<string>%d calendários pessoais</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d personal calendars per user</key>

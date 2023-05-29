@@ -77,12 +77,12 @@ class SearchRobot: CoreElements {
         @discardableResult
         func senderAddressExists(_ sender: String, _ title: String) -> SearchRobot {
             cell(id.messageCellIdentifier(title)).firstMatch()
-                .onDescendant(staticText().hasLabel(sender)).wait().checkExists()
+                .onDescendant(staticText().hasLabel(sender)).waitUntilExists().checkExists()
             return SearchRobot()
         }
         
         func noResultsTextIsDisplayed() {
-            staticText("No results found").wait().checkExists()
+            staticText("No results found").waitUntilExists().checkExists()
         }
     }
 }

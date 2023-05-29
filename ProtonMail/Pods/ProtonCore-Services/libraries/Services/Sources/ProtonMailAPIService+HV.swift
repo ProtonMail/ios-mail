@@ -52,7 +52,7 @@ extension PMAPIService {
         
         // return completion if humanDelegate in not present
         guard self.humanDelegate != nil else {
-            completion.call(task: task, response: .left(response))
+            completion.call(task: task, error: self.getResponseError(task: task, response: response, error: nil) as NSError)
             return
         }
         
@@ -274,13 +274,6 @@ extension PMAPIService {
                 
             }
         }
-    }
-
-    private func getResponseError(task: URLSessionDataTask?, response: APIResponse, error: NSError?) -> ResponseError {
-        return ResponseError(httpCode: (task?.response as? HTTPURLResponse)?.statusCode,
-                             responseCode: response.code,
-                             userFacingMessage: response.errorMessage,
-                             underlyingError: error)
     }
     
     private var invalidHVCodes: [Int] {

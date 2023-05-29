@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-GoLibs",
   "module_name": "ProtonCore_Crypto",
-  "version": "4.0.1",
+  "version": "5.2.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,8 +17,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "4.0.1"
+    "git": null,
+    "tag": "5.2.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "ProtonCore-DataModel": [
-      "4.0.1"
+      "5.2.0"
     ]
   },
   "default_subspecs": [
@@ -94,6 +94,22 @@
         "libraries/Crypto/Sources/**/*.swift"
       ],
       "vendored_frameworks": "vendor/Crypto+VPN-Go1.20.2/GoLibs.xcframework",
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Crypto/Tests/**/*.swift",
+          "resources": "libraries/Crypto/Tests/Resources/**/*"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+VPN-patched-Go1.20.2",
+      "source_files": [
+        "libraries/Crypto/Sources/*.swift",
+        "libraries/Crypto/Sources/**/*.swift"
+      ],
+      "vendored_frameworks": "vendor/Crypto+VPN-patched-Go1.20.2/GoLibs.xcframework",
       "testspecs": [
         {
           "name": "Tests",

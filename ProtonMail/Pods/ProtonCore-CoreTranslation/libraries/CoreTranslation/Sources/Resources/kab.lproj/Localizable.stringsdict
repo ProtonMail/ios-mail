@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d calendar</string>
+			<string>%d uwitay</string>
 			<key>other</key>
-			<string>%d calendars</string>
+			<string>%d yiwitayen</string>
 		</dict>
 	</dict>
 	<key>%d connections</key>
@@ -77,9 +77,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d custom domain</string>
+			<string>%d taɣult tudmawant</string>
 			<key>other</key>
-			<string>%d custom domains</string>
+			<string>%d tiɣula tudmawanin</string>
 		</dict>
 	</dict>
 	<key>%d email addresses</key>
@@ -189,9 +189,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d address per user</string>
+			<string>%d tansa n yimayl i useqdac</string>
 			<key>other</key>
-			<string>%d addresses per user</string>
+			<string>%d tansiwin n yimayl i useqdac</string>
 		</dict>
 	</dict>
 	<key>New_Plans %d folders and labels</key>
@@ -213,7 +213,7 @@
 	<key>New_Plans %d of %d email addresses</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>%#@VARIABLE1@ n %#@VARIABLE2@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -240,7 +240,7 @@
 	<key>New_Plans %d of %d personal calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>%#@VARIABLE1@ n %#@VARIABLE2@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -267,7 +267,7 @@
 	<key>New_Plans %d of %d users</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE1@ of %#@VARIABLE2@</string>
+		<string>%#@VARIABLE1@ n %#@VARIABLE2@</string>
 		<key>VARIABLE1</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>

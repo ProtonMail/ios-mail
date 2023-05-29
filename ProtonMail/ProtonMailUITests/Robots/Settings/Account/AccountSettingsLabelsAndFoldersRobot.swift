@@ -69,7 +69,7 @@ class AccountSettingsLabelsAndFoldersRobot: CoreElements {
     class Verify: CoreElements {
         
         func folderLabelExists(_ name: String) {
-            cell(id.labelFolderCellIdentifier(name)).wait().checkExists()
+            cell(id.labelFolderCellIdentifier(name)).waitUntilExists().checkExists()
         }
         
         func folderLabelDeleted(_ name: String) {

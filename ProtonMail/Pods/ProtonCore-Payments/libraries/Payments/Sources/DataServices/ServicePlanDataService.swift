@@ -309,7 +309,7 @@ extension ServicePlanDataService {
             let methodsRes = try methodsAPI.awaitResponse(responseObject: MethodResponse())
             self.paymentMethods = methodsRes.methods
             
-            guard user.subscribed != 0 else {
+            guard user.hasAnySubscription else {
                 self.currentSubscription = .userHasNoPlanAKAFreePlan
                 self.currentSubscription?.usedSpace = Int64(user.usedSpace)
                 return

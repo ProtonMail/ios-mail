@@ -1,6 +1,3 @@
-/* Bundle display name */
-"CFBundleDisplayName" = "Proton Tölvupóstur";
-
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Nauðsynlegt til að hengja margmiðlunarefni við tölvupóst.";
 

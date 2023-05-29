@@ -41,10 +41,13 @@ class ProtonMailResponseCodeHandler {
         _ retryPolicy: ProtonRetryPolicy.RetryMode,
         _ completion: PMAPIService.APIResponseCompletion<T>,
         _ humanVerificationHandler: (HTTPMethod, String, Any?, [String: Any]?, Bool, Bool, Int, AuthCredential?, TimeInterval?, ProtonRetryPolicy.RetryMode, URLSessionDataTask?, JSONDictionary, PMAPIService.APIResponseCompletion<T>) -> Void,
+        _ deviceVerificationHandler: (HTTPMethod, String, Any?, [String: Any]?, Bool, Bool, Int, AuthCredential?, TimeInterval?, ProtonRetryPolicy.RetryMode, URLSessionDataTask?, JSONDictionary, PMAPIService.APIResponseCompletion<T>) -> Void,
         _ forceUpgradeHandler: (String?) -> Void) where T: APIDecodableResponse {
         if responseCode == APIErrorCode.humanVerificationRequired {
             // human verification required
             humanVerificationHandler(method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, task, response.responseDictionary, completion)
+        } else if responseCode == APIErrorCode.deviceVerificationRequired {
+            deviceVerificationHandler(method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, task, response.responseDictionary, completion)
         } else {
             if responseCode == APIErrorCode.badAppVersion || responseCode == APIErrorCode.badApiVersion {
                 forceUpgradeHandler(response.errorMessage)

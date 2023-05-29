@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "回復は有効です";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "友達を招待";
 
 /* Title */
@@ -2243,7 +2244,7 @@
 "You can't set %@ address as default because it is a paid feature." = "有料機能のため、%@ を既定のアドレスに設定できません。";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "システム設定で FaceID が無効にされました。FaceID は重要なアカウント情報を保護するために使用されています。アカウントにアクセスするには、設定を開き FaceID を有効にするか、もう一度ログインしてください。";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "システム設定で %@ が無効にされました。%@ は重要なアカウント情報を保護するために使用されています。アカウントにアクセスするには、設定を開き %@ を有効にするか、もう一度ログインしてください。";
 
 /* Message */
 "You have %d new emails!" = "%d 件の新着メールがあります";

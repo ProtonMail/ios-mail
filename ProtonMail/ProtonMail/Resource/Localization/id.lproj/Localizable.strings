@@ -381,7 +381,7 @@
 "Change default address to…" = "Ubah alamat default ke…";
 
 /* settings general section title */
-"Change mailbox password" = "Ganti kata sandi kotak pesan";
+"Change mailbox password" = "Ubah kata sandi kotak surat";
 
 /* settings general section title
    title */
@@ -456,7 +456,7 @@
 "Confirm" = "Konfirmasi";
 
 /* Title */
-"Confirm new mailbox password" = "Konfirmasi kata sandi kotak pesan baru";
+"Confirm new mailbox password" = "Konfirmasi kata sandi kotak surat baru";
 
 /* Placeholder */
 "Confirm new password" = "Konfirmasi kata sandi baru";
@@ -1103,7 +1103,7 @@
 "Logs" = "Catatan";
 
 /* cell title in device settings */
-"Mailbox" = "Kotak Pesan";
+"Mailbox" = "Kotak Surat";
 
 /* No comment provided by engineer. */
 "Manage" = "Kelola";
@@ -1253,7 +1253,7 @@
 "New Label" = "Label Baru";
 
 /* Title */
-"New mailbox password" = "Kata sandi kotak pesan baru";
+"New mailbox password" = "Kata sandi kotak surat baru";
 
 /* The title of the button that shows in the conversation view when there is new message coming. */
 "New Message" = "Pesan Baru";
@@ -1521,9 +1521,6 @@
 "Proton is down" = "Proton sedang offline";
 
 /* Title */
-"Proton Mail" = "Proton Mail";
-
-/* Title */
 "Proton Mail is currently offline…" = "Proton Mail sedang offline…";
 
 /* The message about the app is not having the permission to access photo library */
@@ -1562,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Pemulihan diaktifkan";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Rujuk teman";
 
 /* Title */
@@ -1992,7 +1990,7 @@
 "This message was automatically generated" = "Pesan ini dihasilkan secara otomatis";
 
 /* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "Pesan ini akan terkirim pada $%1$@ pukul $%2$@";
+"This message will be sent on %@ at %@" = "Pesan ini akan terkirim pada %1$@ pukul %2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Pesan ini akan kedaluwarsa dalam %1$dH %2$dJ %3$dM";
@@ -2252,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Anda tidak dapat mengatur %@ sebagai alamat default karena pengaturan alamat merupakan fitur berbayar.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Anda menonaktifkan Face ID pada pengaturan sistem. Face ID telah digunakan untuk melindungi informasi akun yang penting. Untuk mengakses akun Anda, buka pengaturan dan aktifkan kembali Face ID, atau masuk ulang kembali.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Anda menonaktifkan %@ pada pengaturan sistem. %@ telah digunakan untuk melindungi informasi akun yang penting. Untuk mengakses akun Anda, buka pengaturan dan aktifkan kembali %@, atau masuk ulang kembali.";
 
 /* Message */
 "You have %d new emails!" = "Anda memiliki %d email baru!";

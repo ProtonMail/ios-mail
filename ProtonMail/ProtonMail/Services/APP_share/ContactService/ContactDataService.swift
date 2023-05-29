@@ -379,17 +379,13 @@ class ContactDataService: Service {
     }
 
     func getContactsByIds(_ ids: [String]) -> [ContactEntity] {
-        let context = coreDataService.makeNewBackgroundContext()
-        var result = [ContactEntity]()
-        context.performAndWait {
+        coreDataService.read { context in
             let contacts: [Contact] = cacheService.selectByIds(context: context, ids: ids)
-            result = contacts.map(ContactEntity.init)
+            return contacts.map(ContactEntity.init)
         }
-        return result
     }
 
     func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity] {
-        let newContext = coreDataService.makeNewBackgroundContext()
         let request = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
         let emailPredicate = NSPredicate(format: "%K in %@", Email.Attributes.email, emailAddresses)
         let userIDPredicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, userID.rawValue)
@@ -398,12 +394,11 @@ class ContactDataService: Service {
             userIDPredicate
         ])
         request.sortDescriptors = [NSSortDescriptor(key: Email.Attributes.email, ascending: false)]
-        var emailEntities = [EmailEntity]()
-        newContext.performAndWait {
+
+        return coreDataService.read { newContext in
             let result = (try? newContext.fetch(request)) ?? []
-            emailEntities = result.map(EmailEntity.init)
+            return result.map(EmailEntity.init)
         }
-        return emailEntities
     }
 
     /**

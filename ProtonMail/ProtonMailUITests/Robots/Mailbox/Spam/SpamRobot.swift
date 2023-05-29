@@ -22,7 +22,7 @@ class SpamRobot: MailboxRobotInterface {
     required init() {
         super.init()
         let label = LocalString._menu_spam_title
-        staticText(id.spamStaticTextIdentifier).wait().checkHasLabel(label)
+        staticText(id.spamStaticTextIdentifier).waitUntilExists().checkHasLabel(label)
     }
     
     func clearSpamFolder() -> SpamRobot {
@@ -54,7 +54,7 @@ class SpamRobot: MailboxRobotInterface {
     class Verify : MailboxRobotVerifyInterface {
         
         func messageWithSubjectExists(_ subject: String) {
-            staticText(id.mailTitileIdentifier).containsLabel(subject).wait().checkExists()
+            staticText(id.mailTitileIdentifier).containsLabel(subject).waitUntilExists().checkExists()
         }
     }
 }

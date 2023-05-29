@@ -24,6 +24,7 @@ public enum BreadcrumbEvent: String {
     case malformedConversationLabelRequest
     case invalidSignatureWhenSendingMessage
     case conversationViewEndUpdatesCrash
+    case sendMessage
 }
 
 /// In memory object tracing custom information for specific events.

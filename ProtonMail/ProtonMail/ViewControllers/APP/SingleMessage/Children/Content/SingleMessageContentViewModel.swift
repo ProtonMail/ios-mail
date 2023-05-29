@@ -191,10 +191,15 @@ class SingleMessageContentViewModel {
     }
 
     func viewDidLoad() {
+        becomeBlockedSenderCacheUpdaterDelegate()
         downloadDetails()
     }
 
     func viewWillAppear() {
+        becomeBlockedSenderCacheUpdaterDelegate()
+    }
+
+    private func becomeBlockedSenderCacheUpdaterDelegate() {
         dependencies.blockedSenderCacheUpdater.delegate = self
     }
 

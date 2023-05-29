@@ -28,6 +28,14 @@
 		</dict>
 		<dict>
 			<key>File</key>
+			<string>Acknowledgements/Difference</string>
+			<key>Title</key>
+			<string>Difference</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
 			<string>Acknowledgements/DKImagePickerController</string>
 			<key>Title</key>
 			<string>DKImagePickerController</string>
@@ -63,6 +71,14 @@
 			<string>Acknowledgements/Groot</string>
 			<key>Title</key>
 			<string>Groot</string>
+			<key>Type</key>
+			<string>PSChildPaneSpecifier</string>
+		</dict>
+		<dict>
+			<key>File</key>
+			<string>Acknowledgements/iosMonkey</string>
+			<key>Title</key>
+			<string>iosMonkey</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

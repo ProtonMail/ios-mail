@@ -15,6 +15,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
+### ios upload_to_appetize
+
+```sh
+[bundle exec] fastlane ios upload_to_appetize
+```
+
+Upload the debug app to Appetize
+
 ### ios build
 
 ```sh
@@ -78,6 +86,14 @@ Run ui test and get test coverage
 ```
 
 Run feature ui test and get test coverage
+
+### ios monkey_tests
+
+```sh
+[bundle exec] fastlane ios monkey_tests
+```
+
+Run Monkey tests
 
 ----
 

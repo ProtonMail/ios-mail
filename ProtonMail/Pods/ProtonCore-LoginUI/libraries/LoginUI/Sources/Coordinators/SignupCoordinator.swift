@@ -152,9 +152,9 @@ final class SignupCoordinator {
         self.signupViewController = signupViewController
 
         switch minimumAccountType {
-        case .username, .internal:
+        case .internal:
             signupViewController.showOtherAccountButton = false
-        case .external:
+        case .username, .external:
             signupViewController.showOtherAccountButton = isExternalSignupFeatureEnabled
         }
         signupViewController.showSeparateDomainsButton = signupParameters.separateDomainsButton
@@ -466,23 +466,31 @@ extension SignupCoordinator: SignupViewControllerDelegate {
     }
     
     func signupCloseButtonPressed() {
+        // on leaving the signup flow, we need to restore the login's minimum account type requirement to original value
+        updateLoginAccountType(accountType: minimumAccountType)
         navigationController?.dismiss(animated: true)
         delegate?.userDidDismissSignupCoordinator(signupCoordinator: self)
     }
     
     func signinButtonPressed() {
+        // on leaving the signup flow, we need to restore the login's minimum account type requirement to original value
+        updateLoginAccountType(accountType: minimumAccountType)
         guard let navigationController = navigationController else { return }
         delegate?.userSelectedSignin(email: nil, navigationViewController: navigationController)
     }
     
     func hvEmailAlreadyExists(email: String) {
+        // on leaving the signup flow, we need to restore the login service's minimum account type requirement to original value
+        updateLoginAccountType(accountType: minimumAccountType)
         guard let navigationController = navigationController else { return }
         delegate?.userSelectedSignin(email: email, navigationViewController: navigationController)
     }
 
     private func updateLoginAccountType(accountType: AccountType) {
-        // changing accountType to intenal, or external is causing key generation on login part. To avoid that we need to skip this when accountType is username
-        if minimumAccountType == .username { return }
+        // updating the login service's minimum account type changes how the account setup is performed.
+        // the account setup is shared between signup and login services, so the configuration must be updated.
+        // for example, even if we allow the username accounts to sign in and we don't generate keys for them,
+        // we want to generate keys if the user is signing up through the internal signup flow
         container.login.updateAccountType(accountType: accountType)
     }
 }
@@ -592,6 +600,9 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
             if let vc = errorVC, self.customErrorPresenter?.willPresentError(error: error, from: vc) == true {
             } else if let vc = errorVC as? SignUpErrorCapable {
                 switch error {
+                case .protonDomainUsedForExternalAccount:
+                    // this error is not user-facing
+                    break
                 case .generic(let message, let code, let originalError):
                     vc.showError(error: SignupError.generic(message: message, code: code, originalError: originalError))
                 case .apiMightBeBlocked(let message, let originalError):

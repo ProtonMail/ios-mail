@@ -254,7 +254,8 @@ extension MenuViewModel: MenuVMProtocol {
             let id = user.userInfo.userId
             let name = user.defaultDisplayName
             let mail = user.defaultEmail
-            return AccountSwitcher.AccountData(userID: id, name: name, mail: mail, isSignin: true, unread: 0)
+            let unread = self.getUnread(of: id)
+            return AccountSwitcher.AccountData(userID: id, name: name, mail: mail, isSignin: true, unread: unread)
         }
 
         list += self.usersManager.disconnectedUsers.map {user -> AccountSwitcher.AccountData in
@@ -338,7 +339,7 @@ extension MenuViewModel: MenuVMProtocol {
     func allowToCreate(type: PMLabelType) -> Bool {
         guard let user = self.currentUser else { return false }
         // Only free user has limitation
-        guard user.userInfo.subscribed == 0 else { return true }
+        guard user.userInfo.subscribed.isEmpty else { return true }
         switch type {
         case .folder:
             return self.folderItems.getNumberOfRows() < Constants.FreePlan.maxNumberOfFolders

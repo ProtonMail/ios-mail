@@ -23,6 +23,7 @@
 import Foundation
 import CommonCrypto
 import ProtonCore_Utilities
+import GoLibs
 
 public struct Hashable<Type> {
     public init(value: Type) {
@@ -69,5 +70,27 @@ extension Hashable where Type == Data {
             CC_SHA256($0.baseAddress, UInt32(self.value.count), &digest)
         }
         return Data(digest)
+    }
+}
+
+/// Hash functions
+public enum Hash {
+    
+    public static func Argon2(challengeData: String) throws -> String {
+        var error: NSError?
+        let outAuth = SrpArgon2PreimageChallenge(challengeData, -1, &error)
+        if let error = error {
+           throw error
+        }
+        return outAuth
+    }
+    
+    public static func ECDLP(challengeData: String) throws -> String {
+        var error: NSError?
+        let outAuth = SrpECDLPChallenge(challengeData, -1, &error)
+        if let error = error {
+           throw error
+        }
+        return outAuth
     }
 }

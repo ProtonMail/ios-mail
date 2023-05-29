@@ -46,7 +46,7 @@ class TrashRobot: MailboxRobotInterface {
     class Verify : MailboxRobotVerifyInterface {
         
         func messageWithSubjectExists(_ subject: String) {
-            staticText(subject).wait().checkExists()
+            staticText(subject).waitUntilExists().checkExists()
         }
     }
 }

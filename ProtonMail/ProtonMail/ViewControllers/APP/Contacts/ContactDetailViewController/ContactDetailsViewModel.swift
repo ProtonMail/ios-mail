@@ -25,7 +25,7 @@ import PromiseKit
 
 typealias LoadingProgress = () -> Void
 
-class ContactDetailsViewModel: ViewModelBase {
+class ContactDetailsViewModel: NSObject {
     var user: UserManager
     let coreDataService: CoreDataService
     private(set) var contact: ContactEntity

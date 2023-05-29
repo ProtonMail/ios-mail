@@ -6,7 +6,6 @@
 //
 
 #include "ProtonMailUITests-Shared.xcconfig"
-#include "Production-common.xcconfig"
 #include "../../Pods/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests.debug.xcconfig"
 
 MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE

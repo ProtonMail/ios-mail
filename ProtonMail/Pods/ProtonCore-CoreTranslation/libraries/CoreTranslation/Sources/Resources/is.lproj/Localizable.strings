@@ -19,9 +19,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en einhverjar tæknilegar upplýsingar vantaði. Gefðu þær upp í villuskýrslunni og mun notendaaðstoðarteymið okkar síðan hafa samband við þig.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en við sjáum að þú hefur skráð þig út af notandaaðgangnum síðan þá.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Ertu viss um að þú viljir skrá þig út %@?";
 
@@ -34,9 +31,6 @@
 
 /* Cancel button */
 "Cancel" = "Hætta við";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA-mennskupróf";
 
 /* Dialog action button title for organization user first login */
 "Change password" = "Breyta lykilorði";
@@ -64,7 +58,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Hafðu beint samband við okkur í gegnum aðstoðarsíðuna okkar, með tölvupósti (support@protonmail.zendesk.com) eða á Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Halda áfram";
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Búðu frekar til öruggt Proton Mail tölvupóstnetfang";
@@ -119,7 +113,7 @@
    Email label
    email method name
    Recovery segmenet email */
-"Email" = "Tölvupóstur";
+"Email" = "Tölvupóstfang";
 
 /* 2FA screen field info
    Email verification code description
@@ -221,9 +215,6 @@
 /* New_Plans Get free plan button */
 "New_Plans Get Proton for free" = "Fáðu Proton ókeypis";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
 /* New_Plans Plan details no logs policy */
 "New_Plans Strict no-logs policy" = "Ströng stefna varðandi enga-atvikaskráningu";
 
@@ -269,9 +260,6 @@
 
 /* Plan details priority customer support */
 "Priority customer support" = "Forgangsstuðningur viðskiptavina";
-
-/* Welcome screen */
-"Privacy by default" = "Privacy by default";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton liggur niðri";
@@ -345,9 +333,6 @@
 /* Skip button */
 "Skip" = "Sleppa";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Því miður getum við ekki meðhöndlað viðskipti í beta-þróunarútgáfu iOS-forritsins. Við þökkum þér hinsvegar fyrir að taka þátt í þróunarvinnu opinberu beta-útgáfunnar.";
 
@@ -355,7 +340,7 @@
 "Still can't find a solution" = "Finn ekki ennþá neina lausn";
 
 /* The subject of the email draft created in the network troubleshoot view. */
-"Subject..." = "Viðfangsefni...";
+"Subject..." = "Efni...";
 
 /* Subscription title */
 "Subscription" = "Áskrift";
@@ -381,9 +366,6 @@
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Reyndu að tengjast Proton frá öðru netkerfi (eða nota %1$@ eða %2$@).";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Tveggja-þátta auðkenning";

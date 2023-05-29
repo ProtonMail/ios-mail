@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Метод восстановления поможет вам получить доступ к аккаунту, если вы забудете пароль или он будет заблокирован.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Аккаунт удален\nВыход из системы...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Требуется настройка аккаунта";
@@ -44,9 +41,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple сообщили, что вы улучшили тариф, но нам не хватает технических данных. Пожалуйста, заполните отчет об ошибке, и наша команда поддержки свяжется с вами.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple сообщили, что вы улучшили тариф, но мы обнаружили, что с того момента вы вышли из аккаунта.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Вы уверены, что хотите выйти из %@?";
 
@@ -62,9 +56,6 @@
 
 /* Cancel button */
 "Cancel" = "Отменить";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "Изменить адрес электронной почты";
@@ -180,10 +171,13 @@
    Email label
    email method name
    Recovery segmenet email */
-"Email" = "Эл. почта";
+"Email" = "Электронная почта";
 
 /* Email address already used error */
 "Email address already used." = "Адрес электронной почты уже используется.";
+
+/* Username field title */
+"Email or username" = "Электронная почта или имя пользователя";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Пользуйтесь миром конфиденциальности.";
@@ -263,7 +257,7 @@
 "If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "Если у вас возникли проблемы с созданием аккаунта, запросите приглашение и мы ответим в течение одного рабочего дня.";
 
 /* alternative routing description */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "В случае если сайты Proton заблокированы, эта настройка позволяет приложению попробовать альтернативную маршрутизацию сети для достижения Proton, что может быть полезно для обхода брандмауэров или сетевых проблем. Мы рекомендуем держать эту настройку включенной для большей надежности. %1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "В случае блокировки сайтов Proton эта настройка позволяет приложению попробовать альтернативную сетевую маршрутизацию, чтобы достигнуть Proton, что может быть полезно для обхода брандмауэров или сетевых проблем. Для большей надёжности мы рекомендуем оставить эту настройку включённой. %1$@";
 
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Неверный пароль почтового ящика";
@@ -289,14 +283,10 @@
 /* alternative routing link name in description
    External accounts not supported popup learn more button
    learn more button */
-"Learn more" = "Подробнее";
+"Learn more" = "Узнать больше";
 
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Подробнее о проверке \"Я не робот\" и зачем мы ее используем.";
-
-/* *
- * Splash */
-"Made by" = "Сделано";
 
 /* Mailbox password field title */
 "Mailbox password" = "Пароль почтового ящика";
@@ -321,7 +311,7 @@
 "New_Plans %@ of %@" = "%@ из %@";
 
 /* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Доступ к службам трансляции по всему миру";
+"New_Plans Access to streaming services globally" = "Доступ к стриминговым сервисам по всему миру";
 
 /* New_Plans Plan details ad-blocker */
 "New_Plans Built-in ad-blocker (NetShield)" = "Встроенный блокировщик рекламы (NetShield)";
@@ -352,9 +342,6 @@
 
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Через это приложение доступны только непродлеваемые годовые подписки";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
 
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Тариф успешно обновлен";
@@ -393,14 +380,14 @@
 "Next" = "Далее";
 
 /* network troubleshot cell title */
-"No internet connection" = "Нет соединения с Интернетом";
+"No internet connection" = "Нет подключения к интернету";
 
 /* Warning message option when user want to relogin to another account */
 "No, for another Proton Mail account" = "Нет, для другого аккаунта Proton Mail";
 
 /* Action
    OK button */
-"OK" = "ОК";
+"OK" = "OK";
 
 /* Signup main view description */
 "One account for all Proton services." = "Один аккаунт для всех служб Proton.";
@@ -442,7 +429,7 @@
 "Phone" = "Телефон";
 
 /* SMS label */
-"Phone number" = "Hомер телефона";
+"Phone number" = "Номер телефона";
 
 /* Sub-user configuration error */
 "Please ask your admin to configure your sub-user." = "Пожалуйста, попросите администратора настроить вашего субпользователя.";
@@ -457,17 +444,11 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Введите пароль вашего аккаунта Proton.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Пожалуйста, войдите в аккаунт Proton Mail, для которого вы обновляете тариф обслуживания, чтобы мы могли оформить покупку.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Пожалуйста, войдите в аккаунт Proton Mail, для которого вы обновляете тариф обслуживания, чтобы мы могли завершить активацию тарифа обслуживания.";
-
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Убедитесь, что работает ваше подключение к Интернету.";
 
 /* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "Опишите свою проблему.";
+"Please share your problem." = "Пожалуйста, опишите свою проблему.";
 
 /* Error message */
 "Please unlock the app to proceed with your service plan activation" = "Пожалуйста, разблокируйте приложение, чтобы продолжить активацию вашего тарифа";
@@ -484,9 +465,6 @@
 
 /* Username field title */
 "Proton email or username" = "Электронная почта или имя пользователя Proton";
-
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton не работает";
@@ -507,7 +485,7 @@
 "Recovery code" = "Код восстановления";
 
 /* Recovery email field title */
-"Recovery email" = "Резервный адрес электронной почты";
+"Recovery email" = "Адрес резервной эл. почты";
 
 /* Recovery phone field title */
 "Recovery phone number" = "Номер телефона для восстановления доступа";
@@ -578,14 +556,11 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Пропустить способ восстановления?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Извините, мы не можем обрабатывать покупки в бета-версии приложения для iOS. Благодарим вас за участие в нашем публичном бета-тестировании!";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Решение так и не нашлось";
+"Still can't find a solution" = "Так и не нашлось решение";
 
 /* *
  *  Login help */
@@ -625,9 +600,6 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Серверы Proton недоступны. Это может быть вызвано неправильной настройкой сети, сбоем серверов Proton или тем, что сервисы Proton были заблокированы";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Сбой проверки TLS-сертификата при попытке подключения к API Proton VPN. Возможно, ваше подключение к Интернету отслеживается. Чтобы сохранить ваши данные в безопасности, мы предотвратили доступ приложения к Proton API.\nДля входа в приложение или доступа к аккаунту подключитесь к другой сети и попробуйте снова.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Обычно на это требуется менее минуты.";
 
@@ -651,9 +623,6 @@
 
 /* other method alert button */
 "Try other method" = "Попробуйте другой способ";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Двухфакторная аутентификация";
@@ -774,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ваш аккаунт Proton Free был успешно создан.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "Время сеанса истекло. Пожалуйста, войдите снова.";
 

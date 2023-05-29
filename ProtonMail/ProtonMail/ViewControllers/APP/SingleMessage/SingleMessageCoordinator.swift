@@ -91,12 +91,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         return viewController
     }
 
-    func follow(_ deeplink: DeepLink) {
-        guard let node = deeplink.popFirst,
-              let messageID = node.value else { return }
-        self.presentExistedCompose(messageID: messageID)
-    }
-
     func navigate(to navigationAction: SingleMessageNavigationAction) {
         switch navigationAction {
         case .compose(let contact):
@@ -193,26 +187,6 @@ extension SingleMessageCoordinator {
         )
 
         presentCompose(viewModel: viewModel)
-    }
-
-    private func presentExistedCompose(messageID: String) {
-        let context = coreDataService.mainContext
-        guard let message = user.messageService.fetchMessages(withIDs: [messageID], in: context).first else {
-            return
-        }
-
-        let viewModel = ComposeViewModel(
-            msg: message,
-            action: .openDraft,
-            msgService: user.messageService,
-            user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
-            internetStatusProvider: internetStatusProvider
-        )
-
-        delay(1) {
-            self.presentCompose(viewModel: viewModel)
-        }
     }
 
     private func presentAttachmentListView(decryptedBody: String?, attachments: [AttachmentInfo]) {

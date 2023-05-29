@@ -74,7 +74,7 @@ version: 2.0
 
 name: fusion, nameSpecified: 
 body: The MIT License (MIT…
-version: 1.2.0
+version: 2.0.0
 
 name: Groot, nameSpecified: 
 body: **Groot**
@@ -93,6 +93,10 @@ body: **Groot**
 
 **Copyrig…
 version: 3.0.1
+
+name: iosMonkey, nameSpecified: 
+body: The MIT License (MIT…
+version: 0.0.1
 
 name: lottie-ios, nameSpecified: 
 body:                     …
@@ -148,23 +152,23 @@ version:
 
 name: ProtonCore-AccountSwitcher, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-AccountSwitcher, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-APIClient, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-APIClient, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-APIClient, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Authentication, nameSpecified: 
 body:                     …
@@ -192,151 +196,151 @@ version:
 
 name: ProtonCore-Challenge, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Challenge, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Challenge, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Common, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Common, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Common, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-CoreTranslation, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-CoreTranslation, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-CoreTranslation, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-CoreTranslation, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-CoreTranslation, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-DataModel, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-DataModel, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-DataModel, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-DataModel, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-DataModel, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Doh, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Doh, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Doh, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Doh, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Doh, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Environment, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Environment, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Environment, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Environment, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-FeatureSwitch, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-FeatureSwitch, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-FeatureSwitch, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-FeatureSwitch, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-FeatureSwitch, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-ForceUpgrade, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-ForceUpgrade, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Foundations, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Foundations, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Foundations, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Foundations, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Foundations, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-GoLibs, nameSpecified: 
 body:                     …
@@ -360,23 +364,23 @@ version:
 
 name: ProtonCore-Hash, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Hash, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Hash, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-HumanVerification, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-HumanVerification, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Keymaker, nameSpecified: 
 body:                     …
@@ -400,27 +404,27 @@ version:
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Log, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Login, nameSpecified: 
 body:                     …
@@ -440,47 +444,47 @@ version:
 
 name: ProtonCore-Networking, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Networking, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Networking, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Networking, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Observability, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Observability, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Observability, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Observability, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-OpenPGP, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-OpenPGP, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-OpenPGP, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Payments, nameSpecified: 
 body:                     …
@@ -500,75 +504,75 @@ version:
 
 name: ProtonCore-QuarkCommands, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Services, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Services, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Services, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Services, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-TestingToolkit, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-TestingToolkit, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-TroubleShooting, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-TroubleShooting, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-UIFoundations, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-UIFoundations, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-UIFoundations, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ProtonCore-Utilities, nameSpecified: 
 body:                     …
-version: 4.0.1
+version: 5.2.0
 
 name: ReachabilitySwift, nameSpecified: 
 body: Copyright (c) 2016 A…
@@ -679,6 +683,8 @@ version: 2.0.0
 name: TrustKit, nameSpecified: 
 body: The MIT License (MIT…
 version: 2.0.0
+
+name: Difference, nameSpecified: Difference, owner: krzysztofzablocki, version: 1.0.2, source: https://github.com/krzysztofzablocki/Difference
 
 name: LifetimeTracker, nameSpecified: LifetimeTracker, owner: krzysztofzablocki, version: 1.8.1, source: https://github.com/krzysztofzablocki/LifetimeTracker
 

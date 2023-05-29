@@ -8,6 +8,19 @@ def proton_test_path
   return "git@gitlab.protontech.ch:tpe/apple-fusion.git"
 end
 
+def proton_test_commit
+  "83c1dfb4"
+end
+
+def monkey_path
+  'git@gitlab.protontech.ch:tpe/ios-monkey.git'
+end
+
+def monkey_commit
+  "fa348f33"
+end
+
+
 # proton url is set to env variable because the core module podspecs expect it.
 # it's part of transition into open sourced core modules and it will not be necessary when they are on github
 ENV['PROTON_CORE_GIT_URL'] = proton_core_path
@@ -21,11 +34,11 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '4.0.1'
+  '5.2.0'
 end
 
 def crypto_variant
-  "Crypto+Search-Go1.15.15"
+  "Crypto+Search-Go1.20.2"
 end
 
 def common_pods
@@ -58,7 +71,7 @@ def pm_pods
   pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-HumanVerification', :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-HumanVerification/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Log', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Login/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-LoginUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
@@ -68,7 +81,7 @@ def pm_pods
   pod "ProtonCore-PaymentsUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', '2.0.6'
-  pod 'SwipyCell', :git=> 'https://github.com/xxi511/SwipyCell.git', :commit => '923310a'
+  pod 'SwipyCell', :git=> 'git@gitlab.protontech.ch:jchen/SwipyCell.git', :commit => '923310a'
   pod "SkeletonView", '1.30.4'
   pod 'SQLite.swift', '~> 0.13.3'
 end
@@ -118,7 +131,8 @@ end
 
 target 'ProtonMailUITests' do
   inherit! :search_paths
-  pod 'fusion', :git => proton_test_path, :branch => 'master'
+  pod 'fusion', :git => proton_test_path, :commit => proton_test_commit
+  pod 'iosMonkey', :git => monkey_path, :commit => monkey_commit
   pod 'ProtonCore-TestingToolkit/UITests/HumanVerification', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/Login', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', :git => proton_core_path, :tag => proton_core_version
@@ -136,7 +150,7 @@ target 'Siri' do
 end
 
 target 'ProtonMailAnalytics' do
-  pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '7.31.2'
+  pod 'Sentry', :git => 'git@gitlab.protontech.ch:jchen/sentry-cocoa.git', :tag => '7.31.2.fork'
 end
 
 post_install do | installer |

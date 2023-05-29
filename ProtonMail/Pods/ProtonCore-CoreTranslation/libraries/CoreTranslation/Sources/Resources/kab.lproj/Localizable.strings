@@ -1,3 +1,6 @@
+/* Plan details storage */
+"%@ storage" = "%@ n uḥraz";
+
 /* Email verification view title */
 "Account verification" = "Asenqed n umiḍan";
 
@@ -19,9 +22,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple yuzen-aɣ-d ulɣu belli tleqqmeḍ aɣawas n umeẓlu, maca kra n yisefka itiknikanen xuṣṣen. Ttxil-k·m ɛemmeṛ aneqqis n wabug syen tarbaɛt-nneɣ n tallalt n umsaɣ ad ak·akem-id-nermes.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple yuzen-aɣ-d ulɣu belli tleqqmeḍ aɣawas n umeẓlu, maca nufa-d teffɣeḍ seg umiḍan seg wass-nni.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Tebɣiḍ ad teffɣeḍ%@?";
 
@@ -34,9 +34,6 @@
 
 /* Cancel button */
 "Cancel" = "Sefsex";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Dialog action button title for organization user first login */
 "Change password" = "Snifel awal uffir";
@@ -60,7 +57,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Nermes-aɣ-d srid s tferkit-nneɣ n tallalt seg, yimayl (support@protonmail.zendesk.com), neɣ Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Kemmel";
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Rnu tansa n Proton Mail taɣellsant deg ubdil";
@@ -120,10 +117,16 @@
 /* Email address already used error */
 "Email address already used." = "Tans-a n yimayl tettuseqdec yakan.";
 
+/* Username field title */
+"Email or username" = "Imayl neɣ isem n useqdac";
+
 /* 2FA screen field info
    Email verification code description
    Verification code hint label */
 "Enter the 6-digit code." = "Sekcem tangalt n 6 n yizwilen.";
+
+/* Verification */
+"Enter the verification code that was sent to %@" = "Sekcem tangalt n usenged i yettwaznen ɣer %@";
 
 /* *
  *  Payments */
@@ -131,6 +134,9 @@
 
 /* Error message */
 "Failed to get list of available products from App Store." = "Tella-d tuccḍa deg tiffin n tebdart n ifarisen deg App Store.";
+
+/* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
+"for %@" = "i %@";
 
 /* Forgot password button title
    Forgot password help button */
@@ -196,14 +202,14 @@
 /* New_Plans Plan details used storage space */
 "New_Plans %@ of %@" = "%@ si %@";
 
+/* New_Plans Plan details ad-blocker */
+"New_Plans Built-in ad-blocker (NetShield)" = "Amsewḥel n udellel usliɣ (NetShield)";
+
 /* New_Plans Get plan button */
 "New_Plans Get %@" = "Awi-d %@";
 
 /* New_Plans Plan details Highest VPN speed */
 "New_Plans Highest VPN speed" = "Arured afellay maḍi VPN";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
 
 /* New_Plans Plan details Secure Core servers */
 "New_Plans Secure Core servers" = "Iqeddacen n Secure Core";
@@ -225,13 +231,19 @@
 
 /* Action
    OK button */
-"OK" = "IH";
+"OK" = "Ih";
 
 /* Signup main view description */
 "One account for all Proton services." = "Yiwen n umiḍan i meṛṛa imeẓla n Proton.";
 
 /* Password field title */
 "Password" = "Awal uffir";
+
+/* Password too short error */
+"Password must contain at least %@ characters." = "Awal uffir ilaq ad isɛu ma drus %@ n yisekkilen.";
+
+/* Password field hint about minimum length */
+"Password must contain at least 8 characters" = "Awal uffir ilaq ad isɛu ma drus 8 n yisekkilen";
 
 /* (No Comment) */
 "payment failed" = "axelleṣ yecceḍ";
@@ -240,16 +252,10 @@
 "Payment failed" = "Axelleṣ yecceḍ";
 
 /* Recovery segmenet phone */
-"Phone" = "Tiliɣri";
+"Phone" = "Teleɣri";
 
 /* SMS label */
 "Phone number" = "Uṭṭun n tiliɣri";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Ttxil qqen ɣer umiḍan-ik•im Proton Mail iwumi tleqqmeḍ aɣawas n useqdec akken ad nesmed timseɣiwt.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Ttxil qqen ɣer umiḍan-ik•im Proton Mail iwumi tleqqmeḍ aɣawas n useqdec akken ad nesmed armad n uɣawas n useqdec.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Ttxil-k•m senqed d akken tuqqna-inek/m internet tetteddu akken iwata.";
@@ -325,9 +331,6 @@
 /* Skip button */
 "Skip" = "Zgel";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Suref-aɣ, ur nezmir ara ad nermed timahilin n tmesɣiwt deg lqem beta n usnas iOS. Tanemmirt imi tettekkaḍ deg lqem-nneɣ beta azayez!";
 
@@ -341,7 +344,7 @@
 "Subject..." = "Asentel...";
 
 /* Subscription title */
-"Subscription" = "Amultaɣ";
+"Subscription" = "Ajerred";
 
 /* network troubleshooting */
 "support form" = "talɣa n tallalt";
@@ -373,9 +376,6 @@
 
 /* other method alert button */
 "Try other method" = "Ɛreḍ tarrayt nniḍen";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Asesteb s snat n tarrayin";
@@ -420,7 +420,7 @@
 "Verifying your payment" = "Asefqed n lexlaṣ-ik•im";
 
 /* Title */
-"Warning" = "Γur-k";
+"Warning" = "Alɣu";
 
 /* Error message */
 "We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Neṭṭf-d talɣut n tiɣin ɣef App Store maca ur nezmir ara ad neg assaɣ gar tiɣin-agi akked umiḍan yellan d ayla-k•m.";
@@ -448,4 +448,7 @@
 
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "Uṭṭun-ik n tiliɣṛi ad yettwaseqdec kan tikkelt deg usenqed-agi.";
+
+/* Plan details renew automatically expired */
+"Your plan will automatically renew on %@" = "Aɣawas-ik·im ad yettuɛawed s wudem awurman deg %@";
 

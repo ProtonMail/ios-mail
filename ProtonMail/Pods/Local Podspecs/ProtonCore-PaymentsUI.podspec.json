@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-PaymentsUI",
-  "version": "4.0.1",
+  "version": "5.2.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "4.0.1"
+    "git": null,
+    "tag": "5.2.0"
   },
   "platforms": {
     "ios": "11.0"
@@ -31,19 +31,19 @@
   "frameworks": "UIKit",
   "dependencies": {
     "ProtonCore-Log": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-CoreTranslation": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-Foundations": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-UIFoundations": [
-      "4.0.1"
+      "5.2.0"
     ],
     "ProtonCore-Observability": [
-      "4.0.1"
+      "5.2.0"
     ]
   },
   "default_subspecs": [
@@ -54,7 +54,7 @@
       "name": "Crypto-Go1.20.2",
       "dependencies": {
         "ProtonCore-Payments/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": "libraries/PaymentsUI/Sources/**/*.swift",
@@ -76,13 +76,13 @@
 
             ],
             "ProtonCore-ObfuscatedConstants": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Observability": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto-Go1.20.2": [
-              "4.0.1"
+              "5.2.0"
             ]
           },
           "source_files": "libraries/PaymentsUI/Tests/**/*.swift"
@@ -93,7 +93,7 @@
       "name": "Crypto-patched-Go1.20.2",
       "dependencies": {
         "ProtonCore-Payments/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": "libraries/PaymentsUI/Sources/**/*.swift",
@@ -115,13 +115,13 @@
 
             ],
             "ProtonCore-ObfuscatedConstants": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Observability": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto-patched-Go1.20.2": [
-              "4.0.1"
+              "5.2.0"
             ]
           },
           "source_files": "libraries/PaymentsUI/Tests/**/*.swift"
@@ -132,7 +132,7 @@
       "name": "Crypto+VPN-Go1.15.15",
       "dependencies": {
         "ProtonCore-Payments/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": "libraries/PaymentsUI/Sources/**/*.swift",
@@ -154,13 +154,13 @@
 
             ],
             "ProtonCore-ObfuscatedConstants": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Observability": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+VPN-Go1.15.15": [
-              "4.0.1"
+              "5.2.0"
             ]
           },
           "source_files": "libraries/PaymentsUI/Tests/**/*.swift"
@@ -171,7 +171,7 @@
       "name": "Crypto+VPN-Go1.20.2",
       "dependencies": {
         "ProtonCore-Payments/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": "libraries/PaymentsUI/Sources/**/*.swift",
@@ -193,13 +193,52 @@
 
             ],
             "ProtonCore-ObfuscatedConstants": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Observability": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+VPN-Go1.20.2": [
-              "4.0.1"
+              "5.2.0"
+            ]
+          },
+          "source_files": "libraries/PaymentsUI/Tests/**/*.swift"
+        }
+      ]
+    },
+    {
+      "name": "Crypto+VPN-patched-Go1.20.2",
+      "dependencies": {
+        "ProtonCore-Payments/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
+        ]
+      },
+      "source_files": "libraries/PaymentsUI/Sources/**/*.swift",
+      "resource_bundles": {
+        "Resources-PaymentsUI": [
+          "libraries/PaymentsUI/Sources/**/*.xib",
+          "libraries/PaymentsUI/Sources/PaymentsUI.storyboard"
+        ]
+      },
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "dependencies": {
+            "swift-snapshot-testing": [
+
+            ],
+            "ProtonCore-Payments": [
+
+            ],
+            "ProtonCore-ObfuscatedConstants": [
+              "5.2.0"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Observability": [
+              "5.2.0"
+            ],
+            "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+VPN-patched-Go1.20.2": [
+              "5.2.0"
             ]
           },
           "source_files": "libraries/PaymentsUI/Tests/**/*.swift"
@@ -210,7 +249,7 @@
       "name": "Crypto+Search-Go1.15.15",
       "dependencies": {
         "ProtonCore-Payments/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": "libraries/PaymentsUI/Sources/**/*.swift",
@@ -232,13 +271,13 @@
 
             ],
             "ProtonCore-ObfuscatedConstants": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Observability": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+Search-Go1.15.15": [
-              "4.0.1"
+              "5.2.0"
             ]
           },
           "source_files": "libraries/PaymentsUI/Tests/**/*.swift"
@@ -249,7 +288,7 @@
       "name": "Crypto+Search-Go1.20.2",
       "dependencies": {
         "ProtonCore-Payments/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": "libraries/PaymentsUI/Sources/**/*.swift",
@@ -271,13 +310,13 @@
 
             ],
             "ProtonCore-ObfuscatedConstants": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Observability": [
-              "4.0.1"
+              "5.2.0"
             ],
             "ProtonCore-TestingToolkit/UnitTests/Payments/Crypto+Search-Go1.20.2": [
-              "4.0.1"
+              "5.2.0"
             ]
           },
           "source_files": "libraries/PaymentsUI/Tests/**/*.swift"

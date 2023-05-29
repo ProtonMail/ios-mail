@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "En återställningsmetod hjälper dig att komma åt ditt konto om du glömmer ditt lösenord eller blir utelåst från ditt konto.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Konto borttaget.\nLoggar ut...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Inställning av konto krävs";
@@ -44,9 +41,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informerade oss att du har uppgraderat paketet för tjänster, men vissa tekniska data saknades. Fyll i felrapporten så kommer vårt kundtjänstteam att kontakta dig.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple meddelade oss att du har uppgraderat serviceplanen, men vi upptäckte att du har loggat ut från kontot sedan dess.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Är du säker på att du vill logga ut %@?";
 
@@ -62,9 +56,6 @@
 
 /* Cancel button */
 "Cancel" = "Avbryt";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "Ändra e-postadress";
@@ -113,7 +104,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontakta oss direkt via vårt supportformulär, e-post (support@protonmail.zendesk.com) eller Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Fortsätt";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Skapa ett Proton-konto med din nuvarande e-post";
@@ -125,7 +116,7 @@
 "Create an account" = "Skapa ett konto";
 
 /* Create user failed error */
-"Create user failed" = "Det gick inte att skapa användare";
+"Create user failed" = "Kunde inte skapa användare";
 
 /* Signup password proton view title */
 "Create your password" = "Skapa ditt lösenord";
@@ -184,6 +175,9 @@
 
 /* Email address already used error */
 "Email address already used." = "E-postadressen har redan använts.";
+
+/* Username field title */
+"Email or username" = "E-post eller användarnamn";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Njut av en värld av integritet.";
@@ -294,10 +288,6 @@
 /* visit item message */
 "Learn more about human verification and why we ask for it." = "Lär dig mer om mänsklig verifiering och varför vi ber om det.";
 
-/* *
- * Splash */
-"Made by" = "Gjord av";
-
 /* Mailbox password field title */
 "Mailbox password" = "Lösenord för brevlådan";
 
@@ -353,9 +343,6 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Endast icke-förnyande årsprenumerationer är tillgängliga via denna app";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Paket uppgraderat";
 
@@ -364,6 +351,9 @@
 
 /* New_Plans Plan details no logs policy */
 "New_Plans Strict no-logs policy" = "Strikt policy att inte logga";
+
+/* New_Plans Plan details free description */
+"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Gratiskontot designat för att ge alla integritet som standard.";
 
 /* New_Plans Plan details plus description */
 "New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Den integritetsbaserade e-post- och kalenderlösningen för dina dagliga kommunikationsbehov.";
@@ -476,9 +466,6 @@
 /* Username field title */
 "Proton email or username" = "E-post eller användarnamn för Proton";
 
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
-
 /* network troubleshot cell title */
 "Proton is down" = "Proton är nere";
 
@@ -569,9 +556,6 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Hoppa över återställningsmetod?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Tyvärr, kan inte vi behandla inköp i betaversionen av iOS-appen. Tack för deltagandet i vår offentliga beta!";
 
@@ -616,9 +600,6 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton-servrarna går inte att nå. Det kan bero på fel nätverkskonfiguration, att Proton-servrar inte fungerar eller att Proton-servrar är blockerade";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "TLS-certifikatvalideringen misslyckades när du försökte ansluta till Proton API. Din nuvarande Internetanslutning kan övervakas. För att skydda din data förhindrar vi appen från att komma åt Proton API. För att logga in eller komma åt ditt konto, byt till ett nytt nätverk och försök ansluta igen.";
-
 /* Complete view description */
 "This should take no more than a minute." = "Detta bör inte ta mer än en minut.";
 
@@ -642,9 +623,6 @@
 
 /* other method alert button */
 "Try other method" = "Prova annan metod";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Tvåfaktorsautentisering";
@@ -743,7 +721,7 @@
 "Your account is being created" = "Ditt konto håller på att skapas…";
 
 /* Dialog text for missing keys error */
-"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Ditt konto saknar nycklar. Logga in på webben för att automatiskt generera nycklar som krävs När du har loggat in på webben går du tillbaka till appen och loggar in.";
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Ditt konto saknar nycklar. Logga in på webben för att automatiskt generera obligatoriska nycklar. När du har loggat in på webben går du tillbaka till appen och loggar in.";
 
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ditt land kanske blockerar åtkomst till Proton. Prova att använda %1$@ (eller någon annan VPN) eller %2$@ för att komma åt Proton.";
@@ -765,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ditt Proton Free-konto har skapats.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "Din session har löpt ut. Logga in igen.";
 

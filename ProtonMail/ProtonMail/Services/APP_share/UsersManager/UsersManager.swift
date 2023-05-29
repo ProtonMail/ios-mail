@@ -146,7 +146,12 @@ class UsersManager: Service {
         #if !APP_EXTENSION
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+
+        // We've been seeing crashes caused by CoreDataService not being ready by the time a UserManager is instantiated.
+        // Setting up the Core Data stack before the main key is available might mess up migration, however it's a lesser evil compared to a crash.
+        (UIApplication.shared.delegate as? AppDelegate)?.setupCoreData()
         #endif
+
         let newUser = UserManager(
             api: apiService,
             userInfo: user,
@@ -399,9 +404,6 @@ extension UsersManager {
         return UserManager.cleanUpAll().ensure {
             try? sharedServices.get(by: CoreDataService.self).rollbackAllContexts()
 
-            self.users.forEach { user in
-                user.userService.signOut()
-            }
             self.users = []
             self.save()
 
@@ -413,8 +415,6 @@ extension UsersManager {
             self.keychain.remove(forKey: CoderKey.disconnectedUsers)
 
             self.currentVersion = self.latestVersion
-
-            sharedUserDataService.signOut()
 
             userCachedStatus.signOut()
             userCachedStatus.cleanGlobal()
@@ -436,6 +436,10 @@ extension UsersManager {
                                  attributes:
                                     nil)
             #endif
+
+            if !ProcessInfo.isRunningUnitTests {
+                NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
+            }
         }
     }
 

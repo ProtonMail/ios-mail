@@ -74,6 +74,7 @@ enum UserFeedbackServiceError: Error {
     case unexpectedCode(Int?)
 }
 
+// sourcery: mock
 protocol UserFeedbackServiceProtocol: Service {
     func send(_ feedback: UserFeedback, handler: @escaping (UserFeedbackServiceError?) -> Void)
 }

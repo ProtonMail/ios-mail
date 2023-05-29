@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonMailAnalytics
 import struct ProtonCore_Networking.ResponseError
 import class ProtonCore_Services.APIErrorCode
 
@@ -51,7 +52,10 @@ class SendMessageTask {
             }
 
         } catch {
-            SystemLogger.log(message: "Error: \(error)", category: .sendMessage, isError: true)
+            let logMessage = "Error: \(error)"
+            SystemLogger.log(message: logMessage, category: .sendMessage, isError: true)
+            Breadcrumbs.shared.add(message: logMessage, to: .sendMessage)
+            Analytics.shared.sendError(.sendMessageFail(error: "\(error)"))
             completion(error)
         }
     }
@@ -73,6 +77,7 @@ class SendMessageTask {
         }
         let message = "MessageID = \(messageSendingData.message.messageID.rawValue)"
         SystemLogger.log(message: message, category: .sendMessage)
+        Breadcrumbs.shared.add(message: message, to: .sendMessage)
         return messageSendingData
     }
 
@@ -88,7 +93,9 @@ class SendMessageTask {
         )) { result in
             switch result {
             case .success(let message):
-                SystemLogger.log(message: "Fetched message detail success", category: .sendMessage)
+                let logMessage = "Fetched message detail success"
+                SystemLogger.log(message: logMessage, category: .sendMessage)
+                Breadcrumbs.shared.add(message: logMessage, to: .sendMessage)
                 let newMessageSendingData = MessageSendingData(
                     message: message,
                     cachedUserInfo: messageSendingData.cachedUserInfo,
@@ -98,8 +105,9 @@ class SendMessageTask {
                 )
                 completion(newMessageSendingData)
             case .failure(let error):
-                let message = "Fetched message detail error: \(error)"
-                SystemLogger.log(message: message, category: .sendMessage, isError: true)
+                let logMessage = "Fetched message detail error: \(error)"
+                SystemLogger.log(message: logMessage, category: .sendMessage, isError: true)
+                Breadcrumbs.shared.add(message: logMessage, to: .sendMessage)
                 completion(messageSendingData)
             }
         }
@@ -146,7 +154,7 @@ extension SendMessageTask {
 
     /// Logic related to user alerts/notifications, error management or queue flow
     private func afterSendingMessageFailure(message: MessageEntity, error: Error) -> Error? {
-        SystemLogger.log(message: "sending finished with error: \(error)", category: .sendMessage, isError: true)
+        logAfterSendingMessageError(error)
         var resultingError: Error? = error
         switch error {
         case let apiError as ResponseError:
@@ -155,6 +163,21 @@ extension SendMessageTask {
             notifySendMessageError(error, message: message)
         }
         return resultingError
+    }
+
+    private func logAfterSendingMessageError(_ error: Error) {
+        let logMessage = "sending finished with error: \(error)"
+        SystemLogger.log(message: logMessage, category: .sendMessage, isError: true)
+        Breadcrumbs.shared.add(message: logMessage, to: .sendMessage)
+        var mailErrorEvent: MailAnalyticsErrorEvent
+        switch error {
+        case let apiError as ResponseError:
+            mailErrorEvent = .sendMessageResponseError(responseCode: apiError.responseCode)
+        default:
+            mailErrorEvent = .sendMessageFail(error: "\(error)")
+        }
+        let trace = Breadcrumbs.shared.trace(for: .sendMessage)
+        Analytics.shared.sendError(mailErrorEvent, trace: trace, fingerprint: true)
     }
 
     private func handleApiError(message: MessageEntity, error: ResponseError) -> Error? {

@@ -20,7 +20,7 @@ fileprivate struct id {
 class SignatureRobot: CoreElements {
     
     func disableSignature() -> SignatureRobot {
-        if (Element.swittch.isEnabledByIndex(0)) {
+        if (swittch().byIndex(0).enabled()) {
             /// Turn switch OFF and then ON
             swittch().byIndex(0).tap()
         } else {
@@ -32,7 +32,7 @@ class SignatureRobot: CoreElements {
     }
     
     func enableSignature() -> SignatureRobot {
-        if (Element.swittch.isEnabledByIndex(0)) {
+        if (swittch().byIndex(0).enabled()) {
             /// Turn switch OFF and then ON
             swittch().byIndex(0).tap()
             swittch().byIndex(0).tap()

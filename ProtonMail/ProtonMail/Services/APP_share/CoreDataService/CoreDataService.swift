@@ -135,10 +135,6 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return context
     }
 
-    func makeNewBackgroundContext() -> NSManagedObjectContext {
-        return container.newBackgroundContext()
-    }
-
     // MARK: - methods
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {
         if let url = URL(string: urlString), url.scheme == "x-coredata" {
@@ -146,15 +142,6 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
             return psc.managedObjectID(forURIRepresentation: url)
         }
         return nil
-    }
-
-    func enqueue(context: NSManagedObjectContext,
-                 block: @escaping (_ context: NSManagedObjectContext) -> Void) {
-        self.serialQueue.addOperation {
-            context.performAndWait {
-                block(context)
-            }
-        }
     }
 
     /// Executes the block synchronously and immediately - without a serial queue.

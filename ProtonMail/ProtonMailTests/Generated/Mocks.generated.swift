@@ -1,10 +1,13 @@
 // Generated using Sourcery 1.9.1 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 import CoreData
+import ProtonCore_Crypto
 import ProtonCore_Environment
 import ProtonCore_PaymentsUI
 import ProtonCore_TestingToolkit
 import ProtonCore_Keymaker
+
+import class ProtonCore_DataModel.UserInfo
 
 @testable import ProtonMail
 
@@ -105,8 +108,8 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
     }
 
     @FuncStub(MockCacheServiceProtocol.updateExpirationOffset) var updateExpirationOffsetStub
-    func updateExpirationOffset(of message: Message, expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: (() -> Void)?) {
-        updateExpirationOffsetStub(message, expirationTime, pwd, pwdHint, completion)
+    func updateExpirationOffset(of messageObjectID: NSManagedObjectID, expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: (() -> Void)?) {
+        updateExpirationOffsetStub(messageObjectID, expirationTime, pwd, pwdHint, completion)
     }
 
 }
@@ -133,6 +136,14 @@ class MockContactCacheStatusProtocol: ContactCacheStatusProtocol {
         set {
             contactsCachedStub(newValue)
         }
+    }
+
+}
+
+class MockContactGroupsProviderProtocol: ContactGroupsProviderProtocol {
+    @FuncStub(MockContactGroupsProviderProtocol.getAllContactGroupVOs, initialReturn: [ContactGroupVO]()) var getAllContactGroupVOsStub
+    func getAllContactGroupVOs() -> [ContactGroupVO] {
+        getAllContactGroupVOsStub()
     }
 
 }
@@ -499,6 +510,93 @@ class MockKeymakerProtocol: KeymakerProtocol {
 
 }
 
+class MockLabelManagerRouterProtocol: LabelManagerRouterProtocol {
+    @FuncStub(MockLabelManagerRouterProtocol.navigateToLabelEdit) var navigateToLabelEditStub
+    func navigateToLabelEdit(editMode: LabelEditMode, labels: [MenuLabel], type: PMLabelType, userInfo: UserInfo, labelService: LabelsDataService) {
+        navigateToLabelEditStub(editMode, labels, type, userInfo, labelService)
+    }
+
+}
+
+class MockLabelManagerUIProtocol: LabelManagerUIProtocol {
+    @FuncStub(MockLabelManagerUIProtocol.viewModeDidChange) var viewModeDidChangeStub
+    func viewModeDidChange(mode: LabelManagerViewModel.ViewMode) {
+        viewModeDidChangeStub(mode)
+    }
+
+    @FuncStub(MockLabelManagerUIProtocol.showLoadingHUD) var showLoadingHUDStub
+    func showLoadingHUD() {
+        showLoadingHUDStub()
+    }
+
+    @FuncStub(MockLabelManagerUIProtocol.hideLoadingHUD) var hideLoadingHUDStub
+    func hideLoadingHUD() {
+        hideLoadingHUDStub()
+    }
+
+    @FuncStub(MockLabelManagerUIProtocol.reloadData) var reloadDataStub
+    func reloadData() {
+        reloadDataStub()
+    }
+
+    @FuncStub(MockLabelManagerUIProtocol.reload) var reloadStub
+    func reload(section: Int) {
+        reloadStub(section)
+    }
+
+    @FuncStub(MockLabelManagerUIProtocol.showToast) var showToastStub
+    func showToast(message: String) {
+        showToastStub(message)
+    }
+
+    @FuncStub(MockLabelManagerUIProtocol.showAlertMaxItemsReached) var showAlertMaxItemsReachedStub
+    func showAlertMaxItemsReached() {
+        showAlertMaxItemsReachedStub()
+    }
+
+    @FuncStub(MockLabelManagerUIProtocol.showNoInternetConnectionToast) var showNoInternetConnectionToastStub
+    func showNoInternetConnectionToast() {
+        showNoInternetConnectionToastStub()
+    }
+
+}
+
+class MockLabelProviderProtocol: LabelProviderProtocol {
+    @FuncStub(MockLabelProviderProtocol.makePublisher, initialReturn: .crash) var makePublisherStub
+    func makePublisher() -> LabelPublisherProtocol {
+        makePublisherStub()
+    }
+
+    @FuncStub(MockLabelProviderProtocol.getCustomFolders, initialReturn: [LabelEntity]()) var getCustomFoldersStub
+    func getCustomFolders() -> [LabelEntity] {
+        getCustomFoldersStub()
+    }
+
+    @FuncStub(MockLabelProviderProtocol.fetchV4Labels) var fetchV4LabelsStub
+    func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?) {
+        fetchV4LabelsStub(completion)
+    }
+
+}
+
+class MockLabelPublisherProtocol: LabelPublisherProtocol {
+    @PropertyStub(\MockLabelPublisherProtocol.delegate, initialGet: nil) var delegateStub
+    var delegate: LabelListenerProtocol? {
+        get {
+            delegateStub()
+        }
+        set {
+            delegateStub(newValue)
+        }
+    }
+
+    @FuncStub(MockLabelPublisherProtocol.fetchLabels) var fetchLabelsStub
+    func fetchLabels(labelType: LabelFetchType) {
+        fetchLabelsStub(labelType)
+    }
+
+}
+
 class MockLockPreferences: LockPreferences {
     @PropertyStub(\MockLockPreferences.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub
     var isPinCodeEnabled: Bool {
@@ -552,6 +650,19 @@ class MockMessageDataActionProtocol: MessageDataActionProtocol {
     @FuncStub(MockMessageDataActionProtocol.mark, initialReturn: Bool()) var markStub
     func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool {
         markStub(messageObjectIDs, labelID, unRead)
+    }
+
+}
+
+class MockNewMessageBodyViewModelDelegate: NewMessageBodyViewModelDelegate {
+    @FuncStub(MockNewMessageBodyViewModelDelegate.reloadWebView) var reloadWebViewStub
+    func reloadWebView(forceRecreate: Bool) {
+        reloadWebViewStub(forceRecreate)
+    }
+
+    @FuncStub(MockNewMessageBodyViewModelDelegate.showReloadError) var showReloadErrorStub
+    func showReloadError() {
+        showReloadErrorStub()
     }
 
 }
@@ -757,6 +868,14 @@ class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
     @FuncStub(MockUnsubscribeActionHandler.markAsUnsubscribed) var markAsUnsubscribedStub
     func markAsUnsubscribed(messageId: MessageID, finish: @escaping () -> Void) {
         markAsUnsubscribedStub(messageId, finish)
+    }
+
+}
+
+class MockUserFeedbackServiceProtocol: UserFeedbackServiceProtocol {
+    @FuncStub(MockUserFeedbackServiceProtocol.send) var sendStub
+    func send(_ feedback: UserFeedback, handler: @escaping (UserFeedbackServiceError?) -> Void) {
+        sendStub(feedback, handler)
     }
 
 }

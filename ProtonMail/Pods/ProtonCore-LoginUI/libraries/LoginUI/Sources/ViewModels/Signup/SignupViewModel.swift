@@ -62,14 +62,22 @@ class SignupViewModel {
         loginService.checkAvailabilityForUsernameAccount(username: username, completion: completion)
     }
     
-    func checkExternalEmailAccount(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void, editEmail: @escaping () -> Void) {
-        loginService.checkAvailabilityForExternalAccount(email: email) { result in
-            guard case .failure(let error) = result, error.codeInLogin == APIErrorCode.humanVerificationEditEmail else {
+    func checkExternalEmailAccount(
+        email: String,
+        completion: @escaping (Result<(), AvailabilityError>) -> Void,
+        editEmail: @escaping () -> Void,
+        protonDomainUsedForExternalAccount: @escaping (String) -> Void
+    ) {
+        loginService.checkAvailabilityForExternalAccount(email: email) { [weak self] result in
+            switch result {
+            case .failure(.protonDomainUsedForExternalAccount(let username, let domain, _)):
+                self?.currentlyChosenSignUpDomain = domain
+                protonDomainUsedForExternalAccount(username)
+            case .failure(let error) where error.codeInLogin == APIErrorCode.humanVerificationEditEmail:
+                editEmail()
+            case .success, .failure:
                 completion(result)
-                return
             }
-            // transform internal HV error to editEmail closure
-            editEmail()
         }
     }
     

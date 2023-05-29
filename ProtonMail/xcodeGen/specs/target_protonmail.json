@@ -63,13 +63,14 @@
          ],
          "postBuildScripts": [
             {
+               "basedOnDependencyAnalysis": false,
                "name": "Overwrite Settings.bundle for Debug",
                "path": "xcodeGen/copySettingsEnvironmentBundle.sh"
             },
             {
                "basedOnDependencyAnalysis": false,
                "name": "SwiftLint",
-               "path": "xcodeGen/swiftlint.sh"
+               "path": "xcodeGen/swiftlint_build_phase.sh"
             }
          ],
          "configFiles": {

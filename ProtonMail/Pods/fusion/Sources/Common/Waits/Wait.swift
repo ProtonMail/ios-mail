@@ -39,67 +39,124 @@ open class Wait {
         defaultTimeout = time
     }
 
+    /**
+     Waits for the element to exist but does not fail the test when condition is not met.
+     */
     @discardableResult
     open func forElement(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
         waitSoftForCondition(element, Predicate.exists, file, line)
         return element
     }
 
+    /**
+     Waits for the element to be enabled and fails the test when condition is not met.
+     */
     @discardableResult
-    open func forElementToBeEnabled(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
-        return waitForCondition(element, Predicate.enabled, file, line)
-    }
-
-    @discardableResult
-    open func forElementToBeDisabled(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
-        return waitForCondition(element, Predicate.disabled, file, line)
-    }
-
-    @discardableResult
-    open func forElementToBeHittable(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
-        return waitForCondition(element, Predicate.hittable, file, line)
-    }
-
-    @discardableResult
-    open func forElementToDisappear(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
-        return waitForCondition(element, Predicate.doesNotExist, file, line)
-    }
-
-    @discardableResult
-    open func forHavingKeyboardFocus(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
-        return waitForCondition(element, Predicate.hasKeyboardFocus, file, line)
-    }
-
-    @discardableResult
-    open func hasKeyboardFocus(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> Bool {
-        return waitSoftForCondition(element, Predicate.hasKeyboardFocus, file, line)
+    open func forElementToBeEnabled(
+        _ element: XCUIElement,
+        _ file: StaticString = #file,
+        _ line: UInt = #line
+    ) -> XCUIElement {
+        waitForCondition(element, Predicate.enabled, file, line)
     }
 
     /**
-     Waits for the condition and fails the test when condition is not met.
+     Waits for the element to be disabled and fails the test when condition is not met.
      */
-    private func waitForCondition(_ element: XCUIElement, _ predicate: NSPredicate, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
-        let expectation = XCTNSPredicateExpectation(predicate: predicate, object: element)
-        let result = XCTWaiter().wait(for: [expectation], timeout: defaultTimeout)
-        if result != .completed {
-            let message = "Condition: \(predicate.predicateFormat) was not met for Element: \(element) after \(defaultTimeout) seconds timeout."
+    @discardableResult
+    open func forElementToBeDisabled(
+        _ element: XCUIElement,
+        _ file: StaticString = #file,
+        _ line: UInt = #line
+    ) -> XCUIElement {
+        waitForCondition(element, Predicate.disabled, file, line)
+    }
+
+    /**
+     Waits for the element to be hittable and fails the test when condition is not met.
+     */
+    @discardableResult
+    open func forElementToBeHittable(
+        _ element: XCUIElement,
+        _ file: StaticString = #file,
+        _ line: UInt = #line
+    ) -> XCUIElement {
+        waitForCondition(element, Predicate.hittable, file, line)
+    }
+
+    /**
+     Waits for the element to disappear and fails the test when condition is not met.
+     */
+    @discardableResult
+    open func forElementToDisappear(
+        _ element: XCUIElement,
+        _ file: StaticString = #file,
+        _ line: UInt = #line
+    ) -> XCUIElement {
+        waitForCondition(element, Predicate.doesNotExist, file, line)
+    }
+
+    /**
+     Waits for the element having keyboard focus and fails the test when condition is not met.
+     */
+    @discardableResult
+    open func forHavingKeyboardFocus(
+        _ element: XCUIElement,
+        _ file: StaticString = #file,
+        _ line: UInt = #line
+    ) -> XCUIElement {
+        waitForCondition(element, Predicate.hasKeyboardFocus, file, line)
+    }
+
+    /**
+     Waits for the element having keyboard focus but does not fail the test when condition is not met.
+     */
+    @discardableResult
+    open func hasKeyboardFocus(
+        _ element: XCUIElement,
+        _ file: StaticString = #file,
+        _ line: UInt = #line
+    ) -> Bool {
+        waitSoftForCondition(element, Predicate.hasKeyboardFocus, file, line)
+    }
+
+    /**
+     Waits for the predicate and fails the test when is not met.
+     */
+    private func waitForCondition(
+        _ element: XCUIElement,
+        _ predicate: NSPredicate,
+        _ file: StaticString = #file,
+        _ line: UInt = #line
+    ) -> XCUIElement {
+        let isPredicateMet = wait(for: element, with: predicate)
+
+        if !isPredicateMet {
+            let message = """
+                          Condition: <\(predicate.predicateFormat)> was NOT met
+                          for element: <\(element)> after \(defaultTimeout) seconds timeout.
+                          """
             XCTFail(message, file: file, line: line)
         }
+
         return element
     }
 
     /**
-     Waits for the condition but don't fail the test to trigger an action on XCUIElement and initiate the UIInterruptionMonitor mechanism when action cannot be completed.
-     UIInterruptionMonitor is not triggered when waiting for the element.
+     Waits for the predicate and does not fail the test when is not met.
      */
     @discardableResult
-    private func waitSoftForCondition(_ element: XCUIElement, _ predicate: NSPredicate, _ file: StaticString = #file, _ line: UInt = #line) -> Bool {
-        let expectation = XCTNSPredicateExpectation(predicate: predicate, object: element)
-        let result = XCTWaiter().wait(for: [expectation], timeout: defaultTimeout)
-        if result == .completed {
-            return true
-        } else {
-            return false
-        }
+    private func waitSoftForCondition(
+        _ element: XCUIElement,
+        _ predicate: NSPredicate,
+        _ file: StaticString = #file,
+        _ line: UInt = #line
+    ) -> Bool {
+        wait(for: element, with: predicate)
     }
+
+    private func wait(for element: XCUIElement, with predicate: NSPredicate) -> Bool {
+        waitUntil(timeout: defaultTimeout, condition: predicate.evaluate(with: element))
+    }
+
 }

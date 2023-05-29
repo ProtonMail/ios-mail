@@ -984,12 +984,6 @@ extension ComposeContentViewController: ComposeViewDataSource {
 // MARK: Attachment
 
 extension ComposeContentViewController {
-    func attachments(pickup attachment: AttachmentEntity) -> Promise<Void> {
-        return self.collectDraftData().done { [weak self] _ in
-            self?.viewModel.composerMessageHelper.addAttachment(attachment)
-        }
-    }
-
     func attachments(deleted attachment: AttachmentEntity) -> Promise<Void> {
         return Promise { [weak self] seal in
             guard let self = self else {

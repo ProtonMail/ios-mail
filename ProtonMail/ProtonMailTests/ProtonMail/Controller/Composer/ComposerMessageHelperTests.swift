@@ -231,7 +231,7 @@ final class ComposerMessageHelperTests: XCTestCase {
 
         XCTAssertTrue(cacheServiceMock.updateExpirationOffsetStub.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(cacheServiceMock.updateExpirationOffsetStub.lastArguments)
-        XCTAssertEqual(argument.a1, testMessage)
+        XCTAssertEqual(argument.a1, testMessage.objectID)
         XCTAssertEqual(argument.a2, expirationTime)
         XCTAssertEqual(argument.a3, password)
         XCTAssertEqual(argument.a4, hint)

@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Kurtarma etkileştirildi";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Arkadaşınıza önerin";
 
 /* Title */
@@ -2249,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Ücretli bir özellik olduğundan %@ adresini varsayılan olarak ayarlayamazsınız.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Sistem ayarlarında FaceID devre dışı bırakılmış. Face ID önemli hesap bilgilerinizi korumak için kullanılır. Hesabınıza erişmek için, ayarlar bölümüne giderek Face ID özelliğini etkinleştirin ya da yeniden oturum açın.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Sistem ayarlarında %@ devre dışı bırakılmış. %@ önemli hesap bilgilerinizi korumak için kullanılır. Hesabınıza erişmek için, ayarlar bölümüne giderek %@ özelliğini etkinleştirin ya da yeniden oturum açın.";
 
 /* Message */
 "You have %d new emails!" = "%d yeni e-postanız var!";

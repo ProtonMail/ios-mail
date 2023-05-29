@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Herstel ingeschakeld";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Verwijs een vriend door";
 
 /* Title */
@@ -1989,7 +1990,7 @@
 "This message was automatically generated" = "Dit bericht werd automatisch gegenereerd";
 
 /* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "Dit bericht zal worden verzonden op %1$@ om $%2$@";
+"This message will be sent on %@ at %@" = "Dit bericht zal worden verzonden op %1$@ om %2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Dit bericht verloopt over %1$dd %2$du %3$dm";
@@ -2249,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "U heeft Face ID uitgeschakeld in uw systeeminstellingen. Face ID is gebruikt om belangrijke accountgegevens te beschermen. Om toegang te krijgen tot uw account gaat u naar instellingen en reactiveer Face ID of log opnieuw in.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "U heeft %@ uitgeschakeld in uw systeeminstellingen. %@ is gebruikt om belangrijke accountgegevens te beschermen. Om toegang te krijgen tot uw account gaat u naar instellingen en reactiveer %@ of log opnieuw in.";
 
 /* Message */
 "You have %d new emails!" = "U heeft %d nieuwe e-mails!";

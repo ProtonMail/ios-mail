@@ -18,14 +18,14 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
-    
+
 import Foundation
 import Security
 
 open class Keychain {
     internal enum Accessibility {
         case afterFirstUnlockThisDeviceOnly
-        
+
         var cfString: CFString {
             switch self {
             case .afterFirstUnlockThisDeviceOnly: return kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
@@ -34,7 +34,7 @@ open class Keychain {
     }
     internal enum AccessControl {
         case none, userPresence
-        
+
         var flags: SecAccessControlCreateFlags? {
             switch self {
             case .userPresence: return [.userPresence]
@@ -42,37 +42,38 @@ open class Keychain {
             }
         }
     }
-    
+
     internal var accessibility: Accessibility
     internal var authenticationPolicy: AccessControl
     internal let accessGroup: String
     internal let service: String
-    
+    internal let keychainQueue = DispatchQueue(label: "me.proton.account.keychain.queue", attributes: .concurrent)
+
     internal func switchAccessibilitySettings(_ accessibility: Accessibility, authenticationPolicy: AccessControl) {
         self.accessibility = accessibility
         self.authenticationPolicy = authenticationPolicy
     }
-    
+
     public init(service: String, accessGroup: String) {
         self.service = service
         self.accessGroup = accessGroup
-        
+
         self.accessibility = .afterFirstUnlockThisDeviceOnly
         self.authenticationPolicy = .none
     }
-    
+
     public func set(_ data: Data, forKey key: String) {
         self.add(data: data, forKey: key)
     }
-    
+
     public func set(_ string: String, forKey key: String) {
         self.add(data: string.data(using: .utf8)!, forKey: key)
     }
-    
+
     public func data(forKey key: String) -> Data? {
         return self.getData(forKey: key)
     }
-    
+
     public func string(forKey key: String) -> String? {
         guard let data = self.getData(forKey: key) else {
             return nil
@@ -83,9 +84,9 @@ open class Keychain {
     public func remove(forKey key: String) {
         _ = self.remove(key)
     }
-        
+
     // Private - internal for unit tests
-    
+
     internal func getData(forKey key: String) -> Data? {
         var query: [String: AnyObject] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -99,25 +100,27 @@ open class Keychain {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
         }
-        
+
         if let auth = self.authenticationPolicy.flags,
             let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault, self.accessibility.cfString, auth, nil)
         {
             query[kSecAttrAccessControl as String] = accessControl
         }
-        
-        var result: AnyObject?
-        let code = withUnsafeMutablePointer(to: &result) {
-            SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+
+        return  keychainQueue.sync {
+            var result: AnyObject?
+            let code = withUnsafeMutablePointer(to: &result) {
+                SecItemCopyMatching(query as CFDictionary, UnsafeMutablePointer($0))
+            }
+
+            guard code == noErr, let data = result as? Data else {
+                return nil
+            }
+
+            return data
         }
-        
-        guard code == noErr, let data = result as? Data else {
-            return nil
-        }
-        
-        return data
     }
-    
+
     @discardableResult
     internal func remove(_ key: String) -> Bool {
         var query: [String: AnyObject] = [
@@ -130,16 +133,18 @@ open class Keychain {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
         }
-        
-        let code = SecItemDelete(query as CFDictionary)
-        
-        guard code == noErr else {
-            return false
+
+        return keychainQueue.sync(flags: .barrier) {
+            let code = SecItemDelete(query as CFDictionary)
+
+            guard code == noErr else {
+                return false
+            }
+
+            return true
         }
-        
-        return true
     }
-    
+
     @discardableResult
     internal func add(data value: Data, forKey key: String) -> Bool {
         // search for existing
@@ -153,35 +158,39 @@ open class Keychain {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
         }
-        
-        var queryForSearch = query
-        queryForSearch[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUIFail
-        let codeExisting = SecItemCopyMatching(queryForSearch as CFDictionary, nil)
-        
-        // update
-        guard codeExisting == errSecItemNotFound else {
-            var updateAttributes: [String: AnyObject] = [
-                kSecAttrSynchronizable as String: NSNumber(value: false),
-                kSecValueData as String: value as AnyObject
-            ]
-            self.injectAccessControlAttributes(into: &updateAttributes)
-            
-            let codeUpdate = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
-            assert(codeUpdate == noErr, "Error updating \(key) to Keychain: \(codeUpdate)")
-            return codeUpdate == noErr
-        }
-        
-        // add new
-        var newAttributes = query
-        newAttributes[kSecAttrSynchronizable as String] = NSNumber(value: false)
-        newAttributes[kSecValueData as String] = value as AnyObject
-        self.injectAccessControlAttributes(into: &newAttributes)
 
-        let code = SecItemAdd(newAttributes as CFDictionary, nil)
-        assert(code == noErr, "Error saving \(key) to Keychain: \(code)")
-        return code == noErr
+        var queryForSearch = query
+        if #unavailable(macOS 11.0, iOS 15.0, macCatalyst 15.0) {
+            queryForSearch[kSecUseAuthenticationUI as String] = kSecUseAuthenticationUIFail
+        }
+        return keychainQueue.sync(flags: .barrier) {
+            let codeExisting = SecItemCopyMatching(queryForSearch as CFDictionary, nil)
+
+            // update
+            guard codeExisting == errSecItemNotFound else {
+                var updateAttributes: [String: AnyObject] = [
+                    kSecAttrSynchronizable as String: NSNumber(value: false),
+                    kSecValueData as String: value as AnyObject
+                ]
+                self.injectAccessControlAttributes(into: &updateAttributes)
+
+                let codeUpdate = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
+                assert(codeUpdate == noErr, "Error updating \(key) to Keychain: \(codeUpdate)")
+                return codeUpdate == noErr
+            }
+
+            // add new
+            var newAttributes = query
+            newAttributes[kSecAttrSynchronizable as String] = NSNumber(value: false)
+            newAttributes[kSecValueData as String] = value as AnyObject
+            self.injectAccessControlAttributes(into: &newAttributes)
+
+            let code = SecItemAdd(newAttributes as CFDictionary, nil)
+            assert(code == noErr, "Error saving \(key) to Keychain: \(code)")
+            return code == noErr
+        }
     }
-    
+
     private func injectAccessControlAttributes(into attributes: inout [String: AnyObject]) {
         if let auth = self.authenticationPolicy.flags,
             let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault, self.accessibility.cfString, auth, nil)
@@ -191,9 +200,9 @@ open class Keychain {
             attributes[kSecAttrAccessible as String] = self.accessibility.cfString
         }
     }
-    
+
     @discardableResult
-    public func removeEverything() -> Bool { 
+    public func removeEverything() -> Bool {
         var query: [String: AnyObject] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: self.service as AnyObject,
@@ -203,13 +212,15 @@ open class Keychain {
         if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
         }
-        
-        let code = SecItemDelete(query as CFDictionary)
-        
-        guard code == noErr else {
-            return false
+
+        return keychainQueue.sync(flags: .barrier) {
+            let code = SecItemDelete(query as CFDictionary)
+
+            guard code == noErr else {
+                return false
+            }
+
+            return true
         }
-        
-        return true
     }
 }

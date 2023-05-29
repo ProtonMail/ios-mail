@@ -173,11 +173,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>few</key>
-			<string>%d szybkie połącznia VPN</string>
+			<string>%d szybkie połączenia VPN</string>
 			<key>many</key>
 			<string>%d szybkich połączeń VPN</string>
 			<key>one</key>
-			<string>%d szybkie połącznie VPN</string>
+			<string>%d szybkie połączenie VPN</string>
 			<key>other</key>
 			<string>%d szybkich połączeń VPN</string>
 		</dict>
