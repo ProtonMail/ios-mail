@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "交談模式將說明您輕鬆瀏覽，並管理郵件往來。";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---為了讓我們能協助你解決問題, 請盡可能提供所有細節---\n\n摘要:\n\n之前是否發生過相同問題: 是/否\n重現此問題之操作步驟:\n預期結果:\n實際結果:\n其他說明:";
+
 /* Title */
 "Bug Report Received" = "已收到您的錯誤回報";
 
@@ -1720,7 +1723,7 @@
 /* Action */
 "Send anyway" = "仍然傳送";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "傳送意見反饋";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2198,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "更新電郵通知";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "已送出更新指令, 等待網路連線中...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "更新於 >1 小時前";
 
@@ -2318,9 +2324,6 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您目前無法將 %@ 設為預設位址，因為這是付費功能。";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "您在系統設定裡停用了%@ 。%@ 被使用在保護重要的帳號資訊上。要存取您的帳號，要去設定裡重新啟動%@ ，或是重新登入。";
-
 /* Message */
 "You have %d new emails!" = "您有 %d 封新郵件！";
 
@@ -2388,6 +2391,7 @@
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "由於您長時間沒有進行任何操作，您的交談已過期或是被撤銷。請重新登入。";
 
 /* contact placeholder */
-"ZIP" = "美國郵區編號";
+"ZIP" = "郵遞區號";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系統設定裡停用了%@ 。%@ 被使用在保護重要的帳號資訊上。要存取您的帳號，要去設定裡重新啟動%@ ，或是重新登入。";

@@ -1523,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Condividi il tuo problema.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Si prega di accedere all'app Proton Mail";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Sei pregato di passare a un piano a pagamento per usare più di 3 cartelle";
 
@@ -1720,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Invia comunque";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Invia il tuo feedback";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2198,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "Email di notifica di aggiornamento";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Aggiornamento in coda, in attesa di connessione...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Aggiornato >1 ora fa";
 
@@ -2319,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Non puoi impostare l'indirizzo %@ come predefinito perché è una funzionalità a pagamento.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Hai disabilitato %@ nelle impostazioni di sistema. %@ è stato utilizzato per proteggere le informazioni importanti dell'account. Per accedere al tuo account, vai nelle impostazioni e riattiva %@, o accedi di nuovo.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Hai disabilitato %1$@ nelle impostazioni di sistema. %2$@ è stato utilizzato per proteggere le informazioni importanti dell'account. Per accedere al tuo account, vai nelle impostazioni e riattiva %3$@, o accedi di nuovo.";
 
 /* Message */
 "You have %d new emails!" = "Ha %d nuovi messaggi!";

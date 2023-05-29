@@ -1723,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Enviar de todos modos";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Enviar comentarios";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2325,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "No puedes establecer la dirección %@ por defecto porque es una función de pago.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Has desactivado %@ en la configuración del sistema. %@ se ha utilizado para proteger información importante de la cuenta. Para acceder a tu cuenta, ve a la configuración y activa de nuevo el %@, o vuelve a iniciar sesión.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Has desactivado %1$@ en la configuración del sistema. %2$@ se ha utilizado para proteger información importante de la cuenta. Para acceder a tu cuenta, ve a la configuración y activa de nuevo el %3$@, o vuelve a iniciar sesión.";
 
 /* Message */
 "You have %d new emails!" = "Tienes %d correos nuevos.";

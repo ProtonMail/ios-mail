@@ -1720,7 +1720,7 @@
 /* Action */
 "Send anyway" = "仍然发送";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "评价应用";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2321,9 +2321,6 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您需要付费才能将 %@ 设为首选地址。";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "您在系统设置中关闭了 %@，但您的账户信息已受到 %@ 保护。请在系统设置中再次开启 %@ 或重新登录解锁账户。";
-
 /* Message */
 "You have %d new emails!" = "您收到了 %d 封新邮件！";
 
@@ -2392,5 +2389,8 @@
 
 /* contact placeholder */
 "ZIP" = "邮编";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系统设置中关闭了 %@，但您的账户信息已受到 %@ 保护。请在系统设置中再次开启 %@ 或重新登录解锁账户。";
 
 "Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

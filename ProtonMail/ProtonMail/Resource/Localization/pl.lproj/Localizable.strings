@@ -1714,16 +1714,13 @@
 /* section title */
 "Select colour" = "Wybierz kolor";
 
-/* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Zaznaczone";
-
 /* Action */
 "Send" = "Wyślij";
 
 /* Action */
 "Send anyway" = "Wyślij mimo to";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Wyślij opinię";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2325,7 +2322,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Nie możesz ustawić adresu %@ jako domyślny, ponieważ jest to funkcja płatna.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Funkcja %@ została wyłączona w ustawieniach systemu. Zabezpieczenie %@ było używane do ochrony ważnych informacji o koncie. Aby uzyskać dostęp do konta, przejdź do ustawień i ponownie aktywuj %@ lub zaloguj się ponownie.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Funkcja %1$@ została wyłączona w ustawieniach systemu. Zabezpieczenie %2$@ było używane do ochrony ważnych informacji o koncie. Aby uzyskać dostęp do konta, przejdź do ustawień i ponownie aktywuj %3$@ lub zaloguj się ponownie.";
 
 /* Message */
 "You have %d new emails!" = "Masz nowe wiadomości! (%d)";

@@ -1723,7 +1723,7 @@
 /* Action */
 "Send anyway" = "このまま送信";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "フィードバックを送信";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2324,9 +2324,6 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "有料機能のため、%@ を既定のアドレスに設定できません。";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "システム設定で %@を無効になっています。%@は重要なアカウント情報を保護するために使用されています。 アカウントにアクセスするには、設定を開き%@を再度有効にするか、再度ログインしてください。";
-
 /* Message */
 "You have %d new emails!" = "%d 件の新着メールがあります";
 
@@ -2396,3 +2393,5 @@
 /* contact placeholder */
 "ZIP" = "郵便番号";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "システム設定で %1$@を無効になっています。%2$@は重要なアカウント情報を保護するために使用されています。 アカウントにアクセスするには、設定を開き%3$@を再度有効にするか、再度ログインしてください。";

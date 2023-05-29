@@ -313,7 +313,7 @@
 "Breeze through threaded messages in conversation mode." = "Navegue pelas mensagens encadeadas no modo de conversa.";
 
 /* The place holder text in the bug report view. */
-"Bug Report Place Holder" = "Para que possamos te ajudar, por favor forneça a maior quantidade de detalhes possível";
+"Bug Report Place Holder" = "Para que possamos te ajudar, forneça a maior quantidade de detalhes possível";
 
 /* Title */
 "Bug Report Received" = "Relatório do problema recebido";
@@ -1723,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Enviar mesmo assim";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Enviar comentários";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2325,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Você não pode definir o endereço %@ como padrão, porque este é um recurso pago.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Você desativou %@ nas configurações do sistema. %@ foi usado para proteger informações importantes da conta. Para acessar sua conta, vá para as configurações e reative %@ ou realize o início de sessão novamente.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Você desativou %1$@ nas configurações do sistema. %2$@ foi usado para proteger informações importantes da conta. Para acessar sua conta, vá para as configurações e reative %3$@ ou entre novamente na sua conta.";
 
 /* Message */
 "You have %d new emails!" = "Você tem %d novos e-mails.";

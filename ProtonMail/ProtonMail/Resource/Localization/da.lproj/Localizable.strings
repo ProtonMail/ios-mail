@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Gå hurtigt gennem tråd af meddelelser i samtaletilstand.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---For at hjælpe os med at hjælpe dig, oplys venligst flest mulig detaljer---\n\nOpsummer:\n\nEr problemet opstået flere gange: ja/nej\nHvilke handlinger får problemet til at opstå:\nForventet resultat:\nFaktiske resultat:\nKommentarer:";
+
 /* Title */
 "Bug Report Received" = "Fejlrapport modtaget";
 
@@ -1720,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Send alligevel";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Send feedback";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2198,6 +2201,9 @@
 /* update notification email error title */
 "Update Notification Email" = "Opdatér notifikations-e-mail";
 
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Afventer internetforbindelse. Opdatering er sat i kø...";
+
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Opdateret for >1 time siden";
 
@@ -2318,6 +2324,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Du kan ikke angive %@-adressen som standard, da dette er en betalingsfunktion.";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Du har deaktiveret %1$@ i dine systemindstillinger. %2$@ er blevet brugt til at beskytte vigtige kontooplysninger. Få adgang til din konto ved at gå til Indstillinger og genaktivere %3$@ eller logge ind igen.";
+
 /* Message */
 "You have %d new emails!" = "Du har %d nye e-mails!";
 
@@ -2387,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "Postnummer";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

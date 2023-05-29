@@ -1723,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Yine de gönder";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Geri bildirimi gönder";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2124,7 +2124,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği etkinleştirin.";
 
 /* Placeholder */
-"Two Factor Code" = "İki aşamalı doğrulama kodu";
+"Two Factor Code" = "İki adımlı doğrulama kodu";
 
 /* Internal type casting error */
 "Type casting error" = "Tür döküm hatası";
@@ -2169,7 +2169,7 @@
 "Unlimited folders and labels" = "Sınırsız klasör ve etiket";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Tarifenizi yükselttiğinizde özel ileti zamanlaması ve diğer özelliklere erişebilirsiniz.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Tarifenizi yükselttiğinizde özel ileti zamanlaması ve ek faydalara erişebilirsiniz.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Unlock required" = "Kilidin açılması gerekli";
@@ -2325,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Ücretli bir özellik olduğundan %@ adresini varsayılan olarak ayarlayamazsınız.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Sistem ayarlarında %@ devre dışı bırakılmış. %@ önemli hesap bilgilerinizi korumak için kullanılır. Hesabınıza erişmek için, ayarlar bölümüne giderek %@ özelliğini etkinleştirin ya da yeniden oturum açın.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Sistem ayarlarında %1$@ devre dışı bırakılmış. %2$@ önemli hesap bilgilerinizi korumak için kullanılır. Hesabınıza erişmek için, ayarlar bölümüne giderek %3$@ özelliğini etkinleştirin ya da yeniden oturum açın.";
 
 /* Message */
 "You have %d new emails!" = "%d yeni e-postanız var!";
