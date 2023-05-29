@@ -14,7 +14,6 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher/ProtonCore_AccountSwitcher.fram
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCore_Authentication_KeyGeneration.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCore_Authentication.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Challenge/ProtonCore_Challenge.framework
-${BUILT_PRODUCTS_DIR}/ProtonCore-Common/ProtonCore_Common.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-CoreTranslation/ProtonCore_CoreTranslation.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCore_DataModel.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCore_Doh.framework

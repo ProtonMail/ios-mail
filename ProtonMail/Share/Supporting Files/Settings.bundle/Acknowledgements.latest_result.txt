@@ -206,18 +206,6 @@ name: ProtonCore-Challenge, nameSpecified:
 body:                     …
 version: 5.2.0
 
-name: ProtonCore-Common, nameSpecified: 
-body:                     …
-version: 5.2.0
-
-name: ProtonCore-Common, nameSpecified: 
-body:                     …
-version: 5.2.0
-
-name: ProtonCore-Common, nameSpecified: 
-body:                     …
-version: 5.2.0
-
 name: ProtonCore-CoreTranslation, nameSpecified: 
 body:                     …
 version: 5.2.0
