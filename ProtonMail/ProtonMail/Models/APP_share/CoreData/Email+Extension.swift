@@ -57,18 +57,4 @@ extension Email {
         }
         return nil
     }
-
-    class func findEmailsController(_ emails: [String], inManagedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController<Email>? {
-        let controller: NSFetchedResultsController<Email> = context.fetchedControllerEntityName(
-            entityName: Attributes.entityName,
-            forKey: Attributes.email,
-            forManagedObjectIDs: emails
-        )
-        do {
-            try controller.performFetch()
-        } catch _ {
-            return nil
-        }
-        return controller
-    }
 }

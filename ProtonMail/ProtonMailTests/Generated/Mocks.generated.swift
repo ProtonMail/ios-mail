@@ -782,8 +782,8 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
         cleanUpStub(userId)
     }
 
-    @FuncStub(MockLastUpdatedStoreProtocol.updateEventID, initialReturn: Promise<Void>()) var updateEventIDStub
-    func updateEventID(by userID: UserID, eventID: String) -> Promise<Void> {
+    @FuncStub(MockLastUpdatedStoreProtocol.updateEventID) var updateEventIDStub
+    func updateEventID(by userID: UserID, eventID: String) {
         updateEventIDStub(userID, eventID)
     }
 

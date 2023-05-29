@@ -564,7 +564,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: isAscending),
                                             NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)]
             fetchRequest.fetchBatchSize = 30
-            fetchRequest.includesPropertyValues = true
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         case .conversation:
             let moc = self.contextProvider.mainContext
@@ -573,7 +572,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
                                             NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)]
             fetchRequest.fetchBatchSize = 30
-            fetchRequest.includesPropertyValues = true
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
     }
@@ -709,7 +707,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 }
 
                 _ = context.saveUpstreamIfNeeded()
-                context.refreshAllObjects()
 
                 if cleanBadgeAndNotifications {
                     UIApplication.setBadge(badge: 0)
@@ -1486,13 +1483,10 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     self.contactDataService.cleanUp().ensure {
                         self.contactDataService.fetchContacts { error in
                             if error == nil {
-                                _ = self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID).ensure {
-                                    completion(error)
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    completion(error)
-                                }
+                                self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID)
+                            }
+                            DispatchQueue.main.async {
+                                completion(error)
                             }
                         }
                     }.cauterize()

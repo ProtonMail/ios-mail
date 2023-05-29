@@ -606,7 +606,6 @@ extension CacheService {
             } catch {
             }
             DispatchQueue.main.async {
-                self.coreDataService.mainContext.refreshAllObjects()
                 completion?()
             }
         }

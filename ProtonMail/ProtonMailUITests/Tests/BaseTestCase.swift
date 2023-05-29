@@ -62,6 +62,8 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         app.launchArguments.append("-skipTour")
         app.launchArguments.append("-toolbarSpotlightOff")
         app.launchArguments.append("-uiTests")
+        app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])
+        app.launchArguments.append(contentsOf: ["-AppleLanguages", "(en)"])
 
         app.launchEnvironment[apiDomainKey] = dynamicDomain
 

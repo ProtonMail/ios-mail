@@ -70,8 +70,6 @@ final class MailboxDiffableDataSource: MailboxDataSource {
     private func reloadMailData() -> NSDiffableDataSourceSnapshot<Int, MailboxRow> {
         var realSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxRow>()
 
-        var itemsToReload: [MailboxRow] = []
-
         for section in 0..<viewModel.sectionCount() {
             realSnapshot.appendSections([section])
             var items: [MailboxRow] = []
@@ -84,10 +82,6 @@ final class MailboxDiffableDataSource: MailboxDataSource {
                 let rowItem = MailboxRow.real(mailboxItem)
 
                 items.append(rowItem)
-
-                if !viewModel.isObjectUpdated(objectID: mailboxItem.objectID) {
-                    itemsToReload.append(rowItem)
-                }
             }
 
             do {
@@ -98,8 +92,6 @@ final class MailboxDiffableDataSource: MailboxDataSource {
                 PMAssertionFailure(error)
             }
         }
-
-        realSnapshot.reloadItems(itemsToReload)
 
         return realSnapshot
     }
