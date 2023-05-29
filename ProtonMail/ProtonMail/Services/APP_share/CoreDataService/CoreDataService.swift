@@ -309,12 +309,13 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return try result.get()
     }
 
-    /// Discards pending changes in the global read and write contexts
-    func rollbackAllContexts() throws {
-        try write { context in
-            context.rollback()
+    /// Discards pending changes in the global main context
+    func resetMainContextIfNeeded() {
+        mainContext.perform {
+            if self.mainContext.hasChanges {
+                self.mainContext.reset()
+            }
         }
-        mainContext.rollback()
     }
 }
 

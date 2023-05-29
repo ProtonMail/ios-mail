@@ -30,7 +30,7 @@ import UIKit
 protocol LastUpdatedStoreProtocol {
     func cleanUp(userId: UserID) -> Promise<Void>
 
-    func updateEventID(by userID: UserID, eventID: String) -> Promise<Void>
+    func updateEventID(by userID: UserID, eventID: String)
     func lastEventID(userID: UserID) -> String
     func lastEventUpdateTime(userID: UserID) -> Date?
 
@@ -94,16 +94,13 @@ final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol, Service
 // MARK: - Event ID
 
 extension LastUpdatedStore {
-    func updateEventID(by userID: UserID, eventID: String) -> Promise<Void> {
-        return Promise { seal in
-            self.contextProvider.performOnRootSavingContext { context in
+    func updateEventID(by userID: UserID, eventID: String) {
+            contextProvider.performAndWaitOnRootSavingContext { context in
                 let event = self.eventIDDefault(by: userID, in: context)
                 event.eventID = eventID
                 event.updateTime = Date()
                 _ = context.saveUpstreamIfNeeded()
-                seal.fulfill_()
             }
-        }
     }
 
     private func eventIDDefault(by userID: UserID, in context: NSManagedObjectContext) -> UserEvent {

@@ -67,7 +67,10 @@ protocol EventsServiceProtocol: AnyObject {
 
 final class EventsService: Service, EventsFetching {
     private static let defaultPollingInterval: TimeInterval = 30
+
+    // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
+
     private typealias EventsObservation = (() -> Void?)?
     private(set) var status: EventsFetchingStatus = .idle
     private var subscribers: [EventsObservation] = []
@@ -175,9 +178,8 @@ extension EventsService {
                                 completion?(.failure(error))
                             } else {
                                 self.dependencies.contactCacheStatus.contactsCached = 0
-                                _ = self.lastUpdatedStore.updateEventID(by: self.userManager.userID, eventID: IDRes.eventID).ensure {
+                                self.lastUpdatedStore.updateEventID(by: self.userManager.userID, eventID: IDRes.eventID)
                                     completion?(.success(responseDict ?? [:]))
-                                }
                             }
                         }
                         self.userManager.conversationService.cleanAll()
@@ -202,28 +204,17 @@ extension EventsService {
                         }.cauterize()
                     }
                 } else if let messageEvents = eventsRes.messages {
-                    self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID) { error in
-                        if error == nil {
-                            self.processEvents(conversations: eventsRes.conversations).then { (_) -> Promise<Void> in
-                                return self.lastUpdatedStore.updateEventID(by: self.userManager.userID, eventID: eventsRes.eventID)
-                            }.then { (_) -> Promise<Void> in
-                                if eventsRes.refresh.contains(.contacts) {
-                                        return Promise()
-                                    } else {
-                                        return self.processEvents(contactEmails: eventsRes.contactEmails)
-                                    }
-                            }.then { (_) -> Promise<Void> in
-                                if eventsRes.refresh.contains(.contacts) {
-                                        return Promise()
-                                    } else {
-                                        return self.processEvents(contacts: eventsRes.contacts)
-                                    }
-                            }.then { (_) -> Promise<Void> in
+                    self.incrementalUpdateQueue.async {
+                        do {
+                            try self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID)
+                            self.processEvents(conversations: eventsRes.conversations)
+                            self.lastUpdatedStore.updateEventID(by: self.userManager.userID, eventID: eventsRes.eventID)
+                            if !eventsRes.refresh.contains(.contacts) {
+                                self.processEvents(contactEmails: eventsRes.contactEmails)
+                                self.processEvents(contacts: eventsRes.contacts)
+                            }
                                 self.processEvents(labels: eventsRes.labels)
-                            }.then ({ (_) -> Promise<Void> in
                                 self.processEvents(addresses: eventsRes.addresses)
-                            })
-                            .ensure {
                                 self.processEvents(user: eventsRes.user)
                                 self.processEvents(userSettings: eventsRes.userSettings)
                                 self.processEvents(mailSettings: eventsRes.mailSettings)
@@ -239,35 +230,22 @@ extension EventsService {
                                     }
                                 }
                                 completion?(.success(["Messages": outMessages, "Notices": eventsRes.notices ?? [String](), "More": eventsRes.more]))
-                            }.cauterize()
-                        } else {
-                            completion?(.failure(error ?? NSError.badResponse()))
+                        } catch {
+                            completion?(.failure(error))
                         }
                     }
                 } else {
                     if eventsRes.responseCode == 1000 {
-                        self.processEvents(conversations: eventsRes.conversations).then { (_) -> Promise<Void> in
-                            return self.lastUpdatedStore.updateEventID(by: self.userManager.userID, eventID: eventsRes.eventID)
-                        }.then { (_) -> Promise<Void> in
-                            if eventsRes.refresh.contains(.contacts) {
-                                return Promise()
-                            } else {
-                                return self.processEvents(contactEmails: eventsRes.contactEmails)
+                        self.incrementalUpdateQueue.async {
+                            self.processEvents(conversations: eventsRes.conversations)
+                            self.lastUpdatedStore.updateEventID(by: self.userManager.userID, eventID: eventsRes.eventID)
+                            if !eventsRes.refresh.contains(.contacts) {
+                                self.processEvents(contactEmails: eventsRes.contactEmails)
+                                self.processEvents(contacts: eventsRes.contacts)
                             }
-                        }.then { (_) -> Promise<Void> in
-                            if eventsRes.refresh.contains(.contacts) {
-                                return Promise()
-                            } else {
-                                return self.processEvents(contacts: eventsRes.contacts)
-                            }
-                        }.then { (_) -> Promise<Void> in
                             self.processEvents(labels: eventsRes.labels)
-                        }.then { (_) -> Promise<Void> in
                             self.processEvents(addresses: eventsRes.addresses)
-                        }.then({ (_) -> Promise<Void> in
                             self.processEvents(incomingDefaults: eventsRes.incomingDefaults)
-                        })
-                        .ensure {
                             self.processEvents(user: eventsRes.user)
                             self.processEvents(userSettings: eventsRes.userSettings)
                             self.processEvents(mailSettings: eventsRes.mailSettings)
@@ -280,7 +258,7 @@ extension EventsService {
                             } else {
                                 completion?(.success(["Notices": eventsRes.notices ?? [String](), "More": eventsRes.more]))
                             }
-                        }.cauterize()
+                        }
                         return
                     }
                     if let eventError = eventsRes.error {
@@ -312,18 +290,17 @@ extension EventsService {
 // MARK: - Events Processing
 extension EventsService {
 
-    fileprivate func processEvents(messages: [[String : Any]], notificationMessageID: MessageID?, completion: @escaping (Error?) -> Void) {
+    fileprivate func processEvents(messages: [[String : Any]], notificationMessageID: MessageID?) throws {
+        assertProperExecution()
+
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
             static let update_draft = 2
             static let update_flags = 3
         }
-
-        // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
-        self.incrementalUpdateQueue.sync {
-            dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
-                var error: NSError?
+        var error: NSError?
+        dependencies.coreDataProvider.performAndWaitOnRootSavingContext { context in
                 var messagesNoCache : [MessageID] = []
                 for message in messages {
                     let msg = MessageEvent(event: message)
@@ -360,7 +337,7 @@ extension EventsService {
                             Helper.mergeDraft(event: msg, existing: existing)
                             self.applyLabelDeletion(msgEvent: msg, context: context, message: existing)
                             self.applyLabelAddition(msgEvent: msg, context: context, message: existing)
-                            _ = context.saveUpstreamIfNeeded()
+                            error = context.saveUpstreamIfNeeded()
                             continue
                         }
 
@@ -408,12 +385,13 @@ extension EventsService {
                                         }
                                 }
                             } else {
-                                // when GRTJSONSerialization inset returns no thing
+                                // when GRTJSONSerialization insert returns nothing
                                 if let messageid = msg.message?["ID"] as? String {
                                     messagesNoCache.append(MessageID(messageid))
                                 }
                             }
                         } catch {
+                            PMAssertionFailure(error)
                             // when GRTJSONSerialization insert failed
                             if let messageid = msg.message?["ID"] as? String {
                                 messagesNoCache.append(MessageID(messageid))
@@ -430,15 +408,16 @@ extension EventsService {
                 self.dependencies
                     .fetchMessageMetaData
                     .execute(with: messagesNoCache) { _ in }
-
-                DispatchQueue.main.async {
-                    completion(error)
-                }
             }
+
+        if let error = error {
+            throw error
         }
     }
 
-    fileprivate func processEvents(conversations: [[String: Any]]?) -> Promise<Void> {
+    private func processEvents(conversations: [[String: Any]]?) {
+        assertProperExecution()
+
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -447,19 +426,15 @@ extension EventsService {
         }
 
         guard let conversationsDict = conversations else {
-            return Promise()
+            return
         }
-        return Promise { seal in
-            self.incrementalUpdateQueue.sync {
-                dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
-                    defer {
-                        seal.fulfill_()
-                    }
+                dependencies.coreDataProvider.performAndWaitOnRootSavingContext { context in
                     var conversationsNeedRefetch: [String] = []
 
                     for conDict in conversationsDict {
                         // Parsing conversation event
                         guard let conversationEvent = ConversationEvent(event: conDict) else {
+                            PMAssertionFailure("Could not instantiate ConversationEvent")
                             continue
                         }
                         switch conversationEvent.action {
@@ -499,6 +474,7 @@ extension EventsService {
                                 }
                                 _ = context.saveUpstreamIfNeeded()
                             } catch {
+                                PMAssertionFailure(error)
                                 // Refetch after insert failed
                                 conversationsNeedRefetch.append(conversationEvent.ID)
                             }
@@ -536,6 +512,7 @@ extension EventsService {
                                 }
                                 _ = context.saveUpstreamIfNeeded()
                             } catch {
+                                PMAssertionFailure(error)
                                 conversationsNeedRefetch.append(conversationEvent.ID)
                             }
                         default:
@@ -548,23 +525,17 @@ extension EventsService {
                     let conversationIDs = conversationsNeedRefetch.map {ConversationID($0)}
                     self.userManager.conversationService.fetchConversations(with: conversationIDs, completion: nil)
                 }
-            }
-        }
     }
 
     /// Process contacts from event logs
     ///
     /// - Parameter contacts: contact events
-    fileprivate func processEvents(contacts: [[String: Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(contacts: [[String: Any]]?) {
         guard let contacts = contacts else {
-            return Promise()
+            return
         }
 
-        return Promise { seal in
-            dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
-                defer {
-                    seal.fulfill_()
-                }
+            dependencies.coreDataProvider.performAndWaitOnRootSavingContext { context in
                 for contact in contacts {
                     let contactObj = ContactEvent(event: contact)
                     switch contactObj.action {
@@ -600,6 +571,7 @@ extension EventsService {
                                 }
                             }
                         } catch {
+                            PMAssertionFailure(error)
                         }
                         _ = context.saveUpstreamIfNeeded()
                     default:
@@ -607,22 +579,17 @@ extension EventsService {
                     }
                 }
             }
-        }
     }
 
     /// Process contact emails this is like metadata update
     ///
     /// - Parameter contactEmails: contact email events
-    fileprivate func processEvents(contactEmails: [[String: Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(contactEmails: [[String: Any]]?) {
         guard let emails = contactEmails else {
-            return Promise()
+            return
         }
 
-        return Promise { seal in
-            dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
-                defer {
-                    seal.fulfill_()
-                }
+            dependencies.coreDataProvider.performAndWaitOnRootSavingContext { context in
                 for email in emails {
                     let emailObj = EmailEvent(event: email)
                     switch emailObj.action {
@@ -649,6 +616,7 @@ extension EventsService {
                             }
 
                         } catch {
+                            PMAssertionFailure(error)
                         }
                     default:
                         break
@@ -657,13 +625,14 @@ extension EventsService {
 
                 _ = context.saveUpstreamIfNeeded()
             }
-        }
     }
 
     /// Process Labels include Folders and Labels.
     ///
     /// - Parameter labels: labels events
-    fileprivate func processEvents(labels: [[String: Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(labels: [[String: Any]]?) {
+        assertProperExecution()
+
         struct IncrementalUpdateType {
             static let delete = 0
             static let insert = 1
@@ -671,13 +640,7 @@ extension EventsService {
         }
 
         if let labels = labels {
-            return Promise { seal in
-                // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
-                self.incrementalUpdateQueue.sync {
-                    dependencies.coreDataProvider.enqueueOnRootSavingContext { context in
-                        defer {
-                            seal.fulfill_()
-                        }
+                    dependencies.coreDataProvider.performAndWaitOnRootSavingContext { context in
                         for labelEvent in labels {
                             let label = LabelEvent(event: labelEvent)
                             switch label.Action {
@@ -694,6 +657,7 @@ extension EventsService {
                                         try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: new_or_update_label, in: context)
                                     }
                                 } catch {
+                                    PMAssertionFailure(error)
                                 }
                             default:
                                 break
@@ -701,11 +665,7 @@ extension EventsService {
                         }
                         _ = context.saveUpstreamIfNeeded()
                     }
-                }
             }
-        } else {
-            return Promise()
-        }
     }
 
     /// Process User information
@@ -730,12 +690,12 @@ extension EventsService {
         self.userManager?.updateFromEvents(mailSettingsRes: mailSettingEvent)
     }
 
-    fileprivate func processEvents(addresses: [[String: Any]]?) -> Promise<Void> {
+    fileprivate func processEvents(addresses: [[String: Any]]?){
+        assertProperExecution()
+
         guard let addrEvents = addresses else {
-            return Promise()
+            return
         }
-        return Promise { seal in
-            self.incrementalUpdateQueue.async {
                 for addrEvent in addrEvents {
                     let address = AddressEvent(event: addrEvent)
                     switch address.action {
@@ -757,25 +717,22 @@ extension EventsService {
                         guard let user = self.userManager else {
                             break
                         }
+                        print("HAHA \(#line) \(Thread.isMainThread)")
                         do {
                             try `await`(user.userService.activeUserKeys(userInfo: user.userInfo, auth: user.authCredential))
                         } catch {
+                            PMAssertionFailure(error)
                         }
                     default:
                         break
                     }
-                }
-                seal.fulfill_()
             }
-        }
     }
 
-    private func processEvents(incomingDefaults: [[String: Any]]?) -> Promise<Void> {
+    private func processEvents(incomingDefaults: [[String: Any]]?) {
         guard UserInfo.isBlockSenderEnabled, let incomingDefaults = incomingDefaults else {
-            return Promise()
+            return
         }
-        return Promise { seal in
-            incrementalUpdateQueue.async {
                 for item in incomingDefaults {
                     let incomingDefaultEvent = IncomingDefaultEvent(event: item)
                     switch incomingDefaultEvent.action {
@@ -791,24 +748,19 @@ extension EventsService {
                         break
                     }
                 }
-                seal.fulfill_()
-            }
-        }
     }
 
     private func saveIncomingDefault(_ incomingDefault: [String: Any]) {
-        guard let incomingDefaultDTO = try? IncomingDefaultDTO(
-            dict: incomingDefault,
-            keyDecodingStrategy: .decapitaliseFirstLetter,
-            dateDecodingStrategy: .secondsSince1970
-        ) else {
-            assertionFailure()
-            return
-        }
         do {
+            let incomingDefaultDTO = try IncomingDefaultDTO(
+                dict: incomingDefault,
+                keyDecodingStrategy: .decapitaliseFirstLetter,
+                dateDecodingStrategy: .secondsSince1970
+            )
+
             try dependencies.incomingDefaultService.save(dto: incomingDefaultDTO)
         } catch {
-            assertionFailure()
+            PMAssertionFailure(error)
         }
     }
 
@@ -820,7 +772,7 @@ extension EventsService {
         do {
             try dependencies.incomingDefaultService.hardDelete(query: .id(incomingDefaultId), includeSoftDeleted: true)
         } catch {
-            assertionFailure()
+            PMAssertionFailure(error)
         }
     }
 
@@ -907,5 +859,11 @@ extension EventsService {
               type == firstUser.getCurrentViewMode() else { return }
         UIApplication.setBadge(badge: unread)
     }
-}
 
+    private func assertProperExecution() {
+        assert(!Thread.isMainThread)
+#if DEBUG_ENTERPRISE
+        dispatchPrecondition(condition: .onQueue(incrementalUpdateQueue))
+#endif
+    }
+}

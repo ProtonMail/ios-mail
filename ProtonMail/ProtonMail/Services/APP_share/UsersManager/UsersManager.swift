@@ -418,7 +418,7 @@ extension UsersManager {
 
     func clean() -> Promise<Void> {
         return UserManager.cleanUpAll().ensure {
-            try? sharedServices.get(by: CoreDataService.self).rollbackAllContexts()
+            sharedServices.get(by: CoreDataService.self).resetMainContextIfNeeded()
 
             self.users = []
             self.save()

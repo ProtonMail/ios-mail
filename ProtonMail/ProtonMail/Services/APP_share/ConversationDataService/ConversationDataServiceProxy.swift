@@ -60,15 +60,25 @@ final class ConversationDataServiceProxy: ConversationProvider {
 }
 
 private extension ConversationDataServiceProxy {
-    func updateContextLabels(for conversationIDs: [ConversationID], on context: NSManagedObjectContext) {
-        let conversations = fetchLocalConversations(withIDs: NSMutableSet(array: conversationIDs.map(\.rawValue)),
-                                                    in: context)
-        conversations.forEach { conversation in
-            (conversation.labels as? Set<ContextLabel>)?
-                .forEach {
-                    context.refresh(conversation, mergeChanges: true)
-                    context.refresh($0, mergeChanges: true)
-                }
+    // this is a workaround for the fact that just updating the ContextLabel won't trigger MailboxViewController's controllerDidChangeContent
+    func updateContextLabelsInViewContext(for conversationIDs: [ConversationID], completion: @escaping () -> Void) {
+        let context = contextProvider.mainContext
+
+        context.perform {
+            let conversations = self.fetchLocalConversations(
+                withIDs: NSMutableSet(array: conversationIDs.map(\.rawValue)),
+                in: context
+            )
+
+            conversations.forEach { conversation in
+                (conversation.labels as? Set<ContextLabel>)?
+                    .forEach {
+                        context.refresh($0, mergeChanges: true)
+                    }
+                context.refresh(conversation, mergeChanges: true)
+            }
+
+            completion()
         }
     }
 }
@@ -119,8 +129,9 @@ extension ConversationDataServiceProxy {
                    isConversation: true)
         localConversationUpdater.delete(conversationIDs: conversationIDs) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
-            completion?(result)
+            self.updateContextLabelsInViewContext(for: conversationIDs) {
+                completion?(result)
+            }
         }
     }
 
@@ -134,8 +145,9 @@ extension ConversationDataServiceProxy {
                                       asUnread: false,
                                       labelID: labelID) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
-            completion?(result)
+            self.updateContextLabelsInViewContext(for: conversationIDs) {
+                completion?(result)
+            }
         }
     }
 
@@ -152,8 +164,9 @@ extension ConversationDataServiceProxy {
                                       asUnread: true,
                                       labelID: labelID) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
-            completion?(result)
+            self.updateContextLabelsInViewContext(for: conversationIDs) {
+                completion?(result)
+            }
         }
     }
 
@@ -176,8 +189,9 @@ extension ConversationDataServiceProxy {
                                             labelToAdd: labelID,
                                             isFolder: false) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
-            completion?(result)
+            self.updateContextLabelsInViewContext(for: conversationIDs) {
+                completion?(result)
+            }
         }
     }
 
@@ -200,8 +214,9 @@ extension ConversationDataServiceProxy {
                                             labelToAdd: nil,
                                             isFolder: false) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: conversationIDs, on: self.contextProvider.mainContext)
-            completion?(result)
+            self.updateContextLabelsInViewContext(for: conversationIDs) {
+                completion?(result)
+            }
         }
     }
 
@@ -235,8 +250,9 @@ extension ConversationDataServiceProxy {
                                             labelToAdd: nextFolderLabel,
                                             isFolder: true) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabels(for: filteredConversationIDs, on: self.contextProvider.mainContext)
-            completion?(result)
+            self.updateContextLabelsInViewContext(for: conversationIDs) {
+                completion?(result)
+            }
         }
     }
 

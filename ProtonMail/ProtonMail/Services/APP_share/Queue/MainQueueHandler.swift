@@ -1123,6 +1123,5 @@ enum MainQueueHandlerHelper {
         let attachmentCount = message.numAttachments.intValue
         message.numAttachments = NSNumber(integerLiteral: max(attachmentCount - toBeDeleted.count, 0))
         _ = context.saveUpstreamIfNeeded()
-        context.refreshAllObjects()
     }
 }
