@@ -811,16 +811,16 @@
 "Encrypted contact details" = "Rincian kontak yang terenkripsi";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted" = "Dienkripsi ujung ke ujung";
+"End-to-end encrypted" = "Terenkripsi end-to-end";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted and signed message" = "Pesan ditandatangani dan dienkripsi ujung ke ujung";
+"End-to-end encrypted and signed message" = "Pesan ditandatangani dan dienkripsi secara end-to-end";
 
 /* encryption lock description */
 "End-to-end encrypted message" = "Pesan dienkripsi ujung ke ujung";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message from verified sender" = "Pesan terenkripsi ujung ke ujung dari pengirim terverifikasi";
+"End-to-end encrypted message from verified sender" = "Pesan terenkripsi secara end-to-end dari pengirim yang terverifikasi";
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "End-to-end encrypted to verified recipient" = "Dienkripsi ujung ke ujung untuk penerima terverifikasi";
@@ -1723,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Tetap kirim";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Kirim tanggapan";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2325,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Anda tidak dapat mengatur %@ sebagai alamat default karena pengaturan alamat merupakan fitur berbayar.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Anda menonaktifkan %@ pada pengaturan sistem Anda. %@ sebelumnya telah digunakan untuk melindungi berbagai informasi akun penting. Untuk mengakses akun Anda, aktifkan ulang %@ pada pengaturan sistem atau masuk kembali.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Anda menonaktifkan %1$@ dalam pengaturan sistem. %2$@ telah digunakan untuk melindungi informasi akun yang penting. Untuk mengakses akun Anda, pergi ke pengaturan dan aktifkan ulang %3$@, atau masuk lagi.";
 
 /* Message */
 "You have %d new emails!" = "Anda memiliki %d email baru!";

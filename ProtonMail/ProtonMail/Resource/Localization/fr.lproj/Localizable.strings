@@ -325,7 +325,7 @@
 "Call contact" = "Appeler le contact";
 
 /* Error */
-"Can't copy the file" = "Impossible de copier le fichier";
+"Can't copy the file" = "Le fichier ne peut pas être copié.";
 
 /* update password error */
 "Can't create a SRP Client" = "Impossible de créer un client SRP";
@@ -334,16 +334,16 @@
 "Can't create a SRP verifier!" = "Impossible de créer un vérificateur SRP";
 
 /* When quick look attachment but can't decrypt it! */
-"Can't decrypt this attachment!" = "Impossible de déchiffrer cette pièce jointe";
+"Can't decrypt this attachment!" = "Cette pièce jointe ne peut pas être déchiffrée.";
 
 /* The error message will be shown when the deletionn of the contact group through API failed */
-"Can't delete contact group through API" = "Impossible de supprimer le groupe de contacts via l'API";
+"Can't delete contact group through API" = "Le groupe de contacts ne peut pas être supprimé par l'intermédiaire de l'API.";
 
 /* Description */
 "Can't find the value from the response body" = "Impossible de trouver la valeur du corps de la réponse";
 
 /* when quick look attachment but can't find the data */
-"Can't find this attachment!" = "Impossible de trouver cette pièce-jointe";
+"Can't find this attachment!" = "Cette pièce jointe est introuvable.";
 
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Impossible d’obtenir un identifiant Modulus";
@@ -377,7 +377,7 @@
 "Canceling" = "Annulation en cours";
 
 /* Warning message */
-"Cannot empty folder right now." = "Impossible de vider le dossier maintenant.";
+"Cannot empty folder right now." = "Il n'est pas possible de vider le dossier maintenant.";
 
 /* message Cc: feild
    Title */
@@ -1646,7 +1646,7 @@
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Signaler un message comme une tentative de phishing/hameçonnage nous enverra le message afin que nous puissions l'analyser et améliorer nos filtres. Cela signifie que nous serons en mesure de voir le contenu du message dans son intégralité.";
 
 /* link opeining confirmation */
-"Request link confirmation" = "Demander une confirmation lors de l'ouverture de liens";
+"Request link confirmation" = "Demander une confirmation pour l'ouverture de liens";
 
 /* The title of the reset button in toolbar customization view. */
 "Reset to default" = "Rétablir les valeurs par défaut";
@@ -1723,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Envoyer quand même";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Envoyer un avis";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2065,7 +2065,7 @@
 "This toolbar appears when selecting multiple messages in your inbox." = "Cette barre d'outils apparaît quand vous sélectionnez plusieurs messages dans votre boite de réception.";
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
-"This toolbar is visible when reading a message." = "Cette barre d'outils est visible lors de la lecture d'un message.";
+"This toolbar is visible when reading a message." = "Cette barre d'outils est visible pendant la lecture d'un message.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "C'est le moment pour se détendre.";
@@ -2130,13 +2130,13 @@
 "Type casting error" = "Erreur d'encodage de type";
 
 /* Description */
-"Unable to edit this message offline" = "Impossible de modifier ce message hors ligne";
+"Unable to edit this message offline" = "Ce message ne peut pas être modifié hors ligne.";
 
 /* Description */
-"Unable to parse response" = "Impossible d’analyser la réponse";
+"Unable to parse response" = "La réponse ne peut pas être analysée.";
 
 /* Description */
-"Unable to parse the response object:\n%@" = "Impossible d’analyser l’objet de la réponse :\n%@";
+"Unable to parse the response object:\n%@" = "L'objet de la réponse ne peut pas être analysé :\n%@";
 
 /* error when sending the message */
 "Unable to send the email" = "Le message n'a pas pu être envoyé.";
@@ -2325,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Vous ne pouvez pas définir l’adresse %@ comme valeur par défaut, il s'agit d'une fonctionnalité payante.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Vous avez désactivé %@ dans les paramètres de votre système. %@ a été utilisé pour protéger les informations importantes de votre compte. Pour accéder à votre compte, allez dans les paramètres et réactivez %@ ou bien reconnectez-vous.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Vous avez désactivé %1$@ dans vos paramètres système. %2$@ est utilisé pour protéger les informations importantes de votre compte. Pour accéder à votre compte, allez dans les paramètres et réactivez %3$@ ou connectez-vous à nouveau.";
 
 /* Message */
 "You have %d new emails!" = "Vous avez %d nouveaux messages.";

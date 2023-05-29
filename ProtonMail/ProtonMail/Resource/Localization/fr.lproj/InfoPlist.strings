@@ -5,7 +5,7 @@
 "NSCameraUsageDescription" = "Nécessaire pour joindre des photos au message.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Utilisé pour accéder aux adresses e-mail des contacts enregistrés sur l'appareil pour qu'elles puissent être utilisées lors de la rédaction d'un message ou du chargement manuel des contacts de l'appareil sur votre compte. Les informations de contact ne sont pas chargées sur nos serveurs sans une action explicite de votre part.";
+"NSContactsUsageDescription" = "Utilisé pour accéder aux adresses e-mail des contacts enregistrés sur l'appareil pour qu'elles puissent être utilisées pendant la rédaction d'un message ou du chargement manuel des contacts de l'appareil sur votre compte. Les informations de contact ne sont pas chargées sur nos serveurs sans une action explicite de votre part.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Vous permet de déverrouiller votre application rapidement et de façon sécurisée.";

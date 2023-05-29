@@ -1723,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Всё равно отправить";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Отправить отзыв";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2325,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Вы не можете сделать адрес %@ основным т.к. это платная функция.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Вы отключили %@ в системных настройках. %@ служил для защиты важных данных аккаунта. Для доступа к аккаунту, активируйте %@ в настройках или снова войдите в аккаунт.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Вы отключили %1$@ в системных настройках. %2$@ служил для защиты важных данных аккаунта. Для доступа к аккаунту, активируйте %3$@ в настройках или снова войдите в аккаунт.";
 
 /* Message */
 "You have %d new emails!" = "У вас %d новых писем!";

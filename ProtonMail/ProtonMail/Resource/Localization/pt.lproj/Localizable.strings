@@ -312,6 +312,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Navegue por tópicos no modo de conversas.";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "--Para nos ajudar a ajudá-lo, por favor forneça o maior número de detalhes quanto possível--\n\nSumário:\n\nO problema aconteceu mais do que uma vez: sim/não\nPassos para reproduzir o problema:\nResultado esperado:\nResultado atual:\nComentários:";
+
 /* Title */
 "Bug Report Received" = "Relatório de erro recebido";
 
@@ -1720,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Enviar mesmo assim";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Enviar comentários";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2322,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Não pode predefinir o endereço %@, é uma funcionalidade paga.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Desativou %@ nas suas definições de sistema. %@ foi utilizado para proteger informações importantes da sua conta. Para aceder à sua conta, vá às definições e reative %@, ou então volte a fazer o início da sua sessão.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Desativou %1$@ nas suas definições de sistema. %2$@ foi utilizado para proteger informações importantes da sua conta. Para aceder à sua conta, vá às definições e reative %3$@, ou então volte a fazer o início da sua sessão.";
 
 /* Message */
 "You have %d new emails!" = "Tem %d novas mensagens!";
@@ -2393,4 +2396,3 @@
 /* contact placeholder */
 "ZIP" = "CP";
 
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

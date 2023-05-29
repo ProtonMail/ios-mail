@@ -1723,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Усё роўна адправіць";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Адправіць водгук";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2325,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Вы не можаце задаць адрас %@ як прадвызначаны, бо гэта функцыя з'яўляецца платнай.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Вы адключылі %@ у наладах сістэмы. %@ выкарыстоўваўся для абароны важных даных уліковага запісу. Каб атрымаць доступ да вашага ўліковага запісу, перайдзіце ў налады і паўторна актывуйце %@ або яшчэ раз увайдзіце ва ўліковы запіс.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Вы адключылі %1$@ у наладах сістэмы. %2$@ выкарыстоўваўся для абароны важных даных уліковага запісу. Каб атрымаць доступ да вашага ўліковага запісу, перайдзіце ў налады і паўторна актывуйце %3$@ або яшчэ раз увайдзіце ва ўліковы запіс.";
 
 /* Message */
 "You have %d new emails!" = "У вашай скрыні ёсць новыя лісты (колькасць: %d)!";

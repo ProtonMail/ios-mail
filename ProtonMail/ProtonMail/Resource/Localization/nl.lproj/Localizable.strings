@@ -1723,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Toch verzenden";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Feedback versturen";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2325,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "U hebt %@ uitgeschakeld in uw systeeminstellingen. %@ is gebruikt om belangrijke accountinformatie te beschermen. Om toegang te krijgen tot uw account, gaat u naar de instellingen en heractiveert u %@, of u meldt zich opnieuw aan.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "U hebt %1$@ uitgeschakeld in uw systeeminstellingen. %2$@ is gebruikt om belangrijke accountinformatie te beschermen. Om toegang te krijgen tot uw account, gaat u naar de instellingen en heractiveert u %3$@, of u meldt zich opnieuw aan.";
 
 /* Message */
 "You have %d new emails!" = "U heeft %d nieuwe e-mails!";

@@ -1723,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Trimitere așa";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Trimitere feedback";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1745,7 +1745,7 @@
 "Sender %@ unblocked" = "Expeditorul %@ este deblocat";
 
 /* Banner in the message view */
-"Sender has been blocked" = "Expeditorul a fost blocat";
+"Sender has been blocked" = "Expeditorul a fost blocat.";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verificare eșuată expeditor";
@@ -1854,7 +1854,7 @@
 "Snooze" = "Amânare";
 
 /* The banner shown in case of proxy failure */
-"Some images could not be loaded with tracking protection." = "Unele imagini nu au putut fi încărcate datorită protecției împotriva urmăririi activată.";
+"Some images could not be loaded with tracking protection." = "Unele imagini nu au putut fi încărcate datorită activării protecției împotriva urmăririi.";
 
 /* menu title */
 "Spam" = "Nedorite";
@@ -2325,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Nu puteți seta adresa %@ ca fiind implicită. Această este o funcție cu plată.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Ați dezactivat %@ în setările sistemului. %@ a fost utilizat pentru a proteja informațiile importante ale contului. Pentru a vă accesa contul, accesați setările și reactivați %@ sau reconectați-vă.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Ați dezactivat %1$@ în setările sistemului. %2$@ a fost utilizat pentru a proteja informațiile importante ale contului. Pentru a vă accesa contul, accesați setările și reactivați %3$@ sau reconectați-vă.";
 
 /* Message */
 "You have %d new emails!" = "Aveți %d mesaje noi!";

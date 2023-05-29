@@ -123,9 +123,6 @@
    menu title */
 "All Mail" = "All e-post";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "Alla skyddsinställningar återställs och raderas när du loggar ut från appen.";
-
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Alla dina meddelanden laddas ner";
 
@@ -313,7 +310,7 @@
 "Breeze through threaded messages in conversation mode." = "Bläddra igenom trådade meddelanden i konversationsläge.";
 
 /* The place holder text in the bug report view. */
-"Bug Report Place Holder" = "---För att hjälpa oss att hjälpa dig, ange så många detaljer som möjligt---\n\nSammanfattning:\n\nHar problemet hänt mer än en gång: ja/nej\nSteg för att återskapa problemet:\nFörväntat resultat:\nFaktiskt resultat:\nkommentarer:";
+"Bug Report Place Holder" = "---För att hjälpa oss att hjälpa dig, ange så många detaljer som möjligt---\n\nSammanfattning:\n\nHar problemet hänt mer än en gång: ja/nej\nSteg för att återskapa problemet:\nFörväntat resultat:\nFaktiskt resultat:\nKommentarer:";
 
 /* Title */
 "Bug Report Received" = "Felrapport mottagen";
@@ -1268,7 +1265,7 @@
 "New contact" = "Ny kontakt";
 
 /* No comment provided by engineer. */
-"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Nya e-postmeddelanden från %@ kommer inte att levereras och kommer att raderas permanent. Hantera blockerade e-postadresser i settings.";
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Nya e-postmeddelanden från %@ kommer inte att levereras och kommer tas bort permanent. Hantera blockerade e-postadresser i inställningarna.";
 
 /* The title of create folder page */
 "New folder" = "Ny mapp";
@@ -1524,7 +1521,7 @@
 "Please share your problem." = "Dela ditt problem.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Logga in på Proton Mail appen.";
+"Please sign in to the Proton Mail app." = "Logga in på Proton Mail-appen.";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Uppgradera till ett betalt paket för att använda mer än 3 mappar";
@@ -1723,7 +1720,7 @@
 /* Action */
 "Send anyway" = "Skicka ändå";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Skicka feedback";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2184,7 +2181,7 @@
 "Unstar" = "Ta bort stjärnmärkning";
 
 /* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Avregistrera dig från e-postlista";
+"Unsubscribe from mailing list" = "Avsluta prenumeration från e-postlista";
 
 /* Error message */
 "Unsupported file type" = "Filtyp stöds inte";
@@ -2325,7 +2322,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Du kan inte ställa in %@-adress som standard eftersom det är en betald funktion.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Du inaktiverade %@ i dina systeminställningar. %@ har använts för att skydda viktig kontoinformation. För att komma åt ditt konto, gå till inställningar och återaktivera %@, eller logga in igen.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Du inaktiverade %1$@ i dina systeminställningar. %2$@ har använts för att skydda viktig kontoinformation. För att komma åt ditt konto, gå till inställningar och återaktivera %3$@ eller logga in igen.";
 
 /* Message */
 "You have %d new emails!" = "Du har %d nya e-postmeddelanden!";
