@@ -20,7 +20,7 @@ import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Log
 
-protocol MessageDecrypterProtocol {
+class MessageDecrypter {
     typealias DecryptionOutput = (body: String, attachments: [MimeAttachment]?)
 
     typealias DecryptionAndVerificationOutput = (
@@ -28,21 +28,6 @@ protocol MessageDecrypterProtocol {
         signatureVerificationResult: SignatureVerificationResult
     )
 
-    func decrypt(messageObject: Message) throws -> DecryptionOutput
-
-    func decryptAndVerify(
-        message: MessageEntity,
-        verificationKeys: [ArmoredKey]
-    ) throws -> DecryptionAndVerificationOutput
-}
-
-extension MessageDecrypterProtocol {
-    func decrypt(message: MessageEntity) throws -> DecryptionOutput {
-        try decryptAndVerify(message: message, verificationKeys: []).decryptionOutput
-    }
-}
-
-class MessageDecrypter: MessageDecrypterProtocol {
     private weak var userDataSource: UserDataSource?
 
     init(userDataSource: UserDataSource) {
@@ -75,7 +60,7 @@ class MessageDecrypter: MessageDecrypterProtocol {
         let decryptionKeys = MailCrypto.decryptionKeys(
             basedOn: addressKeys,
             mailboxPassword: dataSource.mailboxPassword,
-            userKeys: dataSource.userPrivateKeys
+            userKeys: dataSource.userInfo.userPrivateKeys
         )
 
         if message.isMultipartMixed {
@@ -90,12 +75,7 @@ class MessageDecrypter: MessageDecrypterProtocol {
             } catch {
                 // NOTE, decryption function will be called multiple times
                 // Reports on the Sentry could be triple than real situation
-                Analytics.shared.sendError(
-                    .decryptMIMEFailed(error: "\(error)",
-                                       messageID: message.messageID.rawValue)
-
-                )
-                assertionFailure("\(error)")
+                PMAssertionFailure(error)
                 // do not throw here, make a Hail Mary fallback to the non-MIME decryption method
             }
         }
@@ -126,11 +106,9 @@ class MessageDecrypter: MessageDecrypterProtocol {
 
 // MARK: decryption message
 extension MessageDecrypter {
-    func getAddressKeys(for addressID: String?) -> [Key] {
-        guard let addressID = addressID,
-              let keys = self.userDataSource?
-                .getAllAddressKey(address_id: addressID) else {
-            return self.userDataSource?.addressKeys ?? []
+    func getAddressKeys(for addressID: String) -> [Key] {
+        guard let keys = userDataSource?.userInfo.getAllAddressKey(address_id: addressID) else {
+            return self.userDataSource?.userInfo.addressKeys ?? []
         }
         return keys
     }

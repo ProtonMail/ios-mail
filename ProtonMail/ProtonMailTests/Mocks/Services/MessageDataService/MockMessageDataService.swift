@@ -25,7 +25,7 @@ import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 class MockMessageDataService: MessageDataServiceProtocol {
-    var messageDecrypter: MessageDecrypterProtocol {
+    var messageDecrypter: MessageDecrypter {
         return mockDecrypter
     }
     var mockDecrypter: MessageDecrypterMock!

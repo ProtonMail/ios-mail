@@ -36,7 +36,7 @@ enum PrepareSendMetadataBuilder {
         let sendPreferencesDependencies: ResolveSendPreferences.Dependencies = .init(
             fetchVerifiedContacts: FetchAndVerifyContacts(
                 currentUser: userData.userID,
-                currentUserKeys: userData.userPrivateKeys,
+                currentUserKeys: userData.userInfo.userPrivateKeys,
                 dependencies: fetchContactsDependencies
             ),
             fetchAddressesPublicKeys: FetchEmailAddressesPublicKey(dependencies: fetchPublicKeyDependencies)

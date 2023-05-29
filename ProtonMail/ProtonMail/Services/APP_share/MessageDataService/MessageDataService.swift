@@ -32,7 +32,7 @@ import ProtonMailAnalytics
 
 protocol MessageDataServiceProtocol: Service {
     var pushNotificationMessageID: String? { get set }
-    var messageDecrypter: MessageDecrypterProtocol { get }
+    var messageDecrypter: MessageDecrypter { get }
 
     /// Request to get the messages for a user
     /// - Parameters:
@@ -102,7 +102,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     let contextProvider: CoreDataContextProviderProtocol
     let lastUpdatedStore: LastUpdatedStoreProtocol
     let cacheService: CacheService
-    let messageDecrypter: MessageDecrypterProtocol
+    let messageDecrypter: MessageDecrypter
     let undoActionManager: UndoActionManagerProtocol
     let contactCacheStatus: ContactCacheStatusProtocol
 
@@ -945,8 +945,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             let userInfo = message.cachedUser ?? userManager.userInfo
 
-            _ = userInfo.userPrivateKeys
-
             let userPrivKeysArray = userInfo.userPrivateKeys
             let addrPrivKeys = userInfo.addressKeys
 
@@ -1519,12 +1517,12 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             return .empty
         }
 
-        if let key = self.userDataSource?.getAddressKey(address_id: addressId) {
+        if let key = self.userDataSource?.userInfo.getAddressKey(address_id: addressId) {
             return try clearBody.encrypt(withKey: key,
-                                         userKeys: self.userDataSource!.userPrivateKeys,
+                                         userKeys: self.userDataSource!.userInfo.userPrivateKeys,
                                          mailbox_pwd: mailbox_pwd)
         } else { // fallback
-            let key = self.userDataSource!.getAddressPrivKey(address_id: addressId)
+            let key = self.userDataSource!.userInfo.getAddressPrivKey(address_id: addressId)
             return try clearBody.encryptNonOptional(withPrivKey: key, mailbox_pwd: mailbox_pwd.value)
         }
     }

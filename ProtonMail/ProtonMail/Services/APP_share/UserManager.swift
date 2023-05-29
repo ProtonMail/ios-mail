@@ -35,15 +35,9 @@ import ProtonCore_Keymaker
 /// TODO:: this is temp
 protocol UserDataSource: AnyObject {
     var mailboxPassword: Passphrase { get }
-    var addressKeys: [Key] { get }
-    var userPrivateKeys: [ArmoredKey] { get }
     var userInfo: UserInfo { get }
     var authCredential: AuthCredential { get }
     var userID: UserID { get }
-
-    func getAddressKey(address_id: String) -> Key?
-    func getAllAddressKey(address_id: String) -> [Key]?
-    func getAddressPrivKey(address_id: String) -> String
 }
 
 protocol UserManagerSave: AnyObject {
@@ -518,28 +512,6 @@ extension UserManager: UserDataSource {
 
     var hasPaidMailPlan: Bool {
         userInfo.role > 0 && userInfo.subscribed.contains(.mail)
-    }
-
-    func getAddressPrivKey(address_id: String) -> String {
-        return ""
-    }
-
-    func getAddressKey(address_id: String) -> Key? {
-        return self.userInfo.getAddressKey(address_id: address_id)
-    }
-
-    func getAllAddressKey(address_id: String) -> [Key]? {
-        return self.userInfo.getAllAddressKey(address_id: address_id)
-    }
-
-    var userPrivateKeys: [ArmoredKey] {
-        userInfo.userPrivateKeys
-    }
-
-    var addressKeys: [Key] {
-        get {
-            return self.userInfo.userAddresses.toKeys()
-        }
     }
 
     var mailboxPassword: Passphrase {

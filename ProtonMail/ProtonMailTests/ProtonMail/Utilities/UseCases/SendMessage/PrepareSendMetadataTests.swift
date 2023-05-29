@@ -233,7 +233,7 @@ extension PrepareSendMetadataTests {
     private func makeEncryptedBodyWithCorrectSenderAddressKey() -> String {
         return try! dummyMessageBody.encrypt(
             withKey: dummySenderAddressKey,
-            userKeys: mockUserManager.userPrivateKeys,
+            userKeys: mockUserManager.userInfo.userPrivateKeys,
             mailbox_pwd: Passphrase(value: dummyUserKey.passphrase)
         )
     }
@@ -242,7 +242,7 @@ extension PrepareSendMetadataTests {
         let randomKey = Key(keyID: "2", privateKey: dummyUserKey.privateKey)
         return try! dummyMessageBody.encrypt(
             withKey: randomKey,
-            userKeys: mockUserManager.userPrivateKeys,
+            userKeys: mockUserManager.userInfo.userPrivateKeys,
             mailbox_pwd: Passphrase(value: dummyUserKey.passphrase)
         )
     }
