@@ -1,4 +1,3 @@
-import ProtonCore_Common
 import ProtonCore_DataModel
 
 enum ViewMode: Int, CaseIterable {

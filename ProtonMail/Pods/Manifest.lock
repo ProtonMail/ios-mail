@@ -132,10 +132,6 @@ PODS:
     - ProtonCore-DataModel (= 5.2.0)
     - ProtonCore-Foundations (= 5.2.0)
     - ProtonCore-UIFoundations (= 5.2.0)
-  - ProtonCore-Common (5.2.0):
-    - ProtonCore-Networking (= 5.2.0)
-    - ProtonCore-Services (= 5.2.0)
-    - ProtonCore-UIFoundations (= 5.2.0)
   - ProtonCore-CoreTranslation (5.2.0)
   - ProtonCore-DataModel (5.2.0):
     - ProtonCore-Utilities (= 5.2.0)
@@ -362,7 +358,6 @@ DEPENDENCIES:
   - "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.20.2 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-Authentication/Crypto+Search-Go1.20.2 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-Challenge (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
-  - "ProtonCore-Common (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-CoreTranslation (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-DataModel (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-Doh (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
@@ -455,9 +450,6 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
   ProtonCore-Challenge:
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 5.2.0
-  ProtonCore-Common:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
   ProtonCore-CoreTranslation:
@@ -579,9 +571,6 @@ CHECKOUT OPTIONS:
   ProtonCore-Challenge:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
-  ProtonCore-Common:
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 5.2.0
   ProtonCore-CoreTranslation:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
@@ -692,7 +681,6 @@ SPEC CHECKSUMS:
   ProtonCore-Authentication: 2ce166be670e7539e78c84a0abedf28792a48193
   ProtonCore-Authentication-KeyGeneration: e833148abe12c917268f8a727b750bb5d11c4544
   ProtonCore-Challenge: 9bd3a2308129590099e6e4a483cca314dc3cf404
-  ProtonCore-Common: 28b84f999300ce4ab29a2b4d4309ab0fdb1439da
   ProtonCore-CoreTranslation: cdcde6c1f32ce04fd7bf91a15b7841846d04a4b1
   ProtonCore-DataModel: c04a291c0da17db008d4ac24c8c2c54c7cbf47d0
   ProtonCore-Doh: b0cf232b3480a72192a0255a22fcca388c7ed416
@@ -731,6 +719,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: ca9f5c4cc09211ac1c74d8d197b4cda9632cc39e
+PODFILE CHECKSUM: e0ea626634f6be8e29f52aacec9bf0c509047779
 
 COCOAPODS: 1.12.0
