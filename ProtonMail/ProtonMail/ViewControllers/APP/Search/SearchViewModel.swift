@@ -162,7 +162,7 @@ extension SearchViewModel: SearchVMProtocol {
             return
         }
 
-        dependencies.backendSearch
+        dependencies.messageSearch
             .callbackOn(.main)
             .execute(
                 params: .init(query: query, page: currentFetchedSearchResultPage)
@@ -181,7 +181,7 @@ extension SearchViewModel: SearchVMProtocol {
                 self.currentFetchedSearchResultPage = pageToLoad
 
                 self.messages.append(
-                    contentsOf: newMessages.filter({ !self.messageIDs.contains($0.messageID) })
+                    contentsOf: newMessages.filter { !self.messageIDs.contains($0.messageID) }
                 )
 
                 let ids = self.messages.map(\.messageID)
@@ -667,6 +667,6 @@ extension SearchViewModel {
         let coreKeyMaker: KeyMakerProtocol
         let fetchMessageDetail: FetchMessageDetailUseCase
         let fetchSenderImage: FetchSenderImageUseCase
-        let backendSearch: BackendSearchUseCase
+        let messageSearch: SearchUseCase
     }
 }
