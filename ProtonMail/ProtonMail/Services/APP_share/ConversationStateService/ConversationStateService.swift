@@ -1,3 +1,4 @@
+
 // sourcery: mock
 protocol ConversationStateProviderProtocol: AnyObject {
     var viewMode: ViewMode { get set }
