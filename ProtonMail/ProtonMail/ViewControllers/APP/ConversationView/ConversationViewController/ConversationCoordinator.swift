@@ -4,7 +4,6 @@ import SafariServices
 // sourcery: mock
 protocol ConversationCoordinatorProtocol: AnyObject {
     var pendingActionAfterDismissal: (() -> Void)? { get set }
-    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)? { get set }
 
     func handle(navigationAction: ConversationNavigationAction)
 }
@@ -50,7 +49,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
     }
 
-    func start(openFromNotification: Bool = false) {
+    func start() {
         let viewController = makeConversationVC()
         self.viewController = viewController
         if navigationController?.viewControllers.last is MessagePlaceholderVC,
@@ -69,7 +68,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                 queueManager: sharedServices.get(by: QueueManager.self),
                 apiService: user.apiService,
                 contextProvider: sharedServices.get(by: CoreDataService.self),
-                messageDataAction: user.messageService,
                 cacheService: user.cacheService
             )
         )

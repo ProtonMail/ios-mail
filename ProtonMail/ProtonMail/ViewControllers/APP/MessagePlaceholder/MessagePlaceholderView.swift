@@ -52,20 +52,6 @@ final class MessagePlaceholderView: UIView {
 
 private enum SubviewsFactory {
 
-    static var tableView: UITableView {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.tableFooterView = UIView()
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = ColorProvider.BackgroundSecondary
-        return tableView
-    }
-
-    static var separator: UIView {
-        let view = UIView(frame: .zero)
-        view.backgroundColor = ColorProvider.Shade20
-        return view
-    }
-
     static var toolBar: PMToolBarView {
         let toolbar = PMToolBarView()
         return toolbar

@@ -47,7 +47,6 @@ protocol MenuVMProtocol: AnyObject {
     func highlight(label: MenuLabel)
     func appVersion() -> String
     func getAccountList() -> [AccountSwitcher.AccountData]
-    func getUnread(of userID: String) -> Int
     func activateUser(id: UserID)
     func prepareLogin(userID: UserID)
     func prepareLogin(mail: String)

@@ -35,9 +35,3 @@ class NotificationService: UNNotificationServiceExtension {
         handler.willTerminate()
     }
 }
-
-protocol CacheStatusInject {
-    var isPinCodeEnabled: Bool { get }
-    var isTouchIDEnabled: Bool { get }
-    var pinFailedCount: Int { get set }
-}

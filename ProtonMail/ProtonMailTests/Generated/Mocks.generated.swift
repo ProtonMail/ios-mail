@@ -175,16 +175,6 @@ class MockConversationCoordinatorProtocol: ConversationCoordinatorProtocol {
         }
     }
 
-    @PropertyStub(\MockConversationCoordinatorProtocol.goToDraft, initialGet: nil) var goToDraftStub
-    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)? {
-        get {
-            goToDraftStub()
-        }
-        set {
-            goToDraftStub(newValue)
-        }
-    }
-
     @FuncStub(MockConversationCoordinatorProtocol.handle) var handleStub
     func handle(navigationAction: ConversationNavigationAction) {
         handleStub(navigationAction)
@@ -943,14 +933,6 @@ class MockMarkLegitimateActionHandler: MarkLegitimateActionHandler {
     @FuncStub(MockMarkLegitimateActionHandler.markAsLegitimate) var markAsLegitimateStub
     func markAsLegitimate(messageId: MessageID) {
         markAsLegitimateStub(messageId)
-    }
-
-}
-
-class MockMessageDataActionProtocol: MessageDataActionProtocol {
-    @FuncStub(MockMessageDataActionProtocol.mark, initialReturn: Bool()) var markStub
-    func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool {
-        markStub(messageObjectIDs, labelID, unRead)
     }
 
 }

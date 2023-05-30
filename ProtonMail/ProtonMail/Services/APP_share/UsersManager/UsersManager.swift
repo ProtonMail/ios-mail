@@ -93,8 +93,6 @@ class UsersManager: Service {
         return self.users.count
     }
 
-    let internetConnectionStatusProvider: InternetConnectionStatusProvider
-
     // Used to check if the account is already being deleted.
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
     private let userDataCache: CachedUserDataProvider
@@ -112,7 +110,6 @@ class UsersManager: Service {
     init(
         doh: DoHInterface,
         userDataCache: CachedUserDataProvider,
-        internetConnectionStatusProvider: InternetConnectionStatusProvider = .init(),
         userDefaultCache: SharedCacheBase = .init(),
         keychain: Keychain = KeychainWrapper.keychain,
         notificationCenter: NotificationCenter = .default,
@@ -123,7 +120,6 @@ class UsersManager: Service {
         /// for migrate
         self.latestVersion = Version.version
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
-        self.internetConnectionStatusProvider = internetConnectionStatusProvider
         self.userDataCache = userDataCache
         self.userDefaultCache = userDefaultCache
         self.keychain = keychain

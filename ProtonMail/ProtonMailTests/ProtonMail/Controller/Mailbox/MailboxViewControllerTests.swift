@@ -257,7 +257,6 @@ extension MailboxViewControllerTests {
             welcomeCarrouselCache: welcomeCarrouselCache,
             toolbarActionProvider: toolbarActionProviderMock,
             saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-            senderImageService: .init(dependencies: .init(apiService: userManagerMock.apiService, internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
             totalUserCountClosure: {
                 totalUserCount
             }

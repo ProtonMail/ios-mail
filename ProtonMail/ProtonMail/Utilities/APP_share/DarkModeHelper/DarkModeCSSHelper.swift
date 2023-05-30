@@ -46,14 +46,6 @@ struct HSLA {
     // alpha, [0%, 100%] or [0.0, 1.0]
     let a: CGFloat
 
-    var isDark: Bool {
-        l < 50
-    }
-
-    var isLight: Bool {
-        !isDark
-    }
-
     var color: UIColor {
         UIColor(
             hue: CGFloat(h) / 360.0,
@@ -661,19 +653,6 @@ extension CSSMagic {
             }
         }
         return "hsla(\(hsla.h), \(hsla.s)%, \(l)%, \(hsla.a))"
-    }
-
-    static func getRelativeLuminance(from hsla: HSLA) -> CGFloat? {
-        let color = hsla.color
-        var red: CGFloat = 0
-        var green: CGFloat = 0
-        var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-        guard color.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else { return nil }
-        let rValue = transformToRLSpace(from: red)
-        let gValue = transformToRLSpace(from: green)
-        let bValue = transformToRLSpace(from: blue)
-        return 0.2126 * rValue + 0.7152 * gValue + 0.0722 * bValue
     }
 
     private static func transformToRLSpace(from value: CGFloat) -> CGFloat {

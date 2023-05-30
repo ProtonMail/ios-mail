@@ -194,7 +194,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                     user: user,
                     dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
                 )
-                showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
+                showComposer(viewModel: viewModel, navigationVC: nav)
             }
         case .composeMailto where path.value != nil:
             followToComposeMailTo(path: path.value, deeplink: deeplink)
@@ -208,8 +208,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
                 navigateToComposer(
                     existingMessage: message,
-                    isEditingScheduleMsg: true,
-                    originalScheduledTime: .init(rawValue: originalScheduledTime)
+                    isEditingScheduleMsg: true
                 )
             }
         default:
@@ -219,9 +218,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
 }
 
 extension MailboxCoordinator {
-    private func showComposer(viewModel: ComposeViewModel,
-                              navigationVC: UINavigationController,
-                              deepLink: DeepLink) {
+    private func showComposer(viewModel: ComposeViewModel, navigationVC: UINavigationController) {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: contextProvider,
@@ -258,10 +255,7 @@ extension MailboxCoordinator {
 
     private func navigateToComposer(
         existingMessage: Message?,
-        isEditingScheduleMsg: Bool = false,
-        isOpenedFromShare: Bool = false,
-        originalScheduledTime: OriginalScheduleDate? = nil
-    ) {
+        isEditingScheduleMsg: Bool = false) {
         guard let navigationVC = navigation else {
             return
         }
@@ -295,7 +289,6 @@ extension MailboxCoordinator {
                         queueManager: services.get(by: QueueManager.self),
                         apiService: viewModel.user.apiService,
                         contextProvider: coreDataService,
-                        messageDataAction: viewModel.user.messageService,
                         cacheService: viewModel.user.cacheService
                     )
                 ),
@@ -373,7 +366,7 @@ extension MailboxCoordinator {
     private func followToComposeMailTo(path: String?, deeplink: DeepLink) {
         if let msgID = path,
            let existingMsg = Message.messageForMessageID(msgID, inManagedObjectContext: contextProvider.mainContext) {
-            navigateToComposer(existingMessage: existingMsg, isOpenedFromShare: true)
+            navigateToComposer(existingMessage: existingMsg)
             return
         }
 
@@ -439,8 +432,7 @@ extension MailboxCoordinator {
         }
         navigateToComposer(
             existingMessage: msg,
-            isEditingScheduleMsg: true,
-            originalScheduledTime: originalScheduledTime
+            isEditingScheduleMsg: true
         )
     }
 }

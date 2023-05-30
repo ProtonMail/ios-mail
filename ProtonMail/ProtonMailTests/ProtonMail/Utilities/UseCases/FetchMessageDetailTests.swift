@@ -34,12 +34,10 @@ final class FetchMessageDetailTests: XCTestCase {
         apiService = APIServiceMock()
         contextProvider = MockCoreDataContextProvider()
         let cacheService = MockCacheServiceProtocol()
-        let messageDataAction = MockMessageDataActionProtocol()
         sut = FetchMessageDetail(
             dependencies: .init(queueManager: queueManager,
                                 apiService: apiService,
                                 contextProvider: contextProvider,
-                                messageDataAction: messageDataAction,
                                 cacheService: cacheService)
         )
     }
