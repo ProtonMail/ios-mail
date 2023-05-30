@@ -281,6 +281,8 @@ extension MailboxCoordinator {
 
     private func presentSearch() {
         let coreDataService = services.get(by: CoreDataService.self)
+        // TODO: get shared ES service.
+        let esService = EncryptedSearchService()
         let viewModel = SearchViewModel(
             serviceFactory: services,
             user: viewModel.user,
@@ -308,11 +310,33 @@ extension MailboxCoordinator {
                         senderImageStatusProvider: userCachedStatus,
                         mailSettings: viewModel.user.mailSettings
                     )
-                ), backendSearch: BackendSearch(
+                ), messageSearch: MessageSearch(
                     dependencies: .init(
-                        apiService: viewModel.user.apiService,
-                        contextProvider: coreDataService,
-                        userID: viewModel.user.userID
+                        isESEnable: UserInfo.isEncryptedSearchEnabled,
+                        esDefaultCache: EncryptedSearchUserDefaultCache(),
+                        userID: viewModel.user.userID,
+                        backendSearch: BackendSearch(
+                            dependencies: .init(
+                                apiService: viewModel.user.apiService,
+                                contextProvider: coreDataService,
+                                userID: viewModel.user.userID
+                            )
+                        ),
+                        encryptedSearch: EncryptedSearch(
+                            dependencies: .init(
+                                encryptedSearchService: esService,
+                                contextProvider: coreDataService,
+                                userID: viewModel.user.userID,
+                                fetchMessageMetaData: FetchMessageMetaData(
+                                    params: .init(userID: viewModel.user.userID.rawValue),
+                                    dependencies: .init(
+                                        messageDataService: viewModel.user.messageService,
+                                        contextProvider: coreDataService
+                                    )
+                                ),
+                                messageDataService: viewModel.user.messageService
+                            )
+                        ), esStateProvider: esService
                     )
                 )
             )

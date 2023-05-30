@@ -38,7 +38,12 @@ protocol EncryptedSearchServiceProtocol {
     )
 }
 
-final class EncryptedSearchService: EncryptedSearchServiceProtocol {
+// sourcery: mock
+protocol EncryptedSearchStateProvider {
+    func indexBuildingState(for userID: UserID) -> EncryptedSearchIndexState
+}
+
+final class EncryptedSearchService: EncryptedSearchServiceProtocol, EncryptedSearchStateProvider {
     static let shared = EncryptedSearchService()
 
     private var buildSearchIndexes: [UserID: BuildSearchIndex] = [:]

@@ -433,6 +433,14 @@ class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
 
 }
 
+class MockEncryptedSearchStateProvider: EncryptedSearchStateProvider {
+    @FuncStub(MockEncryptedSearchStateProvider.indexBuildingState, initialReturn: EncryptedSearchIndexState()) var indexBuildingStateStub
+    func indexBuildingState(for userID: UserID) -> EncryptedSearchIndexState {
+        indexBuildingStateStub(userID)
+    }
+
+}
+
 class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
     @FuncStub(MockEncryptedSearchUserCache.isEncryptedSearchOn, initialReturn: Bool()) var isEncryptedSearchOnStub
     func isEncryptedSearchOn(of userID: UserID) -> Bool {
