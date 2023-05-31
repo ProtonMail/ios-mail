@@ -175,13 +175,6 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             let css = dom.getAttribute('style').replace(/((color|bgcolor|background-color|background|border):.*?) (!important)/g, "$1")
             dom.setAttribute('style', css);
         }
-        let headStyleNodes = document.head.querySelectorAll('style')
-        for (var i = 0, max = headStyleNodes.length; i < max; i++) {
-            let style = headStyleNodes[i]
-            if (!style.textContent.includes('!important')) { continue }
-            let newText = style.textContent.replace(/((color|bgcolor|background-color|background|border):.*?) (!important)/g, "$1")
-            style.textContent = newText
-        }
 
         // Purify message head
         var dirty = document.documentElement.outerHTML.toString();

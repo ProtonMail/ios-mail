@@ -46,6 +46,14 @@ struct HSLA {
     // alpha, [0%, 100%] or [0.0, 1.0]
     let a: CGFloat
 
+    var isDark: Bool {
+        l < 50
+    }
+
+    var isLight: Bool {
+        !isDark
+    }
+
     var color: UIColor {
         UIColor(
             hue: CGFloat(h) / 360.0,
@@ -387,8 +395,39 @@ extension CSSMagic {
         }
     }
 
+    /// Check if the background and foreground has good contrast
+    /// Color contrast ratio greater than 1 is good contrast
+    /// - Parameter attributes: attributes array
+    /// - Returns: bool result
+    static func hasGoodContrast(attributes: [CSSMagic.CSSAttribute]) -> Bool {
+        let foregroundKey = CSSKeys.color.rawValue
+        let backgroundKeys = [CSSKeys.backgroundColor.rawValue,
+                              CSSKeys.bgColor.rawValue,
+                              CSSKeys.background.rawValue]
+        let foregroundStyle = attributes.first(where: {$0.key == foregroundKey})?.value ?? "#fff"
+        let backgroundStyle = attributes.first(where: {backgroundKeys.contains($0.key)})?.value ?? "#000"
+
+        let foregroundColor = parseAttribute(attribute: foregroundStyle)?.colorAttribute ?? "#fff"
+        let backgroundColor = parseAttribute(attribute: backgroundStyle)?.colorAttribute ?? "#000"
+        let color = getHSLA(attribute: foregroundColor) ?? HSLA(h: 0, s: 0, l: 100, a: 1)
+        let background = getHSLA(attribute: backgroundColor) ?? HSLA(h: 0, s: 0, l: 0, a: 1)
+
+        // https://www.w3.org/TR/WCAG20/#relativeluminancedef
+        guard let colorRL = getRelativeLuminance(from: color),
+              let backgroundRL = getRelativeLuminance(from: background) else {
+            let result = (color.isDark && (background.isLight || background.a == 0)) ||
+            (color.isLight && background.isDark)
+            return result
+        }
+        let lighter = max(colorRL, backgroundRL)
+        let darker = min(colorRL, backgroundRL)
+        let colorContrastRatio = (lighter + 0.05) / (darker + 0.05)
+        return colorContrastRatio >= 4.5
+    }
+
     static func switchToDarkModeStyle(attributes: [CSSMagic.CSSAttribute]) -> [String] {
-        var cssArray: [String] = []
+        var darkForeground: CSSMagic.CSSAttribute?
+        var darkAttributes: [CSSMagic.CSSAttribute] = []
         let keywords = [CSSKeys.color.rawValue,
                         CSSKeys.backgroundColor.rawValue,
                         CSSKeys.bgColor.rawValue,
@@ -406,21 +445,36 @@ extension CSSMagic {
             }
             var key = attribute.key
             if key == CSSKeys.bgColor.rawValue {
-                // bgcolor is decrypted, it will be overridden by background-color
+                // bgcolor is deprecated, it will be overridden by background-color
                 // So in theory, bgcolor and background-color won't use at the same time
                 key = CSSKeys.backgroundColor.rawValue
             }
-            cssArray.append("\(key): \(hsla) !important")
+            if key == CSSKeys.color.rawValue {
+                darkForeground = (key, hsla)
+            } else {
+                darkAttributes.append((key, hsla))
+            }
             if key == CSSKeys.border.rawValue {
                 attributes
                     .filter { $0.key.hasPrefix("\(CSSKeys.border.rawValue)-")}
                     .forEach { attribute in
-                        cssArray.append("\(attribute.key): \(attribute.value) !important")
+                        darkAttributes.append((attribute.key, attribute.value))
                     }
 
             }
         }
-        return cssArray
+        var isOriginalForegroundHasGoodDarkModeContrast = false
+        if let originalForegroundStyle = attributes.first(where: { $0.key == CSSKeys.color.rawValue })?.value {
+            isOriginalForegroundHasGoodDarkModeContrast = hasGoodContrast(
+                attributes: darkAttributes + [(CSSKeys.color.rawValue, originalForegroundStyle)]
+            )
+        }
+        var result = darkAttributes.map { "\($0.key): \($0.value) !important" }
+        if !isOriginalForegroundHasGoodDarkModeContrast,
+           let style = darkForeground {
+            result.append("\(style.key): \(style.value) !important")
+        }
+        return result
     }
 
     static func getHSLA(attribute: String) -> HSLA? {
@@ -647,12 +701,25 @@ extension CSSMagic {
             return "hsla(230, 12%, 10%, \(hsla.a))"
         case (true, false), (false, false):
             if isForeground {
-                l = max(l, 100)
+                l = max(l, 90)
             } else {
                 l = min(30, l)
             }
         }
         return "hsla(\(hsla.h), \(hsla.s)%, \(l)%, \(hsla.a))"
+    }
+
+    static func getRelativeLuminance(from hsla: HSLA) -> CGFloat? {
+        let color = hsla.color
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        guard color.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else { return nil }
+        let rValue = transformToRLSpace(from: red)
+        let gValue = transformToRLSpace(from: green)
+        let bValue = transformToRLSpace(from: blue)
+        return 0.2126 * rValue + 0.7152 * gValue + 0.0722 * bValue
     }
 
     private static func transformToRLSpace(from value: CGFloat) -> CGFloat {
@@ -781,7 +848,10 @@ extension CSSMagic {
                     }
                 }
             let assemble = values
-                .map { "[\(key)*=\"\($0.trim())\"]" }
+                .map { value in
+                    let text = value.preg_replace_none_regex("!important", replaceto: "").trim()
+                    return "[\(key)*=\"\(text)\"]"
+                }
                 .joined()
             return assemble
         } else {
