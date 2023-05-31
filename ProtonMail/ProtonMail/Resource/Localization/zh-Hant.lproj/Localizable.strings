@@ -2394,4 +2394,4 @@
 "ZIP" = "郵遞區號";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系統設定裡停用了%@ 。%@ 被使用在保護重要的帳號資訊上。要存取您的帳號，要去設定裡重新啟動%@ ，或是重新登入。";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系統設定裡停用了%1$@ 。%2$@ 被使用在保護重要的帳號資訊上。要存取您的帳號，要去設定裡重新啟動%3$@ ，或是重新登入。";
