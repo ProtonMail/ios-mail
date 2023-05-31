@@ -17,11 +17,21 @@
 
 import ProtonCore_Environment
 import ProtonCore_Services
+import TrustKit
 
 extension TrustKitWrapper {
     // Prefer this over `setUp`, this covers `PMAPIService` configuration
     static func start(delegate: TrustKitUIDelegate, hardfail: Bool = true) {
+        silenceTrustKitOutput()
         setUp(delegate: delegate, customConfiguration: Environment.pinningConfigs(hardfail: hardfail))
         PMAPIService.trustKit = current
+    }
+
+    private static func silenceTrustKitOutput() {
+        TrustKit.setLoggerBlock { message in
+            if message.range(of: "Error", options: .caseInsensitive) != nil {
+                SystemLogger.log(message: message, isError: true)
+            }
+        }
     }
 }
