@@ -72,6 +72,7 @@ class ConversationViewModel {
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
     var isTrashFolder: Bool { self.labelId == LabelLocation.trash.labelID }
     weak var conversationViewController: ConversationViewController?
+    private(set) var tableViewIsUpdating = false
 
     /// Used to decide if there is any new messages coming
     private var recordNumOfMessages = 0
@@ -604,20 +605,18 @@ class ConversationViewModel {
     private func perform(update: ConversationUpdateType, on tableView: UITableView) {
         switch update {
         case .willUpdate:
+            tableViewIsUpdating = true
             tableView.beginUpdates()
         case let .didUpdate(messages):
             updateDataSource(with: messages)
             do {
                 try ObjC.catchException {
                     tableView.endUpdates()
+                    self.tableViewIsUpdating = false
                 }
-                Breadcrumbs.shared.clearCrumbs(for: .conversationViewEndUpdatesCrash)
             } catch {
                 // unfortunately the error doesn't contain anything useful
-                assertionFailure("\(error)")
-
-                let trace = Breadcrumbs.shared.trace(for: .conversationViewEndUpdatesCrash)
-                Analytics.shared.sendError(.conversationViewEndUpdatesCrash, trace: trace)
+                PMAssertionFailure(error)
 
                 // this call will sync the data again at the expense of no animation
                 tableView.reloadData()
@@ -626,6 +625,7 @@ class ConversationViewModel {
                 /// because we're in the middle of an update after the `beginUpdates` call above.
                 /// Now it's safe, so we don't need to catch again.
                 tableView.endUpdates()
+                tableViewIsUpdating = false
             }
 
             observeNewMessages()

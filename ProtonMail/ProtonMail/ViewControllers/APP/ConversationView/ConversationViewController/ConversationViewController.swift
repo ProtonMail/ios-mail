@@ -177,12 +177,16 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
 
     func cellTapped(
         messageId: MessageID,
-        caller: StaticString = #function,
         reloadCompletion: (() -> Void)? = nil
     ) {
-        // this method sometimes appears in the stack trace for this crash
-        Breadcrumbs.shared.add(message: "\(caller)", to: .conversationViewEndUpdatesCrash)
-        Breadcrumbs.shared.add(message: "cellTapped(messageId: \(messageId)", to: .conversationViewEndUpdatesCrash)
+        guard !viewModel.tableViewIsUpdating else {
+            PMAssertionFailure("Cell tapped while the table view is updating")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.cellTapped(messageId: messageId, reloadCompletion: reloadCompletion)
+            }
+
+            return
+        }
 
         viewModel.cellTapped()
 
