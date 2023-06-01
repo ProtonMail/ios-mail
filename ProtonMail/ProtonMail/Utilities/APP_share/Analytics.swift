@@ -65,8 +65,8 @@ class Analytics {
         analytics.track(event: event, trace: trace)
     }
 
-    func sendError(_ error: MailAnalyticsErrorEvent, trace: String? = nil) {
+    func sendError(_ error: MailAnalyticsErrorEvent, trace: String? = nil, fingerprint: Bool = false) {
         guard isEnabled else { return }
-        analytics.track(error: error, trace: trace)
+        analytics.track(error: error, trace: trace, fingerprint: fingerprint)
     }
 }

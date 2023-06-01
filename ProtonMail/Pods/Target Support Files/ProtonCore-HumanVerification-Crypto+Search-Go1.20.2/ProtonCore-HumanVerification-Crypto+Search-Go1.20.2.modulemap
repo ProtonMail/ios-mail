@@ -1,0 +1,6 @@
+framework module ProtonCore_HumanVerification {
+  umbrella header "ProtonCore-HumanVerification-Crypto+Search-Go1.20.2-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -93,7 +93,7 @@
 "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
 "Complete Setup" = "Complete Setup";
 "Incorrect mailbox password" = "Incorrect mailbox password";
-"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+"Your session has expired. Please log in again." = "Your session has expired. Please sign in again.";
 "An error has occured" = "An error has occured";
 "Proton address required" = "Proton address required";
 "Update required" = "Update required";
@@ -151,15 +151,15 @@
 "Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
 "Purchase is not possible." = "Purchase is not possible.";
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.";
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple informed us you've upgraded the service plan, but we detected you have signed out of the account since then.";
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.";
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!";
 "We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "We have been notified of an App Store purchase but cannot match the purchase with an account of yours.";
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Please sign in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase.";
 "Apple informed us they could not process the purchase." = "Apple informed us they could not process the purchase.";
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "We have successfully activated your subscription. Please relaunch the app to start using your new service plan.";
 "Please unlock the app to proceed with your service plan activation" = "Please unlock the app to proceed with your service plan activation";
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation.";
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Please sign in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation.";
 "Contact support@protonvpn.com to complete your purchase." = "Contact support@protonvpn.com to complete your purchase.";
 "Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Wrong payment token status. Please relaunch the app. If error persists, contact support.";
 
@@ -177,7 +177,7 @@
 
 "Delete account" = "Delete account";
 "This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "This will permanently delete your account and all of its data. You will not be able to reactivate this account.";
-"Account deleted.\nLogging out..." = "Account deleted.\nLogging out...";
+"Account deleted.\nLogging out..." = "Account deleted.\nSigning out...";
 "A networking error has occured" = "A networking error has occured";
 "Close" = "Close";
 
@@ -305,7 +305,7 @@
 
 "Troubleshoot" = "Troubleshoot";
 
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again.";
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "The TLS certificate validation failed when trying to connect to the Proton API. Your current internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo sign in or access your account, switch to a new network and try to connect again.";
 
 
 

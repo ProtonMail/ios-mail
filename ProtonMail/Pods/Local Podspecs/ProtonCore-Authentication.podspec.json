@@ -1,6 +1,6 @@
 {
   "name": "ProtonCore-Authentication",
-  "version": "4.0.1",
+  "version": "5.2.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,8 +16,8 @@
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "4.0.1"
+    "git": null,
+    "tag": "5.2.0"
   },
   "platforms": {
     "ios": "11.0",
@@ -37,16 +37,16 @@
       "name": "Crypto-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-APIClient": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Services": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -60,7 +60,7 @@
           "source_files": "libraries/Authentication/Tests/**/*.swift",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-Go1.20.2": [
-              "4.0.1"
+              "5.2.0"
             ],
             "OHHTTPStubs/Swift": [
 
@@ -73,16 +73,16 @@
       "name": "Crypto-patched-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto-patched-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-APIClient": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Services": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -96,7 +96,7 @@
           "source_files": "libraries/Authentication/Tests/**/*.swift",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto-patched-Go1.20.2": [
-              "4.0.1"
+              "5.2.0"
             ],
             "OHHTTPStubs/Swift": [
 
@@ -109,16 +109,16 @@
       "name": "Crypto+VPN-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-APIClient": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Services": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -132,7 +132,7 @@
           "source_files": "libraries/Authentication/Tests/**/*.swift",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.15.15": [
-              "4.0.1"
+              "5.2.0"
             ],
             "OHHTTPStubs/Swift": [
 
@@ -145,16 +145,16 @@
       "name": "Crypto+VPN-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+VPN-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-APIClient": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Services": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -168,7 +168,43 @@
           "source_files": "libraries/Authentication/Tests/**/*.swift",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-Go1.20.2": [
-              "4.0.1"
+              "5.2.0"
+            ],
+            "OHHTTPStubs/Swift": [
+
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Crypto+VPN-patched-Go1.20.2",
+      "dependencies": {
+        "ProtonCore-GoLibs/Crypto+VPN-patched-Go1.20.2": [
+          "5.2.0"
+        ],
+        "ProtonCore-APIClient": [
+          "5.2.0"
+        ],
+        "ProtonCore-FeatureSwitch": [
+          "5.2.0"
+        ],
+        "ProtonCore-Services": [
+          "5.2.0"
+        ]
+      },
+      "source_files": [
+        "libraries/Authentication/Sources/*.swift",
+        "libraries/Authentication/Sources/**/*.swift"
+      ],
+      "testspecs": [
+        {
+          "name": "Tests",
+          "test_type": "unit",
+          "source_files": "libraries/Authentication/Tests/**/*.swift",
+          "dependencies": {
+            "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+VPN-patched-Go1.20.2": [
+              "5.2.0"
             ],
             "OHHTTPStubs/Swift": [
 
@@ -181,16 +217,16 @@
       "name": "Crypto+Search-Go1.15.15",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.15.15": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-APIClient": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Services": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -204,7 +240,7 @@
           "source_files": "libraries/Authentication/Tests/**/*.swift",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.15.15": [
-              "4.0.1"
+              "5.2.0"
             ],
             "OHHTTPStubs/Swift": [
 
@@ -217,16 +253,16 @@
       "name": "Crypto+Search-Go1.20.2",
       "dependencies": {
         "ProtonCore-GoLibs/Crypto+Search-Go1.20.2": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-APIClient": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-FeatureSwitch": [
-          "4.0.1"
+          "5.2.0"
         ],
         "ProtonCore-Services": [
-          "4.0.1"
+          "5.2.0"
         ]
       },
       "source_files": [
@@ -240,7 +276,7 @@
           "source_files": "libraries/Authentication/Tests/**/*.swift",
           "dependencies": {
             "ProtonCore-TestingToolkit/UnitTests/Authentication/Crypto+Search-Go1.20.2": [
-              "4.0.1"
+              "5.2.0"
             ],
             "OHHTTPStubs/Swift": [
 

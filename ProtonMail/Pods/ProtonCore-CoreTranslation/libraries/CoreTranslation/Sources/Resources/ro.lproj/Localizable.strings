@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "O metodă de recuperare vă ajută să accesați contul în cazul în care vă uitați parola și nu vă puteți conecta la cont.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Cont șters.\nSe deconectează...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Este necesară setarea contului";
@@ -44,9 +41,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ne-a informat că ați modernizat planul serviciului, dar lipsesc unele date tehnice. Completați raportul de erori și echipa de suport vă va contacta.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple ne-a informat că ați modernizat planul serviciului, dar am detectat că v-ați deconectat din cont de atunci.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Sigur doriți să vă deconectați din %@?";
 
@@ -63,9 +57,6 @@
 /* Cancel button */
 "Cancel" = "Anulare";
 
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
-
 /* Change email address button */
 "Change email address" = "Modificare adresă de e-mail";
 
@@ -77,7 +68,7 @@
 "Change your password" = "Schimbare parolă";
 
 /* Proton is down description. */
-"Check Proton Status for our system status." = "Consultați Stare Proton pentru starea sistemului nostru.";
+"Check Proton Status for our system status." = "Consultați Starea Proton pentru starea sistemului nostru.";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Închidere";
@@ -113,7 +104,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contactați-ne direct prin formularul nostru de suport, e-mail (support@protonmail.zendesk.com) sau Twitter.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Continuare";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Creare cont Proton cu e-mailul curent";
@@ -184,6 +175,9 @@
 
 /* Email address already used error */
 "Email address already used." = "Adresă de e-mail deja utilizată.";
+
+/* Username field title */
+"Email or username" = "E-mail sau utilizator";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Bucurați-vă de lumea vieții private.";
@@ -349,9 +343,6 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Numai abonamentele anuale care nu sunt reînnoite sunt disponibile prin intermediul acestei aplicații.";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P / BitTorrent";
-
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Planul a fost modernizat";
 
@@ -453,12 +444,6 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Introduceți parola contului Proton.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Conectați-vă la contul Proton Mail pentru care modificați tipul de abonament pentru a putea finaliza tranzacția.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Conectați-vă la contul Proton Mail pentru care modificați tipul de abonament pentru a putea finaliza activarea abonamentului.";
-
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Asigurați-vă că aveți conexiune la internet.";
 
@@ -480,9 +465,6 @@
 
 /* Username field title */
 "Proton email or username" = "Nume utilizator sau e-mail Proton";
-
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton gratuit";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton nu este disponibil";
@@ -574,9 +556,6 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Omiteți metoda de recuperare?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Ne pare rău, nu putem procesa achizițiile în versiunea beta a aplicației. Vă mulțumim pentru participarea la testul nostru beta public!";
 
@@ -621,9 +600,6 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Serverele Proton nu pot fi accesate. Cauza ar putea fi o configurare greșită a rețelei, serverele Proton nu funcționează sau sunt blocate.";
 
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Validarea certificatului TLS a eșuat când s-a încercat conectarea la API-ul Proton. Conexiunea la internet vă poate fi monitorizată. Pentru a vă păstra securitatea datelor, împiedicăm aplicația să acceseze API-ul Proton.\nPentru a vă conecta și accesa contul, comutați la o rețea nouă și încercați să vă reconectați.";
-
 /* Complete view description */
 "This should take no more than a minute." = "De obicei nu durează mai mult de un minut.";
 
@@ -647,9 +623,6 @@
 
 /* other method alert button */
 "Try other method" = "Încercați altă metodă";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Autentificare cu doi factori";
@@ -770,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Contul Proton gratuit v-a fost creat cu succes.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "Sesiunea a expirat. Reconectați-vă.";
 

@@ -32,7 +32,7 @@ public struct User: Codable, Equatable {
     public let maxUpload: Double
     public let role: Int
     public let `private`: Int
-    public let subscribed: Int
+    public let subscribed: Subscribed
     public let services: Int
     public let delinquent: Int
     public let orgPrivateKey: String?
@@ -43,6 +43,25 @@ public struct User: Codable, Equatable {
     // public let mailSettings: MailSetting
     // public let addresses: [Address]
 
+    public var hasAnySubscription: Bool {
+        !subscribed.isEmpty
+    }
+
+    public struct Subscribed: OptionSet, Codable, Equatable {
+        public let rawValue: UInt8
+
+        public init(rawValue: UInt8) {
+            self.rawValue = rawValue
+        }
+
+        /// 1: has `Mail` subscription.
+        public static let mail     = Subscribed(rawValue: 1 << 0)
+        /// 2: has `Drive` subscription.
+        public static let drive    = Subscribed(rawValue: 1 << 1)
+        /// 4: has `VPN` subscription.
+        public static let vpn      = Subscribed(rawValue: 1 << 2)
+    }
+
     public init(ID: String,
                 name: String?,
                 usedSpace: Double,
@@ -52,7 +71,7 @@ public struct User: Codable, Equatable {
                 maxUpload: Double,
                 role: Int,
                 private: Int,
-                subscribed: Int,
+                subscribed: Subscribed,
                 services: Int,
                 delinquent: Int,
                 orgPrivateKey: String?,
@@ -110,7 +129,7 @@ public final class UserInfo: NSObject {
     public var role: Int
     public var sign: Int
     /// 0: free user, > 0: paid user
-    public var subscribed: Int
+    public var subscribed: User.Subscribed
     public var swipeLeft: Int
     public var swipeRight: Int
     public var telemetry: Int
@@ -125,7 +144,7 @@ public final class UserInfo: NSObject {
         return .init(maxSpace: 0, usedSpace: 0, language: "",
                      maxUpload: 0, role: 0, delinquent: 0,
                      keys: nil, userId: "", linkConfirmation: 0,
-                     credit: 0, currency: "", subscribed: 0)
+                     credit: 0, currency: "", subscribed: DefaultValue.subscribed)
     }
 
     // init from cache
@@ -158,7 +177,7 @@ public final class UserInfo: NSObject {
         twoFA: Int?,
         enableFolderColor: Int?,
         inheritParentFolderColor: Int?,
-        subscribed: Int?,
+        subscribed: User.Subscribed?,
         groupingMode: Int?,
         weekStart: Int?,
         delaySendSeconds: Int?,
@@ -229,7 +248,7 @@ public final class UserInfo: NSObject {
                          linkConfirmation: Int?,
                          credit: Int?,
                          currency: String?,
-                         subscribed: Int?) {
+                         subscribed: User.Subscribed?) {
         self.attachPublicKey = DefaultValue.attachPublicKey
         self.autoSaveContact = DefaultValue.autoSaveContact
         self.conversationToolbarActions = DefaultValue.conversationToolbarActions
@@ -380,7 +399,7 @@ extension UserInfo {
         static let passwordMode: Int = 1
         static let role: Int = 0
         static let sign: Int = 0
-        static let subscribed: Int = 0
+        static let subscribed: User.Subscribed = .init(rawValue: 0)
         static let swipeLeft: Int = 3
         static let swipeRight: Int = 0
         static let telemetry: Int = 1

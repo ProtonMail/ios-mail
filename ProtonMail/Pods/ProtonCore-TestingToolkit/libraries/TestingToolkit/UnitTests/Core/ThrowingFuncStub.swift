@@ -21,6 +21,8 @@
 
 import XCTest
 
+import ProtonCore_Utilities
+
 @propertyWrapper
 public final class ThrowingFuncStub<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12> {
 
@@ -41,8 +43,12 @@ public final class ThrowingFuncStub<Input, Output, A1, A2, A3, A4, A5, A6, A7, A
 
 public final class ThrowingStubbedFunction<Input, Output, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12> {
 
-    public private(set) var callCounter: UInt = .zero
-    public private(set) var capturedArguments: [CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>] = []
+    public var callCounter: UInt { capturedArgumentsAndCounterStorage.value.0 }
+    public var capturedArguments: [CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>] {
+        capturedArgumentsAndCounterStorage.value.1
+    }
+
+    private var capturedArgumentsAndCounterStorage: Atomic<(UInt, [CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>])> = .init((.zero, .empty))
 
     public var description: String
     public var ensureWasCalled = false
@@ -86,8 +92,10 @@ public final class ThrowingStubbedFunction<Input, Output, A1, A2, A3, A4, A5, A6
     }
 
     func callAsFunction(input: Input, arguments: CapturedArguments<Input, A1, A2, A3, A4, A5, A6, A7, A8, A9, A10, A11, A12>) throws -> Output {
-        callCounter += 1
-        capturedArguments.append(arguments)
+        capturedArgumentsAndCounterStorage.mutate {
+            $0.0 += 1
+            $0.1.append(arguments)
+        }
         return try implementation(callCounter, input)
     }
 

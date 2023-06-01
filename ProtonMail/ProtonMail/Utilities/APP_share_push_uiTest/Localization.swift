@@ -632,7 +632,7 @@ class LocalizedString {
 
     lazy var _unlock_required = NSLocalizedString("Unlock required", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
-    lazy var _enable_faceid_in_settings = NSLocalizedString("You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in.", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
+    lazy var _enable_faceid_in_settings = NSLocalizedString("You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in.", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
     lazy var _lock_wipe_desc = NSLocalizedString("All protection settings will be reset and wiped upon signing out of the app.", comment: "A description string in pin & faceID setting page")
 
@@ -1470,6 +1470,10 @@ enum L11n {
         static let trackRewardTitle = NSLocalizedString("Track your rewards", comment: "The title of the track reward button in referral share view.")
         static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
         static let shareContent = NSLocalizedString("I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:", comment: "The content that is shared through the action: `Share the link`")
+
+        static let promptContent = NSLocalizedString("Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free.", comment: "The content of the referral prompt view.")
+        static let referAFriend = NSLocalizedString("Refer a friend", comment: "The title of the refer button in referral prompt view.")
+        static let maybeLater = NSLocalizedString("Maybe later", comment: "The title of the maybe later button in referral prompt view.")
 	}
 
     struct SettingsLockScreen {

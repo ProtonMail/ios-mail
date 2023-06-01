@@ -179,7 +179,7 @@ class CacheServiceTest: XCTestCase {
         let pwdHint = "Hint"
 
         let expect = expectation(description: "Update EO")
-        sut.updateExpirationOffset(of: self.testMessage, expirationTime: expirationTime, pwd: pwd, pwdHint: pwdHint) {
+        sut.updateExpirationOffset(of: self.testMessage.objectID, expirationTime: expirationTime, pwd: pwd, pwdHint: pwdHint) {
             expect.fulfill()
         }
         wait(for: [expect], timeout: 1)

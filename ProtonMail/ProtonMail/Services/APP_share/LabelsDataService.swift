@@ -36,6 +36,7 @@ enum LabelFetchType: Int {
     case folderWithOutbox = 5
 }
 
+// sourcery: mock
 protocol LabelProviderProtocol: AnyObject {
     func makePublisher() -> LabelPublisherProtocol
     func getCustomFolders() -> [LabelEntity]

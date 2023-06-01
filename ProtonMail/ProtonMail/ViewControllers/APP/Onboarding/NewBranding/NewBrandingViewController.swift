@@ -61,7 +61,7 @@ extension NewBrandingViewController {
         self.brandingView.roundCorner(8)
 
         self.brandIcon.image = IconProvider.mailMain
-        self.backgroundImage.image = IconProvider.swirls
+        self.backgroundImage.image = IconProvider.mailTopImage
 
         let titleStyle = FontManager.body1BoldNorm.alignment(.center)
         self.titleLabel.attributedText = LocalString._brand_new_proton.apply(style: titleStyle)

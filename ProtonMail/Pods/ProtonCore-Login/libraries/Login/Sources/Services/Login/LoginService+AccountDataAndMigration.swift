@@ -96,7 +96,7 @@ extension LoginService {
         // user has no addresses but username — username account. If the app supports the username account, we finish right away
         let isUsernameAccountAndAppSupportsIt = user.isInternal && hasNoAddressesAtAll && minimumAccountType == .username
         // user has second password mode (we need to check for keys as well) but the app doesn't need keys, we finish right away
-        let hasSecondPasswordButAppDoesNotNeedKeys = passwordMode == .two && !user.keys.isEmpty && minimumAccountType == .username
+        let hasSecondPasswordButAppDoesNotNeedKeys = passwordMode == .two && !hasNoKeys && minimumAccountType == .username
 
         if isUsernameAccountAndAppSupportsIt || hasSecondPasswordButAppDoesNotNeedKeys {
             withAuthDelegateAvailable(completion) { authManager in
@@ -113,7 +113,7 @@ extension LoginService {
         }
         
         // when external user has no key. external address is not empty. try to create keys only. other logic stays the same
-        if user.isExternal, hasNoKeys, hasExternalAddressAndNoInternalOnes {
+        if hasNoKeys, user.isExternal, hasExternalAddressAndNoInternalOnes {
             
             self.createAccountKeysIfNeeded(user: user,
                                            addresses: addresses,
@@ -122,9 +122,15 @@ extension LoginService {
                 case .failure(let error):
                     completion(.failure(error))
                 case .success(let updatedUser):
+                    // if the user had no keys, it means that the password mode was .two while there is no actual second password
+                    // therefore we need to overwrite the original password mode with the .one value
+                    let passwordModeAfterAccountKeyCreation: PasswordMode = .one
                     // after the keys generation — re-fetch the addresses and continue the flow
                     self?.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-                        user: updatedUser, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
+                        user: updatedUser,
+                        mailboxPassword: mailboxPassword,
+                        passwordMode: passwordModeAfterAccountKeyCreation,
+                        completion: completion
                     )
                 }
             }
@@ -142,9 +148,15 @@ extension LoginService {
                 case .failure(let error):
                     completion(.failure(error))
                 case .success(let updatedUser):
+                    // if the user had no keys, it means that the password mode was .two while there is no actual second password
+                    // therefore we need to overwrite the original password mode with the .one value
+                    let passwordModeAfterAccountKeyCreation: PasswordMode = .one
                     // after the keys generation — fetch the fresh data and retry the process
                     self?.fetchAddressesAndEncryptionDataPerformingAutomaticAccountMigrationIfNeeded(
-                        user: updatedUser, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
+                        user: updatedUser,
+                        mailboxPassword: mailboxPassword,
+                        passwordMode: passwordModeAfterAccountKeyCreation,
+                        completion: completion
                     )
                 }
             }

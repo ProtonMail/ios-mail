@@ -8,7 +8,7 @@
 
 import ProtonCore_TestingToolkit
 
-class MenuTests : BaseTestCase {
+class MenuTests: CleanAuthenticatedTestCase {
 
     private let loginRobot = LoginRobot()
     
@@ -17,11 +17,10 @@ class MenuTests : BaseTestCase {
         let randomString = StringUtils().randomAlphanumericString()
         let newDisplayName = "\(emoji)\(testData.onePassUser.name)\(randomString)"
         
-        loginRobot
-            .loginUser(testData.onePassUser)
+      InboxRobot()
             .menuDrawer()
             .settings()
-            .selectAccount(testData.onePassUser.email)
+            .selectAccount(user.email)
             .displayName()
             .setDisplayNameTextTo(newDisplayName)
             .save()
@@ -37,11 +36,10 @@ class MenuTests : BaseTestCase {
         let newDisplayName = "\(testData.onePassUser.name) \(randomString)"
         let shortName = "\(newDisplayName.prefix(1))\(randomString.prefix(1))".uppercased()
         
-        let menuAccountListRobot = loginRobot
-            .loginUser(testData.onePassUser)
+        let menuAccountListRobot = InboxRobot()
             .menuDrawer()
             .settings()
-            .selectAccount(testData.onePassUser.email)
+            .selectAccount(user.email)
             .displayName()
             .setDisplayNameTextTo(newDisplayName)
             .save()
@@ -56,15 +54,14 @@ class MenuTests : BaseTestCase {
         menuAccountListRobot
             .dismiss()
             .settings()
-            .selectAccount(testData.onePassUser.email)
+            .selectAccount(user.email)
             .displayName()
-            .setDisplayNameTextTo(testData.onePassUser.name)
+            .setDisplayNameTextTo(user.name)
             .save()
             .navigateBackToSettings()
             .close()
             .menuDrawer()
             .accountsList()
-            .verify.accountShortNameIsCorrect("1")
-        
+            .verify.accountShortNameIsCorrect(user.name)
     }
 }

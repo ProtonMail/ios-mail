@@ -26,7 +26,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
     var mockLocalMessagesService: MockLocalMessageDataService!
     var mockLastUpdatedStore: MockLastUpdatedStore!
     var mockContactProvider: MockContactProvider!
-    var mockLabelProvider: MockLabelProvider!
+    var mockLabelProvider: MockLabelProviderProtocol!
 
     private let timeout = 2.0
 
@@ -37,7 +37,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         mockLocalMessagesService = MockLocalMessageDataService()
         mockLastUpdatedStore = MockLastUpdatedStore()
         mockContactProvider = MockContactProvider(coreDataContextProvider: MockCoreDataContextProvider())
-        mockLabelProvider = MockLabelProvider()
+        mockLabelProvider = MockLabelProviderProtocol()
 
         sut = FetchMessagesWithReset(
             userID: "dummy_user_id",
@@ -48,6 +48,10 @@ final class FetchMessagesWithResetTests: XCTestCase {
                 mockLastUpdatedStore: mockLastUpdatedStore,
                 mockContactProvider: mockContactProvider,
                 mockLabelProvider: mockLabelProvider))
+
+        mockLabelProvider.fetchV4LabelsStub.bodyIs { _, completion in
+            completion?(.success(()))
+        }
     }
 
     override func tearDown() {
@@ -153,7 +157,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         XCTAssertFalse(mockContactProvider.wasCleanUpCalled)
         XCTAssertFalse(mockContactProvider.isFetchContactsCalled)
 
-        XCTAssertFalse(mockLabelProvider.wasFetchV4LabelsCalled)
+        XCTAssertEqual(mockLabelProvider.fetchV4LabelsStub.callCounter, 0)
 
         XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadWasCalled)
     }
@@ -182,7 +186,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         XCTAssertFalse(mockContactProvider.wasCleanUpCalled)
         XCTAssertFalse(mockContactProvider.isFetchContactsCalled)
 
-        XCTAssertTrue(mockLabelProvider.wasFetchV4LabelsCalled)
+        XCTAssertEqual(mockLabelProvider.fetchV4LabelsStub.callCounter, 1)
 
         XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadWasCalled)
     }

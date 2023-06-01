@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-public enum SplashScreenIBVariant: Int {
+public enum SplashScreenIBVariant: Int, CaseIterable {
     case mail = 1
     case calendar = 2
     case drive = 3
@@ -28,7 +28,8 @@ public enum SplashScreenIBVariant: Int {
 
 public enum SplashScreenViewControllerFactory {
     
-    public static func instantiate(for variant: SplashScreenIBVariant) -> UIViewController {
+    public static func instantiate(for variant: SplashScreenIBVariant,
+                                   bundle: Bundle = .main) -> UIViewController {
         let storyboardName: String
         switch variant {
         case .mail:
@@ -40,7 +41,7 @@ public enum SplashScreenViewControllerFactory {
         case .vpn:
             storyboardName = "VPNLaunchScreen"
         }
-        let storyboard = UIStoryboard(name: storyboardName, bundle: .main)
+        let storyboard = UIStoryboard(name: storyboardName, bundle: bundle)
         guard let splash = storyboard.instantiateInitialViewController() else {
             assertionFailure("Cannot instantiate launch screen view controller")
             return UIViewController(nibName: nil, bundle: nil)

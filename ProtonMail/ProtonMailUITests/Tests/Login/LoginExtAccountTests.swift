@@ -44,6 +44,6 @@ class LoginExtAccountsTests: BaseTestCase {
 
 extension LoginRobot.Verify {
     func bannerExtAccountError() {
-        textView("This app does not support external accounts").wait().checkExists()
+        textView("This app does not support external accounts").waitUntilExists().checkExists()
     }
 }

@@ -47,10 +47,7 @@
             {
                "basedOnDependencyAnalysis": false,
                "name": "Sourcery",
-               "path": "xcodeGen/sourcery.sh",
-               "outputFiles": [
-                  "${SRCROOT}/ProtonMail/Generated"
-               ]
+               "path": "xcodeGen/sourcery.sh"
             },
             {
                "name": "LicensePlist",

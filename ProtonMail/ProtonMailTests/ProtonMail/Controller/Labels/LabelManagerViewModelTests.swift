@@ -23,53 +23,59 @@ import ProtonCore_TestingToolkit
 class LabelManagerViewModelTests: XCTestCase {
     private var sut: LabelManagerViewModel!
 
-    private var mockLabelManagerRouter = MockLabelManagerRouter()
+    private var mockLabelPublisher: MockLabelPublisherProtocol!
+    private var mockLabelManagerRouter: MockLabelManagerRouterProtocol!
     private var mockUIDelegate: MockLabelManagerUIProtocol!
     private let indexToCreateNewLabel = IndexPath(row: 0, section: 0)
 
     override func setUp() {
         super.setUp()
+
+        mockLabelManagerRouter = MockLabelManagerRouterProtocol()
+        mockLabelPublisher = MockLabelPublisherProtocol()
         mockUIDelegate = MockLabelManagerUIProtocol()
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
+        mockLabelManagerRouter = nil
+        mockLabelPublisher = nil
         mockUIDelegate = nil
     }
 
     func testDidTapReorderBegin_changesViewModeToReorder() {
         sut = makeSUT(labelType: .label)
         sut.input.didTapReorderBegin()
-        XCTAssertTrue(mockUIDelegate.wasCalledViewModeDidChange)
-        XCTAssertEqual(mockUIDelegate.viewMode, LabelManagerViewModel.ViewMode.reorder)
+        XCTAssertEqual(mockUIDelegate.viewModeDidChangeStub.callCounter, 1)
+        XCTAssertEqual(mockUIDelegate.viewModeDidChangeStub.lastArguments?.value, .reorder)
     }
 
     func testDidTapReorderEnd_changesViewModeToReorder() {
         sut = makeSUT(labelType: .label)
         sut.input.didTapReorderBegin()
         sut.input.didTapReorderEnd()
-        XCTAssertEqual(mockUIDelegate.viewMode, LabelManagerViewModel.ViewMode.list)
+        XCTAssertEqual(mockUIDelegate.viewModeDidChangeStub.lastArguments?.value, .list)
     }
 
     func testDidSelectItem_toCreateNewItem_whenItemMaxNotReached() {
         sut = makeSUT(labelType: .label)
         sut.didSelectItem(at: indexToCreateNewLabel)
-        XCTAssertTrue(mockLabelManagerRouter.wasNavigateToLabelEditCalled)
-        XCTAssertFalse(mockUIDelegate.wasShowAlertMaxItemsReached)
+        XCTAssertEqual(mockLabelManagerRouter.navigateToLabelEditStub.callCounter, 1)
+        XCTAssertEqual(mockUIDelegate.showAlertMaxItemsReachedStub.callCounter, 0)
     }
 
     func testDidSelectItem_toCreateNewItem_whenItemMaxReached() {
         sut = makeSUT(labelType: .label, dependencies: makeSUTDependencies(numLabelsToReturn: 3))
         sut.didSelectItem(at: indexToCreateNewLabel)
-        XCTAssertFalse(mockLabelManagerRouter.wasNavigateToLabelEditCalled)
-        XCTAssertTrue(mockUIDelegate.wasShowAlertMaxItemsReached)
+        XCTAssertEqual(mockLabelManagerRouter.navigateToLabelEditStub.callCounter, 0)
+        XCTAssertEqual(mockUIDelegate.showAlertMaxItemsReachedStub.callCounter, 1)
     }
 
     func testDidSelectItem_toViewDetail() {
         sut = makeSUT(labelType: .label)
         sut.didSelectItem(at: indexToCreateNewLabel)
-        XCTAssertTrue(mockLabelManagerRouter.wasNavigateToLabelEditCalled)
+        XCTAssertEqual(mockLabelManagerRouter.navigateToLabelEditStub.callCounter, 1)
     }
 }
 
@@ -82,7 +88,7 @@ extension LabelManagerViewModelTests {
         let depend = dependencies ?? makeSUTDependencies()
         let vm = LabelManagerViewModel(router: mockLabelManagerRouter, type: labelType, dependencies: depend)
 
-        depend.labelPublisher.delegate = vm
+        mockLabelPublisher.delegateStub.fixture = vm
         vm.output.setUIDelegate(mockUIDelegate)
         vm.input.viewDidLoad()
 
@@ -92,8 +98,10 @@ extension LabelManagerViewModelTests {
     func makeSUTDependencies(numLabelsToReturn: Int = 2) -> LabelManagerViewModel.Dependencies {
         let mockApiService = APIServiceMock()
         let mockUserManager = UserManager(api: mockApiService, role: .owner, userInfo: UserInfo.getDefault())
-        let mockLabelPublisher = MockLabelPublisher()
-        mockLabelPublisher.labelsToReturn = LabelEntity.makeMocks(num: numLabelsToReturn)
+        mockLabelPublisher.fetchLabelsStub.bodyIs { [unowned self] _, _ in
+            let labelsToReturn = LabelEntity.makeMocks(num: numLabelsToReturn)
+            self.mockLabelPublisher.delegate?.receivedLabels(labels: labelsToReturn)
+        }
         let dependencies = LabelManagerViewModel.Dependencies(
             userInfo: mockUserManager.userInfo,
             apiService: mockUserManager.apiService,
@@ -104,45 +112,4 @@ extension LabelManagerViewModelTests {
         )
         return dependencies
     }
-}
-
-private class MockLabelManagerRouter: LabelManagerRouterProtocol {
-    private(set) var wasNavigateToLabelEditCalled: Bool = false
-
-    func navigateToLabelEdit(
-        editMode: LabelEditMode,
-        labels: [MenuLabel],
-        type: PMLabelType,
-        userInfo: UserInfo,
-        labelService: LabelsDataService
-    ) {
-        wasNavigateToLabelEditCalled = true
-    }
-}
-
-private class MockLabelManagerUIProtocol: LabelManagerUIProtocol {
-    private(set) var wasCalledViewModeDidChange: Bool = false
-    private(set) var wasShowAlertMaxItemsReached: Bool = false
-    private(set) var viewMode: LabelManagerViewModel.ViewMode = .list
-
-    func viewModeDidChange(mode: LabelManagerViewModel.ViewMode) {
-        wasCalledViewModeDidChange = true
-        viewMode = mode
-    }
-
-    func showLoadingHUD() {}
-
-    func hideLoadingHUD() {}
-
-    func reloadData() {}
-
-    func reload(section: Int) {}
-
-    func showToast(message: String) {}
-
-    func showAlertMaxItemsReached() {
-        wasShowAlertMaxItemsReached = true
-    }
-
-    func showNoInternetConnectionToast() {}
 }

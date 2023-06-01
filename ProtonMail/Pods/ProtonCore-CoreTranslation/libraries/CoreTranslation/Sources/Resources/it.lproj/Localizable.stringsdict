@@ -372,9 +372,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>%d+ server</string>
+			<string>Più di %d server</string>
 			<key>other</key>
-			<string>%d+ server</string>
+			<string>Più di %d server</string>
 		</dict>
 	</dict>
 	<key>New_Plans High-speed VPN on %d devices</key>

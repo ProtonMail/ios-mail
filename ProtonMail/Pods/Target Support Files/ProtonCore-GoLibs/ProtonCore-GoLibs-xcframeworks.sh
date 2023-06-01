@@ -123,5 +123,5 @@ install_xcframework() {
   echo "Copied $source to $destination"
 }
 
-install_xcframework "${PODS_ROOT}/ProtonCore-GoLibs/vendor/Crypto+Search-Go1.15.15/GoLibs.xcframework" "ProtonCore-GoLibs/Crypto+Search-Go1.15.15" "framework" "ios-arm64" "ios-arm64_x86_64-simulator"
+install_xcframework "${PODS_ROOT}/ProtonCore-GoLibs/vendor/Crypto+Search-Go1.20.2/GoLibs.xcframework" "ProtonCore-GoLibs/Crypto+Search-Go1.20.2" "framework" "ios-arm64" "ios-arm64_x86_64-simulator"
 

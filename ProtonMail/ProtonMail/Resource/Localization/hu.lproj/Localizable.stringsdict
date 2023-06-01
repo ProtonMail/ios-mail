@@ -335,9 +335,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Biztos, hogy véglegesen töröl $%d beszélgetést?</string>
+			<string>Biztos, hogy véglegesen töröl %d beszélgetést?</string>
 			<key>other</key>
-			<string>Biztos, hogy véglegesen töröl $%d beszélgetést?</string>
+			<string>Biztos, hogy véglegesen töröl %d beszélgetést?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -351,9 +351,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Biztos, hogy véglegesen töröl $%d üzenetet?</string>
+			<string>Biztos, hogy véglegesen töröl %d üzenetet?</string>
 			<key>other</key>
-			<string>Biztos, hogy véglegesen töröl $%d üzenetet?</string>
+			<string>Biztos, hogy véglegesen töröl %d üzenetet?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>

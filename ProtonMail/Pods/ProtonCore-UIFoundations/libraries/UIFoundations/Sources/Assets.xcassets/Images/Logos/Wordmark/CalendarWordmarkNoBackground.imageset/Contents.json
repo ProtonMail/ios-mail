@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Calendar + wordmark_no bg.pdf",
+      "filename" : "Calendar-logo-LUI.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "Calendar + wordmark_no bg-1.pdf",
+      "filename" : "Calendar-logo-LUI.pdf",
       "idiom" : "universal"
     },
     {
@@ -21,7 +21,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "Calendar + wordmark_no bg_DUI.pdf",
+      "filename" : "Calendar-logo-DUI.pdf",
       "idiom" : "universal"
     }
   ],

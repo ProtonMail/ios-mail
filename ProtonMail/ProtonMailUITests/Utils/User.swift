@@ -24,12 +24,12 @@ class User {
     var numberOfImportedMails: Int?
     var quarkURL: URL?
     
-    init(email: String, password: String, mailboxPassword: String, twoFASecurityKey: String) {
-        self.email = email
+    init(name: String, password: String, mailboxPassword: String, twoFASecurityKey: String) {
+        self.email = name + "@" + dynamicDomain!
         self.password = password
         self.mailboxPassword = mailboxPassword
         self.twoFASecurityKey = twoFASecurityKey
-        self.name = String(email.split(separator: "@")[0])
+        self.name = name
         self.pmMeEmail = "\(name)@pm.me"
     }
 

@@ -18,7 +18,6 @@ fileprivate struct id {
     static let bccTextFieldIdentifier = "bccTextField"
     static let composerWebViewIdentifier = "ComposerBody"
     static let subjectTextFieldIdentifier = "ComposeHeaderViewController.subject"
-    static let pasteMenuItem = app.menuItems.staticTexts.element(boundBy: 0)
     static let popoverDismissRegionOtherIdentifier = "PopoverDismissRegion"
     static let expirationButtonIdentifier = "ComposeContainerViewController.toolbar.hourButton"
     static let passwordButtonIdentifier = "ComposeContainerViewController.toolbar.lockButton"
@@ -281,7 +280,7 @@ class ComposerRobot: CoreElements {
     }
     
     func pasteSubject(_ subjectText: String) -> ComposerRobot {
-        Element.system.saveToClipBoard(subjectText)
+        device().saveTextToClipboard(subjectText)
         textField(id.subjectTextFieldIdentifier).tap()
         textField(id.subjectTextFieldIdentifier).longPress()
         menuItem().byIndex(0).onChild(staticText().byIndex(0)).tap()
@@ -365,7 +364,7 @@ class ComposerRobot: CoreElements {
         
         @discardableResult
         func invalidAddressToastIsShown() -> ComposerRobot {
-            staticText(id.invalidAddressStaticTextIdentifier).wait().checkExists()
+            staticText(id.invalidAddressStaticTextIdentifier).waitUntilExists().checkExists()
             return ComposerRobot()
         }
         

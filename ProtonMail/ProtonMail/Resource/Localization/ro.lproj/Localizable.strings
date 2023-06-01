@@ -849,9 +849,6 @@
 /* alert title */
 "Expiration not supported" = "Expirare nesuportată";
 
-/* The protection title of Face ID protection */
-"Face ID" = "ID facial";
-
 /* Error message */
 "Failed to determine type of file" = "Eșuare determinare tip fișier";
 
@@ -1562,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperare activată";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Recomandați pe cineva";
 
 /* Title */
@@ -2043,9 +2041,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Acțiuni bară utilitare (selectați max 5)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "ID amprentă";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Monitorizare recompense";
 
@@ -2255,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Nu puteți seta adresa %@ ca fiind implicită. Această este o funcție cu plată.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Ați dezactivat Face ID în setările de sistem. Face ID a fost utilizat pentru a proteja informații importante despre cont. Pentru a accesa contul, accesați setările și reactivați Face ID sau reconectați-vă.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Ați dezactivat %@ în setările de sistem. %@ a fost utilizat pentru a proteja informații importante despre cont. Pentru a accesa contul, accesați setările și reactivați %@ sau reconectați-vă.";
 
 /* Message */
 "You have %d new emails!" = "Aveți %d mesaje noi!";

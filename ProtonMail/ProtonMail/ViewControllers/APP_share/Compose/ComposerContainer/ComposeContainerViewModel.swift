@@ -171,8 +171,8 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
         }
     }
 
-    func addAttachment(_ attachment: AttachmentEntity) {
-        childViewModel.composerMessageHelper.addAttachment(attachment)
+    func addAttachment(_ attachmentObjectID: ObjectID) {
+        childViewModel.composerMessageHelper.addAttachment(attachmentObjectID)
     }
 
     func updateAttachmentOrders(completion: @escaping ([AttachmentEntity]) -> Void) {

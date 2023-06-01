@@ -1,0 +1,6 @@
+framework module iosMonkey {
+  umbrella header "iosMonkey-umbrella.h"
+
+  export *
+  module * { export * }
+}

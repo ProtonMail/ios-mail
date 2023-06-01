@@ -942,9 +942,6 @@
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "¿Cómo describirías tu experiencia con el nuevo Proton Mail?";
 
-/* Title of the view showing the message HTML source */
-"HTML" = "HTML";
-
 /* Description */
 "Human Check Failed" = "Error en la verificación humana (CAPTCHA)";
 
@@ -1524,9 +1521,6 @@
 "Proton is down" = "Proton está fuera de servicio.";
 
 /* Title */
-"Proton Mail" = "Proton Mail";
-
-/* Title */
 "Proton Mail is currently offline…" = "Proton Mail está desconectado actualmente…";
 
 /* The message about the app is not having the permission to access photo library */
@@ -1565,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recuperación habilitada";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Recomendar a un amigo";
 
 /* Title */
@@ -1995,7 +1990,7 @@
 "This message was automatically generated" = "Este mensaje se ha generado automáticamente.";
 
 /* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "Se enviará este mensaje el $%1$@ a las $%2$@";
+"This message will be sent on %@ at %@" = "Se enviará este mensaje el %1$@ a las %2$@";
 
 /* expiration time count down */
 "This message will expire in %dD %dH %dM" = "Este mensaje expirará en %1$dD %2$dH %3$dM.";
@@ -2255,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "No puedes establecer la dirección %@ por defecto porque es una función de pago.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Has desactivado Face ID en la configuración del sistema. Face ID se ha utilizado para proteger información importante de la cuenta. Para acceder a tu cuenta, ve a la configuración y activa de nuevo el Face ID, o vuelve a iniciar sesión.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Has desactivado %@ en la configuración del sistema. %@ se ha utilizado para proteger información importante de la cuenta. Para acceder a tu cuenta, ve a la configuración y activa de nuevo el %@, o vuelve a iniciar sesión.";
 
 /* Message */
 "You have %d new emails!" = "Tienes %d correos nuevos.";

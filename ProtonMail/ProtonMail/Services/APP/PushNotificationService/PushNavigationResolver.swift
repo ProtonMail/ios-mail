@@ -116,12 +116,6 @@ private extension PushNavigationResolver {
         }
     }
 
-    private func fetchMessage(userManager: UserManager, messageId: MessageID, callback: @escaping (_ success: Bool) -> Void) {
-        userManager.messageService.fetchNotificationMessageDetail(messageId) { error -> Void in
-            callback(error == nil)
-        }
-    }
-
     private func logPushNotificationError(message: String, redactedInfo: String? = nil) {
         SystemLogger.log(message: message, redactedInfo: redactedInfo, category: .pushNotification, isError: true)
     }

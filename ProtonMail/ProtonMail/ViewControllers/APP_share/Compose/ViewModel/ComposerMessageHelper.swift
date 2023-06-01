@@ -166,7 +166,7 @@ final class ComposerMessageHelper {
             return
         }
         dependencies.cacheService.updateExpirationOffset(
-            of: msg,
+            of: msg.objectID,
             expirationTime: expirationTime,
             pwd: password,
             pwdHint: passwordHint,
@@ -281,7 +281,7 @@ extension ComposerMessageHelper {
                               stripMetadata: shouldStripMetaData,
                               isInline: isInline).done { attachment in
                 if let attachment = attachment {
-                    self.addAttachment(attachment)
+                    self.addAttachment(attachment.objectID)
                 }
                 self.updateDraft()
                 completion(attachment)
@@ -289,9 +289,9 @@ extension ComposerMessageHelper {
         }
     }
 
-    func addAttachment(_ attachment: AttachmentEntity) {
+    func addAttachment(_ attachmentObjectID: ObjectID) {
         dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            if let attachmentObject = context.object(with: attachment.objectID.rawValue) as? Attachment {
+            if let attachmentObject = context.object(with: attachmentObjectID.rawValue) as? Attachment {
                 self.addAttachmentObject(attachmentObject, context: context)
                 self.uploadAttachment(attachment: attachmentObject)
             }
@@ -357,7 +357,7 @@ extension ComposerMessageHelper {
                     completion?(attachment)
                 }
                 guard let att = attachment else { return }
-                self.addAttachment(att)
+                self.addAttachment(att.objectID)
             }.cauterize()
         }
     }
@@ -366,7 +366,7 @@ extension ComposerMessageHelper {
         dependencies.contextProvider.performOnRootSavingContext { context in
             attachment.toAttachment(context: context, stripMetadata: shouldStripMetaData).done { attachment in
                 if let attachment = attachment {
-                    self.addAttachment(attachment)
+                    self.addAttachment(attachment.objectID)
                 }
                 self.updateDraft()
                 completion(attachment)

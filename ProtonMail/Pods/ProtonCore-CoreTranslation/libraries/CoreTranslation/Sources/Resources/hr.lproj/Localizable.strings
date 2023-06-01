@@ -16,9 +16,6 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nas je obavijestio da ste nadogradili plan usluga, ali nedostajali su neki tehnički podaci. Ispunite izvještaj o pogrešci i naš tim za korisničku podršku će vas kontaktirati.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nas je obavijestio da ste nadogradili plan usluge, ali smo otkrili da ste se od tada odjavili s računa.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Da li ste sigurni da se želite odjaviti %@?";
 
@@ -31,9 +28,6 @@
 
 /* Cancel button */
 "Cancel" = "Poništi";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Dialog action button title for organization user first login */
 "Change password" = "Promjena lozinke";
@@ -63,7 +57,7 @@
 "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontaktirajte nas izravno putem obrasca za podršku, e-poštom (support@protonmail.zendesk.com) ili na Twitteru.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Nastavi";
 
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Umjesto toga stvorite sigurnu Proton Mail adresu";
@@ -200,7 +194,7 @@
 "Mailbox password" = "Lozinka sandučića e-pošte";
 
 /* Manage accounts button */
-"Manage accounts" = "Upravljanje korisničkim računima";
+"Manage accounts" = "Upravljanje računima";
 
 /* Plan details multi-user support message */
 "Multi-user support" = "Višekorisnička podrška";
@@ -216,9 +210,6 @@
 
 /* New_Plans Get plan button */
 "New_Plans Get %@" = "Nabavite %@";
-
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
 
 /* New_Plans Plan details Secure Core servers */
 "New_Plans Secure Core servers" = "Secure Core poslužitelji";
@@ -266,12 +257,6 @@
 /* SMS label */
 "Phone number" = "Broj telefona";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Prijavite se na Proton Mail račun za koji nadograđujete plan usluga, kako bismo mogli dovršiti kupnju.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Prijavite se na Proton Mail račun za koji nadograđujete plan usluga, kako bismo mogli dovršiti aktivaciju plana usluga.";
-
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Provjerite da li vaša internetska veza radi.";
 
@@ -280,12 +265,6 @@
 
 /* Plan details priority customer support */
 "Priority customer support" = "Prioritetna korisnička podrška";
-
-/* Welcome screen */
-"Privacy by default" = "Privacy by default";
-
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
 
 /* network troubleshot cell title */
 "Proton is down" = "Proton je van mreže";
@@ -346,9 +325,6 @@
 /* Skip button */
 "Skip" = "Preskoči";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Nažalost, ne možemo obrađivati kupnje u Beta verziji aplikacije na iOS-u. Hvala što sudjelujete u našoj javnoj Beta verziji!";
 
@@ -394,9 +370,6 @@
 
 /* other method alert button */
 "Try other method" = "Pokušajte neki drugi način";
-
-/* network troubleshot view title */
-"Twitter" = "Twitter";
 
 /* 2FA screen title */
 "Two-factor authentication" = "Dvofaktorska autentikacija";

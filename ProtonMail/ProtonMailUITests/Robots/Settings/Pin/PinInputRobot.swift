@@ -153,7 +153,7 @@ class PinInputRobot: CoreElements {
         class Verify: CoreElements {
             @discardableResult
             func emptyPinErrorMessageShows() -> PinAlertDialogRobot {
-                staticText(id.emptyPinStaticTextIdentifier).wait().checkExists()
+                staticText(id.emptyPinStaticTextIdentifier).waitUntilExists().checkExists()
                 return PinAlertDialogRobot()
             }
         }
@@ -164,14 +164,14 @@ class PinInputRobot: CoreElements {
         @discardableResult
         func pinErrorMessageShows(_ count: Int) -> PinInputRobot {
             let errorMessage = String(format: "Incorrect PIN. %d attempts remaining", (10-count))
-            staticText(id.pinCodeAttemptStaticTextIdentifier).hasLabel(errorMessage).wait().checkExists()
+            staticText(id.pinCodeAttemptStaticTextIdentifier).hasLabel(errorMessage).waitUntilExists().checkExists()
             return PinInputRobot()
         }
         
         @discardableResult
         func pinErrorMessageShowsThreeRemainingTries(_ count: Int) -> PinInputRobot {
             let errorMessage = String(format: "%d attempts remaining until secure data wipe!", count)
-            staticText(id.pinCodeAttemptStaticTextIdentifier).hasLabel(errorMessage).wait().checkExists()
+            staticText(id.pinCodeAttemptStaticTextIdentifier).hasLabel(errorMessage).waitUntilExists().checkExists()
             return PinInputRobot()
         }
     }

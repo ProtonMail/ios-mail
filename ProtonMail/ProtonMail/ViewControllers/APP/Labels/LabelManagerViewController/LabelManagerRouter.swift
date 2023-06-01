@@ -24,6 +24,7 @@ import Foundation
 import ProtonCore_DataModel
 import UIKit
 
+// sourcery: mock
 protocol LabelManagerRouterProtocol {
 
     func navigateToLabelEdit(

@@ -186,6 +186,11 @@ public extension SignupError {
 }
 
 public enum AvailabilityError: Error {
+    // this error should be handled by redirecting to the internal signup flow and not shown to the user
+    // that's the reason for the `nonUserFacingMessage` parameter
+    case protonDomainUsedForExternalAccount(username: String, domain: String, nonUserFacingMessage: String)
+
+    // these errors contain message that might be shown to the users
     case notAvailable(message: String)
     case generic(message: String, code: Int, originalError: Error)
     case apiMightBeBlocked(message: String, originalError: Error)
@@ -194,6 +199,8 @@ public enum AvailabilityError: Error {
 extension AvailabilityError: Equatable {
     public static func == (lhs: AvailabilityError, rhs: AvailabilityError) -> Bool {
         switch (lhs, rhs) {
+        case (.protonDomainUsedForExternalAccount(let lusername, let ldomain, _),
+              .protonDomainUsedForExternalAccount(let rusername, let rdomain, _)): return lusername == rusername && ldomain == rdomain
         case (.notAvailable(let lmessage), .notAvailable(let rmessage)): return lmessage == rmessage
         case (.apiMightBeBlocked(let lmessage, _), .apiMightBeBlocked(let rmessage, _)): return lmessage == rmessage
         case (.generic(let lmessage, let lcode, _), .generic(let rmessage, let rcode, _)): return lmessage == rmessage && lcode == rcode
@@ -205,6 +212,9 @@ extension AvailabilityError: Equatable {
 public extension AvailabilityError {
     var userFacingMessageInLogin: String {
         switch self {
+        case .protonDomainUsedForExternalAccount(_, _, let message):
+            assertionFailure("This error should be handled without user-facing error message")
+            return message
         case .generic(let message, _, _), .notAvailable(let message), .apiMightBeBlocked(let message, _): return message
         }
     }

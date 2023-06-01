@@ -116,10 +116,6 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         }
     }
 
-    func makeNewBackgroundContext() -> NSManagedObjectContext {
-        container.newBackgroundContext()
-    }
-
     func read<T>(block: (NSManagedObjectContext) -> T) -> T {
         rethrowingRead(block: block)
     }

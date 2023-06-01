@@ -13,9 +13,6 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Metode pemulihan akan membantu Anda mengakses akun Anda seandainya lupa dengan kata sandi atau terkunci dari akun Anda.";
 
-/* Delete account success */
-"Account deleted.\nLogging out..." = "Akun dihapus.\nMengeluarkan Anda dari akun...";
-
 /* *
  *  Login errors */
 "Account setup required" = "Diperlukan persiapan akun";
@@ -44,15 +41,12 @@
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple menginformasikan, Anda sudah meningkatkan paket layanan, tapi beberapa data teknis hilang. Mohon isi laporan bug dan tim dukungan pelanggan kami akan menghubungi Anda.";
 
-/* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple menginformasikan, Anda sudah meningkatkan paket layanan, tapi kami mendeteksi sejak itu Anda telah keluar dari akun tersebut.";
-
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Apakah Anda yakin anda ingin keluar %@?";
 
 /* *
  * Login 2FA */
-"Authenticate" = "Otentikasi";
+"Authenticate" = "Autentikasi";
 
 /* top left back button */
 "Back" = "Kembali";
@@ -62,9 +56,6 @@
 
 /* Cancel button */
 "Cancel" = "Batal";
-
-/* captha method name */
-"CAPTCHA" = "CAPTCHA";
 
 /* Change email address button */
 "Change email address" = "Ubah alamat email";
@@ -77,7 +68,7 @@
 "Change your password" = "Ubah kata sandi Anda";
 
 /* Proton is down description. */
-"Check Proton Status for our system status." = "Periksa Status Proton untuk status sistem kami.";
+"Check Proton Status for our system status." = "Periksa Proton Status untuk mengetahui status sistem kami.";
 
 /* Button title shown when a error has occured, causes the screen to close */
 "Close" = "Tutup";
@@ -110,10 +101,10 @@
 "Contact support@protonvpn.com to complete your purchase." = "Hubungi support@protonvpn.com untuk menyelesaikan pembayaran Anda.";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Hubungi kami secara langsung melalui formulir dukungan kami, email (support@protonmail.zendesk.com), atau Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Hubungin kami secara langsung melalui formulir layanan dukungan, email (support@protonmail.zendesk.com), atau akun Twitter kami.";
 
 /* Action button title for picking Proton Mail username */
-"Continue" = "Продолжить";
+"Continue" = "Lanjut";
 
 /* Signup password email view title */
 "Create a Proton account with your current email" = "Buat akun Proton dengan alamat email Anda sekarang";
@@ -159,7 +150,7 @@
 "Did not receive the code?" = "Tidak menerima kode?";
 
 /* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "Nonaktifkan seluruh proxy atau firewall yang Anda miliki, atau hubungi pengelola jaringan Anda.";
+"Disable any proxies or firewalls, or contact your network administrator." = "Nonaktifkan seluruh proxy atau firewall yang aktif, atau hubungi pengelola jaringan Anda.";
 
 /* Cancellation for the credits applied popup */
 "Dismiss" = "Abaikan";
@@ -184,6 +175,9 @@
 
 /* Email address already used error */
 "Email address already used." = "Alamat email sudah digunakan.";
+
+/* Username field title */
+"Email or username" = "Email atau nama pengguna";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "Nikmati dunia yang mengedepankan privasi.";
@@ -216,7 +210,7 @@
 "for %@" = "untuk %@";
 
 /* Email verification view description */
-"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Untuk keamanan Anda, kami harus memverifikasi alamat yang Anda masukkan sebagai benar milik Anda. Kami telah mengirimkan kode verifikasi ke %@. Silakan masukkan kode tersebut di bawah:";
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Demi keamanan Anda, kami perlu untuk memverifikasi apakah alamat yang Anda masukkan adalah benar milik Anda. Kami telah mengirimkan kode verifikasi ke %@. Silakan masukkan kode tersebut pada kolom di bawah ini:";
 
 /* Forgot password button title
    Forgot password help button */
@@ -226,7 +220,7 @@
 "Forgot username" = "Lupa nama pengguna";
 
 /* Plan details plus description */
-"Full-featured mailbox with advanced protection." = "Kotak surat berfitur penuh dengan perlindungan tingkat lanjut.";
+"Full-featured mailbox with advanced protection." = "Kotak surat berfitur lengkap dengan perlindungan tingkat lanjut.";
 
 /* Signup complete progress step address generation */
 "Generating your address" = "Membuat alamat email Anda";
@@ -269,7 +263,7 @@
 "Incorrect mailbox password" = "Kata sandi kotak surat salah";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Masalah Internet Service Provider (ISP)";
+"Internet Service Provider (ISP) problem" = "Masalah Penyedia Layanan Internet (ISP)";
 
 /* Invalid hashed password error */
 "Invalid hashed password" = "Kata sandi hashed tidak valid";
@@ -295,7 +289,7 @@
 "Learn more about human verification and why we ask for it." = "Pelajari lebih lanjut tentang verifikasi manusia dan mengapa kami memintanya.";
 
 /* Mailbox password field title */
-"Mailbox password" = "Sandi kotak pesan";
+"Mailbox password" = "Kata sandi kotak surat";
 
 /* Manage accounts button */
 "Manage accounts" = "Kelola akun";
@@ -349,9 +343,6 @@
 /* New_Plans Plan footer description */
 "New_Plans Only non-renewing annual subscriptions are available via this app" = "Hanya langganan tahunan yang tidak terbarukan yang dapat dibeli via aplikasi ini";
 
-/* New_Plans Plan details P2P/BitTorrent */
-"New_Plans P2P/BitTorrent" = "P2P/BitTorrent";
-
 /* New_Plans Plan successfully upgraded banner message */
 "New_Plans Plan successfully upgraded" = "Paket berhasil ditingkatkan";
 
@@ -396,7 +387,7 @@
 
 /* Action
    OK button */
-"OK" = "OKE";
+"OK" = "OK";
 
 /* Signup main view description */
 "One account for all Proton services." = "Satu akun untuk semua layanan Proton.";
@@ -411,7 +402,7 @@
 "Password" = "Kata Sandi";
 
 /* Password empty error */
-"Password can not be empty.\nPlease try again." = "Kata sandi tidak boleh dikosongkan.\nSilakan coba lagi.";
+"Password can not be empty.\nPlease try again." = "Kata sandi tidak boleh kosong.\nSilakan coba lagi.";
 
 /* (No Comment) */
 "Password is too short. Should have at least %@ characters.\nPlease try again." = "Kata sandi terlalu pendek. Kata sandi harus mengandung setidaknya %@ karakter.\nSilakan coba lagi.";
@@ -453,14 +444,8 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Silakan masukkan kata sandi Akun Proton.";
 
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Mohon masuk ke akun Proton Mail yang paket layanannya ingin Anda tingkatkan agar kami dapat menyelesaikan pembayaran.";
-
-/* Error message */
-"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Mohon masuk ke akun Proton Mail yang paket layanannya ingin Anda tingkatkan agar kami dapat menyelesaikan aktivasi paket layanan.";
-
 /* no internet connection description */
-"Please make sure that your internet connection is working." = "Pastikan koneksi internet Anda berfungsi.";
+"Please make sure that your internet connection is working." = "Pastikan koneksi internet Anda tidak bermasalah.";
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Mohon ceritakan masalah yang Anda hadapi.";
@@ -481,9 +466,6 @@
 /* Username field title */
 "Proton email or username" = "Email atau nama pengguna Proton";
 
-/* Signup summary free plan description replacement */
-"Proton Free" = "Proton Free";
-
 /* network troubleshot cell title */
 "Proton is down" = "Proton sedang offline";
 
@@ -503,7 +485,7 @@
 "Recovery code" = "Kode pemulihan";
 
 /* Recovery email field title */
-"Recovery email" = "Alamat email pemulihan";
+"Recovery email" = "Email pemulihan";
 
 /* Recovery phone field title */
 "Recovery phone number" = "Nomor telepon pemulihan";
@@ -533,7 +515,7 @@
 "Resend" = "Kirim ulang";
 
 /* Button in some alerts */
-"Retry" = "Coba Lagi";
+"Retry" = "Coba lagi";
 
 /* Search country placeholder */
 "Search country" = "Cari negara";
@@ -574,14 +556,11 @@
 /* Recovery skip title */
 "Skip recovery method?" = "Lewati metode pemulihan?";
 
-/* SMS method name */
-"SMS" = "SMS";
-
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Maaf, kami tidak dapat memproses pembayaran di aplikasi iOS versi beta. Terima kasih telah berpartisipasi dalam program beta publik kami!";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Saya masih belum menemukan solusi";
+"Still can't find a solution" = "Masalah saya belum teratasi";
 
 /* *
  *  Login help */
@@ -603,7 +582,7 @@
 "switch to" = "ganti ke";
 
 /* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Nonaktifkan sementara atau hapus perangkat antivirus Anda.";
+"Temporarily disable or remove your antivirus software." = "Nonaktifkan atau hapus perangkat antivirus Anda untuk sementara waktu.";
 
 /* Recovery terms and conditions link
    Terms and conditions view title */
@@ -619,10 +598,7 @@
 "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Proses pembelian IAP sudah dimulai. Silakan mengikuti instruksi Apple untuk menuntaskan atau membatalkan pembelian.";
 
 /* Message shown when we suspect that the Proton servers are blocked */
-"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Server Proton tidak dapat dijangkau. Hal ini dapat disebabkan antara lain oleh pengaturan jaringan yang tidak tepat, server Proton yang sedang offline, atau pemblokiran tertentu yang memengaruhi sambungan ke server Proton";
-
-/* Networking insecure connection error */
-"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Sistem gagal memvalidasi sertifikat TLS pada saat mencoba terhubung ke API Proton. Koneksi internet Anda mungkin sedang diawasi. Agar data Anda tetap aman, kami telah mencegah aplikasi yang bersangkutan untuk dapat mengakses API Proton.\nUntuk masuk atau mengakses akun Anda, berpindahlah ke jaringan baru dan cobalah untuk kembali terhubung.";
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Server Proton tidak dapat dijangkau. Hal ini dapat disebabkan antara lain oleh pengaturan jaringan yang tidak tepat, server Proton yang sedang offline, atau pemblokiran terhadap server Proton";
 
 /* Complete view description */
 "This should take no more than a minute." = "Seharusnya tidak sampai satu menit.";
@@ -648,21 +624,18 @@
 /* other method alert button */
 "Try other method" = "Coba metode lain";
 
-/* network troubleshot view title */
-"Twitter" = "Twitter";
-
 /* 2FA screen title */
-"Two-factor authentication" = "Otentikasi dua-faktor";
+"Two-factor authentication" = "Autentikasi dua-faktor";
 
 /* 2FA screen field title */
 "Two-factor code" = "Kode dua-faktor";
 
 /* Mailbox unlock screen action button title */
-"Unlock" = "Membuka kunci";
+"Unlock" = "Buka kunci";
 
 /* *
  * Login unlock mailbox */
-"Unlock your mailbox" = "Buka kunci kotak pesan Anda";
+"Unlock your mailbox" = "Buka kunci kotak surat Anda";
 
 /* update button */
 "Update" = "Perbarui";
@@ -770,7 +743,4 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Akun Proton Free Anda berhasil dibuat.";
-
-/* Session expired info */
-"Your session has expired. Please log in again." = "Masa berlaku sesi Anda telah berakhir. Silakan masuk kembali.";
 

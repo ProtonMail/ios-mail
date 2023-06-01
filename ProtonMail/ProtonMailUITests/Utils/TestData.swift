@@ -10,15 +10,15 @@ import Foundation
 
 class TestData {
     
-    var onePassUser = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
-    var twoPassUser = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
-    var onePassUserWith2Fa = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
-    var twoPassUserWith2Fa = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
+    var onePassUser = User(name: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
+    var twoPassUser = User(name: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
+    var onePassUserWith2Fa = User(name: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
+    var twoPassUserWith2Fa = User(name: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
     
-    var internalEmailTrustedKeys = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
-    var internalEmailNotTrustedKeys = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
-    var externalEmailPGPEncrypted = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
-    var externalEmailPGPSigned = User(email: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
+    var internalEmailTrustedKeys = User(name: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
+    var internalEmailNotTrustedKeys = User(name: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
+    var externalEmailPGPEncrypted = User(name: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
+    var externalEmailPGPSigned = User(name: "emailStub", password: "pwdStub", mailboxPassword: "mailPwdStub", twoFASecurityKey: "twoFAStub")
         
     var messageSubject: String { return "\(Date().millisecondsSince1970)" }
     var newMessageSubject: String { return "New \(Date().millisecondsSince1970)" }

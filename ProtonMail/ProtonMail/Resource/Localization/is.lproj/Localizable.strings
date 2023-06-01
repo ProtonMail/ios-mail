@@ -19,6 +19,9 @@
 /* Text for the estimated time label if less than one minute is remaining */
 "<1 minute remaining" = "<1 mínúta eftir";
 
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1m";
+
 /* The title of banner that is shown after using swipe action to archive a message */
 "1 message moved to archive" = "1 skilaboð færð í geymslu";
 
@@ -174,6 +177,12 @@
 /* The title of section inside the dark mode setting page */
 "Appearance" = "Útlit";
 
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey verndar frekar þínar Proton upplýsingar ef um viðamiklar árásir er að ræða, svo sem þegar árásarmaður klónar innihaldið á tækinu þínu. %1$@";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey vörn";
+
 /* Apply action */
 "Apply" = "Virkja";
 
@@ -281,6 +290,12 @@
 
 /* Settings row */
 "Block email tracking" = "Lokaðu fyrir rakningu tölvupósts";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Listi yfir bannað";
+
+/* Button to block a sender */
+"Block sender" = "Útiloka sendanda";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Hindrar sendendur í að sjá hvort og hvenær þú opnaðir skilaboðin";
@@ -526,6 +541,9 @@
 /* contacts default label type
    Custom option for time config picker */
 "Custom" = "Sérsniðið";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Sérsníða";
 
 /* The title of the item in the App settings section of the device setting view. */
 "Customize toolbar" = "Sérsníða verkfærastiku";
@@ -831,9 +849,6 @@
 /* alert title */
 "Expiration not supported" = "Fyrning ekki studd";
 
-/* The protection title of Face ID protection */
-"Face ID" = "Andlits ID";
-
 /* Error message */
 "Failed to determine type of file" = "Tókst ekki að ákvarða gerð skráar";
 
@@ -860,6 +875,9 @@
 
 /* forward action */
 "Forward" = "Áframsenda";
+
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Áframsenda (síðustu skilaboð)";
 
 /* forwarded message title */
 "Forwarded message" = "Áframsend skilaboð";
@@ -958,6 +976,9 @@
    The footer of alternative routing setting */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Sé lokað á Proton-vefsvæði, gerir þessi stilling forritinu kleift að reyna að nota aðra leið um netið til að tengjast Proton, sem aftur getur nýst til að komast fram hjá eldveggjum eða vandamálum varðandi netkerfið. Við mælum með því að hafa þessa stillingu virka til að auka áreiðanleika forritsins. %1$@";
 
+/* One of schedule time options */
+"In the morning" = "Á morgnana";
+
 /* menu title */
 "Inbox" = "Innhólf";
 
@@ -1052,6 +1073,9 @@
 
 /* The banner title after tapping link copy button in referral share view. */
 "Link copied." = "Krækja afrituð.";
+
+/* Button inside the banner */
+"Load" = "Hlaða inn";
 
 /* The title of loading embedded image banner. */
 "Load embedded images" = "Hlaða inn ívöfnum myndum";
@@ -1201,6 +1225,9 @@
 /* Title */
 "Move to…" = "Færa í…";
 
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Farðu í næstu skilaboð eftir flutning";
+
 /* Onboarding title */
 "Neat and tidy" = "Hreint og fínt";
 
@@ -1239,6 +1266,9 @@
 
 /* title of the next button */
 "Next" = "Næsta";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Næstu skilaboð eftir flutning";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Gælunafn";
@@ -1305,6 +1335,9 @@
 
 /* Alert title */
 "Notice" = "Tilkynning";
+
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Tilkynningaraðgerðir og önnur bakgrunnsferli verða ekki tiltæk";
 
 /* A option title that enable/disable notification feature
    cell title in device settings */
@@ -1375,6 +1408,9 @@
 
 /* Text for pause button */
 "Pause" = "Í bið";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Ef þú framkvæmir flutningsaðgerð á skilaboðum (t.d. í skjalasafn) verður farið í næstu skilaboð.";
 
 /* default vcard types */
 "Personal" = "Persónulegt";
@@ -1478,11 +1514,11 @@
 /* Local notification title */
 "Problem sending message" = "Vandamál við að senda skilaboð";
 
+/* Settings lock protection section */
+"Protection" = "Vörn";
+
 /* network troubleshot cell title */
 "Proton is down" = "Proton liggur niðri";
-
-/* Title */
-"Proton Mail" = "Proton tölvupóstur";
 
 /* Title */
 "Proton Mail is currently offline…" = "Proton tölvupóstur er ótengdur í augnablikinu";
@@ -1523,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Endurheimt virkjuð";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Vísa vini á";
 
 /* Title */
@@ -1551,8 +1588,14 @@
 /* reply action */
 "Reply" = "Svara";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Svara (síðustu skilaboðum)";
+
 /* reply all action */
 "Reply all" = "Svara öllum";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Svaraðu öllum (síðustu skilaboðum)";
 
 /* menu title */
 "Report a problem" = "Tilkynna vandamál";
@@ -1677,6 +1720,9 @@
 /* text displayed in composer when attachments are uploading */
 "Sending will be available\nwhen attachments are uploaded" = "Sending verður í boði\nþegar viðhengjum hefur verið hlaðið upp";
 
+/* menu title */
+"Sent" = "Sent";
+
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption" = "Sent frá Proton tölvupósti með órjúfanlegri dulritun";
 
@@ -1752,6 +1798,9 @@
 
 /* Cell title in device settings - mute notification until a later time. */
 "Snooze" = "Blunda";
+
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Ekki var hægt að hlaða upp sumum myndum með rakningarvörn.";
 
 /* menu title */
 "Spam" = "Ruslpóstur";
@@ -1992,9 +2041,6 @@
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Aðgerðir á tækjastiku (velja allt að 5)";
 
-/* The protection title of Touch ID protection */
-"Touch ID" = "Snerti auðkenni";
-
 /* The title of the track reward button in referral share view. */
 "Track your rewards" = "Fylgstu með verðlaununum þínum";
 
@@ -2204,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Þú getur ekki sett %@ póstfangið sem sjálfgefið því það er eiginleiki sem þarf að greiða fyrir.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Þú gerðir andlitsauðkenni óvirkt í kerfisstillingunum þínum. Andlitsauðkenni hefur verið notað til að vernda mikilvægar upplýsingar notandaaðgangsins. Til að tengjast notandaaðgangnum, farðu þá í stillingar og virkjaðu andlitsauðkenni aftur, eða skráðu þig aftur inn.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Þú gerðir andlitsauðkenni óvirkt í kerfisstillingunum þínum. Andlitsauðkenni hefur verið notað til að vernda mikilvægar upplýsingar notandaaðgangsins. Til að tengjast notandaaðgangnum, farðu þá í stillingar og virkjaðu andlitsauðkenni aftur, eða skráðu þig aftur inn.";
 
 /* Message */
 "You have %d new emails!" = "Þú hefur fengið %d nýja tölvupósta!";
@@ -2272,4 +2318,3 @@
 /* contact placeholder */
 "ZIP" = "Póstnúmer";
 
-"Customize (verb)" = "Customize";

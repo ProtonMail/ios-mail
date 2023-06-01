@@ -63,7 +63,7 @@ public class SignupUITestCases {
             .verify.otherAccountButtonIsNotShown()
     }
     
-    public func testBothAccountIntExternalSignupFeatureOff(signupRobot: SignupRobot) {
+    public func testAccountExtExternalSignupFeatureOff(signupRobot: SignupRobot) {
         signupRobot
             .verify.signupScreenIsShown()
             .verify.otherAccountButtonIsNotShown()

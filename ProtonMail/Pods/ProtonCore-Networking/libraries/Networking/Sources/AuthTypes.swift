@@ -452,6 +452,50 @@ public class HumanVerificationResponse: Response {
     }
 }
 
+public enum ChallengeType: Int {
+    case WASM = 1
+    case Argon2 = 2
+    case ECDLP = 3
+    
+    public init?(rawValue: Int) {
+        switch rawValue {
+        case 1:
+            self = .WASM
+        case 2:
+            self = .Argon2
+        case 3:
+            self = .ECDLP
+        default:
+            return nil
+        }
+    }
+}
+
+public struct DeviceVerifyParameters {
+    public var challengeType: ChallengeType
+    public var challengePayload: String
+    public init(challengeType: ChallengeType, challengePayload: String) {
+        self.challengeType = challengeType
+        self.challengePayload = challengePayload
+    }
+}
+
+public class DeviceVerificationResponse: Response {
+    public var parameters: DeviceVerifyParameters?
+
+    override public func ParseResponse(_ response: [String: Any]) -> Bool {
+        if let details = response["Details"] as? [String: Any] {
+            if let type = details["ChallengeType"] as? Int,
+               let challengeType = ChallengeType(rawValue: type),
+               let payload = details["ChallengePayload"] as? String {
+                parameters = DeviceVerifyParameters(challengeType: challengeType, challengePayload: payload)
+                return true
+            }
+        }
+        return false
+    }
+}
+
 public enum AuthErrors: Error {
     case emptyAuthInfoResponse
     case emptyAuthResponse

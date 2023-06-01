@@ -1559,7 +1559,8 @@
 /* No comment provided by engineer. */
 "Recovery enabled" = "Η ανάκτηση ενεργοποιήθηκε";
 
-/* menu title */
+/* menu title
+   The title of the refer button in referral prompt view. */
 "Refer a friend" = "Συστήστε ένα φίλο";
 
 /* Title */
@@ -2249,7 +2250,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Δεν μπορείτε να ορίσετε τη διεύθυνση %@ ως προεπιλεγμένη, καθώς αυτό είναι μια λειτουργία επί πληρωμή.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled Face ID in your system settings. Face ID has been used to protect important account information. To access your account, go to settings and reactivate Face ID, or log back in." = "Απενεργοποιείτε το Face ID στις ρυθμίσεις dου συστήματός σας. Το Face ID έχει χρησιμοποιηθεί για την προστασία σημαντικdν πληροφοριών λογαριασμού. Για πρόσβαση στον λογαριασμό σας, μεταβείτε στις ρυθμίσεις και ενεργοποιήστε ξανά το Face ID ή συνδεθείτε ξανά.";
+"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Απενεργοποιείτε το %@ στις ρυθμίσεις dου συστήματός σας. Το %@ έχει χρησιμοποιηθεί για την προστασία σημαντικdν πληροφοριών λογαριασμού. Για πρόσβαση στον λογαριασμό σας, μεταβείτε στις ρυθμίσεις και ενεργοποιήστε ξανά το %@ ή συνδεθείτε ξανά.";
 
 /* Message */
 "You have %d new emails!" = "Έχετε %d νέα E-mail!";

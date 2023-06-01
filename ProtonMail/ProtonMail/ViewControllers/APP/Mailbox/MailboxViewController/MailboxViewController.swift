@@ -304,7 +304,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         super.viewWillAppear(animated)
         if !notificationsAreScheduled {
             notificationsAreScheduled = true
-            scheduleNotifications()
+            addNotificationsObserver()
         }
 
         if UIAccessibility.isVoiceOverRunning {
@@ -394,7 +394,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.tableView.zeroMargin()
     }
 
-    private func scheduleNotifications() {
+    private func addNotificationsObserver() {
         if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(doEnterForeground),
@@ -416,6 +416,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                                                     name: UIApplication.didEnterBackgroundNotification,
                                                     object: nil)
         }
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(timeZoneDidChange),
+            name: .NSSystemTimeZoneDidChange,
+            object: nil
+        )
     }
 
     @available(iOS 13.0, *)
@@ -1726,7 +1732,7 @@ extension MailboxViewController: LabelAsActionSheetPresentProtocol {
     }
 
     private func allowToCreateLabels(existingLabels: Int) -> Bool {
-        let isFreeAccount = viewModel.user.userInfo.subscribed == 0
+        let isFreeAccount = viewModel.user.userInfo.subscribed.isEmpty
         if isFreeAccount {
             return existingLabels < Constants.FreePlan.maxNumberOfLabels
         }
@@ -1923,7 +1929,7 @@ extension MailboxViewController: MoveToActionSheetPresentProtocol {
     }
 
     private func allowToCreateFolders(existingFolders: Int) -> Bool {
-        let isFreeAccount = viewModel.user.userInfo.subscribed == 0
+        let isFreeAccount = viewModel.user.userInfo.subscribed.isEmpty
         if isFreeAccount {
             return existingFolders < Constants.FreePlan.maxNumberOfFolders
         }
@@ -2521,6 +2527,16 @@ extension MailboxViewController: SwipyCellDelegate {
 
     func swipyCell(_ cell: SwipyCell, didSwipeWithPercentage percentage: CGFloat, currentState state: SwipyCellState, triggerActivated activated: Bool) {
         viewModel.swipyCellDidSwipe(triggerActivated: activated)
+    }
+}
+
+// MARK: System changes
+
+extension MailboxViewController {
+
+    @objc
+    private func timeZoneDidChange() {
+        reloadTableViewDataSource(animate: false)
     }
 }
 

@@ -1,33 +1,57 @@
+# See https://confluence.protontech.ch/pages/viewpage.action?pageId=121918293
+
 stages:
   - i18n
+  - linting
   - deploy
+  - build
   - test
   - report
   - cleanup
   - testflight
   - enterprise
-  - bot # comes from translations/generator job
+  - distribute
+  - bot
 
-.install_gems_and_run_xcodegen: &install_gems_and_run_xcodegen
-  - bundle install
-  - sh xcodeGenHelper.sh
-  - git restore . # CI will re-download Pods, so we need to restore them to preserve local changes committed to out repo
-
-.before_script_mac: &before_script_mac
-  - cd ProtonMail/ProtonMailUITests
-  - sh Tests/TestPlans/scripts/prepare_users.sh
-  - cd ..
-  - *install_gems_and_run_xcodegen
-
-.set_up_brew_dependecies: &set_up_brew_dependecies
+.setup_basic_tools: &setup_basic_tools
   - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --no-upgrade
   - mint bootstrap --link
 
+.setup_ruby: &setup_ruby
+  - cd ProtonMail
+  - bundle install
+  - cd ..
+
+.setup_project: &setup_project
+  - *setup_basic_tools
+  - *setup_ruby
+
+  - git submodule init
+  - git submodule update --init --recursive
+
+  - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
+
+  - cd ProtonMail
+  - sh xcodeGenHelper.sh
+  - cd ..
+
+.prepare_users_for_ui_tests: &prepare_users_for_ui_tests
+  - cd ProtonMail/ProtonMailUITests
+  - sh Tests/TestPlans/scripts/prepare_users.sh
+  - cd ../..
+
+.configure_sentry: &configure_sentry
+  - curl -sL https://sentry.io/get-cli/ | bash || true
+
+.build_for_testflight: &build_for_testflight
+  - cd ProtonMail
+  - *configure_sentry
+  - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
+  - bundle exec fastlane ios build
+
 .enterprise_config_setting: &enterprise_config_setting
   - cd ProtonMail
-  - *install_gems_and_run_xcodegen
-  - touch ~/.bashrc
-  - curl -sL https://sentry.io/get-cli/ | bash || true
+  - *configure_sentry
   - base64 -D -o Certificates.p12 <<< $ENTERPRISE_DISTRIBUTION_CERTIFICATE
   - base64 -D -o Siri.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SIRI_PROVISIONPROFILE
   - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
@@ -51,18 +75,36 @@ include:
     file: '/scenarios/testmo-script.yml'
 
 variables:
-  LC_ALL: "en_US.UTF-8"
   LANG: "en_US.UTF-8"
   GEM_HOME: "$CI_PROJECT_DIR/gem"
   ATLAS_DEPLOY_LIST: ""
   ATLAS_LINK_APP: mail
-  ATLAS_DEPLOY_SCOPE: "mail-ios-$CI_PIPELINE_ID"
   ATLAS_DEPLOY_ENV: "true"
 
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: $CI_COMMIT_BRANCH == "develop"
+
+default:
+  cache:
+    key: "$CI_PROJECT_NAME"
+    paths:
+      - bundler-cache/
+
+linting:
+  stage: linting
+  before_script:
+    - *setup_basic_tools
+  script:
+    - pip3 install -r Scripts/requirements.txt
+    - python3 Scripts/linkAvailabilityCheck.py
+
+    - cd ProtonMail
+    - xcodeGen/swiftlint.sh
+  tags:
+    - iOS_ARM_TAIPEI
 
 test:unit:
   dependencies: []
@@ -84,27 +126,17 @@ test:unit:
         coverage_format: cobertura
         path: test_output/slatherOutput/cobertura.xml
     paths:
+      - test_output/Build/Products/Debug-iphonesimulator/ProtonMail.app
       - test_output/slatherOutput/
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
+    - *setup_project
   script:
-    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
-    - pip3 install -r Scripts/requirements.txt
-    - python3 Scripts/linkAvailabilityCheck.py
     - cd ProtonMail
-    - *install_gems_and_run_xcodegen
     - bundle exec fastlane unit_test
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
 
 test:ui:smoke:
-  dependencies: []
   stage: test
   except:
     - schedules
@@ -128,28 +160,20 @@ test:ui:smoke:
         coverage_format: cobertura
         path: test_output/slatherOutput/cobertura.xml
       junit:
-        - test_output/TestResults/ProtonMailUITests.xcresult/report.junit
+        - test_output/TestResults/report.xml
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
-    - *before_script_mac
+    - *setup_project
+    - *prepare_users_for_ui_tests
   script:
-    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
+    - cd ProtonMail
     - bundle exec fastlane ui_test
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
   tags:
     - iOS_UITEST
-  allow_failure: false
+  allow_failure: true
 
 report:slack:smoke:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
-  dependencies:
-    - test:ui:smoke
   rules:
     - if: "$CI_COMMIT_BRANCH"
       when: never
@@ -159,16 +183,15 @@ report:slack:smoke:
       when: always
   script:
     - test_reporter.py
-      --path test_output/TestResults/ProtonMailUITests.xcresult/
+      --path test_output/TestResults/
       --platform ios
       --job-name ui_tests_smoke
       --slack-channel mail-ios-uitests
   allow_failure: true
 
 test:ui:feature:
-  dependencies: []
   stage: test
-  rules: &rules_feature
+  rules: 
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
   variables:
     GIT_DEPTH: 1
@@ -181,29 +204,45 @@ test:ui:feature:
     reports:
       junit: test_output/TestResults/report.xml
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
-    - *before_script_mac
+    - *setup_project
+    - *prepare_users_for_ui_tests
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
   script:
-    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool NO # Fixed UI tests failing on secure field
+    - cd ProtonMail
     - bundle exec fastlane feature_tests
-  cache:
-    key: "$CI_PROJECT_NAME"
+  tags:
+    - iOS_UITEST
+
+test:ui:monkey:
+  timeout: 2 hours
+  stage: test
+  rules: 
+    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "monkey"'
+  artifacts:
+    when: always
+    name: "monkey-report"
     paths:
-      - bundler-cache/
+      - test_output/TestResults
+    expire_in: 10 days
+    reports:
+      junit: test_output/TestResults/report.xml
+  before_script:
+    - *setup_project
+    - *prepare_users_for_ui_tests
+  script:
+    - cd ProtonMail
+    - bundle exec fastlane monkey_tests
   tags:
     - iOS_UITEST
 
 report:slack:feature:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
-  dependencies:
-    - test:ui:feature
   variables:
     GIT_DEPTH: 1
-  rules: *rules_feature
+  rules:
+    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
+      when: always
   script:
     - test_reporter.py
       --path test_output/TestResults/
@@ -212,12 +251,28 @@ report:slack:feature:
       --slack-channel mail-ios-uitests
   allow_failure: true
 
+report:slack:monkey:
+  image: $CI_REGISTRY/tpe/test-scripts
+  stage: report
+  rules:
+    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "monkey"'
+      when: always
+  script:
+    - test_reporter.py
+      --path test_output/TestResults/
+      --platform ios
+      --job-name Mail-iOS-Monkey-tests
+      --slack-channel mail-ios-uitests
+  allow_failure: true
+
 report:testmo:feature:
   stage: report
   extends: .testmo-upload
   dependencies:
     - test:ui:feature
-  rules: *rules_feature
+  rules:
+    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
+      when: always
   variables:
     PROJECT_ID: "7"
     NAME: "$TEST_PLAN"
@@ -225,6 +280,50 @@ report:testmo:feature:
     TAGS: "$CI_COMMIT_REF_SLUG"
     SOURCE: "ios"
     RESULT_FOLDER: "./test_output/TestResults/*.xml"
+  allow_failure: true
+
+appetize:start:
+  dependencies: [test:unit]
+  stage: distribute
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    on_stop: appetize:stop
+    url: $APPETIZE_APP_URL?osVersion=16.2&device=iphone14
+  variables:
+    GIT_DEPTH: 1
+  rules:
+    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+      when: manual
+      allow_failure: true
+  before_script:
+    - *setup_ruby
+  script:
+    - cd ProtonMail
+    - bundle exec fastlane upload_to_appetize
+  artifacts:
+    paths:
+      - appetize_public_key.txt
+    reports:
+      dotenv: deploy.env
+  tags:
+    - iOS_ARM_TAIPEI
+
+appetize:stop:
+  dependencies: []
+  stage: .post
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    action: stop
+  rules:
+    - when: manual
+      allow_failure: true
+  variables:
+    GIT_STRATEGY: none
+  script:
+    - curl -X DELETE --fail https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_PUBLIC_KEY
+  tags:
+    # anything that has `curl` basically, apparently without this tag, it's possible to get a runner that doesn't have it
+    - iOS_ARM_TAIPEI
 
 # --- Build app and send to testflight
 testflight:build:upload:
@@ -242,24 +341,14 @@ testflight:build:upload:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
+    - *setup_project
   script:
-    - cd ProtonMail
-    - *install_gems_and_run_xcodegen
-    - touch ~/.bashrc
-    - curl -sL https://sentry.io/get-cli/ | bash || true
-    - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
-    - bundle exec fastlane ios build
+    - *build_for_testflight
     - ./fastlane/add_git_tag.sh
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
   tags:
     - iOS_BUILD
 
+# TODO: this is almost identical to testflight:build:upload:, perhaps we can combine them
 nightly-build-and-upload:
   dependencies: []
   stage: testflight
@@ -274,20 +363,9 @@ nightly-build-and-upload:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
+    - *setup_project
   script:
-    - cd ProtonMail
-    - *install_gems_and_run_xcodegen
-    - touch ~/.bashrc
-    - curl -sL https://sentry.io/get-cli/ | bash || true
-    - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
-    - bundle exec fastlane ios build
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
+    - *build_for_testflight
   tags:
     - iOS_ARM_TAIPEI
 
@@ -307,16 +385,10 @@ enterprise:test:
       - ./ProtonMail/outputs/ProtonMail.app.dSYM.zip
     expire_in: 90 days
   before_script:
-    - git submodule init
-    - git submodule update --init --recursive
-    - *set_up_brew_dependecies
+    - *setup_project
   script:
     - *enterprise_config_setting
     - bundle exec fastlane ios enterprise usingTimeStamp:true
-  cache:
-    key: "$CI_PROJECT_NAME"
-    paths:
-      - bundler-cache/
   tags:
     - iOS_ARM_TAIPEI
 
@@ -346,24 +418,3 @@ commit-locales-release:
       - branches
     variables:
       - $CI_COMMIT_REF_NAME == 'develop'
-
-
-# sonarqube-check:
-#   stage: code_quality
-#   image:
-#     name: sonarsource/sonar-scanner-cli:latest
-#     entrypoint: [""]
-#   variables:
-#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
-#     GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
-#   cache:
-#     key: "${CI_JOB_NAME}"
-#     paths:
-#       - .sonar/cache
-#   script:
-#     - sonar-scanner
-#   allow_failure: true
-#   only:
-#     - merge_requests
-#     - master # or the name of your main branch
-#     - develop
