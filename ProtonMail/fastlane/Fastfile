@@ -208,17 +208,6 @@ def send_to_slack(success, changelog, exception, bundle_version)
   )
 end
 
-def build_for_testing
-  run_tests(
-    build_for_testing: true,
-    result_bundle: true,
-    scheme: UI_TEST_SCHEME,
-    device: UI_TEST_DEVICE,
-    result_bundle: true,
-    app_identifier: APP_IDENTIFIER
-  )
-end
-
 platform :ios do
   desc "Upload the debug app to Appetize"
   lane :upload_to_appetize do |options|
@@ -328,7 +317,13 @@ platform :ios do
       select_for_current_build_only: true,
     )
 
-    build_for_testing
+    run_tests(
+      build_for_testing: true,
+      scheme: UI_TEST_SCHEME,
+      device: UI_TEST_DEVICE,
+      result_bundle: true,
+      app_identifier: APP_IDENTIFIER
+    )
   end
 
   desc "Build enterprise app"
@@ -390,7 +385,7 @@ platform :ios do
       version: '14.2',
       select_for_current_build_only: true,
     )
-    
+
     run_tests(
       scheme: UI_TEST_SCHEME,
       skip_build: true,
