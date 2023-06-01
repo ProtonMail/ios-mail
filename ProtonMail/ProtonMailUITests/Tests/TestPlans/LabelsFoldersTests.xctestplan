@@ -29,6 +29,8 @@
         "LabelsFoldersTests\/testAddMessageToCustomLabelFromInbox()",
         "LabelsFoldersTests\/testCreateAndDeleteCustomFolder()",
         "LabelsFoldersTests\/testCreateAndDeleteCustomLabel()",
+        "LabelsFoldersTests\/testCreateAssingDeleteFolder()",
+        "LabelsFoldersTests\/testCreateAssingDeleteLabel()",
         "LabelsFoldersTests\/testEditCustomFolderNameAndColor()",
         "LabelsFoldersTests\/testEditCustomLabelNameAndColor()"
       ],

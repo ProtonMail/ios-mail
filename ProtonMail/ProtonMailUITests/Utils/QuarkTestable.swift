@@ -180,7 +180,6 @@ extension QuarkTestable where Self: XCTestCase {
             throw QuarkError(url: request.url!, message: "Failed creation of user 👼")
         }
         
-        
         let user = User(id: id, name: name, email: email, password: password, userPlan: plan, mailboxPassword: "", twoFASecurityKey: "", twoFARecoveryCodes: [""], numberOfImportedMails: numberOfImportedMails, quarkURL: request.url!)
         
         plan != UserPlan.free ? try enableSubscription(for: user, domain: domain, plan: plan.rawValue) : ()
