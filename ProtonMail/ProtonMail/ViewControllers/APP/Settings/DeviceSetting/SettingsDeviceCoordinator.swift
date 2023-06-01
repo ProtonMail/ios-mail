@@ -148,6 +148,12 @@ class SettingsDeviceCoordinator {
         let viewController = ToolbarSettingViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+
+    func openApplicationLogsView() {
+        let viewModel = ApplicationLogsViewModel()
+        let viewController = ApplicationLogsViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 extension DeepLink.Node {

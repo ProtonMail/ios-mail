@@ -40,7 +40,8 @@ final class PushNotificationDecryptor {
     func encryptionKit(forSession uid: String) -> EncryptionKit? {
         guard let allSettings = Self.saver.get(),
             let settings = allSettings.first(where: { $0.UID == uid}) else {
-            SystemLogger.log(message: "encryption kit not found", redactedInfo: "uid: \(uid)", category: .encryption, isError: true)
+            let errorMessage = "encryption kit not found, uid: \(uid.redacted)"
+            SystemLogger.log(message: errorMessage, category: .encryption, isError: true)
             return nil
         }
 

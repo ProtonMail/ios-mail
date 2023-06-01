@@ -45,7 +45,7 @@ struct PushSubscriptionSettings: Hashable, Codable {
 
     #if !APP_EXTENSION
     mutating func generateEncryptionKit() throws {
-        SystemLogger.log(message: #function, redactedInfo: "uid \(UID)", category: .encryption)
+        SystemLogger.log(message: "\(#function) - uid: \(UID.redacted)", category: .encryption)
         let keypair = try MailCrypto.generateRandomKeyPair()
         self.encryptionKit = EncryptionKit(passphrase: keypair.passphrase, privateKey: keypair.privateKey, publicKey: keypair.publicKey)
     }

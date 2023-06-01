@@ -28,7 +28,7 @@ extension PushNotificationDecryptor: EncryptionKitProvider {}
 final class PushNotificationHandler {
 
     private enum PushManagementUnexpected: Error {
-        case error(description: String, sensitiveInfo: String?)
+        case error(description: String)
     }
 
     private var contentHandler: ((UNNotificationContent) -> Void)?
@@ -58,8 +58,8 @@ final class PushNotificationHandler {
             populateNotification(content: bestContent, pushContent: pushContent)
             updateBadge(content: bestContent, payload: payload, pushData: pushContent.data, userId: uid)
 
-        } catch let PushManagementUnexpected.error(message, redacted) {
-            logPushNotificationError(message: message, redactedInfo: redacted)
+        } catch let PushManagementUnexpected.error(message) {
+            logPushNotificationError(message: message)
 
         } catch {
             logPushNotificationError(message: "unknown error handling push")
@@ -86,14 +86,14 @@ private extension PushNotificationHandler {
         do {
             return try PushNotificationPayload(userInfo: userInfo)
         } catch {
-            let redactedInfo = String(describing: error)
-            throw PushManagementUnexpected.error(description: "Fail parsing push payload.", sensitiveInfo: redactedInfo)
+            let errorMessage = "Fail parsing push payload. Error: \(String(describing: error))"
+            throw PushManagementUnexpected.error(description: errorMessage)
         }
     }
 
     private func uid(in payload: PushNotificationPayload) throws -> String {
         guard let uid = payload.uid else {
-            throw PushManagementUnexpected.error(description: "uid not found in payload", sensitiveInfo: nil)
+            throw PushManagementUnexpected.error(description: "uid not found in payload")
         }
         return uid
     }
@@ -101,14 +101,14 @@ private extension PushNotificationHandler {
     private func encryptionKit(for uid: String) throws -> EncryptionKit {
         guard let encryptionKit = dependencies.encryptionKitProvider.encryptionKit(forSession: uid) else {
             dependencies.encryptionKitProvider.markEncryptionKitForUnsubscribing(forSession: uid)
-            throw PushManagementUnexpected.error(description: "no encryption kit for uid", sensitiveInfo: "uid \(uid)")
+            throw PushManagementUnexpected.error(description: "no encryption kit for uid \(uid.redacted)")
         }
         return encryptionKit
     }
 
     private func decryptMessage(in payload: PushNotificationPayload, encryptionKit: EncryptionKit) throws -> String {
         guard let encryptedMessage = payload.encryptedMessage else {
-            throw PushManagementUnexpected.error(description: "no encrypted message in payload", sensitiveInfo: nil)
+            throw PushManagementUnexpected.error(description: "no encrypted message in payload")
         }
 
         let decryptionKey = DecryptionKey(
@@ -122,8 +122,7 @@ private extension PushNotificationHandler {
                 encrypted: ArmoredMessage(value: encryptedMessage)
             )
         } catch {
-            let sensitiveInfo = "error: \(error.localizedDescription)"
-            throw PushManagementUnexpected.error(description: "fail decrypting data", sensitiveInfo: sensitiveInfo)
+            throw PushManagementUnexpected.error(description: "fail decrypting data")
         }
     }
 
@@ -132,7 +131,7 @@ private extension PushNotificationHandler {
             return try PushContent(json: decryptedText)
         } catch {
             let redactedInfo = String(describing: error)
-            throw PushManagementUnexpected.error(description: "fail parsing push content", sensitiveInfo: redactedInfo)
+            throw PushManagementUnexpected.error(description: "fail parsing push content")
         }
     }
 
@@ -182,8 +181,8 @@ private extension PushNotificationHandler {
         }
     }
 
-    private func logPushNotificationError(message: String, redactedInfo: String? = nil) {
-        SystemLogger.log(message: message, redactedInfo: redactedInfo, category: .pushNotification, isError: true)
+    private func logPushNotificationError(message: String) {
+        SystemLogger.log(message: message, category: .pushNotification, isError: true)
     }
 }
 
