@@ -128,7 +128,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
         let tokenHasChanged = latestDeviceToken != deviceToken
         guard tokenHasChanged else { return }
-        SystemLogger.log(message: "Receive new device token", redactedInfo: deviceToken, category: .pushNotification)
+        SystemLogger.log(message: "Received new device token: \(deviceToken.redacted)", category: .pushNotification)
         latestDeviceToken = deviceToken
         if signInProvider.isSignedIn, unlockProvider.isUnlocked {
             prepareSettingsAndReportAsync()
@@ -381,9 +381,8 @@ extension PushNotificationService {
         do {
             return try PushNotificationPayload(userInfo: userInfo)
         } catch {
-            let message = "Fail parsing push payload."
-            let info = String(describing: error)
-            SystemLogger.log(message: message, redactedInfo: info, category: .pushNotification, isError: true)
+            let message = "Fail parsing push payload. Error: \(String(describing: error))"
+            SystemLogger.log(message: message, category: .pushNotification, isError: true)
             return nil
         }
     }

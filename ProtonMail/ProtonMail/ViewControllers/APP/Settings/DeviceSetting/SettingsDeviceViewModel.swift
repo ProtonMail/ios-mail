@@ -51,6 +51,7 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
     case alternativeRouting
     case browser
     case toolbar
+    case applicationLogs
 
     var description: String {
         switch self {
@@ -68,6 +69,8 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
             return LocalString._alternative_routing
         case .toolbar:
             return LocalString._toolbar_customize_general_title
+        case .applicationLogs:
+            return L11n.Settings.applicationLogs
         }
     }
 }
@@ -153,6 +156,8 @@ final class SettingsDeviceViewModel {
         if UserInfo.isToolbarCustomizationEnable {
             appSettings.append(.toolbar)
         }
+
+        appSettings.append(.applicationLogs)
     }
 
     func appVersion() -> String {

@@ -212,6 +212,8 @@ extension SettingsDeviceViewController {
                     settingsGeneralCell.configure(right: status)
                 case .toolbar:
                     settingsGeneralCell.configure(left: item.description)
+                case .applicationLogs:
+                    settingsGeneralCell.configure(left: item.description)
                 }
             }
             return cell
@@ -344,6 +346,8 @@ extension SettingsDeviceViewController {
                 coordinator?.go(to: .swipeAction)
             case .toolbar:
                 coordinator?.openToolbarCustomizationView()
+            case .applicationLogs:
+                coordinator?.openApplicationLogsView()
             }
         case .general:
             let item = viewModel.generalSettings[row]

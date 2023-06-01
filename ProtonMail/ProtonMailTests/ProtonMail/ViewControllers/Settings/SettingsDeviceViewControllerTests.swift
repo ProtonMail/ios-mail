@@ -75,7 +75,7 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
 
         XCTAssertEqual(sut.tableView.numberOfSections, 4)
-        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 1), 7)
+        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 1), 8)
 
         let cell = try XCTUnwrap(sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 6, section: 1)) as? SettingsGeneralCell)
         XCTAssertEqual(cell.leftTextValue(), LocalString._toolbar_customize_general_title)

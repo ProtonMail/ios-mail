@@ -442,7 +442,7 @@ extension WindowsCoordinator {
 
     private func openUrl(_ url: URL) {
         guard UIApplication.shared.canOpenURL(url) else {
-            SystemLogger.log(message: "url can't be opened by the system", redactedInfo: url.absoluteString, isError: true)
+            SystemLogger.log(message: "url can't be opened by the system: \(url.absoluteString)", isError: true)
             return
         }
         DispatchQueue.main.async {

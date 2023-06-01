@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,19 +17,10 @@
 
 import Foundation
 
-protocol AppTelemetry {
-    func enable()
-    func disable()
-}
+extension String {
 
-struct MailAppTelemetry: AppTelemetry {
-    func enable() {
-        Analytics.shared.enableAnalytics()
-        SystemLogger.enableLogging()
-    }
-
-    func disable() {
-        Analytics.shared.disableAnalytics()
-        SystemLogger.disableLogging()
+    /// Hides all characters except the last 6.
+    var redacted: String {
+        "****\(suffix(6))"
     }
 }
