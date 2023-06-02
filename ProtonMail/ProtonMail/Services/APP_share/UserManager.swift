@@ -288,7 +288,8 @@ class UserManager: Service {
             sendRefactorStatusProvider: userCachedStatus,
             scheduleSendEnableStatusProvider: userCachedStatus,
             userIntroductionProgressProvider: userCachedStatus,
-            senderImageEnableStatusProvider: userCachedStatus
+            senderImageEnableStatusProvider: userCachedStatus,
+            referralPromptProvider: userCachedStatus
         )
         service.register(newSubscriber: inAppFeedbackStateService)
         return service

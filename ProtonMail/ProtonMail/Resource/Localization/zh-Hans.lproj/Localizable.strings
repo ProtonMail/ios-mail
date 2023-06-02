@@ -2382,7 +2382,7 @@
 "Your messages are being downloaded..." = "正在为您下载邮件...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "如果您的联系人也加入 Proton Mail，您的隐私将得到更好的保护。不妨邀请好友注册 Proton，您与好友都能免费体验高级账户权益。";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "如果您的联系人也加入 Proton Mail，您的隐私将得到更好的保护。不妨邀请好友注册 Proton，您与好友都能免费体验高级账户权益。";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "您的账户因长时间未操作已自动退出，或已被其他设备下线。请重新登录。";

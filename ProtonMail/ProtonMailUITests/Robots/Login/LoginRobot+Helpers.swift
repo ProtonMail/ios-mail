@@ -25,6 +25,14 @@ extension LoginRobot {
             .signIn(robot: InboxRobot.self)
     }
 
+    @discardableResult
+    func loginUserWithReferralPrompt(_ user: User) -> InboxRobot.MailboxReferralPromptRobot {
+        _ = fillUsername(username: user.name)
+            .insertPassword(password: user.password)
+            .signIn(robot: InboxRobot.self)
+        return InboxRobot.MailboxReferralPromptRobot()
+    }
+
     func loginUserWithTwoFA(_ user: User) -> InboxRobot {
         return fillUsername(username: user.name)
             .insertPassword(password: user.password)

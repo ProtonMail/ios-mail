@@ -113,6 +113,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private let mailListActionSheetPresenter = MailListActionSheetPresenter()
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
+    private var referralProgramPresenter: ReferralProgramPromptPresenter?
 
     private var isSwipingCell = false {
         didSet {
@@ -347,6 +348,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         showFeedbackViewIfNeeded()
         showDropVersionsAlertIfNeeded()
+        updateReferralPresenterAndShowPromptIfNeeded()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -522,6 +524,36 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             self.present(alertController, animated: true) {
                 userCachedStatus.didShowDropVersionAlert = true
             }
+        }
+    }
+
+    private func updateReferralPresenterAndShowPromptIfNeeded() {
+        #if DEBUG
+        if ProcessInfo.hasFlag(flag: "-ShowReferralPromptView") {
+            let referralPromptView = ReferralPromptView { _ in }
+            referralPromptView.present(on: self.navigationController!.view)
+            return
+        }
+        #endif
+        guard !ProcessInfo.isRunningUITests,
+              let referralProgram = self.viewModel.user.userInfo.referralProgram,
+              let navController = navigationController else {
+            return
+        }
+        if self.referralProgramPresenter == nil {
+            self.referralProgramPresenter = ReferralProgramPromptPresenter(userID: self.viewModel.user.userID,
+                                                                           referralProgram: referralProgram,
+                                                                           referralPromptProvider: userCachedStatus,
+                                                                           featureFlagService: viewModel.user.featureFlagsDownloadService)
+        }
+        self.referralProgramPresenter?.didShowMailbox()
+        if self.referralProgramPresenter?.shouldShowReferralProgramPrompt() == true {
+            self.referralProgramPresenter?.promptWasShown()
+            let referralPromptView = ReferralPromptView { [weak self] promptView in
+                promptView.dismiss()
+                self?.coordinator?.go(to: .referAFriend, sender: nil)
+            }
+            referralPromptView.present(on: navController.view)
         }
     }
 

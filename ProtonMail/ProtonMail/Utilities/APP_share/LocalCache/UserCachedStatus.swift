@@ -106,6 +106,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"
         static let toolbarCustomizeSpotlightShownUserIds = "toolbarCustomizeSpotlightShownUserIds"
         static let isSenderImageEnabled = "isSenderImageEnabled"
+        static let isReferralPromptEnabled = "isReferralPromptEnabled"
     }
 
     var keymakerRandomkey: String? {

@@ -2385,7 +2385,7 @@
 "Your messages are being downloaded..." = "您的訊息正在下載...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "如果聯絡人也使用 Proton Mail，我們更能保護你的隱私。邀請朋友加入 Proton ，雙方都能免費獲得高級會員福利。";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "如果聯絡人也使用 Proton Mail，我們更能保護你的隱私。邀請朋友加入 Proton ，雙方都能免費獲得高級會員福利。";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "由於您長時間沒有進行任何操作，您的交談已過期或是被撤銷。請重新登入。";

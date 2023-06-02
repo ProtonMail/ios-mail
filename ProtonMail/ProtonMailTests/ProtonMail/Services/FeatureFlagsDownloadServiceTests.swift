@@ -27,6 +27,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     var scheduleSendEnableStatusMock: MockScheduleSendEnableStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
     var senderImageStatusProviderMock: MockSenderImageStatusProvider!
+    var referralPromptProvider: MockReferralPromptProvider!
     var sut: FeatureFlagsDownloadService!
     var userID: UserID = UserID(rawValue: String.randomString(20))
 
@@ -38,6 +39,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         scheduleSendEnableStatusMock = .init()
         userIntroductionProgressProviderMock = .init()
         senderImageStatusProviderMock = .init()
+        referralPromptProvider = .init()
         sut = FeatureFlagsDownloadService(
             userID: userID,
             apiService: apiServiceMock,
@@ -46,7 +48,8 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
             sendRefactorStatusProvider: sendRefactorStatusProvider,
             scheduleSendEnableStatusProvider: scheduleSendEnableStatusMock,
             userIntroductionProgressProvider: userIntroductionProgressProviderMock,
-            senderImageEnableStatusProvider: senderImageStatusProviderMock
+            senderImageEnableStatusProvider: senderImageStatusProviderMock,
+            referralPromptProvider: referralPromptProvider
         )
     }
 

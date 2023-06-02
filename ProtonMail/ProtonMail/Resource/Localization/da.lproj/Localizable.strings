@@ -2388,7 +2388,7 @@
 "Your messages are being downloaded..." = "Din beskeder bliver downloadet...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "Dir privatliv er bedre beskyttet, hvis dine kontakter også bruger Proton Mail. Inviter dine venner til at bruge Proton, så får I begge gratis premium fordele.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Dir privatliv er bedre beskyttet, hvis dine kontakter også bruger Proton Mail. Inviter dine venner til at bruge Proton, så får I begge gratis premium fordele.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session er udløbet, fordi du har været inaktiv i et stykke tid, eller fordi den er blevet tilbagekaldt. Log venligst ind igen.";
