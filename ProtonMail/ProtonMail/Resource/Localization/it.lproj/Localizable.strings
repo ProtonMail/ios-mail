@@ -2388,7 +2388,7 @@
 "Your messages are being downloaded..." = "I tuoi messaggi sono in fase di scaricamento...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free." = "La tua privacy è meglio protetta se anche i tuoi contatti utilizzassero Proton Mail. Invita i tuoi amici a utilizzare Proton ed entrambi otterrete gratuitamente dei benefici premium.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "La tua privacy è meglio protetta se anche i tuoi contatti utilizzassero Proton Mail. Invita i tuoi amici a utilizzare Proton ed entrambi otterrete gratuitamente dei benefici premium.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "La tua sessione è scaduta perché sei stato inattivo per un po' di tempo o perché è stata revocata. Effettua di nuovo il login.";

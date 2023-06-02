@@ -23,6 +23,7 @@ enum FeatureFlagKey: String, CaseIterable {
     case inAppFeedback = "InAppFeedbackIOS"
     case scheduleSend = "ScheduledSendFreemium"
     case senderImage = "ShowSenderImages"
+    case referralPrompt = "ReferralActionSheetShouldBePresentedIOS"
 }
 
 // sourcery: mock
@@ -50,6 +51,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     private let scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
     private let senderImageEnableStatusProvider: SenderImageStatusProvider
+    private let referralPromptProvider: ReferralPromptProvider
 
     init(
         userID: UserID,
@@ -59,7 +61,8 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         sendRefactorStatusProvider: SendRefactorStatusProvider,
         scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        senderImageEnableStatusProvider: SenderImageStatusProvider
+        senderImageEnableStatusProvider: SenderImageStatusProvider,
+        referralPromptProvider: ReferralPromptProvider
     ) {
         self.userID = userID
         self.apiService = apiService
@@ -69,6 +72,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         self.scheduleSendEnableStatusProvider = scheduleSendEnableStatusProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.senderImageEnableStatusProvider = senderImageEnableStatusProvider
+        self.referralPromptProvider = referralPromptProvider
     }
 
     func register(newSubscriber: FeatureFlagsSubscribeProtocol) {
@@ -144,6 +148,13 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
             if let isSenderImageEnable = response.result[FeatureFlagKey.senderImage.rawValue] as? Bool {
                 self.senderImageEnableStatusProvider.setIsSenderImageEnable(
                     enable: isSenderImageEnable,
+                    userID: self.userID
+                )
+            }
+
+            if let isReferralPromptAvailable = response.result[FeatureFlagKey.referralPrompt.rawValue] as? Bool {
+                self.referralPromptProvider.setIsReferralPromptEnabled(
+                    enabled: isReferralPromptAvailable,
                     userID: self.userID
                 )
             }

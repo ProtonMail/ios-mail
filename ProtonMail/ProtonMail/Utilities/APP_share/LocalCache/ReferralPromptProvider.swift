@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,20 +17,18 @@
 
 import Foundation
 
-extension ProcessInfo {
-    static var isRunningUnitTests: Bool {
-        return processInfo.environment["XCTestConfigurationFilePath"] != nil
+// sourcery: mock
+protocol ReferralPromptProvider: AnyObject {
+    func isReferralPromptEnabled(userID: UserID) -> Bool
+    func setIsReferralPromptEnabled(enabled: Bool, userID: UserID)
+}
+
+extension UserCachedStatus: ReferralPromptProvider {
+    func isReferralPromptEnabled(userID: UserID) -> Bool {
+        fetchValueOf(userID: userID, key: Key.isReferralPromptEnabled, defaultValue: false)
     }
 
-    static var isRunningUITests: Bool {
-        launchArguments.contains("-disableAnimations")
-    }
-
-    static var launchArguments: [String] {
-        processInfo.arguments
-    }
-    
-    static func hasFlag(flag: String) -> Bool {
-        launchArguments.contains(flag)
+    func setIsReferralPromptEnabled(enabled: Bool, userID: UserID) {
+        setValueOf(userID: userID, value: enabled, key: Key.isReferralPromptEnabled)
     }
 }

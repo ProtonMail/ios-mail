@@ -93,6 +93,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         case troubleShoot = "toTroubleShootSegue"
         case newFolder = "toNewFolder"
         case newLabel = "toNewLabel"
+        case referAFriend = "referAFriend"
 
         init?(rawValue: String) {
             switch rawValue {
@@ -116,6 +117,8 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                 self = .troubleShoot
             case "composeScheduledMessage":
                 self = .composeScheduledMessage
+            case "referAFriend":
+                self = .referAFriend
             default:
                 return nil
             }
@@ -163,6 +166,8 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             presentTroubleShootView()
         case .search:
             presentSearch()
+        case .referAFriend:
+            presentReferAFriend()
         }
     }
 
@@ -669,6 +674,18 @@ extension MailboxCoordinator {
             let link = DeepLink(MenuCoordinator.Setup.switchInboxFolder.rawValue, sender: folderID)
             NotificationCenter.default.post(name: .switchView, object: link)
         }
+    }
+
+    private func presentReferAFriend() {
+        guard let referralLink = viewController?.viewModel.user.userInfo.referralProgram?.link else {
+            return
+        }
+        let view = ReferralShareViewController(
+            referralLink: referralLink
+        )
+        let navigation = UINavigationController(rootViewController: view)
+        navigation.modalPresentationStyle = .fullScreen
+        viewController?.present(navigation, animated: true)
     }
 
     private func resetNavigationViewControllersIfNeeded() {
