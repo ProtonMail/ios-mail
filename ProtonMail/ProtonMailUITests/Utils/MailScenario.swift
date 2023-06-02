@@ -64,5 +64,5 @@ extension MailScenario {
     static let pgpmimeUntrusted = MailScenario(name: "pgpmime.untrusted", description: "", subject: "")
     static let revokeSession = MailScenario(name: "revoke.session", description: "", subject: "")
     static let trashMultipleMessages = MailScenario(name: "trash.multiple.messages", description: "", subject: "")
-    static let trashOneMessage = MailScenario(name: "trash.one.message", description: "", subject: "")
+    static let trashOneMessage = MailScenario(name: "trash.one.message", description: "", subject: "internal PGP/Mime")
 }

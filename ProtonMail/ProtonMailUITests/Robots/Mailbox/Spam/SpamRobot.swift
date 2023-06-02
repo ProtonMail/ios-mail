@@ -9,10 +9,10 @@
 import fusion
 
 fileprivate struct id {
-    static let mailboxMoreButtonIdentifier = "MailboxViewController.moreBarButtonItem"
-    static let emptyFolderButtonIdentifier = "Empty folder"
+    static let mailboxMoreButtonIdentifier = "MailboxViewController.ellipsisMenuBarItem"
+    static let emptySpamButtonIdentifier = LocalString._empty_spam
     static let spamStaticTextIdentifier = "MailboxViewController.navigationTitleLabel"
-    static let mailTitileIdentifier = "mailboxMessageCell.titleLabel"
+    static let confirmDeleteButtonText = LocalString._general_delete_action
 }
 
 class SpamRobot: MailboxRobotInterface {
@@ -21,8 +21,6 @@ class SpamRobot: MailboxRobotInterface {
     
     required init() {
         super.init()
-        let label = LocalString._menu_spam_title
-        staticText(id.spamStaticTextIdentifier).waitUntilExists().checkHasLabel(label)
     }
     
     func clearSpamFolder() -> SpamRobot {
@@ -37,14 +35,14 @@ class SpamRobot: MailboxRobotInterface {
     }
 
     private func emptyFolder() -> SpamDialogRobot {
-        button(id.emptyFolderButtonIdentifier).tap()
+        button(id.emptySpamButtonIdentifier).tap()
         return SpamDialogRobot()
     }
     
     class SpamDialogRobot: CoreElements {
         
         func emptyFolderDialog() -> SpamRobot {
-            button(id.emptyFolderButtonIdentifier).tap()
+            button(id.confirmDeleteButtonText).tap()
             return SpamRobot()
         }
     }
@@ -53,8 +51,5 @@ class SpamRobot: MailboxRobotInterface {
      */
     class Verify : MailboxRobotVerifyInterface {
         
-        func messageWithSubjectExists(_ subject: String) {
-            staticText(id.mailTitileIdentifier).containsLabel(subject).waitUntilExists().checkExists()
-        }
     }
 }
