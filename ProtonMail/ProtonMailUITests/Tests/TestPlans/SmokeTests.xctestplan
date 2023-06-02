@@ -54,6 +54,7 @@
         "PinTests\/testTurnOnAndOffPin()",
         "ReplyToMessageTests\/testReplyTextMessage()",
         "SpamTests\/testSwipeToSpamMessage()",
+        "TrashOneTests\/testDeleteMessageFromDetailPage()",
         "UnauthSessionTests\/testRefreshingAndOpeningMailWorks()"
       ],
       "target" : {

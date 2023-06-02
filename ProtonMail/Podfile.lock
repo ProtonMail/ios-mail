@@ -346,7 +346,7 @@ PODS:
 DEPENDENCIES:
   - AwaitKit (from `https://github.com/yannickl/AwaitKit.git`, commit `4b725f40dd189f40c0962cba792f06a2073bd977`)
   - DKImagePickerController/PhotoGallery (= 4.3.4)
-  - "fusion (from `git@gitlab.protontech.ch:tpe/apple-fusion.git`, commit `82ddf41`)"
+  - "fusion (from `git@gitlab.protontech.ch:tpe/apple-fusion.git`, commit `9b250a7f`)"
   - Groot (= 3.0.1)
   - "iosMonkey (from `git@gitlab.protontech.ch:tpe/ios-monkey.git`, commit `fa348f33`)"
   - MBProgressHUD (= 1.1.0)
@@ -429,7 +429,7 @@ EXTERNAL SOURCES:
     :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
     :git: https://github.com/yannickl/AwaitKit.git
   fusion:
-    :commit: 82ddf41
+    :commit: 9b250a7f
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
   iosMonkey:
     :commit: fa348f33
@@ -548,7 +548,7 @@ CHECKOUT OPTIONS:
     :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
     :git: https://github.com/yannickl/AwaitKit.git
   fusion:
-    :commit: 82ddf41
+    :commit: 9b250a7f
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
   iosMonkey:
     :commit: fa348f33
@@ -719,6 +719,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: e0ea626634f6be8e29f52aacec9bf0c509047779
+PODFILE CHECKSUM: ae7c6e87ddea090951b5cd25f3139a5e6a067b65
 
 COCOAPODS: 1.12.0

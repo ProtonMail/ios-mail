@@ -511,7 +511,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         view.accessibilityElements = [updateTimeLabel as Any,
                                       newElement,
                                       bannerContainer as Any,
-                                      tableView as Any]
+                                      tableView as Any,
+                                      toolBar as Any,
+                                      noResultMainLabel as Any,
+                                      noResultImage as Any,
+                                      noResultSecondaryLabel as Any]
     }
 
     private func showDropVersionsAlertIfNeeded() {
