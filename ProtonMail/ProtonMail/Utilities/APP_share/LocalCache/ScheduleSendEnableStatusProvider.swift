@@ -23,6 +23,7 @@ enum ScheduledSendStatus {
     case notSet
 }
 
+@available(*, deprecated, message: "Use FeatureFlagsCache instead.")
 protocol ScheduleSendEnableStatusProvider: AnyObject {
     func isScheduleSendEnabled(userID: UserID) -> ScheduledSendStatus
     func setScheduleSendStatus(enable: Bool, userID: UserID)

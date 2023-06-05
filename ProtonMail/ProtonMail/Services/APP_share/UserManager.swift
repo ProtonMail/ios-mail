@@ -281,14 +281,13 @@ class UserManager: Service {
 
 	lazy var featureFlagsDownloadService: FeatureFlagsDownloadService = { [unowned self] in
         let service = FeatureFlagsDownloadService(
+            cache: userCachedStatus,
             userID: userID,
             apiService: self.apiService,
             sessionID: self.authCredential.sessionID,
             appRatingStatusProvider: userCachedStatus,
-            sendRefactorStatusProvider: userCachedStatus,
             scheduleSendEnableStatusProvider: userCachedStatus,
             userIntroductionProgressProvider: userCachedStatus,
-            senderImageEnableStatusProvider: userCachedStatus,
             referralPromptProvider: userCachedStatus
         )
         service.register(newSubscriber: inAppFeedbackStateService)

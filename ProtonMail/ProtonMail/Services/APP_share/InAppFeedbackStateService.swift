@@ -55,10 +55,9 @@ class InAppFeedbackStateService: InAppFeedbackStateServiceProtocol {
 }
 
 extension InAppFeedbackStateService: FeatureFlagsSubscribeProtocol {
-    func handleNewFeatureFlags(_ featureFlags: [String: Any]) {
-        guard let newFlag = featureFlags[FeatureFlagKey.inAppFeedback.rawValue] as? Int else {
-            return
-        }
+    func handleNewFeatureFlags(_ featureFlags: SupportedFeatureFlags) {
+        let newFlag = featureFlags[.inAppFeedback]
+
         var convertedFlag = false
         switch newFlag {
         case 0:

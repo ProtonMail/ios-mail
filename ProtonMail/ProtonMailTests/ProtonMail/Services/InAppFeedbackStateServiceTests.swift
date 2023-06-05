@@ -69,12 +69,12 @@ class InAppFeedbackStateServiceTests: XCTestCase {
         XCTAssertFalse(sut.isEnable)
     }
 
-    func testHandleNewFeatureFlags_remoteIsEmpty_noUpdate() {
+    func testHandleNewFeatureFlags_whenBackendProvidesNoValue_setsToFalse() {
         sut = InAppFeedbackStateService(localFeatureFlag: true)
         sut.handleNewFeatureFlags([FeatureFlagKey.inAppFeedback.rawValue: 1])
         XCTAssertTrue(sut.isEnable)
         sut.handleNewFeatureFlags([:])
-        XCTAssertTrue(sut.isEnable)
+        XCTAssertFalse(sut.isEnable)
     }
 }
 
@@ -85,5 +85,11 @@ class InAppFeedbackStateServiceDelegateMock: InAppFeedbackStateServiceDelegate {
     func inAppFeedbackFeatureFlagHasChanged(enable: Bool) {
         isInAppFeedbackFeatureFlagMethodCalled = true
         enableStatus = enable
+    }
+}
+
+private extension FeatureFlagsSubscribeProtocol {
+    func handleNewFeatureFlags(_ rawValues: [String: Any]) {
+        handleNewFeatureFlags(SupportedFeatureFlags(rawValues: rawValues))
     }
 }

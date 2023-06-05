@@ -71,7 +71,7 @@ class MenuViewModelTests: XCTestCase {
     }
 
     func testInit_withInAppFeedbackEnable() {
-        testUser.inAppFeedbackStateService.handleNewFeatureFlags([FeatureFlagKey.inAppFeedback.rawValue: 1])
+        testUser.inAppFeedbackStateService.handleNewFeatureFlags(.init(rawValues:[FeatureFlagKey.inAppFeedback.rawValue: 1]))
         sut = MenuViewModel(usersManager: usersManagerMock,
                             userStatusInQueueProvider: userStatusInQueueProviderMock,
                             coreDataContextProvider: coreDataContextProviderMock,

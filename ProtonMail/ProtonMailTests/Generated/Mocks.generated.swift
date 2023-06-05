@@ -594,6 +594,19 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
 
 }
 
+class MockFeatureFlagCache: FeatureFlagCache {
+    @FuncStub(MockFeatureFlagCache.storeFeatureFlags) var storeFeatureFlagsStub
+    func storeFeatureFlags(_ flags: SupportedFeatureFlags, for userID: UserID) {
+        storeFeatureFlagsStub(flags, userID)
+    }
+
+    @FuncStub(MockFeatureFlagCache.featureFlags, initialReturn: SupportedFeatureFlags()) var featureFlagsStub
+    func featureFlags(for userID: UserID) -> SupportedFeatureFlags {
+        featureFlagsStub(userID)
+    }
+
+}
+
 class MockFeatureFlagsDownloadServiceProtocol: FeatureFlagsDownloadServiceProtocol {
     @FuncStub(MockFeatureFlagsDownloadServiceProtocol.updateFeatureFlag) var updateFeatureFlagStub
     func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping (Error?) -> Void) {
@@ -604,7 +617,7 @@ class MockFeatureFlagsDownloadServiceProtocol: FeatureFlagsDownloadServiceProtoc
 
 class MockFeatureFlagsSubscribeProtocol: FeatureFlagsSubscribeProtocol {
     @FuncStub(MockFeatureFlagsSubscribeProtocol.handleNewFeatureFlags) var handleNewFeatureFlagsStub
-    func handleNewFeatureFlags(_ featureFlags: [String: Any]) {
+    func handleNewFeatureFlags(_ featureFlags: SupportedFeatureFlags) {
         handleNewFeatureFlagsStub(featureFlags)
     }
 
@@ -1171,28 +1184,10 @@ class MockScheduledSendHelperDelegate: ScheduledSendHelperDelegate {
 
 }
 
-class MockSendRefactorStatusProvider: SendRefactorStatusProvider {
-    @FuncStub(MockSendRefactorStatusProvider.isSendRefactorEnabled, initialReturn: Bool()) var isSendRefactorEnabledStub
-    func isSendRefactorEnabled(userID: UserID) -> Bool {
-        isSendRefactorEnabledStub(userID)
-    }
-
-    @FuncStub(MockSendRefactorStatusProvider.setIsSendRefactorEnabled) var setIsSendRefactorEnabledStub
-    func setIsSendRefactorEnabled(userID: UserID, value: Bool) {
-        setIsSendRefactorEnabledStub(userID, value)
-    }
-
-}
-
 class MockSenderImageStatusProvider: SenderImageStatusProvider {
     @FuncStub(MockSenderImageStatusProvider.isSenderImageEnabled, initialReturn: Bool()) var isSenderImageEnabledStub
     func isSenderImageEnabled(userID: UserID) -> Bool {
         isSenderImageEnabledStub(userID)
-    }
-
-    @FuncStub(MockSenderImageStatusProvider.setIsSenderImageEnable) var setIsSenderImageEnableStub
-    func setIsSenderImageEnable(enable: Bool, userID: UserID) {
-        setIsSenderImageEnableStub(enable, userID)
     }
 
 }

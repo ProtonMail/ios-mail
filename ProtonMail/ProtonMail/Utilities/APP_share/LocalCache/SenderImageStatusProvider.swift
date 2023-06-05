@@ -17,18 +17,14 @@
 
 import Foundation
 
+@available(*, deprecated, message: "Use FeatureFlagsCache instead.")
 // sourcery: mock
 protocol SenderImageStatusProvider: AnyObject {
     func isSenderImageEnabled(userID: UserID) -> Bool
-    func setIsSenderImageEnable(enable: Bool, userID: UserID)
 }
 
 extension UserCachedStatus: SenderImageStatusProvider {
     func isSenderImageEnabled(userID: UserID) -> Bool {
-        fetchValueOf(userID: userID, key: Key.isSenderImageEnabled, defaultValue: false)
-    }
-
-    func setIsSenderImageEnable(enable: Bool, userID: UserID) {
-        setValueOf(userID: userID, value: enable, key: Key.isSenderImageEnabled)
+        featureFlags(for: userID)[.senderImage]
     }
 }
