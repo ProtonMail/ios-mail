@@ -28,7 +28,7 @@ enum FeatureFlagKey: String, CaseIterable {
 
 // sourcery: mock
 protocol FeatureFlagsSubscribeProtocol: AnyObject {
-    func handleNewFeatureFlags(_ featureFlags: [String: Any])
+    func handleNewFeatureFlags(_ featureFlags: SupportedFeatureFlags)
 }
 
 // sourcery: mock
@@ -38,6 +38,7 @@ protocol FeatureFlagsDownloadServiceProtocol {
 
 /// This class is used to download the feature flags from the BE and send the flags to the subscribed objects.
 class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
+    private let cache: FeatureFlagCache
     private let userID: UserID
     private let apiService: APIService
     private let sessionID: String
@@ -47,31 +48,27 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     }
     private(set) var lastFetchingTime: Date?
     private let appRatingStatusProvider: AppRatingStatusProvider
-    private let sendRefactorStatusProvider: SendRefactorStatusProvider
     private let scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
-    private let senderImageEnableStatusProvider: SenderImageStatusProvider
     private let referralPromptProvider: ReferralPromptProvider
 
     init(
+        cache: FeatureFlagCache,
         userID: UserID,
         apiService: APIService,
         sessionID: String,
         appRatingStatusProvider: AppRatingStatusProvider,
-        sendRefactorStatusProvider: SendRefactorStatusProvider,
         scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        senderImageEnableStatusProvider: SenderImageStatusProvider,
         referralPromptProvider: ReferralPromptProvider
     ) {
+        self.cache = cache
         self.userID = userID
         self.apiService = apiService
         self.sessionID = sessionID
         self.appRatingStatusProvider = appRatingStatusProvider
-        self.sendRefactorStatusProvider = sendRefactorStatusProvider
         self.scheduleSendEnableStatusProvider = scheduleSendEnableStatusProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
-        self.senderImageEnableStatusProvider = senderImageEnableStatusProvider
         self.referralPromptProvider = referralPromptProvider
     }
 
@@ -104,11 +101,11 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
 
             self.lastFetchingTime = Date()
 
-            if !response.result.isEmpty {
-                self.subscribers.forEach { $0.handleNewFeatureFlags(response.result) }
-            }
+            let supportedFeatureFlags = SupportedFeatureFlags(response: response)
 
-            if let isScheduleSendEnabled = response.result[FeatureFlagKey.scheduleSend.rawValue] as? Bool {
+            self.subscribers.forEach { $0.handleNewFeatureFlags(supportedFeatureFlags) }
+
+            let isScheduleSendEnabled = supportedFeatureFlags[.scheduleSend]
                 let stateBeforeTheUpdate = self.scheduleSendEnableStatusProvider.isScheduleSendEnabled(
                     userID: self.userID
                 )
@@ -131,26 +128,11 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
                 default:
                     break
                 }
-            } else {
-                // If there is no SS feature flag, mark the feature as disabled, so that we'll be able to reset the
-                // spotlight once the feature is enabled (wouldn't be possible if we left it as not set).
-                self.scheduleSendEnableStatusProvider.setScheduleSendStatus(enable: false, userID: self.userID)
-            }
 
-            if let appRatingStatus = response.result[FeatureFlagKey.appRating.rawValue] as? Bool {
+            let appRatingStatus = supportedFeatureFlags[.appRating]
                 self.appRatingStatusProvider.setIsAppRatingEnabled(appRatingStatus)
-            }
 
-            if let sendRefactor = response.result[FeatureFlagKey.sendRefactor.rawValue] as? Bool {
-                self.sendRefactorStatusProvider.setIsSendRefactorEnabled(userID: self.userID, value: sendRefactor)
-            }
-
-            if let isSenderImageEnable = response.result[FeatureFlagKey.senderImage.rawValue] as? Bool {
-                self.senderImageEnableStatusProvider.setIsSenderImageEnable(
-                    enable: isSenderImageEnable,
-                    userID: self.userID
-                )
-            }
+            self.cache.storeFeatureFlags(supportedFeatureFlags, for: self.userID)
 
             if let isReferralPromptAvailable = response.result[FeatureFlagKey.referralPrompt.rawValue] as? Bool {
                 self.referralPromptProvider.setIsReferralPromptEnabled(

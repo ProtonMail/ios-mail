@@ -167,7 +167,7 @@ final class MainQueueHandler: QueueHandler {
                 // But correct in if case let
                 if case let .send(messageObjectID, deliveryTime) = action {
                     let useSendRefactor = UIApplication.isDebugOrEnterprise ||
-                    dependencies.sendRefactorStatusProvider.isSendRefactorEnabled(userID: userID)
+                    dependencies.featureFlagCache.featureFlags(for: userID)[.sendRefactor]
 
                     if useSendRefactor {
                         let params = SendMessageTask.Params(
@@ -1093,17 +1093,17 @@ extension MainQueueHandler {
 extension MainQueueHandler {
     struct Dependencies {
         let actionRequest: ExecuteNotificationActionUseCase
+        let featureFlagCache: FeatureFlagCache
         let incomingDefaultService: IncomingDefaultServiceProtocol
-        let sendRefactorStatusProvider: SendRefactorStatusProvider
 
         init(
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
-            incomingDefaultService: IncomingDefaultServiceProtocol,
-            sendRefactorStatusProvider: SendRefactorStatusProvider = userCachedStatus
+            featureFlagCache: FeatureFlagCache = userCachedStatus,
+            incomingDefaultService: IncomingDefaultServiceProtocol
         ) {
             self.actionRequest = actionRequest
+            self.featureFlagCache = featureFlagCache
             self.incomingDefaultService = incomingDefaultService
-            self.sendRefactorStatusProvider = sendRefactorStatusProvider
         }
     }
 }

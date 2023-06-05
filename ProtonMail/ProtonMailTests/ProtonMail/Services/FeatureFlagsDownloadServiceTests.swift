@@ -23,10 +23,9 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
 
     var apiServiceMock: APIServiceMock!
     var appRatingStatusProvider: MockAppRatingStatusProvider!
-    var sendRefactorStatusProvider: MockSendRefactorStatusProvider!
+    var featureFlagCache: MockFeatureFlagCache!
     var scheduleSendEnableStatusMock: MockScheduleSendEnableStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
-    var senderImageStatusProviderMock: MockSenderImageStatusProvider!
     var referralPromptProvider: MockReferralPromptProvider!
     var sut: FeatureFlagsDownloadService!
     var userID: UserID = UserID(rawValue: String.randomString(20))
@@ -35,20 +34,18 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         super.setUp()
         apiServiceMock = APIServiceMock()
         appRatingStatusProvider = .init()
-        sendRefactorStatusProvider = .init()
+        featureFlagCache = .init()
         scheduleSendEnableStatusMock = .init()
         userIntroductionProgressProviderMock = .init()
-        senderImageStatusProviderMock = .init()
         referralPromptProvider = .init()
         sut = FeatureFlagsDownloadService(
+            cache: featureFlagCache,
             userID: userID,
             apiService: apiServiceMock,
             sessionID: "",
             appRatingStatusProvider: appRatingStatusProvider,
-            sendRefactorStatusProvider: sendRefactorStatusProvider,
             scheduleSendEnableStatusProvider: scheduleSendEnableStatusMock,
             userIntroductionProgressProvider: userIntroductionProgressProviderMock,
-            senderImageEnableStatusProvider: senderImageStatusProviderMock,
             referralPromptProvider: referralPromptProvider
         )
     }
@@ -57,10 +54,9 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         super.tearDown()
         apiServiceMock = nil
         appRatingStatusProvider = nil
-        sendRefactorStatusProvider = nil
+        featureFlagCache = nil
         scheduleSendEnableStatusMock = nil
         userIntroductionProgressProviderMock = nil
-        senderImageStatusProviderMock = nil
         sut = nil
     }
 
@@ -77,7 +73,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
 
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/core/v4/features") {
-                let response = FeatureFlagTestData.data.parseObjectAny()!
+                let response = FeatureFlagTestData.data
                 completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
@@ -99,11 +95,11 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         XCTAssertTrue(argument.a1)
         XCTAssertEqual(argument.a2, userID)
 
-        XCTAssertTrue(senderImageStatusProviderMock.setIsSenderImageEnableStub.wasCalledExactlyOnce)
-        let argument2 = try XCTUnwrap(
-            senderImageStatusProviderMock.setIsSenderImageEnableStub.lastArguments
-        )
-        XCTAssertTrue(argument2.a1)
+        XCTAssertTrue(featureFlagCache.storeFeatureFlagsStub.wasCalledExactlyOnce)
+        let argument2 = try XCTUnwrap(featureFlagCache.storeFeatureFlagsStub.lastArguments)
+        XCTAssertTrue(argument2.a1[.scheduleSend])
+        XCTAssertEqual(argument2.a1[.inAppFeedback], 1)
+        XCTAssertFalse(argument2.a1[.appRating])
         XCTAssertEqual(argument2.a2, userID)
     }
 
@@ -130,7 +126,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
 
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/core/v4/features") {
-                let response = FeatureFlagTestData.data.parseObjectAny()!
+                let response = FeatureFlagTestData.data
                 completion(nil, .success(response))
             } else {
                 XCTFail("Unexpected path")
