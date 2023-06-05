@@ -57,8 +57,9 @@ extension UserInfo {
     static var isHighlightKeywordEnabled: Bool {
         #if DEBUG_ENTERPRISE
             return true
-        #endif
+        #else
             return false
+        #endif
     }
 
     static var isEncryptedSearchEnabled: Bool {

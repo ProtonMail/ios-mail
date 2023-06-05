@@ -152,7 +152,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         }
 
         self.searchController?.searchResultsUpdater = self
-        self.searchController?.dimsBackgroundDuringPresentation = false
+        self.searchController?.obscuresBackgroundDuringPresentation = false
         self.searchController?.searchBar.delegate = self
         self.searchController?.hidesNavigationBarDuringPresentation = true
         self.searchController?.searchBar.sizeToFit()

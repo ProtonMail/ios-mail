@@ -94,7 +94,7 @@ class ContactGroupSelectEmailViewController: UIViewController {
         self.searchController.searchBar.placeholder = LocalString._general_search_placeholder
 
         self.searchController.searchResultsUpdater = self
-        self.searchController.dimsBackgroundDuringPresentation = false
+        self.searchController.obscuresBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
         self.searchController.hidesNavigationBarDuringPresentation = false
         self.searchController.searchBar.sizeToFit()

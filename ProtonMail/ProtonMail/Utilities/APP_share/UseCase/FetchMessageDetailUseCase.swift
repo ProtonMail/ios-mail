@@ -59,7 +59,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                     callback(.failure(Errors.selfIsReleased))
                     return
                 }
-                
+
                 let response: JSONDictionary
                 switch result {
                 case .success(let value):
@@ -72,7 +72,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                     callback(.failure(NSError.badResponse()))
                     return
                 }
-                
+
                 do {
                     let handledMessage = try self.handle(
                         messageDict: messageDict,

@@ -42,7 +42,6 @@ extension SignInCoordinatorEnvironment {
     ) -> SignInCoordinatorEnvironment {
         let apiMock = APIServiceMock()
         let dohMock = DohMock()
-        apiMock.dohStub.fixture = dohMock
         apiMock.dohInterfaceStub.fixture = dohMock
         return .init(services: ServiceFactory(),
                      apiService: apiMock,

@@ -328,7 +328,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         }
 
         searchController?.searchResultsUpdater = self
-        searchController?.dimsBackgroundDuringPresentation = false
+        searchController?.obscuresBackgroundDuringPresentation = false
         searchController?.searchBar.delegate = self
         searchController?.hidesNavigationBarDuringPresentation = true
         searchController?.searchBar.sizeToFit()

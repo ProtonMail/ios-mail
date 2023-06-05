@@ -117,7 +117,7 @@ final class CountMessagesForLabelTests: XCTestCase {
                     "LabelID": labelID,
                     "Total": total,
                     "Unread": unread
-                ]
+                ] as [String : Any]
             ]
         ]
     }

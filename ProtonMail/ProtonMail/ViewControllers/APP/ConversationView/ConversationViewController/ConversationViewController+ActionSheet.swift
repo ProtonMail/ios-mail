@@ -42,11 +42,6 @@ extension ConversationViewController {
             }
         case .toolbarCustomization:
             showToolbarActionCustomizationView()
-        case .viewInDarkMode, .viewInLightMode:
-            viewModel.handleActionSheetAction(action, message: message, completion: { [weak self] shouldDismissView in
-                guard shouldDismissView else { return }
-                self?.navigationController?.popViewController(animated: true)
-            })
         default:
             viewModel.handleActionSheetAction(action, message: message) { [weak self] shouldDismissView in
                 guard shouldDismissView else { return }

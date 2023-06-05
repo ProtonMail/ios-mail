@@ -472,20 +472,14 @@ extension BuildSearchIndex {
                 }
                 self.totalMessagesCount = messageCount
                 self.log(message: "Fetch messages count success, total \(messageCount)")
-                do {
-                    let numOfMessageInIndex = try self.dependencies.searchIndexDB.numberOfEntries()
-                    if numOfMessageInIndex <= 0 {
-                        self.updateCurrentState(to: .creatingIndex)
-                    } else if numOfMessageInIndex == messageCount {
-                        self.updateCurrentState(to: .complete)
-                    } else {
-                        self.preexistingIndexedMessagesCount = numOfMessageInIndex
-                        self.updateCurrentState(to: .downloadingNewMessage)
-                    }
-                } catch {
-                    self.log(message: "Fetch local cache messages count failed \(error)")
-                    // TODO discussion No db connection or query has issue, recreate db and build index from scratch could be a solution
-                    self.interruptReason.insert(.unExpectedError)
+                let numOfMessageInIndex = self.dependencies.searchIndexDB.numberOfEntries()
+                if numOfMessageInIndex <= 0 {
+                    self.updateCurrentState(to: .creatingIndex)
+                } else if numOfMessageInIndex == messageCount {
+                    self.updateCurrentState(to: .complete)
+                } else {
+                    self.preexistingIndexedMessagesCount = numOfMessageInIndex
+                    self.updateCurrentState(to: .downloadingNewMessage)
                 }
             }
         }
@@ -523,7 +517,6 @@ extension BuildSearchIndex {
         default:
             break
         }
-        let time = dependencies.searchIndexDB.oldestMessageTime() ?? 0
 
         let operation = DownloadPageOperation(
             apiService: dependencies.apiService,

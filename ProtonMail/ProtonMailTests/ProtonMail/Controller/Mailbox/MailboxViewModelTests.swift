@@ -841,7 +841,7 @@ class MailboxViewModelTests: XCTestCase {
                                       type: 0,
                                       order: 0,
                                       notify: false)
-        let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
+        let currentOption = [selectedLabel: PMActionSheetItem.MarkType.none]
         let label = LabelLocation(id: "label1", name: nil)
 
         let conversationObject = Conversation(context: testContext)

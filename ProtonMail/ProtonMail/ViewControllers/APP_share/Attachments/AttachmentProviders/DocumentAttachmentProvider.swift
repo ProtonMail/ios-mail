@@ -24,6 +24,7 @@ import CoreServices
 import Foundation
 import PromiseKit
 import ProtonCore_UIFoundations
+import UniformTypeIdentifiers
 
 protocol FileCoordinationProvider {
     func coordinate(readingItemAt url: URL, options: NSFileCoordinator.ReadingOptions, error: NSErrorPointer, byAccessor: (URL) -> Void)
@@ -44,20 +45,19 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
         PMActionSheetPlainItem(title: LocalString._import_from,
                                icon: IconProvider.fileArrowIn,
                                iconColor: ColorProvider.IconNorm) { (_) -> Void in
-            let types = [
-                kUTTypeMovie as String,
-                kUTTypeVideo as String,
-                kUTTypeImage as String,
-                kUTTypeText as String,
-                kUTTypePDF as String,
-                kUTTypeGNUZipArchive as String,
-                kUTTypeBzip2Archive as String,
-                kUTTypeZipArchive as String,
-                kUTTypeData as String,
-                kUTTypeVCard as String
+            let types: [UTType] = [
+                .movie,
+                .video,
+                .image,
+                .text,
+                .pdf,
+                .gzip,
+                .bz2,
+                .zip,
+                .data,
+                .vCard
             ]
-
-            let picker = PMDocumentPickerViewController(documentTypes: types, in: .import)
+            let picker = PMDocumentPickerViewController(forOpeningContentTypes: types)
             picker.delegate = self
             picker.allowsMultipleSelection = true
             self.controller?.present(picker, animated: true, completion: nil)

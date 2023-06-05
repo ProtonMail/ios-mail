@@ -338,7 +338,7 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
-        let options: UNNotificationPresentationOptions = [.alert, .sound]
+        let options: UNNotificationPresentationOptions = [.list, .banner, .sound]
         completionHandler(options)
     }
 }

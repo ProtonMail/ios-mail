@@ -151,7 +151,6 @@ private extension UserManagerTests {
             sessionID: "",
             accessToken: "",
             refreshToken: "",
-            expiration: Date(),
             userName: "",
             userID: userId.rawValue,
             privateKey: nil,

@@ -1,5 +1,4 @@
 import Foundation
-import UIKit
 import ProtonCore_UIFoundations
 
 extension String {

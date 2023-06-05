@@ -31,7 +31,9 @@ final class PrepareSendRequest: PrepareSendRequestUseCase {
             // Using an empty UseCase for fetchAttachment because it is not needed here
             // since we already have the attachments at this point in `params.metadata.attachments`.
             let emptyUseCase: FetchAttachmentUseCase = NewUseCase()
-            let sendBuilder = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: emptyUseCase, apiService: params.apiService))
+            let sendBuilder = MessageSendingRequestBuilder(
+                dependencies: .init(fetchAttachment: emptyUseCase, apiService: params.apiService)
+            )
             sendBuilder.update(with: params.sendMetadata)
 
             try prepareMimeFormatIfNeeded(sendBuilder: sendBuilder, params: params)

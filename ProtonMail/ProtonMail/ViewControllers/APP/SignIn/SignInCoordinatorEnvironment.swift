@@ -31,7 +31,7 @@ import UIKit
 
 struct SignInCoordinatorEnvironment {
     typealias LoginCreationClosure =
-        (String, AccountType, SignupMode, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
+        (String, AccountType, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
 
     let services: ServiceFactory
     let apiService: APIService
@@ -83,7 +83,7 @@ extension SignInCoordinatorEnvironment {
                          .finalizeSignIn(loginData:onError:showSkeleton:tryUnlock:),
                      unlockIfRememberedCredentials: services.get(by: UnlockManager.self)
                          .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
-                     loginCreationClosure: { appName, minimumAccountType, signupMode, passwordRestrictions, isCloseButtonAvailable in
+                     loginCreationClosure: { appName, minimumAccountType, passwordRestrictions, isCloseButtonAvailable in
                          let signup: SignupAvailability = .available(parameters: .init(
                              separateDomainsButton: true,
                              passwordRestrictions: passwordRestrictions,
