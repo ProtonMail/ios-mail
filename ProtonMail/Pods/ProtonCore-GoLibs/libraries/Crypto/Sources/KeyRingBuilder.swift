@@ -24,12 +24,15 @@ import Foundation
 import GoLibs
 import ProtonCore_Utilities
 
-internal class KeyRingBuilder {
+public final class KeyRingBuilder {
+
+    public init() {
+    }
     
     /// internal function to build up go crypto key ring. will auto convert private to public key
     /// - Parameter armoredKeys: armored key list
     /// - Returns: crypto key ring
-    func buildPublicKeyRing(armoredKeys: [ArmoredKey]) throws -> CryptoKeyRing {
+    public func buildPublicKeyRing(armoredKeys: [ArmoredKey]) throws -> CryptoKeyRing {
         let keyRing = try throwingNotNil { error in CryptoNewKeyRing(nil, &error) }
         var keyParsingErrors = [Error]()
         for armoredKey in armoredKeys {
@@ -52,7 +55,7 @@ internal class KeyRingBuilder {
         return keyRing
     }
     
-    func buildPrivateKeyRingUnlock(privateKeys: [DecryptionKey]) throws -> CryptoKeyRing {
+    public func buildPrivateKeyRingUnlock(privateKeys: [DecryptionKey]) throws -> CryptoKeyRing {
         let newKeyRing = try throwing { error in CryptoNewKeyRing(nil, &error) }
         
         guard let keyRing = newKeyRing else {

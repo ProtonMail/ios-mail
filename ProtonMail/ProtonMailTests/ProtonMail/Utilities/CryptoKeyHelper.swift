@@ -21,6 +21,8 @@ import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 
+@testable import ProtonMail
+
 enum CryptoKeyHelper {
 
     /// Creates a public/private key pair with a passphrase that follows a 64 byte hex string format. The same
@@ -71,5 +73,27 @@ enum CryptoKeyHelper {
             token: senderEncryptedPassphrase.value,
             signature: senderPassphraseSignature.value
         )
+    }
+
+    static func populateAddressesAndKeys(on userManager: UserManager) throws {
+        let keyPair = try makeKeyPair()
+        let key = makeAddressKey(userKey: keyPair)
+        let address = Address(
+            addressID: "",
+            domainID: nil,
+            email: "",
+            send: .active,
+            receive: .active,
+            status: .enabled,
+            type: .externalAddress,
+            order: 1,
+            displayName: "",
+            signature: "a",
+            hasKeys: 1,
+            keys: [key]
+        )
+        userManager.userInfo.userAddresses = [address]
+        userManager.userInfo.userKeys = [Key(keyID: "1", privateKey: keyPair.privateKey)]
+        userManager.authCredential.mailboxpassword = keyPair.passphrase
     }
 }
