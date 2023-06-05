@@ -49,19 +49,13 @@ final class PrivacySettingViewModel: SwitchToggleVMProtocol {
     var output: SwitchToggleVMOutput { self }
 
     var privacySections: [SettingPrivacyItem] {
-        var sections: [SettingPrivacyItem] = [
+        [
             .autoLoadRemoteContent,
             .autoLoadEmbeddedImage,
             .blockEmailTracking,
             .linkOpeningMode,
             .metadataStripping
         ]
-
-        if !UserInfo.isImageProxyAvailable {
-            sections.removeAll { $0 == .blockEmailTracking }
-        }
-
-        return sections
     }
 
     let user: UserManager

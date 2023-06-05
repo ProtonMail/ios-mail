@@ -124,8 +124,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             presentAddContacts(with: contact)
         case .composeTo(let contact):
             presentCompose(with: contact)
-        case let .attachmentList(message, inlineCIDs, attachments):
-            presentAttachmentListView(message: message, inlineCIDS: inlineCIDs, attachments: attachments)
+        case let .attachmentList(inlineCIDs, attachments):
+            presentAttachmentListView(inlineCIDS: inlineCIDs, attachments: attachments)
         case .mailToUrl(let url):
             presentCompose(with: url)
         case .replyAll(let message):
@@ -235,9 +235,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.viewController?.present(nav, animated: true)
     }
 
-    private func presentAttachmentListView(message: MessageEntity,
-                                           inlineCIDS: [String]?,
-                                           attachments: [AttachmentInfo]) {
+    private func presentAttachmentListView(inlineCIDS: [String]?, attachments: [AttachmentInfo]) {
         let viewModel = AttachmentListViewModel(
             attachments: attachments,
             user: user,

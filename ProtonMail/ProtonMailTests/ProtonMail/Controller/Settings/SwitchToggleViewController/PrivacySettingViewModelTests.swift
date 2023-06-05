@@ -30,19 +30,13 @@ final class PrivacySettingViewModelTests: XCTestCase {
     var metadataStrippingProvider: AttachmentMetadataStrippingMock!
 
     var expected: [PrivacySettingViewModel.SettingPrivacyItem] {
-        var items: [PrivacySettingViewModel.SettingPrivacyItem] = [
+        [
             .autoLoadRemoteContent,
             .autoLoadEmbeddedImage,
             .blockEmailTracking,
             .linkOpeningMode,
             .metadataStripping
         ]
-
-        if !UserInfo.isImageProxyAvailable {
-            items.removeAll { $0 == .blockEmailTracking }
-        }
-
-        return items
     }
 
     let errorTemplate = APIServiceMock.APIError(domain: "test.com", code: -999)

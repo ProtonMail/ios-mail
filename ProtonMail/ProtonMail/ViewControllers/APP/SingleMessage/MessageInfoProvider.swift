@@ -72,7 +72,7 @@ final class MessageInfoProvider {
     }
 
     var imageProxyEnabled: Bool {
-        UserInfo.isImageProxyAvailable && user.userInfo.imageProxy.contains(.imageProxy) && !message.isSent
+        user.userInfo.imageProxy.contains(.imageProxy) && !message.isSent
     }
 
     private let contactService: ContactDataService
@@ -114,9 +114,7 @@ final class MessageInfoProvider {
         self.messageDecrypter = messageDecrypter ?? user.messageService.messageDecrypter
 
         // If the message is sent by us, we do not use the image proxy to load the content.
-        let imageProxyEnabled = UserInfo.isImageProxyAvailable &&
-            user.userInfo.imageProxy.contains(.imageProxy) &&
-            !message.isSent
+        let imageProxyEnabled = user.userInfo.imageProxy.contains(.imageProxy) && !message.isSent
         let allowedPolicy: WebContents.RemoteContentPolicy = !imageProxyEnabled ? .allowedAll : .allowed
         self.remoteContentPolicy = user.userInfo.isAutoLoadRemoteContentEnabled ? allowedPolicy : .disallowed
 
