@@ -89,20 +89,6 @@ class MailCrypto {
             return DecryptionKey(privateKey: ArmoredKey(value: addressKey.privateKey), passphrase: keyPassphrase)
         }
     }
-
-    func buildPrivateKeyRing(decryptionKeys: [DecryptionKey]) throws -> CryptoKeyRing {
-        let keys: [(privateKey: String, passphrase: String)] = decryptionKeys.map {
-            ($0.privateKey.value, $0.passphrase.value)
-        }
-        return try Crypto().buildPrivateKeyRing(keys: keys)
-    }
-
-    func buildPublicKeyRing(adding armoredKeys: [ArmoredKey]) throws -> CryptoKeyRing {
-        let keys: [Data] = try armoredKeys.map {
-            try $0.unArmor().value
-        }
-        return try Crypto().buildKeyRingNonOptional(adding: keys)
-    }
 }
 
 extension UnArmoredKey {

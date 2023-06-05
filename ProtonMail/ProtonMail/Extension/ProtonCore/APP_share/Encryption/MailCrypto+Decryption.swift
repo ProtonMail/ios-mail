@@ -82,27 +82,18 @@ extension MailCrypto {
     func decryptMIME(
         encrypted message: String,
         publicKeys: [ArmoredKey],
-        decryptionKeys: [DecryptionKey]
+        decryptionKeyRing: CryptoKeyRing
     ) throws -> MIMEMessageData {
-        let keyRing = try buildPrivateKeyRing(decryptionKeys: decryptionKeys)
-
         let pgpMsg = CryptoPGPMessage(fromArmored: message)
-
-        let verifierKeyRing: CryptoKeyRing?
-        // the Crypto team has advised against constructing an empty keyring, its behavior might not be well-defined
-        if publicKeys.isEmpty {
-            verifierKeyRing = nil
-        } else {
-            verifierKeyRing = try buildPublicKeyRing(adding: publicKeys)
-        }
+        let (verifierKeyRing, verifyTime) = try prepareVerification(publicKeys: publicKeys)
 
         let callbacks = CryptoMIMECallbacks()
 
-        keyRing.decryptMIMEMessage(
+        decryptionKeyRing.decryptMIMEMessage(
             pgpMsg,
             verifyKey: verifierKeyRing,
             callbacks: callbacks,
-            verifyTime: CryptoGetUnixTime()
+            verifyTime: verifyTime
         )
 
         /*
@@ -141,5 +132,59 @@ extension MailCrypto {
             attachments: callbacks.attachments,
             signatureVerificationResult: signatureVerificationResult
         )
+    }
+
+    func decryptNonMIME(
+        encrypted message: String,
+        publicKeys: [ArmoredKey],
+        decryptionKeyRing: CryptoKeyRing
+    ) throws -> (String, SignatureVerificationResult) {
+        let pgpMsg = CryptoPGPMessage(fromArmored: message)
+        let (verifierKeyRing, verifyTime) = try prepareVerification(publicKeys: publicKeys)
+
+        var error: NSError?
+        let verifiedMessage = HelperDecryptExplicitVerify(
+            pgpMsg,
+            decryptionKeyRing,
+            verifierKeyRing,
+            verifyTime,
+            &error
+        )
+
+        if let error = error {
+            throw error
+        }
+
+        guard let verifiedMessage, let message = verifiedMessage.message else {
+            throw CryptoError.decryptionFailed
+        }
+
+        let signatureVerificationResult: SignatureVerificationResult
+
+        if verifierKeyRing == nil {
+            signatureVerificationResult = .signatureVerificationSkipped
+        } else if let gopenpgpErrorCode = verifiedMessage.signatureVerificationError?.status {
+            signatureVerificationResult = SignatureVerificationResult(gopenpgpOutput: gopenpgpErrorCode)
+        } else {
+            signatureVerificationResult = .success
+        }
+
+        return (message.getString(), signatureVerificationResult)
+    }
+
+    private func prepareVerification(publicKeys: [ArmoredKey]) throws -> (CryptoKeyRing?, Int64) {
+        let verifierKeyRing: CryptoKeyRing?
+        let verifyTime: Int64
+
+        // the Crypto team has advised against constructing an empty keyring, its behavior might not be well-defined
+        if publicKeys.isEmpty {
+            verifierKeyRing = nil
+            verifyTime = 0
+        } else {
+            verifierKeyRing = try KeyRingBuilder().buildPublicKeyRing(armoredKeys: publicKeys)
+            verifyTime = CryptoGetUnixTime()
+        }
+
+        return (verifierKeyRing, verifyTime)
     }
 }

@@ -158,8 +158,10 @@ final class MessageInfoProviderTest: XCTestCase {
         apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 completion(nil, .success(["Code": 33101, "Error": "Server failed validation"]))
+            } else if path == AddressesAPI.path {
+                completion(nil, .success([:]))
             } else {
-                XCTFail("Unexpected path")
+                XCTFail("Unexpected path: \(path)")
                 completion(nil, .failure(NSError.badResponse()))
             }
         }
