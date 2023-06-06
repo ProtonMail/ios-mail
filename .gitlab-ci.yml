@@ -105,7 +105,7 @@ linting:
     - cd ProtonMail
     - xcodeGen/swiftlint.sh
   tags:
-    - iOS_ARM_TAIPEI
+    - iOS_GENERAL
 
 build:debug:for-testing:
   stage: build
@@ -319,7 +319,7 @@ appetize:start:
     reports:
       dotenv: deploy.env
   tags:
-    - iOS_ARM_TAIPEI
+    - OS_GENERAL
 
 appetize:stop:
   stage: distribute
@@ -336,7 +336,7 @@ appetize:stop:
     - curl -X DELETE --fail "https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_PUBLIC_KEY"
   tags:
     # anything that has `curl` basically, apparently without this tag, it's possible to get a runner that doesn't have it
-    - iOS_ARM_TAIPEI
+    - OS_GENERAL
 
 # --- Build app and send to testflight
 testflight:alpha:
@@ -361,7 +361,7 @@ testflight:alpha:
     - *build_for_testflight
     - ./fastlane/add_git_tag.sh
   tags:
-    - iOS_BUILD
+    - iOS_RELEASE_BUILD
 
 # TODO: this is almost identical to testflight:build:upload:, perhaps we can combine them
 nightly-build-and-upload:
@@ -382,7 +382,7 @@ nightly-build-and-upload:
   script:
     - *build_for_testflight
   tags:
-    - iOS_ARM_TAIPEI
+    - iOS_RELEASE_BUILD
 
 # --- Build enterprise app for test and upload
 firebase:qa:
@@ -404,7 +404,7 @@ firebase:qa:
     - *enterprise_config_setting
     - bundle exec fastlane ios enterprise usingTimeStamp:true
   tags:
-    - iOS_ARM_TAIPEI
+    - iOS_GENERAL
 
 # --- Translation related tasks ---
 i18n-sync-crowdin:
