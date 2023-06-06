@@ -164,8 +164,10 @@ class SingleMessageContentViewModel {
                     self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
                                                          notificationMessageID: nil,
                                                          completion: { [weak self] _ in
-                        self?.hideProgressHub?()
-                        self?.goToDraft(msgID, .init(originalScheduledTime))
+                        DispatchQueue.main.async {
+                            self?.hideProgressHub?()
+                            self?.goToDraft(msgID, .init(originalScheduledTime))
+                        }
                     })
                 }
         }
