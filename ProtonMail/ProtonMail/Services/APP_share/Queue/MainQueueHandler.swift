@@ -499,14 +499,14 @@ extension MainQueueHandler {
             completion(nil)
         }
         case .failure(let err):
-            let reason = err.localizedDescription
+            if err.code != APIErrorCode.storageLimitExceeded {
+                PMAssertionFailure(err)
+            }
             NotificationCenter
                 .default
                 .post(name: .attachmentUploadFailed,
                       object: nil,
-                      userInfo: ["objectID": attachmentObjectID.uriRepresentation().absoluteString,
-                                 "reason": reason,
-                                 "code": err.code])
+                      userInfo: ["code": err.code])
             completion(err)
         }
     }
