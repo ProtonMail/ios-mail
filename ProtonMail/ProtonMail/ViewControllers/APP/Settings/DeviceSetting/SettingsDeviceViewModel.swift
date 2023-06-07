@@ -22,6 +22,7 @@
 
 import Foundation
 import ProtonCore_DataModel
+import ProtonCore_Log
 
 enum SettingDeviceSection: Int, CustomStringConvertible {
     case account = 0
@@ -157,7 +158,9 @@ final class SettingsDeviceViewModel {
             appSettings.append(.toolbar)
         }
 
-        appSettings.append(.applicationLogs)
+        if PMLog.isEnabled {
+            appSettings.append(.applicationLogs)
+        }
     }
 
     func appVersion() -> String {
