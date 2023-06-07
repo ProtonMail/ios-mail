@@ -58,8 +58,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         return generateEmailsMap()
     }()
 
-    var listEditing: Bool = false
-
     // MARK: - View Outlets
     @IBOutlet weak var tableView: UITableView!
 
@@ -239,7 +237,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
             self.loadDiffableDataSource()
 
-        self.updateNavigationController(listEditing)
+        self.updateNavigationController(viewModel.listEditing)
 
         #if DEBUG
         if CommandLine.arguments.contains("-skipTour") {
@@ -644,7 +642,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         self.showCheckOptions(longPressGestureRecognizer)
-        updateNavigationController(listEditing)
+        updateNavigationController(viewModel.listEditing)
         // invalidate tiemr in multi-selected mode to prevent ui refresh issue
         self.viewModel.eventsService.pause()
     }
@@ -685,7 +683,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     // MARK: - Private methods
 
     private func hideSelectionMode() {
-        self.viewModel.removeAllSelectedIDs()
         self.hideCheckOptions()
         self.updateNavigationController(false)
         if viewModel.eventsService.status != .running {
@@ -886,6 +883,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         // to update used space, pull down will wipe event data
         // so the latest used space can't update by event api
         self.viewModel.user.fetchUserInfo()
+        hideSelectionMode()
         forceRefreshAllMessages()
         self.viewModel.user.labelService.fetchV4Labels()
         self.showNoResultLabelIfNeeded()
@@ -1122,21 +1120,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func hideCheckOptions() {
-        guard listEditing else { return }
-        self.listEditing = false
-        if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
-            for indexPath in indexPathsForVisibleRows {
-                guard let messageCell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell else {
-                    continue
-                }
-
-                messageCellPresenter.presentSelectionStyle(style: .normal, in: messageCell.customView)
-            }
-        }
+        guard viewModel.listEditing else { return }
+        viewModel.listEditing = false
+        tableView.reloadData()
     }
 
     private func enterListEditingMode(indexPath: IndexPath) {
-        self.listEditing = true
+        self.viewModel.listEditing = true
 
         guard let visibleRowsIndexPaths = self.tableView.indexPathsForVisibleRows else { return }
         visibleRowsIndexPaths.forEach { visibleRowIndexPath in
@@ -1152,7 +1142,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         let point: CGPoint = longPressGestureRecognizer.location(in: self.tableView)
         let indexPath: IndexPath? = self.tableView.indexPathForRow(at: point)
         guard let touchedRowIndexPath = indexPath,
-              longPressGestureRecognizer.state == .began && listEditing == false else { return }
+              longPressGestureRecognizer.state == .began && viewModel.listEditing == false else { return }
         enterListEditingMode(indexPath: touchedRowIndexPath)
     }
 
@@ -1585,8 +1575,8 @@ extension MailboxViewController {
 
     @objc
     private func handleAccessibilityAction() {
-        listEditing.toggle()
-        updateNavigationController(listEditing)
+        viewModel.listEditing.toggle()
+        updateNavigationController(viewModel.listEditing)
     }
 
     func moreButtonTapped() {
@@ -2220,7 +2210,7 @@ extension MailboxViewController {
         }
         guard viewModel.selectedIDs.contains(id) else { return }
         viewModel.removeSelected(id: id)
-        self.setupNavigationTitle(showSelected: self.listEditing)
+        self.setupNavigationTitle(showSelected: self.viewModel.listEditing)
         self.dismissActionSheet()
         if viewModel.selectedIDs.isEmpty {
             hideActionBar()
@@ -2317,7 +2307,7 @@ extension MailboxViewController: UITableViewDelegate {
 
     private func handleMessageSelection(indexPath: IndexPath) {
         guard let message = viewModel.item(index: indexPath) else { return }
-        if listEditing {
+        if viewModel.listEditing {
             handleEditingDataSelection(of: message.messageID.rawValue, indexPath: indexPath)
         } else {
             self.tapped(at: indexPath)
@@ -2326,7 +2316,7 @@ extension MailboxViewController: UITableViewDelegate {
 
     private func handleConversationSelection(indexPath: IndexPath) {
         guard let conversation = viewModel.itemOfConversation(index: indexPath) else { return }
-        if listEditing {
+        if viewModel.listEditing {
             handleEditingDataSelection(of: conversation.conversationID.rawValue, indexPath: indexPath)
         } else {
             self.coordinator?.go(to: .details, sender: nil)
@@ -2364,9 +2354,9 @@ extension MailboxViewController: NewMailboxMessageCellDelegate {
     func didSelectButtonStatusChange(cell: NewMailboxMessageCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
 
-        if !listEditing {
+        if !viewModel.listEditing {
             self.enterListEditingMode(indexPath: indexPath)
-            updateNavigationController(listEditing)
+            updateNavigationController(viewModel.listEditing)
         } else {
             tableView(self.tableView, didSelectRowAt: indexPath)
         }
@@ -2586,6 +2576,6 @@ extension MailboxViewController: UndoActionHandlerBase {
 
 extension MailboxViewController: MailboxViewModelUIProtocol {
     func updateTitle() {
-        setupNavigationTitle(showSelected: listEditing)
+        setupNavigationTitle(showSelected: viewModel.listEditing)
     }
 }

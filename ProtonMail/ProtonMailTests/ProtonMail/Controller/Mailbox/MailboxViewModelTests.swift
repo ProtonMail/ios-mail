@@ -1237,6 +1237,24 @@ class MailboxViewModelTests: XCTestCase {
             XCTAssertTrue(msg2?.unRead ?? false)
         }
     }
+
+    func testListEditing_setItToFalse_theSelectedIDsWillBeRemoved() {
+        sut.select(id: String.randomString(20))
+        XCTAssertFalse(sut.selectedIDs.isEmpty)
+
+        sut.listEditing = false
+
+        XCTAssertTrue(sut.selectedIDs.isEmpty)
+    }
+
+    func testListEditing_setItToTrue_theSelectedIDsWillNotBeRemoved() {
+        sut.select(id: String.randomString(20))
+        XCTAssertFalse(sut.selectedIDs.isEmpty)
+
+        sut.listEditing = true
+
+        XCTAssertFalse(sut.selectedIDs.isEmpty)
+    }
 }
 
 extension MailboxViewModelTests {

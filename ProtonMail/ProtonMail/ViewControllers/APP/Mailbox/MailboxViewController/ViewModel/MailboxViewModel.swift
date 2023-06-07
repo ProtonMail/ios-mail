@@ -96,6 +96,14 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     let toolbarActionProvider: ToolbarActionProvider
     let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
 
+    var listEditing: Bool = false {
+        didSet {
+            if !listEditing {
+                selectedIDs.removeAll()
+            }
+        }
+    }
+
     init(labelID: LabelID,
          label: LabelInfo?,
          labelType: PMLabelType,

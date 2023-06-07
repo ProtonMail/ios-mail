@@ -187,6 +187,33 @@ final class MailboxViewControllerTests: XCTestCase {
         }
         waitForExpectations(timeout: 3)
     }
+
+    func testSelectionMode_whenPullToRefresh_selectionModeWillBeDisable() {
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        makeSUT(
+            labelID: Message.Location.inbox.labelID,
+            labelType: .folder,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+        XCTAssertFalse(sut.tableView.visibleCells.isEmpty)
+
+        // Select cell
+        let cell = sut.tableView.visibleCells.first as? NewMailboxMessageCell
+        cell?.customView.leftContainer.sendActions(for: .touchUpInside)
+        XCTAssertEqual(viewModel.selectedIDs.count, 1)
+        XCTAssertTrue(viewModel.listEditing)
+
+        // Pull to refresh
+        let refreshControl = sut.tableView.subviews
+            .compactMap({ $0 as? UIRefreshControl }).first
+        refreshControl?.sendActions(for: .valueChanged)
+
+        // Selection mode is disabled
+        XCTAssertTrue(viewModel.selectedIDs.isEmpty)
+        XCTAssertFalse(viewModel.listEditing)
+    }
 }
 
 extension MailboxViewControllerTests {
@@ -196,7 +223,7 @@ extension MailboxViewControllerTests {
             .object(withEntityName: "Message",
                     fromJSONDictionary: parsedObject,
                     in: testContext) as? Message
-        testMessage?.userID = "1"
+        testMessage?.userID = userID.rawValue
         testMessage?.messageStatus = 1
         try testContext.save()
     }
