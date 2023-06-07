@@ -210,6 +210,7 @@ extension SearchViewController {
     private func clearAction() {
         searchBar.textField.text = nil
         searchBar.textField.sendActions(for: .editingChanged)
+        searchBar.clearButton.isHidden = true
     }
 
     @IBAction func tapAction(_ sender: AnyObject) {
@@ -829,6 +830,10 @@ extension SearchViewController: NewMailboxMessageCellDelegate {
 
 extension SearchViewController: UITextFieldDelegate {
 
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        searchBar.clearButton.isHidden = (textField.text?.isEmpty ?? true)
+    }
+
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
@@ -838,6 +843,7 @@ extension SearchViewController: UITextFieldDelegate {
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        searchBar.clearButton.isHidden = true
         textField.resignFirstResponder()
         self.query = self.query.trim()
         textField.text = self.query
