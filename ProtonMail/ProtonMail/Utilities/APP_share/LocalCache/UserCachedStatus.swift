@@ -614,13 +614,13 @@ extension UserCachedStatus: MobileSignatureCacheProtocol {
     }
 
     func getEncryptedMobileSignature(userID: String) -> Data? {
-        let rawData = getShared().dictionary(forKey: Key.UserWithLocalMobileSignatureStatus)
+        let rawData = getShared().dictionary(forKey: Key.UserWithLocalMobileSignature)
         return rawData?[userID] as? Data
     }
 
     func setEncryptedMobileSignature(userID: String, signatureData: Data) {
         var dataToSave: [String: Any] = [:]
-        if var rawData = getShared().dictionary(forKey: Key.UserWithLocalMobileSignatureStatus) {
+        if var rawData = getShared().dictionary(forKey: Key.UserWithLocalMobileSignature) {
             rawData[userID] = signatureData
             dataToSave = rawData
         } else {
