@@ -27,7 +27,7 @@ class FeatureFlagsResponse: Response {
 
         for code in FeatureFlagKey.allCases {
             guard let feature = features.first(where: { $0["Code"] as? String == code.rawValue }) else {
-                PMAssertionFailure("Feature flag \(code.rawValue) is missing!")
+                PMAssertionFailureIfBackendIsProduction("Feature flag \(code.rawValue) is missing!")
                 continue
             }
 
