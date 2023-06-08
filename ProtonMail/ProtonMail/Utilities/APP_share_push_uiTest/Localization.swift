@@ -353,7 +353,6 @@ class LocalizedString {
     lazy var _general_invalid_access_token = NSLocalizedString("Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in.", comment: "Description")
     /// "Search"
     lazy var _general_search_placeholder = NSLocalizedString("Search", comment: "Title")
-    lazy var _no_results_found = NSLocalizedString("No results found", comment: "zero messages matching search query")
     /// "Notice"
     lazy var _general_notice_alert_title = NSLocalizedString("Notice", comment: "Alert title")
     /// "Don't remind me again"
@@ -1602,5 +1601,13 @@ enum L11n {
             "Bug Report Place Holder",
             comment: "The place holder text in the bug report view."
         )
+    }
+
+    struct Search {
+        static let noResultSubTitle = NSLocalizedString(
+            "Try a different search term.",
+            comment: "The sub title of the search view if there is no result."
+        )
+        static let noResultsTitle = NSLocalizedString("No results found", comment: "zero messages matching search query")
     }
 }
