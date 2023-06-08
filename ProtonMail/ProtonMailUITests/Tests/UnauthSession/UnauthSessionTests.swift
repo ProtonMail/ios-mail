@@ -47,9 +47,10 @@ final class NoUnauthSessionTests: FixtureAuthenticatedTestCase {
     }
 
     func testRefreshingAndOpeningMailWorks() {
-        CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user!, environment: env)
+        runTestWithScenario(.qaMail001) {
+            CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user!, environment: env)
+        }
     }
-
 }
 
 final class UnauthSessionTests: FixtureAuthenticatedTestCase {
@@ -60,6 +61,8 @@ final class UnauthSessionTests: FixtureAuthenticatedTestCase {
     }
     
     func testRefreshingAndOpeningMailWorks() {
-        CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user!, environment: env)
+        runTestWithScenario(.qaMail001) {
+            CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user!, environment: env)
+        }
     }
 }

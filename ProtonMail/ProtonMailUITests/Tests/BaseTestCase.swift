@@ -163,60 +163,28 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
 @available(iOS 16.0, *)
 class FixtureAuthenticatedTestCase: BaseTestCase {
 
-    var scenario: MailScenario { .qaMail001 }
+    var scenario: MailScenario = .qaMail001
     var plan: UserPlan { .mailpro2022 }
     var isSubscriptionIncluded: Bool { true }
     var user: User?
 
     override func setUp() {
         super.setUp()
-        do {
-            user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
-        }
-        catch {
-            XCTFail(error.localizedDescription)
-        }
-
-        login(user: user!)
+    }
+    
+    func runTestWithScenario(_ actualScenario: MailScenario, testBlock: () -> Void) {
+        scenario = actualScenario
+        createUserAndLogin()
+        testBlock()
     }
 
-    override func tearDown() {
+    private func createUserAndLogin() {
         do {
-            try deleteUser(domain: dynamicDomain, user)
-        }
-        catch {
-            XCTFail(error.localizedDescription)
-        }
-        super.tearDown()
-    }
-
-    open override func record(_ issue: XCTIssue) {
-        var myIssue = issue
-        var issueDescription: String = "\n"
-        issueDescription.append("User:")
-        issueDescription.append("\n")
-        issueDescription.append(user.debugDescription)
-        issueDescription.append("\n\n")
-        issueDescription.append("Failure:")
-        issueDescription.append("\n\(myIssue.compactDescription)")
-
-        myIssue.compactDescription = issueDescription
-        super.record(myIssue)
-    }
-}
-
-@available(iOS 16.0, *)
-class NewFixtureAuthenticatedTestCase: BaseTestCase {
-
-    var scenario: MailScenario { .trashOneMessage }
-    var plan: UserPlan { .mailpro2022 }
-    var isSubscriptionIncluded: Bool { true }
-    var user: User?
-
-    override func setUp() {
-        super.setUp()
-        do {
-            user = try createUserWithiOSFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+            if scenario.name.starts(with: "qa-mail-web")  {
+                user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+            } else {
+                user = try createUserWithiOSFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+            }
         }
         catch {
             XCTFail(error.localizedDescription)

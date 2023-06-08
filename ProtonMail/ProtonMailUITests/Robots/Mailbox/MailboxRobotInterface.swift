@@ -17,8 +17,8 @@ fileprivate struct id {
     static let noResultImage = "MailboxViewController.noResultImage"
     static let noResultMainLabel = "MailboxViewController.noResultMainLabel"
     static let noResultSecondaryLabel = "MailboxViewController.noResultSecondaryLabel"
-    static func mailboxMessageCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject)" }
-    static func mailboxMessageTitleIdentifier(_ subject: String) -> String { return "\(subject).titleLabel" }
+    static func mailboxMessageCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject.replaceSpaces())" }
+    static func mailboxMessageTitleIdentifier(_ subject: String) -> String { return "\(subject.replaceSpaces()).titleLabel" }
     static let trashButtonIdentifier = LocalString._menu_trash_title
     static let skipOnboardingButtonLabel = LocalString._skip_btn_title
     static let allowContacsAccessOkButtonLabel = LocalString._general_ok_action
@@ -49,10 +49,10 @@ class MailboxRobotInterface: CoreElements {
     }
 
     private func clickMessageBySubject(_ subject: String, retriesLeft: Int) -> MessageRobot {
-        if !cell(id.mailboxMessageCellIdentifier(subject.replaceSpaces())).exists(), retriesLeft > 0 {
-            return refreshMailbox().clickMessageBySubject(subject.replaceSpaces(), retriesLeft: retriesLeft - 1)
+        if !cell(id.mailboxMessageCellIdentifier(subject)).exists(), retriesLeft > 0 {
+            return refreshMailbox().clickMessageBySubject(subject, retriesLeft: retriesLeft - 1)
         } else {
-            cell(id.mailboxMessageCellIdentifier(subject.replaceSpaces()))
+            cell(id.mailboxMessageCellIdentifier(subject))
                 .firstMatch()
                 .waitForHittable(time: 30.0)
                 .tapIfExists()
@@ -68,7 +68,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func spamMessageBySubject(_ subject: String) -> MailboxRobotInterface {
-        staticText(id.mailboxMessageTitleIdentifier(subject.replaceSpaces())).firstMatch().tapThenSwipeRight(0.5, .slow)
+        staticText(id.mailboxMessageTitleIdentifier(subject)).firstMatch().tapThenSwipeRight(0.5, .slow)
         return self
     }
 
@@ -111,7 +111,8 @@ class MailboxRobotInterface: CoreElements {
         staticText(subject).firstMatch().longPress()
         return SelectionStateRobotInterface()
     }
-    
+
+    @discardableResult
     func longClickMessageOnPosition(_ position: Int) -> SelectionStateRobotInterface {
         cell().byIndex(position).longPress()
         return SelectionStateRobotInterface()
@@ -167,7 +168,7 @@ class MailboxRobotInterface: CoreElements {
 class MailboxRobotVerifyInterface: CoreElements {
     
     func messageExists(_ subject: String) {
-        cell(id.mailboxMessageCellIdentifier(subject.replaceSpaces())).onChild(staticText(subject)).firstMatch().waitUntilExists().checkExists()
+        cell(id.mailboxMessageCellIdentifier(subject)).onChild(staticText(subject)).firstMatch().waitUntilExists().checkExists()
     }
     
     func nothingToSeeHere() {

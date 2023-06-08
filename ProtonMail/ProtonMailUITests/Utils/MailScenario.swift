@@ -58,7 +58,7 @@ extension MailScenario {
     static let manyMessages = MailScenario(name: "many.messages", description: "", subject: "")
     static let onepassMailpro2022 = MailScenario(name: "onepass.mailpro2022", description: "", subject: "")
     static let pgpinline = MailScenario(name: "pgpinline", description: "", subject: "")
-    static let pgpinlineDrafts = MailScenario(name: "pgpinline.drafts", description: "", subject: "")
+    static let pgpinlineDrafts = MailScenario(name: "pgpinline.drafts", description: "", subject: "PGPInline external public key")
     static let pgpinlineUntrusted = MailScenario(name: "pgpinline.untrusted", description: "", subject: "")
     static let pgpmime = MailScenario(name: "pgpmime.untrusted", description: "", subject: "")
     static let pgpmimeUntrusted = MailScenario(name: "pgpmime.untrusted", description: "", subject: "")

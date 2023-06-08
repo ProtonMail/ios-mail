@@ -12,50 +12,54 @@ class LabelsFoldersTests: FixtureAuthenticatedTestCase {
     
     private let accountSettingsRobot: AccountSettingsRobot = AccountSettingsRobot()
     private let loginRobot = LoginRobot()
-
+    
+    
     func testCreateAssingDeleteFolder() {
         let folderName = "test"
         let folderNameAfterSave = "tes" // bug: cannot save the last charactor in the first time
 
-        InboxRobot()
-            .clickMessageBySubject(scenario.subject)
-            .createFolder(folderName)
-            .selectFolder(folderNameAfterSave)
-            .tapDone()
-        InboxRobot()
-            .menuDrawer()
-            .folderOrLabel(folderNameAfterSave)
-            .verify.messageExists(scenario.subject)
-        MailboxRobotInterface()
-            .menuDrawer()
-            .settings()
-            .selectAccount(user!.email)
-            .folders()
-            .deleteFolderLabel(folderNameAfterSave)
-            .verify.folderLabelDeleted(folderNameAfterSave)
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .clickMessageBySubject(scenario.subject)
+                .createFolder(folderName)
+                .selectFolder(folderNameAfterSave)
+                .tapDone()
+            InboxRobot()
+                .menuDrawer()
+                .folderOrLabel(folderNameAfterSave)
+                .verify.messageExists(scenario.subject)
+            MailboxRobotInterface()
+                .menuDrawer()
+                .settings()
+                .selectAccount(user!.email)
+                .folders()
+                .deleteFolderLabel(folderNameAfterSave)
+                .verify.folderLabelDeleted(folderNameAfterSave)
+        }
     }
     
     func testCreateAssingDeleteLabel() {
         let labelName = "test"
         let labelNameAfterSave = "tes" // bug: cannot save the last charactor in the first time
-
-
-        InboxRobot()
-            .clickMessageBySubject(scenario.subject)
-            .createLabel(labelName)
-            .selectLabel(labelNameAfterSave)
-            .tapDone()
-            .navigateBackToInbox()
-            .menuDrawer()
-            .folderOrLabel(labelNameAfterSave)
-            .verify.messageExists(scenario.subject)
-        MailboxRobotInterface()
-            .menuDrawer()
-            .settings()
-            .selectAccount(user!.email)
-            .labels()
-            .deleteFolderLabel(labelNameAfterSave)
-            .verify.folderLabelDeleted(labelNameAfterSave)
+        
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .clickMessageBySubject(scenario.subject)
+                .createLabel(labelName)
+                .selectLabel(labelNameAfterSave)
+                .tapDone()
+                .navigateBackToInbox()
+                .menuDrawer()
+                .folderOrLabel(labelNameAfterSave)
+                .verify.messageExists(scenario.subject)
+            MailboxRobotInterface()
+                .menuDrawer()
+                .settings()
+                .selectAccount(user!.email)
+                .labels()
+                .deleteFolderLabel(labelNameAfterSave)
+                .verify.folderLabelDeleted(labelNameAfterSave)
+        }
     }
     
     func xtestEditCustomFolderNameAndColor() {

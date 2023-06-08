@@ -15,11 +15,14 @@ class AccountSettingsTests : FixtureAuthenticatedTestCase {
     override func setUp() {
         super.setUp()
 
-        InboxRobot()
-            .menuDrawer()
-            .settings()
-            .selectAccount(user!.email)
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .menuDrawer()
+                .settings()
+                .selectAccount(user!.email)
+        }
     }
+
 
     func testChangeSignlePassword() {
         accountSettingsRobot
@@ -48,7 +51,7 @@ class AccountSettingsTests : FixtureAuthenticatedTestCase {
             .setDisplayNameTextTo(newDisplayName)
             .save()
             .verify.displayNameShownWithText(newDisplayName)
-            
+
         accountSettingsRobot
             .displayName()
             .setDisplayNameTextTo(user!.name)

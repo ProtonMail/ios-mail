@@ -13,21 +13,23 @@ import ProtonCore_TestingToolkit
 
 class ReplyToMessageTests: FixtureAuthenticatedTestCase {
 
-    override var scenario: MailScenario { .qaMail002 }
     let folder = "TestAutomationFolder"
     
     func testReplyTextMessage() {
-        let subject = "Re: \(scenario.subject)"
+        runTestWithScenario(.qaMail002) {
 
-        InboxRobot()
-            .clickMessageByIndex(0)
-            .reply()
-            .changeSubjectTo(subject)
-            .sendMessageFromMessageRobot()
-            .navigateBackToInbox()
-            .menuDrawer()
-            .sent()
-            .verify.messageExists(subject)
+            let subject = "Re: \(scenario.subject)"
+
+            InboxRobot()
+                .clickMessageByIndex(0)
+                .reply()
+                .changeSubjectTo(subject)
+                .sendMessageFromMessageRobot()
+                .navigateBackToInbox()
+                .menuDrawer()
+                .sent()
+                .verify.messageExists(subject)
+        }
     }
 
     // TODO: backend need a message with public key 
@@ -74,7 +76,7 @@ class ReplyToMessageTests: FixtureAuthenticatedTestCase {
 
     // TODO: backend need a message with an attachment
     //ID: 31750
-    func testReplyMessageWithAttachments() {
+    func xtestReplyMessageWithAttachments() {
         let user = testData.onePassUser
         let subject = "Message with attachments"
         let replySubject = String(format: "Re: %@ \(Date().millisecondsSince1970)", subject)
