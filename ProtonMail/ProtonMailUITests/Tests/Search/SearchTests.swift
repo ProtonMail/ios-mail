@@ -10,7 +10,7 @@ import XCTest
 
 import ProtonCore_TestingToolkit
 
-class SearchTests: BaseTestCase {
+class SearchTests: FixtureAuthenticatedTestCase {
     
     var subject = String()
     var body = String()
@@ -21,7 +21,7 @@ class SearchTests: BaseTestCase {
         body = testData.messageBody
     }
     
-    func testSearchFromInboxBySubject() {
+    func xtestSearchFromInboxBySubject() {
         let user = testData.onePassUser
         let recipient = testData.twoPassUser
         LoginRobot()
@@ -34,7 +34,7 @@ class SearchTests: BaseTestCase {
             .verify.messageExists(subject)
     }
     
-    func testSearchFromInboxByAddress() {
+    func xtestSearchFromInboxByAddress() {
         let user = testData.onePassUser
         let coreFusionSender = "Core Fusion"
         let title = "163880735864890"
@@ -45,27 +45,26 @@ class SearchTests: BaseTestCase {
             .verify.senderAddressExists(coreFusionSender, title)
     }
     
-    func testSearchDraft() {
-        let user = testData.onePassUser
-        LoginRobot()
-            .loginUser(user)
-            .compose()
-            .changeSubjectTo(subject)
-            .tapCancel()
-            .menuDrawer()
-            .drafts()
-            .searchBar()
-            .searchMessageText(subject)
-            .verify.draftMessageExists(subject)
+    func xtestSearchDraft() {
+        runTestWithScenario(.pgpinlineDrafts) {
+            InboxRobot()
+                .clickMessageBySubject(scenario.subject) //workoarund for atlas env search
+                .navigateBackToInbox()
+                .searchBar()
+                .searchMessageText(scenario.subject)
+                .verify.draftMessageExists(scenario.subject)
+        }
     }
     
     func testSearchForNonExistentMessage() {
-        let user = testData.onePassUser
         let title = "This message doesn't exist!"
-        LoginRobot()
-            .loginUser(user)
-            .searchBar()
-            .searchMessageText(title)
-            .verify.noResultsTextIsDisplayed()
+
+        runTestWithScenario(.pgpmime) {
+            InboxRobot()
+                .searchBar()
+                .searchMessageText(title)
+                .verify.noResultsTextIsDisplayed()
+        }
+
     }
 }

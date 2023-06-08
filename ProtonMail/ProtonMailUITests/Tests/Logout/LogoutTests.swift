@@ -13,9 +13,11 @@ class LogoutTests: FixtureAuthenticatedTestCase {
     private let loginRobot = LoginRobot()
 
     func testLogoutOnePassUser() {
-        InboxRobot()
-            .menuDrawer()
-            .logoutUser()
-            .verify.loginScreenIsShown()
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .menuDrawer()
+                .logoutUser()
+                .verify.loginScreenIsShown()
+        }
     }
 }

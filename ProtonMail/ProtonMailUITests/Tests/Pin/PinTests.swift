@@ -18,12 +18,14 @@ class PinTests: FixtureAuthenticatedTestCase {
     override func setUp() {
         super.setUp()
 
-        inboxRobot
-            .menuDrawer()
-            .settings()
-            .pin()
-            .enablePin()
-            .setPin(correctPin)
+        runTestWithScenario(.qaMail001) {
+            inboxRobot
+                .menuDrawer()
+                .settings()
+                .pin()
+                .enablePin()
+                .setPin(correctPin)
+        }
     }
 
     func testTurnOnAndOffPin() {

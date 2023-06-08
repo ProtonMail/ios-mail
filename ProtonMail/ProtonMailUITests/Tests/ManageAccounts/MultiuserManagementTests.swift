@@ -8,37 +8,43 @@
 
 import ProtonCore_TestingToolkit
 
-class MultiuserManagementTests : NewFixtureAuthenticatedTestCase {
+class MultiuserManagementTests : FixtureAuthenticatedTestCase {
 
     private let loginRobot = LoginRobot()
 
     func testAddSecondAccount_FreeUser() throws {
         let secondUser = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.free, scenario: .qaMail001, isEnableEarlyAccess: false)
-        InboxRobot()
-            .menuDrawer()
-            .accountsList()
-            .manageAccounts()
-            .addAccount()
-            .connectOnePassAccount(secondUser)
-            .menuDrawer()
-            .accountsList()
-            .verify.accountNameEmail(user!)
-            .verify.accountNameEmail(secondUser)
+
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .menuDrawer()
+                .accountsList()
+                .manageAccounts()
+                .addAccount()
+                .connectOnePassAccount(secondUser)
+                .menuDrawer()
+                .accountsList()
+                .verify.accountNameEmail(user!)
+                .verify.accountNameEmail(secondUser)
+        }
     }
 
     func testAddSecondAccount_Mail2022User() throws {
         let secondUser = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mail2022, scenario: .qaMail001, isEnableEarlyAccess: false)
-        InboxRobot()
-            .menuDrawer()
-            .accountsList()
-            .manageAccounts()
-            .addAccount()
-            .connectOnePassAccount(secondUser)
-            .menuDrawer()
-            .accountsList()
-            .verify.accountNameEmail(user!)
-            .verify.accountNameEmail(secondUser)
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .menuDrawer()
+                .accountsList()
+                .manageAccounts()
+                .addAccount()
+                .connectOnePassAccount(secondUser)
+                .menuDrawer()
+                .accountsList()
+                .verify.accountNameEmail(user!)
+                .verify.accountNameEmail(secondUser)
+        }
     }
+
 
     // enable and refactor to use quark commands back after the smoke set is finished
     func xtestConnectTwoPassAccountWithTwoFa() {
