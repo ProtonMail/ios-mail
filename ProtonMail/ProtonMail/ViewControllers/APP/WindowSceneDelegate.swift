@@ -27,7 +27,9 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     lazy var coordinator: WindowsCoordinator = {
         if UIDevice.current.stateRestorationPolicy == .multiwindow {
             // each window scene has it's own windowCoordinator
-            return WindowsCoordinator(factory: sharedServices)
+            let coordinator = WindowsCoordinator(factory: sharedServices)
+            coordinator.delegate = UIApplication.shared.delegate as? WindowsCoordinatorDelegate
+            return coordinator
         } else {
             // windowCoordinator is shared across whole app
             return (UIApplication.shared.delegate as? AppDelegate)!.coordinator
