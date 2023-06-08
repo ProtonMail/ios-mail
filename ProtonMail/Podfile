@@ -63,7 +63,7 @@ end
 
 def pm_pods
   common_pods
-  pod 'DKImagePickerController/PhotoGallery', '4.3.4'
+  pod 'SDWebImage', '5.13.3'
   pod 'OHHTTPStubs/Swift', :configurations => ['Debug', 'Enterprise Debug']
   pod "ProtonCore-AccountDeletion/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version

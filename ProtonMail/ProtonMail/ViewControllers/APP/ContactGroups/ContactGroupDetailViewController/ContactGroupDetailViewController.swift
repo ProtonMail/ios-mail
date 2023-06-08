@@ -155,7 +155,7 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
 
         groupDetailLabel.attributedText = viewModel.getTotalEmailString().apply(style: .DefaultSmallWeek)
 
-        groupImage.setImage(IconProvider.users)
+        groupImage.image = IconProvider.users
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: UIColor.init(hexString: viewModel.color, alpha: 1))
         if let image = sendButton.imageView?.image {
