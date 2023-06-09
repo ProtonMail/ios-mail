@@ -84,7 +84,7 @@ class MailboxRobotInterface: CoreElements {
     }
 
     func menuDrawer() -> MenuRobot {
-        button(id.menuButtonIdentifier).firstMatch().waitForHittable(time: 20).tap()
+        button(id.menuButtonIdentifier).firstMatch().waitForHittable(time: 30).tap()
         return MenuRobot()
     }
     

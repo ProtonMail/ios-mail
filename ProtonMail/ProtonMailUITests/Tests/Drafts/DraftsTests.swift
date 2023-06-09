@@ -8,11 +8,12 @@
 
 import ProtonCore_TestingToolkit
 
+
 class DraftsTests: FixtureAuthenticatedTestCase {
+    
     private var subject = String()
     private var body = String()
     private var to = String()
-
     private var composerRobot: ComposerRobot!
 
     override func setUp() {
@@ -44,6 +45,34 @@ class DraftsTests: FixtureAuthenticatedTestCase {
                 .drafts()
                 .verify.messageWithSubjectExists(subject)
         }
+    }
+
+    /// TestId: 35854
+    func testEditDraftMultipleTimes() throws {
+        let freeUser = users["free"]!
+        let plusUser = users["plus"]!
+        let proUser = users["pro"]!
+        
+        let editOneRecipient = plusUser.email
+        let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
+        
+        let editTwoRecipient = proUser.email
+        let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
+        
+        composerRobot
+            .draftToSubjectBody(freeUser.email, subject, body)
+            .tapCancel()
+            .menuDrawer()
+            .drafts()
+            .clickDraftBySubject(subject)
+            .editRecipients(editOneRecipient)
+            .changeSubjectTo(editOneSubject)
+            .tapCancelFromDrafts()
+            .clickDraftBySubject(editOneSubject)
+            .editRecipients(editTwoRecipient)
+            .changeSubjectTo(editTwoSubject)
+            .tapCancelFromDrafts()
+            .verify.messageWithSubjectExists(editTwoSubject)
     }
 
     func testOpenDraftFromSearch() {
@@ -190,8 +219,8 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     /// TestId: 34634
     func testEditDraftMultipleTimesAndSend() {
-        let editOneRecipient = testData.onePassUserWith2Fa.email
-        let editTwoRecipient = testData.twoPassUserWith2Fa.email
+        let plusUser = users["plus"]!
+        let proUser = users["pro"]!
         let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
         let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
         runTestWithScenario(.qaMail001) {
@@ -202,11 +231,11 @@ class DraftsTests: FixtureAuthenticatedTestCase {
                 .menuDrawer()
                 .drafts()
                 .clickDraftBySubject(subject)
-                .editRecipients(editOneRecipient)
+                .editRecipients(plusUser.email)
                 .changeSubjectTo(editOneSubject)
                 .tapCancelFromDrafts()
                 .clickDraftBySubject(editOneSubject)
-                .editRecipients(editTwoRecipient)
+                .editRecipients(proUser.email)
                 .changeSubjectTo(editTwoSubject)
                 .tapCancelFromDrafts()
                 .verify.messageWithSubjectExists(editTwoSubject)

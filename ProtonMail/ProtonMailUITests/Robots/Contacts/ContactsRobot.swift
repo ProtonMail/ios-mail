@@ -84,12 +84,12 @@ class ContactsRobot: CoreElements {
         }
 
         func clickContact(_ name: String) -> ContactDetailsRobot {
-            cell(id.contactCellIdentifier(name)).swipeUpUntilVisible(maxAttempts: 20).waitForHittable().tap()
+            cell(id.contactCellIdentifier(name)).inTable(table(id.contactsTableViewIdentifier)).swipeUpUntilVisible(maxAttempts: 20).waitForHittable().tap()
             return ContactDetailsRobot()
         }
         
         private func swipeLeftToDelete(_ name: String) -> ContactsView {
-            cell(id.contactCellIdentifier(name)).firstMatch().swipeUpUntilVisible(maxAttempts: 20).swipeLeft()
+            cell(id.contactCellIdentifier(name)).inTable(table(id.contactsTableViewIdentifier)).firstMatch().swipeUpUntilVisible(maxAttempts: 20).swipeLeft()
             return ContactsView()
         }
         

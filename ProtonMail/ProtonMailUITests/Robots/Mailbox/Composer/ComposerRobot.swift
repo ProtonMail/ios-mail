@@ -87,10 +87,10 @@ class ComposerRobot: CoreElements {
     }
     
     func draftToSubjectBodyAttachment(_ to: String, _ subjectText: String, _ body: String) -> ComposerRobot {
-        return addAttachment()
+        return recipients(to)
+            .addAttachment()
             .add()
             .pickImages(1)
-            .recipients(to)
             .subject(subjectText)
             .body(body)
             
@@ -320,7 +320,7 @@ class ComposerRobot: CoreElements {
     }
     
     private func addAttachment() -> MessageAttachmentsRobot  {
-        button(id.attachmentButtonIdentifier).tap()
+        button(id.attachmentButtonIdentifier).waitForHittable().tap()
         return MessageAttachmentsRobot()
     }
     

@@ -20,7 +20,7 @@
                "excludes": [
                   "Info.plist",
                   "**/*.md",
-                  "TestData/*",
+                  "TestData",
                ]
             },
             "ProtonMail/Utilities/APP_share_push_uiTest",
@@ -29,7 +29,19 @@
                "excludes": [
                   "**/InfoPlist.strings"
                ]
+            },
+            {
+               "path": "ProtonMailUITests/TestData",
+               "buildPhase": {
+                  "copyFiles": {
+                     "destination": "resources",
+                     "subpath": "TestData",
+                     "folderReference": true
+                  }
+               },
+               "type": "folder"
             }
+
          ],
          "configFiles": {
             "Debug": "xcodeGen/xcconfig/ProtonMailUITests-Debug.xcconfig",

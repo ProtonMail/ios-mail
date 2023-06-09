@@ -31,11 +31,18 @@ stages:
 .setup_project: &setup_project
   - *setup_basic_tools
   - *setup_ruby
-
+  
+  # Clean up TestData folder and git module information to always fetch latest TestData state
+  - rm -rf .git/modules/ProtonMail/ProtonMailUITests/TestData
+  - rm -rf ProtonMail/ProtonMailUITests/TestData
+  
+  # TEST_DATA_URL keeps the link to TestData https url
   - git config --global url."$TEST_DATA_URL".insteadOf "testdata-repo:"
-
+  
+  # Use --force option to override previously added TestData path
+  - git submodule add --force testdata-repo:tpe/TestData.git ProtonMail/ProtonMailUITests/TestData
   - git submodule init
-  - git submodule update --init --recursive
+  - git submodule update --init --recursive --force
 
   - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
 
@@ -97,6 +104,11 @@ linting:
     - python3 Scripts/linkAvailabilityCheck.py
   tags:
     - iOS_GENERAL
+  except:
+    - schedules
+  tags:
+    - iOS_BUILD
+    - iOS_ARM_TAIPEI
 
 build:debug:for-testing:
   stage: build
@@ -174,13 +186,13 @@ test:ui:smoke:
   script:
     - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
     - cd ProtonMail
-    - bundle install
     - bundle exec fastlane ui_test testplan:"SmokeTests" concurrent_workers:"2"
   tags:
     - iOS_UITEST
-  allow_failure: true
 
 report:slack:smoke:
+  dependencies:
+    - test:ui:smoke
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   rules:
@@ -197,6 +209,8 @@ report:slack:smoke:
       --job-name ui_tests_smoke
       --slack-channel mail-ios-uitests
   allow_failure: true
+  tags:
+    - small
 
 test:ui:feature:
   dependencies:
@@ -215,6 +229,7 @@ test:ui:feature:
       junit: test_output/TestResults/report.xml
   before_script:
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
+    - *setup_project
   script:
     - cd ProtonMail
     - bundle exec fastlane ui_test testplan:$TEST_PLAN concurrent_workers:$NUMBER_OF_DEVICES
@@ -237,13 +252,17 @@ test:ui:monkey:
     expire_in: 10 days
     reports:
       junit: test_output/TestResults/report.xml
+  before_script:
+    - *setup_project
   script:
     - cd ProtonMail
-    - bundle exec fastlane ui_test testplan:MonkeyTests concurrent_workers:1
+    - bundle exec fastlane monkey_tests
   tags:
     - iOS_UITEST
 
 report:slack:feature:
+  dependencies:
+    - test:ui:feature
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   rules:
@@ -256,8 +275,12 @@ report:slack:feature:
       --job-name $TEST_PLAN
       --slack-channel mail-ios-uitests
   allow_failure: true
+  tags:
+    - small
 
 report:slack:monkey:
+  dependencies:
+    - test:ui:monkey
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   rules:
@@ -270,8 +293,12 @@ report:slack:monkey:
       --job-name Mail-iOS-Monkey-tests
       --slack-channel mail-ios-uitests
   allow_failure: true
+  tags:
+    - small
 
 report:testmo:feature:
+  dependencies:
+    - test:ui:feature
   stage: report
   extends: .testmo-upload
   dependencies:
@@ -287,6 +314,8 @@ report:testmo:feature:
     SOURCE: "ios"
     RESULT_FOLDER: "./test_output/TestResults/*.xml"
   allow_failure: true
+  tags:
+    - small
 
 appetize:start:
   dependencies: [test:unit]

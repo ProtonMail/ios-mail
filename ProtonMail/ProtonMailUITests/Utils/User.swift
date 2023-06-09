@@ -8,12 +8,10 @@
 
 import Foundation
 
-struct UserSettings: Decodable {
-    let plans: String?
-    let flags: Flags
+struct Settings: Decodable {
+    let flags: Flags?
 
     enum CodingKeys: String, CodingKey {
-        case plans = "Plans"
         case flags = "Flags"
     }
 }
@@ -26,20 +24,19 @@ struct Flags: Decodable {
     }
 }
 
-struct TestUser: Decodable {
-    let user: User
-    let userSettings: UserSettings?
+struct SubscriptionHistory: Decodable {
+    let subscriptionHistory: String
 
     enum CodingKeys: String, CodingKey {
-        case user = "User"
-        case userSettings = "UserSettings"
+        case subscriptionHistory = "SubscriptionHistory"
     }
 }
 
 struct User: Decodable {
     var name: String
-    var displayName: String
     var password: String
+    var settings: Settings? = nil
+    var subscriptionHistory: String? = ""
 
     var email: String {
         return "\(name)@\(dynamicDomain)"
@@ -51,6 +48,7 @@ struct User: Decodable {
     // additional properties...
     var mailboxPassword: String
     var twoFASecurityKey: String
+    var displayName: String
     var id: Int?
     var userPlan: UserPlan?
     var twoFARecoveryCodes: [String]?
@@ -58,36 +56,37 @@ struct User: Decodable {
     var quarkURL: URL?
 
     enum CodingKeys: String, CodingKey {
-        case name = "Username"
-        case displayName = "DisplayName"
+        case name = "UserName"
         case password = "Password"
+        case settings = "Settings"
+        case subscriptionHistory = "SubscriptionHistory"
         // add more coding keys as per your properties...
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.name = try container.decode(String.self, forKey: .name)
-        self.displayName = try container.decode(String.self, forKey: .displayName)
         self.password = try container.decode(String.self, forKey: .password)
         self.mailboxPassword = ""
         self.twoFASecurityKey = ""
+        self.displayName = name
     }
 
     init() {
         self.name = StringUtils().randomAlphanumericString(length: 8)
         self.password = StringUtils().randomAlphanumericString(length: 8)
-        self.displayName = name
         self.mailboxPassword = ""
+        self.displayName = name
         self.twoFASecurityKey = ""
     }
 
     init(name: String, password: String, mailboxPassword: String, twoFASecurityKey: String) {
         self.name = name
-        self.displayName = name
         self.password = password
         self.mailboxPassword = mailboxPassword
         self.twoFASecurityKey = twoFASecurityKey
         self.name = name
+        self.displayName = name
     }
 
     init(id: Int, name: String, email: String, password: String, userPlan: UserPlan, mailboxPassword: String, twoFASecurityKey: String, twoFARecoveryCodes: [String]?, numberOfImportedMails: Int?, quarkURL: URL) {

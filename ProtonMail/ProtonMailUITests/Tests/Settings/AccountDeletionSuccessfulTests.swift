@@ -51,9 +51,9 @@ class AccountDeletionSuccessfulTests: BaseTestCase {
     }
 
     func testSecondUserInboxIsShownAfterSuccessfulDeletionOfFirstUser() {
-        let free = users["free"]!
+        let freeUser = users["free"]!
         loginRobot
-            .loginUser(free)
+            .loginUser(freeUser)
             .menuDrawer()
             .accountsList()
             .manageAccounts()
@@ -76,6 +76,6 @@ class AccountDeletionSuccessfulTests: BaseTestCase {
             .tapAuthenticateButton(to: InboxRobot.self)
             .verify.inboxShown()
             .menuDrawer()
-            .verify.currentAccount(free.user)
+            .verify.currentAccount(freeUser)
     }
 }

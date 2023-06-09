@@ -15,6 +15,8 @@ fileprivate struct id {
     static let nameTextFieldIdentifier = "ContactEditViewController.displayNameField"
     static let addNewEmailCellIdentifier = "ContactEditAddCell.Add_new_email"
     static let emailTextFieldIdentifier = "Email_address.valueField"
+    static let deleteCellIdentifier = "ContactEditAddCell.Delete_contact"
+    static let deleteContactButtonText = LocalString._delete_contact
 }
 
 /**
@@ -34,6 +36,16 @@ class AddContactRobot: CoreElements {
             .editEmailmail(email)
             .save()
         return ContactDetailsRobot()
+    }
+    
+    func clickDeleteButton() -> AddContactRobot {
+        cell(id.deleteCellIdentifier).waitForHittable().tap()
+        return self
+    }
+
+    func confirmContactDeletion() -> ContactsRobot.ContactsView {
+        button(id.deleteContactButtonText).waitForHittable().tap()
+        return ContactsRobot.ContactsView()
     }
 
     private func displayName(_ name: String) -> AddContactRobot {
