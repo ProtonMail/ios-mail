@@ -488,8 +488,6 @@ extension MailboxCoordinator {
                 } else {
                     self.present(message: message)
                 }
-                let folderID = message.firstValidFolder()
-                self.switchFolderIfNeeded(folderID: folderID?.rawValue)
             case .conversation:
                 self.conversationToShow(isNotification: true, message: message) { [weak self] conversation in
                     guard let conversation = conversation else {
@@ -497,13 +495,12 @@ extension MailboxCoordinator {
                         L11n.Error.cant_open_message.alertToastBottom()
                         return
                     }
+
                     if UserInfo.isConversationSwipeEnabled {
                         self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
                     } else {
                         self?.present(conversation: conversation, targetID: messageID)
                     }
-                    let folderID = message.firstValidFolder()
-                    self?.switchFolderIfNeeded(folderID: folderID?.rawValue)
                 }
             }
         }
@@ -656,6 +653,7 @@ extension MailboxCoordinator {
         if viewControllers.last is MessagePlaceholderVC {
             viewControllers.removeAll(where: { $0 is MessagePlaceholderVC })
         }
+        viewControllers.removeAll(where: { !($0 is MailboxViewController) })
         let page = PagesViewController(viewModel: pageVM, services: services)
         viewControllers.append(page)
         navigationController.setViewControllers(viewControllers, animated: true)
@@ -666,14 +664,6 @@ extension MailboxCoordinator {
               !navigationController.viewControllers.contains(where: { $0 is MessagePlaceholderVC }) else { return }
         let placeholder = MessagePlaceholderVC()
         navigationController.pushViewController(placeholder, animated: true)
-    }
-
-    private func switchFolderIfNeeded(folderID: String?) {
-        // Wait 1 second for navigation.viewControllers update
-        delay(1) {
-            let link = DeepLink(MenuCoordinator.Setup.switchInboxFolder.rawValue, sender: folderID)
-            NotificationCenter.default.post(name: .switchView, object: link)
-        }
     }
 
     private func presentReferAFriend() {
