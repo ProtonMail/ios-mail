@@ -20,7 +20,7 @@ var environmentFileName = "environment"
 var credentialsFileName = "credentials"
 let credentialsBlackFileName = "credentials_black"
 let testData = TestData()
-var users: [String: TestUser] = [:]
+var users: [String: User] = [:]
 
 var dynamicDomain: String {
     ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] ?? ""
@@ -138,20 +138,21 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
     }
     
     private static func getTestUsersFromYamlFiles() {
-        // Get "protonmail-ios/ProtonMail/" path to later locate "protonmail-ios/ProtonMail/TestData".
-        let uiTestsFolderPath = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().path
-        let folderUrl = URL(fileURLWithPath: "\(uiTestsFolderPath)/TestData")
         var userYamlFiles: [URL]
 
-        userYamlFiles = getYamlFiles(in: folderUrl)
+        guard let testDataURL = Bundle(for: BaseTestCase.self).url(forResource: "TestData", withExtension: nil) else {
+            // Handle the case when TestData folder is not found
+            return
+        }
+        userYamlFiles = getYamlFiles(in: testDataURL)
         
         XCTAssertTrue(userYamlFiles.count > 0, "Attempted to parse user.yml files from TestData repository but was not able to find any.")
 
         for file in userYamlFiles {
             do {
                 if let data = try String(contentsOf: file).data(using: .utf8) {
-                    let user = try YAMLDecoder().decode(TestUser.self, from: data)
-                    users[user.user.name] = user
+                    let user = try YAMLDecoder().decode(User.self, from: data)
+                    users[user.name] = user
                 }
             } catch {
                 print("Error deserializing YAML: \(error.localizedDescription)")
