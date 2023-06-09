@@ -252,13 +252,19 @@ extension MenuCoordinator {
               let folderID = node.value else {
             return node
         }
-        if currentLocation?.location.rawLabelID == folderID { return nil }
-        let location = LabelLocation(id: folderID, name: nil)
+        switchFolderIfNeeded(labelID: .init(folderID))
+        return nil
+    }
+
+    private func switchFolderIfNeeded(labelID: LabelID) {
+        guard currentLocation?.location.rawLabelID != labelID.rawValue else {
+            return
+        }
+        let location = LabelLocation(id: labelID.rawValue, name: nil)
         let menuLabel = MenuLabel(location: location)
         navigateToMailBox(labelInfo: menuLabel, deepLink: nil, isSwitchEvent: true)
         currentLocation = menuLabel
         viewModel.highlight(label: menuLabel)
-        return nil
     }
 
     private class func getLocation(by path: String, value: String?) -> MenuLabel? {
