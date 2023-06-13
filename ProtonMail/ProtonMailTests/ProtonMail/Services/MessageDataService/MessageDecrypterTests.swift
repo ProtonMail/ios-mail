@@ -99,6 +99,15 @@ final class MessageDecrypterTests: XCTestCase {
         XCTAssertNil(attachments)
     }
 
+    func testDecrypter_emptyString_doesntCrash() throws {
+        let body = ""
+        let message = try prepareEncryptedMessage(body: body, mimeType: .textPlain)
+
+        let (processedBody, _) = try decrypter.decrypt(message: message)
+
+        XCTAssertEqual(processedBody, body)
+    }
+
     func testCachingImprovesPerformanceWhenPerformingMultipleDecryptions() throws {
         let clock = ContinuousClock()
         let rounds = 50

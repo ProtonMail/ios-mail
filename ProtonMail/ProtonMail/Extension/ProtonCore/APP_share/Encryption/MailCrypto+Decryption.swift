@@ -139,6 +139,12 @@ extension MailCrypto {
         publicKeys: [ArmoredKey],
         decryptionKeyRing: CryptoKeyRing
     ) throws -> (String, SignatureVerificationResult) {
+        // HelperDecryptExplicitVerify will crash if supplied an empty string
+        // this might get patched in the future, making this check unnecessary
+        guard !message.isEmpty else {
+            return ("", .messageNotSigned)
+        }
+
         let pgpMsg = CryptoPGPMessage(fromArmored: message)
         let (verifierKeyRing, verifyTime) = try prepareVerification(publicKeys: publicKeys)
 
