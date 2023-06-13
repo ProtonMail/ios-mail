@@ -271,7 +271,6 @@ class ConversationViewModel {
             contactGroups: sharedContactGroups,
             internetStatusProvider: connectionStatusProvider,
             highlightedKeywords: highlightedKeywords,
-            senderImageStatusProvider: dependencies.senderImageStatusProvider,
             goToDraft: goToDraft
         )
         return .message(viewModel: viewModel)
@@ -1273,7 +1272,6 @@ extension ConversationViewModel {
         let fetchMessageDetail: FetchMessageDetailUseCase
         let nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
         let notificationCenter: NotificationCenter
-        let senderImageStatusProvider: SenderImageStatusProvider
         let fetchSenderImage: FetchSenderImageUseCase
     }
 

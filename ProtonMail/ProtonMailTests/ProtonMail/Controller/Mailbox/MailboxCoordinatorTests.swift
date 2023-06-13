@@ -25,7 +25,6 @@ class MailboxCoordinatorTests: XCTestCase {
     var viewModelMock: MockMailBoxViewModel!
     var reachabilityStub: ReachabilityStub!
     var applicationStateStub: UIApplication.State = .active
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
 
     override func setUp() {
         super.setUp()
@@ -48,7 +47,6 @@ class MailboxCoordinatorTests: XCTestCase {
         let infoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         let toolbarActionProviderMock = MockToolbarActionProvider()
         let saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        mockSenderImageStatusProvider = .init()
 
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
@@ -60,7 +58,6 @@ class MailboxCoordinatorTests: XCTestCase {
                         dependencies: .init(
                             apiService: dummyAPIService,
                             internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
-                    senderImageStatusProvider: mockSenderImageStatusProvider,
                     mailSettings: dummyUser.mailSettings)
             )
         )
@@ -112,7 +109,6 @@ class MailboxCoordinatorTests: XCTestCase {
         sut = nil
         reachabilityStub = nil
         viewModelMock = nil
-        mockSenderImageStatusProvider = nil
     }
 
     func testFetchConversationFromBEIfNeeded_withNoConnection() {

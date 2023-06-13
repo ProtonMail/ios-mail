@@ -23,6 +23,12 @@ protocol FeatureFlagCache {
     func featureFlags(for userID: UserID) -> SupportedFeatureFlags
 }
 
+extension FeatureFlagCache {
+    func isFeatureFlag(_ featureFlag: FeatureFlag<Bool>, enabledForUserWithID userID: UserID) -> Bool {
+        featureFlags(for: userID)[featureFlag]
+    }
+}
+
 extension UserCachedStatus: FeatureFlagCache {
     private var featureFlagsPerUserKey: String {
         "featureFlagsPerUser"

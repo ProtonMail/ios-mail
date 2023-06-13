@@ -30,7 +30,6 @@ final class SingleMessageViewModelTests: XCTestCase {
     var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
     var coordinatorMock: SingleMessageCoordinator!
     var notificationCenterMock: NotificationCenter!
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
 
     override func setUp() {
         super.setUp()
@@ -42,7 +41,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         toolbarCustomizationInfoBubbleViewStatusProvider = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         nextMessageAfterMoveStatusProviderMock = .init()
         notificationCenterMock = .init()
-        mockSenderImageStatusProvider = .init()
     }
 
     override func tearDown() {
@@ -54,7 +52,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         toolbarCustomizeSpotlightStatusProvider = nil
         toolbarCustomizationInfoBubbleViewStatusProvider = nil
         notificationCenterMock = nil
-        mockSenderImageStatusProvider = nil
     }
 
     func testToolbarActionTypes_inSpam_containsDelete() {
@@ -290,7 +287,7 @@ final class SingleMessageViewModelTests: XCTestCase {
             systemUpTime: systemTime,
             coordinator: coordinatorMock,
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            dependencies: components.contentViewModelDependencies(user: fakeUser, senderImageStatusProvider: mockSenderImageStatusProvider),
+            dependencies: components.contentViewModelDependencies(user: fakeUser),
             highlightedKeywords: [],
             goToDraft: { _, _ in },
             notificationCenter: notificationCenterMock

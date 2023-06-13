@@ -32,7 +32,6 @@ class SingleMessageContentViewModelFactory {
         systemUpTime: SystemUpTimeProtocol,
         highlightedKeywords: [String],
         shouldOpenHistory: Bool,
-        senderImageStatusProvider: SenderImageStatusProvider,
         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) -> SingleMessageContentViewModel {
         let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))
@@ -52,8 +51,7 @@ class SingleMessageContentViewModelFactory {
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
                      shouldOpenHistory: shouldOpenHistory,
-                     dependencies: components.contentViewModelDependencies(user: user,
-                                                                           senderImageStatusProvider: senderImageStatusProvider),
+                     dependencies: components.contentViewModelDependencies(user: user),
                      highlightedKeywords: highlightedKeywords,
                      goToDraft: goToDraft)
     }
@@ -71,7 +69,6 @@ class SingleMessageViewModelFactory {
                          highlightedKeywords: [String],
                          imageProxy: ImageProxy,
                          coordinator: SingleMessageCoordinator,
-                         senderImageStatusProvider: SenderImageStatusProvider,
                          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) -> SingleMessageViewModel {
         let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))
         let childViewModels = SingleMessageChildViewModels(
@@ -99,8 +96,7 @@ class SingleMessageViewModelFactory {
             systemUpTime: systemUpTime,
             coordinator: coordinator,
             nextMessageAfterMoveStatusProvider: user,
-            dependencies: components.contentViewModelDependencies(user: user,
-                                                                  senderImageStatusProvider: senderImageStatusProvider),
+            dependencies: components.contentViewModelDependencies(user: user),
             highlightedKeywords: highlightedKeywords,
             goToDraft: goToDraft
         )
@@ -109,10 +105,7 @@ class SingleMessageViewModelFactory {
 }
 
 class SingleMessageComponentsFactory {
-    func contentViewModelDependencies(
-        user: UserManager,
-        senderImageStatusProvider: SenderImageStatusProvider
-    ) -> SingleMessageContentViewModel.Dependencies {
+    func contentViewModelDependencies(user: UserManager) -> SingleMessageContentViewModel.Dependencies {
         let contextProvider = sharedServices.get(by: CoreDataService.self)
         let incomingDefaultService = user.incomingDefaultService
         let queueManager = sharedServices.get(by: QueueManager.self)
@@ -148,7 +141,6 @@ class SingleMessageComponentsFactory {
             blockSender: blockSender,
             fetchMessageDetail: fetchMessageDetail,
             isSenderBlockedPublisher: isSenderBlockedPublisher,
-            senderImageStatusProvider: senderImageStatusProvider,
             unblockSender: unblockSender
         )
     }

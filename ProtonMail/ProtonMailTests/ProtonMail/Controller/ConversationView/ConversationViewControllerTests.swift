@@ -35,7 +35,6 @@ class ConversationViewControllerTests: XCTestCase {
     var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
     var notificationCenterMock: NotificationCenter!
     var contextProvider: MockCoreDataContextProvider!
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
 
     override func setUp() {
         super.setUp()
@@ -53,15 +52,13 @@ class ConversationViewControllerTests: XCTestCase {
         userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
         nextMessageAfterMoveStatusProviderMock = .init()
         notificationCenterMock = .init()
-        mockSenderImageStatusProvider = .init()
 
         let dependencies = ConversationViewModel.Dependencies(
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
             notificationCenter: notificationCenterMock,
-            senderImageStatusProvider: mockSenderImageStatusProvider,
             fetchSenderImage: FetchSenderImage(
-                dependencies: .init(senderImageService: .init(dependencies: .init(apiService: fakeUser.apiService, internetStatusProvider: internetStatusProviderMock)), senderImageStatusProvider: mockSenderImageStatusProvider, mailSettings: fakeUser.mailSettings)
+                dependencies: .init(senderImageService: .init(dependencies: .init(apiService: fakeUser.apiService, internetStatusProvider: internetStatusProviderMock)), mailSettings: fakeUser.mailSettings)
             )
         )
 
@@ -95,7 +92,6 @@ class ConversationViewControllerTests: XCTestCase {
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
         notificationCenterMock = nil
-        mockSenderImageStatusProvider = nil
     }
 
     @available(iOS 13.0, *)

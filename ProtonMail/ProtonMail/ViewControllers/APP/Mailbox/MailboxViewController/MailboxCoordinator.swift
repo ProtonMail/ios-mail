@@ -305,7 +305,6 @@ extension MailboxCoordinator {
                                 internetStatusProvider: internetStatusProvider
                             )
                         ),
-                        senderImageStatusProvider: userCachedStatus,
                         mailSettings: viewModel.user.mailSettings
                     )
                 ), messageSearch: MessageSearch(

@@ -407,7 +407,6 @@ extension MenuCoordinator {
                             internetStatusProvider: InternetConnectionStatusProvider()
                         )
                     ),
-                    senderImageStatusProvider: userCachedStatus,
                     mailSettings: user.mailSettings
                 )
             )

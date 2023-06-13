@@ -75,7 +75,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             fetchMessageDetail: fetchMessageDetail,
             nextMessageAfterMoveStatusProvider: user,
             notificationCenter: .default,
-            senderImageStatusProvider: userCachedStatus,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
                     senderImageService: .init(
@@ -84,7 +83,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                             internetStatusProvider: internetStatusProvider
                         )
                     ),
-                    senderImageStatusProvider: userCachedStatus,
                     mailSettings: user.mailSettings
                 )
             )
