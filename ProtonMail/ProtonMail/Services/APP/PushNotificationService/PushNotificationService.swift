@@ -60,6 +60,8 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         }
     }
 
+    private let dependencies: Dependencies
+
     init(
         subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
         encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
@@ -72,7 +74,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
         unlockProvider: UnlockProvider = UnlockManagerProvider(),
         notificationCenter: NotificationCenter = NotificationCenter.default,
-        lockCacheStatus: LockCacheStatus
+        dependencies: Dependencies
     ) {
         self.currentSubscriptions = SubscriptionsPack(subscriptionSaver, encryptionKitSaver, outdatedSaver)
         self.sessionIDProvider = sessionIDProvider
@@ -84,7 +86,10 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
         self.navigationResolver = PushNavigationResolver(
             dependencies: PushNavigationResolver.Dependencies(subscriptionsPack: currentSubscriptions)
         )
-        self.notificationActions = PushNotificationActionsHandler(dependencies: .init(lockCacheStatus: lockCacheStatus))
+        self.notificationActions = PushNotificationActionsHandler(
+            dependencies: .init(lockCacheStatus: dependencies.lockCacheStatus)
+        )
+        self.dependencies = dependencies
 
         super.init()
 
@@ -274,21 +279,21 @@ extension PushNotificationService {
         let group = DispatchGroup()
         settingsToReport.forEach { settings in
             group.enter()
-            let completion: JSONCompletion = { _, result in
-                defer {
-                    group.leave()
-                }
+            reportResult[settings] = .pending
+            let params = RegisterDevice.Params(
+                uid: settings.UID,
+                deviceToken: settings.token,
+                publicEncryptionKey: settings.encryptionKit.publicKey
+            )
+            dependencies.registerDevice.execute(params: params) { result in
                 switch result {
                 case .success:
                     reportResult[settings] = .reported
                 case .failure:
                     reportResult[settings] = .notReported
                 }
+                group.leave()
             }
-            reportResult[settings] = .pending
-
-            let auth = sharedServices.get(by: UsersManager.self).getUser(by: settings.UID)?.authCredential
-            deviceRegistrator.device(registerWith: settings, authCredential: auth, completion: completion)
         }
         group.wait()
         return reportResult
@@ -475,5 +480,12 @@ private extension PushNotificationService {
 
     enum PushNotificationServiceError: Error {
         case userIsNotReady
+    }
+}
+
+extension PushNotificationService {
+    struct Dependencies {
+        let lockCacheStatus: LockCacheStatus
+        let registerDevice: RegisterDeviceUseCase
     }
 }

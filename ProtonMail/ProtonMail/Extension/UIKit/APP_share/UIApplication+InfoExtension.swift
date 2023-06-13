@@ -36,6 +36,22 @@ extension UIApplication {
         return isDebugOrEnterprise || isTestflightBeta
     }
 
+    static var isDebug: Bool {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
+    }
+
+    static var isEnterprise: Bool {
+        #if Enterprise
+        return true
+        #else
+        return false
+        #endif
+    }
+
     static var isDebugOrEnterprise: Bool {
         #if DEBUG_ENTERPRISE
         return true

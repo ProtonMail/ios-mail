@@ -24,261 +24,135 @@
 import XCTest
 import ProtonCore_Networking
 import ProtonCore_Services
+import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 class PushNotificationServiceTests: XCTestCase {
     typealias SubscriptionWithSettings = PushNotificationService.SubscriptionWithSettings
 
     private var sut: PushNotificationService!
+    private var sessionIdProvider: SessionIdProvider!
+    private var subscriptionSaver: InMemorySaver<Set<SubscriptionWithSettings>>!
+    private var mockRegisterDevice: MockRegisterDeviceUseCase!
 
-    private let mockReportedSetting1 = PushSubscriptionSettings(token: "reported_123", UID: "reported_abc")
-    private lazy var mockSubscriptionWithSettings = PushNotificationService.SubscriptionWithSettings(settings: mockReportedSetting1, state: .reported)
-    private lazy var mockReportedPushSettings: Set<PushNotificationService.SubscriptionWithSettings> = [mockSubscriptionWithSettings]
+    private let dummyToken = "dummy_token"
+    private var firstSessionId: String { sessionIdProvider.sessionIDs.first! }
 
-    private let mockOutdatedSetting1 = PushSubscriptionSettings(token: "outdated_456", UID: "outdated_def")
-    private let mockOutdatedSetting2 = PushSubscriptionSettings(token: "outdated_789", UID: "outdated_ghi")
-    private lazy var mockOutdatedPushSettings: Set<PushSubscriptionSettings> = [mockOutdatedSetting1, mockOutdatedSetting2]
-
-    private let storeKey = "store-key"
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        sessionIdProvider = SessionIDMock()
+        subscriptionSaver = .init()
+        mockRegisterDevice = .init()
+        sut = PushNotificationService(
+            subscriptionSaver: subscriptionSaver,
+            encryptionKitSaver: InMemorySaver(),
+            outdatedSaver: InMemorySaver(),
+            sessionIDProvider: sessionIdProvider,
+            deviceRegistrator: MockDeviceRegistrator(),
+            signInProvider: SignInMock(),
+            unlockProvider: UnlockMock(),
+            notificationCenter: .default,
+            dependencies: .init(lockCacheStatus: MockLockCacheStatus(), registerDevice: mockRegisterDevice)
+        )
+        NotificationCenter.default.removeObserver(sut!)
+    }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
+        sessionIdProvider = nil
+        subscriptionSaver = nil
+        mockRegisterDevice = nil
     }
 
-    func testReceivedNotificationSignOut_whenThereAreNoDeviceTokensToDelete() {
-        let mockDeviceRegistrator = MockDeviceRegistrator()
-        let notificationCenter = NotificationCenter()
+    func testDidRegisterForRemoteNotifications_whenRegisterDeviceSucceeds_itStoresTheTokenAsReported() {
+        let expect = expectation(description: "wait for registration")
+        mockRegisterDevice.callExecutionBlock.bodyIs { _, _, callback in
+            callback(.success(()))
+            expect.fulfill()
+        }
+        subscriptionSaver.set(newValue: nil)
 
-        sut = makeSUT(mockDeviceRegistrator: mockDeviceRegistrator, notificationCenter: notificationCenter)
-        notificationCenter.post(name: .didSignOut, object: nil)
+        sut.didRegisterForRemoteNotifications(withDeviceToken: dummyToken)
 
-        XCTAssert(mockDeviceRegistrator.deviceTokensUnregisteredCalled.isEmpty)
+        waitForExpectations(timeout: 1.0)
+
+        let subsWithSetting = subscriptionSaver.get()!.first!
+        XCTAssertEqual(subsWithSetting.state, .reported)
+        XCTAssertEqual(subsWithSetting.settings.token, dummyToken)
+        XCTAssertEqual(subsWithSetting.settings.UID, firstSessionId)
+
+        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.deviceToken, dummyToken)
+        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.uid, firstSessionId)
     }
 
-    func testNoneToReported() {
-        let newToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
-        let session = SessionIDMock()
-        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
+    func testDidRegisterForRemoteNotifications_whenRegisterDeviceFails_itStoresTheTokenAsNotReported() {
         let expect = expectation(description: "wait for registration")
 
-        let api = APIMock(registration: { new in
-            XCTAssertEqual(new.token, newToken)
-            XCTAssertEqual([new.UID], session.sessionIDs)
-            XCTAssertFalse(new.encryptionKit.passphrase.isEmpty)
-            XCTAssertFalse(new.encryptionKit.publicKey.isEmpty)
-            XCTAssertFalse(new.encryptionKit.privateKey.isEmpty)
-
-            return nil // no error
-        },
-                          unregistration: { old in return nil },
-                          registrationDone: { expect.fulfill() },
-                          unregistrationDone: { })
-
-
-        let service = PushNotificationService.init(subscriptionSaver: currentSubscriptionPin,
-                                                   encryptionKitSaver: InMemorySaver(),
-                                                   outdatedSaver: InMemorySaver(),
-                                                   sessionIDProvider: session,
-                                                   deviceRegistrator: api,
-                                                   signInProvider: SignInMock(),
-                                                   unlockProvider: UnlockMock(),
-                                                   lockCacheStatus: MockLockCacheStatus())
-        NotificationCenter.default.removeObserver(service)
-        currentSubscriptionPin.set(newValue: Optional.none)
-
-
-        service.didRegisterForRemoteNotifications(withDeviceToken: newToken)
-
-        waitForExpectations(timeout: 5) { error in
-            XCTAssertNil(error)
-
-            if let current = currentSubscriptionPin.get()?.first, current.state == .reported {
-                XCTAssertEqual(current.settings, SubscriptionSettings(token: newToken, UID: session.sessionIDs.first!))
-            } else {
-                XCTFail("did not report altho api did not return error")
-            }
+        mockRegisterDevice.callExecutionBlock.bodyIs { _, _, callback in
+            callback(.failure(NSError(domain: "dummy_domain", code: 0, userInfo: nil)))
+            expect.fulfill()
         }
+        subscriptionSaver.set(newValue: nil)
+
+        sut.didRegisterForRemoteNotifications(withDeviceToken: dummyToken)
+
+        waitForExpectations(timeout: 1.0)
+        let subsWithSetting = subscriptionSaver.get()!.first!
+        XCTAssertEqual(subsWithSetting.state, .notReported)
+        XCTAssertEqual(subsWithSetting.settings.token, dummyToken)
+        XCTAssertEqual(subsWithSetting.settings.UID, firstSessionId)
+
+        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.deviceToken, dummyToken)
+        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.uid, firstSessionId)
     }
 
-    func testNoneToNotReported() {
-        let newToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
-        let session = SessionIDMock()
-        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
+    func testDidRegisterForRemoteNotifications_whenRegisterDeviceSucceeds_itOverwritesTheTokenForTheSameSession() {
         let expect = expectation(description: "wait for registration")
 
-        let api = APIMock(registration: { new in
-            XCTAssertEqual(new.token, newToken)
-            XCTAssertEqual([new.UID], session.sessionIDs)
-            XCTAssertFalse(new.encryptionKit.passphrase.isEmpty)
-            XCTAssertFalse(new.encryptionKit.publicKey.isEmpty)
-            XCTAssertFalse(new.encryptionKit.privateKey.isEmpty)
-
-            return NSError.init(domain: "String", code: 0, userInfo: nil) // error
-        },
-                          unregistration: { old in return nil },
-                          registrationDone: { expect.fulfill() },
-                          unregistrationDone: { })
-
-        let service = PushNotificationService.init(subscriptionSaver: currentSubscriptionPin,
-                                                   encryptionKitSaver: InMemorySaver(),
-                                                   outdatedSaver: InMemorySaver(),
-                                                   sessionIDProvider: session,
-                                                   deviceRegistrator: api,
-                                                   signInProvider: SignInMock(),
-                                                   unlockProvider: UnlockMock(),
-                                                   lockCacheStatus: MockLockCacheStatus())
-        NotificationCenter.default.removeObserver(service)
-        currentSubscriptionPin.set(newValue: Optional.none)
-
-        service.didRegisterForRemoteNotifications(withDeviceToken: newToken)
-
-        waitForExpectations(timeout: 5) { error in
-            XCTAssertNil(error)
-            sleep(1)
-            if let current = currentSubscriptionPin.get()?.first, current.state == .notReported { // should be notReported
-                XCTAssertEqual(current.settings, SubscriptionSettings(token: newToken, UID: session.sessionIDs.first!))
-            } else {
-                XCTFail("did not report altho api did not return error")
-            }
+        mockRegisterDevice.callExecutionBlock.bodyIs { _, _, callback in
+            callback(.success(()))
+            expect.fulfill()
         }
+        let subs = [SubscriptionWithSettings(settings: .init(token: "oldToken", UID: firstSessionId), state: .reported)]
+        subscriptionSaver.set(newValue: Set(subs))
+
+        sut.didRegisterForRemoteNotifications(withDeviceToken: dummyToken)
+
+        waitForExpectations(timeout: 1.0)
+        XCTAssertEqual(subscriptionSaver.get()?.count, 1)
+        let subsWithSetting = subscriptionSaver.get()!.first!
+        XCTAssertEqual(subsWithSetting.state, .reported)
+        XCTAssertEqual(subsWithSetting.settings.token, dummyToken)
+        XCTAssertEqual(subsWithSetting.settings.UID, firstSessionId)
+
+        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.deviceToken, dummyToken)
+        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.uid, firstSessionId)
     }
 
-    func testReportedToReported() {
-        let oldToken = "Thou shalt not covet"
-        let newToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
-        let session = SessionIDMock()
-        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
-        let outdatedPin = InMemorySaver<Set<SubscriptionSettings>>()
+    /// This test expects to register the reported token again because it follows the current
+    /// implementation even though indicates lack of confidence in the report status.
+    func testDidRegisterForRemoteNotifications_whenTokenAlreadyReported_itShouldRegisterTheSameToken() {
         let expect = expectation(description: "wait for registration")
 
-        let api = APIMock(registration: { new in
-            XCTAssertEqual(new.token, newToken)
-            XCTAssertEqual([new.UID], session.sessionIDs)
-            XCTAssertFalse(new.encryptionKit.passphrase.isEmpty)
-            XCTAssertFalse(new.encryptionKit.publicKey.isEmpty)
-            XCTAssertFalse(new.encryptionKit.privateKey.isEmpty)
-
-            return nil // no error
-        },
-                          unregistration: { old in
-            XCTAssertEqual(old.token, oldToken) // should unregister old
-            XCTAssertEqual(old.UID, session.sessionIDs.first)
-            return nil // no error
-        },
-                          registrationDone: { expect.fulfill() },
-                          unregistrationDone: { } )
-
-        let service = PushNotificationService.init(subscriptionSaver: currentSubscriptionPin,
-                                                   encryptionKitSaver: InMemorySaver(),
-                                                   outdatedSaver: outdatedPin,
-                                                   sessionIDProvider: session,
-                                                   deviceRegistrator: api,
-                                                   signInProvider: SignInMock(),
-                                                   unlockProvider: UnlockMock(),
-                                                   lockCacheStatus: MockLockCacheStatus())
-        NotificationCenter.default.removeObserver(service)
-        currentSubscriptionPin.set(newValue: Set([SubscriptionWithSettings(settings: .init(token: oldToken, UID: session.sessionIDs.first!), state: .reported)])) // already have some reported subscription
-
-        service.didRegisterForRemoteNotifications(withDeviceToken: newToken)
-
-        waitForExpectations(timeout: 5) { error in
-            XCTAssertNil(error)
-
-            if let current = currentSubscriptionPin.get()?.first, current.state == .reported { // reported with new token
-                XCTAssertEqual(current.settings, SubscriptionSettings(token: newToken, UID: session.sessionIDs.first!))
-            } else {
-                XCTFail("did not report altho api did not return error")
-            }
-
-            XCTAssertTrue(outdatedPin.get()?.isEmpty == true) // outdated should be empty
+        mockRegisterDevice.callExecutionBlock.bodyIs { _, _, callback in
+            callback(.success(()))
+            expect.fulfill()
         }
-    }
+        let subs = [SubscriptionWithSettings(settings: .init(token: dummyToken, UID: firstSessionId), state: .reported)]
+        subscriptionSaver.set(newValue: Set(subs))
 
-    //    //TODO:: enable the test
-    //    func testSameSettingsNoNeedToReport() {
-    //        let oldToken = "Thou shalt not covet"
-    //        let session = SessionIDMock()
-    //        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
-    //
-    //        let expect = expectation(description: "wait for registration")
-    //        expect.isInverted = true // should not be fulfilled - api should not be called
-    //        let api = APIMock(registration: { new in
-    //                XCTFail("attempt of unnecessary registration")
-    //                expect.fulfill()  // no need to continue, already not good
-    //                return nil
-    //        },
-    //            unregistration: { old in
-    //                XCTFail("attempt of unncessary unregistration")
-    //                expect.fulfill()
-    //                return nil // no need to continue, already not good
-    //        },
-    //            registrationDone: { },
-    //            unregistrationDone: { })
-    //
-    //        let service = PushNotificationService.init(service: nil,
-    //                                                   subscriptionSaver: currentSubscriptionPin,
-    //                                                   encryptionKitSaver: InMemorySaver(),
-    //                                                   outdatedSaver: InMemorySaver(),
-    //                                                   sessionIDProvider: session,
-    //                                                   deviceRegistrator: api,
-    //                                                   signInProvider: SignInMock(),
-    //                                                   unlockProvider: UnlockMock())
-    //        NotificationCenter.default.removeObserver(service)
-    //        currentSubscriptionPin.set(newValue: Set([SubscriptionWithSettings(settings:.init(token: oldToken, UID: session.sessionIDs.first!), state: .reported)])) // already have some reported subscription
-    //
-    //        service.didRegisterForRemoteNotifications(withDeviceToken: oldToken)
-    //
-    //        waitForExpectations(timeout: 5) { error in
-    //            XCTAssertNil(error)
-    //
-    //            if let current = currentSubscriptionPin.get()?.first, current.state == .reported {  // should not be different
-    //                XCTAssertEqual(current.settings, SubscriptionSettings(token: oldToken, UID: session.sessionIDs.first!))
-    //            } else {
-    //                 XCTFail("did change subscription altho did not need to")
-    //            }
-    //        }
-    //    }
+        sut.didRegisterForRemoteNotifications(withDeviceToken: dummyToken)
 
-    func testSameSettingsNeedToReport() {
-        let oldToken = "TO ALL FREE MEN OF OUR KINGDOM we have also granted, for us and our heirs for ever, all the liberties written out below, to have and to keep for them and their heirs, of us and our heirs"
-        let session = SessionIDMock()
-        let currentSubscriptionPin = InMemorySaver<Set<PushNotificationService.SubscriptionWithSettings>>()
-        let expect = expectation(description: "wait for registration")
+        waitForExpectations(timeout: 1.0)
+        XCTAssertEqual(subscriptionSaver.get()?.count, 1)
+        let subsWithSetting = subscriptionSaver.get()!.first!
+        XCTAssertEqual(subsWithSetting.state, .reported)
+        XCTAssertEqual(subsWithSetting.settings.token, dummyToken)
+        XCTAssertEqual(subsWithSetting.settings.UID, firstSessionId)
 
-        let api = APIMock(registration: { new in
-            XCTAssertTrue(true) // registers - good
-            return nil
-        },
-                          unregistration: { old in
-            XCTFail("attempt of unncessary unregistration")
-            return nil // no need to continue, already not good
-        },
-                          registrationDone: { expect.fulfill() },
-                          unregistrationDone: { })
-
-        let service = PushNotificationService.init(subscriptionSaver: currentSubscriptionPin,
-                                                   encryptionKitSaver: InMemorySaver(),
-                                                   outdatedSaver: InMemorySaver(),
-                                                   sessionIDProvider: session,
-                                                   deviceRegistrator: api,
-                                                   signInProvider: SignInMock(),
-                                                   unlockProvider: UnlockMock(),
-                                                   lockCacheStatus: MockLockCacheStatus())
-        NotificationCenter.default.removeObserver(service)
-        currentSubscriptionPin.set(newValue: Set([SubscriptionWithSettings(settings:.init(token: oldToken, UID: session.sessionIDs.first!), state: .notReported)])) // already have some reported subscription
-
-        service.didRegisterForRemoteNotifications(withDeviceToken: oldToken) // same settings
-
-        waitForExpectations(timeout: 5) { error in
-            XCTAssertNil(error)
-
-            if let current = currentSubscriptionPin.get()?.first, current.state == .reported {  // should not be different
-                XCTAssertEqual(current.settings, SubscriptionSettings(token: oldToken, UID: session.sessionIDs.first!))
-            } else {
-                XCTFail("did not report subscription altho did not have reported previous with same settings")
-            }
-        }
+        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.deviceToken, dummyToken)
+        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.uid, firstSessionId)
     }
 
     func testUpdateSettingsIfNeeded_notInCurrentSubscription_UpdateClosureCalled() {
@@ -300,9 +174,8 @@ class PushNotificationServiceTests: XCTestCase {
         let settingToReport = PushSubscriptionSettings(token: "token1", UID: "UID1")
         let result = [settingToReport: PushNotificationService.SubscriptionState.reported]
 
-        let subscription = PushNotificationService.SubscriptionWithSettings(settings: settingToReport,
-                                                                            state: .reported)
-        let currentSubscriptions: Set<PushNotificationService.SubscriptionWithSettings> = [subscription]
+        let subscription = SubscriptionWithSettings(settings: settingToReport, state: .reported)
+        let currentSubscriptions: Set<SubscriptionWithSettings> = [subscription]
 
         let expection1 = expectation(description: "closure is called")
         expection1.isInverted = true
@@ -323,9 +196,8 @@ class PushNotificationServiceTests: XCTestCase {
 
         let result = [settingToReport: PushNotificationService.SubscriptionState.reported]
 
-        let subscription = PushNotificationService.SubscriptionWithSettings(settings: settingInSubscription,
-                                                                            state: .reported)
-        let currentSubscriptions: Set<PushNotificationService.SubscriptionWithSettings> = [subscription]
+        let subscription = SubscriptionWithSettings(settings: settingInSubscription, state: .reported)
+        let currentSubscriptions: Set<SubscriptionWithSettings> = [subscription]
 
         let expection1 = expectation(description: "closure is called")
         let sut = PushNotificationService.updateSettingsIfNeeded
@@ -338,41 +210,6 @@ class PushNotificationServiceTests: XCTestCase {
             expection1.fulfill()
         }
         waitForExpectations(timeout: 0.5, handler: nil)
-    }
-}
-
-extension PushNotificationServiceTests {
-
-    private func makeSUT(
-        subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = InMemorySaver(),
-        outdatedSaver: Saver<Set<SubscriptionSettings>> = InMemorySaver(),
-        mockDeviceRegistrator: MockDeviceRegistrator = MockDeviceRegistrator(),
-        notificationCenter: NotificationCenter = NotificationCenter.default
-    ) -> PushNotificationService {
-        let service = PushNotificationService(
-            subscriptionSaver: subscriptionSaver,
-            encryptionKitSaver: InMemorySaver(),
-            outdatedSaver: outdatedSaver,
-            sessionIDProvider: SessionIDMock(),
-            deviceRegistrator: mockDeviceRegistrator,
-            signInProvider: SignInMock(),
-            unlockProvider: UnlockMock(),
-            notificationCenter: notificationCenter,
-            lockCacheStatus: MockLockCacheStatus()
-        )
-        return service
-    }
-
-    private func mockOutdatedSettingsSaverForSignOutTest(key: String, keyValueProvider: KeyValueStoreProvider) -> Saver<Set<PushSubscriptionSettings>> {
-        let outdatedPushSettingsSaver: Saver<Set<PushSubscriptionSettings>> = InMemorySaver(key: storeKey, store: keyValueProvider)
-        outdatedPushSettingsSaver.set(newValue: mockOutdatedPushSettings)
-        return outdatedPushSettingsSaver
-    }
-
-    private func mockReportedSettingsSaverForSignOutTest() -> Saver<Set<SubscriptionWithSettings>> {
-        let pushSettingsSaver: Saver<Set<PushNotificationService.SubscriptionWithSettings>> = InMemorySaver()
-        pushSettingsSaver.set(newValue: mockReportedPushSettings)
-        return pushSettingsSaver
     }
 }
 
@@ -417,47 +254,10 @@ extension PushNotificationServiceTests {
         var sessionIDs = ["001100010010011110100001101101110011"]
     }
     
-    private struct APIMock: DeviceRegistrator {
-        var registration: (_ settings: SubscriptionSettings) -> NSError?
-        var unregistration: (_ settings: SubscriptionSettings) -> NSError?
-        var registrationDone: ()->Void
-        var unregistrationDone: ()->Void
-        
-        func device(registerWith settings: SubscriptionSettings, authCredential: AuthCredential?, completion: @escaping Completion) {
-            if let error = self.registration(settings) {
-                completion(nil, .failure(error))
-            } else {
-                completion(nil, .success([:]))
-            }
-            registrationDone()
-        }
-        
-        func deviceUnregister(_ settings: SubscriptionSettings, completion: @escaping Completion) {
-            if let error = self.unregistration(settings) {
-                completion(nil, .failure(error))
-            } else {
-                completion(nil, .success([:]))
-            }
-            unregistrationDone()
-        }
-    }
-
     private class MockDeviceRegistrator: DeviceRegistrator {
-        private(set) var deviceTokensRegisteredCalled = [PushSubscriptionSettings]()
         private(set) var deviceTokensUnregisteredCalled = [PushSubscriptionSettings]()
-
-        var deviceRegisterSuccess: Bool = true
         var deviceUnregisterSuccess: Bool = true
         var completionError: NSError?
-
-        func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: @escaping Completion) {
-            deviceTokensRegisteredCalled.append(settings)
-            if deviceRegisterSuccess {
-                completion(nil, .success([:]))
-            } else {
-                completion(nil, .failure(completionError!))
-            }
-        }
 
         func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping Completion) {
             deviceTokensUnregisteredCalled.append(settings)
