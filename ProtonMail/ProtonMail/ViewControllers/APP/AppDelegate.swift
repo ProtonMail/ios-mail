@@ -113,7 +113,11 @@ extension AppDelegate: UIApplicationDelegate {
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
-        sharedServices.add(PushNotificationService.self, for: PushNotificationService(lockCacheStatus: coreKeyMaker))
+        let dependencies = PushNotificationService.Dependencies(
+            lockCacheStatus: coreKeyMaker,
+            registerDevice: RegisterDevice(dependencies: .init(usersManager: usersManager))
+        )
+        sharedServices.add(PushNotificationService.self, for: PushNotificationService(dependencies: dependencies))
         sharedServices.add(UnlockManager.self, for: UnlockManager(
             cacheStatus: coreKeyMaker,
             delegate: self,
