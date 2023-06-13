@@ -91,6 +91,7 @@ final class MessageInfoProvider {
         let remoteContentAllowed = remoteContentPolicy == .allowed
         return messageNotSentByUs && remoteContentAllowed && imageProxyEnabled
     }
+    private let dateFormatter: PMDateFormatter
 
     init(
         message: MessageEntity,
@@ -100,7 +101,8 @@ final class MessageInfoProvider {
         labelID: LabelID,
         dependencies: Dependencies,
         highlightedKeywords: [String],
-        shouldOpenHistory: Bool = false
+        shouldOpenHistory: Bool = false,
+        dateFormatter: PMDateFormatter = .shared
     ) {
         self.message = message
         let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
@@ -124,6 +126,7 @@ final class MessageInfoProvider {
         self.labelID = labelID
         self.dependencies = dependencies
         self.highlightedKeywords = highlightedKeywords
+        self.dateFormatter = dateFormatter
 
         if shouldOpenHistory {
             displayMode = .expanded
@@ -185,10 +188,6 @@ final class MessageInfoProvider {
             return .empty
         }
     }
-
-    private lazy var dateFormatter: PMDateFormatter = {
-        return PMDateFormatter.shared
-    }()
 
     lazy var date: String? = {
         guard let date = message.time else { return nil }

@@ -88,7 +88,8 @@ final class MessageInfoProviderTest: XCTestCase {
                     )
                 )
             ), 
-            highlightedKeywords: ["contact", "feng"]
+            highlightedKeywords: ["contact", "feng"],
+            dateFormatter: .init()
         )
         delegateObject = ProviderDelegate()
         sut.set(delegate: delegateObject)
