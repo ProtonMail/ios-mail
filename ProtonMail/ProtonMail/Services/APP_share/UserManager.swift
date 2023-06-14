@@ -289,8 +289,7 @@ class UserManager: Service {
             apiService: self.apiService,
             sessionID: self.authCredential.sessionID,
             appRatingStatusProvider: userCachedStatus,
-            userIntroductionProgressProvider: userCachedStatus,
-            referralPromptProvider: userCachedStatus
+            userIntroductionProgressProvider: userCachedStatus
         )
         service.register(newSubscriber: inAppFeedbackStateService)
         return service

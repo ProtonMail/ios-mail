@@ -1138,19 +1138,6 @@ class MockReceiptActionHandler: ReceiptActionHandler {
 
 }
 
-class MockReferralPromptProvider: ReferralPromptProvider {
-    @FuncStub(MockReferralPromptProvider.isReferralPromptEnabled, initialReturn: Bool()) var isReferralPromptEnabledStub
-    func isReferralPromptEnabled(userID: UserID) -> Bool {
-        isReferralPromptEnabledStub(userID)
-    }
-
-    @FuncStub(MockReferralPromptProvider.setIsReferralPromptEnabled) var setIsReferralPromptEnabledStub
-    func setIsReferralPromptEnabled(enabled: Bool, userID: UserID) {
-        setIsReferralPromptEnabledStub(enabled, userID)
-    }
-
-}
-
 class MockRefetchAllBlockedSendersUseCase: RefetchAllBlockedSendersUseCase {
     @FuncStub(MockRefetchAllBlockedSendersUseCase.execute) var executeStub
     func execute(completion: @escaping (Error?) -> Void) {

@@ -25,7 +25,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     var appRatingStatusProvider: MockAppRatingStatusProvider!
     var featureFlagCache: MockFeatureFlagCache!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
-    var referralPromptProvider: MockReferralPromptProvider!
     var sut: FeatureFlagsDownloadService!
     var userID: UserID = UserID(rawValue: String.randomString(20))
 
@@ -35,15 +34,13 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         appRatingStatusProvider = .init()
         featureFlagCache = .init()
         userIntroductionProgressProviderMock = .init()
-        referralPromptProvider = .init()
         sut = FeatureFlagsDownloadService(
             cache: featureFlagCache,
             userID: userID,
             apiService: apiServiceMock,
             sessionID: "",
             appRatingStatusProvider: appRatingStatusProvider,
-            userIntroductionProgressProvider: userIntroductionProgressProviderMock,
-            referralPromptProvider: referralPromptProvider
+            userIntroductionProgressProvider: userIntroductionProgressProviderMock
         )
     }
 

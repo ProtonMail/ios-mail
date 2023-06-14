@@ -543,10 +543,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             return
         }
         if self.referralProgramPresenter == nil {
-            self.referralProgramPresenter = ReferralProgramPromptPresenter(userID: self.viewModel.user.userID,
-                                                                           referralProgram: referralProgram,
-                                                                           referralPromptProvider: userCachedStatus,
-                                                                           featureFlagService: viewModel.user.featureFlagsDownloadService)
+            self.referralProgramPresenter = ReferralProgramPromptPresenter(
+                userID: self.viewModel.user.userID,
+                referralProgram: referralProgram,
+                featureFlagCache: userCachedStatus,
+                featureFlagService: viewModel.user.featureFlagsDownloadService
+            )
         }
         self.referralProgramPresenter?.didShowMailbox()
         if self.referralProgramPresenter?.shouldShowReferralProgramPrompt() == true {
