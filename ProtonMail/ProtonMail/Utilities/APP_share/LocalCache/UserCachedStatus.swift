@@ -632,3 +632,5 @@ extension UserCachedStatus: MobileSignatureCacheProtocol {
         }
     }
 }
+
+extension UserCachedStatus: Service {}

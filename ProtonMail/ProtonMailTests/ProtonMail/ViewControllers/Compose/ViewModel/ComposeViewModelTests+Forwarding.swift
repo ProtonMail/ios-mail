@@ -123,7 +123,8 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
                 cacheService: user.cacheService,
                 contextProvider: mockCoreDataService,
                 copyMessage: copyMessage
-            ), fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: MockKeyMakerProtocol(), cache: MockMobileSignatureCacheProtocol()))
+            ), fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: MockKeyMakerProtocol(), cache: MockMobileSignatureCacheProtocol())),
+            darkModeCache: MockDarkModeCacheProtocol()
         )
 
         return ComposeViewModel(

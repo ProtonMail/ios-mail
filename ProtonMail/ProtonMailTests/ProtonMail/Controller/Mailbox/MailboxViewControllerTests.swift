@@ -252,6 +252,7 @@ extension MailboxViewControllerTests {
             fetchMessageDetail: mockFetchMessageDetail,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: MockFeatureFlagCache(),
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: userManagerMock.apiService,

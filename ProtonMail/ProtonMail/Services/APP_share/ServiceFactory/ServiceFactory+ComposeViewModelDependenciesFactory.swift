@@ -54,9 +54,9 @@ extension ServiceFactory {
                 fetchMobileSignatureUseCase: FetchMobileSignature(
                     dependencies: .init(
                         coreKeyMaker: factory.get(),
-                        cache: userCachedStatus
+                        cache: factory.userCachedStatus
                     )
-                )
+                ), darkModeCache: factory.userCachedStatus
             )
         }
     }

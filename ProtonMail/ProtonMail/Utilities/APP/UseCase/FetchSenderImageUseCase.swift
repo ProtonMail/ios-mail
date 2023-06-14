@@ -72,7 +72,7 @@ extension FetchSenderImage {
         let localFeatureFlag: Bool = UserInfo.isSenderImageEnabled
 
         init(
-            featureFlagCache: FeatureFlagCache = userCachedStatus,
+            featureFlagCache: FeatureFlagCache,
             senderImageService: SenderImageService,
             mailSettings: MailSettings
         ) {

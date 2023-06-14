@@ -118,8 +118,8 @@ extension AppRatingService {
         init(
             featureFlagService: FeatureFlagsDownloadServiceProtocol,
             appRating: AppRatingWrapper,
-            internetStatus: InternetConnectionStatusProviderProtocol = InternetConnectionStatusProvider(),
-            appRatingPrompt: AppRatingStatusProvider = userCachedStatus,
+            internetStatus: InternetConnectionStatusProviderProtocol,
+            appRatingPrompt: AppRatingStatusProvider,
             notificationCenter: NotificationCenter = .default
         ) {
             self.internetStatus = internetStatus

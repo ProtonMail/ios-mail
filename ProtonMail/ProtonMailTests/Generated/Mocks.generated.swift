@@ -284,6 +284,19 @@ class MockCopyMessageUseCase: CopyMessageUseCase {
 
 }
 
+class MockDarkModeCacheProtocol: DarkModeCacheProtocol {
+    @PropertyStub(\MockDarkModeCacheProtocol.darkModeStatus, initialGet: .followSystem) var darkModeStatusStub
+    var darkModeStatus: DarkModeStatus {
+        get {
+            darkModeStatusStub()
+        }
+        set {
+            darkModeStatusStub(newValue)
+        }
+    }
+
+}
+
 class MockDownloadedMessagesRouterProtocol: DownloadedMessagesRouterProtocol {
     @FuncStub(MockDownloadedMessagesRouterProtocol.closeView) var closeViewStub
     func closeView() {

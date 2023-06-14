@@ -34,6 +34,7 @@ enum DarkModeStatus: Int {
     }
 }
 
+// sourcery: mock
 protocol DarkModeCacheProtocol {
 
     var darkModeStatus: DarkModeStatus { get set }

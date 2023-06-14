@@ -54,6 +54,7 @@ class MailboxCoordinatorTests: XCTestCase {
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: MockFeatureFlagCache(),
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: dummyAPIService,
@@ -75,6 +76,7 @@ class MailboxCoordinatorTests: XCTestCase {
                                              conversationProvider: conversationProviderMock,
                                              eventsService: eventServiceMock,
                                              dependencies: dependencies,
+                                             welcomeCarrouselCache: WelcomeCarrouselCacheMock(),
                                              toolbarActionProvider: toolbarActionProviderMock,
                                              saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                              totalUserCountClosure: {

@@ -237,7 +237,7 @@ struct CSSMagic {
     }
 
     static func darkStyleSupportLevel(document: Document?,
-                                      darkModeCache: DarkModeCacheProtocol = userCachedStatus) -> DarkStyleSupportLevel {
+                                      darkModeCache: DarkModeCacheProtocol) -> DarkStyleSupportLevel {
         if darkModeCache.darkModeStatus == .forceOff {
             return .notSupport
         }

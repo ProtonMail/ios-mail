@@ -39,6 +39,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
     private let composeViewModelFactory: ComposeViewModelDependenciesFactory
+    private let factory: ServiceFactory
 
     init(
         serviceFactory: ServiceFactory,
@@ -61,6 +62,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.highlightedKeywords = highlightedKeywords
         self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
+        self.factory = serviceFactory
     }
 
     func start() {
@@ -82,7 +84,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             labelId: labelId,
             message: message,
             user: user,
-            systemUpTime: userCachedStatus,
+            systemUpTime: factory.userCachedStatus,
             internetStatusProvider: internetStatusProvider,
             highlightedKeywords: highlightedKeywords,
             coordinator: self,
@@ -255,7 +257,7 @@ extension SingleMessageCoordinator {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: coreDataService,
-            userIntroductionProgressProvider: userCachedStatus
+            userIntroductionProgressProvider: factory.userCachedStatus
         )
         viewController?.present(composer, animated: true)
     }
@@ -304,7 +306,7 @@ extension SingleMessageCoordinator {
 
     private func presentToolbarCustomizationSettingView() {
         let viewModel = ToolbarSettingViewModel(
-            infoBubbleViewStatusProvider: userCachedStatus,
+            infoBubbleViewStatusProvider: factory.userCachedStatus,
             toolbarActionProvider: user,
             saveToolbarActionUseCase: SaveToolbarActionSettings(dependencies: .init(user: user))
         )

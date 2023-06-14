@@ -58,7 +58,7 @@ class ConversationViewControllerTests: XCTestCase {
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
             notificationCenter: notificationCenterMock,
             fetchSenderImage: FetchSenderImage(
-                dependencies: .init(senderImageService: .init(dependencies: .init(apiService: fakeUser.apiService, internetStatusProvider: internetStatusProviderMock)), mailSettings: fakeUser.mailSettings)
+                dependencies: .init(featureFlagCache: MockFeatureFlagCache(), senderImageService: .init(dependencies: .init(apiService: fakeUser.apiService, internetStatusProvider: internetStatusProviderMock)), mailSettings: fakeUser.mailSettings)
             )
         )
 

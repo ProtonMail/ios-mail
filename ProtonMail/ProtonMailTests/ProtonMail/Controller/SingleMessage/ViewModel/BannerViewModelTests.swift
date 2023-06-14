@@ -196,9 +196,14 @@ class BannerViewModelTests: XCTestCase {
                     fetchAttachment: mockFetchAttachment,
                     fetchSenderImage: FetchSenderImage(
                         dependencies: .init(
-                            senderImageService: .init(dependencies: .init(apiService: userManagerMock.apiService, internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
+                            featureFlagCache: MockFeatureFlagCache(),
+                            senderImageService: .init(dependencies: .init(
+                                apiService: userManagerMock.apiService,
+                                internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
+                            )),
                             mailSettings: userManagerMock.mailSettings)
-                    )
+                    ),
+                    darkModeCache: MockDarkModeCacheProtocol()
                 ),
                 highlightedKeywords: []
             )

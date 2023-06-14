@@ -122,7 +122,7 @@ extension SaveSwipeActionSetting {
         let usersApiServices: [APIService]
 
         init(
-            swipeActionCache: SwipeActionCacheProtocol = userCachedStatus,
+            swipeActionCache: SwipeActionCacheProtocol,
             usersApiServices: [APIService]
         ) {
             self.swipeActionCache = swipeActionCache

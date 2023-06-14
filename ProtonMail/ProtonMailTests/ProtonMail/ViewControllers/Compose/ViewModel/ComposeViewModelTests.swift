@@ -61,7 +61,11 @@ final class ComposeViewModelTests: XCTestCase {
             fetchAttachment: .init(),
             contactProvider: contactProvider,
             helperDependencies: helperDependencies,
-            fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: MockKeyMakerProtocol(), cache: MockMobileSignatureCacheProtocol()))
+            fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(
+                coreKeyMaker: MockKeyMakerProtocol(),
+                cache: MockMobileSignatureCacheProtocol()
+            )),
+            darkModeCache: MockDarkModeCacheProtocol()
         )
 
         self.message = testContext.performAndWait {

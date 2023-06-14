@@ -144,13 +144,15 @@ class UserManager: Service {
     }()
 
     lazy var contactService: ContactDataService = { [unowned self] in
-        let service = ContactDataService(api: self.apiService,
-                                         labelDataService: self.labelService,
-                                         userInfo: self.userInfo,
-                                         coreDataService: coreDataService,
-                                         contactCacheStatus: userCachedStatus,
-                                         cacheService: self.cacheService,
-                                         queueManager: sharedServices.get(by: QueueManager.self))
+        let service = ContactDataService(
+            api: self.apiService,
+            labelDataService: self.labelService,
+            userInfo: self.userInfo,
+            coreDataService: coreDataService,
+            contactCacheStatus: sharedServices.userCachedStatus,
+            cacheService: self.cacheService,
+            queueManager: sharedServices.get(by: QueueManager.self)
+        )
         return service
     }()
 
@@ -167,7 +169,9 @@ class UserManager: Service {
         let service = AppRatingService(
             dependencies: .init(
                 featureFlagService: featureFlagsDownloadService,
-                appRating: AppRatingManager()
+                appRating: AppRatingManager(),
+                internetStatus: sharedServices.get(by: InternetConnectionStatusProvider.self),
+                appRatingPrompt: sharedServices.userCachedStatus
             )
         )
         return service
@@ -190,22 +194,24 @@ class UserManager: Service {
             user: self,
             cacheService: self.cacheService,
             undoActionManager: self.undoActionManager,
-            contactCacheStatus: userCachedStatus)
+            contactCacheStatus: sharedServices.userCachedStatus)
         service.viewModeDataSource = self
         service.userDataSource = self
         return service
     }()
 
     lazy var conversationService: ConversationDataServiceProxy = { [unowned self] in
-        let service = ConversationDataServiceProxy(api: apiService,
-                                                   userID: userID,
-                                                   contextProvider: coreDataService,
-                                                   lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
-                                                   messageDataService: messageService,
-                                                   eventsService: eventsService,
-                                                   undoActionManager: undoActionManager,
-                                                   queueManager: sharedServices.get(by: QueueManager.self),
-                                                   contactCacheStatus: userCachedStatus)
+        let service = ConversationDataServiceProxy(
+            api: apiService,
+            userID: userID,
+            contextProvider: coreDataService,
+            lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+            messageDataService: messageService,
+            eventsService: eventsService,
+            undoActionManager: undoActionManager,
+            queueManager: sharedServices.get(by: QueueManager.self),
+            contactCacheStatus: sharedServices.userCachedStatus
+        )
         return service
     }()
 
@@ -262,7 +268,11 @@ class UserManager: Service {
         )
         let service = EventsService(
             userManager: self,
-            dependencies: .init(fetchMessageMetaData: useCase, contactCacheStatus: userCachedStatus, incomingDefaultService: incomingDefaultService)
+            dependencies: .init(
+                fetchMessageMetaData: useCase,
+                contactCacheStatus: sharedServices.userCachedStatus,
+                incomingDefaultService: incomingDefaultService
+            )
         )
         return service
     }()
@@ -284,12 +294,12 @@ class UserManager: Service {
 
 	lazy var featureFlagsDownloadService: FeatureFlagsDownloadService = { [unowned self] in
         let service = FeatureFlagsDownloadService(
-            cache: userCachedStatus,
+            cache: sharedServices.userCachedStatus,
             userID: userID,
             apiService: self.apiService,
             sessionID: self.authCredential.sessionID,
-            appRatingStatusProvider: userCachedStatus,
-            userIntroductionProgressProvider: userCachedStatus
+            appRatingStatusProvider: sharedServices.userCachedStatus,
+            userIntroductionProgressProvider: sharedServices.userCachedStatus
         )
         service.register(newSubscriber: inAppFeedbackStateService)
         return service
@@ -312,7 +322,7 @@ class UserManager: Service {
 
         return BlockedSenderCacheUpdater(
             dependencies: .init(
-                fetchStatusProvider: userCachedStatus,
+                fetchStatusProvider: sharedServices.userCachedStatus,
                 internetConnectionStatusProvider: InternetConnectionStatusProvider(),
                 refetchAllBlockedSenders: refetchAllBlockedSenders,
                 userInfo: userInfo
@@ -320,14 +330,16 @@ class UserManager: Service {
         )
     }()
 
-    lazy var payments = Payments(inAppPurchaseIdentifiers: Constants.mailPlanIDs,
-                                 apiService: self.apiService,
-                                 localStorage: userCachedStatus,
-                                 canExtendSubscription: true,
-                                 reportBugAlertHandler: { _ in
-                                     let link = DeepLink("toBugPop", sender: nil)
-                                     NotificationCenter.default.post(name: .switchView, object: link)
-                                 })
+    lazy var payments = Payments(
+        inAppPurchaseIdentifiers: Constants.mailPlanIDs,
+        apiService: self.apiService,
+        localStorage: sharedServices.userCachedStatus,
+        canExtendSubscription: true,
+        reportBugAlertHandler: { _ in
+            let link = DeepLink("toBugPop", sender: nil)
+            NotificationCenter.default.post(name: .switchView, object: link)
+        }
+    )
 
     private var encryptedSearchCache: EncryptedSearchUserCache {
         return sharedServices.get(by: EncryptedSearchUserDefaultCache.self)
@@ -453,7 +465,8 @@ class UserManager: Service {
             labelDataService: labelService,
             localNotificationService: localNotificationService,
             undoActionManager: undoActionManager,
-            user: self
+            user: self,
+            featureFlagCache: sharedServices.userCachedStatus
         )
     }
 

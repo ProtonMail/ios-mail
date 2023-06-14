@@ -269,9 +269,11 @@ extension MailboxCoordinator {
             user: viewModel.user,
             contextProvider: contextProvider,
             isEditingScheduleMsg: isEditingScheduleMsg,
-            userIntroductionProgressProvider: userCachedStatus,
+            userIntroductionProgressProvider: services.userCachedStatus,
             internetStatusProvider: internetStatusProvider,
-            coreKeyMaker: services.get()
+            coreKeyMaker: services.get(),
+            darkModeCache: services.userCachedStatus,
+            mobileSignatureCache: services.userCachedStatus
         )
         navigationVC.present(composer, animated: true)
     }
@@ -297,6 +299,7 @@ extension MailboxCoordinator {
                 ),
                 fetchSenderImage: FetchSenderImage(
                     dependencies: .init(
+                        featureFlagCache: services.userCachedStatus,
                         senderImageService: .init(
                             dependencies: .init(
                                 apiService: viewModel.user.apiService,
@@ -382,9 +385,11 @@ extension MailboxCoordinator {
                 user: user,
                 contextProvider: contextProvider,
                 isEditingScheduleMsg: false,
-                userIntroductionProgressProvider: userCachedStatus,
+                userIntroductionProgressProvider: services.userCachedStatus,
                 internetStatusProvider: internetStatusProvider,
                 coreKeyMaker: services.get(),
+                darkModeCache: services.userCachedStatus,
+                mobileSignatureCache: services.userCachedStatus,
                 mailToUrl: mailToURL
             )
             nav.present(composer, animated: true)
