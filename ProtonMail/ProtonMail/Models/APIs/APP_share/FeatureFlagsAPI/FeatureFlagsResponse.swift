@@ -50,7 +50,7 @@ struct SupportedFeatureFlags {
     }
 
     init() {
-        fatalError("Dummy init for Sourcery")
+        self.init(rawValues: [:])
     }
 
     subscript<T>(_ featureFlag: FeatureFlag<T>) -> T {

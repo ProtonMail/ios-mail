@@ -286,7 +286,6 @@ class UserManager: Service {
             apiService: self.apiService,
             sessionID: self.authCredential.sessionID,
             appRatingStatusProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus,
             userIntroductionProgressProvider: userCachedStatus,
             referralPromptProvider: userCachedStatus
         )

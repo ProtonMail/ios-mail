@@ -74,7 +74,6 @@ class ShareUnlockCoordinator {
             user: user,
             contextProvider: coreDataService,
             userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendStatusProvider: userCachedStatus,
             internetStatusProvider: internetStatusProvider,
             coreKeyMaker: coreKeyMaker,
             navigationViewController: navigationController

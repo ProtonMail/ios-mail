@@ -26,7 +26,6 @@ struct ComposerViewFactory {
         user: UserManager,
         contextProvider: CoreDataContextProviderProtocol,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        scheduleSendStatusProvider: ScheduleSendEnableStatusProvider,
         internetStatusProvider: InternetConnectionStatusProvider,
         coreKeyMaker: KeyMakerProtocol,
         navigationViewController: UINavigationController
@@ -70,7 +69,6 @@ struct ComposerViewFactory {
             router: router,
             editorViewModel: childViewModel,
             userIntroductionProgressProvider: userIntroductionProgressProvider,
-            scheduleSendStatusProvider: scheduleSendStatusProvider,
             contextProvider: contextProvider
         )
         let controller = ComposeContainerViewController(
@@ -88,7 +86,6 @@ struct ComposerViewFactory {
         contextProvider: CoreDataContextProviderProtocol,
         isEditingScheduleMsg: Bool,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
         internetStatusProvider: InternetConnectionStatusProvider,
         coreKeyMaker: KeyMakerProtocol,
         mailToUrl: URL? = nil,
@@ -135,23 +132,20 @@ struct ComposerViewFactory {
         return Self.makeComposer(
             childViewModel: childViewModel,
             contextProvider: contextProvider,
-            userIntroductionProgressProvider: userIntroductionProgressProvider,
-            scheduleSendEnableStatusProvider: scheduleSendEnableStatusProvider
+            userIntroductionProgressProvider: userIntroductionProgressProvider
         )
     }
 
     static func makeComposer(
         childViewModel: ComposeViewModel,
         contextProvider: CoreDataContextProviderProtocol,
-        userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
+        userIntroductionProgressProvider: UserIntroductionProgressProvider
     ) -> UINavigationController {
         let router = ComposerRouter()
         let viewModel = ComposeContainerViewModel(
             router: router,
             editorViewModel: childViewModel,
             userIntroductionProgressProvider: userIntroductionProgressProvider,
-            scheduleSendStatusProvider: scheduleSendEnableStatusProvider,
             contextProvider: contextProvider
         )
         let controller = ComposeContainerViewController(

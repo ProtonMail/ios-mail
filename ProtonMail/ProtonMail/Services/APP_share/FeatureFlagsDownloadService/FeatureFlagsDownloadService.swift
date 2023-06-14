@@ -48,7 +48,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     }
     private(set) var lastFetchingTime: Date?
     private let appRatingStatusProvider: AppRatingStatusProvider
-    private let scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
     private let referralPromptProvider: ReferralPromptProvider
 
@@ -58,7 +57,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         apiService: APIService,
         sessionID: String,
         appRatingStatusProvider: AppRatingStatusProvider,
-        scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
         referralPromptProvider: ReferralPromptProvider
     ) {
@@ -67,7 +65,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         self.apiService = apiService
         self.sessionID = sessionID
         self.appRatingStatusProvider = appRatingStatusProvider
-        self.scheduleSendEnableStatusProvider = scheduleSendEnableStatusProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.referralPromptProvider = referralPromptProvider
     }
@@ -105,18 +102,10 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
 
             self.subscribers.forEach { $0.handleNewFeatureFlags(supportedFeatureFlags) }
 
-            let isScheduleSendEnabled = supportedFeatureFlags[.scheduleSend]
-                let stateBeforeTheUpdate = self.scheduleSendEnableStatusProvider.isScheduleSendEnabled(
-                    userID: self.userID
-                )
+            let isScheduleSendEnabledAfterUpdate = supportedFeatureFlags[.scheduleSend]
+            let wasScheduleSendEnabledBeforeUpdate = self.cache.featureFlags(for: self.userID)[.scheduleSend]
 
-                self.scheduleSendEnableStatusProvider.setScheduleSendStatus(
-                    enable: isScheduleSendEnabled,
-                    userID: self.userID
-                )
-
-                switch stateBeforeTheUpdate {
-                case .disabled where isScheduleSendEnabled:
+                if isScheduleSendEnabledAfterUpdate && !wasScheduleSendEnabledBeforeUpdate {
                     // We need to reset spotlight when transitioning from expicitly disabled to enabled.
                     // However, we should not do it if the feature state was not set at all,
                     // which is the case right after sign in.
@@ -125,8 +114,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
                         asSeen: false,
                         byUserWith: self.userID
                     )
-                default:
-                    break
                 }
 
             let appRatingStatus = supportedFeatureFlags[.appRating]

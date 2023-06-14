@@ -298,7 +298,6 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
             contextProvider: viewModel.coreDataService,
             isEditingScheduleMsg: false,
             userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus,
             internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
             coreKeyMaker: sharedServices.get(),
             toContact: contact

@@ -47,7 +47,6 @@
         "MultiuserManagementTests\/testSwitchAccount()",
         "PinTests\/testEnableAutoLockPin()",
         "PinTests\/testTurnOnAndOffPin()",
-        "ReplyToMessageTests\/testReplyTextMessage()",
         "SpamTests\/testSwipeToSpamMessage()"
       ],
       "target" : {

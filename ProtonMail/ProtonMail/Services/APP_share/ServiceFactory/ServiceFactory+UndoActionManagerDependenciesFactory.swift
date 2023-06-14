@@ -47,7 +47,6 @@ extension ServiceFactory {
                 contextProvider: factory.get(),
                 isEditingScheduleMsg: false,
                 userIntroductionProgressProvider: userCachedStatus,
-                scheduleSendEnableStatusProvider: userCachedStatus,
                 internetStatusProvider: factory.get(),
                 coreKeyMaker: factory.get()
             )

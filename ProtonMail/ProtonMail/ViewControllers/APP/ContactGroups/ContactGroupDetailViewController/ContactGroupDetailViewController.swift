@@ -110,7 +110,6 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
             contextProvider: sharedServices.get(by: CoreDataService.self),
             isEditingScheduleMsg: false,
             userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus,
             internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
             coreKeyMaker: sharedServices.get(),
             toContact: contactGroupVO
