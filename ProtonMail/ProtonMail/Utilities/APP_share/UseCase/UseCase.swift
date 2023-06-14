@@ -41,11 +41,6 @@ class NewUseCase<T, Params> {
     private(set) var executionQueue: DispatchQueue = .global(qos: .userInitiated)
     private(set) var callbackQueue: DispatchQueue = .global(qos: .userInitiated)
 
-    func executeOn(_ queue: DispatchQueue) -> Self {
-        executionQueue = queue
-        return self
-    }
-
     func callbackOn(_ queue: DispatchQueue) -> Self {
         callbackQueue = queue
         return self

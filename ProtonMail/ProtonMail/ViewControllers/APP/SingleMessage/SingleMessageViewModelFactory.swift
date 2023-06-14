@@ -67,7 +67,6 @@ class SingleMessageViewModelFactory {
                          systemUpTime: SystemUpTimeProtocol,
                          internetStatusProvider: InternetConnectionStatusProvider,
                          highlightedKeywords: [String],
-                         imageProxy: ImageProxy,
                          coordinator: SingleMessageCoordinator,
                          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) -> SingleMessageViewModel {
         let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))

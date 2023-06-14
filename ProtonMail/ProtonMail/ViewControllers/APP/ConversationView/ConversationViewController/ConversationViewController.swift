@@ -1006,9 +1006,7 @@ extension ConversationViewController {
         case let .attachmentList(messageId, body, attachments):
             guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
             let cids = message.getCIDOfInlineAttachment(decryptedBody: body)
-            viewModel.handleNavigationAction(.attachmentList(message: message,
-                                                             inlineCIDs: cids,
-                                                             attachments: attachments))
+            viewModel.handleNavigationAction(.attachmentList(inlineCIDs: cids, attachments: attachments))
         case .more(let messageId):
             if let message = viewModel.messagesDataSource.message(with: messageId) {
                 handleMoreAction(messageId: messageId, message: message)

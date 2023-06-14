@@ -86,13 +86,11 @@ final class KeysResponse: Response {
         case external = 2
     }
     var recipientType: RecipientType = .internal
-    var mimeType: String?
     var keys: [KeyResponse] = [KeyResponse]()
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         let rawRecipientType = response["RecipientType"] as? Int ?? 0
         self.recipientType = RecipientType(rawValue: rawRecipientType) ?? .external
-        self.mimeType = response["MIMEType"] as? String
 
         if let keyRes = response["Keys"] as? [[String: Any]] {
             for keyDict in keyRes {

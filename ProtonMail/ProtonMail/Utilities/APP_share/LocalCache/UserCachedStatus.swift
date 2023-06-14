@@ -92,7 +92,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         // Random pin protection
         static let randomPinForProtection = "randomPinForProtection"
-        static let realAttachments = "realAttachments"
 
         static let paymentMethods = "paymentMethods"
 

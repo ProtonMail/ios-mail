@@ -42,16 +42,6 @@ class NewUseCaseTests: XCTestCase {
         waitForExpectations(timeout: 2.0)
     }
 
-    func testExecute_whenExecutionThreadIsSetToMain_executionIsOnMainThread() {
-        let expectation = expectation(description: "")
-        sut.executeOn(.main).execute(params: Void()) { result in
-            let isExecutionOnMain = try! result.get()
-            XCTAssertTrue(isExecutionOnMain)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2.0)
-    }
-
     func testExecute_whenCallbackThreadIsNotSpecified_callbackIsNotOnMainThread() {
         let expectation = expectation(description: "")
         sut.execute(params: Void()) { result in

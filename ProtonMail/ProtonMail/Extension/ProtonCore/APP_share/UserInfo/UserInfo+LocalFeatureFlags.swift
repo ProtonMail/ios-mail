@@ -41,10 +41,6 @@ extension UserInfo {
         return true
     }
 
-    static var isImageProxyAvailable: Bool {
-        true
-    }
-
     /// Swipe to show previous / next conversation or messages
     static var isConversationSwipeEnabled: Bool {
         #if DEBUG_ENTERPRISE

@@ -27,7 +27,6 @@ import UIKit
 final class LabelManagerViewController: UITableViewController {
 
     private enum Layout {
-        static let sectionWithTitleHeight: CGFloat = 32.0
         static let sectionWithoutTitleHeight: CGFloat = 52.0
         static let cellHeight: CGFloat = 48.0
     }
@@ -36,8 +35,6 @@ final class LabelManagerViewController: UITableViewController {
     private let navBarDoneButton = SubviewFactory.navBarDoneButton
 
     private let viewModel: LabelManagerViewModelProtocol
-    private var dragBeginIndex: IndexPath?
-    private var dragDestIndex: IndexPath?
 
     init(viewModel: LabelManagerViewModelProtocol) {
         self.viewModel = viewModel

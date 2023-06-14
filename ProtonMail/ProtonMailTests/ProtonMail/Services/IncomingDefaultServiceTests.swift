@@ -244,18 +244,6 @@ final class IncomingDefaultServiceTests: XCTestCase {
         XCTAssert(existsAndIsSoftDeleted)
     }
 
-    func testSoftDelete_preventsListLocalFromReturningObjects() throws {
-        let id = String.randomString(16)
-
-        storeStubbedObject(id: id, time: .distantPast)
-
-        XCTAssertNotEqual(try sut.listLocal(query: .location(location)), [])
-
-        try sut.softDelete(query: .id(id))
-
-        XCTAssertEqual(try sut.listLocal(query: .location(location)), [])
-    }
-
     func testPerformRemoteDeletion_sendsIdsOfMatchingObjectsIncludingSoftDeleted() async throws {
         let id = String.randomString(16)
 

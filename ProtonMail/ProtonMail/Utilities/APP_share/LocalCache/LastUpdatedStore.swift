@@ -151,7 +151,7 @@ extension LastUpdatedStore {
                 )
             }
 
-            return labelCount.map { LabelCountEntity(labelCount: $0, viewMode: type) }
+            return labelCount.map { LabelCountEntity(labelCount: $0) }
         }
     }
 

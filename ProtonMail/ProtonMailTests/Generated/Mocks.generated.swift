@@ -637,11 +637,6 @@ class MockIncomingDefaultServiceProtocol: IncomingDefaultServiceProtocol {
         fetchAllStub(location, completion)
     }
 
-    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.listLocal, initialReturn: [IncomingDefaultEntity]()) var listLocalStub
-    func listLocal(query: IncomingDefaultService.Query) throws -> [IncomingDefaultEntity] {
-        try listLocalStub(query)
-    }
-
     @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.save) var saveStub
     func save(dto: IncomingDefaultDTO) throws {
         try saveStub(dto)

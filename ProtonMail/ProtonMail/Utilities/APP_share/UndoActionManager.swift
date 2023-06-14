@@ -31,7 +31,6 @@ protocol UndoActionManagerProtocol {
 }
 
 enum UndoAction: Equatable {
-    case send
     case spam
     case trash
     case archive

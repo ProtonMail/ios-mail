@@ -194,8 +194,7 @@ extension LabelCountEntity {
         unreadEnd: Date? = nil,
         unreadUpdate: Date? = nil,
         total: Int = .init(),
-        unread: Int = .init(),
-        viewMode: ViewMode = .conversation
+        unread: Int = .init()
     ) -> Self {
         LabelCountEntity(
             start: start,
@@ -205,8 +204,7 @@ extension LabelCountEntity {
             unreadEnd: unreadEnd,
             unreadUpdate: unreadUpdate,
             total: total,
-            unread: unread,
-            viewMode: viewMode
+            unread: unread
         )
     }
 }
