@@ -31,7 +31,7 @@ class PushNotificationServiceTests: XCTestCase {
     typealias SubscriptionWithSettings = PushNotificationService.SubscriptionWithSettings
 
     private var sut: PushNotificationService!
-    private var sessionIdProvider: SessionIdProvider!
+    private var sessionIdProvider: SessionIDMock!
     private var subscriptionSaver: InMemorySaver<Set<SubscriptionWithSettings>>!
     private var mockRegisterDevice: MockRegisterDeviceUseCase!
 
@@ -118,6 +118,8 @@ class PushNotificationServiceTests: XCTestCase {
         subscriptionSaver.set(newValue: Set(subs))
 
         sut.didRegisterForRemoteNotifications(withDeviceToken: dummyToken)
+        // didRegisterForRemoteNotifications is asynchronous and we need to wait to ensure the logic has finished
+        sleep(1)
 
         waitForExpectations(timeout: 1.0)
         XCTAssertEqual(subscriptionSaver.get()?.count, 1)
@@ -153,6 +155,33 @@ class PushNotificationServiceTests: XCTestCase {
 
         XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.deviceToken, dummyToken)
         XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.uid, firstSessionId)
+    }
+
+    /// This test tries to ensure that the implementation of `didRegisterForRemoteNotifications`
+    /// is not deleting encryption kits momentarily when new a new token is registered
+    func testDidRegisterForRemoteNotifications_whenDeviceTokenRenewed_itAlwaysReturnsAnEncryptionKit() {
+        sessionIdProvider.sessionIDs = (1...4).map { "session\($0)" }
+        mockRegisterDevice.callExecutionBlock.bodyIs { _, _, callback in
+                callback(.success(()))
+        }
+
+        // first call to setup the test conditions
+        sut.didRegisterForRemoteNotifications(withDeviceToken: "token change 1")
+        sleep(1) // necessary to test the second call independently from the first didRegisterForRemoteNotifications
+        // we make sure we have the values set
+        sessionIdProvider.sessionIDs.forEach { uid in
+            if sut.currentSubscriptions.encryptionKit(forUID: uid) == nil {
+                XCTFail("encryptionKit is NIL for uid \(uid)")
+            }
+        }
+
+        // actual test
+        sut.didRegisterForRemoteNotifications(withDeviceToken: "token change 2")
+        sessionIdProvider.sessionIDs.forEach { uid in
+            if sut.currentSubscriptions.encryptionKit(forUID: uid) == nil {
+                XCTFail("encryptionKit is NIL for uid \(uid)")
+            }
+        }
     }
 
     func testUpdateSettingsIfNeeded_notInCurrentSubscription_UpdateClosureCalled() {
@@ -250,7 +279,7 @@ extension PushNotificationServiceTests {
         }
     }
     
-    private struct SessionIDMock: SessionIdProvider {
+    private class SessionIDMock: SessionIdProvider {
         var sessionIDs = ["001100010010011110100001101101110011"]
     }
     

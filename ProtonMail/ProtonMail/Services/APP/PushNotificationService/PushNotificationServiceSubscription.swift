@@ -33,7 +33,7 @@ extension PushNotificationService {
 
     class SubscriptionsPack: SubscriptionsPackProtocol {
         private let subscriptionSaver: Saver<Set<SubscriptionWithSettings>>
-        internal let encryptionKitSaver: Saver<Set<SubscriptionSettings>>
+        private let encryptionKitSaver: Saver<Set<SubscriptionSettings>>
         private let outdatedSaver: Saver<Set<SubscriptionSettings>>
 
         private(set) var subscriptions: Set<SubscriptionWithSettings> {
@@ -66,9 +66,7 @@ extension PushNotificationService {
         }
 
         func outdate(_ settingsToMoveToOutdated: Set<SubscriptionSettings>) {
-            let toOutdate = self.subscriptions.filter { settingsToMoveToOutdated.contains($0.settings) }
-            self.subscriptions.subtract(toOutdate)
-            self.outdatedSettings.formUnion(settingsToMoveToOutdated)
+            outdatedSettings.formUnion(settingsToMoveToOutdated)
         }
 
         func insert(_ subscriptionsToInsert: Set<SubscriptionWithSettings>) {
@@ -81,6 +79,11 @@ extension PushNotificationService {
 
             updated.insert(.init(settings: settings, state: toState))
             self.subscriptions = updated
+        }
+
+        func removeFromActiveSubscriptions(_ settingsToRemove: Set<SubscriptionSettings>) {
+            let toOutdate = subscriptions.filter { settingsToRemove.contains($0.settings) }
+            subscriptions.subtract(toOutdate)
         }
 
         func settings() -> Set<SubscriptionSettings> {

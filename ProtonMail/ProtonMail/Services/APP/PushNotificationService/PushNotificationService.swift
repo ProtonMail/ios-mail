@@ -30,7 +30,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     typealias SubscriptionSettings = PushSubscriptionSettings
     typealias UpdateSubscriptionTuple = (SubscriptionSettings, SubscriptionState)
 
-    private let currentSubscriptions: SubscriptionsPack
+    let currentSubscriptions: SubscriptionsPack
     private let deviceRegistrator: DeviceRegistrator
     private let navigationResolver: PushNavigationResolver
     private let notificationActions: PushNotificationActionsHandler
@@ -45,15 +45,7 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     /// The notification action is pending because the app has been just launched and can't make a request yet
     private var notificationActionPendingUnlock: PendingNotificationAction?
     private var notificationOptions: [AnyHashable: Any]?
-    private var latestDeviceToken: String? { // previous device tokens are not relevant for this class
-        willSet {
-            guard latestDeviceToken != newValue else { return }
-            // Reset state if new token is changed.
-            let settings = currentSubscriptions.settings()
-            for setting in settings {
-                currentSubscriptions.update(setting, toState: .notReported)
-            }
-        }
+    private var latestDeviceToken: String? {
         didSet {
             // but we have to save one for PushNotificationDecryptor
             self.deviceTokenSaver.set(newValue: latestDeviceToken)
@@ -234,6 +226,7 @@ extension PushNotificationService {
     }
 
     private func reportSettings(settingsToReport: Set<PushNotificationService.SubscriptionSettings>) {
+        let settingsOutdated = currentSubscriptions.outdatedSettings
         reportOutdatedSettings()
         let result = report(settingsToReport)
 
@@ -243,6 +236,7 @@ extension PushNotificationService {
         ) { [weak self] result in
             self?.currentSubscriptions.update(result.0, toState: result.1)
         }
+        currentSubscriptions.removeFromActiveSubscriptions(settingsOutdated)
     }
 
     // unregister on BE and validate local values
@@ -277,6 +271,7 @@ extension PushNotificationService {
         var reportResult: [SubscriptionSettings: SubscriptionState] = [:]
 
         let group = DispatchGroup()
+        let serialQueue = DispatchQueue(label: "me.proton.reportEncryptionKit")
         settingsToReport.forEach { settings in
             group.enter()
             reportResult[settings] = .pending
@@ -285,7 +280,7 @@ extension PushNotificationService {
                 deviceToken: settings.token,
                 publicEncryptionKey: settings.encryptionKit.publicKey
             )
-            dependencies.registerDevice.execute(params: params) { result in
+            dependencies.registerDevice.callbackOn(serialQueue).execute(params: params) { result in
                 switch result {
                 case .success:
                     reportResult[settings] = .reported
