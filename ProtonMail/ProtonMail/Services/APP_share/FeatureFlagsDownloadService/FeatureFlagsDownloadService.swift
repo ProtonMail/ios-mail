@@ -49,7 +49,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     private(set) var lastFetchingTime: Date?
     private let appRatingStatusProvider: AppRatingStatusProvider
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
-    private let referralPromptProvider: ReferralPromptProvider
 
     init(
         cache: FeatureFlagCache,
@@ -57,8 +56,7 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         apiService: APIService,
         sessionID: String,
         appRatingStatusProvider: AppRatingStatusProvider,
-        userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        referralPromptProvider: ReferralPromptProvider
+        userIntroductionProgressProvider: UserIntroductionProgressProvider
     ) {
         self.cache = cache
         self.userID = userID
@@ -66,7 +64,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         self.sessionID = sessionID
         self.appRatingStatusProvider = appRatingStatusProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
-        self.referralPromptProvider = referralPromptProvider
     }
 
     func register(newSubscriber: FeatureFlagsSubscribeProtocol) {
@@ -120,13 +117,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
                 self.appRatingStatusProvider.setIsAppRatingEnabled(appRatingStatus)
 
             self.cache.storeFeatureFlags(supportedFeatureFlags, for: self.userID)
-
-            if let isReferralPromptAvailable = response.result[FeatureFlagKey.referralPrompt.rawValue] as? Bool {
-                self.referralPromptProvider.setIsReferralPromptEnabled(
-                    enabled: isReferralPromptAvailable,
-                    userID: self.userID
-                )
-            }
 
             completion?(nil)
         }
