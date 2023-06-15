@@ -219,7 +219,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func openAutoDeleteSettings() {
-        let viewModel = AutoDeleteSettingViewModel(currentState: .implicitlyDisabled)
+        let viewModel = AutoDeleteSettingViewModel(user, apiService: user.apiService)
         let viewController = SwitchToggleViewController(viewModel: viewModel)
         navigationController?.show(viewController, sender: nil)
     }

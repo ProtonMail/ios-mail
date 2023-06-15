@@ -45,6 +45,19 @@ class MockAppRatingWrapper: AppRatingWrapper {
 
 }
 
+class MockAutoDeleteSpamAndTrashDaysProvider: AutoDeleteSpamAndTrashDaysProvider {
+    @PropertyStub(\MockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled, initialGet: Bool()) var isAutoDeleteEnabledStub
+    var isAutoDeleteEnabled: Bool {
+        get {
+            isAutoDeleteEnabledStub()
+        }
+        set {
+            isAutoDeleteEnabledStub(newValue)
+        }
+    }
+
+}
+
 class MockBackendConfigurationCacheProtocol: BackendConfigurationCacheProtocol {
     @FuncStub(MockBackendConfigurationCacheProtocol.readEnvironment, initialReturn: nil) var readEnvironmentStub
     func readEnvironment() -> Environment? {

@@ -313,7 +313,13 @@ extension SettingsAccountViewController {
                                                             for: indexPath) as? SettingsGeneralImageCell else {
             return nil
         }
-        imageCell.configure(left: item.description, right: "Off", leftImage: Asset.upgradeIcon.image)
+        let onOffTitle: String
+        if self.viewModel.isAutoDeleteSpamAndTrashEnabled {
+            onOffTitle = LocalString._settings_On_title
+        } else {
+            onOffTitle = LocalString._settings_Off_title
+        }
+        imageCell.configure(left: item.description, right: onOffTitle, leftImage: Asset.upgradeIcon.image)
         return imageCell
     }
 

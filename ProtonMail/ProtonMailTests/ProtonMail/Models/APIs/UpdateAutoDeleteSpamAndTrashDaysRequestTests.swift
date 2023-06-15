@@ -15,34 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+@testable import ProtonMail
+import XCTest
 
-enum AutoDeleteSpamAndTrashDays: Int, Encodable {
-    case implicitlyDisabled
-    case explicitlyDisabled
-    case explicitlyEnabled
+final class UpdateAutoDeleteSpamAndTrashDaysRequestTests: XCTestCase {
+    func testInit() throws {
+        let value = Bool.random()
+        let sut = UpdateAutoDeleteSpamAndTrashDaysRequest(shouldEnable: value)
 
-    static let disabledValue: Int = 0
-    static let enabledValue: Int = 30
-
-    init(rawValue: Int?) {
-        guard let rawValue else {
-            self = .implicitlyDisabled
-            return
-        }
-        if rawValue == 0 {
-            self = .explicitlyDisabled
-        } else {
-            self = .explicitlyEnabled
-        }
-    }
-
-    var isEnabled: Bool {
-        switch self {
-        case .implicitlyDisabled, .explicitlyDisabled:
-            return false
-        case .explicitlyEnabled:
-            return true
-        }
+        let parameter = try XCTUnwrap(sut.parameters?["Days"] as? Int)
+        XCTAssertEqual(parameter, value == true ? 30 : 0)
     }
 }

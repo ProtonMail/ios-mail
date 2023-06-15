@@ -16,8 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import struct UIKit.CGFloat
+import ProtonCore_Services
 import enum ProtonCore_Utilities.Either
+import struct UIKit.CGFloat
 
 final class AutoDeleteSettingViewModel: SwitchToggleVMProtocol {
     var confirmation: SwitchToggleVMActionConfirmation? {
@@ -28,21 +29,36 @@ final class AutoDeleteSettingViewModel: SwitchToggleVMProtocol {
     var input: SwitchToggleVMInput { self }
     var output: SwitchToggleVMOutput { self }
 
-    let currentState: AutoDeleteSpamAndTrashDays
+    private var autoDeleteSpamAndTrashDaysProvider: AutoDeleteSpamAndTrashDaysProvider
+    private let apiService: APIService
 
-    init(currentState: AutoDeleteSpamAndTrashDays) {
-        self.currentState = currentState
+    init(
+        _ autoDeleteSpamAndTrashDaysProvider: AutoDeleteSpamAndTrashDaysProvider,
+        apiService: APIService
+    ) {
+        self.autoDeleteSpamAndTrashDaysProvider = autoDeleteSpamAndTrashDaysProvider
+        self.apiService = apiService
     }
 }
 
 extension AutoDeleteSettingViewModel: SwitchToggleVMInput {
     func toggle(for indexPath: IndexPath, to newStatus: Bool, completion: @escaping ToggleCompletion) {
-        let newValue: AutoDeleteSpamAndTrashDays = newStatus ? .explicitlyEnabled : .explicitlyDisabled
-        guard newValue != currentState else {
+        guard newStatus != autoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled else {
             completion(nil)
             return
         }
-        //TODO: Call service to update value
+        let request = UpdateAutoDeleteSpamAndTrashDaysRequest(shouldEnable: newStatus)
+        apiService.perform(
+            request: request,
+            response: VoidResponse()
+        ) { [weak self] _, response in
+            if let error = response.error?.toNSError {
+                completion(error)
+            } else {
+                self?.autoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled = newStatus
+                completion(nil)
+            }
+        }
     }
 }
 
@@ -54,7 +70,7 @@ extension AutoDeleteSettingViewModel: SwitchToggleVMOutput {
     var footerTopPadding: CGFloat { 8 }
 
     func cellData(for indexPath: IndexPath) -> (title: String, status: Bool)? {
-        (L11n.AutoDeleteSettings.rowTitle, currentState == .explicitlyEnabled)
+        (L11n.AutoDeleteSettings.rowTitle, autoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled)
     }
 
     func sectionHeader(of section: Int) -> String? {

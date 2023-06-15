@@ -71,7 +71,7 @@ final class SwitchToggleViewController: UITableViewController, AccessibleView {
                     feedback(isSuccess)
                 }
             }
-            if let confirmation = self?.viewModel.confirmation {
+            if newStatus, let confirmation = self?.viewModel.confirmation {
                 let alert = UIAlertController(
                     title: confirmation.title,
                     message: confirmation.message,

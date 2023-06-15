@@ -97,7 +97,7 @@ final class NextMessageAfterMoveViewModelTests: XCTestCase {
         waitForExpectations(timeout: 1)
         
         XCTAssertFalse(
-            mockNextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMoveStub.getWasCalled
+            mockNextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMoveStub.setWasCalled
         )
     }
 }
