@@ -101,6 +101,7 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
     case folders
     case storage
     case nextMsgAfterMove
+    case autoDeleteSpamTrash
 
     var description: String {
         switch self {
@@ -124,6 +125,8 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
             return LocalString._local_storage_limit
         case .nextMsgAfterMove:
             return L11n.NextMsgAfterMove.settingTitle
+        case .autoDeleteSpamTrash:
+            return L11n.AutoDeleteSettings.settingTitle
         }
     }
 }
@@ -188,6 +191,10 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
             mailboxItems.append(.blockList)
         }
 
+        if UserInfo.isAutoDeleteEnabled {
+            mailboxItems.append(.autoDeleteSpamTrash)
+        }
+ 
         self.mailboxItems = mailboxItems
     }
 

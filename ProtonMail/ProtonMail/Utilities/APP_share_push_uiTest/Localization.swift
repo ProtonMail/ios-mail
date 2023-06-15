@@ -1540,4 +1540,13 @@ enum L11n {
         )
         static let noResultsTitle = NSLocalizedString("No results found", comment: "zero messages matching search query")
     }
+
+    struct AutoDeleteSettings {
+        static let settingTitle = NSLocalizedString("Auto-delete", comment: "The title of the setting of the auto-delete option")
+        static let rowTitle = NSLocalizedString("Auto-delete unwanted messages", comment: "The title of the row inside the setting page of auto delete option")
+        static let rowFooterTitle = NSLocalizedString("Messages in trash or spam longer than 30 days will be automatically deleted.", comment: "The footer title of the setting row of the auto delete option")
+        static let alertTitle = NSLocalizedString("Delete messages?", comment: "Title of the alert to confirm enabling of the auto delete option")
+        static let alertMessage = NSLocalizedString("This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.", comment: "Message of the alert to confirm enabling of the auto delete option")
+        static let alertEnableButton = NSLocalizedString("Enable", comment: "Button to enable auto delete")
+    }
 }
