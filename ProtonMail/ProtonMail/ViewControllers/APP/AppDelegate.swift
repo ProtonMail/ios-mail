@@ -275,9 +275,12 @@ extension AppDelegate: UIApplicationDelegate {
             let coreDataService: CoreDataService = sharedServices.get()
             self.purgeOldMessages = PurgeOldMessages(user: user,
                                                      coreDataService: coreDataService)
-            self.purgeOldMessages?.execute(completion: { [weak self] _ in
-                self?.purgeOldMessages = nil
-            })
+            self.purgeOldMessages?.execute(
+                params: (),
+                callback: { [weak self] _ in
+                    self?.purgeOldMessages = nil
+                }
+            )
             user.cacheService.cleanOldAttachment()
             user.messageService.updateMessageCount()
 

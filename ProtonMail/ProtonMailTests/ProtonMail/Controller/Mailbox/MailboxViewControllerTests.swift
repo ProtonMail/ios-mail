@@ -235,6 +235,7 @@ extension MailboxViewControllerTests {
         sut = .init()
         let fetchMessage = MockFetchMessages()
         let updateMailbox = UpdateMailbox(dependencies: .init(
+            labelID: labelID,
             eventService: eventsServiceMock,
             messageDataService: userManagerMock.messageService,
             conversationProvider: conversationProviderMock,
@@ -242,7 +243,7 @@ extension MailboxViewControllerTests {
             fetchMessageWithReset: MockFetchMessagesWithReset(),
             fetchMessage: fetchMessage,
             fetchLatestEventID: mockFetchLatestEventId
-        ), parameters: .init(labelID: labelID))
+        ))
         self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
 
         let dependencies = MailboxViewModel.Dependencies(

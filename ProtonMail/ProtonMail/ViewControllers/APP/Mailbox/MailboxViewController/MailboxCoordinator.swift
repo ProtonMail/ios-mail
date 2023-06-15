@@ -323,8 +323,8 @@ extension MailboxCoordinator {
                                 contextProvider: coreDataService,
                                 userID: viewModel.user.userID,
                                 fetchMessageMetaData: FetchMessageMetaData(
-                                    params: .init(userID: viewModel.user.userID.rawValue),
                                     dependencies: .init(
+                                        userID: viewModel.user.userID,
                                         messageDataService: viewModel.user.messageService,
                                         contextProvider: coreDataService
                                     )

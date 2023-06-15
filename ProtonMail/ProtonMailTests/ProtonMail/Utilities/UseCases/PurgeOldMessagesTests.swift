@@ -23,16 +23,16 @@ final class PurgeOldMessagesTests: XCTestCase {
     private var sut: PurgeOldMessages!
     private var coreDataService: MockCoreDataContextProvider!
     private var mockFetchMessageMetaDataUC: MockFetchMessageMetaData!
-    private var userID: String!
+    private var userID: UserID!
 
     override func setUp() {
-        self.userID = UUID().uuidString
+        self.userID = UserID(UUID().uuidString)
         self.coreDataService = MockCoreDataContextProvider()
         self.mockFetchMessageMetaDataUC = MockFetchMessageMetaData()
         self.sut = PurgeOldMessages(
-            params: .init(userID: userID),
             dependencies: .init(coreDataService: self.coreDataService,
-                                fetchMessageMetaData: self.mockFetchMessageMetaDataUC))
+                                fetchMessageMetaData: self.mockFetchMessageMetaDataUC,
+                                userID: userID))
     }
 
     override func tearDown() {
@@ -45,7 +45,7 @@ final class PurgeOldMessagesTests: XCTestCase {
     // All messages contains meta data
     func testZeroMessagesCase() throws {
         let expectation = expectation(description: "callbacks are called")
-        self.sut.execute { _ in
+        self.sut.execute(params: ()) { _ in
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2.0)
@@ -56,7 +56,7 @@ final class PurgeOldMessagesTests: XCTestCase {
 
     func testMessagesWithoutMetaDataCase() throws {
         var parsedObject = try XCTUnwrap(testMessageMetaData.parseObjectAny())
-        parsedObject["UserID"] = self.userID
+        parsedObject["UserID"] = self.userID.rawValue
         let messageID = MessageID(UUID().uuidString)
         parsedObject["ID"] = messageID.rawValue
 
@@ -68,7 +68,7 @@ final class PurgeOldMessagesTests: XCTestCase {
         }
 
         let expectation = expectation(description: "callbacks are called")
-        self.sut.execute { _ in
+        self.sut.execute(params: ()) { _ in
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2.0)

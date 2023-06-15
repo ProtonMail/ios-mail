@@ -407,7 +407,7 @@ extension EventsService {
 
                 self.dependencies
                     .fetchMessageMetaData
-                    .execute(with: messagesNoCache) { _ in }
+                    .execute(params: .init(messageIDs: messagesNoCache)) { _ in }
             }
 
         if let error = error {

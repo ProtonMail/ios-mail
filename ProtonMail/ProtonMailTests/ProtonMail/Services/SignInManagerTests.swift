@@ -94,8 +94,8 @@ final class SignInManagerTests: XCTestCase {
         let unlockExpectation = expectation(description: "Closure is called")
         let errorExpectation = expectation(description: "Closure should not be called")
         errorExpectation.isInverted = true
-        updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, _, _, completion in
-            completion?()
+        updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, completion in
+            completion(.success)
         }
         apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/settings") {
@@ -140,8 +140,8 @@ final class SignInManagerTests: XCTestCase {
         let unlockExpectation = expectation(description: "Closure is called")
         let errorExpectation = expectation(description: "Closure should not be called")
         errorExpectation.isInverted = true
-        updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, _, _, completion in
-            completion?()
+        updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, completion in
+            completion(.success)
         }
         apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/settings") {
@@ -213,8 +213,8 @@ final class SignInManagerTests: XCTestCase {
         let unlockExpectation = expectation(description: "Closure is called")
         unlockExpectation.isInverted = true
         let errorExpectation = expectation(description: "Closure should not be called")
-        updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, _, _, completion in
-            completion?()
+        updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, completion in
+            completion(.success)
         }
         apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/settings") {

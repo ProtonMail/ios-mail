@@ -18,26 +18,22 @@
 import Foundation
 import Groot
 
-protocol FetchMessageMetaDataUseCase: UseCase {
-    func execute(with messageIDs: [MessageID], callback: @escaping UseCaseResult<Void>)
-}
+typealias FetchMessageMetaDataUseCase = NewUseCase<Void, FetchMessageMetaData.Parameters>
 
 final class FetchMessageMetaData: FetchMessageMetaDataUseCase {
-    private let params: Parameters
     private let dependencies: Dependencies
 
-    init(params: Parameters, dependencies: Dependencies) {
-        self.params = params
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
-    func execute(with messageIDs: [MessageID], callback: @escaping UseCaseResult<Void>) {
-        if messageIDs.isEmpty {
-            callback(.success(Void()))
+    override func executionBlock(params: Parameters, callback: @escaping NewUseCase<Void, Parameters>.Callback) {
+        if params.messageIDs.isEmpty {
+            callback(.success(()))
             return
         }
 
-        let uniqueMessageIDs = Array(Set(messageIDs))
+        let uniqueMessageIDs = Array(Set(params.messageIDs))
         let nonEmptyMessageIDs = uniqueMessageIDs.filter { !$0.rawValue.isEmpty }
         let chunks = nonEmptyMessageIDs.chunked(into: 20)
         let group = DispatchGroup()
@@ -45,7 +41,7 @@ final class FetchMessageMetaData: FetchMessageMetaDataUseCase {
             .queueManager
             .addBlock { [weak self] in
                 guard let self = self else {
-                    callback(.success(Void()))
+                    callback(.success(()))
                     return
                 }
 
@@ -57,13 +53,14 @@ final class FetchMessageMetaData: FetchMessageMetaDataUseCase {
                 }
 
                 group.notify(queue: .global()) {
-                    callback(.success(Void()))
+                    callback(.success(()))
                 }
             }
     }
 }
 
 // MARK: Private functions
+
 extension FetchMessageMetaData {
     private func fetchMetaData(with messageIDs: [MessageID],
                                completion: @escaping (() -> Void)) {
@@ -80,8 +77,10 @@ extension FetchMessageMetaData {
             }
     }
 
-    private func responseProcessor(messageDicts: [[String: Any]]?,
-                                   completion: @escaping (() -> Void)) {
+    private func responseProcessor(
+        messageDicts: [[String: Any]]?,
+        completion: @escaping (() -> Void)
+    ) {
         guard var messageDicts = messageDicts,
               !messageDicts.isEmpty else {
             completion()
@@ -89,7 +88,7 @@ extension FetchMessageMetaData {
         }
 
         for index in messageDicts.indices {
-            messageDicts[index]["UserID"] = self.params.userID
+            messageDicts[index]["UserID"] = dependencies.userID.rawValue
             messageDicts[index].addAttachmentOrderField()
         }
 
@@ -98,7 +97,8 @@ extension FetchMessageMetaData {
                 guard let messages = try GRTJSONSerialization.objects(
                     withEntityName: Message.Attributes.entityName,
                     fromJSONArray: messageDicts,
-                    in: context) as? [Message] else {
+                    in: context
+                ) as? [Message] else {
                     completion()
                     return
                 }
@@ -106,27 +106,32 @@ extension FetchMessageMetaData {
                     message.messageStatus = 1
                 }
                 _ = context.saveUpstreamIfNeeded()
-            } catch { }
+            } catch {}
             completion()
         }
     }
 }
 
 // MARK: Input structs
-extension FetchMessageMetaData {
 
+extension FetchMessageMetaData {
     struct Parameters {
-        let userID: String
+        let messageIDs: [MessageID]
     }
 
     struct Dependencies {
+        let userID: UserID
         let contextProvider: CoreDataContextProviderProtocol
         let queueManager: QueueManagerProtocol
         let messageDataService: MessageDataServiceProtocol
 
-        init(messageDataService: MessageDataServiceProtocol,
-             contextProvider: CoreDataContextProviderProtocol,
-             queueManager: QueueManagerProtocol = sharedServices.get(by: QueueManager.self)) {
+        init(
+            userID: UserID,
+            messageDataService: MessageDataServiceProtocol,
+            contextProvider: CoreDataContextProviderProtocol,
+            queueManager: QueueManagerProtocol = sharedServices.get(by: QueueManager.self)
+        ) {
+            self.userID = userID
             self.messageDataService = messageDataService
             self.contextProvider = contextProvider
             self.queueManager = queueManager
