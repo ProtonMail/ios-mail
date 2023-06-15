@@ -91,7 +91,7 @@ final class EncryptedSearch: EncryptedSearchUseCase {
         }
 
         dependencies.fetchMessageMetaData.execute(
-            with: messageIDsNeedToBeFetch
+            params: .init(messageIDs: messageIDsNeedToBeFetch)
         ) { result in
             switch result {
             case .failure(let error):

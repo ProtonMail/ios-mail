@@ -124,13 +124,16 @@ class SignInManager: Service {
             user.mailSettings = result.1
             self.usersManager.update(userInfo: result.0, for: auth.sessionID)
 
-            self.updateSwipeAction.execute(
-                activeUserInfo: activeUser.userInfo,
-                newUserInfo: user.userInfo,
-                newUserApiService: user.apiService
-            ) {
-                tryUnlock()
-            }
+            self.updateSwipeAction
+                .callbackOn(.main)
+                .execute(
+                params: .init(
+                    activeUserInfo: activeUser.userInfo,
+                    newUserInfo: user.userInfo,
+                    newUserApiService: user.apiService
+                )) { _ in
+                    tryUnlock()
+                }
         }.catch(on: .main) { [weak self] error in
             self?.queueHandlerRegister.unregisterHandler(for: user.userID)
             _ = self?.usersManager.logout(user: user, completion: {

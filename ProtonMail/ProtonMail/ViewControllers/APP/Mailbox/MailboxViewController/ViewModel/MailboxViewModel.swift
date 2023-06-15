@@ -76,7 +76,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     var isHavingUser: Bool {
         return totalUserCountClosure() > 0
     }
-    var isFetchingMessage: Bool { self.dependencies.updateMailbox.isFetching }
+    var isFetchingMessage: Bool {
+        (dependencies.updateMailbox as? UpdateMailbox)?.isFetching ?? false
+    }
     private(set) var isFirstFetch: Bool = true
 
     weak var uiDelegate: MailboxViewModelUIProtocol?
@@ -144,7 +146,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
         super.init()
         self.conversationStateProvider.add(delegate: self)
-        self.dependencies.updateMailbox.setup(source: self)
+        (self.dependencies.updateMailbox as? UpdateMailbox)?.setup(source: self)
     }
 
     /// localized navigation title. override it or return label name
@@ -740,14 +742,18 @@ extension MailboxViewModel {
     func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: @escaping (Error?) -> Void) {
         switch self.locationViewMode {
         case .singleMessage:
-            dependencies.fetchMessages.execute(
-                endTime: time,
-                isUnread: isUnread,
-                callback: { result in
-                    completion(result.error)
-                },
-                onMessagesRequestSuccess: nil)
-
+            dependencies.fetchMessages
+                .callbackOn(.main)
+                .execute(
+                    params: .init(
+                        endTime: time,
+                        isUnread: isUnread,
+                        onMessagesRequestSuccess: nil
+                    ),
+                    callback: { result in
+                        completion(result.error)
+                    }
+                )
         case .conversation:
             conversationProvider.fetchConversations(for: self.labelID, before: time, unreadOnly: isUnread, shouldReset: forceClean) { result in
                 switch result {
@@ -771,14 +777,17 @@ extension MailboxViewModel {
         let fetchMessagesAtTheEnd = isCurrentLocationEmpty || isFirstFetch
         isFirstFetch = false
 
-        dependencies.updateMailbox.exec(
-            showUnreadOnly: showUnreadOnly,
-            isCleanFetch: isCleanFetch,
-            time: time,
-            fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
-            errorHandler: errorHandler,
-            completion: completion
-        )
+        dependencies.updateMailbox.execute(
+            params: .init(
+                showUnreadOnly: showUnreadOnly,
+                isCleanFetch: isCleanFetch,
+                time: time,
+                fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
+                errorHandler: errorHandler
+            )
+        ) { _ in
+            completion()
+        }
     }
 
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback) {

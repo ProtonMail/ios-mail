@@ -1324,14 +1324,6 @@ class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
 
 }
 
-class MockUpdateSwipeActionDuringLoginUseCase: UpdateSwipeActionDuringLoginUseCase {
-    @FuncStub(MockUpdateSwipeActionDuringLoginUseCase.execute) var executeStub
-    func execute(activeUserInfo: UserInfo, newUserInfo: UserInfo, newUserApiService: APIService, completion: (() -> Void)?) {
-        executeStub(activeUserInfo, newUserInfo, newUserApiService, completion)
-    }
-
-}
-
 class MockUserFeedbackServiceProtocol: UserFeedbackServiceProtocol {
     @FuncStub(MockUserFeedbackServiceProtocol.send) var sendStub
     func send(_ feedback: UserFeedback, handler: @escaping (UserFeedbackServiceError?) -> Void) {

@@ -19,40 +19,21 @@ import Foundation
 
 /// This use case fetches messages from backend and persists those messages locally.
 /// It then requests the number of messages in each label/folder and also persists it locally.
-protocol FetchMessagesUseCase: UseCase {
-
-    /// Execute should only contain one callback. Having `onMessagesRequestSuccess` is a temporary
-    /// trade off to be able to refactor little by little.
-    /// - Parameters:
-    ///   - endTime: timestamp to get messages earlier than this value.
-    ///   - isUnread: whether we want only unread messages or not
-    ///   - callback: callback when the use case has finished
-    ///   - onMessagesRequestSuccess: callback when the messages have been received from backend successfully
-    func execute(
-        endTime: Int,
-        isUnread: Bool,
-        callback: @escaping UseCaseResult<Void>,
-        onMessagesRequestSuccess: (() -> Void)?
-    )
-}
+typealias FetchMessagesUseCase = NewUseCase<Void, FetchMessages.Parameters>
 
 class FetchMessages: FetchMessagesUseCase {
-    private let params: Parameters
     private let dependencies: Dependencies
 
-    init(params: Parameters, dependencies: Dependencies) {
-        self.params = params
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
-    func execute(
-        endTime: Int,
-        isUnread: Bool,
-        callback: @escaping UseCaseResult<Void>,
-        onMessagesRequestSuccess: (() -> Void)?
-    ) {
+    override func executionBlock(params: Parameters, callback: @escaping NewUseCase<Void, Parameters>.Callback) {
         requestMessages(
-            endTime: endTime, isUnread: isUnread, callback: callback, onFetchSuccess: onMessagesRequestSuccess
+            endTime: params.endTime,
+            isUnread: params.isUnread,
+            callback: callback,
+            onFetchSuccess: params.onMessagesRequestSuccess
         )
     }
 }
@@ -64,13 +45,13 @@ extension FetchMessages {
     private func requestMessages(
         endTime: Int,
         isUnread: Bool,
-        callback: @escaping UseCaseResult<Void>,
+        callback: @escaping NewUseCase<Void, Parameters>.Callback,
         onFetchSuccess: (() -> Void)?
     ) {
         dependencies
             .messageDataService
             .fetchMessages(
-                labelID: params.labelID,
+                labelID: dependencies.labelID,
                 endTime: endTime,
                 fetchUnread: isUnread
             ) { [weak self] _, result in
@@ -78,9 +59,9 @@ extension FetchMessages {
                     let response = try result.get()
                     onFetchSuccess?()
                     try self?.persistOnLocalStorageMessages(isUnread: isUnread, messagesData: response)
-                    self?.runOnMainThread { callback(.success(())) }
+                    callback(.success(()))
                 } catch {
-                    self?.runOnMainThread { callback(.failure(error)) }
+                    callback(.failure(error))
                 }
             }
     }
@@ -89,7 +70,7 @@ extension FetchMessages {
         try dependencies
             .cacheService
             .parseMessagesResponse(
-                labelID: params.labelID,
+                labelID: dependencies.labelID,
                 isUnread: isUnread,
                 response: messagesData,
                 idsOfMessagesBeingSent: dependencies.messageDataService.idsOfMessagesBeingSent()
@@ -117,10 +98,29 @@ extension FetchMessages {
 extension FetchMessages {
 
     struct Parameters {
-        /// identifier for labels, folders and locations.
+        /// timestamp to get messages earlier than this value.
+        let endTime: Int
+        /// whether we want only unread messages or not
+        let isUnread: Bool
+        /// callback when the messages have been received from backend successfully
+        let onMessagesRequestSuccess: (() -> Void)?
+    }
+
+    struct Dependencies {
+        let messageDataService: MessageDataServiceProtocol
+        let cacheService: CacheServiceProtocol
+        let eventsService: EventsServiceProtocol?
         let labelID: LabelID
 
-        init(labelID: LabelID) {
+        init(
+            messageDataService: MessageDataServiceProtocol,
+            cacheService: CacheServiceProtocol,
+            eventsService: EventsServiceProtocol?,
+            labelID: LabelID
+        ) {
+            self.messageDataService = messageDataService
+            self.cacheService = cacheService
+            self.eventsService = eventsService
             if labelID == LabelLocation.draft.labelID {
                 self.labelID = LabelLocation.hiddenDraft.labelID
             } else if labelID == LabelLocation.sent.labelID {
@@ -128,22 +128,6 @@ extension FetchMessages {
             } else {
                 self.labelID = labelID
             }
-        }
-    }
-
-    struct Dependencies {
-        let messageDataService: MessageDataServiceProtocol
-        let cacheService: CacheServiceProtocol
-        let eventsService: EventsServiceProtocol?
-
-        init(
-            messageDataService: MessageDataServiceProtocol,
-            cacheService: CacheServiceProtocol,
-            eventsService: EventsServiceProtocol?
-        ) {
-            self.messageDataService = messageDataService
-            self.cacheService = cacheService
-            self.eventsService = eventsService
         }
     }
 }

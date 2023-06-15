@@ -62,11 +62,11 @@ class SettingsSwipeActionSelectViewModelImpl: SettingsSwipeActionSelectViewModel
 
     func updateSwipeAction(_ action: SwipeActionSettingType, completion: (() -> Void)?) {
         if self.selectedAction == .left {
-            dependencies.saveSwipeActionSetting.execute(preference: .left(action)) { _ in
+            dependencies.saveSwipeActionSetting.execute(params: .init(preference: .left(action))) { _ in
                 completion?()
             }
         } else {
-            dependencies.saveSwipeActionSetting.execute(preference: .right(action)) { _ in
+            dependencies.saveSwipeActionSetting.execute(params: .init(preference: .right(action))) { _ in
                 completion?()
             }
         }

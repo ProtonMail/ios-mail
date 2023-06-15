@@ -62,7 +62,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
             }
         }
 
-        sut.execute(preference: .left(.trash)) { result in
+        sut.execute(params: .init(preference: .left(.trash))) { result in
             switch result {
             case .success:
                 break
@@ -84,7 +84,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         swipeActionCacheStub.rightToLeftSwipeActionType = .archive
         swipeActionCacheStub.leftToRightSwipeActionType = .archive
 
-        sut.execute(preference: .left(.moveTo)) { result in
+        sut.execute(params: .init(preference: .left(.moveTo))) { result in
             switch result {
             case .success:
                 break
@@ -122,7 +122,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
             }
         }
 
-        sut.execute(preference: .right(.trash)) { result in
+        sut.execute(params: .init(preference: .right(.trash))) { result in
             switch result {
             case .success:
                 break
@@ -144,7 +144,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         swipeActionCacheStub.rightToLeftSwipeActionType = .archive
         swipeActionCacheStub.leftToRightSwipeActionType = .archive
 
-        sut.execute(preference: .right(.moveTo)) { result in
+        sut.execute(params: .init(preference: .right(.moveTo))) { result in
             switch result {
             case .success:
                 break

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,17 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 @testable import ProtonMail
+import ProtonCore_TestingToolkit
 
-final class MockFetchMessageMetaData: FetchMessageMetaDataUseCase {
-    let uuid: UUID = .init()
-    private(set) var messageIDs: [[MessageID]] = []
-
-    override func execute(params: FetchMessageMetaData.Parameters, callback: @escaping NewUseCase<Void, FetchMessageMetaData.Parameters>.Callback) {
-        self.messageIDs.append(params.messageIDs)
-        DispatchQueue.global().async {
-            callback(.success)
-        }
+class MockUpdateSwipeActionDuringLoginUseCase: UpdateSwipeActionDuringLoginUseCase {
+    @FuncStub(MockUpdateSwipeActionDuringLoginUseCase.execute) var executeStub
+    override func execute(params: UpdateSwipeActionDuringLogin.Parameters, callback: @escaping NewUseCase<Void, UpdateSwipeActionDuringLogin.Parameters>.Callback) {
+        executeStub(params, callback)
     }
 }

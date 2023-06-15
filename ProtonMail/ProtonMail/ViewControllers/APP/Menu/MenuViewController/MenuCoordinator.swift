@@ -348,20 +348,20 @@ extension MenuCoordinator {
         )
 
         let fetchMessages = FetchMessages(
-            params: .init(labelID: labelID),
             dependencies: .init(
                 messageDataService: user.messageService,
                 cacheService: user.cacheService,
-                eventsService: user.eventsService
+                eventsService: user.eventsService,
+                labelID: labelID
             )
         )
 
         let fetchMessagesForUpdate = FetchMessages(
-            params: .init(labelID: labelID),
             dependencies: .init(
                 messageDataService: user.messageService,
                 cacheService: user.cacheService,
-                eventsService: user.eventsService
+                eventsService: user.eventsService,
+                labelID: labelID
             )
         )
 
@@ -379,14 +379,15 @@ extension MenuCoordinator {
         let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: self.coreDataService)
 
         let updateMailbox = UpdateMailbox(
-            dependencies: .init(eventService: user.eventsService,
+            dependencies: .init(labelID: labelID,
+                                eventService: user.eventsService,
                                 messageDataService: user.messageService,
                                 conversationProvider: user.conversationService,
                                 purgeOldMessages: purgeOldMessages,
                                 fetchMessageWithReset: fetchMessagesWithReset,
                                 fetchMessage: fetchMessagesForUpdate,
-                                fetchLatestEventID: fetchLatestEvent),
-            parameters: .init(labelID: labelID))
+                                fetchLatestEventID: fetchLatestEvent)
+        )
         let fetchMessageDetail = FetchMessageDetail(
             dependencies: .init(
                 queueManager: services.get(by: QueueManager.self),
