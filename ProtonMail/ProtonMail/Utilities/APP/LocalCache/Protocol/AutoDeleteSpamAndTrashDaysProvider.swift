@@ -1,4 +1,4 @@
-// Copyright (c) 2023 Proton Technologies AG
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,32 +17,18 @@
 
 import Foundation
 
-enum AutoDeleteSpamAndTrashDays: Int, Encodable {
-    case implicitlyDisabled
-    case explicitlyDisabled
-    case explicitlyEnabled
+// sourcery: mock
+protocol AutoDeleteSpamAndTrashDaysProvider {
+    var isAutoDeleteEnabled: Bool { get set }
+}
 
-    static let disabledValue: Int = 0
-    static let enabledValue: Int = 30
-
-    init(rawValue: Int?) {
-        guard let rawValue else {
-            self = .implicitlyDisabled
-            return
+extension UserManager: AutoDeleteSpamAndTrashDaysProvider {
+    var isAutoDeleteEnabled: Bool {
+        get {
+            return mailSettings.autoDeleteSpamTrashDays.isEnabled
         }
-        if rawValue == 0 {
-            self = .explicitlyDisabled
-        } else {
-            self = .explicitlyEnabled
-        }
-    }
-
-    var isEnabled: Bool {
-        switch self {
-        case .implicitlyDisabled, .explicitlyDisabled:
-            return false
-        case .explicitlyEnabled:
-            return true
+        set {
+            mailSettings.update(key: .autoDeleteSpamTrashDays, to: newValue)
         }
     }
 }

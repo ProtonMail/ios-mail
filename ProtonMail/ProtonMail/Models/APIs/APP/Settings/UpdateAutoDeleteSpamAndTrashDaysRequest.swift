@@ -15,34 +15,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Networking
 
-enum AutoDeleteSpamAndTrashDays: Int, Encodable {
-    case implicitlyDisabled
-    case explicitlyDisabled
-    case explicitlyEnabled
+final class UpdateAutoDeleteSpamAndTrashDaysRequest: Request {
+    let shouldEnable: Bool
 
-    static let disabledValue: Int = 0
-    static let enabledValue: Int = 30
-
-    init(rawValue: Int?) {
-        guard let rawValue else {
-            self = .implicitlyDisabled
-            return
-        }
-        if rawValue == 0 {
-            self = .explicitlyDisabled
-        } else {
-            self = .explicitlyEnabled
-        }
+    init(shouldEnable: Bool) {
+        self.shouldEnable = shouldEnable
     }
 
-    var isEnabled: Bool {
-        switch self {
-        case .implicitlyDisabled, .explicitlyDisabled:
-            return false
-        case .explicitlyEnabled:
-            return true
+    var method: HTTPMethod {
+        return .put
+    }
+
+    var path: String {
+        return "\(SettingsAPI.path)/auto-delete-spam-and-trash-days"
+    }
+
+    var parameters: [String: Any]? {
+        let rawValue: Int
+        if shouldEnable {
+            rawValue = AutoDeleteSpamAndTrashDays.enabledValue
+        } else {
+            rawValue = AutoDeleteSpamAndTrashDays.disabledValue
         }
+        return ["Days": rawValue]
     }
 }

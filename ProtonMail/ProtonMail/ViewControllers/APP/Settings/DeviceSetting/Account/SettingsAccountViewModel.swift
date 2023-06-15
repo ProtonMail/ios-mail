@@ -147,6 +147,7 @@ protocol SettingsAccountViewModel: AnyObject {
     var defaultMobileSignatureStatus: String { get }
     var allSendingAddresses: [Address] { get }
 
+    var isAutoDeleteSpamAndTrashEnabled: Bool { get }
     func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?)
 
     var reloadTable: (() -> Void)? { get set }
@@ -253,6 +254,10 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
         return userManager.addresses.filter { address in
             address.status.rawValue == 1 && address.receive.rawValue == 1 && address != defaultAddress
         }
+    }
+
+    var isAutoDeleteSpamAndTrashEnabled: Bool {
+        userManager.isAutoDeleteEnabled
     }
 
     func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?) {
