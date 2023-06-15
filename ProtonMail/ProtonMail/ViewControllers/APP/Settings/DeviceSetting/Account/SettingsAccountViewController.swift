@@ -70,6 +70,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
         tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: CellKey.headerCell)
         tableView.register(SettingsGeneralCell.self)
         tableView.register(SettingsTwoLinesCell.self)
+        tableView.register(SettingsGeneralImageCell.self)
 
         tableView.rowHeight = CellKey.cellHeight
 
@@ -134,7 +135,7 @@ class SettingsAccountViewController: UITableViewController, AccessibleView, Life
                 cellToUpdate.configure(right: "")
             }
         case .mailbox:
-            configureCellInMailboxSection(cell, row)
+            return configureAndReturnCellInMailboxSection(at: indexPath) ?? UITableViewCell()
         case .deleteAccount:
             configureCellInDeleteAccountSection(cell, row)
         }
@@ -285,17 +286,35 @@ extension SettingsAccountViewController {
         }
     }
 
-    private func configureCellInMailboxSection(_ cell: UITableViewCell, _ row: Int) {
-        if let cellToUpdate = cell as? SettingsGeneralCell {
-            let item = self.viewModel.mailboxItems[row]
-            cellToUpdate.configure(left: item.description)
-            switch item {
-            case .storage:
-                cellToUpdate.configure(right: "100 MB (disabled)")
-            default:
-                cellToUpdate.configure(right: "")
-            }
+    private func configureAndReturnCellInMailboxSection(at indexPath: IndexPath) -> UITableViewCell? {
+        let item = self.viewModel.mailboxItems[indexPath.row]
+        switch item {
+        case .autoDeleteSpamTrash:
+            return imageCell(for: indexPath, item: item)
+        case .storage:
+            return generalCell(for: indexPath, item: item, rightLabel: "100 MB (disabled)")
+        default:
+            return generalCell(for: indexPath, item: item, rightLabel: "")
         }
+    }
+
+    private func generalCell(for indexPath: IndexPath, item: SettingsMailboxItem, rightLabel: String) -> UITableViewCell? {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID,
+                                                       for: indexPath) as? SettingsGeneralCell else {
+            return nil
+        }
+        cell.configure(left: item.description)
+        cell.configure(right: rightLabel)
+        return cell
+    }
+
+    private func imageCell(for indexPath: IndexPath, item: SettingsMailboxItem) -> UITableViewCell? {
+        guard let imageCell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralImageCell.CellID,
+                                                            for: indexPath) as? SettingsGeneralImageCell else {
+            return nil
+        }
+        imageCell.configure(left: item.description, right: "Off", leftImage: Asset.upgradeIcon.image)
+        return imageCell
     }
 
     private func configureCellInDeleteAccountSection(_ cell: UITableViewCell, _ row: Int) {
@@ -398,6 +417,8 @@ extension SettingsAccountViewController {
             coordinator.go(to: .nextMsgAfterMove)
         case .blockList:
             coordinator.go(to: .blockList)
+        case .autoDeleteSpamTrash:
+            self.coordinator.go(to: .autoDeleteSpamTrash)
         }
     }
 

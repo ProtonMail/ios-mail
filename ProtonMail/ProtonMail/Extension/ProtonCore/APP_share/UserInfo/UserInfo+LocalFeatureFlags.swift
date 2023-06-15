@@ -82,4 +82,12 @@ extension UserInfo {
         false
 #endif
     }
+
+    static var isAutoDeleteEnabled: Bool {
+        #if DEBUG_ENTERPRISE
+        true
+        #else
+        false
+        #endif
+    }
 }
