@@ -93,6 +93,7 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
         SystemLogger.log(message: message, category: .appLifeCycle)
+        sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
 
         let coreKeyMaker = Keymaker(autolocker: Autolocker(lockTimeProvider: userCachedStatus),
                                 keychain: KeychainWrapper.keychain)
@@ -130,7 +131,6 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
         sharedServices.add(EncryptedSearchUserDefaultCache.self, for: EncryptedSearchUserDefaultCache())
-        sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
         sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
 
 #if DEBUG

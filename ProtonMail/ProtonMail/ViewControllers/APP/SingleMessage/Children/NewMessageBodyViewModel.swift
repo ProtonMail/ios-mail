@@ -60,11 +60,14 @@ struct BodyParts {
         self.bodyHasHistory = bodyHasHistory
     }
 
-    func darkModeCSS() -> String? {
+    func darkModeCSS(darkModeCache: DarkModeCacheProtocol) -> String? {
         guard let document = self.document else {
             return nil
         }
-        let level = CSSMagic.darkStyleSupportLevel(document: document)
+        let level = CSSMagic.darkStyleSupportLevel(
+            document: document,
+            darkModeCache: darkModeCache
+        )
         let css: String?
         switch level {
         case .protonSupport:

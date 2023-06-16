@@ -496,9 +496,11 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
             user: user,
             contextProvider: sharedServices.get(by: CoreDataService.self),
             isEditingScheduleMsg: false,
-            userIntroductionProgressProvider: userCachedStatus,
+            userIntroductionProgressProvider: sharedServices.userCachedStatus,
             internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
             coreKeyMaker: sharedServices.get(),
+            darkModeCache: sharedServices.userCachedStatus,
+            mobileSignatureCache: sharedServices.userCachedStatus,
             toContact: contactGroupVO
         )
 

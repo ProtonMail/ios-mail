@@ -100,13 +100,16 @@ class SettingsDeviceCoordinator {
     }
 
     private func openCombineContacts() {
-        let viewModel = ContactCombineViewModel(combineContactCache: userCachedStatus)
+        let viewModel = ContactCombineViewModel(combineContactCache: services.userCachedStatus)
         let viewController = SwitchToggleViewController(viewModel: viewModel)
         navigationController?.show(viewController, sender: nil)
     }
 
     private func openAlternativeRouting() {
-        let viewModel = NetworkSettingViewModel(userCache: userCachedStatus, dohSetting: BackendConfiguration.shared.doh)
+        let viewModel = NetworkSettingViewModel(
+            userCache: services.userCachedStatus,
+            dohSetting: BackendConfiguration.shared.doh
+        )
         let controller = SwitchToggleViewController(viewModel: viewModel)
         navigationController?.show(controller, sender: nil)
     }
@@ -116,21 +119,24 @@ class SettingsDeviceCoordinator {
         guard !apiServices.isEmpty else {
             return
         }
-        let coordinator = SettingsGesturesCoordinator(navigationController: self.navigationController,
-                                                      userInfo: userManager.userInfo,
-                                                      apiServices: apiServices)
+        let coordinator = SettingsGesturesCoordinator(
+            navigationController: self.navigationController,
+            userInfo: userManager.userInfo,
+            apiServices: apiServices,
+            swipeActionCache: services.userCachedStatus
+        )
         coordinator.start()
     }
 
     private func openDarkMode() {
-        let viewModel = DarkModeSettingViewModel(darkModeCache: userCachedStatus)
+        let viewModel = DarkModeSettingViewModel(darkModeCache: services.userCachedStatus)
         let viewController = SettingsSingleCheckMarkViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
     func openToolbarCustomizationView() {
         let viewModel = ToolbarSettingViewModel(
-            infoBubbleViewStatusProvider: userCachedStatus,
+            infoBubbleViewStatusProvider: services.userCachedStatus,
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)

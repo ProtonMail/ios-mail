@@ -28,6 +28,8 @@ struct ComposerViewFactory {
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
         internetStatusProvider: InternetConnectionStatusProvider,
         coreKeyMaker: KeyMakerProtocol,
+        darkModeCache: DarkModeCacheProtocol,
+        mobileSignatureCache: MobileSignatureCacheProtocol,
         navigationViewController: UINavigationController
     ) -> ComposeContainerViewController {
         let childViewModel = ComposeViewModel(
@@ -58,9 +60,9 @@ struct ComposerViewFactory {
                 ), fetchMobileSignatureUseCase: FetchMobileSignature(
                     dependencies: .init(
                         coreKeyMaker: coreKeyMaker,
-                        cache: userCachedStatus
+                        cache: mobileSignatureCache
                     )
-                )
+                ), darkModeCache: darkModeCache
             )
         )
         let router = ComposerRouter()
@@ -88,6 +90,8 @@ struct ComposerViewFactory {
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
         internetStatusProvider: InternetConnectionStatusProvider,
         coreKeyMaker: KeyMakerProtocol,
+        darkModeCache: DarkModeCacheProtocol,
+        mobileSignatureCache: MobileSignatureCacheProtocol,
         mailToUrl: URL? = nil,
         toContact: ContactPickerModelProtocol? = nil
     ) -> UINavigationController {
@@ -118,9 +122,9 @@ struct ComposerViewFactory {
                 ), fetchMobileSignatureUseCase: FetchMobileSignature(
                     dependencies: .init(
                         coreKeyMaker: coreKeyMaker,
-                        cache: userCachedStatus
+                        cache: mobileSignatureCache
                     )
-                )
+                ), darkModeCache: darkModeCache
             )
         )
         if let url = mailToUrl {

@@ -32,14 +32,14 @@ final class ShareAppCoordinator {
     private var nextCoordinator: ShareUnlockCoordinator?
 
     func start() {
-
+        sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
 
         let keyMaker = Keymaker(
-            autolocker: Autolocker(lockTimeProvider: userCachedStatus),
+            autolocker: Autolocker(lockTimeProvider: sharedServices.userCachedStatus),
             keychain: KeychainWrapper.keychain
         )
         sharedServices.add(Keymaker.self, for: keyMaker)
@@ -56,7 +56,7 @@ final class ShareAppCoordinator {
                 cacheStatus: keyMaker,
                 delegate: self,
                 keyMaker: keyMaker,
-                pinFailedCountCache: userCachedStatus
+                pinFailedCountCache: sharedServices.userCachedStatus
             )
         )
         sharedServices.add(UsersManager.self, for: usersManager)

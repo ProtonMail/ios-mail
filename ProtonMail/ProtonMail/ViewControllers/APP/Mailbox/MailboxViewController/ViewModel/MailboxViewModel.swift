@@ -120,7 +120,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
          conversationProvider: ConversationProvider,
          eventsService: EventsFetching,
          dependencies: Dependencies,
-         welcomeCarrouselCache: WelcomeCarrouselCacheProtocol = userCachedStatus,
+         welcomeCarrouselCache: WelcomeCarrouselCacheProtocol,
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          totalUserCountClosure: @escaping () -> Int

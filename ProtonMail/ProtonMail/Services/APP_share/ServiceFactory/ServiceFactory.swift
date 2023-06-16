@@ -50,6 +50,11 @@ final class ServiceFactory {
 
     private var servicesDictionary: [String: Service] = [:]
 
+    // TODO: init userCachesStatus here instead of a global variable.
+    var userCachedStatus: UserCachedStatus {
+        return get(by: UserCachedStatus.self)
+    }
+
     var isEmpty: Bool {
         servicesDictionary.isEmpty
     }

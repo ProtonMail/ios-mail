@@ -118,6 +118,7 @@ class SingleMessageContentViewModel {
             fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: dependencies.featureFlagCache,
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: user.apiService,
@@ -126,7 +127,7 @@ class SingleMessageContentViewModel {
                     ),
                     mailSettings: user.mailSettings
                 )
-            )
+            ), darkModeCache: dependencies.darkModeCache
         )
 
         self.messageInfoProvider = .init(
@@ -413,5 +414,7 @@ extension SingleMessageContentViewModel {
         let fetchMessageDetail: FetchMessageDetailUseCase
         let isSenderBlockedPublisher: IsSenderBlockedPublisher
         let unblockSender: UnblockSender
+        let featureFlagCache: FeatureFlagCache
+        let darkModeCache: DarkModeCacheProtocol
     }
 }

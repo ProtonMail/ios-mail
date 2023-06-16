@@ -77,6 +77,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             notificationCenter: .default,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: sharedServices.userCachedStatus,
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: user.apiService,

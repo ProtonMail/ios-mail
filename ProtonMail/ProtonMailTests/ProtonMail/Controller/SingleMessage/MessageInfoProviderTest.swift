@@ -87,8 +87,9 @@ final class MessageInfoProviderTest: XCTestCase {
                         ),
                         mailSettings: user.mailSettings
                     )
-                )
-            ), 
+                ),
+                darkModeCache: MockDarkModeCacheProtocol()
+            ),
             highlightedKeywords: ["contact", "feng"],
             dateFormatter: .init()
         )
@@ -261,14 +262,23 @@ final class MessageInfoProviderTest: XCTestCase {
             user: user,
             systemUpTime: systemUpTime,
             labelID: labelID,
-            dependencies: .init(imageProxy: .init(dependencies: .init(apiService: apiMock)),
-                                fetchAttachment: mockFetchAttachment,
-                                fetchSenderImage: FetchSenderImage(dependencies: .init(
-                                    senderImageService: .init(dependencies: .init(apiService: apiMock,
-                                                                                  internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
-                                    mailSettings: user.mailSettings)
-                                )
-                               ),
+            dependencies: .init(
+                imageProxy: .init(dependencies: .init(apiService: apiMock)),
+                fetchAttachment: mockFetchAttachment,
+                fetchSenderImage: FetchSenderImage(
+                    dependencies: .init(
+                        featureFlagCache: MockFeatureFlagCache(),
+                        senderImageService: .init(
+                            dependencies: .init(
+                                apiService: apiMock,
+                                internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
+                            )
+                        ),
+                        mailSettings: user.mailSettings
+                    )
+                ),
+                darkModeCache: MockDarkModeCacheProtocol()
+            ),
             highlightedKeywords: []
         )
 

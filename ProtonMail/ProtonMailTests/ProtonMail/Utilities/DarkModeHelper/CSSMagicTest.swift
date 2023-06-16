@@ -24,16 +24,16 @@ import XCTest
 final class CSSMagicTest: XCTestCase {
 
     func testCanSupportDarkStyle() {
-        let cache = DarkModeStatusStub()
+        let cache = MockDarkModeCacheProtocol()
         let document = CSSMagic.parse(htmlString: "")
         var level = CSSMagic.darkStyleSupportLevel(document: document, darkModeCache: cache)
         XCTAssertEqual(level, DarkStyleSupportLevel.protonSupport)
 
-        cache.darkModeStatus = .forceOff
+        cache.darkModeStatusStub.fixture = .forceOff
         level = CSSMagic.darkStyleSupportLevel(document: document, darkModeCache: cache)
         XCTAssertEqual(level, DarkStyleSupportLevel.notSupport)
 
-        cache.darkModeStatus = .followSystem
+        cache.darkModeStatusStub.fixture = .followSystem
         var htmls = [
             #"<html><head> <meta name="supported-color-schemes" content="[light? || dark? || <ident>?]* || only?"></head><body></body></html>"#,
             #"<html><head> <meta name="color-scheme" content="[light? || dark? || <ident>?]* || only?"></head><body></body></html>"#,

@@ -73,9 +73,11 @@ class ShareUnlockCoordinator {
             files: controller.files,
             user: user,
             contextProvider: coreDataService,
-            userIntroductionProgressProvider: userCachedStatus,
+            userIntroductionProgressProvider: services.userCachedStatus,
             internetStatusProvider: internetStatusProvider,
             coreKeyMaker: coreKeyMaker,
+            darkModeCache: services.userCachedStatus,
+            mobileSignatureCache: services.userCachedStatus,
             navigationViewController: navigationController
         )
         navigationController.setViewControllers([composer], animated: true)

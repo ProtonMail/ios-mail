@@ -336,7 +336,7 @@ final class MessageInfoProvider {
 
     var shouldDisplayRenderModeOptions: Bool {
         if #available(iOS 12.0, *) {
-            if userCachedStatus.darkModeStatus == .forceOff {
+            if dependencies.darkModeCache.darkModeStatus == .forceOff {
                 return false
             }
             let keywords = ["color-scheme", "supported-color-schemes", #"color-scheme:\s?\S{0,}\s?dark"#]
@@ -629,7 +629,7 @@ extension MessageInfoProvider {
             contentLoadingType = .none
         }
 
-        let css = bodyParts?.darkModeCSS()
+        let css = bodyParts?.darkModeCSS(darkModeCache: dependencies.darkModeCache)
         contents = WebContents(
             body: body.keywordHighlighting.usingCSS(keywords: highlightedKeywords),
             remoteContentMode: remoteContentPolicy,
@@ -769,5 +769,6 @@ extension MessageInfoProvider {
         let imageProxy: ImageProxy
         let fetchAttachment: FetchAttachmentUseCase
         let fetchSenderImage: FetchSenderImageUseCase
+        let darkModeCache: DarkModeCacheProtocol
     }
 }

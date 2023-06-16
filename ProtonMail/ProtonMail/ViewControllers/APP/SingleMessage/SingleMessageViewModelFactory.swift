@@ -140,7 +140,9 @@ class SingleMessageComponentsFactory {
             blockSender: blockSender,
             fetchMessageDetail: fetchMessageDetail,
             isSenderBlockedPublisher: isSenderBlockedPublisher,
-            unblockSender: unblockSender
+            unblockSender: unblockSender,
+            featureFlagCache: sharedServices.userCachedStatus,
+            darkModeCache: sharedServices.userCachedStatus
         )
     }
 

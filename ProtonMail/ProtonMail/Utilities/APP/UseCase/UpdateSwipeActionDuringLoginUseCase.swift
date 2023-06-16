@@ -61,7 +61,10 @@ final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
             dependencies.swipeActionCache.rightToLeftSwipeActionType = info.newUserLeftSwipeAction
             callback(.success)
         } else {
-            let useCaseDependencies = SaveSwipeActionSetting.Dependencies(usersApiServices: [params.newUserApiService])
+            let useCaseDependencies = SaveSwipeActionSetting.Dependencies(
+                swipeActionCache: dependencies.swipeActionCache,
+                usersApiServices: [params.newUserApiService]
+            )
             let saveSwipeAction = SaveSwipeActionSetting(dependencies: useCaseDependencies)
 
             saveRightSwipeAction(info: info, saveSwipeAction: saveSwipeAction) { [weak self] in

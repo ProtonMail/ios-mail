@@ -300,6 +300,8 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
             userIntroductionProgressProvider: userCachedStatus,
             internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
             coreKeyMaker: sharedServices.get(),
+            darkModeCache: sharedServices.userCachedStatus,
+            mobileSignatureCache: sharedServices.userCachedStatus,
             toContact: contact
         )
         guard let nav = navigationController else {

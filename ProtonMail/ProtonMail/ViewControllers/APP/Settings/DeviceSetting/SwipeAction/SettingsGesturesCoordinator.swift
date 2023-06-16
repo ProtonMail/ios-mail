@@ -30,21 +30,26 @@ class SettingsGesturesCoordinator {
     private weak var navigationController: UINavigationController?
     private let userInfo: UserInfo
     private let apiServices: [APIService]
+    private let swipeActionCache: SwipeActionCacheProtocol
 
     enum Destination: String {
         case actionSelection
     }
 
-    init(navigationController: UINavigationController?,
-         userInfo: UserInfo,
-         apiServices: [APIService]) {
+    init(
+        navigationController: UINavigationController?,
+        userInfo: UserInfo,
+        apiServices: [APIService],
+        swipeActionCache: SwipeActionCacheProtocol
+    ) {
         self.navigationController = navigationController
         self.userInfo = userInfo
         self.apiServices = apiServices
+        self.swipeActionCache = swipeActionCache
     }
 
     func start() {
-        let viewModel = SettingsGestureViewModelImpl(cache: userCachedStatus,
+        let viewModel = SettingsGestureViewModelImpl(cache: swipeActionCache,
                                                      swipeActionInfo: userInfo)
         let viewController = SettingsGesturesViewController(viewModel: viewModel, coordinator: self)
 
@@ -64,11 +69,14 @@ class SettingsGesturesCoordinator {
 
             let dependencies = SettingsSwipeActionSelectViewModelImpl.Dependencies(
                 saveSwipeActionSetting: SaveSwipeActionSetting(
-                    dependencies: SaveSwipeActionSetting.Dependencies(usersApiServices: apiServices)
+                    dependencies: SaveSwipeActionSetting.Dependencies(
+                        swipeActionCache: swipeActionCache,
+                        usersApiServices: apiServices
+                    )
                 )
             )
             let viewModel = SettingsSwipeActionSelectViewModelImpl(
-                cache: userCachedStatus,
+                cache: swipeActionCache,
                 selectedAction: selectedAction,
                 dependencies: dependencies
             )

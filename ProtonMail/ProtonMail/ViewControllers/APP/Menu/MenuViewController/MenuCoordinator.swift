@@ -402,6 +402,7 @@ extension MenuCoordinator {
             fetchMessageDetail: fetchMessageDetail,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: services.userCachedStatus,
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: user.apiService,
@@ -437,6 +438,7 @@ extension MenuCoordinator {
             conversationProvider: userManager.conversationService,
             eventsService: userManager.eventsService,
             dependencies: mailboxVMDependencies,
+            welcomeCarrouselCache: services.userCachedStatus,
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)

@@ -52,7 +52,8 @@ final class MainQueueHandler: QueueHandler {
          labelDataService: LabelsDataService,
          localNotificationService: LocalNotificationService,
          undoActionManager: UndoActionManagerProtocol,
-         user: UserManager
+         user: UserManager,
+         featureFlagCache: FeatureFlagCache
     ) {
         self.userID = user.userID
         self.coreDataService = coreDataService
@@ -98,7 +99,7 @@ final class MainQueueHandler: QueueHandler {
         )
         self.sendMessageTask = SendMessageTask(dependencies: sendDepenedencies)
 
-        self.dependencies = Dependencies(incomingDefaultService: user.incomingDefaultService)
+        self.dependencies = Dependencies(featureFlagCache: featureFlagCache, incomingDefaultService: user.incomingDefaultService)
     }
 
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
@@ -1098,7 +1099,7 @@ extension MainQueueHandler {
 
         init(
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
-            featureFlagCache: FeatureFlagCache = userCachedStatus,
+            featureFlagCache: FeatureFlagCache,
             incomingDefaultService: IncomingDefaultServiceProtocol
         ) {
             self.actionRequest = actionRequest
