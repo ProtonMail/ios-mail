@@ -207,11 +207,12 @@ extension UndoActionManager {
 
     private func showComposer(for messageID: MessageID) {
         #if !APP_EXTENSION
-            guard let message = message(id: messageID),
-                  let user = getUserManager() else { return }
-            let composer = factory.makeComposer(user: user, message: message)
+        DispatchQueue.main.async {
+            guard let message = self.message(id: messageID), let user = self.getUserManager() else { return }
+            let composer = self.factory.makeComposer(user: user, message: message)
             guard let presentingVC = self.handler?.composerPresentingVC else { return }
             presentingVC.present(composer, animated: true)
+        }
         #endif
     }
 
