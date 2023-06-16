@@ -113,7 +113,7 @@ final class MessageDecrypterTests: XCTestCase {
         let rounds = 50
 
         let scenarios: [(OpenPGPTestsDefine, Message.MimeType, Double)] = [
-            (.message_plaintext, .textHTML, 10),
+            (.message_plaintext, .textHTML, 8),
             (.mime_testMessage_without_mime_sig, .multipartMixed, 1.5),
         ]
 

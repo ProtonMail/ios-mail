@@ -31,14 +31,14 @@ stages:
 .setup_project: &setup_project
   - *setup_basic_tools
   - *setup_ruby
-  
+
   # Clean up TestData folder and git module information to always fetch latest TestData state
   - rm -rf .git/modules/ProtonMail/ProtonMailUITests/TestData
   - rm -rf ProtonMail/ProtonMailUITests/TestData
-  
+
   # TEST_DATA_URL keeps the link to TestData https url
   - git config --global url."$TEST_DATA_URL".insteadOf "testdata-repo:"
-  
+
   # Use --force option to override previously added TestData path
   - git submodule add --force testdata-repo:tpe/TestData.git ProtonMail/ProtonMailUITests/TestData
   - git submodule init
@@ -104,29 +104,27 @@ linting:
     - python3 Scripts/linkAvailabilityCheck.py
   tags:
     - iOS_GENERAL
-  except:
-    - schedules
-  tags:
-    - iOS_BUILD
-    - iOS_ARM_TAIPEI
 
 build:debug:for-testing:
   stage: build
   allow_failure: false
   interruptible: true
   artifacts:
-    untracked: true
     when: on_success
     paths:
-      - test_output/
+      - test_output/Build/Products/Debug-iphonesimulator/ProtonMail.app
+      - test_output/Build/Products/Debug-iphonesimulator/ProtonMailUITests-Runner.app
+      - build_job_pwd.txt
     expire_in: 1 day
   before_script:
     - *setup_project
   script:
     - cd ProtonMail
     - bundle exec fastlane build_for_testing
+    # record the current directory so that it can be used by the test jobs to calculate code coverage if they run on a different runner
+    - echo $PWD >> ../build_job_pwd.txt
   tags:
-    - iOS_BUILD
+    - iOS_GENERAL
 
 test:unit:
   stage: test
@@ -145,15 +143,15 @@ test:unit:
         coverage_format: cobertura
         path: test_output/slatherOutput/cobertura.xml
     paths:
-      - test_output/Build/Products/Debug-iphonesimulator/ProtonMail.app
       - test_output/slatherOutput/
   before_script:
     - *setup_project
   script:
     - cd ProtonMail
     - bundle exec fastlane unit_test
+    - ../Scripts/generate_code_coverage_report.sh
   tags:
-    - iOS_ARM_TAIPEI
+    - iOS_GENERAL
 
 test:ui:smoke:
   dependencies:
@@ -187,6 +185,7 @@ test:ui:smoke:
     - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
     - cd ProtonMail
     - bundle exec fastlane ui_test testplan:"SmokeTests" concurrent_workers:"2"
+    - ../Scripts/generate_code_coverage_report.sh
   tags:
     - iOS_UITEST
 
@@ -318,7 +317,7 @@ report:testmo:feature:
     - small
 
 appetize:start:
-  dependencies: [test:unit]
+  dependencies: [build:debug:for-testing]
   stage: distribute
   environment:
     name: review/$CI_COMMIT_REF_NAME
@@ -339,7 +338,7 @@ appetize:start:
     reports:
       dotenv: deploy.env
   tags:
-    - OS_GENERAL
+    - iOS_GENERAL
 
 appetize:stop:
   stage: distribute
@@ -356,7 +355,7 @@ appetize:stop:
     - curl -X DELETE --fail "https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_PUBLIC_KEY"
   tags:
     # anything that has `curl` basically, apparently without this tag, it's possible to get a runner that doesn't have it
-    - OS_GENERAL
+    - iOS_GENERAL
 
 # --- Build app and send to testflight
 testflight:alpha:

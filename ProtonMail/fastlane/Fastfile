@@ -320,9 +320,11 @@ platform :ios do
     run_tests(
       build_for_testing: true,
       scheme: UI_TEST_SCHEME,
-      device: UI_TEST_DEVICE,
+      destination: "generic/platform=iOS Simulator",
       result_bundle: true,
-      app_identifier: APP_IDENTIFIER
+      app_identifier: APP_IDENTIFIER,
+      reinstall_app: false,
+      skip_detect_devices: true
     )
   end
 
@@ -372,11 +374,9 @@ platform :ios do
       app_identifier: APP_IDENTIFIER,
       reset_simulator: true,
       test_without_building: true,
-      output_directory: "../test_output/"
+      output_directory: "../test_output/",
+      skip_package_dependencies_resolution: true
     )
-
-    slather(cobertura_xml: true)
-    slather(simple_output: true)
   end
 
   desc "Run ui test and get test coverage"
@@ -398,11 +398,9 @@ platform :ios do
       app_identifier: APP_IDENTIFIER,
       output_directory: "../test_output/TestResults",
       output_files: "report.xml",
-      result_bundle: true
+      result_bundle: true,
+      skip_package_dependencies_resolution: true
     )
-
-    slather(cobertura_xml: true)
-    slather(simple_output: true)
   end
 
 end
