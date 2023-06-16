@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Protección AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Registros de la aplicación";
+
 /* Apply action */
 "Apply" = "Aplicar";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Borrar estilo";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Vaciando la caché…";
 
 /* general close action */
 "Close" = "Cerrar";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Introduce el código PIN nuevo";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Introduce el PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Introduce tu contraseña para hacer cambios.";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Ocultar detalles";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias Hide My Email";
+"Hide My Email aliases" = "Alias de Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "¿Cómo describirías tu experiencia con el nuevo Proton Mail?";
@@ -2202,7 +2205,7 @@
 "Update Notification Email" = "Actualizar correo de notificación";
 
 /* Shown when the user attempts to manually refresh the list of blocked senders while offline */
-"Update queued, awaiting connectivity..." = "Actualización en pausa, esperando conexión...";
+"Update queued, awaiting connectivity..." = "Actualización en espera, verificando conexión...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Actualizada hace >1 hora";
@@ -2325,7 +2328,7 @@
 "You can't set %@ address as default because it is a paid feature." = "No puedes establecer la dirección %@ por defecto porque es una función de pago.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Has desactivado %1$@ en la configuración del sistema. %2$@ se ha utilizado para proteger información importante de la cuenta. Para acceder a tu cuenta, ve a la configuración y activa de nuevo el %3$@, o vuelve a iniciar sesión.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Has desactivado %1$@ en los ajustes del sistema. %2$@ se ha utilizado para proteger información importante de la cuenta. Para acceder a tu cuenta, ve a los ajustes y activa de nuevo el %3$@, o vuelve a iniciar sesión.";
 
 /* Message */
 "You have %d new emails!" = "Tienes %d correos nuevos.";
@@ -2388,7 +2391,7 @@
 "Your messages are being downloaded..." = "Tus mensajes se están descargando...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Tu privacidad está mejor protegida si tus contatos también usan Proton Mail. Invita a tus amigos a Proton y obtendrán beneficios premium gratis.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Tu privacidad estará mejor protegida si tus contatos también usan Proton Mail. Invita a tus amigos a Proton y ambos obtendréis beneficios premium gratis.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Tu sesión ha expirado porque has estado inactivo durante un tiempo o porque ha sido revocada. Vuelve a iniciar sesión.";

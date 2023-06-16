@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey koruması";
 
+/* Title for application logs settings option */
+"Application logs" = "Uygulama günlüğü kayıtları";
+
 /* Apply action */
 "Apply" = "Uygula";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Biçemi temizle";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Ön bellek temizleniyor…";
 
 /* general close action */
 "Close" = "Kapat";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Yeni PIN kodunu yazın";
 
-/* The title of the pin code view. */
-"Enter PIN" = "PIN kodunu yazın";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Değişiklik yapmak için parolanızı yazın";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Ayrıntıları gizle";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "E-posta takma adlarım gizlensin";
+"Hide My Email aliases" = "E-postamı gizle takma adları";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Yeni Proton Mail ile yaşadığınız deneyimi nasıl değerlendirirsiniz?";
@@ -1637,7 +1640,7 @@
 "Reply all (to last message)" = "Tümünü yanıtla (son iletiyi)";
 
 /* menu title */
-"Report a problem" = "Bir sorun bildireceğim";
+"Report a problem" = "Sorun bildirin";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Kimlik avı girişimi bildir";
@@ -2117,6 +2120,9 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Güvenilen anahtarlar gönderim için geçerli değil";
 
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Farklı bir ifade ile aramayı deneyin.";
+
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Farklı bir ağ kullanarak Proton bağlantısı kurmayı deneyin (ayrıca %1$@ ya da %2$@ kullanabilirsiniz).";
 
@@ -2388,7 +2394,7 @@
 "Your messages are being downloaded..." = "İletileriniz indiriliyor...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Kişileriniz de Proton Mail kullanıyorsa gizliliğiniz daha iyi korunur. Arkadaşlarınızı da Proton kullanmaya davet edin ve ikiniz de ücretli özelliklerden ücretsiz olarak yararlanın.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Kişileriniz de Proton Mail kullanıyorsa gizliliğiniz daha iyi korunur. Arkadaşlarınızı Proton kullanmaya davet edin ve ücretli özelliklerden ücretsiz olarak yararlanın.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Bir süredir etkin olmadığınızdan ya da kapatıldığından oturumunuzun süresi dolmuş. Lütfen yeniden oturum açın.";

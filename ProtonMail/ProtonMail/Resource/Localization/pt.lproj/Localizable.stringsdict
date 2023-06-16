@@ -91,7 +91,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d tentativas restantes</string>
+			<string>%d tentativa restante</string>
 			<key>other</key>
 			<string>%d tentativas restantes</string>
 		</dict>
@@ -157,9 +157,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d rastreador de correios electrónicos bloqueado</string>
+			<string>%d rastreio de e-mail bloqueado</string>
 			<key>other</key>
-			<string>%d rastreadores de correios electrónicos bloqueados</string>
+			<string>%d rastreadores de e-mails bloqueados</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -173,9 +173,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d rastreador de correios electrónicos encontrado</string>
+			<string>%d rastreador de e-mail encontrado</string>
 			<key>other</key>
-			<string>%d rastreadores de correios electrónicos encontrados</string>
+			<string>%d rastreadores de e-mail encontrados</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
@@ -403,7 +403,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d mensagem será transferida para a pasta Rascunhos e o seu calendário será removido.</string>
+			<string>Esta %d mensagem será transferida para a pasta Rascunhos e o seu calendário será removido.</string>
 			<key>other</key>
 			<string>Estas %d mensagens serão transferidas para a pasta Rascunhos e o seu calendário será removido.</string>
 		</dict>

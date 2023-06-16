@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey-beskyttelse";
 
+/* Title for application logs settings option */
+"Application logs" = "Applikationslogs";
+
 /* Apply action */
 "Apply" = "Anvend";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Ryd stil";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Rydder cache...";
 
 /* general close action */
 "Close" = "Luk";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Indtast ny pinkode";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Indtast PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Angiv din adgangskode for at foretage ændringer";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Skjul detaljer";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Skjul mine e-mail-aliasser";
+"Hide My Email aliases" = "Hide-my-email-aliasser";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hvordan vil du beskrive din oplevelse med den nye Proton Mail?";

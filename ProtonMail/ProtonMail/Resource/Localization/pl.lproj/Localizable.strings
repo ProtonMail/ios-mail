@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Ochrona AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Logi aplikacji";
+
 /* Apply action */
 "Apply" = "Zastosuj";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Wyczyść formatowanie";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Czyszczenie pamięci podręcznej…";
 
 /* general close action */
 "Close" = "Zamknij";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Wpisz nowy kod PIN";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Wpisz kod PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Wpisz hasło";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Ukryj szczegóły";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Aliasy Hide My Email";
+"Hide My Email aliases" = "Aliasy Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Jak oceniasz nową aplikację Proton Mail?";

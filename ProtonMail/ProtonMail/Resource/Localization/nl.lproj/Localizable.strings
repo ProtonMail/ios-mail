@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey-bescherming";
 
+/* Title for application logs settings option */
+"Application logs" = "Toepassingslogboek";
+
 /* Apply action */
 "Apply" = "Toepassen";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Stijl wissen";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Cache legen…";
 
 /* general close action */
 "Close" = "Sluiten";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Voer nieuwe PIN-code in";
 
-/* The title of the pin code view. */
-"Enter PIN" = "PIN Invoeren";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Voer uw wachtwoord in om wijzigingen aan te brengen";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Verberg details";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email-aliassen";
+"Hide My Email aliases" = "Hide-my-email-aliassen";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hoe zou u uw ervaring met de nieuwe Proton Mail omschrijven?";
@@ -2388,7 +2391,7 @@
 "Your messages are being downloaded..." = "Uw berichten worden gedownload...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Uw privacy is beter beschermd als u uw contacten ook Proton Mail gebruiken. Nodig uw vrienden uit voor Proton en ontvang allebei gratis premium voordelen.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Uw privacy is beter beschermd als uw contacten ook Proton Mail gebruiken. Nodig uw vrienden uit voor Proton en ontvang allebei gratis premium voordelen.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Uw sessie is verlopen omdat u al een tijdje inactief bent of omdat deze is ingetrokken. Log opnieuw in.";

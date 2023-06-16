@@ -8,7 +8,7 @@
 "'On' E, MMM d, yyyy 'at' %@" = "'Den' d MMM yyyy 'kl' %@";
 
 /* Message for the alert to delete all downloaded messages. */
-"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Sök meddelandeinnehåll' kommer inaktiveras. Den kan aktiveras igen från inställningar och alla meddelanden kommer laddas ner på nytt.";
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "“Sök meddelandeinnehåll“ kommer att inaktiveras. Det kan aktiveras igen från inställningarna och alla meddelanden måste laddas ner igen.";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ av %2$@";
@@ -182,6 +182,9 @@
 
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey-skydd";
+
+/* Title for application logs settings option */
+"Application logs" = "Applikationsloggar";
 
 /* Apply action */
 "Apply" = "Tillämpa";
@@ -427,6 +430,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Rensa stil";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Rensar cache…";
 
 /* general close action */
 "Close" = "Stäng";
@@ -831,9 +837,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Ange ny PIN-kod";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Ange PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Ange ditt lösenord för att göra ändringar";
 
@@ -955,7 +958,7 @@
 "Hide details" = "Dölj detaljer";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email-alias";
+"Hide My Email aliases" = "Hide-my-email-alias";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hur skulle du beskriva din upplevelse med nya Proton Mail?";
@@ -1209,7 +1212,7 @@
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Meddelanden laddas ner för innehållssökning. Några resultat kanske inte visas. %1$@";
 
 /* Text for the search info banner when indexing is stopped because of storage limit reached. */
-"Messages from before " = "Tidigare meddelanden ";
+"Messages from before " = "Meddelanden från före ";
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Meddelande från innan %@ kommer inte att sökas. För att söka inom dessa, frigör lagringsutrymme på denna enhet.";
@@ -2123,9 +2126,6 @@
 /* Placeholder */
 "Two Factor Code" = "Tvåfaktorskod";
 
-/* Internal type casting error */
-"Type casting error" = "Typkonverteringsfel";
-
 /* Description */
 "Unable to edit this message offline" = "Kan inte att redigera detta meddelande offline";
 
@@ -2385,7 +2385,7 @@
 "Your messages are being downloaded..." = "Dina meddelanden laddas ner …";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Din integritet skyddas bättre om dina kontakter också använder Proton Mail. Bjud in dina vänner till Proton, så får ni båda premiumförmåner gratis.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Din integritet skyddas bättre om dina kontakter också använder Proton Mail. Bjud in dina vänner till Proton, så får ni var och en premiumförmåner gratis.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session har löpt ut eftersom du har varit inaktiv ett tag eller för att den har återkallats. Logga in igen.";

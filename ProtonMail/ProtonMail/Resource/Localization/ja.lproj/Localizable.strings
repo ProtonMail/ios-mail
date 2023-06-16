@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey保護";
 
+/* Title for application logs settings option */
+"Application logs" = "アプリケーションのログ";
+
 /* Apply action */
 "Apply" = "適用";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "スタイルを消去";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "キャッシュをクリアしています…";
 
 /* general close action */
 "Close" = "閉じる";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "新しいPIN コードの入力";
 
-/* The title of the pin code view. */
-"Enter PIN" = "PINコードを入力";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "変更するためにはパスワードを入力してください。";
 
@@ -958,7 +961,7 @@
 "Hide details" = "詳細を非表示";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email エイリアス";
+"Hide My Email aliases" = "Hide-my-email エイリアス";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "新しい Proton Mail の使い心地はいかがでしょうか?";
@@ -1467,7 +1470,7 @@
 "PGP-encrypted to verified recipient" = "検証済みの宛先への、PGP 暗号化による送信";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-signed" = "PGP 署名付き (暗号化なし)";
+"PGP-signed" = "PGP 署名付き（暗号化なし）";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message from verified sender" = "検証済みの送信者からの、PGP 署名付きメッセージ";
@@ -2324,6 +2327,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "有料機能のため、%@ を既定のアドレスに設定できません。";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "システムの設定で %1$@が無効になっています。%2$@は重要なアカウント情報を保護するために使用されています。 アカウントにアクセスするには、設定を開き%3$@を再度有効にするか、再度ログインしてください。";
+
 /* Message */
 "You have %d new emails!" = "%d 件の新着メールがあります";
 
@@ -2384,14 +2390,11 @@
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "メッセージをダウンロード中...";
 
-/* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "さらなるプライバシー保護へ、友達と一緒にProtonMailを使いましょう。招待すると招待された人もあなたもプレミアムプランが使えます。";
-
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "しばらくの間未使用だったか失効させられているため、セッションが無効になりました。再度ログインしてください";
 
 /* contact placeholder */
 "ZIP" = "郵便番号";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "システム設定で %1$@を無効になっています。%2$@は重要なアカウント情報を保護するために使用されています。 アカウントにアクセスするには、設定を開き%3$@を再度有効にするか、再度ログインしてください。";
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "さらなるプライバシー保護へ、友達と一緒にProtonMailを使いましょう。招待すると招待された人もあなたもプレミアムプランが使えます。";

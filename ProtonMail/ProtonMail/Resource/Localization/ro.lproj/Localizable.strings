@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Protecție AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Jurnale aplicație";
+
 /* Apply action */
 "Apply" = "Aplicare";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Eliminare stil";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Se șterge memoria cache…";
 
 /* general close action */
 "Close" = "Închidere";
@@ -833,9 +839,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Introduceți noul cod PIN";
-
-/* The title of the pin code view. */
-"Enter PIN" = "Introduceți codul PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Introduceți parola pentru a efectua modificările";
@@ -2388,7 +2391,7 @@
 "Your messages are being downloaded..." = "Mesajele se descarcă...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Confidențialitatea vă este mai bine protejată dacă și contactele dvs. utilizează Proton Mail. Invitați-le la Proton și veți beneficia împreună gratuit de avantajele premium.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Confidențialitatea vă este mai bine protejată dacă și contactele dvs. utilizează Proton Mail. Invitați-le la Proton și veți beneficia fiecare gratuit de avantajele premium.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesiunea a expirat deoarece nu s-a identificat vreo activitate de ceva timp sau pentru că a fost anulată. Reautentificați-vă.";

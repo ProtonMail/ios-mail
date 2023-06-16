@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Perlindungan AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Log aplikasi";
+
 /* Apply action */
 "Apply" = "Terapkan";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Hapus Corak Mode";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Mengosongkan cache…";
 
 /* general close action */
 "Close" = "Tutup";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Masukkan kode PIN baru";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Masukkan PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Masukkan kata sandi Anda untuk menerapkan perubahan";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Sembunyikan rincian";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias Hide My Email";
+"Hide My Email aliases" = "Alias Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Bagaimana Anda menggambarkan pengalaman Anda dengan Proton Mail yang baru?";
@@ -2388,7 +2391,7 @@
 "Your messages are being downloaded..." = "Pesan Anda sedang diunduh...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Privasi Anda akan lebih terjamin apabila kontak Anda juga menggunakan Proton Mail. Undang teman Anda ke Proton, dan dapatkan berbagai keutamaan premium bagi Anda dan teman Anda secara cuma-cuma.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Privasi Anda terlindungi dengan baik jika kontak Anda juga menggunakan Proton Mail. Undang teman-teman Anda ke Proton, dan Anda akan menerima manfaat premium secara gratis.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesi Anda telah kedaluwarsa karena Anda sudah lama tidak aktif atau izin sesi Anda telah dicabut. Silakan masuk lagi.";

@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Захист AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Журнал застосунку";
+
 /* Apply action */
 "Apply" = "Застосувати";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Очистити стиль";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Очищення кешу…";
 
 /* general close action */
 "Close" = "Закрити";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Введіть ПІН-код";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Введіть PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Введіть свій пароль для виконання змін";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Приховати подробиці";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Псевдоніми Hide My Email";
+"Hide My Email aliases" = "Псевдоніми Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Як би ви описали свої враження від нового Proton Mail?";
@@ -2116,6 +2119,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Довірені ключі недійсні для надсилання";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Спробуйте інший пошуковий термін.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Спробуйте під'єднатися до Proton з іншої мережі (або скористайтеся %1$@ або %2$@).";

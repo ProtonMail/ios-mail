@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Ochrana AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Logy aplikace";
+
 /* Apply action */
 "Apply" = "Použít";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Smazat styl";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Čištění mezipaměti…";
 
 /* general close action */
 "Close" = "Zavřít";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Zadejte nový PIN kód";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Zadejte PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Zadejte své heslo pro provedení změn";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Skrýt detaily";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Aliasy Hide My Email";
+"Hide My Email aliases" = "Aliasy Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Jak byste popsal(a) svou zkušenost s novým Proton Mailem?";

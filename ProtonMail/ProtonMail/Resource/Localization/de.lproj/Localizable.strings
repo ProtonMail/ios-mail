@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey-Schutz";
 
+/* Title for application logs settings option */
+"Application logs" = "Anwendungsprotokolle";
+
 /* Apply action */
 "Apply" = "Übernehmen";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Textstil zurücksetzen";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Cache wird geleert...";
 
 /* general close action */
 "Close" = "Schließen";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Neuen PIN-Code eingeben";
 
-/* The title of the pin code view. */
-"Enter PIN" = "PIN eingeben";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Gib dein Passwort ein, um Änderungen vornehmen zu können";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Details ausblenden";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email-Aliasse";
+"Hide My Email aliases" = "Hide-my-email-Aliasse";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Wie würdest du deine Erfahrungen mit dem neuen Proton Mail beschreiben?";
@@ -1022,7 +1025,7 @@
 "Input Display Name…" = "Anzeigename eingeben …";
 
 /* place holder */
-"Input Notification Email…" = "Benachrichtigungs-E-Mail-Adresse eingeben…";
+"Input Notification Email…" = "E-Mail-Benachrichtigung eingeben…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Unverschlüsselte Verbindung";
@@ -1742,7 +1745,7 @@
 "Sender %@ blocked" = "Absender %@ blockiert";
 
 /* Toast confirming the unblock */
-"Sender %@ unblocked" = "Absender %@ entblockt";
+"Sender %@ unblocked" = "Absender %@ entsperrt";
 
 /* Banner in the message view */
 "Sender has been blocked" = "Der Absender wurde blockiert";
@@ -2117,6 +2120,9 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Die vertrauenswürdigen Schlüssel sind für den Versand nicht gültig";
 
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Versuche es mit einem anderen Suchbegriff.";
+
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Versuche dich von einem anderen Netzwerk aus mit Proton zu verbinden (oder verwende %1$@ oder %2$@).";
 
@@ -2388,7 +2394,7 @@
 "Your messages are being downloaded..." = "Deine Nachrichten werden heruntergeladen...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Deine Privatsphäre ist besser geschützt, wenn deine Kontakte ebenfalls Proton Mail verwenden. Lade deine Freunde zu Proton ein, und ihr beide profitiert kostenlos von den Premium-Vorteilen.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Deine Privatsphäre ist besser geschützt, wenn deine Kontakte ebenfalls Proton Mail verwenden. Lade deine Freunde zu Proton ein, und jeder von euch beiden profitiert kostenlos von den Premium-Vorteilen.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Deine Sitzung ist aufgrund einer längeren Inaktivität oder eines Widerrufs abgelaufen. Bitte melde dich erneut an.";

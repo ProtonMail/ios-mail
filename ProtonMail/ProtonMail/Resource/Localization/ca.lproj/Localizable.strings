@@ -8,7 +8,7 @@
 "'On' E, MMM d, yyyy 'at' %@" = "'El' E, d MMM, yyyy 'a' %@";
 
 /* Message for the alert to delete all downloaded messages. */
-"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Cerca al contingut del missatge' es desactivarà. Es pot tornar a activar des de la configuració i caldrà descarregar de nou tots els missatges.";
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Cerca al contingut del missatge' es desactivarà. Es pot tornar a habilitar des de les preferències i caldrà descarregar de nou tots els missatges.";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ de %2$@";
@@ -23,10 +23,10 @@
 "<1m" = "<1 min";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 message moved to archive" = "1 missatge mogut a l'arxiu";
+"1 message moved to archive" = "1 missatge s'ha mogut a l'arxiu";
 
 /* The title of banner that is shown after using swipe action to spam a message */
-"1 Message moved to spam" = "1 missatge traslladat a Correu brossa";
+"1 Message moved to spam" = "1 missatge s'ha mogut al correu brossa";
 
 /* Placeholder */
 "8 to 21 characters long" = "Longitud de 8 a 21 caràcters";
@@ -111,7 +111,7 @@
 "Addresses" = "Adreces";
 
 /* Settings lock advanced settings section */
-"Advanced settings" = "Configuració avançada";
+"Advanced settings" = "Preferències avançades";
 
 /* Title */
 "Alert" = "Alerta";
@@ -124,7 +124,7 @@
 "All Mail" = "Tot el correu";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "Tots els ajustos de protecció es restabliran i s'eliminaran en tancar la sessió.";
+"All protection settings will be reset and wiped upon signing out of the app." = "Totes les preferències de protecció es restabliran i s'eliminaran en tancar la sessió a l'aplicació.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Tots els vostres missatges s'han descarregat";
@@ -139,7 +139,7 @@
 "Allows you to open previously read messages while offline." = "Us permet obrir missatges llegits prèviament mentre esteu fora de línia.";
 
 /* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Us permet buscar dintre dels vostres missatges. %1$@";
+"Allows you to search within your messages. %1$@" = "Us permet cercar dintre dels vostres missatges. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
 "Also archive?" = "Arxivar també?";
@@ -185,6 +185,9 @@
 
 /* Settings lock AppKey feature */
 "AppKey protection" = "Protecció AppKey";
+
+/* Title for application logs settings option */
+"Application logs" = "Registres de l'aplicació";
 
 /* Apply action */
 "Apply" = "Aplica";
@@ -381,7 +384,7 @@
 
 /* message Cc: feild
    Title */
-"Cc" = "CC";
+"Cc" = "Cc";
 
 /* settings general section title */
 "Change account password" = "Canviar contrasenya del compte";
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Netetja Estil";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Netejant la memòria cau…";
 
 /* general close action */
 "Close" = "Tanca";
@@ -480,7 +486,7 @@
 "Confirmation" = "Confirmació";
 
 /* Text for status label when no wifi is available */
-"Connect to WiFi or enable \"Download via mobile data\"." = "Connecteu a WiFi o activeu \"Descarregar via dades mòbils\".";
+"Connect to WiFi or enable \"Download via mobile data\"." = "Connecteu-vos a WiFi o habiliteu \"Descarrega via dades mòbils\".";
 
 /* Hint when users delete contact offline */
 "Contact deleted, will be synced when connection is available" = "S'ha eliminat el contacte. Es sincronitzarà quan hi hagi una connexió disponible";
@@ -687,7 +693,7 @@
 "Download paused: No connectivity" = "Descàrrega en pausa: cap connectivitat";
 
 /* Text for estimate time label when no wifi is available */
-"Download paused: No WiFi detected" = "Descàrrega en pausa: cap WiFi detectat ";
+"Download paused: No WiFi detected" = "Descàrrega en pausa: no s'ha detectat cap WiFi";
 
 /* Text for estimate time label when storage is full */
 "Download paused: Storage full" = "Descàrrega en pausa: emmagatzematge ple";
@@ -771,7 +777,7 @@
 "Email contact" = "Contacte de correu electrònic";
 
 /* Description */
-"Email failed to send. Message saved as draft." = "Ha fallta l'enviament del correu electrònic. El missatge s'ha guardat com a esborrany.";
+"Email failed to send. Message saved as draft." = "Ha fallat l'enviament del correu electrònic. El missatge s'ha desat com a esborrany.";
 
 /* Tracker protection feature explanation */
 "Email trackers can violate your privacy." = "Els rastrejadors de correu poden violar la vostra privacitat.";
@@ -833,9 +839,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Introduïu el codi PIN nou";
-
-/* The title of the pin code view. */
-"Enter PIN" = "Introdueix el PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Introduïu la vostra contrasenya per fer canvis";
@@ -958,7 +961,7 @@
 "Hide details" = "Amagar els detalls";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Àlies Hide My Email";
+"Hide My Email aliases" = "Àlies Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Com descriuria la seva experiència amb el nou Proton Mail?";
@@ -2388,7 +2391,7 @@
 "Your messages are being downloaded..." = "S'estan descarregant els missatges...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "La vostra privacitat estarà més protegida si els vostres contactes també utilitzen Proton Mail. Convida'ls i ambdós aconseguireu avantatges Prèmium de franc.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "La vostra privacitat estarà més protegida si els vostres contactes també utilitzen Proton Mail. Convideu-los i tots aconseguireu avantatges Prèmium de franc.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "La vostra sessió ha caducat perquè heu estat inactiva durant un temps o perquè s'ha revocat. Torneu a iniciar la sessió.";

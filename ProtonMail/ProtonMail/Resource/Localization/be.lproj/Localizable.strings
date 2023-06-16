@@ -5,7 +5,7 @@
 "…[Show full message]" = "…[Паказаць паведамленне цалкам]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "E, d MMM, yyyy а %@";
+"'On' E, MMM d, yyyy 'at' %@" = "E, d MMM, yyyy у %@";
 
 /* Message for the alert to delete all downloaded messages. */
 "'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "\"Пошук па змесціву ў паведамленні\" будзе адключаны. Яго можна будзе ўключыць зноў у наладах і ўсе паведамленні спампуюцца яшчэ раз.";
@@ -185,6 +185,9 @@
 
 /* Settings lock AppKey feature */
 "AppKey protection" = "Абарона AppKey";
+
+/* Title for application logs settings option */
+"Application logs" = "Журнал праграмы";
 
 /* Apply action */
 "Apply" = "Ужыць";
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Ачысціць стыль";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Ачыстка кэша…";
 
 /* general close action */
 "Close" = "Закрыць";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Увядзіце новы PIN-код";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Увядзіце PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Увядзіце пароль для выканання змен";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Схаваць падрабязнасці";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Псеўданімы Hide My Email";
+"Hide My Email aliases" = "Псеўданімы Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Якія ў вас уражанні ад новай версіі Proton Mail?";
@@ -2117,6 +2120,9 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Давераныя ключы несапраўдныя для адпраўкі";
 
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Паспрабуйце іншы тэрмін для пошуку.";
+
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Паспрабуйце падключыцца да Proton з іншай сеткі (скарыстайцеся %1$@ або %2$@).";
 
@@ -2388,7 +2394,7 @@
 "Your messages are being downloaded..." = "Вашы паведамленні спампоўваюцца...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Ваша прыватнасць будзе мець лепшую абарону, калі вашы кантакты таксама карыстаюцца Proton Mail. Запрасіце сваіх сяброў у Proton і вы разам з імі атрымаеце прэміяльныя перавагі бясплатна.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Ваша прыватнасць будзе мець лепшую абарону, калі вашы кантакты таксама будуць карыстацца Proton Mail. Запрасіце сваіх сяброў у Proton і кожны з вас атрымае прэміяльныя перавагі бясплатна.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Ваш сеанс пратэрмінаваны, таму што вы былі неактыўныя некаторы час або ён быў адкліканы. Увайдзіце ў праграму паўторна.";

@@ -255,7 +255,7 @@
 			<key>one</key>
 			<string>%d min</string>
 			<key>other</key>
-			<string>%d mins</string>
+			<string>%d min</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>
