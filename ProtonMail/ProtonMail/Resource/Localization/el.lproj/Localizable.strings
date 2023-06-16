@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey προστασία";
 
+/* Title for application logs settings option */
+"Application logs" = "Καταγραφές εφαρμογής";
+
 /* Apply action */
 "Apply" = "Εφαρμογή";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Καθαρό Στύλ";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Εκκαθάριση προσωρινής μνήμης…";
 
 /* general close action */
 "Close" = "Κλείσιμο";
@@ -833,9 +839,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Εισαγωγή νέου κωδικού ΡΙΝ";
-
-/* The title of the pin code view. */
-"Enter PIN" = "Εισαγωγή PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Για να κάνετε αλλαγές, εισάγετε τον κωδικό πρόσβασής σας";
@@ -1524,7 +1527,7 @@
 "Please share your problem." = "Παρακαλούμε μοιραστείτε το πρόβλημά σας.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Συνδεθείτε στην εφαρμογή Proton Mail \n*.*, please add*.*.";
+"Please sign in to the Proton Mail app." = "Συνδεθείτε στην εφαρμογή Proton Mail.";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Για χρήση άνω των 3 φακέλων, παρακαλούμε αναβαθμίστε σε πρόγραμμα επί πληρωμή";
@@ -1845,7 +1848,7 @@
 "Signed out from %@ and signed in with %@" = "Αποσυνδεθήκατε από το %1$@ και συνδεθήκατε με το %2$@";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Έχετε εξέλθει από το %@";
+"Signed out of %@" = "Έχετε αποσυνδεθεί από το %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Παράλειψη";
@@ -2117,6 +2120,9 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Τα αξιόπιστα κλειδιά δεν είναι έγκυρα για την αποστολή";
 
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Δοκιμάστε διαφορετικό όρο αναζήτησης.";
+
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Δοκιμάστε να συνδεθείτε στο Proton από διαφορετικό δίκτυο (ή χρησιμοποιήστε το %1$@ ή το %2$@).";
 
@@ -2145,7 +2151,7 @@
 "Unblock" = "Κατάργηση από αποκλεισμό";
 
 /* Button to unblock a sender */
-"Unblock sender" = "Ξεμπλοκάρισμα αποστολέα\n*.*, add trasnlation *.*";
+"Unblock sender" = "Κατάργηση αποκλεισμού αποστολέα";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Μη κοινοποιημένοι παραλήπτες";
@@ -2202,7 +2208,7 @@
 "Update Notification Email" = "Ενημέρωση E-mail ειδοποίησης";
 
 /* Shown when the user attempts to manually refresh the list of blocked senders while offline */
-"Update queued, awaiting connectivity..." = "Ενημέρωση σε ουρά, αναμονή συνδεσιμότητας...";
+"Update queued, awaiting connectivity..." = "Ενημέρωση σε αναμονή, αναμονή σύνδεσης στο διαδίκτυο...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Ενημερώθηκε πριν από >1 ώρες";
@@ -2259,7 +2265,7 @@
 "Warning: Before you pass the human check you can't send email!" = "Προειδοποίηση: Πριν ολοκληρώστε την \"ανθρώπινη επαλήθευση\" δεν μπορείτε να στείλετε email!";
 
 /* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Προειδοποίηση: υποψία κίβδηλης ιστοσελίδας";
+"Warning: suspected fake website" = "Προειδοποίηση: υποψία ψεύτικης ιστοσελίδας";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Δεν ήταν δυνατή η αποστολή του μηνύματος σας, πιθανώς λόγω κακής σύνδεσης δικτύου. Το μήνυμα σας αποθηκεύτηκε στα Πρόχειρα και θα σταλεί αυτόματα την επόμενη φορά που θα ανοίξετε την εφαρμογή.";
@@ -2324,6 +2330,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Δεν μπορείτε να ορίσετε τη διεύθυνση %@ ως προεπιλεγμένη, καθώς αυτό είναι μια λειτουργία επί πληρωμή.";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Απενεργοποιήσατε το %1$@ στις ρυθμίσεις του συστήματός σας. Το %2$@ έχει χρησιμοποιηθεί για την προστασία σημαντικών πληροφοριών λογαριασμού. Για πρόσβαση στον λογαριασμό σας, μεταβείτε στις ρυθμίσεις και ενεργοποιήστε ξανά το %3$@, ή συνδεθείτε ξανά.";
+
 /* Message */
 "You have %d new emails!" = "Έχετε %d νέα E-mail!";
 
@@ -2385,7 +2394,7 @@
 "Your messages are being downloaded..." = "Γίνεται λήψη των μηνυμάτων σας...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Το απόρρητό σας προστατεύεται καλύτερα εάν οι επαφές σας χρησιμοποιούν επίσης Proton Mail. Προσκαλέστε τους φίλους σας στο Proton και θα λάβετε και οι δύο δωρεάν premium οφέλη.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Το απόρρητό σας προστατεύεται καλύτερα εάν οι επαφές σας χρησιμοποιούν επίσης Proton Mail. Προσκαλέστε τους φίλους σας στο Proton και ο καθένας θα λάβει δωρεάν premium οφέλη.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Η περίοδος λειτουργίας σας έχει λήξει επειδή δεν έχετε κάνει κάποια ενέργεια για λίγο ή επειδή έχει ανακληθεί. Συνδεθείτε ξανά.";
@@ -2393,5 +2402,3 @@
 /* contact placeholder */
 "ZIP" = "T.K";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Απενεργοποιήσατε το %1$@ στις ρυθμίσεις του συστήματός σας. Το %2$@ έχει χρησιμοποιηθεί για την προστασία σημαντικών πληροφοριών λογαριασμού. Για πρόσβαση στον λογαριασμό σας, μεταβείτε στις ρυθμίσεις και ενεργοποιήστε ξανά το %3$@, ή συνδεθείτε ξανά.";

@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey 防护";
 
+/* Title for application logs settings option */
+"Application logs" = "应用程序日志";
+
 /* Apply action */
 "Apply" = "应用";
 
@@ -312,6 +315,9 @@
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "会话模式能帮助您轻松应对各方的往来邮件。";
 
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---为了帮助我们更好地解决问题，请提供尽可能详尽的信息---\n\n简要描述问题：\n\n此问题是否反复出现：是/否\n复现问题的步骤：\n预期得到的结果：\n实际得到的结果：\n额外说明：";
+
 /* Title */
 "Bug Report Received" = "反馈已收到";
 
@@ -427,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "清除格式";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "正在清理缓存…";
 
 /* general close action */
 "Close" = "关闭";
@@ -831,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "输入新口令";
 
-/* The title of the pin code view. */
-"Enter PIN" = "输入口令";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "请输入您的密码以进行更改";
 
@@ -955,7 +961,7 @@
 "Hide details" = "隐藏详情";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email 邮箱别名";
+"Hide My Email aliases" = "Hide-my-email 邮箱别名";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "您认为新版 Proton Mail的使用体验如何？";
@@ -2321,6 +2327,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您需要付费才能将 %@ 设为首选地址。";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系统设置中关闭了 %1$@，但您的账户信息已受到 %2$@ 保护。请在系统设置中再次开启 %3$@ 或重新登录解锁账户。";
+
 /* Message */
 "You have %d new emails!" = "您收到了 %d 封新邮件！";
 
@@ -2382,7 +2391,7 @@
 "Your messages are being downloaded..." = "正在为您下载邮件...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "如果您的联系人也加入 Proton Mail，您的隐私将得到更好的保护。不妨邀请好友注册 Proton，您与好友都能免费体验高级账户权益。";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "如果您的联系人也使用 Proton Mail，您的隐私将得到更好的保护。 邀请您的朋友加入 Proton，你们每个人都将免费获得高级福利。";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "您的账户因长时间未操作已自动退出，或已被其他设备下线。请重新登录。";
@@ -2390,7 +2399,3 @@
 /* contact placeholder */
 "ZIP" = "邮编";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系统设置中关闭了 %1$@，但您的账户信息已受到 %2$@ 保护。请在系统设置中再次开启 %3$@ 或重新登录解锁账户。";
-
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Proteção AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Registros do aplicativo";
+
 /* Apply action */
 "Apply" = "Aplicar";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Limpar formatação";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Limpando o cache…";
 
 /* general close action */
 "Close" = "Fechar";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Digite o novo código PIN";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Inserir PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Digite sua senha para fazer alterações";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Ocultar detalhes";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias de Hide My Email";
+"Hide My Email aliases" = "Alias de Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Como você descreveria sua experiência com o novo Proton Mail?";
@@ -2116,6 +2119,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "As chaves confiáveis não são válidas para o envio";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Tente um termo de pesquisa diferente.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Tente conectar ao Proton a partir de uma rede diferente (ou use o %1$@ ou %2$@).";

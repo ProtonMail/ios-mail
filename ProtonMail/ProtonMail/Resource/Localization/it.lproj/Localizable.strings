@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Protezione AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Registri dell'applicazione";
+
 /* Apply action */
 "Apply" = "Applica";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Rimuovi formattazione";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Cancellazione cache...";
 
 /* general close action */
 "Close" = "Chiudi";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Inserisci il nuovo codice PIN";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Inserisci il PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Inserisci la tua password per apportare le modifiche";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Nascondi i dettagli";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias Hide My Email";
+"Hide My Email aliases" = "Alias Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Come vorresti descrivere la tua esperienza con il nuovo Proton Mail?";
@@ -2388,7 +2391,7 @@
 "Your messages are being downloaded..." = "I tuoi messaggi sono in fase di scaricamento...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "La tua privacy è meglio protetta se anche i tuoi contatti utilizzassero Proton Mail. Invita i tuoi amici a utilizzare Proton ed entrambi otterrete gratuitamente dei benefici premium.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "La tua privacy sarebbe protetta meglio se anche i tuoi contatti utilizzassero Proton Mail. Invita i tuoi amici a utilizzare Proton e ognuno otterrà gratuitamente dei benefici premium.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "La tua sessione è scaduta perché sei stato inattivo per un po' di tempo o perché è stata revocata. Effettua di nuovo il login.";

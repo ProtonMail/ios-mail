@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Összes levél";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Az alkalmazásból való kilépéskor minden biztonsági beállítás visszaállításra és törlésre kerül.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Az összes üzenete letöltésre került";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Születésnap";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Letiltás";
+
 /* Settings row */
 "Block email tracking" = "E-mail követés megakadályozása";
 
@@ -297,11 +303,17 @@
 /* Button to block a sender */
 "Block sender" = "Feladó tiltása";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Letiltott küldők";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Megakadályozza, hogy a feladó értesüljön arról amikor megnyitja az üzenetet";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Beszélgetés üzemmódban könnyedén átfuthat a szálankénti üzeneteken.";
+
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Kérjük adjon meg annyi részletet, amennyit csak lehetséges---\n\nÖsszesítés:\n\nMegtörtént ez már korábban is? Igen/Nem.\nA probléma előhozásához szükséges lépések:\nVárt eredmény:\nJelenlegi eredmény:\nMegjegyzések:";
 
 /* Title */
 "Bug Report Received" = "Hibajelentés megérkezett";
@@ -523,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Címke létrehozása nincs engedélyezve";
 
+/* Change language title */
+"Current Language: " = "Jelenlegi nyelv: ";
+
 /* Placeholder */
 "Current password" = "Jelenlegi jelszó";
 
@@ -696,6 +711,9 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Metaadatok letöltése ...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Új üzenetek letöltése...";
 
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Letölti az e-maileket, így kereshet bennük. Az üzenetek titkosítva vannak és helyben tárolódnak. %1$@";
@@ -912,6 +930,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Beállítások megnyitása";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Ugrás a bejelentkezéshez";
+
 /* Got it action */
 "Got it" = "Rendben!";
 
@@ -996,6 +1017,9 @@
 
 /* place holder */
 "Input Display Name…" = "Írja be a megjelenített nevet…";
+
+/* place holder */
+"Input Notification Email…" = "Írja be az értesítési e-mail címet…";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Nem biztonságos kapcsolat";
@@ -1127,6 +1151,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Megjelölés olvasatlanként";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Talán később";
+
 /* menu title */
 "Menu" = "Menü";
 
@@ -1237,6 +1264,9 @@
 /* Contacts add new contact */
 "New contact" = "Új névjegy";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "%@ címről érkező további üzenetek automatikusan és véglegesen törlésre kerülnek. A letiltott e-mail címeket a beállításoknál kezelheti.";
+
 /* The title of create folder page */
 "New folder" = "Új mappa";
 
@@ -1275,6 +1305,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Nincs melléklet";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Nincsenek letiltott feladók";
 
 /* Title */
 "No connectivity detected…" = "Nincs kapcsolat…";
@@ -1487,6 +1520,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Kérjük, ossza meg problémáját.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Jelentkezzen be a Proton Mail alkalmazásba.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Váltson előfizetéses csomagra, 3-nál több mappa használatához";
 
@@ -1663,6 +1699,9 @@
    The title of encrypted search in settings */
 "Search message content" = "Keresés az üzenetek tartalmában";
 
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "Túl sokáig tart a keresés? %1$@ ebből a keresésből, a gyorsabb eredményért.";
+
 /* The link in local storage downloaded messages. */
 "See details" = "Részletek megjelenítése";
 
@@ -1695,6 +1734,15 @@
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Olvasási visszaigazolás küldése";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "%@ feladó letiltva";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "%@ feladó letiltása feloldva";
+
+/* Banner in the message view */
+"Sender has been blocked" = "A feladó letiltásra került";
 
 /* encryption lock description */
 "Sender Verification Failed" = "A küldő ellenőrzése sikertelen volt";
@@ -1789,6 +1837,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Kijelentkezett a következőből: %1$@ és bejelentkezett: %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Kijelentkezve innen: %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Kihagyás";
@@ -1950,6 +2001,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "A megnyitni kívánt URL nem szabványos és nem biztos, hogy helyesen megjeleníthető. Megnyitja az eszköz alapértelmezett böngészőjével?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "A felhasználó már belépett";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Még vannak elküldetlen üzenetek, amelyek elvesznek ha kilép";
 
@@ -1964,6 +2018,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Ez a beszélgetés törölt üzeneteket is tartalmaz";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Az e-mail nem felelt meg a domain név ellenőrzési követelményeinek. Lehet becsapós üzenet vagy hibásan továbbított.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Az e-mail nem felelt meg a domain név ellenőrzési követelményeinek. Lehet becsapós üzenet vagy hibásan továbbított.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ez az e-mail a Proton Mailról feladottnak tűnik, de külső rendszerből érkezett és nem felelt meg az ellenőrzési követelményeknek. Lehet becsapós üzenet vagy hibásan továbbított!";
@@ -2054,6 +2114,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Csatlakozzon a Prontonhoz egy másik hálózaton keresztül (vagy használjon %1$@-t vagy %2$@-t).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Kapcsolja be ezt a funkciót, az e-mail címek automatikus kitöltéséhez az összes bejelentkezett fiók névjegyei alapján.";
+
 /* Placeholder */
 "Two Factor Code" = "Kétlépcsős kód";
 
@@ -2071,6 +2134,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Az üzenet küldése sikertelen";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Feloldás";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Feladó letiltásának feloldása";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Címzettek nem láthatók";
@@ -2125,6 +2194,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Értesítési e-mail frissítése";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "A frissítés várakozik a kapcsolódásra...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = ">1 órája frissítve";
@@ -2246,6 +2318,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "%@ cím nem állítható be az alapértelmezettként, mert ez egy fizetős szolgáltatás.";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "A rendszerbeállításoknál letiltotta a %1$@ lehetőséget. A %2$@ fontos fiók információk védelmére volt használva. A fiók eléréshez engedélyezze újra a %3$@ lehetőséget az eszköz beállításainál, vagy jelentkezzen be újra.";
+
 /* Message */
 "You have %d new emails!" = "%d új üzenete van!";
 
@@ -2312,7 +2387,3 @@
 /* contact placeholder */
 "ZIP" = "Irányítószám";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in.";
-
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

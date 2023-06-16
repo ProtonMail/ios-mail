@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "程式金鑰防護";
 
+/* Title for application logs settings option */
+"Application logs" = "應用程式紀錄";
+
 /* Apply action */
 "Apply" = "套用";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "清除格式";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "清除快取記憶體";
 
 /* general close action */
 "Close" = "關閉";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "輸入新的 PIN 碼";
 
-/* The title of the pin code view. */
-"Enter PIN" = "輸入 PIN 碼";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "輸入您的密碼以作變更";
 
@@ -958,7 +961,7 @@
 "Hide details" = "隱藏詳細資訊";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email 別名";
+"Hide My Email aliases" = "Hide-my-email 別名";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "歡迎告訴我們您的新版 Proton Mail 體驗，有讓您感到驚艷嗎？";
@@ -2117,6 +2120,9 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "已信任的密鑰用於寄送時無效";
 
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "嘗試使用其他搜尋關鍵字。";
+
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用 %1$@ 或 %2$@）。";
 
@@ -2324,6 +2330,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您目前無法將 %@ 設為預設位址，因為這是付費功能。";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您關閉%1$@ 的系統設定。%2$@使用於帳號安全保護。若要使用帳號，須將設定中的%3$@啟用，或重新登錄。";
+
 /* Message */
 "You have %d new emails!" = "您有 %d 封新郵件！";
 
@@ -2385,7 +2394,7 @@
 "Your messages are being downloaded..." = "您的訊息正在下載...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "如果聯絡人也使用 Proton Mail，我們更能保護你的隱私。邀請朋友加入 Proton ，雙方都能免費獲得高級會員福利。";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "使用Proton Mail能更進一步的保障隱私。邀請朋友使用Proton，即可免費使用會員版。";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "由於您長時間沒有進行任何操作，您的交談已過期或是被撤銷。請重新登入。";
@@ -2393,5 +2402,3 @@
 /* contact placeholder */
 "ZIP" = "郵遞區號";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系統設定裡停用了%1$@ 。%2$@ 被使用在保護重要的帳號資訊上。要存取您的帳號，要去設定裡重新啟動%3$@ ，或是重新登入。";

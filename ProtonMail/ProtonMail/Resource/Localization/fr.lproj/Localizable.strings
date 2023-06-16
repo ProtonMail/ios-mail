@@ -75,7 +75,7 @@
 "Add new custom field" = "Ajouter un nouveau champ personnalisé";
 
 /* new email action */
-"Add new email" = "Ajouter un nouvel e-mail";
+"Add new email" = "Ajouter une nouvelle adresse email";
 
 /* new field action */
 "Add new field" = "Ajouter un nouveau champ";
@@ -185,6 +185,9 @@
 
 /* Settings lock AppKey feature */
 "AppKey protection" = "Protection AppKey";
+
+/* Title for application logs settings option */
+"Application logs" = "Journaux de l'application";
 
 /* Apply action */
 "Apply" = "Appliquer";
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Effacer le style";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Suppression du cache en cours";
 
 /* general close action */
 "Close" = "Fermer";
@@ -756,7 +762,7 @@
 "Edit photo" = "Modifier la photo";
 
 /* default vcard types */
-"Email" = "E-mail";
+"Email" = "Adresse e-mail";
 
 /* contact placeholder */
 "Email address" = "Adresse e-mail";
@@ -833,9 +839,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Saisir le nouveau code PIN";
-
-/* The title of the pin code view. */
-"Enter PIN" = "Saisir le PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Saisissez votre mot de passe pour effectuer ces changements.";
@@ -958,7 +961,7 @@
 "Hide details" = "Masquer les détails";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias Hide My Email";
+"Hide My Email aliases" = "Alias Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Comment décririez-vous votre expérience avec le nouveau Proton Mail ?";
@@ -2116,6 +2119,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Les clés approuvées ne sont pas valides pour l'envoi.";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Essayez un autre terme de recherche.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Essayez de vous connecter à Proton depuis un autre réseau (ou utilisez %1$@ ou %2$@).";

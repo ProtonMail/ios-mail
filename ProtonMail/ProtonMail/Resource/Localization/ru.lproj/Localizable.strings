@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Защита AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Журналы приложения";
+
 /* Apply action */
 "Apply" = "Применить";
 
@@ -430,6 +433,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Очистить форматирование";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Очистка кэша...";
 
 /* general close action */
 "Close" = "Закрыть";
@@ -834,9 +840,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Введите новый PIN-код";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Введите PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Введите пароль, чтобы сделать изменения";
 
@@ -958,7 +961,7 @@
 "Hide details" = "Скрыть подробности";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Псевдонимы Hide My Email";
+"Hide My Email aliases" = "Псевдонимы Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Как бы вы описали свои впечатления от новой версии Proton Mail?";
@@ -2388,7 +2391,7 @@
 "Your messages are being downloaded..." = "Ваши сообщения скачиваются...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Ваша конфиденциальность будет лучше защищена, если Ваши контакты также будут использовать Proton Mail. Пригласите друзей в Proton, и вы все получите премиальные функции бесплатно.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Ваша конфиденциальность будет лучше защищена, если Ваши контакты также будут использовать Proton Mail. Приглашайте друзей в Proton, и вы оба получите премиальные функции бесплатно.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Срок вашей сессии истёк, потому что вы были неактивны некоторое время или она была прервана. Пожалуйста, войдите снова.";
