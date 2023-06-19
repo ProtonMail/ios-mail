@@ -19,11 +19,13 @@ struct MailScenario: Hashable {
     public let name: String
     public let description: String
     public let subject: String
-    
-    public init(name: String, description: String, subject: String = "") {
+    public let contacts: [Contact]
+
+    public init(name: String, description: String, subject: String = "", contacts: [Contact] = []) {
         self.name = name
         self.description = description
         self.subject = subject
+        self.contacts = contacts
     }
 }
 
@@ -58,9 +60,17 @@ extension MailScenario {
     static let manyMessages = MailScenario(name: "many.messages", description: "", subject: "")
     static let onepassMailpro2022 = MailScenario(name: "onepass.mailpro2022", description: "", subject: "")
     static let pgpinline = MailScenario(name: "pgpinline", description: "", subject: "")
-    static let pgpinlineDrafts = MailScenario(name: "pgpinline.drafts", description: "", subject: "PGPInline external public key")
+    static let pgpinlineDrafts = MailScenario(name: "pgpinline.drafts", description: "", subject: "PGPInline external public key", contacts: [
+        Contact(name: "Not Signed External Contact", email: "notsigned.external@gmail.com"),
+        Contact(name: "Signed External Contact", email: "signed.external@gmail.com"),
+        Contact(name: "Signed+PGPMime Trusted Proton Contact", email: "ios.pgpmime@\(dynamicDomain)"),
+        Contact(name: "Signed+PGPInline Trusted External Contact", email: "signed.external.pgpinline@gmail.com"),
+        Contact(name: "Signed+PGPInline Trusted Proton Contact", email: "ios.pgpmime@\(dynamicDomain)"),
+        Contact(name: "Signed+PGPMime Untrusted Proton Contact", email: "ios.pgpmime.untrusted@\(dynamicDomain)"),
+        Contact(name: "Signed+PGPInline Untrusted Proton Contact", email: "ios.pgpinline.untrusted@\(dynamicDomain)")
+ ])
     static let pgpinlineUntrusted = MailScenario(name: "pgpinline.untrusted", description: "", subject: "")
-    static let pgpmime = MailScenario(name: "pgpmime.untrusted", description: "", subject: "")
+    static let pgpmime = MailScenario(name: "pgpmime", description: "", subject: "")
     static let pgpmimeUntrusted = MailScenario(name: "pgpmime.untrusted", description: "", subject: "")
     static let revokeSession = MailScenario(name: "revoke.session", description: "", subject: "")
     static let trashMultipleMessages = MailScenario(name: "trash.multiple.messages", description: "", subject: "")

@@ -27,7 +27,7 @@ class ReferralPromptTests: BaseTestCase {
     }
 
     func testTapOutsideShouldDismiss() {
-        let user = testData.onePassUser
+        let user = users["plus"]!
         LoginRobot()
             .loginUserWithReferralPrompt(user)
             .dismissReferralByTapOutside()
@@ -35,7 +35,7 @@ class ReferralPromptTests: BaseTestCase {
     }
 
     func testCloseButtonShouldDismiss() {
-        let user = testData.onePassUser
+        let user = users["plus"]!
         LoginRobot()
             .loginUserWithReferralPrompt(user)
             .dismissReferralWithCloseButton()
@@ -43,7 +43,7 @@ class ReferralPromptTests: BaseTestCase {
     }
 
     func testLaterButtonShouldDismiss() {
-        let user = testData.onePassUser
+        let user = users["plus"]!
         LoginRobot()
             .loginUserWithReferralPrompt(user)
             .dismissReferralWithLaterButton()
