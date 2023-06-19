@@ -34,22 +34,18 @@ class SearchTests: FixtureAuthenticatedTestCase {
             .verify.messageExists(subject)
     }
     
-    func xtestSearchFromInboxByAddress() {
-        let user = testData.onePassUser
-        let coreFusionSender = "Core Fusion"
-        let title = "163880735864890"
-        LoginRobot()
-            .loginUser(user)
-            .searchBar()
-            .searchMessageText(coreFusionSender)
-            .verify.senderAddressExists(coreFusionSender, title)
+    func testSearchFromInboxByAddress() {
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .searchBar()
+                .searchMessageText(user!.email)
+                .verify.messageExists(user!.email)
+        }
     }
     
-    func xtestSearchDraft() {
+    func testSearchDraft() {
         runTestWithScenario(.pgpinlineDrafts) {
             InboxRobot()
-                .clickMessageBySubject(scenario.subject) //workoarund for atlas env search
-                .navigateBackToInbox()
                 .searchBar()
                 .searchMessageText(scenario.subject)
                 .verify.draftMessageExists(scenario.subject)

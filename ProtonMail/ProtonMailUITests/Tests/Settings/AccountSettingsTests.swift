@@ -8,7 +8,7 @@
 
 import ProtonCore_TestingToolkit
 
-class AccountSettingsTests : FixtureAuthenticatedTestCase {
+class AccountSettingsTests: FixtureAuthenticatedTestCase {
 
     private let accountSettingsRobot: AccountSettingsRobot = AccountSettingsRobot()
 

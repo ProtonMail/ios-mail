@@ -68,11 +68,11 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         app.launchEnvironment[apiDomainKey] = dynamicDomain
 
         if humanVerificationStubs {
-            app.launchEnvironment["HumanVerificationStubs"] = "1"
+            app.launchArguments.append(contentsOf: ["HumanVerificationStubs", "1"])
         } else if forceUpgradeStubs {
-            app.launchEnvironment["ForceUpgradeStubs"] = "1"
+            app.launchArguments.append(contentsOf: ["ForceUpgradeStubs", "1"])
         } else if extAccountNotSupportedStub {
-            app.launchEnvironment["ExtAccountNotSupportedStub"] = "1"
+            app.launchArguments.append(contentsOf: ["ExtAccountNotSupportedStub", "1"])
         }
         app.launch()
 

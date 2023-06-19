@@ -10,7 +10,7 @@ import fusion
 
 fileprivate struct id {
     static let imageOtherIdentifier = "DKImageAssetAccessibilityIdentifier"
-    static func selectButtonIdentifier(_ selectionAmount: Int) -> String { return "Select(\(String(selectionAmount)))" }
+    static func selectButtonIdentifier(_ selectionAmount: Int) -> String { return "Show Selected (\(String(selectionAmount)))" }
 }
 
 /**
@@ -27,13 +27,15 @@ class ImageGalleryRobot: CoreElements {
     private func pickImageAtPositions(_ positions: Int) -> ImageGalleryRobot {
         /// Start from image 1 as image on position 0 is 9MB and it takes longer time to upload.
         for i in 1...positions {
-            otherElement(id.imageOtherIdentifier).byIndex(i).tap()
+            image(NSPredicate(format: "label BEGINSWITH 'Photo'")).byIndex(i).tap()
         }
+
         return self
     }
     
     private func confirmSelection(_ attachmentsAmount: Int) -> ComposerRobot {
-        button(id.selectButtonIdentifier(attachmentsAmount)).tap()
+        button(id.selectButtonIdentifier(attachmentsAmount)).checkExists()
+        navigationBar("Photos").onChild(button("Add")).tap()
         return ComposerRobot()
     }
 }

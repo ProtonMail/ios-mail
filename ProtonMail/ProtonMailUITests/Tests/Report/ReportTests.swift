@@ -13,7 +13,7 @@ import ProtonCore_TestingToolkit
 class ReportTests: BaseTestCase {
     
     func testEditAndSendBugReport() {
-        let user = testData.onePassUser
+        let user = users["plus"]!
         let topic = "This is an automation test bug report"
         
         LoginRobot()
