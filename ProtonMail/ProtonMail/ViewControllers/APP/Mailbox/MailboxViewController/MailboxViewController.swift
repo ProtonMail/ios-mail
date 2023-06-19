@@ -1253,7 +1253,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func deleteExpiredMessages() {
-        viewModel.user.messageService.deleteExpiredMessage(completion: nil)
+        viewModel.user.messageService.deleteExpiredMessages()
     }
 
     private func updateScheduledMessageTimeLabel() {
