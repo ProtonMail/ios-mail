@@ -200,15 +200,3 @@ private extension WindowsCoordinatorTests {
 }
 
 extension MockCoreDataContextProvider: Service {}
-
-extension XCTestCase {
-    func wait(
-        _ condition: @escaping @autoclosure () -> (Bool),
-        timeout: TimeInterval = 3
-    )
-    {
-        wait(for: [XCTNSPredicateExpectation(
-            predicate: NSPredicate(block: { _, _ in condition() }), object: nil
-        )], timeout: timeout)
-    }
-}

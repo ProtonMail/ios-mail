@@ -175,14 +175,75 @@ final class MailboxViewControllerTests: XCTestCase {
             _ = context.saveUpstreamIfNeeded()
         }
 
-        let e = expectation(description: "Closure is called")
-        // Give CoreData some time to update the UI.
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            // Check if the title is updated
-            XCTAssertEqual(self.sut.title, labelNewName)
-            e.fulfill()
+        wait(self.sut.title == labelNewName)
+    }
+
+    func testLastUpdateLabel_eventUpdateTimeIsNow_titleIsUpdateJustNow() {
+        let labelID = Message.Location.inbox.labelID
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let event = UserEvent(context: context)
+            event.userID = self.userManagerMock.userID.rawValue
+            event.updateTime = Date()
+            event.eventID = String.randomString(10)
         }
-        waitForExpectations(timeout: 3)
+        makeSUT(
+            labelID: labelID,
+            labelType: .label,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(
+            sut.updateTimeLabel.text,
+            LocalString._mailblox_last_update_time_just_now
+        )
+    }
+
+    func testLastUpdateLabel_eventUpdateTimeIs30MinsBefore_titleIsLastUpdateIn30Mins() {
+        let labelID = Message.Location.inbox.labelID
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let event = UserEvent(context: context)
+            event.userID = self.userManagerMock.userID.rawValue
+            let date = Date().add(.minute, value: -30)
+            event.updateTime = date
+            event.eventID = String.randomString(10)
+        }
+        makeSUT(
+            labelID: labelID,
+            labelType: .label,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(
+            sut.updateTimeLabel.text,
+            String.localizedStringWithFormat(LocalString._mailblox_last_update_time, 30)
+        )
+    }
+
+    func testLastUpdateLabel_eventUpdateTimeIs1HourBefore_titleIsUpdateMoreThan1Hour() {
+        let labelID = Message.Location.inbox.labelID
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let event = UserEvent(context: context)
+            event.userID = self.userManagerMock.userID.rawValue
+            let date = Date().add(.hour, value: -1)
+            event.updateTime = date
+            event.eventID = String.randomString(10)
+        }
+        makeSUT(
+            labelID: labelID,
+            labelType: .label,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(
+            sut.updateTimeLabel.text,
+            LocalString._mailblox_last_update_time_more_than_1_hour
+        )
     }
 
     func testSelectionMode_whenPullToRefresh_selectionModeWillBeDisable() {

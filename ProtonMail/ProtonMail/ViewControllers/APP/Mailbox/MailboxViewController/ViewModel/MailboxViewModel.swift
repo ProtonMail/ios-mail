@@ -36,6 +36,7 @@ struct LabelInfo {
 
 protocol MailboxViewModelUIProtocol: AnyObject {
     func updateTitle()
+    func updateTheUpdateTimeLabel()
 }
 
 class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
@@ -43,6 +44,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     let labelType: PMLabelType
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
+    /// This field stores the latest update time of the user event.
+    private var latestEventUpdateTime: Date?
     var messageLocation: Message.Location? {
         return Message.Location(rawValue: labelID.rawValue)
     }
@@ -55,6 +58,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     private(set) var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     private(set) var unreadFetchedResult: NSFetchedResultsController<NSFetchRequestResult>?
     private var labelPublisher: MailboxLabelPublisher?
+    private var eventUpdatePublisher: EventUpdatePublisher?
 
     private(set) var selectedIDs: Set<String> = Set()
 
@@ -318,6 +322,16 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         )
     }
 
+    private func makeEventPublisher() {
+        eventUpdatePublisher = .init(contextProvider: coreDataContextProvider)
+        eventUpdatePublisher?.startObserve(
+            userID: user.userID,
+            onContentChanged: { [weak self] events in
+                self?.latestEventUpdateTime = events.first?.updateTime
+                self?.uiDelegate?.updateTheUpdateTimeLabel()
+            })
+    }
+
     /// Setup fetch controller to fetch message of specific labelID
     ///
     /// - Parameter delegate: delegate from viewcontroller
@@ -330,6 +344,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         self.unreadFetchedResult?.delegate = delegate
 
         makeLabelPublisherIfNeeded()
+        makeEventPublisher()
     }
 
     /// reset delegate if fetch controller is valid
@@ -474,7 +489,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     func getLastUpdateTimeText() -> String {
         var result = LocalString._mailblox_last_update_time_more_than_1_hour
 
-        if let updateTime = lastUpdatedStore.lastEventUpdateTime(userID: self.user.userID) {
+        if let updateTime = latestEventUpdateTime {
             let time = updateTime.timeIntervalSinceReferenceDate
             let differenceFromNow = Int(Date().timeIntervalSinceReferenceDate - time)
 
