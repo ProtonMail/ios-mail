@@ -113,19 +113,17 @@ extension LastUpdatedStore {
     }
 
     func lastEventID(userID: UserID) -> String {
-        var eventID = ""
-        contextProvider.performAndWaitOnRootSavingContext { context in
-            eventID = self.eventIDDefault(by: userID, in: context).eventID
-        }
-        return eventID
+        findLastEvent(userID: userID, andGetProperty: \.eventID, defaultValue: "")
     }
 
     func lastEventUpdateTime(userID: UserID) -> Date? {
-        var time: Date?
-        contextProvider.performAndWaitOnRootSavingContext { context in
-            time = self.eventIDDefault(by: userID, in: context).updateTime
+        findLastEvent(userID: userID, andGetProperty: \.updateTime, defaultValue: nil)
+    }
+
+    private func findLastEvent<T>(userID: UserID, andGetProperty keyPath: KeyPath<UserEvent, T>, defaultValue: T) -> T {
+        contextProvider.read { context in
+            UserEvent.userEvent(by: userID.rawValue, inManagedObjectContext: context)?[keyPath: keyPath] ?? defaultValue
         }
-        return time
     }
 }
 
