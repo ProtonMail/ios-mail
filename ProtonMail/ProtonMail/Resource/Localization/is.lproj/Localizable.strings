@@ -200,12 +200,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Safn";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Ertu viss um að þú viljir eyða endanlega þessu skilaboði?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Ertu viss um að þú viljir eyða þessum %d skilaboðum endanlega?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Ertu viss um að þú viljir skrá þig út %@?";
 

@@ -137,9 +137,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Arhiva";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Jeste li sigurni da želite trajno izbrisati ovu poruku?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Da li ste sigurni da se želite odjaviti %@?";
 

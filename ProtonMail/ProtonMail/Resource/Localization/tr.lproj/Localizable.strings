@@ -206,12 +206,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Arşivle";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Bu iletiyi kalıcı olarak silmek istediğinize emin misiniz?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "%d iletiyi kalıcı olarak silmek istediğinize emin misiniz?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "%@ oturumunu kapatmak istediğinize emin misiniz?";
 

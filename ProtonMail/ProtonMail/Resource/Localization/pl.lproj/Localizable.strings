@@ -206,12 +206,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Archiwizuj";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Czy na pewno chcesz trwale usunąć tę wiadomość?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Czy na pewno chcesz trwale usunąć %d wiadomości?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Czy na pewno chcesz się wylogować z konta %@?";
 

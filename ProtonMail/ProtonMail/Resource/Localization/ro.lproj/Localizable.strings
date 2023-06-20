@@ -206,12 +206,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Arhivare";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Sigur doriți să ștergeți permanent acest mesaj?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Sigur doriți să ștergeți permanent aceste %d mesaje?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Sigur doriți să vă deconectați din %@?";
 
