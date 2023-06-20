@@ -206,12 +206,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "アーカイブ";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "このメッセージを完全に削除してよろしいですか?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "%d 件のメッセージを完全に削除してよろしいですか?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "%@ からサインアウトしますか?";
 

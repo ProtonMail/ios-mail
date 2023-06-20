@@ -206,12 +206,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Архіваваць";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Вы сапраўды хочаце незваротна выдаліць гэта паведамленне?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Вы сапраўды хочаце назаўсёды выдаліць гэтыя %d паведамленні?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Вы сапраўды хочаце выйсці з %@?";
 

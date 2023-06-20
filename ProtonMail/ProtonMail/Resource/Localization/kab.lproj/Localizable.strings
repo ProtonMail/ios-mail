@@ -176,9 +176,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Taṛcivt";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Tebɣiḍ s tidet ad tekkseḍ i lebda izen-agi?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Tebɣiḍ ad teffɣeḍ%@?";
 

@@ -322,9 +322,7 @@ extension SearchViewController {
         let title = messagesCount > 1 ?
             String(format: LocalString._messages_delete_confirmation_alert_title, messagesCount) :
             LocalString._single_message_delete_confirmation_alert_title
-        let message = messagesCount > 1 ?
-            String(format: LocalString._messages_delete_confirmation_alert_message, messagesCount) :
-            LocalString._single_message_delete_confirmation_alert_message
+        let message = String(format: LocalString._messages_delete_confirmation_alert_message, messagesCount)
         let alert = UIAlertController(
             title: title,
             message: message,

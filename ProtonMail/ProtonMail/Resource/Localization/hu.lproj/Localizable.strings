@@ -203,12 +203,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Archiválás";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Biztos, hogy véglegesen törli ezt az üzenetet?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Biztos benne, hogy véglegesen törölni akar %d üzenetet?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Biztos, hogy ki szeretne jelentkezni %@?";
 

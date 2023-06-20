@@ -206,12 +206,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Archivovat";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Opravdu chcete tuto zprávu trvale odstranit?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Jste si jisti, že chcete těchto %d zpráv trvale odstranit?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Opravdu se chcete odhlásit %@?";
 

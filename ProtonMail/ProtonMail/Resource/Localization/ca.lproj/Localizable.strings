@@ -206,12 +206,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Arxiva";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "N'esteu segur, de voler eliminar permanentment aquest missatge?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Esteu segurs que voleu eliminar permanentment tots aquests %d missatges?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Segur que voleu tancar la sessió de %@?";
 

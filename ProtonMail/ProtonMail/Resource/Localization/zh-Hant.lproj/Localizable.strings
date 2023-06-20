@@ -206,12 +206,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "封存";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "您確定要永久刪除這封郵件嗎？";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "您確定要永久刪除這 %d 封郵件嗎？";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "您確定要登出 %@ 嗎？";
 
