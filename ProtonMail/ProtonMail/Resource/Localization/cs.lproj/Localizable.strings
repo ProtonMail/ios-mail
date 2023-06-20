@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Čas do automatického uzamčení";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Automatické mazání";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Automaticky mazat nechtěné zprávy";
+
 /* settings general section title */
 "Auto-load embedded images" = "Automaticky načíst vložené obrázky";
 
@@ -295,7 +301,7 @@
 "Block email tracking" = "Blokovat sledování emailů";
 
 /* Settings item to open blocked sender list */
-"Block list" = "Seznam blokovaných";
+"Block list" = "Seznam blokovaných kontaktů";
 
 /* Button to block a sender */
 "Block sender" = "Blokovat odesílatele";
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Smazat zprávu";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Smazat zprávy?";
 
 /* Title */
 "Details" = "Detaily";
@@ -1213,6 +1222,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Zprávy z doby před %@, nebudou vyhledávány. Chcete-li v nich vyhledávat, uvolněte v tomto zařízení úložný prostor.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Zprávy, které byly v koši nebo spamu déle než 30 dní, budou automaticky smazány.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Zprávy se budou stahovat přes Wi-Fi. To může nějakou dobu trvat a zařízení se může mírně zahřívat. Akci můžete kdykoli pozastavit.";
@@ -2064,6 +2076,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Tento panel nástrojů je viditelný při čtení zprávy.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Tímto budou mazány všechny zprávy, které budou v koši nebo spamu déle než 30 dní, včetně zpráv, které se v těchto složkách právě nacházejí.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Čas na odpočinek";
 
@@ -2113,6 +2128,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Důvěryhodné klíče nejsou použitelné pro odesílání";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Zkuste jiný hledaný výraz.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Zkuste připojení k Protonu z jiné sítě (nebo použijte %1$@ nebo %2$@).";

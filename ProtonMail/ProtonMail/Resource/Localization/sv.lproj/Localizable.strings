@@ -252,6 +252,12 @@
 /* Title */
 "Auto Lock Time" = "Tid till automatisk låsning";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Ta bort automatiskt";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Ta bort oönskade meddelanden automatiskt";
+
 /* settings general section title */
 "Auto-load embedded images" = "Ladda automatiskt inbäddade bilder";
 
@@ -615,6 +621,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Ta bort meddelande";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Ta bort meddelanden?";
 
 /* Title */
 "Details" = "Detaljer";
@@ -2110,6 +2119,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Betrodda nycklar är inte giltiga för att skicka";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Prova en annan sökterm.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Försök att ansluta till Proton från ett annat nätverk (eller använd %1$@ eller %2$@).";

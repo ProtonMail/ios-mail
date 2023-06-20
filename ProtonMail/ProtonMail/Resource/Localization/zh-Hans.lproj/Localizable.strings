@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "自动锁定时间";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "自动删除";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "自动删除无用邮件";
+
 /* settings general section title */
 "Auto-load embedded images" = "自动加载嵌入图像";
 
@@ -295,7 +301,7 @@
 "Block email tracking" = "阻止电子邮件追踪";
 
 /* Settings item to open blocked sender list */
-"Block list" = "黑名单";
+"Block list" = "屏蔽列表";
 
 /* Button to block a sender */
 "Block sender" = "屏蔽发件人";
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "删除邮件";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "立即删除邮件？";
 
 /* Title */
 "Details" = "详细信息";
@@ -1213,6 +1222,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "早于 %@ 的邮件将无法被搜索到。要在其中搜索，请释放设备的存储空间。";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "归入垃圾邮件或废件箱的邮件超过 30 天自动删除。";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "邮件将通过 WiFi 下载。这可能需要一点时间，且你的设备可能会稍微发热。你可以在任何时候暂停该操作。";
@@ -2064,6 +2076,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "此工具栏将在阅读邮件时显示。";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "此操作将删除所有归入垃圾邮件或废件箱超过 30 天的邮件，现存邮件也不例外。";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "该放松一下了";
 
@@ -2113,6 +2128,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "已信任的密钥对发送无效";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "不妨试试其他关键词。";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "尝试更换网络后再连接 Proton（或使用 %1$@ 或 %2$@）。";
@@ -2385,7 +2403,7 @@
 "Your messages are being downloaded..." = "正在为您下载邮件...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "如果您的联系人也使用 Proton Mail，您的隐私将得到更好的保护。 邀请您的朋友加入 Proton，你们每个人都将免费获得高级福利。";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "如果您的联系人也加入 Proton Mail，您的隐私将得到更好的保护。不妨邀请好友注册 Proton，您与好友都能免费体验高级账户权益。";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "您的账户因长时间未操作已自动退出，或已被其他设备下线。请重新登录。";

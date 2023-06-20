@@ -187,7 +187,7 @@
 "AppKey protection" = "AppKey προστασία";
 
 /* Title for application logs settings option */
-"Application logs" = "Καταγραφές εφαρμογής";
+"Application logs" = "Αρχείο καταγραφών";
 
 /* Apply action */
 "Apply" = "Εφαρμογή";
@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Χρονικό Όριο Αυτόματου Κλειδώματος";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Αυτόματη διαγραφή";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Αυτόματη διαγραφή ανεπιθύμητων μηνυμάτων";
+
 /* settings general section title */
 "Auto-load embedded images" = "Αυτόματη φόρτωση ενσωματωμένων εικόνων";
 
@@ -295,7 +301,7 @@
 "Block email tracking" = "Φραγή ιχνηλάτησης μηνυμάτων";
 
 /* Settings item to open blocked sender list */
-"Block list" = "Λίστα αποκλεισμένων";
+"Block list" = "Αποκλεισμένες διευθύνσεις";
 
 /* Button to block a sender */
 "Block sender" = "Αποκλεισμός αποστολέα";
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Διαγραφή μηνύματος";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Διαγραφή μηνυμάτων;";
 
 /* Title */
 "Details" = "Λεπτομέρειες";
@@ -1213,6 +1222,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Τα μηνύματα πριν από το %@, δεν θα αναζητηθούν. Για να πραγματοποιήσετε αναζήτηση σε αυτά, ελευθερώστε χώρο αποθήκευσης σε αυτήν τη συσκευή.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Τα μηνύματα που είναι στον κάδο απορριμμάτων ή στα ανεπιθύμητα για περισσότερες από 30 ημέρες θα διαγράφονται αυτόματα.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Τα μηνύματα θα ληφθούν μέσω WiFi. Αυτό μπορεί να διαρκέσει αρκετή ώρα και η συσκευή σας μπορεί να θερμανθεί ελαφρώς. Μπορείτε να θέσετε σε παύση την ενέργεια ανά πάσα στιγμή.";
@@ -2064,6 +2076,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Αυτή η γραμμή εργαλείων είναι ορατή κατά την ανάγνωση ενός μηνύματος.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Αυτό θα διαγράψει όλα τα μηνύματα που βρίσκονται στον κάδο απορριμμάτων ή στα ανεπιθύμητα μηνύματα για περισσότερες από 30 ημέρες, συμπεριλαμβανομένων των μηνυμάτων που βρίσκονται αυτήν τη στιγμή σε αυτούς τους φακέλους.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Ώρα για χαλάρωση";
 
@@ -2388,7 +2403,7 @@
 "Your messages are being downloaded..." = "Γίνεται λήψη των μηνυμάτων σας...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Το απόρρητό σας προστατεύεται καλύτερα εάν οι επαφές σας χρησιμοποιούν επίσης Proton Mail. Προσκαλέστε τους φίλους σας στο Proton και ο καθένας θα λάβει δωρεάν premium οφέλη.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Το απόρρητό σας είναι καλύτερα προστατευμένο εάν οι επαφές σας χρησιμοποιούν επίσης Proton Mail. Προσκαλέστε τους φίλους σας στο Proton, και ο καθένας σας θα λάβει premium οφέλη δωρεάν.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Η περίοδος λειτουργίας σας έχει λήξει επειδή δεν έχετε κάνει κάποια ενέργεια για λίγο ή επειδή έχει ανακληθεί. Συνδεθείτε ξανά.";

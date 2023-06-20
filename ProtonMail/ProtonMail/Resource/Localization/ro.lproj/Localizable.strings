@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Timp autoblocare";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Ștergere automată";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Ștergere automată mesaje nedorite";
+
 /* settings general section title */
 "Auto-load embedded images" = "Autoîncărcare imagini incluse";
 
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Ștergere mesaj";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Ștergere mesaje?";
 
 /* Title */
 "Details" = "Detalii";
@@ -1213,6 +1222,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = " Mesajele dinainte de %@, nu vor fi căutate. Pentru a căuta în interiorul lor, eliberați spațiu pe acest dispozitiv.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Mesajele din folderul «Gunoi» și «Nedorite» vor fi șterse automat după de 30 de zile.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Mesajele vor fi descărcate prin WiFi. Ar putea dura și este posibil ca dispozitivul să se încălzească puțin. Puteți suspenda oricând acțiunea.";
@@ -2064,6 +2076,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Această bară de utilitare este vizibilă atunci când se citește un mesaj.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Aceasta va șterge toate mesajele din «Gunoi» și «Nedorite» mai vechi de 30 de zile, inclusiv cele aflate în aceste foldere.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Timp de relaxare";
 
@@ -2113,6 +2128,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Cheile de încredere nu sunt valide pentru trimitere";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Căutați alt termen de căutare.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Încercați să vă conectați la Proton dintr-o rețea diferită (sau folosiți %1$@ sau %2$@).";

@@ -255,6 +255,9 @@
 /* Title */
 "Auto Lock Time" = "Waktu Penguncian Otomatis";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Hapus otomatis";
+
 /* settings general section title */
 "Auto-load embedded images" = "Muat gambar yang tersemat secara otomatis";
 

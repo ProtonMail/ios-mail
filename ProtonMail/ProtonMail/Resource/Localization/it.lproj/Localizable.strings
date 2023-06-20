@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Tempo di blocco automatico";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Eliminazione automatica";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Elimina automaticamente i messaggi non desiderati";
+
 /* settings general section title */
 "Auto-load embedded images" = "Carica automaticamente le immagini incorporate";
 
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Elimina messaggio";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Eliminare messaggi?";
 
 /* Title */
 "Details" = "Dettagli";
@@ -2113,6 +2122,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Le chiavi attendibili non sono valide per l'invio";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Prova un termine di ricerca diverso.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Prova a connetterti a Proton da una rete diversa (o usa %1$@ o %2$@).";

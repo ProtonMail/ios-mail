@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Время автоблокировки";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Автоматическое удаление";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Автоматическое удаление нежелательных сообщений";
+
 /* settings general section title */
 "Auto-load embedded images" = "Авто-показ встроенных изображений";
 
@@ -295,7 +301,7 @@
 "Block email tracking" = "Блокировать отслеживание электронной почты";
 
 /* Settings item to open blocked sender list */
-"Block list" = "Чёрный список";
+"Block list" = "Черный список";
 
 /* Button to block a sender */
 "Block sender" = "Заблокировать отправителя";
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Удалить сообщение";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Удалить сообщения?";
 
 /* Title */
 "Details" = "Информация";
@@ -1213,6 +1222,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Для сообщений, отправленных до %@, поиск работать не будет. Чтобы искать в них, освободите место на этом устройстве.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Сообщения, находящиеся в корзине и спаме более 30 дней, будут автоматически удалены.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Сообщения скачаются через WiFi. Это может занять какое-то время, и ваше устройство слегка нагреется. Вы можете приостановить скачивание в любое время.";
@@ -2064,6 +2076,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Эта панель инструментов видна при чтении сообщения.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Это удалит все сообщения, находящиеся в корзине или спаме более 30 дней, включая сообщения, находящиеся в этих папках сейчас.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Время отдохнуть";
 
@@ -2113,6 +2128,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Доверенные ключи недействительны для отправки";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Попробуйте другой поисковый запрос.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Попробуйте подключиться к Proton из другой сети (или используйте %1$@ или %2$@).";

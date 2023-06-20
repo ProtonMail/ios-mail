@@ -455,7 +455,7 @@
 "Compose" = "Compor";
 
 /* An action title shows in ellipsis menu */
-"Compose message" = "Compor mensagem";
+"Compose message" = "Compor uma mensagem";
 
 /* Title */
 "Compose to" = "Compor para";
@@ -1037,7 +1037,7 @@
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Apresentando o visual atualizado do Proton.\nMuitos serviços, uma missão. Damos-lhe as boas-vindas a uma internet onde a privacidade vem predefinida.";
 
 /* The error message is shown in composer */
-"Invalid email address" = "Endereço de e-mail inválido.";
+"Invalid email address" = "O endereço de e-mail não é válido.";
 
 /* update password error */
 "Invalid hashed password!" = "Palavra-passe de hash inválida!";
@@ -1046,7 +1046,7 @@
 "Invalid URL" = "URL inválido";
 
 /* Error message */
-"Invalid username!" = "O nome de utilizador é inválido!";
+"Invalid username!" = "O nome de utilizador não é válido.";
 
 /* The article title of the referral share view. */
 "Invite friends to Proton,\n get up to $90 in credits!" = "Convide amigos para o Proton,\n ganhe até $90 em créditos!";
@@ -1494,7 +1494,7 @@
 "Please connect and retry" = "Ligue-se e tente novamente.";
 
 /* Text for status label when no internet connection is available */
-"Please connect to the internet to continue." = "Por favor ligue-se à internet para continuar.";
+"Please connect to the internet to continue." = "Ligue-se à internet para continuar.";
 
 /* error message */
 "Please input a valid email address." = "Insira um endereço de e-mail válido.";
@@ -2113,6 +2113,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Chaves confiáveis não são válidas para enviar";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Tente um termo de pesquisa diferente.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Tente ligar ao Proton de uma rede diferente (ou utilize o %1$@ ou %2$@).";

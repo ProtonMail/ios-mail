@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Час аўтаматычнага блакіравання";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Аўтавыдаленне";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Аўтавыдаленне непажаданых паведамленняў";
+
 /* settings general section title */
 "Auto-load embedded images" = "Аўтаматычная загрузка ўбудаваных відарысаў";
 
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Выдаліць паведамленне";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Выдаліць паведамленні?";
 
 /* Title */
 "Details" = "Падрабязнасці";
@@ -1214,6 +1223,9 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Паведамленні да %@ не будуць шукацца. Каб шукаць сярод іх, вызваліце прастору ў сховішчы на гэтай прыладзе.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Паведамленні, якія знаходзяцца ў папках сметніца або спам больш за 30 дзён будуць выдаляцца аўтаматычна.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Паведамленні будуць спампаваны праз Wi-Fi. Гэта зойме некаторы час і ваша прылада можа крыху нагрэцца. Вы можаце прыпыніць гэта дзеянне ў любы час.";
 
@@ -1634,7 +1646,7 @@
 "Reply all (to last message)" = "Адказаць усім (на апошняе паведамленне)";
 
 /* menu title */
-"Report a problem" = "Паведаміць пра праблему";
+"Report a problem" = "Паведаміць аб праблеме";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Паведаміць пра фішынг";
@@ -2063,6 +2075,9 @@
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Гэта панэль інструментаў бачная пры чытанні паведамлення.";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Гэта прывядзе да выдалення ўсіх паведамленняў, якія знаходзяцца ў папках сметніца або спам больш за 30 дзён. Уключаючы паведамленні, якія зараз знаходзяцца ў гэтых папках.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Час адпачыць";

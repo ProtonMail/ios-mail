@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Zeit bis zur automatischen Sperrung";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Automatisch löschen";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Unerwünschte Nachrichten automatisch löschen";
+
 /* settings general section title */
 "Auto-load embedded images" = "Eingebettete Grafiken automatisch laden";
 
@@ -295,7 +301,7 @@
 "Block email tracking" = "E-Mail-Tracking blockieren";
 
 /* Settings item to open blocked sender list */
-"Block list" = "Sperrliste";
+"Block list" = "Liste gesperrter E-Mail-Adressen";
 
 /* Button to block a sender */
 "Block sender" = "Absender sperren";
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Nachricht löschen";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Nachrichten löschen?";
 
 /* Title */
 "Details" = "Details";
@@ -1213,6 +1222,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Nachrichten vor dem %@ werden nicht durchsucht. Gib bitte Speicherplatz auf diesem Gerät frei, um diese ebenfalls zu durchsuchen.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Nachrichten, die länger als 30 Tage im Papierkorb oder Spam liegen, werden automatisch gelöscht.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Die Nachrichten werden über WLAN heruntergeladen. Dies kann einige Zeit dauern und dein Gerät kann sich leicht erwärmen. Du kannst den Vorgang jederzeit unterbrechen.";
@@ -2063,6 +2075,9 @@
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Diese Symbolleiste wird beim Lesen einer Nachricht angezeigt.";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Damit werden alle Nachrichten gelöscht, die sich seit mehr als 30 Tagen im Papierkorb oder im Spam-Ordner befinden, einschließlich der Nachrichten, die sich derzeit in diesen Ordnern befinden.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Zeit zum Entspannen";
