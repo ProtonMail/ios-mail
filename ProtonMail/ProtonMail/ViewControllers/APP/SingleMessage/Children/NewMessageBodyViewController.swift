@@ -199,7 +199,10 @@ class NewMessageBodyViewController: UIViewController {
     }
 
     private func updateViewHeight(to newHeight: CGFloat) {
-        heightConstraint?.constant = newHeight
+        // Limit the maximum height of the view height to the original height * 3.
+        // This can prevent the height constraint becoming too large to be invalid and break the UI layout.
+        let height = min(originalHeight * 3, newHeight)
+        heightConstraint?.constant = height
         viewModel.recalculateCellHeight?(true)
     }
 
