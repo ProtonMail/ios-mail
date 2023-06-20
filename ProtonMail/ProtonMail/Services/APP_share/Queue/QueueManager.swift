@@ -210,11 +210,13 @@ final class QueueManager: Service, UserStatusInQueueProtocol, QueueHandlerRegist
         }
     }
 
-    func clearAll(completeHandler: (() -> Void)?) {
-        self.queue.async {
-            self.messageQueue.clearAll()
-            self.miscQueue.clearAll()
-            completeHandler?()
+    func clearAll() async {
+        await withCheckedContinuation { continuation in
+            self.queue.async {
+                self.messageQueue.clearAll()
+                self.miscQueue.clearAll()
+                continuation.resume()
+            }
         }
     }
 

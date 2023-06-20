@@ -99,38 +99,29 @@ class LabelsDataService: Service {
         }
     }
 
-    func cleanUp() -> Promise<Void> {
-        return Promise { seal in
-            let labelFetch = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
-            labelFetch.predicate = NSPredicate(format: "%K == %@", Label.Attributes.userID, self.userID.rawValue)
+    func cleanUp() {
+        contextProvider.performAndWaitOnRootSavingContext { context in
+            Label.delete(
+                in: context,
+                basedOn: NSPredicate(format: "%K == %@", Label.Attributes.userID, self.userID.rawValue)
+            )
 
-            let contextLabelRequest = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
-            contextLabelRequest.predicate = NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, self.userID.rawValue)
+            ContextLabel.delete(
+                in: context,
+                basedOn: NSPredicate(format: "%K == %@", ContextLabel.Attributes.userID, self.userID.rawValue)
+            )
 
-            self.contextProvider.performOnRootSavingContext { context in
-                if let labelResults = try? context.fetch(labelFetch) {
-                    labelResults.forEach(context.delete)
-                }
-
-                if let contextResults = try? context.fetch(contextLabelRequest) {
-                    contextResults.forEach(context.delete)
-                }
                 _ = context.saveUpstreamIfNeeded()
-                seal.fulfill_()
-            }
         }
     }
 
-    static func cleanUpAll() -> Promise<Void> {
-        return Promise { seal in
+    static func cleanUpAll() {
             let coreDataService = sharedServices.get(by: CoreDataService.self)
-            coreDataService.enqueueOnRootSavingContext { context in
+            coreDataService.performAndWaitOnRootSavingContext { context in
                 Label.deleteAll(in: context)
                 LabelUpdate.deleteAll(in: context)
                 ContextLabel.deleteAll(in: context)
-                seal.fulfill_()
             }
-        }
     }
 
     /// Get label and folder through v4 api

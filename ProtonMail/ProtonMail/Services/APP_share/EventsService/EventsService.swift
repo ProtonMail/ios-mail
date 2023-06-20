@@ -22,7 +22,6 @@
 
 import Foundation
 import Groot
-import PromiseKit
 import ProtonCore_DataModel
 import ProtonCore_Services
 import EllipticCurveKeyPair
@@ -154,9 +153,8 @@ extension EventsService {
 
                 let eventsRes = response
                 if eventsRes.refresh.contains(.contacts) {
-                    _ = self.userManager.contactService.cleanUp().ensure {
+                    self.userManager.contactService.cleanUp()
                         self.userManager.contactService.fetchContacts(completion: nil)
-                    }
                 }
 
                 if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
@@ -184,9 +182,8 @@ extension EventsService {
                             }
                         }
                         self.userManager.conversationService.cleanAll()
-                        self.userManager.messageService.cleanMessage(cleanBadgeAndNotifications: false).then {
-                            return self.userManager.contactService.cleanUp()
-                        }.ensure {
+                        self.userManager.messageService.cleanMessage(cleanBadgeAndNotifications: false)
+                            self.userManager.contactService.cleanUp()
                             switch self.userManager.getCurrentViewMode() {
                             case .conversation:
                                 self.userManager.conversationService.fetchConversations(for: labelID, before: 0, unreadOnly: false, shouldReset: false) { result in
@@ -202,7 +199,6 @@ extension EventsService {
                             }
                             self.userManager.contactService.fetchContacts(completion: nil)
                             self.userManager.messageService.labelDataService.fetchV4Labels()
-                        }.cauterize()
                     }
                 } else if let messageEvents = eventsRes.messages {
                     self.incrementalUpdateQueue.async {

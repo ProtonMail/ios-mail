@@ -42,7 +42,7 @@ protocol ContactProviderProtocol: AnyObject {
 
     func getAllEmails() -> [Email]
     func fetchContacts(completion: ContactFetchComplete?)
-    func cleanUp() -> Promise<Void>
+    func cleanUp()
 }
 
 class ContactDataService: Service {
@@ -74,12 +74,11 @@ class ContactDataService: Service {
     /**
      clean contact local cache
      **/
-    func cleanUp() -> Promise<Void> {
-        return Promise { seal in
+    func cleanUp() {
             self.contactCacheStatus.contactsCached = 0
             let userID = userID.rawValue
 
-            self.coreDataService.performOnRootSavingContext { context in
+            self.coreDataService.performAndWaitOnRootSavingContext { context in
                 Contact.delete(
                     in: context,
                     basedOn: NSPredicate(format: "%K == %@", Contact.Attributes.userID, userID)
@@ -94,21 +93,15 @@ class ContactDataService: Service {
                     in: context,
                     basedOn: NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, userID)
                 )
-                
-                seal.fulfill_()
-            }
         }
     }
 
-    static func cleanUpAll() -> Promise<Void> {
-        return Promise { seal in
+    static func cleanUpAll() {
             let coreDataService = sharedServices.get(by: CoreDataService.self)
-            coreDataService.enqueueOnRootSavingContext { context in
+            coreDataService.performAndWaitOnRootSavingContext { context in
                 Contact.deleteAll(in: context)
                 Email.deleteAll(in: context)
-                seal.fulfill_()
             }
-        }
     }
 
     /**

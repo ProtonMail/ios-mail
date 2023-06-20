@@ -70,20 +70,17 @@ extension FetchMessagesWithReset {
         dependencies.localMessageDataService.cleanMessage(
             removeAllDraft: removeAllDraft,
             cleanBadgeAndNotifications: false
-        ).then { _ -> Promise<Void> in
+        )
             self.dependencies.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID)
-            return Promise<Void>()
-        }.cauterize()
     }
 
     private func cleanContactIfNeeded(cleanContact: Bool) -> Promise<Void> {
         guard cleanContact else { return Promise() }
         return Promise { seal in
-            _ = self.dependencies.contactProvider.cleanUp().done { _ in
+            self.dependencies.contactProvider.cleanUp()
                 self.dependencies.contactProvider.fetchContacts { _ in
                     seal.fulfill_()
                 }
-            }
         }
     }
 }

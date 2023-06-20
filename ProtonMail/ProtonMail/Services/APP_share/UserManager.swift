@@ -61,59 +61,37 @@ class UserManager: Service {
             guard let self = self else { return }
             self.eventsService.stop()
             self.localNotificationService.cleanUp()
-
-            var wait = Promise<Void>()
-            let promises = [
-                self.messageService.cleanUp(),
-                self.labelService.cleanUp(),
-                self.contactService.cleanUp(),
-                self.contactGroupService.cleanUp(),
-                lastUpdatedStore.cleanUp(userId: self.userID),
-                self.incomingDefaultService.cleanUp()
-            ]
+            
+            messageService.cleanUp()
+            labelService.cleanUp()
+            contactService.cleanUp()
+            contactGroupService.cleanUp()
+            lastUpdatedStore.cleanUp(userId: self.userID)
+            try incomingDefaultService.cleanUp()
             self.deactivatePayments()
             #if !APP_EXTENSION
             self.payments.planService.currentSubscription = nil
             self.encryptedSearchCache.logout(of: userID)
             #endif
-            for p in promises {
-                wait = wait.then({ (_) -> Promise<Void> in
-                    return p
-                })
-            }
-            wait.done {
                 userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
-                self.authCredentialAccessQueue.sync { [weak self] in
+                self.authCredentialAccessQueue.async { [weak self] in
                     self?.isLoggedOut = true
+                    seal.fulfill_()
                 }
-                seal.fulfill_()
-            }.catch { (_) in
-                seal.fulfill_()
-            }
         }
     }
 
-    static func cleanUpAll() -> Promise<Void> {
+    static func cleanUpAll() async {
         IncomingDefaultService.cleanUpAll()
         LocalNotificationService.cleanUpAll()
-
-        var wait = Promise<Void>()
-        let promises = [
-            MessageDataService.cleanUpAll(),
-            LabelsDataService.cleanUpAll(),
-            ContactDataService.cleanUpAll(),
-            ContactGroupsDataService.cleanUpAll(),
-            LastUpdatedStore.cleanUpAll()
-        ]
-        for p in promises {
-            wait = wait.then({ (_) -> Promise<Void> in
-                return p
-            })
-        }
-        return wait
+        await MessageDataService.cleanUpAll()
+        LabelsDataService.cleanUpAll()
+        ContactDataService.cleanUpAll()
+        ContactGroupsDataService.cleanUpAll()
+        LastUpdatedStore.cleanUpAll()
     }
 
     var delegate: UserManagerSave?

@@ -231,7 +231,8 @@ class QueueManagerTests: XCTestCase {
         XCTAssertEqual(miscQueue.count, 2)
         
         let finish = expectation(description: "Notification Raised")
-        sut.clearAll(){
+        Task {
+            await sut.clearAll()
             finish.fulfill()
         }
         

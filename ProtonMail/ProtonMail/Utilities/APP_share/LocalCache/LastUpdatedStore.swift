@@ -21,14 +21,12 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import Foundation
-import PromiseKit
 import ProtonCore_DataModel
 import UIKit
 
 // sourcery: mock
 protocol LastUpdatedStoreProtocol {
-    func cleanUp(userId: UserID) -> Promise<Void>
+    func cleanUp(userId: UserID)
 
     func updateEventID(by userID: UserID, eventID: String)
     func lastEventID(userID: UserID) -> String
@@ -67,27 +65,21 @@ final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol, Service
         super.init()
     }
 
-    func cleanUp(userId: UserID) -> Promise<Void> {
-        return Promise { seal in
+    func cleanUp(userId: UserID) {
             self.contextProvider.performOnRootSavingContext { context in
                 _ = UserEvent.remove(by: userId.rawValue, inManagedObjectContext: context)
                 _ = LabelUpdate.remove(by: userId.rawValue, inManagedObjectContext: context)
                 _ = ConversationCount.remove(by: userId.rawValue, inManagedObjectContext: context)
-                seal.fulfill_()
             }
-        }
     }
 
-    static func cleanUpAll() -> Promise<Void> {
-        return Promise { seal in
+    static func cleanUpAll() {
             let coreDataService = sharedServices.get(by: CoreDataService.self)
-            coreDataService.performOnRootSavingContext { context in
+            coreDataService.performAndWaitOnRootSavingContext { context in
                 UserEvent.deleteAll(in: context)
                 LabelUpdate.deleteAll(in: context)
                 ConversationCount.deleteAll(in: context)
-                seal.fulfill_()
             }
-        }
     }
 }
 
