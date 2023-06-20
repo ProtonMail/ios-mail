@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Otomatik kilitleme süresi";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Otomatik sil";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "İstenmeyen iletiler otomatik olarak silinsin";
+
 /* settings general section title */
 "Auto-load embedded images" = "Gömülü görseller otomatik olarak yüklensin";
 
@@ -295,7 +301,7 @@
 "Block email tracking" = "E-postanın izlenmesi engellensin";
 
 /* Settings item to open blocked sender list */
-"Block list" = "Engellenenler listesi";
+"Block list" = "Engellenmiş adresler listesi";
 
 /* Button to block a sender */
 "Block sender" = "Göndericiyi engelle";
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "İletiyi sil";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "İletiler silinsin mi?";
 
 /* Title */
 "Details" = "Ayrıntılar";
@@ -1213,6 +1222,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "%@ öncesindeki iletiler aranamayacak. Bunlarda arama yapabilmek için bu aygıt üzerinde boş alan açın.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Çöp ve istenmeyen kutularında 30 günden uzun süre kalan iletiler otomatik olarak silinir.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "İletiler WiFi ile indirilecek. Bu işlem biraz zaman alabilir ve aygıtınızın hafifçe ısınmasına neden olabilir. İşlemi istediğiniz zaman duraklatabilirsiniz.";
@@ -2063,6 +2075,9 @@
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Bu araç çubuğu bir ileti okunurken görünür.";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Bu işlem, şu anda bu klasörlerde bulunanlarla birlikte çöp veya istenmeyen kutularında 30 günden uzun süre kalan tüm iletileri siler.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Rahatlama zamanı";

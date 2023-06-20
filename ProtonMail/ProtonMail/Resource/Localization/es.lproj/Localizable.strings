@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Tiempo de bloqueo automático";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Eliminación automática";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Eliminación automática de mensajes no deseados";
+
 /* settings general section title */
 "Auto-load embedded images" = "Cargar automáticamente las imágenes incrustadas";
 
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Eliminar mensaje";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Eliminar los mensajes?";
 
 /* Title */
 "Details" = "Detalles";
@@ -1213,6 +1222,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Los mensajes anteriores a %@ no serán descargados. Para buscar en ellos, libera almacenamiento en este dispositivo.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Los mensajes en la carpeta Papelera o Spam de más de 30 días serán automáticamente eliminados.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Los mensajes se descargarán mediante WiFi. Esto puede llevar algún tiempo y tu dispositivo se puede calentar ligeramente. Puedes pausar esta acción en cualquier momento.";
@@ -2064,6 +2076,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Puedes ver esta barra de herramientas cuando lees un mensaje.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Esto eliminará todos los mensajes que están en la carpeta Papelera o Spam de más de 30 días. incluye también mensajes actualmente en esas carpetas.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "¡Es tiempo de relajarte!";
 
@@ -2113,6 +2128,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Las claves de confianza no son válidas para el envío.";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Intenta un término de búsqueda diferente.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Intenta conectarte a Proton desde una red distinta ( o usando %1$@ o %2$@).";

@@ -2114,6 +2114,9 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "信頼された鍵が送信に使用できません";
 
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "別の検索ワードを試してください。";
+
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "別のネットワークから Proton への接続を試してください (または %1$@ や %2$@ をお試しください)";
 

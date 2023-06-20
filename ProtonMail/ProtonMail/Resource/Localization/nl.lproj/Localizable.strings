@@ -295,7 +295,7 @@
 "Block email tracking" = "Blokkeer e-mailtracking";
 
 /* Settings item to open blocked sender list */
-"Block list" = "Blokkeringslijst";
+"Block list" = "Geblokkeerde contacten";
 
 /* Button to block a sender */
 "Block sender" = "Blokkeer afzender";
@@ -2113,6 +2113,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Vertrouwde sleutels zijn niet geldig om mee te verzenden";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Probeer een andere zoekterm.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Probeer verbinding te maken met Proton vanuit een ander netwerk (of gebruik %1$@ of %2$@).";

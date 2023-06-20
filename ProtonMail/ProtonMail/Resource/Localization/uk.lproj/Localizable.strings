@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Час автоблокування";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Автовидалення";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Автовидалення непотрібних повідомлень";
+
 /* settings general section title */
 "Auto-load embedded images" = "Автозавантаження вбудованих зображень";
 
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Видалити повідомлення";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Видалити повідомлення?";
 
 /* Title */
 "Details" = "Подробиці";
@@ -1213,6 +1222,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Повідомлення до %@ не будуть доступними для пошуку. Щоб виконувати пошук серед них, звільніть обсяг сховища на цьому пристрої.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Повідомлення, що знаходяться в смітнику або спамі понад 30 днів, будуть автоматично видалені.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Повідомлення завантажуватимуться через WiFi. Це може тривати певний час, а ваш пристрій може дещо нагрітися. Можна будь-коли призупинити процес.";
@@ -2063,6 +2075,9 @@
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Ця панель інструментів показується під час читання повідомлення.";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Це призведе до видалення всіх повідомлень, які перебувають у теці \"Смітник\" або \"Спам\" понад 30 днів, включно з повідомленнями, які наразі знаходяться в цих теках.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Час відпочити";

@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Czas automatycznego blokowania";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Automatyczne usuwanie";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Automatyczne usuwanie niechcianych wiadomości";
+
 /* settings general section title */
 "Auto-load embedded images" = "Automatycznie załaduj osadzone obrazy";
 
@@ -295,13 +301,13 @@
 "Block email tracking" = "Zablokuj śledzenie wiadomości";
 
 /* Settings item to open blocked sender list */
-"Block list" = "Zablokuj listę";
+"Block list" = "Lista zablokowanych";
 
 /* Button to block a sender */
 "Block sender" = "Zablokuj nadawcę";
 
 /* Title of the blocked sender list screen */
-"Blocked Senders" = "Zablokowani nadawcy";
+"Blocked Senders" = "Lista zabokowanych";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Blokuje nadawcom możliwość sprawdzenia, czy i kiedy otwierasz wiadomość";
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Usuń wiadomość";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Usunąć wiadomości?";
 
 /* Title */
 "Details" = "Szczegóły";
@@ -2110,6 +2119,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Zaufane klucze nie są przeznaczone do wysyłania wiadomości";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Spróbuj użyć innego zapytania.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Spróbuj połączyć się z usługą Proton z innej sieci (lub przez %1$@ albo %2$@).";

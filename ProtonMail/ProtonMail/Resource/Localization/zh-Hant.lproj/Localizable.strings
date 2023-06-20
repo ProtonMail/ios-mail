@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "自動鎖定時間";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "自動刪除";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "自動刪除垃圾訊息";
+
 /* settings general section title */
 "Auto-load embedded images" = "自動載入嵌入圖像";
 
@@ -295,7 +301,7 @@
 "Block email tracking" = "封鎖郵件追蹤";
 
 /* Settings item to open blocked sender list */
-"Block list" = "攔截清單";
+"Block list" = "封鎖清單";
 
 /* Button to block a sender */
 "Block sender" = "封鎖寄件者";
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "刪除郵件";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "刪除郵件?";
 
 /* Title */
 "Details" = "詳細資訊";
@@ -1213,6 +1222,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "郵件日期等於或早於 %@，無法進一步搜尋。若需在該範圍內搜尋，則必須在此裝置上釋出更多儲存空間才可進行。";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "將自動刪除超過30天的垃圾郵件";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "郵件將透過 WiFi 下載。這可能需要一些時間，而且您的裝置可能會稍微發熱。您可以隨時暫停操作。";
@@ -2063,6 +2075,9 @@
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "讀取郵件時，顯示工具列。";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "此會刪除全部於垃圾桶及垃圾郵件超過30天的訊息，包含所有現在此資料夾的訊息。";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "中場休息一下";

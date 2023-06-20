@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Temps de bloqueig automàtic";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Elimina automàticament";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Elimina automàticament els missatges no desitjats";
+
 /* settings general section title */
 "Auto-load embedded images" = "Càrrega automàtica d'imatges incrustades";
 
@@ -295,7 +301,7 @@
 "Block email tracking" = "Bloquegi el seguiment del correu electrònic";
 
 /* Settings item to open blocked sender list */
-"Block list" = "Llista d'adreces bloquejades";
+"Block list" = "Llista de bloquejats";
 
 /* Button to block a sender */
 "Block sender" = "Bloqueja el remitent";
@@ -618,6 +624,9 @@
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Eliminar missatge";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Voleu eliminar els missatges?";
 
 /* Title */
 "Details" = "Detalls";
@@ -1213,6 +1222,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Els missatges d'abans de %@, no seràn cercats. Per cercar entre els missatges antics allibera espai a aquest dispositiu.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Els missatges a la paperera o al correu brossa de més de 30 dies s'eliminaran automàticament.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Els missatges es descarregaran a través de WiFi. Això pot trigar força temps i el vostre dispositiu pot escalfar-se lleugerament. Podeu aturar l'acció en qualsevol moment.";
@@ -2064,6 +2076,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Aquesta barra d'eines és visible quan s'està llegint un missatge.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Això eliminarà tots els missatges que estiguin a la paperera o al correu brossa durant més de 30 dies, inclosos els missatges que es troben actualment en aquestes carpetes.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "És moment de relaxar-se";
 
@@ -2113,6 +2128,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Les claus de confiança no són vàlides per enviar-les";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Proveu un terme de cerca diferent.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Intenta connectar-te al Proton des d'una xarxa diferent (o utilitzi %1$@ o %2$@).";
