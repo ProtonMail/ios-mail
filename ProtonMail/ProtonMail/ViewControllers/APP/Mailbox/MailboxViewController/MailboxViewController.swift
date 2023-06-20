@@ -163,7 +163,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         if viewModel.reloadTable() {
             resetTableView()
         }
-        self.updateLastUpdateTimeLabel()
         self.updateUnreadButton()
 
         refetchAllIfNeeded()
@@ -254,7 +253,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.topActionsView.layer.zPosition = tableView.layer.zPosition + 1
 
         self.updateUnreadButton()
-        self.updateLastUpdateTimeLabel()
 
         self.viewModel.cleanReviewItems()
         generateAccessibilityIdentifiers()
@@ -937,7 +935,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                     self?.refreshControl.endRefreshing()
                 }
                 self?.showNoResultLabelIfNeeded()
-                self?.updateLastUpdateTimeLabel()
             }
             self?.startAutoFetch(false)
         }
@@ -1183,22 +1180,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         let width = titleWidth + 16 + (isInUnreadFilter ? 16 : 0)
         unreadFilterButtonWidth.constant = width
         self.unreadFilterButton.layer.cornerRadius = self.unreadFilterButton.frame.height / 2
-    }
-
-    private func updateLastUpdateTimeLabel() {
-        if let status = self.lastNetworkStatus, status == .notConnected {
-            updateTimeLabel.set(text: LocalString._mailbox_offline_text,
-                                preferredFont: .footnote,
-                                weight: .regular,
-                                textColor: ColorProvider.NotificationError)
-            return
-        }
-
-        let timeText = self.viewModel.getLastUpdateTimeText()
-        updateTimeLabel.set(text: timeText,
-                            preferredFont: .footnote,
-                            weight: .regular,
-                            textColor: ColorProvider.TextHint)
     }
 
     private func configureBannerContainer() {
@@ -2072,7 +2053,7 @@ extension MailboxViewController {
         }
         lastNetworkStatus = connectionStatus
 
-        self.updateLastUpdateTimeLabel()
+        updateTheUpdateTimeLabel()
     }
 
     private func afterNetworkChange(status: ConnectionStatus) {
@@ -2149,7 +2130,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.refreshControl.endRefreshing()
         }
         self.showNewMessageCount(self.newMessageCount)
-        self.updateLastUpdateTimeLabel()
         self.showNoResultLabelIfNeeded()
     }
 
@@ -2577,5 +2557,21 @@ extension MailboxViewController: UndoActionHandlerBase {
 extension MailboxViewController: MailboxViewModelUIProtocol {
     func updateTitle() {
         setupNavigationTitle(showSelected: viewModel.listEditing)
+    }
+
+    func updateTheUpdateTimeLabel() {
+        if let status = self.lastNetworkStatus, status == .notConnected {
+            updateTimeLabel.set(text: LocalString._mailbox_offline_text,
+                                preferredFont: .footnote,
+                                weight: .regular,
+                                textColor: ColorProvider.NotificationError)
+            return
+        }
+
+        let timeText = self.viewModel.getLastUpdateTimeText()
+        updateTimeLabel.set(text: timeText,
+                            preferredFont: .footnote,
+                            weight: .regular,
+                            textColor: ColorProvider.TextHint)
     }
 }
