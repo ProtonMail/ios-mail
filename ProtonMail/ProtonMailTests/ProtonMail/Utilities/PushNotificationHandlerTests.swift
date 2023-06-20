@@ -42,19 +42,13 @@ final class PushNotificationHandlerTests: XCTestCase {
         let testBody = "Test subject"
         let testSender = "A sender"
         let identifier = UUID().uuidString
-        let request = mailNotificationRequest(
-            uid: mockEncryptionKitProvider.UID,
-            identifier: identifier,
-            sender: testSender,
-            body: testBody
-        )
+        let request = mailNotificationRequest(identifier: identifier, sender: testSender, body: testBody)
 
         let expectation = self.expectation(description: "Decryption expectation")
         sut.handle(request: request) { decryptedContent in
             XCTAssertEqual(decryptedContent.threadIdentifier, self.mockEncryptionKitProvider.UID)
             XCTAssertEqual(decryptedContent.title, testSender)
             XCTAssertEqual(decryptedContent.body, testBody)
-            XCTAssertFalse(self.mockEncryptionKitProvider.markForUnsubscribingWasCalled)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
@@ -64,36 +58,13 @@ final class PushNotificationHandlerTests: XCTestCase {
         let expectedSender = "ProntonMail"
         let expectedBody = "New sign in to your account"
         let identifier = UUID().uuidString
-        let request = mailNotificationRequest(
-            uid: mockEncryptionKitProvider.UID,
-            identifier: identifier,
-            sender: expectedSender,
-            body: expectedBody
-        )
+        let request = mailNotificationRequest(identifier: identifier, sender: expectedSender, body: expectedBody)
 
         let expectation = self.expectation(description: "Decryption expectation")
         sut.handle(request: request) { decryptedContent in
             XCTAssertEqual(decryptedContent.threadIdentifier, self.mockEncryptionKitProvider.UID)
             XCTAssertEqual(decryptedContent.title, expectedSender)
             XCTAssertEqual(decryptedContent.body, expectedBody)
-            XCTAssertFalse(self.mockEncryptionKitProvider.markForUnsubscribingWasCalled)
-            expectation.fulfill()
-        }
-        wait(for: [expectation], timeout: 1.0)
-    }
-
-    func testHandle_whenEncriptionKitNotFound_shoudRemoveDeviceToken() {
-        let nonExistingUID = UUID().uuidString
-        let request = mailNotificationRequest(
-            uid: nonExistingUID,
-            identifier: UUID().uuidString,
-            sender: String.randomString(10),
-            body: String.randomString(20)
-        )
-
-        let expectation = self.expectation(description: "Decryption expectation")
-        sut.handle(request: request) { decryptedContent in
-            XCTAssertTrue(self.mockEncryptionKitProvider.markForUnsubscribingWasCalled)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
@@ -101,12 +72,7 @@ final class PushNotificationHandlerTests: XCTestCase {
 }
 
 private extension PushNotificationHandlerTests {
-    private func mailNotificationRequest(
-        uid: String,
-        identifier: String,
-        sender: String,
-        body: String
-    ) -> UNNotificationRequest {
+    private func mailNotificationRequest(identifier: String, sender: String, body: String) -> UNNotificationRequest {
         let plainTextPayload = """
         {
           "data": {
@@ -134,7 +100,7 @@ private extension PushNotificationHandlerTests {
             cleartext: plainTextPayload
         ).value
         let userInfo: [NSString: Any?] = [
-            "UID": uid,
+            "UID": mockEncryptionKitProvider.UID,
             "unreadConversations": nil,
             "unreadMessages": Int.random(in: 0..<100),
             "viewMode": Int.random(in: 0...1),
