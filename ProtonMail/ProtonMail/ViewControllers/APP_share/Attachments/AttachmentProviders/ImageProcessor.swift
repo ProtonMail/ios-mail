@@ -115,29 +115,27 @@ extension ImageProcessor where Self: AttachmentProvider {
                     (LocalString._importing + " \(Int(progress * 100))%").alertToastBottom()
                 }
             }
-            PHImageManager.default().requestImageDataAndOrientation(for: asset, options: options) { imagedata, dataUTI, orientation, info in
-                guard var image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
+            PHImageManager.default().requestImageDataAndOrientation(for: asset, options: options) { data, dataUTI, orientation, info in
+                guard let imageData = data, imageData.count > 0 else {
                     DispatchQueue.main.async {
                         self.controller?.error(LocalString._cant_open_the_file)
                     }
                     return
                 }
-                var fileName = "\(NSUUID().uuidString).jpg"
-                if let url = info["PHImageFileURLKey"] as? NSURL, let url_filename = url.lastPathComponent {
-                    fileName = url_filename
-                }
+                let resource = PHAssetResource.assetResources(for: asset)
+                var fileName = resource.first?.originalFilename ?? "\(UUID().uuidString).jpg"
+                let dataUTI = dataUTI ?? ""
 
-                let UTIstr = dataUTI ?? ""
-
-                if fileName.preg_match(".(heif|heic)") || UTIstr.preg_match(".(heif|heic)") {
-                    if let rawImage = UIImage(data: image_data) {
-                        if let newData = rawImage.jpegData(compressionQuality: 1.0), newData.count > 0 {
-                            image_data = newData
+                var imageDataToSave = imageData
+                if fileName.preg_match(".(heif|heic)") || dataUTI.preg_match(".(heif|heic)") {
+                    if let image = UIImage(data: imageData) {
+                        if let jpegImageData = image.jpegData(compressionQuality: 1.0), jpegImageData.count > 0 {
+                            imageDataToSave = jpegImageData
                             fileName = fileName.preg_replace(".(heif|heic)", replaceto: ".jpeg")
                         }
                     }
                 }
-                let fileData = ConcreteFileData(name: fileName, ext: fileName.mimeType(), contents: image_data)
+                let fileData = ConcreteFileData(name: fileName, ext: fileName.mimeType(), contents: imageDataToSave)
                 self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
             }
 
