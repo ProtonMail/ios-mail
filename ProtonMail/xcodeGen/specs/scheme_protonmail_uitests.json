@@ -30,6 +30,12 @@
             "coverageTargets": [
                "ProtonMail"
             ],
+            "preActions": [
+               {
+                  "script": "xcrun simctl --set ~/Library/Developer/XCTestDevices list devices | grep -E \"Booted\" | sed -E 's/.*\\(([A-F0-9-]+)\\).*/\\1/'| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/XCTestDevices/{}/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist\nxcrun simctl --set ~/Library/Developer/XCTestDevices list devices | grep -E \"Booted\" | sed -E 's/.*\\(([A-F0-9-]+)\\).*/\\1/'| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/XCTestDevices/{}/data/Library/UserConfigurationProfiles/EffectiveUserSettings.plist\nxcrun simctl --set ~/Library/Developer/XCTestDevices list devices | grep -E \"Booted\" | sed -E 's/.*\\(([A-F0-9-]+)\\).*/\\1/'| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/XCTestDevices/{}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist\nxcrun simctl list devices | grep -E \"Booted\" | sed -E 's/.*\\(([A-F0-9-]+)\\).*/\\1/'| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/XCTestDevices/{}/data/Containers/Shared/SystemGroup/systemgroup.com.apple.configurationprofiles/Library/ConfigurationProfiles/UserSettings.plist\nxcrun simctl list devices | grep -E \"Booted\" | sed -E 's/.*\\(([A-F0-9-]+)\\).*/\\1/'| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/XCTestDevices/{}/data/Library/UserConfigurationProfiles/EffectiveUserSettings.plist\nxcrun simctl list devices | grep -E \"Booted\" | sed -E 's/.*\\(([A-F0-9-]+)\\).*/\\1/'| xargs -I {} plutil -replace restrictedBool.allowPasswordAutoFill.value -bool NO ~/Library/Developer/XCTestDevices/{}/data/Library/UserConfigurationProfiles/PublicInfo/PublicEffectiveUserSettings.plist",
+                  "name": "Disable Password Autofill"
+               }
+            ],
             "testPlans": [
                {
                   "path": "ProtonMailUITests/Tests/TestPlans/RegressionTests.xctestplan"

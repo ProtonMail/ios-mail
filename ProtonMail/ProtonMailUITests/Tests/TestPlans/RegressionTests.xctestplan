@@ -29,8 +29,6 @@
         "BaseTestCase",
         "ContactsTests\/testContactDetailSendMessage()",
         "ContactsTests\/testContactGroupSendMessage()",
-        "DraftsTests\/testSaveDraftWithAttachment()",
-        "DraftsTests\/testSendDraftWithAttachment()",
         "FixtureAuthenticatedTestCase",
         "ForceUpgradeTests",
         "HumanVerificationTests",
