@@ -845,13 +845,13 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
     }
 
     @FuncStub(MockLastUpdatedStoreProtocol.removeUpdateTime) var removeUpdateTimeStub
-    func removeUpdateTime(by userID: UserID, type: ViewMode) {
-        removeUpdateTimeStub(userID, type)
+    func removeUpdateTime(by userID: UserID) {
+        removeUpdateTimeStub(userID)
     }
 
     @FuncStub(MockLastUpdatedStoreProtocol.resetCounter) var resetCounterStub
-    func resetCounter(labelID: LabelID, userID: UserID, type: ViewMode?) {
-        resetCounterStub(labelID, userID, type)
+    func resetCounter(labelID: LabelID, userID: UserID) {
+        resetCounterStub(labelID, userID)
     }
 
     @FuncStub(MockLastUpdatedStoreProtocol.removeUpdateTimeExceptUnread) var removeUpdateTimeExceptUnreadStub

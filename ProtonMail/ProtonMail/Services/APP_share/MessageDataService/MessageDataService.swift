@@ -419,9 +419,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 newMessage.numAttachments = NSNumber(value: localAttachmentCount)
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
-                                if let labelID = newMessage.firstValidFolder() {
-                                    self.mark(messageObjectIDs: [objectId], labelID: LabelID(labelID), unRead: false)
-                                }
                                 if newMessage.unRead {
                                     self.cacheService.updateCounterSync(markUnRead: false, on: newMessage)
                                     if let labelID = newMessage.firstValidFolder() {
@@ -491,7 +488,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                         self.mark(
                                             messageObjectIDs: [messageOut.objectID],
                                             labelID: LabelID(labelID),
-                                            unRead: false
+                                            unRead: false,
+                                            context: context
                                         )
                                     }
 
@@ -652,8 +650,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
      */
     func cleanUp() -> Promise<Void> {
         return self.cleanMessage(cleanBadgeAndNotifications: true).done { _ in
-            self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
-            self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
+            self.lastUpdatedStore.removeUpdateTime(by: self.userID)
             self.signout()
         }
     }

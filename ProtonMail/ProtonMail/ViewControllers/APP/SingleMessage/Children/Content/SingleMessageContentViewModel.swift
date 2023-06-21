@@ -265,7 +265,7 @@ class SingleMessageContentViewModel {
     }
 
     func deleteExpiredMessages() {
-        messageService.deleteExpiredMessage(completion: nil)
+        messageService.deleteExpiredMessages()
     }
 
     func markReadIfNeeded() {

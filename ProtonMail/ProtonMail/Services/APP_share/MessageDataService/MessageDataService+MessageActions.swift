@@ -166,8 +166,8 @@ extension MessageDataService {
         return true
     }
 
-    func deleteExpiredMessage(completion: (() -> Void)?) {
-        self.cacheService.deleteExpiredMessage(completion: completion)
+    func deleteExpiredMessages() {
+        cacheService.deleteExpiredMessages()
     }
 
     /// fetch messages with set of message id

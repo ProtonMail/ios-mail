@@ -340,7 +340,7 @@ class CacheService: CacheServiceProtocol {
         }
     }
 
-    func deleteExpiredMessage(completion: (() -> Void)?) {
+    func deleteExpiredMessages() {
         coreDataService.performOnRootSavingContext { context in
             let processInfo = userCachedStatus
             let date = Date.getReferenceDate(processInfo: processInfo)
@@ -362,9 +362,6 @@ class CacheService: CacheServiceProtocol {
                     context.delete(msg)
                 }
                 _ = context.saveUpstreamIfNeeded()
-            }
-            DispatchQueue.main.async {
-                completion?()
             }
         }
     }
@@ -490,75 +487,38 @@ extension CacheService {
     func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID]) {
         let offset = markUnRead ? 1 : -1
         for lID in labelIDs {
-            let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, type: .singleMessage)
-            var count = unreadCount + offset
-            if count < 0 {
-                count = 0
+            for viewType in ViewMode.allCases {
+                let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, type: viewType)
+                let count = max(unreadCount + offset, 0)
+                lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, unread: count, total: nil, type: viewType, shouldSave: false)
             }
-            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, unread: count, total: nil, type: .singleMessage, shouldSave: false)
-
-            // Conversation Count
-            let conversationUnreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, type: .conversation)
-            var conversationCount = conversationUnreadCount + offset
-            if conversationCount < 0 {
-                conversationCount = 0
-            }
-            lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, unread: conversationCount, total: nil, type: .conversation, shouldSave: false)
         }
     }
 
     func updateCounterSync(plus: Bool, with labelID: LabelID) {
         let offset = plus ? 1 : -1
-        // Message Count
-        let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: .singleMessage)
-        var count = unreadCount + offset
-        if count < 0 {
-            count = 0
+        for viewType in ViewMode.allCases {
+            let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: viewType)
+            let count = max(unreadCount + offset, 0)
+            lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, unread: count, total: nil, type: viewType, shouldSave: true)
         }
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, unread: count, total: nil, type: .singleMessage, shouldSave: true)
-
-        // Conversation Count
-        let conversationUnreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: .conversation)
-        var conversationCount = conversationUnreadCount + offset
-        if conversationCount < 0 {
-            conversationCount = 0
-        }
-        lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, unread: conversationCount, total: nil, type: .conversation, shouldSave: true)
     }
 
     private func updateCounterInsideContext(plus: Bool, with labelID: LabelID) {
         let offset = plus ? 1 : -1
-        // Message Count
-        let labelCount = lastUpdatedStore.lastUpdate(by: labelID, userID: userID, type: .singleMessage)
-        let unreadCount = Int(labelCount?.unread ?? 0)
-        var count = unreadCount + offset
-        if count < 0 {
-            count = 0
+        for viewType in ViewMode.allCases {
+            let labelCount = lastUpdatedStore.lastUpdate(by: labelID, userID: userID, type: viewType)
+            let unreadCount = Int(labelCount?.unread ?? 0)
+            let count = max(unreadCount + offset, 0)
+            lastUpdatedStore.updateUnreadCount(
+                by: labelID,
+                userID: userID,
+                unread: count,
+                total: labelCount?.total,
+                type: viewType,
+                shouldSave: true
+            )
         }
-        lastUpdatedStore.updateUnreadCount(
-            by: labelID,
-            userID: userID,
-            unread: count,
-            total: labelCount?.total,
-            type: .singleMessage,
-            shouldSave: true
-        )
-
-        // Conversation Count
-        let contextLabelCount = lastUpdatedStore.lastUpdate(by: labelID, userID: userID, type: .conversation)
-        let conversationUnreadCount = Int(contextLabelCount?.unread ?? 0)
-        var conversationCount = conversationUnreadCount + offset
-        if conversationCount < 0 {
-            conversationCount = 0
-        }
-        lastUpdatedStore.updateUnreadCount(
-            by: labelID,
-            userID: userID,
-            unread: conversationCount,
-            total: contextLabelCount?.total,
-            type: .conversation,
-            shouldSave: true
-        )
     }
 }
 
