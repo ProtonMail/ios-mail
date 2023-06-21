@@ -765,7 +765,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             case .conversation(let conversation):
                 let viewModel = buildNewMailboxMessageViewModel(
                     conversation: conversation,
-                    conversationTagUIModels: getTagUIModelFrom(conversation: conversation),
+                    conversationTagUIModels: viewModel.tagUIModels(for: conversation),
                     customFolderLabels: self.viewModel.customFolders,
                     weekStart: viewModel.user.userInfo.weekStartValue
                 )
@@ -806,14 +806,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 self?.messageCellPresenter.presentSenderImage(image, in: cell.customView)
             }
         }
-    }
-
-    // Temp: needs to refactor the code of generating TagUIModel
-    private func getTagUIModelFrom(conversation: ConversationEntity) -> [TagUIModel] {
-        guard let object = viewModel.coreDataContextProvider.mainContext.object(with: conversation.objectID.rawValue) as? Conversation else {
-            return []
-        }
-        return object.createTags()
     }
 
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {

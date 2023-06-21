@@ -999,6 +999,61 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssert(signalsSent == 2)
     }
 
+    func testTagUIModels_for_conversation() throws {
+        try coreDataService.write { context in
+            let conversation = Conversation(context: context)
+            conversation.userID = self.sut.user.userID.rawValue
+            conversation.expirationTime = Date()
+
+            let systemLabel = Label(context: context)
+            systemLabel.labelID = Message.Location.inbox.rawValue
+            systemLabel.name = "Inbox"
+
+            let userLabels: [Label] = (1...3).map { index in
+                let userLabel = Label(context: context)
+                userLabel.labelID = UUID().uuidString
+                userLabel.name = "Label \(index)"
+                // set descending `order` to test sorting
+                userLabel.order = 10 - index as NSNumber
+                return userLabel
+            }
+
+            let allLabels: [Label] = [systemLabel] + userLabels
+
+            for label in allLabels {
+                label.type = 1
+                label.userID = conversation.userID
+            }
+
+            let contextLabels: [ContextLabel] = allLabels.map { label in
+                let contextLabel = ContextLabel(context: context)
+                contextLabel.labelID = label.labelID
+                return contextLabel
+            }
+            conversation.labels = NSSet(array: contextLabels)
+        }
+
+        let conversationEntity = try coreDataService.read { context in
+            let conversation = try XCTUnwrap(
+                context.managedObjectWithEntityName(Conversation.Attributes.entityName, matching: [:]) as? Conversation
+            )
+            return ConversationEntity(conversation)
+        }
+
+        let tags = sut.tagUIModels(for: conversationEntity)
+
+        // no tag based on the system label
+        XCTAssertFalse(tags.contains { $0.title == Message.Location.inbox.rawValue })
+
+        // expiration tag is present
+        XCTAssertEqual(tags[0].icon, IconProvider.hourglass)
+
+        // sorted according to `order` set above
+        XCTAssertEqual(tags[1].title, "Label 3")
+        XCTAssertEqual(tags[2].title, "Label 2")
+        XCTAssertEqual(tags[3].title, "Label 1")
+    }
+
     func testUpdateToolbarActions_updateActionWithoutMoreAction() {
         saveToolbarActionUseCaseMock.callExecute.bodyIs { _, _, completion  in
             completion(.success(Void()))
