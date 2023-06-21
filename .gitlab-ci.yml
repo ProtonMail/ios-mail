@@ -255,7 +255,7 @@ test:ui:monkey:
     - *setup_project
   script:
     - cd ProtonMail
-    - bundle exec fastlane monkey_tests
+    - bundle exec fastlane ui_test testplan:MonkeyTests concurrent_workers:1
   tags:
     - iOS_UITEST
 
