@@ -14,13 +14,13 @@ class DraftsTests: FixtureAuthenticatedTestCase {
     private var subject = String()
     private var body = String()
     private var to = String()
-    private var composerRobot: ComposerRobot!
+    private var composerRobot: ComposerRobot = ComposerRobot()
 
     override func setUp() {
         super.setUp()
         subject = testData.messageSubject
         body = testData.messageBody
-        to = testData.twoPassUser.email
+        to = users["pro"]!.email
     }
 
     func testSaveDraft() {
@@ -59,7 +59,9 @@ class DraftsTests: FixtureAuthenticatedTestCase {
         let editTwoRecipient = proUser.email
         let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
         
-        composerRobot
+        LoginRobot()
+            .loginUser(freeUser)
+            .compose()
             .draftToSubjectBody(freeUser.email, subject, body)
             .tapCancel()
             .menuDrawer()
@@ -109,7 +111,6 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     // 34849
     func testAddRecipientsToDraft() {
-        let to = testData.internalEmailTrustedKeys.email
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
@@ -124,6 +125,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
         }
     }
 
+    // Need an account with aliases to enable test back
     func disabledChangeDraftSender() {
         let onePassUserSecondEmail = "2\(testData.onePassUser.email)"
 
@@ -196,7 +198,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     /// TestId: 35877
     func testEditDraftMinimiseAppAndSend() {
-        let newRecipient = testData.onePassUserWith2Fa.email
+        let newRecipient = users["plus"]!.email
         let newSubject = testData.newMessageSubject
         runTestWithScenario(.qaMail001) {
             InboxRobot()
@@ -244,12 +246,12 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     /// TestId: 35856
     func testEditEveryFieldInDraftWithEnabledPublicKeyAndSend() {
-        let newRecipient = testData.onePassUserWith2Fa.email
+        let newRecipient = users["plus"]!.email
         let newSubject = testData.newMessageSubject
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .draftToSubjectBody(testData.onePassUser.email, subject, body)
+                .draftToSubjectBody(to, subject, body)
                 .tapCancel()
                 .menuDrawer()
                 .drafts()
@@ -267,14 +269,14 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     /// TestId: 35854
     func testEditDraftWithEnabledPublicKeyMultipleTimesAndSend() {
-        let editOneRecipient = testData.onePassUserWith2Fa.email
-        let editTwoRecipient = testData.onePassUser.email
+        let editOneRecipient = users["free"]!.email
+        let editTwoRecipient = users["plus"]!.email
         let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
         let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .draftToSubjectBody(testData.onePassUser.email, subject, body)
+                .draftToSubjectBody(to, subject, body)
                 .tapCancel()
                 .menuDrawer()
                 .drafts()

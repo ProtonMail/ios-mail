@@ -199,12 +199,11 @@ class ComposerRobot: CoreElements {
     
     func typeAndSelectRecipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).firstMatch().tap().typeText(email)
-
         if cell(id.getContactCellIdentifier(email.replaceSpaces())).firstMatch().exists() {
             cell(id.getContactCellIdentifier(email.replaceSpaces())).firstMatch().waitForHittable().tap()
         }
         return self
-    }    
+    }
     
     func editRecipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).tap().typeText(email)

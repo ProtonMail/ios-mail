@@ -99,6 +99,8 @@ linting:
   stage: linting
   before_script:
     - *setup_basic_tools
+  except:
+    - schedules
   script:
     - pip3 install -r Scripts/requirements.txt
     - python3 Scripts/linkAvailabilityCheck.py

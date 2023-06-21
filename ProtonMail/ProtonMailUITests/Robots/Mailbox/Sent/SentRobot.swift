@@ -9,7 +9,7 @@
 import fusion
 
 fileprivate struct id {
-    static func messageCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject)" }
+    static func messageCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject)".replaceSpaces() }
 }
 
 /**
