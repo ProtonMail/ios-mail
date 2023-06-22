@@ -23,16 +23,6 @@ import ProtonCore_QuarkCommands
 import ProtonCore_CoreTranslation
 
 final class ExternalAccountsTests: BaseTestCase {
-    
-    override class func setUp() {
-        environmentFileName = "environment_black"
-        super.setUp()
-    }
-    
-    override func tearDown() {
-        environmentFileName = "environment"
-        super.tearDown()
-    }
 
     let quarkCommandTimeout = 30.0
     let accountCreationTimeout = 90.0
@@ -49,7 +39,7 @@ final class ExternalAccountsTests: BaseTestCase {
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
         QuarkCommands.create(account: .freeWithAddressAndKeys(username: randomUsername, password: randomPassword),
-                             currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { result in
+                             currentlyUsedHostUrl:  env.doh.getCurrentlyUsedHostUrl()) { result in
             quarkCommandResult = result
             expectQuarkCommandToFinish.fulfill()
         }
@@ -75,7 +65,7 @@ final class ExternalAccountsTests: BaseTestCase {
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
         QuarkCommands.create(account: .external(email: randomEmail, password: randomPassword),
-                             currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { result in
+                             currentlyUsedHostUrl: env.doh.getCurrentlyUsedHostUrl()) { result in
             quarkCommandResult = result
             expectQuarkCommandToFinish.fulfill()
         }
@@ -101,7 +91,7 @@ final class ExternalAccountsTests: BaseTestCase {
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
         var quarkCommandResult: Result<CreatedAccountDetails, CreateAccountError>?
         QuarkCommands.create(account: .freeNoAddressNoKeys(username: randomUsername, password: randomPassword),
-                             currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { result in
+                             currentlyUsedHostUrl: env.doh.getCurrentlyUsedHostUrl()) { result in
             quarkCommandResult = result
             expectQuarkCommandToFinish.fulfill()
         }
@@ -127,7 +117,7 @@ final class ExternalAccountsTests: BaseTestCase {
     func testSignUpWithInternalAccountWorks() {
         
         let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-        QuarkCommands.unban(currentlyUsedHostUrl: Environment.black.doh.getCurrentlyUsedHostUrl()) { _ in
+        QuarkCommands.unban(currentlyUsedHostUrl: env.doh.getCurrentlyUsedHostUrl()) { _ in
             expectQuarkCommandToFinish.fulfill()
         }
         wait(for: [expectQuarkCommandToFinish], timeout: quarkCommandTimeout)
@@ -140,7 +130,7 @@ final class ExternalAccountsTests: BaseTestCase {
             .switchToCreateAccount()
             .verify.signupScreenIsShown()
             .verify.domainsButtonIsShown()
-            .verify.domainsButtonHasValue(domain: "@proton.black")
+            .verify.domainsButtonHasValue(domain: "@\(dynamicDomain)")
             .insertName(name: randomUsername)
             .nextButtonTap(robot: PasswordRobot.self)
             .verify.passwordScreenIsShown()
