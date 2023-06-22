@@ -49,11 +49,6 @@ extension Label {
         replaceNilStringAttributesWithEmptyString()
     }
 
-    /// Removes all messages from the store.
-    class func deleteAll(inContext context: NSManagedObjectContext) {
-        context.deleteAll(Attributes.entityName)
-    }
-
     class func labelFetchController(for labelID: String, inManagedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController<Label> {
         let fetchRequest = NSFetchRequest<Label>(entityName: Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == 0", Attributes.labelID, labelID, Attributes.isSoftDeleted)

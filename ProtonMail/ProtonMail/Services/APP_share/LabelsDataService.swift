@@ -125,9 +125,9 @@ class LabelsDataService: Service {
         return Promise { seal in
             let coreDataService = sharedServices.get(by: CoreDataService.self)
             coreDataService.enqueueOnRootSavingContext { context in
-                Label.deleteAll(inContext: context)
-                LabelUpdate.deleteAll(inContext: context)
-                ContextLabel.deleteAll(inContext: context)
+                Label.deleteAll(in: context)
+                LabelUpdate.deleteAll(in: context)
+                ContextLabel.deleteAll(in: context)
                 seal.fulfill_()
             }
         }

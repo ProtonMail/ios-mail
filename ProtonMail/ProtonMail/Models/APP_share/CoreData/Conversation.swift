@@ -23,6 +23,7 @@
 import CoreData
 import Foundation
 
+// sourcery: CoreDataHelpers
 final class Conversation: NSManagedObject {
     enum Attributes: String, CaseIterable {
         static let entityName = "Conversation"
@@ -61,10 +62,6 @@ final class Conversation: NSManagedObject {
     @NSManaged var labels: NSSet
 
     @NSManaged var userID: String
-
-    class func deleteAll(inContext context: NSManagedObjectContext) {
-        context.deleteAll(Attributes.entityName)
-    }
 }
 
 extension Conversation {

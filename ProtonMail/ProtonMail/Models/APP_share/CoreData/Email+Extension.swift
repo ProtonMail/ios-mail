@@ -34,11 +34,6 @@ extension Email {
         static let lastUsedTime = "lastUsedTime"
     }
 
-    /// Removes all messages from the store.
-    class func deleteAll(inContext context: NSManagedObjectContext) {
-        context.deleteAll(Attributes.entityName)
-    }
-
     class func EmailForID(_ emailID: String, inManagedObjectContext context: NSManagedObjectContext) -> Email? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.emailID, matchingValue: emailID) as? Email
     }

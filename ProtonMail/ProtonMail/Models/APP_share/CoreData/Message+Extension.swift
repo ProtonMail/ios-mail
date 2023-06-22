@@ -274,11 +274,6 @@ extension Message {
                   insertInto: context)
     }
 
-    /// Removes all messages from the store.
-    class func deleteAll(inContext context: NSManagedObjectContext) {
-        context.deleteAll(Attributes.entityName)
-    }
-
     class func messageForMessageID(_ messageID: String,
                                    inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName,
