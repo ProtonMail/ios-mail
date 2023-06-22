@@ -80,6 +80,7 @@ protocol MessageDataServiceProtocol: Service {
     func upload(att: Attachment)
 }
 
+// sourcery: mock
 protocol LocalMessageDataServiceProtocol: Service {
     func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) -> Promise<Void>
     func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message]

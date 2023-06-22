@@ -25,7 +25,7 @@ class EncryptedSearchUseCaseTests: XCTestCase {
     var mockContextProvider: MockCoreDataContextProvider!
     var mockEncryptedService: MockEncryptedSearchServiceProtocol!
     var mockFetchMessageMetaData: MockFetchMessageMetaData!
-    var mockMessageDataService: MockLocalMessageDataService!
+    var mockMessageDataService: MockLocalMessageDataServiceProtocol!
     var fakeUserID: UserID!
 
     override func setUp() {
