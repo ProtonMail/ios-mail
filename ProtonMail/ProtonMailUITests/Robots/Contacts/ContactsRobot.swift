@@ -89,7 +89,11 @@ class ContactsRobot: CoreElements {
         }
         
         private func swipeLeftToDelete(_ name: String) -> ContactsView {
-            cell(id.contactCellIdentifier(name)).inTable(table(id.contactsTableViewIdentifier)).firstMatch().swipeUpUntilVisible(maxAttempts: 20).swipeLeft()
+            var eventCount = 0
+            while eventCount <= 3, !button(id.deleteButtonText).hittable() {
+                cell(id.contactCellIdentifier(name)).inTable(table(id.contactsTableViewIdentifier)).firstMatch().swipeLeft()
+                eventCount += 1
+            }
             return ContactsView()
         }
         
@@ -138,12 +142,17 @@ class ContactsRobot: CoreElements {
         
         private func swipeLeftToDelete(_ withName: String) -> ContactsGroupView {
             scrollToTop()
-            cell(id.groupCellIdentifier(withName))
-                .onChild(staticText(id.groupStaticTextIdentifier(withName)))
-                .swipeUpUntilVisible(maxAttempts: 20)
-                .swipeDownUntilVisible(maxAttempts: 20)
-                .waitForHittable()
-                .swipeLeft()
+
+            var eventCount = 0
+            while eventCount <= 3, !button(id.deleteButtonText).hittable() {
+                cell(id.groupCellIdentifier(withName))
+                    .onChild(staticText(id.groupStaticTextIdentifier(withName)))
+                    .waitForHittable()
+                    .swipeLeft()
+
+                eventCount += 1
+            }
+
             return self
         }
         
