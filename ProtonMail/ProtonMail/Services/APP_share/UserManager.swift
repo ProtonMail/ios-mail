@@ -297,8 +297,7 @@ class UserManager: Service {
             cache: sharedServices.userCachedStatus,
             userID: userID,
             apiService: self.apiService,
-            appRatingStatusProvider: sharedServices.userCachedStatus,
-            userIntroductionProgressProvider: sharedServices.userCachedStatus
+            appRatingStatusProvider: sharedServices.userCachedStatus
         )
         return service
     }()

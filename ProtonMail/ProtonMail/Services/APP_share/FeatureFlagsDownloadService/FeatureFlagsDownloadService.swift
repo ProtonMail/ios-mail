@@ -37,20 +37,17 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     private let apiService: APIService
     private(set) var lastFetchingTime: Date?
     private let appRatingStatusProvider: AppRatingStatusProvider
-    private let userIntroductionProgressProvider: UserIntroductionProgressProvider
 
     init(
         cache: FeatureFlagCache,
         userID: UserID,
         apiService: APIService,
-        appRatingStatusProvider: AppRatingStatusProvider,
-        userIntroductionProgressProvider: UserIntroductionProgressProvider
+        appRatingStatusProvider: AppRatingStatusProvider
     ) {
         self.cache = cache
         self.userID = userID
         self.apiService = apiService
         self.appRatingStatusProvider = appRatingStatusProvider
-        self.userIntroductionProgressProvider = userIntroductionProgressProvider
     }
 
     enum FeatureFlagFetchingError: Error {
@@ -79,20 +76,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
             self.lastFetchingTime = Date()
 
             let supportedFeatureFlags = SupportedFeatureFlags(response: response)
-
-            let isScheduleSendEnabledAfterUpdate = supportedFeatureFlags[.scheduleSend]
-            let wasScheduleSendEnabledBeforeUpdate = self.cache.featureFlags(for: self.userID)[.scheduleSend]
-
-                if isScheduleSendEnabledAfterUpdate && !wasScheduleSendEnabledBeforeUpdate {
-                    // We need to reset spotlight when transitioning from expicitly disabled to enabled.
-                    // However, we should not do it if the feature state was not set at all,
-                    // which is the case right after sign in.
-                    self.userIntroductionProgressProvider.markSpotlight(
-                        for: .scheduledSend,
-                        asSeen: false,
-                        byUserWith: self.userID
-                    )
-                }
 
             let appRatingStatus = supportedFeatureFlags[.appRating]
                 self.appRatingStatusProvider.setIsAppRatingEnabled(appRatingStatus)
