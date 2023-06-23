@@ -65,24 +65,6 @@ class MenuViewModelTests: XCTestCase {
         apiMock = nil
     }
 
-    func testInit_withInAppFeedbackDisable() {
-        XCTAssertEqual(sut.sections, [.inboxes, .folders, .labels, .more])
-        XCTAssertTrue(sut.moreItems.contains(where: { $0.location == .sendFeedback }))
-    }
-
-    func testInit_withInAppFeedbackEnable() {
-        testUser.inAppFeedbackStateService.handleNewFeatureFlags(.init(rawValues:[FeatureFlagKey.inAppFeedback.rawValue: 1]))
-        sut = MenuViewModel(usersManager: usersManagerMock,
-                            userStatusInQueueProvider: userStatusInQueueProviderMock,
-                            coreDataContextProvider: coreDataContextProviderMock,
-                            coreKeyMaker: MockKeyMakerProtocol(),
-                            unlockManager: .init(cacheStatus: CacheStatusStub(), delegate: MockUnlockManagerDelegate(), keyMaker: MockKeyMakerProtocol(), pinFailedCountCache: MockPinFailedCountCache())
-        )
-        XCTAssertEqual(sut.sections, [.inboxes, .folders, .labels, .more])
-
-        XCTAssertTrue(sut.moreItems.contains(where: { $0.location == .sendFeedback }))
-    }
-
     func testInboxItemsAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .inbox),
                              MenuLabel(location: .draft),

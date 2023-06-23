@@ -79,7 +79,6 @@ class FeatureFlag<T>: FeatureFlags {
 
 class FeatureFlags {
     static let appRating = FeatureFlag<Bool>(code: .appRating, defaultValue: false)
-    static let inAppFeedback = FeatureFlag<Int>(code: .inAppFeedback, defaultValue: 0)
     static let referralPrompt = FeatureFlag<Bool>(code: .referralPrompt, defaultValue: false)
     static let scheduleSend = FeatureFlag<Bool>(code: .scheduleSend, defaultValue: false)
     static let senderImage = FeatureFlag<Bool>(code: .senderImage, defaultValue: false)

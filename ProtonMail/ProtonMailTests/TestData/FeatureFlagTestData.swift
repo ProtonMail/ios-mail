@@ -24,14 +24,6 @@ enum FeatureFlagTestData {
         "Features": [
             [
                 "Writable": false,
-                "Type": "integer",
-                "Value": 1,
-                "Global": true,
-                "Code": "InAppFeedbackIOS",
-                "DefaultValue": 0
-            ],
-            [
-                "Writable": false,
                 "Type": "boolean",
                 "Value": true,
                 "Global": true,

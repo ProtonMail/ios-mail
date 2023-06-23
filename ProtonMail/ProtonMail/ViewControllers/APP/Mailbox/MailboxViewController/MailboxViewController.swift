@@ -2446,9 +2446,6 @@ extension MailboxViewController {
     private func makeInAppFeedbackPromptScheduler() -> InAppFeedbackPromptScheduler {
         let allowedHandler: InAppFeedbackPromptScheduler.PromptAllowedHandler = { [weak self] in
             guard let self = self else { return false }
-            guard self.viewModel.user.inAppFeedbackStateService.isEnable else {
-                return false
-            }
             return self.navigationController?.topViewController == self
         }
         let showHandler: InAppFeedbackPromptScheduler.ShowPromptHandler = { [weak self] completionHandler in
