@@ -643,13 +643,8 @@ extension UserManager {
 
     var showMobileSignature: Bool {
         get {
-            #if Enterprise
-            let isEnterprise = true
-            #else
-            let isEnterprise = false
-            #endif
             let role = userInfo.role
-            if role > 0 || isEnterprise {
+            if role > 0 {
                 if let status = userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) {
                     return status
                 } else {
