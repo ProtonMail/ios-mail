@@ -976,6 +976,29 @@ class MockMarkLegitimateActionHandler: MarkLegitimateActionHandler {
 
 }
 
+class MockMenuCoordinatorProtocol: MenuCoordinatorProtocol {
+    @FuncStub(MockMenuCoordinatorProtocol.go) var goStub
+    func go(to labelInfo: MenuLabel, deepLink: DeepLink?) {
+        goStub(labelInfo, deepLink)
+    }
+
+    @FuncStub(MockMenuCoordinatorProtocol.closeMenu) var closeMenuStub
+    func closeMenu() {
+        closeMenuStub()
+    }
+
+    @FuncStub(MockMenuCoordinatorProtocol.lockTheScreen) var lockTheScreenStub
+    func lockTheScreen() {
+        lockTheScreenStub()
+    }
+
+    @FuncStub(MockMenuCoordinatorProtocol.update) var updateStub
+    func update(menuWidth: CGFloat) {
+        updateStub(menuWidth)
+    }
+
+}
+
 class MockMobileSignatureCacheProtocol: MobileSignatureCacheProtocol {
     @FuncStub(MockMobileSignatureCacheProtocol.getMobileSignatureSwitchStatus, initialReturn: nil) var getMobileSignatureSwitchStatusStub
     func getMobileSignatureSwitchStatus(by uid: String) -> Bool? {

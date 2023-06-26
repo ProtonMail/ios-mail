@@ -30,9 +30,11 @@ class MenuViewModelTests: XCTestCase {
     var apiMock: APIServiceMock!
     var enableColorStub = false
     var usingParentFolderColorStub = false
+    var coordinatorMock: MockMenuCoordinatorProtocol!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        coordinatorMock = .init()
         userStatusInQueueProviderMock = UserStatusInQueueProviderMock()
         coreDataContextProviderMock = MockCoreDataContextProvider()
         dohMock = DohMock()
@@ -52,6 +54,7 @@ class MenuViewModelTests: XCTestCase {
         sut.setParentFolderColorClosure {
             return self.usingParentFolderColorStub
         }
+        sut.coordinator = coordinatorMock
     }
 
     override func tearDown() {
@@ -446,5 +449,29 @@ class MenuViewModelTests: XCTestCase {
         sut.setFolderItem([parent])
 
         XCTAssertEqual(sut.getIconColor(of: folder), ColorProvider.SidebarIconWeak)
+    }
+
+    func testGo_selectSameLocation_shouldNotCallGoFunctionOfCoordinator() {
+        // select inbox location
+        sut.highlight(label: .init(location: .inbox))
+
+        sut.go(to: .init(location: .inbox))
+
+        XCTAssertTrue(coordinatorMock.closeMenuStub.wasCalledExactlyOnce)
+        XCTAssertTrue(coordinatorMock.goStub.wasNotCalled)
+    }
+
+    func testGo_selectDifferentLocation_shouldCallGoFunctionOfCoordinator() throws {
+        // select inbox location
+        sut.highlight(label: .init(location: .inbox))
+
+        sut.go(to: .init(location: .archive))
+
+        XCTAssertTrue(coordinatorMock.closeMenuStub.wasNotCalled)
+        XCTAssertTrue(coordinatorMock.goStub.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(
+            coordinatorMock.goStub.lastArguments?.a1
+        )
+        XCTAssertEqual(argument.location, .archive)
     }
 }

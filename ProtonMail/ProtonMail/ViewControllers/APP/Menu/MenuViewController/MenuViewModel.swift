@@ -64,6 +64,10 @@ final class MenuViewModel: NSObject {
     private(set) var moreItems: [MenuLabel]
     /// When BE has issue, BE will disable subscription functionality
     private var subscriptionAvailable = true
+    private var selectedItem: MenuLabel? {
+        let items = inboxItems + folderItems + labelItems + moreItems
+        return items.first(where: { $0.isSelected })
+    }
 
     var reloadClosure: (() -> Void)?
     lazy private(set) var userEnableColorSettingClosure: () -> Bool = { [weak self] in
@@ -73,7 +77,7 @@ final class MenuViewModel: NSObject {
         self?.currentUser?.userInfo.inheritParentFolderColor == 1
     }
 
-    weak var coordinator: MenuCoordinator?
+    weak var coordinator: MenuCoordinatorProtocol?
     private let coreKeyMaker: KeyMakerProtocol
     private let unlockManager: UnlockManager
 
@@ -359,6 +363,10 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func go(to labelInfo: MenuLabel) {
+        guard selectedItem?.location != labelInfo.location else {
+            coordinator?.closeMenu()
+            return
+        }
         coordinator?.go(to: labelInfo, deepLink: nil)
     }
 
