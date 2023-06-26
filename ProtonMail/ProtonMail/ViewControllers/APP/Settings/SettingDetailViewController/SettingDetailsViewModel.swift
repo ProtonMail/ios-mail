@@ -223,6 +223,7 @@ class ChangeSignatureViewModel: SettingDetailsViewModel {
 class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
     let userManager: UserManager
     let dependencies: Dependencies
+    let originalSignature: String
 
     required init(user: UserManager, coreKeyMaker: KeyMakerProtocol) {
         self.userManager = user
@@ -230,6 +231,9 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
             userManager: user,
             updateMobileSignatureUseCase: UpdateMobileSignature(dependencies: .init(coreKeyMaker: coreKeyMaker, cache: userCachedStatus)),
             fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: coreKeyMaker, cache: userCachedStatus))
+        )
+        originalSignature = dependencies.fetchMobileSignatureUseCase.execute(
+            params: .init(userID: userManager.userID, isPaidUser: userManager.isPaid)
         )
     }
 
@@ -266,9 +270,7 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
     }
 
     func getCurrentValue() -> String {
-        return dependencies.fetchMobileSignatureUseCase.execute(
-            params: .init(userID: userManager.userID, isPaidUser: userManager.isPaid)
-        )
+        originalSignature
     }
 
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
@@ -308,13 +310,8 @@ class ChangeMobileSignatureViewModel: SettingDetailsViewModel {
     }
 
     internal func getRole() -> Bool {
-#if Enterprise
-        let isEnterprise = true
-#else
-        let isEnterprise = false
-#endif
         let role = userManager.userInfo.role
-        return role > 0 || isEnterprise
+        return role > 0
     }
 
     func needAsk2FA() -> Bool {

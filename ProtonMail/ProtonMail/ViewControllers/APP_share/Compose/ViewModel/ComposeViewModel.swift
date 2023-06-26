@@ -578,14 +578,7 @@ extension ComposeViewModel {
         var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
         signature = signature.ln2br()
 
-        var userMobileSignature = String.empty
-        if user.showMobileSignature {
-            userMobileSignature = dependencies.fetchMobileSignatureUseCase.execute(
-                params: .init(userID: user.userID, isPaidUser: user.isPaid)
-            )
-        }
-
-        let mobileSignature = "<div id=\"protonmail_mobile_signature_block\"><div>\(userMobileSignature)</div></div>".ln2br()
+        let mobileSignature = self.mobileSignature()
 
         let defaultSignature = self.user.defaultSignatureStatus ?
         "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
@@ -593,6 +586,21 @@ extension ComposeViewModel {
         "<div><br></div><div><br></div>" : "<div class=\"signature_br\"><br></div><div class=\"signature_br\"><br></div>"
         let signatureHtml = "\(defaultSignature) \(mobileBr) \(mobileSignature)"
         return signatureHtml
+    }
+
+    func mobileSignature() -> String {
+        guard user.showMobileSignature else { return .empty }
+        var userMobileSignature = dependencies.fetchMobileSignatureUseCase.execute(
+            params: .init(userID: user.userID, isPaidUser: user.isPaid)
+        )
+        userMobileSignature = userMobileSignature.preg_replace(
+            "Proton Mail",
+            replaceto: "<a href=\"\(Link.promoteInMobilSignature)\">Proton Mail</a>"
+        )
+
+        let mobileSignature = "<div id=\"protonmail_mobile_signature_block\"><div>\(userMobileSignature)</div></div>"
+            .ln2br()
+        return mobileSignature
     }
 
     func shouldShowExpirationWarning(havingPGPPinned: Bool,
