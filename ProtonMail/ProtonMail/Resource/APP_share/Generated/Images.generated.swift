@@ -38,8 +38,6 @@ internal enum Asset {
   internal static let mailAttachmentFileZip = ImageAsset(name: "mail_attachment_file_zip")
   internal static let mailAttachmentGeneral = ImageAsset(name: "mail_attachment_general")
   internal static let mailAttachmentVideo = ImageAsset(name: "mail_attachment_video")
-  internal static let mailStarredActive = ImageAsset(name: "mail_starred-active")
-  internal static let mailStarred = ImageAsset(name: "mail_starred")
   internal static let placeholderBoundBox = ImageAsset(name: "placeholder_bound_box")
   internal static let mailFolderNoResultIcon = ImageAsset(name: "mail_folder_no_result_icon")
   internal static let mailLabelCrossIcon = ImageAsset(name: "mail_label_cross_icon")

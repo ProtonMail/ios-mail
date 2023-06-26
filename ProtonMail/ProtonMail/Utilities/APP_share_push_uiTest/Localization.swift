@@ -105,9 +105,6 @@ class LocalizedString {
     // Mark Message localtion
      lazy var _locations_scheduled_title     = NSLocalizedString("Scheduled", comment: "mail location title")
 
-    /// "Add Star"
-    lazy var _locations_add_star_action     = NSLocalizedString("Add Star", comment: "mark message star")
-
     // Mark Messages
 
     /// "Message sent"
