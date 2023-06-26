@@ -81,8 +81,7 @@ class ConversationMessageViewModel {
     }
 
     private func singleMessageContentViewModel(
-        for message: MessageEntity,
-        shouldOpenHistory: Bool = false
+        for message: MessageEntity
     ) -> SingleMessageContentViewModel {
         let context = SingleMessageContentViewContext(
             labelId: labelId,
@@ -95,7 +94,6 @@ class ConversationMessageViewModel {
             internetStatusProvider: internetStatusProvider,
             systemUpTime: userCachedStatus,
             highlightedKeywords: highlightedKeywords,
-            shouldOpenHistory: shouldOpenHistory,
             goToDraft: goToDraft
         )
     }

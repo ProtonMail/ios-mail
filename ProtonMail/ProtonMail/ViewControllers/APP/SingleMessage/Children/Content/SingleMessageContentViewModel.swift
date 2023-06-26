@@ -106,7 +106,6 @@ class SingleMessageContentViewModel {
          user: UserManager,
          internetStatusProvider: InternetConnectionStatusProvider,
          systemUpTime: SystemUpTimeProtocol,
-         shouldOpenHistory: Bool = false,
          dependencies: Dependencies,
          highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) {
@@ -136,8 +135,7 @@ class SingleMessageContentViewModel {
             systemUpTime: systemUpTime,
             labelID: context.labelId,
             dependencies: messageInfoProviderDependencies,
-            highlightedKeywords: highlightedKeywords,
-            shouldOpenHistory: shouldOpenHistory
+            highlightedKeywords: highlightedKeywords
         )
         imageProxy.set(delegate: messageInfoProvider)
         messageInfoProvider.initialize()

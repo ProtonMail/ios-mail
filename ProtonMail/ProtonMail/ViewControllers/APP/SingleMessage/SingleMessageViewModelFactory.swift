@@ -31,7 +31,6 @@ class SingleMessageContentViewModelFactory {
         internetStatusProvider: InternetConnectionStatusProvider,
         systemUpTime: SystemUpTimeProtocol,
         highlightedKeywords: [String],
-        shouldOpenHistory: Bool,
         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
     ) -> SingleMessageContentViewModel {
         let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))
@@ -50,7 +49,6 @@ class SingleMessageContentViewModelFactory {
                      user: user,
                      internetStatusProvider: internetStatusProvider,
                      systemUpTime: systemUpTime,
-                     shouldOpenHistory: shouldOpenHistory,
                      dependencies: components.contentViewModelDependencies(user: user),
                      highlightedKeywords: highlightedKeywords,
                      goToDraft: goToDraft)

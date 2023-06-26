@@ -101,7 +101,6 @@ final class MessageInfoProvider {
         labelID: LabelID,
         dependencies: Dependencies,
         highlightedKeywords: [String],
-        shouldOpenHistory: Bool = false,
         dateFormatter: PMDateFormatter = .shared
     ) {
         self.message = message
@@ -125,10 +124,6 @@ final class MessageInfoProvider {
         self.dependencies = dependencies
         self.highlightedKeywords = highlightedKeywords
         self.dateFormatter = dateFormatter
-
-        if shouldOpenHistory {
-            displayMode = .expanded
-        }
 
         if message.isPlainText {
             self.currentMessageRenderStyle = .dark
