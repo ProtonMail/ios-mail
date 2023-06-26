@@ -463,7 +463,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping (Error?) -> Void) {
+    func fetchNotificationMessageDetail(_ messageID: MessageID, completion: @escaping (Swift.Result<MessageEntity, Error>) -> Void) {
         self.queueManager?.queue {
             let completionWrapper: (_ task: URLSessionDataTask?, _ result: Swift.Result<JSONDictionary, ResponseError>) -> Void = { task, result in
                 self.contextProvider.performOnRootSavingContext { context in
@@ -486,7 +486,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                         PushUpdater().remove(notificationIdentifiers: [messageOut.notificationId])
                                         self.cacheService.updateCounterSync(markUnRead: false, on: messageOut)
                                     }
-                                    let tmpError = context.saveUpstreamIfNeeded()
+
+                                    if let error = context.saveUpstreamIfNeeded() {
+                                        throw error
+                                    }
+
                                     if let labelID = messageOut.firstValidFolder() {
                                         self.mark(
                                             messageObjectIDs: [messageOut.objectID],
@@ -495,23 +499,25 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                         )
                                     }
 
+                                    let message = MessageEntity(messageOut)
+
                                     DispatchQueue.main.async {
-                                        completion(tmpError)
+                                        completion(.success(message))
                                     }
                                 }
-                            } catch let ex as NSError {
+                            } catch {
                                 DispatchQueue.main.async {
-                                    completion(ex)
+                                    completion(.failure(error))
                                 }
                             }
                         } else {
                             DispatchQueue.main.async {
-                                completion(NSError.badResponse())
+                                completion(.failure(NSError.badResponse()))
                             }
                         }
                     case .failure(let error):
                         DispatchQueue.main.async {
-                            completion(error)
+                            completion(.failure(error))
                         }
                     }
                 }
@@ -530,8 +536,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 if let labelID = message.firstValidFolder() {
                     self.mark(messageObjectIDs: [message.objectID], labelID: LabelID(labelID), unRead: false)
                 }
+
+                let entity = MessageEntity(message)
+
                 DispatchQueue.main.async {
-                    completion(nil)
+                    completion(.success(entity))
                 }
             }
         }
