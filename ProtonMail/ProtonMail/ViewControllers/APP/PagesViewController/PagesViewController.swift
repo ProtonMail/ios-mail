@@ -150,10 +150,20 @@ final class PagesViewController<
 // MARK: SingleMessage
 extension PagesViewController {
     private func initializeForSingleMessage() {
-        guard let (message, refIndex) = viewModel.item(for: viewModel.initialID, offset: 0) as? (MessageEntity, Int),
-              let singleMessageVC = singleMessageVC(for: message, refIndex: refIndex) else {
-            assertionFailure("Shouldn't fail")
-            dismiss()
+        let fail: (String) -> Void = {
+            PMAssertionFailure($0)
+            self.dismiss()
+        }
+
+        guard
+            let (message, refIndex) = viewModel.item(for: viewModel.initialID, offset: 0) as? (MessageEntity, Int)
+        else {
+            fail("ViewModel did not return item for id \(viewModel.initialID) and offset 0")
+            return
+        }
+
+        guard let singleMessageVC = singleMessageVC(for: message, refIndex: refIndex) else {
+            fail("No singleMessageVC for refIndex \(refIndex)")
             return
         }
         setViewControllers([singleMessageVC], direction: .forward, animated: false)

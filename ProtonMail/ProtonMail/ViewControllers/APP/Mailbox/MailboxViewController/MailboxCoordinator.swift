@@ -52,7 +52,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private(set) var conversationCoordinator: ConversationCoordinator?
     private let getApplicationState: () -> UIApplication.State
     let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
-    private var messageIDsOpenedFromNotification: [MessageID] = []
+    private var timeOfLastNavigationToMessageDetails: Date?
 
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
     private let composeViewModelFactory: ComposeViewModelDependenciesFactory
@@ -205,12 +205,13 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             followToComposeMailTo(path: path.value, deeplink: deeplink)
         case .composeScheduledMessage where path.value != nil:
             guard let messageID = path.value,
-                  let originalScheduledTime = path.states?["originalScheduledTime"] as? Date else {
+                  // TODO: do we need this check?
+                  path.states?["originalScheduledTime"] as? Date != nil else {
                 return
             }
-            if case let user = self.viewModel.user,
-               case let msgService = user.messageService,
-               let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
+            let user = self.viewModel.user
+            let msgService = user.messageService
+            if let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
                 navigateToComposer(
                     existingMessage: message,
                     isEditingScheduleMsg: true
@@ -467,6 +468,15 @@ extension MailboxCoordinator {
     }
 
     private func handleDetailDirectFromNotification(node: DeepLink.Node) {
+        if
+            let timeOfLastNavigationToMessageDetails,
+            Date().timeIntervalSince(timeOfLastNavigationToMessageDetails) < 3
+        {
+            return
+        }
+
+        timeOfLastNavigationToMessageDetails = Date()
+
         resetNavigationViewControllersIfNeeded()
         presentMessagePlaceholderIfNeeded()
 
@@ -475,9 +485,6 @@ extension MailboxCoordinator {
                   let message = message else {
                 self?.viewController?.navigationController?.popViewController(animated: true)
                 L11n.Error.cant_open_message.alertToastBottom()
-                return
-            }
-            guard self.messageIDsOpenedFromNotification.last == message.messageID else {
                 return
             }
             let messageID = message.messageID
@@ -560,20 +567,16 @@ extension MailboxCoordinator {
         }
 
         // From notification
-        guard let messageID = node?.value,
-              !messageIDsOpenedFromNotification.contains(.init(messageID)) else {
+        guard let messageID = node?.value else {
             completion(nil)
             return
         }
-        messageIDsOpenedFromNotification.append(.init(messageID))
-        viewModel.user.messageService.fetchNotificationMessageDetail(MessageID(messageID)) { [weak self] _ in
-            guard let self = self else { return }
-            if let message = Message.messageForMessageID(
-                messageID,
-                inManagedObjectContext: self.contextProvider.mainContext
-            ) {
-                completion(MessageEntity(message))
-            } else {
+        viewModel.user.messageService.fetchNotificationMessageDetail(MessageID(messageID)) { result in
+            switch result {
+            case .success(let message):
+                completion(message)
+            case .failure(let error):
+                SystemLogger.log(message: "\(error)", isError: true)
                 completion(nil)
             }
         }
@@ -650,13 +653,12 @@ extension MailboxCoordinator {
     private func presentPageViews<T, U, V>(pageVM: PagesViewModel<T, U, V>) {
         guard let navigationController = viewController?.navigationController else { return }
         var viewControllers = navigationController.viewControllers
-        if viewControllers.last is MessagePlaceholderVC {
-            viewControllers.removeAll(where: { $0 is MessagePlaceholderVC })
-        }
-        viewControllers.removeAll(where: { !($0 is MailboxViewController) })
+        // if a placeholder VC is there, it has been presented with a push animation; avoid doing a 2nd one
+        let animated = !(viewControllers.last is MessagePlaceholderVC)
+        viewControllers.removeAll { !($0 is MailboxViewController) }
         let page = PagesViewController(viewModel: pageVM, services: services)
         viewControllers.append(page)
-        navigationController.setViewControllers(viewControllers, animated: true)
+        navigationController.setViewControllers(viewControllers, animated: animated)
     }
 
     private func presentMessagePlaceholderIfNeeded() {
