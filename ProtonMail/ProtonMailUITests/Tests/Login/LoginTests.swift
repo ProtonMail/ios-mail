@@ -25,16 +25,12 @@ import ProtonCore_TestingToolkit
 class LoginTests: BaseTestCase {
 
     private let loginRobot = LoginRobot()
-    private var user: User?
-    
-    override func setUp() {
-        user = User()
-        quarkCommands.createUser(username: user!.name, password: user!.password, protonPlanName: UserPlan.mailpro2022.rawValue)
-    }
-    
+
     func testTryToLoginWithInvalidPassword() {
+        let freeUser = users["free"]!
+
         loginRobot
-            .loginWithInvalidPassword(user!)
+            .loginWithInvalidPassword(freeUser)
             .verify.incorrectCredentialsErrorDialog()
     }
     

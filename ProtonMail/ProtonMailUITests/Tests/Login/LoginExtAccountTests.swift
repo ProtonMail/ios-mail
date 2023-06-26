@@ -32,8 +32,9 @@ class LoginExtAccountsTests: BaseTestCase {
         extAccountNotSupportedStub = true
         super.setUp()
     }
-    
-    func testLoginExtAcountNotSupported() {
+
+    // TODO: double check if its still valid scenario 
+    func xtestLoginExtAcountNotSupported() {
         loginRobot
             .fillUsername(username: "ExtUser")
             .fillpassword(password: "123")

@@ -51,7 +51,7 @@ extension QuarkTestable where Self: XCTestCase {
     
     func createUserWithiOSFixturesLoad(domain: String, plan: UserPlan, scenario: MailScenario, isEnableEarlyAccess: Bool) throws -> User {
         
-        let request = try URLRequest(domain: domain, quark: "raw::qa:fixtures:load?definition-path=/var/www/apps/Mail/resources/qa/ios/\(scenario.name)&--output-format=json")
+        let request = try URLRequest(domain: domain, quark: "raw::qa:fixtures:load?definition-paths[]=api://apps/Mail/resources/qa/ios/\(scenario.name)&--output-format=json")
         
         ConsoleLogger.shared?.log("🕸 URL: \(request.url!)", osLogType: UITest.self)
         
