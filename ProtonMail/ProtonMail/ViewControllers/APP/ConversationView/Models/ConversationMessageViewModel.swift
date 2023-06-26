@@ -91,8 +91,6 @@ class ConversationMessageViewModel {
         return messageContentViewModelFactory.createViewModel(
             context: context,
             user: user,
-            internetStatusProvider: internetStatusProvider,
-            systemUpTime: userCachedStatus,
             highlightedKeywords: highlightedKeywords,
             goToDraft: goToDraft
         )

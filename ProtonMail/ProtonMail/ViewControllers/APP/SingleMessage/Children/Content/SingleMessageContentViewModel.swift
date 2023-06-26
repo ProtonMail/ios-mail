@@ -23,7 +23,9 @@ protocol SingleMessageContentUIProtocol: AnyObject {
 
 class SingleMessageContentViewModel {
 
-    let messageInfoProvider: MessageInfoProvider
+    var messageInfoProvider: MessageInfoProvider {
+        dependencies.messageInfoProvider
+    }
 
     private(set) var message: MessageEntity {
         didSet { propagateMessageData() }
@@ -52,7 +54,7 @@ class SingleMessageContentViewModel {
     let context: SingleMessageContentViewContext
     let user: UserManager
 
-    private let internetStatusProvider: InternetConnectionStatusProvider
+    private let internetStatusProvider = InternetConnectionStatusProvider()
     private let messageService: MessageDataService
     private let observerID = UUID()
 
@@ -101,52 +103,23 @@ class SingleMessageContentViewModel {
     private var cancellables = Set<AnyCancellable>()
 
     init(context: SingleMessageContentViewContext,
-         imageProxy: ImageProxy,
          childViewModels: SingleMessageChildViewModels,
          user: UserManager,
-         internetStatusProvider: InternetConnectionStatusProvider,
-         systemUpTime: SystemUpTimeProtocol,
          dependencies: Dependencies,
          highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) {
         self.context = context
         self.user = user
         self.message = context.message
-        let messageInfoProviderDependencies = MessageInfoProvider.Dependencies(
-            imageProxy: imageProxy,
-            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(
-                    featureFlagCache: dependencies.featureFlagCache,
-                    senderImageService: .init(
-                        dependencies: .init(
-                            apiService: user.apiService,
-                            internetStatusProvider: internetStatusProvider
-                        )
-                    ),
-                    mailSettings: user.mailSettings
-                )
-            ), darkModeCache: dependencies.darkModeCache
-        )
-
-        self.messageInfoProvider = .init(
-            message: context.message,
-            user: user,
-            systemUpTime: systemUpTime,
-            labelID: context.labelId,
-            dependencies: messageInfoProviderDependencies,
-            highlightedKeywords: highlightedKeywords
-        )
-        imageProxy.set(delegate: messageInfoProvider)
-        messageInfoProvider.initialize()
         self.messageBodyViewModel = childViewModels.messageBody
         self.bannerViewModel = childViewModels.bannerViewModel
-        bannerViewModel.providerHasChanged(provider: messageInfoProvider)
         self.attachmentViewModel = childViewModels.attachments
-        self.internetStatusProvider = internetStatusProvider
         self.messageService = user.messageService
         self.dependencies = dependencies
         self.goToDraft = goToDraft
+
+        messageInfoProvider.initialize()
+        bannerViewModel.providerHasChanged(provider: messageInfoProvider)
 
         createNonExpandedHeaderViewModel()
 
@@ -411,8 +384,7 @@ extension SingleMessageContentViewModel {
         let blockSender: BlockSender
         let fetchMessageDetail: FetchMessageDetailUseCase
         let isSenderBlockedPublisher: IsSenderBlockedPublisher
+        let messageInfoProvider: MessageInfoProvider
         let unblockSender: UnblockSender
-        let featureFlagCache: FeatureFlagCache
-        let darkModeCache: DarkModeCacheProtocol
     }
 }

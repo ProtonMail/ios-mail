@@ -65,19 +65,14 @@ class SingleMessageViewModel {
     init(labelId: LabelID,
          message: MessageEntity,
          user: UserManager,
-         imageProxy: ImageProxy,
-         childViewModels: SingleMessageChildViewModels,
-         internetStatusProvider: InternetConnectionStatusProvider,
          userIntroductionProgressProvider: UserIntroductionProgressProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          toolbarActionProvider: ToolbarActionProvider,
          toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
-         systemUpTime: SystemUpTimeProtocol,
          coordinator: SingleMessageCoordinator,
          nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider,
-         dependencies: SingleMessageContentViewModel.Dependencies,
+         contentViewModel: SingleMessageContentViewModel,
          highlightedKeywords: [String],
-         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void,
          notificationCenter: NotificationCenter = .default
     ) {
         self.labelId = labelId
@@ -86,22 +81,7 @@ class SingleMessageViewModel {
         self.user = user
         self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
         self.highlightedKeywords = highlightedKeywords
-        let contentContext = SingleMessageContentViewContext(
-            labelId: labelId,
-            message: message,
-            viewMode: .singleMessage
-        )
-        self.contentViewModel = SingleMessageContentViewModel(
-            context: contentContext,
-            imageProxy: imageProxy,
-            childViewModels: childViewModels,
-            user: user,
-            internetStatusProvider: internetStatusProvider,
-            systemUpTime: systemUpTime,
-            dependencies: dependencies,
-            highlightedKeywords: highlightedKeywords,
-            goToDraft: goToDraft
-        )
+        self.contentViewModel = contentViewModel
         self.coordinator = coordinator
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.toolbarActionProvider = toolbarActionProvider

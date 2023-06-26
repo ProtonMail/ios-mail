@@ -34,7 +34,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     private let user: UserManager
     private let highlightedKeywords: [String]
     private weak var navigationController: UINavigationController?
-    private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
@@ -50,7 +49,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         coreDataService: CoreDataService =
         sharedServices.get(by: CoreDataService.self),
-        internetStatusProvider: InternetConnectionStatusProvider = sharedServices.get(),
         highlightedKeywords: [String] = []
     ) {
         self.navigationController = navigationController
@@ -58,7 +56,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.message = message
         self.user = user
         self.coreDataService = coreDataService
-        self.internetStatusProvider = internetStatusProvider
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.highlightedKeywords = highlightedKeywords
         self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
@@ -84,8 +81,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             labelId: labelId,
             message: message,
             user: user,
-            systemUpTime: factory.userCachedStatus,
-            internetStatusProvider: internetStatusProvider,
             highlightedKeywords: highlightedKeywords,
             coordinator: self,
             goToDraft: { [weak self] msgID, originalScheduleTime in

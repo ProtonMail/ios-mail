@@ -134,6 +134,7 @@ final class MessageInfoProvider {
     }
 
     func initialize() {
+        dependencies.imageProxy.set(delegate: self)
         self.prepareDisplayBody()
         self.checkSenderPGP()
     }
