@@ -272,6 +272,95 @@ final class MailboxViewControllerTests: XCTestCase {
         XCTAssertTrue(viewModel.selectedIDs.isEmpty)
         XCTAssertFalse(viewModel.listEditing)
     }
+
+    func testUnreadButton_whenUnreadCountIsZeroAtFirst_inConversationMode_unreadIsSetToBe1_unreadButtonShouldBeShown() {
+        let labelID = LabelID(String.randomString(20))
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let count = ConversationCount(context: context)
+            count.userID = self.userID.rawValue
+            count.labelID = labelID.rawValue
+            count.unread = 0
+            _ = context.saveUpstreamIfNeeded()
+        }
+        makeSUT(
+            labelID: labelID,
+            labelType: .folder,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertTrue(sut.unreadFilterButton.isHidden)
+
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let count = ConversationCount.fetchConversationCounts(
+                by: [labelID.rawValue],
+                userID: self.userID.rawValue,
+                context: context
+            ).first
+            count?.unread = 1
+            _ = context.saveUpstreamIfNeeded()
+        }
+
+        wait(self.sut.unreadFilterButton.isHidden == false)
+        XCTAssertEqual(sut.unreadFilterButton.titleLabel?.text, "1 \(LocalString._unread_action) ")
+    }
+
+    func testUnreadButton_whenUnreadCountIsZeroAtFirst_inMessageMode_unreadIsSetToBe1_unreadButtonShouldBeShown() {
+        let labelID = LabelID(String.randomString(20))
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let count = LabelUpdate(context: context)
+            count.userID = self.userID.rawValue
+            count.labelID = labelID.rawValue
+            count.unread = 0
+            _ = context.saveUpstreamIfNeeded()
+        }
+        makeSUT(
+            labelID: labelID,
+            labelType: .folder,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertTrue(sut.unreadFilterButton.isHidden)
+
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let count = LabelUpdate.fetchLastUpdates(
+                by: [labelID.rawValue],
+                userID: self.userID.rawValue,
+                context: context
+            ).first
+            count?.unread = 1
+            _ = context.saveUpstreamIfNeeded()
+        }
+
+        wait(self.sut.unreadFilterButton.isHidden == false)
+        XCTAssertEqual(sut.unreadFilterButton.titleLabel?.text, "1 \(LocalString._unread_action) ")
+    }
+
+    func testUnreadButton_whenUnreadCountIsMoreThan9999_uneradButtonTitleIsSetToBePlus9999() {
+        let labelID = LabelID(String.randomString(20))
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let count = LabelUpdate(context: context)
+            count.userID = self.userID.rawValue
+            count.labelID = labelID.rawValue
+            count.unread = 100000
+            _ = context.saveUpstreamIfNeeded()
+        }
+        makeSUT(
+            labelID: labelID,
+            labelType: .folder,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertFalse(sut.unreadFilterButton.isHidden)
+        XCTAssertEqual(sut.unreadFilterButton.titleLabel?.text, " +9999 \(LocalString._unread_action) ")
+    }
 }
 
 extension MailboxViewControllerTests {

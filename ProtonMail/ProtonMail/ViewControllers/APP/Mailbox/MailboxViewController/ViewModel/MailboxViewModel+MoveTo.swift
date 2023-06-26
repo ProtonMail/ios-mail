@@ -38,7 +38,7 @@ extension MailboxViewModel: MoveToActionSheetProtocol {
             return
         }
         conversationProvider.move(conversationIDs: conversations.map(\.conversationID),
-                                  from: "",
+                                  from: labelId,
                                   to: destination.location.labelID,
                                   isSwipeAction: isFromSwipeAction,
                                   callOrigin: "MailboxViewModel - handleMoveToAction") { [weak self] result in

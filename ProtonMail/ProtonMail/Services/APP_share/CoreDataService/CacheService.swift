@@ -162,17 +162,34 @@ class CacheService: CacheServiceProtocol {
         return true
     }
 
-    func mark(messageObjectID: NSManagedObjectID, labelID: LabelID, unRead: Bool) -> Bool {
+    func mark(
+        messageObjectID: NSManagedObjectID,
+        labelID: LabelID,
+        unRead: Bool,
+        shouldUpdateCounter: Bool = true
+    ) -> Bool {
         var isSuccess: Bool!
 
         coreDataService.performAndWaitOnRootSavingContext { context in
-            isSuccess = self.mark(messageObjectID: messageObjectID, labelID: labelID, unRead: unRead, context: context)
+            isSuccess = self.mark(
+                messageObjectID: messageObjectID,
+                labelID: labelID,
+                unRead: unRead,
+                shouldUpdateCounter: shouldUpdateCounter,
+                context: context
+            )
         }
 
         return isSuccess
     }
 
-    func mark(messageObjectID: NSManagedObjectID, labelID: LabelID, unRead: Bool, context: NSManagedObjectContext) -> Bool {
+    func mark(
+        messageObjectID: NSManagedObjectID,
+        labelID: LabelID,
+        unRead: Bool,
+        shouldUpdateCounter: Bool = true,
+        context: NSManagedObjectContext
+    ) -> Bool {
         guard let msgToUpdate = try? context.existingObject(with: messageObjectID) as? Message else {
             return false
         }
@@ -189,7 +206,9 @@ class CacheService: CacheServiceProtocol {
         if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
             conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID.rawValue)
         }
-        self.updateCounterSync(markUnRead: unRead, on: msgToUpdate.getLabelIDs().map { LabelID($0) })
+        if shouldUpdateCounter {
+            updateCounterSync(markUnRead: unRead, on: msgToUpdate.getLabelIDs().map { LabelID($0) })
+        }
 
         if let error = context.saveUpstreamIfNeeded() {
             assertionFailure("\(error)")

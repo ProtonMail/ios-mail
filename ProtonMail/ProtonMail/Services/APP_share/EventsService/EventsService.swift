@@ -798,7 +798,7 @@ extension EventsService {
                     continue
                 }
                 let total = count["Total"] as? Int
-                self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: viewMode, shouldSave: false)
+                self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: self.userManager.userID, unread: unread, total: total, type: viewMode, shouldSave: true)
                 self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: viewMode)
             }
         }

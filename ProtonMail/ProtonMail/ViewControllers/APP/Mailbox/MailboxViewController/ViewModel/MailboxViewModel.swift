@@ -37,6 +37,7 @@ struct LabelInfo {
 
 protocol MailboxViewModelUIProtocol: AnyObject {
     func updateTitle()
+    func updateUnreadButton(count: Int)
     func updateTheUpdateTimeLabel()
 }
 
@@ -57,9 +58,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     private let pushService: PushNotificationServiceProtocol
     /// fetch controller
     private(set) var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
-    private(set) var unreadFetchedResult: NSFetchedResultsController<NSFetchRequestResult>?
     private var labelPublisher: MailboxLabelPublisher?
     private var eventUpdatePublisher: EventUpdatePublisher?
+    private var unreadCounterPublisher: UnreadCounterPublisher?
+    var unreadCount: Int {
+        unreadCounterPublisher?.unreadCount ?? 0
+    }
 
     private(set) var selectedIDs: Set<String> = Set()
 
@@ -324,46 +328,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         return fetchedResultsController
     }
 
-    private func makeUnreadFetchController() -> NSFetchedResultsController<NSFetchRequestResult> {
-        let fetchController: NSFetchedResultsController<NSFetchRequestResult>
-
-        switch locationViewMode {
-        case .singleMessage:
-            let moc = coreDataContextProvider.mainContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)",
-                                                 LabelUpdate.Attributes.labelID,
-                                                 self.labelID.rawValue,
-                                                 LabelUpdate.Attributes.userID,
-                                                 self.user.userInfo.userId)
-            let strComp = NSSortDescriptor(key: LabelUpdate.Attributes.labelID,
-                                           ascending: true,
-                                           selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-            fetchRequest.sortDescriptors = [strComp]
-            fetchController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        case .conversation:
-            let moc = coreDataContextProvider.mainContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ConversationCount.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)",
-                                                 ConversationCount.Attributes.userID,
-                                                 self.user.userInfo.userId,
-                                                 ConversationCount.Attributes.labelID,
-                                                 self.labelID.rawValue)
-            let strComp = NSSortDescriptor(key: ConversationCount.Attributes.labelID,
-                                           ascending: true,
-                                           selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-            fetchRequest.sortDescriptors = [strComp]
-            fetchController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        }
-
-        do {
-            try fetchController.performFetch()
-        } catch {
-        }
-
-        return fetchController
-    }
-
     private func makeLabelPublisherIfNeeded() {
         guard Message.Location(labelID) == nil else {
             return
@@ -381,7 +345,21 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         )
     }
 
-    private func makeEventPublisher() {
+    private func makeUnreadCounterPublisher() {
+        unreadCounterPublisher = .init(
+            contextProvider: coreDataContextProvider,
+            userID: user.userID
+        )
+        unreadCounterPublisher?.startObserve(
+            labelID: labelID,
+            viewMode: locationViewMode,
+            onContentChanged: { [weak self] unreadCount in
+                self?.uiDelegate?.updateUnreadButton(count: unreadCount)
+            }
+        )
+    }
+
+	private func makeEventPublisher() {
         eventUpdatePublisher = .init(contextProvider: coreDataContextProvider)
         eventUpdatePublisher?.startObserve(
             userID: user.userID,
@@ -389,7 +367,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
                 self?.latestEventUpdateTime = events.first?.updateTime
                 self?.uiDelegate?.updateTheUpdateTimeLabel()
             })
-    }
+	}
 
     /// Setup fetch controller to fetch message of specific labelID
     ///
@@ -399,11 +377,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         self.fetchedResultsController = self.makeFetchController(isUnread: isUnread)
         self.fetchedResultsController?.delegate = delegate
 
-        self.unreadFetchedResult = self.makeUnreadFetchController()
-        self.unreadFetchedResult?.delegate = delegate
-
         makeLabelPublisherIfNeeded()
         makeEventPublisher()
+        makeUnreadCounterPublisher()
     }
 
     /// reset delegate if fetch controller is valid
