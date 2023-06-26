@@ -14,7 +14,7 @@ class LabelsFoldersTests: FixtureAuthenticatedTestCase {
     private let loginRobot = LoginRobot()
     
     
-    func testCreateAssingDeleteFolder() {
+    func testCreateAndDeleteFolder() {
         let folderName = "test"
         let folderNameAfterSave = "tes" // bug: cannot save the last charactor in the first time
 
@@ -38,7 +38,7 @@ class LabelsFoldersTests: FixtureAuthenticatedTestCase {
         }
     }
     
-    func testCreateAssingDeleteLabel() {
+    func testCreateAndDeleteLabel() {
         let labelName = "test"
         let labelNameAfterSave = "tes" // bug: cannot save the last charactor in the first time
         

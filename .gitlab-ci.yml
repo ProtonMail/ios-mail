@@ -97,8 +97,6 @@ default:
 
 linting:
   stage: linting
-  before_script:
-    - *setup_basic_tools
   except:
     - schedules
   script:
@@ -189,7 +187,7 @@ test:ui:smoke:
     - bundle exec fastlane ui_test testplan:"SmokeTests" concurrent_workers:"2"
     - ../Scripts/generate_code_coverage_report.sh
   tags:
-    - iOS_UITEST
+    - iOS_GENERAL
 
 report:slack:smoke:
   dependencies:

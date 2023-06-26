@@ -35,6 +35,13 @@ UNIT_TEST_DEVICE = "iPhone 8"
 UI_TEST_DEVICE = "iPhone 14"
 UI_TEST_SCHEME = "ProtonMailUITests"
 
+def select_xcode
+  xcodes(
+    version: '14.2',
+    select_for_current_build_only: true,
+  )
+end
+
 def set_up_keychain(isEnterprise)
   create_keychain(
       name: DEVELOPER_KEYCHAIN_NAME,
@@ -265,10 +272,7 @@ platform :ios do
 
   desc "Build the app and upload to testflight"
   lane :build do |options|
-    xcodes(
-      version: '14.2',
-      select_for_current_build_only: true,
-    )
+    select_xcode
     set_up_keychain(false)
 
     api_key = set_up_app_store_api_key
@@ -312,10 +316,7 @@ platform :ios do
 
   desc "Build debug apps for testing"
   lane :build_for_testing do |options|
-    xcodes(
-      version: '14.2',
-      select_for_current_build_only: true,
-    )
+    select_xcode
 
     run_tests(
       build_for_testing: true,
@@ -330,10 +331,7 @@ platform :ios do
 
   desc "Build enterprise app"
   lane :enterprise do |options|
-    xcodes(
-      version: '14.2',
-      select_for_current_build_only: true,
-    )
+    select_xcode
     set_up_keychain(true)
 
     # Set build version by git log numbers
@@ -363,10 +361,7 @@ platform :ios do
 
   desc "Run unit test and get test coverage"
   lane :unit_test do |options|
-    xcodes(
-      version: '14.2',
-      select_for_current_build_only: true,
-    )
+    select_xcode
 
     run_tests(
       device: UI_TEST_DEVICE,
@@ -381,10 +376,7 @@ platform :ios do
 
   desc "Run ui test and get test coverage"
   lane :ui_test do |options|
-    xcodes(
-      version: '14.2',
-      select_for_current_build_only: true,
-    )
+    select_xcode
 
     run_tests(
       scheme: UI_TEST_SCHEME,

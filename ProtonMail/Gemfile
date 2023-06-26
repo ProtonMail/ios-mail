@@ -4,7 +4,6 @@ gem "cocoapods"
 gem "fastlane"
 # a fork that handles absolute paths, needed for code coverage when building on two different machines
 gem 'slather', git: 'https://github.com/Linquas/slather.git', ref: 'f5ac241'
-gem "xcode-install"
 
 plugins_path = File.join(File.dirname(__FILE__), 'fastlane', 'Pluginfile')
 eval_gemfile(plugins_path) if File.exist?(plugins_path)
