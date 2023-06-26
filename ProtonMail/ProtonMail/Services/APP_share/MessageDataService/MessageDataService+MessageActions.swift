@@ -141,7 +141,7 @@ extension MessageDataService {
     func markLocally(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) {
         if messageObjectIDs.isEmpty { return }
         for id in messageObjectIDs {
-           _ = self.cacheService.mark(messageObjectID: id, labelID: labelID, unRead: unRead)
+           _ = self.cacheService.mark(messageObjectID: id, labelID: labelID, unRead: unRead, shouldUpdateCounter: false)
         }
     }
 

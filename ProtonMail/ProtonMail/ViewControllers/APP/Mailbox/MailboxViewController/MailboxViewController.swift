@@ -163,7 +163,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         if viewModel.reloadTable() {
             resetTableView()
         }
-        self.updateUnreadButton()
+        self.updateLastUpdateTimeLabel()
+        self.updateUnreadButton(count: viewModel.unreadCount)
 
         refetchAllIfNeeded()
         startAutoFetch()
@@ -252,7 +253,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
         self.topActionsView.layer.zPosition = tableView.layer.zPosition + 1
 
-        self.updateUnreadButton()
+        self.updateUnreadButton(count: viewModel.unreadCount)
+        self.updateLastUpdateTimeLabel()
 
         self.viewModel.cleanReviewItems()
         generateAccessibilityIdentifiers()
@@ -293,7 +295,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                                  argument: self.navigationController?.view)
         }
 
-        self.updateUnreadButton()
+        self.updateUnreadButton(count: viewModel.unreadCount)
         deleteExpiredMessages()
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
@@ -315,7 +317,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         if Message.Location(viewModel.labelID) == .inbox {
             viewModel.user.appRatingService.preconditionEventDidOccur(.inboxNavigation)
         }
-        
+
         if viewModel.eventsService.status != .started {
             self.startAutoFetch()
         } else {
@@ -677,7 +679,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             }
         self.viewModel.isCurrentUserSelectedUnreadFilterInInbox = isSelected
         self.reloadTableViewDataSource(animate: false)
-        self.updateUnreadButton()
+        self.updateUnreadButton(count: viewModel.unreadCount)
     }
 
     // MARK: - Private methods
@@ -707,7 +709,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                                     isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox) { _ in }
         }
 
-        updateUnreadButton()
+        updateUnreadButton(count: viewModel.unreadCount)
         showNoResultLabelIfNeeded()
     }
 
@@ -1151,28 +1153,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         }
     }
 
-    private func updateUnreadButton() {
-        if refreshControl.isRefreshing { return }
-        let unread = viewModel.lastUpdateTime()?.unread ?? 0
-        let isInUnreadFilter = unreadFilterButton.isSelected
-        let shouldShowUnreadFilter = unread != 0
-        unreadFilterButton.backgroundColor = isInUnreadFilter ? ColorProvider.BrandNorm : ColorProvider.BackgroundSecondary
-        unreadFilterButton.isHidden = isInUnreadFilter ? false : unread == 0
-        customUnreadFilterElement?.isAccessibilityElement = shouldShowUnreadFilter
-        let number = unread > 9999 ? " +9999" : "\(unread)"
-
-        if isInUnreadFilter {
-            unreadFilterButton.setTitle("\(number) \(LocalString._unread_action) ", for: .selected)
-        } else {
-            unreadFilterButton.setTitle("\(number) \(LocalString._unread_action) ", for: .normal)
+	private func updateLastUpdateTimeLabel() {
+        if let status = self.lastNetworkStatus, status == .notConnected {
+            updateTimeLabel.set(text: LocalString._mailbox_offline_text,
+                                preferredFont: .footnote,
+                                weight: .regular,
+                                textColor: ColorProvider.NotificationError)
+            return
         }
-        customUnreadFilterElement?.accessibilityLabel = "\(number) \(LocalString._unread_action)"
 
-        let titleWidth = unreadFilterButton.titleLabel?.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).width ?? 0.0
-        let width = titleWidth + 16 + (isInUnreadFilter ? 16 : 0)
-        unreadFilterButtonWidth.constant = width
-        self.unreadFilterButton.layer.cornerRadius = self.unreadFilterButton.frame.height / 2
-    }
+        let timeText = self.viewModel.getLastUpdateTimeText()
+        updateTimeLabel.set(text: timeText,
+                            preferredFont: .footnote,
+                            weight: .regular,
+                            textColor: ColorProvider.TextHint)
+	}
 
     private func configureBannerContainer() {
         let bannerContainer = UIView(frame: .zero)
@@ -2101,11 +2096,6 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == self.viewModel.unreadFetchedResult {
-            self.updateUnreadButton()
-            return
-        }
-
         if shouldKeepSkeletonUntilManualDismissal {
             return
         }
@@ -2125,21 +2115,15 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         self.showNoResultLabelIfNeeded()
     }
 
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == self.viewModel.unreadFetchedResult {
-            return
-        }
-    }
-
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        if controller == self.viewModel.unreadFetchedResult || shouldKeepSkeletonUntilManualDismissal {
+        if shouldKeepSkeletonUntilManualDismissal {
             return
         }
 
-            if type == .delete {
-                popPresentedItemIfNeeded(anObject)
-                hideActionBarIfNeeded(anObject)
-            }
+        if type == .delete {
+            popPresentedItemIfNeeded(anObject)
+            hideActionBarIfNeeded(anObject)
+        }
     }
 }
 
@@ -2565,5 +2549,28 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
                             preferredFont: .footnote,
                             weight: .regular,
                             textColor: ColorProvider.TextHint)
+    }
+
+    func updateUnreadButton(count: Int) {
+        if refreshControl.isRefreshing { return }
+        let unread = count
+        let isInUnreadFilter = unreadFilterButton.isSelected
+        let shouldShowUnreadFilter = unread != 0
+        unreadFilterButton.backgroundColor = isInUnreadFilter ? ColorProvider.BrandNorm : ColorProvider.BackgroundSecondary
+        unreadFilterButton.isHidden = isInUnreadFilter ? false : unread == 0
+        customUnreadFilterElement?.isAccessibilityElement = shouldShowUnreadFilter
+        let number = unread > 9999 ? " +9999" : "\(unread)"
+
+        if isInUnreadFilter {
+            unreadFilterButton.setTitle("\(number) \(LocalString._unread_action) ", for: .selected)
+        } else {
+            unreadFilterButton.setTitle("\(number) \(LocalString._unread_action) ", for: .normal)
+        }
+        customUnreadFilterElement?.accessibilityLabel = "\(number) \(LocalString._unread_action)"
+
+        let titleWidth = unreadFilterButton.titleLabel?.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).width ?? 0.0
+        let width = titleWidth + 16 + (isInUnreadFilter ? 16 : 0)
+        unreadFilterButtonWidth.constant = width
+        self.unreadFilterButton.layer.cornerRadius = self.unreadFilterButton.frame.height / 2
     }
 }

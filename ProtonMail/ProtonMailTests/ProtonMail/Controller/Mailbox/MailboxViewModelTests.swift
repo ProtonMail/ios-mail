@@ -755,7 +755,7 @@ class MailboxViewModelTests: XCTestCase {
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.moveStub.lastArguments)
                 XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertEqual(argument.a2, "")
+                XCTAssertEqual(argument.a2, self.sut.labelID)
                 XCTAssertEqual(argument.a3, labelToMoveTo.location.labelID)
                 XCTAssertFalse(argument.a4)
 
