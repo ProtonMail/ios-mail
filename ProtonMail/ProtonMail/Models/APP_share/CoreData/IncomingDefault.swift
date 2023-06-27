@@ -17,6 +17,7 @@
 
 import CoreData
 
+// sourcery: CoreDataHelpers
 final class IncomingDefault: NSManagedObject {
     enum Attribute: String {
         static let entityName = "IncomingDefault"

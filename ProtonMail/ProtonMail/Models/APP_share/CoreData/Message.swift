@@ -23,6 +23,7 @@
 import CoreData
 import Foundation
 
+// sourcery: CoreDataHelpers
 final class Message: NSManagedObject {
     /// Mark -- new orders
     ///

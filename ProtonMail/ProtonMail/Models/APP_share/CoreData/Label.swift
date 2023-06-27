@@ -23,6 +23,7 @@
 import Foundation
 import CoreData
 
+// sourcery: CoreDataHelpers
 class Label: NSManagedObject {
     @NSManaged var userID: String
 

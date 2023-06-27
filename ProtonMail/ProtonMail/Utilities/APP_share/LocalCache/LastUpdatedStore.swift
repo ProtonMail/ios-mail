@@ -82,9 +82,9 @@ final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol, Service
         return Promise { seal in
             let coreDataService = sharedServices.get(by: CoreDataService.self)
             coreDataService.performOnRootSavingContext { context in
-                UserEvent.deleteAll(inContext: context)
-                LabelUpdate.deleteAll(inContext: context)
-                ConversationCount.deleteAll(inContext: context)
+                UserEvent.deleteAll(in: context)
+                LabelUpdate.deleteAll(in: context)
+                ConversationCount.deleteAll(in: context)
                 seal.fulfill_()
             }
         }

@@ -670,8 +670,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             queueManager.clearAll {
                 let coreDataService = sharedServices.get(by: CoreDataService.self)
                 coreDataService.enqueueOnRootSavingContext { context in
-                    Message.deleteAll(inContext: context)
-                    Conversation.deleteAll(inContext: context)
+                    Message.deleteAll(in: context)
+                    Conversation.deleteAll(in: context)
                     _ = context.saveUpstreamIfNeeded()
                     seal.fulfill_()
                 }

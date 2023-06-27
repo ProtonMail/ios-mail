@@ -169,7 +169,7 @@ extension IncomingDefaultService {
     static func cleanUpAll() {
         let coreDataService = sharedServices.get(by: CoreDataService.self)
         coreDataService.performAndWaitOnRootSavingContext { context in
-            context.deleteAll(IncomingDefault.Attribute.entityName)
+            IncomingDefault.deleteAll(in: context)
         }
     }
 }
