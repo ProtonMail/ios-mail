@@ -195,7 +195,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
 
         let wrapper = document.createElement('div');
         wrapper.innerHTML = messageHead;
-        wrapper.append(style);
+        wrapper.insertBefore(style, wrapper.firstChild);
         Array.from(wrapper.children).forEach(item => document.getElementsByTagName('head')[0].appendChild(item))
 
         var metaWidth = document.createElement('meta');
