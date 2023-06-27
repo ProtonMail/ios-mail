@@ -48,7 +48,7 @@ final class SearchView: UIView {
         stackView.addArrangedSubview(searchBarContainer)
         searchBarContainer.addSubview(searchBar)
         stackView.addArrangedSubview(tableView)
-        stackView.addArrangedSubview(tableView)
+        stackView.addArrangedSubview(toolBar)
         addSubview(activityIndicator)
         addSubview(progressView)
         addSubview(noResultImage)
