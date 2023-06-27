@@ -22,14 +22,6 @@
 
 import ProtonCore_Foundations
 
-protocol EmailHeaderViewProtocol: AnyObject {
-    func updateSize()
-}
-
-protocol EmailHeaderActionsProtocol: RecipientViewDelegate, ShowImageViewDelegate {
-    func star(changed isStarred: Bool)
-}
-
 // for new MessageHeaderViewController
 extension EmailHeaderView {
     func inject(recepientDelegate: RecipientViewDelegate) {
@@ -43,8 +35,8 @@ extension EmailHeaderView {
         self.backgroundColor = .orange
     }
 
-    func prepareForPrinting(_ beforePrinting: Bool) {
-        self.emailDetailButton.clipsToBounds = beforePrinting
+    func prepareForPrinting() {
+        emailDetailButton.clipsToBounds = true
 
         // zero height constraints, first four copied from makeHeaderConstraints()
         emailDetailButton.removeConstraints(emailDetailButton.constraints)
@@ -54,11 +46,7 @@ extension EmailHeaderView {
             emailDetailButton.topAnchor.constraint(equalTo: emailShortTime.topAnchor)
         ].activate()
 
-        if beforePrinting {
-            emailDetailButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
-        }
-
-        self.emailFavoriteButton.isHidden = beforePrinting
+        emailDetailButton.heightAnchor.constraint(equalToConstant: 0).isActive = true
     }
 }
 
@@ -68,24 +56,6 @@ class EmailHeaderView: UIView, AccessibleView {
     private struct Color {
         static let Gray_C9CED4 = UIColor(RRGGBB: UInt(0xC9CED4))
         static let Gray_999DA1 = UIColor(RRGGBB: UInt(0x999DA1))
-    }
-
-    weak var viewDelegate: EmailHeaderViewProtocol?
-    private weak var _delegate: EmailHeaderActionsProtocol?
-
-    var delegate: EmailHeaderActionsProtocol? {
-        get {
-            return self._delegate
-        }
-        set {
-            self._delegate = newValue
-            // set delegate here
-            self.emailFromTable.delegate = self._delegate
-            self.emailToTable.delegate = self._delegate
-            self.emailCcTable.delegate = self._delegate
-            self.emailBccTable.delegate = self._delegate
-            self.showImageView.delegate = self._delegate
-        }
     }
 
     /// Header Content View
@@ -116,7 +86,6 @@ class EmailHeaderView: UIView, AccessibleView {
     /// support mutiple labels
     private var labelsView: LabelsCollectionView!
 
-    fileprivate var emailFavoriteButton: UIButton!
     fileprivate var emailHasAttachmentsImageView: UIImageView!
     fileprivate var emailAttachmentsAmount: UILabel!
 
@@ -341,7 +310,6 @@ class EmailHeaderView: UIView, AccessibleView {
                                       self.emailBcc!, self.emailBccTable!,
                                       self.emailShortTime!,
                                       self.date!,
-                                      self.emailFavoriteButton!,
                                       self.emailDetailButton!]
         generateAccessibilityIdentifiers()
     }
@@ -414,9 +382,6 @@ class EmailHeaderView: UIView, AccessibleView {
         self.emailTo.attributedText = toSinglelineAttr
         self.emailCc.attributedText = ccShortAttr
         self.emailBcc.attributedText = bccShortAttr
-
-        self.emailFavoriteButton.isSelected = self.starred
-        self.emailFavoriteButton.accessibilityLabel = self.starred ? LocalString._menu_starred_title : LocalString._locations_add_star_action
 
         let timeFormat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
         let isToday = Calendar.current.isDateInToday(self.date)
@@ -536,16 +501,6 @@ class EmailHeaderView: UIView, AccessibleView {
         self.emailTitle.textColor = UIColor(RRGGBB: UInt(0x505061))
         self.emailTitle.sizeToFit()
         self.emailHeaderView.addSubview(emailTitle)
-
-        // favorite button
-        self.emailFavoriteButton = UIButton()
-        self.emailFavoriteButton.addTarget(self, action: #selector(EmailHeaderView.emailFavoriteButtonTapped), for: .touchUpInside)
-        self.emailFavoriteButton.setImage(Asset.mailStarred.image, for: UIControl.State())
-        self.emailFavoriteButton.setImage(Asset.mailStarredActive.image, for: .selected)
-        self.emailFavoriteButton.isSelected = self.starred
-        self.emailFavoriteButton.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
-        self.emailFavoriteButton.contentHorizontalAlignment = UIControl.ContentHorizontalAlignment.center
-        self.emailHeaderView.addSubview(emailFavoriteButton)
 
         // details view
         self.emailDetailView = UIView()
@@ -755,19 +710,11 @@ class EmailHeaderView: UIView, AccessibleView {
             emailHeaderView.bottomAnchor.constraint(equalTo: emailDetailView.bottomAnchor)
         ].activate()
 
-        emailFavoriteButton.removeConstraints(emailFavoriteButton.constraints)
-        [
-            emailFavoriteButton.topAnchor.constraint(equalTo: emailHeaderView.topAnchor),
-            emailFavoriteButton.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor),
-            emailFavoriteButton.heightAnchor.constraint(equalToConstant: kEmailFavoriteButtonHeight),
-            emailFavoriteButton.widthAnchor.constraint(equalToConstant: kEmailFavoriteButtonWidth)
-        ].activate()
-
         emailTitle.removeConstraints(emailTitle.constraints)
         [
             emailTitle.leftAnchor.constraint(equalTo: emailHeaderView.leftAnchor),
             emailTitle.topAnchor.constraint(equalTo: emailHeaderView.topAnchor, constant: kEmailHeaderViewMarginTop),
-            emailTitle.rightAnchor.constraint(equalTo: emailFavoriteButton.leftAnchor, constant: -kEmailTitleViewMarginRight)
+            emailTitle.rightAnchor.constraint(equalTo: emailHeaderView.rightAnchor, constant: -kEmailTitleViewMarginRight)
         ].activate()
 
         emailDetailView.removeConstraints(emailDetailView.constraints)
@@ -910,12 +857,6 @@ class EmailHeaderView: UIView, AccessibleView {
         ].activate()
     }
 
-    @objc internal func emailFavoriteButtonTapped() {
-        self.starred = !self.starred
-        self.delegate?.star(changed: self.starred)
-        self.emailFavoriteButton.isSelected = self.starred
-    }
-
     fileprivate func updateSelf(_ anim: Bool) {
         guard self.visible == true else {
             return
@@ -926,7 +867,6 @@ class EmailHeaderView: UIView, AccessibleView {
                 var f = self.frame
                 f.size.height = self.getHeight()
                 self.frame = f
-                self.viewDelegate?.updateSize()
             })
         }
     }
