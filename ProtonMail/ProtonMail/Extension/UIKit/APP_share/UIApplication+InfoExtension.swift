@@ -24,8 +24,32 @@ import UIKit
 
 extension UIApplication {
 
-    static var isInTestingBuild: Bool {
+    /// Varible to determine how the build is distributed.
+    ///
+    /// Returns `true` if the build is one of the following:
+    ///  1. run in debug mode
+    ///  2. enterprise build
+    ///  3. testflight build
+    ///
+    ///  Returns `false` if the build is from the AppStore
+    static var isTestingBuild: Bool {
         return isDebugOrEnterprise || isTestflightBeta
+    }
+
+    static var isDebug: Bool {
+        #if DEBUG
+        return true
+        #else
+        return false
+        #endif
+    }
+
+    static var isEnterprise: Bool {
+        #if Enterprise
+        return true
+        #else
+        return false
+        #endif
     }
 
     static var isDebugOrEnterprise: Bool {

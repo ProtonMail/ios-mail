@@ -178,7 +178,10 @@ private extension WindowsCoordinatorTests {
             userDataCache: UserDataCache(keyMaker: keyMaker, keychain: keyChain),
             coreKeyMaker: MockKeyMakerProtocol()
         )
-        let pushService = PushNotificationService(notificationCenter: notificationCenter, lockCacheStatus: keyMaker)
+        let pushService = PushNotificationService(
+            notificationCenter: notificationCenter,
+            dependencies: .init(lockCacheStatus: keyMaker, registerDevice: MockRegisterDeviceUseCase())
+        )
         let queueManager = QueueManager(messageQueue: MockPMPersistentQueueProtocol(), miscQueue: MockPMPersistentQueueProtocol())
         userDefaultMock = .init(suiteName: randomSuiteName)!
         let darkModeCache = UserCachedStatus(userDefaults: userDefaultMock)

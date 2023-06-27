@@ -56,7 +56,7 @@ extension NSError {
         hud.label.text = NSLocalizedString(localizedDescription, comment: "Title")
         hud.detailsLabel.text = description
         hud.removeFromSuperViewOnHide = true
-        let delay = UIApplication.isInTestingBuild ? 10.0 : 3.0
+        let delay = UIApplication.isTestingBuild ? 10.0 : 3.0
         hud.hide(animated: true, afterDelay: delay)
     }
 
@@ -83,7 +83,7 @@ extension NSError {
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.offset.y = 250.0
-        let delay = UIApplication.isInTestingBuild ? 10.0 : 3.0
+        let delay = UIApplication.isTestingBuild ? 10.0 : 3.0
         hud.hide(animated: true, afterDelay: delay)
     }
 

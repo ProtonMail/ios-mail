@@ -734,12 +734,6 @@ open class SideMenuController: UIViewController {
                         self.revealMenu(animated: false, completion: nil)
                     })
                 })
-            } else {
-                self.revealMenu(animated: false) { _ in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                        self.hideMenu(animated: false, completion: nil)
-                    })
-                }
             }
         }
     }
