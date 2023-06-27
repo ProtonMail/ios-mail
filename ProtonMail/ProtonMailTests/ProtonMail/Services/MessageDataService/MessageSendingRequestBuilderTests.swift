@@ -199,7 +199,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     func testBuildFirstPartOfBody() {
         let boundaryMsg = "---BoundaryMsg---"
         let messageBody = "test"
-        let expected = "Content-Type: multipart/related; boundary=\"---BoundaryMsg---\"\r\n\r\n-----BoundaryMsg---\r\nContent-Type: text/html; charset=utf-8\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Language: en-US\r\n\r\ntest\r\n\r\n\r\n\r\n"
+        let expected = "Content-Type: multipart/mixed; boundary=---BoundaryMsg---\r\n\r\n-----BoundaryMsg---\r\nContent-Type: text/html; charset=utf-8\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Language: en-US\r\n\r\ntest\r\n\r\n\r\n\r\n"
         XCTAssertEqual(sut.buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody), expected)
     }
 
