@@ -21,10 +21,15 @@ import enum ProtonCore_Utilities.Either
 import struct UIKit.CGFloat
 
 final class AutoDeleteSettingViewModel: SwitchToggleVMProtocol {
-    var confirmation: SwitchToggleVMActionConfirmation? {
-        SwitchToggleVMActionConfirmation(title: L11n.AutoDeleteSettings.alertTitle,
-                                         message: L11n.AutoDeleteSettings.alertMessage,
-                                         confirmationButton: L11n.AutoDeleteSettings.alertEnableButton)
+    var confirmationOnEnable: SwitchToggleVMActionConfirmation? {
+        SwitchToggleVMActionConfirmation(title: L11n.AutoDeleteSettings.enableAlertTitle,
+                                         message: L11n.AutoDeleteSettings.enableAlertMessage,
+                                         confirmationButton: L11n.AutoDeleteSettings.enableAlertButton)
+    }
+    var confirmationOnDisable: SwitchToggleVMActionConfirmation? {
+        SwitchToggleVMActionConfirmation(title: L11n.AutoDeleteSettings.disableAlertTitle,
+                                         message: L11n.AutoDeleteSettings.disableAlertMessage,
+                                         confirmationButton: L11n.AutoDeleteSettings.disableAlertButton)
     }
     var input: SwitchToggleVMInput { self }
     var output: SwitchToggleVMOutput { self }
