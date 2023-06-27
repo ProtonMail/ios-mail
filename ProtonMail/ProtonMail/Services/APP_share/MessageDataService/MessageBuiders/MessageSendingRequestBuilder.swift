@@ -359,7 +359,7 @@ extension MessageSendingRequestBuilder {
     }
 
     func buildFirstPartOfBody(boundaryMsg: String, messageBody: String) -> String {
-        let typeMessage = "Content-Type: multipart/related; boundary=\"\(boundaryMsg)\""
+        let typeMessage = "Content-Type: multipart/mixed; boundary=\(boundaryMsg)"
         var signbody = ""
         signbody.append(contentsOf: typeMessage + "\r\n")
         signbody.append(contentsOf: "\r\n")
