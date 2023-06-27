@@ -24,16 +24,8 @@ import UIKit
 
 @available(iOS 13.0, *)
 class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
-    lazy var coordinator: WindowsCoordinator = {
-        if UIDevice.current.stateRestorationPolicy == .multiwindow {
-            // each window scene has it's own windowCoordinator
-            let coordinator = WindowsCoordinator(factory: sharedServices)
-            coordinator.delegate = UIApplication.shared.delegate as? WindowsCoordinatorDelegate
-            return coordinator
-        } else {
-            // windowCoordinator is shared across whole app
-            return (UIApplication.shared.delegate as? AppDelegate)!.coordinator
-        }
+    lazy private(set) var coordinator: WindowsCoordinator = {
+        (UIApplication.shared.delegate as! AppDelegate).coordinator
     }()
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

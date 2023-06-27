@@ -717,7 +717,6 @@ extension EventsService {
                         guard let user = self.userManager else {
                             break
                         }
-                        print("HAHA \(#line) \(Thread.isMainThread)")
                         do {
                             try `await`(user.userService.activeUserKeys(userInfo: user.userInfo, auth: user.authCredential))
                         } catch {
