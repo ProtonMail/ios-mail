@@ -24,7 +24,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     var apiServiceMock: APIServiceMock!
     var appRatingStatusProvider: MockAppRatingStatusProvider!
     var featureFlagCache: MockFeatureFlagCache!
-    var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
     var sut: FeatureFlagsDownloadService!
     var userID: UserID = UserID(rawValue: String.randomString(20))
 
@@ -33,13 +32,11 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         apiServiceMock = APIServiceMock()
         appRatingStatusProvider = .init()
         featureFlagCache = .init()
-        userIntroductionProgressProviderMock = .init()
         sut = FeatureFlagsDownloadService(
             cache: featureFlagCache,
             userID: userID,
             apiService: apiServiceMock,
-            appRatingStatusProvider: appRatingStatusProvider,
-            userIntroductionProgressProvider: userIntroductionProgressProviderMock
+            appRatingStatusProvider: appRatingStatusProvider
         )
     }
 
@@ -48,7 +45,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         apiServiceMock = nil
         appRatingStatusProvider = nil
         featureFlagCache = nil
-        userIntroductionProgressProviderMock = nil
         sut = nil
     }
 
@@ -95,31 +91,5 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 2, handler: nil)
-    }
-
-    func testWhenRemoteFlagIsChangedFromOffToOn_spotlightIsResetForCurrentUser() throws {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
-            if path.contains("/core/v4/features") {
-                let response = FeatureFlagTestData.data
-                completion(nil, .success(response))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(.badResponse()))
-            }
-        }
-
-        let expectation1 = expectation(description: "Closure called")
-
-        sut.getFeatureFlags { _ in
-            expectation1.fulfill()
-        }
-
-        waitForExpectations(timeout: 1, handler: nil)
-
-        XCTAssertEqual(userIntroductionProgressProviderMock.markSpotlightStub.callCounter, 1)
-        let lastCallArguments = try XCTUnwrap(userIntroductionProgressProviderMock.markSpotlightStub.lastArguments)
-        XCTAssertEqual(lastCallArguments.first, .scheduledSend)
-        XCTAssertEqual(lastCallArguments.second, false)
-        XCTAssertEqual(lastCallArguments.third, userID)
     }
 }
