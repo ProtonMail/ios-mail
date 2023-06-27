@@ -26,19 +26,23 @@ class MailboxCoordinatorTests: XCTestCase {
     var reachabilityStub: ReachabilityStub!
     var applicationStateStub: UIApplication.State = .active
 
+    private var conversationStateProviderMock: MockConversationStateProviderProtocol!
+    private var dummyAPIService: APIServiceMock!
+    private var uiNavigationControllerMock: NavigationControllerSpy!
+
     override func setUp() {
         super.setUp()
 
         let dummyServices = ServiceFactory()
-        let dummyAPIService = APIServiceMock()
+        dummyAPIService = APIServiceMock()
         let dummyUser = UserManager(api: dummyAPIService, role: .none)
 
-        let conversationStateProviderMock = MockConversationStateProviderProtocol()
+        conversationStateProviderMock = .init()
         let lastUpdatedStoreMock = MockLastUpdatedStoreProtocol()
         let pushServiceMock = MockPushNotificationService()
         let contextProviderMock = MockCoreDataContextProvider()
         let mailboxViewControllerMock = MailboxViewController()
-        let uiNavigationControllerMock = UINavigationController(rootViewController: mailboxViewControllerMock)
+        uiNavigationControllerMock = .init(rootViewController: mailboxViewControllerMock)
         let contactGroupProviderMock = MockContactGroupsProviderProtocol()
         let labelProviderMock = MockLabelProviderProtocol()
         let contactProviderMock = MockContactProvider(coreDataContextProvider: contextProviderMock)
@@ -97,9 +101,8 @@ class MailboxCoordinatorTests: XCTestCase {
                                  getApplicationState: {
             return self.applicationStateStub
         })
-        sut.viewController = nil
-        mailboxViewControllerMock.set(coordinator: sut)
-        mailboxViewControllerMock.set(viewModel: viewModelMock)
+        sut.start()
+        mailboxViewControllerMock.loadViewIfNeeded()
 
         viewModelMock.callFetchConversationDetail.bodyIs { _, _, callback in
             callback()
@@ -109,6 +112,9 @@ class MailboxCoordinatorTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
+        conversationStateProviderMock = nil
+        dummyAPIService = nil
+        uiNavigationControllerMock = nil
         reachabilityStub = nil
         viewModelMock = nil
     }
@@ -116,7 +122,6 @@ class MailboxCoordinatorTests: XCTestCase {
     func testFetchConversationFromBEIfNeeded_withNoConnection() {
         reachabilityStub.currentReachabilityStatusStub = .NotReachable
         let expectation1 = expectation(description: "closure is called")
-        sut.viewController?.loadViewIfNeeded()
 
         sut.fetchConversationFromBEIfNeeded(conversationID: "") {
             expectation1.fulfill()
@@ -153,5 +158,53 @@ class MailboxCoordinatorTests: XCTestCase {
         XCTAssertTrue(viewModelMock.callFetchConversationDetail.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(viewModelMock.callFetchConversationDetail.lastArguments?.a1)
         XCTAssertEqual(argument, conversationID)
+    }
+
+    func testFollowDeepLink_whenReceivesMultipleCallsForDetails_doesNotStackMultipleViewControllers() async throws {
+        let messageID = "someMessageID"
+
+        let messageData = Data(
+            MessageTestData.messageMetaData(sender: "foo", recipient: "bar", messageID: messageID).utf8
+        )
+
+        let messageJSON = try JSONSerialization.jsonObject(with: messageData)
+
+        dummyAPIService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+            completion(nil, .success(["Message": messageJSON]))
+        }
+
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+
+        for offset in stride(from: 0, through: 0.3, by: 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + offset) {
+                let deepLink = DeepLink(MailboxCoordinator.Destination.details.rawValue, sender: messageID)
+                self.sut.follow(deepLink)
+            }
+        }
+
+        try await Task.sleep(for: .milliseconds(500))
+
+        await MainActor.run {
+            // 1st call by UINavigationController.init(rootViewController:)
+            // 2nd call for showing the placeholder VC
+            XCTAssertEqual(uiNavigationControllerMock.pushViewControllerStub.callCounter, 2)
+
+            // one call for showing the actual message details
+            XCTAssertEqual(uiNavigationControllerMock.setViewControllersStub.callCounter, 1)
+        }
+    }
+}
+
+private class NavigationControllerSpy: UINavigationController {
+    @FuncStub(NavigationControllerSpy.setViewControllers) var setViewControllersStub
+    override func setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {
+        setViewControllersStub(viewControllers, animated)
+        super.setViewControllers(viewControllers, animated: animated)
+    }
+
+    @FuncStub(NavigationControllerSpy.pushViewController) var pushViewControllerStub
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        pushViewControllerStub(viewController, animated)
+        super.pushViewController(viewController, animated: animated)
     }
 }

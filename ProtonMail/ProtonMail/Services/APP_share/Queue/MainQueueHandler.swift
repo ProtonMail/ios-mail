@@ -42,6 +42,7 @@ final class MainQueueHandler: QueueHandler {
     private let contactGroupService: ContactGroupsDataService
     private let undoActionManager: UndoActionManagerProtocol
     private weak var user: UserManager?
+    private let sendMessageResultHandler = SendMessageResultNotificationHandler()
     private let sendMessageTask: SendMessageTask
     private let dependencies: Dependencies
 
@@ -98,6 +99,7 @@ final class MainQueueHandler: QueueHandler {
             undoActionManager: undoActionManager
         )
         self.sendMessageTask = SendMessageTask(dependencies: sendDepenedencies)
+        sendMessageResultHandler.startObservingResult()
 
         self.dependencies = Dependencies(featureFlagCache: featureFlagCache, incomingDefaultService: user.incomingDefaultService)
     }

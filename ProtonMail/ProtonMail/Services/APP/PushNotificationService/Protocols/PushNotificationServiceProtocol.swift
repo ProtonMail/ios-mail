@@ -54,11 +54,6 @@ struct UnlockManagerProvider: UnlockProvider {
 }
 
 protocol DeviceRegistrator {
-    func device(
-        registerWith settings: PushSubscriptionSettings,
-        authCredential: AuthCredential?,
-        completion: @escaping JSONCompletion
-    )
     func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping JSONCompletion)
 }
 
