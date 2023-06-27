@@ -21,6 +21,7 @@ var credentialsFileName = "credentials"
 let credentialsBlackFileName = "credentials_black"
 let testData = TestData()
 var users: [String: User] = [:]
+var wasJailDisabled = false
 
 var dynamicDomain: String {
     ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] ?? ""
@@ -80,6 +81,7 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         quarkCommands = QuarkCommands(doh: env.doh)
 
         handleInterruption()
+        disableJail()
     }
 
     override func tearDown() {
@@ -157,6 +159,24 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
             } catch {
                 print("Error deserializing YAML: \(error.localizedDescription)")
             }
+        }
+    }
+
+    private func disableJail() {
+        if !wasJailDisabled {
+            let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
+            var quarkCommandResult: Result<UnbanDetails, UnbanError>?
+            
+            QuarkCommands.disableJail(currentlyUsedHostUrl: env.doh.getCurrentlyUsedHostUrl()) { result in
+                quarkCommandResult = result
+                expectQuarkCommandToFinish.fulfill()
+            }
+            wait(for: [expectQuarkCommandToFinish], timeout: 30.0)
+            if case .failure(let error) = quarkCommandResult {
+                XCTFail("Cannot unban \(#function) because of \(error.localizedDescription)")
+                return
+            }
+            wasJailDisabled = true
         }
     }
 }

@@ -18,6 +18,7 @@ fileprivate struct id {
     static let blockListLabel = "Block list"
     static let deleteAccount = "Delete account"
     static let mobileSignatureLabel = "Mobile Signature"
+    static let defaultRightTextIdentifier = "Default.rightText"
     
     static let signatureRightStaticTextIdentifier = "Signature.rightText"
     static let mobileSignatureRightStaticTextIdentifier = "Mobile_Signature.rightText"
