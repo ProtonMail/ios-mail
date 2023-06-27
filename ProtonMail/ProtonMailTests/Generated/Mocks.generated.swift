@@ -863,6 +863,19 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
 
 }
 
+class MockLocalMessageDataServiceProtocol: LocalMessageDataServiceProtocol {
+    @FuncStub(MockLocalMessageDataServiceProtocol.cleanMessage, initialReturn: Promise<Void>()) var cleanMessageStub
+    func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
+        cleanMessageStub(removeAllDraft, cleanBadgeAndNotifications)
+    }
+
+    @FuncStub(MockLocalMessageDataServiceProtocol.fetchMessages, initialReturn: [Message]()) var fetchMessagesStub
+    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message] {
+        fetchMessagesStub(selected, context)
+    }
+
+}
+
 class MockLockCacheStatus: LockCacheStatus {
     @PropertyStub(\MockLockCacheStatus.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub
     var isPinCodeEnabled: Bool {
