@@ -282,9 +282,6 @@ GEM
     unicode-display_width (1.8.0)
     webrick (1.8.1)
     word_wrap (1.0.0)
-    xcode-install (2.8.1)
-      claide (>= 0.9.1)
-      fastlane (>= 2.1.0, < 3.0.0)
     xcodeproj (1.22.0)
       CFPropertyList (>= 2.3.3, < 4.0)
       atomos (~> 0.1.3)
@@ -308,7 +305,6 @@ DEPENDENCIES
   fastlane-plugin-try_scan
   fastlane-plugin-xchtmlreport
   slather!
-  xcode-install
 
 BUNDLED WITH
    2.4.6
