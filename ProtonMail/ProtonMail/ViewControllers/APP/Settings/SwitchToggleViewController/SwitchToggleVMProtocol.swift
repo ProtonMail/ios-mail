@@ -26,7 +26,8 @@ struct SwitchToggleVMActionConfirmation {
 }
 
 protocol SwitchToggleVMProtocol {
-    var confirmation: SwitchToggleVMActionConfirmation? { get }
+    var confirmationOnEnable: SwitchToggleVMActionConfirmation? { get }
+    var confirmationOnDisable: SwitchToggleVMActionConfirmation? { get }
     var input: SwitchToggleVMInput { get }
     var output: SwitchToggleVMOutput { get }
 }
@@ -50,5 +51,6 @@ protocol SwitchToggleVMOutput {
 }
 
 extension SwitchToggleVMProtocol {
-    var confirmation: SwitchToggleVMActionConfirmation? { nil }
+    var confirmationOnEnable: SwitchToggleVMActionConfirmation? { nil }
+    var confirmationOnDisable: SwitchToggleVMActionConfirmation? { nil }
 }
