@@ -297,22 +297,15 @@ class UserManager: Service {
             cache: sharedServices.userCachedStatus,
             userID: userID,
             apiService: self.apiService,
-            sessionID: self.authCredential.sessionID,
             appRatingStatusProvider: sharedServices.userCachedStatus,
             userIntroductionProgressProvider: sharedServices.userCachedStatus
         )
-        service.register(newSubscriber: inAppFeedbackStateService)
         return service
     }()
 
     private var lastUpdatedStore: LastUpdatedStoreProtocol {
         return sharedServices.get(by: LastUpdatedStore.self)
     }
-
-    lazy var inAppFeedbackStateService: InAppFeedbackStateServiceProtocol = {
-        let service = InAppFeedbackStateService()
-        return service
-    }()
 
     #if !APP_EXTENSION
     lazy var blockedSenderCacheUpdater: BlockedSenderCacheUpdater = { [unowned self] in

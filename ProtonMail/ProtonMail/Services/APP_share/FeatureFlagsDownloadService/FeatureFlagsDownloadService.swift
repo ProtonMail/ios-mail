@@ -20,15 +20,9 @@ import ProtonCore_Services
 enum FeatureFlagKey: String, CaseIterable {
     case appRating = "RatingIOSMail"
     case sendRefactor = "SendMessageRefactor"
-    case inAppFeedback = "InAppFeedbackIOS"
     case scheduleSend = "ScheduledSendFreemium"
     case senderImage = "ShowSenderImages"
     case referralPrompt = "ReferralActionSheetShouldBePresentedIOS"
-}
-
-// sourcery: mock
-protocol FeatureFlagsSubscribeProtocol: AnyObject {
-    func handleNewFeatureFlags(_ featureFlags: SupportedFeatureFlags)
 }
 
 // sourcery: mock
@@ -41,11 +35,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     private let cache: FeatureFlagCache
     private let userID: UserID
     private let apiService: APIService
-    private let sessionID: String
-    private let subscribersTable: NSHashTable<AnyObject> = NSHashTable.weakObjects()
-    var subscribers: [FeatureFlagsSubscribeProtocol] {
-        subscribersTable.allObjects.compactMap { $0 as? FeatureFlagsSubscribeProtocol }
-    }
     private(set) var lastFetchingTime: Date?
     private let appRatingStatusProvider: AppRatingStatusProvider
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
@@ -54,20 +43,14 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         cache: FeatureFlagCache,
         userID: UserID,
         apiService: APIService,
-        sessionID: String,
         appRatingStatusProvider: AppRatingStatusProvider,
         userIntroductionProgressProvider: UserIntroductionProgressProvider
     ) {
         self.cache = cache
         self.userID = userID
         self.apiService = apiService
-        self.sessionID = sessionID
         self.appRatingStatusProvider = appRatingStatusProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
-    }
-
-    func register(newSubscriber: FeatureFlagsSubscribeProtocol) {
-        subscribersTable.add(newSubscriber)
     }
 
     enum FeatureFlagFetchingError: Error {
@@ -96,8 +79,6 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
             self.lastFetchingTime = Date()
 
             let supportedFeatureFlags = SupportedFeatureFlags(response: response)
-
-            self.subscribers.forEach { $0.handleNewFeatureFlags(supportedFeatureFlags) }
 
             let isScheduleSendEnabledAfterUpdate = supportedFeatureFlags[.scheduleSend]
             let wasScheduleSendEnabledBeforeUpdate = self.cache.featureFlags(for: self.userID)[.scheduleSend]

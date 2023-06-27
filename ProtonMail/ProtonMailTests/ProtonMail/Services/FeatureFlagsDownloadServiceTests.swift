@@ -38,7 +38,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
             cache: featureFlagCache,
             userID: userID,
             apiService: apiServiceMock,
-            sessionID: "",
             appRatingStatusProvider: appRatingStatusProvider,
             userIntroductionProgressProvider: userIntroductionProgressProviderMock
         )
@@ -53,17 +52,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         sut = nil
     }
 
-    func testRegisterNewSubscriber() {
-        let mock = MockFeatureFlagsSubscribeProtocol()
-        sut.register(newSubscriber: mock)
-
-        XCTAssertEqual(sut.subscribers.count, 1)
-    }
-
     func testGetFeatureFlag() throws {
-        let subscriberMock = MockFeatureFlagsSubscribeProtocol()
-        sut.register(newSubscriber: subscriberMock)
-
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
             if path.contains("/core/v4/features") {
                 let response = FeatureFlagTestData.data
@@ -77,7 +66,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         let expectation1 = expectation(description: "Closure is called")
         sut.getFeatureFlags { error in
             XCTAssertNil(error)
-            XCTAssertEqual(subscriberMock.handleNewFeatureFlagsStub.callCounter, 1)
 
             expectation1.fulfill()
         }
@@ -87,7 +75,6 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         XCTAssertTrue(featureFlagCache.storeFeatureFlagsStub.wasCalledExactlyOnce)
         let argument2 = try XCTUnwrap(featureFlagCache.storeFeatureFlagsStub.lastArguments)
         XCTAssertTrue(argument2.a1[.scheduleSend])
-        XCTAssertEqual(argument2.a1[.inAppFeedback], 1)
         XCTAssertFalse(argument2.a1[.appRating])
         XCTAssertEqual(argument2.a2, userID)
     }
