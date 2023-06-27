@@ -787,7 +787,8 @@ extension CSSMagic {
     }
 
     static func getCSSAnchor(of node: Element) -> String {
-        if !node.id().isEmpty {
+        if !node.id().isEmpty && node.id() != "body" {
+            // DomPurify will remove id attribute if the content is `body`
             return "#\(node.id())"
         }
         var anchor = node.tagNameNormal()
@@ -837,7 +838,8 @@ extension CSSMagic {
             let colorKeys = [
                 CSSKeys.color.rawValue,
                 CSSKeys.border.rawValue,
-                CSSKeys.backgroundColor.rawValue
+                CSSKeys.backgroundColor.rawValue,
+                CSSKeys.background.rawValue
             ]
             let values = value
                 .components(separatedBy: ";")
@@ -870,14 +872,17 @@ extension CSSMagic {
     }
 
     static func isColor(attribute: String) -> Bool {
-        let count = [4, 5, 7, 9]
+        let countWithHash = [4, 5, 7, 9]
+        let countWithoutHash = [3, 4, 6, 8]
         if attribute.hasPrefix("rgb") || attribute.hasPrefix("rgba") {
             return attribute.preg_match("rgba?(.*,.*,.*)")
         } else if attribute.hasPrefix("hsl") || attribute.hasPrefix("hsla") {
             return attribute.preg_match("hsla?(.*,.*,.*)")
         } else if definedColors.keys.contains(attribute) {
             return true
-        } else if attribute.hasPrefix("#") && count.firstIndex(of: attribute.count) != nil {
+        } else if attribute.hasPrefix("#") && countWithHash.firstIndex(of: attribute.count) != nil {
+            return true
+        } else if !attribute.hasPrefix("#") && countWithoutHash.firstIndex(of: attribute.count) != nil {
             return true
         }
         return false

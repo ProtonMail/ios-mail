@@ -290,10 +290,10 @@ extension CSSMagicTest {
         XCTAssertEqual(result, "hsla(51, 100%, 30%, 0.5)")
 
         result = CSSMagic.getDarkModeColor(from: "fff", isForeground: false)
-        XCTAssertNil(result)
+        XCTAssertEqual(result, "hsla(230, 12%, 10%, 1.0)")
 
         result = CSSMagic.getDarkModeColor(from: "fff !important", isForeground: false)
-        XCTAssertNil(result)
+        XCTAssertEqual(result, "hsla(230, 12%, 10%, 1.0)")
 
         result = CSSMagic.getDarkModeColor(from: "#fff", isForeground: false)
         XCTAssertNotNil(result)
