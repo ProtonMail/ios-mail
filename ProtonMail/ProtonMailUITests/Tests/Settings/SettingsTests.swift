@@ -68,6 +68,7 @@ class SettingsTests : FixtureAuthenticatedTestCase {
             .activateAppWithPin()
             .inputCorrectPin()
             .verify.inboxShown()
+        
             .menuDrawer()
             .accountsList()
             .switchToAccount(user!)
