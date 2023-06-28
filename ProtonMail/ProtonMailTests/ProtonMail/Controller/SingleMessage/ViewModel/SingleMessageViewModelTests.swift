@@ -251,21 +251,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         messageObject.unRead = false
         let message = message ?? MessageEntity(messageObject)
 
-        let timeStamp = Date.now.timeIntervalSince1970
-        let systemTime = SystemUpTimeMock(localServerTime: timeStamp, localSystemUpTime: 100, systemUpTime: 100)
-
-        let components = SingleMessageComponentsFactory()
-
-        let childViewModels = SingleMessageChildViewModels(
-            messageBody: components.messageBody(
-                spamType: .none,
-                user: fakeUser,
-                imageProxy: .init(dependencies: .init(apiService: apiMock))
-            ),
-            bannerViewModel: components.banner(labelId: labelID, message: message, user: fakeUser),
-            attachments: .init()
-        )
-
         coordinatorMock = SingleMessageCoordinator(serviceFactory: sharedServices,
                                                    navigationController: UINavigationController(),
                                                    labelId: labelID,
@@ -273,23 +258,25 @@ final class SingleMessageViewModelTests: XCTestCase {
                                                    user: fakeUser,
                                                    infoBubbleViewStatusProvider: toolbarCustomizationInfoBubbleViewStatusProvider)
 
+        let context = SingleMessageContentViewContext(labelId: labelID, message: message, viewMode: .singleMessage)
+
         sut = .init(
             labelId: labelID,
             message: message,
             user: fakeUser,
-            imageProxy: .init(dependencies: .init(apiService: apiMock)),
-            childViewModels: childViewModels,
-            internetStatusProvider: InternetConnectionStatusProvider(),
             userIntroductionProgressProvider: userIntroductionProgressProviderMock,
             saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
             toolbarActionProvider: toolbarProviderMock,
             toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProvider,
-            systemUpTime: systemTime,
             coordinator: coordinatorMock,
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            dependencies: components.contentViewModelDependencies(user: fakeUser),
+            contentViewModel: SingleMessageContentViewModelFactory().createViewModel(
+                context: context,
+                user: fakeUser,
+                highlightedKeywords: [],
+                goToDraft: { _, _ in }
+            ),
             highlightedKeywords: [],
-            goToDraft: { _, _ in },
             notificationCenter: notificationCenterMock
         )
     }
