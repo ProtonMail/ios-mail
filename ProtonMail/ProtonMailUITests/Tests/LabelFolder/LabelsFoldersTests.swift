@@ -9,56 +9,52 @@
 import ProtonCore_TestingToolkit
 
 class LabelsFoldersTests: FixtureAuthenticatedTestCase {
-    
     private let accountSettingsRobot: AccountSettingsRobot = AccountSettingsRobot()
     private let loginRobot = LoginRobot()
-    
-    
+
     func testCreateAndDeleteFolder() {
         let folderName = "test"
-        let folderNameAfterSave = "tes" // bug: cannot save the last charactor in the first time
 
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .clickMessageBySubject(scenario.subject)
                 .createFolder(folderName)
-                .selectFolder(folderNameAfterSave)
+                .selectFolder(folderName)
                 .tapDone()
             InboxRobot()
                 .menuDrawer()
-                .folderOrLabel(folderNameAfterSave)
+                .folderOrLabel(folderName)
                 .verify.messageExists(scenario.subject)
             MailboxRobotInterface()
                 .menuDrawer()
                 .settings()
                 .selectAccount(user!.email)
                 .folders()
-                .deleteFolderLabel(folderNameAfterSave)
-                .verify.folderLabelDeleted(folderNameAfterSave)
+                .deleteFolderLabel(folderName)
+                .verify.folderLabelDeleted(folderName)
         }
     }
     
     func testCreateAndDeleteLabel() {
         let labelName = "test"
-        let labelNameAfterSave = "tes" // bug: cannot save the last charactor in the first time
-        
+
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .clickMessageBySubject(scenario.subject)
                 .createLabel(labelName)
-                .selectLabel(labelNameAfterSave)
+                .selectLabel(labelName)
                 .tapDone()
                 .navigateBackToInbox()
                 .menuDrawer()
-                .folderOrLabel(labelNameAfterSave)
+                .folderOrLabel(labelName)
                 .verify.messageExists(scenario.subject)
             MailboxRobotInterface()
                 .menuDrawer()
                 .settings()
                 .selectAccount(user!.email)
                 .labels()
-                .deleteFolderLabel(labelNameAfterSave)
-                .verify.folderLabelDeleted(labelNameAfterSave)
+                .deleteFolderLabel(labelName)
+                .verify.folderLabelDeleted(labelName)
         }
     }
     

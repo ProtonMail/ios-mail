@@ -32,7 +32,9 @@ ENTERPRISE_SHARE_PATH = "Share.mobileprovision"
 
 UNIT_TEST_SCHEME = "ProtonMailTests"
 UNIT_TEST_DEVICE = "iPhone 8"
-UI_TEST_DEVICE = "iPhone 14"
+# do not use 16.4 because of  https://github.com/NativeScript/NativeScript/issues/10267 that's apparently causing the tests to fail
+# 17.0 might be OK though, check it once it's available
+UI_TEST_DEVICE = "iPhone 14 (16.2)"
 UI_TEST_SCHEME = "ProtonMailUITests"
 
 def select_xcode
