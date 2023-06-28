@@ -379,6 +379,13 @@ final class MessageInfoProviderTest: XCTestCase {
 
         XCTAssertTrue(apiMock.downloadStub.wasCalledExactlyOnce)
     }
+
+    func testSetMessage_updateAttachmentDelegateIsTriggered() {
+        let msg = MessageEntity.createSenderImageEligibleMessage()
+        sut.update(message: msg)
+
+        wait(self.delegateObject.attachmentsUpdate.wasCalledExactlyOnce == true)
+    }
 }
 
 extension MessageInfoProviderTest {

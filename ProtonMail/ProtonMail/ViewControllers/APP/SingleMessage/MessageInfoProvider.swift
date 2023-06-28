@@ -58,6 +58,7 @@ final class MessageInfoProvider {
                 prepareDisplayBody()
                 checkSenderPGP()
             }
+            delegate?.updateAttachments()
         }
     }
 
