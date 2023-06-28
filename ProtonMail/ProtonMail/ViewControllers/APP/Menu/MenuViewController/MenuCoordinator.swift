@@ -31,7 +31,15 @@ protocol MenuCoordinatorDelegate: AnyObject {
     func lockTheScreen()
 }
 
-final class MenuCoordinator: CoordinatorDismissalObserver {
+// sourcery: mock
+protocol MenuCoordinatorProtocol: AnyObject {
+    func go(to labelInfo: MenuLabel, deepLink: DeepLink?)
+    func closeMenu()
+    func lockTheScreen()
+    func update(menuWidth: CGFloat)
+}
+
+final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtocol {
     enum Setup: String {
         case switchUser = "USER"
         case switchUserFromNotification = "UserFromNotification"
@@ -202,6 +210,10 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
 
     func lockTheScreen() {
         delegate?.lockTheScreen()
+    }
+
+    func closeMenu() {
+        sideMenu.hideMenu()
     }
 
     private func checkIsCurrentViewInInboxView() -> Bool {
