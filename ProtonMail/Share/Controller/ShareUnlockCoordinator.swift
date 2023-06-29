@@ -51,7 +51,10 @@ class ShareUnlockCoordinator {
         // UI refe
         guard let navigationController = self.navigationController else { return }
         let pinView = SharePinUnlockCoordinator(navigation: navigationController,
-                                                vm: ShareUnlockPinCodeModelImpl(unlock: self.services.get()),
+                                                vm: ShareUnlockPinCodeModelImpl(
+                                                    unlock: services.get(),
+                                                    pinFailedCountCache: services.userCachedStatus
+                                                ),
                                                 delegate: self)
         self.nextCoordinator = pinView
         pinView.start()
@@ -78,6 +81,7 @@ class ShareUnlockCoordinator {
             coreKeyMaker: coreKeyMaker,
             darkModeCache: services.userCachedStatus,
             mobileSignatureCache: services.userCachedStatus,
+            attachmentMetadataStrippingCache: services.userCachedStatus,
             navigationViewController: navigationController
         )
         navigationController.setViewControllers([composer], animated: true)

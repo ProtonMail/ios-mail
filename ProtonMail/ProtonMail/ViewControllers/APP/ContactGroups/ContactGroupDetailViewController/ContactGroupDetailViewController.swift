@@ -114,6 +114,7 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
             coreKeyMaker: sharedServices.get(),
             darkModeCache: sharedServices.userCachedStatus,
             mobileSignatureCache: sharedServices.userCachedStatus,
+            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
             toContact: contactGroupVO
         )
 

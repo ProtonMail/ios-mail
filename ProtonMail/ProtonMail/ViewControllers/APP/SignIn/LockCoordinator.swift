@@ -75,7 +75,7 @@ final class LockCoordinator: LifetimeTrackable {
     private func goToPin() {
         if actualViewController.presentedViewController is PinCodeViewController { return }
         let pinVC = PinCodeViewController(unlockManager: UnlockManager.shared,
-                                          viewModel: UnlockPinCodeModelImpl(),
+                                          viewModel: UnlockPinCodeModelImpl(pinFailedCountCache: dependencies.pinFailedCountCache),
                                           delegate: self)
         pinVC.modalPresentationStyle = .fullScreen
         actualViewController.present(pinVC, animated: true, completion: nil)
@@ -126,5 +126,6 @@ extension LockCoordinator {
     struct Dependencies {
         let unlockManager: UnlockManager
         let usersManager: UsersManager
+        let pinFailedCountCache: PinFailedCountCache
     }
 }

@@ -124,7 +124,8 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
                 contextProvider: mockCoreDataService,
                 copyMessage: copyMessage
             ), fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: MockKeyMakerProtocol(), cache: MockMobileSignatureCacheProtocol())),
-            darkModeCache: MockDarkModeCacheProtocol()
+            darkModeCache: MockDarkModeCacheProtocol(),
+            attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock()
         )
 
         return ComposeViewModel(

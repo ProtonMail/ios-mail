@@ -501,6 +501,7 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
             coreKeyMaker: sharedServices.get(),
             darkModeCache: sharedServices.userCachedStatus,
             mobileSignatureCache: sharedServices.userCachedStatus,
+            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
             toContact: contactGroupVO
         )
 
