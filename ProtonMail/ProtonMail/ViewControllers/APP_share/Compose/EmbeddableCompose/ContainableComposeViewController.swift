@@ -72,16 +72,16 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
             if self.step.contains(.storageExceeded) { return }
             self.latestError = notification.userInfo?["text"] as? String
             if self.latestError == LocalString._storage_exceeded {
-                self.step.insert(.storageExceeded)
+                insert(newStep: .storageExceeded)
             } else {
-                self.step.insert(.sendingFinishedWithError)
+                insert(newStep: .sendingFinishedWithError)
             }
         #endif
     }
 
     @objc private func noErrorNotification() {
         #if APP_EXTENSION
-            self.step.insert(.sendingFinishedSuccessfully)
+        insert(newStep: .sendingFinishedSuccessfully)
         #endif
     }
 
@@ -150,6 +150,7 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
 
 // TODO: when refactoring ComposeViewController, place this stuff in a higher level ViewModel and Controller - ComposeContainer
 #if APP_EXTENSION
+    private let stepUpdateQueue = DispatchQueue(label: "me.proton.mail.step.update")
     private var latestError: String?
     private struct SendingStep: OptionSet {
         let rawValue: Int
@@ -164,61 +165,11 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
         static var storageExceeded = SendingStep(rawValue: 1 << 7)
     }
 
-    private var step: SendingStep = .composing {
-        didSet {
-            if step.contains(.storageExceeded) {
-                let title = LocalString._storage_exceeded
-                let message = LocalString._please_upgrade_plan
-                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-                alert.addAction(.init(title: LocalString._general_ok_action, style: .default, handler: { [weak self] _ in self?.dismissAnimation() }))
-                self.stepAlert = alert
-                return
-            }
-            guard !step.contains(.composing) else {
-                return
-            }
-            if step.contains(.resultAcknowledged) && step.contains(.queueIsEmpty) {
-                self.dismissAnimation()
-                return
-            }
-            if step.contains(.queueIsEmpty) {
-                return
-            }
-            if step.contains(.sendingFinishedSuccessfully) {
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { [weak self] in
-                    self?.step.insert(.resultAcknowledged)
-                }
-
-                let alert = UIAlertController(title: "✅", message: LocalString._message_sent_ok_desc, preferredStyle: .alert)
-                self.stepAlert = alert
-                return
-            }
-            if step.contains(.sendingFinishedWithError) {
-                let alert = UIAlertController(title: "⚠️", message: self.latestError, preferredStyle: .alert)
-                alert.addAction(.init(title: "Ok", style: .default, handler: { [weak self] _ in self?.step = .composing }))
-                self.stepAlert = alert
-                return
-            }
-            if step.contains(.composingCanceled) {
-                let alert = UIAlertController(title: LocalString._closing_draft,
-                                                   message: LocalString._please_wait_in_foreground,
-                                                   preferredStyle: .alert)
-                self.stepAlert = alert
-                return
-            }
-            if step.contains(.sendingStarted) {
-                let alert = UIAlertController(title: LocalString._sending_message,
-                                               message: LocalString._please_wait_in_foreground,
-                                               preferredStyle: .alert)
-
-                self.stepAlert = alert
-                return
-            }
-        }
-    }
+    private var step: SendingStep = .composing
     private var stepAlert: UIAlertController? {
         didSet {
             DispatchQueue.main.async {
+                guard self.presentedViewController != self.stepAlert else { return }
                 self.presentedViewController?.dismiss(animated: false)
                 if let alert = self.stepAlert {
                     self.present(alert, animated: false, completion: nil)
@@ -227,13 +178,95 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
         }
     }
 
+    private func contain(step: SendingStep) -> Bool {
+        return stepUpdateQueue.sync {
+            return self.step.contains(step)
+        }
+    }
+
+    private func insert(newStep: SendingStep) {
+        stepUpdateQueue.sync {
+            guard !step.contains(newStep) else { return }
+            self.step.insert(newStep)
+
+            if newStep.contains(.storageExceeded) {
+                let title = LocalString._storage_exceeded
+                let message = LocalString._please_upgrade_plan
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(
+                    .init(
+                        title: LocalString._general_ok_action,
+                        style: .default,
+                        handler: {
+                            [weak self] _ in
+                            self?.dismissAnimation()
+                        }
+                    )
+                )
+                self.stepAlert = alert
+                return
+            }
+            if self.step.contains(.resultAcknowledged) && self.step.contains(.queueIsEmpty) {
+                self.dismissAnimation()
+                return
+            }
+            if newStep.contains(.sendingFinishedSuccessfully) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { [weak self] in
+                    self?.insert(newStep: .resultAcknowledged)
+                }
+                let alert = UIAlertController(
+                    title: "✅",
+                    message: LocalString._message_sent_ok_desc,
+                    preferredStyle: .alert
+                )
+                self.stepAlert = alert
+                return
+            }
+            if newStep.contains(.sendingFinishedWithError) {
+                let alert = UIAlertController(
+                    title: "⚠️",
+                    message: self.latestError,
+                    preferredStyle: .alert
+                )
+                alert.addAction(
+                    .init(
+                        title: "Ok",
+                        style: .default,
+                        handler: {
+                            [weak self] _ in
+                            self?.step = .composing
+                        }
+                    )
+                )
+                self.stepAlert = alert
+                return
+            }
+        }
+    }
+
     override func cancel() {
-        self.step = [.composingCanceled, .resultAcknowledged]
+        stepUpdateQueue.sync {
+            self.step = [.composingCanceled, .resultAcknowledged]
+            let alert = UIAlertController(
+                title: LocalString._closing_draft,
+                message: LocalString._please_wait_in_foreground,
+                preferredStyle: .alert
+            )
+            self.stepAlert = alert
+        }
     }
 
     override func startSendingMessage() {
+        stepUpdateQueue.sync {
+            self.step = .sendingStarted
+            let alert = UIAlertController(
+                title: LocalString._sending_message,
+                message: LocalString._please_wait_in_foreground,
+                preferredStyle: .alert
+            )
+            self.stepAlert = alert
+        }
         super.startSendingMessage()
-        self.step = .sendingStarted
     }
 
     override func dismiss() {
@@ -245,8 +278,8 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
     }
 
     @objc private func updateStepWhenTheQueueIsEmpty() {
-        guard !step.contains(.queueIsEmpty) else { return }
-        self.step.insert(.queueIsEmpty)
+        guard !contain(step: .queueIsEmpty) else { return }
+        insert(newStep: .queueIsEmpty)
     }
 
     private func dismissAnimation() {
