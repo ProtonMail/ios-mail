@@ -29,7 +29,7 @@ extension ProcessInfo {
     static var launchArguments: [String] {
         processInfo.arguments
     }
-    
+
     static func hasFlag(flag: String) -> Bool {
         launchArguments.contains(flag)
     }
