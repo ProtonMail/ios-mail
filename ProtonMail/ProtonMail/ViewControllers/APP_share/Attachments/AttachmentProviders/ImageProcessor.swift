@@ -129,7 +129,9 @@ extension ImageProcessor where Self: AttachmentProvider {
                 var imageDataToSave = imageData
                 if fileName.preg_match(".(heif|heic)") || dataUTI.preg_match(".(heif|heic)") {
                     if let image = UIImage(data: imageData) {
-                        if let jpegImageData = image.jpegData(compressionQuality: 1.0), jpegImageData.count > 0 {
+                        // 80% JPEG quality gives a greater file size reduction with almost no loss in quality.
+                        // https://sirv.com/help/articles/jpeg-quality-comparison/
+                        if let jpegImageData = image.jpegData(compressionQuality: 0.8), jpegImageData.count > 0 {
                             imageDataToSave = jpegImageData
                             fileName = fileName.preg_replace(".(heif|heic)", replaceto: ".jpeg")
                         }
