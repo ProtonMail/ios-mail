@@ -651,6 +651,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     @IBAction func unreadMessageFilterButtonTapped(_ sender: Any) {
+        if viewModel.listEditing {
+            hideSelectionMode()
+        }
         self.unreadFilterButton.isSelected.toggle()
         let isSelected = self.unreadFilterButton.isSelected
         if isSelected {
@@ -805,7 +808,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             isDarkMode: isDarkMode,
             scale: currentScreenScale
         ) { [weak self, weak cell] image in
-            if let image = image, let cell = cell, cell.mailboxItem == item {
+            if let image = image, let cell = cell, cell.mailboxItem == item, self?.viewModel.listEditing == false {
                 self?.messageCellPresenter.presentSenderImage(image, in: cell.customView)
             }
         }

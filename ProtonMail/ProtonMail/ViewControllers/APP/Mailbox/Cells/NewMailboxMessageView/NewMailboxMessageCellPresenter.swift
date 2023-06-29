@@ -80,9 +80,6 @@ class NewMailboxMessageCellPresenter {
     }
 
     func presentSenderImage(_ image: UIImage, in view: NewMailboxMessageCellContentView) {
-        guard view.checkBoxView.isHidden else {
-            return
-        }
         view.senderImageView.image = image
         view.senderImageView.isHidden = false
         view.initialsLabel.isHidden = true

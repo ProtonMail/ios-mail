@@ -361,6 +361,24 @@ final class MailboxViewControllerTests: XCTestCase {
         XCTAssertFalse(sut.unreadFilterButton.isHidden)
         XCTAssertEqual(sut.unreadFilterButton.titleLabel?.text, " +9999 \(LocalString._unread_action) ")
     }
+
+    func testUnreadButton_whenClickTheUnreadButton_selectionModeWillBeCancelled() throws {
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        makeSUT(labelID: .init("0"), labelType: .folder, isCustom: false, labelName: nil)
+        sut.loadViewIfNeeded()
+
+        // Enter selection mode
+        let cell = try XCTUnwrap(sut.tableView.visibleCells.first as? NewMailboxMessageCell)
+        sut.didSelectButtonStatusChange(cell: cell)
+        XCTAssertTrue(viewModel.listEditing)
+        XCTAssertFalse(viewModel.selectedIDs.isEmpty)
+
+        // Click unread button
+        sut.unreadFilterButton.sendActions(for: .touchUpInside)
+
+        XCTAssertFalse(viewModel.listEditing)
+        XCTAssertEqual(viewModel.selectedIDs, [])
+    }
 }
 
 extension MailboxViewControllerTests {
