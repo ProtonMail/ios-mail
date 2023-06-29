@@ -1354,7 +1354,8 @@ extension MailboxViewModelTests {
                     ),
                     mailSettings: userManagerMock.mailSettings
                 )
-            )
+            ),
+            encryptedSearchService: MockEncryptedSearchServiceProtocol()
         )
         let label = LabelInfo(name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),

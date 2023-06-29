@@ -74,7 +74,7 @@ class MessageDecrypter {
             let processedBody = postProcessNonMIME(decryptedBody: decryptedBody, isPlainText: message.isPlainText)
             return ((processedBody, nil), signatureVerificationResult)
         } catch {
-            PMAssertionFailure(error)
+            SystemLogger.log(message: error.localizedDescription)
 
             if keyRingWasCached {
                 keyFactory.removeKeyRingFromCache(addressID: message.addressID)

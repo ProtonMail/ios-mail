@@ -186,16 +186,8 @@ final class SearchIndexDB {
         }
     }
 
-    // TODO isEncryptedSearchOn and currentState shouldn't be part of this class, better to move to buildSearchIndex
     /// - Returns: `Bool`, `true` found target entry and delete it, `false` otherwise
-    func removeEntryFromSearchIndex(
-        isEncryptedSearchOn: Bool,
-        currentState: EncryptedSearchIndexState,
-        messageID: MessageID
-    ) throws -> Bool {
-        if isEncryptedSearchOn == false || currentState == .disabled {
-            throw IndexError.encryptedSearchDisabled
-        }
+    func removeEntryFromSearchIndex(messageID: MessageID) throws -> Bool {
         let filter = messagesTable.filter(databaseSchema.messageID == messageID.rawValue)
         do {
             let connection = try connectionToDB()
@@ -228,9 +220,9 @@ final class SearchIndexDB {
          firstMessageTime(order: databaseSchema.time.desc)
      }
 
-     func oldestMessageTime() -> Int? {
-         firstMessageTime(order: databaseSchema.time.asc)
-     }
+    func oldestMessageTime() -> Int? {
+        firstMessageTime(order: databaseSchema.time.asc)
+    }
 
     private func firstMessageTime(order: Expressible) -> Int? {
          var timeStamp: Int?

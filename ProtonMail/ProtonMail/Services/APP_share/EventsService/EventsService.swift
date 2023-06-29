@@ -161,6 +161,7 @@ extension EventsService {
 
                 if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
                     let getLatestEventID = EventLatestIDRequest()
+                    self.dependencies.encryptedSearchServiceWrapper.rebuildSearchIndex(for: self.userManager.userID)
                     self.userManager.apiService.perform(request: getLatestEventID, response: EventLatestIDResponse()) { _, eventIDResponse in
                         if let err = eventIDResponse.error {
                             completion?(.failure(err.toNSError))
@@ -302,11 +303,15 @@ extension EventsService {
         var error: NSError?
         dependencies.coreDataProvider.performAndWaitOnRootSavingContext { context in
                 var messagesNoCache : [MessageID] = []
+                var removedMessages: [MessageID] = []
+                var hasNewComingMessage = false
+                var updatedMessages: [MessageEntity] = []
                 for message in messages {
                     let msg = MessageEvent(event: message)
                     switch msg.Action {
                     case .some(IncrementalUpdateType.delete):
                         if let messageID = msg.ID {
+                            removedMessages.append(MessageID(messageID))
                             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                                 let labelObjs = message.mutableSetValue(forKey: "labels")
                                 labelObjs.removeAllObjects()
@@ -318,6 +323,7 @@ extension EventsService {
                         }
                     case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update_draft), .some(IncrementalUpdateType.update_flags):
                         if IncrementalUpdateType.insert == msg.Action {
+                            hasNewComingMessage = true
                             if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
                                 if !cachedMessage.contains(label: .sent) {
                                     continue
@@ -338,6 +344,7 @@ extension EventsService {
                             self.applyLabelDeletion(msgEvent: msg, context: context, message: existing)
                             self.applyLabelAddition(msgEvent: msg, context: context, message: existing)
                             error = context.saveUpstreamIfNeeded()
+                            updatedMessages.append(MessageEntity(existing))
                             continue
                         }
 
@@ -354,7 +361,7 @@ extension EventsService {
 
                                 if (msg.message?["LabelIDs"] as? NSArray) != nil {
                                     messageObject.checkLabels()
-                                    // TODO : add later need to know whne it is happending
+                                    // TODO : add later need to know when it is happening
                                 }
 
                                 if messageObject.messageStatus == 0 {
@@ -383,6 +390,7 @@ extension EventsService {
                                             msgCount?.unread += 1
                                             msgCount?.total += 1
                                         }
+
                                 }
                             } else {
                                 // when GRTJSONSerialization insert returns nothing
@@ -405,6 +413,12 @@ extension EventsService {
                     error = context.saveUpstreamIfNeeded()
                 }
 
+                let userID = self.userManager.userID
+                self.dependencies.encryptedSearchServiceWrapper.remove(messageIDs: removedMessages, for: userID)
+                self.dependencies.encryptedSearchServiceWrapper.update(drafts: updatedMessages, for: userID)
+                if hasNewComingMessage {
+                    self.dependencies.encryptedSearchServiceWrapper.fetchNewerMessage(for: userID)
+                }
                 self.dependencies
                     .fetchMessageMetaData
                     .execute(params: .init(messageIDs: messagesNoCache)) { _ in }

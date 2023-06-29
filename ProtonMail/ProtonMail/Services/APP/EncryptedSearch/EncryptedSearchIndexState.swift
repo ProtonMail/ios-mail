@@ -27,7 +27,7 @@ enum EncryptedSearchIndexState: Equatable {
         .partial,
         .creatingIndex,
         .paused(nil),
-        .downloadingNewMessage,
+        .downloadingNewMessage(isInitialIndexComplete: false),
         .complete,
         .undetermined,
         .background,
@@ -37,14 +37,13 @@ enum EncryptedSearchIndexState: Equatable {
     /// Content search has not yet been enabled, or is actively disabled by the user
     case disabled
     /// Indexing has been stopped because the size of the search index has hit the storage limit
-    // TODO remove this state, introduce new interrupt reason instead 
     case partial
     /// Downloading messages older than local db 
     case creatingIndex
     /// The index building is paused, either actively by the user or due to an interrupt
     case paused(BuildSearchIndex.InterruptReason?)
     /// Downloading all messages newer than local db
-    case downloadingNewMessage
+    case downloadingNewMessage(isInitialIndexComplete: Bool)
     /// The search index is completely built and there are no newer messages on the server
     case complete
     /// There has been an error and the current state cannot be determined

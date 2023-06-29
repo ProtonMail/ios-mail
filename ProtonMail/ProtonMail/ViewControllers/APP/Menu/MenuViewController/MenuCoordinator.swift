@@ -429,7 +429,8 @@ extension MenuCoordinator {
                     ),
                     mailSettings: user.mailSettings
                 )
-            )
+            ),
+            encryptedSearchService: EncryptedSearchService.shared
         )
         return mailboxVMDependencies
     }

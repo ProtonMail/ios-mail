@@ -411,7 +411,7 @@ extension MailboxViewControllerTests {
                     ),
                     mailSettings: userManagerMock.mailSettings
                 )
-            )
+            ), encryptedSearchService: MockEncryptedSearchServiceProtocol()
         )
         let label = LabelInfo(name: labelName ?? "")
         viewModel = MailboxViewModel(

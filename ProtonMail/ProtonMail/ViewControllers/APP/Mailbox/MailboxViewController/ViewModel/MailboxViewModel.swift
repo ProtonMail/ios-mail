@@ -784,6 +784,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
                     }
             }
     }
+
+    func initializeEncryptedSearchIfNeeded() {
+        DispatchQueue.global().async {
+            self.dependencies.encryptedSearchService.initializeServiceStateIfNeeded()
+        }
+    }
 }
 
 // MARK: - Data fetching methods
@@ -1130,6 +1136,7 @@ extension MailboxViewModel {
         let updateMailbox: UpdateMailboxUseCase
         let fetchMessageDetail: FetchMessageDetailUseCase
         let fetchSenderImage: FetchSenderImageUseCase
+        let encryptedSearchService: EncryptedSearchServiceProtocol
     }
 }
 
