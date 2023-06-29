@@ -80,7 +80,8 @@ final class UnreadCounterPublisher {
             contextProvider: contextProvider
         )
         cancellable = conversationCounterPublisher?.contentDidChange
-            .sink(receiveValue: { results in
+            .sink(receiveValue: { [weak self] results in
+                guard let self = self else { return }
                 self.unreadCount = Int(results.first?.unread ?? 0)
                 onContentChanged(self.unreadCount)
             })
@@ -114,7 +115,8 @@ final class UnreadCounterPublisher {
             contextProvider: contextProvider
         )
         cancellable = messageCounterPublisher?.contentDidChange
-            .sink(receiveValue: { results in
+            .sink(receiveValue: { [weak self] results in
+                guard let self = self else { return }
                 self.unreadCount = Int(results.first?.unread ?? 0)
                 onContentChanged(self.unreadCount)
             })
