@@ -34,7 +34,7 @@ public final class TrustKitWrapper {
         
         let instance = TrustKit(configuration: config)
         
-        instance.pinningValidatorCallback = { validatorResult, hostName, policy in
+        instance.pinningValidatorCallback = { [weak delegate] validatorResult, hostName, policy in
             if validatorResult.evaluationResult != .success,
                 validatorResult.finalTrustDecision != .shouldAllowConnection {
                 guard validatorResult.evaluationResult != .success,
@@ -42,10 +42,10 @@ public final class TrustKitWrapper {
 
                 if hostName.contains(check: ".compute.amazonaws.com") || isIp(hostName) {
                     // hard fail
-                    delegate.onTrustKitValidationError(.hardfailed)
+                    delegate?.onTrustKitValidationError(.hardfailed)
                 } else {
                     // need to show a alert let user to ignore the alert or not.
-                    delegate.onTrustKitValidationError(.failed)
+                    delegate?.onTrustKitValidationError(.failed)
                 }
             }
         }
