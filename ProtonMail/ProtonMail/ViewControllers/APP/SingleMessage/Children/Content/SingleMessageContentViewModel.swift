@@ -43,7 +43,7 @@ class SingleMessageContentViewModel {
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
     var messageHadChanged: (() -> Void)?
     var updateErrorBanner: ((NSError?) -> Void)?
-    let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)
+    let goToDraft: ((MessageID, Date?) -> Void)
     var showProgressHub: (() -> Void)?
     var hideProgressHub: (() -> Void)?
 
@@ -107,7 +107,7 @@ class SingleMessageContentViewModel {
          user: UserManager,
          dependencies: Dependencies,
          highlightedKeywords: [String],
-         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) {
+         goToDraft: @escaping (MessageID, Date?) -> Void) {
         self.context = context
         self.user = user
         self.message = context.message
@@ -137,7 +137,7 @@ class SingleMessageContentViewModel {
                                                          completion: { [weak self] _ in
                         DispatchQueue.main.async {
                             self?.hideProgressHub?()
-                            self?.goToDraft(msgID, .init(originalScheduledTime))
+                            self?.goToDraft(msgID, originalScheduledTime)
                         }
                     })
                 }

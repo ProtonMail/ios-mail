@@ -55,7 +55,7 @@ final class MessageInfoProviderTest: XCTestCase {
 
         featureFlagCache = .init()
 
-        user = try Self.prepareUser(apiMock: apiMock)
+        user = try UserManager.prepareUser(apiMock: apiMock)
         // testing are more thorough with this setting disabled, even though it is enabled by default
         user.userInfo.hideRemoteImages = 1
 
@@ -389,33 +389,7 @@ final class MessageInfoProviderTest: XCTestCase {
 }
 
 extension MessageInfoProviderTest {
-    private static func prepareUser(apiMock: APIServiceMock) throws -> UserManager {
-        let keyPair = try MailCrypto.generateRandomKeyPair()
-        let key = Key(keyID: "1", privateKey: keyPair.privateKey)
-        key.signature = "signature is needed to make this a V2 key"
-        let address = Address(
-            addressID: "",
-            domainID: nil,
-            email: "",
-            send: .active,
-            receive: .active,
-            status: .enabled,
-            type: .externalAddress,
-            order: 1,
-            displayName: "",
-            signature: "a",
-            hasKeys: 1,
-            keys: [key]
-        )
-
-        let user = UserManager(api: apiMock, role: .member)
-        user.userInfo.userAddresses = [address]
-        user.userInfo.userKeys = [key]
-        user.authCredential.mailboxpassword = keyPair.passphrase
-        return user
-    }
-
-    private static func prepareEncryptedMessage(
+    static func prepareEncryptedMessage(
         plaintextBody: String,
         mimeType: Message.MimeType,
         user: UserManager

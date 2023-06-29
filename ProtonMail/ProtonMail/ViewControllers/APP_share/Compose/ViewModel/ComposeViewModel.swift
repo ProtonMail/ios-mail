@@ -39,7 +39,7 @@ class ComposeViewModel: NSObject {
     let composerMessageHelper: ComposerMessageHelper
     let messageService: MessageDataService
     let isEditingScheduleMsg: Bool
-    let originalScheduledTime: OriginalScheduleDate?
+    let originalScheduledTime: Date?
     let dependencies: Dependencies
     var urlSchemesToBeHandle: Set<String> {
         let schemes: [HTTPRequestSecureLoader.ProtonScheme] = [.http, .https, .noProtocol]
@@ -84,7 +84,7 @@ class ComposeViewModel: NSObject {
         action: ComposeMessageAction,
         msgService: MessageDataService,
         user: UserManager,
-        originalScheduledTime: OriginalScheduleDate? = nil,
+        originalScheduledTime: Date? = nil,
         dependencies: Dependencies
     ) {
         self.user = user
@@ -133,7 +133,7 @@ class ComposeViewModel: NSObject {
         msgService: MessageDataService,
         user: UserManager,
         isEditingScheduleMsg: Bool = false,
-        originalScheduledTime: OriginalScheduleDate? = nil,
+        originalScheduledTime: Date? = nil,
         dependencies: Dependencies
     ) {
         self.user = user

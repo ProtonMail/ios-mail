@@ -29,7 +29,7 @@ class SingleMessageContentViewModelFactory {
         context: SingleMessageContentViewContext,
         user: UserManager,
         highlightedKeywords: [String],
-        goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
+        goToDraft: @escaping (MessageID, Date?) -> Void
     ) -> SingleMessageContentViewModel {
         let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))
         let childViewModels = SingleMessageChildViewModels(
@@ -64,7 +64,7 @@ class SingleMessageViewModelFactory {
                          user: UserManager,
                          highlightedKeywords: [String],
                          coordinator: SingleMessageCoordinator,
-                         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) -> SingleMessageViewModel {
+                         goToDraft: @escaping (MessageID, Date?) -> Void) -> SingleMessageViewModel {
         let contentContext = SingleMessageContentViewContext(
             labelId: labelId,
             message: message,

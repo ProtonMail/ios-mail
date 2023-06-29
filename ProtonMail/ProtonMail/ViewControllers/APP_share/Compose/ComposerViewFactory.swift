@@ -97,7 +97,8 @@ struct ComposerViewFactory {
         mobileSignatureCache: MobileSignatureCacheProtocol,
         attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
         mailToUrl: URL? = nil,
-        toContact: ContactPickerModelProtocol? = nil
+        toContact: ContactPickerModelProtocol? = nil,
+        originalScheduledTime: Date? = nil
     ) -> UINavigationController {
         let childViewModel = ComposeViewModel(
             msg: msg,
@@ -105,6 +106,7 @@ struct ComposerViewFactory {
             msgService: user.messageService,
             user: user,
             isEditingScheduleMsg: isEditingScheduleMsg,
+            originalScheduledTime: originalScheduledTime,
             dependencies: .init(
                 coreDataContextProvider: contextProvider,
                 coreKeyMaker: coreKeyMaker,

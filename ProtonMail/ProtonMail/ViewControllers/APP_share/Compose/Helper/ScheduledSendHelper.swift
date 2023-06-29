@@ -39,7 +39,7 @@ final class ScheduledSendHelper {
     private weak var viewController: UIViewController?
     private var actionSheet: PMActionSheet?
     private weak var delegate: ScheduledSendHelperDelegate?
-    private let originalScheduledTime: OriginalScheduleDate?
+    private let originalScheduledTime: Date?
 
     var isActionSheetShownOnView: Bool {
         guard let viewController = self.viewController else {
@@ -53,7 +53,7 @@ final class ScheduledSendHelper {
     init(
         viewController: UIViewController,
         delegate: ScheduledSendHelperDelegate,
-        originalScheduledTime: OriginalScheduleDate?
+        originalScheduledTime: Date?
     ) {
         self.viewController = viewController
         self.delegate = delegate
@@ -176,7 +176,7 @@ extension ScheduledSendHelper {
     }
 
     private func setUpAsScheduledAction() -> PMActionSheetItem? {
-        guard let originalTime = originalScheduledTime?.rawValue else {
+        guard let originalTime = originalScheduledTime else {
             return nil
         }
         return PMActionSheetItem(components: [
