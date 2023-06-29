@@ -92,16 +92,8 @@ class TableContainerViewController<ViewModel: TableContainerViewModel>: UIViewCo
         self.tableView.separatorInset = .zero
         self.tableView.tableFooterView = UIView(frame: .zero)
 
-        // events
-        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
-
-        if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self, selector: #selector(restoreOffset), name: UIWindowScene.willEnterForegroundNotification, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(saveOffset), name: UIWindowScene.didEnterBackgroundNotification, object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self, selector: #selector(restoreOffset), name: UIApplication.willEnterForegroundNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(saveOffset), name: UIApplication.didEnterBackgroundNotification, object: nil)
-        }
         generateAccessibilityIdentifiers()
     }
 
@@ -144,11 +136,6 @@ class TableContainerViewController<ViewModel: TableContainerViewModel>: UIViewCo
     // --
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {}
-
-    @objc func scrollToTop() {
-        guard self.presentedViewController == nil, self.navigationController?.topViewController == self else { return }
-        self.tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: true)
-    }
 
     func propagate(scrolling delta: CGPoint, boundsTouchedHandler: () -> Void) {
         UIView.animate(withDuration: 0.001) { // hackish way to show scrolling indicators on tableView
