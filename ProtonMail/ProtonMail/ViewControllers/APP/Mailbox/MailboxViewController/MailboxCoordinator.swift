@@ -283,7 +283,7 @@ extension MailboxCoordinator {
     private func presentSearch() {
         let coreDataService = services.get(by: CoreDataService.self)
         // TODO: get shared ES service.
-        let esService = EncryptedSearchService()
+        let esService = EncryptedSearchService.shared
         let viewModel = SearchViewModel(
             serviceFactory: services,
             user: viewModel.user,

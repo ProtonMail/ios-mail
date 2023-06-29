@@ -387,6 +387,11 @@ class MockEncryptedSearchDeviceCache: EncryptedSearchDeviceCache {
 }
 
 class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
+    @FuncStub(MockEncryptedSearchServiceProtocol.initializeServiceStateIfNeeded) var initializeServiceStateIfNeededStub
+    func initializeServiceStateIfNeeded() {
+        initializeServiceStateIfNeededStub()
+    }
+
     @FuncStub(MockEncryptedSearchServiceProtocol.setBuildSearchIndexDelegate) var setBuildSearchIndexDelegateStub
     func setBuildSearchIndexDelegate(for userID: UserID, delegate: BuildSearchIndexDelegate?) {
         setBuildSearchIndexDelegateStub(userID, delegate)
@@ -425,6 +430,26 @@ class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
     @FuncStub(MockEncryptedSearchServiceProtocol.stopBuildingIndex) var stopBuildingIndexStub
     func stopBuildingIndex(for userID: UserID) {
         stopBuildingIndexStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.rebuildSearchIndex) var rebuildSearchIndexStub
+    func rebuildSearchIndex(for userID: UserID) {
+        rebuildSearchIndexStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.fetchNewerMessageIfNeeded) var fetchNewerMessageIfNeededStub
+    func fetchNewerMessageIfNeeded(for userID: UserID) {
+        fetchNewerMessageIfNeededStub(userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.remove) var removeStub
+    func remove(messageIDs: [MessageID], for userID: UserID) {
+        removeStub(messageIDs, userID)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.update) var updateStub
+    func update(drafts: [MessageEntity], for userID: UserID) {
+        updateStub(drafts, userID)
     }
 
     @FuncStub(MockEncryptedSearchServiceProtocol.didChangeDownloadViaMobileData) var didChangeDownloadViaMobileDataStub
@@ -478,64 +503,24 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
         setCanDownloadViaMobileDataStub(userID, value)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.isAppFreshInstalled, initialReturn: Bool()) var isAppFreshInstalledStub
-    func isAppFreshInstalled(of userID: UserID) -> Bool {
-        isAppFreshInstalledStub(userID)
+    @FuncStub(MockEncryptedSearchUserCache.isExternalRefreshed, initialReturn: Bool()) var isExternalRefreshedStub
+    func isExternalRefreshed(of userID: UserID) -> Bool {
+        isExternalRefreshedStub(userID)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.setIsAppFreshInstalled) var setIsAppFreshInstalledStub
-    func setIsAppFreshInstalled(of userID: UserID, value: Bool) {
-        setIsAppFreshInstalledStub(userID, value)
+    @FuncStub(MockEncryptedSearchUserCache.setIsExternalRefreshed) var setIsExternalRefreshedStub
+    func setIsExternalRefreshed(of userID: UserID, value: Bool) {
+        setIsExternalRefreshedStub(userID, value)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.totalMessages, initialReturn: Int()) var totalMessagesStub
-    func totalMessages(of userID: UserID) -> Int {
-        totalMessagesStub(userID)
+    @FuncStub(MockEncryptedSearchUserCache.shouldSendMetric, initialReturn: Bool()) var shouldSendMetricStub
+    func shouldSendMetric(of userID: UserID) -> Bool {
+        shouldSendMetricStub(userID)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.setTotalMessages) var setTotalMessagesStub
-    func setTotalMessages(of userID: UserID, value: Int) {
-        setTotalMessagesStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.oldestIndexedMessageTime, initialReturn: Int()) var oldestIndexedMessageTimeStub
-    func oldestIndexedMessageTime(of userID: UserID) -> Int {
-        oldestIndexedMessageTimeStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setOldestIndexedMessageTime) var setOldestIndexedMessageTimeStub
-    func setOldestIndexedMessageTime(of userID: UserID, value: Int) {
-        setOldestIndexedMessageTimeStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.lastIndexedMessageID, initialReturn: nil) var lastIndexedMessageIDStub
-    func lastIndexedMessageID(of userID: UserID) -> MessageID? {
-        lastIndexedMessageIDStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setLastIndexedMessageID) var setLastIndexedMessageIDStub
-    func setLastIndexedMessageID(of userID: UserID, value: MessageID) {
-        setLastIndexedMessageIDStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.processedMessagesCount, initialReturn: Int()) var processedMessagesCountStub
-    func processedMessagesCount(of userID: UserID) -> Int {
-        processedMessagesCountStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setProcessedMessagesCount) var setProcessedMessagesCountStub
-    func setProcessedMessagesCount(of userID: UserID, value: Int) {
-        setProcessedMessagesCountStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.previousProcessedMessagesCount, initialReturn: Int()) var previousProcessedMessagesCountStub
-    func previousProcessedMessagesCount(of userID: UserID) -> Int {
-        previousProcessedMessagesCountStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setPreviousProcessedMessagesCount) var setPreviousProcessedMessagesCountStub
-    func setPreviousProcessedMessagesCount(of userID: UserID, value: Int) {
-        setPreviousProcessedMessagesCountStub(userID, value)
+    @FuncStub(MockEncryptedSearchUserCache.setShouldSendMetric) var setShouldSendMetricStub
+    func setShouldSendMetric(of userID: UserID, value: Bool) {
+        setShouldSendMetricStub(userID, value)
     }
 
     @FuncStub(MockEncryptedSearchUserCache.indexingPausedByUser, initialReturn: Bool()) var indexingPausedByUserStub
@@ -568,16 +553,6 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
         setNumberOfInterruptionsStub(userID, value)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.initialIndexingTimeEstimated, initialReturn: Bool()) var initialIndexingTimeEstimatedStub
-    func initialIndexingTimeEstimated(of userID: UserID) -> Bool {
-        initialIndexingTimeEstimatedStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setInitialIndexingTimeEstimated) var setInitialIndexingTimeEstimatedStub
-    func setInitialIndexingTimeEstimated(of userID: UserID, value: Bool) {
-        setInitialIndexingTimeEstimatedStub(userID, value)
-    }
-
     @FuncStub(MockEncryptedSearchUserCache.initialIndexingEstimationTime, initialReturn: Int()) var initialIndexingEstimationTimeStub
     func initialIndexingEstimationTime(of userID: UserID) -> Int {
         initialIndexingEstimationTimeStub(userID)
@@ -588,24 +563,24 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
         setInitialIndexingEstimationTimeStub(userID, value)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.indexStartTime, initialReturn: Double()) var indexStartTimeStub
-    func indexStartTime(of userID: UserID) -> Double {
-        indexStartTimeStub(userID)
+    @FuncStub(MockEncryptedSearchUserCache.indexingTime, initialReturn: Int()) var indexingTimeStub
+    func indexingTime(of userID: UserID) -> Int {
+        indexingTimeStub(userID)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.setIndexStartTime) var setIndexStartTimeStub
-    func setIndexStartTime(of userID: UserID, value: Double) {
-        setIndexStartTimeStub(userID, value)
+    @FuncStub(MockEncryptedSearchUserCache.setIndexingTime) var setIndexingTimeStub
+    func setIndexingTime(of userID: UserID, value: Int) {
+        setIndexingTimeStub(userID, value)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.isExternalRefreshed, initialReturn: Bool()) var isExternalRefreshedStub
-    func isExternalRefreshed(of userID: UserID) -> Bool {
-        isExternalRefreshedStub(userID)
+    @FuncStub(MockEncryptedSearchUserCache.isFirstSearch, initialReturn: Bool()) var isFirstSearchStub
+    func isFirstSearch(of userID: UserID) -> Bool {
+        isFirstSearchStub(userID)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.setIsExternalRefreshed) var setIsExternalRefreshedStub
-    func setIsExternalRefreshed(of userID: UserID, value: Bool) {
-        setIsExternalRefreshedStub(userID, value)
+    @FuncStub(MockEncryptedSearchUserCache.hasSearched) var hasSearchedStub
+    func hasSearched(of userID: UserID) {
+        hasSearchedStub(userID)
     }
 
     @FuncStub(MockEncryptedSearchUserCache.logout) var logoutStub

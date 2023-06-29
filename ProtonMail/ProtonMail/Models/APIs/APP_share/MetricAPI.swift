@@ -42,11 +42,9 @@ final class MetricDarkMode: Request {
         case updateDarkStyles = "update_dark_styles"
     }
 
-    static var defaultPath: String { MetricAPI.path }
-    var path: String { Self.defaultPath }
+    var path: String { MetricAPI.path }
 
-    static var defaultMethod: HTTPMethod { .post }
-    var method: HTTPMethod { Self.defaultMethod }
+    var method: HTTPMethod { .post }
     let applyDarkStyle: Bool
 
     init(applyDarkStyle: Bool) {
@@ -71,5 +69,37 @@ final class MetricDarkMode: Request {
             ]
             return out
         }
+    }
+}
+
+// https://confluence.protontech.ch/display/CRYPTO/Logs+collection
+final class MetricEncryptedSearch: Request {
+    private enum ParameterKeys: String {
+        case log = "Log"
+        case title = "Title"
+        case Data = "Data"
+    }
+
+    enum MetricType: String {
+        case index, search
+    }
+
+    var path: String { MetricAPI.path }
+
+    var method: HTTPMethod { .post }
+    private let metricType: MetricType
+    private let data: [String: Any]
+
+    init(type: MetricType, data: [String: Any]) {
+        self.metricType = type
+        self.data = data
+    }
+
+    var parameters: [String: Any]? {
+        [
+            ParameterKeys.log.rawValue: "encrypted_search",
+            ParameterKeys.title.rawValue: metricType.rawValue,
+            ParameterKeys.Data.rawValue: data
+        ]
     }
 }

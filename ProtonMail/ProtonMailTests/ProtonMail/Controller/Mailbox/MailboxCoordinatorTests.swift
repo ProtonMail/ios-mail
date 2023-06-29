@@ -64,7 +64,8 @@ class MailboxCoordinatorTests: XCTestCase {
                             apiService: dummyAPIService,
                             internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
                     mailSettings: dummyUser.mailSettings)
-            )
+            ),
+            encryptedSearchService: MockEncryptedSearchServiceProtocol()
         )
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,

@@ -93,20 +93,6 @@ final class SearchIndexDBTests: XCTestCase {
         ))
     }
 
-    func testRemoveEntryFromSearchIndex_with_unexpected_precondition() throws {
-        createDB()
-        XCTAssertThrowsError(try sut.removeEntryFromSearchIndex(
-            isEncryptedSearchOn: false,
-            currentState: .creatingIndex,
-            messageID: MessageID("r")
-        ))
-        XCTAssertThrowsError(try sut.removeEntryFromSearchIndex(
-            isEncryptedSearchOn: true,
-            currentState: .disabled,
-            messageID: MessageID("r")
-        ))
-    }
-
     func testRemoveEntryFromSearchIndex() throws {
         createDB()
         let messages = (0...5).map { MessageID("message\($0)") }
@@ -125,18 +111,10 @@ final class SearchIndexDBTests: XCTestCase {
         }
 
         for id in messages.reversed() {
-            let isDeleted = try sut.removeEntryFromSearchIndex(
-                isEncryptedSearchOn: true,
-                currentState: .creatingIndex,
-                messageID: id
-            )
+            let isDeleted = try sut.removeEntryFromSearchIndex(messageID: id)
             XCTAssertTrue(isDeleted)
         }
-        let isDeleted = try sut.removeEntryFromSearchIndex(
-            isEncryptedSearchOn: true,
-            currentState: .creatingIndex,
-            messageID: MessageID("unknown")
-        )
+        let isDeleted = try sut.removeEntryFromSearchIndex(messageID: MessageID("unknown"))
         XCTAssertFalse(isDeleted)
     }
 
@@ -214,11 +192,7 @@ final class SearchIndexDBTests: XCTestCase {
 
         for index in 4...5 {
             let id = messages[index]
-            let isDeleted = try sut.removeEntryFromSearchIndex(
-                isEncryptedSearchOn: true,
-                currentState: .creatingIndex,
-                messageID: id
-            )
+            let isDeleted = try sut.removeEntryFromSearchIndex(messageID: id)
             XCTAssertTrue(isDeleted)
         }
         let rowID = try sut.addNewEntryToSearchIndex(

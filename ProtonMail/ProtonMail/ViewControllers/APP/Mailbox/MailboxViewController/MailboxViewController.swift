@@ -281,6 +281,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                          selector: #selector(preferredContentSizeChanged(_:)),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
+        viewModel.initializeEncryptedSearchIfNeeded()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -881,6 +882,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         forceRefreshAllMessages()
         self.viewModel.user.labelService.fetchV4Labels()
         self.showNoResultLabelIfNeeded()
+        EncryptedSearchService.shared.fetchNewerMessageIfNeeded(for: viewModel.user.userID)
     }
 
     @objc private func goTroubleshoot() {

@@ -27,7 +27,7 @@ final class DownloadPageOperation: AsyncOperation {
     private let labelID: LabelID
     private let pageSize: Int
     private let userID: UserID
-    private(set) var result: Result<[ESMessage], Error>?
+    private(set) var result: Result<[MessageID], Error>?
 
     init(
         apiService: APIService,
@@ -59,6 +59,7 @@ final class DownloadPageOperation: AsyncOperation {
         if isCancelled { return }
 
         apiService.perform(request: request) { [weak self] _, result in
+            defer { self?.finish() }
             guard let self = self, !self.isCancelled else { return }
             switch result {
             case .failure(let error):
@@ -67,38 +68,25 @@ final class DownloadPageOperation: AsyncOperation {
             case .success(let dict):
                 self.result = self.parseDownloadMessagePage(response: dict)
             }
-            self.finish()
         }
     }
 
-    private func parseDownloadMessagePage(response dict: JSONDictionary) -> Result<[ESMessage], Error> {
+    private func parseDownloadMessagePage(response dict: JSONDictionary) -> Result<[MessageID], Error> {
         var timeInfo: String = "No time information"
         if let beginTime {
             timeInfo = "beginTime \(beginTime)"
         } else if let endTime {
             timeInfo = "endTime \(endTime)"
         }
-        guard var messagesArray = dict["Messages"] as? [[String: Any]] else {
+        guard let messagesArray = dict["Messages"] as? [[String: Any]] else {
             log(message: "Parse message list (\(timeInfo)) response failed, due to no Messages in dictionary")
             return .failure(NSError.unableToParseResponse(dict))
         }
-        for index in messagesArray.indices {
-            messagesArray[index]["UserID"] = userID.rawValue
+        let messageIDs = messagesArray.compactMap { data -> MessageID? in
+            guard let id = data["ID"] as? String else { return nil }
+            return MessageID(id)
         }
-
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: messagesArray)
-            let messages = try JSONDecoder().decode([ESMessage].self, from: jsonData)
-            if messages.isEmpty { return .success([]) }
-            for index in messages.indices {
-                messages[index].isDetailsDownloaded = false
-            }
-            let esMessages = messages.sorted(by: { $0.time > $1.time })
-            log(message: "Parse message list (\(timeInfo)) success, messages count \(esMessages.count)")
-            return .success(esMessages)
-        } catch {
-            log(message: "Parse message list (\(timeInfo)) response json failed \(error)")
-            return .failure(error)
-        }
+        log(message: "Parse message list (\(timeInfo)) success, messages count \(messageIDs.count)")
+        return .success(messageIDs)
     }
 }

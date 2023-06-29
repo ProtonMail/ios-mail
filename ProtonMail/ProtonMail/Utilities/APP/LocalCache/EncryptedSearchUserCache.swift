@@ -25,44 +25,34 @@ protocol EncryptedSearchUserCache {
     func canDownloadViaMobileData(of userID: UserID) -> Bool
     func setCanDownloadViaMobileData(of userID: UserID, value: Bool)
 
-    func isAppFreshInstalled(of userID: UserID) -> Bool
-    func setIsAppFreshInstalled(of userID: UserID, value: Bool)
+    // Rebuild search index due to `isRefreshed` in eventAPI response
+    func isExternalRefreshed(of userID: UserID) -> Bool
+    func setIsExternalRefreshed(of userID: UserID, value: Bool)
 
-    func totalMessages(of userID: UserID) -> Int
-    func setTotalMessages(of userID: UserID, value: Int)
-
-    func oldestIndexedMessageTime(of userID: UserID) -> Int
-    func setOldestIndexedMessageTime(of userID: UserID, value: Int)
-
-    func lastIndexedMessageID(of userID: UserID) -> MessageID?
-    func setLastIndexedMessageID(of userID: UserID, value: MessageID)
-
-    func processedMessagesCount(of userID: UserID) -> Int
-    func setProcessedMessagesCount(of userID: UserID, value: Int)
-
-    func previousProcessedMessagesCount(of userID: UserID) -> Int
-    func setPreviousProcessedMessagesCount(of userID: UserID, value: Int)
+    // Only send metric when build index from scratch
+    func shouldSendMetric(of userID: UserID) -> Bool
+    func setShouldSendMetric(of userID: UserID, value: Bool)
 
     func indexingPausedByUser(of userID: UserID) -> Bool
     func setIndexingPausedByUser(of userID: UserID, value: Bool)
 
+    // number of times the user has paused indexing during the process
     func numberOfPauses(of userID: UserID) -> Int
     func setNumberOfPauses(of userID: UserID, value: Int)
 
+    // an estimated number of times indexing was interrupted, not including pauses
     func numberOfInterruptions(of userID: UserID) -> Int
     func setNumberOfInterruptions(of userID: UserID, value: Int)
 
-    func initialIndexingTimeEstimated(of userID: UserID) -> Bool
-    func setInitialIndexingTimeEstimated(of userID: UserID, value: Bool)
-
+    // the number of seconds that indexing was first estimated to take
     func initialIndexingEstimationTime(of userID: UserID) -> Int
     func setInitialIndexingEstimationTime(of userID: UserID, value: Int)
 
-    func indexStartTime(of userID: UserID) -> Double
-    func setIndexStartTime(of userID: UserID, value: Double)
+    func indexingTime(of userID: UserID) -> Int
+    func setIndexingTime(of userID: UserID, value: Int)
 
-    func isExternalRefreshed(of userID: UserID) -> Bool
-    func setIsExternalRefreshed(of userID: UserID, value: Bool)
+    func isFirstSearch(of userID: UserID) -> Bool
+    func hasSearched(of userID: UserID)
 
     func logout(of userID: UserID)
     func cleanGlobal()
@@ -84,19 +74,14 @@ final class EncryptedSearchUserDefaultCache: SharedCacheBase, EncryptedSearchUse
         // MARK: - User specific flags
         static let encryptedSearchFlag = "encrypted_search_flag"
         static let encryptedSearchDownloadViaMobileData = "encrypted_search_download_via_mobile_data_flag"
-        static let encryptedSearchAppFreshInstalledFlag = "encrypted_search_app_fresh_installed_flag"
-        static let encryptedSearchTotalMessages = "encrypted_search_total_messages"
-        static let encryptedSearchOldestIndexedMessageTime = "encrypted_search_oldest_indexed_message_time"
-        static let encryptedSearchLastMessageIDIndexed = "encrypted_search_last_message_id_indexed"
-        static let encryptedSearchProcessedMessages = "encrypted_search_processed_messages"
-        static let encryptedSearchPreviousProcessedMessages = "encrypted_search_previous_processed_messages"
+        static let encryptedSearchIsExternalRefreshed = "encrypted_search_is_external_refreshed"
+        static let encryptedShouldSendMetric = "encrypted_search_should_send_metric"
         static let encryptedSearchIndexingPausedByUser = "encrypted_search_indexing_paused_by_user"
         static let encryptedSearchNumberOfPauses = "encrypted_search_number_of_pauses"
         static let encryptedSearchNumberOfInterruptions = "encrypted_search_number_of_interruptions"
-        static let encryptedSearchIsInitialIndexingTimeEstimate = "encrypted_search_is_initial_indexing_time_estimate"
         static let encryptedSearchInitialIndexingTimeEstimate = "encrypted_search_initial_indexing_time_estimate"
-        static let encryptedSearchIndexingStartTime = "encrypted_search_indexing_start_time"
-        static let encryptedSearchIsExternalRefreshed = "encrypted_search_is_external_refreshed"
+        static let encryptedSearchIndexingTime = "encrypted_search_indexing_time"
+        static let encryptedSearchIsFirstSearch = "encrypted_search_is_first_search"
 
         // MARK: - Global flags
         static let encryptedSearchStorageLimit = "encrypted_search_storage_limit_flag"
@@ -124,65 +109,20 @@ final class EncryptedSearchUserDefaultCache: SharedCacheBase, EncryptedSearchUse
         updateDictionary(key: Key.encryptedSearchDownloadViaMobileData, userID: userID, value: value)
     }
 
-    func isAppFreshInstalled(of userID: UserID) -> Bool {
-        getValueFromDictionary(key: Key.encryptedSearchAppFreshInstalledFlag, userID: userID, defaultValue: false)
+    func isExternalRefreshed(of userID: UserID) -> Bool {
+        getValueFromDictionary(key: Key.encryptedSearchIsExternalRefreshed, userID: userID, defaultValue: false)
     }
 
-    func setIsAppFreshInstalled(of userID: UserID, value: Bool) {
-        updateDictionary(key: Key.encryptedSearchAppFreshInstalledFlag, userID: userID, value: value)
+    func setIsExternalRefreshed(of userID: UserID, value: Bool) {
+        updateDictionary(key: Key.encryptedSearchIsExternalRefreshed, userID: userID, value: value)
     }
 
-    func totalMessages(of userID: UserID) -> Int {
-        getValueFromDictionary(key: Key.encryptedSearchTotalMessages, userID: userID, defaultValue: 0)
+    func shouldSendMetric(of userID: UserID) -> Bool {
+        getValueFromDictionary(key: Key.encryptedShouldSendMetric, userID: userID, defaultValue: false)
     }
 
-    func setTotalMessages(of userID: UserID, value: Int) {
-        updateDictionary(key: Key.encryptedSearchTotalMessages, userID: userID, value: value)
-    }
-
-    func oldestIndexedMessageTime(of userID: UserID) -> Int {
-        getValueFromDictionary(key: Key.encryptedSearchOldestIndexedMessageTime, userID: userID, defaultValue: 0)
-    }
-
-    func setOldestIndexedMessageTime(of userID: UserID, value: Int) {
-        updateDictionary(key: Key.encryptedSearchOldestIndexedMessageTime, userID: userID, value: value)
-    }
-
-    func lastIndexedMessageID(of userID: UserID) -> MessageID? {
-        let value: String = getValueFromDictionary(
-            key: Key.encryptedSearchLastMessageIDIndexed,
-            userID: userID,
-            defaultValue: .empty
-        )
-        if value == .empty {
-            return nil
-        } else {
-            return .init(value)
-        }
-    }
-
-    func setLastIndexedMessageID(of userID: UserID, value: MessageID) {
-        updateDictionary(
-            key: Key.encryptedSearchLastMessageIDIndexed,
-            userID: userID,
-            value: value.rawValue
-        )
-    }
-
-    func processedMessagesCount(of userID: UserID) -> Int {
-        getValueFromDictionary(key: Key.encryptedSearchProcessedMessages, userID: userID, defaultValue: 0)
-    }
-
-    func setProcessedMessagesCount(of userID: UserID, value: Int) {
-        updateDictionary(key: Key.encryptedSearchProcessedMessages, userID: userID, value: value)
-    }
-
-    func previousProcessedMessagesCount(of userID: UserID) -> Int {
-        getValueFromDictionary(key: Key.encryptedSearchPreviousProcessedMessages, userID: userID, defaultValue: 0)
-    }
-
-    func setPreviousProcessedMessagesCount(of userID: UserID, value: Int) {
-        updateDictionary(key: Key.encryptedSearchPreviousProcessedMessages, userID: userID, value: value)
+    func setShouldSendMetric(of userID: UserID, value: Bool) {
+        updateDictionary(key: Key.encryptedShouldSendMetric, userID: userID, value: value)
     }
 
     func indexingPausedByUser(of userID: UserID) -> Bool {
@@ -209,18 +149,6 @@ final class EncryptedSearchUserDefaultCache: SharedCacheBase, EncryptedSearchUse
         updateDictionary(key: Key.encryptedSearchNumberOfInterruptions, userID: userID, value: value)
     }
 
-    func initialIndexingTimeEstimated(of userID: UserID) -> Bool {
-        getValueFromDictionary(
-            key: Key.encryptedSearchIsInitialIndexingTimeEstimate,
-            userID: userID,
-            defaultValue: true
-        )
-    }
-
-    func setInitialIndexingTimeEstimated(of userID: UserID, value: Bool) {
-        updateDictionary(key: Key.encryptedSearchIsInitialIndexingTimeEstimate, userID: userID, value: value)
-    }
-
     func initialIndexingEstimationTime(of userID: UserID) -> Int {
         getValueFromDictionary(key: Key.encryptedSearchInitialIndexingTimeEstimate, userID: userID, defaultValue: 0)
     }
@@ -229,42 +157,32 @@ final class EncryptedSearchUserDefaultCache: SharedCacheBase, EncryptedSearchUse
         updateDictionary(key: Key.encryptedSearchInitialIndexingTimeEstimate, userID: userID, value: value)
     }
 
-    func indexStartTime(of userID: UserID) -> Double {
-        getValueFromDictionary(
-            key: Key.encryptedSearchIndexingStartTime,
-            userID: userID,
-            defaultValue: CFAbsoluteTimeGetCurrent()
-        )
+    func indexingTime(of userID: UserID) -> Int {
+        getValueFromDictionary(key: Key.encryptedSearchIndexingTime, userID: userID, defaultValue: 0)
     }
 
-    func setIndexStartTime(of userID: UserID, value: Double) {
-        updateDictionary(key: Key.encryptedSearchIndexingStartTime, userID: userID, value: value)
+    func setIndexingTime(of userID: UserID, value: Int) {
+        updateDictionary(key: Key.encryptedSearchIndexingTime, userID: userID, value: value)
     }
 
-    func isExternalRefreshed(of userID: UserID) -> Bool {
-        getValueFromDictionary(key: Key.encryptedSearchIsExternalRefreshed, userID: userID, defaultValue: false)
+    func isFirstSearch(of userID: UserID) -> Bool {
+        getValueFromDictionary(key: Key.encryptedSearchIsFirstSearch, userID: userID, defaultValue: true)
     }
 
-    func setIsExternalRefreshed(of userID: UserID, value: Bool) {
-        updateDictionary(key: Key.encryptedSearchIsExternalRefreshed, userID: userID, value: value)
+    func hasSearched(of userID: UserID) {
+        updateDictionary(key: Key.encryptedSearchIsFirstSearch, userID: userID, value: false)
     }
 
     func logout(of userID: UserID) {
         deleteValueFromDictionary(key: Key.encryptedSearchFlag, userID: userID)
         deleteValueFromDictionary(key: Key.encryptedSearchDownloadViaMobileData, userID: userID)
-        deleteValueFromDictionary(key: Key.encryptedSearchAppFreshInstalledFlag, userID: userID)
-        deleteValueFromDictionary(key: Key.encryptedSearchTotalMessages, userID: userID)
-        deleteValueFromDictionary(key: Key.encryptedSearchOldestIndexedMessageTime, userID: userID)
-        deleteValueFromDictionary(key: Key.encryptedSearchLastMessageIDIndexed, userID: userID)
-        deleteValueFromDictionary(key: Key.encryptedSearchProcessedMessages, userID: userID)
-        deleteValueFromDictionary(key: Key.encryptedSearchPreviousProcessedMessages, userID: userID)
+        deleteValueFromDictionary(key: Key.encryptedSearchIsExternalRefreshed, userID: userID)
+        deleteValueFromDictionary(key: Key.encryptedShouldSendMetric, userID: userID)
         deleteValueFromDictionary(key: Key.encryptedSearchIndexingPausedByUser, userID: userID)
         deleteValueFromDictionary(key: Key.encryptedSearchNumberOfPauses, userID: userID)
         deleteValueFromDictionary(key: Key.encryptedSearchNumberOfInterruptions, userID: userID)
-        deleteValueFromDictionary(key: Key.encryptedSearchIsInitialIndexingTimeEstimate, userID: userID)
         deleteValueFromDictionary(key: Key.encryptedSearchInitialIndexingTimeEstimate, userID: userID)
-        deleteValueFromDictionary(key: Key.encryptedSearchIndexingStartTime, userID: userID)
-        deleteValueFromDictionary(key: Key.encryptedSearchIsExternalRefreshed, userID: userID)
+        deleteValueFromDictionary(key: Key.encryptedSearchIndexingTime, userID: userID)
     }
 
     func cleanGlobal() {

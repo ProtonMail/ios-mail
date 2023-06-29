@@ -97,13 +97,13 @@ final class EncryptedSearch: EncryptedSearchUseCase {
             case .failure(let error):
                 completion(.failure(error))
             case .success:
-                var messages: [MessageEntity] = []
-                self.dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-                    messages = self.dependencies.messageDataService.fetchMessages(
-                        withIDs: .init(set: messageIDs),
-                        in: context
-                    ).map(MessageEntity.init)
-                }
+                let messages: [MessageEntity] = self.dependencies.contextProvider
+                    .read { context in
+                        self.dependencies.messageDataService.fetchMessages(withIDs: .init(set: messageIDs), in: context)
+                            .map(MessageEntity.init)
+                    }
+                    .sorted(by: { ($0.time ?? .distantPast) >= ($1.time ?? .distantPast) })
+
                 completion(.success(messages))
             }
         }
