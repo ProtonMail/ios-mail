@@ -61,26 +61,13 @@ class AnyImagePickerDelegate: NSObject, AttachmentProvider, ImageProcessor {
 
 extension AnyImagePickerDelegate: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        // Local variable inserted by Swift 4.2 migrator.
-        let info = convertFromUIImagePickerControllerInfoKeyDictionary(info)
-
-        if let asset = info[UIImagePickerController.InfoKey.phAsset.rawValue] as? PHAsset {
+        if let asset = info[.phAsset] as? PHAsset {
             self.process(asset: asset)
             picker.dismiss(animated: true, completion: nil)
-        } else if let originalImage = info[UIImagePickerController.InfoKey.originalImage.rawValue] as? UIImage {
+        } else if let originalImage = info[.originalImage] as? UIImage {
             self.process(original: originalImage).done { (_) in
                 picker.dismiss(animated: true, completion: nil)
             }.cauterize()
-        } else if let referenceUrl = info[UIImagePickerController.InfoKey.referenceURL.rawValue] as? URL {
-            // If the info dict does not contain the PHAsset, that means we do not have access to read the file.
-            let result = PHAsset.fetchAssets(withALAssetURLs: [referenceUrl], options: nil)
-            if let asset = result.firstObject {
-                self.process(asset: asset)
-            } else {
-                self.controller?.error(title: LocalString._no_photo_library_permission_title,
-                                       description: LocalString._no_photo_library_permission_content)
-            }
-            picker.dismiss(animated: true, completion: nil)
         } else {
             self.controller?.error(LocalString._cant_copy_the_file)
             picker.dismiss(animated: true, completion: nil)
@@ -90,9 +77,4 @@ extension AnyImagePickerDelegate: UIImagePickerControllerDelegate, UINavigationC
     @objc func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-private func convertFromUIImagePickerControllerInfoKeyDictionary(_ input: [UIImagePickerController.InfoKey: Any]) -> [String: Any] {
-	return Dictionary(uniqueKeysWithValues: input.map {key, value in (key.rawValue, value)})
 }
