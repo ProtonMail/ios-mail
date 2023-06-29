@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_TestingToolkit
+import WebKit
 import XCTest
 
 @testable import ProtonMail
@@ -71,13 +72,59 @@ class NewMessageBodyViewModelTests: XCTestCase {
         XCTAssertEqual(sut.placeholderContent, expected1)
     }
 
-    func testGetWebViewPreference() {
-        XCTAssertFalse(sut.webViewPreferences.javaScriptEnabled)
-        XCTAssertFalse(sut.webViewPreferences.javaScriptCanOpenWindowsAutomatically)
-    }
-
     func testGetWebViewConfig() {
         XCTAssertEqual(sut.webViewConfig.dataDetectorTypes, [.phoneNumber, .link])
     }
 
+    @MainActor
+    func testWebViewConfig_blocksEmbeddedJavaScript() async throws {
+        let bodyWithSUTConfig = try await loadMessageWithJavaScript(configuration: sut.webViewConfig)
+        XCTAssertEqual(bodyWithSUTConfig, "original content")
+
+        let sanityCheckBody = try await loadMessageWithJavaScript(configuration: nil)
+        XCTAssertEqual(sanityCheckBody, "modified by javascript")
+    }
+
+    @MainActor
+    private func loadMessageWithJavaScript(configuration: WKWebViewConfiguration?) async throws -> String {
+        let webView = configuration.map { WKWebView(frame: .zero, configuration: $0) } ?? WKWebView(frame: .zero)
+
+        let delegate = NavigationDelegate()
+        webView.navigationDelegate = delegate
+
+        let html = """
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+    original content
+
+    <script>
+        document.body.innerHTML = "modified by javascript";
+    </script>
+</body>
+
+</html>
+"""
+        webView.loadHTMLString(html, baseURL: nil)
+
+        await delegate.waitForNavigationToFinish()
+
+        let scriptOutput = try await webView.evaluateJavaScript("document.body.innerHTML")
+        return try XCTUnwrap(scriptOutput as? String).trim()
+    }
+}
+
+private class NavigationDelegate: NSObject, WKNavigationDelegate {
+    private var pendingContinuation: CheckedContinuation<Void, Never>?
+
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        pendingContinuation?.resume()
+    }
+
+    func waitForNavigationToFinish() async {
+        return await withCheckedContinuation { continuation in
+            pendingContinuation = continuation
+        }
+    }
 }

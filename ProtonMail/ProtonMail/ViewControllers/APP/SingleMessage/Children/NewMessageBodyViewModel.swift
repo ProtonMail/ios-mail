@@ -119,16 +119,10 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         return htmlString
     }
 
-    var webViewPreferences: WKPreferences {
-        let preferences = WKPreferences()
-        preferences.javaScriptEnabled = false
-        preferences.javaScriptCanOpenWindowsAutomatically = false
-        return preferences
-    }
-
     var webViewConfig: WKWebViewConfiguration {
         let config = WKWebViewConfiguration()
         config.dataDetectorTypes = [.phoneNumber, .link]
+        config.defaultWebpagePreferences.allowsContentJavaScript = false
         return config
     }
 
