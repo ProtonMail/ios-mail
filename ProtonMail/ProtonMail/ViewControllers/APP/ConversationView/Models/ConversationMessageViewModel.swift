@@ -31,7 +31,7 @@ class ConversationMessageViewModel {
     private let contactGroups: [ContactGroupVO]
     private let internetStatusProvider: InternetConnectionStatusProvider
     let highlightedKeywords: [String]
-    private let goToDraft: (MessageID, OriginalScheduleDate?) -> Void
+    private let goToDraft: (MessageID, Date?) -> Void
 
     init(labelId: LabelID,
          message: MessageEntity,
@@ -40,7 +40,7 @@ class ConversationMessageViewModel {
          contactGroups: [ContactGroupVO],
          internetStatusProvider: InternetConnectionStatusProvider,
          highlightedKeywords: [String],
-         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
+         goToDraft: @escaping (MessageID, Date?) -> Void
     ) {
         self.labelId = labelId
         self.message = message

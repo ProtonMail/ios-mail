@@ -23,7 +23,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let contextProvider: CoreDataContextProviderProtocol
     private let composeViewModelFactory: ComposeViewModelDependenciesFactory
     var pendingActionAfterDismissal: (() -> Void)?
-    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
+    var goToDraft: ((MessageID, Date?) -> Void)?
 
     init(
         labelId: LabelID,

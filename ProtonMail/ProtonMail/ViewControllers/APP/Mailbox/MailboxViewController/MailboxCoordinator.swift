@@ -205,8 +205,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             followToComposeMailTo(path: path.value, deeplink: deeplink)
         case .composeScheduledMessage where path.value != nil:
             guard let messageID = path.value,
-                  // TODO: do we need this check?
-                  path.states?["originalScheduledTime"] as? Date != nil else {
+                  let originalScheduledTime = path.states?["originalScheduledTime"] as? Date else {
                 return
             }
             let user = self.viewModel.user
@@ -214,7 +213,8 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             if let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
                 navigateToComposer(
                     existingMessage: message,
-                    isEditingScheduleMsg: true
+                    isEditingScheduleMsg: true,
+                    originalScheduledTime: .init(originalScheduledTime)
                 )
             }
         default:
@@ -260,7 +260,9 @@ extension MailboxCoordinator {
 
     private func navigateToComposer(
         existingMessage: Message?,
-        isEditingScheduleMsg: Bool = false) {
+        isEditingScheduleMsg: Bool = false,
+        originalScheduledTime: Date? = nil
+    ) {
         guard let navigationVC = navigation else {
             return
         }
@@ -275,7 +277,8 @@ extension MailboxCoordinator {
             coreKeyMaker: services.get(),
             darkModeCache: services.userCachedStatus,
             mobileSignatureCache: services.userCachedStatus,
-            attachmentMetadataStrippingCache: services.userCachedStatus
+            attachmentMetadataStrippingCache: services.userCachedStatus,
+            originalScheduledTime: originalScheduledTime
         )
         navigationVC.present(composer, animated: true)
     }
@@ -434,14 +437,15 @@ extension MailboxCoordinator {
         viewController?.navigationController?.present(nav, animated: true)
     }
 
-    private func editScheduleMsg(messageID: MessageID, originalScheduledTime: OriginalScheduleDate?) {
+    private func editScheduleMsg(messageID: MessageID, originalScheduledTime: Date?) {
         let context = contextProvider.mainContext
         guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {
             return
         }
         navigateToComposer(
             existingMessage: msg,
-            isEditingScheduleMsg: true
+            isEditingScheduleMsg: true,
+            originalScheduledTime: originalScheduledTime
         )
     }
 }

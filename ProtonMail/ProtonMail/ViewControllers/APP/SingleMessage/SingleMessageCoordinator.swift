@@ -36,7 +36,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     private weak var navigationController: UINavigationController?
     var pendingActionAfterDismissal: (() -> Void)?
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
-    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
+    var goToDraft: ((MessageID, Date?) -> Void)?
     private let composeViewModelFactory: ComposeViewModelDependenciesFactory
     private let factory: ServiceFactory
 
