@@ -50,7 +50,8 @@ extension ServiceFactory {
                 internetStatusProvider: factory.get(),
                 coreKeyMaker: factory.get(),
                 darkModeCache: factory.userCachedStatus,
-                mobileSignatureCache: factory.userCachedStatus
+                mobileSignatureCache: factory.userCachedStatus,
+                attachmentMetadataStrippingCache: factory.userCachedStatus
             )
         }
     }

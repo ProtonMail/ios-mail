@@ -29,9 +29,11 @@ class ShareUnlockPinCodeModelImpl: PinCodeViewModel {
     var enterPin: String = ""
 
     let unlockManager: UnlockManager
+    private let pinFailedCountCache: PinFailedCountCache
 
-    init(unlock: UnlockManager) {
+    init(unlock: UnlockManager, pinFailedCountCache: PinFailedCountCache) {
         self.unlockManager = unlock
+        self.pinFailedCountCache = pinFailedCountCache
     }
 
     override func cancel() -> String {
@@ -59,11 +61,11 @@ class ShareUnlockPinCodeModelImpl: PinCodeViewModel {
     }
 
     override func getPinFailedRemainingCount() -> Int {
-        return 10 - userCachedStatus.pinFailedCount
+        return 10 - pinFailedCountCache.pinFailedCount
     }
 
     override func getPinFailedError() -> String {
-        let c = 10 - userCachedStatus.pinFailedCount
+        let c = 10 - pinFailedCountCache.pinFailedCount
         if c < 4 {
             let error = String.localizedStringWithFormat(LocalString._attempt_remaining_until_secure_data_wipe, c)
             return error

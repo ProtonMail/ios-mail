@@ -302,6 +302,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
             coreKeyMaker: sharedServices.get(),
             darkModeCache: sharedServices.userCachedStatus,
             mobileSignatureCache: sharedServices.userCachedStatus,
+            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
             toContact: contact
         )
         guard let nav = navigationController else {

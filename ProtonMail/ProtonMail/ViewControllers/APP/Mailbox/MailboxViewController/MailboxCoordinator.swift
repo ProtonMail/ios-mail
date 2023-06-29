@@ -274,7 +274,8 @@ extension MailboxCoordinator {
             internetStatusProvider: internetStatusProvider,
             coreKeyMaker: services.get(),
             darkModeCache: services.userCachedStatus,
-            mobileSignatureCache: services.userCachedStatus
+            mobileSignatureCache: services.userCachedStatus,
+            attachmentMetadataStrippingCache: services.userCachedStatus
         )
         navigationVC.present(composer, animated: true)
     }
@@ -391,6 +392,7 @@ extension MailboxCoordinator {
                 coreKeyMaker: services.get(),
                 darkModeCache: services.userCachedStatus,
                 mobileSignatureCache: services.userCachedStatus,
+                attachmentMetadataStrippingCache: services.userCachedStatus,
                 mailToUrl: mailToURL
             )
             nav.present(composer, animated: true)

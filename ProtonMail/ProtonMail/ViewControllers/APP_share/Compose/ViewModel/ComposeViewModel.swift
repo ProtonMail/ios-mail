@@ -73,6 +73,10 @@ class ComposeViewModel: NSObject {
         return composerMessageHelper.attachmentSize
     }
 
+    private var shouldStripMetaData: Bool {
+        return dependencies.attachmentMetadataStrippingCache.metadataStripping == .stripMetadata
+    }
+
     init(
         subject: String,
         body: String,
@@ -107,7 +111,6 @@ class ComposeViewModel: NSObject {
                           pwdHit: "")
         self.updateDraft()
 
-        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         var currentAttachmentSize = 0
         for file in files {
             let size = file.contents.dataSize
@@ -117,7 +120,7 @@ class ComposeViewModel: NSObject {
             }
             currentAttachmentSize += size
             composerMessageHelper.addAttachment(file,
-                                                shouldStripMetaData: stripMetadata) { _ in
+                                                shouldStripMetaData: shouldStripMetaData) { _ in
                 self.updateDraft()
                 self.composerMessageHelper.updateAttachmentView?()
             }
@@ -283,13 +286,12 @@ class ComposeViewModel: NSObject {
         }
 
         let data = Data(key.publicKey.utf8)
-        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
 
         self.composerMessageHelper.addPublicKeyIfNeeded(
             email: addr.email,
             fingerprint: key.shortFingerprint,
             data: data,
-            shouldStripMetaDate: stripMetadata
+            shouldStripMetaDate: shouldStripMetaData
         ) { _ in
             completion()
         }
@@ -1113,6 +1115,7 @@ extension ComposeViewModel {
         let helperDependencies: ComposerMessageHelper.Dependencies
         let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
         let darkModeCache: DarkModeCacheProtocol
+        let attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol
     }
 
     struct EncodableRecipient: Encodable {

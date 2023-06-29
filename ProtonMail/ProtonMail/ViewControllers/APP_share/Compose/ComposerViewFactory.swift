@@ -30,6 +30,7 @@ struct ComposerViewFactory {
         coreKeyMaker: KeyMakerProtocol,
         darkModeCache: DarkModeCacheProtocol,
         mobileSignatureCache: MobileSignatureCacheProtocol,
+        attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
         navigationViewController: UINavigationController
     ) -> ComposeContainerViewController {
         let childViewModel = ComposeViewModel(
@@ -62,7 +63,9 @@ struct ComposerViewFactory {
                         coreKeyMaker: coreKeyMaker,
                         cache: mobileSignatureCache
                     )
-                ), darkModeCache: darkModeCache
+                ),
+                darkModeCache: darkModeCache,
+                attachmentMetadataStrippingCache: attachmentMetadataStrippingCache
             )
         )
         let router = ComposerRouter()
@@ -92,6 +95,7 @@ struct ComposerViewFactory {
         coreKeyMaker: KeyMakerProtocol,
         darkModeCache: DarkModeCacheProtocol,
         mobileSignatureCache: MobileSignatureCacheProtocol,
+        attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
         mailToUrl: URL? = nil,
         toContact: ContactPickerModelProtocol? = nil
     ) -> UINavigationController {
@@ -124,7 +128,9 @@ struct ComposerViewFactory {
                         coreKeyMaker: coreKeyMaker,
                         cache: mobileSignatureCache
                     )
-                ), darkModeCache: darkModeCache
+                ),
+                darkModeCache: darkModeCache,
+                attachmentMetadataStrippingCache: attachmentMetadataStrippingCache
             )
         )
         if let url = mailToUrl {

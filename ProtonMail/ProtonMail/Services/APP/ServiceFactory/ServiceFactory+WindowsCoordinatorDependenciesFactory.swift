@@ -64,7 +64,8 @@ extension ServiceFactory {
             .init(
                 dependencies: .init(
                     unlockManager: factory.get(),
-                    usersManager: factory.get()
+                    usersManager: factory.get(),
+                    pinFailedCountCache: factory.userCachedStatus
                 ),
                 finishLockFlow: finishLockFlow
             )
