@@ -147,10 +147,8 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
                       textColor: ColorProvider.TextWeak)
         self.fromPickerButton.tintColor = ColorProvider.IconWeak
         fromPickerButton.setImage(IconProvider.threeDotsHorizontal, for: .normal)
-        if #available(iOS 14.0, *) {
             self.delegate?.setupComposeFromMenu(for: self.fromPickerButton)
             self.fromPickerButton.addTarget(self, action: #selector(self.clickFromField(_:)), for: .menuActionTriggered)
-        }
 
         self.showCcBccButton.tintColor = ColorProvider.IconWeak
         self.showCcBccButton.setImage(IconProvider.chevronDown, for: .normal)

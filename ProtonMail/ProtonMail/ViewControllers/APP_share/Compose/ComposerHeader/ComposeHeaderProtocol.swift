@@ -34,7 +34,6 @@ protocol ComposeViewDelegate: AnyObject {
     func composeView(_ composeView: ComposeHeaderViewController, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker)
     func composeView(_ composeView: ComposeHeaderViewController, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
 
-    @available(iOS 14.0, *)
     func setupComposeFromMenu(for button: UIButton)
     func composeViewPickFrom(_ composeView: ComposeHeaderViewController)
 

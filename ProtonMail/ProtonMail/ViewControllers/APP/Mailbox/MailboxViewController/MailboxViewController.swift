@@ -329,9 +329,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             viewModel.eventsService.call()
         }
 
-        if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = self.title ?? LocalString._menu_inbox_title
-        }
 
         guard viewModel.isHavingUser else {
             return
@@ -397,7 +395,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func addNotificationsObserver() {
-        if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(doEnterForeground),
                                                    name: UIWindowScene.willEnterForegroundNotification,
@@ -407,17 +404,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                                                    selector: #selector(doEnterBackground),
                                                    name: UIWindowScene.didEnterBackgroundNotification,
                                                    object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self,
-                                                    selector: #selector(doEnterForeground),
-                                                    name: UIApplication.willEnterForegroundNotification,
-                                                    object: nil)
-
-            NotificationCenter.default.addObserver(self,
-                                                    selector: #selector(doEnterBackground),
-                                                    name: UIApplication.didEnterBackgroundNotification,
-                                                    object: nil)
-        }
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(timeZoneDidChange),

@@ -109,10 +109,9 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if #available(iOS 12.0, *) {
             let isDarkModeStyle = traitCollection.userInterfaceStyle == .dark
             viewModel.sendMetricAPIIfNeeded(isDarkModeStyle: isDarkModeStyle)
-        }
+        super.traitCollectionDidChange(previousTraitCollection)
     }
 
     @objc private func showHide(_ sender: UIButton) {
@@ -268,7 +267,6 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func addObservations() {
-        if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(restoreOffset),
                                                    name: UIWindowScene.willEnterForegroundNotification,
@@ -282,21 +280,6 @@ class SingleMessageContentViewController: UIViewController {
                              selector: #selector(willBecomeActive),
                              name: UIScene.willEnterForegroundNotification,
                              object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(restoreOffset),
-                                                   name: UIApplication.willEnterForegroundNotification,
-                                                   object: nil)
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(saveOffset),
-                                                   name: UIApplication.didEnterBackgroundNotification,
-                                                   object: nil)
-            NotificationCenter.default
-                .addObserver(self,
-                             selector: #selector(willBecomeActive),
-                             name: UIApplication.willEnterForegroundNotification,
-                             object: nil)
-        }
         NotificationCenter.default
             .addObserver(self,
                          selector: #selector(preferredContentSizeChanged(_:)),

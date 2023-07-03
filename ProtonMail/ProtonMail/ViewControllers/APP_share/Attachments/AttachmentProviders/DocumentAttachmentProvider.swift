@@ -131,7 +131,6 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
 
 /// Documents
 extension DocumentAttachmentProvider: UIDocumentPickerDelegate {
-    @available(iOS 11.0, *)
     internal func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         urls.forEach { self.documentPicker(controller, didPickDocumentAt: $0) }
     }

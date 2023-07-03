@@ -25,14 +25,8 @@ extension String {
         private let isHighlightKeywordEnabled: Bool
 
         private let highlightColor: UIColor = {
-            let color: UIColor
-            if #available(iOS 13.0, *) {
                 let trait = UITraitCollection(userInterfaceStyle: .dark)
-                color = ColorProvider.NotificationWarning.resolvedColor(with: trait)
-            } else {
-                color = ColorProvider.NotificationWarning
-            }
-            return color
+            return ColorProvider.NotificationWarning.resolvedColor(with: trait)
         }()
 
         // swiftlint:disable:next strict_fileprivate

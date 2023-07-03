@@ -314,13 +314,8 @@ extension MenuViewModel: MenuVMProtocol {
 
     func getIconColor(of label: MenuLabel) -> UIColor {
 
-        let defaultColor: UIColor
-        if #available(iOS 13.0, *) {
-            defaultColor = label.isSelected ? ColorProvider.SidebarIconWeak
+        let defaultColor = label.isSelected ? ColorProvider.SidebarIconWeak
                 .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light)) : ColorProvider.SidebarIconWeak
-        } else {
-            defaultColor = label.isSelected ? ColorProvider.SidebarIconWeak : ColorProvider.SidebarIconWeak
-        }
 
         guard label.type == .folder else {
             if let labelColor = label.iconColor {

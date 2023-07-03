@@ -58,7 +58,6 @@ class AppDelegate: UIResponder {
 // MARK: - consider move this to coordinator
 extension AppDelegate {
     func onLogout() {
-        if #available(iOS 13.0, *) {
             let sessions = Array(UIApplication.shared.openSessions)
             let oneToStay = sessions.first(where: { $0.scene?.delegate as? WindowSceneDelegate != nil })
             (oneToStay?.scene?.delegate as? WindowSceneDelegate)?.coordinator.go(dest: .signInWindow(.form))
@@ -66,23 +65,16 @@ extension AppDelegate {
             for session in sessions where session != oneToStay {
                 UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { _ in }
             }
-        } else {
-            self.coordinator.go(dest: .signInWindow(.form))
-        }
     }
 }
 
 extension AppDelegate: TrustKitUIDelegate {
     func onTrustKitValidationError(_ alert: UIAlertController) {
         let currentWindow: UIWindow? = {
-            if #available(iOS 13.0, *) {
                 let session = UIApplication.shared.openSessions.first { $0.scene?.activationState == UIScene.ActivationState.foregroundActive }
                 let scene = session?.scene as? UIWindowScene
                 let window = scene?.windows.first
                 return window
-            } else {
-                return self.window
-            }
         }()
 
         guard let top = currentWindow?.topmostViewController(), !(top is UIAlertController) else { return }
@@ -194,11 +186,6 @@ extension AppDelegate: UIApplicationDelegate {
         let backgroundTaskHelper = sharedServices.get(by: BackgroundTaskHelper.self)
         backgroundTaskHelper.registerBackgroundTask()
 
-        if #available(iOS 13.0, *) {
-            // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
-        } else {
-            self.coordinator.start()
-        }
 
         UIBarButtonItem.enableMenuSwizzle()
         #if DEBUG
@@ -385,7 +372,6 @@ extension AppDelegate: UIApplicationDelegate {
 
     // MARK: - Multiwindow iOS 13
 
-    @available(iOS 13.0, *)
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         let scene = Scenes.fullApp // TODO: add more scenes
         let config = UISceneConfiguration(name: scene.rawValue, sessionRole: connectingSceneSession.role)
@@ -393,7 +379,6 @@ extension AppDelegate: UIApplicationDelegate {
         return config
     }
 
-    @available(iOS 13.0, *)
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         sceneSessions.forEach { session in
             // TODO: check that this discards state restoration for scenes explicitely closed by user

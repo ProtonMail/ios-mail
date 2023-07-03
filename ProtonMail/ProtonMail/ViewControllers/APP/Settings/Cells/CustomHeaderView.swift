@@ -28,10 +28,8 @@ class CustomHeaderView: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        if #available(iOS 10, *) {
             headerText.font = UIFont.preferredFont(for: .caption1, weight: .regular)
             headerText.adjustsFontForContentSizeCategory = true
-        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

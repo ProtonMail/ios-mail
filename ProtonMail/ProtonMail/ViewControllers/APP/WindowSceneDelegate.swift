@@ -22,7 +22,6 @@
 
 import UIKit
 
-@available(iOS 13.0, *)
 class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     lazy private(set) var coordinator: WindowsCoordinator = {
         (UIApplication.shared.delegate as! AppDelegate).coordinator
@@ -167,7 +166,6 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 }
 
-@available(iOS 13.0, *)
 enum Scenes: String {
     case fullApp
     case messageView

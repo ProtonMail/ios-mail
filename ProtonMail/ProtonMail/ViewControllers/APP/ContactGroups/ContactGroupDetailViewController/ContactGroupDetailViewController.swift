@@ -225,7 +225,6 @@ extension ContactGroupDetailViewController: UITableViewDataSource, UITableViewDe
     }
 }
 
-@available (iOS 13, *)
 extension ContactGroupDetailViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         reload()

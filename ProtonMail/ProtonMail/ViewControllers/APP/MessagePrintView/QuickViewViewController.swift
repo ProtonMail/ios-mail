@@ -35,17 +35,10 @@ class QuickViewViewController: QLPreviewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(self.dismissWhenAppGoesToBackground),
                                                    name: UIWindowScene.didEnterBackgroundNotification,
                                                    object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(self.dismissWhenAppGoesToBackground),
-                                                   name: UIApplication.didEnterBackgroundNotification,
-                                                   object: nil)
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

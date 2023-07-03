@@ -332,7 +332,6 @@ final class MessageInfoProvider {
     }
 
     var shouldDisplayRenderModeOptions: Bool {
-        if #available(iOS 12.0, *) {
             if dependencies.darkModeCache.darkModeStatus == .forceOff {
                 return false
             }
@@ -342,9 +341,6 @@ final class MessageInfoProvider {
             } else {
                 return true
             }
-        } else {
-            return false
-        }
     }
 
     private let dispatchQueue = DispatchQueue(

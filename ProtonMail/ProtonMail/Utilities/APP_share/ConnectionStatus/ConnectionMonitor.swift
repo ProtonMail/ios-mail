@@ -20,7 +20,6 @@ import Network
 
 // sourcery: mock
 protocol ConnectionMonitor: AnyObject {
-    var currentNWPath: NWPathProtocol? { get }
     var pathUpdateClosure: ((_ newPath: NWPathProtocol) -> Void)? { get set }
 
     func start(queue: DispatchQueue)
@@ -28,10 +27,6 @@ protocol ConnectionMonitor: AnyObject {
 }
 
 extension NWPathMonitor: ConnectionMonitor {
-    var currentNWPath: NWPathProtocol? {
-        return currentPath
-    }
-
     var pathUpdateClosure: ((_ newPath: NWPathProtocol) -> Void)? {
         get {
             nil

@@ -97,15 +97,9 @@ final class ReferralShareViewController: UIViewController {
 
     @objc
     private func copyLinkToClipboard() {
-        if #available(iOS 14.0, *) {
             UIPasteboard.general.setValue(
                 referralLink,
                 forPasteboardType: UTType.plainText.identifier)
-        } else {
-            UIPasteboard.general.setValue(
-                referralLink,
-                forPasteboardType: kUTTypePlainText as String)
-        }
         let banner = PMBanner(
             message: L11n.ReferralProgram.linkCopied,
             style: PMBannerNewStyle.info

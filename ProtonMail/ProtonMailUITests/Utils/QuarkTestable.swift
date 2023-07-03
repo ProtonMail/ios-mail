@@ -37,12 +37,10 @@ final class UITest: LogObject {
     static var osLog: OSLog = OSLog(subsystem: "UITests", category: "Quark")
 }
 
-@available(iOS 16.0, *)
 protocol QuarkTestable {
 }
 
 
-@available(iOS 16.0, *)
 extension QuarkTestable where Self: XCTestCase {
     
     private func record(_ attachement: XCTAttachment) {

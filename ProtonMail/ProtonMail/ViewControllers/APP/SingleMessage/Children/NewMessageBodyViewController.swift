@@ -207,9 +207,7 @@ class NewMessageBodyViewController: UIViewController {
     private func prepareGestureRecognizer() {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(pan))
         self.verticalRecognizer = gesture
-        if #available(iOS 13.4, *) {
             self.verticalRecognizer?.allowedScrollTypesMask = .all
-        }
         self.verticalRecognizer?.delegate = self
         self.verticalRecognizer?.maximumNumberOfTouches = 1
         self.webView?.scrollView.addGestureRecognizer(gesture)

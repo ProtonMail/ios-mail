@@ -133,13 +133,8 @@ extension Date {
     }
 
     func countExpirationTime(processInfo: SystemUpTimeProtocol?) -> String {
-        let distance: TimeInterval
         let unixTime = Date.getReferenceDate(processInfo: processInfo)
-        if #available(iOS 13.0, *) {
-            distance = unixTime.distance(to: self) + 60
-        } else {
-            distance = timeIntervalSinceReferenceDate - unixTime.timeIntervalSinceReferenceDate + 60
-        }
+        let distance = unixTime.distance(to: self) + 60
 
         if distance > 86_400 {
             let day = Int(distance / 86_400)

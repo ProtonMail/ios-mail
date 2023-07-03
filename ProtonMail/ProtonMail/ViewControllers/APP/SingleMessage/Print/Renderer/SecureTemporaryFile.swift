@@ -75,12 +75,7 @@ private extension Error {
     var underlying: [Error] {
         let nsError = self as NSError
 
-        if #available(iOS 14.5, *) {
             return nsError.underlyingErrors
-        } else {
-            let underlyingError = nsError.userInfo[NSUnderlyingErrorKey] as? Error
-            return [underlyingError].compactMap { $0 }
-        }
     }
 
     private func belongs(to domain: String, code: Int) -> Bool {

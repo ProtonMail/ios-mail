@@ -29,13 +29,11 @@ class SettingsCell: UITableViewCell, AccessibleCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        if #available(iOS 10, *) {
             LeftText.font = UIFont.preferredFont(for: .footnote, weight: .regular)
             LeftText.adjustsFontForContentSizeCategory = true
 
             RightText.font = UIFont.preferredFont(for: .caption1, weight: .regular)
             RightText.adjustsFontForContentSizeCategory = true
-        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

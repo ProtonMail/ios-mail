@@ -143,9 +143,7 @@ final class SettingsDeviceViewModel {
         self.lockCacheStatus = lockCacheStatus
         self.dependencies = dependencies
 
-        if #available(iOS 13, *) {
             appSettings.insert(.darkMode, at: 0)
-        }
 
         if UserInfo.isToolbarCustomizationEnable {
             appSettings.append(.toolbar)

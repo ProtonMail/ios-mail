@@ -23,7 +23,6 @@
 import Intents
 import ProtonCore_Keymaker
 
-@available(iOS 12.0, *)
 class IntentHandler: INExtension {
 
     override func handler(for intent: INIntent) -> Any {
@@ -37,7 +36,6 @@ class IntentHandler: INExtension {
 
 }
 
-@available(iOS 12.0, *)
 class WipeMainKeyIntentHandler: NSObject, WipeMainKeyIntentHandling {
 
     func handle(intent: WipeMainKeyIntent, completion: @escaping (WipeMainKeyIntentResponse) -> Void) {

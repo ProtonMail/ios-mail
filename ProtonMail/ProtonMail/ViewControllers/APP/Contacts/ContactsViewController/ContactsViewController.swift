@@ -142,14 +142,6 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     private func prepareSearchBar() {
         self.searchController = UISearchController(searchResultsController: nil)
         self.searchController?.searchBar.placeholder = LocalString._general_search_placeholder
-
-        if #available(iOS 13.0, *) {
-            // Terminating app due to uncaught exception 'NSGenericException', reason: 'Access to UISearchBar's set_cancelButtonText: ivar is prohibited. This is an application bug'
-        } else {
-            self.searchController?.searchBar.setValue(LocalString._general_done_button,
-                                                     forKey: "_cancelButtonText")
-        }
-
         self.searchController?.searchResultsUpdater = self
         self.searchController?.obscuresBackgroundDuringPresentation = false
         self.searchController?.searchBar.delegate = self
@@ -208,12 +200,11 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         self.show(newView, sender: nil)
         isOnMainView = false
 
-        if #available(iOS 13, *) { // detect view dismiss above iOS 13
+            // detect view dismiss above iOS 13
             if let nav = self.navigationController {
                 nav.children[0].presentationController?.delegate = self
             }
             newView.presentationController?.delegate = self
-        }
     }
 
     override func addContactTapped() {
@@ -223,10 +214,9 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         let nav = UINavigationController(rootViewController: newView)
         self.present(nav, animated: true)
 
-        if #available(iOS 13, *) { // detect view dismiss above iOS 13
+            // detect view dismiss above iOS 13
             nav.children[0].presentationController?.delegate = self
             nav.presentationController?.delegate = self
-        }
     }
 
     @objc internal func fireFetch() {

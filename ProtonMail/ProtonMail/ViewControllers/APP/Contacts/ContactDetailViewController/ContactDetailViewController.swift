@@ -239,11 +239,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
         if let phoneCallURL = URL(string: phoneUrl) {
             let application = UIApplication.shared
             if application.canOpenURL(phoneCallURL) {
-                if #available(iOS 10.0, *) {
                     application.open(phoneCallURL, options: [:], completionHandler: nil)
-                } else {
-                    application.openURL(phoneCallURL)
-                }
             }
         }
     }
@@ -329,9 +325,7 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
 
     func updated() {
         // nono full screen persent vc in ios 13. viewWillAppear will not be called. hack here
-        if #available(iOS 13.0, *) {
             self.viewModel.rebuild()
-        }
         configHeader()
         tableView.reloadData()
     }
@@ -627,11 +621,7 @@ extension ContactDetailViewController: UITableViewDelegate {
                 if let strUrl = fullUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                    let url = URL(string: strUrl)
                 {
-                    if #available(iOS 10.0, *) {
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    } else {
-                        UIApplication.shared.openURL(url)
-                    }
                 }
             }
         case .url:
@@ -646,11 +636,7 @@ extension ContactDetailViewController: UITableViewDelegate {
                 if let validUrl = comps.url {
                     let application = UIApplication.shared
                     if application.canOpenURL(validUrl) {
-                        if #available(iOS 10.0, *) {
                             application.open(validUrl, options: [:], completionHandler: nil)
-                        } else {
-                            application.openURL(validUrl)
-                        }
                         break
                     }
                 }

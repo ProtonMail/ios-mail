@@ -187,7 +187,6 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
     }
 }
 
-@available(iOS 16.0, *)
 class FixtureAuthenticatedTestCase: BaseTestCase {
 
     var scenario: MailScenario = .qaMail001

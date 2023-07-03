@@ -60,9 +60,7 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
         passwordVC.encryptionConfirmPassword = confirmPassword
         passwordVC.encryptionPasswordHint = hint
         passwordVC.delegate = delegate
-        if #available(iOS 13.0, *) {
             passwordVC.isModalInPresentation = true
-        }
         return passwordVC
     }
 

@@ -783,7 +783,6 @@ extension ComposeContentViewController: ComposeViewDelegate {
         self.viewModel.checkMails(in: contactGroup, progress: progress, complete: complete)
     }
 
-    @available(iOS 14.0, *)
     func setupComposeFromMenu(for button: UIButton) {
         var multiDomains = self.viewModel.getAddresses()
         multiDomains.sort(by: { $0.order < $1.order })

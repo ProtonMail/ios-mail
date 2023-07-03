@@ -97,7 +97,6 @@ class ConversationViewControllerTests: XCTestCase {
         notificationCenterMock = nil
     }
 
-    @available(iOS 13.0, *)
     func testConnectionStatusChangedInBackground_thenBringTheAppToForeground() {
         applicationStateMock.applicationState = .background
         viewModelMock.callFetchConversationDetail.bodyIs { _, callback in

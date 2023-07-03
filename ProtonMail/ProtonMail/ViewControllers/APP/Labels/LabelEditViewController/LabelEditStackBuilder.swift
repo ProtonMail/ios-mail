@@ -39,9 +39,7 @@ enum LabelEditStackBuilder {
             dependencies: dependencies
         )
         let viewController = LabelEditViewController(viewModel: viewModel)
-        if #available(iOS 13.0, *) {
             viewController.isModalInPresentation = true
-        }
 
         navigationController.setViewControllers([viewController], animated: false)
         return navigationController

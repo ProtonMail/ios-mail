@@ -77,14 +77,9 @@ class WindowsCoordinator {
         case lockWindow, appWindow, signInWindow(SignInDestination)
     }
 
-    var scene: AnyObject? {
+    var scene: UIScene? {
         didSet {
-            // UIWindowScene class is available on iOS 13 and newer, older platforms should not use this property
-            if #available(iOS 13.0, *) {
                 assert(scene is UIWindowScene, "Scene should be of type UIWindowScene")
-            } else {
-                assert(false, "Scenes are unavailable on iOS 12 and older")
-            }
         }
     }
     weak var delegate: WindowsCoordinatorDelegate?
@@ -230,7 +225,7 @@ class WindowsCoordinator {
                     self.appWindow = UIWindow(root: root, scene: self.scene)
                     self.launchedByNotification = false
                 }
-                if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
+                if self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
                 }
                 if self.navigate(from: self.currentWindow, to: self.appWindow, animated: true), let deeplink = self.deepLink {
@@ -361,26 +356,12 @@ class WindowsCoordinator {
                 self.lock()
             }
 
-        if #available(iOS 13.0, *) {
             dependencies.notificationCenter.addObserver(
                 self,
                 selector: #selector(updateUserInterfaceStyle),
                 name: .shouldUpdateUserInterfaceStyle,
                 object: nil
             )
-            // this is done by UISceneDelegate
-        } else {
-            dependencies.notificationCenter.addObserver(
-                self, selector: #selector(willEnterForeground),
-                name: UIApplication.willEnterForegroundNotification,
-                object: nil
-            )
-            dependencies.notificationCenter.addObserver(
-                self, selector: #selector(didEnterBackground),
-                name: UIApplication.didEnterBackgroundNotification,
-                object: nil
-            )
-        }
     }
 }
 
@@ -479,12 +460,10 @@ extension WindowsCoordinator {
 
 // MARK: Actions
 extension WindowsCoordinator {
-    @objc
     func willEnterForeground() {
         self.snapshot.remove()
     }
 
-    @objc
     func didEnterBackground() {
         if let vc = self.currentWindow?.topmostViewController(),
            !(vc is ComposeContainerViewController) {
@@ -564,7 +543,6 @@ extension WindowsCoordinator {
 
     @objc
     private func updateUserInterfaceStyle() {
-        guard #available(iOS 13, *) else { return }
         switch dependencies.darkModeCache.darkModeStatus {
         case .followSystem:
             currentWindow?.overrideUserInterfaceStyle = .unspecified
