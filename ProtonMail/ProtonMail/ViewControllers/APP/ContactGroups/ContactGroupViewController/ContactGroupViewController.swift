@@ -510,14 +510,13 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
 }
 
 extension ContactGroupsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView,
-                   editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
-    {
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         resetStateFromMultiSelect()
 
-        let deleteHandler = {
-            (_: UITableViewRowAction, indexPath: IndexPath) in
-
+        let deleteHandler: UIContextualAction.Handler = { _, _, completion in
                 let deleteActionHandler = {
                     (_: UIAlertAction) -> Void in
 
@@ -549,12 +548,15 @@ extension ContactGroupsViewController: UITableViewDelegate {
                 alertController.popoverPresentationController?.sourceRect = CGRect(x: self.tableView.bounds.midX, y: self.tableView.bounds.maxY - 100, width: 0, height: 0)
 
                 self.present(alertController, animated: true, completion: nil)
+            completion(false)
         }
 
-        let deleteAction = UITableViewRowAction(style: .destructive,
-                                                title: LocalString._general_delete_action,
-                                                handler: deleteHandler)
-        return [deleteAction]
+        let deleteAction = UIContextualAction(
+            style: .destructive,
+            title: LocalString._general_delete_action,
+            handler: deleteHandler
+        )
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
