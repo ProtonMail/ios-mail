@@ -152,7 +152,7 @@ class NewMessageBodyViewController: UIViewController {
         self.heightConstraint = heightConstraint
     }
 
-    func prepareWebView(with loader: WebContentsSecureLoader? = nil) {
+    private func prepareWebView(with loader: WebContentsSecureLoader? = nil) {
         view.removeConstraints(view.constraints.filter({ $0.firstAnchor == view.heightAnchor }))
 
         self.heightConstraint?.isActive = false
@@ -161,9 +161,7 @@ class NewMessageBodyViewController: UIViewController {
         [heightConstraint].activate()
         self.heightConstraint = heightConstraint
 
-        let preferences = viewModel.webViewPreferences
         let config = viewModel.webViewConfig
-        config.preferences = preferences
         loader?.inject(into: config)
 
         if let existingWebView = self.webView {
@@ -472,12 +470,7 @@ extension NewMessageBodyViewController {
         }
         """
 
-        let javaScriptEnabledBefore = webView.configuration.preferences.javaScriptEnabled
-        webView.configuration.preferences.javaScriptEnabled = true
-
         webView.evaluateJavaScript(script) { [weak self] output, error in
-            webView.configuration.preferences.javaScriptEnabled = javaScriptEnabledBefore
-
             if let error = error {
                 assertionFailure("\(error)")
                 return

@@ -112,13 +112,6 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
         }
     }
 
-    override func webViewPreferences() -> WKPreferences {
-        let preferences = WKPreferences()
-        preferences.javaScriptEnabled = true
-        preferences.javaScriptCanOpenWindowsAutomatically = false
-        return preferences
-    }
-
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.htmlEditor.loadContentIfNeeded()
         super.webView(webView, didFinish: navigation)
