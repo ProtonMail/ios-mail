@@ -441,7 +441,7 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
         sharedServices.get(by: UsersManager.self).clean().ensure {
             let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
             coreKeyMaker.wipeMainKey()
-            coreKeyMaker.mainKeyExists()
+            _ = coreKeyMaker.mainKeyExists()
             completion()
         }.cauterize()
     }
