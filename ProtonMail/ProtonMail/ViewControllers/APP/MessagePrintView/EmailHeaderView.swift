@@ -493,7 +493,7 @@ class EmailHeaderView: UIView, AccessibleView {
         self.addSubview(emailHeaderView)
 
         // create title
-        self.emailTitle = ActionLabel()
+        self.emailTitle = UILabel()
         self.emailTitle.font = Fonts.h4.medium
         self.emailTitle.numberOfLines = 0
         self.emailTitle.lineBreakMode = .byWordWrapping

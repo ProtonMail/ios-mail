@@ -129,7 +129,6 @@ private extension PushNotificationHandler {
         do {
             return try PushContent(json: decryptedText)
         } catch {
-            let redactedInfo = String(describing: error)
             throw PushManagementUnexpected.error(description: "fail parsing push content")
         }
     }

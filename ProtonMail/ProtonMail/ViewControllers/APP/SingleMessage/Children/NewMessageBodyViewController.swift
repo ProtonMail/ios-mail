@@ -297,7 +297,6 @@ class NewMessageBodyViewController: UIViewController {
         self.contentSizeObservation =
             self.webView?.scrollView.observe(\.contentSize,
                                              options: [.initial, .new, .old]) { [weak self] scrollView, change in
-                guard let webView = self?.webView else { return }
                 // As of iOS 13 beta 2, contentSize increases by 1pt after every updateHeight causing infinite loop.
                 // This 10pt treshold will prevent looping
                 guard let new = change.newValue?.height,
@@ -305,7 +304,7 @@ class NewMessageBodyViewController: UIViewController {
                       new - old > 10.0 else { return }
 
                 // Update the original height here for the web page that has image to be downloaded.
-                self?.originalHeight = webView.scrollView.contentSize.height
+                self?.originalHeight = scrollView.contentSize.height
             }
 
         guard self.loadingObservation == nil else {
