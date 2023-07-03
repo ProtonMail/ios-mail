@@ -369,21 +369,6 @@ extension AppDelegate: UIApplicationDelegate {
         completionHandler(.newData)
     }
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first {
-            let point = touch.location(in: UIApplication.shared.keyWindow)
-            let statusBarFrame = UIApplication.shared.statusBarFrame
-            if statusBarFrame.contains(point) {
-                self.touchStatusBar()
-            }
-        }
-    }
-
-    func touchStatusBar() {
-        let notification = Notification(name: .touchStatusBar, object: nil, userInfo: nil)
-        NotificationCenter.default.post(notification)
-    }
-
     // MARK: - Multiwindow iOS 13
 
     @available(iOS 13.0, *)
