@@ -819,36 +819,16 @@ extension ConversationViewController {
     private func deleteAction(completion: (() -> Void)? = nil) {
         showDeleteAlert(
             deleteHandler: { [weak self] _ in
+                self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
                 self?.viewModel.handleToolBarAction(.delete)
-                self?.viewModel.navigateToNextConversation(
-                    isInPageView: self?.isInPageView ?? false,
-                    popCurrentView: {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                )
                 self?.showMessageMoved(title: LocalString._messages_has_been_deleted)
+                guard self?.isInPageView ?? false else {
+                    self?.navigationController?.popViewController(animated: true)
+                    return
+                }
             },
             completion: completion
         )
-    }
-
-    @objc
-    private func trashAction() {
-        let continueAction = { [weak self] in
-            self?.viewModel.handleToolBarAction(.trash)
-            self?.viewModel.navigateToNextConversation(
-                isInPageView: self?.isInPageView ?? false,
-                popCurrentView: {
-                    self?.navigationController?.popViewController(animated: true)
-                }
-            )
-            self?.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .trash)
-        }
-        viewModel.searchForScheduled { [weak self] scheduledNum in
-            self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
-        } continueAction: {
-            continueAction()
-        }
     }
 
     @objc
@@ -943,13 +923,12 @@ extension ConversationViewController {
             moreButtonTapped()
         case .trash:
             let continueAction: () -> Void = { [weak self] in
+                self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.viewModel.navigateToNextConversation(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    )
+                    guard self?.isInPageView ?? false else {
+                        self?.navigationController?.popViewController(animated: true)
+                        return
+                    }
                 })
             }
             viewModel.searchForScheduled(displayAlert: { [weak self] scheduledNum in
@@ -962,13 +941,12 @@ extension ConversationViewController {
                 continueAction()
             })
         case .archive, .spam, .inbox, .spamMoveToInbox:
+            viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
             viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                self?.viewModel.navigateToNextConversation(
-                    isInPageView: self?.isInPageView ?? false,
-                    popCurrentView: {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                )
+                guard self?.isInPageView ?? false else {
+                    self?.navigationController?.popViewController(animated: true)
+                    return
+                }
             })
         case .viewHeaders, .viewHTML, .reportPhishing, .viewInDarkMode,
                 .viewInLightMode, .replyOrReplyAll:
@@ -1152,7 +1130,7 @@ extension ConversationViewController {
         let convMessages = viewModel.messagesDataSource.compactMap(\.message)
         let labelAsViewModel = LabelAsActionSheetViewModelConversationMessages(menuLabels: labels,
                                                                                conversationMessages: convMessages)
-        
+
         labelAsActionSheetPresenter.present(
             on: self.navigationController ?? self,
             listener: self,
@@ -1182,6 +1160,10 @@ extension ConversationViewController {
                 }
             },
             done: { [weak self] isArchive, currentOptionsStatus in
+                if isArchive {
+                    self?.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .archive)
+                    self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
+                }
                 if let conversation = self?.viewModel.conversation {
                     self?.labelAsActionHandler
                         .handleLabelAsAction(conversations: [conversation],
@@ -1190,13 +1172,6 @@ extension ConversationViewController {
                                              completion: nil)
                 }
                 self?.dismissActionSheet()
-                if isArchive {
-                    self?.viewModel.navigateToNextConversation(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: nil
-                    )
-                    self?.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .archive)
-                }
             }
         )
     }
@@ -1237,6 +1212,9 @@ extension ConversationViewController {
                          }
                      },
                      done: { [weak self] isArchive, currentOptionsStatus in
+                        if isArchive {
+                            self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
+                        }
                          self?.labelAsActionHandler
                              .handleLabelAsAction(messages: [message],
                                                   shouldArchive: isArchive,
@@ -1348,16 +1326,14 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             done: { [weak self] isHavingUnsavedChanges in
                 defer {
                     self?.dismissActionSheet()
-                    self?.viewModel.navigateToNextConversation(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    )
+                    if !(self?.isInPageView ?? false) {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 }
                 guard isHavingUnsavedChanges else {
                     return
                 }
+                self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
                 self?.moveToActionHandler.handleMoveToAction(messages: [message], isFromSwipeAction: false)
             }
         )
@@ -1407,12 +1383,9 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             done: { [weak self] isHavingUnsavedChanges in
                 defer {
                     self?.dismissActionSheet()
-                    self?.viewModel.navigateToNextConversation(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    )
+                    if !(self?.isInPageView ?? false) {
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 }
                 guard isHavingUnsavedChanges,
                       let conversation = self?.viewModel.conversation,
@@ -1429,6 +1402,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                                            undoActionType: .custom(destinationId))
                 }
 
+                self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
                 if self?.moveToActionHandler.selectedMoveToFolder?.location == .trash {
                     self?.viewModel.searchForScheduled(conversation: conversation,
                                                        displayAlert: { scheduledNum in
