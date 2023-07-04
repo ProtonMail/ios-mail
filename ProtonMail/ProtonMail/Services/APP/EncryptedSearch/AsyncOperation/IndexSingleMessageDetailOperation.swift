@@ -58,21 +58,25 @@ final class IndexSingleMessageDetailOperation: AsyncOperation {
         messageID: MessageID,
         completion: @escaping (Result<ESMessage, Swift.Error>) -> Void
     ) {
-        // TODO try to use FetchMessageDetail but need to get rid of ESMessage
+        // TODO: try to use FetchMessageDetail but need to get rid of ESMessage
         // And if core data contains the message, doesn't need to call API
         let request = MessageDetailRequest(messageID: messageID, priority: .lowestPriority)
-        apiService.perform(request: request, jsonDictionaryCompletion: { [weak self] _, result in
-            guard let self = self, !self.isCancelled else {
-                completion(.failure(BuildSearchIndex.IndexError.taskIsCancelled))
-                return
+        apiService.perform(
+            request: request,
+            callCompletionBlockUsing: .asyncExecutor(dispatchQueue: .global()),
+            jsonDictionaryCompletion: { [weak self] _, result in
+                guard let self = self, !self.isCancelled else {
+                    completion(.failure(BuildSearchIndex.IndexError.taskIsCancelled))
+                    return
+                }
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error))
+                case .success(let dict):
+                    self.parseMessageDetail(response: dict, completion: completion)
+                }
             }
-            switch result {
-            case .failure(let error):
-                completion(.failure(error))
-            case .success(let dict):
-                self.parseMessageDetail(response: dict, completion: completion)
-            }
-        })
+        )
     }
 
     private func parseMessageDetail(

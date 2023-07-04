@@ -78,7 +78,7 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol, EncryptedSea
     }
 
     func indexBuildingEstimatedProgress(for userID: UserID) -> BuildSearchIndexEstimatedProgress? {
-        buildSearchIndex(for: userID)?.estimatedProgress
+        buildSearchIndex(for: userID)?.estimatedProgress.value
     }
 
     func isIndexBuildingComplete(for userID: UserID) -> Bool {
