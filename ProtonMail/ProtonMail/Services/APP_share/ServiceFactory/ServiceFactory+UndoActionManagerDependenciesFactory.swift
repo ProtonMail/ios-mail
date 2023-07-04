@@ -47,7 +47,7 @@ extension ServiceFactory {
                 contextProvider: factory.get(),
                 isEditingScheduleMsg: false,
                 userIntroductionProgressProvider: factory.userCachedStatus,
-                internetStatusProvider: factory.get(),
+                internetStatusProvider: InternetConnectionStatusProvider.shared,
                 coreKeyMaker: factory.get(),
                 darkModeCache: factory.userCachedStatus,
                 mobileSignatureCache: factory.userCachedStatus,
