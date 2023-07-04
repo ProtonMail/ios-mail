@@ -30,8 +30,8 @@ class NewMessageBodyViewModelTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        let reachabilityStub = ReachabilityStub()
-        let internetConnectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
+        let connectionMonitor = MockConnectionMonitor()
+        let internetConnectionStatusProviderMock = InternetConnectionStatusProvider(connectionMonitor: connectionMonitor)
         apiServiceMock = .init()
         imageProxyMock = .init(apiService: apiServiceMock)
         sut = NewMessageBodyViewModel(

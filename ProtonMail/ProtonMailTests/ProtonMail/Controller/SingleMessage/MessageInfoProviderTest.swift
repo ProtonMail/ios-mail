@@ -34,6 +34,7 @@ final class MessageInfoProviderTest: XCTestCase {
     private var user: UserManager!
     private var mockFetchAttachment: MockFetchAttachment!
     private var imageTempUrl: URL!
+    private var internetConnectionProvider: MockInternetConnectionStatusProviderProtocol!
 
     private let systemUpTime = SystemUpTimeMock(
         localServerTime: TimeInterval(1635745851),
@@ -52,6 +53,8 @@ final class MessageInfoProviderTest: XCTestCase {
         apiMock = APIServiceMock()
         apiMock.sessionUIDStub.fixture = String.randomString(10)
         apiMock.dohInterfaceStub.fixture = DohMock()
+        internetConnectionProvider = MockInternetConnectionStatusProviderProtocol()
+        internetConnectionProvider.statusStub.fixture = .connectedViaWiFi
 
         featureFlagCache = .init()
 
@@ -83,7 +86,7 @@ final class MessageInfoProviderTest: XCTestCase {
                         senderImageService: .init(
                             dependencies: .init(
                                 apiService: user.apiService,
-                                internetStatusProvider: MockInternetConnectionStatusProviderProtocol())
+                                internetStatusProvider: internetConnectionProvider)
                         ),
                         mailSettings: user.mailSettings
                     )
@@ -110,6 +113,7 @@ final class MessageInfoProviderTest: XCTestCase {
         message = nil
         messageDecrypter = nil
         user = nil
+        internetConnectionProvider = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
         try super.tearDownWithError()

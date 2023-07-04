@@ -88,6 +88,10 @@ extension Notification.Name {
         return .init("shouldUpdateUserInterfaceStyle")
     }
 
+    static var tempNetworkError: Notification.Name {
+        return .init("tempNetworkError")
+    }
+
     static var pagesSwipeExpectation: Notification.Name {
        return .init(rawValue: "pagesSwipeExpectation")
     }

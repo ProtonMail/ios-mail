@@ -2,6 +2,7 @@
 // DO NOT EDIT
 import CoreData
 import LocalAuthentication
+import Network
 import ProtonCore_Crypto
 import ProtonCore_Environment
 import ProtonCore_Keymaker
@@ -152,6 +153,42 @@ class MockCachedUserDataProvider: CachedUserDataProvider {
     @FuncStub(MockCachedUserDataProvider.fetchDisconnectedUsers, initialReturn: [UsersManager.DisconnectedUserHandle]()) var fetchDisconnectedUsersStub
     func fetchDisconnectedUsers() -> [UsersManager.DisconnectedUserHandle] {
         fetchDisconnectedUsersStub()
+    }
+
+}
+
+class MockConnectionMonitor: ConnectionMonitor {
+    @PropertyStub(\MockConnectionMonitor.currentNWPath, initialGet: nil) var currentNWPathStub
+    var currentNWPath: NWPathProtocol? {
+        currentNWPathStub()
+    }
+
+    @PropertyStub(\MockConnectionMonitor.pathUpdateClosure, initialGet: nil) var pathUpdateClosureStub
+    var pathUpdateClosure: ((_ newPath: NWPathProtocol) -> Void)? {
+        get {
+            pathUpdateClosureStub()
+        }
+        set {
+            pathUpdateClosureStub(newValue)
+        }
+    }
+
+    @FuncStub(MockConnectionMonitor.start) var startStub
+    func start(queue: DispatchQueue) {
+        startStub(queue)
+    }
+
+    @FuncStub(MockConnectionMonitor.cancel) var cancelStub
+    func cancel() {
+        cancelStub()
+    }
+
+}
+
+class MockConnectionStatusReceiver: ConnectionStatusReceiver {
+    @FuncStub(MockConnectionStatusReceiver.connectionStatusHasChanged) var connectionStatusHasChangedStub
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        connectionStatusHasChangedStub(newStatus)
     }
 
 }
@@ -663,19 +700,24 @@ class MockIncomingDefaultServiceProtocol: IncomingDefaultServiceProtocol {
 }
 
 class MockInternetConnectionStatusProviderProtocol: InternetConnectionStatusProviderProtocol {
-    @PropertyStub(\MockInternetConnectionStatusProviderProtocol.currentStatus, initialGet: .connected) var currentStatusStub
-    var currentStatus: ConnectionStatus {
-        currentStatusStub()
+    @PropertyStub(\MockInternetConnectionStatusProviderProtocol.status, initialGet: .initialize) var statusStub
+    var status: ConnectionStatus {
+        statusStub()
     }
 
-    @FuncStub(MockInternetConnectionStatusProviderProtocol.registerConnectionStatus) var registerConnectionStatusStub
-    func registerConnectionStatus(observerID: UUID, fireAfterRegister: Bool, callback: @escaping (ConnectionStatus) -> Void) {
-        registerConnectionStatusStub(observerID, fireAfterRegister, callback)
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.register) var registerStub
+    func register(receiver: ConnectionStatusReceiver, fireWhenRegister: Bool) {
+        registerStub(receiver, fireWhenRegister)
     }
 
-    @FuncStub(MockInternetConnectionStatusProviderProtocol.unregisterObserver) var unregisterObserverStub
-    func unregisterObserver(observerID: UUID) {
-        unregisterObserverStub(observerID)
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.unRegister) var unRegisterStub
+    func unRegister(receiver: ConnectionStatusReceiver) {
+        unRegisterStub(receiver)
+    }
+
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.updateNewStatusToAll) var updateNewStatusToAllStub
+    func updateNewStatusToAll(_ newStatus: ConnectionStatus) {
+        updateNewStatusToAllStub(newStatus)
     }
 
 }
@@ -1007,6 +1049,24 @@ class MockMobileSignatureCacheProtocol: MobileSignatureCacheProtocol {
 
 }
 
+class MockNWPathProtocol: NWPathProtocol {
+    @PropertyStub(\MockNWPathProtocol.pathStatus, initialGet: nil) var pathStatusStub
+    var pathStatus: NWPath.Status? {
+        pathStatusStub()
+    }
+
+    @PropertyStub(\MockNWPathProtocol.isPossiblyConnectedThroughVPN, initialGet: Bool()) var isPossiblyConnectedThroughVPNStub
+    var isPossiblyConnectedThroughVPN: Bool {
+        isPossiblyConnectedThroughVPNStub()
+    }
+
+    @FuncStub(MockNWPathProtocol.usesInterfaceType, initialReturn: Bool()) var usesInterfaceTypeStub
+    func usesInterfaceType(_ type: NWInterface.InterfaceType) -> Bool {
+        usesInterfaceTypeStub(type)
+    }
+
+}
+
 class MockNewMessageBodyViewModelDelegate: NewMessageBodyViewModelDelegate {
     @FuncStub(MockNewMessageBodyViewModelDelegate.reloadWebView) var reloadWebViewStub
     func reloadWebView(forceRecreate: Bool) {
@@ -1295,6 +1355,22 @@ class MockToolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomization
         set {
             shouldHideToolbarCustomizeInfoBubbleViewStub(newValue)
         }
+    }
+
+}
+
+class MockURLSessionDataTaskProtocol: URLSessionDataTaskProtocol {
+    @FuncStub(MockURLSessionDataTaskProtocol.resume) var resumeStub
+    func resume() {
+        resumeStub()
+    }
+
+}
+
+class MockURLSessionProtocol: URLSessionProtocol {
+    @FuncStub(MockURLSessionProtocol.dataTask, initialReturn: .crash) var dataTaskStub
+    func dataTask(withRequest: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol {
+        dataTaskStub(withRequest, completionHandler)
     }
 
 }

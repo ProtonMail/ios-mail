@@ -29,7 +29,7 @@ class ConversationMessageViewModel {
     private let messageContentViewModelFactory = SingleMessageContentViewModelFactory()
     private let replacingEmailsMap: [String: EmailEntity]
     private let contactGroups: [ContactGroupVO]
-    private let internetStatusProvider: InternetConnectionStatusProvider
+    private let internetStatusProvider: InternetConnectionStatusProviderProtocol
     let highlightedKeywords: [String]
     private let goToDraft: (MessageID, Date?) -> Void
 
@@ -38,7 +38,7 @@ class ConversationMessageViewModel {
          user: UserManager,
          replacingEmailsMap: [String: EmailEntity],
          contactGroups: [ContactGroupVO],
-         internetStatusProvider: InternetConnectionStatusProvider,
+         internetStatusProvider: InternetConnectionStatusProviderProtocol,
          highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, Date?) -> Void
     ) {
@@ -91,6 +91,7 @@ class ConversationMessageViewModel {
         return messageContentViewModelFactory.createViewModel(
             context: context,
             user: user,
+            internetStatusProvider: internetStatusProvider,
             highlightedKeywords: highlightedKeywords,
             goToDraft: goToDraft
         )

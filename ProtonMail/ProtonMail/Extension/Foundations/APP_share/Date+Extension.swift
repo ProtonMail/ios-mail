@@ -101,31 +101,18 @@ extension Date {
 // MARK: Count expiration time
 extension Date {
 
-    static func getReferenceDate(processInfo: SystemUpTimeProtocol?) -> Date {
-        #if APP_EXTENSION
-            return Date.getReferenceDate(reachability: nil,
-                                         processInfo: processInfo)
-        #else
-            return Date.getReferenceDate(reachability: sharedInternetReachability,
-                                         processInfo: processInfo)
-        #endif
-    }
-
-    static func getReferenceDate(reachability: Reachability?,
+    static func getReferenceDate(connectionStatus: ConnectionStatus = InternetConnectionStatusProvider.shared.status,
                                  processInfo: SystemUpTimeProtocol?,
                                  deviceDate: Date = Date()) -> Date {
-        guard let reachability = reachability,
+        guard connectionStatus != .initialize,
               let processInfo = processInfo else {
-            // App extension doesn't have reachability
             return Date.getOfflineReferenceDate(processInfo: processInfo, deviceDate: deviceDate)
         }
 
-        let status = reachability.currentReachabilityStatus()
         let serverDate = Date(timeIntervalSince1970: processInfo.localServerTime)
-        switch status {
-        case .ReachableViaWWAN, .ReachableViaWiFi:
+        if connectionStatus.isConnected {
             return serverDate
-        default:
+        } else {
             // .NotReachable and other unknown cases
             return Date.getOfflineReferenceDate(processInfo: processInfo, deviceDate: deviceDate)
         }

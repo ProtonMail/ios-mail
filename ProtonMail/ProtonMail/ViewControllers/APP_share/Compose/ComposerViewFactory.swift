@@ -91,7 +91,7 @@ struct ComposerViewFactory {
         contextProvider: CoreDataContextProviderProtocol,
         isEditingScheduleMsg: Bool,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        internetStatusProvider: InternetConnectionStatusProvider,
+        internetStatusProvider: InternetConnectionStatusProviderProtocol,
         coreKeyMaker: KeyMakerProtocol,
         darkModeCache: DarkModeCacheProtocol,
         mobileSignatureCache: MobileSignatureCacheProtocol,

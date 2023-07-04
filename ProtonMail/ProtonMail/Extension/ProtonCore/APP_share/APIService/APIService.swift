@@ -149,7 +149,7 @@ extension PMAPIService {
         }
 
         func isReachable() -> Bool {
-            sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
+            InternetConnectionStatusProvider.shared.status.isConnected
         }
 
         func onDohTroubleshot() {

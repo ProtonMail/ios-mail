@@ -575,7 +575,7 @@ extension SearchViewController {
                     navigationController: navigation,
                     conversation: conversation,
                     user: self.viewModel.user,
-                    internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+                    internetStatusProvider: .shared,
                     infoBubbleViewStatusProvider: userCachedStatus,
                     highlightedKeywords: self.query.components(separatedBy: .whitespacesAndNewlines),
                     contextProvider: sharedServices.get(by: CoreDataService.self),

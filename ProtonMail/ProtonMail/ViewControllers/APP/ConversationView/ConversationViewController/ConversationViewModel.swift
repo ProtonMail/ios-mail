@@ -119,7 +119,7 @@ class ConversationViewModel {
             .allSatisfy { $0.message.contains(location: .archive) }
     }
 
-    let connectionStatusProvider: InternetConnectionStatusProvider
+    let connectionStatusProvider: InternetConnectionStatusProviderProtocol
     private let observerID = UUID()
     var isInitialDataFetchCalled = false
     private let conversationStateProvider: ConversationStateProviderProtocol
@@ -138,13 +138,15 @@ class ConversationViewModel {
     private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
     let highlightedKeywords: [String]
     let dependencies: Dependencies
+    private var isApplicationActive: (() -> Bool)?
+    private var reloadWhenAppIsActive: (() -> Void)?
 
     init(labelId: LabelID,
          conversation: ConversationEntity,
          coordinator: ConversationCoordinatorProtocol,
          user: UserManager,
          contextProvider: CoreDataContextProviderProtocol,
-         internetStatusProvider: InternetConnectionStatusProvider,
+         internetStatusProvider: InternetConnectionStatusProviderProtocol,
          conversationStateProvider: ConversationStateProviderProtocol,
          labelProvider: LabelProviderProtocol,
          userIntroductionProgressProvider: UserIntroductionProgressProvider,
@@ -306,22 +308,13 @@ class ConversationViewModel {
         }
     }
 
-    func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
-                                      reloadWhenAppIsActive: @escaping (Bool) -> Void) {
-        connectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] networkStatus in
-            guard self?.isInitialDataFetchCalled == true else {
-                return
-            }
-            let isApplicationActive = isApplicationActive()
-            switch isApplicationActive {
-            case true where networkStatus == .notConnected:
-                break
-            case true:
-                self?.fetchConversationDetails(completion: nil)
-            default:
-                reloadWhenAppIsActive(true)
-            }
-        }
+    func startMonitorConnectionStatus(
+        isApplicationActive: @escaping () -> Bool,
+        reloadWhenAppIsActive: @escaping () -> Void
+    ) {
+        self.isApplicationActive = isApplicationActive
+        self.reloadWhenAppIsActive = reloadWhenAppIsActive
+        connectionStatusProvider.register(receiver: self, fireWhenRegister: true)
     }
 
     func areAllMessagesIn(location: LabelLocation) -> Bool {
@@ -1282,5 +1275,27 @@ extension ConversationViewModel {
         case partial
         /// The cell is not visible.
         case hidden
+    }
+}
+
+// MARK: - ConnectionStatusReceiver
+extension ConversationViewModel: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        guard isInitialDataFetchCalled == true else {
+            return
+        }
+        guard let isApplicationActiveClosure = isApplicationActive,
+              let reloadWhenAppIsActiveClosure = reloadWhenAppIsActive else {
+            return
+        }
+        let isApplicationActive = isApplicationActiveClosure()
+        switch isApplicationActive {
+        case true where newStatus == .notConnected:
+            break
+        case true:
+            fetchConversationDetails(completion: nil)
+        default:
+            reloadWhenAppIsActiveClosure()
+        }
     }
 }

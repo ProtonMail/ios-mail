@@ -81,8 +81,8 @@ extension ComposeSaveHintProtocol {
 
     func showMessageSendingHintBanner(messageID: String,
                                       messageDataService: MessageDataProcessProtocol) {
-        let internetConnection = InternetConnectionStatusProvider()
-        guard internetConnection.currentStatus != .notConnected else {
+        let internetConnection = InternetConnectionStatusProvider.shared
+        guard internetConnection.status != .notConnected else {
             self.showMessageSendingOfflineHintBanner(messageID: messageID, messageDataService: messageDataService)
             return
         }

@@ -84,10 +84,6 @@ extension AppDelegate: TrustKitUIDelegate {
     }
 }
 
-//move to a manager class later
-let sharedInternetReachability: Reachability = Reachability.forInternetConnection()
-//let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
-
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
@@ -133,7 +129,6 @@ extension AppDelegate: UIApplicationDelegate {
                                                                   updateSwipeActionUseCase: updateSwipeActionUseCase))
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
-        sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
         sharedServices.add(EncryptedSearchUserDefaultCache.self, for: EncryptedSearchUserDefaultCache())
         sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
 
@@ -169,8 +164,6 @@ extension AppDelegate: UIApplicationDelegate {
         configureAppearance()
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true
-        //start network notifier
-        sharedInternetReachability.startNotifier()
         self.configureLanguage()
         /// configurePushService needs to be called in didFinishLaunchingWithOptions to make push
         /// notification actions work. This is because the app could be inactive when an action is triggered

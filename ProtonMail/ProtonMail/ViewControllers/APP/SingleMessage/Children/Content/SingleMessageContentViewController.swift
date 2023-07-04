@@ -86,8 +86,8 @@ class SingleMessageContentViewController: UIViewController {
 
         viewModel.startMonitorConnectionStatus { [weak self] in
             return self?.applicationStateProvider.applicationState == .active
-        } reloadWhenAppIsActive: { [weak self] value in
-            self?.shouldReloadWhenAppIsActive = value
+        } reloadWhenAppIsActive: { [weak self] in
+            self?.shouldReloadWhenAppIsActive = true
         }
 
         viewModel.showProgressHub = { [weak self] in

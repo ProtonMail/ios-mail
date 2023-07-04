@@ -22,6 +22,7 @@
 
 import PassKit
 import ProtonCore_UIFoundations
+import Reachability
 import QuickLook
 import UIKit
 
@@ -36,12 +37,18 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
 
     // Used in Quick Look dataSource
     private var tempClearFileURL: URL?
-    private var currentNetworkStatus: NetworkStatus = .NotReachable
+    private let internetConnectionStatusProvider: InternetConnectionStatusProvider
+    private var currentNetworkStatus: ConnectionStatus
 
-    init(viewModel: AttachmentListViewModel) {
+    init(
+        viewModel: AttachmentListViewModel,
+        internetConnectionStatusProvider: InternetConnectionStatusProvider = .shared
+    ) {
         self.viewModel = viewModel
+        self.internetConnectionStatusProvider = internetConnectionStatusProvider
+        self.currentNetworkStatus = internetConnectionStatusProvider.status
         super.init(nibName: nil, bundle: nil)
-
+        self.internetConnectionStatusProvider.register(receiver: self)
         setUpSubviews()
     }
 
@@ -68,11 +75,6 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
 
         title = String(format: LocalString._attachment, viewModel.normalAttachments.count)
 
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(reachabilityChanged(_:)),
-                                               name: NSNotification.Name.reachabilityChanged,
-                                               object: nil)
-
         self.bindDownloadEvent()
     }
 
@@ -84,7 +86,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.updateInterface(reachability: sharedInternetReachability)
+        self.updateInterface()
     }
 
     private func bindDownloadEvent() {
@@ -127,7 +129,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
                                    fileSize: sizeString,
                                    isDownloading: isDownloading)
 
-            if currentNetworkStatus == .NotReachable && !attachment.isDownloaded {
+            if !currentNetworkStatus.isConnected && !attachment.isDownloaded {
                 cellToConfig.selectionStyle = .none
             } else {
                 cellToConfig.selectionStyle = .default
@@ -256,9 +258,13 @@ private extension AttachmentListViewController {
 }
 
 // MARK: - Handle Network status changed
-private extension AttachmentListViewController {
+extension AttachmentListViewController: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        updateInterface()
+    }
+
     private func showInternetConnectionBanner() {
-        guard isInternetBannerPresented == false else { return }
+        guard isInternetBannerPresented == false, bannerHeightConstraint != nil else { return }
         let banner = MailBannerView()
         bannerContainer.addSubview(banner)
 
@@ -291,27 +297,15 @@ private extension AttachmentListViewController {
                        })
     }
 
-    private func updateInterface(reachability: Reachability) {
-        let netStatus = reachability.currentReachabilityStatus()
+    private func updateInterface() {
+        let netStatus = internetConnectionStatusProvider.status
         currentNetworkStatus = netStatus
-        switch netStatus {
-        case .NotReachable:
+        if netStatus.isConnected {
+            hideInternetConnectionBanner()
+        } else {
             showInternetConnectionBanner()
-        case .ReachableViaWWAN:
-            hideInternetConnectionBanner()
-        case .ReachableViaWiFi:
-            hideInternetConnectionBanner()
-        default:
-            break
         }
         tableView.reloadData()
-    }
-
-    @objc
-    private func reachabilityChanged(_ note: Notification) {
-        if let currentReachability = note.object as? Reachability {
-            self.updateInterface(reachability: currentReachability)
-        }
     }
 }
 

@@ -24,6 +24,14 @@ struct TaskCompletionHelper {
         static let networkResponseErrorKey = "com.alamofire.serialization.response.error.response"
     }
 
+    private let internetConnectionStatusProvider: InternetConnectionStatusProviderProtocol
+
+    init(
+        provider: InternetConnectionStatusProviderProtocol = InternetConnectionStatusProvider.shared
+    ) {
+        self.internetConnectionStatusProvider = provider
+    }
+
     func calculateIsInternetIssue(error: NSError, currentNetworkStatus: ConnectionStatus) -> Bool {
         var result = false
 
@@ -67,11 +75,8 @@ struct TaskCompletionHelper {
 
     func handleReachabilityChangedNotification(isTimeoutError: Bool, isInternetIssue: Bool) {
         // Show timeout error banner or not reachable banner in mailbox
-        if isTimeoutError {
-            NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 0, userInfo: nil))
-        } else if isInternetIssue {
-            NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 1, userInfo: nil))
-        }
+        let reason: ConnectionFailedReason = isTimeoutError ? .timeout : .internetIssue
+        NotificationCenter.default.post(Notification(name: .tempNetworkError, object: reason, userInfo: nil))
     }
 
     func parseStatusCodeIfErrorReceivedFromNetworkResponse(errorUserInfo: [String: Any]) -> Int? {
@@ -100,7 +105,10 @@ struct TaskCompletionHelper {
         if let statusCodeFromResponse = parseStatusCodeIfErrorReceivedFromNetworkResponse(errorUserInfo: errorUserInfo) {
             statusCode = statusCodeFromResponse
         } else {
-            isInternetIssue = calculateIsInternetIssue(error: error, currentNetworkStatus: InternetConnectionStatusProvider().currentStatus)
+            isInternetIssue = calculateIsInternetIssue(
+                error: error,
+                currentNetworkStatus: InternetConnectionStatusProvider.shared.status
+            )
 
             handleReachabilityChangedNotification(isTimeoutError: errorCode == NSURLErrorTimedOut,
                                                   isInternetIssue: isInternetIssue)

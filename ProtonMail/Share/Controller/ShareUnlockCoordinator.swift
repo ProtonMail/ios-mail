@@ -68,7 +68,7 @@ class ShareUnlockCoordinator {
         }
 
         let coreDataService = self.services.get(by: CoreDataService.self)
-        let internetStatusProvider = self.services.get(by: InternetConnectionStatusProvider.self)
+        let internetStatusProvider = InternetConnectionStatusProvider.shared
         let coreKeyMaker: KeyMakerProtocol = services.get()
         let composer = ComposerViewFactory.makeComposer(
             subject: controller.inputSubject,

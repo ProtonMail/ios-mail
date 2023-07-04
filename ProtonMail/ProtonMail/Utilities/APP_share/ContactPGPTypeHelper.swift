@@ -22,7 +22,7 @@ import ProtonCore_Services
 import ProtonCore_UIFoundations
 
 struct ContactPGPTypeHelper {
-    let internetConnectionStatusProvider: InternetConnectionStatusProvider
+    let internetConnectionStatusProvider: InternetConnectionStatusProviderProtocol
     let apiService: APIService
     /// Get from UserManager.UserInfo.sign
     let userSign: Int
@@ -32,7 +32,7 @@ struct ContactPGPTypeHelper {
     func calculateEncryptionIcon(email: String,
                                  isMessageHavingPWD: Bool,
                                  completion: @escaping (EncryptionIconStatus?, Int?) -> Void) {
-        if internetConnectionStatusProvider.currentStatus == .notConnected {
+        if internetConnectionStatusProvider.status == .notConnected {
             let result = calculateEncryptionIconLocally(email: email)
             completion(result.0, result.1)
         } else {

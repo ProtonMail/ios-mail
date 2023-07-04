@@ -118,7 +118,7 @@ class NewMessageBodyViewController: UIViewController {
 
         if let contents = self.viewModel.contents, !contents.body.isEmpty {
             self.loader.load(contents: contents, in: webView)
-        } else if viewModel.internetStatusProvider.currentStatus == .notConnected &&
+        } else if viewModel.internetStatusProvider.status == .notConnected &&
                     viewModel.contents == nil {
             prepareReloadView()
         } else {

@@ -35,6 +35,7 @@ class MailboxViewModelTests: XCTestCase {
     var labelProviderMock: MockLabelProviderProtocol!
     var contactProviderMock: MockContactProvider!
     var conversationProviderMock: MockConversationProvider!
+    var internetConnectionProvider: MockInternetConnectionStatusProviderProtocol!
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
@@ -56,6 +57,8 @@ class MailboxViewModelTests: XCTestCase {
         apiServiceMock = APIServiceMock()
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
+        internetConnectionProvider = MockInternetConnectionStatusProviderProtocol()
+        internetConnectionProvider.statusStub.fixture = .connectedViaWiFi
         let fakeAuth = AuthCredential(sessionID: "",
                                       accessToken: "",
                                       refreshToken: "",
@@ -149,6 +152,7 @@ class MailboxViewModelTests: XCTestCase {
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
+        internetConnectionProvider = nil
         apiServiceMock = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
@@ -1349,7 +1353,7 @@ extension MailboxViewModelTests {
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: userManagerMock.apiService,
-                            internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
+                            internetStatusProvider: internetConnectionProvider
                         )
                     ),
                     mailSettings: userManagerMock.mailSettings

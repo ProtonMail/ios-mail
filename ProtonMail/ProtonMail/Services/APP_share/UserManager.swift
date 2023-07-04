@@ -170,7 +170,7 @@ class UserManager: Service {
             dependencies: .init(
                 featureFlagService: featureFlagsDownloadService,
                 appRating: AppRatingManager(),
-                internetStatus: sharedServices.get(by: InternetConnectionStatusProvider.self),
+                internetStatus: InternetConnectionStatusProvider.shared,
                 appRatingPrompt: sharedServices.userCachedStatus
             )
         )
@@ -315,7 +315,7 @@ class UserManager: Service {
         return BlockedSenderCacheUpdater(
             dependencies: .init(
                 fetchStatusProvider: sharedServices.userCachedStatus,
-                internetConnectionStatusProvider: InternetConnectionStatusProvider(),
+                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared,
                 refetchAllBlockedSenders: refetchAllBlockedSenders,
                 userInfo: userInfo
             )

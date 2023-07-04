@@ -192,7 +192,7 @@ final class BuildSearchIndex {
     func didChangeDownloadViaMobileDataConfiguration() {
         indexingQueue.async { [weak self] in
             guard let self = self else { return }
-            let networkStatus = self.dependencies.connectionStatusProvider.currentStatus
+            let networkStatus = self.dependencies.connectionStatusProvider.status
             self.networkConditionsChanged(internetStatus: networkStatus)
         }
     }
@@ -275,7 +275,7 @@ final class BuildSearchIndex {
 // MARK: - prerequisite
 extension BuildSearchIndex {
     private func canBuildSearchIndex() -> Bool {
-        guard dependencies.connectionStatusProvider.currentStatus.isConnected else {
+        guard dependencies.connectionStatusProvider.status.isConnected else {
             interruptReason.insert(.noConnection)
             return false
         }
@@ -470,9 +470,7 @@ extension BuildSearchIndex {
     }
 
     private func registerForNetworkChange() {
-        dependencies.connectionStatusProvider.registerConnectionStatus(observerID: observerID, fireAfterRegister: false) { [weak self] status in
-            self?.networkConditionsChanged(internetStatus: status)
-        }
+        dependencies.connectionStatusProvider.register(receiver: self, fireWhenRegister: false)
     }
 
     /// Either the internet connection or the user network configuration has changed
@@ -501,6 +499,8 @@ extension BuildSearchIndex {
                 .connectedViaWiFiWithoutInternet,
                 .notConnected:
             break
+        case .initialize:
+            return
         }
     }
 
@@ -920,6 +920,12 @@ extension BuildSearchIndex {
         }
         currentState = newState
         delegate?.indexBuildingStateDidChange(state: newState)
+    }
+}
+
+extension BuildSearchIndex: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        networkConditionsChanged(internetStatus: newStatus)
     }
 }
 

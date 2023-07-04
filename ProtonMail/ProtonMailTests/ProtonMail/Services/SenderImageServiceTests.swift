@@ -35,7 +35,7 @@ final class SenderImageServiceTests: XCTestCase {
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
         internetStatusProviderMock = .init()
-        internetStatusProviderMock.currentStatusStub.fixture = .connected
+        internetStatusProviderMock.statusStub.fixture = .connected
         sut = .init(dependencies: .init(apiService: apiServiceMock,
                                         internetStatusProvider: internetStatusProviderMock))
 
@@ -160,7 +160,7 @@ final class SenderImageServiceTests: XCTestCase {
         wait(for: [e], timeout: 1)
 
         // turn offline
-        internetStatusProviderMock.currentStatusStub.fixture = .notConnected
+        internetStatusProviderMock.statusStub.fixture = .notConnected
 
         // check the image for dark mode.
         let e2 = expectation(description: "Closure is called")

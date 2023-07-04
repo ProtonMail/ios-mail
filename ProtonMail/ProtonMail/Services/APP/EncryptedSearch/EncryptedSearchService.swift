@@ -489,7 +489,7 @@ extension EncryptedSearchService {
 
     struct Dependencies {
         let esDefaultCache = EncryptedSearchUserDefaultCache()
-        let connectionStatusProvider = InternetConnectionStatusProvider()
+        let connectionStatusProvider = InternetConnectionStatusProvider.shared
         let usersManager = sharedServices.get(by: UsersManager.self)
     }
 }

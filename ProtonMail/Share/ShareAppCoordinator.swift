@@ -23,8 +23,6 @@
 import ProtonCore_Keymaker
 import UIKit
 
-let sharedInternetReachability: Reachability = Reachability.forInternetConnection()
-
 /// Main entry point to the app
 final class ShareAppCoordinator {
     // navigation controller instance -- entry
@@ -60,8 +58,6 @@ final class ShareAppCoordinator {
             )
         )
         sharedServices.add(UsersManager.self, for: usersManager)
-        sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
-
         self.loadUnlockCheckView()
     }
 

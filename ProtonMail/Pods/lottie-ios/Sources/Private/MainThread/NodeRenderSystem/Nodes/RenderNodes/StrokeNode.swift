@@ -118,7 +118,7 @@ final class StrokeNode: AnimatorNode, RenderNode {
 
     /// Get dash lengths
     let dashLengths = strokeProperties.dashPattern.value.map { $0.cgFloatValue }
-    if dashLengths.count > 0 {
+    if dashLengths.count > 0, dashLengths.isSupportedLayerDashPattern {
       strokeRender.dashPhase = strokeProperties.dashPhase.value.cgFloatValue
       strokeRender.dashLengths = dashLengths
     } else {
@@ -148,6 +148,33 @@ extension Array where Element == DashElement {
         dashPatterns.append(dash.value.keyframes)
       }
     }
+
+    dashPatterns = ContiguousArray(dashPatterns.map { pattern in
+      ContiguousArray(pattern.map { keyframe -> Keyframe<Vector1D> in
+        // The recommended way to create a stroke of round dots, in theory,
+        // is to use a value of 0 followed by the stroke width, but for
+        // some reason Core Animation incorrectly (?) renders these as pills
+        // instead of circles. As a workaround, for parity with Lottie on other
+        // platforms, we can change `0`s to `0.01`: https://stackoverflow.com/a/38036486
+        if keyframe.value.cgFloatValue == 0 {
+          return keyframe.withValue(Vector1D(0.01))
+        } else {
+          return keyframe
+        }
+      })
+    })
+
     return (dashPatterns, dashPhase)
+  }
+}
+
+extension Array where Element == CGFloat {
+  // If all of the items in the dash pattern are zeros, then we shouldn't attempt to render it.
+  // This causes Core Animation to have extremely poor performance for some reason, even though
+  // it doesn't affect the appearance of the animation.
+  //  - We check for `== 0.01` instead of `== 0` because `dashPattern.shapeLayerConfiguration`
+  //    converts all `0` values to `0.01` to work around a different Core Animation rendering issue.
+  var isSupportedLayerDashPattern: Bool {
+    !allSatisfy { $0 == 0.01 }
   }
 }

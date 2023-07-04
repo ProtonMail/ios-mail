@@ -81,6 +81,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             labelId: labelId,
             message: message,
             user: user,
+            internetStatusProvider: InternetConnectionStatusProvider.shared,
             highlightedKeywords: highlightedKeywords,
             coordinator: self,
             goToDraft: { [weak self] msgID, originalScheduleTime in
