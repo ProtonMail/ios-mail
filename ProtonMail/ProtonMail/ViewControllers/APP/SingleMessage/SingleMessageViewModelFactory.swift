@@ -28,6 +28,7 @@ class SingleMessageContentViewModelFactory {
     func createViewModel(
         context: SingleMessageContentViewContext,
         user: UserManager,
+        internetStatusProvider: InternetConnectionStatusProviderProtocol,
         highlightedKeywords: [String],
         goToDraft: @escaping (MessageID, Date?) -> Void
     ) -> SingleMessageContentViewModel {
@@ -44,8 +45,10 @@ class SingleMessageContentViewModelFactory {
         return .init(context: context,
                      childViewModels: childViewModels,
                      user: user,
+                     internetStatusProvider: internetStatusProvider,
                      dependencies: components.contentViewModelDependencies(
                         context: context,
+                        internetStatusProvider: internetStatusProvider,
                         highlightedKeywords: highlightedKeywords,
                         imageProxy: imageProxy,
                         user: user
@@ -62,6 +65,7 @@ class SingleMessageViewModelFactory {
     func createViewModel(labelId: LabelID,
                          message: MessageEntity,
                          user: UserManager,
+                         internetStatusProvider: InternetConnectionStatusProviderProtocol,
                          highlightedKeywords: [String],
                          coordinator: SingleMessageCoordinator,
                          goToDraft: @escaping (MessageID, Date?) -> Void) -> SingleMessageViewModel {
@@ -85,6 +89,7 @@ class SingleMessageViewModelFactory {
             contentViewModel: SingleMessageContentViewModelFactory().createViewModel(
                 context: contentContext,
                 user: user,
+                internetStatusProvider: internetStatusProvider,
                 highlightedKeywords: highlightedKeywords,
                 goToDraft: goToDraft
             ),
@@ -97,13 +102,13 @@ class SingleMessageViewModelFactory {
 class SingleMessageComponentsFactory {
     func contentViewModelDependencies(
         context: SingleMessageContentViewContext,
+        internetStatusProvider: InternetConnectionStatusProviderProtocol,
         highlightedKeywords: [String],
         imageProxy: ImageProxy,
         user: UserManager
     ) -> SingleMessageContentViewModel.Dependencies {
         let contextProvider = sharedServices.get(by: CoreDataService.self)
         let incomingDefaultService = user.incomingDefaultService
-        let internetStatusProvider = InternetConnectionStatusProvider()
         let queueManager = sharedServices.get(by: QueueManager.self)
 
         let blockSender = BlockSender(
@@ -175,7 +180,7 @@ class SingleMessageComponentsFactory {
     ) -> NewMessageBodyViewModel {
         return .init(
             spamType: spamType,
-            internetStatusProvider: InternetConnectionStatusProvider(),
+            internetStatusProvider: InternetConnectionStatusProvider.shared,
             linkConfirmation: user.userInfo.linkConfirmation,
             userKeys: user.toUserKeys(),
             imageProxy: imageProxy

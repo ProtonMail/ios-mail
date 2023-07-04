@@ -169,10 +169,7 @@ extension LabelEditViewModel {
     }
 
     private var hasNetworking: Bool {
-        guard let reachability = Reachability.forInternetConnection() else {
-            return false
-        }
-        return reachability.currentReachabilityStatus() != .NotReachable
+        InternetConnectionStatusProvider.shared.status.isConnected
     }
 }
 

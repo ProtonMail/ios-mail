@@ -18,29 +18,46 @@
 import Foundation
 import Network
 
+// sourcery: mock
 protocol ConnectionMonitor: AnyObject {
-    @available(iOS 12.0, *)
-    var currentNWPath: NWPath? { get }
-    @available(iOS 12.0, *)
-    var pathUpdateHandler: ((_ newPath: NWPath) -> Void)? { get set }
+    var currentNWPath: NWPathProtocol? { get }
+    var pathUpdateClosure: ((_ newPath: NWPathProtocol) -> Void)? { get set }
 
     func start(queue: DispatchQueue)
     func cancel()
 }
 
-@available(iOS 12.0, *)
 extension NWPathMonitor: ConnectionMonitor {
-    var currentNWPath: NWPath? {
+    var currentNWPath: NWPathProtocol? {
         return currentPath
+    }
+
+    var pathUpdateClosure: ((_ newPath: NWPathProtocol) -> Void)? {
+        get {
+            nil
+        }
+        set {
+            pathUpdateHandler = newValue
+        }
     }
 }
 
-class ConnectionMonitorFactory {
-    static func makeMonitor() -> ConnectionMonitor? {
-        if #available(iOS 12, *) {
-            return NWPathMonitor()
-        } else {
-            return nil
-        }
+// sourcery: mock
+protocol NWPathProtocol {
+    var pathStatus: NWPath.Status? { get }
+    var isPossiblyConnectedThroughVPN: Bool { get }
+
+    func usesInterfaceType(_ type: NWInterface.InterfaceType) -> Bool
+}
+
+extension NWPathProtocol {
+    var isPossiblyConnectedThroughVPN: Bool {
+        usesInterfaceType(.other)
+    }
+}
+
+extension NWPath: NWPathProtocol {
+    var pathStatus: Status? {
+        status
     }
 }

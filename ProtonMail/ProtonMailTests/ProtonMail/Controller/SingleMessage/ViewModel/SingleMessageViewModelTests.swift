@@ -273,6 +273,7 @@ final class SingleMessageViewModelTests: XCTestCase {
             contentViewModel: SingleMessageContentViewModelFactory().createViewModel(
                 context: context,
                 user: fakeUser,
+                internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
                 highlightedKeywords: [],
                 goToDraft: { _, _ in }
             ),

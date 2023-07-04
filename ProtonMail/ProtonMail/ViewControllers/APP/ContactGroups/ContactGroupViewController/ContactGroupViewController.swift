@@ -64,9 +64,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
 
     private var refreshControl: UIRefreshControl?
     private var searchController: UISearchController?
-
-    private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
-    private let observerID = UUID()
+    private let internetConnectionStatusProvider = InternetConnectionStatusProvider.shared
 
     @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private var searchView: UIView!
@@ -347,24 +345,19 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     }
 
     @objc func fireFetch() {
-        internetConnectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
-            guard status.isConnected else {
-                DispatchQueue.main.async {
-                    self?.refreshControl?.endRefreshing()
-                }
-                return
+        guard internetConnectionStatusProvider.status.isConnected else {
+            DispatchQueue.main.async {
+                self.refreshControl?.endRefreshing()
             }
-
+            return
+        }
+        self.viewModel.fetchLatestContactGroup { [weak self] error in
             guard let self = self else { return }
 
-            self.viewModel.fetchLatestContactGroup { [weak self] error in
-                guard let self = self else { return }
-
-                if let error = error {
-                    error.alert(at: self.view)
-                } else {
-                    self.refreshControl?.endRefreshing()
-                }
+            if let error = error {
+                error.alert(at: self.view)
+            } else {
+                self.refreshControl?.endRefreshing()
             }
         }
     }
@@ -497,7 +490,7 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
             contextProvider: sharedServices.get(by: CoreDataService.self),
             isEditingScheduleMsg: false,
             userIntroductionProgressProvider: sharedServices.userCachedStatus,
-            internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+            internetStatusProvider: internetConnectionStatusProvider,
             coreKeyMaker: sharedServices.get(),
             darkModeCache: sharedServices.userCachedStatus,
             mobileSignatureCache: sharedServices.userCachedStatus,

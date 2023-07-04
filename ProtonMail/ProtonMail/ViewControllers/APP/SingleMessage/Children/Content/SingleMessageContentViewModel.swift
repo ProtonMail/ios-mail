@@ -46,6 +46,8 @@ class SingleMessageContentViewModel {
     let goToDraft: ((MessageID, Date?) -> Void)
     var showProgressHub: (() -> Void)?
     var hideProgressHub: (() -> Void)?
+    private var isApplicationActive: (() -> Bool)?
+    private var reloadWhenAppIsActive: (() -> Void)?
 
     var isEmbedInConversationView: Bool {
         context.viewMode == .conversation
@@ -54,7 +56,7 @@ class SingleMessageContentViewModel {
     let context: SingleMessageContentViewContext
     let user: UserManager
 
-    private let internetStatusProvider = InternetConnectionStatusProvider()
+    private let internetStatusProvider: InternetConnectionStatusProviderProtocol
     private let messageService: MessageDataService
     private let observerID = UUID()
 
@@ -105,6 +107,7 @@ class SingleMessageContentViewModel {
     init(context: SingleMessageContentViewContext,
          childViewModels: SingleMessageChildViewModels,
          user: UserManager,
+         internetStatusProvider: InternetConnectionStatusProviderProtocol,
          dependencies: Dependencies,
          highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, Date?) -> Void) {
@@ -115,6 +118,7 @@ class SingleMessageContentViewModel {
         self.bannerViewModel = childViewModels.bannerViewModel
         self.attachmentViewModel = childViewModels.attachments
         self.messageService = user.messageService
+        self.internetStatusProvider = internetStatusProvider
         self.dependencies = dependencies
         self.goToDraft = goToDraft
 
@@ -186,7 +190,7 @@ class SingleMessageContentViewModel {
             }
             return
         }
-        guard internetStatusProvider.currentStatus != .notConnected else {
+        guard internetStatusProvider.status != .notConnected else {
             messageBodyViewModel.errorHappens()
             return
         }
@@ -279,24 +283,10 @@ class SingleMessageContentViewModel {
     }
 
     func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
-                                      reloadWhenAppIsActive: @escaping (Bool) -> Void) {
-        internetStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] networkStatus in
-            guard self?.message.body.isEmpty == true else {
-                return
-            }
-            guard self?.hasAlreadyFetchedMessageData == true else {
-                return
-            }
-            let isApplicationActive = isApplicationActive()
-            switch isApplicationActive {
-            case true where networkStatus == .notConnected:
-                break
-            case true:
-                self?.downloadDetails()
-            default:
-                reloadWhenAppIsActive(true)
-            }
-        }
+                                      reloadWhenAppIsActive: @escaping () -> Void) {
+        self.isApplicationActive = isApplicationActive
+        self.reloadWhenAppIsActive = reloadWhenAppIsActive
+        internetStatusProvider.register(receiver: self, fireWhenRegister: true)
     }
 
     func set(uiDelegate: SingleMessageContentUIProtocol) {
@@ -375,6 +365,28 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
     func trackerProtectionSummaryChanged() {
         DispatchQueue.main.async {
             self.uiDelegate?.trackerProtectionSummaryChanged()
+        }
+    }
+}
+
+extension SingleMessageContentViewModel: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        guard message.body.isEmpty == true else {
+            return
+        }
+        guard hasAlreadyFetchedMessageData == true,
+              let isApplicationActiveClosure = isApplicationActive,
+              let reloadWhenAppIsActiveClosure = reloadWhenAppIsActive else {
+            return
+        }
+        let isApplicationActive = isApplicationActiveClosure()
+        switch isApplicationActive {
+        case true where newStatus == .notConnected:
+            break
+        case true:
+            downloadDetails()
+        default:
+            reloadWhenAppIsActiveClosure()
         }
     }
 }

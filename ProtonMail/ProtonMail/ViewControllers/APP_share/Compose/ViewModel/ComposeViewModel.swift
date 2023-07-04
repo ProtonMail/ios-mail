@@ -1109,7 +1109,7 @@ extension ComposeViewModel {
         let coreDataContextProvider: CoreDataContextProviderProtocol
         let coreKeyMaker: KeyMakerProtocol
         let fetchAndVerifyContacts: FetchAndVerifyContactsUseCase
-        let internetStatusProvider: InternetConnectionStatusProvider
+        let internetStatusProvider: InternetConnectionStatusProviderProtocol
         let fetchAttachment: FetchAttachmentUseCase
         let contactProvider: ContactProviderProtocol
         let helperDependencies: ComposerMessageHelper.Dependencies

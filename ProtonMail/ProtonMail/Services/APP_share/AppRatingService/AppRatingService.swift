@@ -63,7 +63,7 @@ final class AppRatingService {
 
     private func promptAppRatingIfConditionsAreMet() {
         guard
-            dependencies.internetStatus.currentStatus.isConnected,
+            dependencies.internetStatus.status.isConnected,
             dependencies.appRatingStatusProvider.isAppRatingEnabled(),
             !dependencies.appRatingStatusProvider.hasAppRatingBeenShownInCurrentVersion(),
             isInboxNavigationConditionMet
@@ -118,7 +118,7 @@ extension AppRatingService {
         init(
             featureFlagService: FeatureFlagsDownloadServiceProtocol,
             appRating: AppRatingWrapper,
-            internetStatus: InternetConnectionStatusProviderProtocol,
+            internetStatus: InternetConnectionStatusProviderProtocol = InternetConnectionStatusProvider.shared,
             appRatingPrompt: AppRatingStatusProvider,
             notificationCenter: NotificationCenter = .default
         ) {

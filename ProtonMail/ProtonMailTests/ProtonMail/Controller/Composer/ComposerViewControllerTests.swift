@@ -92,7 +92,7 @@ extension ComposerViewControllerTests {
             contextProvider: contextProviderMock,
             isEditingScheduleMsg: true,
             userIntroductionProgressProvider: MockUserIntroductionProgressProvider(),
-            internetStatusProvider: .init(),
+            internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
             coreKeyMaker: MockKeyMakerProtocol(),
             darkModeCache: MockDarkModeCacheProtocol(),
             mobileSignatureCache: MockMobileSignatureCacheProtocol(),

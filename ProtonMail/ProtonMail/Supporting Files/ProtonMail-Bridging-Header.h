@@ -29,9 +29,6 @@
 //try catch objective-c
 #import "SwiftTryCatch.h"
 
-//network check
-#import "Reachability.h"
-
 //localization
 #import "NSBundle+Language.h"
 

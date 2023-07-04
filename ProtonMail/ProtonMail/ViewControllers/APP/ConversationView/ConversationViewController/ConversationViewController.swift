@@ -336,9 +336,9 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         }
 
         viewModel.startMonitorConnectionStatus { [weak self] in
-            self?.applicationStateProvider.applicationState == .active
-        } reloadWhenAppIsActive: { [weak self] value in
-            self?.shouldReloadWhenAppIsActive = value
+            return self?.applicationStateProvider.applicationState == .active
+        } reloadWhenAppIsActive: { [weak self] in
+            self?.shouldReloadWhenAppIsActive = true
         }
 
         viewModel.viewModeIsChanged = { [weak self] _ in

@@ -424,7 +424,7 @@ extension MenuCoordinator {
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: user.apiService,
-                            internetStatusProvider: InternetConnectionStatusProvider()
+                            internetStatusProvider: InternetConnectionStatusProvider.shared
                         )
                     ),
                     mailSettings: user.mailSettings

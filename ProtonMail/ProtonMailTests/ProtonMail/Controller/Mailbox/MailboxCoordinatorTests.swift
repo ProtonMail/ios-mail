@@ -23,7 +23,7 @@ class MailboxCoordinatorTests: XCTestCase {
 
     var sut: MailboxCoordinator!
     var viewModelMock: MockMailBoxViewModel!
-    var reachabilityStub: ReachabilityStub!
+    var connectionStatusProviderMock: MockInternetConnectionStatusProviderProtocol!
     var applicationStateStub: UIApplication.State = .active
 
     private var conversationStateProviderMock: MockConversationStateProviderProtocol!
@@ -32,7 +32,6 @@ class MailboxCoordinatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-
         let dummyServices = ServiceFactory()
         dummyAPIService = APIServiceMock()
         let dummyUser = UserManager(api: dummyAPIService, role: .none)
@@ -51,6 +50,7 @@ class MailboxCoordinatorTests: XCTestCase {
         let infoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         let toolbarActionProviderMock = MockToolbarActionProvider()
         let saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
+        connectionStatusProviderMock = MockInternetConnectionStatusProviderProtocol()
 
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
@@ -88,9 +88,6 @@ class MailboxCoordinatorTests: XCTestCase {
                                                  0
                                              })
 
-        reachabilityStub = ReachabilityStub()
-        let connectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: .default, reachability: reachabilityStub)
-
         sut = MailboxCoordinator(sideMenu: nil,
                                  nav: uiNavigationControllerMock,
                                  viewController: mailboxViewControllerMock,
@@ -113,15 +110,15 @@ class MailboxCoordinatorTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
+        connectionStatusProviderMock = nil
         conversationStateProviderMock = nil
         dummyAPIService = nil
         uiNavigationControllerMock = nil
-        reachabilityStub = nil
         viewModelMock = nil
     }
 
     func testFetchConversationFromBEIfNeeded_withNoConnection() {
-        reachabilityStub.currentReachabilityStatusStub = .NotReachable
+        connectionStatusProviderMock.statusStub.fixture = .notConnected
         let expectation1 = expectation(description: "closure is called")
 
         sut.fetchConversationFromBEIfNeeded(conversationID: "") {
@@ -133,7 +130,7 @@ class MailboxCoordinatorTests: XCTestCase {
 
     func testFetchConversationFromBEIfNeeded_withConnectionAndAppIsActive() throws {
         applicationStateStub = .active
-        reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
+        connectionStatusProviderMock.statusStub.fixture = .connectedViaWiFi
         let conversationID: ConversationID = "testID"
         let expectation1 = expectation(description: "closure is called")
 
@@ -148,7 +145,7 @@ class MailboxCoordinatorTests: XCTestCase {
 
     func testFetchConversationFromBEIfNeeded_withConnectionAndAppIsInactive() throws {
         applicationStateStub = .inactive
-        reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
+        connectionStatusProviderMock.statusStub.fixture = .connectedViaWiFi
         let conversationID: ConversationID = "testID"
         let expectation1 = expectation(description: "closure is called")
 

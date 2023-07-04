@@ -139,9 +139,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private var customUnreadFilterElement: UIAccessibilityElement?
     private var diffableDataSource: MailboxDataSource?
-
-    let connectionStatusProvider = InternetConnectionStatusProvider()
-    private let observerID = UUID()
+    let connectionStatusProvider = InternetConnectionStatusProvider.shared
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
@@ -271,15 +269,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         setupAccessibility()
 
         inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
-
-        connectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] newStatus in
-            self?.updateInterface(connectionStatus: newStatus)
-        }
+        connectionStatusProvider.register(receiver: self)
 
         NotificationCenter.default
             .addObserver(self,
                          selector: #selector(preferredContentSizeChanged(_:)),
                          name: UIContentSizeCategory.didChangeNotification,
+                         object: nil)
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(tempNetworkError(_:)),
+                         name: .tempNetworkError,
                          object: nil)
         viewModel.initializeEncryptedSearchIfNeeded()
     }
@@ -337,7 +337,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.viewModel.processCachedPush()
         self.viewModel.checkStorageIsCloseLimit()
 
-        self.updateInterface(connectionStatus: connectionStatusProvider.currentStatus)
+        self.updateInterface(connectionStatus: connectionStatusProvider.status)
 
         if let selectedItem = self.tableView.indexPathForSelectedRow, !self.viewModel.isInDraftFolder {
             self.tableView.deselectRow(at: selectedItem, animated: true)
@@ -360,6 +360,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         // Somehow unreadFilterButton can't reflect font size change automatically
         // reset font again when user preferred font size changed
         unreadFilterButton.titleLabel?.font = .preferredFont(for: .footnote, weight: .semibold)
+    }
+
+    @objc
+    private func tempNetworkError(_ notification: Notification) {
+        DispatchQueue.main.async {
+            guard let error = notification.object as? ConnectionFailedReason else { return }
+            switch error {
+            case .timeout:
+                self.showTimeOutErrorMessage()
+            case .internetIssue:
+                self.showInternetConnectionBanner()
+            }
+        }
     }
 
     private func setupScreenEdgeGesture() {
@@ -834,8 +847,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func handleRequestError(_ error: NSError) {
-        guard sharedInternetReachability.currentReachabilityStatus() != .NotReachable else { return }
-        guard checkDoh(error) == false else { return }
+        guard connectionStatusProvider.status.isConnected,
+              checkDoh(error) == false else { return }
 
         let errorCode: Int
         let systemErrorsImportantForUser = [
@@ -1043,7 +1056,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 return
             }
 
-            guard connectionStatusProvider.currentStatus.isConnected, !message.messageID.hasLocalFormat else {
+            guard connectionStatusProvider.status.isConnected, !message.messageID.hasLocalFormat else {
                 defer {
                     self.updateTapped(status: false)
                 }
@@ -2206,7 +2219,7 @@ extension MailboxViewController: UITableViewDelegate {
                 let recordedCount = totalMessage
                 // here need add a counter to check if tried too many times make one real call in case count not right
                 if isNew || recordedCount > sectionCount {
-                    guard connectionStatusProvider.currentStatus.isConnected else {
+                    guard connectionStatusProvider.status.isConnected else {
                         return
                     }
                     self.fetchingOlder = true
@@ -2529,6 +2542,13 @@ extension MailboxViewController: UndoActionHandlerBase {
 
     var composerPresentingVC: UIViewController? {
         self
+    }
+}
+
+// MARK: - ConnectionStatusReceiver
+extension MailboxViewController: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        updateInterface(connectionStatus: newStatus)
     }
 }
 

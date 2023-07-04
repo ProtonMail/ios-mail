@@ -23,20 +23,14 @@ import XCTest
 
 class ContactPGPTypeHelperTests: XCTestCase {
     var sut: ContactPGPTypeHelper!
-    var reachabilityStub: ReachabilityStub!
-    var internetConnectionStatusProviderStub: InternetConnectionStatusProvider!
+    var internetConnectionStatusProviderStub: MockInternetConnectionStatusProviderProtocol!
     var apiServiceMock: APIServiceMock!
     var localContactsStub: [PreContact] = []
 
-    override func setUp() {
-        super.setUp()
-        reachabilityStub = ReachabilityStub()
-        reachabilityStub.currentReachabilityStatusStub = .ReachableViaWWAN
-        internetConnectionStatusProviderStub = InternetConnectionStatusProvider(
-            notificationCenter: NotificationCenter(),
-            reachability: reachabilityStub,
-            connectionMonitor: nil
-        )
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        internetConnectionStatusProviderStub = .init()
+        internetConnectionStatusProviderStub.statusStub.fixture = .connectedViaCellular
         apiServiceMock = APIServiceMock()
     }
 
@@ -44,14 +38,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         super.tearDown()
         sut = nil
         internetConnectionStatusProviderStub = nil
-        reachabilityStub = nil
         apiServiceMock = nil
         localContactsStub = []
     }
 
     func testCalculateEncryptionIcon_withNoInternet_nonPMValidEmail_returnNil() {
         let mail = "test@mail.com"
-        reachabilityStub.currentReachabilityStatusStub = .NotReachable
+        internetConnectionStatusProviderStub.statusStub.fixture = .notConnected
         sut = ContactPGPTypeHelper(
             internetConnectionStatusProvider: internetConnectionStatusProviderStub,
             apiService: apiServiceMock,
@@ -74,7 +67,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
 
     func testCalculateEncryptionIcon_withNoInternet_PMValidEmail_returnLockIcon() {
         let mails = ["test@pm.me", "test@protonmail.com", "test@protonmail.ch", "test@proton.me"]
-        reachabilityStub.currentReachabilityStatusStub = .NotReachable
+        internetConnectionStatusProviderStub.statusStub.fixture = .notConnected
         sut = ContactPGPTypeHelper(
             internetConnectionStatusProvider: internetConnectionStatusProviderStub,
             apiService: apiServiceMock,
@@ -104,7 +97,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
 
     func testCalculateEncryptionIcon_withNoInternet_invalidEmail_returnErrorIcon() {
         let mail = "test@mailcom"
-        reachabilityStub.currentReachabilityStatusStub = .NotReachable
+        internetConnectionStatusProviderStub.statusStub.fixture = .notConnected
         sut = ContactPGPTypeHelper(
             internetConnectionStatusProvider: internetConnectionStatusProviderStub,
             apiService: apiServiceMock,

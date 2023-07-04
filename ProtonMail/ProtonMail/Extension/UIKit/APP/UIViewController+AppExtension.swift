@@ -20,11 +20,7 @@ import UIKit
 
 extension UIViewController {
     var isOnline: Bool {
-        guard let reachability = Reachability.forInternetConnection(),
-              reachability.currentReachabilityStatus() != .NotReachable else {
-            return false
-        }
-        return true
+        InternetConnectionStatusProvider.shared.status.isConnected
     }
 
     func setPresentationStyleForSelfController(_ selfController: UIViewController,

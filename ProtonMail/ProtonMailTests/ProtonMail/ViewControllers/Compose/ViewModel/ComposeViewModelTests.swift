@@ -60,7 +60,7 @@ final class ComposeViewModelTests: XCTestCase {
             coreDataContextProvider: mockCoreDataService,
             coreKeyMaker: MockKeyMakerProtocol(),
             fetchAndVerifyContacts: .init(),
-            internetStatusProvider: .init(),
+            internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
             fetchAttachment: .init(),
             contactProvider: contactProvider,
             helperDependencies: helperDependencies,

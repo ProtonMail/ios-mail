@@ -152,7 +152,6 @@ excluded:
   - ${PWD}/ProtonMail/Utilities/APP_share/MimeParser/Header.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/MimeParser/QuotedPrintable.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/FontManager.swift
-  - ${PWD}/ProtonMail/Utilities/APP_share/ConnectionStatus/InternetConnectionStatusProvider.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/WebContentsSecureLoader/WebContentsSecureLoader.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/TrustKitWrapper.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/WebContentsSecureLoader/HTTPRequestSecureLoader.swift

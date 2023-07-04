@@ -53,8 +53,7 @@ final class QueueManager: Service, UserStatusInQueueProtocol, QueueHandlerRegist
     private let messageQueue: PMPersistentQueueProtocol
     /// Handle actions exclude sending message related things
     private let miscQueue: PMPersistentQueueProtocol
-    private let internetStatusProvider = InternetConnectionStatusProvider()
-    private let observerID = UUID()
+    private let internetStatusProvider = InternetConnectionStatusProvider.shared
     private var connectionStatus: ConnectionStatus? {
         willSet {
             guard let previousStatus = connectionStatus,
@@ -84,10 +83,7 @@ final class QueueManager: Service, UserStatusInQueueProtocol, QueueHandlerRegist
         self.messageQueue = messageQueue
         self.miscQueue = miscQueue
 
-        
-        internetStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
-            self?.connectionStatus = status
-        }
+        internetStatusProvider.register(receiver: self)
         #if !APP_EXTENSION
         trackLifetime()
         #endif
@@ -337,7 +333,7 @@ extension QueueManager {
     }
 
     private func dequeueIfNeeded() {
-        guard internetStatusProvider.currentStatus != .notConnected,
+        guard internetStatusProvider.status != .notConnected,
               self.checkQueueStatus() == .running,
               self.allowedToDequeue() else {return}
         if !self.hasDequeued {
@@ -442,6 +438,7 @@ extension QueueManager {
                 category: .queue
             )
             _ = self.miscQueue.remove(task.uuid)
+            dequeueMiscQueue()
             return
         }
         let action = task.action
@@ -656,6 +653,13 @@ extension QueueManager {
                       dependencyIDs: dependencyIDs,
                       isConversation: isConversation)
         }
+    }
+}
+
+// MARK: - ConnectionStatusReceiver
+extension QueueManager: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        connectionStatus = newStatus
     }
 }
 

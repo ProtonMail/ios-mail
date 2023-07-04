@@ -27,7 +27,6 @@ protocol BlockedSenderCacheUpdaterDelegate: AnyObject {
 
 final class BlockedSenderCacheUpdater {
     private let dependencies: Dependencies
-    private let observerID = UUID()
 
     // Side effects cannot be happening synchronously in didSet, because they might write to the `state` property themselves.
     // That would result in nested execution and issues like the delegate receiving events in reverse order.
@@ -45,7 +44,6 @@ final class BlockedSenderCacheUpdater {
                 PMAssertionFailure(errorMessage)
                 return
             }
-
             // capture state as a local constant before it is mutated
             sideEffectQueue.async { [state, weak self] in
                 guard let self = self else {
@@ -105,7 +103,7 @@ final class BlockedSenderCacheUpdater {
     }
 
     private func attemptUpdateIfOnline() {
-        if dependencies.internetConnectionStatusProvider.currentStatus.isConnected {
+        if dependencies.internetConnectionStatusProvider.status.isConnected {
             state = .updateInProgress
         } else {
             state = .waitingToBecomeOnline
@@ -113,18 +111,11 @@ final class BlockedSenderCacheUpdater {
     }
 
     private func registerForConnectivityUpdates() {
-        dependencies.internetConnectionStatusProvider.registerConnectionStatus(
-            observerID: observerID,
-            fireAfterRegister: true
-        ) { [weak self] status in
-            if status.isConnected {
-                self?.state = .updateInProgress
-            }
-        }
+        dependencies.internetConnectionStatusProvider.register(receiver: self, fireWhenRegister: true)
     }
 
     private func unregisterFromConnectivityUpdates() {
-        dependencies.internetConnectionStatusProvider.unregisterObserver(observerID: observerID)
+        dependencies.internetConnectionStatusProvider.unRegister(receiver: self)
     }
 
     private func beginUpdate() {
@@ -141,6 +132,14 @@ final class BlockedSenderCacheUpdater {
     private func scheduleRetry() {
         Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
             self?.state = .updateRequested
+        }
+    }
+}
+
+extension BlockedSenderCacheUpdater: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        if newStatus.isConnected {
+            state = .updateInProgress
         }
     }
 }

@@ -115,8 +115,8 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 
     func allowScheduledSend(completion: @escaping (Bool) -> Void) {
-        let connectionStatusProvider = InternetConnectionStatusProvider()
-        let status = connectionStatusProvider.currentStatus
+        let connectionStatusProvider = InternetConnectionStatusProvider.shared
+        let status = connectionStatusProvider.status
         guard status.isConnected else {
             checkLocalScheduledMessage(completion: completion)
             return
