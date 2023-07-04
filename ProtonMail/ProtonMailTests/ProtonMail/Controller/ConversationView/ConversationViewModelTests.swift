@@ -504,31 +504,31 @@ class ConversationViewModelTests: XCTestCase {
         XCTAssertFalse(sut.shouldShowToolbarCustomizeSpotlight())
     }
 
-    func testNavigateToNextConversation_withFlagIsFalse_coordinatorShouldNotBeCalled() {
+    func testSendSwipeNotification_withFlagIsFalse_notificationShouldNotSend() {
         let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
         e.isInverted = true
         nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = false
 
-        sut.navigateToNextConversation(isInPageView: true)
+        sut.sendSwipeNotificationIfNeeded(isInPageView: true)
 
         wait(for: [e], timeout: 2)
     }
 
-    func testNavigateToNextConversation_withFlagIsTrue_coordinatorIsCalled() {
+    func testSendSwipeNotification_withFlagIsTrue_notificationIsSent() {
         let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
         nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
 
-        sut.navigateToNextConversation(isInPageView: true)
+        sut.sendSwipeNotificationIfNeeded(isInPageView: true)
 
         wait(for: [e], timeout: 1)
 	}
 
-    func testNavigateToNextConversation_withFlagIsTrue_notInPageView_coordinatorShouldNotBeCalled() {
+    func testSendSwipeNotification_withFlagIsTrue_notInPageView_notificationDoesNotSend() {
         let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
         e.isInverted = true
         nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
 
-        sut.navigateToNextConversation(isInPageView: false)
+        sut.sendSwipeNotificationIfNeeded(isInPageView: false)
 
         wait(for: [e], timeout: 2)
     }

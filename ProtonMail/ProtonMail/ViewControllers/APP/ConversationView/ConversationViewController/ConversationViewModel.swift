@@ -919,14 +919,11 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
         coordinator.handle(navigationAction: action)
     }
 
-    func navigateToNextConversation(isInPageView: Bool, popCurrentView: (() -> Void)? = nil) {
-        guard isInPageView else {
-            popCurrentView?()
-            return
-        }
-        guard dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove else {
-            return
-        }
+    func sendSwipeNotificationIfNeeded(isInPageView: Bool) {
+        guard
+            isInPageView,
+            dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove
+        else { return }
         DispatchQueue.main.async { [weak self] in
             let userInfo: [String: Any] = ["expectation": PagesSwipeAction.forward, "reload": true]
             self?.dependencies.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
