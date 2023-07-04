@@ -18,6 +18,7 @@
 import Foundation
 import GoLibs
 import ProtonCore_Services
+import ProtonCore_Utilities
 
 protocol BuildSearchIndexDelegate: AnyObject {
     func indexBuildingStateDidChange(state: EncryptedSearchIndexState)
@@ -70,7 +71,7 @@ final class BuildSearchIndex {
     private var indexingQueue = DispatchQueue(label: "ch.protonmail.protonmail.build.index")
 
     private(set) var currentState: EncryptedSearchIndexState?
-    private(set) var estimatedProgress: BuildSearchIndexEstimatedProgress?
+    private(set) var estimatedProgress: Atomic<BuildSearchIndexEstimatedProgress?>
     private var savedMessagesCount: Int = 0
     private var downloadedMessagesCount: Int = 0
     private var preexistingIndexedMessagesCount: Int = 0
@@ -96,6 +97,7 @@ final class BuildSearchIndex {
         self.downloadPageQueue.name = "Download Page Queue"
         self.downloadPageQueue.maxConcurrentOperationCount = 1 // Download 1 page at a time
         self.downloadPageQueue.qualityOfService = .userInitiated
+        self.estimatedProgress = .init(nil)
     }
 
     var isBuildingIndexInProgress: Bool {
@@ -395,7 +397,9 @@ extension BuildSearchIndex {
                 estimatedTimeString: nil,
                 currentProgress: max(0, min(1, currentProgress)) * 100
             )
-            estimatedProgress = progress
+            estimatedProgress.mutate { value in
+                value = progress
+            }
             return (progress, 0)
         }
         let timeDifference = Double(currentTime - startingTime)
@@ -406,7 +410,9 @@ extension BuildSearchIndex {
             estimatedTimeString: timeToDate(timeInSecond: estimatedTime),
             currentProgress: max(0, min(1, currentProgress)) * 100
         )
-        estimatedProgress = progress
+        estimatedProgress.mutate { value in
+            value = progress
+        }
         return (progress, Int(estimatedTime))
     }
 
@@ -916,7 +922,9 @@ extension BuildSearchIndex {
             resetMetricData()
         }
         if newState == .complete || newState == .partial || newState == .disabled {
-            estimatedProgress = nil
+            estimatedProgress.mutate { value in
+                value = nil
+            }
         }
         currentState = newState
         delegate?.indexBuildingStateDidChange(state: newState)
