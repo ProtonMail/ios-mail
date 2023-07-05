@@ -224,7 +224,6 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
             sessionID: "SessionID_\(userID)",
             accessToken: "",
             refreshToken: "",
-            expiration: Date(),
             userName: userID,
             userID: userID,
             privateKey: nil,

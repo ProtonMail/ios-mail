@@ -41,7 +41,6 @@ final class IndexSingleMessageDetailOperationTests: XCTestCase {
     func testOneOperation_callAPI_and_parseResponse_success() {
         testOnBackground { isFinish in
             let order = Int.random(in: 0...99)
-            let message = self.makeEsMessage(order: order)
             let messageID = "ESID-\(order)"
             self.apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
                 guard path == "/mail/v4/messages/\(messageID)" else {
@@ -79,7 +78,6 @@ final class IndexSingleMessageDetailOperationTests: XCTestCase {
     func testOneOperation_callAPI_fail() {
         testOnBackground { isFinish in
             let order = Int.random(in: 0...99)
-            let message = self.makeEsMessage(order: order)
             let messageID = "ESID-\(order)"
             self.apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
                 guard path == "/mail/v4/messages/\(messageID)" else {
