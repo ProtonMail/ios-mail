@@ -187,7 +187,7 @@
 "AppKey protection" = "AppKey προστασία";
 
 /* Title for application logs settings option */
-"Application logs" = "Αρχείο καταγραφών";
+"Application logs" = "Αρχείο καταγραφών εφαρμογής";
 
 /* Apply action */
 "Apply" = "Εφαρμογή";
@@ -266,6 +266,9 @@
 
 /* settings general section title */
 "Auto-load remote content" = "Αυτόματη φόρτωση απομακρυσμένου περιεχομένου";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Αυτόματη διαγραφή μηνυμάτων που βρίσκονται στον κάδο απορριμμάτων για περισσότερες από 30 ημέρες.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Διαθέσιμες ενέργειες";
@@ -631,8 +634,14 @@
 /* Title */
 "Details" = "Λεπτομέρειες";
 
+/* Button to disable auto delete */
+"Disable" = "Απενεργοποίηση";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Απενεργοποιήστε τυχόν διαμεσολαβητές και τείχη προστασίας, ή επικοινωνήστε με τον διαχειριστή του δικτύου σας.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Απενεργοποίηση αυτόματης διαγραφής;";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Απενεργοποίηση Επαλήθευσης";
@@ -788,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Προστασία ιχνηλασίας μηνυμάτων";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Τα μηνύματα ηλεκτρονικού ταχυδρομείου που έχουν προγραμματιστεί για διαγραφή θα παραμείνουν στους φακέλους απορριμμάτων και ανεπιθύμητης αλληλογραφίας.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Άδειασμα ανεπιθύμητων";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Άδειασμα Ενοχλητικών";
 
 /* Alert title */
 "Empty spam folder" = "Εκκαθάριση φακέλου ενοχλητικών";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Άδειασμα κάδου απορριμμάτων";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Εκκαθάριση Διαγραμμένων";
@@ -1226,6 +1244,9 @@
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Τα μηνύματα που είναι στον κάδο απορριμμάτων ή στα ανεπιθύμητα για περισσότερες από 30 ημέρες θα διαγράφονται αυτόματα.";
 
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Τα μηνύματα που βρίσκονται στον κάδο απορριμμάτων και στα ανεπιθύμητα για περισσότερες από 30 ημέρες θα διαγράφονται αυτόματα.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Τα μηνύματα θα ληφθούν μέσω WiFi. Αυτό μπορεί να διαρκέσει αρκετή ώρα και η συσκευή σας μπορεί να θερμανθεί ελαφρώς. Μπορείτε να θέσετε σε παύση την ενέργεια ανά πάσα στιγμή.";
 
@@ -1350,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Όχι, δεν σχετίζεται με την αγορά εντός της εφαρμογής";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Όχι, ευχαριστώ";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2233,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Για αποστολή από τη διεύθυνσή σας %@, αναβαθμίστε σε πρόγραμμα επί πληρωμή";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Κάντε αναβάθμιση για να διαγράψετε αυτόματα μηνύματα που βρίσκονται στον κάδο απορριμμάτων ή στα ανεπιθύμητα για περισσότερες από 30 ημέρες.";
 
 /* Action */
 "Upload device contacts" = "Ανέβασμα επαφών συσκευής";

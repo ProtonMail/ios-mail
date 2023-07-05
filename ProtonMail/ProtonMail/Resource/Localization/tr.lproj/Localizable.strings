@@ -23,7 +23,7 @@
 "<1m" = "<1d";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 message moved to archive" = "1 ileti arşive taşındı";
+"1 message moved to archive" = "1 ileti arşivlendi";
 
 /* The title of banner that is shown after using swipe action to spam a message */
 "1 Message moved to spam" = "1 ileti İstenmeyen kutusuna taşındı";
@@ -133,16 +133,16 @@
 "Allow alternative routing" = "Alternatif yöneltme kullanılabilsin";
 
 /* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Çevrimdışı iken daha önce açılmış ek dosyaların açılabilmesini sağlar.";
+"Allows you to open previously opened attachments while offline." = "Çevrim dışı iken daha önce açılmış ek dosyaların açılabilmesini sağlar.";
 
 /* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Çevrimdışı iken daha önce açılmış iletilerin açılabilmesini sağlar.";
+"Allows you to open previously read messages while offline." = "Çevrim dışı iken daha önce açılmış iletilerin açılabilmesini sağlar.";
 
 /* The text explaining what downloaded messages in local storage is used for. */
 "Allows you to search within your messages. %1$@" = "İletilerinizde arama yapabilmenizi sağlar. %1$@";
 
 /* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Arşive de taşınsın mı?";
+"Also archive?" = "Ayrıca arşivlensin mi?";
 
 /* cell title in app settings */
 "Alternative routing" = "Alternatif yöneltme";
@@ -266,6 +266,9 @@
 
 /* settings general section title */
 "Auto-load remote content" = "Uzak içerik otomatik olarak yüklensin";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Çöp kutusunda 30 günden uzun süre kalan iletileri otomatik olarak silin.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Yapılabilecek işlemler";
@@ -631,8 +634,14 @@
 /* Title */
 "Details" = "Ayrıntılar";
 
+/* Button to disable auto delete */
+"Disable" = "Kapat";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Vekil sunucuları veya güvenlik duvarlarını devre dışı bırakın ya da ağ yöneticinizle görüşün.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Otomatik silme kapatılsın mı?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Doğrulamayı devre dışı bırak";
@@ -788,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "E-posta izleme koruması";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Silinmek üzere zamanlanmış e-postalar çöp kutusu ve istenmeyen klasöründe kalacak.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "İstenmeyen kutusunu boşalt";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "İstenmeyen kutusunu boşalt";
 
 /* Alert title */
 "Empty spam folder" = "İstenmeyen kutusunu boşalt";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Çöp kutusunu boşalt";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Çöp kutusunu boşalt";
@@ -964,7 +982,7 @@
 "Hide details" = "Ayrıntıları gizle";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "E-postamı gizle takma adları";
+"Hide My Email aliases" = "Hide My Email takma adları";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Yeni Proton Mail ile yaşadığınız deneyimi nasıl değerlendirirsiniz?";
@@ -1226,6 +1244,9 @@
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Çöp ve istenmeyen kutularında 30 günden uzun süre kalan iletiler otomatik olarak silinir.";
 
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Çöp ve istenmeyen kutularında 30 günden uzun süredir duran iletiler otomatik olarak silinir.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "İletiler WiFi ile indirilecek. Bu işlem biraz zaman alabilir ve aygıtınızın hafifçe ısınmasına neden olabilir. İşlemi istediğiniz zaman duraklatabilirsiniz.";
 
@@ -1248,7 +1269,7 @@
 "Move to" = "Şuraya taşınsın";
 
 /* Action title of move to archive */
-"Move to archive" = "Arşive taşı";
+"Move to archive" = "Arşivle";
 
 /* The title of the remove action in action sheet */
 "Move to inbox" = "Gelen kutusuna taşı";
@@ -1351,6 +1372,9 @@
 /* Error message */
 "No, not related to in-app purchase" = "Hayır, uygulama içi satın alma işlemiyle ilgili değil";
 
+/* Title of button to discard auto delete option */
+"No, thanks" = "Hayır, teşekkürler";
+
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
    The protection title of None protection
@@ -1395,10 +1419,10 @@
 "Official" = "Resmi";
 
 /* Title of the alert when the device is offline */
-"Offline" = "Çevrimdışı";
+"Offline" = "Çevrim dışı";
 
 /* Sending message when device doesn't have netowrk connection description */
-"Offline, message queued for sending" = "Çevrimdışı. İleti gönderilmek üzere kuyruğa alındı";
+"Offline, message queued for sending" = "Çevrim dışı. İleti gönderilmek üzere kuyruğa alındı";
 
 /* Action */
 "OK" = "Tamam";
@@ -1569,7 +1593,7 @@
 "Proton is down" = "Proton çalışmıyor";
 
 /* Title */
-"Proton Mail is currently offline…" = "Proton Mail şu anda çevrimdışı…";
+"Proton Mail is currently offline…" = "Proton Mail şu anda çevrim dışı…";
 
 /* The message about the app is not having the permission to access photo library */
 "Proton Mail needs photo library access in your device settings." = "Proton Mail aygıt ayarlarınızdan fotoğraf kitaplığına erişme iznine gerek duyuyor.";
@@ -2145,7 +2169,7 @@
 "Type casting error" = "Tür döküm hatası";
 
 /* Description */
-"Unable to edit this message offline" = "Bu ileti çevrimdışı düzenlenemedi";
+"Unable to edit this message offline" = "Bu ileti çevrim dışı düzenlenemedi";
 
 /* Description */
 "Unable to parse response" = "Yanıt işlenemedi";
@@ -2234,6 +2258,9 @@
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "%@ adresinden gönderebilmek için ücretli bir tarifeye yükseltin";
 
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Çöp veya istenmeyen kutularında 30 günden uzun süredir duran iletilerin otomatik olarak silinmesi için tarifenizi yükseltin.";
+
 /* Action */
 "Upload device contacts" = "Aygıt kişilerini yükle";
 
@@ -2316,7 +2343,7 @@
 "You are not connected. We cannot display the content of your message." = "Bağlantınız yok. İletinizin içeriğini görüntüleyemiyoruz.";
 
 /* The text shown on the mailbox when the device is in offline mode */
-"You are offline" = "Çevrimdışısınız";
+"You are offline" = "Çevrim dışısınız";
 
 /* The title of the info bubble view in toolbar customization view. */
 "You can choose and rearrange the actions in your toolbar" = "Araç çubuğunuzdaki işlemleri seçebilir ve yeniden düzenleyebilirsiniz";

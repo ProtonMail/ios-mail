@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey védelem";
 
+/* Title for application logs settings option */
+"Application logs" = "Alkalmazás napló";
+
 /* Apply action */
 "Apply" = "Alkalmazás";
 
@@ -252,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "Automatikus Zárolás Ideje";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Automatikus törlés";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Nem kívánt üzenetek automatikus törlése";
+
 /* settings general section title */
 "Auto-load embedded images" = "Beágyazott képek automatikus betöltése";
 
 /* settings general section title */
 "Auto-load remote content" = "Távoli tartalom automatikus betöltése";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "A 30 napnál régebben a lomtárba helyezett üzenetek automatikus törlése.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Elérhető műveletek";
@@ -424,6 +436,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Letisztult Stílus";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "A gyorsítótár törlése...";
 
 /* general close action */
 "Close" = "Bezárás";
@@ -613,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Üzenet törlése";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Üzenetek törlése?";
+
 /* Title */
 "Details" = "Részletek";
 
+/* Button to disable auto delete */
+"Disable" = "Letiltás";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Kapcsolja ki a proxy-t vagy a tűzfalat, vagy vegye fel a kapcsolatot a hálózati rendszergazdával.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Automatikus törlés letiltása?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Tanúsítás letiltása";
@@ -773,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "E-mail követési védelem";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "A törlésre ütemezett emailek a lomtárban és a levélszemét mappában maradnak.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Levélszemét kiürítése";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Levélszemét ürítése";
 
 /* Alert title */
 "Empty spam folder" = "Lomtár ürítése";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Lomtár kiürítése";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Lomtár ürítése";
@@ -1208,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "A %@ előtti üzenetek nem lesznek kereshetőek. Ha szeretne keresni bennük, szabadítson fel tárhelyet ezen az eszközön.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "A 30 napnál régebben lomtárba vagy a levélszemét mappába került üzenetek automatikusan törlésre kerülnek.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "A 30 napnál régebben lomtárba vagy a levélszemét mappába került üzenetek automatikusan törlésre kerülnek.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Az üzenetek letöltése WiFi-n keresztül történik. Ez eltarthat egy ideig, és a készülék kissé felmelegedhet. A műveletet bármikor szüneteltetheti.";
 
@@ -1332,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Nem, nem érint alkalmazáson belüli vásárlást";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Köszönöm, nem";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -1816,6 +1858,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Megjelenítés";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Jelentkezzen be újra, hogy továbbra is megkapja a frissítéseket";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Kijelentkezés";
@@ -2055,6 +2100,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Ez az eszköztár akkor látható, amikor egy üzenetet olvas.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Ez minden olyan üzenetet töröl, amely több mint 30 napja a lomtárban vagy a levélszemét mappában van, beleértve a jelenleg ezekben a mappákban lévő üzeneteket is.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Ideje lazítani";
 
@@ -2104,6 +2152,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "A küldéshez nem érvényesek a megbízhatóként megjelölt kulcsok";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Próbáljon más keresést.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Csatlakozzon a Prontonhoz egy másik hálózaton keresztül (vagy használjon %1$@-t vagy %2$@-t).";
@@ -2206,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Váltson előfizetéses csomagra, hogy erről a címről is küldhessen üzenetet: %@";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Váltson nagyobb csomagra a 30 napja lomtárban vagy a levélszemét mappában lévő üzenetek automatikus törléséhez.";
 
 /* Action */
 "Upload device contacts" = "Az eszköz névjegyeinek felötlése";
@@ -2374,6 +2428,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Az üzenetei letöltés alatt vannak...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Az Ön adatai jobban védettek, ha a kapcsolatai is a Proton Mailt használják. Hívja meg ismerőseit a Protonra, és mindannyian ingyenesen juthatnak majd prémium előnyökhöz.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "A munkamenet lejárt, mert egy ideje inkatív volt, vagy visszavonták. Kérjük jelentkezzen be ismét.";

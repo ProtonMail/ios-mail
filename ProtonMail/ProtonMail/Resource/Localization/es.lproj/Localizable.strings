@@ -267,6 +267,9 @@
 /* settings general section title */
 "Auto-load remote content" = "Cargar automáticamente el contenido remoto";
 
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Elimina mensajes automáticamente que han estado en la carpeta Papelera por más de 30 días.";
+
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Acciones disponibles";
 
@@ -631,8 +634,14 @@
 /* Title */
 "Details" = "Detalles";
 
+/* Button to disable auto delete */
+"Disable" = "Deshabilitar";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Deshabilita cualquier proxy o cortafuegos, o contacta con el administrador de tu red.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "¿Deshabilitar la eliminación automática?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Desactivar validación";
@@ -788,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Protección contra rastreos de correo electrónico";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Los correos programados para eliminarse permanecerán en las carpetas de papelera y spam.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Vaciar Spam";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Vaciar spam";
 
 /* Alert title */
 "Empty spam folder" = "Carpeta de spam vacía";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Vaciar la papelera";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Vaciar papelera";
@@ -1226,6 +1244,9 @@
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Los mensajes en la carpeta Papelera o Spam de más de 30 días serán automáticamente eliminados.";
 
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Los mensajes que hayan estado en la carpeta Papelera o Spam por más de 30 días serán eliminados automáticamente.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Los mensajes se descargarán mediante WiFi. Esto puede llevar algún tiempo y tu dispositivo se puede calentar ligeramente. Puedes pausar esta acción en cualquier momento.";
 
@@ -1350,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "No, no es relacionado con una compra en la aplicación.";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "No, gracias";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2233,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Pasa a un plan de pago para enviar desde tu dirección %@.";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Actualiza tu plan para eliminar automáticamente los mensajes que hayan estado en la carpeta Papelera o Spam por más de 30 días.";
 
 /* Action */
 "Upload device contacts" = "Cargar los contactos del dispositivo";

@@ -267,6 +267,9 @@
 /* settings general section title */
 "Auto-load remote content" = "Carica automaticamente il contenuto remoto";
 
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Elimina automaticamente i messaggi che sono stati nel cestino per più di 30 giorni.";
+
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Comandi disponibili";
 
@@ -631,8 +634,14 @@
 /* Title */
 "Details" = "Dettagli";
 
+/* Button to disable auto delete */
+"Disable" = "Disabilita";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Disabilita proxy o firewall, o contatta l'amministratore di rete.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Disabilitare auto eliminazione?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Disabilita Validazione";
@@ -788,11 +797,17 @@
 /* Name of the feature */
 "Email tracking protection" = "Protezione dal tracciamento email";
 
+/* Title of button to empty spam folder */
+"Empty spam" = "Svuota spam";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Svuota Spam";
 
 /* Alert title */
 "Empty spam folder" = "Svuota cartella di spam";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Svuota il cestino";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Svuota Cestino";
@@ -1223,6 +1238,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "I messaggi antecedenti a %@ non verranno sottoposti a ricerca. Per ricercare tra quelli, libera dello spazio di archiviazione da questo dispositivo.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "I messaggi presenti nel cestino o nella cartella spam per oltre 30 giorni saranno eliminati automaticamente.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Gli elementi nella cartella Cestino o Spam saranno eliminati automaticamente dopo 30 giorni.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "I messaggi verranno scaricati tramite WiFi. Questo può richiedere più tempo e il tuo dispositivo potrebbe surriscaldarsi leggermente. Puoi mettere in pausa l'azione in qualsiasi momento.";
 
@@ -1347,6 +1368,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "No, non correlato all'acquisto in-app";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "No, grazie";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2073,6 +2097,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Questa toolbar sarà visibile durante la lettura di un messaggio.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Questa operazione eliminerà tutti i messaggi presenti nel cestino o nei spam da più di 30 giorni, incluso quelli attualmente presenti in queste cartelle.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Tempo di rilassarsi";
 
@@ -2227,6 +2254,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Effettui l'upgrade ad un piano a pagamento per inviare dal suo indirizzo %@";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Aggiorna il piano per eliminare automaticamente gli elementi presenti nel cestino o in spam dopo 30 giorni.";
 
 /* Action */
 "Upload device contacts" = "Carica i contatti del dispositivo";

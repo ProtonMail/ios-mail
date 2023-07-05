@@ -267,6 +267,9 @@
 /* settings general section title */
 "Auto-load remote content" = "Automatycznie załaduj zawartość zdalną";
 
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Automatycznie usuwaj wiadomości, które znajdują się w Koszu dłużej niż 30 dni.";
+
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Dostępne akcje";
 
@@ -307,7 +310,7 @@
 "Block sender" = "Zablokuj nadawcę";
 
 /* Title of the blocked sender list screen */
-"Blocked Senders" = "Lista zabokowanych";
+"Blocked Senders" = "Lista zablokowanych";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Blokuje nadawcom możliwość sprawdzenia, czy i kiedy otwierasz wiadomość";
@@ -631,8 +634,14 @@
 /* Title */
 "Details" = "Szczegóły";
 
+/* Button to disable auto delete */
+"Disable" = "Wyłącz";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Wyłącz zaporę oraz proxy lub skontaktuj się z administratorem sieci.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Wyłączyć automatyczne usuwanie?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Wyłącz weryfikację";
@@ -788,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Ochrona przed śledzeniem wiadomości";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Wiadomości zaplanowane do usunięcia pozostaną w Koszu i Spamie.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Opróżnij Spam";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Opróżnij Spam";
 
 /* Alert title */
 "Empty spam folder" = "Opróżnij Spam";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Opróżnij Kosz";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Opróżnij Kosz";
@@ -1223,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Wiadomości starsze niż %@ nie będą przeszukiwane. Aby to zmienić, zwolnij część miejsca na urządzeniu.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni, zostaną automatycznie usunięte.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni, zostaną automatycznie usunięte.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Wiadomości zostaną pobrane przez sieć Wi-Fi. Ten proces może zająć trochę czasu, a urządzenie może się lekko nagrzać. Możesz wstrzymać proces w dowolnym momencie.";
 
@@ -1347,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Nie, nie jest związane z zakupem w aplikacji";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Nie, dziękuję";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2070,6 +2097,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Pasek narzędzi widoczny jest podczas czytania wiadomości.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Wszystkie wiadomości, które znajdują się w Koszu lub w Spamie dłużej niż 30 dni zostaną usunięte.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Czas na odpoczynek";
 
@@ -2224,6 +2254,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Ulepsz do płatnego planu, aby wysyłać wiadomości z adresu %@";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Ulepsz konto, aby automatycznie usuwać wiadomości, które znajdują się w Koszu lub Spamie dłużej niż 30 dni.";
 
 /* Action */
 "Upload device contacts" = "Prześlij kontakty urządzenia";

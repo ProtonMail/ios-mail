@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "All e-post";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Alla skyddsinställningar kommer att återställas och tas bort när du loggar ut från appen.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Alla dina meddelanden laddas ner";
 
@@ -263,6 +266,9 @@
 
 /* settings general section title */
 "Auto-load remote content" = "Ladda fjärrinnehåll automatiskt";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Ta bort meddelanden som har legat i papperskorgen i mer än 30 dagar automatiskt.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Tillgängliga åtgärder";
@@ -628,8 +634,14 @@
 /* Title */
 "Details" = "Detaljer";
 
+/* Button to disable auto delete */
+"Disable" = "Inaktivera";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Inaktivera eventuella proxies eller brandväggar eller kontakta din nätverksadministratör.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Inaktivera automatisk borttagning?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Inaktivera validering";
@@ -785,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "E-postspårningsskydd";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "E-postmeddelanden som schemalagts för borttagning kommer finnas kvar i papperskorgen och skräppostmapparna.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Töm skräppost";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Töm skräppost";
 
 /* Alert title */
 "Empty spam folder" = "Töm skräppostmapp";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Töm papperskorg";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Töm papperskorg";
@@ -1220,6 +1241,9 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Meddelande från innan %@ kommer inte att sökas. För att söka inom dessa, frigör lagringsutrymme på denna enhet.";
 
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar kommer att tas bort automatiskt.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Meddelanden kommer att ladda ner via WiFi. Detta kan ta lite tid och din enhet kan bli lite varmare. Du kan pausa åtgärden när som helst.";
 
@@ -1344,6 +1368,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Nej, inte relaterade till i-app inköp";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Nej tack";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2221,6 +2248,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Uppgradera till ett betalt paket för att skicka från din %@-adress";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Uppgradera för att ta bort meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar automatiskt.";
 
 /* Action */
 "Upload device contacts" = "Ladda upp enhetskontakter";

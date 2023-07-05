@@ -267,6 +267,9 @@
 /* settings general section title */
 "Auto-load remote content" = "Autoîncărcare conținut extern";
 
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Ștergere automată mesaje din gunoi mai vechi de 30 de zile.";
+
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Acțiuni disponibile";
 
@@ -289,7 +292,7 @@
 "Bcc" = "Ca";
 
 /* message Bcc: feild */
-"Bcc:" = "CA:";
+"Bcc:" = "Ca:";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Data naşterii";
@@ -631,8 +634,14 @@
 /* Title */
 "Details" = "Detalii";
 
+/* Button to disable auto delete */
+"Disable" = "Dezactivare";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Dezactivați setările din proxy sau paravanul de protecție sau contactați administratorul de rețea.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Dezactivare autoștergere?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Dezactivare validare";
@@ -788,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Protejare e-mail împotriva urmăririi";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Mesajele programate pentru ștergere vor rămâne în folderele «Gunoi» și «Nedorite».";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Golire nedorite";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Golire «Nedorite»";
 
 /* Alert title */
 "Empty spam folder" = "Golire folder «Nedorite»";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Golire gunoi";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Golire «Gunoi»";
@@ -1226,6 +1244,9 @@
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Mesajele din folderul «Gunoi» și «Nedorite» vor fi șterse automat după de 30 de zile.";
 
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile vor fi șterse automat.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Mesajele vor fi descărcate prin WiFi. Ar putea dura și este posibil ca dispozitivul să se încălzească puțin. Puteți suspenda oricând acțiunea.";
 
@@ -1350,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Nu are legătură cu achiziția în aplicație.";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Nu, mulțumesc";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -1781,13 +1805,13 @@
 "Sent" = "Trimise";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption" = "Trimis de Proton Mail cu criptare cu acces zero.";
+"Sent by Proton Mail with zero-access encryption" = "Trimis cu Proton Mail cu criptare cu acces zero.";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption to verified recipient" = "Trimis de Proton Mail cu criptare cu acces zero la destinatar verificat.";
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Trimis cu Proton Mail cu criptare cu acces zero la destinatar verificat.";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption" = "Trimis de dvs. cu criptare în ambele părți";
+"Sent by you with end-to-end encryption" = "Trimis de către dvs. cu criptare în ambele părți.";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption to verified recipient" = "Trimis de către dvs. cu criptare în ambele părți către destinatar verificat.";
@@ -2229,10 +2253,13 @@
 "Updated Proton, unified protection" = "Proton actualizat, protecție unificată";
 
 /* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Modernizare";
+"Upgrade now" = "Modificare";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Treceți la un plan cu plată pentru a trimite de la adresa %@";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Modificați-vă planul pentru a putea șterge automat mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile.";
 
 /* Action */
 "Upload device contacts" = "Încărcare contacte din dispozitiv";
@@ -2340,7 +2367,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Nu puteți seta adresa %@ ca fiind implicită. Această este o funcție cu plată.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Ați dezactivat %1$@ în setările sistemului. %2$@ a fost utilizat pentru a proteja informațiile importante ale contului. Pentru a vă accesa contul, accesați setările și reactivați %3$@ sau reconectați-vă.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Ați dezactivat %1$@ în setările sistemului. %2$@ a fost utilizat pentru a proteja informațiile importante a contului. Pentru a vă accesa contul, accesați setările și reactivați %3$@ sau reconectați-vă.";
 
 /* Message */
 "You have %d new emails!" = "Aveți %d mesaje noi!";

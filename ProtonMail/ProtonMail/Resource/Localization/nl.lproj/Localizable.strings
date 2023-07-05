@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "Tijd tot automatische vergrendeling";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Automatisch verwijderen";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Automatisch ongewenste berichten verwijderen";
+
 /* settings general section title */
 "Auto-load embedded images" = "Ingesloten afbeeldingen automatisch laden";
 
@@ -619,11 +625,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Bericht verwijderen";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Berichten verwijderen?";
+
 /* Title */
 "Details" = "Details";
 
+/* Button to disable auto delete */
+"Disable" = "Uitschakelen";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Schakel eventuele proxy's of firewalls uit of neem contact op met uw netwerkbeheerder.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Schakel automatisch verwijderen uit";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Validatie uitschakelen";
@@ -778,6 +793,9 @@
 
 /* Name of the feature */
 "Email tracking protection" = "Bescherming tegen e-mailtracking";
+
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "E-mails die gepland staan om te worden verwijderen, blijven in de Prullenbak en Spam.";
 
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Spam leegmaken";
@@ -1213,6 +1231,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Berichten van voor %@, worden niet doorzocht. Maak opslagruimte vrij op dit apparaat om ze te doorzoeken.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Berichten die meer dan 30 dagen in de spam zitten worden automatisch verwijderd.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Berichten worden gedownload via wifi. Dit kan enkele momenten duren en uw apparaat kan een beetje warm worden. U kunt de handeling op elk moment pauzeren.";
@@ -2063,6 +2084,9 @@
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Deze werkbalk is zichtbaar wanneer u een bericht leest.";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Dit zal alle berichten die langer dan 30 dagen in de prullenbak of spam zitten verwijderen, inclusief berichten die nu in deze mappen zitten.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Tijd om te ontspannen";

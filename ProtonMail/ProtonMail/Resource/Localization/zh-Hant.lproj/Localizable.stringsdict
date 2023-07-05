@@ -139,7 +139,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>other</key>
-			<string>已封鎖 %d 個電郵追蹤程式</string>
+			<string>已攔截 %d 個電郵追蹤程式</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -282,6 +282,20 @@
 			<string>d</string>
 			<key>other</key>
 			<string>%d 其他人</string>
+		</dict>
+	</dict>
+	<key>Are you sure you want to delete these %d messages permanently?</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>您確定要永久刪除這封郵件 %d 嗎？</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d conversation?</key>
