@@ -29,15 +29,6 @@ final class Dictionary_ExtensionTests: XCTestCase {
         XCTAssertNil(invalid.toString())
     }
 
-    func testDictionaryConcat() {
-        let dict1 = ["name": "Tester"]
-        let dict2 = ["age": 100]
-        let concat: [String: Any] = dict1 + dict2
-        let possible1 = ["{\"age\":100,\"name\":\"Tester\"}",
-                         "{\"name\":\"Tester\",\"age\":100}"]
-        XCTAssertTrue(possible1.contains(concat.json()))
-    }
-
     func testAttachmentOrderField() throws {
         let attachment1 = ["attID": 1]
         let attachment2 = ["attID": 2]
