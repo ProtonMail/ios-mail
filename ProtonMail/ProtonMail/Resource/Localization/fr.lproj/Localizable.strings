@@ -267,6 +267,9 @@
 /* settings general section title */
 "Auto-load remote content" = "Charger automatiquement le contenu distant";
 
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Supprimez automatiquement les messages qui sont dans le dossier Corbeille depuis plus de 30 jours.";
+
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Actions disponibles";
 
@@ -380,7 +383,7 @@
 "Canceling" = "Annulation en cours";
 
 /* Warning message */
-"Cannot empty folder right now." = "Il n'est pas possible de vider le dossier maintenant.";
+"Cannot empty folder right now." = "Impossible de vider le dossier maintenant";
 
 /* message Cc: feild
    Title */
@@ -631,8 +634,14 @@
 /* Title */
 "Details" = "Détails";
 
+/* Button to disable auto delete */
+"Disable" = "Désactiver";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Désactivez tout proxy ou pare-feu, ou contactez votre administrateur réseau.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Désactiver la suppression automatique ?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Désactiver la validation";
@@ -788,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Protection contre le suivi des e-mails";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Les messages dont la suppression est prévue resteront dans les dossiers Corbeille et Indésirable/spam.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Vider le dossier Indésirables/spam";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Vider le dossier Indésirables/spam";
 
 /* Alert title */
 "Empty spam folder" = "Vider le dossier Indésirables/spam";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Vider le dossier Corbeille";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Vider la Corbeille";
@@ -964,7 +982,7 @@
 "Hide details" = "Masquer les détails";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias Hide-my-email";
+"Hide My Email aliases" = "Alias « Hide My Email »";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Comment décririez-vous votre expérience avec le nouveau Proton Mail ?";
@@ -1226,6 +1244,9 @@
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Les messages dans les dossiers Corbeille et Indésirables/spam depuis plus de 30 jours seront automatiquement supprimés.";
 
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Les messages dans les dossiers Corbeille et Indésirables/spam depuis plus de 30 jours seront automatiquement supprimés.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Les messages seront téléchargés via le wifi. Cela peut prendre un certain temps et votre appareil peut chauffer légèrement. Vous pouvez interrompre le téléchargement à tout moment.";
 
@@ -1350,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Non, non relié à un achat dans l'application";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Non merci";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2233,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Passez à un abonnement payant pour envoyer depuis votre adresse %@.";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Changez d'abonnement pour supprimer automatiquement les messages qui sont dans les dossiers Corbeille ou Indésirables/spam depuis plus de 30 jours.";
 
 /* Action */
 "Upload device contacts" = "Importer les contacts de l'appareil";

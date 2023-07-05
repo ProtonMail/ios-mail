@@ -267,6 +267,9 @@
 /* settings general section title */
 "Auto-load remote content" = "Аўтаматычная загрузка аддаленага змесціва";
 
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў сметніцы больш за 30 дзён.";
+
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Даступныя дзеянні";
 
@@ -631,8 +634,14 @@
 /* Title */
 "Details" = "Падрабязнасці";
 
+/* Button to disable auto delete */
+"Disable" = "Адключыць";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Адключыце ўсе проксі-серверы або міжсеткавыя экраны. Таксама вы можаце звярнуцца да свайго сеткавага адміністратара.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Адключыць аўтаматычнае выдаленне?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Адключыць праверку";
@@ -788,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Абарона ад праграм сачэння электроннай пошты";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Лісты, запланаваныя для выдалення, застануцца ў сметніцы і папках са спамам.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Ачысціць спам";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Ачысціць спам";
 
 /* Alert title */
 "Empty spam folder" = "Ачысціць папку са спамам";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Ачысціць сметніцу";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Ачысціць сметніцу";
@@ -1226,6 +1244,9 @@
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Паведамленні, якія знаходзяцца ў папках сметніца або спам больш за 30 дзён будуць выдаляцца аўтаматычна.";
 
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Паведамленні, якія знаходзяцца ў папках сметніца і спам больш за 30 дзён будуць выдаляцца аўтаматычна.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Паведамленні будуць спампаваны праз Wi-Fi. Гэта зойме некаторы час і ваша прылада можа крыху нагрэцца. Вы можаце прыпыніць гэта дзеянне ў любы час.";
 
@@ -1350,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Не мае ніякага дачынення да куплі праз праграму";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Не, дзякуй";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2233,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перайдзіце на платны тарыфны план, каб мець магчымасць адпраўляць з вашага адраса %@";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Палепшыце тарыфны план, каб аўтаматычна выдаляць паведамленні, якія былі ў папках сметніца або спам больш за 30 дзён.";
 
 /* Action */
 "Upload device contacts" = "Запампаваць кантакты з прылады";

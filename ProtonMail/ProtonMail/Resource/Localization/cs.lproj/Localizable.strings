@@ -267,6 +267,9 @@
 /* settings general section title */
 "Auto-load remote content" = "Automaticky načíst vzdálený obsah";
 
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Automaticky vymazat zprávy, které jsou v koši déle než 30 dní.";
+
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Dostupné akce";
 
@@ -631,8 +634,14 @@
 /* Title */
 "Details" = "Detaily";
 
+/* Button to disable auto delete */
+"Disable" = "Zakázat";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Zakažte všechny proxy a brány firewallu, nebo se obraťte na správce sítě.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Vypnout automatické mazání?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Vypnout ověřování";
@@ -788,11 +797,17 @@
 /* Name of the feature */
 "Email tracking protection" = "Ochrana před sledovacími prvky v e-mailech";
 
+/* Title of button to empty spam folder */
+"Empty spam" = "Vysypat spam";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Vyprázdnit spam";
 
 /* Alert title */
 "Empty spam folder" = "Vyprázdnit složku spam";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Vysypat koš";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Vysypat koš";
@@ -1350,6 +1365,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Ne, nesouvisí s nákupem v aplikaci";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Ne, děkuji";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2233,6 +2251,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Přejděte na placený tarif pro odesílání z vaší %@ adresy";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Navyšte svůj tarif pro automatické mazání zpráv, které jsou v koši nebo spamu déle než 30 dní.";
 
 /* Action */
 "Upload device contacts" = "Nahrát kontakty ze zařízení";

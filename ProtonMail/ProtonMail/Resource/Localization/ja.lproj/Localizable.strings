@@ -255,6 +255,12 @@
 /* Title */
 "Auto Lock Time" = "自動ロックまでの時間";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "自動削除";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "不要なメッセージを自動削除";
+
 /* settings general section title */
 "Auto-load embedded images" = "埋め込み画像を自動で読み込む";
 
@@ -619,11 +625,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "メッセージを削除";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "メッセージを削除しますか？";
+
 /* Title */
 "Details" = "詳細";
 
+/* Button to disable auto delete */
+"Disable" = "無効化";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "プロキシやファイアウォールを無効にするか、ネットワーク管理者にお問い合わせください。";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "自動削除を無効にしますか？";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "検証を無効にする";
@@ -1213,6 +1228,9 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "%@ 以前のメッセージは検索されません。その内容を検索するには、このデバイスのストレージ容量を空けてください。";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "30日経過したメッセージは自動的に削除されます。";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "メッセージは Wi-Fi 経由でダウンロードされます。これには時間がかかる場合があり、デバイスがわずかに発熱するかもしれません。この操作はいつでも一時停止できます。";
@@ -2063,6 +2081,9 @@
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "このツールバーは、メッセージ閲覧時に表示されます。";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "ゴミ箱や迷惑メールに30日以上入っているメッセージは、現在これらのフォルダに入っているメッセージも含めてすべて削除されます。";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "メッセージはありません";

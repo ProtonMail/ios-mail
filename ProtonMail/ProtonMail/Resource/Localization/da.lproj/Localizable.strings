@@ -255,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "Auto-lås tid";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Slet automatisk";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Slet uønskede beskeder automatisk";
+
 /* settings general section title */
 "Auto-load embedded images" = "Auto-indlæs indlejrede billeder";
 
 /* settings general section title */
 "Auto-load remote content" = "Auto-indlæs fjernindhold";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Slet automatisk beskeder, der har været i papirkurven i mere end 30 dage.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Tilgængelige handlinger";
@@ -619,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Slet besked";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Slet beskeder?";
+
 /* Title */
 "Details" = "Detaljer";
 
+/* Button to disable auto delete */
+"Disable" = "Deaktivér";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Deaktivér eventuelle proxier eller firewalls, eller kontakt din netværksadministrator.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Deaktivér automatisk sletning?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Deaktivér validering";
@@ -779,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Beskyttelse mod sporing af e-mail";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "E-mails, der er planlagt til sletning, forbliver i papirkurven og spam-mapperne.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Tøm Spam";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Tøm spam";
 
 /* Alert title */
 "Empty spam folder" = "Tøm spammappe";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Tøm Papirkurv";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Tøm papirkurv";
@@ -1214,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Beskeder fra før %@, vil ikke blive søgt. Hvis du vil søge i dem, skal du frigøre lagerplads på denne enhed.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Beskeder i papirkurv eller spam i mere end 30 dage vil blive slettet automatisk.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Beskeder der har været i papirkurven og spam i mere end 30 dage vil blive slettet automatisk.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Meddelelser downloades via Wi-Fi. Det kan tage noget tid, og din enhed kan blive lidt varm. Du kan til enhver tid sætte handlingen på pause.";
 
@@ -1338,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Nej, omhandler ikke In-app køb";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Nej tak";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2064,6 +2100,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Denne værktøjslinje er synlig, når du læser en besked.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Dette sletter alle beskeder, der har ligget i papirkurven eller spam i mere end 30 dage, inklusive beskeder, der aktuelt ligger i disse mapper.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Det er tid til at slappe af";
 
@@ -2113,6 +2152,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Betroede nøgler er ikke gyldige til afsendelse";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Prøv et andet søgeord.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Prøv at forbinde til Proton fra et andet netværk (eller brug %1$@ eller %2$@).";
@@ -2215,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Opgradér til et abonnement for at sende fra din %@-adresse";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Opgradér for automatisk at slette beskeder, der har været i papirkurven eller spam i mere end 30 dage.";
 
 /* Action */
 "Upload device contacts" = "Upload enhedskontakter";
@@ -2385,7 +2430,7 @@
 "Your messages are being downloaded..." = "Din beskeder bliver downloadet...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Dir privatliv er bedre beskyttet, hvis dine kontakter også bruger Proton Mail. Inviter dine venner til at bruge Proton, så får I begge gratis premium fordele.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Dir privatliv er bedre beskyttet, hvis dine kontakter også bruger Proton Mail. Inviter dine venner til at bruge Proton, og i vil hver især få gratis premium-fordele.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session er udløbet, fordi du har været inaktiv i et stykke tid, eller fordi den er blevet tilbagekaldt. Log venligst ind igen.";

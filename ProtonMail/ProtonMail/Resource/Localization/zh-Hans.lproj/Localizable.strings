@@ -267,6 +267,9 @@
 /* settings general section title */
 "Auto-load remote content" = "自动加载外链内容";
 
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "自动删除废件箱内超过 30 天的邮件。";
+
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "可选操作";
 
@@ -631,8 +634,14 @@
 /* Title */
 "Details" = "详细信息";
 
+/* Button to disable auto delete */
+"Disable" = "关闭";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "关闭代理服务器和防火墙，或联系网络管理员。";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "关闭自动删除？";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "关闭验证";
@@ -788,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "邮件追踪保护";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "计划删除的邮件将会保留在废件箱和垃圾邮件文件夹内。";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "清空垃圾邮件";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "清空垃圾邮件";
 
 /* Alert title */
 "Empty spam folder" = "清空垃圾邮件文件夹";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "清空废件箱";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "清空回收站";
@@ -1226,6 +1244,9 @@
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "归入垃圾邮件或废件箱的邮件超过 30 天自动删除。";
 
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "已归入垃圾邮件或废件箱超过 30 天的邮件将被自动删除。";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "邮件将通过 WiFi 下载。这可能需要一点时间，且你的设备可能会稍微发热。你可以在任何时候暂停该操作。";
 
@@ -1350,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "不，和 App 内购买项目无关";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "不用了，谢谢";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2233,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "开通付费账户方可从 %@ 地址发送邮件";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "升级账户即可自动删除归入垃圾邮件或废件箱超过 30 天的邮件。";
 
 /* Action */
 "Upload device contacts" = "上传本机通讯录";

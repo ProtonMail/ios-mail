@@ -166,13 +166,13 @@
 "API Server not reachable…" = "API сервер недоступний…";
 
 /* security title in settings */
-"App PIN" = "ПІН-код програми";
+"App PIN" = "PIN-код програми";
 
 /* security title in settings */
-"App PIN & Face ID" = "ПІН і Face ID";
+"App PIN & Face ID" = "PIN-код і Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "ПІН і Touch ID";
+"App PIN & Touch ID" = "PIN-код і Touch ID";
 
 /* section title in settings */
 "App settings" = "Параметри програми";
@@ -187,7 +187,7 @@
 "AppKey protection" = "Захист AppKey";
 
 /* Title for application logs settings option */
-"Application logs" = "Журнал застосунку";
+"Application logs" = "Журнал програми";
 
 /* Apply action */
 "Apply" = "Застосувати";
@@ -259,13 +259,16 @@
 "Auto-delete" = "Автовидалення";
 
 /* The title of the row inside the setting page of auto delete option */
-"Auto-delete unwanted messages" = "Автовидалення непотрібних повідомлень";
+"Auto-delete unwanted messages" = "Автовидалення небажаних повідомлень";
 
 /* settings general section title */
 "Auto-load embedded images" = "Автозавантаження вбудованих зображень";
 
 /* settings general section title */
 "Auto-load remote content" = "Автозавантаження зовнішнього вмісту";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Автоматично видаляти повідомлення, які перебували в смітнику понад 30 днів.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Доступні дії";
@@ -403,7 +406,7 @@
 "Change Password" = "Змінити пароль";
 
 /* The title of change PIN code option in security settings */
-"Change PIN code" = "Змінити ПІН-код";
+"Change PIN code" = "Змінити PIN-код";
 
 /* Title */
 "Change sender address to…" = "Змінити адресу відправника на…";
@@ -631,8 +634,14 @@
 /* Title */
 "Details" = "Подробиці";
 
+/* Button to disable auto delete */
+"Disable" = "Вимкнути";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Вимкніть будь-які проксі чи мережеві екрани, або зверніться до свого мережевого адміністратора.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Вимкнути автоматичне видалення?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Вимкнути перевірку";
@@ -788,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Захист від стеження електронної пошти";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Електронні листи, заплановані для видалення, залишатимуться в смітнику та теках спаму.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Очистити спам";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Спорожнити спам";
 
 /* Alert title */
 "Empty spam folder" = "Спорожнити теку спаму";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Очистити смітник";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Спорожнити смітник";
@@ -838,16 +856,16 @@
 "Enter" = "Ввести";
 
 /* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Введіть ПІН-код від 4 до 21 символів.";
+"Enter a PIN code with min 4 characters and max 21 characters." = "Введіть PIN-код від 4 до 21 символів.";
 
 /* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Введіть ПІН-код";
+"Enter new PIN code" = "Введіть новий PIN-код";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Введіть свій пароль для виконання змін";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Введіть ПІН для відімкнення поштової скриньки.";
+"Enter your PIN to unlock your inbox." = "Введіть PIN-код для відімкнення поштової скриньки.";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "Введіть тут свій підпис";
@@ -1010,7 +1028,7 @@
 "Inbox" = "Вхідні";
 
 /* Error */
-"Incorrect PIN." = "Неправильний ПІН.";
+"Incorrect PIN." = "Неправильний PIN-код.";
 
 /* The foot of downloaded messages in local storage settings */
 "Information about how much storage space this Proton Mail account is using on your device." = "Інформація про використаний обсяг сховища цим обліковим записом Proton Mail на вашому пристрої.";
@@ -1224,7 +1242,10 @@
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Повідомлення до %@ не будуть доступними для пошуку. Щоб виконувати пошук серед них, звільніть обсяг сховища на цьому пристрої.";
 
 /* The footer title of the setting row of the auto delete option */
-"Messages in trash or spam longer than 30 days will be automatically deleted." = "Повідомлення, що знаходяться в смітнику або спамі понад 30 днів, будуть автоматично видалені.";
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Повідомлення в смітнику або спамі автоматично видалятимуться через 30 днів.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Повідомлення, що перебувають у смітнику та спамі понад 30 днів, автоматично видалятимуться.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Повідомлення завантажуватимуться через WiFi. Це може тривати певний час, а ваш пристрій може дещо нагрітися. Можна будь-коли призупинити процес.";
@@ -1351,6 +1372,9 @@
 /* Error message */
 "No, not related to in-app purchase" = "Ні, не пов'язано з покупкою в програмі";
 
+/* Title of button to discard auto delete option */
+"No, thanks" = "Ні, дякую";
+
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
    The protection title of None protection
@@ -1461,28 +1485,28 @@
 "Personal" = "Особистий";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted" = "Зашифровано PGP";
+"PGP-encrypted" = "Зашифровано з PGP";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-encrypted and signed message" = "PGP-зашифроване та підписане повідомлення";
+"PGP-encrypted and signed message" = "Зашифроване з PGP та підписане повідомлення";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message" = "PGP-зашифроване повідомлення";
+"PGP-encrypted message" = "Зашифроване з PGP повідомлення";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message from verified sender" = "PGP-зашифроване повідомлення від перевіреного відправника";
+"PGP-encrypted message from verified sender" = "Зашифроване з PGP повідомлення від перевіреного відправника";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted to verified recipient" = "Зашифровано PGP для перевіреного отримувача";
+"PGP-encrypted to verified recipient" = "Зашифровано з PGP для перевіреного отримувача";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-signed" = "Підписано PGP";
+"PGP-signed" = "Підписано з PGP";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message from verified sender" = "PGP-підписане повідомлення від перевіреного відправника";
+"PGP-signed message from verified sender" = "Підписане з PGP повідомлення від перевіреного відправника";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message. Sender verification failed" = "PGP-підписане повідомлення. Не вдалося перевірити відправника";
+"PGP-signed message. Sender verification failed" = "Підписане з PGP повідомлення. Не вдалося перевірити відправника";
 
 /* default vcard types */
 "Phone" = "Телефон";
@@ -1491,16 +1515,16 @@
 "Phone number" = "Номер телефону";
 
 /* The protection title of PIN code protection */
-"PIN code" = "ПІН-код";
+"PIN code" = "PIN-код";
 
 /* Description */
-"PIN code can't be empty." = "ПІН-код не може бути порожнім.";
+"PIN code can't be empty." = "Потрібно ввести PIN-код.";
 
 /* The error message of entering a long pin */
-"PIN is too long" = "ПІН-код задовгий";
+"PIN is too long" = "PIN-код задовгий";
 
 /* The error message of entering a short pin */
-"PIN is too short" = "ПІН-код закороткий";
+"PIN is too short" = "PIN-код закороткий";
 
 /* Alert message is shown when the device doesn't have network connection */
 "Please connect and retry" = "Під'єднайтесь і повторіть спробу";
@@ -1631,7 +1655,7 @@
 
 /* The title of PIN code setup2 view
    The title of textfield of PIN code setup2 */
-"Repeat PIN code" = "Повторіть ПІН-код";
+"Repeat PIN code" = "Повторіть PIN-код";
 
 /* reply action */
 "Reply" = "Відповісти";
@@ -1811,7 +1835,7 @@
 "Set Password" = "Встановити пароль";
 
 /* The title of PIN code setup1 view */
-"Set PIN code" = "Встановити ПІН-код";
+"Set PIN code" = "Встановити PIN-код";
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "Налаштуйте жести посування для найуживаніших швидких дій.";
@@ -1996,7 +2020,7 @@
 "The password must be between 8 and 21 characters long" = "Пароль повинен мати від 8 до 21 символів";
 
 /* The error message of entering an invalid password */
-"The PIN codes must match!" = "ПІН-коди повинні збігатися!";
+"The PIN codes must match!" = "PIN-коди повинні збігатися!";
 
 /* update password error */
 "The private key update failed." = "Не вдалося оновити приватний ключ.";
@@ -2233,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перейдіть на платний тарифний план, щоб надіслати з вашої адреси %@";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Поліпшіть підписку , щоб автоматично видаляти повідомлення, які перебували у смітнику або спамі понад 30 днів.";
 
 /* Action */
 "Upload device contacts" = "Вивантажити контакти пристрою";
