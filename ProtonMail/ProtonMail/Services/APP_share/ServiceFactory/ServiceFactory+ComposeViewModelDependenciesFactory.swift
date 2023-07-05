@@ -36,7 +36,7 @@ extension ServiceFactory {
                 fetchAndVerifyContacts: FetchAndVerifyContacts(
                     user: user
                 ),
-                internetStatusProvider: factory.get(),
+                internetStatusProvider: InternetConnectionStatusProvider.shared,
                 fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
                 contactProvider: user.contactService,
                 helperDependencies: .init(
