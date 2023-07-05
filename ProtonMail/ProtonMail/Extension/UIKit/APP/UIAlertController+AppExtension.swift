@@ -25,7 +25,7 @@ extension UIAlertController {
     static func showOnTopmostVC(title: String, message: String, action: UIAlertAction) {
         #if !APP_EXTENSION
         DispatchQueue.main.async {
-            guard let window: UIWindow = UIApplication.shared.keyWindow else {
+            guard let window: UIWindow = UIApplication.shared.topMostWindow else {
                 return
             }
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)

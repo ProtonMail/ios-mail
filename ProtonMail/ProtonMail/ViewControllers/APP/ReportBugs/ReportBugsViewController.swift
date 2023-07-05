@@ -151,7 +151,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        guard let keywindow = UIApplication.shared.keyWindow, self.reportSent else { return }
+        guard let keywindow = UIApplication.shared.topMostWindow, self.reportSent else { return }
         keywindow.enumerateViewControllerHierarchy { (controller, stop) in
             guard controller is MenuViewController else {return}
             let alert = UIAlertController(title: LocalString._bug_report_received,
@@ -263,7 +263,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { action in
 
         }))
-        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true, completion: nil)
 
         return true
     }

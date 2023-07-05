@@ -112,6 +112,7 @@ extension LabelEditViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
 
+        // TODO: verify if this is correct
         guard let keyWindow = UIApplication.shared.windows.first else {
             return
         }

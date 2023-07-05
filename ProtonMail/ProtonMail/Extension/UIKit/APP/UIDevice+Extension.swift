@@ -58,6 +58,6 @@ extension UIDevice {
     }
 
     static var hasNotch: Bool {
-        return UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0 > 0
+        return UIApplication.shared.topMostWindow?.safeAreaInsets.bottom ?? 0 > 0
     }
 }

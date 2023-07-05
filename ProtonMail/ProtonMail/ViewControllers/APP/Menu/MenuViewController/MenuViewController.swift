@@ -111,7 +111,7 @@ final class MenuViewController: UIViewController, AccessibleView {
     }
 
     static func calcProperMenuWidth(
-        keyWindow: UIWindow? = UIApplication.shared.keyWindow,
+        keyWindow: UIWindow? = UIApplication.shared.topMostWindow,
         referenceWidth: CGFloat? = nil,
         expectedMenuWidth: CGFloat = 327
     ) -> CGFloat {
