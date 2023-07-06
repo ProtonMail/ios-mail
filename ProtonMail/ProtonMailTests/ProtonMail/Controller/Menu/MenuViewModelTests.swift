@@ -31,6 +31,7 @@ class MenuViewModelTests: XCTestCase {
     var enableColorStub = false
     var usingParentFolderColorStub = false
     var coordinatorMock: MockMenuCoordinatorProtocol!
+    var delegate: MenuUIProtocol!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -55,6 +56,8 @@ class MenuViewModelTests: XCTestCase {
             return self.usingParentFolderColorStub
         }
         sut.coordinator = coordinatorMock
+        delegate = TestViewController()
+        sut.set(delegate: delegate)
     }
 
     override func tearDown() {
@@ -452,6 +455,7 @@ class MenuViewModelTests: XCTestCase {
     }
 
     func testGo_selectSameLocation_shouldNotCallGoFunctionOfCoordinator() {
+        sut.activateUser(id: testUser.userID)
         // select inbox location
         sut.highlight(label: .init(location: .inbox))
 
@@ -474,4 +478,34 @@ class MenuViewModelTests: XCTestCase {
         )
         XCTAssertEqual(argument.location, .archive)
     }
+
+    func testGo_currentUserIDIsDifferentFromCurrentUser_shouldCallGoFunctionOfCoordinator() throws {
+        let userID = UserID(String.randomString(20))
+        // set currentUserID
+        sut.activateUser(id: userID)
+
+        sut.go(to: .init(location: .archive))
+
+        XCTAssertTrue(coordinatorMock.goStub.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(
+            coordinatorMock.goStub.lastArguments?.a1
+        )
+        XCTAssertEqual(argument.location, .archive)
+    }
+}
+
+class TestViewController: UIViewController, MenuUIProtocol {
+    func update(email: String) {}
+
+    func update(displayName: String) {}
+
+    func update(avatar: String) {}
+
+    func showToast(message: String) {}
+
+    func updateMenu(section: Int?) {}
+
+    func update(rows: [IndexPath], insertRows: [IndexPath], deleteRows: [IndexPath]) {}
+
+    func navigateTo(label: ProtonMail.MenuLabel) {}
 }

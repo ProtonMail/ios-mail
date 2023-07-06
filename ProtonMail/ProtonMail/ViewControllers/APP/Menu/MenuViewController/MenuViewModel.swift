@@ -51,6 +51,8 @@ final class MenuViewModel: NSObject {
     var currentUser: UserManager? {
         return self.usersManager.firstUser
     }
+    /// It is used to check if menu needs to update the view when the active account is changed.
+    private var currentUserID: UserID?
     var secondUser: UserManager? {
         return self.usersManager.user(at: 1)
     }
@@ -292,6 +294,7 @@ extension MenuViewModel: MenuVMProtocol {
         self.delegate?.navigateTo(label: MenuLabel(location: .inbox))
         let msg = String(format: LocalString._signed_in_as, user.defaultEmail)
         self.delegate?.showToast(message: msg)
+        currentUserID = currentUser?.userID
     }
 
     func prepareLogin(userID: UserID) {
@@ -363,7 +366,7 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func go(to labelInfo: MenuLabel) {
-        guard selectedItem?.location != labelInfo.location else {
+        guard selectedItem?.location != labelInfo.location || currentUserID != currentUser?.userID else {
             coordinator?.closeMenu()
             return
         }
