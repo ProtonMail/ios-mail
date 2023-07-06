@@ -91,8 +91,6 @@ class WindowsCoordinator {
     private let factory: WindowsCoordinatorDependenciesFactory
     private let dependencies: Dependencies
     private let showPlaceHolderViewOnly: Bool
-    /// used to make sure that only the active window handles the view switching
-    private var shouldHandleSwitchView: Bool = false
 
     init(factory: ServiceFactory, showPlaceHolderViewOnly: Bool = ProcessInfo.isRunningUnitTests) {
         self.showPlaceHolderViewOnly = showPlaceHolderViewOnly
@@ -321,7 +319,6 @@ class WindowsCoordinator {
             object: nil,
             queue: .main
         ) { [weak self] notification in
-            guard self?.shouldHandleSwitchView == true else { return }
             self?.arePrimaryUserSettingsFetched = true
             // trigger the menu to follow the deeplink or show inbox
             self?.handleSwitchViewDeepLinkIfNeeded(notification.object as? DeepLink)
@@ -484,13 +481,11 @@ extension WindowsCoordinator {
 extension WindowsCoordinator {
     @objc
     func willEnterForeground() {
-        shouldHandleSwitchView = true
         self.snapshot.remove()
     }
 
     @objc
     func didEnterBackground() {
-        shouldHandleSwitchView = false
         if let vc = self.currentWindow?.topmostViewController(),
            !(vc is ComposeContainerViewController) {
             vc.view.endEditing(true)
