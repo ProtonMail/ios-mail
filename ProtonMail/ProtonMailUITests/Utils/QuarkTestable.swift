@@ -51,7 +51,7 @@ extension QuarkTestable where Self: XCTestCase {
     
     func createUserWithiOSFixturesLoad(domain: String, plan: UserPlan, scenario: MailScenario, isEnableEarlyAccess: Bool) throws -> User {
         
-        let request = try URLRequest(domain: domain, quark: "raw::qa:fixtures:load?definition-paths[]=api://apps/Mail/resources/qa/ios/\(scenario.name)&--output-format=json")
+        let request = try URLRequest(domain: domain, quark: "raw::qa:fixtures:load?definition-paths[]=api://apps/Mail/resources/qa/ios/\(scenario.name)&--output-format=json", timeoutWorkaround: true)
         
         ConsoleLogger.shared?.log("🕸 URL: \(request.url!)", osLogType: UITest.self)
         
@@ -246,10 +246,18 @@ extension QuarkTestable where Self: XCTestCase {
 // MARK: - Helpers
 private extension URLRequest {
     typealias Endpoint = String
-    
-    init(domain: String, quark: Endpoint) throws {
-        guard let url = URL(string: "https://\(domain)/api/internal/quark/\(quark)") else {
-            throw NSError(domain: "Could not generate proper URL, domain: https://\(domain)/api/internal/quark/\(quark)", code: 10)
+
+    init(domain: String, quark: Endpoint, timeoutWorkaround: Bool = false) throws {
+        var urlString: String
+
+        if timeoutWorkaround {
+            urlString = "https://\(domain)/internal-api/quark/\(quark)"
+        } else {
+            urlString = "https://\(domain)/api/internal/quark/\(quark)"
+        }
+
+        guard let url = URL(string: urlString) else {
+            throw NSError(domain: "Could not generate proper URL, domain: \(urlString)", code: 10)
         }
         self.init(url: url)
     }
