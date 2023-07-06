@@ -47,27 +47,39 @@ extension RegistrationRequiredPersistable {
     }
 }
 
+// sourcery: mock
+protocol FailedPushDecryptionProvider {
+    var hadPushNotificationDecryptionFailed: Bool { get }
+
+    func markPushNotificationDecryptionFailure()
+    func clearPushNotificationDecryptionFailure()
+}
+
 extension UserDefaults: TimestampPushPersistable {}
 extension UserDefaults: RegistrationRequiredPersistable {}
 
 struct SharedUserDefaults {
+    static let shared = SharedUserDefaults()
 
-    #if Enterprise
+#if Enterprise
     private static let appGroupUserDefaults = UserDefaults(suiteName: "group.com.protonmail.protonmail")
-    #else
+#else
     private static let appGroupUserDefaults = UserDefaults(suiteName: "group.ch.protonmail.protonmail")
-    #endif
+#endif
 
     private enum Key: String {
         case lastReceivedPushTimestamp
         case shouldRegisterAgain
+        case failedPushNotificationDecryption
     }
 
     private let timestampPushPersistable: TimestampPushPersistable?
     private let registrationRequiredPersistable: RegistrationRequiredPersistable?
 
-    init(timestampPushPersistable: TimestampPushPersistable? = appGroupUserDefaults,
-         registrationRequiredPersistable: RegistrationRequiredPersistable? = appGroupUserDefaults) {
+    init(
+        timestampPushPersistable: TimestampPushPersistable? = appGroupUserDefaults,
+        registrationRequiredPersistable: RegistrationRequiredPersistable? = appGroupUserDefaults
+    ) {
         self.timestampPushPersistable = timestampPushPersistable
         self.registrationRequiredPersistable = registrationRequiredPersistable
     }
@@ -82,7 +94,7 @@ struct SharedUserDefaults {
 
     func shouldRegisterAgain(for UID: String) -> Bool {
         guard let UIDs = registrationRequiredPersistable?
-                .array(forKey: Key.shouldRegisterAgain.rawValue) as? [String] else {
+            .array(forKey: Key.shouldRegisterAgain.rawValue) as? [String] else {
             return false
         }
         return UIDs.contains(UID)
@@ -90,5 +102,20 @@ struct SharedUserDefaults {
 
     func didRegister(for UID: String) {
         registrationRequiredPersistable?.remove(UID, forKey: Key.shouldRegisterAgain.rawValue)
+    }
+}
+
+extension SharedUserDefaults: FailedPushDecryptionProvider {
+
+    var hadPushNotificationDecryptionFailed: Bool {
+        SharedUserDefaults.appGroupUserDefaults?.bool(forKey: Key.failedPushNotificationDecryption.rawValue) ?? false
+    }
+
+    func markPushNotificationDecryptionFailure() {
+        SharedUserDefaults.appGroupUserDefaults?.set(true, forKey: Key.failedPushNotificationDecryption.rawValue)
+    }
+
+    func clearPushNotificationDecryptionFailure() {
+        SharedUserDefaults.appGroupUserDefaults?.removeObject(forKey: Key.failedPushNotificationDecryption.rawValue)
     }
 }

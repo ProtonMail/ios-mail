@@ -17,6 +17,7 @@
 
 import ProtonCore_Networking
 
+// sourcery: mock
 protocol DeviceRegistrationUseCase {
     func execute(sessionIDs: [String], deviceToken: String, publicKey: String) async -> [DeviceRegistrationResult]
 }
@@ -95,7 +96,7 @@ struct DeviceRegistration: DeviceRegistrationUseCase {
             caughtError = .responseError(error: responseError)
         } catch {
             PMAssertionFailure(error)
-            caughtError = .unknown
+            caughtError = .unexpected(error: error)
         }
         if let caughtError {
             let token = request.deviceToken.redacted
@@ -134,5 +135,5 @@ struct DeviceRegistrationResult {
 enum DeviceRegistrationError: Error {
     case noSessionIdFound(sessionId: String)
     case responseError(error: ResponseError)
-    case unknown
+    case unexpected(error: Error)
 }

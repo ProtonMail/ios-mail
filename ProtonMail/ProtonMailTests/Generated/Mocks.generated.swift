@@ -334,6 +334,22 @@ class MockDarkModeCacheProtocol: DarkModeCacheProtocol {
 
 }
 
+class MockDeviceRegistrationUseCase: DeviceRegistrationUseCase {
+    @FuncStub(MockDeviceRegistrationUseCase.execute, initialReturn: [DeviceRegistrationResult]()) var executeStub
+    func execute(sessionIDs: [String], deviceToken: String, publicKey: String) -> [DeviceRegistrationResult] {
+        executeStub(sessionIDs, deviceToken, publicKey)
+    }
+
+}
+
+class MockDeviceUnregistrationUseCase: DeviceUnregistrationUseCase {
+    @FuncStub(MockDeviceUnregistrationUseCase.execute, initialReturn: [DeviceUnregistrationResult]()) var executeStub
+    func execute(sessionIDs: [String], deviceToken: String) -> [DeviceUnregistrationResult] {
+        executeStub(sessionIDs, deviceToken)
+    }
+
+}
+
 class MockDownloadedMessagesRouterProtocol: DownloadedMessagesRouterProtocol {
     @FuncStub(MockDownloadedMessagesRouterProtocol.closeView) var closeViewStub
     func closeView() {
@@ -628,6 +644,24 @@ class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
     @FuncStub(MockEncryptedSearchUserCache.cleanGlobal) var cleanGlobalStub
     func cleanGlobal() {
         cleanGlobalStub()
+    }
+
+}
+
+class MockFailedPushDecryptionProvider: FailedPushDecryptionProvider {
+    @PropertyStub(\MockFailedPushDecryptionProvider.hadPushNotificationDecryptionFailed, initialGet: Bool()) var hadPushNotificationDecryptionFailedStub
+    var hadPushNotificationDecryptionFailed: Bool {
+        hadPushNotificationDecryptionFailedStub()
+    }
+
+    @FuncStub(MockFailedPushDecryptionProvider.markPushNotificationDecryptionFailure) var markPushNotificationDecryptionFailureStub
+    func markPushNotificationDecryptionFailure() {
+        markPushNotificationDecryptionFailureStub()
+    }
+
+    @FuncStub(MockFailedPushDecryptionProvider.clearPushNotificationDecryptionFailure) var clearPushNotificationDecryptionFailureStub
+    func clearPushNotificationDecryptionFailure() {
+        clearPushNotificationDecryptionFailureStub()
     }
 
 }

@@ -18,6 +18,7 @@
 import ProtonCore_Networking
 import ProtonCore_Services
 
+// sourcery: mock
 protocol DeviceUnregistrationUseCase {
     func execute(sessionIDs: [String], deviceToken: String) async -> [DeviceUnregistrationResult]
 }
