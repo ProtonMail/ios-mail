@@ -21,7 +21,7 @@ stages:
 
 .setup_basic_tools: &setup_basic_tools
   - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --no-upgrade
-  - mint bootstrap --link
+  - mint bootstrap
 
 .setup_ruby: &setup_ruby
   - cd ProtonMail

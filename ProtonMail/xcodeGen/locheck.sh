@@ -1,12 +1,12 @@
 #!/bin/bash
 
-set -euo pipefail
+set -uo pipefail
 
-function validateLocalizations {
-    xcodeGen/run_with_mint.sh locheck discoverlproj --ignore-missing --treat-warnings-as-errors ProtonMail/Resource/Localization
-}
+xcodeGen/run_with_mint.sh locheck discoverlproj --ignore-missing --treat-warnings-as-errors ProtonMail/Resource/Localization
+locheck_exit_code=$?
 
-if ! validateLocalizations; then
+if ! ( [ $locheck_exit_code == 0 ] || [ $locheck_exit_code == 65 ] ); then
     echo "error: Some localizable strings are not correct. What locheck calls a warning can actually cause a crash in production, so please fix everything that is listed above."
-    exit 1
 fi
+
+exit $locheck_exit_code

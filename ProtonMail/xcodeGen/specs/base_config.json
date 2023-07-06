@@ -5,7 +5,7 @@
       "deploymentTarget": {
          "iOS": "14.7"
       },
-      "postGenCommand": "xcodeGen/install_pods.sh"
+      "postGenCommand": "xcodeGen/post_gen.sh"
    },
    "fileGroups": [
       "ProtonMail",
