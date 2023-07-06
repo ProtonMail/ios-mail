@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_DataModel
+import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_TestingToolkit
 @testable import ProtonMail
@@ -29,7 +30,12 @@ extension UserManager {
         self.init(api: api, role: role, userInfo: userInfo, coreKeyMaker: MockKeyMakerProtocol())
     }
 
-    convenience init(api: APIService, userID: String, coreKeyMaker: KeyMakerProtocol = MockKeyMakerProtocol()) {
+    convenience init(
+        api: APIService,
+        userID: String,
+        authCredential: AuthCredential = .none,
+        coreKeyMaker: KeyMakerProtocol = MockKeyMakerProtocol()
+    ) {
         self.init(
             api: api,
             role: .none,
@@ -47,7 +53,8 @@ extension UserManager {
                 currency: nil,
                 subscribed: nil
             ),
-            coreKeyMaker: coreKeyMaker
+            coreKeyMaker: coreKeyMaker,
+            authCredential: authCredential
         )
     }
 

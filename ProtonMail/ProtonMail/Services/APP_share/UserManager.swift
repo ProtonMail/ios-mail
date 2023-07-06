@@ -386,6 +386,7 @@ class UserManager: Service {
         mailSettings: MailSettings = .init(),
         appTelemetry: AppTelemetry = MailAppTelemetry(),
         coreKeyMaker: KeyMakerProtocol,
+        authCredential: AuthCredential = .none,
         coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
     ) {
         guard ProcessInfo.isRunningUnitTests || ProcessInfo.isRunningUITests else {
@@ -397,7 +398,7 @@ class UserManager: Service {
         self.apiService = api
         self.appTelemetry = appTelemetry
         self.coreKeyMaker = coreKeyMaker
-        self.authCredential = AuthCredential.none
+        self.authCredential = authCredential
         self.mailSettings = mailSettings
         self.authHelper = AuthHelper(authCredential: authCredential)
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
