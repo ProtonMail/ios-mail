@@ -15,6 +15,7 @@ fileprivate struct id {
     static let composeButtonLabel = "MailboxViewController.composeBarButtonItem"
     static let buttonSkipTutorial = LocalString._skip_btn_title
     static let skeletonCell = "SkeletonCell"
+    static let yourFeedbackCloseButtonIdentifier = "InAppFeedbackActionSheetView.closeButton"
 }
 
 /**
@@ -46,6 +47,11 @@ class InboxRobot : MailboxRobotInterface {
     
     func activateAppWithoutPin() -> InboxRobot {
         XCUIApplication().activate()
+        return self
+    }
+
+    func closeYourFeedbackView() -> InboxRobot {
+        button(id.yourFeedbackCloseButtonIdentifier).tap()
         return self
     }
     

@@ -64,7 +64,7 @@ class MenuRobot: CoreElements {
     
     @discardableResult
     func contacts() -> ContactsRobot {
-        cell(id.contactsStaticText).swipeUpUntilVisible().tap()
+        cell(id.contactsStaticText).swipeUpUntilVisible().waitForHittable().tap()
         return ContactsRobot()
     }
     
@@ -91,7 +91,7 @@ class MenuRobot: CoreElements {
         return InboxRobot()
     }
     
-    func spams() -> SpamRobot {
+    func spam() -> SpamRobot {
         cell(id.spamStaticText).swipeDownUntilVisible().tap()
         return SpamRobot()
     }

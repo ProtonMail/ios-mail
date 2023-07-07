@@ -49,32 +49,32 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     /// TestId: 35854
     func testEditDraftMultipleTimes() throws {
-        let freeUser = users["free"]!
-        let plusUser = users["plus"]!
-        let proUser = users["pro"]!
-        
-        let editOneRecipient = plusUser.email
-        let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
-        
-        let editTwoRecipient = proUser.email
-        let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
-        
-        LoginRobot()
-            .loginUser(freeUser)
-            .compose()
-            .draftToSubjectBody(freeUser.email, subject, body)
-            .tapCancel()
-            .menuDrawer()
-            .drafts()
-            .clickDraftBySubject(subject)
-            .editRecipients(editOneRecipient)
-            .changeSubjectTo(editOneSubject)
-            .tapCancelFromDrafts()
-            .clickDraftBySubject(editOneSubject)
-            .editRecipients(editTwoRecipient)
-            .changeSubjectTo(editTwoSubject)
-            .tapCancelFromDrafts()
-            .verify.messageWithSubjectExists(editTwoSubject)
+        runTestWithScenario(.qaMail001) {
+            let plusUser = users["plus"]!
+            let freeUser = users["free"]!
+            
+            let editOneRecipient = plusUser.email
+            let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
+            
+            let editTwoRecipient = freeUser.email
+            let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
+            
+            InboxRobot()
+                .compose()
+                .draftToSubjectBody(to, subject, body)
+                .tapCancel()
+                .menuDrawer()
+                .drafts()
+                .clickDraftBySubject(subject)
+                .editRecipients(editOneRecipient)
+                .changeSubjectTo(editOneSubject)
+                .tapCancelFromDrafts()
+                .clickDraftBySubject(editOneSubject)
+                .editRecipients(editTwoRecipient)
+                .changeSubjectTo(editTwoSubject)
+                .tapCancelFromDrafts()
+                .verify.messageWithSubjectExists(editTwoSubject)
+        }
     }
 
     func testOpenDraftFromSearch() {
@@ -190,6 +190,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
                 .backgroundApp()
                 .foregroundApp()
                 .tapCancel()
+                .closeYourFeedbackView()
                 .menuDrawer()
                 .drafts()
                 .verify.messageWithSubjectExists(subject)

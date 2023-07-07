@@ -33,6 +33,8 @@ fileprivate struct id {
     static let recipientNotFoundStaticTextIdentifier = LocalString._recipient_not_found
     
     static let setExpirationButtonLabel = LocalString._general_set
+    static let messageBodyLabel = "HTML Editor"
+    static let returnKeyboardButtonLabel = "return"
     
     /// Default Photo library images identifiers
     static func imageCellIdentifier(_ number: Int) -> String {
@@ -201,6 +203,8 @@ class ComposerRobot: CoreElements {
         textField(id.toTextFieldIdentifier).firstMatch().tap().typeText(email)
         if cell(id.getContactCellIdentifier(email.replaceSpaces())).firstMatch().exists() {
             cell(id.getContactCellIdentifier(email.replaceSpaces())).firstMatch().waitForHittable().tap()
+        } else {
+            otherElement(id.messageBodyLabel).tap()
         }
         return self
     }
@@ -276,13 +280,15 @@ class ComposerRobot: CoreElements {
         textField(id.subjectTextFieldIdentifier)
             .firstMatch()
             .forceKeyboardFocus()
+            .tap()
             .typeText(subjectText)
+        button(id.returnKeyboardButtonLabel).tap()
         return self
     }
     
     @discardableResult
     private func body(_ text: String) -> ComposerRobot {
-        ///TODO: add body update when WebView field will be accessible.
+        otherElement(id.messageBodyLabel).tap().typeText(text)
         return self
     }
     
