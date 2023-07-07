@@ -20,7 +20,7 @@ import XCTest
 @testable import ProtonMail
 
 class NewUseCaseTests: XCTestCase {
-    var sut: NewUseCase<Bool, Void>!
+    var sut: UseCase<Bool, Void>!
 
     override func setUp() {
         super.setUp()
@@ -61,7 +61,7 @@ class NewUseCaseTests: XCTestCase {
     }
 }
 
-private class RunsInMainThreadUseCase: NewUseCase<Bool, Void> {
+private class RunsInMainThreadUseCase: UseCase<Bool, Void> {
 
     override func executionBlock(params: Void, callback: @escaping Callback) {
         let result = Thread.current.isMainThread

@@ -17,7 +17,7 @@
 
 import Foundation
 
-typealias SearchUseCase = NewUseCase<[MessageEntity], MessageSearch.Params>
+typealias SearchUseCase = UseCase<[MessageEntity], MessageSearch.Params>
 
 final class MessageSearch: SearchUseCase {
     private let dependencies: Dependencies
@@ -28,7 +28,7 @@ final class MessageSearch: SearchUseCase {
 
     override func executionBlock(
         params: Params,
-        callback: @escaping NewUseCase<[MessageEntity], Params>.Callback
+        callback: @escaping UseCase<[MessageEntity], Params>.Callback
     ) {
         guard dependencies.isESEnable,
               isEncryptedSearchOn(),

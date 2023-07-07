@@ -22,7 +22,7 @@ import class ProtonCore_DataModel.UserInfo
 import ProtonCore_Crypto
 import ProtonMailAnalytics
 
-typealias PrepareSendMetadataUseCase = NewUseCase<SendMessageMetadata, PrepareSendMetadata.Params>
+typealias PrepareSendMetadataUseCase = UseCase<SendMessageMetadata, PrepareSendMetadata.Params>
 
 final class PrepareSendMetadata: PrepareSendMetadataUseCase {
     private let dependencies: Dependencies

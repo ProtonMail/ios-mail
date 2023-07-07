@@ -18,7 +18,7 @@
 import Foundation
 import PromiseKit
 
-typealias FetchMessagesWithResetUseCase = NewUseCase<Void, FetchMessagesWithReset.Params>
+typealias FetchMessagesWithResetUseCase = UseCase<Void, FetchMessagesWithReset.Params>
 
 final class FetchMessagesWithReset: FetchMessagesWithResetUseCase {
     private let userID: UserID

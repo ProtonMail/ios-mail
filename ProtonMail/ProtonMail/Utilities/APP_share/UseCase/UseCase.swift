@@ -18,7 +18,7 @@
 import Foundation
 
 /// Parent class that allows use cases to implement the same multithreading approach.
-class NewUseCase<T, Params> {
+class UseCase<T, Params> {
     typealias Callback = (Result<T, Error>) -> Void
 
     private(set) var executionQueue: DispatchQueue = .global(qos: .userInitiated)

@@ -22,7 +22,7 @@ import ProtonCore_Services
 /// This use case saves the swipe action selection from the user locally in the UserCachedStatus. Then, if
 /// the action has to be synced with backend, it sends one or multiple requests to update the swipe action
 /// preference for multiple Proton accounts in the backend.
-typealias SaveSwipeActionSettingForUsersUseCase = NewUseCase<Void, SaveSwipeActionSetting.Parameters>
+typealias SaveSwipeActionSettingForUsersUseCase = UseCase<Void, SaveSwipeActionSetting.Parameters>
 
 enum SwipeActionPreference: Equatable {
     case left(SwipeActionSettingType)
@@ -51,7 +51,7 @@ final class SaveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
         self.dependencies = dependencies
     }
 
-    override func executionBlock(params: Parameters, callback: @escaping NewUseCase<Void, Parameters>.Callback) {
+    override func executionBlock(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         saveSwipePreferenceLocally(preference: params.preference)
         saveSwipeActionInBackendIfNeeded(preference: params.preference, callback: callback)
     }
@@ -67,7 +67,7 @@ final class SaveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
 
     private func saveSwipeActionInBackendIfNeeded(
         preference: SwipeActionPreference,
-        callback: @escaping NewUseCase<Void, Parameters>.Callback
+        callback: @escaping UseCase<Void, Parameters>.Callback
     ) {
         guard preference.isSyncable else {
             callback(.success)

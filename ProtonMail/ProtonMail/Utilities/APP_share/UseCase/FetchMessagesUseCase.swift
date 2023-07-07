@@ -19,7 +19,7 @@ import Foundation
 
 /// This use case fetches messages from backend and persists those messages locally.
 /// It then requests the number of messages in each label/folder and also persists it locally.
-typealias FetchMessagesUseCase = NewUseCase<Void, FetchMessages.Parameters>
+typealias FetchMessagesUseCase = UseCase<Void, FetchMessages.Parameters>
 
 class FetchMessages: FetchMessagesUseCase {
     private let dependencies: Dependencies
@@ -28,7 +28,7 @@ class FetchMessages: FetchMessagesUseCase {
         self.dependencies = dependencies
     }
 
-    override func executionBlock(params: Parameters, callback: @escaping NewUseCase<Void, Parameters>.Callback) {
+    override func executionBlock(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         requestMessages(
             endTime: params.endTime,
             isUnread: params.isUnread,
@@ -45,7 +45,7 @@ extension FetchMessages {
     private func requestMessages(
         endTime: Int,
         isUnread: Bool,
-        callback: @escaping NewUseCase<Void, Parameters>.Callback,
+        callback: @escaping UseCase<Void, Parameters>.Callback,
         onFetchSuccess: (() -> Void)?
     ) {
         dependencies

@@ -18,7 +18,7 @@
 import CoreData
 import Foundation
 
-typealias PurgeOldMessagesUseCase = NewUseCase<Void, Void>
+typealias PurgeOldMessagesUseCase = UseCase<Void, Void>
 
 final class PurgeOldMessages: PurgeOldMessagesUseCase {
     private let dependencies: Dependencies
@@ -43,7 +43,7 @@ final class PurgeOldMessages: PurgeOldMessagesUseCase {
         self.dependencies = dependencies
     }
 
-    override func executionBlock(params: Void, callback: @escaping NewUseCase<Void, Void>.Callback) {
+    override func executionBlock(params: Void, callback: @escaping UseCase<Void, Void>.Callback) {
         queryMessagesWithoutMetaData { [weak self] ids, error in
             guard let self = self else {
                 callback(.success(()))

@@ -21,7 +21,7 @@ import ProtonCore_DataModel
 @testable import ProtonMail
 import ProtonCore_TestingToolkit
 
-final class MockPrepareSendMetadata: NewUseCase<SendMessageMetadata, PrepareSendMetadata.Params> {
+final class MockPrepareSendMetadata: UseCase<SendMessageMetadata, PrepareSendMetadata.Params> {
 
     private lazy var dummySendMessageMetadata: SendMessageMetadata = {
         let validKeyPair = try! MailCrypto.generateRandomKeyPair()

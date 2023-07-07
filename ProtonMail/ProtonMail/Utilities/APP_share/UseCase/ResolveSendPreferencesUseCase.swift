@@ -18,7 +18,7 @@
 import Foundation
 import ProtonCore_DataModel
 
-typealias ResolveSendPreferencesUseCase = NewUseCase<[RecipientSendPreferences], ResolveSendPreferences.Params>
+typealias ResolveSendPreferencesUseCase = UseCase<[RecipientSendPreferences], ResolveSendPreferences.Params>
 
 final class ResolveSendPreferences: ResolveSendPreferencesUseCase {
     private let dependencies: Dependencies

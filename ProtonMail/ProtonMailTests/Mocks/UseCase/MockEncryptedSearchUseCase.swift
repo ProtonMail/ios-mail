@@ -22,7 +22,7 @@ import ProtonCore_TestingToolkit
 final class MockEncryptedSearchUseCase: EncryptedSearchUseCase {
 
     @FuncStub(MockEncryptedSearchUseCase.executionBlock) var executionBlockStub
-    override func executionBlock(params: EncryptedSearch.Params, callback: @escaping NewUseCase<[MessageEntity], EncryptedSearch.Params>.Callback) {
+    override func executionBlock(params: EncryptedSearch.Params, callback: @escaping UseCase<[MessageEntity], EncryptedSearch.Params>.Callback) {
         executionBlockStub(params, callback)
     }
 }

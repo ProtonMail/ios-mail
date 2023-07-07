@@ -18,7 +18,7 @@
 import Foundation
 import Groot
 
-typealias FetchMessageMetaDataUseCase = NewUseCase<Void, FetchMessageMetaData.Parameters>
+typealias FetchMessageMetaDataUseCase = UseCase<Void, FetchMessageMetaData.Parameters>
 
 final class FetchMessageMetaData: FetchMessageMetaDataUseCase {
     private let dependencies: Dependencies
@@ -27,7 +27,7 @@ final class FetchMessageMetaData: FetchMessageMetaDataUseCase {
         self.dependencies = dependencies
     }
 
-    override func executionBlock(params: Parameters, callback: @escaping NewUseCase<Void, Parameters>.Callback) {
+    override func executionBlock(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         if params.messageIDs.isEmpty {
             callback(.success(()))
             return

@@ -19,7 +19,7 @@ import Foundation
 import ProtonCore_DataModel
 import UIKit
 
-typealias FetchSenderImageUseCase = NewUseCase<UIImage?, FetchSenderImage.Params>
+typealias FetchSenderImageUseCase = UseCase<UIImage?, FetchSenderImage.Params>
 
 final class FetchSenderImage: FetchSenderImageUseCase {
     private let dependencies: Dependencies

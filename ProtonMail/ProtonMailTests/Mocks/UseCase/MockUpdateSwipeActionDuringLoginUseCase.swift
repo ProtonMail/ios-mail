@@ -20,7 +20,7 @@ import ProtonCore_TestingToolkit
 
 class MockUpdateSwipeActionDuringLoginUseCase: UpdateSwipeActionDuringLoginUseCase {
     @FuncStub(MockUpdateSwipeActionDuringLoginUseCase.execute) var executeStub
-    override func execute(params: UpdateSwipeActionDuringLogin.Parameters, callback: @escaping NewUseCase<Void, UpdateSwipeActionDuringLogin.Parameters>.Callback) {
+    override func execute(params: UpdateSwipeActionDuringLogin.Parameters, callback: @escaping UseCase<Void, UpdateSwipeActionDuringLogin.Parameters>.Callback) {
         executeStub(params, callback)
     }
 }

@@ -18,7 +18,7 @@
 import Foundation
 import ProtonCore_Keymaker
 
-typealias UpdateMobileSignatureUseCase = NewUseCase<Void, UpdateMobileSignature.Parameters>
+typealias UpdateMobileSignatureUseCase = UseCase<Void, UpdateMobileSignature.Parameters>
 
 final class UpdateMobileSignature: UpdateMobileSignatureUseCase {
     private let dependencies: Dependencies
@@ -27,7 +27,7 @@ final class UpdateMobileSignature: UpdateMobileSignatureUseCase {
         self.dependencies = dependencies
     }
 
-    override func executionBlock(params: Parameters, callback: @escaping NewUseCase<Void, Parameters>.Callback) {
+    override func executionBlock(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         guard let mainKey = dependencies.coreKeyMaker.mainKey(by: .randomPin) else {
             callback(.failure(UpdateMobileSignatureError.failedToGetMainKey))
             return

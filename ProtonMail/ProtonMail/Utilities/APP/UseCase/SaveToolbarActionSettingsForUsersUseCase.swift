@@ -23,7 +23,7 @@ import ProtonCore_Services
 /// This use case updates the toolbar action inside the userInfo of the user passed in.
 /// It sends a request to update the mailSettings of the user. Then, update the
 /// mailSettings by the response of the API.
-typealias SaveToolbarActionSettingsForUsersUseCase = NewUseCase<Void, SaveToolbarActionSettings.Params>
+typealias SaveToolbarActionSettingsForUsersUseCase = UseCase<Void, SaveToolbarActionSettings.Params>
 
 struct ToolbarActionPreference {
     let messageActions: [MessageViewActionSheetAction]?
@@ -43,7 +43,7 @@ final class SaveToolbarActionSettings: SaveToolbarActionSettingsForUsersUseCase 
         self.dependencies = dependencies
     }
 
-    override func executionBlock(params: Params, callback: @escaping NewUseCase<Void, Params>.Callback) {
+    override func executionBlock(params: Params, callback: @escaping UseCase<Void, Params>.Callback) {
         let messageActions = params.preference.messageActions
             .map(ServerToolbarAction.convert)
         let listViewActions = params.preference.listViewActions

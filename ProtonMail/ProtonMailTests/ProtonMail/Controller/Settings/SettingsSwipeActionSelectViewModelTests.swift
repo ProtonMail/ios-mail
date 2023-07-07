@@ -25,7 +25,7 @@ import XCTest
 
 class MockSaveSwipeActionSettingForUsersUseCase: SaveSwipeActionSettingForUsersUseCase {
     @FuncStub(MockSaveSwipeActionSettingForUsersUseCase.execute) var callExecute
-    override func execute(params: SaveSwipeActionSetting.Parameters, callback: @escaping NewUseCase<Void, SaveSwipeActionSetting.Parameters>.Callback) {
+    override func execute(params: SaveSwipeActionSetting.Parameters, callback: @escaping UseCase<Void, SaveSwipeActionSetting.Parameters>.Callback) {
         callExecute(params, callback)
     }
 }
