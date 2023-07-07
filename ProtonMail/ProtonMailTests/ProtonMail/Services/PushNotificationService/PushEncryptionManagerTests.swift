@@ -242,6 +242,18 @@ final class PushEncryptionManagerTests: XCTestCase {
         XCTAssertEqual(mockFailedPushProvider.clearPushNotificationDecryptionFailureStub.callCounter, 1)
     }
 
+    func testRegisterDeviceForNotifications_whenSameTokenButFailDecryptionFlagEnabled_itShouldNotUnregisterAnyToken() {
+        prepareMockSessions(num: 1)
+        setLastUsedDeviceToken(dummyDeviceToken)
+        mockKitsSaver.set(newValue: [dummyEncryptionKit])
+        mockFailedPushProvider.hadPushNotificationDecryptionFailedStub.fixture = true
+
+        sut.registerDeviceForNotifications(deviceToken: dummyDeviceToken)
+        sleepToAllowAsyncTaskToFinish()
+
+        XCTAssertTrue(mockDeviceUnregistration.executeStub.callCounter == 0)
+    }
+
     func testRegisterDeviceForNotifications_whenSameTokenButRetryFlagEnabled_itRegistersTokenWithExistingKey() {
         prepareMockSessions(num: 1)
         setLastUsedDeviceToken(dummyDeviceToken)
@@ -254,6 +266,18 @@ final class PushEncryptionManagerTests: XCTestCase {
         XCTAssertEqual(mockDeviceRegistration.executeStub.lastArguments?.a2, dummyDeviceToken)
         XCTAssertEqual(mockDeviceRegistration.executeStub.lastArguments?.a3, dummyEncryptionKit.publicKey)
         XCTAssertFalse(mockUserDefaults.bool(forKey: "pushEncryptionRetryDeviceTokenRegistration"))
+    }
+
+    func testRegisterDeviceForNotifications_whenSameTokenButRetryFlagEnabled_itShouldNotUnregisterAnyToken() {
+        prepareMockSessions(num: 1)
+        setLastUsedDeviceToken(dummyDeviceToken)
+        mockKitsSaver.set(newValue: [dummyEncryptionKit])
+        setRetryTokenRegistrationFlag()
+
+        sut.registerDeviceForNotifications(deviceToken: dummyDeviceToken)
+        sleepToAllowAsyncTaskToFinish()
+
+        XCTAssertTrue(mockDeviceUnregistration.executeStub.callCounter == 0)
     }
 
     func testRegisterDeviceForNotifications_whenRegisteringWithDifferentKeys_itRemovesOldestKeyWhenOverMaxAllowed() {
@@ -305,6 +329,17 @@ final class PushEncryptionManagerTests: XCTestCase {
         XCTAssertNotNil(publicKeyUsed)
         XCTAssertNotEqual(publicKeyUsed, dummyEncryptionKit.publicKey)
         XCTAssertEqual(mockKitsSaver.get()!.count, 2)
+    }
+
+    func testRotatePushNotificationsEncryptionKey_whenTokenHasBeenRegistered_itShouldNotUnregisterAnyToken() {
+        prepareMockSessions(num: 1)
+        setLastUsedDeviceToken(dummyDeviceToken)
+        mockKitsSaver.set(newValue: [dummyEncryptionKit])
+
+        sut.rotatePushNotificationsEncryptionKey()
+        sleepToAllowAsyncTaskToFinish()
+
+        XCTAssertEqual(mockDeviceUnregistration.executeStub.callCounter, 0)
     }
 
     // MARK: Tests for deleteAllCachedData

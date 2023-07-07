@@ -57,9 +57,10 @@ final class PushEncryptionManager: PushEncryptionManagerProtocol {
         Task {
             let rotateKey = dependencies.failedPushDecryptionProvider.hadPushNotificationDecryptionFailed
             guard let kit = kitForRegisteringDevice(rotateKey: rotateKey) else { return }
+            let tokenToUnregister = deviceToken != lastRegisteredToken ? lastRegisteredToken : nil
             await updateTokensAndKitsForAllSessions(
                 tokenToRegister: deviceToken,
-                previousTokenToUnregisterIfSuccess: lastRegisteredToken,
+                previousTokenToUnregisterIfSuccess: tokenToUnregister,
                 kit: kit
             )
         }
