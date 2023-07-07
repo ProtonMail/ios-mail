@@ -121,10 +121,11 @@ private enum SubviewFactory {
     }
 
     static var tableView: UITableView {
-        let view = UITableView(frame: .zero, style: .plain)
+        let view = UITableView(frame: .zero, style: .grouped)
         view.contentInsetAdjustmentBehavior = .automatic
         view.estimatedRowHeight = 100
         view.rowHeight = UITableView.automaticDimension
+        view.estimatedSectionHeaderHeight = 100
         view.backgroundColor = .clear
         view.separatorColor = ColorProvider.SeparatorNorm
         return view

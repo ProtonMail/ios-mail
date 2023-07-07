@@ -34,7 +34,7 @@ protocol EncryptedSearchServiceProtocol {
     func update(drafts: [MessageEntity], for userID: UserID)
     func didChangeDownloadViaMobileData(for userID: UserID)
     func indexSize(for userID: UserID) -> Measurement<UnitInformationStorage>?
-    func oldesMessageTime(for userID: UserID) -> Int?
+    func oldestMessageTime(for userID: UserID) -> Int?
     func search(
         userID: UserID,
         query: String,
@@ -125,7 +125,7 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol, EncryptedSea
         buildSearchIndex(for: userID)?.indexSize
     }
 
-    func oldesMessageTime(for userID: UserID) -> Int? {
+    func oldestMessageTime(for userID: UserID) -> Int? {
         buildSearchIndex(for: userID)?.oldestMessageTime
     }
 

@@ -515,9 +515,9 @@ class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
         indexSizeStub(userID)
     }
 
-    @FuncStub(MockEncryptedSearchServiceProtocol.oldesMessageTime, initialReturn: nil) var oldesMessageTimeStub
-    func oldesMessageTime(for userID: UserID) -> Int? {
-        oldesMessageTimeStub(userID)
+    @FuncStub(MockEncryptedSearchServiceProtocol.oldestMessageTime, initialReturn: nil) var oldestMessageTimeStub
+    func oldestMessageTime(for userID: UserID) -> Int? {
+        oldestMessageTimeStub(userID)
     }
 
     @FuncStub(MockEncryptedSearchServiceProtocol.search) var searchStub
