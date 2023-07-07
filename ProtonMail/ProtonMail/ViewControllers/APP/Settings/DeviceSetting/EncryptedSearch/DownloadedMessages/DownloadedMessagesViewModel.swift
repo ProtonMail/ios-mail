@@ -74,7 +74,7 @@ extension DownloadedMessagesViewModel: DownloadedMessagesViewModelOutput {
 
     var oldestMessageTime: String {
         var oldestTime: String = "-"
-        if let time = dependencies.esService.oldesMessageTime(for: userID) {
+        if let time = dependencies.esService.oldestMessageTime(for: userID) {
             oldestTime = dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(time)))
         }
         return oldestTime

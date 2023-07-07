@@ -127,6 +127,10 @@ extension SearchViewController {
         customView.tableView.dataSource = self
         customView.tableView.noSeparatorsBelowFooter()
         customView.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
+        customView.tableView.register(
+            ESIndexingInformationBanner.self,
+            forHeaderFooterViewReuseIdentifier: ESIndexingInformationBanner.identifier
+        )
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self,
                                                                       action: #selector(handleLongPress(_:)))
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
@@ -665,6 +669,29 @@ extension SearchViewController {
                 }
             }
     }
+
+    private func showEncryptedSearchSettingPage() {
+        guard let navController = navigationController else { return }
+        let router = SettingsEncryptedSearchRouter(navigationController: navController)
+        let viewModel = SettingsEncryptedSearchViewModel(
+            router: router,
+            dependencies: .init(userID: viewModel.user.userID)
+        )
+        let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
+        navController.pushViewController(viewController, animated: true)
+    }
+
+    private func showESDownloadedMessagePage() {
+        guard let navController = navigationController else { return }
+        let router = DownloadedMessagesRouter(navigationController: navController)
+        let viewModel = DownloadedMessagesViewModel(
+            router: router,
+            searchIndexState: viewModel.currentEncryptedSearchIndexingState(),
+            dependencies: .init(userID: viewModel.user.userID)
+        )
+        let viewController = DownloadedMessagesViewController(viewModel: viewModel)
+        navController.pushViewController(viewController, animated: true)
+    }
 }
 
 extension SearchViewController: SearchViewUIProtocol {
@@ -704,7 +731,7 @@ extension SearchViewController: SearchViewUIProtocol {
 // MARK: - UITableView
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.viewModel.messages.isEmpty ? 0 : 1
+        1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -756,6 +783,37 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
             return
         }
         self.prepareFor(message: message)
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        guard
+            viewModel.shouldShowESIndexingBanner(),
+            let header = tableView.dequeueReusableHeaderFooterView(
+                withIdentifier: ESIndexingInformationBanner.identifier
+            ) as? ESIndexingInformationBanner
+        else { return nil }
+        let oldestTime = viewModel.oldestMessageTime() ?? Int(Date().timeIntervalSince1970)
+        header.updateView(
+            for: viewModel.currentEncryptedSearchIndexingState(),
+            oldestMessageDateInSearchIndex: Date(timeIntervalSince1970: Double(oldestTime))
+        )
+        header.closeClosure = { [weak self] in
+            self?.viewModel.userCloseESIndexingBanner()
+            self?.customView.tableView.reloadSections([0], with: .automatic)
+        }
+        header.openPage = { [weak self] target in
+            switch target {
+            case .infoPage:
+                self?.showEncryptedSearchSettingPage()
+            case .storageSetting:
+                self?.showESDownloadedMessagePage()
+            }
+        }
+        return header
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        viewModel.shouldShowESIndexingBanner() ? UITableView.automaticDimension : 0
     }
 }
 

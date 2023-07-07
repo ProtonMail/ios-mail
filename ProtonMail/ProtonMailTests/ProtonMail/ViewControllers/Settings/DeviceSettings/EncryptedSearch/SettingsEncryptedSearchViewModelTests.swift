@@ -173,7 +173,7 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
     }
 
     func testOutput_downloadMessageInfo_itParsesTheDataCorrectly() {
-        mockEncryptedSearchService.oldesMessageTimeStub.bodyIs { _, _ in
+        mockEncryptedSearchService.oldestMessageTimeStub.bodyIs { _, _ in
             1644858210
         }
         mockEncryptedSearchService.indexSizeStub.bodyIs { _, _ in

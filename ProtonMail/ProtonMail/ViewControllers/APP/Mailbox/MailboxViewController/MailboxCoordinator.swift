@@ -341,7 +341,8 @@ extension MailboxCoordinator {
                             )
                         ), esStateProvider: esService
                     )
-                )
+                ),
+                encryptedSearchService: esService
             )
         )
         let viewController = SearchViewController(viewModel: viewModel, serviceFactory: services)
