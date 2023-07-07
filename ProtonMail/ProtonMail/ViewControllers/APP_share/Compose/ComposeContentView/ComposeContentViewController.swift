@@ -37,7 +37,7 @@ protocol ComposeContentViewControllerDelegate: AnyObject {
     func displayContactGroupSubSelectionView()
 }
 
-// swiftlint:disable line_length type_body_length
+// swiftlint:disable:next line_length type_body_length
 class ComposeContentViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
     let viewModel: ComposeViewModel
     var openScheduleSendActionSheet: (() -> Void)?

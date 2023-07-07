@@ -62,7 +62,6 @@ struct ContactPGPTypeHelper {
         return (nil, nil)
     }
 
-    // swiftlint:disable function_body_length
     func calculateEncryptionIconWithAPI(email: String,
                                         isMessageHavingPwd: Bool,
                                         completion: @escaping (EncryptionIconStatus?, Int?) -> Void) {

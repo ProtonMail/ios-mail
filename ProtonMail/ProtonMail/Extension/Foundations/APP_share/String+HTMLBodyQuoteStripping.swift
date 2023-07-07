@@ -18,7 +18,6 @@
 import Foundation
 import SwiftSoup
 
-// swiftlint:disable:file_name
 extension String {
     static let quoteElements: [String] = [
         ".protonmail_quote", // Proton Mail

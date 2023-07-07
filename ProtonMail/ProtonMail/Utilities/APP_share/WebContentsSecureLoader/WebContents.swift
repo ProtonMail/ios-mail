@@ -110,26 +110,26 @@ struct WebContents: Equatable {
         (try? ProtonCSS.viewerLightOnly.content()) ?? .empty
     }()
 
-    // swiftlint:disable force_try force_unwrapping
     static var domPurifyConstructor: WKUserScript = {
+        // swiftlint:disable:next force_try force_unwrapping
         let raw = try! String(contentsOf: Bundle.main.url(forResource: "purify.min", withExtension: "js")!)
         return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
 
-    // swiftlint:disable force_try force_unwrapping
     static var escapeJS: WKUserScript = {
+        // swiftlint:disable:next force_try force_unwrapping
         let raw = try! String(contentsOf: Bundle.main.url(forResource: "Escape", withExtension: "js")!)
         return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
 
-    // swiftlint:disable force_try force_unwrapping
     static var loaderJS: WKUserScript = {
+        // swiftlint:disable:next force_try force_unwrapping
         let raw = try! String(contentsOf: Bundle.main.url(forResource: "Loader", withExtension: "js")!)
         return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
 
-    // swiftlint:disable force_try force_unwrapping
     static var blockQuoteJS: WKUserScript = {
+        // swiftlint:disable:next force_try force_unwrapping
         var raw = try! String(contentsOf: Bundle.main.url(forResource: "Blockquote", withExtension: "js")!)
         let blockQuoteSelectors = String.quoteElements
             .map { "\($0):not(:empty)" }

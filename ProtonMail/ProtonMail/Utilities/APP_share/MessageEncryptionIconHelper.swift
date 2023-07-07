@@ -25,7 +25,7 @@ struct VerificationResult {
     let signatureVerificationResult: SignatureVerificationResult
 }
 
-// swiftlint:disable type_body_length
+// swiftlint:disable:next type_body_length
 struct MessageEncryptionIconHelper {
     enum ContentEncryptionType: String, Equatable {
         case none
@@ -48,7 +48,7 @@ struct MessageEncryptionIconHelper {
         static let pinnedTypes: [Self] = [.pgpPMPinned, .pgpMIMEPinned, .pgpInlinePinned]
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     func sentStatusIconInfo(message: MessageEntity) -> EncryptionIconStatus? {
         guard !message.parsedHeaders.isEmpty else {
             return nil
@@ -145,7 +145,7 @@ struct MessageEncryptionIconHelper {
         }
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     func receivedStatusIconInfo(_ message: MessageEntity,
                                 verifyResult: VerificationResult) -> EncryptionIconStatus {
         let isInternal = getOrigin(headerValue: message.parsedHeaders) == "internal"

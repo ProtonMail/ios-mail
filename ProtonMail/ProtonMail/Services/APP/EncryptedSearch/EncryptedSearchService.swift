@@ -247,7 +247,7 @@ extension EncryptedSearchService {
         }
     }
 
-    // swiftlint:disable function_parameter_count
+    // swiftlint:disable:next function_parameter_count
     private func searchInIndex(
         searcher: GoLibsEncryptedSearchSimpleSearcher,
         cipher: GoLibsEncryptedSearchAESGCMCipher,
@@ -312,7 +312,7 @@ extension EncryptedSearchService {
         completion(.success(searchResults))
     }
 
-    // swiftlint:disable function_parameter_count
+    // swiftlint:disable:next function_parameter_count
     private func searchInCache(
         searcher: GoLibsEncryptedSearchSimpleSearcher,
         page: UInt,
@@ -404,7 +404,6 @@ extension EncryptedSearchService {
             let searchIndex = buildSearchIndex(for: userID)
         else { return }
         let size = searchIndex.indexSize ?? .zero
-        let end = CFAbsoluteTimeGetCurrent()
         let searchTimeInMilliSeconds = Double((CFAbsoluteTimeGetCurrent() - startSearchTime) * 100)
         let isFirstSearch = dependencies.esDefaultCache.isFirstSearch(of: userID)
         let searchMetricsData: [String: Any] = [

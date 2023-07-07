@@ -1339,7 +1339,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
         )
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     private func showMoveToActionSheetForConversation() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor

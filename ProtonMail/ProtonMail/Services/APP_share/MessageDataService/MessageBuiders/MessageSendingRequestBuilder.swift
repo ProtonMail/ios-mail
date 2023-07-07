@@ -226,7 +226,6 @@ extension MessageSendingRequestBuilder {
         }
     }
 
-    // swiftlint:disable function_body_length
     func buildMime(senderKey: Key,
                    passphrase: Passphrase,
                    userKeys: [ArmoredKey],
@@ -401,6 +400,7 @@ extension MessageSendingRequestBuilder {
 
 // MARK: - Create builders for each type of message
 extension MessageSendingRequestBuilder {
+    // swiftlint:disable:next function_body_length
     func generatePackageBuilder() throws -> [PackageBuilder] {
         var out = [PackageBuilder]()
         for (email, sendPreferences) in self.addressSendPreferences {

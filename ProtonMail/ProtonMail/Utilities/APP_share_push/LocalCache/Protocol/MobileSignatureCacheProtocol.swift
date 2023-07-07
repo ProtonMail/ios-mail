@@ -19,6 +19,7 @@ import Foundation
 
 // sourcery: mock
 protocol MobileSignatureCacheProtocol {
+    // swiftlint:disable:next discouraged_optional_boolean
     func getMobileSignatureSwitchStatus(by uid: String) -> Bool?
     func setMobileSignatureSwitchStatus(uid: String, value: Bool)
     func removeMobileSignatureSwitchStatus(uid: String)

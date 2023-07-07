@@ -420,6 +420,7 @@ excluded:
   - ${PWD}/Pods
   - ${PWD}/ProtonMailTests
   - ${PWD}/ProtonMailUITests
+  - ${PWD}/ProtonMail/Resource/APP_share/Generated/Images.generated.swift
 
 line_length:
   ignores_comments: true

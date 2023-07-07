@@ -18,7 +18,7 @@
 import UIKit
 
 struct ComposerViewFactory {
-    // swiftlint:disable function_parameter_count
+    // swiftlint:disable:next function_parameter_count
     static func makeComposer(
         subject: String,
         body: String,
@@ -83,7 +83,7 @@ struct ComposerViewFactory {
         return controller
     }
 
-    // swiftlint:disable function_parameter_count
+    // swiftlint:disable:next function_parameter_count
     static func makeComposer(
         msg: Message?,
         action: ComposeMessageAction,
