@@ -42,9 +42,11 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     }
 
     var actionSheetItem: PMActionSheetItem {
-        PMActionSheetPlainItem(title: LocalString._import_from,
-                               icon: IconProvider.fileArrowIn,
-                               iconColor: ColorProvider.IconNorm) { (_) -> Void in
+        PMActionSheetItem(
+            title: LocalString._import_from,
+            icon: IconProvider.fileArrowIn,
+            iconColor: ColorProvider.IconNorm
+        ) { _ in
             let types: [UTType] = [
                 .movie,
                 .video,
@@ -133,15 +135,15 @@ extension DocumentAttachmentProvider: UIDocumentPickerDelegate {
     internal func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         urls.forEach { self.documentPicker(controller, didPickDocumentAt: $0) }
     }
-    
+
     internal func documentPicker(_ documentController: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         // TODO: at least on iOS 11.3.1, DocumentPicker does not call this method until whole file will be downloaded from the cloud. This should be a bug, but in future we can check size of document before downloading it
         // FileManager.default.attributesOfItem(atPath: url.path)[NSFileSize]
-        
+
         DispatchQueue.global().async {
             self.process(fileAt: url) { }
         }
     }
-    
+
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) { }
 }

@@ -969,7 +969,7 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
     func handleLabelAsAction(conversations: [ConversationEntity],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
+                             currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType],
                              completion: (() -> Void)?) {
         let group = DispatchGroup()
         let fetchEvents = { [weak self] (result: Result<Void, Error>) in

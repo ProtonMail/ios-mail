@@ -423,7 +423,7 @@ extension SingleMessageViewModel: LabelAsActionSheetProtocol {
 
     func handleLabelAsAction(conversations: [ConversationEntity],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
+                             currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType],
                              completion: (() -> Void)?) {
         fatalError("Not implemented")
     }

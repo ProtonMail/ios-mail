@@ -26,7 +26,7 @@ import ProtonCore_UIFoundations
 
 class PhotoAttachmentProvider: AnyImagePickerDelegate {
     override var actionSheetItem: PMActionSheetItem {
-        return PMActionSheetPlainItem(
+        return PMActionSheetItem(
             title: LocalString._from_your_photo_library,
             icon: IconProvider.image,
             iconColor: ColorProvider.IconNorm

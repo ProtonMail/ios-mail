@@ -571,11 +571,11 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     private func showContactMenu(contact: ContactVO, contactPicker: ContactPicker) {
         guard let parent = self.parent?.navigationController,
               let address = contact.displayEmail else { return }
-        let copy = PMActionSheetPlainItem(title: LocalString._general_copy, icon: nil) { _ in
+        let copy = PMActionSheetItem(title: LocalString._general_copy, icon: nil) { _ in
             UIPasteboard.general.string = address
             contactPicker.deselectCells()
         }
-        let cut = PMActionSheetPlainItem(title: LocalString._general_cut, icon: nil) { _ in
+        let cut = PMActionSheetItem(title: LocalString._general_cut, icon: nil) { _ in
             UIPasteboard.general.string = address
             contactPicker.removeContact(address: address)
             contactPicker.deselectCells()

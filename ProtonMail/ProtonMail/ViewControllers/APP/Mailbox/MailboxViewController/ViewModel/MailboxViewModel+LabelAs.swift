@@ -54,7 +54,7 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
         }
     }
     
-    func handleLabelAsAction(conversations: [ConversationEntity], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType], completion: (() -> Void)? = nil) {
+    func handleLabelAsAction(conversations: [ConversationEntity], shouldArchive: Bool, currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType], completion: (() -> Void)? = nil) {
         let group = DispatchGroup()
         let fetchEvents = { [weak self] (result: Result<Void, Error>) in
             defer {
