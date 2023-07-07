@@ -24,13 +24,13 @@ import ProtonCore_UIFoundations
 
 protocol LabelAsActionSheetViewModel {
     var menuLabels: [MenuLabel] { get }
-    var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] { get }
+    var initialLabelSelectionStatus: [MenuLabel: PMActionSheetItem.MarkType] { get }
 }
 
 struct LabelAsActionSheetViewModelMessages: LabelAsActionSheetViewModel {
     let menuLabels: [MenuLabel]
     private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
-    private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
+    private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetItem.MarkType] = [:]
 
     init(menuLabels: [MenuLabel], messages: [MessageEntity]) {
         self.menuLabels = menuLabels
@@ -51,7 +51,7 @@ struct LabelAsActionSheetViewModelMessages: LabelAsActionSheetViewModel {
             } else if value < messages.count && value > 0 {
                 initialLabelSelectionStatus[key] = .dash
             } else {
-                initialLabelSelectionStatus[key] = PMActionSheetPlainItem.MarkType.none
+                initialLabelSelectionStatus[key] = PMActionSheetItem.MarkType.none
             }
         }
     }
@@ -60,7 +60,7 @@ struct LabelAsActionSheetViewModelMessages: LabelAsActionSheetViewModel {
 struct LabelAsActionSheetViewModelConversations: LabelAsActionSheetViewModel {
     let menuLabels: [MenuLabel]
     private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
-    private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
+    private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetItem.MarkType] = [:]
 
     init(menuLabels: [MenuLabel], conversations: [ConversationEntity]) {
         self.menuLabels = menuLabels
@@ -81,7 +81,7 @@ struct LabelAsActionSheetViewModelConversations: LabelAsActionSheetViewModel {
             } else if value < conversations.count && value > 0 {
                 initialLabelSelectionStatus[key] = .dash
             } else {
-                initialLabelSelectionStatus[key] = PMActionSheetPlainItem.MarkType.none
+                initialLabelSelectionStatus[key] = PMActionSheetItem.MarkType.none
             }
         }
     }
@@ -90,7 +90,7 @@ struct LabelAsActionSheetViewModelConversations: LabelAsActionSheetViewModel {
 struct LabelAsActionSheetViewModelConversationMessages: LabelAsActionSheetViewModel {
     let menuLabels: [MenuLabel]
     private var initialLabelSelectionCount: [MenuLabel: Int] = [:]
-    private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetPlainItem.MarkType] = [:]
+    private(set) var initialLabelSelectionStatus: [MenuLabel: PMActionSheetItem.MarkType] = [:]
 
     init(menuLabels: [MenuLabel], conversationMessages: [MessageEntity]) {
         self.menuLabels = menuLabels
@@ -111,7 +111,7 @@ struct LabelAsActionSheetViewModelConversationMessages: LabelAsActionSheetViewMo
             } else if value < conversationMessages.count && value > 0 {
                 initialLabelSelectionStatus[key] = .dash
             } else {
-                initialLabelSelectionStatus[key] = PMActionSheetPlainItem.MarkType.none
+                initialLabelSelectionStatus[key] = PMActionSheetItem.MarkType.none
             }
         }
     }
