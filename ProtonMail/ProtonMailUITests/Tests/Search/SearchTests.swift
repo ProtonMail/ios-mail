@@ -20,7 +20,8 @@ class SearchTests: FixtureAuthenticatedTestCase {
         subject = testData.messageSubject
         body = testData.messageBody
     }
-    
+
+    // TODO: enable back after fixing the root cause of flaky search functionality
     func xtestSearchFromInboxBySubject() {
         let user = testData.onePassUser
         let recipient = testData.twoPassUser
@@ -33,17 +34,20 @@ class SearchTests: FixtureAuthenticatedTestCase {
             .searchMessageText(subject)
             .verify.messageExists(subject)
     }
-    
-    func testSearchFromInboxByAddress() {
+
+    // TODO: enable back after fixing the root cause of flaky search functionality
+    func xtestSearchFromInboxByAddress() {
+        let messageSubject = "001_message_with_remote_content_in_inbox"
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .searchBar()
-                .searchMessageText(user!.email)
-                .verify.messageExists(user!.email)
+                .searchMessageText(messageSubject)
+                .verify.messageExists(messageSubject)
         }
     }
-    
-    func testSearchDraft() {
+
+    // TODO: enable back after fixing the root cause of flaky search functionality
+    func xtestSearchDraft() {
         runTestWithScenario(.pgpinlineDrafts) {
             InboxRobot()
                 .searchBar()

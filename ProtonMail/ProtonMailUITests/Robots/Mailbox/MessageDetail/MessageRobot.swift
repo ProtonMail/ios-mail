@@ -90,12 +90,7 @@ class MessageRobot: CoreElements {
     }
     
     func moreOptions() -> MessageMoreOptions {
-        let more = button(id.moreNavBarButtonIdentifier)
-
-        more.waitForHittable().tap()
-        if (more.exists()){
-            more.tap() // tap again if it was too fast
-        }
+        button(id.moreNavBarButtonIdentifier).tap()
         return MessageMoreOptions()
     }
 

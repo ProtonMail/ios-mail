@@ -22,7 +22,7 @@ class SpamTests: FixtureAuthenticatedTestCase {
                 .tapDone()
             InboxRobot()
                 .menuDrawer()
-                .spams()
+                .spam()
                 .verify.messageExists(scenario.subject)
         }
     }
@@ -33,7 +33,7 @@ class SpamTests: FixtureAuthenticatedTestCase {
                 .clickMessageBySubject(scenario.subject)
                 .clickMoveToSpam()
                 .menuDrawer()
-                .spams()
+                .spam()
                 .verify.messageExists(scenario.subject)
         }
     }
@@ -47,7 +47,7 @@ class SpamTests: FixtureAuthenticatedTestCase {
                 .tapDone()
             InboxRobot()
                 .menuDrawer()
-                .spams()
+                .spam()
                 .clearSpamFolder()
                 .verify.nothingToSeeHere()
         }
