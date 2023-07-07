@@ -216,11 +216,11 @@ extension SwitchToggleViewController {
     }
 
     private func showLoading(shouldShow: Bool) {
-        let view = UIApplication.shared.keyWindow ?? UIView()
         if shouldShow {
             MBProgressHUD.showAdded(to: view, animated: true)
+        } else {
+            MBProgressHUD.hide(for: view, animated: true)
         }
-        MBProgressHUD.hide(for: view, animated: true)
     }
 }
 

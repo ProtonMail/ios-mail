@@ -378,7 +378,7 @@ extension SettingsAccountViewController {
                         }
                     }
 
-                    let view = UIApplication.shared.keyWindow ?? UIView()
+                    let view: UIView = self.view
                     MBProgressHUD.showAdded(to: view, animated: true)
 
                     self.viewModel.updateDefaultAddress(with: address) { [weak self] error in

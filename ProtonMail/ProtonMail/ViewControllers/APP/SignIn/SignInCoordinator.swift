@@ -364,8 +364,7 @@ final class SignInCoordinator {
             }
         )
         DispatchQueue.main.async {
-            UIApplication.shared.keyWindow?.rootViewController?
-                .present(alertController, animated: true, completion: nil)
+            self.viewController?.present(alertController, animated: true, completion: nil)
         }
 
         return true

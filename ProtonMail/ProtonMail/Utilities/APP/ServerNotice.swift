@@ -83,6 +83,10 @@ class ServerNotice {
         alertController.addAction(UIAlertAction(title: LocalString._dont_show_again, style: .destructive, handler: { action in
             self.setTime(31536000)// 1 year 1 * 365 * 24 * 60 * 60
         }))
-        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+        UIApplication.shared.topMostWindow?.rootViewController?.present(
+            alertController,
+            animated: true,
+            completion: nil
+        )
     }
 }
