@@ -57,6 +57,16 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
 
+    // Multiple windows support is disabled temporary in 4.7.0
+    // But if user has created multiple windows in 4.6.0
+    // They will hit black screen issue after updating to 4.7.0
+    // Use this function to destroy other inactivate sessions
+    private func onlyKeepOneActivateSession(session: UISceneSession) {
+        for openSession in UIApplication.shared.openSessions where openSession != session {
+            UIApplication.shared.requestSceneSessionDestruction(openSession, options: nil) { _ in }
+        }
+    }
+
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         self.coordinator.scene = scene
 
@@ -90,6 +100,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         _ = connectionOptions.urlContexts.first { context in
             self.handleUrlOpen(context.url)
         }
+        onlyKeepOneActivateSession(session: session)
     }
 
     // handle the shorcut item in scene(_:willConnectTo:options:)
