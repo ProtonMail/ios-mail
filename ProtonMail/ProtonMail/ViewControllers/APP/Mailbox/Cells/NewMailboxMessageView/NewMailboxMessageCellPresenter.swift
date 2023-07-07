@@ -95,7 +95,7 @@ class NewMailboxMessageCellPresenter {
         }
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     private func presentContent(
         viewModel: NewMailboxMessageViewModel,
         in view: NewMailboxMessageContentView,

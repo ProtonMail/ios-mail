@@ -49,7 +49,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
     private let userIntroduction: UserIntroductionProgressProvider
     weak var uiDelegate: PagesViewUIProtocol?
     /// ID is moved to other locations by action `Move to`, `Archive` ... etc
-    fileprivate var idHasBeenMoved: ObjectID?
+    var idHasBeenMoved: ObjectID?
 
     init(
         viewMode: ViewMode,

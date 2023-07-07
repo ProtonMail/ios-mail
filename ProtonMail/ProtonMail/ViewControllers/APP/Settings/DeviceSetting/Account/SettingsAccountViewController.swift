@@ -298,7 +298,11 @@ extension SettingsAccountViewController {
         }
     }
 
-    private func generalCell(for indexPath: IndexPath, item: SettingsMailboxItem, rightLabel: String) -> UITableViewCell? {
+    private func generalCell(
+        for indexPath: IndexPath,
+        item: SettingsMailboxItem,
+        rightLabel: String
+    ) -> UITableViewCell? {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID,
                                                        for: indexPath) as? SettingsGeneralCell else {
             return nil

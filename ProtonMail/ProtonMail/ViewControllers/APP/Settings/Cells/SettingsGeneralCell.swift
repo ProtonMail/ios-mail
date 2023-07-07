@@ -88,7 +88,13 @@ class SettingsGeneralCell: UITableViewCell, AccessibleCell {
         stackViewTrailingConstraintWithContainer.priority = .defaultLow
     }
 
-    func configureCell(left: String?, right: String?, imageType: ImageType, contentType: ContentType = .informational, stackViewDistribution: UIStackView.Distribution? = nil) {
+    func configureCell(
+        left: String?,
+        right: String?,
+        imageType: ImageType,
+        contentType: ContentType = .informational,
+        stackViewDistribution: UIStackView.Distribution? = nil
+    ) {
         if let left = left {
             leftText.text = left
             if contentType == .destructive {

@@ -355,7 +355,8 @@ private extension SingleMessageViewController {
     // swiftlint:disable:next function_body_length
     func handleActionSheetAction(_ action: MessageViewActionSheetAction) {
         switch action {
-        case .reply, .replyAll, .forward, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
+        case .reply, .replyAll, .forward, .replyInConversation, .forwardInConversation,
+             .replyOrReplyAllInConversation, .replyAllInConversation:
             handleOpenComposerAction(action)
         case .labelAs:
             showLabelAsActionSheet()
@@ -578,7 +579,7 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
         return viewModel
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     func showMoveToActionSheet() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor

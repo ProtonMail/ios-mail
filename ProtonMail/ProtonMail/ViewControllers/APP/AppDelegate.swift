@@ -160,7 +160,6 @@ extension AppDelegate: UIApplicationDelegate {
         configureCoreFeatureFlags(launchArguments: ProcessInfo.launchArguments)
         configureCoreObservability()
         configureAnalytics()
-        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         configureAppearance()
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true

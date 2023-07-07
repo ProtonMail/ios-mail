@@ -125,7 +125,7 @@ extension ConversationEntity {
 
 extension ConversationEntity {
     #if !APP_EXTENSION
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     func getFolderIcons(customFolderLabels: [LabelEntity]) -> [ImageAsset.Image] {
         let labelIds = getLabelIDs()
         let standardFolders: [LabelID] = [

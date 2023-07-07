@@ -38,7 +38,7 @@ private enum EmbeddedDownloadStatus {
     case none, downloading, finish
 }
 
-// swiftlint:disable type_body_length
+// swiftlint:disable:next type_body_length
 final class MessageInfoProvider {
     private(set) var message: MessageEntity {
         willSet {

@@ -43,7 +43,7 @@ class ProgressBarButtonTableViewCell: UITableViewCell {
         self.createSubViews()
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     private func createSubViews() {
         let parentView: UIView = self.contentView
 

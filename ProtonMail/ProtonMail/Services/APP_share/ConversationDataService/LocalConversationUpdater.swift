@@ -77,7 +77,7 @@ final class LocalConversationUpdater {
         }
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     func editLabels(conversationIDs: [ConversationID],
                     labelToRemove: LabelID?,
                     labelToAdd: LabelID?,

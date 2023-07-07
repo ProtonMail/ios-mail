@@ -122,7 +122,7 @@ extension Message {
         return outLabel
     }
 
-    // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity
     func setAsDraft() {
         if let context = self.managedObjectContext {
             let labelObjects = self.mutableSetValue(forKey: Attributes.labels)
@@ -269,7 +269,7 @@ extension Message {
     // MARK: - methods
 
     convenience init(context: NSManagedObjectContext) {
-        // swiftlint:disable force_unwrapping
+        // swiftlint:disable:next force_unwrapping
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!,
                   insertInto: context)
     }

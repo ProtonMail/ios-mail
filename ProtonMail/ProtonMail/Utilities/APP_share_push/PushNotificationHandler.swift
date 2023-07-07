@@ -199,7 +199,7 @@ extension PushNotificationHandler {
     }
 
     final class PushCacheStatus: SharedCacheBase {
-        // swiftlint:disable nesting
+        // swiftlint:disable:next nesting
         enum Key {
             static let primaryUserSessionId = "primary_user_session_id"
         }

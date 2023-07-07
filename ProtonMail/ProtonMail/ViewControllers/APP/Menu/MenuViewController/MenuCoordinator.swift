@@ -356,7 +356,7 @@ extension MenuCoordinator {
         }
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     private func mailBoxVMDependencies(user: UserManager, labelID: LabelID) -> MailboxViewModel.Dependencies {
         let userID = user.userID
 

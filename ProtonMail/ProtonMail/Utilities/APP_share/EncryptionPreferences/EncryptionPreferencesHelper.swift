@@ -19,9 +19,8 @@ import Foundation
 import GoLibs
 import ProtonCore_DataModel
 
-// swiftlint:disable type_body_length
+// swiftlint:disable:next type_body_length
 enum EncryptionPreferencesHelper {
-    // swiftlint:disable function_body_length
     static func getEncryptionPreferences(email: String,
                                          keysResponse: KeysResponse,
                                          userDefaultSign: Bool,
