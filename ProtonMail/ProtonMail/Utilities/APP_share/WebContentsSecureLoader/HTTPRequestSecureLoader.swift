@@ -168,6 +168,14 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         let sanitizeRaw = """
         \(loggerCode)
         // Remove color related `!important`
+        let styles = document.head.querySelectorAll('style')
+        for (var i = 0, max = styles.length; i < max; i++) {
+            let style = styles[i]
+            if (!style.textContent.includes('!important')) { continue }
+            let css = style.textContent.replace(/((color|bgcolor|background-color|background|border):.*?) (!important)/g, "$1")
+            styles[0].textContent = css;
+        }
+
         let targetDOMs = document.querySelectorAll('*:not(html):not(head):not(body):not(script):not(meta):not(title)')
         for (var i = 0, max = targetDOMs.length; i < max; i++) {
             let dom = targetDOMs[i]

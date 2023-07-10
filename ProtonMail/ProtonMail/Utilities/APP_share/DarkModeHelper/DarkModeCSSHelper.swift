@@ -309,7 +309,8 @@ extension CSSMagic {
                 guard let innerHTML = try? element.html() else {
                     return nil
                 }
-                let style = innerHTML.preg_replace(#"\/\*[^{}]+\*\/"#, replaceto: "")
+                // Remove comment, e.g. /* Font family */
+                let style = innerHTML.preg_replace(#"\/\*([\s\S]*?)\*\/"#, replaceto: "")
                 return style
             })
         } catch {
@@ -335,18 +336,28 @@ extension CSSMagic {
     /// - Returns: dark mode style css or `nil` if it doesn't have good contrast
     static func getDarkModeCSSDictFrom(styleCSS: [String]) -> [String: [String]]? {
         var result: [String: [String]] = [:]
-        let flattenCSS = styleCSS.flatMap({ $0.split(separator: "}") })
-        for css in flattenCSS {
-            let data = css.split(separator: "{")
-                .map({ String($0) })
-            guard data.count == 2,
-                  let selectorKey = data.first,
-                  let selectorValue = data.last else { continue }
-            let attributes = CSSMagic.splitInline(attributes: selectorValue)
-            let newAttributes = CSSMagic.switchToDarkModeStyle(attributes: attributes)
-            if newAttributes.isEmpty { continue }
-            let previousResult = result[selectorKey] ?? []
-            result[selectorKey] = previousResult + newAttributes
+        for css in styleCSS {
+            do {
+                let regex = try RegularExpressionCache.regex(for: "(.*?)\\{(.*?)\\}", options: [.allowCommentsAndWhitespace, .dotMatchesLineSeparators])
+                let length = (css as NSString).length
+                let matches = regex.matches(in: css, range: NSRange(location: 0, length: length))
+                for match in matches where match.numberOfRanges == 3 {
+                    let keyRange = match.range(at: 1)
+                    let attributeRange = match.range(at: 2)
+                    // e.g. html, .textBlock
+                    let selectorKey = (css as NSString).substring(with: keyRange).trim()
+                    // e.g. background: black; width: 100px;
+                    let selectorValue = (css as NSString).substring(with: attributeRange).trim()
+
+                    let attributes = CSSMagic.splitInline(attributes: selectorValue)
+                    let newAttributes = CSSMagic.switchToDarkModeStyle(attributes: attributes)
+                    if newAttributes.isEmpty { continue }
+                    let previousResult = result[selectorKey] ?? []
+                    result[selectorKey] = previousResult + newAttributes
+                }
+            } catch {
+                PMAssertionFailure(error)
+            }
         }
         return result
     }
