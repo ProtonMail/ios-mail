@@ -92,6 +92,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.setupSearchBar()
         self.setupTableview()
         self.viewModel.viewDidLoad()
+        showEncryptedSearchSpotlightIfNeeded()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -135,6 +136,16 @@ extension SearchViewController {
                                                                       action: #selector(handleLongPress(_:)))
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
         customView.tableView.addGestureRecognizer(longPressGestureRecognizer)
+    }
+
+    private func showEncryptedSearchSpotlightIfNeeded() {
+        guard viewModel.shouldShowEncryptedSearchSpotlight() else { return }
+        let spotlightView = ESSpotlightView(frame: .zero)
+        view.addSubview(spotlightView)
+        spotlightView.fillSuperview()
+        spotlightView.showMeClosure = { [weak self] in
+            self?.showEncryptedSearchSettingPage()
+        }
     }
 }
 

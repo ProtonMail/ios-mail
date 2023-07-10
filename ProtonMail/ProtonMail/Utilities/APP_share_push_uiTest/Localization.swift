@@ -1449,7 +1449,7 @@ enum L11n {
 
         static let popup_title = NSLocalizedString("Content search available", comment: "The title of the pop up when encrypted search is available.")
         static let popup_description = NSLocalizedString("You can now search within your messages. This feature can be enabled from settings at any time.", comment: "The description of encrypted search at the pop up.")
-        static let popup_button_title = NSLocalizedString("Enable", comment: "The title of the button to move to settings and enable encrypted search.")
+        static let popup_button_title = NSLocalizedString("Show me", comment: "The title of the button to move to settings and enable encrypted search.")
         static let pause_button = NSLocalizedString("Pause", comment: "Text for pause button")
         static let resume_button = NSLocalizedString("Resume", comment: "Text for resume button")
         static let download_paused = NSLocalizedString("Download paused", comment: "Text for status label when pause button is pressed")

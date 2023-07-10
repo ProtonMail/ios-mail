@@ -58,6 +58,8 @@ protocol SearchVMProtocol: AnyObject {
         scale: CGFloat,
         completion: @escaping (UIImage?) -> Void
     )
+    func shouldShowEncryptedSearchSpotlight() -> Bool
+    func setEncryptedSearchSpotlightIsShown()
     func shouldShowESIndexingBanner() -> Bool
     func userCloseESIndexingBanner()
     func currentEncryptedSearchIndexingState() -> EncryptedSearchIndexState
@@ -419,7 +421,26 @@ extension SearchViewModel: SearchVMProtocol {
                     case .failure:
                         completion(nil)
                     }
-            }
+                }
+    }
+
+    func shouldShowEncryptedSearchSpotlight() -> Bool {
+        guard
+            UserInfo.isEncryptedSearchEnabled,
+            dependencies.userIntroductionProgressProvider.shouldShowSpotlight(
+                for: .encryptedSearchAvailable,
+                toUserWith: user.userID
+            )
+        else { return false }
+        return true
+    }
+
+    func setEncryptedSearchSpotlightIsShown() {
+        dependencies.userIntroductionProgressProvider.markSpotlight(
+            for: .encryptedSearchAvailable,
+            asSeen: true,
+            byUserWith: user.userID
+        )
     }
 
     func shouldShowESIndexingBanner() -> Bool {
@@ -701,6 +722,7 @@ extension SearchViewModel {
         let fetchMessageDetail: FetchMessageDetailUseCase
         let fetchSenderImage: FetchSenderImageUseCase
         let messageSearch: SearchUseCase
+        let userIntroductionProgressProvider: UserIntroductionProgressProvider
         let encryptedSearchService: EncryptedSearchServiceProtocol
     }
 }
