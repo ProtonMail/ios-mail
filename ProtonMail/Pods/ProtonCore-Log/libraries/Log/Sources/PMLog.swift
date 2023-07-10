@@ -53,6 +53,7 @@ public class PMLog {
     public static var logsDirectory = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first
 
     private static let maxLogLines = 2000
+    private static let numberOfOldestLinesToTrimInOneGo = 500
     private static let queue = DispatchQueue(label: "ch.proton.core.log")
 
     public static var logFile: URL? {
@@ -118,12 +119,13 @@ public class PMLog {
         do {
             let logContents = try String(contentsOf: url, encoding: .utf8)
             let lines = logContents.components(separatedBy: .newlines)
+
             if lines.count > maxLogLines {
-                let prunedLines = Array(lines.dropFirst(lines.count - maxLogLines))
-                let replacementText = prunedLines.joined(separator: "\n")
-                try replacementText.data(using: .utf8)?.write(to: url)
+                let linesAfterPruning = lines.dropFirst(numberOfOldestLinesToTrimInOneGo)
+                let replacementText = linesAfterPruning.joined(separator: "\n")
+                try Data(replacementText.utf8).write(to: url)
             }
-        } catch let error {
+        } catch {
             printToConsole(error.localizedDescription)
         }
     }

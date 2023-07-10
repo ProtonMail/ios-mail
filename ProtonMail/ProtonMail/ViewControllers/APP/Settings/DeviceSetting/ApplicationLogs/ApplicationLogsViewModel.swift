@@ -32,14 +32,14 @@ protocol ApplicationLogsViewModelInput {
 
 protocol ApplicationLogsViewModelOutput {
     var content: CurrentValueSubject<String, Never> { get }
-    var fileToShare: CurrentValueSubject<URL?, Never> { get }
+    var fileToShare: PassthroughSubject<URL, Never> { get }
 }
 
 final class ApplicationLogsViewModel: ApplicationLogsViewModelProtocol, ApplicationLogsViewModelOutput {
     var input: ApplicationLogsViewModelInput { self }
     var output: ApplicationLogsViewModelOutput { self }
     let content = CurrentValueSubject<String, Never>(.empty)
-    let fileToShare = CurrentValueSubject<URL?, Never>(nil)
+    let fileToShare = PassthroughSubject<URL, Never>()
     private let dependencies: Dependencies
 
     private var logsLinkFile: URL {
@@ -72,10 +72,10 @@ extension ApplicationLogsViewModel: ApplicationLogsViewModelInput {
             // We create a hard link to the original logs file to work with a more
             // beautiful file name instead of the default `logs.txt`
             try dependencies.fileManager.linkItem(at: sourceLogFile, to: logsLinkFile)
-            fileToShare.value = logsLinkFile
+            fileToShare.send(logsLinkFile)
         } catch {
             PMAssertionFailure(error)
-            fileToShare.value = sourceLogFile
+            fileToShare.send(sourceLogFile)
         }
     }
 
