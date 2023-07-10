@@ -152,8 +152,68 @@ extension CSSMagicTest {
         ]
         XCTAssertEqual(styleCSS, expected)
         newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
-        let result = try XCTUnwrap(newStyleCSS[".email"])
+        var result = try XCTUnwrap(newStyleCSS[".email"])
         XCTAssertEqual(result, ["background-color: hsla(230, 12%, 10%, 1.0) !important"])
+
+        html = """
+        <html>
+            <head>
+                <style>
+                    #content,
+                    .mailbody {
+                        background-color: #ffffff;
+                    }
+                    .a .b {
+                        background-color: #336635;
+                    }
+                </style>
+            </head>
+        </html>
+        """
+        document = try XCTUnwrap(CSSMagic.parse(htmlString: html))
+        styleCSS = CSSMagic.getStyleCSS(from: document)
+        expected = [
+            "#content,\n            .mailbody {\n                background-color: #ffffff;\n            }\n            .a .b {\n                background-color: #336635;\n            }"
+        ]
+        XCTAssertEqual(styleCSS, expected)
+        newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
+        XCTAssertEqual(newStyleCSS.count, 2)
+        for newStyle in newStyleCSS {
+            if newStyle.key == "#content,\n            .mailbody" {
+                XCTAssertEqual(newStyle.value, ["background-color: hsla(230, 12%, 10%, 1.0) !important"])
+            } else if newStyle.key == ".a .b" {
+                XCTAssertEqual(newStyle.value, ["background-color: hsla(122, 33%, 30%, 1.0) !important"])
+            } else {
+                XCTFail("Unknown key")
+            }
+        }
+    }
+
+    func testGetStyleNodes_part2() throws {
+        var html = """
+        <html>
+        <head>
+            <style>
+                body,
+                html,
+                td {
+                    font-family: "Helvetica Neue", Helvetica, Arial, Verdana, sans-serif; /* Font family */
+                    color: rgb(31, 31, 31);/* Font color */
+                }
+            </style>
+        </head>
+        </html>
+        """
+        var document = try XCTUnwrap(CSSMagic.parse(htmlString: html))
+        var styleCSS = CSSMagic.getStyleCSS(from: document)
+        var expected = [
+            "body,\n        html,\n        td {\n            font-family: \"Helvetica Neue\", Helvetica, Arial, Verdana, sans-serif; \n            color: rgb(31, 31, 31);\n        }"
+        ]
+        XCTAssertEqual(styleCSS, expected)
+        var newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
+        XCTAssertEqual(newStyleCSS.count, 1)
+        var result = try XCTUnwrap(newStyleCSS["body,\n        html,\n        td"])
+        XCTAssertEqual(result, ["color: hsla(0, 0%, 100%, 1.0) !important"])
     }
 
     func testGetColorNodes() {
