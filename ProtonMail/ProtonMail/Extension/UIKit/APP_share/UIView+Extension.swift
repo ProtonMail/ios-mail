@@ -33,6 +33,18 @@ extension UIView {
         clipsToBounds = true
     }
 
+    func roundCorners(at corners: UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(
+            roundedRect: bounds,
+            byRoundingCorners: corners,
+            cornerRadii: CGSize(width: radius, height:  radius)
+        )
+
+        let maskLayer = CAShapeLayer()
+        maskLayer.path = path.cgPath
+        layer.mask = maskLayer
+    }
+
     func shake(_ times: Float, offset: CGFloat) {
         UIView.animate(withDuration: 1.0, animations: {
             let shakeAnimation = CABasicAnimation(keyPath: "position")

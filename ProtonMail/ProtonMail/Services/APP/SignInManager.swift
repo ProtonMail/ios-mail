@@ -168,7 +168,7 @@ private extension SpotlightableFeatureKey {
         case .messageSwipeNavigation:
             return UserInfo.isConversationSwipeEnabled
         case .encryptedSearchAvailable:
-            return false
+            return UserInfo.isEncryptedSearchEnabled
         }
     }
 }

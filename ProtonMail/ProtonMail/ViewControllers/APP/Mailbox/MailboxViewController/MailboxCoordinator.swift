@@ -342,6 +342,7 @@ extension MailboxCoordinator {
                         ), esStateProvider: esService
                     )
                 ),
+                userIntroductionProgressProvider: services.userCachedStatus,
                 encryptedSearchService: esService
             )
         )
