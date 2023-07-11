@@ -24,7 +24,7 @@ class AccountDeletionOptionTests: BaseTestCase {
     let accountDeletionRobot = AccountDeletionButtonRobot()
     
     func testDeleteAccountOptionExists() {
-        let freeUser = users["free"]!
+        let freeUser = users["plus"]!
         loginRobot
             .loginUser(freeUser)
             .menuDrawer()
@@ -36,7 +36,7 @@ class AccountDeletionOptionTests: BaseTestCase {
     }
     
     func testDeleteAccountCanBeClosed() {
-        let freeUser = users["free"]!
+        let freeUser = users["plus"]!
         loginRobot
             .loginUser(freeUser)
             .menuDrawer()

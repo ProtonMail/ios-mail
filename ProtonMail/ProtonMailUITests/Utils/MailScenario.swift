@@ -19,23 +19,25 @@ struct MailScenario: Hashable {
     public let name: String
     public let description: String
     public let subject: String
+    public let body: String
     public let contacts: [Contact]
 
-    public init(name: String, description: String, subject: String = "", contacts: [Contact] = []) {
+    public init(name: String, description: String, subject: String = "", body: String = "", contacts: [Contact] = []) {
         self.name = name
         self.description = description
         self.subject = subject
         self.contacts = contacts
+        self.body = body
     }
 }
 
 extension MailScenario {
     
     static let qaMail001 = MailScenario(name: "qa-mail-web-001", description: "1 message with remote content in Inbox", subject: "001_message_with_remote_content_in_inbox")
-    static let qaMail002 = MailScenario(name: "qa-mail-web-002", description: "1 message with rich text in Inbox", subject: "002_message_with_rich_text_in_inbox")
-    static let qaMail003 = MailScenario(name: "qa-mail-web-003", description: "1 message with empty body in Inbox", subject: "003_message_with_empty_body_in_inbox")
+    static let qaMail002 = MailScenario(name: "qa-mail-web-002", description: "1 message with rich text in Inbox", subject: "002_message_with_rich_text_in_inbox", body: "Auto generated email")
+    static let qaMail003 = MailScenario(name: "qa-mail-web-003", description: "1 message with empty body in Inbox", subject: "003_message_with_empty_body_in_inbox", body: "Empty Message")
     static let qaMail004 = MailScenario(name: "qa-mail-web-004", description: "1 message with BCC in Sent", subject: "004_message_with_BCC_in_inbox")
-    static let qaMail005 = MailScenario(name: "qa-mail-web-005", description: "1 message with Unsubscribe in Inbox", subject: "005_message_with_subscription_in_inbox")
+    static let qaMail005 = MailScenario(name: "qa-mail-web-005", description: "1 message with Unsubscribe in Inbox", subject: "005_message_with_subscription_in_inbox", body: "Unsubscribe")
     static let qaMail006 = MailScenario(name: "qa-mail-web-006", description: "3 messages in Inbox", subject: "006_3_messages_in_inbox")
     static let qaMail007 = MailScenario(name: "qa-mail-web-007", description: "1 messages with remote content and 1 message with tracked content in Inbox", subject: "007_message_with_remote_content")
     static let qaMail008 = MailScenario(name: "qa-mail-web-008", description: "3 messages with remote content in Sent")
@@ -73,6 +75,6 @@ extension MailScenario {
     static let pgpmime = MailScenario(name: "pgpmime", description: "", subject: "")
     static let pgpmimeUntrusted = MailScenario(name: "pgpmime.untrusted", description: "", subject: "")
     static let revokeSession = MailScenario(name: "revoke.session", description: "", subject: "")
-    static let trashMultipleMessages = MailScenario(name: "trash.multiple.messages", description: "", subject: "")
+    static let trashMultipleMessages = MailScenario(name: "trash.multiple.messages", description: "", subject: "internal PGP/Mime public key with attachment")
     static let trashOneMessage = MailScenario(name: "trash.one.message", description: "", subject: "internal PGP/Mime")
 }

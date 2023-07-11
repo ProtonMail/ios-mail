@@ -1,0 +1,57 @@
+{
+  "configurations" : [
+    {
+      "id" : "D6207E9F-4B35-4212-AFFA-8B42BF5A24E8",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "AccountDeletionOptionTests",
+        "AccountDeletionSuccessfulTests",
+        "AccountSettingsTests",
+        "BaseTestCase",
+        "ContactsTests",
+        "DraftsTests",
+        "ExternalAccountsTests",
+        "FixtureAuthenticatedTestCase",
+        "ForceUpgradeTests",
+        "ForwardMessageTests",
+        "HumanVerificationTests",
+        "LabelsFoldersTests",
+        "LoginExtAccountsTests",
+        "LoginNonExistingUserTests",
+        "LoginTests",
+        "LogoutTests",
+        "MenuTests",
+        "MonkeyTests",
+        "MultiuserManagementTests",
+        "NoUnauthSessionTests",
+        "PinTests",
+        "RecipientAddressesTests",
+        "ReferralPromptTests",
+        "ReplyToMessageTests",
+        "ReportTests",
+        "SearchTests",
+        "SendNewMessageTests",
+        "SettingsTests",
+        "SpamTests",
+        "TrashTests",
+        "UnauthSessionTests"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "67596B012358FAE8B0782EE2",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
