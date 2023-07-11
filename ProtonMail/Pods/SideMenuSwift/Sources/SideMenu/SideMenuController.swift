@@ -168,8 +168,12 @@ open class SideMenuController: UIViewController {
             fatalError("[SideMenuSwift] `menuViewController` or `contentViewController` should not be nil.")
         }
 
-        contentContainerView.frame = view.bounds
         view.addSubview(contentContainerView)
+        contentContainerView.translatesAutoresizingMaskIntoConstraints = false
+        contentContainerView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        contentContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        contentContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        contentContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
 
         resolveDirection(with: contentContainerView)
 

@@ -396,7 +396,7 @@ DEPENDENCIES:
   - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `7.31.2.fork`)"
-  - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.landscape`)"
+  - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.autolayout`)"
   - SkeletonView (= 1.30.4)
   - SQLite.swift (~> 0.13.3)
   - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
@@ -532,7 +532,7 @@ EXTERNAL SOURCES:
     :tag: 7.31.2.fork
   SideMenuSwift:
     :git: "git@gitlab.protontech.ch:jchen/SideMenu.git"
-    :tag: v2.0.9.landscape
+    :tag: v2.0.9.autolayout
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
@@ -651,7 +651,7 @@ CHECKOUT OPTIONS:
     :tag: 7.31.2.fork
   SideMenuSwift:
     :git: "git@gitlab.protontech.ch:jchen/SideMenu.git"
-    :tag: v2.0.9.landscape
+    :tag: v2.0.9.autolayout
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
@@ -719,6 +719,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: e0ea626634f6be8e29f52aacec9bf0c509047779
+PODFILE CHECKSUM: d6b8f3b2ce9b633559402eeaee1a5fb2902c0ee1
 
 COCOAPODS: 1.12.0
