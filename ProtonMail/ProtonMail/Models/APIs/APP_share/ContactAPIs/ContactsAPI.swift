@@ -241,17 +241,9 @@ extension Array where Element: CardData {
 final class ContactAddRequest: Request {
     let cardsList: [[CardData]]
     let importedFromDevice: Bool
-    init(cards: [[CardData]], authCredential: AuthCredential?, importedFromDevice: Bool = false) {
+    init(cards: [[CardData]], importedFromDevice: Bool = false) {
         self.cardsList = cards
-        self.auth = authCredential
         self.importedFromDevice = importedFromDevice
-    }
-
-    let auth: AuthCredential?
-    var authCredential: AuthCredential? {
-        get {
-            return self.auth
-        }
     }
 
     var path: String {
