@@ -342,14 +342,6 @@ class MockDeviceRegistrationUseCase: DeviceRegistrationUseCase {
 
 }
 
-class MockDeviceUnregistrationUseCase: DeviceUnregistrationUseCase {
-    @FuncStub(MockDeviceUnregistrationUseCase.execute, initialReturn: [DeviceUnregistrationResult]()) var executeStub
-    func execute(sessionIDs: [String], deviceToken: String) -> [DeviceUnregistrationResult] {
-        executeStub(sessionIDs, deviceToken)
-    }
-
-}
-
 class MockDownloadedMessagesRouterProtocol: DownloadedMessagesRouterProtocol {
     @FuncStub(MockDownloadedMessagesRouterProtocol.closeView) var closeViewStub
     func closeView() {

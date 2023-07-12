@@ -60,35 +60,3 @@ struct DeviceRegistrationRequest: Request {
         ]
     }
 }
-
-struct DeviceUnregistrationRequest: Request {
-    let deviceToken: String
-    let uid: String
-
-    var path: String {
-        DeviceAPI.path
-    }
-
-    var method: HTTPMethod {
-        .delete
-    }
-
-    var header: [String: Any] {
-        .empty
-    }
-
-    var isAuth: Bool {
-        false
-    }
-
-    var autoRetry: Bool {
-        false
-    }
-
-    var parameters: [String: Any]? {
-        [
-        "DeviceToken": deviceToken,
-        "UID": uid
-        ]
-    }
-}
