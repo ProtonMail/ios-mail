@@ -57,12 +57,7 @@ final class PushEncryptionManager: PushEncryptionManagerProtocol {
         Task {
             let rotateKey = dependencies.failedPushDecryptionProvider.hadPushNotificationDecryptionFailed
             guard let kit = kitForRegisteringDevice(rotateKey: rotateKey) else { return }
-            let tokenToUnregister = deviceToken != lastRegisteredToken ? lastRegisteredToken : nil
-            await updateTokensAndKitsForAllSessions(
-                tokenToRegister: deviceToken,
-                previousTokenToUnregisterIfSuccess: tokenToUnregister,
-                kit: kit
-            )
+            await updateTokensAndKitsForAllSessions(tokenToRegister: deviceToken, kit: kit)
         }
     }
 
@@ -71,11 +66,7 @@ final class PushEncryptionManager: PushEncryptionManagerProtocol {
         guard let lastRegisteredToken = lastRegisteredToken else { return }
         Task {
             guard let kit = kitForRegisteringDevice(rotateKey: true) else { return }
-            await updateTokensAndKitsForAllSessions(
-                tokenToRegister: lastRegisteredToken,
-                previousTokenToUnregisterIfSuccess: nil,
-                kit: kit
-            )
+            await updateTokensAndKitsForAllSessions(tokenToRegister: lastRegisteredToken, kit: kit)
         }
     }
 
@@ -143,11 +134,7 @@ extension PushEncryptionManager {
         return false
     }
 
-    private func updateTokensAndKitsForAllSessions(
-        tokenToRegister: String,
-        previousTokenToUnregisterIfSuccess: String?,
-        kit: EncryptionKit
-    ) async {
+    private func updateTokensAndKitsForAllSessions(tokenToRegister: String, kit: EncryptionKit) async {
         setRetryDeviceTokenRegistration(to: false)
         dependencies.failedPushDecryptionProvider.clearPushNotificationDecryptionFailure()
 
@@ -157,19 +144,11 @@ extension PushEncryptionManager {
             setRetryDeviceTokenRegistration(to: true)
             return
         }
-
         saveDeviceRegistrationInCache(token: tokenToRegister, kit: kit)
+
         if registrationResult.someFailed {
             // we will try to register the device token for all sessions again
             setRetryDeviceTokenRegistration(to: true)
-        }
-
-        if let previousTokenToUnregisterIfSuccess {
-            // best effort cleaning old token which anyway won't be valid (most likely)
-            await unregisterDeviceInBackend(
-                for: Array(registrationResult.successfulSessionIDs),
-                deviceToken: previousTokenToUnregisterIfSuccess
-            )
         }
     }
 
@@ -182,12 +161,6 @@ extension PushEncryptionManager {
         let successfulRegistrations = Set(results.filter({ $0.error == nil }).map(\.sessionID))
         let failedRegistrations = Set(results.filter({ $0.error != nil }).map(\.sessionID))
         return BulkRequestResult(successfulSessionIDs: successfulRegistrations, failedSessionIDs: failedRegistrations)
-    }
-
-    private func unregisterDeviceInBackend(for sessionIDs: [String], deviceToken: String) async {
-        _ = await dependencies
-            .deviceUnregistration
-            .execute(sessionIDs: sessionIDs, deviceToken: deviceToken)
     }
 
     private func kitForRegisteringDevice(rotateKey: Bool) -> EncryptionKit? {
@@ -251,7 +224,6 @@ extension PushEncryptionManager {
     struct Dependencies {
         let usersManagers: UsersManager
         let deviceRegistration: DeviceRegistrationUseCase
-        let deviceUnregistration: DeviceUnregistrationUseCase
         let encryptionKitsCache: Saver<[EncryptionKit]>
         let pushEncryptionProvider: PushEncryptionProvider
         let failedPushDecryptionProvider: FailedPushDecryptionProvider
@@ -259,14 +231,12 @@ extension PushEncryptionManager {
         init(
             usersManager: UsersManager = sharedServices.get(by: UsersManager.self),
             deviceRegistration: DeviceRegistrationUseCase = DeviceRegistration(),
-            deviceUnregistration: DeviceUnregistrationUseCase = DeviceUnregistration(),
             encryptionKitsCache: Saver<[EncryptionKit]> = PushEncryptionKitSaver.shared.saver,
             pushEncryptionProvider: PushEncryptionProvider = UserDefaults.standard,
             failedPushDecryptionDefaults: FailedPushDecryptionProvider = SharedUserDefaults.shared
         ) {
             self.usersManagers = usersManager
             self.deviceRegistration = deviceRegistration
-            self.deviceUnregistration = deviceUnregistration
             self.encryptionKitsCache = encryptionKitsCache
             self.pushEncryptionProvider = pushEncryptionProvider
             self.failedPushDecryptionProvider = failedPushDecryptionDefaults
