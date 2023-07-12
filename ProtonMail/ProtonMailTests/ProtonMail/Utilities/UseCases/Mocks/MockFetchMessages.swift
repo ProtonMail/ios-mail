@@ -23,7 +23,7 @@ final class MockFetchMessages: FetchMessagesUseCase {
     private(set) var executeWasCalled: Bool = false
     var result: Result<Void, Error> = .success(Void())
 
-    override func execute(params: FetchMessages.Parameters, callback: @escaping NewUseCase<Void, FetchMessages.Parameters>.Callback) {
+    override func execute(params: FetchMessages.Parameters, callback: @escaping UseCase<Void, FetchMessages.Parameters>.Callback) {
         executeWasCalled = true
         if result.nsError == nil {
             params.onMessagesRequestSuccess?()

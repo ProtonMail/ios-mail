@@ -20,7 +20,7 @@ import ProtonCore_DataModel
 import ProtonCore_Services
 
 // sourcery: mock
-typealias UpdateSwipeActionDuringLoginUseCase = NewUseCase<Void, UpdateSwipeActionDuringLogin.Parameters>
+typealias UpdateSwipeActionDuringLoginUseCase = UseCase<Void, UpdateSwipeActionDuringLogin.Parameters>
 
 /// This use case updates the swipe action settings of the newly logged-in account's to the same
 /// as the current active account. If the account is the first account logs into the app, it will update
@@ -39,7 +39,7 @@ final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
         self.dependencies = dependencies
     }
 
-    override func executionBlock(params: Parameters, callback: @escaping NewUseCase<Void, Parameters>.Callback) {
+    override func executionBlock(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         let info = SwipeInfoHelper(
             activeUserRightSwipeAction: SwipeActionSettingType.convertFromServer(
                 rawValue: params.activeUserInfo.swipeRight

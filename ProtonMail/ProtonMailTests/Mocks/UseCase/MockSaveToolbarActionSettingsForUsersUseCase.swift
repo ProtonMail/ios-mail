@@ -21,7 +21,7 @@ import ProtonCore_TestingToolkit
 
 class MockSaveToolbarActionSettingsForUsersUseCase: SaveToolbarActionSettingsForUsersUseCase {
     @FuncStub(MockSaveToolbarActionSettingsForUsersUseCase.executionBlock) var callExecute
-    override func executionBlock(params: SaveToolbarActionSettings.Params, callback: @escaping NewUseCase<Void, SaveToolbarActionSettings.Params>.Callback) {
+    override func executionBlock(params: SaveToolbarActionSettings.Params, callback: @escaping UseCase<Void, SaveToolbarActionSettings.Params>.Callback) {
         callExecute(params, callback)
     }
 }

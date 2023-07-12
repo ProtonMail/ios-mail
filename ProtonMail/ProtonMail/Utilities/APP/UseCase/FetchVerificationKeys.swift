@@ -20,7 +20,7 @@ import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Log
 
-typealias FetchVerificationKeysUseCase = NewUseCase<FetchVerificationKeys.Output, FetchVerificationKeys.Params>
+typealias FetchVerificationKeysUseCase = UseCase<FetchVerificationKeys.Output, FetchVerificationKeys.Params>
 
 final class FetchVerificationKeys: FetchVerificationKeysUseCase {
     typealias Output = (pinnedKeys: [ArmoredKey], keysResponse: KeysResponse?)

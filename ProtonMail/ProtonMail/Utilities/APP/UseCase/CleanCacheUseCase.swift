@@ -17,7 +17,7 @@
 
 import Foundation
 
-typealias CleanCacheUseCase = NewUseCase<Void, Void>
+typealias CleanCacheUseCase = UseCase<Void, Void>
 
 final class CleanCache: CleanCacheUseCase {
     private let dependencies: Dependencies
@@ -26,7 +26,7 @@ final class CleanCache: CleanCacheUseCase {
         self.dependencies = dependencies
     }
 
-    override func executionBlock(params: Void, callback: @escaping NewUseCase<Void, Void>.Callback) {
+    override func executionBlock(params: Void, callback: @escaping UseCase<Void, Void>.Callback) {
         var lastError: NSError?
         let group = DispatchGroup()
         for user in dependencies.usersManager.users {

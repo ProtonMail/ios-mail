@@ -20,7 +20,7 @@ import ProtonCore_Crypto
 @testable import ProtonMail
 import ProtonCore_TestingToolkit
 
-final class MockPrepareSendRequest: NewUseCase<SendMessageRequest, PrepareSendRequest.Params> {
+final class MockPrepareSendRequest: UseCase<SendMessageRequest, PrepareSendRequest.Params> {
 
     private lazy var dummySendMessageRequest: SendMessageRequest = {
         let messageID = UUID().uuidString

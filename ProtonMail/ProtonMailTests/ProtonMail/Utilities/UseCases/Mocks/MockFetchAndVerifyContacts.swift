@@ -18,7 +18,7 @@
 import Foundation
 @testable import ProtonMail
 
-final class MockFetchAndVerifyContacts: NewUseCase<[PreContact], FetchAndVerifyContacts.Parameters> {
+final class MockFetchAndVerifyContacts: UseCase<[PreContact], FetchAndVerifyContacts.Parameters> {
     private(set) var executeWasCalled: Bool = false
     var result: Result<[PreContact], Error> = .success([])
 

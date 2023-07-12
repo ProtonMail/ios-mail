@@ -23,7 +23,7 @@ import ProtonCore_Services
 /// There are 2 common cases
 /// 1. The message was fetched by mailbox list, there is no detail data locally
 /// 2. Open a draft, needs to update draft data in case it is updated through other devices
-typealias FetchMessageDetailUseCase = NewUseCase<FetchMessageDetail.Output, FetchMessageDetail.Params>
+typealias FetchMessageDetailUseCase = UseCase<FetchMessageDetail.Output, FetchMessageDetail.Params>
 
 final class FetchMessageDetail: FetchMessageDetailUseCase {
     typealias Output = MessageEntity

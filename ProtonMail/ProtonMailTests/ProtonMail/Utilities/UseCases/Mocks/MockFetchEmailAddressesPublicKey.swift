@@ -18,7 +18,7 @@
 import Foundation
 @testable import ProtonMail
 
-final class MockFetchEmailAddressesPublicKey: NewUseCase<[String: KeysResponse], FetchEmailAddressesPublicKey.Params> {
+final class MockFetchEmailAddressesPublicKey: UseCase<[String: KeysResponse], FetchEmailAddressesPublicKey.Params> {
     private(set) var executeWasCalled: Bool = false
     var result: Result<[String: KeysResponse], Error> = .failure(NSError.badResponse())
 

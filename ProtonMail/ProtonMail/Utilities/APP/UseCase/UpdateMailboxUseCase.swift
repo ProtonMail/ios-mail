@@ -18,7 +18,7 @@
 import Foundation
 import ProtonCore_Services
 
-typealias UpdateMailboxUseCase = NewUseCase<Void, UpdateMailbox.Parameters>
+typealias UpdateMailboxUseCase = UseCase<Void, UpdateMailbox.Parameters>
 
 protocol UpdateMailboxSourceProtocol: AnyObject {
     var locationViewMode: ViewMode { get }
@@ -47,7 +47,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
         }
     }
 
-    override func executionBlock(params: Parameters, callback: @escaping NewUseCase<Void, Parameters>.Callback) {
+    override func executionBlock(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
         if self.isFetching {
             callback(.success)
             return
@@ -73,7 +73,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
                                 time: Int,
                                 fetchMessagesAtTheEnd: Bool,
                                 errorHandler: @escaping ErrorHandler,
-                                callback: @escaping NewUseCase<Void, Parameters>.Callback) {
+                                callback: @escaping UseCase<Void, Parameters>.Callback) {
 
         guard self.isEventIDValid else {
             self.fetchDataWithReset(time: time,
@@ -101,7 +101,7 @@ final class UpdateMailbox: UpdateMailboxUseCase {
     private func cleanFetch(showUnreadOnly: Bool,
                             time: Int,
                             errorHandler: @escaping ErrorHandler,
-                            callback: @escaping NewUseCase<Void, Parameters>.Callback) {
+                            callback: @escaping UseCase<Void, Parameters>.Callback) {
 
         self.fetchDataWithReset(time: time,
                                 cleanContact: true,
@@ -145,7 +145,7 @@ extension UpdateMailbox {
                              time: Int,
                              fetchMessagesAtTheEnd: Bool,
                              errorHandler: @escaping ErrorHandler,
-                             callback: @escaping NewUseCase<Void, Parameters>.Callback) {
+                             callback: @escaping UseCase<Void, Parameters>.Callback) {
 
         let labelID = dependencies.labelID
         self.dependencies.eventService
@@ -273,7 +273,7 @@ extension UpdateMailbox {
                                   result: Swift.Result<[String: Any], Error>,
                                   fetchMessagesAtTheEnd: Bool,
                                   errorHandler: @escaping ErrorHandler,
-                                  callback: @escaping NewUseCase<Void, Parameters>.Callback) {
+                                  callback: @escaping UseCase<Void, Parameters>.Callback) {
         switch result {
         case .failure(let error):
             errorHandler(error)

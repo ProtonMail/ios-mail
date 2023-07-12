@@ -22,7 +22,7 @@ import class ProtonCore_Networking.AuthCredential
 import ProtonCore_Services
 import ProtonMailAnalytics
 
-typealias PrepareSendRequestUseCase = NewUseCase<SendMessageRequest, PrepareSendRequest.Params>
+typealias PrepareSendRequestUseCase = UseCase<SendMessageRequest, PrepareSendRequest.Params>
 
 final class PrepareSendRequest: PrepareSendRequestUseCase {
 
@@ -30,7 +30,7 @@ final class PrepareSendRequest: PrepareSendRequestUseCase {
         do {
             // Using an empty UseCase for fetchAttachment because it is not needed here
             // since we already have the attachments at this point in `params.metadata.attachments`.
-            let emptyUseCase: FetchAttachmentUseCase = NewUseCase()
+            let emptyUseCase: FetchAttachmentUseCase = UseCase()
             let sendBuilder = MessageSendingRequestBuilder(
                 dependencies: .init(fetchAttachment: emptyUseCase, apiService: params.apiService)
             )

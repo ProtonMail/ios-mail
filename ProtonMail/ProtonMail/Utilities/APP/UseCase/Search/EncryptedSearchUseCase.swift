@@ -17,7 +17,7 @@
 
 import Foundation
 
-typealias EncryptedSearchUseCase = NewUseCase<[MessageEntity], EncryptedSearch.Params>
+typealias EncryptedSearchUseCase = UseCase<[MessageEntity], EncryptedSearch.Params>
 
 final class EncryptedSearch: EncryptedSearchUseCase {
     let dependencies: Dependencies
@@ -28,7 +28,7 @@ final class EncryptedSearch: EncryptedSearchUseCase {
 
     override func executionBlock(
         params: Params,
-        callback: @escaping NewUseCase<[MessageEntity], Params>.Callback
+        callback: @escaping UseCase<[MessageEntity], Params>.Callback
     ) {
         guard !params.query.isEmpty else {
             callback(.success([]))
