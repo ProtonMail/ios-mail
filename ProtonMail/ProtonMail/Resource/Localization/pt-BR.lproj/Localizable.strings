@@ -1823,7 +1823,7 @@
 "Set" = "Definir";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Defina uma senha para criptografar esta mensagem para usuários não-Proton Mail.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Defina uma senha para criptografar esta mensagem para usuários não usam o Proton Mail.";
 
 /* The voiceiver title of the add expiration button in the tool bar of composer */
 "Set mail expiration" = "Definir expiração do e-mail";
@@ -1981,10 +1981,10 @@
 "Terms & conditions" = "Termos e condições";
 
 /* No comment provided by engineer. */
-"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Obrigado por enviar um relatório de bug. Adicionamos seu relatório ao nosso sistema de rastreamento de bugs.";
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Nós lhe agradecemos por enviar um relatório de bug. Adicionamos seu relatório ao nosso sistema de rastreamento de bugs.";
 
 /* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Obrigado por seu comentário!";
+"Thank you for your feedback!" = "Nós lhe agradecemos por seu comentário.";
 
 /* Error message */
 "The 2 passwords are not matching" = "As senhas não coincidem.";

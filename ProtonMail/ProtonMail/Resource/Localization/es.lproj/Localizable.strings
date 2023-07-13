@@ -629,7 +629,7 @@
 "Delete message" = "Eliminar mensaje";
 
 /* Title of the alert to confirm enabling of the auto delete option */
-"Delete messages?" = "Eliminar los mensajes?";
+"Delete messages?" = "¿Eliminar los mensajes?";
 
 /* Title */
 "Details" = "Detalles";
@@ -1242,7 +1242,7 @@
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Los mensajes anteriores a %@ no serán descargados. Para buscar en ellos, libera almacenamiento en este dispositivo.";
 
 /* The footer title of the setting row of the auto delete option */
-"Messages in trash or spam longer than 30 days will be automatically deleted." = "Los mensajes en la carpeta Papelera o Spam de más de 30 días serán automáticamente eliminados.";
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Los mensajes en las carpetas Papelera o Spam de más de 30 días se eliminarán automáticamente.";
 
 /* Text to inform users they have the auto delete feature enabled */
 "Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Los mensajes que hayan estado en la carpeta Papelera o Spam por más de 30 días serán eliminados automáticamente.";
@@ -1557,7 +1557,7 @@
 "Please share your problem." = "Comparte tu problema.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Inicia sesión en la aplicación de Proton Mail.";
+"Please sign in to the Proton Mail app." = "Inicie sesión en la aplicación de Proton Mail.";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Pasa a un plan de pago para utilizar más de 3 carpetas.";
@@ -2259,7 +2259,7 @@
 "Upgrade to a paid plan to send from your %@ address" = "Pasa a un plan de pago para enviar desde tu dirección %@.";
 
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Actualiza tu plan para eliminar automáticamente los mensajes que hayan estado en la carpeta Papelera o Spam por más de 30 días.";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Actualice su plan para eliminar automáticamente los mensajes que hayan estado en las carpetas Papelera o Spam durante más de 30 días.";
 
 /* Action */
 "Upload device contacts" = "Cargar los contactos del dispositivo";
@@ -2367,7 +2367,7 @@
 "You can't set %@ address as default because it is a paid feature." = "No puedes establecer la dirección %@ por defecto porque es una función de pago.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Has desactivado %1$@ en los ajustes del sistema. %2$@ se ha utilizado para proteger información importante de la cuenta. Para acceder a tu cuenta, ve a los ajustes y activa de nuevo el %3$@, o vuelve a iniciar sesión.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Ha desactivado %1$@ en los ajustes del sistema. %2$@ se ha utilizado para proteger información importante de la cuenta. Para acceder a su cuenta, vaya a los ajustes y active de nuevo el %3$@, o vuelva a iniciar sesión.";
 
 /* Message */
 "You have %d new emails!" = "Tienes %d correos nuevos.";
@@ -2430,7 +2430,7 @@
 "Your messages are being downloaded..." = "Tus mensajes se están descargando...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Tu privacidad estará mejor protegida si tus contatos también usan Proton Mail. Invita a tus amigos a Proton y ambos obtendréis beneficios premium gratis.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Su privacidad estará mejor protegida si sus contactos también usan Proton Mail. Invite a sus amigos a Proton y ambos obtendrán beneficios prémium gratis.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Tu sesión ha expirado porque has estado inactivo durante un tiempo o porque ha sido revocada. Vuelve a iniciar sesión.";

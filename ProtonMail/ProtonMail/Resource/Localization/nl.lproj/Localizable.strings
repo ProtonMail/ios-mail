@@ -267,6 +267,9 @@
 /* settings general section title */
 "Auto-load remote content" = "Externe inhoud automatisch laden";
 
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Automatisch berichten verwijderen die al 30 of meer dagen in de prullenbak zitten.";
+
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Beschikbare acties";
 
@@ -797,11 +800,17 @@
 /* Message of the alert to confirm disabling of the auto delete option */
 "Emails scheduled for deletion will remain in the trash and spam folders." = "E-mails die gepland staan om te worden verwijderen, blijven in de Prullenbak en Spam.";
 
+/* Title of button to empty spam folder */
+"Empty spam" = "Spam leegmaken";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Spam leegmaken";
 
 /* Alert title */
 "Empty spam folder" = "Spamfolder leegmaken";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Prullenbak leegmaken";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Prullenbak leegmaken";
@@ -1235,6 +1244,9 @@
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Berichten die meer dan 30 dagen in de spam zitten worden automatisch verwijderd.";
 
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Berichten die meer dan 30 dagen in de prullenbak en spam zitten worden automatisch verwijderd.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Berichten worden gedownload via wifi. Dit kan enkele momenten duren en uw apparaat kan een beetje warm worden. U kunt de handeling op elk moment pauzeren.";
 
@@ -1359,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Nee, niet gerelateerd aan de in-app aankoop";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Nee, bedankt";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2242,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Upgrade naar een betaald abonnement om te kunnen verzenden vanaf uw adres %@";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Upgrade om automatisch berichten te verwijderen die meer dan 30 dagen in de prullenbak of spam zitten.";
 
 /* Action */
 "Upload device contacts" = "Apparaat contacten uploaden";

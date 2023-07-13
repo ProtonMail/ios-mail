@@ -797,6 +797,9 @@
 /* Name of the feature */
 "Email tracking protection" = "Perlindungan pelacak email";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Email yang terjadwal untuk dihapus akan tetap berada pada folder sampah dan spam.";
+
 /* Title of button to empty spam folder */
 "Empty spam" = "Kosongkan spam";
 
@@ -1248,10 +1251,10 @@
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Pesan akan diunduh melalui WiFi. Proses ini dapat memakan waktu dan membuat perangkat Anda sedikit panas. Anda dapat menghentikan sementara proses ini kapan saja.";
 
 /* default vcard types */
-"Mobile" = "Seluler";
+"Mobile" = "Mobile";
 
 /* Mobile Signature title in settings */
-"Mobile Signature" = "Tanda Tangan Seluler";
+"Mobile Signature" = "Tanda Tangan Mobile";
 
 /* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
 "Monday (%@) at 08:%02d" = "Senin (%1$@) pada pukul 08:%2$d";

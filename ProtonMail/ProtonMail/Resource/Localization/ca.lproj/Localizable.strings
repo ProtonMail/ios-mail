@@ -444,7 +444,7 @@
 "Close" = "Tanca";
 
 /* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close CC and BCC" = "Tanca Cc i Cco";
+"Close CC and BCC" = "Tanca CC i CCO";
 
 /* the message will show when closing a draft from the share extension */
 "Closing" = "Tancant";
@@ -498,7 +498,7 @@
 "Contact saved, will be synced when connection is available" = "S'ha desat el contacte. Es sincronitzarà quan hi hagi una connexió disponible";
 
 /* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contacteu-nos directament a través del nostre formulari d’assistència, correu electrònic (support@protonmail.zendesk.com) o Twitter.";
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contacteu amb nosaltres directament a través del formulari d’assistència, correu electrònic (support@protonmail.zendesk.com) o Twitter.";
 
 /* Action and title
    menu title */
@@ -725,7 +725,7 @@
 "Downloaded messages will be deleted" = "Els missatges descarregats s'eliminaran.";
 
 /* The text for the number of downloaded messages. */
-"Downloading message %1d out of %2d" = "Descarregant missatge %1$d de %2$d";
+"Downloading message %1d out of %2d" = "S'està descarregant el missatge %1$d de %2$d";
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "S'estan descarregant les metadades...";
@@ -1076,7 +1076,7 @@
 "Invalid username!" = "Nom d'usuari invàlid!";
 
 /* The article title of the referral share view. */
-"Invite friends to Proton,\n get up to $90 in credits!" = "Convideu amistats a Proton.\nObtingueu fins a 90 $ en crèdits!";
+"Invite friends to Proton,\n get up to $90 in credits!" = "Convideu amistats a Proton.\nObteniu fins a 90 $ en crèdits.";
 
 /* Onboarding content */
 "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Convideu els vostres contactes a Proton Mail per a gaudir de xifratge d'extrem a extrem integrat o afegiu protecció de contrasenya als missatges que els envieu.";
@@ -1245,7 +1245,7 @@
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Els missatges a la paperera o al correu brossa de més de 30 dies s'eliminaran automàticament.";
 
 /* Text to inform users they have the auto delete feature enabled */
-"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Els missatges que hagin estat a la paperera i al correu brossa més de 30 dies se suprimiran automàticament.";
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Els missatges que hagin estat a la paperera i al correu brossa més de 30 dies s'eliminaran automàticament.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Els missatges es descarregaran a través de WiFi. Això pot trigar força temps i el vostre dispositiu pot escalfar-se lleugerament. Podeu aturar l'acció en qualsevol moment.";
@@ -1331,7 +1331,7 @@
 "Next" = "Següent";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "Missatge següent després de moure'l";
+"Next message after move" = "Passa al missatge següent després de moure";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Sobrenom";
@@ -1455,7 +1455,7 @@
 "Other" = "Altres";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "El nostre equip de Suport al Client intentarà activar el vostre pla de serveis manualment si esteu d'acord en adjuntar les dades tècniques que l'App Store va proporcionar a l'aplicació al moment de la compra. Aquestes dades no inclouen detalls del seu compte d'iTunes, d'Apple ID, de tarjetes de crèdit o cap altra informació personal. Les dades tècniques només ens ajudaran a verificar que la transacció es va realitzar als servidors de l'App Store.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "El nostre servei d'atenció al client intentarà activar el vostre pla de serveis manualment si esteu d'acord a adjuntar les dades tècniques que l'App Store va proporcionar a l'aplicació en el moment de la compra. Aquestes dades no inclouen cap detall del vostre compte d'iTunes, l'ID d'Apple, les targetes de pagament vinculades o cap altra informació de l'usuari. Les dades tècniques només ens ajuden a verificar que la transacció s'ha realitzat als servidors de l'App Store.";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "El nostre sistema ha marcat aquest missatge com un intent de suplantació d'identitat. Comproveu que sigui legítim.";
@@ -2175,7 +2175,7 @@
 "Unable to parse response" = "No s'ha pogut analitzar la resposta";
 
 /* Description */
-"Unable to parse the response object:\n%@" = "No es pot analitzar l'objecte de resposta:\n%@";
+"Unable to parse the response object:\n%@" = "No es pot analitzar l'objecte de la resposta:\n%@";
 
 /* error when sending the message */
 "Unable to send the email" = "No es pot enviar el correu electrònic";

@@ -588,10 +588,10 @@
 "Decryption error" = "Errore di decriptazione";
 
 /* error details */
-"Decryption of this content failed" = "Decifratura di questo contenuto fallita";
+"Decryption of this content failed" = "Decriptazione di questo contenuto non riuscita";
 
 /* error details */
-"Decryption of this message's encrypted content failed." = "La decifratura del contenuto cifrato nel messaggio è fallita.";
+"Decryption of this message's encrypted content failed." = "La decriptazione del contenuto cifrato nel messaggio non è riuscita.";
 
 /* Title */
 "Default" = "Predefinito";
@@ -889,7 +889,7 @@
 "Expiration not supported" = "Scadenza non supportata";
 
 /* Error message */
-"Failed to determine type of file" = "Fallito nel determinare il tipo di file";
+"Failed to determine type of file" = "Impossibile determinare il tipo di file";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Impossibile caricare il contenuto!\nSei pregato di riprovare.";
@@ -1224,7 +1224,7 @@
 "Message saved to Drafts" = "Messaggio salvato nelle Bozze";
 
 /* Description */
-"Message sending failed. Please try again." = "L'invio del messaggio è fallito. Per favore riprova.";
+"Message sending failed. Please try again." = "L'invio del messaggio non è riuscito. Riprova.";
 
 /* Description after message have been sent */
 "Message sent" = "Messaggio inviato";
@@ -1503,7 +1503,7 @@
 "PGP-signed message from verified sender" = "Messaggio firmato PGP dal mittente verificato";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message. Sender verification failed" = "Messaggio firmato PGP. Verifica del mittente fallita";
+"PGP-signed message. Sender verification failed" = "Messaggio firmato PGP. Verifica del mittente non riuscito.";
 
 /* default vcard types */
 "Phone" = "Telefono";
@@ -1778,7 +1778,7 @@
 "Sender has been blocked" = "Il mittente è stato bloccato";
 
 /* encryption lock description */
-"Sender Verification Failed" = "Verifica del mittente fallita";
+"Sender Verification Failed" = "Verifica del mittente non riuscita";
 
 /* title of incorrect email format error while sending */
 "Sending failed" = "Invio non riuscito";
@@ -2059,10 +2059,10 @@
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Quest'email non ha superato i requisiti d'autenticazione del suo dominio. Potrebbe esser falsificata o inoltrata impropriamente.";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Quest'email ha fallito i requisiti d'autenticazione del suo dominio. Potrebbe esser falsificata o inoltrata impropriamente.";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Quest'email non ha superato i requisiti d'autenticazione del suo dominio. Potrebbe esser falsificata o inoltrata impropriamente.";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Questa email sembra provenire da un indirizzo Proton Mail, ma arriva dall'esterno del nostro sistema e ha fallito la nostra prova di autenticazione. Potrebbe essere falsa o non correttamente inoltrata!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Questa email sembra provenire da un indirizzo Proton Mail, ma arriva dall'esterno del nostro sistema e non ha superato la nostra prova di autenticazione. Potrebbe essere falsa o non correttamente inoltrata!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Questa funzione ritarda l'invio delle tue email, dandoti la possibilità di annullare l'invio durante il periodo di tempo selezionato.";
@@ -2113,7 +2113,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Convalida del certificato TLS non riuscita. La tua connessione potrebbe essere monitorata e l'app è temporaneamente bloccata per la tua sicurezza.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Convalida del certificato TLS fallita. La tua connessione potrebbe esser monitorata e l'app esser bloccata temporaneamente per la tua sicurezza.\n\nCambia immediatamente rete.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Convalida del certificato TLS non riuscita. La tua connessione potrebbe esser monitorata e l'app esser bloccata temporaneamente per la tua sicurezza.\n\nCambia immediatamente rete.";
 
 /* message To: feild
    Title */
@@ -2274,7 +2274,7 @@
 "Verification error" = "Errore di verifica";
 
 /* error details */
-"Verification of this content’s signature failed" = "Verifica della firma di questo contenuto fallita";
+"Verification of this content’s signature failed" = "Verifica della firma di questo contenuto non riuscita";
 
 /* View action for view scheduled message. */
 "View" = "Visualizza";

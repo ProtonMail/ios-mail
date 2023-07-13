@@ -5,7 +5,7 @@
 "…[Show full message]" = "…[Zobrazit celou zprávu]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'V' E, MMM d, yyyy 'v' %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'V' E, MMM d, rrrr 'v' %@";
 
 /* Message for the alert to delete all downloaded messages. */
 "'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Hledání v obsahu zprávy' bude zakázáno. Lze to opět povolit v nastavení, všechny zprávy bude nutné znovu stáhnout.";
@@ -797,6 +797,9 @@
 /* Name of the feature */
 "Email tracking protection" = "Ochrana před sledovacími prvky v e-mailech";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "E-maily naplánované ke smazání zůstanou ve složkách Koš a Spam.";
+
 /* Title of button to empty spam folder */
 "Empty spam" = "Vysypat spam";
 
@@ -1240,6 +1243,9 @@
 
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Zprávy, které byly v koši nebo spamu déle než 30 dní, budou automaticky smazány.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Zprávy, které byly v koši a spamu déle než 30 dní, budou automaticky smazány.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Zprávy se budou stahovat přes Wi-Fi. To může nějakou dobu trvat a zařízení se může mírně zahřívat. Akci můžete kdykoli pozastavit.";
@@ -2068,7 +2074,7 @@
 "This folder is empty" = "Tato složka je prázdná";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tento odkaz vede na webovou stránku, která se může pokoušet ukrást vaše údaje, například hesla a údaje o kreditní kartě.\n%@\n\nKvůli vaší bezpečnosti, nepokračujte.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tento odkaz vede na webovou stránku, která se může pokoušet ukrást vaše údaje, například hesla a údaje o platební kartě.\n%@\n\nKvůli vaší bezpečnosti, nepokračujte.";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Tato zpráva již není naplánována k pozdějšímu odeslání. Pokud ji chcete odeslat později, můžete klepnout na možnost \"Naplánovat odeslání\"";

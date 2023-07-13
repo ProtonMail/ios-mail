@@ -1046,7 +1046,7 @@
 "Input Display Name…" = "Saisissez le nom d'affichage…";
 
 /* place holder */
-"Input Notification Email…" = "Saisissez l'adresse e-mail de notification…";
+"Input Notification Email…" = "Saisissez le message de notification...";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Connexion non sécurisée";

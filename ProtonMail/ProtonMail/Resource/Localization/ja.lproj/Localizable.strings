@@ -267,6 +267,9 @@
 /* settings general section title */
 "Auto-load remote content" = "外部コンテンツを自動で読み込む";
 
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "ゴミ箱に入ってから30日以上経過したメッセージを自動的に削除。";
+
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "利用可能なアクション";
 
@@ -794,6 +797,9 @@
 /* Name of the feature */
 "Email tracking protection" = "メールトラッキング防止";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "削除予定のメールはゴミ箱や迷惑メールフォルダに残ります。";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "迷惑メールを空にする";
 
@@ -1232,6 +1238,9 @@
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "30日経過したメッセージは自動的に削除されます。";
 
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "ゴミ箱やスパムに30日以上入っているメッセージは自動的に削除されます。";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "メッセージは Wi-Fi 経由でダウンロードされます。これには時間がかかる場合があり、デバイスがわずかに発熱するかもしれません。この操作はいつでも一時停止できます。";
 
@@ -1356,6 +1365,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "いいえ、アプリ内課金とは関係ありません。";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "いいえ、結構です";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2240,6 +2252,9 @@
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "%@ アドレスから送信するには有料プランへのアップグレードが必要です";
 
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "30日以上ゴミ箱や迷惑メールに入っているメッセージを自動的に削除するようにアップグレードできます。";
+
 /* Action */
 "Upload device contacts" = "デバイスの連絡先をアップロード";
 
@@ -2408,11 +2423,12 @@
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "メッセージをダウンロード中...";
 
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "あなたの連絡先もProton Mailを使えば、あなたのプライバシーはより守られます。お友達をプロトンに招待すると、それぞれ無料でプレミアム特典を受けることができます。";
+
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "しばらくの間未使用だったか失効させられているため、セッションが無効になりました。再度ログインしてください";
 
 /* contact placeholder */
 "ZIP" = "郵便番号";
 
-/* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "さらなるプライバシー保護へ、友達と一緒にProtonMailを使いましょう。招待すると招待された人もあなたもプレミアムプランが使えます。";
