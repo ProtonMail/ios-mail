@@ -18,19 +18,26 @@
 import Foundation
 
 extension ProcessInfo {
+    enum LaunchArgument: String {
+        case disableInAppFeedbackPromptAutoShow = "-disableInAppFeedbackPromptAutoShow"
+        case disableToolbarSpotlight = "-toolbarSpotlightOff"
+        case showReferralPromptView = "-showReferralPromptView"
+        case uiTests = "-uiTests"
+    }
+
     static var isRunningUnitTests: Bool {
         return processInfo.environment["XCTestConfigurationFilePath"] != nil
     }
 
     static var isRunningUITests: Bool {
-        launchArguments.contains("-disableAnimations")
+        hasLaunchArgument(.uiTests)
     }
 
     static var launchArguments: [String] {
         processInfo.arguments
     }
 
-    static func hasFlag(flag: String) -> Bool {
-        launchArguments.contains(flag)
+    static func hasLaunchArgument(_ argument: LaunchArgument) -> Bool {
+        launchArguments.contains(argument.rawValue)
     }
 }

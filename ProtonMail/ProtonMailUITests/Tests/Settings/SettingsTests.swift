@@ -33,7 +33,6 @@ class SettingsTests : FixtureAuthenticatedTestCase {
             .close()
             .backgroundAppWithoutPin()
             .activateAppWithoutPin()
-            .closeYourFeedbackView()
             .menuDrawer()
             .settings()
             .pin()

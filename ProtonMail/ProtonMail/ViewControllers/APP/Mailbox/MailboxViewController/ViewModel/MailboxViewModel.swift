@@ -115,6 +115,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         }
     }
 
+    var shouldAutoShowInAppFeedbackPrompt: Bool {
+        !ProcessInfo.hasLaunchArgument(.disableInAppFeedbackPromptAutoShow)
+    }
+
     init(labelID: LabelID,
          label: LabelInfo?,
          labelType: PMLabelType,

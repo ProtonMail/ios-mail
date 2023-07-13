@@ -190,7 +190,6 @@ class DraftsTests: FixtureAuthenticatedTestCase {
                 .backgroundApp()
                 .foregroundApp()
                 .tapCancel()
-                .closeYourFeedbackView()
                 .menuDrawer()
                 .drafts()
                 .verify.messageWithSubjectExists(subject)
