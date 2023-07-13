@@ -916,7 +916,6 @@ extension MainQueueHandler {
         let service = self.contactService
         service.add(
             cards: [cardDatas],
-            authCredential: nil,
             objectID: objectID,
             importFromDevice: importFromDevice,
             completion: completion
