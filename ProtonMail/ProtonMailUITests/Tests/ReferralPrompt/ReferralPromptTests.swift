@@ -22,7 +22,7 @@ import ProtonCore_TestingToolkit
 class ReferralPromptTests: BaseTestCase {
 
     override func setUp() {
-        launchArguments.append("-ShowReferralPromptView")
+        launchArguments.append("-showReferralPromptView")
         super.setUp()
     }
 

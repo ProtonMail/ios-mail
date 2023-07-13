@@ -268,7 +268,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         setupScreenEdgeGesture()
         setupAccessibility()
 
-        inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
+        if viewModel.shouldAutoShowInAppFeedbackPrompt {
+            inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
+        }
+
         connectionStatusProvider.register(receiver: self)
 
         NotificationCenter.default
@@ -345,7 +348,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         FileManager.default.cleanCachedAttsLegacy()
 
-        showFeedbackViewIfNeeded()
+        if viewModel.shouldAutoShowInAppFeedbackPrompt {
+            showFeedbackViewIfNeeded()
+        }
+
         showDropVersionsAlertIfNeeded()
         updateReferralPresenterAndShowPromptIfNeeded()
     }
@@ -545,7 +551,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private func updateReferralPresenterAndShowPromptIfNeeded() {
         #if DEBUG
-        if ProcessInfo.hasFlag(flag: "-ShowReferralPromptView") {
+        if ProcessInfo.hasLaunchArgument(.showReferralPromptView) {
             let referralPromptView = ReferralPromptView { _ in }
             referralPromptView.present(on: self.navigationController!.view)
             return
@@ -2523,7 +2529,7 @@ extension MailboxViewController {
         }
         if scheduleUserFeedbackCallOnAppear {
             scheduleUserFeedbackCallOnAppear = false
-            self.showFeedbackActionSheet { [weak self] completed in
+            self.showFeedbackActionSheet { [weak self] _ in
                 guard let self = self else { return }
                 self.inAppFeedbackScheduler?.markAsFeedbackSubmitted()
             }

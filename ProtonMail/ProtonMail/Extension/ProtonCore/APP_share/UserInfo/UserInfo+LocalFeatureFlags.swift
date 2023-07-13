@@ -18,24 +18,11 @@
 import ProtonCore_DataModel
 
 extension UserInfo {
-    static var isInAppFeedbackEnabled: Bool {
-        if ProcessInfo.isRunningUnitTests {
-            return true
-        }
-        // The `-disableAnimations` flag is set for UI tests runs
-        if CommandLine.arguments.contains("-disableAnimations") {
-            return false
-        }
-        return true
-    }
-
     static var isToolbarCustomizationEnable: Bool {
         if ProcessInfo.isRunningUnitTests {
             return true
         }
-        if ProcessInfo.processInfo.arguments.contains(
-            BackendConfiguration.Arguments.disableToolbarSpotlight
-        ) {
+        if ProcessInfo.hasLaunchArgument(.disableToolbarSpotlight) {
             return false
         }
         return true

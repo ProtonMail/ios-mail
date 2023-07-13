@@ -75,6 +75,10 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         } else if extAccountNotSupportedStub {
             app.launchArguments.append(contentsOf: ["ExtAccountNotSupportedStub", "1"])
         }
+
+        // Disable feedback pop up
+        app.launchArguments.append("-disableInAppFeedbackPromptAutoShow")
+
         app.launch()
 
         env = Environment.custom(dynamicDomain)
