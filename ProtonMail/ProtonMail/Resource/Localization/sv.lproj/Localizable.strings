@@ -1241,6 +1241,9 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Meddelande från innan %@ kommer inte att sökas. För att söka inom dessa, frigör lagringsutrymme på denna enhet.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Meddelanden som legat i papperskorg eller skräppost i mer än 30 dagar kommer tas bort automatiskt.";
+
 /* Text to inform users they have the auto delete feature enabled */
 "Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar kommer att tas bort automatiskt.";
 
@@ -2096,6 +2099,9 @@
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Detta verktygsfält är synligt när du läser ett meddelande.";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Detta kommer ta bort alla meddelanden som finns i papperskorg eller skräppost i mer än 30 dagar, inklusive meddelanden som för närvarande finns i dessa mappar.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Dags att koppla av";

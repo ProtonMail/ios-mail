@@ -561,13 +561,13 @@
 
 /* contacts default label type
    Custom option for time config picker */
-"Custom" = "Tilpasset";
+"Custom" = "Brugerdefineret";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Tilpas";
 
 /* The title of the item in the App settings section of the device setting view. */
-"Customize toolbar" = "Tilpas værktøjsbjælker";
+"Customize toolbar" = "Tilpas værktøjslinje";
 
 /* Title */
 "Cut" = "Klip";
@@ -865,7 +865,7 @@
 "Enter your password to make changes" = "Angiv din adgangskode for at foretage ændringer";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Angiv PIN-kode til oplåsning af din indbakke.";
+"Enter your PIN to unlock your inbox." = "Angiv pinkode til oplåsning af din indbakke.";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "Indtast din signatur her";
@@ -994,7 +994,7 @@
 "Human Check Warning" = "Robottjek -advarsel";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Jeg har brugt Proton Mail og tror, at du også vil kunne lide den. Det er en sikker e-mailtjeneste, der beskytter dit privatliv. Tilmeld dig med dette link for at få 1 måned med premium-funktioner gratis:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Jeg anvender Proton Mail og tror, at du også vil kunne lide den. Det er en sikker e-mailtjeneste, der beskytter dit privatliv. Tilmeld dig med dette link for at få 1 måned med premium-funktioner gratis:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Hvis du mister din WiFi-forbindelse, fortsætter download via mobildata.";
@@ -1515,7 +1515,7 @@
 "Phone number" = "Telefonnummer";
 
 /* The protection title of PIN code protection */
-"PIN code" = "PIN-kode";
+"PIN code" = "Pinkode";
 
 /* Description */
 "PIN code can't be empty." = "Pinkode skal udfyldes.";
@@ -2430,7 +2430,7 @@
 "Your messages are being downloaded..." = "Din beskeder bliver downloadet...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Dir privatliv er bedre beskyttet, hvis dine kontakter også bruger Proton Mail. Inviter dine venner til at bruge Proton, og i vil hver især få gratis premium-fordele.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Dit privatliv er bedre beskyttet, hvis dine kontakter også bruger Proton Mail. Inviter dine venner til Proton, så får I alle premium-fordele gratis.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session er udløbet, fordi du har været inaktiv i et stykke tid, eller fordi den er blevet tilbagekaldt. Log venligst ind igen.";
