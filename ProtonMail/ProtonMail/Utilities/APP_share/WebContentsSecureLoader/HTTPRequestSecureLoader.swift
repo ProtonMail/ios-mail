@@ -237,6 +237,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         config.userContentController.add(self, name: "logger")
         #endif
 
+        config.userContentController.removeAllContentRuleLists()
         config.userContentController.add(self.blockRules!)
     }
 
