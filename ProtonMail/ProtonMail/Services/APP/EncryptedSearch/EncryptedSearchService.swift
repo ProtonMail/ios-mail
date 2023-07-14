@@ -41,6 +41,7 @@ protocol EncryptedSearchServiceProtocol {
         page: UInt,
         completion: @escaping (Result<EncryptedSearchService.SearchResult, Error>) -> Void
     )
+    func pauseBuildingIndexInBackground(for userID: UserID)
 }
 
 // sourcery: mock
@@ -139,6 +140,10 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol, EncryptedSea
         serial.sync {
             buildSearchIndexes[userID] = nil
         }
+    }
+
+    func pauseBuildingIndexInBackground(for userID: UserID) {
+        buildSearchIndex(for: userID)?.stopInBackground()
     }
 }
 

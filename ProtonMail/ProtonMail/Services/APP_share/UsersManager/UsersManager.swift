@@ -34,8 +34,15 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonMailAnalytics
 
+// sourcery: mock
+protocol UsersManagerProtocol: AnyObject {
+    var firstUser: UserManager? { get }
+
+    func hasUsers() -> Bool
+}
+
 /// manager all the users and there services
-class UsersManager: Service {
+class UsersManager: Service, UsersManagerProtocol {
     enum Version: Int {
         static let version: Int = 1 // this is app cache version
 

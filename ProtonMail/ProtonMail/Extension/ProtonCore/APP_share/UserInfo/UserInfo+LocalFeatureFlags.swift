@@ -46,6 +46,9 @@ extension UserInfo {
     }
 
     static var isEncryptedSearchEnabled: Bool {
+        if ProcessInfo.isRunningUnitTests {
+            return true
+        }
 //        #if DEBUG_ENTERPRISE
 //        return true
 //        #else
