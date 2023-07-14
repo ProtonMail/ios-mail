@@ -74,7 +74,6 @@ final class ApplicationLogsViewController: UIViewController {
             .fileToShare
             .receive(on: DispatchQueue.main)
             .sink { [weak self] file in
-                guard let file else { return }
                 self?.showShareView(for: file)
             }
             .store(in: &subscribers)

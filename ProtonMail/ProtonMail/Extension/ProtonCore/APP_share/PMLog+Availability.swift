@@ -18,8 +18,8 @@
 import ProtonCore_Log
 
 extension PMLog {
-
+    // TODO: remove this once we verify that the number of disk writes is reduced
     static var isEnabled: Bool {
-        UIApplication.isTestingBuild
+        true
     }
 }

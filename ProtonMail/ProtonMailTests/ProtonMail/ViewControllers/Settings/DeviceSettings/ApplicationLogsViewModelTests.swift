@@ -52,11 +52,8 @@ final class ApplicationLogsViewModelTests: XCTestCase {
 
     func testInput_didTapShare_itShouldPublishTheFileToExport() throws {
         let expectation = expectation(description: "Awaiting value")
-        sut.output.fileToShare.collect(2).sink { urls in
-            let initialValue = urls.first!
-            let lastUrl = urls.last!
-            XCTAssertNil(initialValue)
-            XCTAssertEqual(lastUrl?.lastPathComponent, "proton-mail-debug.log")
+        sut.output.fileToShare.sink { url in
+            XCTAssertEqual(url.lastPathComponent, "proton-mail-debug.log")
             expectation.fulfill()
         }.store(in: &cancellables)
         sut.didTapShare()
