@@ -46,10 +46,7 @@ final class LabelManagerViewModel: LabelManagerViewModelProtocol {
     }
 
     private var hasNetworking: Bool {
-        guard let reachability = Reachability.forInternetConnection() else {
-            return false
-        }
-        return reachability.currentReachabilityStatus() != .NotReachable
+        InternetConnectionStatusProvider.shared.status.isConnected
     }
 
     init(router: LabelManagerRouterProtocol, type: PMLabelType, dependencies: Dependencies) {

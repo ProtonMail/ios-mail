@@ -19,7 +19,7 @@ import Foundation
 import protocol ProtonCore_Doh.DoHInterface
 import protocol ProtonCore_Services.APIService
 
-typealias FetchAttachmentUseCase = NewUseCase<AttachmentFile, FetchAttachment.Params>
+typealias FetchAttachmentUseCase = UseCase<AttachmentFile, FetchAttachment.Params>
 
 final class FetchAttachment: FetchAttachmentUseCase {
     private let dependencies: Dependencies

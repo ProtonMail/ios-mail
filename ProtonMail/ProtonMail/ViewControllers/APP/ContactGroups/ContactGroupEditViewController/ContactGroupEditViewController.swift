@@ -189,12 +189,10 @@ final class ContactGroupEditViewController: UIViewController, AccessibleView {
     private func save() {
         firstly { () -> Promise<Void> in
             MBProgressHUD.showAdded(to: self.view, animated: true)
-            UIApplication.shared.isNetworkActivityIndicatorVisible = true
             return viewModel.saveDetail()
         }.done {
             self.dismiss(message: LocalString._contacts_saved_offline_hint)
         }.ensure {
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             MBProgressHUD.hide(for: self.view, animated: true)
         }.catch {
             error in
@@ -281,13 +279,11 @@ extension ContactGroupEditViewController: UITableViewDelegate {
                     firstly {
                         () -> Promise<Void> in
                             MBProgressHUD.showAdded(to: self.view, animated: true)
-                            UIApplication.shared.isNetworkActivityIndicatorVisible = true
                             return self.viewModel.deleteContactGroup()
                     }.done {
                         self.dismiss(message: LocalString._contacts_deleted_offline_hint)
                         self.delegate?.didDeleteGroup()
                     }.ensure {
-                        UIApplication.shared.isNetworkActivityIndicatorVisible = false
                         MBProgressHUD.hide(for: self.view, animated: true)
                     }.catch {
                         error in

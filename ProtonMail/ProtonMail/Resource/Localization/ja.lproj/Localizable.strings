@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey保護";
 
+/* Title for application logs settings option */
+"Application logs" = "アプリケーションのログ";
+
 /* Apply action */
 "Apply" = "適用";
 
@@ -202,12 +205,6 @@
 
 /* Push notification action archive */
 "Archive (verb)" = "アーカイブ";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "このメッセージを完全に削除してよろしいですか?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "%d 件のメッセージを完全に削除してよろしいですか?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "%@ からサインアウトしますか?";
@@ -258,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "自動ロックまでの時間";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "自動削除";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "不要なメッセージを自動削除";
+
 /* settings general section title */
 "Auto-load embedded images" = "埋め込み画像を自動で読み込む";
 
 /* settings general section title */
 "Auto-load remote content" = "外部コンテンツを自動で読み込む";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "ゴミ箱に入ってから30日以上経過したメッセージを自動的に削除。";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "利用可能なアクション";
@@ -430,6 +436,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "スタイルを消去";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "キャッシュをクリアしています…";
 
 /* general close action */
 "Close" = "閉じる";
@@ -619,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "メッセージを削除";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "メッセージを削除しますか？";
+
 /* Title */
 "Details" = "詳細";
 
+/* Button to disable auto delete */
+"Disable" = "無効化";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "プロキシやファイアウォールを無効にするか、ネットワーク管理者にお問い合わせください。";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "自動削除を無効にしますか？";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "検証を無効にする";
@@ -779,6 +797,9 @@
 /* Name of the feature */
 "Email tracking protection" = "メールトラッキング防止";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "削除予定のメールはゴミ箱や迷惑メールフォルダに残ります。";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "迷惑メールを空にする";
 
@@ -833,9 +854,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "新しいPIN コードの入力";
-
-/* The title of the pin code view. */
-"Enter PIN" = "PINコードを入力";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "変更するためにはパスワードを入力してください。";
@@ -958,7 +976,7 @@
 "Hide details" = "詳細を非表示";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email エイリアス";
+"Hide My Email aliases" = "Hide-my-email エイリアス";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "新しい Proton Mail の使い心地はいかがでしょうか?";
@@ -1217,6 +1235,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "%@ 以前のメッセージは検索されません。その内容を検索するには、このデバイスのストレージ容量を空けてください。";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "30日経過したメッセージは自動的に削除されます。";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "ゴミ箱やスパムに30日以上入っているメッセージは自動的に削除されます。";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "メッセージは Wi-Fi 経由でダウンロードされます。これには時間がかかる場合があり、デバイスがわずかに発熱するかもしれません。この操作はいつでも一時停止できます。";
 
@@ -1341,6 +1365,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "いいえ、アプリ内課金とは関係ありません。";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "いいえ、結構です";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -1467,7 +1494,7 @@
 "PGP-encrypted to verified recipient" = "検証済みの宛先への、PGP 暗号化による送信";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-signed" = "PGP 署名付き (暗号化なし)";
+"PGP-signed" = "PGP 署名付き（暗号化なし）";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message from verified sender" = "検証済みの送信者からの、PGP 署名付きメッセージ";
@@ -2067,6 +2094,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "このツールバーは、メッセージ閲覧時に表示されます。";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "ゴミ箱や迷惑メールに30日以上入っているメッセージは、現在これらのフォルダに入っているメッセージも含めてすべて削除されます。";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "メッセージはありません";
 
@@ -2116,6 +2146,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "信頼された鍵が送信に使用できません";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "別の検索ワードを試してください。";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "別のネットワークから Proton への接続を試してください (または %1$@ や %2$@ をお試しください)";
@@ -2218,6 +2251,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "%@ アドレスから送信するには有料プランへのアップグレードが必要です";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "30日以上ゴミ箱や迷惑メールに入っているメッセージを自動的に削除するようにアップグレードできます。";
 
 /* Action */
 "Upload device contacts" = "デバイスの連絡先をアップロード";
@@ -2324,6 +2360,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "有料機能のため、%@ を既定のアドレスに設定できません。";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "システムの設定で %1$@が無効になっています。%2$@は重要なアカウント情報を保護するために使用されています。 アカウントにアクセスするには、設定を開き%3$@を再度有効にするか、再度ログインしてください。";
+
 /* Message */
 "You have %d new emails!" = "%d 件の新着メールがあります";
 
@@ -2385,7 +2424,7 @@
 "Your messages are being downloaded..." = "メッセージをダウンロード中...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "さらなるプライバシー保護へ、友達と一緒にProtonMailを使いましょう。招待すると招待された人もあなたもプレミアムプランが使えます。";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "あなたの連絡先もProton Mailを使えば、あなたのプライバシーはより守られます。お友達をプロトンに招待すると、それぞれ無料でプレミアム特典を受けることができます。";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "しばらくの間未使用だったか失効させられているため、セッションが無効になりました。再度ログインしてください";
@@ -2393,5 +2432,3 @@
 /* contact placeholder */
 "ZIP" = "郵便番号";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "システム設定で %1$@を無効になっています。%2$@は重要なアカウント情報を保護するために使用されています。 アカウントにアクセスするには、設定を開き%3$@を再度有効にするか、再度ログインしてください。";

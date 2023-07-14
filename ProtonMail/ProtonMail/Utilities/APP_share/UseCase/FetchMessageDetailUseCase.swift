@@ -23,7 +23,7 @@ import ProtonCore_Services
 /// There are 2 common cases
 /// 1. The message was fetched by mailbox list, there is no detail data locally
 /// 2. Open a draft, needs to update draft data in case it is updated through other devices
-typealias FetchMessageDetailUseCase = NewUseCase<FetchMessageDetail.Output, FetchMessageDetail.Params>
+typealias FetchMessageDetailUseCase = UseCase<FetchMessageDetail.Output, FetchMessageDetail.Params>
 
 final class FetchMessageDetail: FetchMessageDetailUseCase {
     typealias Output = MessageEntity
@@ -59,7 +59,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                     callback(.failure(Errors.selfIsReleased))
                     return
                 }
-                
+
                 let response: JSONDictionary
                 switch result {
                 case .success(let value):
@@ -72,7 +72,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                     callback(.failure(NSError.badResponse()))
                     return
                 }
-                
+
                 do {
                     let handledMessage = try self.handle(
                         messageDict: messageDict,

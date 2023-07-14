@@ -79,7 +79,6 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
 enum GeneralSectionItem: Int, CustomStringConvertible {
     case notification = 0
     case language = 1
-    case localizationPreview = 2
 
     var description: String {
         switch self {
@@ -87,8 +86,6 @@ enum GeneralSectionItem: Int, CustomStringConvertible {
             return LocalString._push_notification
         case .language:
             return LocalString._app_language
-        case .localizationPreview:
-            return "Localization Preview"
         }
     }
 }
@@ -149,10 +146,6 @@ final class SettingsDeviceViewModel {
         if #available(iOS 13, *) {
             appSettings.insert(.darkMode, at: 0)
         }
-
-        #if DEBUG_ENTERPRISE
-        generalSettings.append(.localizationPreview)
-        #endif
 
         if UserInfo.isToolbarCustomizationEnable {
             appSettings.append(.toolbar)

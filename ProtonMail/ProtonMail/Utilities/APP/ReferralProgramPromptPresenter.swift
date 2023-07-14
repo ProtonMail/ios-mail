@@ -60,7 +60,7 @@ final class ReferralProgramPromptPresenter {
 
     private let userID: UserID
     private let referralProgram: ReferralProgram
-    private let referralPromptProvider: ReferralPromptProvider
+    private let featureFlagCache: FeatureFlagCache
     private var referralProgramPromptStatus: ReferralProgramPromptStatus
     private let featureFlagService: FeatureFlagsDownloadServiceProtocol
     private let notificationCenter: NotificationCenter
@@ -71,14 +71,14 @@ final class ReferralProgramPromptPresenter {
 
     init(userID: UserID,
          referralProgram: ReferralProgram,
-         referralPromptProvider: ReferralPromptProvider,
+         featureFlagCache: FeatureFlagCache,
          referralProgramPromptStatus: ReferralProgramPromptStatus = userCachedStatus,
          featureFlagService: FeatureFlagsDownloadServiceProtocol,
          notificationCenter: NotificationCenter = .default,
          firstRunDate: Date = Date()) {
         self.userID = userID
         self.referralProgram = referralProgram
-        self.referralPromptProvider = referralPromptProvider
+        self.featureFlagCache = featureFlagCache
         self.referralProgramPromptStatus = referralProgramPromptStatus
         self.featureFlagService = featureFlagService
         self.notificationCenter = notificationCenter
@@ -107,7 +107,7 @@ final class ReferralProgramPromptPresenter {
         referralProgramPromptStatus.referralProgramPromptWasShown == false &&
         isInboxNavigationConditionMet &&
         referralProgram.eligible &&
-        referralPromptProvider.isReferralPromptEnabled(userID: self.userID) &&
+        featureFlagCache.isFeatureFlag(.referralPrompt, enabledForUserWithID: userID) &&
         isDateMoreThan30DaysInThePast(referralProgramPromptStatus.firstRunDate)
     }
 

@@ -17,10 +17,12 @@ LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_path/
 MTL_FAST_MATH = YES
 PRODUCT_BUNDLE_IDENTIFIER = pm.ProtonMailUITests
 PRODUCT_NAME = $(TARGET_NAME)
-PROVISIONING_PROFILE_SPECIFIER = 
-SWIFT_OBJC_BRIDGING_HEADER = 
+PROVISIONING_PROFILE_SPECIFIER =
+SWIFT_OBJC_BRIDGING_HEADER =
 SWIFT_VERSION = 5.0
-IPHONEOS_DEPLOYMENT_TARGET = 16.0
+// do not use 16.4 because of  https://github.com/NativeScript/NativeScript/issues/10267 that's apparently causing the tests to fail
+// 17.0 might be OK though, check it once it's available
+IPHONEOS_DEPLOYMENT_TARGET = 16.2
 TARGETED_DEVICE_FAMILY = 1,2
 TEST_TARGET_NAME = ProtonMail
 

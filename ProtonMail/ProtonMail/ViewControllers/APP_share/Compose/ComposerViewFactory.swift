@@ -18,7 +18,7 @@
 import UIKit
 
 struct ComposerViewFactory {
-    // swiftlint:disable function_parameter_count
+    // swiftlint:disable:next function_parameter_count
     static func makeComposer(
         subject: String,
         body: String,
@@ -26,9 +26,11 @@ struct ComposerViewFactory {
         user: UserManager,
         contextProvider: CoreDataContextProviderProtocol,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        scheduleSendStatusProvider: ScheduleSendEnableStatusProvider,
         internetStatusProvider: InternetConnectionStatusProvider,
         coreKeyMaker: KeyMakerProtocol,
+        darkModeCache: DarkModeCacheProtocol,
+        mobileSignatureCache: MobileSignatureCacheProtocol,
+        attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
         navigationViewController: UINavigationController
     ) -> ComposeContainerViewController {
         let childViewModel = ComposeViewModel(
@@ -59,9 +61,11 @@ struct ComposerViewFactory {
                 ), fetchMobileSignatureUseCase: FetchMobileSignature(
                     dependencies: .init(
                         coreKeyMaker: coreKeyMaker,
-                        cache: userCachedStatus
+                        cache: mobileSignatureCache
                     )
-                )
+                ),
+                darkModeCache: darkModeCache,
+                attachmentMetadataStrippingCache: attachmentMetadataStrippingCache
             )
         )
         let router = ComposerRouter()
@@ -70,7 +74,6 @@ struct ComposerViewFactory {
             router: router,
             editorViewModel: childViewModel,
             userIntroductionProgressProvider: userIntroductionProgressProvider,
-            scheduleSendStatusProvider: scheduleSendStatusProvider,
             contextProvider: contextProvider
         )
         let controller = ComposeContainerViewController(
@@ -80,7 +83,7 @@ struct ComposerViewFactory {
         return controller
     }
 
-    // swiftlint:disable function_parameter_count
+    // swiftlint:disable:next function_parameter_count
     static func makeComposer(
         msg: Message?,
         action: ComposeMessageAction,
@@ -88,11 +91,14 @@ struct ComposerViewFactory {
         contextProvider: CoreDataContextProviderProtocol,
         isEditingScheduleMsg: Bool,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
-        internetStatusProvider: InternetConnectionStatusProvider,
+        internetStatusProvider: InternetConnectionStatusProviderProtocol,
         coreKeyMaker: KeyMakerProtocol,
+        darkModeCache: DarkModeCacheProtocol,
+        mobileSignatureCache: MobileSignatureCacheProtocol,
+        attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
         mailToUrl: URL? = nil,
-        toContact: ContactPickerModelProtocol? = nil
+        toContact: ContactPickerModelProtocol? = nil,
+        originalScheduledTime: Date? = nil
     ) -> UINavigationController {
         let childViewModel = ComposeViewModel(
             msg: msg,
@@ -100,6 +106,7 @@ struct ComposerViewFactory {
             msgService: user.messageService,
             user: user,
             isEditingScheduleMsg: isEditingScheduleMsg,
+            originalScheduledTime: originalScheduledTime,
             dependencies: .init(
                 coreDataContextProvider: contextProvider,
                 coreKeyMaker: coreKeyMaker,
@@ -121,9 +128,11 @@ struct ComposerViewFactory {
                 ), fetchMobileSignatureUseCase: FetchMobileSignature(
                     dependencies: .init(
                         coreKeyMaker: coreKeyMaker,
-                        cache: userCachedStatus
+                        cache: mobileSignatureCache
                     )
-                )
+                ),
+                darkModeCache: darkModeCache,
+                attachmentMetadataStrippingCache: attachmentMetadataStrippingCache
             )
         )
         if let url = mailToUrl {
@@ -135,23 +144,20 @@ struct ComposerViewFactory {
         return Self.makeComposer(
             childViewModel: childViewModel,
             contextProvider: contextProvider,
-            userIntroductionProgressProvider: userIntroductionProgressProvider,
-            scheduleSendEnableStatusProvider: scheduleSendEnableStatusProvider
+            userIntroductionProgressProvider: userIntroductionProgressProvider
         )
     }
 
     static func makeComposer(
         childViewModel: ComposeViewModel,
         contextProvider: CoreDataContextProviderProtocol,
-        userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
+        userIntroductionProgressProvider: UserIntroductionProgressProvider
     ) -> UINavigationController {
         let router = ComposerRouter()
         let viewModel = ComposeContainerViewModel(
             router: router,
             editorViewModel: childViewModel,
             userIntroductionProgressProvider: userIntroductionProgressProvider,
-            scheduleSendStatusProvider: scheduleSendEnableStatusProvider,
             contextProvider: contextProvider
         )
         let controller = ComposeContainerViewController(

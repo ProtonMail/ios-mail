@@ -58,6 +58,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case deleteAccount
         case nextMsgAfterMove
         case blockList
+        case autoDeleteSpamTrash
     }
 
     init(navigationController: UINavigationController?, services: ServiceFactory) {
@@ -107,6 +108,13 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             openAccountDeletion()
         case .nextMsgAfterMove:
             openNextMessageAfterMove()
+        case .autoDeleteSpamTrash:
+            if user.isPaid {
+                openAutoDeleteSettings()
+            } else {
+                //TODO: Replace with upsell view
+                "Upgrade to benefit from Auto-Delete".toast(at: self.navigationController!.view)
+            }
         }
     }
 
@@ -208,6 +216,12 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         let viewModel = SettingsLocalStorageViewModel(router: router, dependencies: .init(userID: user.userID))
         let viewController = SettingsLocalStorageViewController(viewModel: viewModel)
         navController.pushViewController(viewController, animated: true)
+    }
+
+    private func openAutoDeleteSettings() {
+        let viewModel = AutoDeleteSettingViewModel(user, apiService: user.apiService)
+        let viewController = SwitchToggleViewController(viewModel: viewModel)
+        navigationController?.show(viewController, sender: nil)
     }
     
     private func openAccountDeletion() {

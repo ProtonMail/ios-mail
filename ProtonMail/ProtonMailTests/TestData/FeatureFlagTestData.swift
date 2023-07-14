@@ -18,53 +18,50 @@
 import Foundation
 
 enum FeatureFlagTestData {
-    static let data = """
-{
-    "Code": 1000,
-    "Features": [
-        {
-            "Code": "ThreadingIOS",
-            "Type": "boolean",
-            "Global": true,
-            "DefaultValue": true,
-            "Value": true,
-            "Writable": true
-        },
-        {
-            "Code": "TestInteger",
-            "Type": "integer",
-            "Global": 1,
-            "DefaultValue": 1,
-            "Value": 1,
-            "UpdateTime": 1638767627,
-            "Writable": true
-        },
-        {
-            "Code": "ScheduledSendFreemium",
-            "Type": "boolean",
-            "Global": true,
-            "DefaultValue": true,
-            "Value": true,
-            "Writable": true
-        },
-        {
-            "Code": "RealNumAttachments",
-            "Type": "boolean",
-            "Global": true,
-            "DefaultValue": true,
-            "Value": true,
-            "Writable": true
-        },
-        {
-            "Code": "ShowSenderImages",
-            "Type": "boolean",
-            "Global": true,
-            "DefaultValue": true,
-            "Value": true,
-            "Writable": false
-        }
-    ],
-    "Total": 14
-}
-"""
+    static let data: [String: Any] = [
+        "Total": 5,
+        "Code": 1000,
+        "Features": [
+            [
+                "Writable": false,
+                "Type": "boolean",
+                "Value": true,
+                "Global": true,
+                "Code": "ShowSenderImages",
+                "DefaultValue": true
+            ],
+            [
+                "Writable": false,
+                "Type": "boolean",
+                "Value": true,
+                "Global": true,
+                "Code": "ScheduledSendFreemium",
+                "DefaultValue": true
+            ],
+            [
+                "Writable": false,
+                "Type": "boolean",
+                "Value": false,
+                "Global": true,
+                "Code": "SendMessageRefactor",
+                "DefaultValue": false
+            ],
+            [
+                "Writable": true,
+                "Type": "boolean",
+                "Value": false,
+                "Global": false,
+                "Code": "RatingIOSMail",
+                "DefaultValue": false
+            ],
+            [
+                "Writable": true,
+                "Type": "boolean",
+                "Value": false,
+                "Global": false,
+                "Code": "ReferralActionSheetShouldBePresentedIOS",
+                "DefaultValue" :false
+            ]
+        ] as [[String: Any]]
+    ]
 }

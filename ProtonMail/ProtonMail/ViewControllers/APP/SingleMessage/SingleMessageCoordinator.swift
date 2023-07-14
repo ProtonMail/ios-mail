@@ -34,11 +34,11 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     private let user: UserManager
     private let highlightedKeywords: [String]
     private weak var navigationController: UINavigationController?
-    private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
-    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
+    var goToDraft: ((MessageID, Date?) -> Void)?
     private let composeViewModelFactory: ComposeViewModelDependenciesFactory
+    private let factory: ServiceFactory
 
     init(
         serviceFactory: ServiceFactory,
@@ -49,7 +49,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         coreDataService: CoreDataService =
         sharedServices.get(by: CoreDataService.self),
-        internetStatusProvider: InternetConnectionStatusProvider = sharedServices.get(),
         highlightedKeywords: [String] = []
     ) {
         self.navigationController = navigationController
@@ -57,10 +56,10 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.message = message
         self.user = user
         self.coreDataService = coreDataService
-        self.internetStatusProvider = internetStatusProvider
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.highlightedKeywords = highlightedKeywords
         self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
+        self.factory = serviceFactory
     }
 
     func start() {
@@ -82,12 +81,9 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             labelId: labelId,
             message: message,
             user: user,
-            systemUpTime: userCachedStatus,
-            internetStatusProvider: internetStatusProvider,
+            internetStatusProvider: InternetConnectionStatusProvider.shared,
             highlightedKeywords: highlightedKeywords,
-            imageProxy: .init(dependencies: .init(apiService: user.apiService)),
             coordinator: self,
-            senderImageStatusProvider: userCachedStatus,
             goToDraft: { [weak self] msgID, originalScheduleTime in
                 self?.navigationController?.popViewController(animated: false)
                 self?.goToDraft?(msgID, originalScheduleTime)
@@ -257,8 +253,7 @@ extension SingleMessageCoordinator {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: coreDataService,
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus
+            userIntroductionProgressProvider: factory.userCachedStatus
         )
         viewController?.present(composer, animated: true)
     }
@@ -307,7 +302,7 @@ extension SingleMessageCoordinator {
 
     private func presentToolbarCustomizationSettingView() {
         let viewModel = ToolbarSettingViewModel(
-            infoBubbleViewStatusProvider: userCachedStatus,
+            infoBubbleViewStatusProvider: factory.userCachedStatus,
             toolbarActionProvider: user,
             saveToolbarActionUseCase: SaveToolbarActionSettings(dependencies: .init(user: user))
         )

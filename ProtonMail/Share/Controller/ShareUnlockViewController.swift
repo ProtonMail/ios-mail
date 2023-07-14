@@ -61,7 +61,6 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
         super.viewDidLoad()
 
         // TODO: Refactor the view to pass the dependency from init
-        let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
         LanguageManager().translateBundleToPreferredLanguageOfTheMainApp()
         configureNavigationBar()
 

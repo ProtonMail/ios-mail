@@ -18,6 +18,7 @@
 import Foundation
 import GoLibs
 import ProtonCore_Services
+import ProtonCore_Utilities
 
 protocol BuildSearchIndexDelegate: AnyObject {
     func indexBuildingStateDidChange(state: EncryptedSearchIndexState)
@@ -28,18 +29,33 @@ final class BuildSearchIndex {
     private let dependencies: Dependencies
     private let params: Params
     private weak var delegate: BuildSearchIndexDelegate?
-    private var progressUpdateTimer: Timer?
+    private var loadingCheckTimer: Timer?
     private var timerFireTimes: Int = 0
     /// Time to start build search index
     private var startingTime: CFAbsoluteTime?
     private var totalMessagesCount: Int = 0
     private var interruptReason: InterruptReason = .none {
-        didSet { interruptReasonHasUpdated() }
+        didSet {
+            guard oldValue != interruptReason else { return }
+            if oldValue == .none {
+                let numOfInterruptions = dependencies.esUserCache.numberOfInterruptions(of: params.userID)
+                dependencies.esUserCache.setNumberOfInterruptions(of: params.userID, value: numOfInterruptions + 1)
+            }
+            interruptReasonHasUpdated()
+        }
     }
     private var pageSize: Int = 150 {
-        didSet { log(message: "Page size is updated to \(pageSize)") }
+        didSet {
+            guard oldValue != pageSize else { return }
+            log(message: "Page size is updated to \(pageSize)")
+        }
     }
-    private var indexingSpeed = OperationQueue.defaultMaxConcurrentOperationCount
+    private var indexingSpeed = OperationQueue.defaultMaxConcurrentOperationCount {
+        didSet {
+            guard oldValue != indexingSpeed else { return }
+            log(message: "Indexing speed is updated to \(indexingSpeed)")
+        }
+    }
     /// Sleep 2 seconds between each API when memory resource tight
     private var addTimeOutWhenIndexingAsMemoryExceeds = false
     private let formatter: DateComponentsFormatter = {
@@ -52,15 +68,16 @@ final class BuildSearchIndex {
     }()
     private let messageIndexingQueue: OperationQueue
     private var downloadPageQueue: OperationQueue
+    private var indexingQueue = DispatchQueue(label: "ch.protonmail.protonmail.build.index")
 
     private(set) var currentState: EncryptedSearchIndexState?
-    var estimatedProgress: BuildSearchIndexEstimatedProgress? {
-        estimateDownloadingIndexingTime()
-    }
-    private var processedMessagesCount: Int = 0
+    private(set) var estimatedProgress: Atomic<BuildSearchIndexEstimatedProgress?>
+    private var savedMessagesCount: Int = 0
+    private var downloadedMessagesCount: Int = 0
     private var preexistingIndexedMessagesCount: Int = 0
     private let observerID = UUID()
     private var connectionStatus: ConnectionStatus?
+    private var isPaused = false
 
     init(
         dependencies: Dependencies,
@@ -80,12 +97,17 @@ final class BuildSearchIndex {
         self.downloadPageQueue.name = "Download Page Queue"
         self.downloadPageQueue.maxConcurrentOperationCount = 1 // Download 1 page at a time
         self.downloadPageQueue.qualityOfService = .userInitiated
+        self.estimatedProgress = .init(nil)
     }
 
     var isBuildingIndexInProgress: Bool {
         guard let state = currentState else { return false }
-        let expectedStatus: [EncryptedSearchIndexState] = [.background, .creatingIndex, .downloadingNewMessage]
-        return expectedStatus.containsCase(state)
+        switch state {
+        case .background, .creatingIndex, .downloadingNewMessage:
+            return !isPaused
+        default:
+            return false
+        }
     }
 
     var isEncryptedSearchEnabled: Bool {
@@ -100,56 +122,89 @@ final class BuildSearchIndex {
         dependencies.searchIndexDB.size
     }
 
+    // MARK: - Basic operations
     func start() {
-        guard canBuildSearchIndex(),
-              !isBuildingIndexInProgress else { return }
-        log(message: "Build search index")
+        indexingQueue.async { [weak self] in
+            guard let self = self,
+                  self.canBuildSearchIndex(),
+                  !self.isBuildingIndexInProgress else { return }
+            self.log(message: "Build search index")
 
-        registerForPowerStateChange()
-        registerForThermalState()
-        registerForNetworkChange()
+            self.registerForPowerStateChange()
+            self.registerForThermalState()
+            self.registerForNetworkChange()
 
-        // TODO schedule background task
-        scheduleProgressUpdateTimer()
-        enableOperationQueue()
-        adaptIndexingSpeedByMemoryUsage()
+            // TODO schedule background task
+            self.scheduleLoadingCheckTimer()
+            self.adaptIndexingSpeedByMemoryUsage()
 
-        initializeCurrentState { [weak self] in
-            guard let self = self else { return }
-            switch self.currentState {
-            case .creatingIndex, .downloadingNewMessage:
-                self.downloadAndProcessPage()
-            case .complete:
-                self.cleanupAfterIndexing()
-            default:
-                break
+            self.initializeCurrentState { [weak self] in
+                guard let self = self else { return }
+                // To initialize progress bar
+                _ = self.estimateDownloadingIndexingTime(currentTime: CFAbsoluteTimeGetCurrent())
+                switch self.currentState {
+                case .creatingIndex, .downloadingNewMessage:
+                    self.downloadAndProcessPage()
+                case .complete:
+                    self.invalidateLoadingCheckTimer()
+                default:
+                    break
+                }
             }
         }
     }
 
     func pause() {
-        stopAndClearOperationQueue()
-        cleanupAfterIndexing()
-        timerFireTimes = 0
-        guard isBuildingIndexInProgress else { return }
-        updateCurrentState(to: .paused(nil))
+        log(message: "click paused, isPaused: \(isPaused)")
+        if isPaused { return }
+        isPaused = true
+        stopBuildIndex()
+        indexingQueue.async { [weak self] in
+            guard let self = self else { return }
+            self.log(message: "run pause block")
+            self.updateCurrentState(to: .paused(nil))
+            self.dependencies.esUserCache.setIndexingPausedByUser(of: self.params.userID, value: true)
+            let numberOfPaused = self.dependencies.esUserCache.numberOfPauses(of: self.params.userID)
+            self.dependencies.esUserCache.setNumberOfPauses(of: self.params.userID, value: numberOfPaused + 1)
+        }
     }
 
     func resume() {
-        start()
+        guard isPaused,
+              case .paused = currentState else { return }
+        isPaused = false
+        indexingQueue.async { [weak self] in
+            guard let self = self else { return }
+            self.dependencies.esUserCache.setIndexingPausedByUser(of: self.params.userID, value: false)
+            self.start()
+        }
     }
 
     func disable() {
-        stopAndClearOperationQueue()
-        cleanupAfterIndexing()
-        timerFireTimes = 0
-        updateCurrentState(to: .disabled)
-        try? dependencies.searchIndexDB.deleteSearchIndex()
+        indexingQueue.async { [weak self] in
+            guard let self = self else { return }
+            self.dependencies.esUserCache.setIndexingPausedByUser(of: self.params.userID, value: false)
+            self.stopBuildIndex()
+            self.invalidateLoadingCheckTimer()
+            self.updateCurrentState(to: .disabled)
+            try? self.dependencies.searchIndexDB.deleteSearchIndex()
+        }
+    }
+
+    func stopInBackground() {
+        stopBuildIndex()
+        indexingQueue.sync { [weak self] in
+            guard let self = self else { return }
+            self.updateCurrentState(to: .backgroundStopped)
+        }
     }
 
     func didChangeDownloadViaMobileDataConfiguration() {
-        let networkStatus = dependencies.connectionStatusProvider.currentStatus
-        networkConditionsChanged(internetStatus: networkStatus)
+        indexingQueue.async { [weak self] in
+            guard let self = self else { return }
+            let networkStatus = self.dependencies.connectionStatusProvider.status
+            self.networkConditionsChanged(internetStatus: networkStatus)
+        }
     }
 
     func update(delegate: BuildSearchIndexDelegate?) {
@@ -158,11 +213,66 @@ final class BuildSearchIndex {
 
     /// Update build index state if the value haven't been initialized
     /// Receive updated value from delegate
-    // TODO provide more information for state recovery, e.g. message numbers
     func updateCurrentState() {
-        initializeCurrentState(completion: nil)
+        indexingQueue.async { [weak self] in
+            guard let self = self else { return }
+            self.initializeCurrentState(completion: nil)
+        }
     }
 
+    // MARK: - Event update
+    func rebuildSearchIndex() {
+        indexingQueue.async { [weak self] in
+            guard let self = self else { return }
+            self.updateCurrentState(to: .disabled)
+            self.stopBuildIndex()
+            self.resetMetricData()
+            try? self.dependencies.searchIndexDB.deleteSearchIndex()
+            self.dependencies.esUserCache.setIsExternalRefreshed(of: self.params.userID, value: true)
+            if self.interruptReason == .none {
+                self.start()
+            } else {
+                // none will trigger start() automatically
+                self.interruptReason = .none
+            }
+        }
+    }
+
+    func fetchNewerMessageIfNeeded() {
+        indexingQueue.async { [weak self] in
+            guard let self = self else { return }
+            guard self.currentState == .complete || self.currentState == .partial else { return }
+            self.start()
+        }
+    }
+
+    func remove(messageIDs: [MessageID]) {
+        if messageIDs.isEmpty { return }
+        indexingQueue.async { [weak self] in
+            guard let self = self else { return }
+            for id in messageIDs {
+                _ = try? self.dependencies.searchIndexDB.removeEntryFromSearchIndex(messageID: id)
+            }
+        }
+    }
+
+    func update(drafts: [MessageEntity]) {
+        if drafts.isEmpty { return }
+        indexingQueue.async { [weak self] in
+            guard let self = self else { return }
+            let messageIDs = drafts.map { $0.messageID }
+            do {
+                guard self.continueBuildIndex() else { return }
+                let messages = try self.downloadDetail(for: messageIDs)
+                guard self.continueBuildIndex() else { return }
+                self.saveDownloadMessages(messages: messages, isUpdate: true)
+            } catch {
+                self.log(message: "Update draft from event failed, \(error)")
+            }
+        }
+    }
+
+    // MARK: - SearchDB API
     func numberOfEntriesInSearchIndex() -> Int {
         return dependencies.searchIndexDB.numberOfEntries()
     }
@@ -175,7 +285,7 @@ final class BuildSearchIndex {
 // MARK: - prerequisite
 extension BuildSearchIndex {
     private func canBuildSearchIndex() -> Bool {
-        guard dependencies.connectionStatusProvider.currentStatus.isConnected else {
+        guard dependencies.connectionStatusProvider.status.isConnected else {
             interruptReason.insert(.noConnection)
             return false
         }
@@ -239,72 +349,79 @@ extension BuildSearchIndex {
         return dependencies.searchIndexDB.dbExists
     }
 
-    private func enableOperationQueue() {
-        messageIndexingQueue.isSuspended = false
-        downloadPageQueue.isSuspended = false
-    }
-
     private func stopAndClearOperationQueue() {
-        messageIndexingQueue.isSuspended = true
+        log(message: "stopAndClearOperationQueue")
         messageIndexingQueue.cancelAllOperations()
-
-        downloadPageQueue.isSuspended = true
         downloadPageQueue.cancelAllOperations()
     }
 }
 
 // MARK: - Progress update
 extension BuildSearchIndex {
-    private func scheduleProgressUpdateTimer() {
+    private func scheduleLoadingCheckTimer() {
         startingTime = CFAbsoluteTimeGetCurrent()
-        progressUpdateTimer?.invalidate()
+        loadingCheckTimer?.invalidate()
         timerFireTimes = 0
-        progressUpdateTimer = Timer.scheduledTimer(
+        loadingCheckTimer = Timer.scheduledTimer(
             timeInterval: 2,
             target: self,
-            selector: #selector(self.updateProgress),
+            selector: #selector(self.checkLoading),
             userInfo: nil,
             repeats: true
         )
     }
 
-    private func invalidateProgressUpdateTimer() {
-        progressUpdateTimer?.invalidate()
-        progressUpdateTimer = nil
+    private func invalidateLoadingCheckTimer() {
+        loadingCheckTimer?.invalidate()
+        loadingCheckTimer = nil
     }
 
     @objc
-    private func updateProgress() {
+    private func checkLoading() {
         guard isBuildingIndexInProgress else {
-            invalidateProgressUpdateTimer()
+            invalidateLoadingCheckTimer()
             return
         }
         timerFireTimes += 1
-
-        notifyEstimatedProgress()
         adaptIndexingSpeedByMemoryUsage()
     }
 
-    private func estimateDownloadingIndexingTime() -> BuildSearchIndexEstimatedProgress? {
+    func estimateDownloadingIndexingTime(currentTime: CFAbsoluteTime) -> (BuildSearchIndexEstimatedProgress, Int)? {
         guard totalMessagesCount > 0,
-              processedMessagesCount > 0,
-              let startingTime = startingTime else {
+              savedMessagesCount + preexistingIndexedMessagesCount > 0 else {
             return nil
         }
         let remainingMessagesCount = Double(
-            totalMessagesCount - processedMessagesCount + preexistingIndexedMessagesCount
+            totalMessagesCount - downloadedMessagesCount - preexistingIndexedMessagesCount
         )
-        let currentTime = CFAbsoluteTimeGetCurrent()
-        let timeDifference = Double(currentTime - startingTime)
-        let estimatedTime = (timeDifference / Double(processedMessagesCount)) * remainingMessagesCount
-        let totalIndexedMessages = processedMessagesCount + preexistingIndexedMessagesCount
+        let totalIndexedMessages = savedMessagesCount + preexistingIndexedMessagesCount
         let currentProgress = Double(totalIndexedMessages) / Double(totalMessagesCount)
-        return BuildSearchIndexEstimatedProgress(
+
+        guard let startingTime = self.startingTime,
+              downloadedMessagesCount > 0 else {
+            let progress = BuildSearchIndexEstimatedProgress(
+                totalMessages: totalMessagesCount,
+                indexedMessages: totalIndexedMessages,
+                estimatedTimeString: nil,
+                currentProgress: max(0, min(1, currentProgress)) * 100
+            )
+            estimatedProgress.mutate { value in
+                value = progress
+            }
+            return (progress, 0)
+        }
+        let timeDifference = Double(currentTime - startingTime)
+        let estimatedTime = (timeDifference / Double(downloadedMessagesCount)) * remainingMessagesCount
+        let progress = BuildSearchIndexEstimatedProgress(
             totalMessages: totalMessagesCount,
             indexedMessages: totalIndexedMessages,
             estimatedTimeString: timeToDate(timeInSecond: estimatedTime),
             currentProgress: max(0, min(1, currentProgress)) * 100
         )
+        estimatedProgress.mutate { value in
+            value = progress
+        }
+        return (progress, Int(estimatedTime))
     }
 
     private func timeToDate(timeInSecond: Double) -> String {
@@ -314,8 +431,9 @@ extension BuildSearchIndex {
         return formatter.string(from: timeInSecond) ?? L11n.EncryptedSearch.estimating_time_remaining
     }
 
-    private func notifyEstimatedProgress() {
-        guard var progress = estimateDownloadingIndexingTime() else { return }
+    private func notifyEstimatedProgress(currentTime: CFAbsoluteTime) {
+        guard let estimatedInfo = estimateDownloadingIndexingTime(currentTime: currentTime) else { return }
+        var progress = estimatedInfo.0
         // Just show a time estimate after a few rounds (to have a more stable estimate)
         let waitRoundsBeforeShowingTimeEstimate: Int = 5
         if timerFireTimes < waitRoundsBeforeShowingTimeEstimate {
@@ -326,6 +444,11 @@ extension BuildSearchIndex {
                 estimatedTimeString: nil,
                 currentProgress: progress.currentProgress
             )
+        } else {
+            if dependencies.esUserCache.initialIndexingEstimationTime(of: params.userID) == 0 {
+                let time = estimatedInfo.1
+                dependencies.esUserCache.setInitialIndexingEstimationTime(of: params.userID, value: time)
+            }
         }
         delegate?.indexBuildingProgressUpdate(progress: progress)
     }
@@ -361,9 +484,7 @@ extension BuildSearchIndex {
     }
 
     private func registerForNetworkChange() {
-        dependencies.connectionStatusProvider.registerConnectionStatus(observerID: observerID, fireAfterRegister: false) { [weak self] status in
-            self?.networkConditionsChanged(internetStatus: status)
-        }
+        dependencies.connectionStatusProvider.register(receiver: self, fireWhenRegister: false)
     }
 
     /// Either the internet connection or the user network configuration has changed
@@ -392,6 +513,8 @@ extension BuildSearchIndex {
                 .connectedViaWiFiWithoutInternet,
                 .notConnected:
             break
+        case .initialize:
+            return
         }
     }
 
@@ -448,6 +571,12 @@ extension BuildSearchIndex {
 
 // MARK: - Start build index
 extension BuildSearchIndex {
+    private func stopBuildIndex() {
+        stopAndClearOperationQueue()
+        invalidateLoadingCheckTimer()
+        timerFireTimes = 0
+    }
+
     private func initializeCurrentState(completion: (() -> Void)?) {
         guard !isBuildingIndexInProgress else {
             completion?()
@@ -458,36 +587,75 @@ extension BuildSearchIndex {
             completion?()
             return
         }
-        dependencies.countMessagesForLabel.execute(params: .init(labelID: params.labelID)) { [weak self] result in
+        updateMessageCounts { [weak self] error in
             guard let self = self else { return }
-            defer { completion?() }
-            switch result {
-            case .failure(let error):
+            self.savedMessagesCount = 0
+            self.downloadedMessagesCount = 0
+            self.preexistingIndexedMessagesCount = self.dependencies.searchIndexDB.numberOfEntries()
+            if let error {
                 self.log(message: "error: Fetch messages count failed \(error)", isError: true)
                 self.interruptReason.insert(.unExpectedError)
-            case .success(let messageCount):
-                guard messageCount > 0 else {
+            } else {
+                self.log(message: "Fetch messages count success, total \(self.totalMessagesCount)")
+                let isUserPaused = self.dependencies.esUserCache.indexingPausedByUser(of: self.params.userID)
+                self.isPaused = isUserPaused
+                if self.preexistingIndexedMessagesCount <= 0 {
+                    self.dependencies.esUserCache.setShouldSendMetric(of: self.params.userID, value: true)
+                    self.updateCurrentState(to: isUserPaused ? .paused(nil) : .creatingIndex)
+                } else if self.preexistingIndexedMessagesCount == self.totalMessagesCount {
                     self.updateCurrentState(to: .complete)
-                    return
-                }
-                self.totalMessagesCount = messageCount
-                self.log(message: "Fetch messages count success, total \(messageCount)")
-                do {
-                    let numOfMessageInIndex = try self.dependencies.searchIndexDB.numberOfEntries()
-                    if numOfMessageInIndex <= 0 {
-                        self.updateCurrentState(to: .creatingIndex)
-                    } else if numOfMessageInIndex == messageCount {
-                        self.updateCurrentState(to: .complete)
-                    } else {
-                        self.preexistingIndexedMessagesCount = numOfMessageInIndex
-                        self.updateCurrentState(to: .downloadingNewMessage)
-                    }
-                } catch {
-                    self.log(message: "Fetch local cache messages count failed \(error)")
-                    // TODO discussion No db connection or query has issue, recreate db and build index from scratch could be a solution
-                    self.interruptReason.insert(.unExpectedError)
+                } else {
+                    self.updateCurrentState(
+                        to: isUserPaused ? .paused(nil) : .downloadingNewMessage(isInitialIndexComplete: false)
+                    )
                 }
             }
+            completion?()
+        }
+    }
+
+    private func updateMessageCounts(completion: ((Error?) -> Void)?) {
+        dependencies
+            .countMessagesForLabel
+            .callbackOn(indexingQueue)
+            .execute(params: .init(labelID: params.labelID)) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .failure(let error):
+                    completion?(error)
+                case .success(let messageCount):
+                    self.totalMessagesCount = messageCount
+                    completion?(nil)
+                }
+            }
+    }
+
+    private func continueBuildIndex() -> Bool {
+        guard isEncryptedSearchEnabled else {
+            updateCurrentState(to: .disabled)
+            log(message: "Encrypted search is disabled")
+            return false
+        }
+        guard isBuildingIndexInProgress else {
+            log(message: "building index is stop")
+            return false
+        }
+        return true
+    }
+
+    private func updateStateDueToEmptyMessageList() {
+        if case let .downloadingNewMessage(isInitialIndexComplete: value) = currentState,
+           value == false {
+            updateCurrentState(to: .creatingIndex)
+            downloadAndProcessPage()
+        } else if currentState == .creatingIndex {
+            updateMessageCounts { [weak self] error in
+                guard error == nil else { return }
+                self?.updateCurrentState(to: .downloadingNewMessage(isInitialIndexComplete: true))
+                self?.downloadAndProcessPage()
+            }
+        } else {
+            updateCurrentState(to: .complete)
         }
     }
 
@@ -496,19 +664,39 @@ extension BuildSearchIndex {
             log(message: "Sleep 2 seconds to lower memory usage")
             Thread.sleep(forTimeInterval: 2)
         }
-        if processedMessagesCount >= totalMessagesCount {
-            updateCurrentState(to: .complete)
+        guard continueBuildIndex() else { return }
+        adaptIndexingSpeedByMemoryUsage()
+        let indexingStart = CFAbsoluteTimeGetCurrent()
+        do {
+            let messageIDs = try downloadAPageOfMessageIDs()
+            log(message: "Get \(messageIDs.count) messageIDs")
+            if messageIDs.isEmpty {
+                updateStateDueToEmptyMessageList()
+                log(message: "This page is empty")
+                return
+            }
+            defer { downloadAndProcessPage() }
+            guard continueBuildIndex() else { return }
+            let downloadedMessages = try downloadDetail(for: messageIDs)
+            log(message: "Download detail for \(downloadedMessages.count) messages")
+
+            guard continueBuildIndex() else { return }
+            saveDownloadMessages(messages: downloadedMessages, isUpdate: false)
+            log(message: "Save downloaded message to searchIndexDB")
+
+            let timeDifference = CFAbsoluteTimeGetCurrent() - indexingStart
+            let previousIndexingTime = dependencies.esUserCache.indexingTime(of: params.userID)
+            dependencies.esUserCache.setIndexingTime(
+                of: params.userID,
+                value: previousIndexingTime + Int(timeDifference)
+            )
+            log(message: "Take \(Int(timeDifference)) seconds for this page")
+        } catch {
+            log(message: "Error happens in indexing \(error)", isError: true)
         }
-        downloadPage()
     }
 
-    private func downloadPage() {
-        guard isEncryptedSearchEnabled else {
-            updateCurrentState(to: .disabled)
-            return
-        }
-        guard isBuildingIndexInProgress else { return }
-        adaptIndexingSpeedByMemoryUsage()
+    private func downloadAPageOfMessageIDs() throws -> [MessageID] {
         var endTime: Int?
         var beginTime: Int?
         switch currentState {
@@ -523,7 +711,6 @@ extension BuildSearchIndex {
         default:
             break
         }
-        let time = dependencies.searchIndexDB.oldestMessageTime() ?? 0
 
         let operation = DownloadPageOperation(
             apiService: dependencies.apiService,
@@ -535,65 +722,56 @@ extension BuildSearchIndex {
         )
         downloadPageQueue.addOperation(operation)
         downloadPageQueue.waitUntilAllOperationsAreFinished()
-        guard let result = operation.result else { return }
+        guard let result = operation.result else {
+            throw IndexError.noResult
+        }
         switch result {
         case .failure(let error):
-            log(message: "Download page error \(error)", isError: true)
-        case .success(let esMessages):
-            downloadDetail(for: esMessages)
+            throw error
+        case .success(let messageIDs):
+            return messageIDs
         }
-        downloadAndProcessPage()
     }
 
-    private func downloadDetail(for messages: [ESMessage]) {
-        guard isEncryptedSearchEnabled else {
-            updateCurrentState(to: .disabled)
-            return
-        }
-        guard isBuildingIndexInProgress else { return }
-
-        guard !messages.isEmpty else {
-            if currentState == .downloadingNewMessage {
-                updateCurrentState(to: .creatingIndex)
-            } else {
-                updateCurrentState(to: .complete)
-            }
-            return
-        }
-        messageIndexingQueue.maxConcurrentOperationCount = indexingSpeed
+    private func downloadDetail(for messageIDs: [MessageID], isUpdate: Bool = false) throws -> [ESMessage] {
+        let queue = isUpdate ? OperationQueue() : messageIndexingQueue
+        queue.maxConcurrentOperationCount = indexingSpeed
         var operations: [IndexSingleMessageDetailOperation] = []
-        for message in messages {
+        for id in messageIDs {
             let operation = IndexSingleMessageDetailOperation(
                 apiService: dependencies.apiService,
-                message: message,
+                messageID: id,
                 userID: params.userID
             )
-            messageIndexingQueue.addOperation(operation)
+            queue.addOperation(operation)
             operations.append(operation)
         }
-        messageIndexingQueue.waitUntilAllOperationsAreFinished()
-        processDownloadDetail(indexOperations: operations)
+        log(message: "waiting for download detail")
+        queue.waitUntilAllOperationsAreFinished()
+        var messages: [ESMessage] = []
+        for operation in operations {
+            guard let message = try operation.result?.get() else { continue }
+            messages.append(message)
+        }
+        return messages
     }
 
-    private func processDownloadDetail(indexOperations: [IndexSingleMessageDetailOperation]) {
-        var processedCount = 0
-        for operation in indexOperations {
-            guard let result = operation.result else { continue }
-            processedCount += 1
-            switch result {
-            case .failure(let error):
-                log(message: "Index single message detail failed \(error)", isError: true)
-            case .success(let esMessage):
-                let canContinue = decryptAndExtractDataSingleMessage(
-                    message: esMessage.toEntity(),
-                    userID: params.userID
-                )
-                if !canContinue {
-                    break
-                }
+    private func saveDownloadMessages(messages: [ESMessage], isUpdate: Bool) {
+        downloadedMessagesCount += messages.count
+        let now = CFAbsoluteTimeGetCurrent()
+        for message in messages {
+            let canContinue = decryptAndExtractDataSingleMessage(
+                message: message.toEntity(),
+                userID: params.userID
+            )
+            if !isUpdate {
+                savedMessagesCount += 1
+                notifyEstimatedProgress(currentTime: now)
+            }
+            if !canContinue {
+                break
             }
         }
-        processedMessagesCount += processedCount
     }
 
     // - Returns: can continue?
@@ -691,25 +869,43 @@ extension BuildSearchIndex {
         }
     }
 
-    private func cleanupAfterIndexing() {
-        log(message: "Clean up after indexing")
-        invalidateProgressUpdateTimer()
-        let finishStates: [EncryptedSearchIndexState] = [.complete, .partial]
-        guard let state = currentState,
-              finishStates.contains(state) else { return }
-
-        // TODO cancel background task
-        // TODO sendIndexingMetrics
-        if currentState == .complete {
-            // TODO processEventsAfterIndexing
-            // Process new added message during indexing
-            // The data is from core data
-            // I think this is not very reliable, imagine the messages are coming when app is terminated
-        }
-    }
-
     private func log(message: String, isError: Bool = false) {
         SystemLogger.log(message: message, category: .encryptedSearch, isError: isError)
+    }
+
+    private func sendMetric() {
+        guard
+            dependencies.userManager.hasTelemetryEnabled,
+            dependencies.esUserCache.shouldSendMetric(of: params.userID)
+        else { return }
+        let numMessagesIndexed = dependencies.searchIndexDB.numberOfEntries()
+        let size = dependencies.searchIndexDB.size ?? .zero
+        let indexingTime = dependencies.esUserCache.indexingTime(of: params.userID)
+        let originalEstimatedTime = dependencies.esUserCache.initialIndexingEstimationTime(of: params.userID)
+        let metricData: [String: Any] = [
+            "numMessagesIndexed": numMessagesIndexed,
+            // the size of the index in Bytes
+            "indexSize": size.value,
+            // an estimated amount of time taken by indexing, expressed in seconds
+            "indexTime": indexingTime,
+            // the number of seconds that indexing was first estimated to take
+            "originalEstimate": originalEstimatedTime,
+            "numPauses": dependencies.esUserCache.numberOfPauses(of: params.userID),
+            "numInterruptions": dependencies.esUserCache.numberOfInterruptions(of: params.userID),
+            // whether the indexing process was automatically started per effect of a refresh or not.
+            "isRefreshed": dependencies.esUserCache.isExternalRefreshed(of: params.userID)
+        ]
+        let request = MetricEncryptedSearch(type: .index, data: metricData)
+        dependencies.apiService.perform(request: request, jsonDictionaryCompletion: { _, _ in })
+    }
+
+    private func resetMetricData() {
+        dependencies.esUserCache.setNumberOfPauses(of: params.userID, value: 0)
+        dependencies.esUserCache.setNumberOfInterruptions(of: params.userID, value: 0)
+        dependencies.esUserCache.setIndexingTime(of: params.userID, value: 0)
+        dependencies.esUserCache.setInitialIndexingEstimationTime(of: params.userID, value: 0)
+        dependencies.esUserCache.setShouldSendMetric(of: params.userID, value: false)
+        dependencies.esUserCache.setIsExternalRefreshed(of: params.userID, value: false)
     }
 }
 
@@ -729,8 +925,23 @@ extension BuildSearchIndex {
 
     private func updateCurrentState(to newState: EncryptedSearchIndexState) {
         log(message: "Current state is changed \(newState)")
+        if newState == .complete || newState == .partial {
+            sendMetric()
+            resetMetricData()
+        }
+        if newState == .complete || newState == .partial || newState == .disabled {
+            estimatedProgress.mutate { value in
+                value = nil
+            }
+        }
         currentState = newState
         delegate?.indexBuildingStateDidChange(state: newState)
+    }
+}
+
+extension BuildSearchIndex: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        networkConditionsChanged(internetStatus: newStatus)
     }
 }
 
@@ -811,6 +1022,7 @@ extension BuildSearchIndex {
         let messageDataService: MessageDataService
         let notificationCenter: NotificationCenter
         let searchIndexDB: SearchIndexDB
+        let userManager: UserManager
 
         init(
             apiService: APIService,
@@ -823,7 +1035,8 @@ extension BuildSearchIndex {
             memoryUsage: MemoryUsageProtocol = DeviceCapacity.Memory(),
             messageDataService: MessageDataService,
             notificationCenter: NotificationCenter = NotificationCenter.default,
-            searchIndexDB: SearchIndexDB
+            searchIndexDB: SearchIndexDB,
+            userManager: UserManager
         ) {
             self.apiService = apiService
             self.connectionStatusProvider = connectionStatusProvider
@@ -836,6 +1049,8 @@ extension BuildSearchIndex {
             self.messageDataService = messageDataService
             self.notificationCenter = notificationCenter
             self.searchIndexDB = searchIndexDB
+
+            self.userManager = userManager
         }
     }
 }
@@ -849,4 +1064,14 @@ struct BuildSearchIndexEstimatedProgress {
     let estimatedTimeString: String?
     /// Download progress, 0 ~ 100
     let currentProgress: Double
+}
+
+extension BuildSearchIndex {
+    enum IndexError: Error {
+        case encryptedSearchIsDisabled
+        case selfIsReleased
+        case previousTaskDidNotFinish
+        case noResult
+        case taskIsCancelled
+    }
 }

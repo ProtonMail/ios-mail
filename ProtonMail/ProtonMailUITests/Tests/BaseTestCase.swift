@@ -20,7 +20,8 @@ var environmentFileName = "environment"
 var credentialsFileName = "credentials"
 let credentialsBlackFileName = "credentials_black"
 let testData = TestData()
-var users: [String: TestUser] = [:]
+var users: [String: User] = [:]
+var wasJailDisabled = false
 
 var dynamicDomain: String {
     ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] ?? ""
@@ -68,18 +69,23 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         app.launchEnvironment[apiDomainKey] = dynamicDomain
 
         if humanVerificationStubs {
-            app.launchEnvironment["HumanVerificationStubs"] = "1"
+            app.launchArguments.append(contentsOf: ["HumanVerificationStubs", "1"])
         } else if forceUpgradeStubs {
-            app.launchEnvironment["ForceUpgradeStubs"] = "1"
+            app.launchArguments.append(contentsOf: ["ForceUpgradeStubs", "1"])
         } else if extAccountNotSupportedStub {
-            app.launchEnvironment["ExtAccountNotSupportedStub"] = "1"
+            app.launchArguments.append(contentsOf: ["ExtAccountNotSupportedStub", "1"])
         }
+
+        // Disable feedback pop up
+        app.launchArguments.append("-disableInAppFeedbackPromptAutoShow")
+
         app.launch()
 
         env = Environment.custom(dynamicDomain)
         quarkCommands = QuarkCommands(doh: env.doh)
 
         handleInterruption()
+        disableJail()
     }
 
     override func tearDown() {
@@ -138,24 +144,43 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
     }
     
     private static func getTestUsersFromYamlFiles() {
-        // Get "protonmail-ios/ProtonMail/" path to later locate "protonmail-ios/ProtonMail/TestData".
-        let uiTestsFolderPath = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().path
-        let folderUrl = URL(fileURLWithPath: "\(uiTestsFolderPath)/TestData")
         var userYamlFiles: [URL]
 
-        userYamlFiles = getYamlFiles(in: folderUrl)
+        guard let testDataURL = Bundle(for: BaseTestCase.self).url(forResource: "TestData", withExtension: nil) else {
+            // Handle the case when TestData folder is not found
+            return
+        }
+        userYamlFiles = getYamlFiles(in: testDataURL)
         
         XCTAssertTrue(userYamlFiles.count > 0, "Attempted to parse user.yml files from TestData repository but was not able to find any.")
 
         for file in userYamlFiles {
             do {
                 if let data = try String(contentsOf: file).data(using: .utf8) {
-                    let user = try YAMLDecoder().decode(TestUser.self, from: data)
-                    users[user.user.name] = user
+                    let user = try YAMLDecoder().decode(User.self, from: data)
+                    users[user.name] = user
                 }
             } catch {
                 print("Error deserializing YAML: \(error.localizedDescription)")
             }
+        }
+    }
+
+    private func disableJail() {
+        if !wasJailDisabled {
+            let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
+            var quarkCommandResult: Result<UnbanDetails, UnbanError>?
+            
+            QuarkCommands.disableJail(currentlyUsedHostUrl: env.doh.getCurrentlyUsedHostUrl()) { result in
+                quarkCommandResult = result
+                expectQuarkCommandToFinish.fulfill()
+            }
+            wait(for: [expectQuarkCommandToFinish], timeout: 30.0)
+            if case .failure(let error) = quarkCommandResult {
+                XCTFail("Cannot unban \(#function) because of \(error.localizedDescription)")
+                return
+            }
+            wasJailDisabled = true
         }
     }
 }
@@ -163,60 +188,28 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
 @available(iOS 16.0, *)
 class FixtureAuthenticatedTestCase: BaseTestCase {
 
-    var scenario: MailScenario { .qaMail001 }
+    var scenario: MailScenario = .qaMail001
     var plan: UserPlan { .mailpro2022 }
     var isSubscriptionIncluded: Bool { true }
     var user: User?
 
     override func setUp() {
         super.setUp()
-        do {
-            user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
-        }
-        catch {
-            XCTFail(error.localizedDescription)
-        }
-
-        login(user: user!)
+    }
+    
+    func runTestWithScenario(_ actualScenario: MailScenario, testBlock: () -> Void) {
+        scenario = actualScenario
+        createUserAndLogin()
+        testBlock()
     }
 
-    override func tearDown() {
+    private func createUserAndLogin() {
         do {
-            try deleteUser(domain: dynamicDomain, user)
-        }
-        catch {
-            XCTFail(error.localizedDescription)
-        }
-        super.tearDown()
-    }
-
-    open override func record(_ issue: XCTIssue) {
-        var myIssue = issue
-        var issueDescription: String = "\n"
-        issueDescription.append("User:")
-        issueDescription.append("\n")
-        issueDescription.append(user.debugDescription)
-        issueDescription.append("\n\n")
-        issueDescription.append("Failure:")
-        issueDescription.append("\n\(myIssue.compactDescription)")
-
-        myIssue.compactDescription = issueDescription
-        super.record(myIssue)
-    }
-}
-
-@available(iOS 16.0, *)
-class NewFixtureAuthenticatedTestCase: BaseTestCase {
-
-    var scenario: MailScenario { .trashOneMessage }
-    var plan: UserPlan { .mailpro2022 }
-    var isSubscriptionIncluded: Bool { true }
-    var user: User?
-
-    override func setUp() {
-        super.setUp()
-        do {
-            user = try createUserWithiOSFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+            if scenario.name.starts(with: "qa-mail-web")  {
+                user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+            } else {
+                user = try createUserWithiOSFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+            }
         }
         catch {
             XCTFail(error.localizedDescription)

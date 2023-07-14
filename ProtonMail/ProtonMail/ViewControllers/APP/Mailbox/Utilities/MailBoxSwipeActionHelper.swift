@@ -40,7 +40,7 @@ struct MailBoxSwipeActionHelper {
         }
     }
 
-    // swiftlint:disable function_parameter_count
+    // swiftlint:disable:next function_parameter_count
     func checkIsSwipeActionValidOnMessage(isDraft: Bool,
                                           isUnread: Bool,
                                           isStar: Bool,

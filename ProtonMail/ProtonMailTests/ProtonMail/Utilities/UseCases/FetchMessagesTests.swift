@@ -24,6 +24,7 @@ class FetchMessagesTests: XCTestCase {
     var mockMessagesService: MockMessageDataService!
     var mockCacheService: MockCacheServiceProtocol!
     var mockEventsService: MockEventsService!
+    let labelID: LabelID = "dummy_label_id"
 
     override func setUp() {
         super.setUp()
@@ -32,11 +33,11 @@ class FetchMessagesTests: XCTestCase {
         mockEventsService = MockEventsService()
 
         sut = FetchMessages(
-            params: makeParams(),
             dependencies: makeDependencies(
                 mockMessageDataService: mockMessagesService,
                 mockCacheService: mockCacheService,
-                mockEventsService: mockEventsService
+                mockEventsService: mockEventsService,
+                labelID: labelID
             )
         )
     }
@@ -52,11 +53,18 @@ class FetchMessagesTests: XCTestCase {
         let expectation = expectation(description: "callbacks are correct")
         expectation.expectedFulfillmentCount = 2
 
-        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false) { _ in
-            expectation.fulfill()
-        } onMessagesRequestSuccess: {
-            expectation.fulfill()
-        }
+        sut.execute(
+            params: .init(
+                endTime: Int(Date().timeIntervalSince1970),
+                isUnread: false,
+                onMessagesRequestSuccess: {
+                    expectation.fulfill()
+                }
+            ),
+            callback: { _ in
+                expectation.fulfill()
+            }
+        )
         waitForExpectations(timeout: 2.0)
 
         XCTAssert(mockCacheService.parseMessagesResponseStub.wasCalledExactlyOnce == true)
@@ -70,11 +78,18 @@ class FetchMessagesTests: XCTestCase {
         let expectation = expectation(description: "callbacks are called")
         expectation.expectedFulfillmentCount = 1
 
-        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false) { _ in
-            expectation.fulfill()
-        } onMessagesRequestSuccess: {
-            XCTFail("Should not call this closure since the fetch is set to be failed.")
-        }
+        sut.execute(
+            params: .init(
+                endTime: Int(Date().timeIntervalSince1970),
+                isUnread: false,
+                onMessagesRequestSuccess: {
+                    XCTFail("Should not call this closure since the fetch is set to be failed.")
+                }
+            ),
+            callback: { _ in
+                expectation.fulfill()
+            }
+        )
         waitForExpectations(timeout: 2.0)
 
         XCTAssert(mockCacheService.parseMessagesResponseStub.wasCalledExactlyOnce == false)
@@ -88,18 +103,28 @@ class FetchMessagesTests: XCTestCase {
         }
 
         sut = FetchMessages(
-            params: makeParams(),
-            dependencies: makeDependencies(mockCacheService: mockCacheService, mockEventsService: mockEventsService)
+            dependencies: makeDependencies(
+                mockCacheService: mockCacheService,
+                mockEventsService: mockEventsService,
+                labelID: labelID
+            )
         )
 
         let expectation = expectation(description: "callbacks are correct")
         expectation.expectedFulfillmentCount = 2
 
-        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false) { _ in
-            expectation.fulfill()
-        } onMessagesRequestSuccess: {
-            expectation.fulfill()
-        }
+        sut.execute(
+            params: .init(
+                endTime: Int(Date().timeIntervalSince1970),
+                isUnread: false,
+                onMessagesRequestSuccess: {
+                    expectation.fulfill()
+                }
+            ),
+            callback: { _ in
+                expectation.fulfill()
+            }
+        )
         waitForExpectations(timeout: 2.0)
 
         XCTAssert(mockCacheService.parseMessagesResponseStub.wasCalledExactlyOnce == true)
@@ -113,11 +138,18 @@ class FetchMessagesTests: XCTestCase {
         let expectation = expectation(description: "callbacks are called")
         expectation.expectedFulfillmentCount = 2
 
-        sut.execute(endTime: Int(Date().timeIntervalSince1970), isUnread: false) { _ in
-            expectation.fulfill()
-        } onMessagesRequestSuccess: {
-            expectation.fulfill()
-        }
+        sut.execute(
+            params: .init(
+                endTime: Int(Date().timeIntervalSince1970),
+                isUnread: false,
+                onMessagesRequestSuccess: {
+                    expectation.fulfill()
+                }
+            ),
+            callback: { _ in
+                expectation.fulfill()
+            }
+        )
         waitForExpectations(timeout: 2.0)
 
         XCTAssert(mockCacheService.parseMessagesResponseStub.wasCalledExactlyOnce == true)
@@ -126,18 +158,16 @@ class FetchMessagesTests: XCTestCase {
     }
 }
 
-private func makeParams() -> FetchMessages.Parameters {
-    FetchMessages.Parameters(labelID: "dummy_label_id")
-}
-
 private func makeDependencies(
     mockMessageDataService: MessageDataServiceProtocol = MockMessageDataService(),
     mockCacheService: CacheServiceProtocol = MockCacheServiceProtocol(),
-    mockEventsService: EventsServiceProtocol = MockEventsService()
+    mockEventsService: EventsServiceProtocol = MockEventsService(),
+    labelID: LabelID
 ) -> FetchMessages.Dependencies {
     FetchMessages.Dependencies(
         messageDataService: mockMessageDataService,
         cacheService: mockCacheService,
-        eventsService: mockEventsService
+        eventsService: mockEventsService,
+        labelID: labelID
     )
 }

@@ -19,7 +19,7 @@ import Foundation
 @testable import ProtonMail
 import ProtonCore_TestingToolkit
 
-final class MockResolveSendPreferences: NewUseCase<[RecipientSendPreferences], ResolveSendPreferences.Params> {
+final class MockResolveSendPreferences: UseCase<[RecipientSendPreferences], ResolveSendPreferences.Params> {
 
     var result: Result<[RecipientSendPreferences], Error>!
 

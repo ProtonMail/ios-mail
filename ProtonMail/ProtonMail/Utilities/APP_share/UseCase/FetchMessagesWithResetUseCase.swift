@@ -18,7 +18,7 @@
 import Foundation
 import PromiseKit
 
-typealias FetchMessagesWithResetUseCase = NewUseCase<Void, FetchMessagesWithReset.Params>
+typealias FetchMessagesWithResetUseCase = UseCase<Void, FetchMessagesWithReset.Params>
 
 final class FetchMessagesWithReset: FetchMessagesWithResetUseCase {
     private let userID: UserID
@@ -45,19 +45,22 @@ extension FetchMessagesWithReset {
             }
             self.dependencies.labelProvider.fetchV4Labels { _ in
                 _ = self.cleanContactIfNeeded(cleanContact: params.refetchContacts).done { _ in
-                    self.dependencies.fetchMessages.execute(
-                        endTime: params.endTime,
-                        isUnread: params.fetchOnlyUnreadMessages,
-                        callback: { result in
+                    self.dependencies.fetchMessages
+                        .execute(
+                            params: .init(
+                                endTime: params.endTime,
+                                isUnread: params.fetchOnlyUnreadMessages,
+                                onMessagesRequestSuccess: {
+                                    self.removePersistedMessages(removeAllDraft: params.removeAllDrafts)
+                                }
+                            )
+                        ) { result in
                             if let error = result.error {
                                 callback(.failure(error))
                             } else {
-                                callback(.success(Void()))
+                                callback(.success(()))
                             }
-                        },
-                        onMessagesRequestSuccess: {
-                            self.removePersistedMessages(removeAllDraft: params.removeAllDrafts)
-                        })
+                        }
                 }
             }
         }

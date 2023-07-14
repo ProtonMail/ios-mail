@@ -18,7 +18,7 @@
 import Foundation
 import ProtonCore_Services
 
-typealias FetchEmailAddressesPublicKeyUseCase = NewUseCase<[String: KeysResponse], FetchEmailAddressesPublicKey.Params>
+typealias FetchEmailAddressesPublicKeyUseCase = UseCase<[String: KeysResponse], FetchEmailAddressesPublicKey.Params>
 
 final class FetchEmailAddressesPublicKey: FetchEmailAddressesPublicKeyUseCase {
     private let dependencies: Dependencies

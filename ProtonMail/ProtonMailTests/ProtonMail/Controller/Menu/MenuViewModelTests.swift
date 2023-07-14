@@ -30,9 +30,12 @@ class MenuViewModelTests: XCTestCase {
     var apiMock: APIServiceMock!
     var enableColorStub = false
     var usingParentFolderColorStub = false
+    var coordinatorMock: MockMenuCoordinatorProtocol!
+    var delegate: MenuUIProtocol!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        coordinatorMock = .init()
         userStatusInQueueProviderMock = UserStatusInQueueProviderMock()
         coreDataContextProviderMock = MockCoreDataContextProvider()
         dohMock = DohMock()
@@ -52,6 +55,9 @@ class MenuViewModelTests: XCTestCase {
         sut.setParentFolderColorClosure {
             return self.usingParentFolderColorStub
         }
+        sut.coordinator = coordinatorMock
+        delegate = TestViewController()
+        sut.set(delegate: delegate)
     }
 
     override func tearDown() {
@@ -63,24 +69,6 @@ class MenuViewModelTests: XCTestCase {
         testUser = nil
         dohMock = nil
         apiMock = nil
-    }
-
-    func testInit_withInAppFeedbackDisable() {
-        XCTAssertEqual(sut.sections, [.inboxes, .folders, .labels, .more])
-        XCTAssertTrue(sut.moreItems.contains(where: { $0.location == .sendFeedback }))
-    }
-
-    func testInit_withInAppFeedbackEnable() {
-        testUser.inAppFeedbackStateService.handleNewFeatureFlags([FeatureFlagKey.inAppFeedback.rawValue: 1])
-        sut = MenuViewModel(usersManager: usersManagerMock,
-                            userStatusInQueueProvider: userStatusInQueueProviderMock,
-                            coreDataContextProvider: coreDataContextProviderMock,
-                            coreKeyMaker: MockKeyMakerProtocol(),
-                            unlockManager: .init(cacheStatus: CacheStatusStub(), delegate: MockUnlockManagerDelegate(), keyMaker: MockKeyMakerProtocol(), pinFailedCountCache: MockPinFailedCountCache())
-        )
-        XCTAssertEqual(sut.sections, [.inboxes, .folders, .labels, .more])
-
-        XCTAssertTrue(sut.moreItems.contains(where: { $0.location == .sendFeedback }))
     }
 
     func testInboxItemsAreTheExpectedOnes() {
@@ -465,4 +453,59 @@ class MenuViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.getIconColor(of: folder), ColorProvider.SidebarIconWeak)
     }
+
+    func testGo_selectSameLocation_shouldNotCallGoFunctionOfCoordinator() {
+        sut.activateUser(id: testUser.userID)
+        // select inbox location
+        sut.highlight(label: .init(location: .inbox))
+
+        sut.go(to: .init(location: .inbox))
+
+        XCTAssertTrue(coordinatorMock.closeMenuStub.wasCalledExactlyOnce)
+        XCTAssertTrue(coordinatorMock.goStub.wasNotCalled)
+    }
+
+    func testGo_selectDifferentLocation_shouldCallGoFunctionOfCoordinator() throws {
+        // select inbox location
+        sut.highlight(label: .init(location: .inbox))
+
+        sut.go(to: .init(location: .archive))
+
+        XCTAssertTrue(coordinatorMock.closeMenuStub.wasNotCalled)
+        XCTAssertTrue(coordinatorMock.goStub.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(
+            coordinatorMock.goStub.lastArguments?.a1
+        )
+        XCTAssertEqual(argument.location, .archive)
+    }
+
+    func testGo_currentUserIDIsDifferentFromCurrentUser_shouldCallGoFunctionOfCoordinator() throws {
+        let userID = UserID(String.randomString(20))
+        // set currentUserID
+        sut.activateUser(id: userID)
+
+        sut.go(to: .init(location: .archive))
+
+        XCTAssertTrue(coordinatorMock.goStub.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(
+            coordinatorMock.goStub.lastArguments?.a1
+        )
+        XCTAssertEqual(argument.location, .archive)
+    }
+}
+
+class TestViewController: UIViewController, MenuUIProtocol {
+    func update(email: String) {}
+
+    func update(displayName: String) {}
+
+    func update(avatar: String) {}
+
+    func showToast(message: String) {}
+
+    func updateMenu(section: Int?) {}
+
+    func update(rows: [IndexPath], insertRows: [IndexPath], deleteRows: [IndexPath]) {}
+
+    func navigateTo(label: ProtonMail.MenuLabel) {}
 }

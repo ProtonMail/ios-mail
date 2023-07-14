@@ -43,7 +43,7 @@ extension MailboxViewController {
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: message.isLabelLocation(labelId: labelId),
-            style: listEditing ? .selection(isSelected: isSelected) : style,
+            style: viewModel.listEditing ? .selection(isSelected: isSelected) : style,
             initial: senderRowComponents.initials(),
             isRead: !message.unRead,
             sender: senderRowComponents,
@@ -85,7 +85,7 @@ extension MailboxViewController {
         var mailboxViewModel = NewMailboxMessageViewModel(
             location: Message.Location(viewModel.labelID),
             isLabelLocation: Message.Location(viewModel.labelId) == nil && !isInCustomFolder,
-            style: listEditing ? .selection(isSelected: isSelected) : .normal,
+            style: viewModel.listEditing ? .selection(isSelected: isSelected) : .normal,
             initial: senderRowComponents.initials(),
             isRead: conversation.getNumUnread(labelID: labelId) <= 0,
             sender: senderRowComponents,

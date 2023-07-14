@@ -20,7 +20,7 @@ import Foundation
 
 final class MockPurgeOldMessages: PurgeOldMessagesUseCase {
 
-    func execute(completion: UseCaseResult<Void>) {
-        completion(.success(Void()))
+    override func execute(params: Void, callback: @escaping UseCase<Void, Void>.Callback) {
+        callback(.success(()))
     }
 }

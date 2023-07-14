@@ -144,7 +144,6 @@ final class SignInCoordinator {
     private func initLogin() {
         login = environment.loginCreationClosure(LocalString._protonmail,
                                                  .internal, // account type required for signin
-                                                 .internal, // account type possible for signup
                                                  [.notEmpty, .atLeastEightCharactersLong],
                                                  !isFirstAccountFlow)
     }
@@ -365,8 +364,7 @@ final class SignInCoordinator {
             }
         )
         DispatchQueue.main.async {
-            UIApplication.shared.keyWindow?.rootViewController?
-                .present(alertController, animated: true, completion: nil)
+            self.viewController?.present(alertController, animated: true, completion: nil)
         }
 
         return true

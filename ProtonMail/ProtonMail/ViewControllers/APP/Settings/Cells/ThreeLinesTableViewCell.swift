@@ -96,7 +96,7 @@ class ThreeLinesTableViewCell: UITableViewCell {
         middleLabel.attributedText = middleLine
         bottomLabel.attributedText = bottomLine
 
-        self.icon.setImage(icon)
+        self.icon.image = icon
 
         self.layoutIfNeeded()
     }

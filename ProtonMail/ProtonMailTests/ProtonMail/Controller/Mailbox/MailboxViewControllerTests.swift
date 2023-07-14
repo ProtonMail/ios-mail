@@ -43,7 +43,6 @@ final class MailboxViewControllerTests: XCTestCase {
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
     var mockFetchMessageDetail: MockFetchMessageDetail!
     var fakeCoordinator: MockMailboxCoordinatorProtocol!
 
@@ -97,7 +96,6 @@ final class MailboxViewControllerTests: XCTestCase {
         welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        mockSenderImageStatusProvider = .init()
         try loadTestMessage() // one message
 
         conversationProviderMock.fetchConversationStub.bodyIs { [unowned self] _, _, _, _, completion in
@@ -146,7 +144,6 @@ final class MailboxViewControllerTests: XCTestCase {
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
-        mockSenderImageStatusProvider = nil
         apiServiceMock = nil
     }
 
@@ -178,14 +175,209 @@ final class MailboxViewControllerTests: XCTestCase {
             _ = context.saveUpstreamIfNeeded()
         }
 
-        let e = expectation(description: "Closure is called")
-        // Give CoreData some time to update the UI.
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            // Check if the title is updated
-            XCTAssertEqual(self.sut.title, labelNewName)
-            e.fulfill()
+        wait(self.sut.title == labelNewName)
+    }
+
+    func testLastUpdateLabel_eventUpdateTimeIsNow_titleIsUpdateJustNow() {
+        let labelID = Message.Location.inbox.labelID
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let event = UserEvent(context: context)
+            event.userID = self.userManagerMock.userID.rawValue
+            event.updateTime = Date()
+            event.eventID = String.randomString(10)
         }
-        waitForExpectations(timeout: 3)
+        makeSUT(
+            labelID: labelID,
+            labelType: .label,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(
+            sut.updateTimeLabel.text,
+            LocalString._mailblox_last_update_time_just_now
+        )
+    }
+
+    func testLastUpdateLabel_eventUpdateTimeIs30MinsBefore_titleIsLastUpdateIn30Mins() {
+        let labelID = Message.Location.inbox.labelID
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let event = UserEvent(context: context)
+            event.userID = self.userManagerMock.userID.rawValue
+            let date = Date().add(.minute, value: -30)
+            event.updateTime = date
+            event.eventID = String.randomString(10)
+        }
+        makeSUT(
+            labelID: labelID,
+            labelType: .label,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(
+            sut.updateTimeLabel.text,
+            String.localizedStringWithFormat(LocalString._mailblox_last_update_time, 30)
+        )
+    }
+
+    func testLastUpdateLabel_eventUpdateTimeIs1HourBefore_titleIsUpdateMoreThan1Hour() {
+        let labelID = Message.Location.inbox.labelID
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let event = UserEvent(context: context)
+            event.userID = self.userManagerMock.userID.rawValue
+            let date = Date().add(.hour, value: -1)
+            event.updateTime = date
+            event.eventID = String.randomString(10)
+        }
+        makeSUT(
+            labelID: labelID,
+            labelType: .label,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertEqual(
+            sut.updateTimeLabel.text,
+            LocalString._mailblox_last_update_time_more_than_1_hour
+        )
+    }
+
+    func testSelectionMode_whenPullToRefresh_selectionModeWillBeDisable() {
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        makeSUT(
+            labelID: Message.Location.inbox.labelID,
+            labelType: .folder,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+        XCTAssertFalse(sut.tableView.visibleCells.isEmpty)
+
+        // Select cell
+        let cell = sut.tableView.visibleCells.first as? NewMailboxMessageCell
+        cell?.customView.leftContainer.sendActions(for: .touchUpInside)
+        XCTAssertEqual(viewModel.selectedIDs.count, 1)
+        XCTAssertTrue(viewModel.listEditing)
+
+        // Pull to refresh
+        let refreshControl = sut.tableView.subviews
+            .compactMap({ $0 as? UIRefreshControl }).first
+        refreshControl?.sendActions(for: .valueChanged)
+
+        // Selection mode is disabled
+        XCTAssertTrue(viewModel.selectedIDs.isEmpty)
+        XCTAssertFalse(viewModel.listEditing)
+    }
+
+    func testUnreadButton_whenUnreadCountIsZeroAtFirst_inConversationMode_unreadIsSetToBe1_unreadButtonShouldBeShown() {
+        let labelID = LabelID(String.randomString(20))
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let count = ConversationCount(context: context)
+            count.userID = self.userID.rawValue
+            count.labelID = labelID.rawValue
+            count.unread = 0
+            _ = context.saveUpstreamIfNeeded()
+        }
+        makeSUT(
+            labelID: labelID,
+            labelType: .folder,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertTrue(sut.unreadFilterButton.isHidden)
+
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let count = ConversationCount.fetchConversationCounts(
+                by: [labelID.rawValue],
+                userID: self.userID.rawValue,
+                context: context
+            ).first
+            count?.unread = 1
+            _ = context.saveUpstreamIfNeeded()
+        }
+
+        wait(self.sut.unreadFilterButton.isHidden == false)
+        XCTAssertEqual(sut.unreadFilterButton.titleLabel?.text, "1 \(LocalString._unread_action) ")
+    }
+
+    func testUnreadButton_whenUnreadCountIsZeroAtFirst_inMessageMode_unreadIsSetToBe1_unreadButtonShouldBeShown() {
+        let labelID = LabelID(String.randomString(20))
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let count = LabelUpdate(context: context)
+            count.userID = self.userID.rawValue
+            count.labelID = labelID.rawValue
+            count.unread = 0
+            _ = context.saveUpstreamIfNeeded()
+        }
+        makeSUT(
+            labelID: labelID,
+            labelType: .folder,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertTrue(sut.unreadFilterButton.isHidden)
+
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let count = LabelUpdate.fetchLastUpdates(
+                by: [labelID.rawValue],
+                userID: self.userID.rawValue,
+                context: context
+            ).first
+            count?.unread = 1
+            _ = context.saveUpstreamIfNeeded()
+        }
+
+        wait(self.sut.unreadFilterButton.isHidden == false)
+        XCTAssertEqual(sut.unreadFilterButton.titleLabel?.text, "1 \(LocalString._unread_action) ")
+    }
+
+    func testUnreadButton_whenUnreadCountIsMoreThan9999_uneradButtonTitleIsSetToBePlus9999() {
+        let labelID = LabelID(String.randomString(20))
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let count = LabelUpdate(context: context)
+            count.userID = self.userID.rawValue
+            count.labelID = labelID.rawValue
+            count.unread = 100000
+            _ = context.saveUpstreamIfNeeded()
+        }
+        makeSUT(
+            labelID: labelID,
+            labelType: .folder,
+            isCustom: false,
+            labelName: nil
+        )
+        sut.loadViewIfNeeded()
+
+        XCTAssertFalse(sut.unreadFilterButton.isHidden)
+        XCTAssertEqual(sut.unreadFilterButton.titleLabel?.text, " +9999 \(LocalString._unread_action) ")
+    }
+
+    func testUnreadButton_whenClickTheUnreadButton_selectionModeWillBeCancelled() throws {
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        makeSUT(labelID: .init("0"), labelType: .folder, isCustom: false, labelName: nil)
+        sut.loadViewIfNeeded()
+
+        // Enter selection mode
+        let cell = try XCTUnwrap(sut.tableView.visibleCells.first as? NewMailboxMessageCell)
+        sut.didSelectButtonStatusChange(cell: cell)
+        XCTAssertTrue(viewModel.listEditing)
+        XCTAssertFalse(viewModel.selectedIDs.isEmpty)
+
+        // Click unread button
+        sut.unreadFilterButton.sendActions(for: .touchUpInside)
+
+        XCTAssertFalse(viewModel.listEditing)
+        XCTAssertEqual(viewModel.selectedIDs, [])
     }
 }
 
@@ -196,7 +388,7 @@ extension MailboxViewControllerTests {
             .object(withEntityName: "Message",
                     fromJSONDictionary: parsedObject,
                     in: testContext) as? Message
-        testMessage?.userID = "1"
+        testMessage?.userID = userID.rawValue
         testMessage?.messageStatus = 1
         try testContext.save()
     }
@@ -211,6 +403,7 @@ extension MailboxViewControllerTests {
         sut = .init()
         let fetchMessage = MockFetchMessages()
         let updateMailbox = UpdateMailbox(dependencies: .init(
+            labelID: labelID,
             eventService: eventsServiceMock,
             messageDataService: userManagerMock.messageService,
             conversationProvider: conversationProviderMock,
@@ -218,7 +411,7 @@ extension MailboxViewControllerTests {
             fetchMessageWithReset: MockFetchMessagesWithReset(),
             fetchMessage: fetchMessage,
             fetchLatestEventID: mockFetchLatestEventId
-        ), parameters: .init(labelID: labelID))
+        ))
         self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
 
         let dependencies = MailboxViewModel.Dependencies(
@@ -227,16 +420,16 @@ extension MailboxViewControllerTests {
             fetchMessageDetail: mockFetchMessageDetail,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: MockFeatureFlagCache(),
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: userManagerMock.apiService,
                             internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
                         )
                     ),
-                    senderImageStatusProvider: mockSenderImageStatusProvider,
                     mailSettings: userManagerMock.mailSettings
                 )
-            )
+            ), encryptedSearchService: MockEncryptedSearchServiceProtocol()
         )
         let label = LabelInfo(name: labelName ?? "")
         viewModel = MailboxViewModel(

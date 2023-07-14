@@ -70,7 +70,7 @@ final class SendMessageResultNotificationHandler {
                 userInfo: ["text": errorMessage]
             )
             #else
-            guard let window: UIWindow = UIApplication.shared.keyWindow else {
+            guard let window: UIWindow = UIApplication.shared.topMostWindow else {
                 return
             }
             let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)

@@ -19,7 +19,7 @@ import Foundation
 import ProtonCore_DataModel
 import UIKit
 
-typealias FetchSenderImageUseCase = NewUseCase<UIImage?, FetchSenderImage.Params>
+typealias FetchSenderImageUseCase = UseCase<UIImage?, FetchSenderImage.Params>
 
 final class FetchSenderImage: FetchSenderImageUseCase {
     private let dependencies: Dependencies
@@ -29,9 +29,11 @@ final class FetchSenderImage: FetchSenderImageUseCase {
     }
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
-        guard dependencies.localFeatureFlag &&
-                dependencies.senderImageStatusProvider.isSenderImageEnabled(userID: params.userID) &&
-                !dependencies.mailSettings.hideSenderImages else {
+        guard
+            dependencies.localFeatureFlag,
+            dependencies.featureFlagCache.isFeatureFlag(.senderImage, enabledForUserWithID: params.userID),
+            !dependencies.mailSettings.hideSenderImages
+        else {
             callback(.failure(FetchSenderImageError.featureDisabled))
             return
         }
@@ -64,9 +66,19 @@ extension FetchSenderImage {
     }
 
     struct Dependencies {
+        let featureFlagCache: FeatureFlagCache
         let senderImageService: SenderImageService
-        let senderImageStatusProvider: SenderImageStatusProvider
         let mailSettings: MailSettings
         let localFeatureFlag: Bool = UserInfo.isSenderImageEnabled
+
+        init(
+            featureFlagCache: FeatureFlagCache,
+            senderImageService: SenderImageService,
+            mailSettings: MailSettings
+        ) {
+            self.featureFlagCache = featureFlagCache
+            self.senderImageService = senderImageService
+            self.mailSettings = mailSettings
+        }
     }
 }

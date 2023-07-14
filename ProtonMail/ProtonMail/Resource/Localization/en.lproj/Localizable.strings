@@ -237,18 +237,6 @@
 "Archive" = "Archive";
 "Archive (verb)" = "Archive";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Are you sure you want to delete permanently this message?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Are you sure you want to delete these %d messages permanently?";
-
-/* Warning message when users try to empty conversations in the folder */
-"Are you sure you want to permanently delete %d conversation?" = "Are you sure you want to permanently delete %d conversation?";
-
-/* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete %d message?" = "Are you sure you want to permanently delete %d message?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Are you sure you want to sign out %@?";
 

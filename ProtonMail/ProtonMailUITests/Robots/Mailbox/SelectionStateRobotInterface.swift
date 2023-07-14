@@ -6,35 +6,46 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import XCTest
+import fusion
 
 /**
  Parent class for selection state of Mailbox Robot classes like Inbox, Sent, Trash, etc.
-*/
-class SelectionStateRobotInterface {
+ */
+
+
+fileprivate struct id {
+    static let readButtonIdentifier = "PMToolBarView.readButton"
+    static let trashButtonIdentifier = "PMToolBarView.trashButton"
+    static let spamButtonIdentifier = "PMToolBarView.spamButton"
+    static let moveToButtonIdentifier = "PMToolBarView.moveToButton"
+    static let labelAsButtonIdentifier = "PMToolBarView.labelAsButton"
+    static let moreButtonIdentifier = "PMToolBarView.moreButton"
+}
+
+class SelectionStateRobotInterface: CoreElements {
     
-    func exitMessageSelectionState() -> SelectionStateRobotInterface {
-        //TODO:: add implementation
+    func read() -> SelectionStateRobotInterface {
+        // TODO: Add implementation for read
         return self
     }
 
-    func openMoreOptions() -> SelectionStateRobotInterface {
-        //TODO:: add implementation
+    func moveToTrash() -> MailboxRobotInterface {
+        button(id.trashButtonIdentifier).waitForHittable().tap()
+        return MailboxRobotInterface()
+    }
+
+    func moveTo() -> MoveToFolderRobotInterface {
+        button(id.moveToButtonIdentifier).waitForHittable().tap()
+        return MoveToFolderRobotInterface()
+    }
+
+    func labelAs() -> SelectionStateRobotInterface {
+        // TODO: Add implementation for labelAs
         return self
     }
 
-    func addLabel() -> SelectionStateRobotInterface {
-        //TODO:: add implementation
-        return self
-    }
-
-    func addFolder() -> SelectionStateRobotInterface {
-        //TODO:: add implementation
-        return self
-    }
-
-    func selectMessage(position: Int) -> SelectionStateRobotInterface {
-        //TODO:: add implementation
+    func more() -> SelectionStateRobotInterface {
+        // TODO: Add implementation for more
         return self
     }
 }

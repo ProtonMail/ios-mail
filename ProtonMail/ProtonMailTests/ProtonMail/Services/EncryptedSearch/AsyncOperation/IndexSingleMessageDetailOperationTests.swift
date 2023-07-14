@@ -41,7 +41,6 @@ final class IndexSingleMessageDetailOperationTests: XCTestCase {
     func testOneOperation_callAPI_and_parseResponse_success() {
         testOnBackground { isFinish in
             let order = Int.random(in: 0...99)
-            let message = self.makeEsMessage(order: order)
             let messageID = "ESID-\(order)"
             self.apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
                 guard path == "/mail/v4/messages/\(messageID)" else {
@@ -51,7 +50,11 @@ final class IndexSingleMessageDetailOperationTests: XCTestCase {
                 let response = self.makeResponse(messageID: messageID)
                 completion(nil, .success(response))
             }
-            let operation = IndexSingleMessageDetailOperation(apiService: self.apiService, message: message, userID: self.userID)
+            let operation = IndexSingleMessageDetailOperation(
+                apiService: self.apiService,
+                messageID: MessageID(messageID),
+                userID: self.userID
+            )
             self.queue.addOperation(operation)
             self.queue.waitUntilAllOperationsAreFinished()
             let result = try XCTUnwrap(operation.result)
@@ -72,34 +75,9 @@ final class IndexSingleMessageDetailOperationTests: XCTestCase {
         }
     }
 
-    func testOneOperation_message_has_downloaded() {
-        testOnBackground { isFinish in
-            let order = Int.random(in: 0...99)
-            let message = self.makeEsMessage(order: order)
-            message.isDetailsDownloaded = true
-            self.apiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _ in
-                XCTFail("Shouldn't call API")
-            }
-            let operation = IndexSingleMessageDetailOperation(apiService: self.apiService, message: message, userID: self.userID)
-            self.queue.addOperation(operation)
-            self.queue.waitUntilAllOperationsAreFinished()
-            let result = try XCTUnwrap(operation.result)
-            switch result {
-            case .failure:
-                XCTFail("Unexpected")
-            case .success(let esMessage):
-                let conversationID = message.conversationID
-                XCTAssertEqual(esMessage.subject, message.subject)
-                XCTAssertEqual(esMessage.conversationID, conversationID)
-            }
-            isFinish.fulfill()
-        }
-    }
-
     func testOneOperation_callAPI_fail() {
         testOnBackground { isFinish in
             let order = Int.random(in: 0...99)
-            let message = self.makeEsMessage(order: order)
             let messageID = "ESID-\(order)"
             self.apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
                 guard path == "/mail/v4/messages/\(messageID)" else {
@@ -108,7 +86,11 @@ final class IndexSingleMessageDetailOperationTests: XCTestCase {
                 }
                 completion(self.makeFailResponse(canRetry: false), .failure(.badResponse()))
             }
-            let operation = IndexSingleMessageDetailOperation(apiService: self.apiService, message: message, userID: self.userID)
+            let operation = IndexSingleMessageDetailOperation(
+                apiService: self.apiService,
+                messageID: MessageID(messageID),
+                userID: self.userID
+            )
             self.queue.addOperation(operation)
             self.queue.waitUntilAllOperationsAreFinished()
             let result = try XCTUnwrap(operation.result)
@@ -142,7 +124,12 @@ final class IndexSingleMessageDetailOperationTests: XCTestCase {
                     self.queue.cancelAllOperations()
                 }
             }
-            let operations = messages.map { IndexSingleMessageDetailOperation(apiService: self.apiService, message: $0, userID: self.userID) }
+            let operations = messages.map {
+                IndexSingleMessageDetailOperation(
+                    apiService: self.apiService,
+                    messageID: MessageID($0.id),
+                    userID: self.userID
+                ) }
             operations.forEach { self.queue.addOperation($0) }
 
             self.queue.waitUntilAllOperationsAreFinished()

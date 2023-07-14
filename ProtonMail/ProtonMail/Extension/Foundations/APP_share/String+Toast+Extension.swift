@@ -84,7 +84,7 @@ extension String {
         viewToShow = view
         #else
         let application = UIApplication.shared
-        viewToShow = application.keyWindow
+        viewToShow = application.topMostWindow
         #endif
         return viewToShow
     }

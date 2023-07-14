@@ -58,8 +58,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         return generateEmailsMap()
     }()
 
-    var listEditing: Bool = false
-
     // MARK: - View Outlets
     @IBOutlet weak var tableView: UITableView!
 
@@ -141,9 +139,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private var customUnreadFilterElement: UIAccessibilityElement?
     private var diffableDataSource: MailboxDataSource?
-
-    let connectionStatusProvider = InternetConnectionStatusProvider()
-    private let observerID = UUID()
+    let connectionStatusProvider = InternetConnectionStatusProvider.shared
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
@@ -166,7 +162,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             resetTableView()
         }
         self.updateLastUpdateTimeLabel()
-        self.updateUnreadButton()
+        self.updateUnreadButton(count: viewModel.unreadCount)
 
         refetchAllIfNeeded()
         startAutoFetch()
@@ -239,7 +235,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
             self.loadDiffableDataSource()
 
-        self.updateNavigationController(listEditing)
+        self.updateNavigationController(viewModel.listEditing)
 
         #if DEBUG
         if CommandLine.arguments.contains("-skipTour") {
@@ -255,7 +251,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.topActionsView.backgroundColor = ColorProvider.BackgroundNorm
         self.topActionsView.layer.zPosition = tableView.layer.zPosition + 1
 
-        self.updateUnreadButton()
+        self.updateUnreadButton(count: viewModel.unreadCount)
         self.updateLastUpdateTimeLabel()
 
         self.viewModel.cleanReviewItems()
@@ -272,17 +268,23 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         setupScreenEdgeGesture()
         setupAccessibility()
 
-        inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
-
-        connectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] newStatus in
-            self?.updateInterface(connectionStatus: newStatus)
+        if viewModel.shouldAutoShowInAppFeedbackPrompt {
+            inAppFeedbackScheduler = makeInAppFeedbackPromptScheduler()
         }
+
+        connectionStatusProvider.register(receiver: self)
 
         NotificationCenter.default
             .addObserver(self,
                          selector: #selector(preferredContentSizeChanged(_:)),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
+        NotificationCenter.default
+            .addObserver(self,
+                         selector: #selector(tempNetworkError(_:)),
+                         name: .tempNetworkError,
+                         object: nil)
+        viewModel.initializeEncryptedSearchIfNeeded()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -297,7 +299,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                                  argument: self.navigationController?.view)
         }
 
-        self.updateUnreadButton()
+        self.updateUnreadButton(count: viewModel.unreadCount)
         deleteExpiredMessages()
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
@@ -319,7 +321,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         if Message.Location(viewModel.labelID) == .inbox {
             viewModel.user.appRatingService.preconditionEventDidOccur(.inboxNavigation)
         }
-        
+
         if viewModel.eventsService.status != .started {
             self.startAutoFetch()
         } else {
@@ -338,7 +340,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.viewModel.processCachedPush()
         self.viewModel.checkStorageIsCloseLimit()
 
-        self.updateInterface(connectionStatus: connectionStatusProvider.currentStatus)
+        self.updateInterface(connectionStatus: connectionStatusProvider.status)
 
         if let selectedItem = self.tableView.indexPathForSelectedRow, !self.viewModel.isInDraftFolder {
             self.tableView.deselectRow(at: selectedItem, animated: true)
@@ -346,7 +348,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         FileManager.default.cleanCachedAttsLegacy()
 
-        showFeedbackViewIfNeeded()
+        if viewModel.shouldAutoShowInAppFeedbackPrompt {
+            showFeedbackViewIfNeeded()
+        }
+
         showDropVersionsAlertIfNeeded()
         updateReferralPresenterAndShowPromptIfNeeded()
     }
@@ -361,6 +366,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         // Somehow unreadFilterButton can't reflect font size change automatically
         // reset font again when user preferred font size changed
         unreadFilterButton.titleLabel?.font = .preferredFont(for: .footnote, weight: .semibold)
+    }
+
+    @objc
+    private func tempNetworkError(_ notification: Notification) {
+        DispatchQueue.main.async {
+            guard let error = notification.object as? ConnectionFailedReason else { return }
+            switch error {
+            case .timeout:
+                self.showTimeOutErrorMessage()
+            case .internetIssue:
+                self.showInternetConnectionBanner()
+            }
+        }
     }
 
     private func setupScreenEdgeGesture() {
@@ -511,7 +529,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         view.accessibilityElements = [updateTimeLabel as Any,
                                       newElement,
                                       bannerContainer as Any,
-                                      tableView as Any]
+                                      tableView as Any,
+                                      toolBar as Any,
+                                      noResultMainLabel as Any,
+                                      noResultImage as Any,
+                                      noResultSecondaryLabel as Any]
     }
 
     private func showDropVersionsAlertIfNeeded() {
@@ -529,7 +551,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private func updateReferralPresenterAndShowPromptIfNeeded() {
         #if DEBUG
-        if ProcessInfo.hasFlag(flag: "-ShowReferralPromptView") {
+        if ProcessInfo.hasLaunchArgument(.showReferralPromptView) {
             let referralPromptView = ReferralPromptView { _ in }
             referralPromptView.present(on: self.navigationController!.view)
             return
@@ -541,10 +563,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             return
         }
         if self.referralProgramPresenter == nil {
-            self.referralProgramPresenter = ReferralProgramPromptPresenter(userID: self.viewModel.user.userID,
-                                                                           referralProgram: referralProgram,
-                                                                           referralPromptProvider: userCachedStatus,
-                                                                           featureFlagService: viewModel.user.featureFlagsDownloadService)
+            self.referralProgramPresenter = ReferralProgramPromptPresenter(
+                userID: self.viewModel.user.userID,
+                referralProgram: referralProgram,
+                featureFlagCache: userCachedStatus,
+                featureFlagService: viewModel.user.featureFlagsDownloadService
+            )
         }
         self.referralProgramPresenter?.didShowMailbox()
         if self.referralProgramPresenter?.shouldShowReferralProgramPrompt() == true {
@@ -640,12 +664,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     @objc internal func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         self.showCheckOptions(longPressGestureRecognizer)
-        updateNavigationController(listEditing)
+        updateNavigationController(viewModel.listEditing)
         // invalidate tiemr in multi-selected mode to prevent ui refresh issue
         self.viewModel.eventsService.pause()
     }
 
     @IBAction func unreadMessageFilterButtonTapped(_ sender: Any) {
+        if viewModel.listEditing {
+            hideSelectionMode()
+        }
         self.unreadFilterButton.isSelected.toggle()
         let isSelected = self.unreadFilterButton.isSelected
         if isSelected {
@@ -675,13 +702,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             }
         self.viewModel.isCurrentUserSelectedUnreadFilterInInbox = isSelected
         self.reloadTableViewDataSource(animate: false)
-        self.updateUnreadButton()
+        self.updateUnreadButton(count: viewModel.unreadCount)
     }
 
     // MARK: - Private methods
 
     private func hideSelectionMode() {
-        self.viewModel.removeAllSelectedIDs()
         self.hideCheckOptions()
         self.updateNavigationController(false)
         if viewModel.eventsService.status != .running {
@@ -706,7 +732,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                                     isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox) { _ in }
         }
 
-        updateUnreadButton()
+        updateUnreadButton(count: viewModel.unreadCount)
         showNoResultLabelIfNeeded()
     }
 
@@ -764,7 +790,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             case .conversation(let conversation):
                 let viewModel = buildNewMailboxMessageViewModel(
                     conversation: conversation,
-                    conversationTagUIModels: getTagUIModelFrom(conversation: conversation),
+                    conversationTagUIModels: viewModel.tagUIModels(for: conversation),
                     customFolderLabels: self.viewModel.customFolders,
                     weekStart: viewModel.user.userInfo.weekStartValue
                 )
@@ -801,18 +827,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
             isDarkMode: isDarkMode,
             scale: currentScreenScale
         ) { [weak self, weak cell] image in
-            if let image = image, let cell = cell, cell.mailboxItem == item {
+            if let image = image, let cell = cell, cell.mailboxItem == item, self?.viewModel.listEditing == false {
                 self?.messageCellPresenter.presentSenderImage(image, in: cell.customView)
             }
         }
-    }
-
-    // Temp: needs to refactor the code of generating TagUIModel
-    private func getTagUIModelFrom(conversation: ConversationEntity) -> [TagUIModel] {
-        guard let object = viewModel.coreDataContextProvider.mainContext.object(with: conversation.objectID.rawValue) as? Conversation else {
-            return []
-        }
-        return object.createTags()
     }
 
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
@@ -835,8 +853,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func handleRequestError(_ error: NSError) {
-        guard sharedInternetReachability.currentReachabilityStatus() != .NotReachable else { return }
-        guard checkDoh(error) == false else { return }
+        guard connectionStatusProvider.status.isConnected,
+              checkDoh(error) == false else { return }
 
         let errorCode: Int
         let systemErrorsImportantForUser = [
@@ -882,9 +900,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         // to update used space, pull down will wipe event data
         // so the latest used space can't update by event api
         self.viewModel.user.fetchUserInfo()
+        hideSelectionMode()
         forceRefreshAllMessages()
         self.viewModel.user.labelService.fetchV4Labels()
         self.showNoResultLabelIfNeeded()
+        EncryptedSearchService.shared.fetchNewerMessageIfNeeded(for: viewModel.user.userID)
     }
 
     @objc private func goTroubleshoot() {
@@ -933,7 +953,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                     self?.refreshControl.endRefreshing()
                 }
                 self?.showNoResultLabelIfNeeded()
-                self?.updateLastUpdateTimeLabel()
             }
             self?.startAutoFetch(false)
         }
@@ -1043,7 +1062,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 return
             }
 
-            guard connectionStatusProvider.currentStatus.isConnected, !message.messageID.hasLocalFormat else {
+            guard connectionStatusProvider.status.isConnected, !message.messageID.hasLocalFormat else {
                 defer {
                     self.updateTapped(status: false)
                 }
@@ -1118,21 +1137,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func hideCheckOptions() {
-        guard listEditing else { return }
-        self.listEditing = false
-        if let indexPathsForVisibleRows = self.tableView.indexPathsForVisibleRows {
-            for indexPath in indexPathsForVisibleRows {
-                guard let messageCell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell else {
-                    continue
-                }
-
-                messageCellPresenter.presentSelectionStyle(style: .normal, in: messageCell.customView)
-            }
-        }
+        guard viewModel.listEditing else { return }
+        viewModel.listEditing = false
+        tableView.reloadData()
     }
 
     private func enterListEditingMode(indexPath: IndexPath) {
-        self.listEditing = true
+        self.viewModel.listEditing = true
 
         guard let visibleRowsIndexPaths = self.tableView.indexPathsForVisibleRows else { return }
         visibleRowsIndexPaths.forEach { visibleRowIndexPath in
@@ -1148,7 +1159,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         let point: CGPoint = longPressGestureRecognizer.location(in: self.tableView)
         let indexPath: IndexPath? = self.tableView.indexPathForRow(at: point)
         guard let touchedRowIndexPath = indexPath,
-              longPressGestureRecognizer.state == .began && listEditing == false else { return }
+              longPressGestureRecognizer.state == .began && viewModel.listEditing == false else { return }
         enterListEditingMode(indexPath: touchedRowIndexPath)
     }
 
@@ -1166,30 +1177,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         }
     }
 
-    private func updateUnreadButton() {
-        if refreshControl.isRefreshing { return }
-        let unread = viewModel.lastUpdateTime()?.unread ?? 0
-        let isInUnreadFilter = unreadFilterButton.isSelected
-        let shouldShowUnreadFilter = unread != 0
-        unreadFilterButton.backgroundColor = isInUnreadFilter ? ColorProvider.BrandNorm : ColorProvider.BackgroundSecondary
-        unreadFilterButton.isHidden = isInUnreadFilter ? false : unread == 0
-        customUnreadFilterElement?.isAccessibilityElement = shouldShowUnreadFilter
-        let number = unread > 9999 ? " +9999" : "\(unread)"
-
-        if isInUnreadFilter {
-            unreadFilterButton.setTitle("\(number) \(LocalString._unread_action) ", for: .selected)
-        } else {
-            unreadFilterButton.setTitle("\(number) \(LocalString._unread_action) ", for: .normal)
-        }
-        customUnreadFilterElement?.accessibilityLabel = "\(number) \(LocalString._unread_action)"
-
-        let titleWidth = unreadFilterButton.titleLabel?.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).width ?? 0.0
-        let width = titleWidth + 16 + (isInUnreadFilter ? 16 : 0)
-        unreadFilterButtonWidth.constant = width
-        self.unreadFilterButton.layer.cornerRadius = self.unreadFilterButton.frame.height / 2
-    }
-
-    private func updateLastUpdateTimeLabel() {
+	private func updateLastUpdateTimeLabel() {
         if let status = self.lastNetworkStatus, status == .notConnected {
             updateTimeLabel.set(text: LocalString._mailbox_offline_text,
                                 preferredFont: .footnote,
@@ -1203,7 +1191,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                             preferredFont: .footnote,
                             weight: .regular,
                             textColor: ColorProvider.TextHint)
-    }
+	}
 
     private func configureBannerContainer() {
         let bannerContainer = UIView(frame: .zero)
@@ -1276,7 +1264,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     private func deleteExpiredMessages() {
-        viewModel.user.messageService.deleteExpiredMessage(completion: nil)
+        viewModel.user.messageService.deleteExpiredMessages()
     }
 
     private func updateScheduledMessageTimeLabel() {
@@ -1549,9 +1537,7 @@ extension MailboxViewController {
         let title = messagesCount > 1 ?
             String(format: LocalString._messages_delete_confirmation_alert_title, messagesCount) :
             LocalString._single_message_delete_confirmation_alert_title
-        let message = messagesCount > 1 ?
-            String(format: LocalString._messages_delete_confirmation_alert_message, messagesCount) :
-            LocalString._single_message_delete_confirmation_alert_message
+        let message = String(format: LocalString._messages_delete_confirmation_alert_message, messagesCount)
         let alert = UIAlertController(
             title: title,
             message: message,
@@ -1581,8 +1567,8 @@ extension MailboxViewController {
 
     @objc
     private func handleAccessibilityAction() {
-        listEditing.toggle()
-        updateNavigationController(listEditing)
+        viewModel.listEditing.toggle()
+        updateNavigationController(viewModel.listEditing)
     }
 
     func moreButtonTapped() {
@@ -2078,7 +2064,7 @@ extension MailboxViewController {
         }
         lastNetworkStatus = connectionStatus
 
-        self.updateLastUpdateTimeLabel()
+        updateTheUpdateTimeLabel()
     }
 
     private func afterNetworkChange(status: ConnectionStatus) {
@@ -2134,11 +2120,6 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == self.viewModel.unreadFetchedResult {
-            self.updateUnreadButton()
-            return
-        }
-
         if shouldKeepSkeletonUntilManualDismissal {
             return
         }
@@ -2155,25 +2136,18 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             self.refreshControl.endRefreshing()
         }
         self.showNewMessageCount(self.newMessageCount)
-        self.updateLastUpdateTimeLabel()
         self.showNoResultLabelIfNeeded()
     }
 
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == self.viewModel.unreadFetchedResult {
-            return
-        }
-    }
-
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        if controller == self.viewModel.unreadFetchedResult || shouldKeepSkeletonUntilManualDismissal {
+        if shouldKeepSkeletonUntilManualDismissal {
             return
         }
 
-            if type == .delete {
-                popPresentedItemIfNeeded(anObject)
-                hideActionBarIfNeeded(anObject)
-            }
+        if type == .delete {
+            popPresentedItemIfNeeded(anObject)
+            hideActionBarIfNeeded(anObject)
+        }
     }
 }
 
@@ -2216,7 +2190,7 @@ extension MailboxViewController {
         }
         guard viewModel.selectedIDs.contains(id) else { return }
         viewModel.removeSelected(id: id)
-        self.setupNavigationTitle(showSelected: self.listEditing)
+        self.setupNavigationTitle(showSelected: self.viewModel.listEditing)
         self.dismissActionSheet()
         if viewModel.selectedIDs.isEmpty {
             hideActionBar()
@@ -2251,7 +2225,7 @@ extension MailboxViewController: UITableViewDelegate {
                 let recordedCount = totalMessage
                 // here need add a counter to check if tried too many times make one real call in case count not right
                 if isNew || recordedCount > sectionCount {
-                    guard connectionStatusProvider.currentStatus.isConnected else {
+                    guard connectionStatusProvider.status.isConnected else {
                         return
                     }
                     self.fetchingOlder = true
@@ -2313,7 +2287,7 @@ extension MailboxViewController: UITableViewDelegate {
 
     private func handleMessageSelection(indexPath: IndexPath) {
         guard let message = viewModel.item(index: indexPath) else { return }
-        if listEditing {
+        if viewModel.listEditing {
             handleEditingDataSelection(of: message.messageID.rawValue, indexPath: indexPath)
         } else {
             self.tapped(at: indexPath)
@@ -2322,7 +2296,7 @@ extension MailboxViewController: UITableViewDelegate {
 
     private func handleConversationSelection(indexPath: IndexPath) {
         guard let conversation = viewModel.itemOfConversation(index: indexPath) else { return }
-        if listEditing {
+        if viewModel.listEditing {
             handleEditingDataSelection(of: conversation.conversationID.rawValue, indexPath: indexPath)
         } else {
             self.coordinator?.go(to: .details, sender: nil)
@@ -2360,9 +2334,9 @@ extension MailboxViewController: NewMailboxMessageCellDelegate {
     func didSelectButtonStatusChange(cell: NewMailboxMessageCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
 
-        if !listEditing {
+        if !viewModel.listEditing {
             self.enterListEditingMode(indexPath: indexPath)
-            updateNavigationController(listEditing)
+            updateNavigationController(viewModel.listEditing)
         } else {
             tableView(self.tableView, didSelectRowAt: indexPath)
         }
@@ -2496,9 +2470,6 @@ extension MailboxViewController {
     private func makeInAppFeedbackPromptScheduler() -> InAppFeedbackPromptScheduler {
         let allowedHandler: InAppFeedbackPromptScheduler.PromptAllowedHandler = { [weak self] in
             guard let self = self else { return false }
-            guard self.viewModel.user.inAppFeedbackStateService.isEnable else {
-                return false
-            }
             return self.navigationController?.topViewController == self
         }
         let showHandler: InAppFeedbackPromptScheduler.ShowPromptHandler = { [weak self] completionHandler in
@@ -2558,7 +2529,7 @@ extension MailboxViewController {
         }
         if scheduleUserFeedbackCallOnAppear {
             scheduleUserFeedbackCallOnAppear = false
-            self.showFeedbackActionSheet { [weak self] completed in
+            self.showFeedbackActionSheet { [weak self] _ in
                 guard let self = self else { return }
                 self.inAppFeedbackScheduler?.markAsFeedbackSubmitted()
             }
@@ -2580,8 +2551,54 @@ extension MailboxViewController: UndoActionHandlerBase {
     }
 }
 
+// MARK: - ConnectionStatusReceiver
+extension MailboxViewController: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        updateInterface(connectionStatus: newStatus)
+    }
+}
+
 extension MailboxViewController: MailboxViewModelUIProtocol {
     func updateTitle() {
-        setupNavigationTitle(showSelected: listEditing)
+        setupNavigationTitle(showSelected: viewModel.listEditing)
+    }
+
+    func updateTheUpdateTimeLabel() {
+        if let status = self.lastNetworkStatus, status == .notConnected {
+            updateTimeLabel.set(text: LocalString._mailbox_offline_text,
+                                preferredFont: .footnote,
+                                weight: .regular,
+                                textColor: ColorProvider.NotificationError)
+            return
+        }
+
+        let timeText = self.viewModel.getLastUpdateTimeText()
+        updateTimeLabel.set(text: timeText,
+                            preferredFont: .footnote,
+                            weight: .regular,
+                            textColor: ColorProvider.TextHint)
+    }
+
+    func updateUnreadButton(count: Int) {
+        if refreshControl.isRefreshing { return }
+        let unread = count
+        let isInUnreadFilter = unreadFilterButton.isSelected
+        let shouldShowUnreadFilter = unread != 0
+        unreadFilterButton.backgroundColor = isInUnreadFilter ? ColorProvider.BrandNorm : ColorProvider.BackgroundSecondary
+        unreadFilterButton.isHidden = isInUnreadFilter ? false : unread == 0
+        customUnreadFilterElement?.isAccessibilityElement = shouldShowUnreadFilter
+        let number = unread > 9999 ? " +9999" : "\(unread)"
+
+        if isInUnreadFilter {
+            unreadFilterButton.setTitle("\(number) \(LocalString._unread_action) ", for: .selected)
+        } else {
+            unreadFilterButton.setTitle("\(number) \(LocalString._unread_action) ", for: .normal)
+        }
+        customUnreadFilterElement?.accessibilityLabel = "\(number) \(LocalString._unread_action)"
+
+        let titleWidth = unreadFilterButton.titleLabel?.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).width ?? 0.0
+        let width = titleWidth + 16 + (isInUnreadFilter ? 16 : 0)
+        unreadFilterButtonWidth.constant = width
+        self.unreadFilterButton.layer.cornerRadius = self.unreadFilterButton.frame.height / 2
     }
 }

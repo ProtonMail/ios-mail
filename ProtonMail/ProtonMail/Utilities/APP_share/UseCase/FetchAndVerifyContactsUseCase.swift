@@ -20,7 +20,7 @@ import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Services
 
-typealias FetchAndVerifyContactsUseCase = NewUseCase<[PreContact], FetchAndVerifyContacts.Parameters>
+typealias FetchAndVerifyContactsUseCase = UseCase<[PreContact], FetchAndVerifyContacts.Parameters>
 
 /// Given a list of email addresses, it returns a PreContact object for each address that exist in contacts
 /// and has custom send preferences (e.g. a different public key, a specific PGP scheme,

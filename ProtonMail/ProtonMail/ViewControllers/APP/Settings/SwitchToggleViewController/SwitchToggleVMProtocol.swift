@@ -19,7 +19,15 @@ import Foundation
 import struct UIKit.CGFloat
 import enum ProtonCore_Utilities.Either
 
+struct SwitchToggleVMActionConfirmation {
+    let title: String
+    let message: String
+    let confirmationButton: String
+}
+
 protocol SwitchToggleVMProtocol {
+    var confirmationOnEnable: SwitchToggleVMActionConfirmation? { get }
+    var confirmationOnDisable: SwitchToggleVMActionConfirmation? { get }
     var input: SwitchToggleVMInput { get }
     var output: SwitchToggleVMOutput { get }
 }
@@ -40,4 +48,9 @@ protocol SwitchToggleVMOutput {
     func cellData(for indexPath: IndexPath) -> (title: String, status: Bool)?
     func sectionHeader(of section: Int) -> String?
     func sectionFooter(of section: Int) -> Either<String, NSAttributedString>?
+}
+
+extension SwitchToggleVMProtocol {
+    var confirmationOnEnable: SwitchToggleVMActionConfirmation? { nil }
+    var confirmationOnDisable: SwitchToggleVMActionConfirmation? { nil }
 }

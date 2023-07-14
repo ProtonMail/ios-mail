@@ -226,7 +226,6 @@ extension MessageSendingRequestBuilder {
         }
     }
 
-    // swiftlint:disable function_body_length
     func buildMime(senderKey: Key,
                    passphrase: Passphrase,
                    userKeys: [ArmoredKey],
@@ -359,7 +358,7 @@ extension MessageSendingRequestBuilder {
     }
 
     func buildFirstPartOfBody(boundaryMsg: String, messageBody: String) -> String {
-        let typeMessage = "Content-Type: multipart/related; boundary=\"\(boundaryMsg)\""
+        let typeMessage = "Content-Type: multipart/mixed; boundary=\(boundaryMsg)"
         var signbody = ""
         signbody.append(contentsOf: typeMessage + "\r\n")
         signbody.append(contentsOf: "\r\n")
@@ -401,6 +400,7 @@ extension MessageSendingRequestBuilder {
 
 // MARK: - Create builders for each type of message
 extension MessageSendingRequestBuilder {
+    // swiftlint:disable:next function_body_length
     func generatePackageBuilder() throws -> [PackageBuilder] {
         var out = [PackageBuilder]()
         for (email, sendPreferences) in self.addressSendPreferences {

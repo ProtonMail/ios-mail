@@ -8,7 +8,7 @@
 "'On' E, MMM d, yyyy 'at' %@" = "'Den' d MMM yyyy 'kl' %@";
 
 /* Message for the alert to delete all downloaded messages. */
-"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Sök meddelandeinnehåll' kommer inaktiveras. Den kan aktiveras igen från inställningar och alla meddelanden kommer laddas ner på nytt.";
+"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "“Sök meddelandeinnehåll“ kommer att inaktiveras. Det kan aktiveras igen från inställningarna och alla meddelanden måste laddas ner igen.";
 
 /* The text combining size of index and storage limit */
 "%@ of %@" = "%1$@ av %2$@";
@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "All e-post";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Alla skyddsinställningar kommer att återställas och tas bort när du loggar ut från appen.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Alla dina meddelanden laddas ner";
 
@@ -183,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey-skydd";
 
+/* Title for application logs settings option */
+"Application logs" = "Applikationsloggar";
+
 /* Apply action */
 "Apply" = "Tillämpa";
 
@@ -199,12 +205,6 @@
 
 /* Push notification action archive */
 "Archive (verb)" = "Arkivera";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Är du säker på att du vill ta bort detta meddelande permanent?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Är du säker på att du vill ta bort dessa %d meddelanden permanent?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Är du säker på att du vill logga ut %@?";
@@ -255,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "Tid till automatisk låsning";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Ta bort automatiskt";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Ta bort oönskade meddelanden automatiskt";
+
 /* settings general section title */
 "Auto-load embedded images" = "Ladda automatiskt inbäddade bilder";
 
 /* settings general section title */
 "Auto-load remote content" = "Ladda fjärrinnehåll automatiskt";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Ta bort meddelanden som har legat i papperskorgen i mer än 30 dagar automatiskt.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Tillgängliga åtgärder";
@@ -427,6 +436,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Rensa stil";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Rensar cache…";
 
 /* general close action */
 "Close" = "Stäng";
@@ -616,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Ta bort meddelande";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Ta bort meddelanden?";
+
 /* Title */
 "Details" = "Detaljer";
 
+/* Button to disable auto delete */
+"Disable" = "Inaktivera";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Inaktivera eventuella proxies eller brandväggar eller kontakta din nätverksadministratör.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Inaktivera automatisk borttagning?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Inaktivera validering";
@@ -776,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "E-postspårningsskydd";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "E-postmeddelanden som schemalagts för borttagning kommer finnas kvar i papperskorgen och skräppostmapparna.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Töm skräppost";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Töm skräppost";
 
 /* Alert title */
 "Empty spam folder" = "Töm skräppostmapp";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Töm papperskorg";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Töm papperskorg";
@@ -830,9 +860,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Ange ny PIN-kod";
-
-/* The title of the pin code view. */
-"Enter PIN" = "Ange PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Ange ditt lösenord för att göra ändringar";
@@ -955,7 +982,7 @@
 "Hide details" = "Dölj detaljer";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email-alias";
+"Hide My Email aliases" = "Hide-my-email-alias";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hur skulle du beskriva din upplevelse med nya Proton Mail?";
@@ -1209,10 +1236,16 @@
 "Messages are being downloaded for content search. Some results may not be shown. %1$@" = "Meddelanden laddas ner för innehållssökning. Några resultat kanske inte visas. %1$@";
 
 /* Text for the search info banner when indexing is stopped because of storage limit reached. */
-"Messages from before " = "Tidigare meddelanden ";
+"Messages from before " = "Meddelanden från före ";
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Meddelande från innan %@ kommer inte att sökas. För att söka inom dessa, frigör lagringsutrymme på denna enhet.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Meddelanden som legat i papperskorg eller skräppost i mer än 30 dagar kommer tas bort automatiskt.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar kommer att tas bort automatiskt.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Meddelanden kommer att ladda ner via WiFi. Detta kan ta lite tid och din enhet kan bli lite varmare. Du kan pausa åtgärden när som helst.";
@@ -1338,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Nej, inte relaterade till i-app inköp";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Nej tack";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2064,6 +2100,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Detta verktygsfält är synligt när du läser ett meddelande.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Detta kommer ta bort alla meddelanden som finns i papperskorg eller skräppost i mer än 30 dagar, inklusive meddelanden som för närvarande finns i dessa mappar.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Dags att koppla av";
 
@@ -2114,6 +2153,9 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Betrodda nycklar är inte giltiga för att skicka";
 
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Prova en annan sökterm.";
+
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Försök att ansluta till Proton från ett annat nätverk (eller använd %1$@ eller %2$@).";
 
@@ -2122,9 +2164,6 @@
 
 /* Placeholder */
 "Two Factor Code" = "Tvåfaktorskod";
-
-/* Internal type casting error */
-"Type casting error" = "Typkonverteringsfel";
 
 /* Description */
 "Unable to edit this message offline" = "Kan inte att redigera detta meddelande offline";
@@ -2215,6 +2254,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Uppgradera till ett betalt paket för att skicka från din %@-adress";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Uppgradera för att ta bort meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar automatiskt.";
 
 /* Action */
 "Upload device contacts" = "Ladda upp enhetskontakter";
@@ -2385,7 +2427,7 @@
 "Your messages are being downloaded..." = "Dina meddelanden laddas ner …";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Din integritet skyddas bättre om dina kontakter också använder Proton Mail. Bjud in dina vänner till Proton, så får ni båda premiumförmåner gratis.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Din integritet skyddas bättre om dina kontakter också använder Proton Mail. Bjud in dina vänner till Proton, så får ni var och en premiumförmåner gratis.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session har löpt ut eftersom du har varit inaktiv ett tag eller för att den har återkallats. Logga in igen.";

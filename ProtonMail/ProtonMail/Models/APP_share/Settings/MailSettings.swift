@@ -18,24 +18,28 @@
 import ProtonCore_DataModel
 
 struct MailSettings: Parsable, Equatable {
-    private(set) var nextMessageOnMove: NextMessageOnMove
+    private(set) var autoDeleteSpamTrashDays: AutoDeleteSpamAndTrashDays
     private(set) var hideSenderImages: Bool
+    private(set) var nextMessageOnMove: NextMessageOnMove
     private(set) var showMoved: ShowMoved
 
     enum CodingKeys: String, CodingKey {
         case nextMessageOnMove = "NextMessageOnMove"
         case hideSenderImages = "HideSenderImages"
         case showMoved = "ShowMoved"
+        case autoDeleteSpamTrashDays = "AutoDeleteSpamAndTrashDays"
     }
 
     init(
         nextMessageOnMove: NextMessageOnMove = DefaultValue.nextMessageOnMove,
         hideSenderImages: Bool = DefaultValue.hideSenderImages,
-        showMoved: ShowMoved = DefaultValue.showMoved
+        showMoved: ShowMoved = DefaultValue.showMoved,
+        autoDeleteSpamTrashDays: AutoDeleteSpamAndTrashDays = DefaultValue.autoDeleteSpamTrashDays
     ) {
         self.nextMessageOnMove = nextMessageOnMove
         self.hideSenderImages = hideSenderImages
         self.showMoved = showMoved
+        self.autoDeleteSpamTrashDays = autoDeleteSpamTrashDays
     }
 
     init(from decoder: Decoder) throws {
@@ -48,6 +52,8 @@ struct MailSettings: Parsable, Equatable {
         )
         let showMovedValue = try container.decodeIfPresent(Int.self, forKey: .showMoved)
         showMoved = ShowMoved(rawValue: showMovedValue)
+        let autoDeleteSpamTrashDaysValue = try container.decodeIfPresent(Int.self, forKey: .autoDeleteSpamTrashDays)
+        autoDeleteSpamTrashDays = AutoDeleteSpamAndTrashDays(rawValue: autoDeleteSpamTrashDaysValue)
     }
 
     mutating func update(key: CodingKeys, to newValue: Bool) {
@@ -58,6 +64,8 @@ struct MailSettings: Parsable, Equatable {
             hideSenderImages = newValue
         case .showMoved:
             assertionFailure("Not suitable for this key")
+        case .autoDeleteSpamTrashDays:
+            autoDeleteSpamTrashDays = newValue ? .explicitlyEnabled : .explicitlyDisabled
         }
     }
 
@@ -65,6 +73,7 @@ struct MailSettings: Parsable, Equatable {
         static let nextMessageOnMove = NextMessageOnMove.implicitlyDisabled
         static let hideSenderImages = false
         static let showMoved = ShowMoved.doNotKeep
+        static let autoDeleteSpamTrashDays = AutoDeleteSpamAndTrashDays.implicitlyDisabled
     }
 }
 

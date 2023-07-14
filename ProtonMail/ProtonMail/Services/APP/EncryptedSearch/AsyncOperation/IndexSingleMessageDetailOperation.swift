@@ -21,42 +21,36 @@ import ProtonCore_Services
 
 final class IndexSingleMessageDetailOperation: AsyncOperation {
     private let apiService: APIService
-    private let message: ESMessage
+    private let messageID: MessageID
     private let userID: UserID
     private(set) var result: Result<ESMessage, Error>?
 
     init(
         apiService: APIService,
-        message: ESMessage,
+        messageID: MessageID,
         userID: UserID
     ) {
         self.apiService = apiService
-        self.message = message
+        self.messageID = messageID
         self.userID = userID
     }
 
     override func main() {
         super.main()
 
-        if message.isDetailsDownloaded ?? false {
-            log(message: "indexSingleMessageDetailOperation early return, is downloaded")
-            result = .success(message)
-            finish()
-            return
-        }
-        downloadMessageDetail(messageID: MessageID(message.id)) { [weak self] result in
+        downloadMessageDetail(messageID: messageID) { [weak self] result in
+            defer { self?.finish() }
             guard let self = self, !self.isCancelled else { return }
             switch result {
             case .failure(let error):
                 self.log(
-                    message: "indexSingleMessageDetailOperation \(self.message.id) failed use esMessage \(error)",
+                    message: "indexSingleMessageDetailOperation \(self.messageID.rawValue) failed use esMessage \(error)",
                     isError: true
                 )
                 self.result = .failure(error)
             case .success(let message):
                 self.result = .success(message)
             }
-            self.finish()
         }
     }
 
@@ -64,17 +58,25 @@ final class IndexSingleMessageDetailOperation: AsyncOperation {
         messageID: MessageID,
         completion: @escaping (Result<ESMessage, Swift.Error>) -> Void
     ) {
-        // TODO try to use FetchMessageDetail but need to get rid of ESMessage
+        // TODO: try to use FetchMessageDetail but need to get rid of ESMessage
         // And if core data contains the message, doesn't need to call API
         let request = MessageDetailRequest(messageID: messageID, priority: .lowestPriority)
-        apiService.perform(request: request, jsonDictionaryCompletion: { [weak self] _, result in
-            switch result {
-            case .failure(let error):
-                completion(.failure(error))
-            case .success(let dict):
-                self?.parseMessageDetail(response: dict, completion: completion)
+        apiService.perform(
+            request: request,
+            callCompletionBlockUsing: .asyncExecutor(dispatchQueue: .global()),
+            jsonDictionaryCompletion: { [weak self] _, result in
+                guard let self = self, !self.isCancelled else {
+                    completion(.failure(BuildSearchIndex.IndexError.taskIsCancelled))
+                    return
+                }
+                switch result {
+                case .failure(let error):
+                    completion(.failure(error))
+                case .success(let dict):
+                    self.parseMessageDetail(response: dict, completion: completion)
+                }
             }
-        })
+        )
     }
 
     private func parseMessageDetail(

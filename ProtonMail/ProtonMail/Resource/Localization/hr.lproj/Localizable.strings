@@ -137,9 +137,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Arhiva";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Jeste li sigurni da želite trajno izbrisati ovu poruku?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Da li ste sigurni da se želite odjaviti %@?";
 
@@ -1715,9 +1712,6 @@
 /* contact placeholder */
 "ZIP" = "Poštanski broj";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in.";
-
 "Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";
 
-"Customize (verb)" = "Customize (verb)";
+"Customize (verb)" = "Customize";

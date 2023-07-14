@@ -129,7 +129,6 @@ private extension PushNotificationHandler {
         do {
             return try PushContent(json: decryptedText)
         } catch {
-            let redactedInfo = String(describing: error)
             throw PushManagementUnexpected.error(description: "fail parsing push content")
         }
     }
@@ -200,7 +199,7 @@ extension PushNotificationHandler {
     }
 
     final class PushCacheStatus: SharedCacheBase {
-        // swiftlint:disable nesting
+        // swiftlint:disable:next nesting
         enum Key {
             static let primaryUserSessionId = "primary_user_session_id"
         }

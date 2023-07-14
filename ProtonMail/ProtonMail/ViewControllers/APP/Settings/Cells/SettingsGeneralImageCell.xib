@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="SettingsGeneralImageCell" id="rth-qh-jV5" customClass="SettingsGeneralImageCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="440" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rth-qh-jV5" id="mHI-aa-bJO">
+                <rect key="frame" x="0.0" y="0.0" width="440" height="50"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="xoN-yX-f1O">
+                        <rect key="frame" x="16" y="0.0" width="376" height="50"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="252" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="wRd-Ml-Jhr">
+                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="50"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kf0-YD-xGI">
+                                <rect key="frame" x="8" y="0.0" width="50" height="50"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Up1-ZR-Ba2">
+                                <rect key="frame" x="66" y="0.0" width="310" height="50"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="Up1-ZR-Ba2" firstAttribute="leading" secondItem="Kf0-YD-xGI" secondAttribute="trailing" constant="8" id="XEI-x4-HbR"/>
+                            <constraint firstItem="Kf0-YD-xGI" firstAttribute="leading" secondItem="wRd-Ml-Jhr" secondAttribute="trailing" constant="8" id="ySq-ur-cqD"/>
+                        </constraints>
+                    </stackView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="tGX-1Z-ujR">
+                        <rect key="frame" x="400" y="15" width="20" height="20"/>
+                    </activityIndicatorView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zaX-qf-ufH">
+                        <rect key="frame" x="400" y="15" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="zaX-qf-ufH" secondAttribute="height" multiplier="1:1" id="Jrr-zJ-rpk"/>
+                            <constraint firstAttribute="height" constant="20" id="h9e-3X-9oU"/>
+                            <constraint firstAttribute="width" constant="20" id="uhV-QZ-zdC"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="xoN-yX-f1O" firstAttribute="top" relation="greaterThanOrEqual" secondItem="mHI-aa-bJO" secondAttribute="top" id="44O-cl-8az"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="zaX-qf-ufH" secondAttribute="trailing" id="6Hn-Gr-8Vn"/>
+                    <constraint firstItem="xoN-yX-f1O" firstAttribute="centerY" secondItem="mHI-aa-bJO" secondAttribute="centerY" id="75h-HE-Tnc"/>
+                    <constraint firstAttribute="bottom" secondItem="zaX-qf-ufH" secondAttribute="bottom" constant="15" id="HGd-9Z-k2k"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="tGX-1Z-ujR" secondAttribute="trailing" id="Hnz-97-Cc3"/>
+                    <constraint firstItem="zaX-qf-ufH" firstAttribute="centerY" secondItem="xoN-yX-f1O" secondAttribute="centerY" id="LfI-Ta-fez"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="xoN-yX-f1O" secondAttribute="bottom" id="akE-m8-rXJ"/>
+                    <constraint firstAttribute="trailing" secondItem="xoN-yX-f1O" secondAttribute="trailing" priority="750" constant="16" id="eZL-4h-arq"/>
+                    <constraint firstItem="zaX-qf-ufH" firstAttribute="top" secondItem="mHI-aa-bJO" secondAttribute="top" constant="15" id="kbS-PJ-5b5"/>
+                    <constraint firstItem="tGX-1Z-ujR" firstAttribute="centerY" secondItem="mHI-aa-bJO" secondAttribute="centerY" id="m1q-55-cPz"/>
+                    <constraint firstItem="xoN-yX-f1O" firstAttribute="leading" secondItem="mHI-aa-bJO" secondAttribute="leading" constant="16" id="oYp-B6-09C"/>
+                    <constraint firstItem="zaX-qf-ufH" firstAttribute="leading" secondItem="xoN-yX-f1O" secondAttribute="trailing" priority="999" constant="8" id="pL6-Sj-YST"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="activityIndicator" destination="tGX-1Z-ujR" id="cnD-QH-yiB"/>
+                <outlet property="leftImageView" destination="Kf0-YD-xGI" id="sbl-mD-4jG"/>
+                <outlet property="leftText" destination="wRd-Ml-Jhr" id="xER-gq-bpe"/>
+                <outlet property="rightArrowImage" destination="zaX-qf-ufH" id="kQQ-V5-0DH"/>
+                <outlet property="rightText" destination="Up1-ZR-Ba2" id="Dbo-C4-F8U"/>
+                <outlet property="stackView" destination="xoN-yX-f1O" id="xx9-wd-BZU"/>
+                <outlet property="stackViewTrailingConstraintWithContainer" destination="eZL-4h-arq" id="w5b-xc-WMR"/>
+                <outlet property="stackViewTrailingConstraintWithIconView" destination="pL6-Sj-YST" id="rVZ-Sh-PUZ"/>
+            </connections>
+            <point key="canvasLocation" x="-359.4202898550725" y="-261.16071428571428"/>
+        </tableViewCell>
+    </objects>
+</document>

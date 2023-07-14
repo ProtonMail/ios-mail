@@ -24,8 +24,11 @@ class ConversationViewModelTests: XCTestCase {
 
     private var sut: ConversationViewModel!
     var contextProviderMock: MockCoreDataContextProvider!
+    var featureFlagCache: MockFeatureFlagCache!
     var labelProviderMock: MockLabelProviderProtocol!
     var messageMock: MessageEntity!
+    var internetStatusProviderMock: MockInternetConnectionStatusProviderProtocol!
+    var connectionMonitor: MockConnectionMonitor!
     var toolbarCustomizeSpotlightStatusProviderMock: MockToolbarCustomizeSpotlightStatusProvider!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
@@ -34,7 +37,6 @@ class ConversationViewModelTests: XCTestCase {
     var coordinatorMock: MockConversationCoordinator!
     var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
     var notificationCenterMock: NotificationCenter!
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
     var apiServiceMock: APIServiceMock!
     var imageTempUrl: URL!
 
@@ -42,13 +44,15 @@ class ConversationViewModelTests: XCTestCase {
         try super.setUpWithError()
 
         self.contextProviderMock = MockCoreDataContextProvider()
-        let fakeConversation = ConversationEntity(Conversation(context: contextProviderMock.viewContext))
+        let fakeConversationObject = Conversation(context: contextProviderMock.viewContext)
+        let fakeConversation = ConversationEntity(fakeConversationObject)
         apiServiceMock = APIServiceMock()
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
+        featureFlagCache = .init()
         userManagerStub = UserManager(api: apiServiceMock, role: .none)
-        let reachabilityStub = ReachabilityStub()
-        let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
+        internetStatusProviderMock = .init()
+        internetStatusProviderMock.statusStub.fixture = .connectedViaWiFi
         labelProviderMock = MockLabelProviderProtocol()
         toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
         toolbarActionProviderMock = MockToolbarActionProvider()
@@ -57,39 +61,8 @@ class ConversationViewModelTests: XCTestCase {
         coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
         nextMessageAfterMoveStatusProviderMock = .init()
         notificationCenterMock = .init()
-        mockSenderImageStatusProvider = .init()
-
-        let dependencies = ConversationViewModel.Dependencies(
-            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
-            nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            notificationCenter: notificationCenterMock,
-            senderImageStatusProvider: mockSenderImageStatusProvider,
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(
-                    senderImageService: .init(dependencies: .init(apiService: apiServiceMock,
-                                                                  internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
-                    senderImageStatusProvider: mockSenderImageStatusProvider,
-                    mailSettings: userManagerStub.mailSettings
-                )
-            )
-        )
-
-        sut = ConversationViewModel(labelId: "",
-                                    conversation: fakeConversation,
-                                    coordinator: coordinatorMock,
-                                    user: userManagerStub,
-                                    contextProvider: contextProviderMock,
-                                    internetStatusProvider: internetStatusProviderMock,
-                                    conversationStateProvider: MockConversationStateProviderProtocol(),
-                                    labelProvider: labelProviderMock,
-                                    userIntroductionProgressProvider: userIntroductionProgressProviderMock,
-                                    targetID: nil,
-                                    toolbarActionProvider: toolbarActionProviderMock,
-                                    saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                                    toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
-                                    highlightedKeywords: [],
-                                    goToDraft: { _, _ in },
-                                    dependencies: dependencies)
+        connectionMonitor = MockConnectionMonitor()
+        makeSUT(labelID: "", conversation: fakeConversationObject)
 
         // Prepare for api mock to write image data to disk
         imageTempUrl = FileManager.default.temporaryDirectory
@@ -99,12 +72,15 @@ class ConversationViewModelTests: XCTestCase {
 
     override func tearDownWithError() throws {
         sut = nil
+        featureFlagCache = nil
         labelProviderMock = nil
         messageMock = nil
+        internetStatusProviderMock = nil
         toolbarCustomizeSpotlightStatusProviderMock = nil
         toolbarActionProviderMock = nil
         userManagerStub = nil
         apiServiceMock = nil
+        connectionMonitor = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
         try super.tearDownWithError()
@@ -528,31 +504,31 @@ class ConversationViewModelTests: XCTestCase {
         XCTAssertFalse(sut.shouldShowToolbarCustomizeSpotlight())
     }
 
-    func testNavigateToNextConversation_withFlagIsFalse_coordinatorShouldNotBeCalled() {
+    func testSendSwipeNotification_withFlagIsFalse_notificationShouldNotSend() {
         let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
         e.isInverted = true
         nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = false
 
-        sut.navigateToNextConversation(isInPageView: true)
+        sut.sendSwipeNotificationIfNeeded(isInPageView: true)
 
         wait(for: [e], timeout: 2)
     }
 
-    func testNavigateToNextConversation_withFlagIsTrue_coordinatorIsCalled() {
+    func testSendSwipeNotification_withFlagIsTrue_notificationIsSent() {
         let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
         nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
 
-        sut.navigateToNextConversation(isInPageView: true)
+        sut.sendSwipeNotificationIfNeeded(isInPageView: true)
 
         wait(for: [e], timeout: 1)
 	}
 
-    func testNavigateToNextConversation_withFlagIsTrue_notInPageView_coordinatorShouldNotBeCalled() {
+    func testSendSwipeNotification_withFlagIsTrue_notInPageView_notificationDoesNotSend() {
         let e = XCTNSNotificationExpectation(name: .pagesSwipeExpectation, object: nil, notificationCenter: notificationCenterMock)
         e.isInverted = true
         nextMessageAfterMoveStatusProviderMock.shouldMoveToNextMessageAfterMoveStub.fixture = true
 
-        sut.navigateToNextConversation(isInPageView: false)
+        sut.sendSwipeNotificationIfNeeded(isInPageView: false)
 
         wait(for: [e], timeout: 2)
     }
@@ -745,9 +721,6 @@ class ConversationViewModelTests: XCTestCase {
     func testFetchSenderImageIfNeeded_featureFlagIsOff_getNil() {
         makeSUT(labelID: Message.Location.inbox.labelID)
         userManagerStub.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return false
-        }
         let e = expectation(description: "Closure is called")
 
         sut.fetchSenderImageIfNeeded(message: MessageEntity.make(),
@@ -765,8 +738,8 @@ class ConversationViewModelTests: XCTestCase {
     func testFetchSenderImageIfNeeded_hideSenderImageInMailSettingTrue_getNil() {
         makeSUT(labelID: Message.Location.inbox.labelID)
         userManagerStub.mailSettings = .init(hideSenderImages: true)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
 
@@ -785,8 +758,8 @@ class ConversationViewModelTests: XCTestCase {
     func testFetchSenderImageIfNeeded_msgHasNoSenderThatIsEligible_getNil() {
         makeSUT(labelID: Message.Location.inbox.labelID)
         userManagerStub.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
 
@@ -804,9 +777,10 @@ class ConversationViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_msgHasEligibleSender_getImageData() {
         makeSUT(labelID: Message.Location.inbox.labelID)
+        internetStatusProviderMock.statusStub.fixture = .connectedViaWiFi
         userManagerStub.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
         let msg = MessageEntity.createSenderImageEligibleMessage()
@@ -845,18 +819,15 @@ class ConversationViewModelTests: XCTestCase {
         let fakeConversation = ConversationEntity(conversation)
         let fakeUser = UserManager(api: apiServiceMock, role: .none)
         userManagerStub = fakeUser
-        let reachabilityStub = ReachabilityStub()
-        let internetStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: NotificationCenter(), reachability: reachabilityStub)
 
         let dependencies = ConversationViewModel.Dependencies(
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            notificationCenter: .default,
-            senderImageStatusProvider: mockSenderImageStatusProvider,
+            notificationCenter: notificationCenterMock,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
-                    senderImageService: .init(dependencies: .init(apiService: fakeUser.apiService, internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
-                    senderImageStatusProvider: mockSenderImageStatusProvider,
+                    featureFlagCache: featureFlagCache,
+                    senderImageService: .init(dependencies: .init(apiService: fakeUser.apiService, internetStatusProvider: internetStatusProviderMock)),
                     mailSettings: fakeUser.mailSettings
                 )
             )
@@ -885,9 +856,7 @@ class ConversationViewModelTests: XCTestCase {
         location: Message.Location = .inbox,
         multipleRecipients: Bool = false
     ) -> ConversationMessageViewModel {
-        let fakeInternetProvider = InternetConnectionStatusProvider(notificationCenter: .default,
-                                                                    reachability: ReachabilityStub(),
-                                                                    connectionMonitor: nil)
+        let fakeInternetProvider = InternetConnectionStatusProvider(connectionMonitor: connectionMonitor)
         let fakeUserManager = UserManager(api: APIServiceMock(), role: .none)
         userManagerStub = fakeUserManager
 
@@ -901,7 +870,6 @@ class ConversationViewModelTests: XCTestCase {
             contactGroups: [],
             internetStatusProvider: fakeInternetProvider,
             highlightedKeywords: [],
-            senderImageStatusProvider: mockSenderImageStatusProvider,
             goToDraft: { _, _ in })
         if isExpanded {
             viewModel.toggleState()

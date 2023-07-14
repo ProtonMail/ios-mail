@@ -191,7 +191,6 @@ class ConversationsAPITests: XCTestCase {
         let sut = ConversationDeleteResponse()
         XCTAssertTrue(sut.ParseResponse(responseDictionary))
         XCTAssertNotNil(sut.results)
-        XCTAssertNotNil(sut.responseDict)
     }
     
     //MARK: - Conversation Label

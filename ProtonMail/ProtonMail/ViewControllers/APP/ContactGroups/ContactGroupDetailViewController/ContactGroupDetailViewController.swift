@@ -110,9 +110,11 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
             contextProvider: sharedServices.get(by: CoreDataService.self),
             isEditingScheduleMsg: false,
             userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus,
-            internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+            internetStatusProvider: InternetConnectionStatusProvider.shared,
             coreKeyMaker: sharedServices.get(),
+            darkModeCache: sharedServices.userCachedStatus,
+            mobileSignatureCache: sharedServices.userCachedStatus,
+            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
             toContact: contactGroupVO
         )
 
@@ -155,7 +157,7 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
 
         groupDetailLabel.attributedText = viewModel.getTotalEmailString().apply(style: .DefaultSmallWeek)
 
-        groupImage.setImage(IconProvider.users)
+        groupImage.image = IconProvider.users
         groupImage.setupImage(tintColor: UIColor.white,
                               backgroundColor: UIColor.init(hexString: viewModel.color, alpha: 1))
         if let image = sendButton.imageView?.image {

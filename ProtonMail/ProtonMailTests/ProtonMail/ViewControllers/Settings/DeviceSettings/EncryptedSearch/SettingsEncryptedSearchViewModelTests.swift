@@ -70,7 +70,10 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
             isESEnabled
         }
         mockEncryptedSearchService.indexBuildingStateStub.bodyIs { _, _ in
-            [EncryptedSearchIndexState.downloadingNewMessage, EncryptedSearchIndexState.creatingIndex].randomElement()!
+            [
+                EncryptedSearchIndexState.downloadingNewMessage(isInitialIndexComplete: true),
+                EncryptedSearchIndexState.creatingIndex
+            ].randomElement()!
         }
 
         sut.input.didChangeEncryptedSearchValue(isNewStatusEnabled: isESEnabled)
@@ -125,7 +128,11 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
 
     func testInput_didTapDownloadedMessages() {
         mockEncryptedSearchService.indexBuildingStateStub.bodyIs { _, _ in
-            [EncryptedSearchIndexState.complete, .creatingIndex, .downloadingNewMessage].randomElement()!
+            [
+                EncryptedSearchIndexState.complete,
+                    .creatingIndex,
+                    .downloadingNewMessage(isInitialIndexComplete: false)
+            ].randomElement()!
         }
         sut.input.didTapDownloadedMessages()
         XCTAssertEqual(mockRouter.navigateToDownloadedMessagesStub.callCounter, 1)
@@ -166,7 +173,7 @@ final class SettingsEncryptedSearchViewModelTests: XCTestCase {
     }
 
     func testOutput_downloadMessageInfo_itParsesTheDataCorrectly() {
-        mockEncryptedSearchService.oldesMessageTimeStub.bodyIs { _, _ in
+        mockEncryptedSearchService.oldestMessageTimeStub.bodyIs { _, _ in
             1644858210
         }
         mockEncryptedSearchService.indexSizeStub.bodyIs { _, _ in

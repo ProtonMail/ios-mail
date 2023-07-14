@@ -18,31 +18,14 @@
 import ProtonCore_DataModel
 
 extension UserInfo {
-    static var isInAppFeedbackEnabled: Bool {
-        if ProcessInfo.isRunningUnitTests {
-            return true
-        }
-        // The `-disableAnimations` flag is set for UI tests runs
-        if CommandLine.arguments.contains("-disableAnimations") {
-            return false
-        }
-        return true
-    }
-
     static var isToolbarCustomizationEnable: Bool {
         if ProcessInfo.isRunningUnitTests {
             return true
         }
-        if ProcessInfo.processInfo.arguments.contains(
-            BackendConfiguration.Arguments.disableToolbarSpotlight
-        ) {
+        if ProcessInfo.hasLaunchArgument(.disableToolbarSpotlight) {
             return false
         }
         return true
-    }
-
-    static var isImageProxyAvailable: Bool {
-        true
     }
 
     /// Swipe to show previous / next conversation or messages
@@ -57,11 +40,15 @@ extension UserInfo {
     static var isHighlightKeywordEnabled: Bool {
         #if DEBUG_ENTERPRISE
             return true
-        #endif
+        #else
             return false
+        #endif
     }
 
     static var isEncryptedSearchEnabled: Bool {
+        if ProcessInfo.isRunningUnitTests {
+            return true
+        }
 //        #if DEBUG_ENTERPRISE
 //        return true
 //        #else
@@ -84,5 +71,13 @@ extension UserInfo {
 #else
         false
 #endif
+    }
+
+    static var isAutoDeleteEnabled: Bool {
+        #if DEBUG_ENTERPRISE
+        true
+        #else
+        false
+        #endif
     }
 }

@@ -30,12 +30,10 @@ struct LabelCountEntity {
     let total: Int
     let unread: Int
 
-    let viewMode: ViewMode
-
 }
 
 extension LabelCountEntity {
-    init(labelCount: LabelCount, viewMode: ViewMode) {
+    init(labelCount: LabelCount) {
         start = labelCount.start
         end = labelCount.end
         update = labelCount.update
@@ -46,16 +44,10 @@ extension LabelCountEntity {
 
         total = Int(labelCount.total)
         unread = Int(labelCount.unread)
-
-        self.viewMode = viewMode
     }
 
     var isNew: Bool {
         return start == end && start == update
-    }
-
-    var startTime: Date {
-        return start ?? .distantPast
     }
 
     var endTime: Date {

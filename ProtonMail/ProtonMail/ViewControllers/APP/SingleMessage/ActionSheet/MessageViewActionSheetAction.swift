@@ -178,7 +178,8 @@ enum MessageViewActionSheetAction: Equatable, ToolbarAction {
         switch self {
         case .archive, .trash, .spam, .delete, .moveTo, .inbox, .spamMoveToInbox:
             return .moveMessage
-        case .reply, .replyAll, .forward, .replyOrReplyAll, .replyInConversation, .forwardInConversation, .replyOrReplyAllInConversation, .replyAllInConversation:
+        case .reply, .replyAll, .forward, .replyOrReplyAll, .replyInConversation, .forwardInConversation,
+                .replyOrReplyAllInConversation, .replyAllInConversation:
             return .messageActions
         case .markUnread, .markRead, .labelAs, .star, .unstar, .viewInLightMode, .viewInDarkMode:
             return .manage

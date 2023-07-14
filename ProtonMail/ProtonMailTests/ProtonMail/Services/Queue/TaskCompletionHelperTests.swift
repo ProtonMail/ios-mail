@@ -20,15 +20,19 @@ import XCTest
 
 class TaskCompletionHelperTests: XCTestCase {
     var sut: TaskCompletionHelper!
+    var internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol!
 
-    override func setUp() {
-        super.setUp()
-        sut = TaskCompletionHelper()
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        internetConnectionStatusProvider = .init()
+        internetConnectionStatusProvider.statusStub.fixture = .connectedViaWiFi
+        sut = TaskCompletionHelper(provider: internetConnectionStatusProvider)
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
+        internetConnectionStatusProvider = nil
     }
 
     func testCalculateIsInternetIssue_normalError() {
@@ -109,19 +113,28 @@ class TaskCompletionHelperTests: XCTestCase {
     }
 
     func testHandleReachabilityChangedNotification_timeoutError() {
-        expectation(forNotification: .reachabilityChanged, object: 0, handler: nil)
+        expectation(forNotification: .tempNetworkError, object: nil) { notification in
+            let error = notification.object as? ConnectionFailedReason
+            return error == .timeout
+        }
         sut.handleReachabilityChangedNotification(isTimeoutError: true, isInternetIssue: false)
         waitForExpectations(timeout: 0.5, handler: nil)
     }
 
     func testHandleReachabilityChangedNotification_internetIssue() {
-        expectation(forNotification: .reachabilityChanged, object: 1, handler: nil)
+        expectation(forNotification: .tempNetworkError, object: nil) { notification in
+            let error = notification.object as? ConnectionFailedReason
+            return error == .internetIssue
+        }
         sut.handleReachabilityChangedNotification(isTimeoutError: false, isInternetIssue: true)
         waitForExpectations(timeout: 0.5, handler: nil)
     }
 
     func testHandleReachabilityChangedNotification_bothError() {
-        expectation(forNotification: .reachabilityChanged, object: 0, handler: nil)
+        expectation(forNotification: .tempNetworkError, object: nil) { notification in
+            let error = notification.object as? ConnectionFailedReason
+            return error == .timeout
+        }
         sut.handleReachabilityChangedNotification(isTimeoutError: true, isInternetIssue: true)
         waitForExpectations(timeout: 0.5, handler: nil)
     }

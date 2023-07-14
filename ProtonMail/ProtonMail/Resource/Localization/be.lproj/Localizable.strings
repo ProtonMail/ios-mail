@@ -5,7 +5,7 @@
 "…[Show full message]" = "…[Паказаць паведамленне цалкам]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "E, d MMM, yyyy а %@";
+"'On' E, MMM d, yyyy 'at' %@" = "E, d MMM, yyyy у %@";
 
 /* Message for the alert to delete all downloaded messages. */
 "'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "\"Пошук па змесціву ў паведамленні\" будзе адключаны. Яго можна будзе ўключыць зноў у наладах і ўсе паведамленні спампуюцца яшчэ раз.";
@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Абарона AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Журнал праграмы";
+
 /* Apply action */
 "Apply" = "Ужыць";
 
@@ -202,12 +205,6 @@
 
 /* Push notification action archive */
 "Archive (verb)" = "Архіваваць";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Вы сапраўды хочаце незваротна выдаліць гэта паведамленне?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Вы сапраўды хочаце назаўсёды выдаліць гэтыя %d паведамленні?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Вы сапраўды хочаце выйсці з %@?";
@@ -258,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "Час аўтаматычнага блакіравання";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Аўтавыдаленне";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Аўтавыдаленне непажаданых паведамленняў";
+
 /* settings general section title */
 "Auto-load embedded images" = "Аўтаматычная загрузка ўбудаваных відарысаў";
 
 /* settings general section title */
 "Auto-load remote content" = "Аўтаматычная загрузка аддаленага змесціва";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Аўтаматычна выдаляць паведамленні, якія знаходзяцца ў сметніцы больш за 30 дзён.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Даступныя дзеянні";
@@ -430,6 +436,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Ачысціць стыль";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Ачыстка кэша…";
 
 /* general close action */
 "Close" = "Закрыць";
@@ -619,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Выдаліць паведамленне";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Выдаліць паведамленні?";
+
 /* Title */
 "Details" = "Падрабязнасці";
 
+/* Button to disable auto delete */
+"Disable" = "Адключыць";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Адключыце ўсе проксі-серверы або міжсеткавыя экраны. Таксама вы можаце звярнуцца да свайго сеткавага адміністратара.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Адключыць аўтаматычнае выдаленне?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Адключыць праверку";
@@ -779,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Абарона ад праграм сачэння электроннай пошты";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Лісты, запланаваныя для выдалення, застануцца ў сметніцы і папках са спамам.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Ачысціць спам";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Ачысціць спам";
 
 /* Alert title */
 "Empty spam folder" = "Ачысціць папку са спамам";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Ачысціць сметніцу";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Ачысціць сметніцу";
@@ -833,9 +860,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Увядзіце новы PIN-код";
-
-/* The title of the pin code view. */
-"Enter PIN" = "Увядзіце PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Увядзіце пароль для выканання змен";
@@ -958,7 +982,7 @@
 "Hide details" = "Схаваць падрабязнасці";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Псеўданімы Hide My Email";
+"Hide My Email aliases" = "Псеўданімы Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Якія ў вас уражанні ад новай версіі Proton Mail?";
@@ -1217,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Паведамленні да %@ не будуць шукацца. Каб шукаць сярод іх, вызваліце прастору ў сховішчы на гэтай прыладзе.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Паведамленні, якія знаходзяцца ў папках сметніца або спам больш за 30 дзён будуць выдаляцца аўтаматычна.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Паведамленні, якія знаходзяцца ў папках сметніца і спам больш за 30 дзён будуць выдаляцца аўтаматычна.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Паведамленні будуць спампаваны праз Wi-Fi. Гэта зойме некаторы час і ваша прылада можа крыху нагрэцца. Вы можаце прыпыніць гэта дзеянне ў любы час.";
 
@@ -1341,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Не мае ніякага дачынення да куплі праз праграму";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Не, дзякуй";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -1637,7 +1670,7 @@
 "Reply all (to last message)" = "Адказаць усім (на апошняе паведамленне)";
 
 /* menu title */
-"Report a problem" = "Паведаміць пра праблему";
+"Report a problem" = "Паведаміць аб праблеме";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Паведаміць пра фішынг";
@@ -2067,6 +2100,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Гэта панэль інструментаў бачная пры чытанні паведамлення.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Гэта прывядзе да выдалення ўсіх паведамленняў, якія знаходзяцца ў папках сметніца або спам больш за 30 дзён. Уключаючы паведамленні, якія зараз знаходзяцца ў гэтых папках.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Час адпачыць";
 
@@ -2116,6 +2152,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Давераныя ключы несапраўдныя для адпраўкі";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Паспрабуйце іншы тэрмін для пошуку.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Паспрабуйце падключыцца да Proton з іншай сеткі (скарыстайцеся %1$@ або %2$@).";
@@ -2218,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перайдзіце на платны тарыфны план, каб мець магчымасць адпраўляць з вашага адраса %@";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Палепшыце тарыфны план, каб аўтаматычна выдаляць паведамленні, якія былі ў папках сметніца або спам больш за 30 дзён.";
 
 /* Action */
 "Upload device contacts" = "Запампаваць кантакты з прылады";
@@ -2388,7 +2430,7 @@
 "Your messages are being downloaded..." = "Вашы паведамленні спампоўваюцца...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Ваша прыватнасць будзе мець лепшую абарону, калі вашы кантакты таксама карыстаюцца Proton Mail. Запрасіце сваіх сяброў у Proton і вы разам з імі атрымаеце прэміяльныя перавагі бясплатна.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Ваша прыватнасць будзе мець лепшую абарону, калі вашы кантакты таксама будуць карыстацца Proton Mail. Запрасіце сваіх сяброў у Proton і кожны з вас атрымае прэміяльныя перавагі бясплатна.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Ваш сеанс пратэрмінаваны, таму што вы былі неактыўныя некаторы час або ён быў адкліканы. Увайдзіце ў праграму паўторна.";

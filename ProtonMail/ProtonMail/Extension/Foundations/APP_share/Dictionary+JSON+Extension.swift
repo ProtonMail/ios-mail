@@ -36,12 +36,6 @@ extension Dictionary where Key == String, Value == Any {
         return [:]
     }
 
-    static func +<Key, Value> (lhs: [Key: Value], rhs: [Key: Value]) -> [Key: Value] {
-        var result = lhs
-        rhs.forEach { result[$0] = $1 }
-        return result
-    }
-
     ///  Returns a new dictionary that each attachment has the ordering info from the API.
     /// - Returns: A new dictionary contains attachments which have the order info inferring their
     ///  ordering from the API.

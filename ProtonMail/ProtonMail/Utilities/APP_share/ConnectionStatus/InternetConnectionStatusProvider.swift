@@ -1,196 +1,177 @@
 import Foundation
 import Network
+import ProtonCore_Doh
 
-enum ConnectionStatus: Int {
-    case connected,
-         connectedViaCellular,
-         connectedViaCellularWithoutInternet,
-         connectedViaEthernet,
-         connectedViaEthernetWithoutInternet,
-         connectedViaWiFi,
-         connectedViaWiFiWithoutInternet,
-         notConnected
+// sourcery: mock
+protocol ConnectionStatusReceiver: AnyObject {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus)
+}
 
-    var isConnected: Bool {
-        switch self {
-        case .connected, .connectedViaCellular, .connectedViaEthernet, .connectedViaWiFi:
-            return true
-        case .notConnected, .connectedViaWiFiWithoutInternet, .connectedViaCellularWithoutInternet, .connectedViaEthernetWithoutInternet:
-            return false
-        }
-    }
-    
-    var desc: String {
-        switch self {
-        case .connected:
-            return "connected"
-        case .connectedViaCellular:
-            return "connectedViaCellular"
-        case .connectedViaCellularWithoutInternet:
-            return "connectedViaCellularWithoutInternet"
-        case .connectedViaEthernet:
-            return "connectedViaEthernet"
-        case .connectedViaEthernetWithoutInternet:
-            return "connectedViaEthernetWithoutInternet"
-        case .connectedViaWiFi:
-            return "connectedViaWiFi"
-        case .connectedViaWiFiWithoutInternet:
-            return "connectedViaWiFiWithoutInternet"
-        case .notConnected:
-            return "notConnected"
-        }
+// sourcery: mock
+protocol URLSessionProtocol {
+    func dataTask(
+        withRequest: URLRequest,
+        completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void
+    ) -> URLSessionDataTaskProtocol
+}
+extension URLSession: URLSessionProtocol {
+    func dataTask(
+        withRequest: URLRequest,
+        completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void
+    ) -> URLSessionDataTaskProtocol {
+        let task = dataTask(with: withRequest, completionHandler: completionHandler)
+        return task
     }
 }
 
 // sourcery: mock
-protocol InternetConnectionStatusProviderProtocol {
-    var currentStatus: ConnectionStatus { get }
+protocol URLSessionDataTaskProtocol {
+    func resume()
+}
+extension URLSessionDataTask: URLSessionDataTaskProtocol {}
 
-    func registerConnectionStatus(observerID: UUID, fireAfterRegister: Bool, callback: @escaping (ConnectionStatus) -> Void)
-    func unregisterObserver(observerID: UUID)
+// sourcery: mock
+protocol InternetConnectionStatusProviderProtocol {
+    var status: ConnectionStatus { get }
+
+    func register(receiver: ConnectionStatusReceiver, fireWhenRegister: Bool)
+    func unRegister(receiver: ConnectionStatusReceiver)
+#if DEBUG
+    func updateNewStatusToAll(_ newStatus: ConnectionStatus)
+#endif
 }
 
-class InternetConnectionStatusProvider: InternetConnectionStatusProviderProtocol, Service {
-
-    private let notificationCenter: NotificationCenter
-    private var reachability: Reachability
-    private var callbacksToNotify: [UUID: (ConnectionStatus) -> Void] = [:]
+final class InternetConnectionStatusProvider: InternetConnectionStatusProviderProtocol {
+    static let shared = InternetConnectionStatusProvider()
     // Stores the reference of NWPathMonitor
-    var pathMonitor: ConnectionMonitor?
-    private var isPathMonitorUpdated = false
+    private let pathMonitor: ConnectionMonitor
+    private let doh: DoHInterface
+    private let session: URLSessionProtocol
+    private let monitorQueue = DispatchQueue(label: "me.proton.mail.connection.status.monitor", qos: .userInitiated)
 
-    init(notificationCenter: NotificationCenter = .default,
-         reachability: Reachability = .forInternetConnection(),
-         connectionMonitor: ConnectionMonitor? = ConnectionMonitorFactory.makeMonitor()) {
-        self.notificationCenter = notificationCenter
-        self.reachability = reachability
+    private let delegatesStore: NSHashTable<AnyObject> = NSHashTable.weakObjects()
+    private(set) var status: ConnectionStatus = .initialize {
+        didSet {
+            if oldValue == status { return }
+            let receivers = delegatesStore
+                .allObjects
+                .compactMap { $0 as? ConnectionStatusReceiver }
+            if Thread.isMainThread {
+                receivers.forEach { $0.connectionStatusHasChanged(newStatus: self.status) }
+            } else {
+                DispatchQueue.main.async {
+                    receivers.forEach { $0.connectionStatusHasChanged(newStatus: self.status) }
+                }
+            }
+        }
+    }
+
+    init(
+        connectionMonitor: ConnectionMonitor = NWPathMonitor(),
+        doh: DoHInterface = BackendConfiguration.shared.doh,
+        session: URLSessionProtocol = URLSession.shared
+    ) {
         self.pathMonitor = connectionMonitor
+        self.doh = doh
+        self.session = session
         startObservation()
     }
 
     deinit {
-        if #available(iOS 12, *), let monitor = pathMonitor {
-            monitor.pathUpdateHandler = nil
-            monitor.cancel()
-        }
         stopInternetConnectionStatusObservation()
     }
 
-    /**
-     Observe connectivity status changes.
-
-    - parameter observerID: Each observing object should store its own UUID to avoid accidentally registering multiple times and to allow unregistering.
-     */
-    func registerConnectionStatus(observerID: UUID, fireAfterRegister: Bool = true, callback: @escaping ((ConnectionStatus) -> Void)) {
-        callbacksToNotify[observerID] = callback
-        if fireAfterRegister {
-            callback(currentStatus)
-        }
-
-    }
-
-    func unregisterObserver(observerID: UUID) {
-        callbacksToNotify.removeValue(forKey: observerID)
-    }
-
-    func startObservation() {
-        if #available(iOS 12, *), let monitor = pathMonitor {
-            monitor.pathUpdateHandler = { [weak self] path in
-                guard let self = self else { return }
-                self.isPathMonitorUpdated = true
-                let status = self.status(from: path)
-                self.callbacksToNotify.values.forEach { callback in
-                    callback(status)
+    func register(receiver: ConnectionStatusReceiver, fireWhenRegister: Bool = true) {
+        if Thread.isMainThread {
+            delegatesStore.add(receiver)
+            if fireWhenRegister {
+                receiver.connectionStatusHasChanged(newStatus: status)
+            }
+        } else {
+            DispatchQueue.main.async {
+                self.delegatesStore.add(receiver)
+                if fireWhenRegister {
+                    receiver.connectionStatusHasChanged(newStatus: self.status)
                 }
             }
-            monitor.start(queue: .main)
+        }
+    }
+
+    func unRegister(receiver: ConnectionStatusReceiver) {
+        delegatesStore.remove(receiver)
+    }
+}
+
+// MARK: - NWPathMonitor
+@available(iOS 12.0, *)
+extension InternetConnectionStatusProvider {
+    private func startPathMonitor(_ monitor: ConnectionMonitor) {
+        monitor.pathUpdateClosure = { [weak self] path in
+            self?.updateStatusFrom(path: path)
+        }
+        monitor.start(queue: monitorQueue)
+    }
+
+    private func updateStatusFrom(path: NWPathProtocol) {
+        guard let pathStatus = path.pathStatus,
+              pathStatus == .satisfied else {
+            self.status = .notConnected
+            return
+        }
+
+        let status: ConnectionStatus
+        if path.isPossiblyConnectedThroughVPN {
+            // Connection status detection has problem when VPN is enabled
+            // The reliable way to detect connection status is calling API
+            status = hasConnectionWhenVPNISEnabled() ? .connected : .notConnected
+        } else if path.usesInterfaceType(.wifi) {
+            status = .connectedViaWiFi
+        } else if path.usesInterfaceType(.wiredEthernet) {
+            status = .connectedViaEthernet
+        } else if path.usesInterfaceType(.cellular) {
+            status = .connectedViaCellular
         } else {
-            startReachabilityStatusObservation()
+            status = .connected
         }
+        self.status = status
     }
-
-    func stopInternetConnectionStatusObservation() {
-        if #available(iOS 12, *), let monitor = pathMonitor {
-            monitor.pathUpdateHandler = nil
-            monitor.cancel()
-        }
-        notificationCenter.removeObserver(self)
-    }
-
-    var currentStatus: ConnectionStatus {
-        /* When the NWMonitor is initialized, the status of the network is not correct.
-            It will update after a short period of time.
-            When that happens, use the status of the Reachability.
-         */
-        if #available(iOS 12, *),
-           let monitor = pathMonitor,
-           let path = monitor.currentNWPath,
-           isPathMonitorUpdated {
-            return self.status(from: path)
-        } else {
-            let status = reachability.currentReachabilityStatus()
-            return self.status(from: status)
-        }
-    }
-
-    // MARK: - Private
-
-    private func startReachabilityStatusObservation() {
-        notificationCenter.addObserver(
-            self,
-            selector: #selector(connectionStatusHasChanged(notification:)),
-            name: .reachabilityChanged,
-            object: nil
-        )
-    }
-
-    @objc private func connectionStatusHasChanged(notification: Notification) {
-        guard let reachability = notification.object as? Reachability else { return }
-        self.reachability = reachability
-        let currentStatus = reachability.currentReachabilityStatus()
-        let result = self.status(from: currentStatus)
-        self.callbacksToNotify.values.forEach { callback in
-            callback(result)
-        }
-    }
-
 }
 
 extension InternetConnectionStatusProvider {
-    func status(from networkStatus: NetworkStatus) -> ConnectionStatus {
-        switch networkStatus {
-        case .NotReachable:
-            return .notConnected
-        case .ReachableViaWiFi:
-            return .connectedViaWiFi
-        case .ReachableViaWWAN:
-            return .connectedViaCellular
-        @unknown default:
-            return .notConnected
-        }
+    private func startObservation() {
+        startPathMonitor(pathMonitor)
     }
 
-    @available(iOS 12.0, *)
-    func status(from path: NWPath) -> ConnectionStatus {
-        guard path.status == .satisfied else {
-            return .notConnected
+    private func stopInternetConnectionStatusObservation() {
+        pathMonitor.pathUpdateClosure = nil
+        pathMonitor.cancel()
+    }
+
+    private func hasConnectionWhenVPNISEnabled() -> Bool {
+        let baseURL = doh.getCurrentlyUsedHostUrl()
+        let link = "\(baseURL)/core/tests/ping"
+        guard let url = URL(string: link) else {
+            let errorMessage = "Ping URL is wrong \(link)"
+            PMAssertionFailure(errorMessage)
+            return false
         }
-        if path.usesInterfaceType(.wifi) {
-            return .connectedViaWiFi
-        } else if path.usesInterfaceType(.wiredEthernet) {
-            return .connectedViaEthernet
-        } else if path.usesInterfaceType(.cellular) {
-            return .connectedViaCellular
-        } else {
-            return .connected
-        }
+        let request = URLRequest(url: url, timeoutInterval: 2)
+        let semaphore = DispatchSemaphore(value: 0)
+        var isSuccess = true
+        session.dataTask(withRequest: request) { _, _, error in
+            if error != nil {
+                self.status = .notConnected
+                isSuccess = false
+            }
+            semaphore.signal()
+        }.resume()
+        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
+        return isSuccess
     }
 
     #if DEBUG
-    func updateNewStatusToAll(_ status: ConnectionStatus) {
-        self.callbacksToNotify.values.forEach { callback in
-            callback(status)
-        }
+    func updateNewStatusToAll(_ newStatus: ConnectionStatus) {
+        status = newStatus
     }
     #endif
 }

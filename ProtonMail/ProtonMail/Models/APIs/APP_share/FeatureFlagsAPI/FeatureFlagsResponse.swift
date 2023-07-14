@@ -25,25 +25,62 @@ class FeatureFlagsResponse: Response {
             return false
         }
 
-        features.forEach { dict in
-            guard let type = dict["Type"] as? String,
-                  let code = dict["Code"] as? String else {
-                return
+        for code in FeatureFlagKey.allCases {
+            guard let feature = features.first(where: { $0["Code"] as? String == code.rawValue }) else {
+                PMAssertionFailureIfBackendIsProduction("Feature flag \(code.rawValue) is missing!")
+                continue
             }
-            // Supports only boolean and integer now
-            switch type {
-            case "boolean":
-                if let value = dict["Value"] as? Bool {
-                    result[code] = value
-                }
-            case "integer":
-                if let value = dict["Value"] as? Int {
-                    result[code] = value
-                }
-            default:
-                break
-            }
+
+            result[code.rawValue] = feature["Value"]
         }
+
         return true
     }
+}
+
+struct SupportedFeatureFlags {
+    let rawValues: [String: Any]
+
+    init(response: FeatureFlagsResponse) {
+        self.init(rawValues: response.result)
+    }
+
+    init(rawValues: [String: Any]) {
+        self.rawValues = rawValues
+    }
+
+    init() {
+        self.init(rawValues: [:])
+    }
+
+    subscript<T>(_ featureFlag: FeatureFlag<T>) -> T {
+        guard let requestedFlag = rawValues[featureFlag.code.rawValue] else {
+            return featureFlag.defaultValue
+        }
+
+        guard let matchingValue = requestedFlag as? T else {
+            PMAssertionFailure("Feature flag \(featureFlag.code.rawValue) has an unexpected value \(requestedFlag)")
+            return featureFlag.defaultValue
+        }
+
+        return matchingValue
+    }
+}
+
+class FeatureFlag<T>: FeatureFlags {
+    let code: FeatureFlagKey
+    let defaultValue: T
+
+    init(code: FeatureFlagKey, defaultValue: T) {
+        self.code = code
+        self.defaultValue = defaultValue
+    }
+}
+
+class FeatureFlags {
+    static let appRating = FeatureFlag<Bool>(code: .appRating, defaultValue: false)
+    static let referralPrompt = FeatureFlag<Bool>(code: .referralPrompt, defaultValue: false)
+    static let scheduleSend = FeatureFlag<Bool>(code: .scheduleSend, defaultValue: false)
+    static let senderImage = FeatureFlag<Bool>(code: .senderImage, defaultValue: false)
+    static let sendRefactor = FeatureFlag<Bool>(code: .sendRefactor, defaultValue: false)
 }

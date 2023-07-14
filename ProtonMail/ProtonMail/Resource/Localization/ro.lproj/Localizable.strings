@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Protecție AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Jurnale aplicație";
+
 /* Apply action */
 "Apply" = "Aplicare";
 
@@ -202,12 +205,6 @@
 
 /* Push notification action archive */
 "Archive (verb)" = "Arhivare";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Sigur doriți să ștergeți permanent acest mesaj?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Sigur doriți să ștergeți permanent aceste %d mesaje?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Sigur doriți să vă deconectați din %@?";
@@ -258,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "Timp autoblocare";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Ștergere automată";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Ștergere automată mesaje nedorite";
+
 /* settings general section title */
 "Auto-load embedded images" = "Autoîncărcare imagini incluse";
 
 /* settings general section title */
 "Auto-load remote content" = "Autoîncărcare conținut extern";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Ștergere automată mesaje din gunoi mai vechi de 30 de zile.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Acțiuni disponibile";
@@ -286,7 +292,7 @@
 "Bcc" = "Ca";
 
 /* message Bcc: feild */
-"Bcc:" = "CA:";
+"Bcc:" = "Ca:";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Data naşterii";
@@ -430,6 +436,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Eliminare stil";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Se șterge memoria cache…";
 
 /* general close action */
 "Close" = "Închidere";
@@ -619,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Ștergere mesaj";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Ștergere mesaje?";
+
 /* Title */
 "Details" = "Detalii";
 
+/* Button to disable auto delete */
+"Disable" = "Dezactivare";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Dezactivați setările din proxy sau paravanul de protecție sau contactați administratorul de rețea.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Dezactivare autoștergere?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Dezactivare validare";
@@ -779,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Protejare e-mail împotriva urmăririi";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Mesajele programate pentru ștergere vor rămâne în folderele «Gunoi» și «Nedorite».";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Golire nedorite";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Golire «Nedorite»";
 
 /* Alert title */
 "Empty spam folder" = "Golire folder «Nedorite»";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Golire gunoi";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Golire «Gunoi»";
@@ -833,9 +860,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Introduceți noul cod PIN";
-
-/* The title of the pin code view. */
-"Enter PIN" = "Introduceți codul PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Introduceți parola pentru a efectua modificările";
@@ -1217,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = " Mesajele dinainte de %@, nu vor fi căutate. Pentru a căuta în interiorul lor, eliberați spațiu pe acest dispozitiv.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Mesajele din folderul «Gunoi» și «Nedorite» vor fi șterse automat după de 30 de zile.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile vor fi șterse automat.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Mesajele vor fi descărcate prin WiFi. Ar putea dura și este posibil ca dispozitivul să se încălzească puțin. Puteți suspenda oricând acțiunea.";
 
@@ -1341,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Nu are legătură cu achiziția în aplicație.";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Nu, mulțumesc";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -1772,13 +1805,13 @@
 "Sent" = "Trimise";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption" = "Trimis de Proton Mail cu criptare cu acces zero.";
+"Sent by Proton Mail with zero-access encryption" = "Trimis cu Proton Mail cu criptare cu acces zero.";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption to verified recipient" = "Trimis de Proton Mail cu criptare cu acces zero la destinatar verificat.";
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Trimis cu Proton Mail cu criptare cu acces zero la destinatar verificat.";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption" = "Trimis de dvs. cu criptare în ambele părți";
+"Sent by you with end-to-end encryption" = "Trimis de către dvs. cu criptare în ambele părți.";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption to verified recipient" = "Trimis de către dvs. cu criptare în ambele părți către destinatar verificat.";
@@ -2067,6 +2100,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Această bară de utilitare este vizibilă atunci când se citește un mesaj.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Aceasta va șterge toate mesajele din «Gunoi» și «Nedorite» mai vechi de 30 de zile, inclusiv cele aflate în aceste foldere.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Timp de relaxare";
 
@@ -2116,6 +2152,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Cheile de încredere nu sunt valide pentru trimitere";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Căutați alt termen de căutare.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Încercați să vă conectați la Proton dintr-o rețea diferită (sau folosiți %1$@ sau %2$@).";
@@ -2214,10 +2253,13 @@
 "Updated Proton, unified protection" = "Proton actualizat, protecție unificată";
 
 /* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Modernizare";
+"Upgrade now" = "Modificare";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Treceți la un plan cu plată pentru a trimite de la adresa %@";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Modificați-vă planul pentru a putea șterge automat mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile.";
 
 /* Action */
 "Upload device contacts" = "Încărcare contacte din dispozitiv";
@@ -2325,7 +2367,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Nu puteți seta adresa %@ ca fiind implicită. Această este o funcție cu plată.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Ați dezactivat %1$@ în setările sistemului. %2$@ a fost utilizat pentru a proteja informațiile importante ale contului. Pentru a vă accesa contul, accesați setările și reactivați %3$@ sau reconectați-vă.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Ați dezactivat %1$@ în setările sistemului. %2$@ a fost utilizat pentru a proteja informațiile importante a contului. Pentru a vă accesa contul, accesați setările și reactivați %3$@ sau reconectați-vă.";
 
 /* Message */
 "You have %d new emails!" = "Aveți %d mesaje noi!";
@@ -2388,7 +2430,7 @@
 "Your messages are being downloaded..." = "Mesajele se descarcă...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Confidențialitatea vă este mai bine protejată dacă și contactele dvs. utilizează Proton Mail. Invitați-le la Proton și veți beneficia împreună gratuit de avantajele premium.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Confidențialitatea vă este mai bine protejată dacă și contactele dvs. utilizează Proton Mail. Invitați-le la Proton și veți beneficia fiecare gratuit de avantajele premium.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesiunea a expirat deoarece nu s-a identificat vreo activitate de ceva timp sau pentru că a fost anulată. Reautentificați-vă.";

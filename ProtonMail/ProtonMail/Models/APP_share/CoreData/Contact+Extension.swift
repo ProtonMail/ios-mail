@@ -46,11 +46,6 @@ extension Contact {
         replaceNilStringAttributesWithEmptyString()
     }
 
-    /// Removes all messages from the store.
-    class func deleteAll(inContext context: NSManagedObjectContext) {
-        context.deleteAll(Attributes.entityName)
-    }
-
     class func contactForContactID(_ contactID: String, inManagedObjectContext context: NSManagedObjectContext) -> Contact? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.contactID, matchingValue: contactID) as? Contact
     }

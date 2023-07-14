@@ -36,7 +36,7 @@ extension ServiceFactory {
                 fetchAndVerifyContacts: FetchAndVerifyContacts(
                     user: user
                 ),
-                internetStatusProvider: factory.get(),
+                internetStatusProvider: InternetConnectionStatusProvider.shared,
                 fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
                 contactProvider: user.contactService,
                 helperDependencies: .init(
@@ -54,9 +54,11 @@ extension ServiceFactory {
                 fetchMobileSignatureUseCase: FetchMobileSignature(
                     dependencies: .init(
                         coreKeyMaker: factory.get(),
-                        cache: userCachedStatus
+                        cache: factory.userCachedStatus
                     )
-                )
+                ),
+                darkModeCache: factory.userCachedStatus,
+                attachmentMetadataStrippingCache: factory.userCachedStatus
             )
         }
     }

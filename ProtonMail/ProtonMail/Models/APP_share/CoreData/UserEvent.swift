@@ -23,6 +23,7 @@
 import Foundation
 import CoreData
 
+// sourcery: CoreDataHelpers
 class UserEvent: NSManagedObject {
 
     @NSManaged var userID: String
@@ -50,10 +51,6 @@ extension UserEvent {
         event.eventID = ""
         _ = event.managedObjectContext?.saveUpstreamIfNeeded()
         return event
-    }
-
-    class func deleteAll(inContext context: NSManagedObjectContext) {
-        context.deleteAll(Attributes.entityName)
     }
 
     class func remove(by userID: String, inManagedObjectContext context: NSManagedObjectContext) -> Bool {

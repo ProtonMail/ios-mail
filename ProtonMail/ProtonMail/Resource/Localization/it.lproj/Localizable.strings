@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Protezione AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Registri dell'applicazione";
+
 /* Apply action */
 "Apply" = "Applica";
 
@@ -202,12 +205,6 @@
 
 /* Push notification action archive */
 "Archive (verb)" = "Archivia";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Sei sicuro di voler eliminare permanentemente questo messaggio?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Sei sicuro di voler eliminare permanentemente questi %d messaggi?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Sei sicuro di voler uscire %@?";
@@ -258,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "Tempo di blocco automatico";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Eliminazione automatica";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Elimina automaticamente i messaggi non desiderati";
+
 /* settings general section title */
 "Auto-load embedded images" = "Carica automaticamente le immagini incorporate";
 
 /* settings general section title */
 "Auto-load remote content" = "Carica automaticamente il contenuto remoto";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Elimina automaticamente i messaggi che sono stati nel cestino per più di 30 giorni.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Comandi disponibili";
@@ -431,6 +437,9 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Rimuovi formattazione";
 
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Cancellazione cache...";
+
 /* general close action */
 "Close" = "Chiudi";
 
@@ -579,10 +588,10 @@
 "Decryption error" = "Errore di decriptazione";
 
 /* error details */
-"Decryption of this content failed" = "Decifratura di questo contenuto fallita";
+"Decryption of this content failed" = "Decriptazione di questo contenuto non riuscita";
 
 /* error details */
-"Decryption of this message's encrypted content failed." = "La decifratura del contenuto cifrato nel messaggio è fallita.";
+"Decryption of this message's encrypted content failed." = "La decriptazione del contenuto cifrato nel messaggio non è riuscita.";
 
 /* Title */
 "Default" = "Predefinito";
@@ -619,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Elimina messaggio";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Eliminare messaggi?";
+
 /* Title */
 "Details" = "Dettagli";
 
+/* Button to disable auto delete */
+"Disable" = "Disabilita";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Disabilita proxy o firewall, o contatta l'amministratore di rete.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Disabilitare auto eliminazione?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Disabilita Validazione";
@@ -779,11 +797,17 @@
 /* Name of the feature */
 "Email tracking protection" = "Protezione dal tracciamento email";
 
+/* Title of button to empty spam folder */
+"Empty spam" = "Svuota spam";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Svuota Spam";
 
 /* Alert title */
 "Empty spam folder" = "Svuota cartella di spam";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Svuota il cestino";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Svuota Cestino";
@@ -834,9 +858,6 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Inserisci il nuovo codice PIN";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Inserisci il PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Inserisci la tua password per apportare le modifiche";
 
@@ -868,7 +889,7 @@
 "Expiration not supported" = "Scadenza non supportata";
 
 /* Error message */
-"Failed to determine type of file" = "Fallito nel determinare il tipo di file";
+"Failed to determine type of file" = "Impossibile determinare il tipo di file";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Impossibile caricare il contenuto!\nSei pregato di riprovare.";
@@ -958,7 +979,7 @@
 "Hide details" = "Nascondi i dettagli";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias Hide My Email";
+"Hide My Email aliases" = "Alias Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Come vorresti descrivere la tua esperienza con il nuovo Proton Mail?";
@@ -1203,7 +1224,7 @@
 "Message saved to Drafts" = "Messaggio salvato nelle Bozze";
 
 /* Description */
-"Message sending failed. Please try again." = "L'invio del messaggio è fallito. Per favore riprova.";
+"Message sending failed. Please try again." = "L'invio del messaggio non è riuscito. Riprova.";
 
 /* Description after message have been sent */
 "Message sent" = "Messaggio inviato";
@@ -1216,6 +1237,12 @@
 
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "I messaggi antecedenti a %@ non verranno sottoposti a ricerca. Per ricercare tra quelli, libera dello spazio di archiviazione da questo dispositivo.";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "I messaggi presenti nel cestino o nella cartella spam per oltre 30 giorni saranno eliminati automaticamente.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Gli elementi nella cartella Cestino o Spam saranno eliminati automaticamente dopo 30 giorni.";
 
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "I messaggi verranno scaricati tramite WiFi. Questo può richiedere più tempo e il tuo dispositivo potrebbe surriscaldarsi leggermente. Puoi mettere in pausa l'azione in qualsiasi momento.";
@@ -1341,6 +1368,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "No, non correlato all'acquisto in-app";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "No, grazie";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -1473,7 +1503,7 @@
 "PGP-signed message from verified sender" = "Messaggio firmato PGP dal mittente verificato";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message. Sender verification failed" = "Messaggio firmato PGP. Verifica del mittente fallita";
+"PGP-signed message. Sender verification failed" = "Messaggio firmato PGP. Verifica del mittente non riuscito.";
 
 /* default vcard types */
 "Phone" = "Telefono";
@@ -1748,7 +1778,7 @@
 "Sender has been blocked" = "Il mittente è stato bloccato";
 
 /* encryption lock description */
-"Sender Verification Failed" = "Verifica del mittente fallita";
+"Sender Verification Failed" = "Verifica del mittente non riuscita";
 
 /* title of incorrect email format error while sending */
 "Sending failed" = "Invio non riuscito";
@@ -2029,10 +2059,10 @@
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Quest'email non ha superato i requisiti d'autenticazione del suo dominio. Potrebbe esser falsificata o inoltrata impropriamente.";
 
 /* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Quest'email ha fallito i requisiti d'autenticazione del suo dominio. Potrebbe esser falsificata o inoltrata impropriamente.";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Quest'email non ha superato i requisiti d'autenticazione del suo dominio. Potrebbe esser falsificata o inoltrata impropriamente.";
 
 /* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Questa email sembra provenire da un indirizzo Proton Mail, ma arriva dall'esterno del nostro sistema e ha fallito la nostra prova di autenticazione. Potrebbe essere falsa o non correttamente inoltrata!";
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Questa email sembra provenire da un indirizzo Proton Mail, ma arriva dall'esterno del nostro sistema e non ha superato la nostra prova di autenticazione. Potrebbe essere falsa o non correttamente inoltrata!";
 
 /* Description for undo send */
 "This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Questa funzione ritarda l'invio delle tue email, dandoti la possibilità di annullare l'invio durante il periodo di tempo selezionato.";
@@ -2067,6 +2097,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Questa toolbar sarà visibile durante la lettura di un messaggio.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Questa operazione eliminerà tutti i messaggi presenti nel cestino o nei spam da più di 30 giorni, incluso quelli attualmente presenti in queste cartelle.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Tempo di rilassarsi";
 
@@ -2080,7 +2113,7 @@
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Convalida del certificato TLS non riuscita. La tua connessione potrebbe essere monitorata e l'app è temporaneamente bloccata per la tua sicurezza.";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Convalida del certificato TLS fallita. La tua connessione potrebbe esser monitorata e l'app esser bloccata temporaneamente per la tua sicurezza.\n\nCambia immediatamente rete.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Convalida del certificato TLS non riuscita. La tua connessione potrebbe esser monitorata e l'app esser bloccata temporaneamente per la tua sicurezza.\n\nCambia immediatamente rete.";
 
 /* message To: feild
    Title */
@@ -2116,6 +2149,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Le chiavi attendibili non sono valide per l'invio";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Prova un termine di ricerca diverso.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Prova a connetterti a Proton da una rete diversa (o usa %1$@ o %2$@).";
@@ -2219,6 +2255,9 @@
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Effettui l'upgrade ad un piano a pagamento per inviare dal suo indirizzo %@";
 
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Aggiorna il piano per eliminare automaticamente gli elementi presenti nel cestino o in spam dopo 30 giorni.";
+
 /* Action */
 "Upload device contacts" = "Carica i contatti del dispositivo";
 
@@ -2235,7 +2274,7 @@
 "Verification error" = "Errore di verifica";
 
 /* error details */
-"Verification of this content’s signature failed" = "Verifica della firma di questo contenuto fallita";
+"Verification of this content’s signature failed" = "Verifica della firma di questo contenuto non riuscita";
 
 /* View action for view scheduled message. */
 "View" = "Visualizza";
@@ -2388,7 +2427,7 @@
 "Your messages are being downloaded..." = "I tuoi messaggi sono in fase di scaricamento...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "La tua privacy è meglio protetta se anche i tuoi contatti utilizzassero Proton Mail. Invita i tuoi amici a utilizzare Proton ed entrambi otterrete gratuitamente dei benefici premium.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "La tua privacy sarebbe protetta meglio se anche i tuoi contatti utilizzassero Proton Mail. Invita i tuoi amici a utilizzare Proton e ognuno otterrà gratuitamente dei benefici premium.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "La tua sessione è scaduta perché sei stato inattivo per un po' di tempo o perché è stata revocata. Effettua di nuovo il login.";

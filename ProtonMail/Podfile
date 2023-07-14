@@ -9,7 +9,7 @@ def proton_test_path
 end
 
 def proton_test_commit
-  "82ddf41"
+  "9b250a7f"
 end
 
 def monkey_path
@@ -56,6 +56,7 @@ def common_pods
   pod "ProtonCore-Keymaker/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
+  pod 'ReachabilitySwift'
   pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
   pod 'SwiftSoup', '~> 2.3'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'release/1.0.3'
@@ -63,8 +64,8 @@ end
 
 def pm_pods
   common_pods
-  pod 'DKImagePickerController/PhotoGallery', '4.3.4'
-  pod 'OHHTTPStubs/Swift', '9.0.0', :configurations => ['Debug', 'Enterprise Debug']
+  pod 'SDWebImage', '5.13.3'
+  pod 'OHHTTPStubs/Swift', :configurations => ['Debug', 'Enterprise Debug']
   pod "ProtonCore-AccountDeletion/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
@@ -111,7 +112,7 @@ end
 
 target 'ProtonMailTests' do
   inherit! :search_paths
-  pod 'OHHTTPStubs/Swift', '9.0.0'
+  pod 'OHHTTPStubs/Swift'
   pod 'Groot', '3.0.1'
   pod 'PromiseKit', '6.13.1'
   pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
@@ -138,7 +139,7 @@ target 'ProtonMailUITests' do
   pod 'ProtonCore-TestingToolkit/UITests/PaymentsUI', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
-  pod 'Yams', '5.0.5'
+  pod 'Yams'
 end
 
 target 'Share' do

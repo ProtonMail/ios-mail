@@ -156,7 +156,7 @@ final class AppRatingServiceTests: XCTestCase {
 
     func testPreconditionEventDidOccur_whenConditionsAreMetExceptInternetConnection_itDoesNotPromptAppRating() {
         setUpSuccessConditions()
-        mockInternetStatus.currentStatusStub.fixture = .notConnected
+        mockInternetStatus.statusStub.fixture = .notConnected
 
         recordPreconditionInBoxEvents(in: sut, times: 2)
 
@@ -200,7 +200,7 @@ final class AppRatingServiceTests: XCTestCase {
 extension AppRatingServiceTests {
 
     private func setUpSuccessConditions() {
-        mockInternetStatus.currentStatusStub.fixture = .connected
+        mockInternetStatus.statusStub.fixture = .connected
         mockAppRatingStatusProvider.isAppRatingEnabledStub.bodyIs { _ in true }
         mockAppRatingStatusProvider.hasAppRatingBeenShownInCurrentVersionStub.bodyIs { _ in false }
     }

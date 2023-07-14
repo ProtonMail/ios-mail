@@ -38,7 +38,7 @@ extension ServiceFactory {
                 pushService: factory.get(),
                 queueManager: factory.get(),
                 unlockManager: factory.get(),
-                darkModeCache: factory.get(by: UserCachedStatus.self),
+                darkModeCache: factory.userCachedStatus,
                 lockCache: factory.get(by: KeyMakerProtocol.self),
                 notificationCenter: factory.get(),
                 coreKeyMaker: factory.get()
@@ -64,7 +64,8 @@ extension ServiceFactory {
             .init(
                 dependencies: .init(
                     unlockManager: factory.get(),
-                    usersManager: factory.get()
+                    usersManager: factory.get(),
+                    pinFailedCountCache: factory.userCachedStatus
                 ),
                 finishLockFlow: finishLockFlow
             )
@@ -75,5 +76,3 @@ extension ServiceFactory {
         WindowsCoordinatorFactory(factory: self)
     }
 }
-
-extension UserCachedStatus: Service {}

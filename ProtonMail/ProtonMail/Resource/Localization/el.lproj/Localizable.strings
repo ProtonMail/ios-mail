@@ -23,10 +23,10 @@
 "<1m" = "<1λ";
 
 /* The title of banner that is shown after using swipe action to archive a message */
-"1 message moved to archive" = "1 μήνυμα μετακινήθηκε στο αρχείο";
+"1 message moved to archive" = "1 μήνυμα μετακινήθηκε στα Αρχειοθετημένα";
 
 /* The title of banner that is shown after using swipe action to spam a message */
-"1 Message moved to spam" = "1 Το μήνυμα μετακινήθηκε στα ανεπιθύμητα";
+"1 Message moved to spam" = "1 μήνυμα μετακινήθηκε στα Ενοχλητικά";
 
 /* Placeholder */
 "8 to 21 characters long" = "μήκος 8 έως 21 χαρακτήρες";
@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey προστασία";
 
+/* Title for application logs settings option */
+"Application logs" = "Αρχείο καταγραφών εφαρμογής";
+
 /* Apply action */
 "Apply" = "Εφαρμογή";
 
@@ -201,13 +204,7 @@
 "Archive" = "Αρχειοθετημένα";
 
 /* Push notification action archive */
-"Archive (verb)" = "Αρχειοθέτηση";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Θέλετε σίγουρα να εξαλείψετε οριστικά αυτό το μήνυμα;";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Θέλετε σίγουρα να εξαλείψετε οριστικά αυτά τα %d μηνύματα;";
+"Archive (verb)" = "Αρχειοθετημένα";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Θέλετε σίγουρα έξοδο του %@;";
@@ -258,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "Χρονικό Όριο Αυτόματου Κλειδώματος";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Αυτόματη διαγραφή";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Αυτόματη διαγραφή ανεπιθύμητων μηνυμάτων";
+
 /* settings general section title */
 "Auto-load embedded images" = "Αυτόματη φόρτωση ενσωματωμένων εικόνων";
 
 /* settings general section title */
 "Auto-load remote content" = "Αυτόματη φόρτωση απομακρυσμένου περιεχομένου";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Αυτόματη οριστική εξάλειψη μηνυμάτων που παραμένουν στα Διαγραμμένα για περισσότερες από 30 ημέρες.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Διαθέσιμες ενέργειες";
@@ -298,7 +304,7 @@
 "Block email tracking" = "Φραγή ιχνηλάτησης μηνυμάτων";
 
 /* Settings item to open blocked sender list */
-"Block list" = "Λίστα αποκλεισμένων";
+"Block list" = "Αποκλεισμένες διευθύνσεις";
 
 /* Button to block a sender */
 "Block sender" = "Αποκλεισμός αποστολέα";
@@ -430,6 +436,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Καθαρό Στύλ";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Εκκαθάριση προσωρινής μνήμης…";
 
 /* general close action */
 "Close" = "Κλείσιμο";
@@ -619,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Διαγραφή μηνύματος";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Διαγραφή μηνυμάτων;";
+
 /* Title */
 "Details" = "Λεπτομέρειες";
 
+/* Button to disable auto delete */
+"Disable" = "Απενεργοποίηση";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Απενεργοποιήστε τυχόν διαμεσολαβητές και τείχη προστασίας, ή επικοινωνήστε με τον διαχειριστή του δικτύου σας.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Απενεργοποίηση αυτόματης διαγραφής;";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Απενεργοποίηση Επαλήθευσης";
@@ -779,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Προστασία ιχνηλασίας μηνυμάτων";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Τα μηνύματα ηλεκτρονικού ταχυδρομείου που έχουν προγραμματιστεί για διαγραφή θα παραμείνουν στους φακέλους απορριμμάτων και ανεπιθύμητης αλληλογραφίας.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Άδειασμα Ενοχλητικών";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Άδειασμα Ενοχλητικών";
 
 /* Alert title */
 "Empty spam folder" = "Εκκαθάριση φακέλου ενοχλητικών";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Άδειασμα Διαγραμμένων";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Εκκαθάριση Διαγραμμένων";
@@ -833,9 +860,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Εισαγωγή νέου κωδικού ΡΙΝ";
-
-/* The title of the pin code view. */
-"Enter PIN" = "Εισαγωγή PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Για να κάνετε αλλαγές, εισάγετε τον κωδικό πρόσβασής σας";
@@ -1217,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Τα μηνύματα πριν από το %@, δεν θα αναζητηθούν. Για να πραγματοποιήσετε αναζήτηση σε αυτά, ελευθερώστε χώρο αποθήκευσης σε αυτήν τη συσκευή.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Μηνύματα στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες θα διαγράφονται αυτόματα.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Μηνύματα που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες θα εξαλείφονται αυτόματα και οριστικά.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Τα μηνύματα θα ληφθούν μέσω WiFi. Αυτό μπορεί να διαρκέσει αρκετή ώρα και η συσκευή σας μπορεί να θερμανθεί ελαφρώς. Μπορείτε να θέσετε σε παύση την ενέργεια ανά πάσα στιγμή.";
 
@@ -1341,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Όχι, δεν σχετίζεται με την αγορά εντός της εφαρμογής";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Όχι, ευχαριστώ";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -1524,7 +1557,7 @@
 "Please share your problem." = "Παρακαλούμε μοιραστείτε το πρόβλημά σας.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Συνδεθείτε στην εφαρμογή Proton Mail \n*.*, please add*.*.";
+"Please sign in to the Proton Mail app." = "Συνδεθείτε στην εφαρμογή Proton Mail.";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Για χρήση άνω των 3 φακέλων, παρακαλούμε αναβαθμίστε σε πρόγραμμα επί πληρωμή";
@@ -1845,7 +1878,7 @@
 "Signed out from %@ and signed in with %@" = "Αποσυνδεθήκατε από το %1$@ και συνδεθήκατε με το %2$@";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Έχετε εξέλθει από το %@";
+"Signed out of %@" = "Έχετε αποσυνδεθεί από το %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Παράλειψη";
@@ -2067,6 +2100,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Αυτή η γραμμή εργαλείων είναι ορατή κατά την ανάγνωση ενός μηνύματος.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Αυτό θα διαγράφει όλα τα μηνύματα που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες, συμπεριλαμβανομένων όσων βρίσκονται ήδη σε αυτούς τους φακέλους.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Ώρα για χαλάρωση";
 
@@ -2117,6 +2153,9 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Τα αξιόπιστα κλειδιά δεν είναι έγκυρα για την αποστολή";
 
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Δοκιμάστε διαφορετικό όρο αναζήτησης.";
+
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Δοκιμάστε να συνδεθείτε στο Proton από διαφορετικό δίκτυο (ή χρησιμοποιήστε το %1$@ ή το %2$@).";
 
@@ -2145,7 +2184,7 @@
 "Unblock" = "Κατάργηση από αποκλεισμό";
 
 /* Button to unblock a sender */
-"Unblock sender" = "Ξεμπλοκάρισμα αποστολέα\n*.*, add trasnlation *.*";
+"Unblock sender" = "Κατάργηση αποκλεισμού αποστολέα";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Μη κοινοποιημένοι παραλήπτες";
@@ -2202,7 +2241,7 @@
 "Update Notification Email" = "Ενημέρωση E-mail ειδοποίησης";
 
 /* Shown when the user attempts to manually refresh the list of blocked senders while offline */
-"Update queued, awaiting connectivity..." = "Ενημέρωση σε ουρά, αναμονή συνδεσιμότητας...";
+"Update queued, awaiting connectivity..." = "Ενημέρωση σε αναμονή, αναμονή σύνδεσης στο διαδίκτυο...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Ενημερώθηκε πριν από >1 ώρες";
@@ -2218,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Για αποστολή από τη διεύθυνσή σας %@, αναβαθμίστε σε πρόγραμμα επί πληρωμή";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Για αυτόματη οριστική εξάλειψη των μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες, κάντε αναβάθμιση.";
 
 /* Action */
 "Upload device contacts" = "Ανέβασμα επαφών συσκευής";
@@ -2259,7 +2301,7 @@
 "Warning: Before you pass the human check you can't send email!" = "Προειδοποίηση: Πριν ολοκληρώστε την \"ανθρώπινη επαλήθευση\" δεν μπορείτε να στείλετε email!";
 
 /* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Προειδοποίηση: υποψία κίβδηλης ιστοσελίδας";
+"Warning: suspected fake website" = "Προειδοποίηση: υποψία ψεύτικης ιστοσελίδας";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Δεν ήταν δυνατή η αποστολή του μηνύματος σας, πιθανώς λόγω κακής σύνδεσης δικτύου. Το μήνυμα σας αποθηκεύτηκε στα Πρόχειρα και θα σταλεί αυτόματα την επόμενη φορά που θα ανοίξετε την εφαρμογή.";
@@ -2324,6 +2366,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Δεν μπορείτε να ορίσετε τη διεύθυνση %@ ως προεπιλεγμένη, καθώς αυτό είναι μια λειτουργία επί πληρωμή.";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Απενεργοποιήσατε το %1$@ στις ρυθμίσεις του συστήματός σας. Το %2$@ έχει χρησιμοποιηθεί για την προστασία σημαντικών πληροφοριών λογαριασμού. Για πρόσβαση στον λογαριασμό σας, μεταβείτε στις ρυθμίσεις και ενεργοποιήστε ξανά το %3$@, ή συνδεθείτε ξανά.";
+
 /* Message */
 "You have %d new emails!" = "Έχετε %d νέα E-mail!";
 
@@ -2385,7 +2430,7 @@
 "Your messages are being downloaded..." = "Γίνεται λήψη των μηνυμάτων σας...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Το απόρρητό σας προστατεύεται καλύτερα εάν οι επαφές σας χρησιμοποιούν επίσης Proton Mail. Προσκαλέστε τους φίλους σας στο Proton και θα λάβετε και οι δύο δωρεάν premium οφέλη.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Το απόρρητό σας είναι καλύτερα προστατευμένο εάν οι επαφές σας χρησιμοποιούν επίσης Proton Mail. Προσκαλέστε τους φίλους σας στο Proton, και ο καθένας σας θα λάβει premium οφέλη δωρεάν.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Η περίοδος λειτουργίας σας έχει λήξει επειδή δεν έχετε κάνει κάποια ενέργεια για λίγο ή επειδή έχει ανακληθεί. Συνδεθείτε ξανά.";
@@ -2393,5 +2438,3 @@
 /* contact placeholder */
 "ZIP" = "T.K";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Απενεργοποιήσατε το %1$@ στις ρυθμίσεις του συστήματός σας. Το %2$@ έχει χρησιμοποιηθεί για την προστασία σημαντικών πληροφοριών λογαριασμού. Για πρόσβαση στον λογαριασμό σας, μεταβείτε στις ρυθμίσεις και ενεργοποιήστε ξανά το %3$@, ή συνδεθείτε ξανά.";

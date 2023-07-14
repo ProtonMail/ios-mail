@@ -60,11 +60,14 @@ struct BodyParts {
         self.bodyHasHistory = bodyHasHistory
     }
 
-    func darkModeCSS() -> String? {
+    func darkModeCSS(darkModeCache: DarkModeCacheProtocol) -> String? {
         guard let document = self.document else {
             return nil
         }
-        let level = CSSMagic.darkStyleSupportLevel(document: document)
+        let level = CSSMagic.darkStyleSupportLevel(
+            document: document,
+            darkModeCache: darkModeCache
+        )
         let css: String?
         switch level {
         case .protonSupport:
@@ -116,16 +119,10 @@ final class NewMessageBodyViewModel: LinkOpeningValidator {
         return htmlString
     }
 
-    var webViewPreferences: WKPreferences {
-        let preferences = WKPreferences()
-        preferences.javaScriptEnabled = false
-        preferences.javaScriptCanOpenWindowsAutomatically = false
-        return preferences
-    }
-
     var webViewConfig: WKWebViewConfiguration {
         let config = WKWebViewConfiguration()
         config.dataDetectorTypes = [.phoneNumber, .link]
+        config.defaultWebpagePreferences.allowsContentJavaScript = false
         return config
     }
 

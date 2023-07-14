@@ -25,18 +25,18 @@ final class FetchMessageMetaDataUseCaseTests: XCTestCase {
     var messageDataService: MockMessageDataService!
     var contextProvider: MockCoreDataContextProvider!
     var queueManager: MockQueueManager!
+    let userID = UserID(String.randomString(20))
 
     override func setUp() {
         self.contextProvider = MockCoreDataContextProvider()
         self.messageDataService = MockMessageDataService()
         self.queueManager = MockQueueManager()
         let dependencies = FetchMessageMetaData
-            .Dependencies(messageDataService: self.messageDataService,
+            .Dependencies(userID: userID,
+                          messageDataService: self.messageDataService,
                           contextProvider: self.contextProvider,
                           queueManager: self.queueManager)
-        let params = FetchMessageMetaData.Parameters(userID: "the userID")
         self.sut = FetchMessageMetaData(
-            params: params,
             dependencies: dependencies)
     }
 
@@ -49,7 +49,7 @@ final class FetchMessageMetaDataUseCaseTests: XCTestCase {
 
     func testExecute_whenWePassNoMessageIDs() {
         let expectation = expectation(description: "callbacks are called")
-        self.sut.execute(with: []) { _ in
+        self.sut.execute(params: .init(messageIDs: [])) { _ in
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2.0)
@@ -62,7 +62,7 @@ final class FetchMessageMetaDataUseCaseTests: XCTestCase {
         let ids = Array(0...20).map { _ in MessageID(UUID().uuidString) }
         let expectation = expectation(description: "callbacks are called")
 
-        self.sut.execute(with: ids) { _ in
+        self.sut.execute(params: .init(messageIDs: ids)) { _ in
             expectation.fulfill()
         }
 
@@ -94,7 +94,7 @@ final class FetchMessageMetaDataUseCaseTests: XCTestCase {
 
         let expectation = expectation(description: "callbacks are called")
 
-        self.sut.execute(with: [messageID]) { _ in
+        self.sut.execute(params: .init(messageIDs: [messageID])) { _ in
             expectation.fulfill()
         }
         waitForExpectations(timeout: 5.0)
@@ -103,7 +103,7 @@ final class FetchMessageMetaDataUseCaseTests: XCTestCase {
                        1)
 
         let message = try XCTUnwrap(Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: contextProvider.viewContext))
-        XCTAssertEqual(message.userID, "the userID")
+        XCTAssertEqual(message.userID, userID.rawValue)
         XCTAssertEqual(message.messageStatus, NSNumber(1))
     }
 
@@ -113,7 +113,7 @@ final class FetchMessageMetaDataUseCaseTests: XCTestCase {
         let idsToTest = ids + invalids + ids
         let expectation = expectation(description: "callbacks are called")
 
-        self.sut.execute(with: idsToTest) { _ in
+        self.sut.execute(params: .init(messageIDs: idsToTest)) { _ in
             expectation.fulfill()
         }
 

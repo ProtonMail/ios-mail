@@ -18,8 +18,10 @@
 import Foundation
 import ProtonCore_Services
 
-typealias RegisterDeviceUseCase = NewUseCase<Void, RegisterDevice.Params>
+@available(*, deprecated, message: "Use DeviceRegistrationUseCase instead")
+typealias RegisterDeviceUseCase = UseCase<Void, RegisterDevice.Params>
 
+@available(*, deprecated, message: "Use DeviceRegistration instead")
 final class RegisterDevice: RegisterDeviceUseCase {
     private let dependencies: Dependencies
 

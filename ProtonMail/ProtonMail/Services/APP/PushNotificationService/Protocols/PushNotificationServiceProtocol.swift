@@ -53,6 +53,7 @@ struct UnlockManagerProvider: UnlockProvider {
     }
 }
 
+@available(*, deprecated, message: "Deprecated use DeviceRegistrationUseCase instead")
 protocol DeviceRegistrator {
     func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping JSONCompletion)
 }

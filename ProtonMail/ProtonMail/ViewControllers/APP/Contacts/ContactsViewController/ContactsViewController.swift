@@ -45,8 +45,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     private var searchString: String = ""
     private var refreshControl: UIRefreshControl?
     private var searchController: UISearchController?
-    private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
-    private let observerID = UUID()
+    private let internetConnectionStatusProvider = InternetConnectionStatusProvider.shared
 
     deinit {
         self.viewModel.resetFetchedController()
@@ -152,7 +151,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         }
 
         self.searchController?.searchResultsUpdater = self
-        self.searchController?.dimsBackgroundDuringPresentation = false
+        self.searchController?.obscuresBackgroundDuringPresentation = false
         self.searchController?.searchBar.delegate = self
         self.searchController?.hidesNavigationBarDuringPresentation = true
         self.searchController?.searchBar.sizeToFit()
@@ -231,22 +230,19 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     }
 
     @objc internal func fireFetch() {
-        internetConnectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
-            guard status.isConnected else {
-                DispatchQueue.main.async {
-                    self?.refreshControl?.endRefreshing()
-                }
-                return
+        guard internetConnectionStatusProvider.status.isConnected else {
+            DispatchQueue.main.async {
+                self.refreshControl?.endRefreshing()
             }
-
-            self?.viewModel.fetchContacts { error in
-                if let error = error {
-                    let alertController = error.alertController()
-                    alertController.addOKAction()
-                    self?.present(alertController, animated: true, completion: nil)
-                }
-                self?.refreshControl?.endRefreshing()
+            return
+        }
+        self.viewModel.fetchContacts { [weak self] error in
+            if let error = error as NSError? {
+                let alertController = error.alertController()
+                alertController.addOKAction()
+                self?.present(alertController, animated: true, completion: nil)
             }
+            self?.refreshControl?.endRefreshing()
         }
     }
 
@@ -306,7 +302,6 @@ extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
 }
 
 // MARK: - UITableViewDataSource
-
 extension ContactsViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sectionCount()
@@ -331,7 +326,6 @@ extension ContactsViewController: UITableViewDataSource {
 }
 
 // MARK: - UITableViewDelegate
-
 extension ContactsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension

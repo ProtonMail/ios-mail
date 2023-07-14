@@ -27,7 +27,7 @@ final class MockFetchMessageDetail: FetchMessageDetailUseCase {
         result = stubbedResult
     }
 
-    override func executionBlock(params: FetchMessageDetail.Params, callback: @escaping NewUseCase<FetchMessageDetail.Output, FetchMessageDetail.Params>.Callback) {
+    override func executionBlock(params: FetchMessageDetail.Params, callback: @escaping UseCase<FetchMessageDetail.Output, FetchMessageDetail.Params>.Callback) {
         self.params = params
         executionTime += 1
         callback(result)

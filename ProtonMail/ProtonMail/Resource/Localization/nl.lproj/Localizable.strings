@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey-bescherming";
 
+/* Title for application logs settings option */
+"Application logs" = "Toepassingslogboek";
+
 /* Apply action */
 "Apply" = "Toepassen";
 
@@ -202,12 +205,6 @@
 
 /* Push notification action archive */
 "Archive (verb)" = "Archiveren";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Weet u zeker dat u dit bericht permanent wilt verwijderen?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Weet u zeker dat u deze %d berichten definitief wilt verwijderen?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Weet u zeker dat u %@ wilt uitloggen?";
@@ -258,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "Tijd tot automatische vergrendeling";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Automatisch verwijderen";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Automatisch ongewenste berichten verwijderen";
+
 /* settings general section title */
 "Auto-load embedded images" = "Ingesloten afbeeldingen automatisch laden";
 
 /* settings general section title */
 "Auto-load remote content" = "Externe inhoud automatisch laden";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Automatisch berichten verwijderen die al 30 of meer dagen in de prullenbak zitten.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Beschikbare acties";
@@ -298,7 +304,7 @@
 "Block email tracking" = "Blokkeer e-mailtracking";
 
 /* Settings item to open blocked sender list */
-"Block list" = "Blokkeringslijst";
+"Block list" = "Geblokkeerde contacten";
 
 /* Button to block a sender */
 "Block sender" = "Blokkeer afzender";
@@ -430,6 +436,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Stijl wissen";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Cache legen…";
 
 /* general close action */
 "Close" = "Sluiten";
@@ -619,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Bericht verwijderen";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Berichten verwijderen?";
+
 /* Title */
 "Details" = "Details";
 
+/* Button to disable auto delete */
+"Disable" = "Uitschakelen";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Schakel eventuele proxy's of firewalls uit of neem contact op met uw netwerkbeheerder.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Schakel automatisch verwijderen uit";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Validatie uitschakelen";
@@ -779,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Bescherming tegen e-mailtracking";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "E-mails die gepland staan om te worden verwijderen, blijven in de Prullenbak en Spam.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Spam leegmaken";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Spam leegmaken";
 
 /* Alert title */
 "Empty spam folder" = "Spamfolder leegmaken";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Prullenbak leegmaken";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Prullenbak leegmaken";
@@ -833,9 +860,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Voer nieuwe PIN-code in";
-
-/* The title of the pin code view. */
-"Enter PIN" = "PIN Invoeren";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Voer uw wachtwoord in om wijzigingen aan te brengen";
@@ -958,7 +982,7 @@
 "Hide details" = "Verberg details";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email-aliassen";
+"Hide My Email aliases" = "Hide-my-email-aliassen";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hoe zou u uw ervaring met de nieuwe Proton Mail omschrijven?";
@@ -1217,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Berichten van voor %@, worden niet doorzocht. Maak opslagruimte vrij op dit apparaat om ze te doorzoeken.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Berichten die meer dan 30 dagen in de spam zitten worden automatisch verwijderd.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Berichten die meer dan 30 dagen in de prullenbak en spam zitten worden automatisch verwijderd.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Berichten worden gedownload via wifi. Dit kan enkele momenten duren en uw apparaat kan een beetje warm worden. U kunt de handeling op elk moment pauzeren.";
 
@@ -1341,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Nee, niet gerelateerd aan de in-app aankoop";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Nee, bedankt";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2067,6 +2100,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Deze werkbalk is zichtbaar wanneer u een bericht leest.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Dit zal alle berichten die langer dan 30 dagen in de prullenbak of spam zitten verwijderen, inclusief berichten die nu in deze mappen zitten.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Tijd om te ontspannen";
 
@@ -2116,6 +2152,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Vertrouwde sleutels zijn niet geldig om mee te verzenden";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Probeer een andere zoekterm.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Probeer verbinding te maken met Proton vanuit een ander netwerk (of gebruik %1$@ of %2$@).";
@@ -2218,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Upgrade naar een betaald abonnement om te kunnen verzenden vanaf uw adres %@";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Upgrade om automatisch berichten te verwijderen die meer dan 30 dagen in de prullenbak of spam zitten.";
 
 /* Action */
 "Upload device contacts" = "Apparaat contacten uploaden";
@@ -2388,7 +2430,7 @@
 "Your messages are being downloaded..." = "Uw berichten worden gedownload...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Uw privacy is beter beschermd als u uw contacten ook Proton Mail gebruiken. Nodig uw vrienden uit voor Proton en ontvang allebei gratis premium voordelen.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Uw privacy is beter beschermd als uw contacten ook Proton Mail gebruiken. Nodig uw vrienden uit voor Proton en ontvang allebei gratis premium voordelen.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Uw sessie is verlopen omdat u al een tijdje inactief bent of omdat deze is ingetrokken. Log opnieuw in.";

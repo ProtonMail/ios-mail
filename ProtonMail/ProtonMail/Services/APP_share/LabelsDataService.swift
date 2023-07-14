@@ -125,9 +125,9 @@ class LabelsDataService: Service {
         return Promise { seal in
             let coreDataService = sharedServices.get(by: CoreDataService.self)
             coreDataService.enqueueOnRootSavingContext { context in
-                Label.deleteAll(inContext: context)
-                LabelUpdate.deleteAll(inContext: context)
-                ContextLabel.deleteAll(inContext: context)
+                Label.deleteAll(in: context)
+                LabelUpdate.deleteAll(in: context)
+                ContextLabel.deleteAll(in: context)
                 seal.fulfill_()
             }
         }
@@ -371,12 +371,9 @@ class LabelsDataService: Service {
         lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: self.userID, type: viewMode, completion: completion)
     }
 
-    func resetCounter(labelID: LabelID,
-                      userID: UserID? = nil,
-                      viewMode: ViewMode? = nil)
+    func resetCounter(labelID: LabelID)
     {
-        let id = userID ?? self.userID
-        self.lastUpdatedStore.resetCounter(labelID: labelID, userID: id, type: viewMode)
+        lastUpdatedStore.resetCounter(labelID: labelID, userID: userID)
     }
 
     func createNewLabel(name: String,

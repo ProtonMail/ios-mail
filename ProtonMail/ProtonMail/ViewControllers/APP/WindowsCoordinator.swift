@@ -553,7 +553,7 @@ extension WindowsCoordinator {
                     }
                 }
                 if shouldShowBadTokenAlert {
-                    NSError.alertBadToken()
+                    NSError.alertBadToken(in: appWindow)
                 }
 
                 let handler = LocalNotificationService(userID: user.userID)

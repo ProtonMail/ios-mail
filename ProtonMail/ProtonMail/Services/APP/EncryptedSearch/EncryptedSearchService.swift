@@ -19,6 +19,7 @@ import ProtonCore_Crypto
 
 // sourcery: mock
 protocol EncryptedSearchServiceProtocol {
+    func initializeServiceStateIfNeeded()
     func setBuildSearchIndexDelegate(for userID: UserID, delegate: BuildSearchIndexDelegate?)
     func indexBuildingState(for userID: UserID) -> EncryptedSearchIndexState
     func indexBuildingEstimatedProgress(for userID: UserID) -> BuildSearchIndexEstimatedProgress?
@@ -27,15 +28,20 @@ protocol EncryptedSearchServiceProtocol {
     func pauseBuildingIndex(for userID: UserID)
     func resumeBuildingIndex(for userID: UserID)
     func stopBuildingIndex(for userID: UserID)
+    func rebuildSearchIndex(for userID: UserID)
+    func fetchNewerMessageIfNeeded(for userID: UserID)
+    func remove(messageIDs: [MessageID], for userID: UserID)
+    func update(drafts: [MessageEntity], for userID: UserID)
     func didChangeDownloadViaMobileData(for userID: UserID)
     func indexSize(for userID: UserID) -> Measurement<UnitInformationStorage>?
-    func oldesMessageTime(for userID: UserID) -> Int?
+    func oldestMessageTime(for userID: UserID) -> Int?
     func search(
         userID: UserID,
         query: String,
         page: UInt,
         completion: @escaping (Result<EncryptedSearchService.SearchResult, Error>) -> Void
     )
+    func pauseBuildingIndexInBackground(for userID: UserID)
 }
 
 // sourcery: mock
@@ -56,6 +62,13 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol, EncryptedSea
         observeMemoryWarningNotification()
     }
 
+    func initializeServiceStateIfNeeded() {
+        guard self.buildSearchIndexes.isEmpty,
+              let user = self.dependencies.usersManager.firstUser else { return }
+        self.createBuildSearchIndexIfNeeded(for: user.userID)
+        self.buildSearchIndex(for: user.userID)?.start()
+    }
+
     func setBuildSearchIndexDelegate(for userID: UserID, delegate: BuildSearchIndexDelegate?) {
         createBuildSearchIndexIfNeeded(for: userID)
         buildSearchIndex(for: userID)?.update(delegate: delegate)
@@ -66,7 +79,7 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol, EncryptedSea
     }
 
     func indexBuildingEstimatedProgress(for userID: UserID) -> BuildSearchIndexEstimatedProgress? {
-        buildSearchIndex(for: userID)?.estimatedProgress
+        buildSearchIndex(for: userID)?.estimatedProgress.value
     }
 
     func isIndexBuildingComplete(for userID: UserID) -> Bool {
@@ -89,6 +102,22 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol, EncryptedSea
         buildSearchIndex(for: userID)?.disable()
     }
 
+    func rebuildSearchIndex(for userID: UserID) {
+        buildSearchIndex(for: userID)?.rebuildSearchIndex()
+    }
+
+    func fetchNewerMessageIfNeeded(for userID: UserID) {
+        buildSearchIndex(for: userID)?.fetchNewerMessageIfNeeded()
+    }
+
+    func remove(messageIDs: [MessageID], for userID: UserID) {
+        buildSearchIndex(for: userID)?.remove(messageIDs: messageIDs)
+    }
+
+    func update(drafts: [MessageEntity], for userID: UserID) {
+        buildSearchIndex(for: userID)?.update(drafts: drafts)
+    }
+
     func didChangeDownloadViaMobileData(for userID: UserID) {
         buildSearchIndex(for: userID)?.didChangeDownloadViaMobileDataConfiguration()
     }
@@ -97,7 +126,7 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol, EncryptedSea
         buildSearchIndex(for: userID)?.indexSize
     }
 
-    func oldesMessageTime(for userID: UserID) -> Int? {
+    func oldestMessageTime(for userID: UserID) -> Int? {
         buildSearchIndex(for: userID)?.oldestMessageTime
     }
 
@@ -111,6 +140,10 @@ final class EncryptedSearchService: EncryptedSearchServiceProtocol, EncryptedSea
         serial.sync {
             buildSearchIndexes[userID] = nil
         }
+    }
+
+    func pauseBuildingIndexInBackground(for userID: UserID) {
+        buildSearchIndex(for: userID)?.stopInBackground()
     }
 }
 
@@ -219,7 +252,7 @@ extension EncryptedSearchService {
         }
     }
 
-    // swiftlint:disable function_parameter_count
+    // swiftlint:disable:next function_parameter_count
     private func searchInIndex(
         searcher: GoLibsEncryptedSearchSimpleSearcher,
         cipher: GoLibsEncryptedSearchAESGCMCipher,
@@ -284,7 +317,7 @@ extension EncryptedSearchService {
         completion(.success(searchResults))
     }
 
-    // swiftlint:disable function_parameter_count
+    // swiftlint:disable:next function_parameter_count
     private func searchInCache(
         searcher: GoLibsEncryptedSearchSimpleSearcher,
         page: UInt,
@@ -302,7 +335,7 @@ extension EncryptedSearchService {
             completion(.success([]))
             return
         }
-
+        let startSearchTime = CFAbsoluteTimeGetCurrent()
         var found = 0
         var batchCount = 0
         var searchResults: [GoLibsEncryptedSearchResultList] = []
@@ -327,6 +360,8 @@ extension EncryptedSearchService {
 
         SystemLogger.logTemporarily(message: "Cache search found: \(found) results.\nBatch count: \(batchCount)\nBatch size: \(batchSize)", category: .encryptedSearch)
         completion(.success(searchResults))
+        sendSearchMetric(for: userID, cache: cache, startSearchTime: startSearchTime)
+        dependencies.esDefaultCache.hasSearched(of: userID)
     }
 
     private func buildCacheIfNeeded(
@@ -362,6 +397,35 @@ extension EncryptedSearchService {
         }
         searchCacheServiceMap.removeAll()
     }
+
+    private func sendSearchMetric(
+        for userID: UserID,
+        cache: GoLibsEncryptedSearchCache,
+        startSearchTime: CFAbsoluteTime
+    ) {
+        guard
+            let user = dependencies.usersManager.users.first(where: { $0.userID == userID }),
+            user.hasTelemetryEnabled,
+            let searchIndex = buildSearchIndex(for: userID)
+        else { return }
+        let size = searchIndex.indexSize ?? .zero
+        let searchTimeInMilliSeconds = Double((CFAbsoluteTimeGetCurrent() - startSearchTime) * 100)
+        let isFirstSearch = dependencies.esDefaultCache.isFirstSearch(of: userID)
+        let searchMetricsData: [String: Any] = [
+            "numMessagesIndexed": searchIndex.numberOfEntriesInSearchIndex(),
+            "indexSize": size.value,
+            "cacheSize": cache.getSize(),
+            "isFirstSearch": isFirstSearch,
+            "isCacheLimited": cache.isPartial(),
+            "searchTime": searchTimeInMilliSeconds
+        ]
+        let request = MetricEncryptedSearch(type: .search, data: searchMetricsData)
+        // For privacy reasons, search metric is sent to the server with random delay, between 1 second to 3 mins
+        let delay = Double.random(in: 1...180)
+        DispatchQueue.global().asyncAfter(deadline: .now() + delay) {
+            user.apiService.perform(request: request, jsonDictionaryCompletion: { _, _ in })
+        }
+    }
 }
 
 extension EncryptedSearchService {
@@ -388,7 +452,8 @@ extension EncryptedSearchService {
                 esDeviceCache: dependencies.esDefaultCache,
                 esUserCache: dependencies.esDefaultCache,
                 messageDataService: user.messageService,
-                searchIndexDB: searchIndexDB
+                searchIndexDB: searchIndexDB,
+                userManager: user
             ),
             params: .init(userID: user.userID)
         )
@@ -402,13 +467,14 @@ extension EncryptedSearchService {
         serial.sync {
             build = buildSearchIndexes[userID]
         }
-        guard let build = build else {
-            let message = "\(caller): BuildSearchIndex not found for userID \(userID)"
-            log(message: message, isError: true)
-            assertionFailure(message)
-            return nil
+        if build == nil {
+            createBuildSearchIndexIfNeeded(for: userID)
+            return serial.sync {
+                return buildSearchIndexes[userID]
+            }
+        } else {
+            return build
         }
-        return build
     }
 
     enum Constant {
@@ -427,7 +493,7 @@ extension EncryptedSearchService {
 
     struct Dependencies {
         let esDefaultCache = EncryptedSearchUserDefaultCache()
-        let connectionStatusProvider = InternetConnectionStatusProvider()
+        let connectionStatusProvider = InternetConnectionStatusProvider.shared
         let usersManager = sharedServices.get(by: UsersManager.self)
     }
 }

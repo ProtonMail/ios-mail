@@ -40,31 +40,49 @@ final class MailSettingsTest: XCTestCase {
 
         sut.update(key: .nextMessageOnMove, to: false)
         XCTAssertEqual(sut.nextMessageOnMove, .explicitlyDisabled)
+
+        sut.update(key: .autoDeleteSpamTrashDays, to: true)
+        XCTAssertEqual(sut.autoDeleteSpamTrashDays, .explicitlyEnabled)
+
+        sut.update(key: .autoDeleteSpamTrashDays, to: false)
+        XCTAssertEqual(sut.autoDeleteSpamTrashDays, .explicitlyDisabled)
     }
 
     func testMailSettingsDecode_valueIsMoreThan0_flagIsTrue() throws {
         let value = Int.random(in: 1...Int.max)
         let json: [String: Any] = [
             "NextMessageOnMove": 1,
-            "HideSenderImages": value
+            "HideSenderImages": value,
+            "AutoDeleteSpamAndTrashDays": 30
         ]
         let data = try JSONSerialization.data(withJSONObject: json)
         let decoder = JSONDecoder()
         let result = try decoder.decode(MailSettings.self, from: data)
         XCTAssertEqual(result.nextMessageOnMove, .implicitlyDisabled)
         XCTAssertTrue(result.hideSenderImages)
+        XCTAssertEqual(result.autoDeleteSpamTrashDays, .explicitlyEnabled)
     }
 
     func testMailSettingsDecode_valueIsSmallerThan1_flagIsFalse() throws {
         let value = Int.random(in: Int.min...0)
         let json: [String: Any] = [
             "NextMessageOnMove": 0,
-            "HideSenderImages": value
+            "HideSenderImages": value,
+            "AutoDeleteSpamAndTrashDays": 0
         ]
         let data = try JSONSerialization.data(withJSONObject: json)
         let decoder = JSONDecoder()
         let result = try decoder.decode(MailSettings.self, from: data)
         XCTAssertEqual(result.nextMessageOnMove, .explicitlyDisabled)
         XCTAssertFalse(result.hideSenderImages)
+        XCTAssertEqual(result.autoDeleteSpamTrashDays, .explicitlyDisabled)
+    }
+
+    func testMailSettingsDecode_valueIsNull_flagIsImplicitlyDisabled() throws {
+        let json: [String: Any] = [:]
+        let data = try JSONSerialization.data(withJSONObject: json)
+        let decoder = JSONDecoder()
+        let result = try decoder.decode(MailSettings.self, from: data)
+        XCTAssertEqual(result.autoDeleteSpamTrashDays, .implicitlyDisabled)
     }
 }

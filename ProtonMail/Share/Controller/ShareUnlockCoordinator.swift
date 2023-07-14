@@ -51,7 +51,10 @@ class ShareUnlockCoordinator {
         // UI refe
         guard let navigationController = self.navigationController else { return }
         let pinView = SharePinUnlockCoordinator(navigation: navigationController,
-                                                vm: ShareUnlockPinCodeModelImpl(unlock: self.services.get()),
+                                                vm: ShareUnlockPinCodeModelImpl(
+                                                    unlock: services.get(),
+                                                    pinFailedCountCache: services.userCachedStatus
+                                                ),
                                                 delegate: self)
         self.nextCoordinator = pinView
         pinView.start()
@@ -65,7 +68,7 @@ class ShareUnlockCoordinator {
         }
 
         let coreDataService = self.services.get(by: CoreDataService.self)
-        let internetStatusProvider = self.services.get(by: InternetConnectionStatusProvider.self)
+        let internetStatusProvider = InternetConnectionStatusProvider.shared
         let coreKeyMaker: KeyMakerProtocol = services.get()
         let composer = ComposerViewFactory.makeComposer(
             subject: controller.inputSubject,
@@ -73,10 +76,12 @@ class ShareUnlockCoordinator {
             files: controller.files,
             user: user,
             contextProvider: coreDataService,
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendStatusProvider: userCachedStatus,
+            userIntroductionProgressProvider: services.userCachedStatus,
             internetStatusProvider: internetStatusProvider,
             coreKeyMaker: coreKeyMaker,
+            darkModeCache: services.userCachedStatus,
+            mobileSignatureCache: services.userCachedStatus,
+            attachmentMetadataStrippingCache: services.userCachedStatus,
             navigationViewController: navigationController
         )
         navigationController.setViewControllers([composer], animated: true)

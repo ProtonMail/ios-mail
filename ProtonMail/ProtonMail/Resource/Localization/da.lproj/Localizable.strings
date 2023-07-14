@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey-beskyttelse";
 
+/* Title for application logs settings option */
+"Application logs" = "Applikationslogs";
+
 /* Apply action */
 "Apply" = "Anvend";
 
@@ -202,12 +205,6 @@
 
 /* Push notification action archive */
 "Archive (verb)" = "Arkivér";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Er du sikker på, at du vil slette denne besked permanent?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Er du sikker på, at du ønsker at slette disse %d beskeder permanent?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Er du sikker på, at du vil logge ud %@?";
@@ -258,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "Auto-lås tid";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Slet automatisk";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Slet uønskede beskeder automatisk";
+
 /* settings general section title */
 "Auto-load embedded images" = "Auto-indlæs indlejrede billeder";
 
 /* settings general section title */
 "Auto-load remote content" = "Auto-indlæs fjernindhold";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Slet automatisk beskeder, der har været i papirkurven i mere end 30 dage.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Tilgængelige handlinger";
@@ -431,6 +437,9 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "Ryd stil";
 
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Rydder cache...";
+
 /* general close action */
 "Close" = "Luk";
 
@@ -552,13 +561,13 @@
 
 /* contacts default label type
    Custom option for time config picker */
-"Custom" = "Tilpasset";
+"Custom" = "Brugerdefineret";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Tilpas";
 
 /* The title of the item in the App settings section of the device setting view. */
-"Customize toolbar" = "Tilpas værktøjsbjælker";
+"Customize toolbar" = "Tilpas værktøjslinje";
 
 /* Title */
 "Cut" = "Klip";
@@ -619,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Slet besked";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Slet beskeder?";
+
 /* Title */
 "Details" = "Detaljer";
 
+/* Button to disable auto delete */
+"Disable" = "Deaktivér";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Deaktivér eventuelle proxier eller firewalls, eller kontakt din netværksadministrator.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Deaktivér automatisk sletning?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Deaktivér validering";
@@ -779,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Beskyttelse mod sporing af e-mail";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "E-mails, der er planlagt til sletning, forbliver i papirkurven og spam-mapperne.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Tøm Spam";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Tøm spam";
 
 /* Alert title */
 "Empty spam folder" = "Tøm spammappe";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Tøm Papirkurv";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Tøm papirkurv";
@@ -834,14 +861,11 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Indtast ny pinkode";
 
-/* The title of the pin code view. */
-"Enter PIN" = "Indtast PIN";
-
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Angiv din adgangskode for at foretage ændringer";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Angiv PIN-kode til oplåsning af din indbakke.";
+"Enter your PIN to unlock your inbox." = "Angiv pinkode til oplåsning af din indbakke.";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "Indtast din signatur her";
@@ -958,7 +982,7 @@
 "Hide details" = "Skjul detaljer";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Skjul mine e-mail-aliasser";
+"Hide My Email aliases" = "Hide-my-email-aliasser";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Hvordan vil du beskrive din oplevelse med den nye Proton Mail?";
@@ -970,7 +994,7 @@
 "Human Check Warning" = "Robottjek -advarsel";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Jeg har brugt Proton Mail og tror, at du også vil kunne lide den. Det er en sikker e-mailtjeneste, der beskytter dit privatliv. Tilmeld dig med dette link for at få 1 måned med premium-funktioner gratis:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Jeg anvender Proton Mail og tror, at du også vil kunne lide den. Det er en sikker e-mailtjeneste, der beskytter dit privatliv. Tilmeld dig med dette link for at få 1 måned med premium-funktioner gratis:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Hvis du mister din WiFi-forbindelse, fortsætter download via mobildata.";
@@ -1217,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Beskeder fra før %@, vil ikke blive søgt. Hvis du vil søge i dem, skal du frigøre lagerplads på denne enhed.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Beskeder i papirkurv eller spam i mere end 30 dage vil blive slettet automatisk.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Beskeder der har været i papirkurven og spam i mere end 30 dage vil blive slettet automatisk.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Meddelelser downloades via Wi-Fi. Det kan tage noget tid, og din enhed kan blive lidt varm. Du kan til enhver tid sætte handlingen på pause.";
 
@@ -1341,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Nej, omhandler ikke In-app køb";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Nej tak";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -1482,7 +1515,7 @@
 "Phone number" = "Telefonnummer";
 
 /* The protection title of PIN code protection */
-"PIN code" = "PIN-kode";
+"PIN code" = "Pinkode";
 
 /* Description */
 "PIN code can't be empty." = "Pinkode skal udfyldes.";
@@ -2067,6 +2100,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Denne værktøjslinje er synlig, når du læser en besked.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Dette sletter alle beskeder, der har ligget i papirkurven eller spam i mere end 30 dage, inklusive beskeder, der aktuelt ligger i disse mapper.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "Det er tid til at slappe af";
 
@@ -2116,6 +2152,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Betroede nøgler er ikke gyldige til afsendelse";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Prøv et andet søgeord.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Prøv at forbinde til Proton fra et andet netværk (eller brug %1$@ eller %2$@).";
@@ -2218,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Opgradér til et abonnement for at sende fra din %@-adresse";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Opgradér for automatisk at slette beskeder, der har været i papirkurven eller spam i mere end 30 dage.";
 
 /* Action */
 "Upload device contacts" = "Upload enhedskontakter";
@@ -2388,7 +2430,7 @@
 "Your messages are being downloaded..." = "Din beskeder bliver downloadet...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Dir privatliv er bedre beskyttet, hvis dine kontakter også bruger Proton Mail. Inviter dine venner til at bruge Proton, så får I begge gratis premium fordele.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Dit privatliv er bedre beskyttet, hvis dine kontakter også bruger Proton Mail. Inviter dine venner til Proton, så får I alle premium-fordele gratis.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session er udløbet, fordi du har været inaktiv i et stykke tid, eller fordi den er blevet tilbagekaldt. Log venligst ind igen.";

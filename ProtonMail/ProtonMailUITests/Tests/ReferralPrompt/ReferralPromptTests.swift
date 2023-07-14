@@ -22,12 +22,12 @@ import ProtonCore_TestingToolkit
 class ReferralPromptTests: BaseTestCase {
 
     override func setUp() {
-        launchArguments.append("-ShowReferralPromptView")
+        launchArguments.append("-showReferralPromptView")
         super.setUp()
     }
 
     func testTapOutsideShouldDismiss() {
-        let user = testData.onePassUser
+        let user = users["plus"]!
         LoginRobot()
             .loginUserWithReferralPrompt(user)
             .dismissReferralByTapOutside()
@@ -35,7 +35,7 @@ class ReferralPromptTests: BaseTestCase {
     }
 
     func testCloseButtonShouldDismiss() {
-        let user = testData.onePassUser
+        let user = users["plus"]!
         LoginRobot()
             .loginUserWithReferralPrompt(user)
             .dismissReferralWithCloseButton()
@@ -43,7 +43,7 @@ class ReferralPromptTests: BaseTestCase {
     }
 
     func testLaterButtonShouldDismiss() {
-        let user = testData.onePassUser
+        let user = users["plus"]!
         LoginRobot()
             .loginUserWithReferralPrompt(user)
             .dismissReferralWithLaterButton()

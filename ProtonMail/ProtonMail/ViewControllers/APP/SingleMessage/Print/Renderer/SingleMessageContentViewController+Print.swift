@@ -73,7 +73,7 @@ extension SingleMessageContentViewController: CustomViewPrintable {
 
     func printingWillStart(renderer: CustomViewPrintRenderer) {
         guard let newHeader = renderer.view as? EmailHeaderView else { return }
-        newHeader.prepareForPrinting(true)
+        newHeader.prepareForPrinting()
         newHeader.frame = .init(x: 18, y: 40, width: 560, height: newHeader.getHeight())
         newHeader.layoutIfNeeded()
 

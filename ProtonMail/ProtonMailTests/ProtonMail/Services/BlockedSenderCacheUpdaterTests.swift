@@ -23,6 +23,7 @@ import XCTest
 final class BlockedSenderCacheUpdaterTests: XCTestCase {
     private var fetchStatusProvider: MockBlockedSenderFetchStatusProviderProtocol!
     private var internetStatusProvider: MockInternetConnectionStatusProviderProtocol!
+    private var connectionStatusReceiver: MockConnectionStatusReceiver!
     private var refetchAllBlockedSenders: MockRefetchAllBlockedSendersUseCase!
     private var sut: BlockedSenderCacheUpdater!
 
@@ -34,6 +35,8 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
         fetchStatusProvider = .init()
         internetStatusProvider = .init()
         refetchAllBlockedSenders = .init()
+        connectionStatusReceiver = .init()
+        internetStatusProvider.statusStub.fixture = .connected
 
         sut = BlockedSenderCacheUpdater(
             dependencies: .init(
@@ -80,15 +83,11 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
     }
 
     func testRequestingTheUpdate_whileOffline_triggersWaitingForOnlineState() {
-        internetStatusProvider.currentStatusStub.fixture = .notConnected
+        internetStatusProvider.statusStub.fixture = .notConnected
 
-        var didRegainConnectivity: (() -> Void)!
-
-        internetStatusProvider.registerConnectionStatusStub.bodyIs { _, _, _, callback in
-            // we're capturing callback to run it later, thus simulating regaining connectivity
-            didRegainConnectivity = {
-                callback(.connected)
-            }
+        var statusReceiver: ConnectionStatusReceiver?
+        internetStatusProvider.registerStub.bodyIs { _, receiver, _ in
+            statusReceiver = receiver
         }
 
         sut.requestUpdate()
@@ -96,13 +95,13 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
 
         XCTAssertEqual(sut.state, .waitingToBecomeOnline)
         XCTAssertEqual(refetchAllBlockedSenders.executeStub.callCounter, 0)
-        XCTAssertEqual(internetStatusProvider.registerConnectionStatusStub.callCounter, 1)
+        XCTAssertEqual(internetStatusProvider.registerStub.callCounter, 1)
 
-        didRegainConnectivity()
+        statusReceiver?.connectionStatusHasChanged(newStatus: .connected)
         waitForSideEffectsToOccur()
 
         XCTAssertEqual(sut.state, .updateInProgress)
-        XCTAssertEqual(internetStatusProvider.unregisterObserverStub.callCounter, 1)
+        XCTAssertEqual(internetStatusProvider.unRegisterStub.callCounter, 1)
         XCTAssertEqual(refetchAllBlockedSenders.executeStub.callCounter, 1)
     }
 

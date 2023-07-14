@@ -42,12 +42,11 @@ final class SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelPr
         if isEncryptedSearchEnabled {
             sections = [.encryptedSearchFeature, .downloadViaMobileData]
             let indexBuildingState = dependencies.esService.indexBuildingState(for: userID)
-            if indexBuildingState != .undetermined { // TODO: we should get rid of the .undeterminate state
-                if indexBuildingState.allowsToShowDownloadingProgress {
-                    sections.append(.downloadProgress)
-                } else {
-                    sections.append(.downloadedMessages)
-                }
+            guard indexBuildingState != .undetermined else { return }
+            if indexBuildingState.allowsToShowDownloadingProgress {
+                sections.append(.downloadProgress)
+            } else if indexBuildingState.allowsToShowDownloadedMessagesInfo {
+                sections.append(.downloadedMessages)
             }
         } else {
             sections = [.encryptedSearchFeature]
@@ -116,7 +115,7 @@ extension SettingsEncryptedSearchViewModel: SettingsEncryptedSearchViewModelOutp
             indexSize = storage.stringFormatted
         }
         var oldestTime: String = "-"
-        if let time = dependencies.esService.oldesMessageTime(for: userID) {
+        if let time = dependencies.esService.oldestMessageTime(for: userID) {
             oldestTime = dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(time)))
         }
         let isDownloadComplete = dependencies.esService.indexBuildingState(for: userID) == .complete

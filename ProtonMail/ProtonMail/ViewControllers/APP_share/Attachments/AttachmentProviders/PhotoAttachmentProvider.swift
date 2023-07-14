@@ -21,23 +21,40 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import PhotosUI
 import ProtonCore_UIFoundations
 
 class PhotoAttachmentProvider: AnyImagePickerDelegate {
     override var actionSheetItem: PMActionSheetItem {
-        return PMActionSheetPlainItem(title: LocalString._from_your_photo_library,
-                                      icon: IconProvider.image,
-                                      iconColor: ColorProvider.IconNorm) { (_) -> Void in
-            let picker = PMImagePickerController()
-            picker.setup(withDelegate: self)
+        return PMActionSheetItem(
+            title: LocalString._from_your_photo_library,
+            icon: IconProvider.image,
+            iconColor: ColorProvider.IconNorm
+        ) { _ in
+            self.checkPhotoPermission { granted in
+                guard granted else {
+                    return
+                }
 
-            #if APP_EXTENSION
-            self.checkPhotoPermission { _ in
+                let photoLibrary = PHPhotoLibrary.shared()
+                var config = PHPickerConfiguration(photoLibrary: photoLibrary)
+                config.selectionLimit = 0
+                let picker = PHPickerViewController(configuration: config)
+                picker.delegate = self
                 self.controller?.present(picker, animated: true, completion: nil)
             }
-            #else
-            self.controller?.present(picker, animated: true, completion: nil)
-            #endif
+        }
+    }
+}
+
+extension PhotoAttachmentProvider: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+
+        let identifiers = results.compactMap(\.assetIdentifier)
+        let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
+        fetchResult.enumerateObjects { asset, _, _ in
+            self.process(asset: asset)
         }
     }
 }

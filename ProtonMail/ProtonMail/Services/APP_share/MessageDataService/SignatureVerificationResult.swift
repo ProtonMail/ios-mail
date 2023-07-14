@@ -37,26 +37,4 @@ enum SignatureVerificationResult {
             self = .failure
         }
     }
-
-    init(error: SignatureVerifyError) {
-        switch error.code {
-        case ConstantsSIGNATURE_NOT_SIGNED, ConstantsSIGNATURE_FAILED, ConstantsSIGNATURE_NO_VERIFIER:
-            self.init(gopenpgpOutput: error.code)
-        default:
-            assertionFailure("Unexpected error: \(error.message) (code \(error.code))")
-            self = .failure
-        }
-    }
-
-    init<T>(message: VerifiedMessage<T>) {
-        switch message {
-        case .verified:
-            self = .success
-        case let .unverified(_, error as SignatureVerifyError):
-            self = SignatureVerificationResult(error: error)
-        case let .unverified(_, error):
-            assertionFailure("Unrecognized error: \(error)")
-            self = .failure
-        }
-    }
 }

@@ -52,4 +52,14 @@ class EventAPITests: XCTestCase {
         XCTAssertEqual(sut.usedSpace, 157621062)
         XCTAssertEqual(sut.notices, [])
     }
+
+    func testEventCheckRequestUrlPath() {
+        let eventID = String.randomString(20)
+        let sut = EventCheckRequest(eventID: eventID)
+
+        XCTAssertEqual(
+            sut.path,
+            "/core/v4/events/\(eventID)?ConversationCounts=1&MessageCounts=1"
+        )
+    }
 }

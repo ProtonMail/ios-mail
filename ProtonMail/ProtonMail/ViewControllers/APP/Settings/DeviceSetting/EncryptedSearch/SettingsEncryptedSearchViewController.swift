@@ -147,6 +147,7 @@ extension SettingsEncryptedSearchViewController {
         cell.delegate = self
         let searchIndexState = viewModel.output.searchIndexState
         cell.configureWith(state: downloadingState(from: searchIndexState))
+        cell.updateDownloadingProgress(progress: downloadProgress().toDownloadingProgress())
         downloadProgressCell = cell
         return cell
     }

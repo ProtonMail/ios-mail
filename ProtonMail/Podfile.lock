@@ -2,37 +2,6 @@ PODS:
   - Alamofire (5.4.4)
   - AwaitKit (5.2.0):
     - PromiseKit (~> 6)
-  - DKImagePickerController/Core (4.3.4):
-    - DKImagePickerController/ImageDataManager
-    - DKImagePickerController/Resource
-  - DKImagePickerController/ImageDataManager (4.3.4)
-  - DKImagePickerController/PhotoGallery (4.3.4):
-    - DKImagePickerController/Core
-    - DKPhotoGallery
-  - DKImagePickerController/Resource (4.3.4)
-  - DKPhotoGallery (0.0.17):
-    - DKPhotoGallery/Core (= 0.0.17)
-    - DKPhotoGallery/Model (= 0.0.17)
-    - DKPhotoGallery/Preview (= 0.0.17)
-    - DKPhotoGallery/Resource (= 0.0.17)
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Core (0.0.17):
-    - DKPhotoGallery/Model
-    - DKPhotoGallery/Preview
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Model (0.0.17):
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Preview (0.0.17):
-    - DKPhotoGallery/Model
-    - DKPhotoGallery/Resource
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Resource (0.0.17):
-    - SDWebImage
-    - SwiftyGif
   - EllipticCurveKeyPair (2.0)
   - fusion (2.0.1)
   - Groot (3.0.1):
@@ -338,19 +307,17 @@ PODS:
   - SQLite.swift/standard (0.13.3)
   - swift-snapshot-testing (1.10.0)
   - SwiftSoup (2.4.3)
-  - SwiftyGif (5.4.3)
   - SwipyCell (4.1.1)
   - TrustKit (2.0.0)
   - Yams (5.0.5)
 
 DEPENDENCIES:
   - AwaitKit (from `https://github.com/yannickl/AwaitKit.git`, commit `4b725f40dd189f40c0962cba792f06a2073bd977`)
-  - DKImagePickerController/PhotoGallery (= 4.3.4)
-  - "fusion (from `git@gitlab.protontech.ch:tpe/apple-fusion.git`, commit `82ddf41`)"
+  - "fusion (from `git@gitlab.protontech.ch:tpe/apple-fusion.git`, commit `9b250a7f`)"
   - Groot (= 3.0.1)
   - "iosMonkey (from `git@gitlab.protontech.ch:tpe/ios-monkey.git`, commit `fa348f33`)"
   - MBProgressHUD (= 1.1.0)
-  - OHHTTPStubs/Swift (= 9.0.0)
+  - OHHTTPStubs/Swift
   - PromiseKit (= 6.13.1)
   - "ProtonCore-AccountDeletion/Crypto+Search-Go1.20.2 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-AccountSwitcher (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
@@ -395,6 +362,8 @@ DEPENDENCIES:
   - "ProtonCore-TroubleShooting (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
+  - ReachabilitySwift
+  - SDWebImage (= 5.13.3)
   - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `7.31.2.fork`)"
   - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.autolayout`)"
   - SkeletonView (= 1.30.4)
@@ -403,13 +372,11 @@ DEPENDENCIES:
   - SwiftSoup (~> 2.3)
   - "SwipyCell (from `git@gitlab.protontech.ch:jchen/SwipyCell.git`, commit `923310a`)"
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `release/1.0.3`)
-  - Yams (= 5.0.5)
+  - Yams
 
 SPEC REPOS:
   trunk:
     - Alamofire
-    - DKImagePickerController
-    - DKPhotoGallery
     - EllipticCurveKeyPair
     - Groot
     - lottie-ios
@@ -421,7 +388,6 @@ SPEC REPOS:
     - SkeletonView
     - SQLite.swift
     - SwiftSoup
-    - SwiftyGif
     - Yams
 
 EXTERNAL SOURCES:
@@ -429,7 +395,7 @@ EXTERNAL SOURCES:
     :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
     :git: https://github.com/yannickl/AwaitKit.git
   fusion:
-    :commit: 82ddf41
+    :commit: 9b250a7f
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
   iosMonkey:
     :commit: fa348f33
@@ -548,7 +514,7 @@ CHECKOUT OPTIONS:
     :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
     :git: https://github.com/yannickl/AwaitKit.git
   fusion:
-    :commit: 82ddf41
+    :commit: 9b250a7f
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
   iosMonkey:
     :commit: fa348f33
@@ -665,8 +631,6 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   AwaitKit: 512626cd12c82b1fbffddc8f414d0364cb456004
-  DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
-  DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
   fusion: 4ce692b0bd8030d952dde9b4ceae3ab9fd3d2b72
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
@@ -714,11 +678,10 @@ SPEC CHECKSUMS:
   SQLite.swift: 903bfa3bc9ab06345fdfbb578e34f47cfcf417da
   swift-snapshot-testing: d388c9ff71363d8572312dcb45704bb5df021c8f
   SwiftSoup: 3384f2e618cfc1b3cbc7852c16692fe8de13fb8f
-  SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: d6b8f3b2ce9b633559402eeaee1a5fb2902c0ee1
+PODFILE CHECKSUM: bb4c81ee40f59e329c0abc953e84b884e8d21ef7
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1

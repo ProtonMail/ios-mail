@@ -29,6 +29,9 @@ final class ComposeViewModelTests: XCTestCase {
     private var fakeUserManager: UserManager!
     private var sut: ComposeViewModel!
     private var contactProvider: MockContactProvider!
+    private var dependencies: ComposeViewModel.Dependencies!
+    private var attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock!
+    private let userID: UserID = .init(String.randomString(20))
 
     override func setUp() {
         super.setUp()
@@ -52,16 +55,21 @@ final class ComposeViewModelTests: XCTestCase {
             contextProvider: mockCoreDataService,
             copyMessage: copyMessage
         )
-
-        let dependencies = ComposeViewModel.Dependencies(
+        attachmentMetadataStrippingCache = .init()
+        dependencies = ComposeViewModel.Dependencies(
             coreDataContextProvider: mockCoreDataService,
             coreKeyMaker: MockKeyMakerProtocol(),
             fetchAndVerifyContacts: .init(),
-            internetStatusProvider: .init(),
+            internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
             fetchAttachment: .init(),
             contactProvider: contactProvider,
             helperDependencies: helperDependencies,
-            fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: MockKeyMakerProtocol(), cache: MockMobileSignatureCacheProtocol()))
+            fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(
+                coreKeyMaker: MockKeyMakerProtocol(),
+                cache: MockMobileSignatureCacheProtocol()
+            )),
+            darkModeCache: MockDarkModeCacheProtocol(),
+            attachmentMetadataStrippingCache: attachmentMetadataStrippingCache
         )
 
         self.message = testContext.performAndWait {
@@ -83,6 +91,7 @@ final class ComposeViewModelTests: XCTestCase {
         self.apiMock = nil
         self.message = nil
         self.testContext = nil
+        FileManager.default.cleanTemporaryDirectory()
 
         super.tearDown()
     }
@@ -192,12 +201,44 @@ final class ComposeViewModelTests: XCTestCase {
             XCTAssertEqual(contact.displayName, "friend@example.com")
         }
     }
+
+    func testInit_withFileData_stripMetaDataIsOn_attachmentHasNoGPSData() throws {
+        let fileData = try loadImage(fileName: "IMG_0001")
+        attachmentMetadataStrippingCache.metadataStripping = .stripMetadata
+        let e = expectation(description: "Closure is called")
+
+        sut = .init(
+            subject: "",
+            body: "",
+            files: [fileData],
+            action: .newDraftFromShare,
+            msgService: fakeUserManager.messageService,
+            user: fakeUserManager,
+            dependencies: dependencies
+        )
+        sut.composerMessageHelper.updateAttachmentView = {
+            e.fulfill()
+        }
+        waitForExpectations(timeout: 5)
+
+
+        var imageUrl: URL?
+        mockCoreDataService.performAndWaitOnRootSavingContext { context in
+            let msg = self.sut.composerMessageHelper.getRawMessageObject()
+            XCTAssertFalse(msg?.attachments.count == 0)
+            let attachment = (msg?.attachments.allObjects as? [Attachment])?.first
+            imageUrl = attachment?.localURL
+        }
+        let urlToLoad = try XCTUnwrap(imageUrl)
+        XCTAssertFalse(urlToLoad.hasGPSData())
+    }
 }
 
 extension ComposeViewModelTests {
     private func mockUserManager() -> UserManager {
         let userInfo = UserInfo.getDefault()
         userInfo.defaultSignature = "Hi"
+        userInfo.userId = self.userID.rawValue
         let key = Key(keyID: "keyID", privateKey: KeyTestData.privateKey1)
         let address = Address(addressID: UUID().uuidString,
                               domainID: "",
@@ -237,5 +278,20 @@ extension ComposeViewModelTests {
             )
         }
         return list
+    }
+
+    private func loadImage(fileName: String) throws -> ConcreteFileData {
+        let bundle = Bundle.init(for: Self.self)
+        let fullFileName = "\(fileName).JPG"
+        let jpgUrl = try XCTUnwrap(bundle.url(forResource: fileName, withExtension: "JPG"))
+        let data = try Data(contentsOf: jpgUrl)
+        let url = try FileManager.default.createTempURL(forCopyOfFileNamed: fullFileName)
+        try data.write(to: url)
+        XCTAssertTrue(url.hasGPSData())
+        return ConcreteFileData(
+            name: fullFileName,
+            ext: "image/png",
+            contents: url
+        )
     }
 }

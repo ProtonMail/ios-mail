@@ -18,9 +18,10 @@ class ForceUpgradeTests: BaseTestCase {
     override func setUp() {
         forceUpgradeStubs = true
         super.setUp()
+        let freeUser = users["plus"]!
 
         menuRobot = loginRobot
-            .loginUser(testData.onePassUser)
+            .loginUser(freeUser)
             .menuDrawer()
     }
 

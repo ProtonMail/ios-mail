@@ -37,10 +37,13 @@ var beforeSanitizeElements = function (node) {
             var attribute = element.getAttribute(item);
             // Don't update base64 string
             // Mainly for signature case
-            if (!attribute.startsWith('data:')) {
+            try {
+                let _ = new URL(attribute);
                 const originalUrl = attribute;
                 const replacedUrl = 'proton-' + attribute;
                 element.setAttribute(item, replacedUrl || '');
+            } catch(_) {
+                // not URL, don't do anything
             }
         }
 

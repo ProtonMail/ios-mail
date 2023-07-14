@@ -51,6 +51,8 @@ final class MenuViewModel: NSObject {
     var currentUser: UserManager? {
         return self.usersManager.firstUser
     }
+    /// It is used to check if menu needs to update the view when the active account is changed.
+    private var currentUserID: UserID?
     var secondUser: UserManager? {
         return self.usersManager.user(at: 1)
     }
@@ -64,6 +66,10 @@ final class MenuViewModel: NSObject {
     private(set) var moreItems: [MenuLabel]
     /// When BE has issue, BE will disable subscription functionality
     private var subscriptionAvailable = true
+    private var selectedItem: MenuLabel? {
+        let items = inboxItems + folderItems + labelItems + moreItems
+        return items.first(where: { $0.isSelected })
+    }
 
     var reloadClosure: (() -> Void)?
     lazy private(set) var userEnableColorSettingClosure: () -> Bool = { [weak self] in
@@ -73,7 +79,7 @@ final class MenuViewModel: NSObject {
         self?.currentUser?.userInfo.inheritParentFolderColor == 1
     }
 
-    weak var coordinator: MenuCoordinator?
+    weak var coordinator: MenuCoordinatorProtocol?
     private let coreKeyMaker: KeyMakerProtocol
     private let unlockManager: UnlockManager
 
@@ -288,6 +294,7 @@ extension MenuViewModel: MenuVMProtocol {
         self.delegate?.navigateTo(label: MenuLabel(location: .inbox))
         let msg = String(format: LocalString._signed_in_as, user.defaultEmail)
         self.delegate?.showToast(message: msg)
+        currentUserID = currentUser?.userID
     }
 
     func prepareLogin(userID: UserID) {
@@ -359,6 +366,10 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func go(to labelInfo: MenuLabel) {
+        guard selectedItem?.location != labelInfo.location || currentUserID != currentUser?.userID else {
+            coordinator?.closeMenu()
+            return
+        }
         coordinator?.go(to: labelInfo, deepLink: nil)
     }
 

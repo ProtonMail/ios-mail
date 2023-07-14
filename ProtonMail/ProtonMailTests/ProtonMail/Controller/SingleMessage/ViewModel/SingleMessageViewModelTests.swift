@@ -30,7 +30,6 @@ final class SingleMessageViewModelTests: XCTestCase {
     var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
     var coordinatorMock: SingleMessageCoordinator!
     var notificationCenterMock: NotificationCenter!
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
 
     override func setUp() {
         super.setUp()
@@ -42,7 +41,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         toolbarCustomizationInfoBubbleViewStatusProvider = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         nextMessageAfterMoveStatusProviderMock = .init()
         notificationCenterMock = .init()
-        mockSenderImageStatusProvider = .init()
     }
 
     override func tearDown() {
@@ -54,7 +52,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         toolbarCustomizeSpotlightStatusProvider = nil
         toolbarCustomizationInfoBubbleViewStatusProvider = nil
         notificationCenterMock = nil
-        mockSenderImageStatusProvider = nil
     }
 
     func testToolbarActionTypes_inSpam_containsDelete() {
@@ -254,21 +251,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         messageObject.unRead = false
         let message = message ?? MessageEntity(messageObject)
 
-        let timeStamp = Date.now.timeIntervalSince1970
-        let systemTime = SystemUpTimeMock(localServerTime: timeStamp, localSystemUpTime: 100, systemUpTime: 100)
-
-        let components = SingleMessageComponentsFactory()
-
-        let childViewModels = SingleMessageChildViewModels(
-            messageBody: components.messageBody(
-                spamType: .none,
-                user: fakeUser,
-                imageProxy: .init(dependencies: .init(apiService: apiMock))
-            ),
-            bannerViewModel: components.banner(labelId: labelID, message: message, user: fakeUser),
-            attachments: .init()
-        )
-
         coordinatorMock = SingleMessageCoordinator(serviceFactory: sharedServices,
                                                    navigationController: UINavigationController(),
                                                    labelId: labelID,
@@ -276,23 +258,26 @@ final class SingleMessageViewModelTests: XCTestCase {
                                                    user: fakeUser,
                                                    infoBubbleViewStatusProvider: toolbarCustomizationInfoBubbleViewStatusProvider)
 
+        let context = SingleMessageContentViewContext(labelId: labelID, message: message, viewMode: .singleMessage)
+
         sut = .init(
             labelId: labelID,
             message: message,
             user: fakeUser,
-            imageProxy: .init(dependencies: .init(apiService: apiMock)),
-            childViewModels: childViewModels,
-            internetStatusProvider: InternetConnectionStatusProvider(),
             userIntroductionProgressProvider: userIntroductionProgressProviderMock,
             saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
             toolbarActionProvider: toolbarProviderMock,
             toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProvider,
-            systemUpTime: systemTime,
             coordinator: coordinatorMock,
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            dependencies: components.contentViewModelDependencies(user: fakeUser, senderImageStatusProvider: mockSenderImageStatusProvider),
+            contentViewModel: SingleMessageContentViewModelFactory().createViewModel(
+                context: context,
+                user: fakeUser,
+                internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
+                highlightedKeywords: [],
+                goToDraft: { _, _ in }
+            ),
             highlightedKeywords: [],
-            goToDraft: { _, _ in },
             notificationCenter: notificationCenterMock
         )
     }

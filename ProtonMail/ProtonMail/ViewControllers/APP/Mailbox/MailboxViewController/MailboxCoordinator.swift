@@ -42,7 +42,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     let viewModel: MailboxViewModel
     var services: ServiceFactory
     private let contextProvider: CoreDataContextProviderProtocol
-    private let internetStatusProvider: InternetConnectionStatusProvider
+    private let internetStatusProvider: InternetConnectionStatusProviderProtocol
 
     weak var viewController: MailboxViewController?
     private(set) weak var navigation: UINavigationController?
@@ -64,7 +64,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
          services: ServiceFactory,
          contextProvider: CoreDataContextProviderProtocol,
          infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-         internetStatusProvider: InternetConnectionStatusProvider = InternetConnectionStatusProvider(),
+         internetStatusProvider: InternetConnectionStatusProviderProtocol = InternetConnectionStatusProvider.shared,
          getApplicationState: @escaping () -> UIApplication.State = {
         return UIApplication.shared.applicationState
     }
@@ -205,8 +205,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             followToComposeMailTo(path: path.value, deeplink: deeplink)
         case .composeScheduledMessage where path.value != nil:
             guard let messageID = path.value,
-                  // TODO: do we need this check?
-                  path.states?["originalScheduledTime"] as? Date != nil else {
+                  let originalScheduledTime = path.states?["originalScheduledTime"] as? Date else {
                 return
             }
             let user = self.viewModel.user
@@ -214,7 +213,8 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             if let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
                 navigateToComposer(
                     existingMessage: message,
-                    isEditingScheduleMsg: true
+                    isEditingScheduleMsg: true,
+                    originalScheduledTime: .init(originalScheduledTime)
                 )
             }
         default:
@@ -228,8 +228,7 @@ extension MailboxCoordinator {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: contextProvider,
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus)
+            userIntroductionProgressProvider: userCachedStatus)
         navigationVC.present(composer, animated: true)
     }
 
@@ -261,7 +260,9 @@ extension MailboxCoordinator {
 
     private func navigateToComposer(
         existingMessage: Message?,
-        isEditingScheduleMsg: Bool = false) {
+        isEditingScheduleMsg: Bool = false,
+        originalScheduledTime: Date? = nil
+    ) {
         guard let navigationVC = navigation else {
             return
         }
@@ -271,10 +272,13 @@ extension MailboxCoordinator {
             user: viewModel.user,
             contextProvider: contextProvider,
             isEditingScheduleMsg: isEditingScheduleMsg,
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus,
+            userIntroductionProgressProvider: services.userCachedStatus,
             internetStatusProvider: internetStatusProvider,
-            coreKeyMaker: services.get()
+            coreKeyMaker: services.get(),
+            darkModeCache: services.userCachedStatus,
+            mobileSignatureCache: services.userCachedStatus,
+            attachmentMetadataStrippingCache: services.userCachedStatus,
+            originalScheduledTime: originalScheduledTime
         )
         navigationVC.present(composer, animated: true)
     }
@@ -282,12 +286,12 @@ extension MailboxCoordinator {
     private func presentSearch() {
         let coreDataService = services.get(by: CoreDataService.self)
         // TODO: get shared ES service.
-        let esService = EncryptedSearchService()
+        let esService = EncryptedSearchService.shared
         let viewModel = SearchViewModel(
             serviceFactory: services,
             user: viewModel.user,
             coreDataContextProvider: coreDataService,
-            internetStatusProvider: services.get(),
+            internetStatusProvider: .shared,
             dependencies: .init(
                 coreKeyMaker: services.get(),
                 fetchMessageDetail: FetchMessageDetail(
@@ -300,13 +304,13 @@ extension MailboxCoordinator {
                 ),
                 fetchSenderImage: FetchSenderImage(
                     dependencies: .init(
+                        featureFlagCache: services.userCachedStatus,
                         senderImageService: .init(
                             dependencies: .init(
                                 apiService: viewModel.user.apiService,
                                 internetStatusProvider: internetStatusProvider
                             )
                         ),
-                        senderImageStatusProvider: userCachedStatus,
                         mailSettings: viewModel.user.mailSettings
                     )
                 ), messageSearch: MessageSearch(
@@ -327,8 +331,8 @@ extension MailboxCoordinator {
                                 contextProvider: coreDataService,
                                 userID: viewModel.user.userID,
                                 fetchMessageMetaData: FetchMessageMetaData(
-                                    params: .init(userID: viewModel.user.userID.rawValue),
                                     dependencies: .init(
+                                        userID: viewModel.user.userID,
                                         messageDataService: viewModel.user.messageService,
                                         contextProvider: coreDataService
                                     )
@@ -337,7 +341,9 @@ extension MailboxCoordinator {
                             )
                         ), esStateProvider: esService
                     )
-                )
+                ),
+                userIntroductionProgressProvider: services.userCachedStatus,
+                encryptedSearchService: esService
             )
         )
         let viewController = SearchViewController(viewModel: viewModel, serviceFactory: services)
@@ -349,7 +355,7 @@ extension MailboxCoordinator {
     }
 
     func fetchConversationFromBEIfNeeded(conversationID: ConversationID, goToDetailPage: @escaping () -> Void) {
-        guard internetStatusProvider.currentStatus != .notConnected else {
+        guard internetStatusProvider.status.isConnected else {
             goToDetailPage()
             return
         }
@@ -386,10 +392,12 @@ extension MailboxCoordinator {
                 user: user,
                 contextProvider: contextProvider,
                 isEditingScheduleMsg: false,
-                userIntroductionProgressProvider: userCachedStatus,
-                scheduleSendEnableStatusProvider: userCachedStatus,
+                userIntroductionProgressProvider: services.userCachedStatus,
                 internetStatusProvider: internetStatusProvider,
                 coreKeyMaker: services.get(),
+                darkModeCache: services.userCachedStatus,
+                mobileSignatureCache: services.userCachedStatus,
+                attachmentMetadataStrippingCache: services.userCachedStatus,
                 mailToUrl: mailToURL
             )
             nav.present(composer, animated: true)
@@ -431,14 +439,15 @@ extension MailboxCoordinator {
         viewController?.navigationController?.present(nav, animated: true)
     }
 
-    private func editScheduleMsg(messageID: MessageID, originalScheduledTime: OriginalScheduleDate?) {
+    private func editScheduleMsg(messageID: MessageID, originalScheduledTime: Date?) {
         let context = contextProvider.mainContext
         guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {
             return
         }
         navigateToComposer(
             existingMessage: msg,
-            isEditingScheduleMsg: true
+            isEditingScheduleMsg: true,
+            originalScheduledTime: originalScheduledTime
         )
     }
 }
@@ -606,7 +615,7 @@ extension MailboxCoordinator {
             navigationController: navigationController,
             conversation: conversation,
             user: viewModel.user,
-            internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
+            internetStatusProvider: .shared,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             contextProvider: contextProvider,
             targetID: targetID,

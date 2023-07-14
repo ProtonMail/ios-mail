@@ -18,43 +18,54 @@
 import CoreData
 import Foundation
 
-protocol PurgeOldMessagesUseCase: UseCase {
-    func execute(completion: @escaping UseCaseResult<Void>)
-}
+typealias PurgeOldMessagesUseCase = UseCase<Void, Void>
 
 final class PurgeOldMessages: PurgeOldMessagesUseCase {
-    private let params: Parameters
     private let dependencies: Dependencies
 
     convenience init(user: UserManager, coreDataService: CoreDataContextProviderProtocol) {
-        let userID = user.userInfo.userId
         let fetchMessageMetaData = FetchMessageMetaData(
-            params: .init(userID: userID),
-            dependencies: .init(messageDataService: user.messageService,
-                                contextProvider: coreDataService))
-        self.init(params: .init(userID: userID),
-                  dependencies: .init(coreDataService: coreDataService,
-                                      fetchMessageMetaData: fetchMessageMetaData))
+            dependencies: .init(
+                userID: user.userID,
+                messageDataService: user.messageService,
+                contextProvider: coreDataService
+            ))
+        self.init(
+            dependencies: .init(
+                coreDataService: coreDataService,
+                fetchMessageMetaData: fetchMessageMetaData,
+                userID: user.userID
+            )
+        )
     }
 
-    init(params: Parameters, dependencies: Dependencies) {
-        self.params = params
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
-    func execute(completion: @escaping UseCaseResult<Void>) {
-        self.queryMessagesWithoutMetaData { [weak self] ids, error in
+    override func executionBlock(params: Void, callback: @escaping UseCase<Void, Void>.Callback) {
+        queryMessagesWithoutMetaData { [weak self] ids, error in
             guard let self = self else {
-                completion(.success(Void()))
+                callback(.success(()))
                 return
             }
             if let error = error {
-                completion(.failure(error))
+                callback(.failure(error))
                 return
             }
             self.dependencies
                 .fetchMessageMetaData
-                .execute(with: ids, callback: completion)
+                .execute(
+                    params: .init(messageIDs: ids),
+                    callback: { result in
+                        switch result {
+                        case .success:
+                            callback(.success(()))
+                        case .failure(let error):
+                            callback(.failure(error))
+                        }
+                    }
+                )
         }
     }
 }
@@ -62,14 +73,13 @@ final class PurgeOldMessages: PurgeOldMessagesUseCase {
 // MARK: Private functions
 extension PurgeOldMessages {
     private func queryMessagesWithoutMetaData(completion: @escaping ([MessageID], Error?) -> Void) {
-        let userID = self.params.userID
         self.dependencies.coreDataService.enqueueOnRootSavingContext { context in
             let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(
                 format: "(%K == 0) AND %K == %@",
                 Message.Attributes.messageStatus,
                 Contact.Attributes.userID,
-                userID
+                self.dependencies.userID.rawValue
             )
             do {
                 let badMessages = try context.fetch(fetchRequest)
@@ -84,18 +94,17 @@ extension PurgeOldMessages {
 
 // MARK: Appendix struct definition
 extension PurgeOldMessages {
-    struct Parameters {
-        let userID: String
-    }
-
     struct Dependencies {
+        let userID: UserID
         let coreDataService: CoreDataContextProviderProtocol
         let fetchMessageMetaData: FetchMessageMetaDataUseCase
 
         init(coreDataService: CoreDataContextProviderProtocol,
-             fetchMessageMetaData: FetchMessageMetaDataUseCase) {
+             fetchMessageMetaData: FetchMessageMetaDataUseCase,
+             userID: UserID) {
             self.coreDataService = coreDataService
             self.fetchMessageMetaData = fetchMessageMetaData
+            self.userID = userID
         }
     }
 }

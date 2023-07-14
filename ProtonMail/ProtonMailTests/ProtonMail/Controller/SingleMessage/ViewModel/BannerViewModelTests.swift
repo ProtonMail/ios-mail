@@ -29,7 +29,6 @@ class BannerViewModelTests: XCTestCase {
     var apiServiceMock: APIServiceMock!
     var systemUpTimeMock: SystemUpTimeMock!
     var mockFetchAttachment: MockFetchAttachment!
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
 
     override func setUp() {
         super.setUp()
@@ -40,7 +39,6 @@ class BannerViewModelTests: XCTestCase {
         apiServiceMock = APIServiceMock()
         userManagerMock = UserManager(api: apiServiceMock, role: .none)
         systemUpTimeMock = SystemUpTimeMock(localServerTime: 0, localSystemUpTime: 0, systemUpTime: 0)
-        mockSenderImageStatusProvider = .init()
     }
 
     override func tearDown() {
@@ -52,7 +50,6 @@ class BannerViewModelTests: XCTestCase {
         apiServiceMock = nil
         userManagerMock = nil
         systemUpTimeMock = nil
-        mockSenderImageStatusProvider = nil
     }
 
     func testDurationsBySecond() {
@@ -199,10 +196,14 @@ class BannerViewModelTests: XCTestCase {
                     fetchAttachment: mockFetchAttachment,
                     fetchSenderImage: FetchSenderImage(
                         dependencies: .init(
-                            senderImageService: .init(dependencies: .init(apiService: userManagerMock.apiService, internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
-                            senderImageStatusProvider: mockSenderImageStatusProvider,
+                            featureFlagCache: MockFeatureFlagCache(),
+                            senderImageService: .init(dependencies: .init(
+                                apiService: userManagerMock.apiService,
+                                internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
+                            )),
                             mailSettings: userManagerMock.mailSettings)
-                    )
+                    ),
+                    darkModeCache: MockDarkModeCacheProtocol()
                 ),
                 highlightedKeywords: []
             )

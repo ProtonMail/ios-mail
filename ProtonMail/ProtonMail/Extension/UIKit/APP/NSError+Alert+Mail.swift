@@ -28,7 +28,7 @@ extension NSError {
     static var isAlertShown = false
 
     func alertSentErrorToast() {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+        guard let window: UIWindow = UIApplication.shared.topMostWindow else {
             return
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
@@ -41,7 +41,7 @@ extension NSError {
     }
 
     class func alertLocalCacheErrorToast() {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+        guard let window: UIWindow = UIApplication.shared.topMostWindow else {
             return
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
@@ -53,9 +53,9 @@ extension NSError {
         hud.hide(animated: true, afterDelay: 2)
     }
 
-    class func alertBadToken() {
+    class func alertBadToken(in window: UIWindow) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
-            guard let window = UIApplication.shared.keyWindow, !NSError.isAlertShown else {
+            guard !NSError.isAlertShown else {
                 return
             }
             NSError.isAlertShown = true

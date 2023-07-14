@@ -67,7 +67,9 @@ extension PMAPIService {
         #if !APP_EXTENSION
         // For the extension, please check ShareExtensionEntry
         guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
-            assertionFailure("\(UIApplication.shared.delegate) is not an instance of AppDelegate!")
+            assertionFailure(
+                "\(UIApplication.shared.delegate.map { "\($0)" } ?? "null") is not an instance of AppDelegate!"
+            )
             return
         }
         TrustKitWrapper.start(delegate: delegate)
@@ -147,7 +149,7 @@ extension PMAPIService {
         }
 
         func isReachable() -> Bool {
-            sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
+            InternetConnectionStatusProvider.shared.status.isConnected
         }
 
         func onDohTroubleshot() {

@@ -19,7 +19,7 @@ import Foundation
 import Groot
 import ProtonCore_Services
 
-typealias BackendSearchUseCase = NewUseCase<[MessageEntity], BackendSearch.Params>
+typealias BackendSearchUseCase = UseCase<[MessageEntity], BackendSearch.Params>
 
 /// This use case fetches the result of the search query from the user.
 /// The result will be cached into the CoreData and be returned to the caller in the form of an array of `MessageEntity`.
@@ -33,7 +33,7 @@ final class BackendSearch: BackendSearchUseCase {
 
     override func executionBlock(
         params: Params,
-        callback: @escaping NewUseCase<[MessageEntity], Params>.Callback
+        callback: @escaping UseCase<[MessageEntity], Params>.Callback
     ) {
         fetchSearchResult(
             query: params.query,

@@ -10,77 +10,50 @@ import XCTest
 
 import ProtonCore_TestingToolkit
 
-class TrashTests: BaseTestCase {
-    
-    var subject = String()
-    var body = String()
-
-    override func setUp() {
-        super.setUp()
-        subject = testData.messageSubject
-        body = testData.messageBody
-    }
+class TrashTests: FixtureAuthenticatedTestCase {
 
     func testDeleteSingleMessageFromLongClick() {
-        let user = testData.onePassUser
-        let recipient = testData.onePassUser
-        LoginRobot()
-            .loginUser(user)
-            .compose()
-            .sendMessage(recipient.email, subject)
-            .menuDrawer()
-            .sent()
-            .longClickMessageBySubject(subject)
-//            .addLabel()
-//            .menuDrawer()
-//            .trash()
-//            .verify.messageWithSubjectExists(subject)
+        runTestWithScenario(.trashOneMessage) {
+            InboxRobot()
+                .longClickMessageBySubject(scenario.subject)
+                .moveToTrash()
+                .menuDrawer()
+                .trash()
+                .verify.messageExists(scenario.subject)
+        }
     }
     
     func testDeleteMessageFromDetailPage() {
-        let user = testData.onePassUser
-        let recipient = testData.onePassUser
-        LoginRobot()
-            .loginUser(user)
-            .compose()
-            .sendMessage(recipient.email, subject)
-            .menuDrawer()
-            .sent()
-            .clickMessageBySubject(subject)
-            .moveToTrash()
-            .menuDrawer()
-            .trash()
-            .verify.messageWithSubjectExists(subject)
+        runTestWithScenario(.trashOneMessage) {
+            InboxRobot()
+                .clickMessageBySubject(scenario.subject)
+                .moveToTrash()
+                .menuDrawer()
+                .trash()
+                .verify.messageExists(scenario.subject)
+        }
     }
-    
+
     func testDeleteMultipleMessages() {
-        let user = testData.onePassUser
-        let recipient = testData.onePassUser
-        let subject1 = "Test trash 1"
-        let subject2 = "Test trash 2"
-        LoginRobot()
-            .loginUser(user)
-            .compose()
-            .sendMessage(recipient.email, subject1)
-            .compose()
-            .sendMessage(recipient.email, subject2)
-            .menuDrawer()
-            .inbox()
-            .longClickMessageBySubject(subject1)
-//            .menuDrawer()
-//            .trash()
-//            .verify.messageSubjectsExist()
+        runTestWithScenario(.trashMultipleMessages) {
+            InboxRobot()
+                .selectMultipleMessages([0,2])
+                .moveToTrash()
+                .menuDrawer()
+                .trash()
+                .verify.numberOfMessageExists(2)
+        }
     }
-    
-    
-    //Clear trash folder no longer available in v4
-    func disabletestClearTrashFolder() {
-        let user = testData.onePassUser
-        LoginRobot()
-            .loginUser(user)
-            .menuDrawer()
-            .trash()
-            .clearTrashFolder()
-            .verify.messageIsEmpty()
+
+    func testClearTrashFolder() {
+        runTestWithScenario(.trashMultipleMessages) {
+            InboxRobot()
+                .selectMultipleMessages([0,1])
+                .moveToTrash()
+                .menuDrawer()
+                .trash()
+                .clearTrashFolder()
+                .verify.nothingToSeeHere()
+        }
     }
 }

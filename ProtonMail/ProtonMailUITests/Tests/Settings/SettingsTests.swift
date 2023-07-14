@@ -11,11 +11,18 @@ import ProtonCore_TestingToolkit
 class SettingsTests : FixtureAuthenticatedTestCase {
     
     private let correctPin = "0000"
-    private let inboxRobot: InboxRobot = InboxRobot()
+
+    override func setUp() {
+        super.setUp()
+
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .menuDrawer()
+        }
+    }
 
     func testEditAutoLockTime() {
-        inboxRobot
-            .menuDrawer()
+        MenuRobot()
             .settings()
             .pin()
             .enablePin()
@@ -43,8 +50,7 @@ class SettingsTests : FixtureAuthenticatedTestCase {
     func testEnableAndDisablePinForMultipleAccounts() throws {
         let secondAccount = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
 
-        inboxRobot
-            .menuDrawer()
+        MenuRobot()
             .accountsList()
             .manageAccounts()
             .addAccount()
@@ -62,6 +68,7 @@ class SettingsTests : FixtureAuthenticatedTestCase {
             .activateAppWithPin()
             .inputCorrectPin()
             .verify.inboxShown()
+        
             .menuDrawer()
             .accountsList()
             .switchToAccount(user!)
@@ -77,8 +84,7 @@ class SettingsTests : FixtureAuthenticatedTestCase {
     }
     
     func testDarkModeEnable() {
-      inboxRobot
-            .menuDrawer()
+        MenuRobot()
             .settings()
             .selectDarkMode()
             .selectAlwaysOn()
@@ -87,8 +93,7 @@ class SettingsTests : FixtureAuthenticatedTestCase {
     }
     
     func testDarkModeDisabled() {
-      inboxRobot
-            .menuDrawer()
+        MenuRobot()
             .settings()
             .selectDarkMode()
             .selectAlwaysOn()
@@ -98,8 +103,7 @@ class SettingsTests : FixtureAuthenticatedTestCase {
     }
 
     func testBlockList() {
-        inboxRobot
-            .menuDrawer()
+        MenuRobot()
             .settings()
             .selectAccount(user!.email)
             .blockList()

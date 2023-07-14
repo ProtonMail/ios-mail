@@ -75,7 +75,7 @@
 "Add new custom field" = "Ajouter un nouveau champ personnalisé";
 
 /* new email action */
-"Add new email" = "Ajouter un nouvel e-mail";
+"Add new email" = "Ajouter une nouvelle adresse email";
 
 /* new field action */
 "Add new field" = "Ajouter un nouveau champ";
@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Protection AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Journaux de l'application";
+
 /* Apply action */
 "Apply" = "Appliquer";
 
@@ -202,12 +205,6 @@
 
 /* Push notification action archive */
 "Archive (verb)" = "Archiver";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Voulez-vous vraiment supprimer définitivement ce message ?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Voulez-vous vraiment supprimer définitivement ces %d messages ?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Voulez-vous vraiment vous déconnecter de %@ ?";
@@ -258,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "Délai avant verrouillage automatique";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Suppression automatique";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Suppression automatique des messages indésirables";
+
 /* settings general section title */
 "Auto-load embedded images" = "Charger automatiquement les images intégrées";
 
 /* settings general section title */
 "Auto-load remote content" = "Charger automatiquement le contenu distant";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Supprimez automatiquement les messages qui sont dans le dossier Corbeille depuis plus de 30 jours.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Actions disponibles";
@@ -377,7 +383,7 @@
 "Canceling" = "Annulation en cours";
 
 /* Warning message */
-"Cannot empty folder right now." = "Il n'est pas possible de vider le dossier maintenant.";
+"Cannot empty folder right now." = "Impossible de vider le dossier maintenant";
 
 /* message Cc: feild
    Title */
@@ -430,6 +436,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Effacer le style";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Suppression du cache en cours";
 
 /* general close action */
 "Close" = "Fermer";
@@ -619,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Supprimer le message";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Supprimer les messages ?";
+
 /* Title */
 "Details" = "Détails";
 
+/* Button to disable auto delete */
+"Disable" = "Désactiver";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Désactivez tout proxy ou pare-feu, ou contactez votre administrateur réseau.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Désactiver la suppression automatique ?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Désactiver la validation";
@@ -756,7 +774,7 @@
 "Edit photo" = "Modifier la photo";
 
 /* default vcard types */
-"Email" = "E-mail";
+"Email" = "Adresse e-mail";
 
 /* contact placeholder */
 "Email address" = "Adresse e-mail";
@@ -779,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Protection contre le suivi des e-mails";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Les messages dont la suppression est prévue resteront dans les dossiers Corbeille et Indésirable/spam.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Vider le dossier Indésirables/spam";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Vider le dossier Indésirables/spam";
 
 /* Alert title */
 "Empty spam folder" = "Vider le dossier Indésirables/spam";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Vider le dossier Corbeille";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Vider la Corbeille";
@@ -833,9 +860,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Saisir le nouveau code PIN";
-
-/* The title of the pin code view. */
-"Enter PIN" = "Saisir le PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Saisissez votre mot de passe pour effectuer ces changements.";
@@ -958,7 +982,7 @@
 "Hide details" = "Masquer les détails";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias Hide My Email";
+"Hide My Email aliases" = "Alias « Hide My Email »";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Comment décririez-vous votre expérience avec le nouveau Proton Mail ?";
@@ -1022,7 +1046,7 @@
 "Input Display Name…" = "Saisissez le nom d'affichage…";
 
 /* place holder */
-"Input Notification Email…" = "Saisissez l'adresse e-mail de notification…";
+"Input Notification Email…" = "Saisissez le message de notification...";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Connexion non sécurisée";
@@ -1217,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Les messages datant d'avant le %@ ne seront pas recherchés. Pour faire une recherche dans ces messages, libérez de l'espace de stockage sur cet appareil.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Les messages dans les dossiers Corbeille et Indésirables/spam depuis plus de 30 jours seront automatiquement supprimés.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Les messages dans les dossiers Corbeille et Indésirables/spam depuis plus de 30 jours seront automatiquement supprimés.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Les messages seront téléchargés via le wifi. Cela peut prendre un certain temps et votre appareil peut chauffer légèrement. Vous pouvez interrompre le téléchargement à tout moment.";
 
@@ -1341,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Non, non relié à un achat dans l'application";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Non merci";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2067,6 +2100,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Cette barre d'outils est visible pendant la lecture d'un message.";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Cela supprimera tous les messages qui se trouvent dans les dossiers Corbeille et Indésirables/spam depuis plus de 30 jours, y compris les messages qui s'y trouvent actuellement.";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "C'est le moment pour se détendre.";
 
@@ -2116,6 +2152,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Les clés approuvées ne sont pas valides pour l'envoi.";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Essayez un autre terme de recherche.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Essayez de vous connecter à Proton depuis un autre réseau (ou utilisez %1$@ ou %2$@).";
@@ -2218,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Passez à un abonnement payant pour envoyer depuis votre adresse %@.";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Changez d'abonnement pour supprimer automatiquement les messages qui sont dans les dossiers Corbeille ou Indésirables/spam depuis plus de 30 jours.";
 
 /* Action */
 "Upload device contacts" = "Importer les contacts de l'appareil";

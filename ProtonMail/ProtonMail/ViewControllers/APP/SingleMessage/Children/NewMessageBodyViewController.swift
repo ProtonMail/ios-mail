@@ -118,7 +118,7 @@ class NewMessageBodyViewController: UIViewController {
 
         if let contents = self.viewModel.contents, !contents.body.isEmpty {
             self.loader.load(contents: contents, in: webView)
-        } else if viewModel.internetStatusProvider.currentStatus == .notConnected &&
+        } else if viewModel.internetStatusProvider.status == .notConnected &&
                     viewModel.contents == nil {
             prepareReloadView()
         } else {
@@ -152,7 +152,7 @@ class NewMessageBodyViewController: UIViewController {
         self.heightConstraint = heightConstraint
     }
 
-    func prepareWebView(with loader: WebContentsSecureLoader? = nil) {
+    private func prepareWebView(with loader: WebContentsSecureLoader? = nil) {
         view.removeConstraints(view.constraints.filter({ $0.firstAnchor == view.heightAnchor }))
 
         self.heightConstraint?.isActive = false
@@ -161,9 +161,7 @@ class NewMessageBodyViewController: UIViewController {
         [heightConstraint].activate()
         self.heightConstraint = heightConstraint
 
-        let preferences = viewModel.webViewPreferences
         let config = viewModel.webViewConfig
-        config.preferences = preferences
         loader?.inject(into: config)
 
         if let existingWebView = self.webView {
@@ -199,7 +197,10 @@ class NewMessageBodyViewController: UIViewController {
     }
 
     private func updateViewHeight(to newHeight: CGFloat) {
-        heightConstraint?.constant = newHeight
+        // Limit the maximum height of the view height to the original height * 3.
+        // This can prevent the height constraint becoming too large to be invalid and break the UI layout.
+        let height = min(originalHeight * 3, newHeight)
+        heightConstraint?.constant = height
         viewModel.recalculateCellHeight?(true)
     }
 
@@ -294,7 +295,6 @@ class NewMessageBodyViewController: UIViewController {
         self.contentSizeObservation =
             self.webView?.scrollView.observe(\.contentSize,
                                              options: [.initial, .new, .old]) { [weak self] scrollView, change in
-                guard let webView = self?.webView else { return }
                 // As of iOS 13 beta 2, contentSize increases by 1pt after every updateHeight causing infinite loop.
                 // This 10pt treshold will prevent looping
                 guard let new = change.newValue?.height,
@@ -302,7 +302,7 @@ class NewMessageBodyViewController: UIViewController {
                       new - old > 10.0 else { return }
 
                 // Update the original height here for the web page that has image to be downloaded.
-                self?.originalHeight = webView.scrollView.contentSize.height
+                self?.originalHeight = scrollView.contentSize.height
             }
 
         guard self.loadingObservation == nil else {
@@ -470,12 +470,7 @@ extension NewMessageBodyViewController {
         }
         """
 
-        let javaScriptEnabledBefore = webView.configuration.preferences.javaScriptEnabled
-        webView.configuration.preferences.javaScriptEnabled = true
-
         webView.evaluateJavaScript(script) { [weak self] output, error in
-            webView.configuration.preferences.javaScriptEnabled = javaScriptEnabledBefore
-
             if let error = error {
                 assertionFailure("\(error)")
                 return

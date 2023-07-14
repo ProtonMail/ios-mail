@@ -25,7 +25,6 @@ import class PromiseKit.Promise
 // sourcery: mock
 protocol IncomingDefaultServiceProtocol {
     func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void)
-    func listLocal(query: IncomingDefaultService.Query) throws -> [IncomingDefaultEntity]
     func save(dto: IncomingDefaultDTO) throws
     func performLocalUpdate(emailAddress: String, newLocation: IncomingDefaultsAPI.Location) throws
     func performRemoteUpdate(
@@ -49,12 +48,6 @@ final class IncomingDefaultService {
 extension IncomingDefaultService: IncomingDefaultServiceProtocol {
     func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void) {
         fetchAndStoreRecursively(location: location, currentPage: 0, fetchedCount: 0, completion: completion)
-    }
-
-    func listLocal(query: Query) throws -> [IncomingDefaultEntity] {
-        try dependencies.contextProvider.read { context in
-            try self.find(query: query, in: context, includeSoftDeleted: false).map(IncomingDefaultEntity.init)
-        }
     }
 
     func save(dto: IncomingDefaultDTO) throws {
@@ -176,7 +169,7 @@ extension IncomingDefaultService {
     static func cleanUpAll() {
         let coreDataService = sharedServices.get(by: CoreDataService.self)
         coreDataService.performAndWaitOnRootSavingContext { context in
-            context.deleteAll(IncomingDefault.Attribute.entityName)
+            IncomingDefault.deleteAll(in: context)
         }
     }
 }

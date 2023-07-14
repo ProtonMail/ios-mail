@@ -62,10 +62,7 @@ class ConversationPrintRenderer: UIPrintPageRenderer, LifetimeTrackable {
         """
 
         let webView = source.0
-        webView.configuration.preferences.javaScriptEnabled = true
         webView.evaluateJavaScript(jsString) { _, error in
-            webView.configuration.preferences.javaScriptEnabled = false
-
             if let error = error {
                 assertionFailure("\(error)")
             }

@@ -53,7 +53,8 @@ final class MainQueueHandler: QueueHandler {
          labelDataService: LabelsDataService,
          localNotificationService: LocalNotificationService,
          undoActionManager: UndoActionManagerProtocol,
-         user: UserManager
+         user: UserManager,
+         featureFlagCache: FeatureFlagCache
     ) {
         self.userID = user.userID
         self.coreDataService = coreDataService
@@ -100,7 +101,7 @@ final class MainQueueHandler: QueueHandler {
         self.sendMessageTask = SendMessageTask(dependencies: sendDepenedencies)
         sendMessageResultHandler.startObservingResult()
 
-        self.dependencies = Dependencies(incomingDefaultService: user.incomingDefaultService)
+        self.dependencies = Dependencies(featureFlagCache: featureFlagCache, incomingDefaultService: user.incomingDefaultService)
     }
 
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
@@ -169,7 +170,7 @@ final class MainQueueHandler: QueueHandler {
                 // But correct in if case let
                 if case let .send(messageObjectID, deliveryTime) = action {
                     let useSendRefactor = UIApplication.isDebugOrEnterprise ||
-                    dependencies.sendRefactorStatusProvider.isSendRefactorEnabled(userID: userID)
+                    dependencies.featureFlagCache.isFeatureFlag(.sendRefactor, enabledForUserWithID: userID)
 
                     if useSendRefactor {
                         let params = SendMessageTask.Params(
@@ -501,14 +502,14 @@ extension MainQueueHandler {
             completion(nil)
         }
         case .failure(let err):
-            let reason = err.localizedDescription
+            if err.code != APIErrorCode.storageLimitExceeded {
+                PMAssertionFailure(err)
+            }
             NotificationCenter
                 .default
                 .post(name: .attachmentUploadFailed,
                       object: nil,
-                      userInfo: ["objectID": attachmentObjectID.uriRepresentation().absoluteString,
-                                 "reason": reason,
-                                 "code": err.code])
+                      userInfo: ["code": err.code])
             completion(err)
         }
     }
@@ -915,7 +916,6 @@ extension MainQueueHandler {
         let service = self.contactService
         service.add(
             cards: [cardDatas],
-            authCredential: nil,
             objectID: objectID,
             importFromDevice: importFromDevice,
             completion: completion
@@ -1095,17 +1095,17 @@ extension MainQueueHandler {
 extension MainQueueHandler {
     struct Dependencies {
         let actionRequest: ExecuteNotificationActionUseCase
+        let featureFlagCache: FeatureFlagCache
         let incomingDefaultService: IncomingDefaultServiceProtocol
-        let sendRefactorStatusProvider: SendRefactorStatusProvider
 
         init(
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
-            incomingDefaultService: IncomingDefaultServiceProtocol,
-            sendRefactorStatusProvider: SendRefactorStatusProvider = userCachedStatus
+            featureFlagCache: FeatureFlagCache,
+            incomingDefaultService: IncomingDefaultServiceProtocol
         ) {
             self.actionRequest = actionRequest
+            self.featureFlagCache = featureFlagCache
             self.incomingDefaultService = incomingDefaultService
-            self.sendRefactorStatusProvider = sendRefactorStatusProvider
         }
     }
 }

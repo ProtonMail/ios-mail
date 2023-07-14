@@ -73,9 +73,9 @@ final class ESMessage: Codable {
     private(set) var userID: String? = ""
 
     // local variables
-    // swiftlint:disable discouraged_optional_boolean
+    // swiftlint:disable:next discouraged_optional_boolean
     var isStarred: Bool? = false
-    // swiftlint:disable discouraged_optional_boolean
+    // swiftlint:disable:next discouraged_optional_boolean
     var isDetailsDownloaded: Bool? = false
 
     enum CodingKeys: String, CodingKey {

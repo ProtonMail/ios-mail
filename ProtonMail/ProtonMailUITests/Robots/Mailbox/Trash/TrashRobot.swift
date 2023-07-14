@@ -7,10 +7,13 @@
 //
 
 import fusion
+import XCTest
 
 fileprivate struct id {
-    static let mailboxMoreButtonIdentifier = "MailboxViewController.moreBarButtonItem"
-    static let emptyFolderButtonIdentifier = "Empty folder"
+    static let mailboxMoreButtonIdentifier = "MailboxViewController.ellipsisMenuBarItem"
+    static let emptyTrashButtonText = LocalString._empty_trash
+    static let confirmDeleteButtonText = LocalString._general_delete_action
+    static let mailBoxTableView = "MailboxViewController.tableView"
 }
 
 class TrashRobot: MailboxRobotInterface {
@@ -29,13 +32,13 @@ class TrashRobot: MailboxRobotInterface {
     }
 
     private func emptyFolder() -> TrashDialogRobot {
-        button(id.emptyFolderButtonIdentifier).tap()
+        button(id.emptyTrashButtonText).tap()
         return TrashDialogRobot()
     }
     
     class TrashDialogRobot: CoreElements {
         func confirmEmptyTrashFolderAction() -> TrashRobot {
-            button(id.emptyFolderButtonIdentifier).tap()
+            button(id.confirmDeleteButtonText).tap()
             return TrashRobot()
         }
     }
@@ -44,9 +47,10 @@ class TrashRobot: MailboxRobotInterface {
      * Contains all the validations that can be performed by [Trash].
      */
     class Verify : MailboxRobotVerifyInterface {
-        
-        func messageWithSubjectExists(_ subject: String) {
-            staticText(subject).waitUntilExists().checkExists()
+
+        func numberOfMessageExists(_ number: Int) {
+            table(id.mailBoxTableView).waitUntilExists()
+            XCTAssertEqual(number, table(id.mailBoxTableView).childrenCountByType(XCUIElement.ElementType.cell), "Number of expected messages doesnt match")
         }
     }
 }

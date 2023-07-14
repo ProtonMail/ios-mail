@@ -20,7 +20,7 @@ import class ProtonCore_DataModel.UserInfo
 import protocol ProtonCore_Services.APIService
 import typealias ProtonCore_Networking.JSONDictionary
 
-typealias SendMessageUseCase = NewUseCase<Void, SendMessage.Params>
+typealias SendMessageUseCase = UseCase<Void, SendMessage.Params>
 
 final class SendMessage: SendMessageUseCase {
     private let dependencies: Dependencies

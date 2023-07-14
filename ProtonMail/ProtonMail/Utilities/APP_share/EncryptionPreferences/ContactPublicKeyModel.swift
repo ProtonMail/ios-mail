@@ -24,6 +24,7 @@ struct ContactPublicKeyModel {
     let sign: Bool?
     let scheme: String?
     let mimeType: String?
+    // swiftlint:enable discouraged_optional_boolean
     let email: String
     let publicKeys: ContactPublicKeys
     let trustedFingerprints: Set<String>

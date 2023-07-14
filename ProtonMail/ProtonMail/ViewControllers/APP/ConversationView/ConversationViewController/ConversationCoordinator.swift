@@ -23,7 +23,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let contextProvider: CoreDataContextProviderProtocol
     private let composeViewModelFactory: ComposeViewModelDependenciesFactory
     var pendingActionAfterDismissal: (() -> Void)?
-    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
+    var goToDraft: ((MessageID, Date?) -> Void)?
 
     init(
         labelId: LabelID,
@@ -75,16 +75,15 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             fetchMessageDetail: fetchMessageDetail,
             nextMessageAfterMoveStatusProvider: user,
             notificationCenter: .default,
-            senderImageStatusProvider: userCachedStatus,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: sharedServices.userCachedStatus,
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: user.apiService,
                             internetStatusProvider: internetStatusProvider
                         )
                     ),
-                    senderImageStatusProvider: userCachedStatus,
                     mailSettings: user.mailSettings
                 )
             )
@@ -126,8 +125,8 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             presentAddContacts(with: contact)
         case .composeTo(let contact):
             presentCompose(with: contact)
-        case let .attachmentList(message, inlineCIDs, attachments):
-            presentAttachmentListView(message: message, inlineCIDS: inlineCIDs, attachments: attachments)
+        case let .attachmentList(inlineCIDs, attachments):
+            presentAttachmentListView(inlineCIDS: inlineCIDs, attachments: attachments)
         case .mailToUrl(let url):
             presentCompose(with: url)
         case .replyAll(let message):
@@ -224,8 +223,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: contextProvider,
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus)
+            userIntroductionProgressProvider: userCachedStatus)
         viewController?.present(composer, animated: true)
     }
 
@@ -238,9 +236,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.viewController?.present(nav, animated: true)
     }
 
-    private func presentAttachmentListView(message: MessageEntity,
-                                           inlineCIDS: [String]?,
-                                           attachments: [AttachmentInfo]) {
+    private func presentAttachmentListView(inlineCIDS: [String]?, attachments: [AttachmentInfo]) {
         let viewModel = AttachmentListViewModel(
             attachments: attachments,
             user: user,

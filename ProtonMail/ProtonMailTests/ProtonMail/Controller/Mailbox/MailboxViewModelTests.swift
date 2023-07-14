@@ -28,18 +28,19 @@ class MailboxViewModelTests: XCTestCase {
     var sut: MailboxViewModel!
     var apiServiceMock: APIServiceMock!
     var coreDataService: CoreDataService!
+    var featureFlagCache: MockFeatureFlagCache!
     var userManagerMock: UserManager!
     var conversationStateProviderMock: MockConversationStateProviderProtocol!
     var contactGroupProviderMock: MockContactGroupsProviderProtocol!
     var labelProviderMock: MockLabelProviderProtocol!
     var contactProviderMock: MockContactProvider!
     var conversationProviderMock: MockConversationProvider!
+    var internetConnectionProvider: MockInternetConnectionStatusProviderProtocol!
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
     var imageTempUrl: URL!
     var mockFetchMessageDetail: MockFetchMessageDetail!
 
@@ -56,6 +57,8 @@ class MailboxViewModelTests: XCTestCase {
         apiServiceMock = APIServiceMock()
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
+        internetConnectionProvider = MockInternetConnectionStatusProviderProtocol()
+        internetConnectionProvider.statusStub.fixture = .connectedViaWiFi
         let fakeAuth = AuthCredential(sessionID: "",
                                       accessToken: "",
                                       refreshToken: "",
@@ -81,6 +84,7 @@ class MailboxViewModelTests: XCTestCase {
                                       mailSettings: nil,
                                       parent: nil,
                                       coreKeyMaker: MockKeyMakerProtocol())
+        featureFlagCache = .init()
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
@@ -92,7 +96,6 @@ class MailboxViewModelTests: XCTestCase {
         welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        mockSenderImageStatusProvider = .init()
         try loadTestMessage() // one message
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
@@ -144,11 +147,12 @@ class MailboxViewModelTests: XCTestCase {
         contactProviderMock = nil
         coreDataService = nil
         eventsServiceMock = nil
+        featureFlagCache = nil
         userManagerMock = nil
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
-        mockSenderImageStatusProvider = nil
+        internetConnectionProvider = nil
         apiServiceMock = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
@@ -755,7 +759,7 @@ class MailboxViewModelTests: XCTestCase {
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.moveStub.lastArguments)
                 XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertEqual(argument.a2, "")
+                XCTAssertEqual(argument.a2, self.sut.labelID)
                 XCTAssertEqual(argument.a3, labelToMoveTo.location.labelID)
                 XCTAssertFalse(argument.a4)
 
@@ -841,7 +845,7 @@ class MailboxViewModelTests: XCTestCase {
                                       type: 0,
                                       order: 0,
                                       notify: false)
-        let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
+        let currentOption = [selectedLabel: PMActionSheetItem.MarkType.none]
         let label = LabelLocation(id: "label1", name: nil)
 
         let conversationObject = Conversation(context: testContext)
@@ -999,6 +1003,61 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssert(signalsSent == 2)
     }
 
+    func testTagUIModels_for_conversation() throws {
+        try coreDataService.write { context in
+            let conversation = Conversation(context: context)
+            conversation.userID = self.sut.user.userID.rawValue
+            conversation.expirationTime = Date()
+
+            let systemLabel = Label(context: context)
+            systemLabel.labelID = Message.Location.inbox.rawValue
+            systemLabel.name = "Inbox"
+
+            let userLabels: [Label] = (1...3).map { index in
+                let userLabel = Label(context: context)
+                userLabel.labelID = UUID().uuidString
+                userLabel.name = "Label \(index)"
+                // set descending `order` to test sorting
+                userLabel.order = 10 - index as NSNumber
+                return userLabel
+            }
+
+            let allLabels: [Label] = [systemLabel] + userLabels
+
+            for label in allLabels {
+                label.type = 1
+                label.userID = conversation.userID
+            }
+
+            let contextLabels: [ContextLabel] = allLabels.map { label in
+                let contextLabel = ContextLabel(context: context)
+                contextLabel.labelID = label.labelID
+                return contextLabel
+            }
+            conversation.labels = NSSet(array: contextLabels)
+        }
+
+        let conversationEntity = try coreDataService.read { context in
+            let conversation = try XCTUnwrap(
+                context.managedObjectWithEntityName(Conversation.Attributes.entityName, matching: [:]) as? Conversation
+            )
+            return ConversationEntity(conversation)
+        }
+
+        let tags = sut.tagUIModels(for: conversationEntity)
+
+        // no tag based on the system label
+        XCTAssertFalse(tags.contains { $0.title == Message.Location.inbox.rawValue })
+
+        // expiration tag is present
+        XCTAssertEqual(tags[0].icon, IconProvider.hourglass)
+
+        // sorted according to `order` set above
+        XCTAssertEqual(tags[1].title, "Label 3")
+        XCTAssertEqual(tags[2].title, "Label 2")
+        XCTAssertEqual(tags[3].title, "Label 1")
+    }
+
     func testUpdateToolbarActions_updateActionWithoutMoreAction() {
         saveToolbarActionUseCaseMock.callExecute.bodyIs { _, _, completion  in
             completion(.success(Void()))
@@ -1054,9 +1113,6 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_featureFlagIsOff_getNil() {
         userManagerMock.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return false
-        }
         let e = expectation(description: "Closure is called")
 
         sut.fetchSenderImageIfNeeded(item: .message(MessageEntity.make()),
@@ -1073,8 +1129,8 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_hideSenderImageInMailSettingTrue_getNil() {
         userManagerMock.mailSettings = .init(hideSenderImages: true)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
 
@@ -1092,8 +1148,8 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_msgHasNoSenderThatIsEligible_getNil() {
         userManagerMock.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
         let e2 = expectation(description: "Closure is called")
@@ -1119,8 +1175,8 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_msgHasEligibleSender_getImageData() {
         userManagerMock.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
         let msg = MessageEntity.createSenderImageEligibleMessage()
@@ -1237,6 +1293,24 @@ class MailboxViewModelTests: XCTestCase {
             XCTAssertTrue(msg2?.unRead ?? false)
         }
     }
+
+    func testListEditing_setItToFalse_theSelectedIDsWillBeRemoved() {
+        sut.select(id: String.randomString(20))
+        XCTAssertFalse(sut.selectedIDs.isEmpty)
+
+        sut.listEditing = false
+
+        XCTAssertTrue(sut.selectedIDs.isEmpty)
+    }
+
+    func testListEditing_setItToTrue_theSelectedIDsWillNotBeRemoved() {
+        sut.select(id: String.randomString(20))
+        XCTAssertFalse(sut.selectedIDs.isEmpty)
+
+        sut.listEditing = true
+
+        XCTAssertFalse(sut.selectedIDs.isEmpty)
+    }
 }
 
 extension MailboxViewModelTests {
@@ -1258,6 +1332,7 @@ extension MailboxViewModelTests {
                    totalUserCount: Int = 1) {
         let fetchMessage = MockFetchMessages()
         let updateMailbox = UpdateMailbox(dependencies: .init(
+            labelID: .init(labelID),
             eventService: eventsServiceMock,
             messageDataService: userManagerMock.messageService,
             conversationProvider: conversationProviderMock,
@@ -1265,7 +1340,7 @@ extension MailboxViewModelTests {
             fetchMessageWithReset: MockFetchMessagesWithReset(),
             fetchMessage: fetchMessage,
             fetchLatestEventID: mockFetchLatestEventId
-        ), parameters: .init(labelID: LabelID(labelID)))
+        ))
         self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
 
         let dependencies = MailboxViewModel.Dependencies(
@@ -1274,16 +1349,17 @@ extension MailboxViewModelTests {
             fetchMessageDetail: mockFetchMessageDetail,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: featureFlagCache,
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: userManagerMock.apiService,
-                            internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
+                            internetStatusProvider: internetConnectionProvider
                         )
                     ),
-                    senderImageStatusProvider: mockSenderImageStatusProvider,
                     mailSettings: userManagerMock.mailSettings
                 )
-            )
+            ),
+            encryptedSearchService: MockEncryptedSearchServiceProtocol()
         )
         let label = LabelInfo(name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),

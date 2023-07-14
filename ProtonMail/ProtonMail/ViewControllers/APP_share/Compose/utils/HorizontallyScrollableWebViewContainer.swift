@@ -61,25 +61,16 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         }
     }
 
-    func webViewPreferences() -> WKPreferences {
-        let preferences = WKPreferences()
-        preferences.javaScriptEnabled = false
-        preferences.javaScriptCanOpenWindowsAutomatically = false
-        return preferences
-    }
-
     func prepareWebView(
         with loader: WebContentsSecureLoader? = nil,
         urlHandler: WKURLSchemeHandler? = nil,
         urlSchemesToBeHandled: Set<String> = []
     ) {
-        let preferences = self.webViewPreferences()
         let config = WKWebViewConfiguration()
         urlSchemesToBeHandled.forEach { scheme in
             config.setURLSchemeHandler(urlHandler, forURLScheme: scheme)
         }
         loader?.inject(into: config)
-        config.preferences = preferences
         config.dataDetectorTypes = [.phoneNumber, .link]
 
         // oh, WKWebView is available in IB since iOS 11 only

@@ -195,13 +195,13 @@ extension UIColor {
         let blueR = hex.index(hex.startIndex, offsetBy: 6)
         let blueHex = String(hex[blueL..<blueR])
 
-        var redInt: CUnsignedInt = 0
-        var greenInt: CUnsignedInt = 0
-        var blueInt: CUnsignedInt = 0
+        var redInt: CUnsignedLongLong = 0
+        var greenInt: CUnsignedLongLong = 0
+        var blueInt: CUnsignedLongLong = 0
 
-        Scanner(string: redHex).scanHexInt32(&redInt)
-        Scanner(string: greenHex).scanHexInt32(&greenInt)
-        Scanner(string: blueHex).scanHexInt32(&blueInt)
+        Scanner(string: redHex).scanHexInt64(&redInt)
+        Scanner(string: greenHex).scanHexInt64(&greenInt)
+        Scanner(string: blueHex).scanHexInt64(&blueInt)
 
         self.init(red: CGFloat(redInt) / 255.0, green: CGFloat(greenInt) / 255.0, blue: CGFloat(blueInt) / 255.0, alpha: CGFloat(alpha))
     }

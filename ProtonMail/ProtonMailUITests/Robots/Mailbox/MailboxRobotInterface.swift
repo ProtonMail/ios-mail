@@ -14,9 +14,11 @@ fileprivate struct id {
     static let composeButtonLabelIdentifier = "MailboxViewController.composeBarButtonItem"
     static let mailboxTableViewIdentifier = "MailboxViewController.tableView"
     static let searchNavBarButtonIdentifier = "MailboxViewController.searchBarButtonItem"
-    static let mailboxNoResultIdentifier = "MailboxViewController.noResultLabel"
-    static func mailboxMessageCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject)" }
-    static let mailboxMessageTitleIdentifier = "mailboxMessageCell.titleLabel"
+    static let noResultImage = "MailboxViewController.noResultImage"
+    static let noResultMainLabel = "MailboxViewController.noResultMainLabel"
+    static let noResultSecondaryLabel = "MailboxViewController.noResultSecondaryLabel"
+    static func mailboxMessageCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject.replaceSpaces())" }
+    static func mailboxMessageTitleIdentifier(_ subject: String) -> String { return "\(subject.replaceSpaces()).titleLabel" }
     static let trashButtonIdentifier = LocalString._menu_trash_title
     static let skipOnboardingButtonLabel = LocalString._skip_btn_title
     static let allowContacsAccessOkButtonLabel = LocalString._general_ok_action
@@ -66,7 +68,7 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func spamMessageBySubject(_ subject: String) -> MailboxRobotInterface {
-        cell(id.mailboxMessageCellIdentifier(subject)).firstMatch().tapThenSwipeLeft(0.5, .slow)
+        staticText(id.mailboxMessageTitleIdentifier(subject)).firstMatch().tapThenSwipeRight(0.5, .slow)
         return self
     }
 
@@ -82,7 +84,7 @@ class MailboxRobotInterface: CoreElements {
     }
 
     func menuDrawer() -> MenuRobot {
-        button(id.menuButtonIdentifier).firstMatch().waitForHittable(time: 20).tap()
+        button(id.menuButtonIdentifier).firstMatch().waitForHittable(time: 30).tap()
         return MenuRobot()
     }
     
@@ -109,12 +111,27 @@ class MailboxRobotInterface: CoreElements {
         staticText(subject).firstMatch().longPress()
         return SelectionStateRobotInterface()
     }
-    
+
     @discardableResult
     func longClickMessageOnPosition(_ position: Int) -> SelectionStateRobotInterface {
         cell().byIndex(position).longPress()
         return SelectionStateRobotInterface()
     }
+
+    func selectMultipleMessages(_ positions: [Int]) -> SelectionStateRobotInterface {
+        if let firstPosition = positions.first {
+            longClickMessageOnPosition(firstPosition)
+        }
+        
+        if positions.count > 1 {
+            let remainingPositions = Array(positions.dropFirst())
+            for position in remainingPositions {
+                cell().byIndex(position).tap()
+            }
+        }
+        return SelectionStateRobotInterface()
+    }
+
     
     func backgroundApp() -> PinRobot {
         XCUIDevice.shared.press(.home)
@@ -151,11 +168,13 @@ class MailboxRobotInterface: CoreElements {
 class MailboxRobotVerifyInterface: CoreElements {
     
     func messageExists(_ subject: String) {
-        cell(id.mailboxMessageCellIdentifier(subject.replaceSpaces())).onChild(staticText(subject)).firstMatch().waitUntilExists().checkExists()
+        cell(id.mailboxMessageCellIdentifier(subject)).onChild(staticText(subject)).firstMatch().waitUntilExists().checkExists()
     }
     
-    func messageIsEmpty() {
-        staticText(id.mailboxNoResultIdentifier).checkHasLabel("No Messages")
+    func nothingToSeeHere() {
+        image(id.noResultImage).waitUntilExists().checkExists()
+        staticText(id.noResultMainLabel).checkExists()
+        staticText(id.noResultSecondaryLabel).checkExists()
     }
     
     func draftWithAttachmentSaved(draftSubject: String) {

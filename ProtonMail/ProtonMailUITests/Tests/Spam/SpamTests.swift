@@ -10,58 +10,47 @@ import XCTest
 
 import ProtonCore_TestingToolkit
 
-class SpamTests: BaseTestCase {
-    var subject = String()
-    var body = String()
+class SpamTests: FixtureAuthenticatedTestCase {
 
-    override func setUp() {
-        super.setUp()
-        subject = testData.messageSubject
-        body = testData.messageBody
+
+    func testSpamSingleMessageFromLongClick() {
+        runTestWithScenario(.trashOneMessage) {
+            InboxRobot()
+                .longClickMessageBySubject(scenario.subject)
+                .moveTo()
+                .selectFolder(LocalString._menu_spam_title)
+                .tapDone()
+            InboxRobot()
+                .menuDrawer()
+                .spam()
+                .verify.messageExists(scenario.subject)
+        }
     }
-    
-    func testSpamMessageFromMessageDetail() {
-        let user = testData.onePassUser
-        let recipient = testData.onePassUser
-        LoginRobot()
-            .loginUser(user)
-            .compose()
-            .sendMessage(recipient.email, subject)
-            .menuDrawer()
-            .inbox()
-            .clickMessageBySubject(subject)
-            .clickMoveToSpam()
-            .menuDrawer()
-            .spams()
-            .verify.messageWithSubjectExists(subject)
+
+    func testSpamMessageFromDetailPage() {
+        runTestWithScenario(.trashOneMessage) {
+            InboxRobot()
+                .clickMessageBySubject(scenario.subject)
+                .clickMoveToSpam()
+                .menuDrawer()
+                .spam()
+                .verify.messageExists(scenario.subject)
+        }
     }
-    
-    
-    //Spam is not the default swiping action
-    func disabletestSwipeToSpamMessage() {
-        let user = testData.onePassUser
-        let recipient = testData.onePassUser
-        LoginRobot()
-            .loginUser(user)
-            .compose()
-            .sendMessage(recipient.email, subject)
-            .menuDrawer()
-            .inbox()
-            .spamMessageBySubject(subject)
-            .menuDrawer()
-            .spams()
-            .verify.messageWithSubjectExists(subject)
-    }
-    
-    //Clear spam messages is no longer available in v4
-    func disabletestClearSpamMessages() {
-        let user = testData.onePassUser
-        LoginRobot()
-            .loginUser(user)
-            .menuDrawer()
-            .spams()
-            .clearSpamFolder()
-            .verify.messageIsEmpty()
+
+    func testClearSpamMessages() {
+        runTestWithScenario(.trashOneMessage) {
+            InboxRobot()
+                .longClickMessageBySubject(scenario.subject)
+                .moveTo()
+                .selectFolder(LocalString._menu_spam_title)
+                .tapDone()
+            InboxRobot()
+                .menuDrawer()
+                .spam()
+                .clearSpamFolder()
+                .verify.nothingToSeeHere()
+        }
     }
 }
 

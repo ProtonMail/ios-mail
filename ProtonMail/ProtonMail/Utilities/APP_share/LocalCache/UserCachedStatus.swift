@@ -92,7 +92,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         // Random pin protection
         static let randomPinForProtection = "randomPinForProtection"
-        static let realAttachments = "realAttachments"
 
         static let paymentMethods = "paymentMethods"
 
@@ -100,13 +99,10 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let isContactsCached = "isContactsCached"
 
         static let isAppRatingEnabled = "isAppRatingEnabled"
-        static let isSendRefactorEnabled = "isSendRefactorEnabled"
         static let appRatingPromptedInVersion = "appRatingPromptedInVersion"
         static let isScheduleSendEnabled = "isScheduleSendEnabled"
         static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"
         static let toolbarCustomizeSpotlightShownUserIds = "toolbarCustomizeSpotlightShownUserIds"
-        static let isSenderImageEnabled = "isSenderImageEnabled"
-        static let isReferralPromptEnabled = "isReferralPromptEnabled"
     }
 
     var keymakerRandomkey: String? {
@@ -636,3 +632,5 @@ extension UserCachedStatus: MobileSignatureCacheProtocol {
         }
     }
 }
+
+extension UserCachedStatus: Service {}

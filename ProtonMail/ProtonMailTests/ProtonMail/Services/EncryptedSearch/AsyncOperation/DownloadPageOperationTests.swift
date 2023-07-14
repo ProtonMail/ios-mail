@@ -61,12 +61,8 @@ final class DownloadPageOperationTests: XCTestCase {
             switch result {
             case .failure:
                 XCTFail("Unexpected")
-            case .success(let esMessages):
-                XCTAssertEqual(esMessages.count, 4)
-                let times = esMessages.map { $0.time }
-                for i in 1..<esMessages.count {
-                    XCTAssertTrue(times[i - 1] >= times[i])
-                }
+            case .success(let messageIDs):
+                XCTAssertEqual(messageIDs.count, 4)
             }
             isFinish.fulfill()
         }

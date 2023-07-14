@@ -337,7 +337,7 @@ final class LastUpdatedStoreTests: XCTestCase {
         prepareLabelUpdateUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 100, unread: 100, userID: userID)
         prepareConversationCountUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 1000, unread: 100, userID: userID)
 
-        sut.resetCounter(labelID: labelID, userID: userID, type: nil)
+        sut.resetCounter(labelID: labelID, userID: userID)
 
         let labelCount = try XCTUnwrap(sut.lastUpdate(by: labelID, userID: userID, type: .singleMessage))
         XCTAssertEqual(labelCount.total, 0)
@@ -354,11 +354,11 @@ final class LastUpdatedStoreTests: XCTestCase {
         XCTAssertNil(conversationCount.unreadUpdate)
     }
 
-    func testResetCounter_singleMessage_onlyResetLabelCount() throws {
+    func testResetCounter_resetLabelCounts() throws {
         prepareLabelUpdateUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 100, unread: 100, userID: userID)
         prepareConversationCountUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 1000, unread: 100, userID: userID)
 
-        sut.resetCounter(labelID: labelID, userID: userID, type: .singleMessage)
+        sut.resetCounter(labelID: labelID, userID: userID)
 
         let labelCount = try XCTUnwrap(sut.lastUpdate(by: labelID, userID: userID, type: .singleMessage))
         XCTAssertEqual(labelCount.total, 0)
@@ -366,27 +366,6 @@ final class LastUpdatedStoreTests: XCTestCase {
         XCTAssertNil(labelCount.unreadStart)
         XCTAssertNil(labelCount.unreadEnd)
         XCTAssertNil(labelCount.unreadUpdate)
-
-        let conversationCount = try XCTUnwrap(sut.lastUpdate(by: labelID, userID: userID, type: .conversation))
-        XCTAssertEqual(conversationCount.total, 1000)
-        XCTAssertEqual(conversationCount.unread, 100)
-        XCTAssertNotNil(conversationCount.unreadStart)
-        XCTAssertNotNil(conversationCount.unreadEnd)
-        XCTAssertNotNil(conversationCount.unreadUpdate)
-    }
-
-    func testResetCounter_conversation_onlyResetConversationCount() throws {
-        prepareLabelUpdateUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 100, unread: 100, userID: userID)
-        prepareConversationCountUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 1000, unread: 100, userID: userID)
-
-        sut.resetCounter(labelID: labelID, userID: userID, type: .conversation)
-
-        let labelCount = try XCTUnwrap(sut.lastUpdate(by: labelID, userID: userID, type: .singleMessage))
-        XCTAssertEqual(labelCount.total, 100)
-        XCTAssertEqual(labelCount.unread, 100)
-        XCTAssertNotNil(labelCount.unreadStart)
-        XCTAssertNotNil(labelCount.unreadEnd)
-        XCTAssertNotNil(labelCount.unreadUpdate)
 
         let conversationCount = try XCTUnwrap(sut.lastUpdate(by: labelID, userID: userID, type: .conversation))
         XCTAssertEqual(conversationCount.total, 0)
@@ -398,30 +377,17 @@ final class LastUpdatedStoreTests: XCTestCase {
 
     // MARK: - remove data
 
-    func testRemoveUpdateTime_singleMessage() {
+    func testRemoveUpdateTime() {
         prepareLabelUpdateUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 100, unread: 100, userID: userID)
         prepareConversationCountUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 1000, unread: 100, userID: userID)
 
         XCTAssertNotNil(sut.lastUpdate(by: labelID, userID: userID, type: .singleMessage))
         XCTAssertNotNil(sut.lastUpdate(by: labelID, userID: userID, type: .conversation))
 
-        sut.removeUpdateTime(by: userID, type: .singleMessage)
+        sut.removeUpdateTime(by: userID)
 
         XCTAssertNil(sut.lastUpdate(by: labelID, userID: userID, type: .singleMessage))
-        XCTAssertNotNil(sut.lastUpdate(by: labelID, userID: userID, type: .conversation))
-    }
-
-    func testRemoveUpdateTime_conversation() {
-        prepareLabelUpdateUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 100, unread: 100, userID: userID)
-        prepareConversationCountUnreadTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 1000, unread: 100, userID: userID)
-
-        XCTAssertNotNil(sut.lastUpdate(by: labelID, userID: userID, type: .singleMessage))
-        XCTAssertNotNil(sut.lastUpdate(by: labelID, userID: userID, type: .conversation))
-
-        sut.removeUpdateTime(by: userID, type: .conversation)
-
         XCTAssertNil(sut.lastUpdate(by: labelID, userID: userID, type: .conversation))
-        XCTAssertNotNil(sut.lastUpdate(by: labelID, userID: userID, type: .singleMessage))
     }
 
     // MARK: - RemoveUpdateTimeExceptUnread

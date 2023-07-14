@@ -324,6 +324,22 @@
 			<string>%d outros</string>
 		</dict>
 	</dict>
+	<key>Are you sure you want to delete these %d messages permanently?</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Você tem certeza de que deseja excluir permanentemente esta mensagem?</string>
+			<key>other</key>
+			<string>Você tem certeza de que deseja excluir permanentemente estas %d mensagens?</string>
+		</dict>
+	</dict>
 	<key>Are you sure you want to permanently delete %d conversation?</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>

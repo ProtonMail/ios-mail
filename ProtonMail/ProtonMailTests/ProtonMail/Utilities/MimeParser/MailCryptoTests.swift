@@ -154,3 +154,14 @@ class MailCryptoTests: XCTestCase {
         return armoredMessage.value
     }
 }
+
+private extension MailCrypto {
+    func decryptMIME(
+        encrypted message: String,
+        publicKeys: [ArmoredKey],
+        decryptionKeys: [DecryptionKey]
+    ) throws -> MIMEMessageData {
+        let decryptionKeyRing = try KeyRingBuilder().buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        return try decryptMIME(encrypted: message, publicKeys: publicKeys, decryptionKeyRing: decryptionKeyRing)
+    }
+}

@@ -17,34 +17,12 @@
 
 import Foundation
 
-/// The intention of this protocol is to provide objects and helper methods for use cases.
-protocol UseCase {
-    typealias UseCaseResult<T> = (Result<T, Error>) -> Void
-}
-
-extension UseCase {
-
-    /// Use this function to execute the return callback on the Main thread
-    func runOnMainThread(_ block: @escaping () -> Void) {
-        if Thread.isMainThread {
-            block()
-        } else {
-            DispatchQueue.main.async(execute: block)
-        }
-    }
-}
-
 /// Parent class that allows use cases to implement the same multithreading approach.
-class NewUseCase<T, Params> {
+class UseCase<T, Params> {
     typealias Callback = (Result<T, Error>) -> Void
 
     private(set) var executionQueue: DispatchQueue = .global(qos: .userInitiated)
     private(set) var callbackQueue: DispatchQueue = .global(qos: .userInitiated)
-
-    func executeOn(_ queue: DispatchQueue) -> Self {
-        executionQueue = queue
-        return self
-    }
 
     func callbackOn(_ queue: DispatchQueue) -> Self {
         callbackQueue = queue

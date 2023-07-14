@@ -100,7 +100,7 @@ final class ScheduleSendPromotionView: UIView {
         scrollContentView.addSubview(planStackView)
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     private func setupLayout() {
         let topConstraint = containerView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         containerTopConstraint = topConstraint

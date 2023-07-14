@@ -31,7 +31,15 @@ protocol MenuCoordinatorDelegate: AnyObject {
     func lockTheScreen()
 }
 
-final class MenuCoordinator: CoordinatorDismissalObserver {
+// sourcery: mock
+protocol MenuCoordinatorProtocol: AnyObject {
+    func go(to labelInfo: MenuLabel, deepLink: DeepLink?)
+    func closeMenu()
+    func lockTheScreen()
+    func update(menuWidth: CGFloat)
+}
+
+final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtocol {
     enum Setup: String {
         case switchUser = "USER"
         case switchUserFromNotification = "UserFromNotification"
@@ -204,6 +212,10 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         delegate?.lockTheScreen()
     }
 
+    func closeMenu() {
+        sideMenu.hideMenu()
+    }
+
     private func checkIsCurrentViewInInboxView() -> Bool {
         return ((sideMenu.contentViewController as? UINavigationController)?
                     .topViewController as? MailboxViewController)?.viewModel.labelID == Message.Location.inbox.labelID
@@ -344,7 +356,7 @@ extension MenuCoordinator {
         }
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     private func mailBoxVMDependencies(user: UserManager, labelID: LabelID) -> MailboxViewModel.Dependencies {
         let userID = user.userID
 
@@ -354,20 +366,20 @@ extension MenuCoordinator {
         )
 
         let fetchMessages = FetchMessages(
-            params: .init(labelID: labelID),
             dependencies: .init(
                 messageDataService: user.messageService,
                 cacheService: user.cacheService,
-                eventsService: user.eventsService
+                eventsService: user.eventsService,
+                labelID: labelID
             )
         )
 
         let fetchMessagesForUpdate = FetchMessages(
-            params: .init(labelID: labelID),
             dependencies: .init(
                 messageDataService: user.messageService,
                 cacheService: user.cacheService,
-                eventsService: user.eventsService
+                eventsService: user.eventsService,
+                labelID: labelID
             )
         )
 
@@ -385,14 +397,15 @@ extension MenuCoordinator {
         let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: self.coreDataService)
 
         let updateMailbox = UpdateMailbox(
-            dependencies: .init(eventService: user.eventsService,
+            dependencies: .init(labelID: labelID,
+                                eventService: user.eventsService,
                                 messageDataService: user.messageService,
                                 conversationProvider: user.conversationService,
                                 purgeOldMessages: purgeOldMessages,
                                 fetchMessageWithReset: fetchMessagesWithReset,
                                 fetchMessage: fetchMessagesForUpdate,
-                                fetchLatestEventID: fetchLatestEvent),
-            parameters: .init(labelID: labelID))
+                                fetchLatestEventID: fetchLatestEvent)
+        )
         let fetchMessageDetail = FetchMessageDetail(
             dependencies: .init(
                 queueManager: services.get(by: QueueManager.self),
@@ -407,16 +420,17 @@ extension MenuCoordinator {
             fetchMessageDetail: fetchMessageDetail,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: services.userCachedStatus,
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: user.apiService,
-                            internetStatusProvider: InternetConnectionStatusProvider()
+                            internetStatusProvider: InternetConnectionStatusProvider.shared
                         )
                     ),
-                    senderImageStatusProvider: userCachedStatus,
                     mailSettings: user.mailSettings
                 )
-            )
+            ),
+            encryptedSearchService: EncryptedSearchService.shared
         )
         return mailboxVMDependencies
     }
@@ -443,6 +457,7 @@ extension MenuCoordinator {
             conversationProvider: userManager.conversationService,
             eventsService: userManager.eventsService,
             dependencies: mailboxVMDependencies,
+            welcomeCarrouselCache: services.userCachedStatus,
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)

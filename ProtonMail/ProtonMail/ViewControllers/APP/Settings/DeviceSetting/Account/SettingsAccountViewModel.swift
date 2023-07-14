@@ -101,6 +101,7 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
     case folders
     case storage
     case nextMsgAfterMove
+    case autoDeleteSpamTrash
 
     var description: String {
         switch self {
@@ -124,6 +125,8 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
             return LocalString._local_storage_limit
         case .nextMsgAfterMove:
             return L11n.NextMsgAfterMove.settingTitle
+        case .autoDeleteSpamTrash:
+            return L11n.AutoDeleteSettings.settingTitle
         }
     }
 }
@@ -144,6 +147,7 @@ protocol SettingsAccountViewModel: AnyObject {
     var defaultMobileSignatureStatus: String { get }
     var allSendingAddresses: [Address] { get }
 
+    var isAutoDeleteSpamAndTrashEnabled: Bool { get }
     func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?)
 
     var reloadTable: (() -> Void)? { get set }
@@ -188,6 +192,10 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
             mailboxItems.append(.blockList)
         }
 
+        if UserInfo.isAutoDeleteEnabled {
+            mailboxItems.append(.autoDeleteSpamTrash)
+        }
+ 
         self.mailboxItems = mailboxItems
     }
 
@@ -246,6 +254,10 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
         return userManager.addresses.filter { address in
             address.status.rawValue == 1 && address.receive.rawValue == 1 && address != defaultAddress
         }
+    }
+
+    var isAutoDeleteSpamAndTrashEnabled: Bool {
+        userManager.isAutoDeleteEnabled
     }
 
     func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?) {

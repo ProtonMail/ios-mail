@@ -28,7 +28,6 @@ struct EventAPI {
     static let path: String = "/events"
 }
 
-// MARK: Get messages part -- EventCheckResponse
 final class EventCheckRequest: Request {
     let eventID: String
 
@@ -37,7 +36,13 @@ final class EventCheckRequest: Request {
     }
 
     var path: String {
-        return "/core/v4" + EventAPI.path + "/\(self.eventID)"
+        let url = "/core/v4\(EventAPI.path)/\(eventID)"
+        var urlComponents = URLComponents(string: url)
+        urlComponents?.queryItems = [
+            URLQueryItem(name: "ConversationCounts", value: "1"),
+            URLQueryItem(name: "MessageCounts", value: "1")
+        ]
+        return urlComponents?.url?.absoluteString ?? .empty
     }
 }
 

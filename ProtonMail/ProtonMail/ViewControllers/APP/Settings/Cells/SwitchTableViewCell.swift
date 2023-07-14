@@ -48,8 +48,9 @@ final class SwitchTableViewCell: UITableViewCell, AccessibleCell {
     private var onSwitch: SwitchActionBlock?
 
     @IBOutlet private weak var centerConstraint: NSLayoutConstraint!
-    // swiftlint:disable private_outlet
+    // swiftlint:disable:next private_outlet
     @IBOutlet weak var topLineLabel: UILabel!
+    // swiftlint:disable:next private_outlet
     @IBOutlet weak var switchView: UISwitch!
 
     override func prepareForReuse() {

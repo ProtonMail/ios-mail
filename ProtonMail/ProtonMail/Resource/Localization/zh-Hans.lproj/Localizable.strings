@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey 防护";
 
+/* Title for application logs settings option */
+"Application logs" = "应用程序日志";
+
 /* Apply action */
 "Apply" = "应用";
 
@@ -202,12 +205,6 @@
 
 /* Push notification action archive */
 "Archive (verb)" = "存档";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "您确定要永久删除这封邮件吗？";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "您确定要永久删除这 %d 封邮件吗？";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "您确定要退出登录 %@ 吗？";
@@ -258,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "自动锁定时间";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "自动删除";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "自动删除无用邮件";
+
 /* settings general section title */
 "Auto-load embedded images" = "自动加载嵌入图像";
 
 /* settings general section title */
 "Auto-load remote content" = "自动加载外链内容";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "自动删除废件箱内超过 30 天的邮件。";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "可选操作";
@@ -298,7 +304,7 @@
 "Block email tracking" = "阻止电子邮件追踪";
 
 /* Settings item to open blocked sender list */
-"Block list" = "黑名单";
+"Block list" = "屏蔽列表";
 
 /* Button to block a sender */
 "Block sender" = "屏蔽发件人";
@@ -311,6 +317,9 @@
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "会话模式能帮助您轻松应对各方的往来邮件。";
+
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---为了帮助我们更好地解决问题，请提供尽可能详尽的信息---\n\n简要描述问题：\n\n此问题是否反复出现：是/否\n复现问题的步骤：\n预期得到的结果：\n实际得到的结果：\n额外说明：";
 
 /* Title */
 "Bug Report Received" = "反馈已收到";
@@ -427,6 +436,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "清除格式";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "正在清理缓存…";
 
 /* general close action */
 "Close" = "关闭";
@@ -616,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "删除邮件";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "立即删除邮件？";
+
 /* Title */
 "Details" = "详细信息";
 
+/* Button to disable auto delete */
+"Disable" = "关闭";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "关闭代理服务器和防火墙，或联系网络管理员。";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "关闭自动删除？";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "关闭验证";
@@ -776,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "邮件追踪保护";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "计划删除的邮件将会保留在废件箱和垃圾邮件文件夹内。";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "清空垃圾邮件";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "清空垃圾邮件";
 
 /* Alert title */
 "Empty spam folder" = "清空垃圾邮件文件夹";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "清空废件箱";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "清空回收站";
@@ -830,9 +860,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "输入新口令";
-
-/* The title of the pin code view. */
-"Enter PIN" = "输入口令";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "请输入您的密码以进行更改";
@@ -955,7 +982,7 @@
 "Hide details" = "隐藏详情";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email 邮箱别名";
+"Hide My Email aliases" = "Hide-my-email 邮箱别名";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "您认为新版 Proton Mail的使用体验如何？";
@@ -1214,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "早于 %@ 的邮件将无法被搜索到。要在其中搜索，请释放设备的存储空间。";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "归入垃圾邮件或废件箱的邮件超过 30 天自动删除。";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "已归入垃圾邮件或废件箱超过 30 天的邮件将被自动删除。";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "邮件将通过 WiFi 下载。这可能需要一点时间，且你的设备可能会稍微发热。你可以在任何时候暂停该操作。";
 
@@ -1338,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "不，和 App 内购买项目无关";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "不用了，谢谢";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2064,6 +2100,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "此工具栏将在阅读邮件时显示。";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "此操作将删除所有归入垃圾邮件或废件箱超过 30 天的邮件，现存邮件也不例外。";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "该放松一下了";
 
@@ -2113,6 +2152,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "已信任的密钥对发送无效";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "不妨试试其他关键词。";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "尝试更换网络后再连接 Proton（或使用 %1$@ 或 %2$@）。";
@@ -2215,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "开通付费账户方可从 %@ 地址发送邮件";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "升级账户即可自动删除归入垃圾邮件或废件箱超过 30 天的邮件。";
 
 /* Action */
 "Upload device contacts" = "上传本机通讯录";
@@ -2321,6 +2366,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您需要付费才能将 %@ 设为首选地址。";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系统设置中关闭了 %1$@，但您的账户信息已受到 %2$@ 保护。请在系统设置中再次开启 %3$@ 或重新登录解锁账户。";
+
 /* Message */
 "You have %d new emails!" = "您收到了 %d 封新邮件！";
 
@@ -2390,7 +2438,3 @@
 /* contact placeholder */
 "ZIP" = "邮编";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系统设置中关闭了 %1$@，但您的账户信息已受到 %2$@ 保护。请在系统设置中再次开启 %3$@ 或重新登录解锁账户。";
-
-"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

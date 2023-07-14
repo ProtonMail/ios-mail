@@ -46,6 +46,8 @@ final class SettingsLocalStorageViewController: UITableViewController, Accessibl
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         viewModel.input.viewWillAppear()
     }
 

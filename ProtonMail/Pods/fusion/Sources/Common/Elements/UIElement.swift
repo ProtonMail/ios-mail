@@ -160,12 +160,12 @@ open class UIElement {
         return element.isSelected
     }
 
-    public func childsCount() -> Int {
-        return locatedElement!.children(matching: XCUIElement.ElementType.any).count
+    public func childrenCount() -> Int {
+        return uiElement()!.children(matching: XCUIElement.ElementType.any).count
     }
 
-    public func childsCountByType(_ type: XCUIElement.ElementType) -> Int {
-        return locatedElement!.children(matching: type).count
+    public func childrenCountByType(_ type: XCUIElement.ElementType) -> Int {
+        return uiElement()!.children(matching: type).count
     }
 
     /// Matchers
@@ -415,7 +415,7 @@ open class UIElement {
         return self
     }
 
-    /// Allow actions on childs / descendants
+    /// Allow actions on children / descendants
     public func onChild(_ childElement: UIElement) -> UIElement {
         self.childElement = childElement
         return self

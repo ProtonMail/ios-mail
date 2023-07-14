@@ -18,7 +18,7 @@
 import Foundation
 import PromiseKit
 
-typealias FetchLatestEventIdUseCase = NewUseCase<EventLatestIDResponse, Void>
+typealias FetchLatestEventIdUseCase = UseCase<EventLatestIDResponse, Void>
 
 class FetchLatestEventId: FetchLatestEventIdUseCase {
     private let userId: UserID

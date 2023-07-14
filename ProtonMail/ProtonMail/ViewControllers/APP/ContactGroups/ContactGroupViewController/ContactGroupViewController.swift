@@ -64,9 +64,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
 
     private var refreshControl: UIRefreshControl?
     private var searchController: UISearchController?
-
-    private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
-    private let observerID = UUID()
+    private let internetConnectionStatusProvider = InternetConnectionStatusProvider.shared
 
     @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private var searchView: UIView!
@@ -328,7 +326,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         }
 
         searchController?.searchResultsUpdater = self
-        searchController?.dimsBackgroundDuringPresentation = false
+        searchController?.obscuresBackgroundDuringPresentation = false
         searchController?.searchBar.delegate = self
         searchController?.hidesNavigationBarDuringPresentation = true
         searchController?.searchBar.sizeToFit()
@@ -347,24 +345,19 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     }
 
     @objc func fireFetch() {
-        internetConnectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
-            guard status.isConnected else {
-                DispatchQueue.main.async {
-                    self?.refreshControl?.endRefreshing()
-                }
-                return
+        guard internetConnectionStatusProvider.status.isConnected else {
+            DispatchQueue.main.async {
+                self.refreshControl?.endRefreshing()
             }
-
+            return
+        }
+        self.viewModel.fetchLatestContactGroup { [weak self] error in
             guard let self = self else { return }
 
-            self.viewModel.fetchLatestContactGroup { [weak self] error in
-                guard let self = self else { return }
-
-                if let error = error {
-                    error.alert(at: self.view)
-                } else {
-                    self.refreshControl?.endRefreshing()
-                }
+            if let error = error {
+                error.alert(at: self.view)
+            } else {
+                self.refreshControl?.endRefreshing()
             }
         }
     }
@@ -496,10 +489,12 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
             user: user,
             contextProvider: sharedServices.get(by: CoreDataService.self),
             isEditingScheduleMsg: false,
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus,
-            internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+            userIntroductionProgressProvider: sharedServices.userCachedStatus,
+            internetStatusProvider: internetConnectionStatusProvider,
             coreKeyMaker: sharedServices.get(),
+            darkModeCache: sharedServices.userCachedStatus,
+            mobileSignatureCache: sharedServices.userCachedStatus,
+            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
             toContact: contactGroupVO
         )
 
@@ -508,14 +503,13 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
 }
 
 extension ContactGroupsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView,
-                   editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
-    {
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         resetStateFromMultiSelect()
 
-        let deleteHandler = {
-            (_: UITableViewRowAction, indexPath: IndexPath) in
-
+        let deleteHandler: UIContextualAction.Handler = { _, _, completion in
                 let deleteActionHandler = {
                     (_: UIAlertAction) -> Void in
 
@@ -547,12 +541,15 @@ extension ContactGroupsViewController: UITableViewDelegate {
                 alertController.popoverPresentationController?.sourceRect = CGRect(x: self.tableView.bounds.midX, y: self.tableView.bounds.maxY - 100, width: 0, height: 0)
 
                 self.present(alertController, animated: true, completion: nil)
+            completion(false)
         }
 
-        let deleteAction = UITableViewRowAction(style: .destructive,
-                                                title: LocalString._general_delete_action,
-                                                handler: deleteHandler)
-        return [deleteAction]
+        let deleteAction = UIContextualAction(
+            style: .destructive,
+            title: LocalString._general_delete_action,
+            handler: deleteHandler
+        )
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

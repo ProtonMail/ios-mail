@@ -58,6 +58,12 @@ protocol SearchVMProtocol: AnyObject {
         scale: CGFloat,
         completion: @escaping (UIImage?) -> Void
     )
+    func shouldShowEncryptedSearchSpotlight() -> Bool
+    func setEncryptedSearchSpotlightIsShown()
+    func shouldShowESIndexingBanner() -> Bool
+    func userCloseESIndexingBanner()
+    func currentEncryptedSearchIndexingState() -> EncryptedSearchIndexState
+    func oldestMessageTime() -> Int?
 }
 
 final class SearchViewModel: NSObject {
@@ -94,6 +100,7 @@ final class SearchViewModel: NSObject {
     private var currentPage = 0
     private var query = ""
     private let sharedReplacingEmailsMap: [String: EmailEntity]
+    private var userHasClosedESIndexingBanner = false
 
     var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
@@ -414,7 +421,54 @@ extension SearchViewModel: SearchVMProtocol {
                     case .failure:
                         completion(nil)
                     }
-            }
+                }
+    }
+
+    func shouldShowEncryptedSearchSpotlight() -> Bool {
+        guard
+            UserInfo.isEncryptedSearchEnabled,
+            dependencies.userIntroductionProgressProvider.shouldShowSpotlight(
+                for: .encryptedSearchAvailable,
+                toUserWith: user.userID
+            )
+        else { return false }
+        return true
+    }
+
+    func setEncryptedSearchSpotlightIsShown() {
+        dependencies.userIntroductionProgressProvider.markSpotlight(
+            for: .encryptedSearchAvailable,
+            asSeen: true,
+            byUserWith: user.userID
+        )
+    }
+
+    func shouldShowESIndexingBanner() -> Bool {
+        guard
+            UserInfo.isEncryptedSearchEnabled,
+            !userHasClosedESIndexingBanner
+        else { return false }
+        let state = dependencies.encryptedSearchService.indexBuildingState(for: user.userID)
+        let statesOfBannerShouldBeHidden: [EncryptedSearchIndexState] = [
+            .complete,
+            .undetermined,
+            .background,
+            .backgroundStopped,
+            .disabled
+        ]
+        return !statesOfBannerShouldBeHidden.contains(state)
+    }
+
+    func userCloseESIndexingBanner() {
+        userHasClosedESIndexingBanner = true
+    }
+
+    func currentEncryptedSearchIndexingState() -> EncryptedSearchIndexState {
+        dependencies.encryptedSearchService.indexBuildingState(for: user.userID)
+    }
+
+    func oldestMessageTime() -> Int? {
+        dependencies.encryptedSearchService.oldestMessageTime(for: user.userID)
     }
 }
 
@@ -473,7 +527,7 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
 
     func handleLabelAsAction(conversations: [ConversationEntity],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
+                             currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType],
                              completion: (() -> Void)?) {
         // search view doesn't support conversation mode
         fatalError("not implemented")
@@ -668,5 +722,7 @@ extension SearchViewModel {
         let fetchMessageDetail: FetchMessageDetailUseCase
         let fetchSenderImage: FetchSenderImageUseCase
         let messageSearch: SearchUseCase
+        let userIntroductionProgressProvider: UserIntroductionProgressProvider
+        let encryptedSearchService: EncryptedSearchServiceProtocol
     }
 }

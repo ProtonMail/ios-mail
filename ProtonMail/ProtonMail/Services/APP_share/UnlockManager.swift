@@ -112,7 +112,7 @@ final class UnlockManager: Service {
         }
         keyMaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
             guard self.validate(mainKey: key) else {
-                userCachedStatus.pinFailedCount += 1
+                self.pinFailedCountCache.pinFailedCount += 1
                 completion(false)
                 return
             }

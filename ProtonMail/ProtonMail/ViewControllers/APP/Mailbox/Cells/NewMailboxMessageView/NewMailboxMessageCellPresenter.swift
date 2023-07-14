@@ -80,9 +80,6 @@ class NewMailboxMessageCellPresenter {
     }
 
     func presentSenderImage(_ image: UIImage, in view: NewMailboxMessageCellContentView) {
-        guard view.checkBoxView.isHidden else {
-            return
-        }
         view.senderImageView.image = image
         view.senderImageView.isHidden = false
         view.initialsLabel.isHidden = true
@@ -98,7 +95,7 @@ class NewMailboxMessageCellPresenter {
         }
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     private func presentContent(
         viewModel: NewMailboxMessageViewModel,
         in view: NewMailboxMessageContentView,

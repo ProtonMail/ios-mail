@@ -21,7 +21,6 @@ import XCTest
 class ContactAddRequestTest: XCTestCase {
     func testParameters_withImportFromDeviceIsTrue_containsImportFlag() throws {
         let sut = ContactAddRequest(cards: [],
-                                    authCredential: nil,
                                     importedFromDevice: true)
         let parameters = try XCTUnwrap(sut.parameters)
         XCTAssertEqual(parameters["Import"] as? Int, 1)
@@ -29,7 +28,6 @@ class ContactAddRequestTest: XCTestCase {
 
     func testParameters_withoutImportFromDeviceIsFalse_notContainsImportFlag()  throws {
         let sut = ContactAddRequest(cards: [],
-                                    authCredential: nil,
                                     importedFromDevice: false)
         let parameters = try XCTUnwrap(sut.parameters)
         XCTAssertNil(parameters["Import"] as? Int)

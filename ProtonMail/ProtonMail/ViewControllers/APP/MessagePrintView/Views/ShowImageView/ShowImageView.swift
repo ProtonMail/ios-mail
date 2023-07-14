@@ -22,21 +22,15 @@
 
 import ProtonCore_UIFoundations
 
-protocol ShowImageViewDelegate: AnyObject {
-    func showImage()
-}
-
 class ShowImageView: PMView {
 
     @IBOutlet weak var showImageButton: UIButton!
-    weak var delegate: ShowImageViewDelegate?
 
     override func getNibName() -> String {
         return "ShowImageView"
     }
 
     @IBAction func clickAction(_ sender: AnyObject) {
-        self.delegate?.showImage()
     }
 
     override func setup() {

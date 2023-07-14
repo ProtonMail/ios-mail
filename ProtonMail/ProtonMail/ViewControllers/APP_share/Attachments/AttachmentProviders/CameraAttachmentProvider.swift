@@ -25,9 +25,11 @@ import ProtonCore_UIFoundations
 
 final class CameraAttachmentProvider: AnyImagePickerDelegate {
     override var actionSheetItem: PMActionSheetItem {
-        return PMActionSheetPlainItem(title: LocalString._take_new_photo,
-                                      icon: IconProvider.camera,
-                                      iconColor: ColorProvider.IconNorm) { (_) -> Void in
+        return PMActionSheetItem(
+            title: LocalString._take_new_photo,
+            icon: IconProvider.camera,
+            iconColor: ColorProvider.IconNorm
+        ) { _ in
             guard UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) else { return }
             let picker = UIImagePickerController()
             picker.delegate = self

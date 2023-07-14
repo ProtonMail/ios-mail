@@ -40,7 +40,6 @@ final class PagesViewModelTests: XCTestCase {
             sessionID: "id",
             accessToken: "token",
             refreshToken: "refresh",
-            expiration: .distantFuture,
             userName: "name",
             userID: "1",
             privateKey: nil,

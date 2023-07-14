@@ -24,6 +24,7 @@ struct PinnedKeysConfig {
     let sign: Bool?
     let scheme: String?
     let mimeType: String?
+    // swiftlint:enable discouraged_optional_boolean
     let pinnedKeys: [CryptoKey]
     let isContact: Bool
 }

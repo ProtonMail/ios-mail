@@ -34,8 +34,15 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonMailAnalytics
 
+// sourcery: mock
+protocol UsersManagerProtocol: AnyObject {
+    var firstUser: UserManager? { get }
+
+    func hasUsers() -> Bool
+}
+
 /// manager all the users and there services
-class UsersManager: Service {
+class UsersManager: Service, UsersManagerProtocol {
     enum Version: Int {
         static let version: Int = 1 // this is app cache version
 
@@ -142,7 +149,10 @@ class UsersManager: Service {
         self.cleanRandomKeyIfNeeded()
         let session = auth.sessionID
         let apiService = PMAPIService.createAPIService(
-            doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+            doh: doh,
+            sessionUID: session,
+            challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge()
+                                                       )
         )
         apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
         #if !APP_EXTENSION
@@ -674,7 +684,7 @@ extension UsersManager {
 
 // MARK: - Legacy crypto functions
 extension UsersManager {
-    // swiftlint:disable cyclomatic_complexity function_body_length
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func migrate_0_1() -> Bool {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             return false
@@ -692,7 +702,9 @@ extension UsersManager {
         if let oldAuth = oldAuthFetchLegacy(), let user = oldUserInfoLegacy() {
             let session = oldAuth.sessionID
             let apiService = PMAPIService.createAPIService(
-                doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+                doh: doh,
+                sessionUID: session,
+                challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
             )
             apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
             #if !APP_EXTENSION
@@ -775,8 +787,7 @@ extension UsersManager {
 
             let disconnectedUsers = self.disconnectedUsersLegacy()
             if let data = try? JSONEncoder().encode(disconnectedUsers),
-               let locked = try? Locked(clearValue: data, with: mainKey)
-            {
+               let locked = try? Locked(clearValue: data, with: mainKey) {
                 keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)
             }
             return true

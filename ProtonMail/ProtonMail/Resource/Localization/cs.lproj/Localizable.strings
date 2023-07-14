@@ -5,7 +5,7 @@
 "…[Show full message]" = "…[Zobrazit celou zprávu]";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'V' E, MMM d, yyyy 'v' %@";
+"'On' E, MMM d, yyyy 'at' %@" = "'V' E, MMM d, rrrr 'v' %@";
 
 /* Message for the alert to delete all downloaded messages. */
 "'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'Hledání v obsahu zprávy' bude zakázáno. Lze to opět povolit v nastavení, všechny zprávy bude nutné znovu stáhnout.";
@@ -186,6 +186,9 @@
 /* Settings lock AppKey feature */
 "AppKey protection" = "Ochrana AppKey";
 
+/* Title for application logs settings option */
+"Application logs" = "Logy aplikace";
+
 /* Apply action */
 "Apply" = "Použít";
 
@@ -202,12 +205,6 @@
 
 /* Push notification action archive */
 "Archive (verb)" = "Archivovat";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Opravdu chcete tuto zprávu trvale odstranit?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Jste si jisti, že chcete těchto %d zpráv trvale odstranit?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Opravdu se chcete odhlásit %@?";
@@ -258,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "Čas do automatického uzamčení";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Automatické mazání";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Automaticky mazat nechtěné zprávy";
+
 /* settings general section title */
 "Auto-load embedded images" = "Automaticky načíst vložené obrázky";
 
 /* settings general section title */
 "Auto-load remote content" = "Automaticky načíst vzdálený obsah";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Automaticky vymazat zprávy, které jsou v koši déle než 30 dní.";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "Dostupné akce";
@@ -298,7 +304,7 @@
 "Block email tracking" = "Blokovat sledování emailů";
 
 /* Settings item to open blocked sender list */
-"Block list" = "Seznam blokovaných";
+"Block list" = "Seznam blokovaných kontaktů";
 
 /* Button to block a sender */
 "Block sender" = "Blokovat odesílatele";
@@ -430,6 +436,9 @@
 
 /* Menu action to remove text formatting */
 "Clear Style" = "Smazat styl";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Čištění mezipaměti…";
 
 /* general close action */
 "Close" = "Zavřít";
@@ -619,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Smazat zprávu";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Smazat zprávy?";
+
 /* Title */
 "Details" = "Detaily";
 
+/* Button to disable auto delete */
+"Disable" = "Zakázat";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "Zakažte všechny proxy a brány firewallu, nebo se obraťte na správce sítě.";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Vypnout automatické mazání?";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Vypnout ověřování";
@@ -779,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "Ochrana před sledovacími prvky v e-mailech";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "E-maily naplánované ke smazání zůstanou ve složkách Koš a Spam.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Vysypat spam";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "Vyprázdnit spam";
 
 /* Alert title */
 "Empty spam folder" = "Vyprázdnit složku spam";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Vysypat koš";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "Vysypat koš";
@@ -833,9 +860,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Zadejte nový PIN kód";
-
-/* The title of the pin code view. */
-"Enter PIN" = "Zadejte PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Zadejte své heslo pro provedení změn";
@@ -958,7 +982,7 @@
 "Hide details" = "Skrýt detaily";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Aliasy Hide My Email";
+"Hide My Email aliases" = "Aliasy Hide-my-email";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "Jak byste popsal(a) svou zkušenost s novým Proton Mailem?";
@@ -1217,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "Zprávy z doby před %@, nebudou vyhledávány. Chcete-li v nich vyhledávat, uvolněte v tomto zařízení úložný prostor.";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Zprávy, které byly v koši nebo spamu déle než 30 dní, budou automaticky smazány.";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Zprávy, které byly v koši a spamu déle než 30 dní, budou automaticky smazány.";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "Zprávy se budou stahovat přes Wi-Fi. To může nějakou dobu trvat a zařízení se může mírně zahřívat. Akci můžete kdykoli pozastavit.";
 
@@ -1341,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "Ne, nesouvisí s nákupem v aplikaci";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "Ne, děkuji";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -2041,7 +2074,7 @@
 "This folder is empty" = "Tato složka je prázdná";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tento odkaz vede na webovou stránku, která se může pokoušet ukrást vaše údaje, například hesla a údaje o kreditní kartě.\n%@\n\nKvůli vaší bezpečnosti, nepokračujte.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Tento odkaz vede na webovou stránku, která se může pokoušet ukrást vaše údaje, například hesla a údaje o platební kartě.\n%@\n\nKvůli vaší bezpečnosti, nepokračujte.";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
 "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Tato zpráva již není naplánována k pozdějšímu odeslání. Pokud ji chcete odeslat později, můžete klepnout na možnost \"Naplánovat odeslání\"";
@@ -2066,6 +2099,9 @@
 
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "Tento panel nástrojů je viditelný při čtení zprávy.";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Tímto budou mazány všechny zprávy, které budou v koši nebo spamu déle než 30 dní, včetně zpráv, které se v těchto složkách právě nacházejí.";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Čas na odpočinek";
@@ -2116,6 +2152,9 @@
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Důvěryhodné klíče nejsou použitelné pro odesílání";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Zkuste jiný hledaný výraz.";
 
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Zkuste připojení k Protonu z jiné sítě (nebo použijte %1$@ nebo %2$@).";
@@ -2218,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Přejděte na placený tarif pro odesílání z vaší %@ adresy";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Navyšte svůj tarif pro automatické mazání zpráv, které jsou v koši nebo spamu déle než 30 dní.";
 
 /* Action */
 "Upload device contacts" = "Nahrát kontakty ze zařízení";

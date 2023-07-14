@@ -104,8 +104,8 @@ class ContactDataService: Service {
         return Promise { seal in
             let coreDataService = sharedServices.get(by: CoreDataService.self)
             coreDataService.enqueueOnRootSavingContext { context in
-                Contact.deleteAll(inContext: context)
-                Email.deleteAll(inContext: context)
+                Contact.deleteAll(in: context)
+                Email.deleteAll(in: context)
                 seal.fulfill_()
             }
         }
@@ -152,11 +152,10 @@ class ContactDataService: Service {
      - Parameter completion: async add contact complete response
      **/
     func add(cards: [[CardData]],
-             authCredential: AuthCredential?,
-             objectID: String? = nil,
+             objectID: String,
              importFromDevice: Bool,
              completion: @escaping (Error?) -> Void) {
-        let route = ContactAddRequest(cards: cards, authCredential: authCredential, importedFromDevice: importFromDevice)
+        let route = ContactAddRequest(cards: cards, importedFromDevice: importFromDevice)
         self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
             guard let self = self else { return }
             var contactsData: [[String: Any]] = []

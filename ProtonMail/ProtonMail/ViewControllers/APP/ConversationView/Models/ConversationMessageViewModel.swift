@@ -29,20 +29,18 @@ class ConversationMessageViewModel {
     private let messageContentViewModelFactory = SingleMessageContentViewModelFactory()
     private let replacingEmailsMap: [String: EmailEntity]
     private let contactGroups: [ContactGroupVO]
-    private let internetStatusProvider: InternetConnectionStatusProvider
+    private let internetStatusProvider: InternetConnectionStatusProviderProtocol
     let highlightedKeywords: [String]
-    private let goToDraft: (MessageID, OriginalScheduleDate?) -> Void
-    private let senderImageStatusProvider: SenderImageStatusProvider
+    private let goToDraft: (MessageID, Date?) -> Void
 
     init(labelId: LabelID,
          message: MessageEntity,
          user: UserManager,
          replacingEmailsMap: [String: EmailEntity],
          contactGroups: [ContactGroupVO],
-         internetStatusProvider: InternetConnectionStatusProvider,
+         internetStatusProvider: InternetConnectionStatusProviderProtocol,
          highlightedKeywords: [String],
-         senderImageStatusProvider: SenderImageStatusProvider,
-         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
+         goToDraft: @escaping (MessageID, Date?) -> Void
     ) {
         self.labelId = labelId
         self.message = message
@@ -50,7 +48,6 @@ class ConversationMessageViewModel {
         self.replacingEmailsMap = replacingEmailsMap
         self.contactGroups = contactGroups
         self.internetStatusProvider = internetStatusProvider
-        self.senderImageStatusProvider = senderImageStatusProvider
         self.goToDraft = goToDraft
         self.highlightedKeywords = highlightedKeywords
         let collapsedViewModel = ConversationCollapsedMessageViewModel(
@@ -84,8 +81,7 @@ class ConversationMessageViewModel {
     }
 
     private func singleMessageContentViewModel(
-        for message: MessageEntity,
-        shouldOpenHistory: Bool = false
+        for message: MessageEntity
     ) -> SingleMessageContentViewModel {
         let context = SingleMessageContentViewContext(
             labelId: labelId,
@@ -96,10 +92,7 @@ class ConversationMessageViewModel {
             context: context,
             user: user,
             internetStatusProvider: internetStatusProvider,
-            systemUpTime: userCachedStatus,
             highlightedKeywords: highlightedKeywords,
-            shouldOpenHistory: shouldOpenHistory,
-            senderImageStatusProvider: senderImageStatusProvider,
             goToDraft: goToDraft
         )
     }

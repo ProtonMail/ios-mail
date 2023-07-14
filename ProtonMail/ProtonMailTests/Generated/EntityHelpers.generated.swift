@@ -1,4 +1,4 @@
-// Generated using Sourcery 1.9.1 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 @testable import ProtonMail
 
@@ -194,8 +194,7 @@ extension LabelCountEntity {
         unreadEnd: Date? = nil,
         unreadUpdate: Date? = nil,
         total: Int = .init(),
-        unread: Int = .init(),
-        viewMode: ViewMode = .conversation
+        unread: Int = .init()
     ) -> Self {
         LabelCountEntity(
             start: start,
@@ -205,8 +204,7 @@ extension LabelCountEntity {
             unreadEnd: unreadEnd,
             unreadUpdate: unreadUpdate,
             total: total,
-            unread: unread,
-            viewMode: viewMode
+            unread: unread
         )
     }
 }

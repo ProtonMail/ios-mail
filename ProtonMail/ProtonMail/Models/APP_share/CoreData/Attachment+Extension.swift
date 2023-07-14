@@ -60,9 +60,9 @@ extension Attachment {
         }
         #if APP_EXTENSION
         // Share extension doesn't have recovery situation
-        // Also its path is different from main app 
+        // Also its path is different from main app
         return localURL
-        #endif
+        #else
         guard let localURL = self.localURL else { return nil }
 
         let nameUUID = localURL.deletingPathExtension().lastPathComponent
@@ -77,6 +77,7 @@ extension Attachment {
         } catch {
             return nil
         }
+        #endif
     }
 
     var isUploaded: Bool {

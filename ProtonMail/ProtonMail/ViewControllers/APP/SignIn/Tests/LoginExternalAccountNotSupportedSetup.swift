@@ -25,10 +25,6 @@ import Foundation
 import OHHTTPStubs
 
 final class LoginExternalAccountNotSupportedSetup {
-    static func stop() {
-        HTTPStubs.removeAllStubs()
-    }
-
     static func start() {
         HTTPStubs.setEnabled(true)
 

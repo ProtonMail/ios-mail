@@ -22,14 +22,6 @@ import ProtonCore_TestingToolkit
 
 class MockComposerSchemeHandler: ComposerSchemeHandler {}
 
-class MockNavigationDelegate: NSObject, WKNavigationDelegate {
-    var didFinishIsCalled: (() -> Void)?
-
-    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        didFinishIsCalled?()
-    }
-}
-
 final class HtmlEditorBehaviourTests: XCTestCase {
 
     var container: UIViewController!

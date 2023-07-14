@@ -178,13 +178,16 @@
 "App settings" = "應用程式設定";
 
 /* The title of section inside the dark mode setting page */
-"Appearance" = "外觀";
+"Appearance" = "介面視覺";
 
 /* Settings lock AppKey description */
 "AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "程式金鑰更深層保護您的 Proton 資訊，以防遭到精心策劃的攻擊，例如：攻擊者複製您裝置的內容。%1$@";
 
 /* Settings lock AppKey feature */
 "AppKey protection" = "程式金鑰防護";
+
+/* Title for application logs settings option */
+"Application logs" = "應用程式紀錄";
 
 /* Apply action */
 "Apply" = "套用";
@@ -202,12 +205,6 @@
 
 /* Push notification action archive */
 "Archive (verb)" = "封存";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "您確定要永久刪除這封郵件嗎？";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "您確定要永久刪除這 %d 封郵件嗎？";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "您確定要登出 %@ 嗎？";
@@ -258,11 +255,20 @@
 /* Title */
 "Auto Lock Time" = "自動鎖定時間";
 
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "自動刪除";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "自動刪除垃圾訊息";
+
 /* settings general section title */
 "Auto-load embedded images" = "自動載入嵌入圖像";
 
 /* settings general section title */
 "Auto-load remote content" = "自動載入遠端內容";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "將會把於垃圾桶超過30天的訊息刪除";
 
 /* The title of the section header in the toolbar customize view. */
 "Available actions" = "可用操作";
@@ -292,19 +298,19 @@
 "Birthday" = "生日";
 
 /* Button to block a sender, keep it short to fit in the UI */
-"Block" = "封鎖";
+"Block" = "攔截";
 
 /* Settings row */
-"Block email tracking" = "封鎖郵件追蹤";
+"Block email tracking" = "攔截郵件追蹤";
 
 /* Settings item to open blocked sender list */
 "Block list" = "攔截清單";
 
 /* Button to block a sender */
-"Block sender" = "封鎖寄件者";
+"Block sender" = "攔截寄件者";
 
 /* Title of the blocked sender list screen */
-"Blocked Senders" = "已封鎖的寄件者";
+"Blocked Senders" = "攔截的寄件者";
 
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "阻止寄件人得知您閱讀此封郵件。";
@@ -431,6 +437,9 @@
 /* Menu action to remove text formatting */
 "Clear Style" = "清除格式";
 
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "清除快取記憶體";
+
 /* general close action */
 "Close" = "關閉";
 
@@ -503,7 +512,7 @@
 "Continue" = "繼續";
 
 /* No comment provided by engineer. */
-"Conversation grouping" = "會話群組";
+"Conversation grouping" = "對話群組";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "交談群组模式";
@@ -619,11 +628,20 @@
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "刪除郵件";
 
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "刪除郵件?";
+
 /* Title */
 "Details" = "詳細資訊";
 
+/* Button to disable auto delete */
+"Disable" = "關閉";
+
 /* Firewall interference description. */
 "Disable any proxies or firewalls, or contact your network administrator." = "停用任何代理伺服器或防火牆，或聯絡您的網路管理員。";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "停用自動刪除";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "停用驗證";
@@ -779,11 +797,20 @@
 /* Name of the feature */
 "Email tracking protection" = "電郵追蹤防護";
 
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "電子郵件計畫刪除時將刪除於垃圾桶及垃圾郵件資料夾的全部訊息";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "清空垃圾郵件";
+
 /* An action title shows in ellipsis menu */
 "Empty Spam" = "清空垃圾郵件";
 
 /* Alert title */
 "Empty spam folder" = "清空垃圾郵件";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "清空垃圾桶";
 
 /* An action title shows in ellipsis menu */
 "Empty Trash" = "清空「垃圾桶」";
@@ -833,9 +860,6 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "輸入新的 PIN 碼";
-
-/* The title of the pin code view. */
-"Enter PIN" = "輸入 PIN 碼";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "輸入您的密碼以作變更";
@@ -958,7 +982,7 @@
 "Hide details" = "隱藏詳細資訊";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email 別名";
+"Hide My Email aliases" = "Hide-my-email 別名";
 
 /* Prompt of user feedback view */
 "How would you describe your experience with the new Proton Mail?" = "歡迎告訴我們您的新版 Proton Mail 體驗，有讓您感到驚艷嗎？";
@@ -1217,6 +1241,12 @@
 /* Text for the search info banner when indexing is stopped because of storage exceeded. */
 "Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "郵件日期等於或早於 %@，無法進一步搜尋。若需在該範圍內搜尋，則必須在此裝置上釋出更多儲存空間才可進行。";
 
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "將自動刪除超過30天的垃圾郵件";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "垃圾桶與垃圾郵件中超過30天的訊息將會被自動刪除。";
+
 /* Text for the alert to enable encrypted search */
 "Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "郵件將透過 WiFi 下載。這可能需要一些時間，而且您的裝置可能會稍微發熱。您可以隨時暫停操作。";
 
@@ -1268,7 +1298,7 @@
 "New contact" = "加入聯絡人";
 
 /* No comment provided by engineer. */
-"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "來自%@的新郵件都不會被傳送，且會被永久刪除。在設定頁面管理封鎖的郵箱地址。";
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "來自 %@ 的新郵件都不會被傳送，且會被永久刪除。在設定頁面管理攔截的郵箱位址。";
 
 /* The title of create folder page */
 "New folder" = "加入資料夾";
@@ -1310,7 +1340,7 @@
 "No attachment found" = "找不到附件";
 
 /* Placeholder for empty sender list */
-"No blocked senders" = "沒有已封鎖的寄件者";
+"No blocked senders" = "沒有攔截的寄件者";
 
 /* Title */
 "No connectivity detected…" = "未偵測到網際網路連線…";
@@ -1341,6 +1371,9 @@
 
 /* Error message */
 "No, not related to in-app purchase" = "否, 與 App 內購買無關";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "不用了，謝謝";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Action title of none
@@ -1739,13 +1772,13 @@
 "Send read receipt" = "傳送已讀回條";
 
 /* Toast confirming the block */
-"Sender %@ blocked" = "寄件者%@已封鎖";
+"Sender %@ blocked" = "寄件者 %@ 已攔截";
 
 /* Toast confirming the unblock */
-"Sender %@ unblocked" = "寄件者%@已解除封鎖";
+"Sender %@ unblocked" = "寄件者 %@ 已解除攔截";
 
 /* Banner in the message view */
-"Sender has been blocked" = "寄件者已被封鎖";
+"Sender has been blocked" = "寄件者已被攔截";
 
 /* encryption lock description */
 "Sender Verification Failed" = "寄件人驗證失敗";
@@ -2067,6 +2100,9 @@
 /* The title of the info label in the first segment of the Customize toolbar setting view. */
 "This toolbar is visible when reading a message." = "讀取郵件時，顯示工具列。";
 
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "此會刪除全部於垃圾桶及垃圾郵件超過30天的訊息，包含所有現在此資料夾的訊息。";
+
 /* The subtitle of empty inbox */
 "Time to relax" = "中場休息一下";
 
@@ -2117,11 +2153,14 @@
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "已信任的密鑰用於寄送時無效";
 
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "嘗試使用其他搜尋關鍵字。";
+
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用 %1$@ 或 %2$@）。";
 
 /* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "啟用此功能，以使用已登入帳號中的聯絡人，自動填入電子郵件地址。";
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "啟用此功能，以使用已登入帳號中的聯絡人，自動填入電子郵件位址。";
 
 /* Placeholder */
 "Two Factor Code" = "兩步驟驗證碼";
@@ -2142,10 +2181,10 @@
 "Unable to send the email" = "無法寄送信件";
 
 /* Button to unblock a sender, keep it short to fit in the UI */
-"Unblock" = "解除封鎖";
+"Unblock" = "解除攔截";
 
 /* Button to unblock a sender */
-"Unblock sender" = "解除封鎖寄件者";
+"Unblock sender" = "解除攔截寄件者";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "非公開收件者";
@@ -2193,7 +2232,7 @@
 "Up to 3 custom email domains" = "支援 3 個自訂電郵網域";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 15 email addresses" = "多達 15 個電子郵件地址";
+"Up to 15 email addresses" = "多達 15 組電子郵件位址";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "多達 500 GB 的儲存空間";
@@ -2218,6 +2257,9 @@
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "升級至付款方案後，您將能夠從 %@ 傳送郵件";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "升級以自動刪除在垃圾桶和垃圾郵件中超過30天的訊息。";
 
 /* Action */
 "Upload device contacts" = "上載裝置通訊錄";
@@ -2324,6 +2366,9 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您目前無法將 %@ 設為預設位址，因為這是付費功能。";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您關閉%1$@ 的系統設定。%2$@使用於帳號安全保護。若要使用帳號，須將設定中的%3$@啟用，或重新登錄。";
+
 /* Message */
 "You have %d new emails!" = "您有 %d 封新郵件！";
 
@@ -2385,7 +2430,7 @@
 "Your messages are being downloaded..." = "您的訊息正在下載...";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "如果聯絡人也使用 Proton Mail，我們更能保護你的隱私。邀請朋友加入 Proton ，雙方都能免費獲得高級會員福利。";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "使用Proton Mail能更進一步的保障隱私。邀請朋友使用Proton，即可免費使用會員版。";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "由於您長時間沒有進行任何操作，您的交談已過期或是被撤銷。請重新登入。";
@@ -2393,5 +2438,3 @@
 /* contact placeholder */
 "ZIP" = "郵遞區號";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系統設定裡停用了%1$@ 。%2$@ 被使用在保護重要的帳號資訊上。要存取您的帳號，要去設定裡重新啟動%3$@ ，或是重新登入。";

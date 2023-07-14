@@ -37,7 +37,7 @@ protocol ComposeContentViewControllerDelegate: AnyObject {
     func displayContactGroupSubSelectionView()
 }
 
-// swiftlint:disable line_length type_body_length
+// swiftlint:disable:next line_length type_body_length
 class ComposeContentViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
     let viewModel: ComposeViewModel
     var openScheduleSendActionSheet: (() -> Void)?
@@ -305,7 +305,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
         stopAutoSave()
     }
 
@@ -938,22 +938,12 @@ extension ComposeContentViewController: ComposeViewDelegate {
                 self.viewModel.toSelectedContacts.remove(at: contactIndex)
             }
         } else if picker == headerView.ccContactPicker {
-            var contactIndex = -1
-            let selectedContacts = self.viewModel.ccSelectedContacts
-            for (index, selectedContact) in selectedContacts.enumerated() where contact.displayEmail == selectedContact.displayEmail {
-                contactIndex = index
-            }
-            if contactIndex >= 0 {
-                self.viewModel.ccSelectedContacts.remove(at: contactIndex)
+            viewModel.ccSelectedContacts.removeAll { selectedContact in
+                contact.displayEmail == selectedContact.displayEmail
             }
         } else if picker == headerView.bccContactPicker {
-            var contactIndex = -1
-            let selectedContacts = self.viewModel.bccSelectedContacts
-            for (index, selectedContact) in selectedContacts.enumerated() where contact.displayEmail == selectedContact.displayEmail {
-                contactIndex = index
-            }
-            if contactIndex >= 0 {
-                self.viewModel.bccSelectedContacts.remove(at: contactIndex)
+            viewModel.bccSelectedContacts.removeAll { selectedContact in
+                contact.displayEmail == selectedContact.displayEmail
             }
         }
     }

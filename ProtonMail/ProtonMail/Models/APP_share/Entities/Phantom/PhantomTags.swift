@@ -42,6 +42,3 @@ typealias AttachmentID = Phantom<AttachmentIDTag, String>
 
 enum AddressIDTag {}
 typealias AddressID = Phantom<AddressIDTag, String>
-
-enum OriginalScheduleDateTag {}
-typealias OriginalScheduleDate = Phantom<OriginalScheduleDateTag, Date>

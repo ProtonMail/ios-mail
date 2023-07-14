@@ -112,11 +112,10 @@ final class ReferralShareView: UIView {
         shareButton.layoutIfNeeded()
         trackRewardButton.titleLabel?.font = UIFont.adjustedFont(forTextStyle: .body)
 
-        var attributes = FontManager.DefaultSmall + [
-            .underlineStyle: NSUnderlineStyle.single.rawValue,
-            .underlineColor: ColorProvider.TextNorm as UIColor,
-            .font: UIFont.adjustedFont(forTextStyle: .subheadline)
-        ]
+        var attributes = FontManager.DefaultSmall
+        attributes[.underlineStyle] = NSUnderlineStyle.single.rawValue
+        attributes[.underlineColor] = ColorProvider.TextNorm as UIColor
+        attributes[.font] = UIFont.adjustedFont(forTextStyle: .subheadline)
         attributes = attributes.alignment(.center)
         termsAndConditionButton.setAttributedTitle(
             L11n.ReferralProgram.termsAndConditionTitle
@@ -231,11 +230,10 @@ private enum SubviewFactory {
 
     static var bottomButton: UIButton {
         let label = UIButton()
-        var attributes = FontManager.DefaultSmall + [
-            .underlineStyle: NSUnderlineStyle.single.rawValue,
-            .underlineColor: ColorProvider.TextNorm as UIColor,
-            .font: UIFont.adjustedFont(forTextStyle: .subheadline)
-        ]
+        var attributes = FontManager.DefaultSmall
+        attributes[.underlineStyle] = NSUnderlineStyle.single.rawValue
+        attributes[.underlineColor] = ColorProvider.TextNorm as UIColor
+        attributes[.font] = UIFont.adjustedFont(forTextStyle: .subheadline)
         attributes = attributes.alignment(.center)
         label.setAttributedTitle(
             L11n.ReferralProgram.termsAndConditionTitle

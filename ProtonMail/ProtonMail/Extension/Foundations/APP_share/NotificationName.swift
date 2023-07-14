@@ -33,11 +33,6 @@ extension Notification.Name {
         return .init(rawValue: "ScheduledMessageSucceed")
     }
 
-    /// notify when status bar is clicked
-    static var touchStatusBar: Notification.Name {
-        return .init(rawValue: "Application.TouchStatusBar")
-    }
-
     /// when received a custom url schema. ex. verify code
     static var customUrlSchema: Notification.Name {
         return .init(rawValue: "Application.CustomUrlSchema")
@@ -91,6 +86,10 @@ extension Notification.Name {
 
     static var shouldUpdateUserInterfaceStyle: Notification.Name {
         return .init("shouldUpdateUserInterfaceStyle")
+    }
+
+    static var tempNetworkError: Notification.Name {
+        return .init("tempNetworkError")
     }
 
     static var pagesSwipeExpectation: Notification.Name {
