@@ -67,7 +67,7 @@ final class RefetchAllBlockedSendersTests: XCTestCase {
     }
 
     func testFetchesAllPagesAndStoresThemInDatabase() async throws {
-        apiService.requestDecodableStub.bodyIs { _, _, _, params, _, _, _, _, _, _, completion in
+        apiService.requestDecodableStub.bodyIs { _, _, _, params, _, _, _, _, _, _, _, completion in
             let parameters = params as! [String: Any]
             let requestedPageNumber = parameters["Page"] as! Int
             let requestedResources = self.stubbedAPIPages[requestedPageNumber]
@@ -97,7 +97,7 @@ final class RefetchAllBlockedSendersTests: XCTestCase {
     }
 
     func testWhenOneOfTheRequestsFails_storesResourcesFetchedBeforeThat() async throws {
-        apiService.requestDecodableStub.bodyIs { _, _, _, params, _, _, _, _, _, _, completion in
+        apiService.requestDecodableStub.bodyIs { _, _, _, params, _, _, _, _, _, _, _, completion in
             let parameters = params as! [String: Any]
             let requestedPageNumber = parameters["Page"] as! Int
 
@@ -139,7 +139,7 @@ final class RefetchAllBlockedSendersTests: XCTestCase {
     }
 
     func testRemovesPreviousEntitiesBeforeFetching() async throws {
-        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             let response = GetIncomingDefaultsResponse(code: 0, incomingDefaults: [], total: 0)
             completion(nil, .success(response))
         }

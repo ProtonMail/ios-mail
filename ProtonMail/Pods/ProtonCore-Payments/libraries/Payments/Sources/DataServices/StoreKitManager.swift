@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+import Foundation
 import StoreKit
 import Reachability
 import ProtonCore_CoreTranslation
@@ -290,7 +291,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
                 return
             }
             guard self.planService.isIAPAvailable,
-                  let details = self.planService.detailsOfServicePlan(named: plan.protonName),
+                  let details = self.planService.detailsOfPlanCorrespondingToIAP(plan),
                   details.isPurchasable else {
                 errorCompletion(Errors.unavailableProduct)
                 return
@@ -608,11 +609,11 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         guard let plan = InAppPurchasePlan(storeKitProductId: transaction.payment.productIdentifier)
         else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
 
-        if planService.detailsOfServicePlan(named: plan.protonName) == nil {
+        if planService.detailsOfPlanCorrespondingToIAP(plan) == nil {
             try planService.updateServicePlans()
         }
 
-        guard let details = planService.detailsOfServicePlan(named: plan.protonName),
+        guard let details = planService.detailsOfPlanCorrespondingToIAP(plan),
               let amount = details.pricing(for: plan.period),
               let protonIdentifier = details.iD
         else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }

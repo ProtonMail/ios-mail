@@ -41,14 +41,18 @@ final class LoginCoordinator {
     enum ChildCoordinators {
         case createAddress
     }
-
+    
     weak var delegate: LoginCoordinatorDelegate?
     var initialError: LoginError?
-
+    
     private let container: Container
     private let isCloseButtonAvailable: Bool
     private let isSignupAvailable: Bool
-    private var navigationController: LoginNavigationViewController?
+    private var navigationController: LoginNavigationViewController? {
+        didSet {
+            navigationController?.overrideUserInterfaceStyle = customization.inAppTheme().userInterfaceStyle
+        }
+    }
     private var childCoordinators: [ChildCoordinators: Any] = [:]
     private let externalLinks: ExternalLinks
     private var customization: LoginCustomizationOptions
@@ -72,23 +76,29 @@ final class LoginCoordinator {
 
     @discardableResult
     func start(_ kind: FlowStartKind, username: String? = nil) -> UINavigationController {
-        showInitialViewController(kind, initialViewController: loginViewController(username: username))
+        showInitialViewController(kind, initialViewController: createLoginViewController(username: username))
     }
 
     func startFromWelcomeScreen(
         viewController: UIViewController, variant: WelcomeScreenVariant, username: String? = nil
     ) -> UINavigationController {
-        let welcome = WelcomeViewController(variant: variant, delegate: self, username: username, signupAvailable: isSignupAvailable)
+        let welcome = createWelcomeViewController(variant: variant, username: username)
         return showInitialViewController(.over(viewController, .crossDissolve), initialViewController: welcome, navigationBarHidden: true)
     }
 
     func startWithUnmanagedWelcomeScreen(variant: WelcomeScreenVariant, username: String? = nil) -> UINavigationController {
-        let welcome = WelcomeViewController(variant: variant, delegate: self, username: username, signupAvailable: isSignupAvailable)
+        let welcome = createWelcomeViewController(variant: variant, username: username)
         return showInitialViewController(.unmanaged, initialViewController: welcome, navigationBarHidden: true)
     }
+    
+    func createWelcomeViewController(variant: WelcomeScreenVariant, username: String? = nil) -> WelcomeViewController {
+        let welcome = WelcomeViewController(variant: variant, delegate: self, username: username, signupAvailable: isSignupAvailable)
+        welcome.overrideUserInterfaceStyle = customization.inAppTheme().userInterfaceStyle
+        return welcome
+    }
 
-    private func loginViewController(username: String?) -> UIViewController {
-        let loginViewController = UIStoryboard.instantiate(LoginViewController.self)
+    func createLoginViewController(username: String?) -> UIViewController {
+        let loginViewController = UIStoryboard.instantiateInLogin(LoginViewController.self, inAppTheme: customization.inAppTheme)
         loginViewController.viewModel = container.makeLoginViewModel()
         loginViewController.customErrorPresenter = customization.customErrorPresenter
         loginViewController.initialUsername = username
@@ -138,15 +148,17 @@ final class LoginCoordinator {
     }
 
     private func showHelp() {
-        let helpViewController = UIStoryboard.instantiate(HelpViewController.self)
+        let helpViewController = UIStoryboard.instantiateInLogin(HelpViewController.self,
+                                                          inAppTheme: customization.inAppTheme)
         helpViewController.delegate = self
         helpViewController.viewModel = HelpViewModel(helpDecorator: customization.helpDecorator)
         navigationController?.present(helpViewController, animated: true, completion: nil)
     }
 
-    private func showTwoFactorCode() {
-        let twoFactorViewController = UIStoryboard.instantiate(TwoFactorViewController.self)
-        twoFactorViewController.viewModel = container.makeTwoFactorViewModel()
+    private func showTwoFactorCode(username: String, password: String) {
+        let twoFactorViewController = UIStoryboard.instantiateInLogin(TwoFactorViewController.self,
+                                                               inAppTheme: customization.inAppTheme)
+        twoFactorViewController.viewModel = container.makeTwoFactorViewModel(username: username, password: password)
         twoFactorViewController.customErrorPresenter = customization.customErrorPresenter
         twoFactorViewController.delegate = self
         twoFactorViewController.onDohTroubleshooting = { [weak self] in
@@ -160,7 +172,8 @@ final class LoginCoordinator {
     }
 
     private func showMailboxPassword() {
-        let mailboxPasswordViewController = UIStoryboard.instantiate(MailboxPasswordViewController.self)
+        let mailboxPasswordViewController = UIStoryboard.instantiateInLogin(MailboxPasswordViewController.self,
+                                                                     inAppTheme: customization.inAppTheme)
         mailboxPasswordViewController.viewModel = container.makeMailboxPasswordViewModel()
         mailboxPasswordViewController.customErrorPresenter = customization.customErrorPresenter
         mailboxPasswordViewController.delegate = self
@@ -180,9 +193,11 @@ final class LoginCoordinator {
         }
 
         let coordinator = CreateAddressCoordinator(
-            container: container, navigationController: navigationController,
-            data: data, customErrorPresenter: customization.customErrorPresenter,
-            defaultUsername: defaultUsername
+            container: container,
+            navigationController: navigationController,
+            data: data,
+            defaultUsername: defaultUsername,
+            customization: customization
         )
         coordinator.delegate = self
         childCoordinators[.createAddress] = coordinator
@@ -244,8 +259,8 @@ extension LoginCoordinator: LoginStepsDelegate {
         UIApplication.openURLIfPossible(externalLinks.accountSetup)
     }
 
-    func twoFactorCodeNeeded() {
-        showTwoFactorCode()
+    func requestTwoFactorCode(username: String, password: String) {
+        showTwoFactorCode(username: username, password: password)
     }
 
     func mailboxPasswordNeeded() {
@@ -424,9 +439,9 @@ extension LoginCoordinator: TwoFactorViewControllerDelegate {
     }
 }
 
-private extension UIStoryboard {
-    static func instantiate<T: UIViewController>(_ controllerType: T.Type) -> T {
-        self.instantiate(storyboardName: "PMLogin", controllerType: controllerType)
+extension UIStoryboard {
+    static func instantiateInLogin<T: UIViewController>(_ controllerType: T.Type, inAppTheme: () -> InAppTheme) -> T {
+        self.instantiate(storyboardName: "PMLogin", controllerType: controllerType, inAppTheme: inAppTheme)
     }
 }
 
@@ -437,7 +452,7 @@ extension LoginCoordinator: WelcomeViewControllerDelegate {
     func userWantsToLogIn(username: String?) {
         guard let navigationController = navigationController else { return }
         navigationController.modalTransitionStyle = .coverVertical
-        let login = loginViewController(username: username)
+        let login = createLoginViewController(username: username)
         navigationController.autoresettingNextTransitionStyle = .modalLike
         navigationController.setViewControllers([login], animated: true)
     }

@@ -133,7 +133,7 @@ public class PMLog {
         do {
             let fileHandle = try FileHandle(forWritingTo: url)
 
-            if #available(iOS 13.4, macOS 10.15.4, *) {
+            if #available(macOS 10.15.4, *) {
                 try fileHandle.seekToEnd()
                 try fileHandle.write(contentsOf: dataToLog)
                 try fileHandle.close()

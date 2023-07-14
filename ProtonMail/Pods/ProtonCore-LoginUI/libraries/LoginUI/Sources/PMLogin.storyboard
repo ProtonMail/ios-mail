@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vDH-n2-Ues">
-                                        <rect key="frame" x="8" y="56" width="398" height="409.5"/>
+                                        <rect key="frame" x="8" y="56" width="398" height="398.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="REA-Fj-eCa">
                                                 <rect key="frame" x="164.5" y="8" width="69.5" height="26.5"/>
@@ -67,32 +67,16 @@
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f0K-Kh-3Bo" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
                                                         <rect key="frame" x="0.0" y="0.0" width="382" height="34"/>
                                                         <state key="normal" title="Sign in"/>
-                                                        <connections>
-                                                            <action selector="signInPressed:" destination="ns3-2c-TbF" eventType="touchUpInside" id="t0C-M2-ApC"/>
-                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a9F-OJ-qwD" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
                                                         <rect key="frame" x="0.0" y="42" width="382" height="34"/>
                                                         <state key="normal" title="Create an account"/>
-                                                        <connections>
-                                                            <action selector="signUpPressed:" destination="ns3-2c-TbF" eventType="touchUpInside" id="5gi-LJ-cUg"/>
-                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
-                                            <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="GFF-vf-p90">
-                                                <rect key="frame" x="8" y="356.5" width="382" height="1"/>
-                                                <color key="backgroundColor" systemColor="systemGrayColor"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="1" id="JbM-zY-ruH"/>
-                                                </constraints>
-                                            </view>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BQk-BF-bjo" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
-                                                <rect key="frame" x="8" y="367.5" width="382" height="34"/>
-                                                <state key="normal" title="Need help?"/>
-                                                <connections>
-                                                    <action selector="needHelpPressed:" destination="ns3-2c-TbF" eventType="touchUpInside" id="fDM-UM-uRb"/>
-                                                </connections>
+                                                <rect key="frame" x="8" y="356.5" width="382" height="34"/>
+                                                <state key="normal" title="Sign in with SSO"/>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -102,21 +86,18 @@
                                             <constraint firstItem="abK-Fo-mdZ" firstAttribute="top" secondItem="KGZ-j9-ciy" secondAttribute="bottom" constant="24" id="6z5-RF-VUV"/>
                                             <constraint firstItem="REA-Fj-eCa" firstAttribute="centerX" secondItem="vDH-n2-Ues" secondAttribute="centerX" id="9s8-LL-cdJ"/>
                                             <constraint firstItem="abK-Fo-mdZ" firstAttribute="leading" secondItem="vDH-n2-Ues" secondAttribute="leading" constant="8" id="9va-1T-8Zw"/>
-                                            <constraint firstItem="BQk-BF-bjo" firstAttribute="top" secondItem="GFF-vf-p90" secondAttribute="bottom" constant="10" id="B6C-IW-yJG"/>
                                             <constraint firstItem="abK-Fo-mdZ" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="E9H-eT-VKq"/>
                                             <constraint firstItem="REA-Fj-eCa" firstAttribute="top" secondItem="vDH-n2-Ues" secondAttribute="top" constant="8" id="Mfn-Ks-qRJ"/>
                                             <constraint firstItem="BQk-BF-bjo" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="TPB-3v-d08"/>
-                                            <constraint firstItem="GFF-vf-p90" firstAttribute="leading" secondItem="vDH-n2-Ues" secondAttribute="leading" constant="8" id="WD1-5m-p6h"/>
                                             <constraint firstItem="ssN-wD-ixD" firstAttribute="top" secondItem="abK-Fo-mdZ" secondAttribute="bottom" constant="8" id="Z3d-5X-OcR"/>
                                             <constraint firstItem="3kB-7r-0CL" firstAttribute="top" secondItem="ssN-wD-ixD" secondAttribute="bottom" constant="18" id="bM3-zd-yOT"/>
                                             <constraint firstItem="3kB-7r-0CL" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="dCG-fY-0e7"/>
                                             <constraint firstItem="KGZ-j9-ciy" firstAttribute="top" secondItem="REA-Fj-eCa" secondAttribute="bottom" constant="8" id="fjV-zy-jsi"/>
-                                            <constraint firstItem="GFF-vf-p90" firstAttribute="top" secondItem="3kB-7r-0CL" secondAttribute="bottom" constant="10" id="gG7-6V-9FH"/>
                                             <constraint firstItem="KGZ-j9-ciy" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="mj7-S8-hMV"/>
                                             <constraint firstItem="3kB-7r-0CL" firstAttribute="leading" secondItem="vDH-n2-Ues" secondAttribute="leading" constant="8" id="qak-OP-mY4"/>
                                             <constraint firstItem="ssN-wD-ixD" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="qzH-xC-8Zv"/>
                                             <constraint firstItem="BQk-BF-bjo" firstAttribute="leading" secondItem="vDH-n2-Ues" secondAttribute="leading" constant="8" id="slI-eU-f1v"/>
-                                            <constraint firstItem="GFF-vf-p90" firstAttribute="trailing" secondItem="vDH-n2-Ues" secondAttribute="trailing" constant="-8" id="uIe-94-3Vh"/>
+                                            <constraint firstItem="BQk-BF-bjo" firstAttribute="top" secondItem="3kB-7r-0CL" secondAttribute="bottom" constant="10" id="wW2-ew-CL4"/>
                                             <constraint firstItem="ssN-wD-ixD" firstAttribute="leading" secondItem="vDH-n2-Ues" secondAttribute="leading" constant="8" id="yTH-Gg-Xhc"/>
                                         </constraints>
                                     </view>
@@ -142,12 +123,11 @@
                     </view>
                     <connections>
                         <outlet property="brandImage" destination="f37-xG-C6L" id="E8a-zS-mxF"/>
-                        <outlet property="helpButton" destination="BQk-BF-bjo" id="eTY-9P-pLt"/>
                         <outlet property="loginTextField" destination="abK-Fo-mdZ" id="pkl-3R-Zqs"/>
                         <outlet property="passwordTextField" destination="ssN-wD-ixD" id="CPN-j7-l8u"/>
                         <outlet property="scrollView" destination="1Yh-Pq-tND" id="t71-Wc-56E"/>
-                        <outlet property="separatorView" destination="GFF-vf-p90" id="rKe-eN-U7K"/>
                         <outlet property="signInButton" destination="f0K-Kh-3Bo" id="l4l-fh-9dS"/>
+                        <outlet property="signInWithSSOButton" destination="BQk-BF-bjo" id="Smp-aF-h40"/>
                         <outlet property="signUpButton" destination="a9F-OJ-qwD" id="YH9-e2-fux"/>
                         <outlet property="subtitleLabel" destination="KGZ-j9-ciy" id="uZt-uj-KkG"/>
                         <outlet property="titleLabel" destination="ga1-hy-Q3M" id="ANa-Bi-Oiv"/>
@@ -155,7 +135,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kCe-Gn-YRu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="31.199999999999999" y="119.70443349753695"/>
+            <point key="canvasLocation" x="30.434782608695656" y="119.19642857142857"/>
         </scene>
         <!--Two Factor View Controller-->
         <scene sceneID="d4t-He-PWP">

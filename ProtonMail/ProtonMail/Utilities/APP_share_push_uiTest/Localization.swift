@@ -668,9 +668,6 @@ class LocalizedString {
     /// "Can't create a SRP Client"
     lazy var _cant_create_a_srp_client = NSLocalizedString("Can't create a SRP Client", comment: "update password error")
 
-    /// "Can't get user auth info"
-    lazy var _cant_get_user_auth_info = NSLocalizedString("Can't get user auth info", comment: "update password error")
-
     /// "The password is wrong."
     lazy var _the_password_is_wrong = NSLocalizedString("The password is wrong.", comment: "update password error")
 

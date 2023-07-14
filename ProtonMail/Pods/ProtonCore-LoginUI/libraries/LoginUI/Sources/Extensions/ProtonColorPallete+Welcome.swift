@@ -26,7 +26,7 @@ extension ProtonColorPaletteiOS {
     enum Welcome {
         static var Background: UIColor {
             switch Brand.currentBrand {
-            case .proton:
+            case .proton, .pass:
                 // Port Gore
                 return UIColor(rgb: 0x1C223D)
             case .vpn:

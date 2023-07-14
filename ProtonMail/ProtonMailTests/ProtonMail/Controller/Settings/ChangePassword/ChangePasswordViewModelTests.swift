@@ -151,7 +151,7 @@ extension ChangePasswordViewModelTests {
 
 extension ChangePasswordViewModelTests {
     func setNewPassword_succeed() {
-        apiService.requestJSONStub.bodyIs { _, _, path, reqParams, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, _, path, reqParams, _, _, _, _, _, _, _, completion in
             if path == "/auth/modulus" {
                 completion(nil, .success(self.modulesResponse))
             } else if path == "/auth/info" {

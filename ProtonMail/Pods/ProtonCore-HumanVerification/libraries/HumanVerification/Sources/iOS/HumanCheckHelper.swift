@@ -24,6 +24,7 @@ import ProtonCore_APIClient
 import ProtonCore_Networking
 import ProtonCore_Services
 import enum ProtonCore_DataModel.ClientApp
+import ProtonCore_UIFoundations
 
 public class HumanCheckHelper: HumanVerifyDelegate {
     private let rootViewController: UIViewController?
@@ -33,6 +34,7 @@ public class HumanCheckHelper: HumanVerifyDelegate {
     private var verificationCompletion: ((HumanVerifyFinishReason) -> Void)?
     var humanCheckCoordinator: HumanCheckCoordinator?
     private let clientApp: ClientApp
+    private let inAppTheme: () -> InAppTheme
 
     // These delegates are registered and used only in login and signup
     // If set outside the LoginUI module, they will be overwritten there
@@ -43,11 +45,13 @@ public class HumanCheckHelper: HumanVerifyDelegate {
                 supportURL: URL? = nil,
                 viewController: UIViewController? = nil,
                 nonModalUrls: [URL]? = nil,
+                inAppTheme: @escaping () -> InAppTheme,
                 clientApp: ClientApp) {
         self.apiService = apiService
         self.supportURL = supportURL ?? HVCommon.defaultSupportURL(clientApp: clientApp)
         self.rootViewController = viewController
         self.nonModalUrls = nonModalUrls
+        self.inAppTheme = inAppTheme
         self.clientApp = clientApp
     }
     
@@ -90,7 +94,7 @@ public class HumanCheckHelper: HumanVerifyDelegate {
             isModalPresentation = false
         }
         DispatchQueue.main.async {
-            self.humanCheckCoordinator = HumanCheckCoordinator(rootViewController: self.rootViewController, isModalPresentation: isModalPresentation, apiService: self.apiService, parameters: parameters, clientApp: self.clientApp)
+            self.humanCheckCoordinator = HumanCheckCoordinator(rootViewController: self.rootViewController, isModalPresentation: isModalPresentation, apiService: self.apiService, parameters: parameters, inAppTheme: self.inAppTheme, clientApp: self.clientApp)
             self.humanCheckCoordinator?.delegate = self
             self.humanCheckCoordinator?.start()
         }

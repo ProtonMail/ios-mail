@@ -15,10 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import ProtonCore_TestingToolkit
+
 @testable import ProtonMail
-import GoLibs
 
 class MockEncryptedSearchGolangCache: GoLibsEncryptedSearchCache {
     @FuncStub(MockEncryptedSearchGolangCache.deleteAll) var callDeleteAll

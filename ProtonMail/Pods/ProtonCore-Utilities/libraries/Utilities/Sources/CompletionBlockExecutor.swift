@@ -20,6 +20,8 @@
 //  along with ProtonCore. If not, see https://www.gnu.org/licenses/.
 //
 
+import Foundation
+
 public struct CompletionBlockExecutor {
     
     private let executionContext: (DispatchTimeInterval?, @escaping () -> Void) -> Void

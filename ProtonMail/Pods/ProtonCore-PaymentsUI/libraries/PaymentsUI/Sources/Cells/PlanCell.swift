@@ -51,8 +51,29 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             planNameLabel.textColor = ColorProvider.TextNorm
         }
     }
+    @IBOutlet weak var offerPercentageView: UIView! {
+        didSet {
+            offerPercentageView.roundCorner(8.0)
+            offerPercentageView.backgroundColor = ColorProvider.InteractionWeak
+        }
+    }
+    @IBOutlet weak var offerPercentageLabel: UILabel! {
+        didSet {
+            offerPercentageLabel.textColor = ColorProvider.TextAccent
+        }
+    }
+    @IBOutlet weak var offerDescriptionView: UIView! {
+        didSet {
+            offerDescriptionView.roundCorner(8.0)
+            offerDescriptionView.backgroundColor = ColorProvider.TextAccent
+        }
+    }
+    @IBOutlet weak var offerDescriptionLabel: UILabel! {
+        didSet {
+            offerDescriptionLabel.textColor = ColorProvider.BackgroundSecondary
+        }
+    }
     @IBOutlet weak var preferredImageView: UIImageView!
-    @IBOutlet weak var preferredImageViewWidthConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var planDescriptionLabel: UILabel! {
         didSet {
@@ -71,29 +92,27 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         }
     }
     @IBOutlet weak var planDetailsStackView: UIStackView!
-    @IBOutlet weak var spacerView: UIView!
-    @IBOutlet weak var selectPlanButtonStackView: UIStackView! {
-        didSet {
-            selectPlanButtonStackView.isAccessibilityElement = true
-        }
-    }
+    @IBOutlet weak var detailsSpacerView: UIView!
+    @IBOutlet weak var buttonSpacerView: UIView!
     @IBOutlet weak var selectPlanButton: ProtonButton! {
         didSet {
             selectPlanButton.isAccessibilityElement = true
+            selectPlanButton.setMode(mode: .solid)
         }
     }
-    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var expandButton: ProtonButton! {
         didSet {
             expandButton.setMode(mode: .image(type: .chevron))
             expandButton.isAccessibilityElement = true
         }
     }
-
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         planNameLabel.font = .adjustedFont(forTextStyle: .headline, weight: .semibold)
         planDescriptionLabel.font = .adjustedFont(forTextStyle: .footnote)
+        offerPercentageLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .semibold)
+        offerDescriptionLabel.font = .adjustedFont(forTextStyle: .footnote, weight: .semibold)
         priceLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
         priceDescriptionLabel.font = .adjustedFont(forTextStyle: .footnote)
     }
@@ -113,11 +132,27 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         generateCellAccessibilityIdentifiers(planDetails.name)
         
         planNameLabel.text = planDetails.name
-        if planDetails.isPreferred {
+        switch planDetails.highlight {
+        case .no:
+            preferredImageView.isHidden = true
+            offerPercentageView.isHidden = true
+            offerDescriptionView.isHidden = true
+        case .preferred:
+            preferredImageView.isHidden = false
             preferredImageView.tintColor = ColorProvider.InteractionNorm
             preferredImageView.image = IconProvider.starFilled
-        } else {
-            preferredImageViewWidthConstraint.constant = 0
+            offerPercentageView.isHidden = true
+            offerDescriptionView.isHidden = true
+        case let .offer(percentage, description):
+            preferredImageView.isHidden = true
+            if let percentage {
+                offerPercentageLabel.text = percentage
+                offerPercentageView.isHidden = false
+            } else {
+                offerPercentageView.isHidden = true
+            }
+            offerDescriptionLabel.text = description
+            offerDescriptionView.isHidden = false
         }
         if let title = planDetails.title {
             planDescriptionLabel.text = title
@@ -140,6 +175,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
             planDetailsStackView.addArrangedSubview(detailView)
         }
         drawView()
+        drawAlphas()
     }
     
     func selectCell() {
@@ -177,29 +213,23 @@ final class PlanCell: UITableViewCell, AccessibleCell {
     
     private func drawView() {
         guard let plan = plan, case PlanPresentationType.plan(let planDetails) = plan.planPresentationType else { return }
-        expandButton.isSelected = plan.isExpanded
-        spacerView.isHidden = !planDetails.isSelectable || !plan.isExpanded
+        detailsSpacerView.isHidden = !planDetails.isSelectable || !plan.isExpanded
+        buttonSpacerView.isHidden = !planDetails.isSelectable || !plan.isExpanded
         selectPlanButton.isHidden = !planDetails.isSelectable || !plan.isExpanded
-        selectPlanButton.layoutIfNeeded()
-        selectPlanButton.alpha = plan.isExpanded ? 1 : 0
+        planDetailsStackView.isHidden = !planDetails.isSelectable || !plan.isExpanded
+        expandButton.isSelected = plan.isExpanded
 
         if plan.accountPlan.isFreePlan {
-            selectPlanButton.setTitle(CoreString._new_plans_get_free_plan_button, for: .normal)
+            selectPlanButton.setTitle(CoreString._get_free_plan_button, for: .normal)
         } else {
-            selectPlanButton.setTitle(String(format: CoreString._new_plans_get_plan_button, planDetails.name), for: .normal)
+            selectPlanButton.setTitle(String(format: CoreString._get_plan_button, planDetails.name), for: .normal)
         }
         if planDetails.isSelectable {
             priceLabel.font = UIFont.systemFont(ofSize: 22.0, weight: .bold)
         } else {
             priceLabel.font = UIFont.systemFont(ofSize: 13.0, weight: .semibold)
         }
-        selectPlanButton.setMode(mode: .solid)
-        planDetailsStackView.subviews.forEach {
-            $0.isHidden = !plan.isExpanded
-            $0.alpha = plan.isExpanded ? 1 : 0
-        }
         configureMainView(isSelectable: planDetails.isSelectable)
-        bottomConstraint.constant = plan.isExpanded ? 16 : 0
     }
     
     private func configureMainView(isSelectable: Bool) {
@@ -218,10 +248,20 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         }
     }
     
+    func drawAlphas() {
+        guard let plan = plan else { return }
+        selectPlanButton.alpha = plan.isExpanded ? 1 : 0
+        planDetailsStackView.alpha = plan.isExpanded ? 1 : 0
+    }
+    
     private func expandCollapseCell() {
         plan?.isExpanded.toggle()
         UIView.animate(withDuration: 0.2, animations: { [weak self] in
             self?.drawView()
+        })
+        UIView.animate(withDuration: 0.1, delay: 0.1, options: [.curveEaseIn],
+                       animations: { [weak self] in
+            self?.drawAlphas()
         })
         guard let indexPath = indexPath else { return }
         delegate?.cellDidChange(indexPath: indexPath)

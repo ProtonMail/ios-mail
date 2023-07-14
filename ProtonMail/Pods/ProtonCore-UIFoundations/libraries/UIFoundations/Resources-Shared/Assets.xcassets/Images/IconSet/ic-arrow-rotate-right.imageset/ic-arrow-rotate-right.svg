@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g class="ic-arrow-rotate-right">
+    <path fill-rule="evenodd" d="M10.72 1.72a.75.75 0 0 1 1.06 0l2.038 2.038c.41.41.41 1.074 0 1.485L11.78 7.28a.75.75 0 1 1-1.06-1.06l.963-.963a7.5 7.5 0 1 0 5.278 1.868A.75.75 0 0 1 17.953 6a9 9 0 1 1-6.259-2.245l-.974-.975a.75.75 0 0 1 0-1.06Zm2.037 3.098Z" class="Icon"/>
+  </g>
+</svg>

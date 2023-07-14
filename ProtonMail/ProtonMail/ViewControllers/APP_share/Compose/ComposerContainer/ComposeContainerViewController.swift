@@ -783,7 +783,8 @@ extension ComposeContainerViewController: ScheduledSendHelperDelegate {
         paymentsUI = PaymentsUI(
             payments: viewModel.user.payments,
             clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames
+            shownPlanNames: Constants.shownPlanNames,
+            customization: .empty
         )
         paymentsUI?.showUpgradePlan(
             presentationType: .modal,

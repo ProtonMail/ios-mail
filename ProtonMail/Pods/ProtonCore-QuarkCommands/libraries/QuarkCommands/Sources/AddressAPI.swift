@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+import Foundation
 import ProtonCore_Log
 
 public enum AddAccountEmailError: Error {
@@ -33,7 +34,7 @@ public enum AddAccountEmailError: Error {
         case .cannotConstructUrl: return "cannot construct url"
         case .cannotDecodeResponseBody: return "cannot decode response body"
         case .responseError(let error): return "response error: \(error)"
-        case .actualError(let error): return "actual error: \(error.messageForTheUser)"
+        case .actualError(let error): return "actual error: \(error.localizedDescription)"
         }
     }
 }

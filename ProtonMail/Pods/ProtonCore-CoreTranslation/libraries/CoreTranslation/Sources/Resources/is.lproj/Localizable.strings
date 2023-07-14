@@ -203,26 +203,26 @@
 /* Help button */
 "Need help?" = "Þarftu hjálp?";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ af %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ af %@";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Innbyggður auglýsingabani (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Innbyggður auglýsingabani (NetShield)";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Fáðu %@";
+/* Get plan button */
+"Get %@" = "Fáðu %@";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Fáðu Proton ókeypis";
+/* Get free plan button */
+"Get Proton for free" = "Fáðu Proton ókeypis";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Ströng stefna varðandi enga-atvikaskráningu";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Ströng stefna varðandi enga-atvikaskráningu";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor yfir VPN";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor yfir VPN";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Ótakmarkaðar möppur, merkimiðar og síur";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "Ótakmarkaðar möppur, merkimiðar og síur";
 
 /* Next button */
 "Next" = "Næsta";

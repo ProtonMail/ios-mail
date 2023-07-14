@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+import Foundation
 import ProtonCore_Log
 
 public struct CreatedAccountDetails {
@@ -39,7 +40,7 @@ public enum CreateAccountError: Error {
         case .cannotConstructUrl: return "cannot construct url"
         case .cannotDecodeResponseBody: return "cannot decode response body"
         case .cannotFindAccountDetailsInResponseBody: return "cannot find account details in response body"
-        case .actualError(let error): return "actual error: \(error.messageForTheUser)"
+        case .actualError(let error): return "actual error: \(error.localizedDescription)"
         }
     }
 }
@@ -121,7 +122,7 @@ extension QuarkCommands {
         }.resume()
     }
 
-    @available(iOS 13.0, macOS 10.15, *)
+    @available(macOS 10.15, *)
     public static func create(account: AccountAvailableForCreation,
                               currentlyUsedHostUrl host: String,
                               callCompletionBlockOn: DispatchQueue = .main) async -> Result<CreatedAccountDetails, CreateAccountError> {

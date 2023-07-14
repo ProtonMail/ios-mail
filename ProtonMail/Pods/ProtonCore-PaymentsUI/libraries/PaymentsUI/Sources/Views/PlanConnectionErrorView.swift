@@ -43,13 +43,13 @@ final class PlanConnectionErrorView: UIView {
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.textColor = ColorProvider.TextNorm
-            titleLabel.text = CoreString._new_plans_connection_error_title
+            titleLabel.text = CoreString._connection_error_title
         }
     }
     @IBOutlet weak var descriptionLabel: UILabel! {
         didSet {
             descriptionLabel.textColor = ColorProvider.TextWeak
-            descriptionLabel.text = CoreString._new_plans_connection_error_description
+            descriptionLabel.text = CoreString._connection_error_description
         }
     }
     

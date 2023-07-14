@@ -19,14 +19,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 
 public extension UISearchBar {
     var searchBarTextField: UITextField? {
-        if #available(iOS 13.0, *) {
-            return searchTextField
-        } else {
-            return subviews.first?.subviews.first(where: { $0 as? UITextField != nil }) as? UITextField
-        }
+        searchTextField
     }
 }
+
+#endif

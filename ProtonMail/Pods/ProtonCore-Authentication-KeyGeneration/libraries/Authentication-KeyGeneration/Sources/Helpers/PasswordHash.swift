@@ -21,8 +21,8 @@
 
 import Foundation
 import OpenPGP
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_Hash
 
 public final class PasswordHash {
@@ -76,7 +76,7 @@ public final class PasswordHash {
     static func bcrypt(_ password: String, salt: Data) throws -> String {
         var error: NSError?
         let passSlice = password.data(using: .utf8)
-        let out = SrpMailboxPassword(passSlice, salt, &error)
+        let out = CryptoGo.SrpMailboxPassword(passSlice, salt, &error)
         if let err = error {
             throw err
         }

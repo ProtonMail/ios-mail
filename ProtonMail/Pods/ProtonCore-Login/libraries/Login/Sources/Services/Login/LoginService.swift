@@ -95,7 +95,7 @@ public final class LoginService: Login {
         apiService.perform(request: route) { (_, result: Result<AvailableDomainResponse, ResponseError>) in
             switch result {
             case .failure(let error):
-                completion(.failure(LoginError.generic(message: error.networkResponseMessageForTheUser,
+                completion(.failure(LoginError.generic(message: error.localizedDescription,
                                                        code: error.bestShotAtReasonableErrorCode,
                                                        originalError: error)))
             case .success(let response):
@@ -114,7 +114,7 @@ public final class LoginService: Login {
                 switch result {
                 case .failure(let error):
                     completion(.failure(error.asLoginError()))
-                case .success(.ask2FA):
+                case .success(.ask2FA), .success(.ssoChallenge):
                     completion(.failure(.invalidState))
                 case .success(.newCredential(let credential, _)), .success(.updatedCredential(let credential)):
                     authManager.onUpdate(credential: credential, sessionUID: self.sessionId)
@@ -139,7 +139,7 @@ public final class LoginService: Login {
 
     // MARK: - Data gathering entry point
 
-    func handleValidCredentials(credential: Credential, passwordMode: PasswordMode, mailboxPassword: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+    func handleValidCredentials(credential: Credential, passwordMode: PasswordMode, mailboxPassword: String?, isSSO: Bool = false, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         self.mailboxPassword = mailboxPassword
         withAuthDelegateAvailable(completion) { authManager in
             authManager.onSessionObtaining(credential: credential)
@@ -148,13 +148,25 @@ public final class LoginService: Login {
             manager.getUserInfo { result in
                 switch result {
                 case .success(let user):
+                    if isSSO {
+                        var ssoCredential = credential
+                        ssoCredential.userName = user.name ?? ""
+                        completion(.success(.finished(UserData(credential: .init(ssoCredential), user: user, salts: [], passphrases: [:], addresses: [], scopes: credential.scopes))))
+                        return
+                    }
+                    
                     // This is because of a bug on the API, where accounts with no keys return PasswordMode = 2.
                     // (according to Android code)
                     if passwordMode == .two && !user.keys.isEmpty && self.minimumAccountType != .username {
                         completion(.success(.askSecondPassword))
                         return
                     }
+                    
                     PMLog.debug("No mailbox password required, finishing up")
+                    guard let mailboxPassword = mailboxPassword else {
+                        completion(.failure(.invalidState))
+                        return
+                    }
                     self.getAccountDataPerformingAccountMigrationIfNeeded(
                         user: user, mailboxPassword: mailboxPassword, passwordMode: passwordMode, completion: completion
                     )

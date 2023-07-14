@@ -67,6 +67,8 @@ private extension Environment {
             return "black"
         case .blackPayment:
             return "blackPayment"
+        case .passProd:
+            return "passProd"
         case .custom:
             return "custom"
         }
@@ -74,7 +76,7 @@ private extension Environment {
 
     var customDomain: String? {
         switch self {
-        case .mailProd, .vpnProd, .driveProd, .calendarProd, .black, .blackPayment:
+        case .mailProd, .vpnProd, .driveProd, .calendarProd, .black, .blackPayment, .passProd:
             return nil
         case .custom(let customDomain):
             return customDomain

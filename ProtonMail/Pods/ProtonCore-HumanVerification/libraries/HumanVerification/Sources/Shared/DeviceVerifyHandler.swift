@@ -29,16 +29,19 @@ public extension HumanVerifyDelegate {
     // This function calculate a device challenge using different challenge types and returns the solved hash in Base64 format.
     func onDeviceVerify(parameters: DeviceVerifyParameters) -> String? {
         do {
+            let startTime = CFAbsoluteTimeGetCurrent()
             // Determine the challenge type and perform the corresponding hash operation.
             switch parameters.challengeType {
             case .WASM, .Argon2:
                 // Solve the hash using Argon2 and return the solved hash in Base64 format.
                 let solved = try Hash.Argon2(challengeData: parameters.challengePayload)
-                return solved
+                let duration = getEndTime(startTime: startTime)
+                return "\(solved), \(duration)"
             case .ECDLP:
                 // Solve the hash using ECDLP and return the solved hash in Base64 format.
                 let solved = try Hash.ECDLP(challengeData: parameters.challengePayload)
-                return solved
+                let duration = getEndTime(startTime: startTime)
+                return "\(solved), \(duration)"
             }
         } catch {
             // we don't need to send the hash errors but we should log it.
@@ -47,5 +50,12 @@ public extension HumanVerifyDelegate {
         
         // Return nil if the hash operation was not successful.
         return nil
-    }    
+    }
+    
+    func getEndTime(startTime: CFAbsoluteTime) -> Double {
+        let endTime = CFAbsoluteTimeGetCurrent()
+        let duration = endTime - startTime
+        // Convert to milliseconds and round to two decimal places
+        return round(duration * 1000 * 100) / 100
+    }
 }

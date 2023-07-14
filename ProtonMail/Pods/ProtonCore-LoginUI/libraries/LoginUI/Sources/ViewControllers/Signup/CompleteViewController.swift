@@ -123,7 +123,7 @@ class CompleteViewController: UIViewController, AccessibleView {
     }
 
     private func createExternalAccount() {
-        guard let email = name, let password = password, let verifyToken = verifyToken, let tokenType = tokenType else {
+        guard let email = name, let password = password else {
             assertionFailure("Create external account input data missing")
             return
         }

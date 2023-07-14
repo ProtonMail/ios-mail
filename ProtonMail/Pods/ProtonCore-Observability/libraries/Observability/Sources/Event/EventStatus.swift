@@ -25,7 +25,7 @@ public enum SuccessOrFailureStatus: String, Encodable, CaseIterable {
     case failed
 }
 
-public enum SuccessOrFailureOrCancelledStatus: String, Encodable, CaseIterable {
+public enum SuccessOrFailureOrCanceledStatus: String, Encodable, CaseIterable {
     case successful
     case failed
     case canceled

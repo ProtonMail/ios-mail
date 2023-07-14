@@ -19,8 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
 import enum ProtonCore_Utilities.Either
+import UIKit
 
 public class PMActionSheetItem {
     public private(set) var components: [any PMActionSheetComponent]
@@ -176,7 +179,7 @@ extension PMActionSheetItem {
             case .checkMark:
                 return IconProvider.checkmarkCircleFilled
             case .dash:
-                return IconProvider.minusCircle1
+                return IconProvider.minusCircle
             }
         }
 
@@ -190,3 +193,5 @@ extension PMActionSheetItem {
         }
     }
 }
+
+#endif

@@ -68,9 +68,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             tableView.register(PlanCell.nib, forCellReuseIdentifier: PlanCell.reuseIdentifier)
             tableView.register(CurrentPlanCell.nib, forCellReuseIdentifier: CurrentPlanCell.reuseIdentifier)
             tableView.separatorStyle = .none
-            if #unavailable(iOS 13.0) {
-                tableView.estimatedRowHeight = 600
-            }
+            tableView.estimatedRowHeight = UITableView.automaticDimension
             tableView.rowHeight = UITableView.automaticDimension
             tableView.estimatedSectionHeaderHeight = sectionHeaderHeight
         }
@@ -96,7 +94,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
             extendSubscriptionButton.isHidden = true
             extendSubscriptionButton.isAccessibilityElement = true
             extendSubscriptionButton.setMode(mode: .solid)
-            extendSubscriptionButton.setTitle(CoreString._new_plans_extend_subscription_button, for: .normal)
+            extendSubscriptionButton.setTitle(CoreString._extend_subscription_button, for: .normal)
         }
     }
     
@@ -228,7 +226,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     }
 
     func showPurchaseSuccessBanner() {
-        let banner = PMBanner(message: CoreString._new_plans_plan_successfully_upgraded,
+        let banner = PMBanner(message: CoreString._plan_successfully_upgraded,
                               style: PMBannerNewStyle.info,
                               dismissDuration: 4.0)
         showBanner(banner: banner, position: .top)
@@ -301,7 +299,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         var hasExtendSubscriptionButton = false
         switch model?.footerType {
         case .withPlansToBuy:
-            tableFooterTextLabel.text = CoreString._new_plans_plan_footer_desc
+            tableFooterTextLabel.text = CoreString._plan_footer_desc
         case .withoutPlansToBuy:
             tableFooterTextLabel.text = CoreString._pu_plan_footer_desc_purchased
         case .withExtendSubscriptionButton:
@@ -318,7 +316,7 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
         updateHeaderFooterViewHeight()
         if mode == .signup {
             tableHeaderTitleLabel.text = CoreString._pu_select_plan_title
-            tableHeaderDescriptionLabel.text = CoreString._new_plans_select_plan_description
+            tableHeaderDescriptionLabel.text = CoreString._select_plan_description
             navigationItem.title = ""
             setupHeaderView()
         } else {

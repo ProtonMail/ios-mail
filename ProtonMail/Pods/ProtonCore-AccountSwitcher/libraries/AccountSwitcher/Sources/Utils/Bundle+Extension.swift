@@ -19,9 +19,19 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
+
+#if canImport(ProtonCore_AccountSwitcher_Resources_iOS)
+import ProtonCore_AccountSwitcher_Resources_iOS
+#endif
+
 extension Bundle {
     static let switchBundle: Bundle = {
+        #if canImport(ProtonCore_AccountSwitcher_Resources_iOS)
+        return resourceBundle
+        #else
         let moduleBundle = Bundle(for: AccountSwitcher.self)
         guard
             let resourceBundlePath = moduleBundle.path(forResource: "Resources-AccountSwitcher", ofType: "bundle"),
@@ -30,5 +40,8 @@ extension Bundle {
             return moduleBundle
         }
         return resourceBundle
+        #endif
     }()
 }
+
+#endif

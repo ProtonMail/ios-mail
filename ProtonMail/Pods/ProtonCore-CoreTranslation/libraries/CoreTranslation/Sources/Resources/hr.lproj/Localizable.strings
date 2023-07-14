@@ -202,23 +202,23 @@
 /* Help button */
 "Need help?" = "Trebate pomoć?";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ od %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ od %@";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Ugrađeni bloker oglasa (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Ugrađeni bloker oglasa (NetShield)";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Nabavite %@";
+/* Get plan button */
+"Get %@" = "Nabavite %@";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core poslužitelji";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Secure Core poslužitelji";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Stroga politika ne spremanja zapisa";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Stroga politika ne spremanja zapisa";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor preko VPN-a";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor preko VPN-a";
 
 /* Next button */
 "Next" = "Sljedeće";

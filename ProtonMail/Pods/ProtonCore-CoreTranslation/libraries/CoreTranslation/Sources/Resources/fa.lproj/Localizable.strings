@@ -100,9 +100,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "ادامه";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "ایجاد یک حساب Proton با ایمیل فعلی خود";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "به جای آن یک آدرس Proton Mail امن ایجاد کنید";
 
@@ -112,7 +109,7 @@
 /* Create user failed error */
 "Create user failed" = "کاربر ساخته نشد";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "گذرواژه خود را ایجاد کنید";
 
 /* *
@@ -292,59 +289,59 @@
  * Networking */
 "Network connection error" = "خطا ارتباط با شبکه";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ از %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ از %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "به سرویس‌های پخش آنلاین به صورت جهانی دسترسی پیدا کنید";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "به سرویس‌های پخش آنلاین به صورت جهانی دسترسی پیدا کنید";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "مسدودکنندهٔ آگهی تعبیه شده (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "مسدودکنندهٔ آگهی تعبیه شده (NetShield)";
 
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "اتصال اینترنت خود را بررسی کنید";
+/* Plan connection error description */
+"Check your internet connection" = "اتصال اینترنت خود را بررسی کنید";
 
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "مشکل در برقراری ارتباط";
+/* Plan connection error title */
+"Connection issues" = "مشکل در برقراری ارتباط";
 
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "VPN رایگان در یک دستگاه";
+/* Plan details VPN on a single device */
+"Free VPN on a single device" = "VPN رایگان در یک دستگاه";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "%@ را دریافت کنید";
+/* Get plan button */
+"Get %@" = "%@ را دریافت کنید";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "دریافت رایگان Proton";
+/* Get free plan button */
+"Get Proton for free" = "دریافت رایگان Proton";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "بالاترین سرعت VPN";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "بالاترین سرعت VPN";
 
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "یک طرح سرویس برای همه سرویس‌های Proton";
+/* */
+"One plan for all Proton services" = "یک طرح سرویس برای همه سرویس‌های Proton";
 
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "طرح سرویس با موفقیت ارتقا یافت";
+/* Plan successfully upgraded banner message */
+"Plan successfully upgraded" = "طرح سرویس با موفقیت ارتقا یافت";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "سرورهای Secure Core";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "سرورهای Secure Core";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "سیاست سخت‌گیرانه عدم ثبت رویدادها";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "سیاست سخت‌گیرانه عدم ثبت رویدادها";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "حساب آغازین بدون هزینه طراحی شده تا به هر کسی با حریم خصوصی به‌ صورت پیش فرض قدرت بدهد.";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "حساب آغازین بدون هزینه طراحی شده تا به هر کسی با حریم خصوصی به‌ صورت پیش فرض قدرت بدهد.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor روی VPN";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor روی VPN";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "پوشه‌ها، برچسب‌ها و فیلترهای نامحدود";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "پوشه‌ها، برچسب‌ها و فیلترهای نامحدود";
 
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "فضای ذخیر سازی تا %@";
+/* Plan details up to storage */
+"Up to %@ storage" = "فضای ذخیر سازی تا %@";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "حریم خصوصی و امنیت شما اولویت ماست.";
+/* Plan details vpn plus description */
+"Your privacy and security are our priority." = "حریم خصوصی و امنیت شما اولویت ماست.";
 
 /* Next button */
 "Next" = "بعدی";

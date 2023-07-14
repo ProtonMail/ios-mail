@@ -42,7 +42,7 @@ final class IndexSingleMessageDetailOperationTests: XCTestCase {
         testOnBackground { isFinish in
             let order = Int.random(in: 0...99)
             let messageID = "ESID-\(order)"
-            self.apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+            self.apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
                 guard path == "/mail/v4/messages/\(messageID)" else {
                     XCTFail("Unknown path")
                     return
@@ -79,7 +79,7 @@ final class IndexSingleMessageDetailOperationTests: XCTestCase {
         testOnBackground { isFinish in
             let order = Int.random(in: 0...99)
             let messageID = "ESID-\(order)"
-            self.apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+            self.apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
                 guard path == "/mail/v4/messages/\(messageID)" else {
                     XCTFail("Unknown path")
                     return
@@ -117,7 +117,7 @@ final class IndexSingleMessageDetailOperationTests: XCTestCase {
         testOnBackground { isFinish in
             self.queue.maxConcurrentOperationCount = 1
             let messages = [self.makeEsMessage(order: 1), self.makeEsMessage(order: 2)]
-            self.apiService.requestJSONStub.bodyIs { callTimes, _, path, _, _, _, _, _, _, _, completion in
+            self.apiService.requestJSONStub.bodyIs { callTimes, _, _, path, _, _, _, _, _, _, _, completion in
                 if callTimes == 1 {
                     completion(nil, .success(self.makeResponse(messageID: "test")))
                 } else {

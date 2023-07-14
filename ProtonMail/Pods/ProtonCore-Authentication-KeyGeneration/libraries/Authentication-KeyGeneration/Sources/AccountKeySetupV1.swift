@@ -19,8 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import OpenPGP
 import Foundation
 import ProtonCore_Authentication
@@ -90,11 +90,11 @@ final class AccountKeySetupV1 {
 
         let addressData = try key.addressKeys.map { addressKey -> [String: Any] in
             // lagcy logic and will be deprecated. we will not migrate it
-            guard let cryptoKey = CryptoNewKeyFromArmored(addressKey.armoredKey.value, &error) else {
+            guard let cryptoKey = CryptoGo.CryptoNewKeyFromArmored(addressKey.armoredKey.value, &error) else {
                 throw KeySetupError.keyReadFailed
             }
             let unlockedKey = try cryptoKey.unlock(key.password.data)
-            guard let keyRing = CryptoKeyRing(unlockedKey) else {
+            guard let keyRing = CryptoGo.CryptoKeyRing(unlockedKey) else {
                 throw KeySetupError.keyRingGenerationFailed
             }
 
@@ -107,7 +107,7 @@ final class AccountKeySetupV1 {
             ]]
 
             let jsonKeylist = keylist.json()
-            let message = CryptoNewPlainMessageFromString(jsonKeylist)
+            let message = CryptoGo.CryptoNewPlainMessageFromString(jsonKeylist)
             let signature = try keyRing.signDetached(message)
             let signed = signature.getArmored(&error)
             let signedKeyList: [String: Any] = [

@@ -19,9 +19,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import GoLibs
 import Foundation
 import ProtonCore_APIClient
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -39,6 +39,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
         case ask2FA(TwoFactorContext)
         case newCredential(Credential, PasswordMode)
         case updatedCredential(Credential)
+        case ssoChallenge(SSOChallengeResponse)
     }
     
     public var apiService: APIService!
@@ -50,55 +51,95 @@ public class Authenticator: NSObject, AuthenticatorInterface {
     // we do not want this to be ever used
     override private init() { }
 
-    /// Clear login, when previously unauthenticated
-    public func authenticate(username: String, password PASSWORD: String, challenge: ChallengeProperties?, srpAuth: SrpAuth? = nil, completion: @escaping Completion) {
+    private let srpBuilder = SRPBuilder()
+    
+    /// login with SSO
+    public func authenticate(idpEmail: String,
+                             responseToken: SSOResponseToken,
+                             completion: @escaping Completion) {
         // 1. auth info request
         let authClient = AuthService(api: self.apiService)
-        authClient.info(username: username) { (response) in
-            if let responseError = response.error {
-                completion(.failure(.from(responseError)))
-                return
+        authClient.ssoAuthentication(ssoResponseToken: responseToken) { [weak self] response in
+            switch response {
+            case .success(let authResponse):
+                let credential = Credential(res: authResponse, userName: idpEmail, userID: authResponse.userID)
+                self?.apiService.setSessionUID(uid: credential.UID)
+                completion(.success(.newCredential(credential, authResponse.passwordMode)))
+            case .failure(let error):
+                completion(.failure(.networkingError(error)))
             }
+        }
+    }
+    
+    /// Clear login, when previously unauthenticated
+    public func authenticate(username: String,
+                             password: String,
+                             challenge: ChallengeProperties?,
+                             intent: Intent? = nil,
+                             srpAuth: SrpAuth? = nil,
+                             completion: @escaping Completion) {
+        // 1. auth info request
+        let authClient = AuthService(api: self.apiService)
+        authClient.info(username: username, intent: intent) { [weak self] response in
+            switch response {
+            case .success(let eitherResponse):
+                switch eitherResponse {
+                case .left(let authInfoResponse):
+                    self?.handleAuthInfoResponse(username: username,
+                                                 password: password,
+                                                 challenge: challenge,
+                                                 response: authInfoResponse,
+                                                 authClient: authClient,
+                                                 srpAuth: srpAuth,
+                                                 completion: completion)
+                case .right(let ssoResponse):
+                    completion(.success(.ssoChallenge(ssoResponse)))
+                }
+            case .failure(let error):
+                completion(.failure(.networkingError(error)))
+            }
+        }
+    }
+    
+    // swiftlint:disable:next function_parameter_count
+    private func handleAuthInfoResponse(username: String,
+                                        password: String,
+                                        challenge: ChallengeProperties?,
+                                        response: AuthInfoResponse,
+                                        authClient: AuthService,
+                                        srpAuth: SrpAuth? = nil,
+                                        completion: @escaping Completion) {
+        if let responseError = response.error {
+            completion(.failure(.from(responseError)))
+            return
+        }
+        
+        // 2. build SRP things
+        do {
+            let srpClientInfo = try self.srpBuilder.buildSRP(
+                username: username,
+                password: password,
+                authInfo: AuthInfoResponse(
+                    modulus: response.modulus,
+                    serverEphemeral: response.serverEphemeral,
+                    version: response.version,
+                    salt: response.salt,
+                    srpSession: response.srpSession
+                ),
+                srpAuth: srpAuth
+            )
             
-            // guard let response
-            guard let salt = response.salt,
-                  let signedModulus = response.modulus,
-                  let serverEphemeral = response.serverEphemeral,
-                  let srpSession = response.srpSession
-            else {
-                return completion(.failure(Errors.emptyAuthInfoResponse))
-            }
-
-            // 2. build SRP things
-            do {
-                let passSlice = PASSWORD.data(using: .utf8)
-                guard let auth = srpAuth ?? SrpAuth.init(response.version,
-                                              username: username,
-                                              password: passSlice,
-                                              b64salt: salt,
-                                              signedModulus: signedModulus,
-                                              serverEphemeral: serverEphemeral) else
-                {
-                    return completion(.failure(Errors.emptyServerSrpAuth))
-                }
-                
-                // client SRP
-                let srpClient = try auth.generateProofs(2048)
-                guard let clientEphemeral = srpClient.clientEphemeral,
-                      let clientProof = srpClient.clientProof,
-                      let expectedServerProof = srpClient.expectedServerProof else
-                {
-                    return completion(.failure(Errors.emptyClientSrpAuth))
-                }
-                
+            switch srpClientInfo {
+            case .failure(let error):
+                return completion(.failure(error))
+            case .success(let srpClientInfo):
                 // 3. auth request
-                authClient.auth(username: username, ephemeral: clientEphemeral, proof: clientProof, session: srpSession, challenge: challenge) { (result) in
+                authClient.auth(username: username, ephemeral: srpClientInfo.clientEphemeral, proof: srpClientInfo.clientProof, srpSession: response.srpSession, challenge: challenge) { (result) in
                     switch result {
                     case .failure(let responseError):
                         completion(.failure(.from(responseError)))
                     case .success(let authResponse):
-                        
-                        guard expectedServerProof == Data(base64Encoded: authResponse.serverProof) else {
+                        guard let serverProof = authResponse.serverProof, srpClientInfo.expectedServerProof == Data(base64Encoded: serverProof) else {
                             return completion(.failure(Errors.wrongServerProof))
                         }
                         // are we done yet or need 2FA?
@@ -118,9 +159,9 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                         }
                     }
                 }
-            } catch let parsingError {
-                return completion(.failure(.parsingError(parsingError)))
             }
+        } catch let parsingError {
+            return completion(.failure(.parsingError(parsingError)))
         }
     }
     
@@ -286,7 +327,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
                                         _ f: @escaping (S) -> T) -> (URLSessionDataTask?, Result<S, ResponseError>) -> Void {
         return { (_, result: Result<S, ResponseError>) -> Void in
             completion(result.map(f).mapError {
-                $0.isApiIsBlockedError ? AuthErrors.apiMightBeBlocked(message: $0.networkResponseMessageForTheUser, originalError: $0) : .networkingError($0)
+                $0.isApiIsBlockedError ? AuthErrors.apiMightBeBlocked(message: $0.localizedDescription, originalError: $0) : .networkingError($0)
             })
         }
     }
@@ -294,7 +335,7 @@ public class Authenticator: NSObject, AuthenticatorInterface {
     private func mapError<T>(_ completion: @escaping (Result<T, AuthErrors>) -> Void) -> (URLSessionDataTask?, Result<T, ResponseError>) -> Void {
         return { (_, result: Result<T, ResponseError>) in
             completion(result.mapError {
-                $0.isApiIsBlockedError ? AuthErrors.apiMightBeBlocked(message: $0.networkResponseMessageForTheUser, originalError: $0) : .networkingError($0)
+                $0.isApiIsBlockedError ? AuthErrors.apiMightBeBlocked(message: $0.localizedDescription, originalError: $0) : .networkingError($0)
             })
         }
     }

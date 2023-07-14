@@ -23,6 +23,7 @@ import Foundation
 import ProtonCore_CoreTranslation
 import ProtonCore_Login
 import ProtonCore_UIFoundations
+import ProtonCore_Services
 
 enum DisplayProgressStep: Hashable {
     case createAccount
@@ -83,7 +84,7 @@ class CompleteViewModel {
         }
     }
 
-    func createNewExternalAccount(email: String, password: String, verifyToken: String, tokenType: String,
+    func createNewExternalAccount(email: String, password: String, verifyToken: String?, tokenType: String?,
                                   completion: @escaping (Result<(LoginData), Error>) -> Void) {
         DispatchQueue.main.async {
             self.progressStepWait(progressStep: .createAccount)
@@ -189,13 +190,13 @@ class CompleteViewModel {
     }
 
     private func login(name: String, password: String, completion: @escaping (Result<(LoginData), Error>) -> Void) {
-        loginService.login(username: name, password: password, challenge: nil) { result in
+        loginService.login(username: name, password: password, intent: .proton, challenge: nil) { result in
             switch result {
             case .success(let loginStatus):
                 switch loginStatus {
                 case .finished(let loginData):
                     completion(.success(loginData))
-                case .ask2FA, .askSecondPassword, .chooseInternalUsernameAndCreateInternalAddress:
+                case .ask2FA, .askSecondPassword, .chooseInternalUsernameAndCreateInternalAddress, .ssoChallenge:
                     completion(.failure(LoginError.invalidState))
                 }
             case .failure(let error):

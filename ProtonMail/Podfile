@@ -34,26 +34,42 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '5.2.0'
+  '9.3.0'
 end
 
 def crypto_variant
-  "Crypto+Search-Go1.20.2"
+  "Crypto+Search-Go"
 end
 
-def common_pods
+def app_share_push_siri_pods
+  pod "ProtonCore-Keymaker", :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Log', :git => proton_core_path, :tag => proton_core_version
+end
+
+def app_share_push_pods
+  app_share_push_siri_pods
+
+  pod "ProtonCore-Crypto", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-CryptoGoImplementation/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-CryptoGoInterface", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-GoLibs", :git => proton_core_path, :tag => proton_core_version
+end
+
+def app_share_pods
+  app_share_push_pods
+
   pod 'AwaitKit', :git => 'https://github.com/yannickl/AwaitKit.git', :commit => '4b725f40dd189f40c0962cba792f06a2073bd977'
   pod 'Groot', '3.0.1'
   pod 'MBProgressHUD' , '1.1.0'
   pod 'PromiseKit', '6.13.1'
   pod 'ProtonCore-Challenge', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-DataModel', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-APIClient', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Authentication-KeyGeneration/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-Authentication-KeyGeneration", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-FeatureSwitch', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Authentication/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-GoLibs/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-Authentication", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Keymaker/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
   pod 'ReachabilitySwift'
@@ -62,23 +78,22 @@ def common_pods
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'release/1.0.3'
 end
 
-def pm_pods
-  common_pods
+def app_pods
+  app_share_pods
   pod 'SDWebImage', '5.13.3'
   pod 'OHHTTPStubs/Swift', :configurations => ['Debug', 'Enterprise Debug']
-  pod "ProtonCore-AccountDeletion/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-AccountDeletion", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-HumanVerification/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Log', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Login/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-LoginUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-HumanVerification", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-Login", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-LoginUI", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Observability', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-OpenPGP', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Payments/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-PaymentsUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-Payments", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-PaymentsUI", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', :git=> 'git@gitlab.protontech.ch:jchen/SideMenu.git', :tag=>'v2.0.9.autolayout'
   pod 'SwipyCell', :git=> 'git@gitlab.protontech.ch:jchen/SwipyCell.git', :commit => '923310a'
@@ -86,47 +101,28 @@ def pm_pods
   pod 'SQLite.swift', '~> 0.13.3'
 end
 
-def pm_share
-  common_pods
-end
-
-def pm_siri
-  pod "ProtonCore-GoLibs/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Keymaker/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-end
-
-def pm_pushService
-  pod "ProtonCore-GoLibs/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Doh', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Keymaker/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-DataModel', :git => proton_core_path, :tag => proton_core_version
-end
-
 target 'ProtonMail' do
-  pm_pods
+  app_pods
 end
 
 target 'PushService' do
-  pm_pushService
+  app_share_push_pods
 end
 
 target 'ProtonMailTests' do
   inherit! :search_paths
   pod 'OHHTTPStubs/Swift'
-  pod 'Groot', '3.0.1'
-  pod 'PromiseKit', '6.13.1'
   pod 'ProtonCore-Utilities', :git => proton_core_path, :tag => proton_core_version
   pod 'swift-snapshot-testing', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Core', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Doh', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Services', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-TestingToolkit/UnitTests/Login/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-TestingToolkit/UnitTests/LoginUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-TestingToolkit/UnitTests/Login", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-TestingToolkit/UnitTests/LoginUI", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/DataModel', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Networking', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-TestingToolkit/UnitTests/HumanVerification', :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-TestingToolkit/UnitTests/Authentication/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pm_pods
+  pod "ProtonCore-TestingToolkit/UnitTests/Authentication", :git => proton_core_path, :tag => proton_core_version
+  app_pods
 end
 
 target 'ProtonMailUITests' do
@@ -143,11 +139,11 @@ target 'ProtonMailUITests' do
 end
 
 target 'Share' do
-  pm_share
+  app_share_pods
 end
 
 target 'Siri' do
-  pm_siri
+  app_share_push_siri_pods
 end
 
 target 'ProtonMailAnalytics' do
@@ -158,8 +154,6 @@ post_install do | installer |
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = minimum_deployment_target
-      config.build_settings['SWIFT_VERSION'] = '5.0'
-      config.build_settings['ENABLE_BITCODE'] = 'NO'
       config.build_settings['CODE_SIGN_IDENTITY'] = ''
       if config.name.include? 'Release'
         config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'

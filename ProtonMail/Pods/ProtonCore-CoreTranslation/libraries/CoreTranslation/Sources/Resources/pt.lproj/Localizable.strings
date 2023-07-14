@@ -1,3 +1,9 @@
+/* Plan details storage */
+"%@ storage" = "%@ de armazenamento";
+
+/* Plan details storage per user */
+"%@ storage / user" = "%@ de armazenamento / utilizador";
+
 /* Email verification view title */
 "Account verification" = "Verificação da conta";
 
@@ -78,7 +84,7 @@
 /* Create account button */
 "Create an account" = "Criar uma conta";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Crie a sua palavra-passe";
 
 /* *
@@ -230,35 +236,41 @@
 /* Help button */
 "Need help?" = "Precisa de ajuda?";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ de %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ de %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Aceda a serviços de streaming globalmente";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "Aceda a serviços de streaming globalmente";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Bloqueador integrado (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Bloqueador integrado (NetShield)";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Obter %@";
+/* Get plan button */
+"Get %@" = "Obter %@";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Obtenha Proton gratuitamente";
+/* Get free plan button */
+"Get Proton for free" = "Obtenha Proton gratuitamente";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Velocidade VPN máxima";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "Velocidade VPN máxima";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Servidores Secure Core";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Servidores Secure Core";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Política estrita sem diários";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Política estrita sem diários";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor sobre VPN";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "A conta inicial gratuita criada para oferecer privacidade a todos por defeito.";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Pastas, etiquetas e filtros ilimitados";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor sobre VPN";
+
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "Pastas, etiquetas e filtros ilimitados";
+
+/* Plan details up to storage */
+"Up to %@ storage" = "Até %@ de armazenamento";
 
 /* Next button */
 "Next" = "Seguinte";
@@ -471,7 +483,7 @@
 "Use two-factor code" = "Usar código em dois passos";
 
 /* Email address button */
-"Use your current email instead" = "Utilizar o correio electrónico atual";
+"Use your current email instead" = "Utilizar o seu correio electrónico atual";
 
 /* Username field title */
 "Username" = "Utilizador";

@@ -76,6 +76,17 @@ Sources: [libraries/Challenge](libraries/Challenge)
 Platforms supported: iOS
 
 
+### Common
+
+Architectural sketch. A set of protocols and basic types to base the architecture on.
+
+Podspec: [ProtonCore-Common.podspec](ProtonCore-Common.podspec)
+
+Sources: [libraries/Common](libraries/Common)
+
+Platforms supported: iOS, macOS (very limited subset of sources)
+
+
 ### CoreTranslation
 
 Localized strings.
@@ -403,7 +414,7 @@ Platforms supported: iOS, macOS
 
 ## Example app
 
-The example app is located in [the example-app directory](example-app).
+The example app is located in [the ExampleApp directory](ExampleApp).
 
 ## License
 

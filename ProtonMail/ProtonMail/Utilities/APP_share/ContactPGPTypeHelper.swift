@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import GoLibs
 import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations

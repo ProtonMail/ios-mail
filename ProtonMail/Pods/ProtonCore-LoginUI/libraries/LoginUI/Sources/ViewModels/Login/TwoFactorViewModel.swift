@@ -43,9 +43,13 @@ final class TwoFactorViewModel {
     let mode = Observable<Mode>(.twoFactorCode)
 
     private let login: Login
+    let username: String
+    let password: String
 
-    init(login: Login) {
+    init(login: Login, username: String, password: String) {
         self.login = login
+        self.username = username
+        self.password = password
     }
 
     // MARK: - Actions
@@ -67,13 +71,8 @@ final class TwoFactorViewModel {
                 case let .finished(data):
                     self?.finished.publish(.done(data))
                 case let .chooseInternalUsernameAndCreateInternalAddress(data):
-                    self?.login.checkUsernameFromEmail(email: data.email) { [weak self] result in
-                        switch result {
-                        case .failure(let error):
-                            self?.error.publish(.generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode, originalError: error))
-                        case .success(let defaultUsername):
-                            self?.finished.publish(.createAddressNeeded(data, defaultUsername))
-                        }
+                    self?.login.availableUsernameForExternalAccountEmail(email: data.email) { [weak self] username in
+                        self?.finished.publish(.createAddressNeeded(data, username))
                         self?.isLoading.value = false
                     }
                 case .ask2FA:
@@ -82,6 +81,10 @@ final class TwoFactorViewModel {
                     self?.isLoading.value = false
                 case .askSecondPassword:
                     self?.finished.publish(.mailboxPasswordNeeded)
+                    self?.isLoading.value = false
+                case .ssoChallenge:
+                    PMLog.error("Receiving SSO challenge after successful 2FA code is an invalid state")
+                    self?.error.publish(.invalidState)
                     self?.isLoading.value = false
                 }
             }

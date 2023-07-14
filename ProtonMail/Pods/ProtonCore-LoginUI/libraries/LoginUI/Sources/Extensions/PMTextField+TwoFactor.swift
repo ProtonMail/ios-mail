@@ -29,9 +29,7 @@ extension PMTextField {
         case .twoFactorCode:
             title = CoreString._ls_login_2fa_field_title
             keyboardType = .numberPad
-            if #available(iOS 12.0, *) {
-                textContentType = .oneTimeCode
-            }
+            textContentType = .oneTimeCode
             assistiveText = CoreString._ls_login_2fa_field_info
         case .recoveryCode:
             title = CoreString._ls_login_2fa_recovery_field_title

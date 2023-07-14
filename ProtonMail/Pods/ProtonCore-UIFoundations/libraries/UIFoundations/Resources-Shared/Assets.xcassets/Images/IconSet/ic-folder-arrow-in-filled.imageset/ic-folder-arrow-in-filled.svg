@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g class="ic-folder-arrow-in-filled">
+    <path fill-rule="evenodd" d="M1.5 6a3 3 0 0 1 3-3h4.25a3 3 0 0 1 1.8.6l2.12 1.59a.3.3 0 0 0 .18.06h6.65a3 3 0 0 1 3 3V18a3 3 0 0 1-3 3h-15a3 3 0 0 1-3-3v-4.5h9.44l-1.72 1.72a.75.75 0 1 0 1.06 1.06l2.788-2.788a1.05 1.05 0 0 0 0-1.485L10.28 9.22a.75.75 0 1 0-1.06 1.06L10.94 12H1.5V6Z" class="Icon"/>
+  </g>
+</svg>

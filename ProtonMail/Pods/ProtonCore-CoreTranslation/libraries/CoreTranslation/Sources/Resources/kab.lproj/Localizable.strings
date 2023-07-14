@@ -199,26 +199,26 @@
 /* Help button */
 "Need help?" = "Tesriḍ tallelt?";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ si %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ si %@";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Amsewḥel n udellel usliɣ (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Amsewḥel n udellel usliɣ (NetShield)";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Awi-d %@";
+/* Get plan button */
+"Get %@" = "Awi-d %@";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Arured afellay maḍi VPN";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "Arured afellay maḍi VPN";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Iqeddacen n Secure Core";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Iqeddacen n Secure Core";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Tasertit tuḥrist war aɣmis";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Tasertit tuḥrist war aɣmis";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor ɣef VPN";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor ɣef VPN";
 
 /* Next button */
 "Next" = "Ɣer sdat";

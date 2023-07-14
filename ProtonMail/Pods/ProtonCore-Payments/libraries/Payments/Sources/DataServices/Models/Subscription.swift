@@ -65,13 +65,16 @@ extension Subscription {
         // remove all other plans not defined in the shownPlanNames
         let planDetails = planDetails?.filter { elem in shownPlanNames.contains { elem.name == $0 } }
         guard let planDetails = planDetails else { return .empty }
-        let subscriptionPlan = Plan.combineDetailsDroppingPricing(planDetails)
+        let subscriptionPlan = Plan.combineDetails(planDetails, droppingPrice: true)
         guard let organization = organization else { return subscriptionPlan }
         return Plan(name: subscriptionPlan.name,
                     iD: subscriptionPlan.iD,
                     maxAddresses: max(subscriptionPlan.maxAddresses, organization.maxAddresses),
                     maxMembers: max(subscriptionPlan.maxMembers, organization.maxMembers),
-                    pricing: nil,
+                    pricing: subscriptionPlan.pricing,
+                    defaultPricing: subscriptionPlan.defaultPricing,
+                    vendors: subscriptionPlan.vendors,
+                    offer: subscriptionPlan.offer,
                     maxDomains: max(subscriptionPlan.maxDomains, organization.maxDomains),
                     maxSpace: max(subscriptionPlan.maxSpace, organization.maxSpace),
                     maxRewardsSpace: subscriptionPlan.maxRewardsSpace,

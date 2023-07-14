@@ -38,33 +38,6 @@ protocol HumanVerifyViewControllerDelegate: AnyObject {
     func emailAddressAlreadyTakenWithError(code: Int, description: String)
 }
 
-// Delete this enum once iOS 11 support is dropped.
-enum UserInterfaceStyle: Int {
-    case unspecified = 0
-    case light = 1
-    case dark = 2
-
-    @available(iOS 12, *)
-    init(value: UIUserInterfaceStyle) {
-        switch value {
-        case .unspecified:
-            self = .unspecified
-        case .light:
-            self = .light
-        case .dark:
-            self = .dark
-        @unknown default:
-            assertionFailure("Unrecognized UIUserInterfaceStyle: \(value)")
-            self = .unspecified
-        }
-    }
-
-    @available(iOS 12, *)
-    static func != (lhs: UIUserInterfaceStyle, rhs: UserInterfaceStyle) -> Bool {
-        lhs.rawValue != rhs.rawValue
-    }
-}
-
 final class HumanVerifyViewController: UIViewController, AccessibleView {
 
     // MARK: Outlets
@@ -93,7 +66,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     var banner: PMBanner?
     var presentsBannerInsteadOfWebView = false
     var dispatchQueue: CompletionBlockExecutor = .asyncMainExecutor
-    private lazy var currentInterfaceStyle: UserInterfaceStyle = .unspecified
+    private var webViewInterfaceStyle: UIUserInterfaceStyle = .unspecified
 
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
@@ -101,7 +74,6 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupObservers()
         configureUI()
         loadWebContent()
         generateAccessibilityIdentifiers()
@@ -110,15 +82,18 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
 
     deinit {
         userContentController.removeAllUserScripts()
-        NotificationCenter.default.removeObserver(self)
     }
-
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        if #available(iOS 12.0, *) {
-            if UIApplication.shared.applicationState == .active {
-                checkInterfaceStyle()
-            }
+        if UIApplication.shared.applicationState != .background,
+            traitCollection.userInterfaceStyle != webViewInterfaceStyle,
+            overrideUserInterfaceStyle == .unspecified {
+            setWebViewInterfaceStyle()
+            // reload webview for new theme
+            loadWebContent()
+        } else {
+            setWebViewInterfaceStyle()
         }
     }
 
@@ -134,18 +109,24 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     }
 
     // MARK: Private interface
-
+    
     private func configureUI() {
         title = viewTitle ?? CoreString._hv_title
-        if #available(iOS 12.0, *) {
-            currentInterfaceStyle = .init(value: traitCollection.userInterfaceStyle)
-        }
         closeBarButtonItem.tintColor = ColorProvider.IconNorm
         closeBarButtonItem.accessibilityLabel = "closeButton"
         updateTitleAttributes()
         view.backgroundColor = ColorProvider.BackgroundNorm
         closeBarButtonItem.image = isModalPresentation ? IconProvider.cross : IconProvider.arrowLeft
         setupWebView()
+        setWebViewInterfaceStyle()
+    }
+    
+    private func setWebViewInterfaceStyle() {
+        if overrideUserInterfaceStyle != .unspecified {
+            webViewInterfaceStyle = overrideUserInterfaceStyle
+        } else {
+            webViewInterfaceStyle = traitCollection.userInterfaceStyle
+        }
     }
 
     private func setupWebView() {
@@ -153,9 +134,7 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
         let webViewConfiguration = WKWebViewConfiguration()
         webViewConfiguration.userContentController = userContentController
         viewModel.setup(webViewConfiguration: webViewConfiguration)
-        if #available(iOS 13.0, *) {
-            webViewConfiguration.defaultWebpagePreferences.preferredContentMode = .mobile
-        }
+        webViewConfiguration.defaultWebpagePreferences.preferredContentMode = .mobile
         webViewConfiguration.websiteDataStore = WKWebsiteDataStore.default()
         webView = WKWebView(frame: .zero, configuration: webViewConfiguration)
         webView.navigationDelegate = self
@@ -175,27 +154,12 @@ final class HumanVerifyViewController: UIViewController, AccessibleView {
     private var lastLoadingURL: String?
 
     private func loadWebContent() {
+        webView.overrideUserInterfaceStyle = webViewInterfaceStyle
         hideWebView(showActivityIndicator: true)
         URLCache.shared.removeAllCachedResponses()
         let requestObj = viewModel.getURLRequest
         lastLoadingURL = requestObj.url?.absoluteString
         webView.load(requestObj)
-    }
-
-    private func setupObservers() {
-        NotificationCenter.default.addObserver(forName: UIApplication.didBecomeActiveNotification, object: nil, queue: .main) { [weak self] _ in
-            if #available(iOS 12.0, *) {
-                self?.checkInterfaceStyle()
-            }
-        }
-    }
-
-    @available(iOS 12.0, *)
-    private func checkInterfaceStyle() {
-        if traitCollection.userInterfaceStyle != currentInterfaceStyle {
-            loadWebContent()
-            currentInterfaceStyle = .init(value: traitCollection.userInterfaceStyle)
-        }
     }
 
     private func presentErrorWithoutWebView(message: String) {

@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import GoLibs
+import ProtonCore_CryptoGoInterface
 
 enum EncryptedSearchHelper {
     static func createEncryptedMessageContent(
@@ -96,7 +96,7 @@ enum EncryptedSearchHelper {
     static func generateSearchIndexKey(userID: UserID) -> Data? {
         let keyLength = 32
         var error: NSError?
-        let bytes: Data? = CryptoRandomToken(keyLength, &error)
+        let bytes: Data? = CryptoGo.CryptoRandomToken(keyLength, &error)
 
         if let key = bytes {
             // Add search index key to KeyChain

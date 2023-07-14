@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 
 extension MailCrypto {
     /// The listener object used to communicate with gopenpgp.
@@ -84,7 +84,7 @@ extension MailCrypto {
         publicKeys: [ArmoredKey],
         decryptionKeyRing: CryptoKeyRing
     ) throws -> MIMEMessageData {
-        let pgpMsg = CryptoPGPMessage(fromArmored: message)
+        let pgpMsg = CryptoGo.CryptoPGPMessage(fromArmored: message)
         let (verifierKeyRing, verifyTime) = try prepareVerification(publicKeys: publicKeys)
 
         let callbacks = CryptoMIMECallbacks()
@@ -145,11 +145,11 @@ extension MailCrypto {
             return ("", .messageNotSigned)
         }
 
-        let pgpMsg = CryptoPGPMessage(fromArmored: message)
+        let pgpMsg = CryptoGo.CryptoPGPMessage(fromArmored: message)
         let (verifierKeyRing, verifyTime) = try prepareVerification(publicKeys: publicKeys)
 
         var error: NSError?
-        let verifiedMessage = HelperDecryptExplicitVerify(
+        let verifiedMessage = CryptoGo.HelperDecryptExplicitVerify(
             pgpMsg,
             decryptionKeyRing,
             verifierKeyRing,
@@ -161,7 +161,7 @@ extension MailCrypto {
             throw error
         }
 
-        guard let verifiedMessage, let message = verifiedMessage.message else {
+        guard let verifiedMessage, let message = verifiedMessage.messageGoCrypto else {
             throw CryptoError.decryptionFailed
         }
 
@@ -169,7 +169,7 @@ extension MailCrypto {
 
         if verifierKeyRing == nil {
             signatureVerificationResult = .signatureVerificationSkipped
-        } else if let gopenpgpErrorCode = verifiedMessage.signatureVerificationError?.status {
+        } else if let gopenpgpErrorCode = verifiedMessage.signatureVerificationErrorGoCrypto?.status {
             signatureVerificationResult = SignatureVerificationResult(gopenpgpOutput: gopenpgpErrorCode)
         } else {
             signatureVerificationResult = .success
@@ -188,7 +188,7 @@ extension MailCrypto {
             verifyTime = 0
         } else {
             verifierKeyRing = try KeyRingBuilder().buildPublicKeyRing(armoredKeys: publicKeys)
-            verifyTime = CryptoGetUnixTime()
+            verifyTime = CryptoGo.CryptoGetUnixTime()
         }
 
         return (verifierKeyRing, verifyTime)

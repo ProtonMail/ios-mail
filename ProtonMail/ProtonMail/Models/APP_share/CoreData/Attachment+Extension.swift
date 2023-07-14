@@ -20,11 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
 import CoreData
 import PromiseKit
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 
 // TODO::fixme import header
@@ -96,12 +95,12 @@ extension Attachment {
         }
 
         var error: NSError?
-        let key = CryptoNewKeyFromArmored(key.publicKey, &error)
+        let key = CryptoGo.CryptoNewKeyFromArmored(key.publicKey, &error)
         if let err = error {
             throw err
         }
 
-        let keyRing = CryptoNewKeyRing(key, &error)
+        let keyRing = CryptoGo.CryptoNewKeyRing(key, &error)
         if let err = error {
             throw err
         }

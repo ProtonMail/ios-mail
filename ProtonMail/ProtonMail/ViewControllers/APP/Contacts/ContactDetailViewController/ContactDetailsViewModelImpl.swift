@@ -22,7 +22,6 @@
 
 import Foundation
 import PromiseKit
-import GoLibs
 import CoreData
 import OpenPGP
 import ProtonCore_Crypto

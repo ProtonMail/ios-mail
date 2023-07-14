@@ -29,6 +29,8 @@ enum DetailType {
     case checkmark, storage, envelope, globe, tag, calendarCheckmark, shield
     case powerOff, rocket, servers, play, locks, brandTor, arrowsSwitch, eyeSlash
     case user
+    case infinity, lock, vault, alias, at, forward, eye, penSquare
+    case custom(UIImage)
     
     var icon: UIImage {
         switch self {
@@ -48,6 +50,15 @@ enum DetailType {
         case .arrowsSwitch: return IconProvider.arrowsSwitch
         case .eyeSlash: return IconProvider.eyeSlash
         case .user: return IconProvider.user
+        case .infinity: return UIImage(systemName: "infinity")!
+        case .lock: return IconProvider.lock
+        case .vault: return IconProvider.vault
+        case .alias: return IconProvider.alias
+        case .at: return IconProvider.at
+        case .forward: return IconProvider.forward
+        case .eye: return IconProvider.eye
+        case .penSquare: return IconProvider.penSquare
+        case .custom(let image): return image
         }
     }
 }
@@ -83,31 +94,31 @@ extension PlanPresentation {
                            servicePlan: ServicePlanDataServiceProtocol,
                            clientApp: ClientApp,
                            storeKitManager: StoreKitManagerProtocol,
+                           customPlansDescription: CustomPlansDescription,
                            isCurrent: Bool,
                            isSelectable: Bool,
                            isMultiUser: Bool,
                            hasPaymentMethods: Bool,
                            endDate: NSAttributedString?,
                            price protonPrice: String?) -> PlanPresentation? {
-        guard let plan = InAppPurchasePlan(protonName: details.name, listOfIAPIdentifiers: storeKitManager.inAppPurchaseIdentifiers) else { return nil }
+        guard let plan = InAppPurchasePlan(protonPlan: details, listOfIAPIdentifiers: storeKitManager.inAppPurchaseIdentifiers) else { return nil }
         var planPresentationType: PlanPresentationType
         let countriesCount = servicePlan.countriesCount?.first { $0.maxTier == details.maxTier ?? 0 }?.count
         if isCurrent {
-            let currentPlanDetails = CurrentPlanDetails.createPlan(from: details, plan: plan, servicePlan: servicePlan, countriesCount: countriesCount, clientApp: clientApp, storeKitManager: storeKitManager, isMultiUser: isMultiUser, protonPrice: protonPrice, hasPaymentMethods: hasPaymentMethods, endDate: endDate)
+            let currentPlanDetails = CurrentPlanDetails.createPlan(from: details, plan: plan, servicePlan: servicePlan, countriesCount: countriesCount, clientApp: clientApp, storeKitManager: storeKitManager, customPlansDescription: customPlansDescription, isMultiUser: isMultiUser, protonPrice: protonPrice, hasPaymentMethods: hasPaymentMethods, endDate: endDate)
             planPresentationType = .current(.details(currentPlanDetails))
         } else {
-            let planDetails = PlanDetails.createPlan(from: details, plan: plan, countriesCount: countriesCount, clientApp: clientApp, storeKitManager: storeKitManager, protonPrice: protonPrice, isSelectable: isSelectable)
+            let planDetails = PlanDetails.createPlan(from: details, plan: plan, countriesCount: countriesCount, clientApp: clientApp, storeKitManager: storeKitManager, customPlansDescription: customPlansDescription, protonPrice: protonPrice, isSelectable: isSelectable)
             planPresentationType = .plan(planDetails)
         }
         return PlanPresentation(accountPlan: plan, planPresentationType: planPresentationType)
     }
     
     static var unavailableBecauseUserHasNoAccessToPlanDetails: PlanPresentation {
-        PlanPresentation(accountPlan: InAppPurchasePlan(protonName: InAppPurchasePlan.freePlanName, listOfIAPIdentifiers: [])!, planPresentationType: .current(.unavailable))
+        PlanPresentation(accountPlan: InAppPurchasePlan.freePlan, planPresentationType: .current(.unavailable))
     }
     
-    static func getLocale(from name: String, storeKitManager: StoreKitManagerProtocol) -> Locale? {
-        guard let plan = InAppPurchasePlan(protonName: name, listOfIAPIdentifiers: storeKitManager.inAppPurchaseIdentifiers) else { return nil }
+    static func getLocale(from plan: InAppPurchasePlan, storeKitManager: StoreKitManagerProtocol) -> Locale? {
         return plan.planLocale(from: storeKitManager)
     }
 }

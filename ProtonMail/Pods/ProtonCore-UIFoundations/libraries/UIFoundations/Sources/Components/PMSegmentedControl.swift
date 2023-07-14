@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 import ProtonCore_Foundations
 
@@ -55,11 +57,10 @@ public final class PMSegmentedControl: UISegmentedControl, AccessibleView {
         setTitleTextAttributes(titleTextAttributes, for: .normal)
         
         backgroundColor = ColorProvider.SeparatorNorm
-        if #available(iOS 13.0, *) {
-            selectedSegmentTintColor = ColorProvider.BackgroundNorm
-        } else {
-            tintColor = ColorProvider.BackgroundNorm
-        }
+        selectedSegmentTintColor = ColorProvider.BackgroundNorm
+
         generateAccessibilityIdentifiers()
     }
 }
+
+#endif

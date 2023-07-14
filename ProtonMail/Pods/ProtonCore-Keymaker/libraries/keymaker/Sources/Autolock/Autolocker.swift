@@ -82,18 +82,18 @@ public class Autolocker {
     }
     
     /// Asks to register the moment we start the countdown for the autolock
-    func startCountdown() {
+    public func startCountdown() {
         countdownStartedAt = timeProvider.date
         countdownStartedAtUptime = timeProvider.deviceUptime
     }
     
     /// Disables the countdown
-    func releaseCountdown() {
+    public func releaseCountdown() {
         countdownStartedAt = nil
         countdownStartedAtUptime = nil
     }
     
-    func shouldAutolockNow() -> Bool {
+    public func shouldAutolockNow() -> Bool {
         guard hasCountdownStarted else { return false }
 
         switch userSettingsProvider.lockTime {

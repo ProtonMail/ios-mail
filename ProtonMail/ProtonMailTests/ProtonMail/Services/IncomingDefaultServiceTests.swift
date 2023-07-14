@@ -66,7 +66,7 @@ final class IncomingDefaultServiceTests: XCTestCase {
             total: 1
         )
 
-        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(stubbedResponse))
         }
 
@@ -92,7 +92,7 @@ final class IncomingDefaultServiceTests: XCTestCase {
             total: 1
         )
 
-        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(stubbedResponse))
         }
 
@@ -189,7 +189,7 @@ final class IncomingDefaultServiceTests: XCTestCase {
             incomingDefault: .init(email: emailAddress, id: "New ID", location: .blocked, time: .distantFuture),
             undoToken: UndoTokenData(token: "", tokenValidTime: 0)
         )
-        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(stubbedResponse))
         }
 
@@ -212,7 +212,7 @@ final class IncomingDefaultServiceTests: XCTestCase {
             incomingDefault: .init(email: emailAddress, id: id, location: .blocked, time: .distantFuture),
             undoToken: UndoTokenData(token: "", tokenValidTime: 0)
         )
-        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(stubbedResponse))
         }
 
@@ -249,7 +249,7 @@ final class IncomingDefaultServiceTests: XCTestCase {
 
         storeStubbedObject(id: id, time: .distantPast)
 
-        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(DeleteIncomingDefaultsResponse()))
         }
 
@@ -265,7 +265,7 @@ final class IncomingDefaultServiceTests: XCTestCase {
     func testPerformRemoteDeletion_doesntHardDeleteObjects() async throws {
         storeStubbedObject(id: nil, time: .distantPast)
 
-        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+        apiService.requestDecodableStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(DeleteIncomingDefaultsResponse()))
         }
 

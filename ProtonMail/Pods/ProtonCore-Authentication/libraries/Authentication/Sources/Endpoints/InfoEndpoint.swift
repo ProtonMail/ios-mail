@@ -22,34 +22,21 @@
 import Foundation
 import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
+import ProtonCore_Services
 
 extension AuthService {
-    
-    public final class AuthInfoResponse: Response, Codable {
-        public var modulus: String?
-        public var serverEphemeral: String?
-        public var version: Int = 0
-        public var salt: String?
-        public var srpSession: String?
-        
-        override public func ParseResponse(_ response: [String: Any]!) -> Bool {
-            self.modulus = response["Modulus"] as? String
-            self.serverEphemeral = response["ServerEphemeral"] as? String
-            self.version = response["Version"] as? Int ?? 0
-            self.salt = response["Salt"] as? String
-            self.srpSession = response["SRPSession"] as? String
-            return true
-        }
-    }
-    
     struct InfoEndpoint: Request {
         struct Key {
             static let userName = "Username"
+            static let intent = "Intent"
         }
         
         let username: String
-        init(username: String) {
+        private let intent: Intent?
+        
+        init(username: String, intent: Intent? = nil) {
             self.username = username
+            self.intent = intent
         }
         
         var path: String {
@@ -61,7 +48,12 @@ extension AuthService {
         }
         
         var parameters: [String: Any]? {
-            return [Key.userName: username]
+            var parameters = [Key.userName: username]
+            if let intent {
+                parameters[Key.intent] = intent.rawValue
+            }
+            
+            return parameters
         }
         
         var isAuth: Bool {

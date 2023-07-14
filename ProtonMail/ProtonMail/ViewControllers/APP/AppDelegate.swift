@@ -24,6 +24,7 @@ import BackgroundTasks
 import Intents
 import LifetimeTracker
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoImplementation
 import ProtonCore_DataModel
 import ProtonCore_Doh
 import ProtonCore_FeatureSwitch
@@ -47,6 +48,11 @@ class AppDelegate: UIResponder {
     lazy var coordinator: WindowsCoordinator = WindowsCoordinator(factory: sharedServices)
     private var currentState: UIApplication.State = .active
     private var purgeOldMessages: PurgeOldMessagesUseCase?
+
+    override init() {
+        injectDefaultCryptoImplementation()
+        super.init()
+    }
 }
 
 // MARK: - consider move this to coordinator

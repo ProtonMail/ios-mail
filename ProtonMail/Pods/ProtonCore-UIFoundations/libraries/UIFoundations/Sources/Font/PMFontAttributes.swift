@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 
 /// When needing customization, this typealias can make life easier to access the attributes.
@@ -354,3 +356,5 @@ extension Dictionary where Key == NSAttributedString.Key, Value: Any {
         set( color ) { self[.foregroundColor] = color as? Value }
     }
 }
+
+#endif

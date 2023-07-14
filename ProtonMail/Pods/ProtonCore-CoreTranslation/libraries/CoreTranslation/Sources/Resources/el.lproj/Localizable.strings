@@ -106,9 +106,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Συνέχεια";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Δημιουργήστε έναν λογαριασμό Proton με την τρέχουσα διεύθυνσή σας";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Εναλλακτικά, δημιουργήστε μια διασφαλισμένη διεύθυνση Proton Mail";
 
@@ -118,7 +115,7 @@
 /* Create user failed error */
 "Create user failed" = "Αποτυχία δημιουργίας χρήστη";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Δημιουργήστε τον κωδικό πρόσβασής σας";
 
 /* *
@@ -304,74 +301,74 @@
  * Networking */
 "Network connection error" = "Σφάλμα σύνδεσης δικτύου";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ από %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ από %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Πρόσβαση παγκοσμίως σε υπηρεσίες μετάδοσης";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "Πρόσβαση παγκοσμίως σε υπηρεσίες μετάδοσης";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Ενσωματωμένη φραγή διαφημίσεων (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Ενσωματωμένη φραγή διαφημίσεων (NetShield)";
 
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Ελέγξτε τη σύνδεσή σας στο διαδίκτυο";
+/* Plan connection error description */
+"Check your internet connection" = "Ελέγξτε τη σύνδεσή σας στο διαδίκτυο";
 
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Προβλήματα σύνδεσης";
+/* Plan connection error title */
+"Connection issues" = "Προβλήματα σύνδεσης";
 
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Επέκταση συνδρομής";
+/* Extend subscription button */
+"Extend subscription" = "Επέκταση συνδρομής";
 
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Δωρεάν VPN σε μία μόνο συσκευή";
+/* Plan details VPN on a single device */
+"Free VPN on a single device" = "Δωρεάν VPN σε μία μόνο συσκευή";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Αποκτήστε %@";
+/* Get plan button */
+"Get %@" = "Αποκτήστε %@";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Αποκτήστε το Proton δωρεάν";
+/* Get free plan button */
+"Get Proton for free" = "Αποκτήστε το Proton δωρεάν";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Ύψιστη ταχύτητα VPN";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "Ύψιστη ταχύτητα VPN";
 
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Ένα πρόγραμμα για όλες τις υπηρεσίες Proton";
+/* */
+"One plan for all Proton services" = "Ένα πρόγραμμα για όλες τις υπηρεσίες Proton";
 
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Μόνο οι ετήσιες συνδρομές μη αυτόματης ανανέωσης είναι διαθέσιμες μέσω αυτής της εφαρμογής";
+/* Plan footer description */
+"Only non-renewing annual subscriptions are available via this app" = "Μόνο οι ετήσιες συνδρομές μη αυτόματης ανανέωσης είναι διαθέσιμες μέσω αυτής της εφαρμογής";
 
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Επιτυχημένη αναβάθμιση προγράμματος";
+/* Plan successfully upgraded banner message */
+"Plan successfully upgraded" = "Επιτυχημένη αναβάθμιση προγράμματος";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Διακομιστές Secure Core";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Διακομιστές Secure Core";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Αυστηρή πολιτική μη καταγραφής";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Αυστηρή πολιτική μη καταγραφής";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Ο λογαριασμός εκκίνησης χωρίς κόστους έχει σχεδιαστεί για να παρέχει σε όλους το απόρρητο από προεπιλογή.";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "Ο λογαριασμός εκκίνησης χωρίς κόστους έχει σχεδιαστεί για να παρέχει σε όλους το απόρρητο από προεπιλογή.";
 
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Η κατά προτεραιότητα απόρρητη λύση ταχυδρομείου και ημερολογίου για τις καθημερινές ανάγκες επικοινωνίας σας.";
+/* Plan details plus description */
+"The privacy-first email and calendar solution for your everyday communication needs." = "Η κατά προτεραιότητα απόρρητη λύση ταχυδρομείου και ημερολογίου για τις καθημερινές ανάγκες επικοινωνίας σας.";
 
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Το πρόγραμμα που εστιάζει στον χώρο αποθήκευσης με 200 GB χώρου αποθήκευσης στο cloud για να διατηρείτε τα αρχεία σας ιδιωτικά.";
+/* Plan details drive plus description */
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Το πρόγραμμα που εστιάζει στον χώρο αποθήκευσης με 200 GB χώρου αποθήκευσης στο cloud για να διατηρείτε τα αρχεία σας ιδιωτικά.";
 
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Το απόλυτο πακέτο απορρήτου με πρόσβαση σε όλες τις premium υπηρεσίες Proton.";
+/* Plan details bundle description */
+"The ultimate privacy pack with access to all premium Proton services." = "Το απόλυτο πακέτο απορρήτου με πρόσβαση σε όλες τις premium υπηρεσίες Proton.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor μέσω VPN";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor μέσω VPN";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Απεριόριστοι φάκελοι, ετικέτες, και φίλτρα";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "Απεριόριστοι φάκελοι, ετικέτες, και φίλτρα";
 
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Έως και %@ αποθηκευτικού χώρου";
+/* Plan details up to storage */
+"Up to %@ storage" = "Έως και %@ αποθηκευτικού χώρου";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Η ιδιωτικότητα και διασφάλισή σας είναι η προτεραιότητά μας.";
+/* Plan details vpn plus description */
+"Your privacy and security are our priority." = "Η ιδιωτικότητα και διασφάλισή σας είναι η προτεραιότητά μας.";
 
 /* Next button */
 "Next" = "Επόμενο";

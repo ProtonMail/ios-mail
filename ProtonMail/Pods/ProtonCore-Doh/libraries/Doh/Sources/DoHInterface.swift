@@ -123,6 +123,7 @@ public protocol DoHInterface {
     func getCaptchaHostUrl() -> String
     func getHumanVerificationV3Host() -> String
     func getAccountHost() -> String
+    func getAccountHostForAPI() -> String
     
     func getCurrentlyUsedUrlHeaders() -> [String: String]
     func getCaptchaHeaders() -> [String: String]

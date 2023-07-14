@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 import ProtonCore_Foundations
 
@@ -215,3 +217,5 @@ extension CountryPickerViewController: UIGestureRecognizerDelegate {
     }
 
 }
+
+#endif

@@ -43,7 +43,7 @@ class UserFeedbackServiceTests: XCTestCase {
     }
 
     func testThatCorrectResponseCodeHandledWithoutError() {
-        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             guard path.contains(UserFeedbackRequest.apiPath) else {
                 XCTFail("Unexpected path")
                 return
@@ -61,7 +61,7 @@ class UserFeedbackServiceTests: XCTestCase {
     }
 
     func testThatWrongResponseCodeTriggersError() {
-        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             guard path.contains(UserFeedbackRequest.apiPath) else {
                 XCTFail("Unexpected path")
                 return

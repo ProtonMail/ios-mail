@@ -94,12 +94,23 @@ extension ResponseError: APIResponse {
         set { self = ResponseError(httpCode: httpCode, responseCode: responseCode, userFacingMessage: newValue, underlyingError: underlyingError) }
     }
     
-    public var details: HumanVerificationDetails? {
+    public var details: APIResponseDetails? {
         guard let sessionError = underlyingError as? SessionResponseError else { return nil }
         switch sessionError {
         case .responseBodyIsNotAJSONDictionary(let body?, _), .responseBodyIsNotADecodableObject(let body?, _):
-            struct ResponseWithHumanVerificationDetails: Codable { var details: HumanVerificationDetails? }
-            return try? JSONDecoder.decapitalisingFirstLetter.decode(ResponseWithHumanVerificationDetails.self, from: body).details
+            if let humanVerificationDetails = try? JSONDecoder.decapitalisingFirstLetter.decode(ResponseWithHumanVerificationDetails.self, from: body).details {
+                return .humanVerification(humanVerificationDetails)
+            }
+            
+            if let deviceVerificationDetails = try? JSONDecoder.decapitalisingFirstLetter.decode(ResponseWithDeviceVerificationDetails.self, from: body).details {
+                return .deviceVerification(deviceVerificationDetails)
+            }
+            
+            if let missingScopesDetails = try? JSONDecoder.decapitalisingFirstLetter.decode(ResponseWithMissingScopesDetails.self, from: body).details {
+                return .missingScopes(missingScopesDetails)
+            }
+            
+            return nil
         case .configurationError, .networkingEngineError, .responseBodyIsNotAJSONDictionary(body: nil, _), .responseBodyIsNotADecodableObject(body: nil, _): return nil
         }
     }
@@ -119,7 +130,7 @@ extension Either: APIResponse where Left == JSONDictionary, Right == ResponseErr
         set { self = mapLeft { var tmp = $0; tmp.error = newValue; return tmp }.mapRight { var tmp = $0; tmp.error = newValue; return tmp } }
     }
     
-    public var details: HumanVerificationDetails? {
+    public var details: APIResponseDetails? {
         mapLeft { $0.details }.mapRight { $0.details }.value()
     }
 }
@@ -131,12 +142,11 @@ public class PMAPIService: APIService {
     typealias APIResponseCompletion<T> = Either<JSONCompletion, DecodableCompletion<T>> where T: APIDecodableResponse
 
     public weak var forceUpgradeDelegate: ForceUpgradeDelegate?
-    
     public weak var humanDelegate: HumanVerifyDelegate?
-    
     public weak var authDelegate: AuthDelegate?
-    
+    public weak var loggingDelegate: APIServiceLoggingDelegate?
     public weak var serviceDelegate: APIServiceDelegate?
+    public weak var missingScopesDelegate: MissingScopesDelegate?
     
     public static var noTrustKit: Bool = false
     public static var trustKit: TrustKit?
@@ -157,8 +167,9 @@ public class PMAPIService: APIService {
     
     private(set) var session: Session
     
-    private(set) var isHumanVerifyUIPresented: Atomic<Bool> = .init(false)
-    private(set) var isForceUpgradeUIPresented: Atomic<Bool> = .init(false)
+    private(set) var isHumanVerifyUIPresented = Atomic(false)
+    private(set) var isForceUpgradeUIPresented = Atomic(false)
+    private(set) var isPasswordVerifyUIPresented = Atomic(false)
     
     let protonMailResponseCodeHandler = ProtonMailResponseCodeHandler()
     let hvDispatchGroup = DispatchGroup()

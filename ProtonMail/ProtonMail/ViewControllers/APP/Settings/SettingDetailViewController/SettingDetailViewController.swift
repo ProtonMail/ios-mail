@@ -202,7 +202,12 @@ class SettingDetailViewController: UIViewController, AccessibleView {
     }
 
     private func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(payments: self.viewModel.userManager.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
+        self.paymentsUI = PaymentsUI(
+            payments: viewModel.userManager.payments,
+            clientApp: .mail,
+            shownPlanNames: Constants.shownPlanNames,
+            customization: .empty
+        )
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
                                          backendFetch: true) { _ in }
     }

@@ -15,10 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import GoLibs
+import ProtonCore_CryptoGoInterface
 
 struct SendPreferences: Equatable {
+    // TODO: can `CryptoKey` be made `Equatable` again?
+    static func == (lhs: SendPreferences, rhs: SendPreferences) -> Bool {
+        lhs.encrypt == rhs.encrypt &&
+        lhs.sign == rhs.sign &&
+        lhs.pgpScheme == rhs.pgpScheme &&
+        lhs.mimeType == rhs.mimeType &&
+        lhs.publicKeys?.getFingerprint() == rhs.publicKeys?.getFingerprint() &&
+        lhs.isPublicKeyPinned == rhs.isPublicKeyPinned &&
+        lhs.hasApiKeys == rhs.hasApiKeys &&
+        lhs.hasPinnedKeys == rhs.hasPinnedKeys &&
+        lhs.error == rhs.error
+    }
+
     let encrypt: Bool
     let sign: Bool
     let pgpScheme: PGPScheme

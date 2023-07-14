@@ -64,11 +64,7 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
             verificationCodeTextField.autocorrectionType = .no
             verificationCodeTextField.autocapitalizationType = .none
             verificationCodeTextField.spellCheckingType = .no
-            if #available(iOS 12.0, *) {
-                verificationCodeTextField.textContentType = .oneTimeCode
-            } else {
-                verificationCodeTextField.textContentType = .none
-            }
+            verificationCodeTextField.textContentType = .oneTimeCode
         }
     }
     @IBOutlet weak var nextButton: ProtonButton! {

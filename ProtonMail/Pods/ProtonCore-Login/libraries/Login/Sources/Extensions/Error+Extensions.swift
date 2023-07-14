@@ -88,7 +88,8 @@ public extension AuthErrors {
 
     func asAvailabilityError() -> AvailabilityError {
         switch self {
-        case .networkingError(let responseError) where responseError.responseCode == 12106:
+        case .networkingError(let responseError)
+            where responseError.responseCode == 2500 || responseError.responseCode == 12106:
             return .notAvailable(message: localizedDescription)
         case let .apiMightBeBlocked(message, originalError):
             return .apiMightBeBlocked(message: message, originalError: originalError)

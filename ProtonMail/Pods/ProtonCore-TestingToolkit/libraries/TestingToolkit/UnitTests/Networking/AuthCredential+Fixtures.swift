@@ -19,6 +19,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
+import ProtonCore_TestingToolkit_UnitTests_Core
+#endif
 import ProtonCore_Networking
 
 public extension AuthCredential {

@@ -24,6 +24,8 @@ import ProtonCore_APIClient
 import ProtonCore_Networking
 import ProtonCore_DataModel
 import ProtonCore_CoreTranslation
+import ProtonCore_Authentication
+import ProtonCore_Services
 
 public struct CreateAddressData {
     public let email: String
@@ -50,6 +52,7 @@ public enum LoginStatus {
     case ask2FA
     case askSecondPassword
     case chooseInternalUsernameAndCreateInternalAddress(CreateAddressData)
+    case ssoChallenge(SSOChallengeResponse)
 }
 
 public enum LoginError: Error, CustomStringConvertible {
@@ -209,8 +212,8 @@ extension AvailabilityError: Equatable {
     }
 }
 
-public extension AvailabilityError {
-    var userFacingMessageInLogin: String {
+extension AvailabilityError: LocalizedError {
+    public var errorDescription: String? {
         switch self {
         case .protonDomainUsedForExternalAccount(_, _, let message):
             assertionFailure("This error should be handled without user-facing error message")
@@ -218,7 +221,9 @@ public extension AvailabilityError {
         case .generic(let message, _, _), .notAvailable(let message), .apiMightBeBlocked(let message, _): return message
         }
     }
-    
+}
+
+public extension AvailabilityError {
     var codeInLogin: Int {
         switch self {
         case .apiMightBeBlocked(_, let originalError): return originalError.bestShotAtReasonableErrorCode
@@ -322,11 +327,15 @@ public extension CreateAddressKeysError {
 }
 
 public protocol Login {
+    func processResponseToken(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
+    func getSSORequest(challenge ssoChallengeResponse: SSOChallengeResponse) async -> (request: URLRequest?, error: String?)
+    func isProtonPage(url: URL?) -> Bool
+    
     var currentlyChosenSignUpDomain: String { get set }
     var allSignUpDomains: [String] { get }
     func updateAllAvailableDomains(type: AvailableDomainsType, result: @escaping ([String]?) -> Void)
 
-    func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
+    func login(username: String, password: String, intent: Intent?, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func provide2FACode(_ code: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func finishLoginFlow(mailboxPassword: String, passwordMode: PasswordMode, completion: @escaping (Result<LoginStatus, LoginError>) -> Void)
     func logout(credential: AuthCredential?, completion: @escaping (Result<Void, Error>) -> Void)
@@ -343,7 +352,7 @@ public protocol Login {
     
     func refreshCredentials(completion: @escaping (Result<Credential, LoginError>) -> Void)
     func refreshUserInfo(completion: @escaping (Result<User, LoginError>) -> Void)
-    func checkUsernameFromEmail(email: String, result: @escaping (Result<(String?), AvailabilityError>) -> Void)
+    func availableUsernameForExternalAccountEmail(email: String, completion: @escaping (String?) -> Void)
 
     var minimumAccountType: AccountType { get }
     func updateAccountType(accountType: AccountType)
@@ -358,7 +367,7 @@ public extension Login {
     
     @available(*, deprecated, message: "this will be removed. use the function with challenge")
     func login(username: String, password: String, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        login(username: username, password: password, challenge: nil, completion: completion)
+        login(username: username, password: password, intent: nil, challenge: nil, completion: completion)
     }
     
     @available(*, deprecated, message: "Please switch to the updateAllAvailableDomains variant that returns all domains instead of just a first one")
@@ -379,5 +388,12 @@ public extension Login {
     @available(*, deprecated, renamed: "checkAvailabilityForExternalAccount")
     func checkAvailabilityExternal(email: String, completion: @escaping (Result<(), AvailabilityError>) -> Void) {
         checkAvailabilityForExternalAccount(email: email, completion: completion)
+    }
+    
+    @available(*, deprecated, message: "This method no longer returns the .failed(error), please switch to availableUsernameForExternalAccountEmail instead")
+    func checkUsernameFromEmail(email: String, result: @escaping (Result<(String?), AvailabilityError>) -> Void) {
+        availableUsernameForExternalAccountEmail(email: email) { username in
+            result(.success(username))
+        }
     }
 }

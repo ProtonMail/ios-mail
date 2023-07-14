@@ -45,11 +45,13 @@ extension AccountDeletionService: AccountDeletion {
     
     public func initiateAccountDeletionProcess(
         over viewController: UIViewController,
+        inAppTheme: @escaping () -> InAppTheme = { .default },
         performAfterShowingAccountDeletionScreen: @escaping () -> Void = { },
         performBeforeClosingAccountDeletionScreen: @escaping (@escaping () -> Void) -> Void = { $0() },
         completion: @escaping (Result<AccountDeletionSuccess, AccountDeletionError>) -> Void
     ) {
         initiateAccountDeletionProcess(presenter: viewController,
+                                       inAppTheme: inAppTheme,
                                        performAfterShowingAccountDeletionScreen: performAfterShowingAccountDeletionScreen,
                                        performBeforeClosingAccountDeletionScreen: performBeforeClosingAccountDeletionScreen,
                                        completion: completion)
@@ -135,8 +137,14 @@ extension AccountDeletionService: AccountDeletionWebViewDelegate {
         viewController.presentingViewController?.dismiss(animated: true, completion: completion)
     }
     
-    func present(vc: AccountDeletionWebView, over: AccountDeletionViewControllerPresenter, completion: @escaping () -> Void) {
+    func present(vc: AccountDeletionWebView,
+                 over: AccountDeletionViewControllerPresenter,
+                 inAppTheme: () -> InAppTheme,
+                 completion: @escaping () -> Void) {
+        let theme = inAppTheme().userInterfaceStyle
+        vc.overrideUserInterfaceStyle = theme
         let navigationVC = DarkModeAwareNavigationViewController(rootViewController: vc)
+        navigationVC.overrideUserInterfaceStyle = theme
         vc.title = CoreString._ad_delete_account_title
         let leftBarButtonItem = UIBarButtonItem(
             image: IconProvider.arrowLeft,

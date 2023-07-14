@@ -19,8 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import Foundation
 import ProtonCore_Authentication

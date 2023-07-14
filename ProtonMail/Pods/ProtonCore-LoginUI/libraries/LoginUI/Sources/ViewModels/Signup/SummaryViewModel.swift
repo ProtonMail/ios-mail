@@ -73,7 +73,7 @@ class SummaryViewModel {
             return nil
         case .screenVariant(let screenVariant):
             switch screenVariant {
-            case .mail(let text), .vpn(let text), .drive(let text), .calendar(let text):
+            case .mail(let text), .vpn(let text), .drive(let text), .calendar(let text), .pass(let text):
                 return text
             case .custom(let data):
                 return data.startButtonText
