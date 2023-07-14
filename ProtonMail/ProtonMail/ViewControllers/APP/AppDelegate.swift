@@ -93,7 +93,8 @@ extension AppDelegate: TrustKitUIDelegate {
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
+        let appVersion = Bundle.main.appVersion
+        let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable) | \(appVersion)"
         SystemLogger.log(message: message, category: .appLifeCycle)
         sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
 
