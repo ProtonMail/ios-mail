@@ -44,7 +44,7 @@ final class BugDataServiceTests: XCTestCase {
         let lastReceivedPush = String(Date().timeIntervalSince1970)
         let reachability = "WiFi"
         let completionExpectations = expectation(description: "Wait async operation")
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains(BugReportRequest.defaultPath) {
                 completion(nil, .success(["Code": 1001]))
             } else {
@@ -81,7 +81,7 @@ final class BugDataServiceTests: XCTestCase {
         let lastReceivedPush = String(Date().timeIntervalSince1970)
         let reachability = "WiFi"
         let stubbedError = NSError(domain: "error.com", code: 1, userInfo: [:])
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains(BugReportRequest.defaultPath) {
                 completion(nil, .failure(stubbedError))
             } else {
@@ -121,7 +121,7 @@ final class BugDataServiceTests: XCTestCase {
     func testReportPhishing_bodyIsNormal_apiIsCalled() {
         let expectation1 = expectation(description: "Closure is called")
         let messageBody = "Test body"
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains(ReportPhishing.defaultPath) {
                 completion(nil, .success(["Code": 1001]))
             } else {
@@ -144,7 +144,7 @@ final class BugDataServiceTests: XCTestCase {
         let expectation1 = expectation(description: "Closure is called")
         let messageBody = "Test body"
         let stubbedError = NSError(domain: "error.com", code: 3, userInfo: [:])
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains(ReportPhishing.defaultPath) {
                 completion(nil, .failure(stubbedError))
             } else {

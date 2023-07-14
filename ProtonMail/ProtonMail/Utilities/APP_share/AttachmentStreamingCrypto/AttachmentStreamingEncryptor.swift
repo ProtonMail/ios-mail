@@ -15,9 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 
 enum AttachmentStreamingEncryptor {}
 
@@ -61,7 +60,7 @@ extension AttachmentStreamingEncryptor {
                                             _ totalSize: Int,
                                             _ bufferSize: Int ) throws -> Data {
 
-        guard let cipherTextWriter = HelperMobile2GoWriter(FileMobileWriter(file: cipherTextFile)) else {
+        guard let cipherTextWriter = CryptoGo.HelperMobile2GoWriter(FileMobileWriter(file: cipherTextFile)) else {
             throw EncryptError.unableToMakeWriter
         }
         let plaintextWriter = try encryptionKeyRing.encryptSplitStream(cipherTextWriter,

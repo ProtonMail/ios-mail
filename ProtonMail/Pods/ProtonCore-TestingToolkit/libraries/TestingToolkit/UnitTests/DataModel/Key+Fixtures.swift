@@ -20,6 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_DataModel
+#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
+import ProtonCore_TestingToolkit_UnitTests_Core
+#endif
 
 public extension Key {
 

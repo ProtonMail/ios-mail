@@ -26,98 +26,6 @@ public typealias JSONDictionary = [String: Any]
 public typealias JSONCompletion = (_ task: URLSessionDataTask?, _ result: Result<JSONDictionary, NSError>) -> Void
 public typealias SessionDecodableResponse = Decodable
 
-public struct HumanVerificationDetails: Codable, Equatable {
-    
-    let token: String?
-    let title: String?
-    let methods: [String]?
-    
-    let type: Int?
-    let payload: String?
-    
-    enum CodingKeys: String, CodingKey {
-        // even though the server response JSON use uppercase keys, we specify the lowercase keys here
-        // because we handle the uppercase keys globally by using the JSONDecoder
-        // that uses the custom KeyDecodingStrategy called JSONDecoder.decapitaliseFirstLetter
-        case token = "humanVerificationToken"
-        case title = "title"
-        case methods = "humanVerificationMethods"
-        
-        case type = "challengeType"
-        case payload = "challengePayload"
-        
-        // we provide the uppercase variants for when we work with JSON dictionary and not with Codable objects
-        var uppercased: String {
-            "\(rawValue.prefix(1).uppercased())\(rawValue.dropFirst())"
-        }
-    }
-    
-    public var serialized: [String: Any] {
-        var responseDict: [String: Any] = [:]
-        if let token = token { responseDict[CodingKeys.token.uppercased] = token }
-        if let title = title { responseDict[CodingKeys.title.uppercased] = title }
-        if let methods = methods { responseDict[CodingKeys.methods.uppercased] = methods }
-        
-        if let type = type { responseDict[CodingKeys.type.uppercased] = type }
-        if let payload = payload { responseDict[CodingKeys.payload.uppercased] = payload }
-        
-        return responseDict
-    }
-    
-    public init(token: String?, title: String?, methods: [String]?, type: Int? = nil, payload: String? = nil) {
-        self.token = token
-        self.title = title
-        self.methods = methods
-        self.type = type
-        self.payload = payload
-    }
-    
-    init(jsonDictionary details: [String: Any]) {
-        self.token = details[HumanVerificationDetails.CodingKeys.token.uppercased] as? String
-        self.title = details[HumanVerificationDetails.CodingKeys.title.uppercased] as? String
-        self.methods = details[HumanVerificationDetails.CodingKeys.methods.uppercased] as? [String]
-        self.type = details[HumanVerificationDetails.CodingKeys.type.uppercased] as? Int
-        self.payload = details[HumanVerificationDetails.CodingKeys.payload.uppercased] as? String
-    }
-}
-
-public protocol APIResponse {
-    var code: Int? { get set }
-    var error: String? { get set }
-    var details: HumanVerificationDetails? { get }
-}
-
-public extension APIResponse {
-    var errorMessage: String? { get { error } set { error = newValue } }
-}
-
-extension APIResponse {
-    public var serialized: [String: Any] {
-        var responseDict: [String: Any] = [:]
-        if let code = code { responseDict["Code"] = code }
-        if let error = error { responseDict["Error"] = error }
-        if let details = details { responseDict["Details"] = details.serialized }
-        return responseDict
-    }
-}
-
-extension Dictionary: APIResponse where Key == String, Value == Any {
-    
-    public var code: Int? { get { self["Code"] as? Int } set { self["Code"] = newValue } }
-    
-    public var error: String? { get { self["Error"] as? String } set { self["Error"] = newValue } }
-    
-    public var details: HumanVerificationDetails? {
-        get {
-            guard let details = self["Details"] as? [String: Any] else { return nil }
-            return HumanVerificationDetails(jsonDictionary: details)
-        }
-        set {
-            self["Details"] = newValue?.serialized
-        }
-    }
-}
-
 public typealias APIDecodableResponse = SessionDecodableResponse
 
 public enum SessionResponseError: Error {
@@ -150,6 +58,23 @@ public enum SessionResponseError: Error {
         case .responseBodyIsNotAJSONDictionary, .responseBodyIsNotADecodableObject:
             return self as NSError
         case .networkingEngineError(let underlyingError): return underlyingError
+        }
+    }
+}
+
+extension SessionResponseError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .configurationError: return "Configuration error"
+        case .responseBodyIsNotAJSONDictionary(let data, _),
+             .responseBodyIsNotADecodableObject(let data, _):
+            let genericMessage: String = "Network error"
+            if let data = data, let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any] {
+                return object["Error"] as? String ?? genericMessage
+            } else {
+                return genericMessage
+            }
+        case .networkingEngineError(let underlyingError): return underlyingError.localizedDescription
         }
     }
 }
@@ -209,10 +134,13 @@ public protocol Session {
                   timeout: TimeInterval?,
                   retryPolicy: ProtonRetryPolicy.RetryMode) throws -> SessionRequest
     
-    func request(with request: SessionRequest, completion: @escaping JSONResponseCompletion)
+    func request(with request: SessionRequest,
+                 onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
+                 completion: @escaping JSONResponseCompletion)
     
     func request<T>(with request: SessionRequest,
                     jsonDecoder: JSONDecoder?,
+                    onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                     completion: @escaping DecodableResponseCompletion<T>) where T: SessionDecodableResponse
     
     func download(with request: SessionRequest,
@@ -269,6 +197,19 @@ public protocol Session {
     func failsTLS(request: SessionRequest) -> String?
     
     var sessionConfiguration: URLSessionConfiguration { get }
+}
+
+public extension Session {
+    func request(with request: SessionRequest,
+                 completion: @escaping JSONResponseCompletion) {
+        self.request(with: request, onDataTaskCreated: { _ in }, completion: completion)
+    }
+    
+    func request<T>(with request: SessionRequest,
+                    jsonDecoder: JSONDecoder?,
+                    completion: @escaping DecodableResponseCompletion<T>) where T: SessionDecodableResponse {
+        self.request(with: request, jsonDecoder: jsonDecoder, onDataTaskCreated: { _ in }, completion: completion)
+    }
 }
 
 public extension Session {

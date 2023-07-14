@@ -20,6 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
+import ProtonCore_TestingToolkit_UnitTests_Core
+#endif
 import ProtonCore_Doh
 import ProtonCore_Foundations
 import ProtonCore_Networking
@@ -50,6 +53,11 @@ public struct APIServiceMock: APIService {
         acquireSessionIfNeededStub(completion)
     }
     
+    @FuncStub(APIServiceMock.fetchAuthCredentials) public var fetchAuthCredentialsStub
+    public func fetchAuthCredentials(completion: @escaping (AuthCredentialFetchingResult) -> Void) {
+        fetchAuthCredentialsStub(completion)
+    }
+    
     @PropertyStub(\APIServiceMock.serviceDelegate, initialGet: .crash) public var serviceDelegateStub
     public var serviceDelegate: APIServiceDelegate? { get { serviceDelegateStub() } set { serviceDelegateStub(newValue) } }
     
@@ -75,7 +83,7 @@ public struct APIServiceMock: APIService {
     @PropertyStub(\APIServiceMock.signUpDomain, initialGet: .crash) public var signUpDomainStub
     public var signUpDomain: String { signUpDomainStub() }
     
-    @FuncStub(APIServiceMock.request(method:path:parameters:headers:authenticated:autoRetry:customAuthCredential:nonDefaultTimeout:retryPolicy:jsonCompletion:)) public var requestJSONStub
+    @FuncStub(APIServiceMock.request(method:path:parameters:headers:authenticated:autoRetry:customAuthCredential:nonDefaultTimeout:retryPolicy:onDataTaskCreated:jsonCompletion:)) public var requestJSONStub
     public func request(method: HTTPMethod,
                         path: String,
                         parameters: Any?,
@@ -85,8 +93,9 @@ public struct APIServiceMock: APIService {
                         customAuthCredential: AuthCredential?,
                         nonDefaultTimeout: TimeInterval?,
                         retryPolicy: ProtonRetryPolicy.RetryMode,
+                        onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                         jsonCompletion: @escaping JSONCompletion) {
-        requestJSONStub(method, path, parameters, headers, authenticated, autoRetry, customAuthCredential, nonDefaultTimeout, retryPolicy, jsonCompletion)
+        requestJSONStub(method, path, parameters, headers, authenticated, autoRetry, customAuthCredential, nonDefaultTimeout, retryPolicy, onDataTaskCreated, jsonCompletion)
     }
     
     func requestWithoutGenerics(method: HTTPMethod,
@@ -98,8 +107,9 @@ public struct APIServiceMock: APIService {
                                 customAuthCredential: AuthCredential?,
                                 nonDefaultTimeout: TimeInterval?,
                                 retryPolicy: ProtonRetryPolicy.RetryMode,
+                                onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                                 decodableCompletion: @escaping AnyAPIDecodableResponseCompletion) { }
-    @FuncStub(APIServiceMock.requestWithoutGenerics(method:path:parameters:headers:authenticated:autoRetry:customAuthCredential:nonDefaultTimeout:retryPolicy:decodableCompletion:)) public var requestDecodableStub
+    @FuncStub(APIServiceMock.requestWithoutGenerics(method:path:parameters:headers:authenticated:autoRetry:customAuthCredential:nonDefaultTimeout:retryPolicy:onDataTaskCreated:decodableCompletion:)) public var requestDecodableStub
     public func request<T>(method: HTTPMethod,
                            path: String,
                            parameters: Any?,
@@ -109,8 +119,9 @@ public struct APIServiceMock: APIService {
                            customAuthCredential: AuthCredential?,
                            nonDefaultTimeout: TimeInterval?,
                            retryPolicy: ProtonRetryPolicy.RetryMode,
+                           onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                            decodableCompletion: @escaping DecodableCompletion<T>) where T: APIDecodableResponse {
-        requestDecodableStub(method, path, parameters, headers, authenticated, autoRetry, customAuthCredential, nonDefaultTimeout, retryPolicy, eraseGenerics(from: decodableCompletion))
+        requestDecodableStub(method, path, parameters, headers, authenticated, autoRetry, customAuthCredential, nonDefaultTimeout, retryPolicy, onDataTaskCreated, eraseGenerics(from: decodableCompletion))
     }
     
     @FuncStub(APIServiceMock.download(byUrl:destinationDirectoryURL:headers:authenticated:customAuthCredential:nonDefaultTimeout:retryPolicy:downloadTask:downloadCompletion:)) public var downloadStub
@@ -302,7 +313,7 @@ public final class URLSessionDataTaskMock: URLSessionDataTask {
     @PropertyStub(\URLSessionDataTask.priority, initialGet: 0) public var priorityStub
     override public var priority: Float { get { priorityStub() } set { priorityStub.fixture = newValue } }
     
-    @available(iOS 11.0, macOS 10.13, *)
+    @available(macOS 10.13, *)
     public final class macOS10_13 {
         public static let shared = macOS10_13()
         
@@ -315,22 +326,22 @@ public final class URLSessionDataTaskMock: URLSessionDataTask {
         @PropertyStub(\URLSessionDataTask.countOfBytesClientExpectsToReceive, initialGet: 0) public var countOfBytesClientExpectsToReceiveStub
     }
     
-    @available(iOS 11.0, macOS 10.13, *)
+    @available(macOS 10.13, *)
     override public var progress: Progress { macOS10_13.shared.progressStub() }
     
-    @available(iOS 11.0, macOS 10.13, *)
+    @available(macOS 10.13, *)
     override public var earliestBeginDate: Date? {
         get { macOS10_13.shared.earliestBeginDateStub() }
         set { macOS10_13.shared.earliestBeginDateStub.fixture = newValue }
     }
     
-    @available(iOS 11.0, macOS 10.13, *)
+    @available(macOS 10.13, *)
     override public var countOfBytesClientExpectsToSend: Int64 {
         get { macOS10_13.shared.countOfBytesClientExpectsToSendStub() }
         set { macOS10_13.shared.countOfBytesClientExpectsToSendStub.fixture = newValue }
     }
     
-    @available(iOS 11.0, macOS 10.13, *)
+    @available(macOS 10.13, *)
     override public var countOfBytesClientExpectsToReceive: Int64 {
         get { macOS10_13.shared.countOfBytesClientExpectsToReceiveStub() }
         set { macOS10_13.shared.countOfBytesClientExpectsToReceiveStub.fixture = newValue }
@@ -392,7 +403,7 @@ public extension APIServiceMock {
                       error: NSError?,
                       forPath: @escaping (String) -> Bool,
                       method requiredMethod: HTTPMethod? = nil) {
-        requestJSONStub.addToBody { counter, method, path, parameters, headers, authenticated, autoRetry, customAuthCredential, nonDefaultTimeout, retryPolicy, completion in
+        requestJSONStub.addToBody { counter, method, path, parameters, headers, authenticated, autoRetry, customAuthCredential, nonDefaultTimeout, retryPolicy, onDataTaskCreated, completion in
             let pathFits = forPath(path)
             let methodFits = requiredMethod.map { method == $0 } ?? true
             if pathFits && methodFits {

@@ -105,7 +105,7 @@ final class AccountDeletionWebView: AccountDeletionViewController {
         webViewConfiguration.userContentController = userContentController
         viewModel.setup(webViewConfiguration: webViewConfiguration)
         
-        if #available(iOS 13.0, macOS 10.15, *) {
+        if #available(macOS 10.15, *) {
             webViewConfiguration.defaultWebpagePreferences.preferredContentMode = .mobile
         }
         webViewConfiguration.websiteDataStore = WKWebsiteDataStore.default()
@@ -116,13 +116,13 @@ final class AccountDeletionWebView: AccountDeletionViewController {
         view.addSubview(webView)
         
         webView.translatesAutoresizingMaskIntoConstraints = false
-        if #available(iOS 11, macOS 11, *) {
+        if #available(macOS 11, *) {
             let layoutGuide = view.safeAreaLayoutGuide
             webView.leadingAnchor.constraint(equalTo: layoutGuide.leadingAnchor).isActive = true
             webView.trailingAnchor.constraint(equalTo: layoutGuide.trailingAnchor).isActive = true
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
             webView.topAnchor.constraint(equalTo: layoutGuide.topAnchor).isActive = true
-        } else {
+        } else { // macOS 10.13 - 10.15
             webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
             webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
             webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -133,9 +133,7 @@ final class AccountDeletionWebView: AccountDeletionViewController {
         loader.translatesAutoresizingMaskIntoConstraints = false
         
         #if canImport(UIKit)
-        if #available(iOS 13, *) {
-            loader.style = .large
-        }
+        loader.style = .large
         loader.centerInSuperview()
         loader.startAnimating()
         #endif

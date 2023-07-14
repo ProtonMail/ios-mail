@@ -97,7 +97,7 @@ final class SignInManagerTests: XCTestCase {
         updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, completion in
             completion(.success)
         }
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/settings") {
                 let response = SettingTestData.mailSettings
                 completion(nil, .success(response))
@@ -143,7 +143,7 @@ final class SignInManagerTests: XCTestCase {
         updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, completion in
             completion(.success)
         }
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/settings") {
                 let response = SettingTestData.mailSettings
                 completion(nil, .success(response))
@@ -185,7 +185,7 @@ final class SignInManagerTests: XCTestCase {
         let unlockExpectation = expectation(description: "Closure is called")
         unlockExpectation.isInverted = true
         let errorExpectation = expectation(description: "Closure should not be called")
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             completion(nil, .failure(.badResponse()))
         }
 
@@ -216,7 +216,7 @@ final class SignInManagerTests: XCTestCase {
         updateSwipeActionUseCaseMock.executeStub.bodyIs { _, _, completion in
             completion(.success)
         }
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("mail/v4/settings") {
                 let response = SettingTestData.mailSettings
                 completion(nil, .success(response))

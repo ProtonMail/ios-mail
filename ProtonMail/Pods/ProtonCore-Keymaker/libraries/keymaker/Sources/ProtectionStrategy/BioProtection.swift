@@ -90,14 +90,8 @@ public struct BioProtection: ProtectionStrategy {
     
     public func lock(value: MainKey) throws {
         let locked = try Locked<MainKey>(clearValue: value) { cleartext -> Data in
-            if #available(iOS 10.3, *) {
-                let encryptor = BioProtection.makeAsymmetricEncryptor(in: self.keychain)
-                return try encryptor.encrypt(Data(cleartext))
-            } else {
-                let ethemeral = BioProtection.makeSymmetricEncryptor(in: self.keychain)
-                let locked = try Locked<MainKey>(clearValue: cleartext, with: ethemeral)
-                return locked.encryptedValue
-            }
+            let encryptor = BioProtection.makeAsymmetricEncryptor(in: self.keychain)
+            return try encryptor.encrypt(Data(cleartext))
         }
         BioProtection.saveCyphertext(locked.encryptedValue, in: self.keychain)
         self.keychain.set(self.version.rawValue, forKey: Constants.versionKey)
@@ -106,26 +100,8 @@ public struct BioProtection: ProtectionStrategy {
     public func unlock(cypherBits: Data) throws -> MainKey {
         let locked = Locked<MainKey>(encryptedValue: cypherBits)
         let cleardata = try locked.unlock { cyphertext -> MainKey in
-            if #available(iOS 10.3, *) {
-                let encryptor = BioProtection.makeAsymmetricEncryptor(in: self.keychain)
-                return try encryptor.decrypt(cyphertext).bytes
-            } else {
-                let curVer: Version = Version.init(raw: self.keychain.string(forKey: Constants.versionKey))
-                do {
-                    switch curVer {
-                    case .lagcy:
-                        let ethemeral = BioProtection.makeSymmetricEncryptor(in: self.keychain)
-                        let key = try locked.lagcyUnlock(with: ethemeral)
-                        try self.lock(value: key)
-                        return key
-                    default:
-                        let ethemeral = BioProtection.makeSymmetricEncryptor(in: self.keychain)
-                        return try locked.unlock(with: ethemeral)
-                    }
-                } catch let error {
-                    throw error
-                }
-            }
+            let encryptor = BioProtection.makeAsymmetricEncryptor(in: self.keychain)
+            return try encryptor.decrypt(cyphertext).bytes
         }
         return cleardata
     }

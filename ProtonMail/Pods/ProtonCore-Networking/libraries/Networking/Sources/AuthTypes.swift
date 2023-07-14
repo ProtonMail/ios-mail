@@ -509,15 +509,18 @@ public enum AuthErrors: Error {
     case apiMightBeBlocked(message: String, originalError: ResponseError)
     case parsingError(Error)
     case notImplementedYet(String)
-
+    case wrongPassword
+    case switchToSSOError
+    case switchToSRPError
+    
     // case serverError(NSError) <- This case was removed. Use networkingError instead. If you're logic depends on previously available NSError, use .underlyingError property.
     // In case you wonder why I'm writing a comment and not use @available(*, unavailable): it's because at the time of writing,
     // this bug is still open: https://bugs.swift.org/browse/SR-4079 and it renders availability mark for enum cases useless.
 
     public var underlyingError: NSError {
         switch self {
-        case .emptyAuthResponse, .emptyAuthInfoResponse, .emptyServerSrpAuth,
-             .emptyClientSrpAuth, .emptyUserInfoResponse, .wrongServerProof, .notImplementedYet:
+        case .emptyAuthResponse, .emptyAuthInfoResponse, .emptyServerSrpAuth, .wrongPassword,
+             .emptyClientSrpAuth, .emptyUserInfoResponse, .wrongServerProof, .notImplementedYet, .switchToSSOError, .switchToSRPError:
             return self as NSError
         case .addressKeySetupError(let error), .parsingError(let error):
             return error as NSError
@@ -528,8 +531,8 @@ public enum AuthErrors: Error {
 
     public var codeInNetworking: Int {
         switch self {
-        case .emptyAuthResponse, .emptyAuthInfoResponse, .emptyServerSrpAuth,
-             .emptyClientSrpAuth, .emptyUserInfoResponse, .wrongServerProof, .notImplementedYet:
+        case .emptyAuthResponse, .emptyAuthInfoResponse, .emptyServerSrpAuth, .wrongPassword,
+             .emptyClientSrpAuth, .emptyUserInfoResponse, .wrongServerProof, .notImplementedYet, .switchToSSOError, .switchToSRPError:
             return (self as NSError).code
         case .addressKeySetupError(let error), .parsingError(let error):
             return (error as NSError).code
@@ -540,7 +543,7 @@ public enum AuthErrors: Error {
 
     public var localizedDescription: String {
         switch self {
-        case .emptyAuthResponse, .emptyAuthInfoResponse, .emptyServerSrpAuth, .emptyClientSrpAuth, .emptyUserInfoResponse, .wrongServerProof:
+        case .emptyAuthResponse, .emptyAuthInfoResponse, .emptyServerSrpAuth, .emptyClientSrpAuth, .emptyUserInfoResponse, .wrongServerProof, .wrongPassword, .switchToSSOError, .switchToSRPError:
             return (self as NSError).localizedDescription
         case .addressKeySetupError(let error), .parsingError(let error):
             return error.localizedDescription
@@ -556,6 +559,21 @@ public enum AuthErrors: Error {
             return true
         }
         return false
+    }
+}
+
+extension AuthErrors: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .emptyAuthResponse, .emptyAuthInfoResponse, .emptyServerSrpAuth, .emptyClientSrpAuth, .emptyUserInfoResponse, .wrongServerProof, .wrongPassword, .switchToSSOError, .switchToSRPError:
+            return "Authentication error"
+        case .addressKeySetupError(let error), .parsingError(let error):
+            return error.localizedDescription
+        case .networkingError(let error), .apiMightBeBlocked(_, let error):
+            return error.localizedDescription
+        case .externalAccountsNotSupported(let message, _, _), .notImplementedYet(let message):
+            return message
+        }
     }
 }
 

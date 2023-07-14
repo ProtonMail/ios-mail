@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import GoLibs
+import ProtonCore_CryptoGoInterface
 
 // public func SrpAuth(version hashVersion: Int,
 //                    userName: String,
@@ -40,7 +40,7 @@ import GoLibs
 public func SrpAuthForVerifier(_ password: String, _ signedModulus: String, _ rawSalt: Data) throws -> SrpAuth? {
     var error: NSError?
     let passwordSlice = password.data(using: .utf8)
-    let outAuth = SrpNewAuthForVerifier(passwordSlice, signedModulus, rawSalt, &error)
+    let outAuth = CryptoGo.SrpNewAuthForVerifier(passwordSlice, signedModulus, rawSalt, &error)
     if let err = error {
         throw err
     }
@@ -49,7 +49,7 @@ public func SrpAuthForVerifier(_ password: String, _ signedModulus: String, _ ra
 
 public func SrpRandomBits(_ count: Int) throws -> Data? {
     var error: NSError?
-    let bits = SrpRandomBits(count, &error)
+    let bits = CryptoGo.SrpRandomBits(count, &error)
     if let err = error {
         throw err
     }

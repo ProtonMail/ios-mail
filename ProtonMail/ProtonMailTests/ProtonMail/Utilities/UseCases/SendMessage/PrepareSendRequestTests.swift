@@ -15,9 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_TestingToolkit
@@ -32,7 +31,7 @@ final class PrepareSendRequestTests: XCTestCase {
     private var dummySenderKey: Key!
     private var dummyWrongSenderKey: Key!
     private let dummyRecipientEmailAddress = "recipient@example.com"
-    private var dummyRecipientPublicKey: CryptoKey = try! XCTUnwrap(CryptoKey(fromArmored: OpenPGPDefines.publicKey))
+    private var dummyRecipientPublicKey = try! XCTUnwrap(CryptoGo.CryptoKey(fromArmored: OpenPGPDefines.publicKey))
     private var dummyTimeToExpire: Int!
     private var dummyDeliveryTime: Date!
     private var dummySendDelay: Int!

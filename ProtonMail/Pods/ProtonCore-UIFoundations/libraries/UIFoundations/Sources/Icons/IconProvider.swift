@@ -94,7 +94,7 @@ public struct DarkModePreferingIcon {
     }
     
     #if canImport(SwiftUI)
-    @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+    @available(macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     public func darkModePrefering() -> Image {
         let nsImage: NSImage = darkModePrefering()
         return Image(nsImage: nsImage)

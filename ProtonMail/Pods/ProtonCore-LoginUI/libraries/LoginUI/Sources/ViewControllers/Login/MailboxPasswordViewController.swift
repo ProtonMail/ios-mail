@@ -140,11 +140,6 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
         scrollView.adjust(forKeyboardVisibilityNotification: nil)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        focusOnce(view: mailboxPasswordTextField)
-    }
-
     // MARK: - Keyboard
 
     private func setupNotifications() {

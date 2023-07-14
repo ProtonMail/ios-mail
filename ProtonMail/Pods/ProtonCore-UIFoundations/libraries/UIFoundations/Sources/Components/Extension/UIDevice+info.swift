@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 public extension UIDevice {
     /// A boolean value that indicates the device has a physical home button or not.
@@ -52,3 +54,5 @@ public extension UIDevice {
         return keyWindow.safeAreaInsets
     }()
 }
+
+#endif

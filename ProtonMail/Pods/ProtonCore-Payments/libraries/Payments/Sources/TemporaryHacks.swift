@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 #if DEBUG_CORE_INTERNALS
+import Foundation
 
 public enum TemporaryHacks {
     // Can be used only for core example app internal tests

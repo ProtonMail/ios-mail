@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
 
 public protocol AccountSwitchDelegate: AnyObject {
@@ -41,3 +43,5 @@ public extension AccountSwitchDelegate {
     func accountManagerWillAppear() {}
     func accountManagerWillDisappear() {}
 }
+
+#endif

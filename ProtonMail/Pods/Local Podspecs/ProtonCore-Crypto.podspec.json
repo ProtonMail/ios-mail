@@ -1,0 +1,93 @@
+{
+  "name": "ProtonCore-Crypto",
+  "version": "9.3.0",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me",
+    "magohamote": "cedric.rolland@proton.ch",
+    "siejkowski": "krzysztof.siejkowski@proton.ch",
+    "vjalencas": "victor.jalencas@proton.ch"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "9.3.0"
+  },
+  "platforms": {
+    "ios": "14.0",
+    "osx": "11.0"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "YES"
+  },
+  "dependencies": {
+    "ProtonCore-DataModel": [
+      "9.3.0"
+    ],
+    "ProtonCore-CryptoGoInterface": [
+      "9.3.0"
+    ]
+  },
+  "source_files": [
+    "libraries/Crypto/Sources/*.swift",
+    "libraries/Crypto/Sources/**/*.swift"
+  ],
+  "default_subspecs": [
+
+  ],
+  "testspecs": [
+    {
+      "name": "Tests-Crypto-Go",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-CryptoGoImplementation/Crypto-Go": [
+          "9.3.0"
+        ]
+      },
+      "source_files": "libraries/Crypto/Tests/*.swift",
+      "resources": "libraries/Crypto/Tests/Resources/**/*"
+    },
+    {
+      "name": "Tests-Crypto-patched-Go",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
+          "9.3.0"
+        ]
+      },
+      "source_files": "libraries/Crypto/Tests/*.swift",
+      "resources": "libraries/Crypto/Tests/Resources/**/*"
+    },
+    {
+      "name": "Tests-Crypto+VPN-patched-Go",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
+          "9.3.0"
+        ]
+      },
+      "source_files": "libraries/Crypto/Tests/*.swift",
+      "resources": "libraries/Crypto/Tests/Resources/**/*"
+    },
+    {
+      "name": "Tests-Crypto+Search-Go",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
+          "9.3.0"
+        ]
+      },
+      "source_files": "libraries/Crypto/Tests/*.swift",
+      "resources": "libraries/Crypto/Tests/Resources/**/*"
+    }
+  ],
+  "swift_version": "5.6"
+}

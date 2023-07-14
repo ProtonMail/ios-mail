@@ -45,7 +45,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         let expectation1 = expectation(description: "Closure is called")
         swipeActionCacheStub.rightToLeftSwipeActionType = .archive
         swipeActionCacheStub.leftToRightSwipeActionType = .archive
-        firstUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        firstUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swipeleft") {
                 completion(nil, .success(["Code": 1000]))
             } else {
@@ -53,7 +53,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
                 completion(nil, .failure(.badResponse()))
             }
         }
-        secondUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        secondUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swipeleft") {
                 completion(nil, .success(["Code": 1000]))
             } else {
@@ -105,7 +105,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         let expectation1 = expectation(description: "Closure is called")
         swipeActionCacheStub.rightToLeftSwipeActionType = .archive
         swipeActionCacheStub.leftToRightSwipeActionType = .archive
-        firstUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        firstUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swiperight") {
                 completion(nil, .success(["Code": 1000]))
             } else {
@@ -113,7 +113,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
                 completion(nil, .failure(.badResponse()))
             }
         }
-        secondUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        secondUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swiperight") {
                 completion(nil, .success(["Code": 1000]))
             } else {

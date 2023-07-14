@@ -142,7 +142,12 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
 
     func presentPlanUpgrade() {
         guard let user = user else { return }
-        self.paymentsUI = PaymentsUI(payments: user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
+        self.paymentsUI = PaymentsUI(
+            payments: user.payments,
+            clientApp: .mail,
+            shownPlanNames: Constants.shownPlanNames,
+            customization: .empty
+        )
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
                                          backendFetch: true) { _ in }
     }

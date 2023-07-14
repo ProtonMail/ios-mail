@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 import ProtonCore_Foundations
 
@@ -342,7 +344,7 @@ public class PMTextField: UIView, AccessibleView {
 
     // MARK: - Setup
 
-    override init(frame: CGRect) {
+    override public init(frame: CGRect) {
         super.init(frame: frame)
         load()
     }
@@ -480,3 +482,5 @@ extension PMTextField: PMInternalTextFieldDelegate {
         textFieldDidChange(textField: textField)
     }
 }
+
+#endif

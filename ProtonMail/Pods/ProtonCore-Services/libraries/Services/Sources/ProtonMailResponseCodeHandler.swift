@@ -19,43 +19,53 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+import Foundation
+import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
 import ProtonCore_Utilities
 
 class ProtonMailResponseCodeHandler {
-
     // swiftlint:disable:next function_parameter_count
     func handleProtonResponseCode<T>(
-        _ task: URLSessionDataTask?,
-        _ response: Either<JSONDictionary, ResponseError>,
-        _ responseCode: Int,
-        _ method: HTTPMethod,
-        _ path: String,
-        _ parameters: Any?,
-        _ headers: [String: Any]?,
-        _ authenticated: Bool,
-        _ authRetry: Bool,
-        _ authRetryRemains: Int,
-        _ authCredential: AuthCredential?,
-        _ nonDefaultTimeout: TimeInterval?,
-        _ retryPolicy: ProtonRetryPolicy.RetryMode,
-        _ completion: PMAPIService.APIResponseCompletion<T>,
-        _ humanVerificationHandler: (HTTPMethod, String, Any?, [String: Any]?, Bool, Bool, Int, AuthCredential?, TimeInterval?, ProtonRetryPolicy.RetryMode, URLSessionDataTask?, JSONDictionary, PMAPIService.APIResponseCompletion<T>) -> Void,
-        _ deviceVerificationHandler: (HTTPMethod, String, Any?, [String: Any]?, Bool, Bool, Int, AuthCredential?, TimeInterval?, ProtonRetryPolicy.RetryMode, URLSessionDataTask?, JSONDictionary, PMAPIService.APIResponseCompletion<T>) -> Void,
-        _ forceUpgradeHandler: (String?) -> Void) where T: APIDecodableResponse {
+        responseHandlerData: PMResponseHandlerData,
+        response: Either<JSONDictionary, ResponseError>,
+        responseCode: Int,
+        completion: PMAPIService.APIResponseCompletion<T>,
+        humanVerificationHandler: (PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>, JSONDictionary) -> Void,
+        deviceVerificationHandler: (PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>, JSONDictionary) -> Void,
+        missingScopesHandler: (String, PMResponseHandlerData, PMAPIService.APIResponseCompletion<T>) -> Void,
+        forceUpgradeHandler: (String?) -> Void) where T: APIDecodableResponse {
         if responseCode == APIErrorCode.humanVerificationRequired {
             // human verification required
-            humanVerificationHandler(method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, task, response.responseDictionary, completion)
+            humanVerificationHandler(responseHandlerData, completion, response.responseDictionary)
         } else if responseCode == APIErrorCode.deviceVerificationRequired {
-            deviceVerificationHandler(method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, task, response.responseDictionary, completion)
+            deviceVerificationHandler(responseHandlerData, completion, response.responseDictionary)
+        } else if isMissingScopeError(response: response) && FeatureFactory.shared.isEnabled(.missingScopes), let authCredential = responseHandlerData.customAuthCredential {
+            missingScopesHandler(
+                authCredential.userName,
+                responseHandlerData,
+                completion
+            )
         } else {
             if responseCode == APIErrorCode.badAppVersion || responseCode == APIErrorCode.badApiVersion {
                 forceUpgradeHandler(response.errorMessage)
             }
             switch response {
-            case .left(let jsonDictionary): completion.call(task: task, response: .left(jsonDictionary))
-            case .right(let responseError): completion.call(task: task, error: responseError as NSError)
+            case .left(let jsonDictionary): completion.call(task: responseHandlerData.task, response: .left(jsonDictionary))
+            case .right(let responseError): completion.call(task: responseHandlerData.task, error: responseError as NSError)
             }
         }
+    }
+    
+    private func isMissingScopeError(response: Either<JSONDictionary, ResponseError>) -> Bool {
+        if case let .right(error) = response, case .missingScopes = error.details {
+            return true
+        }
+       
+        if case let .left(error) = response, case .missingScopes = error.details {
+            return true
+        }
+        
+        return false
     }
 }

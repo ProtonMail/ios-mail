@@ -197,33 +197,44 @@ extension AlamofireSession {
 
 extension AlamofireSession {
     
-    public func request(with sessionRequest: SessionRequest, completion: @escaping JSONResponseCompletion) {
+    public func request(with sessionRequest: SessionRequest,
+                        onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
+                        completion: @escaping JSONResponseCompletion) {
         guard let alamofireRequest = sessionRequest as? AlamofireRequest else {
             completion(nil, .failure(.configurationError))
             return
         }
-        let (taskOut, dataRequest) = request(alamofireRequest: alamofireRequest)
+        let (taskOut, dataRequest) = request(alamofireRequest: alamofireRequest,
+                                             onDataTaskCreated: onDataTaskCreated)
         finalizeJSONResponse(dataRequest: dataRequest, taskOut: taskOut, completion: completion)
     }
     
     public func request<T>(
-        with sessionRequest: SessionRequest, jsonDecoder: JSONDecoder?, completion: @escaping DecodableResponseCompletion<T>
+        with sessionRequest: SessionRequest,
+        jsonDecoder: JSONDecoder?,
+        onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
+        completion: @escaping DecodableResponseCompletion<T>
     ) where T: SessionDecodableResponse {
         guard let alamofireRequest = sessionRequest as? AlamofireRequest else {
             completion(nil, .failure(.configurationError))
             return
         }
-        let (taskOut, dataRequest) = request(alamofireRequest: alamofireRequest)
+        let (taskOut, dataRequest) = request(alamofireRequest: alamofireRequest,
+                                             onDataTaskCreated: onDataTaskCreated)
         finalizeDecodableResponse(dataRequest: dataRequest, taskOut: taskOut, jsonDecoder: jsonDecoder, completion: completion)
     }
     
-    private func request(alamofireRequest: AlamofireRequest) -> (() -> URLSessionDataTask?, DataRequest) {
+    private func request(
+        alamofireRequest: AlamofireRequest, onDataTaskCreated: @escaping (URLSessionDataTask) -> Void
+    ) -> (() -> URLSessionDataTask?, DataRequest) {
         alamofireRequest.updateHeader()
         var taskOut: URLSessionDataTask?
         // Added: call Validate after request created. this is the key to trigger retry logic when received none 2xx http code.
         //    - default valid httpcode: 200-300
         let dataRequest = self.session.request(alamofireRequest, interceptor: alamofireRequest.interceptor).validate(statusCode: 200..<300).onURLSessionTaskCreation { task in
-            taskOut = task as? URLSessionDataTask
+            guard let dataTask = task as? URLSessionDataTask else { return }
+            taskOut = dataTask
+            onDataTaskCreated(dataTask)
         }
         return ({ taskOut }, dataRequest)
     }

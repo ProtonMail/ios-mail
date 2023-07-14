@@ -34,6 +34,7 @@ class HumanCheckCoordinator {
     private let clientApp: ClientApp
     private var destination: String = ""
     private var title: String?
+    private let inAppTheme: () -> InAppTheme
 
     /// View controllers
     private let rootViewController: UIViewController?
@@ -50,12 +51,13 @@ class HumanCheckCoordinator {
 
     // MARK: - Public methods
 
-    init(rootViewController: UIViewController?, isModalPresentation: Bool = true, apiService: APIService, parameters: HumanVerifyParameters, clientApp: ClientApp) {
+    init(rootViewController: UIViewController?, isModalPresentation: Bool = true, apiService: APIService, parameters: HumanVerifyParameters, inAppTheme: @escaping () -> InAppTheme, clientApp: ClientApp) {
         self.rootViewController = rootViewController
         self.isModalPresentation = isModalPresentation
         self.apiService = apiService
         self.clientApp = clientApp
         self.title = parameters.title
+        self.inAppTheme = inAppTheme
         
         self.humanVerifyViewModel = HumanVerifyViewModel(api: apiService, startToken: parameters.startToken, methods: parameters.methods, clientApp: clientApp)
         self.humanVerifyViewModel.onVerificationCodeBlock = { [weak self] verificationCodeBlock in
@@ -79,7 +81,7 @@ class HumanCheckCoordinator {
     // MARK: - Private methods
     
     private func instantiateViewController() {
-        initialViewController = instantiateVC(method: HumanVerifyViewController.self, identifier: "HumanVerifyViewController")
+        initialViewController = instantiateVC(method: HumanVerifyViewController.self, identifier: "HumanVerifyViewController", inAppTheme: inAppTheme)
         initialViewController?.viewModel = humanVerifyViewModel
         initialViewController?.delegate = self
         initialViewController?.isModalPresentation = isModalPresentation
@@ -92,6 +94,7 @@ class HumanCheckCoordinator {
             let nav = DarkModeAwareNavigationViewController()
             nav.modalPresentationStyle = .fullScreen
             nav.viewControllers = [viewController]
+            nav.overrideUserInterfaceStyle = inAppTheme().userInterfaceStyle
             if isModalPresentation {
                 nav.hideBackground()
                 rootViewController.present(nav, animated: true)
@@ -110,6 +113,7 @@ class HumanCheckCoordinator {
             let nav = DarkModeAwareNavigationViewController()
             nav.modalPresentationStyle = .fullScreen
             nav.viewControllers = [viewController]
+            nav.overrideUserInterfaceStyle = inAppTheme().userInterfaceStyle
             if isModalPresentation {
                 nav.hideBackground()
                 topViewController?.present(nav, animated: true)
@@ -124,7 +128,7 @@ class HumanCheckCoordinator {
     }
     
     private var getHelpViewController: HVHelpViewController {
-        let helpViewController = instantiateVC(method: HVHelpViewController.self, identifier: "HumanCheckHelpViewController")
+        let helpViewController = instantiateVC(method: HVHelpViewController.self, identifier: "HumanCheckHelpViewController", inAppTheme: inAppTheme)
         helpViewController.delegate = self
         helpViewController.viewModel = HelpViewModel(url: apiService.humanDelegate?.getSupportURL(), clientApp: clientApp)
         return helpViewController
@@ -187,9 +191,12 @@ extension HumanCheckCoordinator: HVHelpViewControllerDelegate {
 }
 
 extension HumanCheckCoordinator {
-    private func instantiateVC <T: UIViewController>(method: T.Type, identifier: String) -> T {
+    private func instantiateVC<T: UIViewController>(
+        method: T.Type, identifier: String, inAppTheme: () -> InAppTheme
+    ) -> T {
         let storyboard = UIStoryboard.init(name: "HumanVerify", bundle: HVCommon.bundle)
         let customViewController = storyboard.instantiateViewController(withIdentifier: identifier) as! T
+        customViewController.overrideUserInterfaceStyle = inAppTheme().userInterfaceStyle
         return customViewController
     }
 }

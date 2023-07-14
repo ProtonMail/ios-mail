@@ -32,25 +32,7 @@ import ProtonCore_Utilities
 
 extension PMAPIService {
     
-    static var noAuthDelegateError: NSError { .protonMailError(0, localizedDescription: "AuthDelegate is required") }
-
-    static var emptyTokenError: NSError { .protonMailError(0, localizedDescription: "Empty token") }
-
-    enum AuthCredentialFetchingResult: Equatable {
-        case found(credentials: AuthCredential)
-        case notFound
-        case wrongConfigurationNoDelegate
-
-        var toNSError: NSError? {
-            switch self {
-            case .found: return nil
-            case .notFound: return emptyTokenError
-            case .wrongConfigurationNoDelegate: return noAuthDelegateError
-            }
-        }
-    }
-    
-    func fetchAuthCredentials(completion: @escaping (AuthCredentialFetchingResult) -> Void) {
+    public func fetchAuthCredentials(completion: @escaping (AuthCredentialFetchingResult) -> Void) {
         performSeriallyInAuthCredentialQueue { continuation in
             self.fetchAuthCredentialsWithoutSynchronization(continuation: continuation, completion: completion)
         }
@@ -98,7 +80,7 @@ extension PMAPIService {
                         self.finalize(result: .foundExisting(credentials),
                                       continuation: continuation, completion: completion)
                     case .wrongConfigurationNoDelegate:
-                        self.finalize(result: .triedAcquiringNew(.wrongConfigurationNoDelegate(PMAPIService.noAuthDelegateError)),
+                        self.finalize(result: .triedAcquiringNew(.wrongConfigurationNoDelegate(AuthCredentialFetchingResult.noAuthDelegateError)),
                                       continuation: continuation, completion: completion)
                     case .notFound:
                         self.acquireSessionWithoutSynchronization(
@@ -154,19 +136,30 @@ extension PMAPIService {
                                                              deviceFingerprints: ChallengeProperties,
                                                              continuation: @escaping () -> Void,
                                                              completion: @escaping (AuthCredentialRefreshingResult) -> Void) {
+        
+        loggingDelegate?.accessTokenRefreshDidStart(for: sessionUID, sessionType: .from(credentialsCausing401))
 
         guard let authDelegate = authDelegate else {
+            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                       sessionType: .from(credentialsCausing401),
+                                                       error: .noAuthDelegate)
             reportRefreshFailure(authenticated: !credentialsCausing401.isForUnauthenticatedSession)
             finalize(result: .wrongConfigurationNoDelegate, continuation: continuation, completion: completion)
             return
         }
         
         guard let currentCredentials = authDelegate.authCredential(sessionUID: sessionUID) else {
+            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                       sessionType: .from(credentialsCausing401),
+                                                       error: .noAccessTokenToBeRefreshed)
             finalize(result: .noCredentialsToBeRefreshed, continuation: continuation, completion: completion)
             return
         }
         
         guard currentCredentials.accessToken == credentialsCausing401.accessToken else {
+            loggingDelegate?.accessTokenRefreshDidSucceed(for: sessionUID,
+                                                          sessionType: .from(currentCredentials),
+                                                          reason: .freshAccessTokenAlreadyAvailable)
             // we copy credentials to ensure updating the instance in authDelegate doesn't influence the refresh logic
             finalize(result: .refreshed(credentials: AuthCredential(copying: currentCredentials)),
                      continuation: continuation,
@@ -175,6 +168,9 @@ extension PMAPIService {
         }
 
         guard refreshCounter > 0 else {
+            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                       sessionType: .from(credentialsCausing401),
+                                                       error: .tooManyRefreshingAttempts)
             finalize(result: .tooManyRefreshingAttempts, continuation: continuation, completion: completion)
             return
         }
@@ -213,6 +209,9 @@ extension PMAPIService {
 
         switch result {
         case .success(let credential):
+            loggingDelegate?.accessTokenRefreshDidSucceed(for: sessionUID,
+                                                          sessionType: .from(credential),
+                                                          reason: .accessTokenRefreshed)
             authDelegate?.onUpdate(credential: credential, sessionUID: sessionUID)
             setSessionUID(uid: credential.UID)
             continuation()
@@ -220,6 +219,10 @@ extension PMAPIService {
 
         case .failure(.networkingError(let responseError))
             where credentialsCausing401.isForUnauthenticatedSession && (responseError.httpCode == 422 || responseError.httpCode == 400):
+            
+            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                       sessionType: .from(credentialsCausing401),
+                                                       error: .unauthSessionInvalidatedAndRefetched)
 
             authDelegate?.onUnauthenticatedSessionInvalidated(sessionUID: sessionUID)
 
@@ -238,6 +241,11 @@ extension PMAPIService {
 
         case .failure(.networkingError(let responseError))
             where !credentialsCausing401.isForUnauthenticatedSession && (responseError.httpCode == 422 || responseError.httpCode == 400):
+            
+            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                       sessionType: .from(credentialsCausing401),
+                                                       error: .refreshFailedWithLogout)
+            
             reportRefreshFailure(authenticated: !credentialsCausing401.isForUnauthenticatedSession)
 
             authDelegate?.onAuthenticatedSessionInvalidated(sessionUID: sessionUID)
@@ -247,6 +255,11 @@ extension PMAPIService {
 
             // should we bring this logic over? I'm really unsure
         case .failure(.networkingError(let responseError)) where responseError.underlyingError?.code == APIErrorCode.AuthErrorCode.localCacheBad:
+            
+            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                       sessionType: .from(credentialsCausing401),
+                                                       error: .localCacheBadRefreshRetried)
+            
             reportRefreshFailure(authenticated: !credentialsCausing401.isForUnauthenticatedSession)
             continuation()
             refreshAuthCredential(credentialsCausing401: credentialsCausing401,
@@ -257,6 +270,9 @@ extension PMAPIService {
 
             // if the credentials refresh fails with error OTHER THAN 400 or 422, return error
         case .failure(let error):
+            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                       sessionType: .from(credentialsCausing401),
+                                                       error: .refreshFailedWithAuthError(error))
             reportRefreshFailure(authenticated: !credentialsCausing401.isForUnauthenticatedSession)
             continuation()
             completion(.refreshingError(underlyingError: error))
@@ -273,6 +289,9 @@ extension PMAPIService {
         
         switch result {
         case .success(let credential):
+            loggingDelegate?.accessTokenRefreshDidSucceed(for: sessionUID,
+                                                          sessionType: .from(credential),
+                                                          reason: .accessTokenRefreshed)
             authDelegate?.onUpdate(credential: credential, sessionUID: sessionUID)
             setSessionUID(uid: credential.UID)
             // originally, this completion block was called on the main queue, but I think it's not required anymore
@@ -282,11 +301,18 @@ extension PMAPIService {
             // according to documentation 422 indicates expired refresh token and 400 indicates invalid refresh token
             // both situations should result in user logout
         case .failure(.networkingError(let responseError)) where responseError.httpCode == 422 || responseError.httpCode == 400:
+            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                       sessionType: .from(credentialsCausing401),
+                                                       error: .legacyRefreshFailedWithLogout)
             authDelegate?.onAuthenticatedSessionInvalidated(sessionUID: sessionUID)
             continuation()
             completion(.logout(underlyingError: responseError))
 
-        case .failure(.networkingError(let responseError)) where responseError.underlyingError?.code == APIErrorCode.AuthErrorCode.localCacheBad:
+        case .failure(.networkingError(let responseError))
+            where responseError.underlyingError?.code == APIErrorCode.AuthErrorCode.localCacheBad:
+            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                       sessionType: .from(credentialsCausing401),
+                                                       error: .localCacheBadRefreshRetried)
             // the original logic: we're just refreshing again
             continuation()
             refreshAuthCredential(credentialsCausing401: credentialsCausing401,
@@ -295,6 +321,9 @@ extension PMAPIService {
                                   deviceFingerprints: deviceFingerprints,
                                   completion: completion)
         case .failure(let error):
+            loggingDelegate?.accessTokenRefreshDidFail(for: sessionUID,
+                                                       sessionType: .from(credentialsCausing401),
+                                                       error: .refreshFailedWithAuthError(error))
             continuation()
             completion(.refreshingError(underlyingError: error))
         }
@@ -328,6 +357,7 @@ extension PMAPIService {
                                                fetchingCredentialsResult: .notFound,
                                                nonDefaultTimeout: nil,
                                                retryPolicy: .background,
+                                               onDataTaskCreated: { _ in },
                                                completion: .right({ (task, result: Result<SessionsRequestResponse, APIError>) in
             self.fetchAuthCredentialCompletionBlockBackgroundQueue.async {
                 self.handleSessionAcquiringResult(

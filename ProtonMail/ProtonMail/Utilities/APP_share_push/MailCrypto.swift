@@ -20,10 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
-import GoLibs
 import CryptoKit
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Log
 
@@ -53,7 +52,7 @@ class MailCrypto {
         let keyType = "x25519"
         var error: NSError?
 
-        guard let unlockedKey = CryptoGenerateKey(username, email, keyType, 0, &error) else {
+        guard let unlockedKey = CryptoGo.CryptoGenerateKey(username, email, keyType, 0, &error) else {
             throw CryptoError.failedGeneratingKeypair(error)
         }
 
@@ -94,7 +93,7 @@ class MailCrypto {
 extension UnArmoredKey {
     func armor() throws -> ArmoredKey {
         var error: NSError?
-        let result = ArmorArmorKey(value, &error)
+        let result = CryptoGo.ArmorArmorKey(value, &error)
         if let error = error {
             throw error
         } else {

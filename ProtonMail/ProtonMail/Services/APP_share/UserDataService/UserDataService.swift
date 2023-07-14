@@ -20,12 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
 import PromiseKit
-import GoLibs
 import OpenPGP
 import ProtonCore_APIClient
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
@@ -310,11 +309,10 @@ class UserDataService: Service {
 
                     let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthAPI.Router.info(username: _username)))
                     let authVersion = info.version
-                    guard let modulus = info.modulus,
-                          let ephemeral = info.serverEphemeral, let salt = info.salt,
-                          let session = info.srpSession else {
-                        throw UpdatePasswordError.invalideAuthInfo.error
-                    }
+                    let modulus = info.modulus
+                    let ephemeral = info.serverEphemeral
+                    let salt = info.salt
+                    let session = info.srpSession
 
                     if authVersion <= 2 && !forceRetry {
                         forceRetry = true
@@ -451,9 +449,10 @@ class UserDataService: Service {
                     // get auto info
                     let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthAPI.Router.info(username: _username)))
                     let authVersion = info.version
-                    guard let modulus = info.modulus, let ephemeral = info.serverEphemeral, let salt = info.salt, let session = info.srpSession else {
-                        throw UpdatePasswordError.invalideAuthInfo.error
-                    }
+                    let modulus = info.modulus
+                    let ephemeral = info.serverEphemeral
+                    let salt = info.salt
+                    let session = info.srpSession
 
                     if authVersion <= 2 && !forceRetry {
                         forceRetry = true
@@ -591,9 +590,10 @@ class UserDataService: Service {
                     // get auto info
                     let info: AuthInfoResponse = try `await`(self.apiService.run(route: AuthAPI.Router.info(username: _username)))
                     let authVersion = info.version
-                    guard let modulus = info.modulus, let ephemeral = info.serverEphemeral, let salt = info.salt, let session = info.srpSession else {
-                        throw UpdateNotificationEmailError.invalideAuthInfo.error
-                    }
+                    let modulus = info.modulus
+                    let ephemeral = info.serverEphemeral
+                    let salt = info.salt
+                    let session = info.srpSession
 
                     if authVersion <= 2 && !forceRetry {
                         forceRetry = true

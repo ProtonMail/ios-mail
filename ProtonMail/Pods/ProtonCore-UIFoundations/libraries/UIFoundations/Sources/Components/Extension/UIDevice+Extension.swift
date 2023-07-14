@@ -21,6 +21,8 @@
 
 // swiftlint:disable identifier_name
 
+#if os(iOS)
+
 import Foundation
 import UIKit
 
@@ -69,3 +71,5 @@ public extension UIDevice {
         }
     }
 }
+
+#endif

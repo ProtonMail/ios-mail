@@ -45,6 +45,7 @@ public struct ResponseError: Error, Equatable {
 
     public let userFacingMessage: String?
     public let underlyingError: NSError?
+
     public var bestShotAtReasonableErrorCode: Int {
         responseCode ?? httpCode ?? underlyingError?.code ?? (self as NSError).code
     }
@@ -70,14 +71,19 @@ public struct ResponseError: Error, Equatable {
 
 extension ResponseError: LocalizedError {
     public var errorDescription: String? {
+        let httpCodeMessage = httpCode.map { " (http code \($0))" } ?? ""
         if let userFacingMessage = userFacingMessage {
             return userFacingMessage
+        } else if let underlyingError = underlyingError,
+                    let underlyingResponseError = underlyingError as? ResponseError,
+                    underlyingResponseError.httpCode != nil {
+            return underlyingResponseError.errorDescription
         } else if let underlyingError = underlyingError {
-            return underlyingError.localizedDescription
+            return "\(underlyingError.localizedDescription)\(httpCodeMessage)"
         } else if isNetworkIssueError {
             return CoreString._net_connection_error
         } else {
-            return nil
+            return "Network error\(httpCodeMessage)"
         }
     }
 }
@@ -103,9 +109,7 @@ public extension ResponseType {
         responseObject apiRes: T, originalResponse response: URLResponse?, responseDict: [String: Any]?, error originalError: NSError?
     ) -> (T, ResponseError?) where T: ResponseType {
         
-        var error = originalError
-
-        if let error = error {
+        if let error = originalError {
             PMLog.debug("\(error)")
             let networkingError = apiRes.parseTaskError(response: response, taskError: error, responseDict: responseDict)
             return (apiRes, networkingError)

@@ -92,7 +92,7 @@ final class CreateAddressViewModel {
                 success()
             case let .failure(error):
                 self?.isLoading.value = false
-                self?.error.publish((error.userFacingMessageInLogin, error.codeInLogin, .availabilityError(error)))
+                self?.error.publish((error.localizedDescription, error.codeInLogin, .availabilityError(error)))
             }
         }
     }
@@ -149,7 +149,7 @@ final class CreateAddressViewModel {
             switch result {
             case let .success(status):
                 switch status {
-                case .ask2FA, .askSecondPassword, .chooseInternalUsernameAndCreateInternalAddress:
+                case .ask2FA, .askSecondPassword, .chooseInternalUsernameAndCreateInternalAddress, .ssoChallenge:
                     self?.isLoading.value = false
                 case let .finished(data):
                     self?.finished.publish(data)

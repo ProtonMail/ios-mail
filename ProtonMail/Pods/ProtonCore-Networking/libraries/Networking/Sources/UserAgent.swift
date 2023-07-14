@@ -20,6 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public final class UserAgent {
     public static let `default`: UserAgent = UserAgent()

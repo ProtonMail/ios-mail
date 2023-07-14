@@ -95,7 +95,7 @@ final class Container {
     
     func makeLoginViewModel() -> LoginViewModel {
         challenge.reset()
-        return LoginViewModel(login: login, challenge: challenge)
+        return LoginViewModel(api: api, login: login, challenge: challenge, clientApp: clientApp)
     }
     
     func makeCreateAddressViewModel(data: CreateAddressData, defaultUsername: String?) -> CreateAddressViewModel {
@@ -106,8 +106,8 @@ final class Container {
         return MailboxPasswordViewModel(login: login)
     }
     
-    func makeTwoFactorViewModel() -> TwoFactorViewModel {
-        return TwoFactorViewModel(login: login)
+    func makeTwoFactorViewModel(username: String, password: String) -> TwoFactorViewModel {
+        return TwoFactorViewModel(login: login, username: username, password: password)
     }
     
     // MARK: Signup view models
@@ -142,8 +142,8 @@ final class Container {
                                 screenVariant: screenVariant, clientApp: clientApp)
     }
     
-    func makePaymentsCoordinator(for iaps: ListOfIAPIdentifiers, shownPlanNames: ListOfShownPlanNames, reportBugAlertHandler: BugAlertHandler) -> PaymentsManager {
-        let paymentsManager = PaymentsManager(apiService: api, iaps: iaps, shownPlanNames: shownPlanNames, clientApp: clientApp, reportBugAlertHandler: reportBugAlertHandler)
+    func makePaymentsCoordinator(for iaps: ListOfIAPIdentifiers, shownPlanNames: ListOfShownPlanNames, customization: PaymentsUICustomizationOptions, reportBugAlertHandler: BugAlertHandler) -> PaymentsManager {
+        let paymentsManager = PaymentsManager(apiService: api, iaps: iaps, shownPlanNames: shownPlanNames, clientApp: clientApp, customization: customization, reportBugAlertHandler: reportBugAlertHandler)
         self.paymentsManager = paymentsManager
         return paymentsManager
     }

@@ -19,13 +19,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
+import ProtonCore_TestingToolkit_UnitTests_Core
+#endif
 import TrustKit
 import ProtonCore_Networking
 
 public typealias AnyDecodableResponseCompletion = (_ task: URLSessionDataTask?, _ result: Result<Any, SessionResponseError>) -> Void
 
 public final class SessionMock: Session {
-
+    
     public init() {}
     
     private func eraseGenerics<T>(from completion: @escaping DecodableResponseCompletion<T>) -> AnyDecodableResponseCompletion where T: SessionDecodableResponse {
@@ -40,17 +43,23 @@ public final class SessionMock: Session {
         try generateStub(method, urlString, parameters, timeout, retryPolicy)
     }
     
-    @FuncStub(SessionMock.request(with:completion:)) public var requestJSONStub
-    public func request(with request: SessionRequest, completion: @escaping JSONResponseCompletion) {
-        requestJSONStub(request, completion)
+    @FuncStub(SessionMock.request(with:onDataTaskCreated:completion:)) public var requestJSONStub
+    public func request(with request: ProtonCore_Networking.SessionRequest,
+                        onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
+                        completion: @escaping JSONResponseCompletion) {
+        requestJSONStub(request, onDataTaskCreated, completion)
     }
     
-    private func genericRequestErased(with request: SessionRequest, jsonDecoder: JSONDecoder?, completion: @escaping AnyDecodableResponseCompletion) {}
-    @FuncStub(SessionMock.genericRequestErased(with:jsonDecoder:completion:)) public var requestDecodableStub
-    public func request<T>(with request: SessionRequest,
+    private func genericRequestErased(with request: SessionRequest,
+                                      jsonDecoder: JSONDecoder?,
+                                      onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
+                                      completion: @escaping AnyDecodableResponseCompletion) {}
+    @FuncStub(SessionMock.genericRequestErased(with:jsonDecoder:onDataTaskCreated:completion:)) public var requestDecodableStub
+    public func request<T>(with request: ProtonCore_Networking.SessionRequest,
                            jsonDecoder: JSONDecoder?,
-                           completion: @escaping DecodableResponseCompletion<T>) where T: SessionDecodableResponse {
-        requestDecodableStub(request, jsonDecoder, eraseGenerics(from: completion))
+                           onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
+                           completion: @escaping DecodableResponseCompletion<T>) where T: Decodable {
+        requestDecodableStub(request, jsonDecoder, onDataTaskCreated, eraseGenerics(from: completion))
     }
     
     @FuncStub(SessionMock.download(with:destinationDirectoryURL:completion:)) public var downloadStub

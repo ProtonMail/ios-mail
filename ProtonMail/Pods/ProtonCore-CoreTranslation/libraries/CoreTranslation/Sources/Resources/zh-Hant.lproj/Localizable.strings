@@ -1,3 +1,6 @@
+/* Plan details number of email aliases message */
+"%@ email aliases" = "%@電子信箱別名";
+
 /* Plan details storage */
 "%@ storage" = "%@ 雲端儲存";
 
@@ -12,6 +15,9 @@
 
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "復原方法可協助您存取帳號，以因應忘記密碼或被鎖在帳號之外。";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "帳號已刪除\n正在登出…";
 
 /* *
  *  Login errors */
@@ -40,6 +46,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple 通報我們您已升等服務方案，但缺少部份技術資料。煩請儘速填寫錯誤回報，以利客戶支援團隊及時與您聯繫。";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple 通報我們您已升等服務方案，但我們偵測到您同時亦登出帳號。";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "您確定要登出 %@ 嗎？";
@@ -106,9 +115,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "繼續";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "以既有電郵位址創建 Proton 帳號";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "另行創建安全防護的 Proton Mail 電郵位址";
 
@@ -118,7 +124,7 @@
 /* Create user failed error */
 "Create user failed" = "無法創建新使用者";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "創建您的密碼";
 
 /* *
@@ -196,6 +202,9 @@
 /* Enter email code label */
 "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "請輸入傳送到 %@ 的驗證碼。若您在收件匣中找不到該電郵，請查看垃圾郵件資料夾。";
 
+/* Title of a page asking to enter your password. */
+"Enter your password" = "請輸入您的密碼";
+
 /* Login screen subtitle */
 "Enter your Proton Account details." = "輸入您的 Proton 帳號詳細資料。";
 
@@ -208,6 +217,9 @@
 
 /* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
 "for %@" = "為期 %@";
+
+/* Description of the Pass plan */
+"For next-level password management and identity protection." = "使用密碼管理及身分保護以增加安性。。";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "為保障您帳號安全，我們必須驗證您確實擁有輸入的電郵位址。我們已傳送一組驗證碼至 %@ ，請在下方輸入驗證碼：";
@@ -262,6 +274,9 @@
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "不正確的郵箱密碼";
 
+/* Plan details `Integrated 2FA authenticator` message */
+"Integrated 2FA authenticator" = "使用雙重驗證";
+
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "網際網路服務提供商 (ISP) 問題";
 
@@ -307,74 +322,74 @@
  * Networking */
 "Network connection error" = "網路連線發生錯誤";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ 中的 %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ 中的 %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "無邊界存取影音串流服務";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "無邊界存取影音串流服務";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "內建廣告攔截程式 (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "內建廣告攔截程式 (NetShield)";
 
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "檢查您的網路連線";
+/* Plan connection error description */
+"Check your internet connection" = "檢查您的網路連線";
 
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "連線問題";
+/* Plan connection error title */
+"Connection issues" = "連線問題";
 
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "延展訂購授權";
+/* Extend subscription button */
+"Extend subscription" = "延展訂購授權";
 
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "單一裝置的免費 VPN";
+/* Plan details VPN on a single device */
+"Free VPN on a single device" = "單一裝置的免費 VPN";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "取得 %@";
+/* Get plan button */
+"Get %@" = "取得 %@";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "取得免費版 Proton";
+/* Get free plan button */
+"Get Proton for free" = "取得免費版 Proton";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "業界最高 VPN 速率";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "業界最高 VPN 速率";
 
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "單一方案，Proton 服務吃到飽";
+/* */
+"One plan for all Proton services" = "單一方案，Proton 服務吃到飽";
 
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "此應用程式僅提供非續購型年約授權";
+/* Plan footer description */
+"Only non-renewing annual subscriptions are available via this app" = "此應用程式僅提供非續購型年約授權";
 
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "方案升級成功";
+/* Plan successfully upgraded banner message */
+"Plan successfully upgraded" = "方案升級成功";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core 伺服器";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Secure Core 伺服器";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "絕對零日誌政策";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "絕對零日誌政策";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "完全免費的新手版帳號，旨在提供所有人以隱私權為首要使命的服務。";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "完全免費的新手版帳號，旨在提供所有人以隱私權為首要使命的服務。";
 
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "隱私權第一的電郵與行事曆解決方案，是您日常聯繫通訊需求的最佳選擇。";
+/* Plan details plus description */
+"The privacy-first email and calendar solution for your everyday communication needs." = "隱私權第一的電郵與行事曆解決方案，是您日常聯繫通訊需求的最佳選擇。";
 
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "著重儲存空間的方案，提供 200 GB 雲端儲存空間，以便保護您的檔案私密。";
+/* Plan details drive plus description */
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "著重儲存空間的方案，提供 200 GB 雲端儲存空間，以便保護您的檔案私密。";
 
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "隱私權第一，無限量 Proton 服務吃到飽的終極套裝包。";
+/* Plan details bundle description */
+"The ultimate privacy pack with access to all premium Proton services." = "隱私權第一，無限量 Proton 服務吃到飽的終極套裝包。";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "透過 VPN 使用 Tor";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "透過 VPN 使用 Tor";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "無限的資料夾、標籤與過濾條件";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "無限的資料夾、標籤與過濾條件";
 
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "多至 %@ 儲存空間";
+/* Plan details up to storage */
+"Up to %@ storage" = "多至 %@ 儲存空間";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "您的隱私權與安全防護是我們首要任務。";
+/* Plan details vpn plus description */
+"Your privacy and security are our priority." = "您的隱私權與安全防護是我們首要任務。";
 
 /* Next button */
 "Next" = "下一個";
@@ -444,6 +459,12 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "請輸入您的 Proton 帳號密碼。";
 
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "請登入至您要升級服務方案的 Proton Mail 帳號，我們隨後即可完成此次訂購。";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "請註冊至您要升級服務方案的 Proton Mail 帳號，我們隨後即可完成方案服務啟用。";
+
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "請確認您的網際網路連線正常運作。";
 
@@ -455,6 +476,9 @@
 
 /* Plan details priority customer support */
 "Priority customer support" = "優先客戶專屬支援";
+
+/* Plan details `Priority support` message */
+"Priority support" = "優先支援";
 
 /* Welcome screen */
 "Privacy by default" = "隱私權為根本";
@@ -600,6 +624,9 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "無法連線到 Proton 伺服器。可能是錯誤的網路組態設定、Proton 伺服器暫停服務，又或者 Proton 伺服器遭到封鎖所導致";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "連接 Proton API 時，TLS 憑證驗證失敗。您現階段網路連線很可能會受到監控。基於防禦您的資料安全無虞，我們正管制此應用程式存取 Proton API。若需登入或存取您的帳號，請切換至新的網路後，再試著連接。";
+
 /* Complete view description */
 "This should take no more than a minute." = "此耗時往往不超過一分鐘。";
 
@@ -619,7 +646,7 @@
 "TroubleShooting" = "疑難排解";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用ProtonVPN and Tor）。";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用 %1$@ 或 %2$@）。";
 
 /* other method alert button */
 "Try other method" = "嘗試其他方法";
@@ -630,12 +657,24 @@
 /* 2FA screen field title */
 "Two-factor code" = "兩步驟代碼";
 
+/* Plan details `Unlimited devices` message */
+"Unlimited devices" = "無裝置數量上限";
+
+/* Plan details `Unlimited email aliases` message */
+"Unlimited email aliases" = "電子郵件別名無上限";
+
+/* Plan details `Unlimited logins and notes` message */
+"Unlimited logins and notes" = "登入與註記無上限";
+
 /* Mailbox unlock screen action button title */
 "Unlock" = "解鎖";
 
 /* *
  * Login unlock mailbox */
 "Unlock your mailbox" = "解除鎖定您的信箱";
+
+/* Plan details `Up to %@ forwarding mailboxes` message */
+"Up to %@ forwarding mailboxes" = "最多%@個轉寄電郵信箱";
 
 /* update button */
 "Update" = "更新";
@@ -685,7 +724,7 @@
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "我們已成功啟動您的訂閱。請重新啟動應用程式以開始使用新的服務方案。";
 
 /* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
-"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "我們無法";
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "我們無法將您的帳號升級為您選取的方案，故您的付款已加到您帳號的儲值中。若需更多資訊並完成您的升級，請聯絡支援團隊。";
 
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "若您的帳號被鎖定導致無法登入，我們會傳送恢復說明到此電郵位址。";
@@ -743,4 +782,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "您的 Proton 免費帳號已成功創建。";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "連線已逾時，請重新登入。";
 

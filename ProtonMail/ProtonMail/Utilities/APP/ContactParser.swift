@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import GoLibs
 import OpenPGP
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 
 struct ContactDecryptionResult {
@@ -141,7 +141,7 @@ final class ContactParser: ContactParserProtocol {
                     signature: signature,
                     plainText: plainText,
                     verifierKey: key,
-                    verifyTime: CryptoGetUnixTime()
+                    verifyTime: CryptoGo.CryptoGetUnixTime()
                 )
 
                 guard isVerified else { continue }
@@ -180,7 +180,7 @@ extension ContactParser {
                 signature: signature,
                 plainText: plainText,
                 verifierKey: key,
-                verifyTime: CryptoGetUnixTime()
+                verifyTime: CryptoGo.CryptoGetUnixTime()
             )
         } catch {
             return false

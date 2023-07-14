@@ -49,7 +49,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
     }
 
     func testGetFeatureFlag() throws {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/core/v4/features") {
                 let response = FeatureFlagTestData.data
                 completion(nil, .success(response))

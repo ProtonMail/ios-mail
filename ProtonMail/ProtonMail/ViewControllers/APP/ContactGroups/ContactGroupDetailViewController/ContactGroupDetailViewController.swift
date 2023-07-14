@@ -174,10 +174,13 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
         tableView.allowsSelection = false
     }
 
-
-
     private func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
+        self.paymentsUI = PaymentsUI(
+            payments: viewModel.user.payments,
+            clientApp: .mail,
+            shownPlanNames: Constants.shownPlanNames,
+            customization: .empty
+        )
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
                                          backendFetch: true) { _ in }
     }

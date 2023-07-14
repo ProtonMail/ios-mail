@@ -36,7 +36,7 @@ extension XCTestCase {
         return try block()
     }
 
-    @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
+    @available(macOS 10.15, tvOS 13.0, watchOS 6.0, *)
     public func withFeatureSwitches<T>(_ switches: [Feature], perform block: () async throws -> T) async rethrows -> T {
         let currentValues = FeatureFactory.shared.getCurrentFeatures()
 

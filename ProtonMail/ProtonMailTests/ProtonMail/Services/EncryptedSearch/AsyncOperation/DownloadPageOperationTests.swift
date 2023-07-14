@@ -41,7 +41,7 @@ final class DownloadPageOperationTests: XCTestCase {
     func testOneOperation_callAPI_success() {
         testOnBackground { isFinish in
             let sut = self.makeOperation()
-            self.apiService.requestJSONStub.bodyIs { _, _, path, reqParams, header, _, _, _, _, _, completion in
+            self.apiService.requestJSONStub.bodyIs { _, _, path, reqParams, header, _, _, _, _, _, _, completion in
                 do {
                     try self.verifyRequest(
                         path: path,
@@ -71,7 +71,7 @@ final class DownloadPageOperationTests: XCTestCase {
     func testOneOperation_callAPI_success_with_emptyMessages() {
         testOnBackground { isFinish in
             let sut = self.makeOperation()
-            self.apiService.requestJSONStub.bodyIs { _, _, path, reqParams, header, _, _, _, _, _, completion in
+            self.apiService.requestJSONStub.bodyIs { _, _, path, reqParams, header, _, _, _, _, _, _, completion in
                 do {
                     try self.verifyRequest(
                         path: path,
@@ -101,7 +101,7 @@ final class DownloadPageOperationTests: XCTestCase {
     func testOneOperation_callAPI_failed() {
         testOnBackground { isFinish in
             let sut = self.makeOperation()
-            self.apiService.requestJSONStub.bodyIs { _, _, path, reqParams, header, _, _, _, _, _, completion in
+            self.apiService.requestJSONStub.bodyIs { _, _, path, reqParams, header, _, _, _, _, _, _, completion in
                 do {
                     try self.verifyRequest(
                         path: path,
@@ -134,7 +134,7 @@ final class DownloadPageOperationTests: XCTestCase {
     func testOneOperation_callAPI_got_unexpected_response() {
         testOnBackground { isFinish in
             let sut = self.makeOperation()
-            self.apiService.requestJSONStub.bodyIs { _, _, path, reqParams, header, _, _, _, _, _, completion in
+            self.apiService.requestJSONStub.bodyIs { _, _, path, reqParams, header, _, _, _, _, _, _, completion in
                 do {
                     try self.verifyRequest(
                         path: path,
@@ -168,7 +168,7 @@ final class DownloadPageOperationTests: XCTestCase {
         testOnBackground { isFinish in
             self.queue.maxConcurrentOperationCount = 1
             let suts = [self.makeOperation(), self.makeOperation()]
-            self.apiService.requestJSONStub.bodyIs { callTime, _, path, reqParams, header, _, _, _, _, _, completion in
+            self.apiService.requestJSONStub.bodyIs { callTime, _, _, _, _, _, _, _, _, _, _, completion in
                 if callTime == 1 {
                     completion(nil, .success(self.makeSuccessResponse(isEmpty: false)))
                 } else {

@@ -152,7 +152,7 @@ private extension DeviceRegistrationTests {
 private extension APIServiceMock {
 
     func setUpToRespondSuccessfully() {
-        requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             guard path.contains("/devices") else {
                 XCTFail("Wrong path")
                 return
@@ -162,7 +162,7 @@ private extension APIServiceMock {
     }
 
     func setUpToRespondWithError() {
-        requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             guard path.contains("/devices") else {
                 XCTFail("Wrong path")
                 return

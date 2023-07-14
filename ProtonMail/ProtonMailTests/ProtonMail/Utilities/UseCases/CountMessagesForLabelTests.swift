@@ -37,7 +37,7 @@ final class CountMessagesForLabelTests: XCTestCase {
         let labelIDValue = String.randomString(6)
         let unreadValue = false
         let total = Int.random(in: 1...99)
-        apiService.requestJSONStub.bodyIs { _, _, path, reqParams, _, _, _, _, _, _, handler in
+        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, handler in
             if path == "/mail/v4/messages/count" {
                 handler(nil, .success(self.response(labelID: labelIDValue, total: total, unread: 4)))
             } else {
@@ -61,7 +61,7 @@ final class CountMessagesForLabelTests: XCTestCase {
     }
 
     func testExecute_whenRequestSucceeds_itDidNotReturnsTheMessageCount() {
-        apiService.requestJSONStub.bodyIs { _, _, path, reqParams, b, _, _, _, _, _, handler in
+        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, handler in
             if path == "/mail/v4/messages/count" {
                 handler(nil, .success(self.response(labelID: "bbb", total: 8, unread: 3)))
             } else {
@@ -86,7 +86,7 @@ final class CountMessagesForLabelTests: XCTestCase {
     }
 
     func testExecute_whenRequestFailed_itReturnsError() throws {
-        apiService.requestJSONStub.bodyIs { _, _, path, reqParams, b, _, _, _, _, _, handler in
+        apiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, handler in
             if path == "/mail/v4/messages/count" {
                 handler(nil, .failure(.badResponse()))
             } else {

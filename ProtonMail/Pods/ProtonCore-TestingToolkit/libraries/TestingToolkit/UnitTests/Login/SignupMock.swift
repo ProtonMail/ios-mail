@@ -49,7 +49,7 @@ public class SignupServiceMock: Signup {
         completion(createNewUsernameAccountResult)
     }
     
-    public func createNewExternalAccount(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+    public func createNewExternalAccount(email: String, password: String, verifyToken: String?, tokenType: String?, completion: @escaping (Result<(), SignupError>) -> Void) {
         completion(createNewExternalAccountResult)
     }
     

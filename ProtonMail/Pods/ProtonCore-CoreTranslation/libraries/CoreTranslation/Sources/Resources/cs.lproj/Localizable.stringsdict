@@ -202,7 +202,27 @@
 			<string>%d uživatelů</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d VPN connections per user</key>
+	<key>%d vaults</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>few</key>
+			<string>%d trezory</string>
+			<key>many</key>
+			<string>%d trezorů</string>
+			<key>one</key>
+			<string>%d trezor</string>
+			<key>other</key>
+			<string>%d trezorů</string>
+		</dict>
+	</dict>
+	<key>%d VPN connections per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -222,7 +242,7 @@
 			<string>%d VPN připojení na uživatele</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d addresses per user</key>
+	<key>%d addresses per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -242,7 +262,7 @@
 			<string>%d adres na uživatele</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d folders and labels</key>
+	<key>%d folders and labels</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -262,7 +282,7 @@
 			<string>%d složek a štítků</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d email addresses</key>
+	<key>%d of %d email addresses</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE1@ z %#@VARIABLE2@</string>
@@ -297,7 +317,7 @@
 			<string>%d emailových adres</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d personal calendars</key>
+	<key>%d of %d calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE1@ z %#@VARIABLE2@</string>
@@ -332,7 +352,7 @@
 			<string>%d osobních kalendářů</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d users</key>
+	<key>%d of %d users</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE1@ z %#@VARIABLE2@</string>
@@ -367,27 +387,7 @@
 			<string>%d uživatelů</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d personal calendars</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>%d osobní kalendáře</string>
-			<key>many</key>
-			<string>%d osobních kalendářů</string>
-			<key>one</key>
-			<string>%d osobní kalendář</string>
-			<key>other</key>
-			<string>%d osobních kalendářů</string>
-		</dict>
-	</dict>
-	<key>New_Plans %d personal calendars per user</key>
+	<key>%d calendars per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -407,7 +407,7 @@
 			<string>%d osobních kalendářů na uživatele</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d servers in %d countries (US, NL, JP)</key>
+	<key>%d servers in %d countries (US, NL, JP)</key>
 	<dict>
 		<key>COUNTRIES</key>
 		<dict>
@@ -442,7 +442,7 @@
 			<string>%d servers</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d+ servers in %d countries</key>
+	<key>%d+ servers in %d countries</key>
 	<dict>
 		<key>COUNTRIES</key>
 		<dict>
@@ -477,7 +477,7 @@
 			<string>%d+ serverů</string>
 		</dict>
 	</dict>
-	<key>New_Plans High-speed VPN on %d devices</key>
+	<key>High-speed VPN on %d devices</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -497,7 +497,7 @@
 			<string>Vysokorychlostní VPN na %d zařízeních</string>
 		</dict>
 	</dict>
-	<key>New_Plans Medium VPN speed %d VPN connections</key>
+	<key>Medium VPN speed %d VPN connections</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -517,7 +517,7 @@
 			<string>Střední rychlost VPN %d VPN spojení</string>
 		</dict>
 	</dict>
-	<key>New_Plans Support for %d custom email domains</key>
+	<key>Support for %d custom email domains</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>

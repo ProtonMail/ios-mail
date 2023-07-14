@@ -15,11 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import GoLibs
-import Foundation
 import OpenPGP
-import PromiseKit
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Log
 
@@ -64,7 +62,7 @@ class CardDataParser {
                             let keyGroup = key.getGroup()
                             if keyGroup == group {
                                 let value = key.getBinary() // based 64 key
-                                if let cryptoKey = CryptoKey(value), !cryptoKey.isExpired() {
+                                if let cryptoKey = CryptoGo.CryptoKey(value), !cryptoKey.isExpired() {
                                     pubKeys.append(value)
                                 }
                             }
@@ -95,7 +93,7 @@ class CardDataParser {
                 signature: ArmoredSignature(value: cardData.signature),
                 plainText: cardData.data,
                 verifierKeys: userKeys,
-                verifyTime: CryptoGetUnixTime()
+                verifyTime: CryptoGo.CryptoGetUnixTime()
             )
         } catch {
             PMLog.error(error)

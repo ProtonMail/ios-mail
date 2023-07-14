@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+import Foundation
 import ProtonCore_Services
 
 public enum PurchaseResult {
@@ -111,8 +112,8 @@ final class PurchaseManager: PurchaseManagerProtocol {
             return
         }
 
-        guard let details = planService.detailsOfServicePlan(named: plan.protonName),
-              let planId = planService.detailsOfServicePlan(named: plan.protonName)?.iD else {
+        guard let details = planService.detailsOfPlanCorrespondingToIAP(plan),
+              let planId = planService.detailsOfPlanCorrespondingToIAP(plan)?.iD else {
             // the plan details, including its id, are unknown, preventing us from doing any further operation
             assertionFailure("Programmer's error: buy plan method must be called when the plan details are available")
             throw StoreKitManagerErrors.transactionFailedByUnknownReason

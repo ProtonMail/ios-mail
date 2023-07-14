@@ -31,7 +31,6 @@ open class SnapshotTestCase: XCTestCase {
     let reRecordEverything = false
 
     #if os(iOS)
-    @available(iOS 13, *)
     public func checkSnapshots(controller: UIViewController,
                                wait: TimeInterval? = nil,
                                size: CGSize = CGSize(width: 750, height: 1334),
@@ -62,7 +61,6 @@ open class SnapshotTestCase: XCTestCase {
         }
     }
 
-    @available(iOS 13, *)
     public func checkSnapshots<Content>(view: Content,
                                         perceptualPrecision: Float = 1,
                                         record: Bool = false,
@@ -88,7 +86,6 @@ open class SnapshotTestCase: XCTestCase {
 }
 
 #if os(iOS)
-@available(iOS 12.0, *)
 extension UIUserInterfaceStyle: CustomStringConvertible {
     public var description: String {
         switch self {

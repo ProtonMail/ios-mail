@@ -7,8 +7,14 @@
 /* A generic error message when we have no better message from the backend */
 "A networking error has occured" = "ネットワークエラーが発生しました";
 
+/* Unfinished operation error dialog description */
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Proton バンドルプランの購入処理が進行中です。続けるを押すと、支払い処理を完了してアカウントを作成します";
+
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "パスワードを忘れたり、アカウントにアクセスできなくなった場合に、回復手段を使ってアカウントにアクセスできるようにします。";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "アカウントが削除されました。\nサインアウトしています...";
 
 /* *
  *  Login errors */
@@ -37,6 +43,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Appleからサブスクリプションプランのアップグレードの通知を受けましたが、いくつかの技術情報が見当たりません。顧客サポートチームがご連絡しますので、バグ報告をお願いします。";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Appleからサービスプランのアップグレードの通知を受けましたが、サインアウトしている事を検出しました。";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "%@ からサインアウトしますか?";
@@ -103,9 +112,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "続行";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "現在のメールで Proton アカウントを作成";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "代わりに安全な Proton Mail アドレスを作成";
 
@@ -115,7 +121,7 @@
 /* Create user failed error */
 "Create user failed" = "ユーザーを作成できませんでした";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "パスワードを作成";
 
 /* *
@@ -155,6 +161,9 @@
 /* Button for dismissing account switcher */
 "Dismiss account switcher" = "アカウント変更を隠す";
 
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchase for %@ address?" = "購読したプランをアドレス %@ に対して有効化しますか？";
+
 /* Title of domains bottom action sheet */
 "Domain" = "ドメイン";
 
@@ -169,6 +178,9 @@
 
 /* Email address already used error */
 "Email address already used." = "メールアドレスはすでに使用されています.";
+
+/* Username field title */
+"Email or username" = "メールアドレスまたはユーザー名";
 
 /* Signup summary welcome text */
 "Enjoy the world of privacy." = "プライバシーの世界を楽しもう。";
@@ -215,6 +227,9 @@
 
 /* Signup complete progress step address generation */
 "Generating your address" = "アドレスを生成しています";
+
+/* External accounts not supported popup local desc */
+"Get a Proton Mail address linked to this account in your Proton web settings." = "Proton のウェブ設定でこのアカウントに紐付いた Proton Mail アドレスを取得してください。";
 
 /* alert message */
 "Get a replacement code sent to %@." = "代わりのコードを %@ に送信しました。";
@@ -295,68 +310,74 @@
  * Networking */
 "Network connection error" = "ネットワーク接続エラー";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ / %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ / %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "世界中でストリーミングサービスにアクセス";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "世界中でストリーミングサービスにアクセス";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "広告ブロッカー内蔵 (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "広告ブロッカー内蔵 (NetShield)";
 
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "インターネット接続を確認してください";
+/* Plan connection error description */
+"Check your internet connection" = "インターネット接続を確認してください";
 
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "接続の問題";
+/* Plan connection error title */
+"Connection issues" = "接続の問題";
 
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "サブスクリプションを延長";
+/* Extend subscription button */
+"Extend subscription" = "サブスクリプションを延長";
 
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "1 台のデバイスで無料 VPN";
+/* Plan details VPN on a single device */
+"Free VPN on a single device" = "1 台のデバイスで無料 VPN";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "%@ を入手";
+/* Get plan button */
+"Get %@" = "%@ を入手";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Proton を無料で入手";
+/* Get free plan button */
+"Get Proton for free" = "Proton を無料で入手";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "最高の VPN 速度";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "最高の VPN 速度";
 
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "すべての Proton サービスのための 1 つのプラン";
+/* */
+"One plan for all Proton services" = "すべての Proton サービスのための 1 つのプラン";
 
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "プランは正常にアップグレードされました";
+/* Plan footer description */
+"Only non-renewing annual subscriptions are available via this app" = "このアプリでは、更新なしの年間サブスクリプションのみ利用できます";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core サーバー";
+/* Plan successfully upgraded banner message */
+"Plan successfully upgraded" = "プランは正常にアップグレードされました";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "厳格なノーログポリシー";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Secure Core サーバー";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "すべての人にプライバシーを提供するための、無料のスタータープランです。";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "厳格なノーログポリシー";
 
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "毎日のコミュニケーションに必要なプライバシーファーストのメールおよびカレンダーソリューション。";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "すべての人にプライバシーを提供するための、無料のスタータープランです。";
 
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "究極のプライバシーパックにはすべてのプレミアムな Proton サービスが含まれています。";
+/* Plan details plus description */
+"The privacy-first email and calendar solution for your everyday communication needs." = "毎日のコミュニケーションに必要なプライバシーファーストのメールおよびカレンダーソリューション。";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor over VPN";
+/* Plan details drive plus description */
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "ストレージに焦点を当てたプランで、ファイルをプライベートに保つための 200 GB のクラウドストレージを備えています。";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "制限なしのフォルダー、ラベル、フィルター";
+/* Plan details bundle description */
+"The ultimate privacy pack with access to all premium Proton services." = "究極のプライバシーパックにはすべてのプレミアムな Proton サービスが含まれています。";
 
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "最大 %@ のストレージ";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor over VPN";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "あなたのプライバシーとセキュリティは私たちの最優先事項です。";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "制限なしのフォルダー、ラベル、フィルター";
+
+/* Plan details up to storage */
+"Up to %@ storage" = "最大 %@ のストレージ";
+
+/* Plan details vpn plus description */
+"Your privacy and security are our priority." = "あなたのプライバシーとセキュリティは私たちの最優先事項です。";
 
 /* Next button */
 "Next" = "次へ";
@@ -373,6 +394,9 @@
 
 /* Signup main view description */
 "One account for all Proton services." = "1つのアカウントで全 Proton サービスを利用可能.";
+
+/* Plan footer description */
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "モバイルアプリ内では、自動更新なしの年間サブスクリプションのみ利用できます。";
 
 /* Other sign-in issues button */
 "Other sign-in issues" = "その他のサインインに関する問題";
@@ -410,6 +434,9 @@
 /* SMS label */
 "Phone number" = "電話番号";
 
+/* Sub-user configuration error */
+"Please ask your admin to configure your sub-user." = "管理者にサブユーザーの設定を依頼してください。";
+
 /* Username field error message */
 "Please enter a username." = "名前を入力してください。";
 
@@ -419,6 +446,12 @@
 
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Proton アカウントのパスワードを入力してください。";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "購入手続きを完了するには、プランをアップグレードする Proton Mail アカウントにサインインしてください。";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "プランの有効化を完了するには、プランをアップグレードする Proton Mail アカウントにサインインしてください。";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "インターネットに接続されていることを確認してください。";
@@ -431,6 +464,9 @@
 
 /* Plan details priority customer support */
 "Priority customer support" = "優先カスタマーサポート";
+
+/* Welcome screen */
+"Privacy by default" = "常にプライバシーを重視";
 
 /* *
  * Login create address */
@@ -447,6 +483,9 @@
 
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "プロキシまたはファイアウォールの干渉";
+
+/* Error message */
+"Purchase is not possible." = "購入処理を進めることができません。";
 
 /* quit button */
 "Quit" = "終了";
@@ -564,6 +603,15 @@
 /* Plan details free description */
 "The basic for private and secure communications." = "プライベートで安全な会話のための基本機能。";
 
+/* IAP in progress banner message */
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "アプリ内購入の処理が進行中です。Apple の指示に従って購入を完了またはキャンセルしてください。";
+
+/* Message shown when we suspect that the Proton servers are blocked */
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton のサーバーに到達できません。原因として、誤ったネットワーク設定や Proton サーバーが稼働していない、あるいはブロックされているなどが考えられます";
+
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Proton API への接続試行中に、TLS 証明書の検証に失敗しました。このインターネット接続は監視されている可能性があります。データを安全に保つため、アプリによる Proton API へのアクセスを中止しています。\nサインインまたはアカウントにアクセスするには、新しいネットワークに切り替えてから再度接続をお試しください。";
+
 /* Complete view description */
 "This should take no more than a minute." = "これにはそんなに時間はかかりません。";
 
@@ -648,6 +696,9 @@
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "購読の有効化に成功しました。アプリの再起動をして新しいプランになっていることを確認してください。";
 
+/* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "選択したプランにアカウントをアップグレードできなかったため、お支払額をアカウントのクレジット残高に追加しました。アップグレードを完了するには、サポートにご連絡ください。";
+
 /* Recovery view description */
 "We will send recovery instructions to this email if you get locked out of your account." = "アカウントにアクセスできなくなった場合に、回復手順をメールに送信します。";
 
@@ -681,6 +732,9 @@
 /* Complete view title */
 "Your account is being created" = "アカウントを作成しています…";
 
+/* Dialog text for missing keys error */
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "アカウントのキーが見つからないため、ウェブでサインインして必要なキーを自動生成してください。ウェブでサインインした後、アプリに戻ってサインインします。";
+
 /* Goverment blocking description */
 "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "あなたの国の政府が、Proton への接続をブロックしている可能性があります。Proton にアクセスするには %1$@ (または他社のVPN) もしくは %2$@ を使用してください。";
 
@@ -701,4 +755,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Proton Free アカウントは正常に作成されました。";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "セッションの有効期限が切れました。再度サインインしてください。";
 

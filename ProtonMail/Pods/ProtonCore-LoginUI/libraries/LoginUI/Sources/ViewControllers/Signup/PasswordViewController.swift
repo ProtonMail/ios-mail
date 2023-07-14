@@ -47,8 +47,7 @@ class PasswordViewController: UIViewController, AccessibleView, Focusable {
 
     @IBOutlet weak var createPasswordTitleLabel: UILabel! {
         didSet {
-            let title = signupAccountType == .internal ? CoreString._su_password_proton_view_title : CoreString._su_password_email_view_title
-            createPasswordTitleLabel.text = title
+            createPasswordTitleLabel.text = CoreString._su_password_view_title
             createPasswordTitleLabel.textColor = ColorProvider.TextNorm
             createPasswordTitleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
             createPasswordTitleLabel.adjustsFontForContentSizeCategory = true

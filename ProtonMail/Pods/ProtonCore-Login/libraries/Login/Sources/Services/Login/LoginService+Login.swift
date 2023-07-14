@@ -27,10 +27,84 @@ import ProtonCore_CoreTranslation
 import ProtonCore_DataModel
 import ProtonCore_Log
 import ProtonCore_Networking
+import ProtonCore_Services
+import ProtonCore_Observability
 
 extension LoginService {
 
+    public func processResponseToken(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+        if responseToken.uid != apiService.sessionUID,
+           responseToken.uid.caseInsensitiveCompare("notimplementedyet") != .orderedSame {
+            assertionFailure("response token UID is not equal to apiService UID and it should.")
+        }
+        authenticateWithSSO(idpEmail: idpEmail, responseToken: responseToken, completion: completion)
+    }
+    
+    public func getSSORequest(challenge ssoChallengeResponse: SSOChallengeResponse) async -> (request: URLRequest?, error: String?) {
+        let accessToken: (token: String?, error: String?) = await withCheckedContinuation { continuation in
+            apiService.fetchAuthCredentials { result in
+                switch result {
+                case .found(let credentials):
+                    continuation.resume(returning: (credentials.accessToken, nil))
+                case .notFound:
+                    continuation.resume(returning: (nil, AuthCredentialFetchingResult.notFound.toNSError?.localizedDescription))
+                case .wrongConfigurationNoDelegate:
+                    continuation.resume(returning: (nil, AuthCredentialFetchingResult.wrongConfigurationNoDelegate.toNSError?.localizedDescription))
+                }
+            }
+        }
+        
+        if let error = accessToken.error, accessToken.token == nil {
+            return (nil, error)
+        }
+        
+        let host = apiService.dohInterface.getCurrentlyUsedHostUrl()
+        let sessionUID = apiService.sessionUID
+        
+        let url = URL(string: "\((host))/auth/sso/\(ssoChallengeResponse.ssoChallengeToken)")!
+        var request = URLRequest(url: url)
+        request.setValue(sessionUID, forHTTPHeaderField: "x-pm-uid")
+        request.setValue(accessToken.token, forHTTPHeaderField: "Authorization")
+        
+        return (request, nil)
+    }
+    
+    public func isProtonPage(url: URL?) -> Bool {
+        guard let url else { return false }
+        let hosts = [
+            apiService.dohInterface.getAccountHost(),
+            apiService.dohInterface.getCurrentlyUsedHostUrl(),
+            apiService.dohInterface.getHumanVerificationV3Host(),
+            apiService.dohInterface.getCaptchaHostUrl()
+        ]
+        return hosts.contains(where: url.absoluteString.contains)
+    }
+    
+    private func authenticateWithSSO(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+        withAuthDelegateAvailable(completion) { authManager in
+            manager.authenticate(idpEmail: idpEmail, responseToken: responseToken) { result in
+                switch result {
+                case let .success(status):
+                    switch status {
+                    case let .newCredential(credential, passwordMode):
+                        self.handleValidCredentials(credential: credential, passwordMode: passwordMode, mailboxPassword: nil, isSSO: true, completion: completion)
+                    case .updatedCredential, .ssoChallenge, .ask2FA:
+                        completion(.failure(.invalidState))
+                    }
+
+                case let .failure(error):
+                    PMLog.debug("Login failed with \(error)")
+                    completion(.failure(error.asLoginError()))
+                }
+            }
+        }
+    }
+    
     public func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+        login(username: username, password: password, intent: nil, challenge: challenge, completion: completion)
+    }
+    
+    public func login(username: String, password: String, intent: Intent?, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
         withAuthDelegateAvailable(completion) { authManager in
             self.username = username
             self.mailboxPassword = password
@@ -40,7 +114,7 @@ extension LoginService {
             }
             PMLog.debug("Logging in with username and password")
 
-            manager.authenticate(username: username, password: password, challenge: data, srpAuth: nil) { result in
+            manager.authenticate(username: username, password: password, challenge: data, intent: intent, srpAuth: nil) { result in
                 switch result {
                 case let .success(status):
                     switch status {
@@ -56,10 +130,15 @@ extension LoginService {
                         self.apiService.setSessionUID(uid: credential.UID)
                         PMLog.debug("No idea how to handle updatedCredential")
                         completion(.failure(.invalidState))
+                    case .ssoChallenge(let ssoChallengeResponse):
+                        completion(.success(.ssoChallenge(ssoChallengeResponse)))
                     }
 
                 case let .failure(error):
                     PMLog.debug("Login failed with \(error)")
+                    if case let .networkingError(error) = error, error.isSwitchToSRPError {
+                        ObservabilityEnv.report(.ssoObtainChallengeToken(status: .ssoDomainNotFound))
+                    }
                     completion(.failure(error.asLoginError()))
                 }
             }
@@ -96,6 +175,9 @@ extension LoginService {
                         authManager.onSessionObtaining(credential: credential)
                         self.apiService.setSessionUID(uid: credential.UID)
                         PMLog.debug("No idea how to handle updatedCredential")
+                        completion(.failure(.invalidState))
+                    case .ssoChallenge:
+                        PMLog.debug("Obtaining SSO challenge should never happen")
                         completion(.failure(.invalidState))
                     }
                 case let .failure(error):
@@ -320,22 +402,22 @@ extension LoginService {
         }
     }
     
-    public func checkUsernameFromEmail(email: String, result: @escaping (Result<(String?), AvailabilityError>) -> Void) {
+    public func availableUsernameForExternalAccountEmail(email: String, completion: @escaping (String?) -> Void) {
         guard let username = email.components(separatedBy: "@").first else {
-            result(.success(nil))
+            completion(nil)
             return
         }
-        checkAvailabilityForInternalAccount(username: username) { res in
-            switch res {
+        checkAvailabilityForInternalAccount(username: username) { result in
+            switch result {
             case .success:
-                result(.success(username))
-            case .failure(let error):
-                switch error {
-                case .notAvailable:
-                    result(.success(nil))
-                default:
-                    result(.failure(error))
-                }
+                completion(username)
+            case .failure:
+                // we ignore the error and just return nil by design
+                // reason being — this method is used for checking if the username
+                // we want to propose to the user converting from external to internal account
+                // is available. if we cannot confirm it, we don't want to block the user.
+                // we just won't propose them the username, but we will let them choose their own one
+                completion(nil)
             }
         }
     }

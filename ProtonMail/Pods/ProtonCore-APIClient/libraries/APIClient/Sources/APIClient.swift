@@ -22,9 +22,7 @@
 import Foundation
 import ProtonCore_Services
 
-public protocol APIClient {
-
-}
+public protocol APIClient {}
 
 public protocol Client {
     var apiService: APIService { get }

@@ -162,7 +162,23 @@
 			<string>%d utilisateur·rice·s</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d VPN connections per user</key>
+	<key>%d vaults</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>%d vault</string>
+			<key>other</key>
+			<string>%d vaults</string>
+		</dict>
+	</dict>
+	<key>%d VPN connections per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -178,7 +194,7 @@
 			<string>%d connexions RPV par utilisateur</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d addresses per user</key>
+	<key>%d addresses per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -194,7 +210,7 @@
 			<string>%d adresses par utilisateur</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d folders and labels</key>
+	<key>%d folders and labels</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -210,7 +226,7 @@
 			<string>%d dossiers et labels</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d email addresses</key>
+	<key>%d of %d email addresses</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE1@ sur %#@VARIABLE2@</string>
@@ -237,7 +253,7 @@
 			<string>%d adresses électroniques</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d personal calendars</key>
+	<key>%d of %d calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE1@ sur %#@VARIABLE2@</string>
@@ -264,7 +280,7 @@
 			<string>%d calendriers personnels</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d users</key>
+	<key>%d of %d users</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE1@ sur %#@VARIABLE2@</string>
@@ -291,7 +307,7 @@
 			<string>%d utilisateurs</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d personal calendars</key>
+	<key>%d calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -307,7 +323,7 @@
 			<string>%d calendriers personnels</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d personal calendars per user</key>
+	<key>%d calendars per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -323,7 +339,7 @@
 			<string>%d calendriers personnels par utilisateur</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d servers in %d countries (US, NL, JP)</key>
+	<key>%d servers in %d countries (US, NL, JP)</key>
 	<dict>
 		<key>COUNTRIES</key>
 		<dict>
@@ -350,7 +366,7 @@
 			<string>%d servers</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d+ servers in %d countries</key>
+	<key>%d+ servers in %d countries</key>
 	<dict>
 		<key>COUNTRIES</key>
 		<dict>
@@ -377,7 +393,7 @@
 			<string>Plus de %d serveurs</string>
 		</dict>
 	</dict>
-	<key>New_Plans High-speed VPN on %d devices</key>
+	<key>High-speed VPN on %d devices</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -393,7 +409,7 @@
 			<string>RPV haut débit sur %d appareils</string>
 		</dict>
 	</dict>
-	<key>New_Plans Medium VPN speed %d VPN connections</key>
+	<key>Medium VPN speed %d VPN connections</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -409,7 +425,7 @@
 			<string>%d connexions RPV vitesse moyenne</string>
 		</dict>
 	</dict>
-	<key>New_Plans Support for %d custom email domains</key>
+	<key>Support for %d custom email domains</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>

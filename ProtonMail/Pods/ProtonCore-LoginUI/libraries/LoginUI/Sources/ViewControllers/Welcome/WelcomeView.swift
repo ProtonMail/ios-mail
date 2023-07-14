@@ -205,6 +205,7 @@ final class WelcomeView: UIView {
         case .calendar: ColorProvider.brand = .proton
         case .drive: ColorProvider.brand = .proton
         case .vpn: ColorProvider.brand = .vpn
+        case .pass: ColorProvider.brand = .pass
         case .custom(let data): ColorProvider.brand = data.brand
         }
 
@@ -217,6 +218,7 @@ final class WelcomeView: UIView {
         case .calendar: return IconProvider.calendarTopImage
         case .drive: return IconProvider.driveTopImage
         case .vpn: return IconProvider.vpnTopImage
+        case .pass: return IconProvider.passTopImage
         case .custom: return IconProvider.mailTopImage
         }
     }
@@ -228,6 +230,7 @@ final class WelcomeView: UIView {
         case .calendar: wordmark = IconProvider.calendarWordmarkNoBackground
         case .drive: wordmark = IconProvider.driveWordmarkNoBackground
         case .vpn: wordmark = IconProvider.vpnWordmarkNoBackground
+        case .pass: wordmark = IconProvider.passWordmarkNoBackground
         case .custom(let data): wordmark = data.wordmarkWithLogo
         }
         return UIImageView(image: wordmark)
@@ -237,8 +240,10 @@ final class WelcomeView: UIView {
         let body = UILabel()
         let text: String
         switch variant {
-        case .mail(let texts), .calendar(let texts), .drive(let texts), .vpn(let texts): text = texts.body
-        case .custom(let data): text = data.body
+        case .mail(let texts), .calendar(let texts), .drive(let texts), .vpn(let texts), .pass(let texts):
+            text = texts.body
+        case .custom(let data):
+            text = data.body
         }
         var attributes = PMFontAttributes.DefaultSmall
         let foregroundColor: UIColor = ColorProvider.TextWeak

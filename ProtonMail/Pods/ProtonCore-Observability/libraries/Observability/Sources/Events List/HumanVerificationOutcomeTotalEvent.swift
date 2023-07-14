@@ -20,11 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 public struct HumanVerificationOutcomeLabels: Encodable, Equatable {
-    let status: SuccessOrFailureOrCancelledStatus
+    let status: SuccessOrFailureOrCanceledStatus
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<HumanVerificationOutcomeLabels> {
-    public static func humanVerificationOutcomeTotal(status: SuccessOrFailureOrCancelledStatus) -> Self {
+    public static func humanVerificationOutcomeTotal(status: SuccessOrFailureOrCanceledStatus) -> Self {
         .init(name: "ios_core_human_verification_outcome_total", labels: .init(status: status))
     }
 }

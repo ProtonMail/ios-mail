@@ -116,7 +116,7 @@ public protocol PaymentsApiProtocol {
     func organizationsRequest(api: APIService) -> OrganizationsRequest
     func defaultPlanRequest(api: APIService) -> DefaultPlanRequest
     func plansRequest(api: APIService) -> PlansRequest
-    func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse>
+    func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest
     func methodsRequest(api: APIService) -> MethodRequest
     func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest
     func tokenStatusRequest(api: APIService, token: PaymentToken) -> TokenStatusRequest
@@ -168,8 +168,8 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
         PlansRequest(api: api)
     }
 
-    func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest<CreditResponse> {
-        CreditRequest<CreditResponse>(api: api, amount: amount, paymentAction: paymentAction)
+    func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest {
+        CreditRequest(api: api, amount: amount, paymentAction: paymentAction)
     }
     
     func methodsRequest(api: APIService) -> MethodRequest {

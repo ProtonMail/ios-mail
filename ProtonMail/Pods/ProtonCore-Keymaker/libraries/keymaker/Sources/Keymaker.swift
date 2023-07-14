@@ -46,17 +46,10 @@ public class Keymaker: NSObject {
         
         super.init()
         #if canImport(UIKit)
-        if #available(iOS 13.0, *) {
-            NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
-                                                   name: UIApplication.willEnterForegroundNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
-                                                   name: UIApplication.willEnterForegroundNotification, object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
-                                                   name: UIApplication.willEnterForegroundNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
-                                                   name: UIApplication.didBecomeActiveNotification, object: nil)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
+                                               name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
+                                               name: UIApplication.willEnterForegroundNotification, object: nil)
         #endif
     }
     
@@ -264,22 +257,7 @@ public class Keymaker: NSObject {
             } catch let error {
                 NotificationCenter.default.post(name: Const.errorObtainingMainKey, object: self, userInfo: ["error": error])
                 
-                if #available(iOS 14.0, *) {
-                    self._mainKey = nil
-                }
-                // this CFError trows randomly on iOS 13 (up to 13.3 beta 2) on TouchID capable devices
-                // it happens less if auth prompt is invoked with 1 sec delay after app gone foreground but still happens
-                // description: "Could not decrypt. Failed to get externalizedContext from LAContext"
-                else if #available(iOS 13.0, *),
-                        case EllipticCurveKeyPair.Error.underlying(message: _, error: let underlyingError) = error,
-                        underlyingError.code == -2
-                {
-                    isMainThread
-                        ? DispatchQueue.main.async { self.obtainMainKey(with: protector, handler: handler) }
-                        : self.obtainMainKey(with: protector, handler: handler)
-                } else {
-                    self._mainKey = nil
-                }
+                self._mainKey = nil
             }
             
             isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)

@@ -75,7 +75,6 @@ enum UpdatePasswordError: Int, Error, CustomErrorVar {
     case cantHashPassword = 0x110004
     case cantGenerateVerifier = 0x110005
     case cantGenerateSRPClient = 0x110006
-    case invalideAuthInfo = 0x110007
 
     // mailbox password part
     case currentPasswordWrong = 0x110008
@@ -109,8 +108,6 @@ enum UpdatePasswordError: Int, Error, CustomErrorVar {
             return LocalString._cant_create_a_srp_verifier
         case .cantGenerateSRPClient:
             return LocalString._cant_create_a_srp_client
-        case .invalideAuthInfo:
-            return LocalString._cant_get_user_auth_info
         case .currentPasswordWrong:
             return LocalString._the_password_is_wrong
         case .newNotMatch:
@@ -133,7 +130,6 @@ enum UpdateNotificationEmailError: Int, Error, CustomErrorVar {
     case cantHashPassword = 0x110102
     case cantGenerateVerifier = 0x110103
     case cantGenerateSRPClient = 0x110104
-    case invalideAuthInfo = 0x110105
 
     case `default` = 0x110100
 
@@ -155,8 +151,6 @@ enum UpdateNotificationEmailError: Int, Error, CustomErrorVar {
             return LocalString._cant_create_a_srp_verifier
         case .cantGenerateSRPClient:
             return LocalString._cant_create_a_srp_client
-        case .invalideAuthInfo:
-            return LocalString._cant_get_user_auth_info
         case .default:
             return LocalString._password_update_failed
         }

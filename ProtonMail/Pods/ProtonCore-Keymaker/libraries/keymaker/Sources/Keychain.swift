@@ -97,7 +97,7 @@ open class Keychain {
             kSecAttrAccessGroup as String: self.accessGroup as AnyObject,
             kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
         ]
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
+        if #available(macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
         }
 
@@ -130,7 +130,7 @@ open class Keychain {
             kSecAttrAccessGroup as String: self.accessGroup as AnyObject,
             kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
         ]
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
+        if #available(macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
         }
 
@@ -155,7 +155,7 @@ open class Keychain {
             kSecAttrAccessGroup as String: self.accessGroup as AnyObject,
             kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
         ]
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
+        if #available(macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
         }
 
@@ -209,7 +209,7 @@ open class Keychain {
             kSecAttrAccessGroup as String: self.accessGroup as AnyObject,
             kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
         ]
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
+        if #available(macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
         }
 

@@ -221,18 +221,10 @@ extension HumanVerifyViewModel {
 import UIKit
 extension HumanVerifyViewModel {
     private var getTheme: Int {
-        if #available(iOS 13.0, *) {
-            if let vc = UIApplication.shared.keyWindow?.rootViewController, vc.traitCollection.userInterfaceStyle == .dark {
-                return 1
-            } else {
-                return 2
-            }
+        if let vc = UIApplication.shared.keyWindow?.rootViewController, vc.traitCollection.userInterfaceStyle == .dark {
+            return 1
         } else {
-            if clientApp == .vpn {
-                return 1
-            } else {
-                return 0
-            }
+            return 2
         }
     }
 }

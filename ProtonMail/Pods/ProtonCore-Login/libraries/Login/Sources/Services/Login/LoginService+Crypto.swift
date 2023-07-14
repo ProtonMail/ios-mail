@@ -19,8 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import GoLibs
 import Foundation
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Utilities
 
@@ -38,7 +38,7 @@ extension LoginService {
             let passSlice = mailboxPassword.data(using: .utf8)
 
             let saltPackage = Data(base64Encoded: keySalt, options: NSData.Base64DecodingOptions(rawValue: 0))
-            let passphraseSlice = SrpMailboxPassword(passSlice, saltPackage, &error)
+            let passphraseSlice = CryptoGo.SrpMailboxPassword(passSlice, saltPackage, &error)
             
             let passphraseUncut = String.init(data: passphraseSlice!, encoding: .utf8)
             // by some internal reason of go-srp, output will be 60 characters but we need only last 31 of them
@@ -63,7 +63,7 @@ extension LoginService {
             .map(\.privateKey)
             .forEach { privateKey in
                 var error: NSError?
-                let armored = CryptoNewKeyFromArmored(privateKey, &error)
+                let armored = CryptoGo.CryptoNewKeyFromArmored(privateKey, &error)
 
                 do {
                     try armored?.unlock(passphrase.utf8)

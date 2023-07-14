@@ -164,6 +164,10 @@ open class DoH: DoHInterface {
         headersForUrl(defaultValue: config.humanVerificationV3Host)
     }
     
+    open func getAccountHostForAPI() -> String {
+        getAccountHost() + config.defaultPath
+    }
+    
     open func getAccountHost() -> String {
         var currentlyUsedAccountDeletionUrl = getCurrentlyUsedUrl(defaultingTo: config.accountHost)
         guard currentlyUsedAccountDeletionUrl != config.accountHost else { return currentlyUsedAccountDeletionUrl }

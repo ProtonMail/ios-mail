@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 public extension UIView {
     var safeGuide: UIEdgeInsets {
@@ -62,4 +64,15 @@ public extension UIView {
             layer.render(in: context.cgContext)
         }
     }
+    
+    func addConstraints(_ constraintsMaker: (UIView) -> [NSLayoutConstraint]) {
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(constraintsMaker(self))
+    }
+    
+    func addSubviews(_ subviews: UIView...) {
+        subviews.forEach(addSubview)
+    }
 }
+
+#endif

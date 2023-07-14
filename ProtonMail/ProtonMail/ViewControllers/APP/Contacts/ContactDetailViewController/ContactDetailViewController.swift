@@ -343,7 +343,7 @@ extension ContactDetailViewController: ContactUpgradeCellDelegate {
     }
 
     private func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
+        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames, customization: .empty)
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
                                          backendFetch: true,
                                          completionHandler: { _ in })

@@ -28,6 +28,7 @@ public enum Environment {
     case vpnProd
     case driveProd
     case calendarProd
+    case passProd
     case black
     case blackPayment
     
@@ -37,12 +38,14 @@ public enum Environment {
     static let productionVPN = ProductionVPN()
     static let productionDrive = ProductionDrive()
     static let productionCalendar = ProductionCalendar()
+    static let productionPass = ProductionPass()
     static let blackServer = Environment.buildCustomDoh(customDomain: "proton.black")
     static let blackPaymentsServer = Environment.buildCustomDoh(customDomain: "payments.proton.black")
 }
 
 extension Environment {
-    public static var prebuild: [Environment] = [.mailProd, .vpnProd, .driveProd, .calendarProd, .black, .blackPayment]
+    public static var productions: [Environment] = [.mailProd, .vpnProd, .driveProd, .calendarProd, .passProd]
+    public static var prebuild: [Environment] = productions + [.black, .blackPayment]
 }
 
 extension Environment: Equatable {
@@ -75,6 +78,8 @@ extension Environment {
             Environment.productionDrive.status = status
         case .calendarProd:
             Environment.productionCalendar.status = status
+        case .passProd:
+            Environment.productionPass.status = status
         case .black:
             Environment.blackServer.status = status
         case .blackPayment:
@@ -94,6 +99,8 @@ extension Environment {
             return Environment.productionDrive
         case .calendarProd:
             return Environment.productionCalendar
+        case .passProd:
+            return Environment.productionPass
         case .black:
             return Environment.blackServer
         case .blackPayment:
@@ -113,6 +120,8 @@ extension Environment {
             return Environment.productionDrive
         case .calendarProd:
             return Environment.productionCalendar
+        case .passProd:
+            return Environment.productionPass
         case .black, .blackPayment, .custom:
             fatalError("Invalid index")
         }

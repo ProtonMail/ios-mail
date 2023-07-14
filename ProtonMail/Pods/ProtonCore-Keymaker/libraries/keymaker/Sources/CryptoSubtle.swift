@@ -20,21 +20,21 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import GoLibs
+import ProtonCore_CryptoGoInterface
 
 public struct CryptoSubtle {
     public static func Random(_ len: Int) -> Data? {
         var error: NSError?
-        return CryptoRandomToken(len, &error)
+        return CryptoGo.CryptoRandomToken(len, &error)
     }
     
     public static func DeriveKey(_ one: String, _ two: Data, _ three: Int, _ four: inout NSError?) -> Data? {
-        return SubtleDeriveKey(one, two, three, &four)
+        return CryptoGo.SubtleDeriveKey(one, two, three, &four)
     }
     public static func EncryptWithoutIntegrity(_ one: Data, _ two: Data, _ three: Data, _ four: inout NSError?) -> Data? {
-        return SubtleEncryptWithoutIntegrity(one, two, three, &four)
+        return CryptoGo.SubtleEncryptWithoutIntegrity(one, two, three, &four)
     }
     public static func DecryptWithoutIntegrity(_ one: Data, _ two: Data, _ three: Data, _ four: inout NSError?) -> Data? {
-        return SubtleDecryptWithoutIntegrity(one, two, three, &four)
+        return CryptoGo.SubtleDecryptWithoutIntegrity(one, two, three, &four)
     }
 }

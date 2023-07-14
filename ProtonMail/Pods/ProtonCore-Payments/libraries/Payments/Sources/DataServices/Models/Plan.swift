@@ -24,6 +24,15 @@
 import Foundation
 
 public struct Plan: Codable, Equatable {
+    
+    public struct Vendors: Codable, Equatable {
+        public let apple: Vendor
+    }
+    
+    public struct Vendor: Codable, Equatable {
+        public let plans: [String: String]
+    }
+    
     // amount is ignored
     public let name: String
     public var hashedName: String { name.sha256 }
@@ -31,7 +40,16 @@ public struct Plan: Codable, Equatable {
     public let maxAddresses: Int
     public let maxMembers: Int
     // max tier is ignored
+    
+    // these three exist only for /plans
     public let pricing: [String: Int]?
+    public let defaultPricing: [String: Int]?
+    public let vendors: Vendors?
+    // offers are ignored for now
+    
+    // this one exists only for /subscription
+    public let offer: String?
+    
     public let maxDomains: Int
     public let maxSpace: Int64
     // maxRewardsSpace exists only for plans/default route
@@ -55,7 +73,8 @@ public struct Plan: Codable, Equatable {
     public let state: Int?
 
     public static var empty: Plan {
-        Plan(name: "", iD: nil, maxAddresses: 0, maxMembers: 0, pricing: nil, maxDomains: 0, maxSpace: 0, maxRewardsSpace: nil,
+        Plan(name: "", iD: nil, maxAddresses: 0, maxMembers: 0, pricing: nil,
+             defaultPricing: nil, vendors: nil, offer: nil, maxDomains: 0, maxSpace: 0, maxRewardsSpace: nil,
              type: 0, title: "", maxVPN: 0, maxTier: 0, features: 0, maxCalendars: nil, state: nil, cycle: nil)
     }
 
@@ -64,6 +83,9 @@ public struct Plan: Codable, Equatable {
                 maxAddresses: Int,
                 maxMembers: Int,
                 pricing: [String: Int]?,
+                defaultPricing: [String: Int]?,
+                vendors: Vendors?,
+                offer: String?,
                 maxDomains: Int,
                 maxSpace: Int64,
                 maxRewardsSpace: Int64?,
@@ -80,6 +102,9 @@ public struct Plan: Codable, Equatable {
         self.maxAddresses = maxAddresses
         self.maxMembers = maxMembers
         self.pricing = pricing
+        self.defaultPricing = defaultPricing
+        self.vendors = vendors
+        self.offer = offer
         self.maxDomains = maxDomains
         self.maxSpace = maxSpace
         self.maxRewardsSpace = maxRewardsSpace
@@ -97,9 +122,21 @@ public struct Plan: Codable, Equatable {
 public extension Plan {
     func pricing(for period: String?) -> Int? { period.flatMap { pricing?[$0] } }
     
+    func defaultPricing(for period: String?) -> Int? { period.flatMap { defaultPricing?[$0] } }
+    
     func updating(cycle: Int?) -> Plan {
-        Plan(name: name, iD: iD, maxAddresses: maxAddresses, maxMembers: maxMembers, pricing: pricing,
-             maxDomains: maxDomains, maxSpace: maxSpace, maxRewardsSpace: maxRewardsSpace, type: type, title: title, maxVPN: maxVPN, maxTier: maxTier,
+        Plan(name: name, iD: iD, maxAddresses: maxAddresses, maxMembers: maxMembers,
+             pricing: pricing, defaultPricing: defaultPricing, vendors: vendors, offer: offer,
+             maxDomains: maxDomains, maxSpace: maxSpace, maxRewardsSpace: maxRewardsSpace, type: type,
+             title: title, maxVPN: maxVPN, maxTier: maxTier,
+             features: features, maxCalendars: maxCalendars, state: state, cycle: cycle)
+    }
+    
+    func updating(vendors: Vendors?) -> Plan {
+        Plan(name: name, iD: iD, maxAddresses: maxAddresses, maxMembers: maxMembers,
+             pricing: pricing, defaultPricing: defaultPricing, vendors: vendors, offer: offer,
+             maxDomains: maxDomains, maxSpace: maxSpace, maxRewardsSpace: maxRewardsSpace, type: type,
+             title: title, maxVPN: maxVPN, maxTier: maxTier,
              features: features, maxCalendars: maxCalendars, state: state, cycle: cycle)
     }
 }
@@ -116,10 +153,14 @@ public extension Plan {
 public extension Plan {
 
     static func combineDetailsDroppingPricing(_ planDetails: Plan...) -> Plan {
-        combineDetailsDroppingPricing(planDetails)
+        combineDetails(planDetails, droppingPrice: true)
+    }
+    
+    static func combineDetailsKeepingPricing(_ planDetails: Plan...) -> Plan {
+        combineDetails(planDetails, droppingPrice: false)
     }
 
-    static func combineDetailsDroppingPricing(_ planDetails: [Plan]) -> Plan {
+    static func combineDetails(_ planDetails: [Plan], droppingPrice: Bool) -> Plan {
 
         func combinedValue<T: Comparable>(_ allDetails: [Plan],
                                           _ keyPath: KeyPath<Plan, T>) -> T {
@@ -138,13 +179,18 @@ public extension Plan {
         if plansForNames.isEmpty, let firstPlan = planDetails.first {
             plansForNames.append(firstPlan)
         }
+        
+        let primaryPlan = planDetails.first { $0.isAPrimaryPlan }
 
         return Plan(
             name: plansForNames.map(\.name).joined(separator: " + "),
             iD: plansForNames.first?.iD,
             maxAddresses: combinedValue(planDetails, \.maxAddresses),
             maxMembers: combinedValue(planDetails, \.maxMembers),
-            pricing: nil,
+            pricing: droppingPrice ? nil : primaryPlan?.pricing,
+            defaultPricing: droppingPrice ? nil : primaryPlan?.defaultPricing,
+            vendors: primaryPlan?.vendors,
+            offer: primaryPlan?.offer,
             maxDomains: combinedValue(planDetails, \.maxDomains),
             maxSpace: combinedValue(planDetails, \.maxSpace),
             maxRewardsSpace: combinedValue(planDetails, \.maxRewardsSpace),
@@ -157,5 +203,30 @@ public extension Plan {
             state: combinedValue(planDetails, \.state),
             cycle: combinedValue(planDetails, \.cycle)
         )
+    }
+}
+
+extension Plan {
+    static func sortPurchasablePlans(lhs: Plan, rhs: Plan) -> Bool {
+        // There are three rules to sorting plans:
+        // 1. Sort by offer: if plan has offer, rise it to the top
+        //    We detect the offer by checking if pricing and defaultPricing differ
+        // 2. Sort by pricing: if plan is more expensive, rise to the top
+        // 3. Keep server order
+        let leftCycle = lhs.cycle.map(String.init) ?? InAppPurchasePlan.defaultCycle
+        let rightCycle = rhs.cycle.map(String.init) ?? InAppPurchasePlan.defaultCycle
+        let isLeftAnOffer = lhs.hasAnOffer(cycle: leftCycle)
+        let isRightAnOffer = rhs.hasAnOffer(cycle: rightCycle)
+        if isLeftAnOffer, !isRightAnOffer { return true }
+        if !isLeftAnOffer, isRightAnOffer { return false }
+        return lhs.pricing(for: leftCycle) ?? 0 > rhs.pricing(for: rightCycle) ?? 0
+    }
+    
+    private func hasAnOffer(cycle: String) -> Bool {
+        guard let pricing = pricing(for: cycle),
+              let defaultPricing = defaultPricing(for: cycle) else {
+            return false
+        }
+        return pricing != defaultPricing
     }
 }

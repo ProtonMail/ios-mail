@@ -231,17 +231,22 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
 
         viewController.isAccountDeletionPending = true
         let accountDeletion = AccountDeletionService(api: user.apiService)
-        accountDeletion.initiateAccountDeletionProcess(over: viewController) { [weak viewController] in
-            viewController?.isAccountDeletionPending = false
-        } completion: { [weak self] result in
-            switch result {
-            case .success:
-                self?.processSuccessfulAccountDeletion()
-            case .failure(let error):
-                viewController.isAccountDeletionPending = false
-                self?.presentAccountDeletionError(error)
+        accountDeletion.initiateAccountDeletionProcess(
+            over: viewController,
+            performBeforeClosingAccountDeletionScreen: { [weak viewController] completion in
+                viewController?.isAccountDeletionPending = false
+                completion()
+            },
+            completion: { [weak self] result in
+                switch result {
+                case .success:
+                    self?.processSuccessfulAccountDeletion()
+                case .failure(let error):
+                    viewController.isAccountDeletionPending = false
+                    self?.presentAccountDeletionError(error)
+                }
             }
-        }
+        )
     }
     
     private func processSuccessfulAccountDeletion() {

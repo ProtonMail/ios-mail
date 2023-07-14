@@ -19,14 +19,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import Foundation
 import ProtonCore_Authentication
 import ProtonCore_Hash
 import ProtonCore_DataModel
 
 final class AddressKeySetup {
+    
+    static let signedKeyListSignatureContext = SignatureContext(value: "key-transparency.key-list", isCritical: false)
     
     struct GeneratedAddressKey {
         /// armored key
@@ -97,7 +99,7 @@ final class AddressKeySetup {
         /// sign detached. keylist.json signed by primary address key. on signup situation this is the address key we are going to submit.
         let addrSignerKey = SigningKey.init(privateKey: armoredAddrKey,
                                             passphrase: addrKeyPassphrase)
-        let signed = try Sign.signDetached(signingKey: addrSignerKey, plainText: jsonKeylist)
+        let signed = try Sign.signDetached(signingKey: addrSignerKey, plainText: jsonKeylist, signatureContext: AddressKeySetup.signedKeyListSignatureContext)
         
         let signedKeyList: [String: Any] = [
             "Data": jsonKeylist,

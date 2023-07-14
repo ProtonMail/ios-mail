@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Foundations
@@ -28,11 +30,11 @@ import ProtonCore_Utilities
 protocol AccountmanagerUserCellDelegate: AnyObject {
     /// Show more option action sheet, only call this function before iOS 14
     func showMoreOption(for userID: String, sender: UIButton)
-    @available(iOS 14.0, *)
+
     func removeAccount(of userID: String)
-    @available(iOS 14.0, *)
+
     func prepareSignIn(for userID: String)
-    @available(iOS 14.0, *)
+
     func prepareSignOut(for userID: String)
 }
 
@@ -83,9 +85,7 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        if #available(iOS 14.0, *) {
-            self.moreBtn.showsMenuAsPrimaryAction = true
-        }
+        self.moreBtn.showsMenuAsPrimaryAction = true
         self.shortNameView.roundCorner(8)
         self.shortNameLabel.adjustsFontSizeToFitWidth = true
         self.contentView.backgroundColor = ColorProvider.BackgroundNorm
@@ -120,14 +120,11 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
         self.mail.text = mail
         
         self.isLogin = isLogin
-        if #available(iOS 14.0, *) {
-            // This will override IBAction
-            self.configMoreButton(isSignin: isLogin)
-        }
+        // This will override IBAction
+        self.configMoreButton(isSignin: isLogin)
         self.generateCellAccessibilityIdentifiers(name)
     }
 
-    @available(iOS 14.0, *)
     private func configMoreButton(isSignin: Bool) {
         // todo i18n
 
@@ -160,3 +157,5 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
         self.delegate?.showMoreOption(for: self.userID, sender: sender)
     }
 }
+
+#endif

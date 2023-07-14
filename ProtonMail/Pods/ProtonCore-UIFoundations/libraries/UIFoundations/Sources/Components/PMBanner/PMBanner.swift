@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 import ProtonCore_Foundations
 
@@ -567,12 +569,8 @@ extension PMBanner {
 
     private func createActivityIndicator() {
         if activityIndicator != nil { return }
-        if #available(iOS 13.0, *) {
-            activityIndicator = UIActivityIndicatorView(style: .medium)
-            activityIndicator?.color = self.style.assistTextColor
-        } else {
-            activityIndicator = UIActivityIndicatorView(style: .white)
-        }
+        activityIndicator = UIActivityIndicatorView(style: .medium)
+        activityIndicator?.color = self.style.assistTextColor
         guard let activityIndicator = activityIndicator,
               let actionButton = self.actionButton else { return }
         activityIndicator.hidesWhenStopped = true
@@ -653,3 +651,5 @@ extension PMBanner: UITextViewDelegate {
         textView.selectedTextRange = nil
     }
 }
+
+#endif

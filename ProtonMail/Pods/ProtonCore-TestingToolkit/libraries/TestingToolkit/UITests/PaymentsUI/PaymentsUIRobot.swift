@@ -101,7 +101,7 @@ public enum PaymentsPlan: String {
             return [
                 "1 user",
                 "1 of 10 email addresses",
-                "0 of 20 personal calendars",
+                "0 of 20 calendars",
                 "1 VPN connection"]
         case .unlimited:
             return [
@@ -120,7 +120,7 @@ public enum PaymentsPlan: String {
             return [
                 "1 user",
                 "1 email address",
-                "1 personal calendar",
+                "1 calendar",
                 "1 VPN connection"]
         case .mailPlus:
             return [
@@ -154,7 +154,7 @@ public enum PaymentsPlan: String {
             return [
                 "1 user",
                 "1 of 10 email addresses",
-                "0 of 20 personal calendars",
+                "0 of 20 calendars",
                 "1 VPN connection"]
         case .unlimited:
             return [
