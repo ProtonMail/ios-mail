@@ -191,6 +191,14 @@ final class BuildSearchIndex {
         }
     }
 
+    func stopInBackground() {
+        stopBuildIndex()
+        indexingQueue.sync { [weak self] in
+            guard let self = self else { return }
+            self.updateCurrentState(to: .backgroundStopped)
+        }
+    }
+
     func didChangeDownloadViaMobileDataConfiguration() {
         indexingQueue.async { [weak self] in
             guard let self = self else { return }

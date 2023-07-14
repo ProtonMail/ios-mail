@@ -1,5 +1,6 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
+import BackgroundTasks
 import CoreData
 import LocalAuthentication
 import Network
@@ -55,6 +56,24 @@ class MockAutoDeleteSpamAndTrashDaysProvider: AutoDeleteSpamAndTrashDaysProvider
         set {
             isAutoDeleteEnabledStub(newValue)
         }
+    }
+
+}
+
+class MockBGTaskSchedulerProtocol: BGTaskSchedulerProtocol {
+    @ThrowingFuncStub(MockBGTaskSchedulerProtocol.submit) var submitStub
+    func submit(_ taskRequest: BGTaskRequest) throws {
+        try submitStub(taskRequest)
+    }
+
+    @FuncStub(MockBGTaskSchedulerProtocol.register, initialReturn: Bool()) var registerStub
+    func register(forTaskWithIdentifier identifier: String, using queue: DispatchQueue?, launchHandler: @escaping (BGTask) -> Void) -> Bool {
+        registerStub(identifier, queue, launchHandler)
+    }
+
+    @FuncStub(MockBGTaskSchedulerProtocol.cancel) var cancelStub
+    func cancel(taskRequestWithIdentifier identifier: String) {
+        cancelStub(identifier)
     }
 
 }
@@ -515,6 +534,11 @@ class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
     @FuncStub(MockEncryptedSearchServiceProtocol.search) var searchStub
     func search(userID: UserID, query: String, page: UInt, completion: @escaping (Result<EncryptedSearchService.SearchResult, Error>) -> Void) {
         searchStub(userID, query, page, completion)
+    }
+
+    @FuncStub(MockEncryptedSearchServiceProtocol.pauseBuildingIndexInBackground) var pauseBuildingIndexInBackgroundStub
+    func pauseBuildingIndexInBackground(for userID: UserID) {
+        pauseBuildingIndexInBackgroundStub(userID)
     }
 
 }
@@ -1459,6 +1483,19 @@ class MockUserIntroductionProgressProvider: UserIntroductionProgressProvider {
     @FuncStub(MockUserIntroductionProgressProvider.markSpotlight) var markSpotlightStub
     func markSpotlight(for feature: SpotlightableFeatureKey, asSeen seen: Bool, byUserWith userID: UserID) {
         markSpotlightStub(feature, seen, userID)
+    }
+
+}
+
+class MockUsersManagerProtocol: UsersManagerProtocol {
+    @PropertyStub(\MockUsersManagerProtocol.firstUser, initialGet: nil) var firstUserStub
+    var firstUser: UserManager? {
+        firstUserStub()
+    }
+
+    @FuncStub(MockUsersManagerProtocol.hasUsers, initialReturn: Bool()) var hasUsersStub
+    func hasUsers() -> Bool {
+        hasUsersStub()
     }
 
 }

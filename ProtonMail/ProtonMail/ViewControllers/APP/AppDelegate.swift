@@ -20,15 +20,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import BackgroundTasks
 import Intents
-import SideMenuSwift
 import LifetimeTracker
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Doh
+import ProtonCore_FeatureSwitch
 import ProtonCore_Keymaker
 import ProtonCore_Log
-import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
 import ProtonCore_Observability
 import ProtonCore_Payments
@@ -131,6 +131,14 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         sharedServices.add(EncryptedSearchUserDefaultCache.self, for: EncryptedSearchUserDefaultCache())
         sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
+        sharedServices.add(
+            BackgroundTaskHelper.self,
+            for: BackgroundTaskHelper(dependencies: .init(
+                coreKeyMaker: coreKeyMaker,
+                esService: EncryptedSearchService.shared,
+                usersManager: usersManager
+            ))
+        )
 
 #if DEBUG
         if ProcessInfo.isRunningUnitTests {
@@ -175,6 +183,10 @@ extension AppDelegate: UIApplicationDelegate {
                                                name: NSNotification.Name.didSignOut,
                                                object: nil)
         coordinator.delegate = self
+
+        let backgroundTaskHelper = sharedServices.get(by: BackgroundTaskHelper.self)
+        backgroundTaskHelper.registerBackgroundTask()
+
         if #available(iOS 13.0, *) {
             // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
         } else {
@@ -256,6 +268,9 @@ extension AppDelegate: UIApplicationDelegate {
         self.currentState = .background
 
         startAutoLockCountDownIfNeeded()
+
+        let backgroundTaskHelper = sharedServices.get(by: BackgroundTaskHelper.self)
+        backgroundTaskHelper.scheduleBackgroundProcessingIfNeeded()
 
         let users: UsersManager = sharedServices.get()
         let queueManager: QueueManager = sharedServices.get()
