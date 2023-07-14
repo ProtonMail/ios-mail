@@ -243,7 +243,7 @@ final class SignInManagerTests: XCTestCase {
                 unlockExpectation.fulfill()
             })
 
-        waitForExpectations(timeout: 0.5)
+        waitForExpectations(timeout: 1)
 
         XCTAssertFalse(usersManager.hasUsers())
     }

@@ -33,8 +33,7 @@ final class WindowsCoordinatorTests: XCTestCase {
     private var userDefaultMock: UserDefaults!
     private var cacheStatusStub: CacheStatusStub!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
         keyChain = KeychainWrapper(
             service: "ch.protonmail.test",
             accessGroup: "2SB5Z68H26.ch.protonmail.protonmail"
@@ -47,8 +46,10 @@ final class WindowsCoordinatorTests: XCTestCase {
         notificationCenter = NotificationCenter()
         unlockManagerDelegateMock = .init()
         cacheStatusStub = .init()
-        setupServiceFactory()
-        sut = .init(factory: serviceFactory)
+        await setupServiceFactory()
+        await MainActor.run(body: {
+            sut = .init(factory: serviceFactory)
+        })
     }
 
     override func tearDown() {
@@ -166,7 +167,7 @@ private extension WindowsCoordinatorTests {
         sut = .init(factory: serviceFactory, showPlaceHolderViewOnly: showPlaceHolderViewOnly)
     }
 
-    func setupServiceFactory() {
+    func setupServiceFactory() async {
         let unlockManager = UnlockManager(
             cacheStatus: cacheStatusStub,
             delegate: unlockManagerDelegateMock,
@@ -176,7 +177,7 @@ private extension WindowsCoordinatorTests {
         usersManager = UsersManager(
             doh: DohInterfaceMock(),
             userDataCache: UserDataCache(keyMaker: keyMaker, keychain: keyChain),
-            coreKeyMaker: MockKeyMakerProtocol()
+            coreKeyMaker: keyMaker
         )
         let pushService = PushNotificationService(
             notificationCenter: notificationCenter,
@@ -199,6 +200,11 @@ private extension WindowsCoordinatorTests {
         serviceFactory.add(UnlockManager.self, for: unlockManager)
         serviceFactory.add(NotificationCenter.self, for: notificationCenter)
         serviceFactory.add(KeyMakerProtocol.self, for: keyMaker)
+        return await withCheckedContinuation { continuation in
+            keyMaker.activate(RandomPinProtection(pin: String.randomString(32), keychain: keyChain)) { success in
+                continuation.resume()
+            }
+        }
     }
 }
 
