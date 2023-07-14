@@ -110,6 +110,9 @@ class MailboxCoordinatorTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
+        conversationStateProviderMock = nil
+        dummyAPIService = nil
+        uiNavigationControllerMock = nil
         connectionStatusProviderMock = nil
         conversationStateProviderMock = nil
         dummyAPIService = nil

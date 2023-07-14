@@ -365,7 +365,7 @@ DEPENDENCIES:
   - ReachabilitySwift
   - SDWebImage (= 5.13.3)
   - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `7.31.2.fork`)"
-  - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.landscape`)"
+  - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.autolayout`)"
   - SkeletonView (= 1.30.4)
   - SQLite.swift (~> 0.13.3)
   - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
@@ -498,7 +498,7 @@ EXTERNAL SOURCES:
     :tag: 7.31.2.fork
   SideMenuSwift:
     :git: "git@gitlab.protontech.ch:jchen/SideMenu.git"
-    :tag: v2.0.9.landscape
+    :tag: v2.0.9.autolayout
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
@@ -617,7 +617,7 @@ CHECKOUT OPTIONS:
     :tag: 7.31.2.fork
   SideMenuSwift:
     :git: "git@gitlab.protontech.ch:jchen/SideMenu.git"
-    :tag: v2.0.9.landscape
+    :tag: v2.0.9.autolayout
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
@@ -682,6 +682,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: 302c6999b5a616e8024f12ee4d333021e0dfd6b3
+PODFILE CHECKSUM: bb4c81ee40f59e329c0abc953e84b884e8d21ef7
 
 COCOAPODS: 1.12.1
