@@ -70,10 +70,6 @@ extension NSManagedObjectContext {
         file: StaticString = #file,
         line: UInt = #line
     ) -> NSError? {
-        if CoreDataService.useNewApproach {
-            return nil
-        }
-
         var error: NSError?
         do {
             if hasChanges {

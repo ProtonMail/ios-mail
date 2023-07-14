@@ -54,7 +54,7 @@ extension CacheServiceTest {
         contextProviderMock.performAndWaitOnRootSavingContext { context in
             if let objectID = objectID {
                 let object = context.object(with: objectID)
-                XCTAssertTrue(object.isDeleted)
+                XCTAssertTrue(object.isFault)
             }
         }
     }
