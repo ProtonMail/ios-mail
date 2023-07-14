@@ -34,7 +34,8 @@ UNIT_TEST_SCHEME = "ProtonMailTests"
 UNIT_TEST_DEVICE = "iPhone 8"
 # do not use 16.4 because of  https://github.com/NativeScript/NativeScript/issues/10267 that's apparently causing the tests to fail
 # 17.0 might be OK though, check it once it's available
-UI_TEST_DEVICE = "iPhone 14 (16.2)"
+UI_TEST_IOS_VERSION = "16.2"
+UI_TEST_DEVICES = ["iPhone SE (3rd generation) (#{UI_TEST_IOS_VERSION})", "iPad Pro (12.9-inch) (6th generation) (#{UI_TEST_IOS_VERSION})"]
 UI_TEST_SCHEME = "ProtonMailUITests"
 
 def select_xcode
@@ -366,7 +367,7 @@ platform :ios do
     select_xcode
 
     run_tests(
-      device: UI_TEST_DEVICE,
+      device: UNIT_TEST_DEVICE,
       scheme: UNIT_TEST_SCHEME,
       app_identifier: APP_IDENTIFIER,
       reset_simulator: true,
@@ -387,7 +388,7 @@ platform :ios do
       test_without_building: true,
       parallel_testing: true,
       concurrent_workers: options[:concurrent_workers],
-      device: UI_TEST_DEVICE,
+      devices: UI_TEST_DEVICES,
       testplan: options[:testplan],
       app_identifier: APP_IDENTIFIER,
       output_directory: "../test_output/TestResults",
