@@ -565,7 +565,7 @@ extension MainQueueHandler {
             autoreleasepool(){
                 do {
                     guard let (keyPacket, dataPacketURL) = try attachment.encrypt(byKey: key) else {
-                        MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: attachment.message, context: context)
+                        try MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: attachment.message, context: context)
                         completion(NSError.encryptionError())
                         return
                     }
@@ -596,7 +596,7 @@ extension MainQueueHandler {
                                                          jsonCompletion: completionWrapper)
 
                 } catch {
-                    MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: attachment.message, context: context)
+                    try? MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: attachment.message, context: context)
                     let err = error as NSError
                     completion(err)
                 }
@@ -1112,7 +1112,7 @@ extension MainQueueHandler {
 
 enum MainQueueHandlerHelper {
     static func removeAllAttachmentsNotUploaded(of message: Message,
-                                                context: NSManagedObjectContext) {
+                                                context: NSManagedObjectContext) throws {
         let toBeDeleted = message.attachments
             .compactMap({ $0 as? Attachment })
             .filter({ !$0.isUploaded })
@@ -1122,6 +1122,6 @@ enum MainQueueHandlerHelper {
         }
         let attachmentCount = message.numAttachments.intValue
         message.numAttachments = NSNumber(integerLiteral: max(attachmentCount - toBeDeleted.count, 0))
-        _ = context.saveUpstreamIfNeeded()
+        try context.save()
     }
 }

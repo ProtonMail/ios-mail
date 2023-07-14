@@ -43,6 +43,14 @@ enum FeatureFlagTestData {
                 "Type": "boolean",
                 "Value": false,
                 "Global": true,
+                "Code": "ModernizedCoreData",
+                "DefaultValue": false
+            ],
+            [
+                "Writable": false,
+                "Type": "boolean",
+                "Value": false,
+                "Global": true,
                 "Code": "SendMessageRefactor",
                 "DefaultValue": false
             ],

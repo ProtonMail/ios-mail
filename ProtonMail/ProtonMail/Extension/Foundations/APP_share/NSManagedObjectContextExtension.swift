@@ -70,6 +70,10 @@ extension NSManagedObjectContext {
         file: StaticString = #file,
         line: UInt = #line
     ) -> NSError? {
+        if CoreDataService.useNewApproach {
+            return nil
+        }
+
         var error: NSError?
         do {
             if hasChanges {
@@ -90,7 +94,7 @@ extension NSManagedObjectContext {
                     }
                 }
                 if let parentContext = parent {
-                    assertionFailure(
+                    PMAssertionFailure(
                         "This should never be needed, rootSavingContext has no parent and mainContext is never saved."
                     )
                     parentContext.performAndWait { () -> Void in
