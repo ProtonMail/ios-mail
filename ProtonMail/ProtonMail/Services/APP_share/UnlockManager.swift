@@ -175,12 +175,7 @@ final class UnlockManager: Service {
                         requestPin()
                     case .requireTouchID:
                         self.biometricAuthentication(afterBioAuthPassed: {
-                            self.unlockIfRememberedCredentials(
-                                requestMailboxPassword: requestMailboxPassword,
-                                unlocked: {
-                                    self.notificationCenter.post(name: Notification.Name.didUnlock, object: nil)
-                                }
-                            )
+                            self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
                         })
                     case .restore:
                         assertionFailure("Should not reach here.")
@@ -234,9 +229,7 @@ final class UnlockManager: Service {
 
         delegate.loadUserDataAfterUnlock()
 
-        if !cacheStatus.isTouchIDEnabled && !cacheStatus.isPinCodeEnabled {
-            notificationCenter.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
-        }
+        notificationCenter.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
         unlocked?()
     }
 }
