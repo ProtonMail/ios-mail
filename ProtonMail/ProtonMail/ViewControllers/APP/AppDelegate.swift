@@ -202,7 +202,6 @@ extension AppDelegate: UIApplicationDelegate {
           _ application: UIApplication,
           supportedInterfaceOrientationsFor window: UIWindow?
       ) -> UIInterfaceOrientationMask {
-          guard UserInfo.isRotateScreenEnabled else { return .portrait }
           let viewController = window?.rootViewController
           if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
               return UIInterfaceOrientationMask.all
