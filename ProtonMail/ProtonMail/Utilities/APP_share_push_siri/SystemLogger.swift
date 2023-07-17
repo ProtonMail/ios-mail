@@ -95,6 +95,25 @@ final class SystemLogger {
         log(message: message, category: category, isError: isError, isDebug: false, caller: caller)
     }
 
+    /// Logs an error into the unified logging system and the log file
+    ///
+    /// The unified logging system only works for iOS 15+
+    ///
+    /// - Parameters:
+    ///   - error: the error to log.
+    ///   - category: describes the scope for this message and helps filtering the system logs.
+    static func log(
+        error: Error,
+        category: Category? = nil,
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: Int = #line,
+        column: Int = #column
+    ) {
+        let caller = Caller(file: file, function: function, line: line, column: column)
+        log(message: "\(error)", category: category, isError: true, isDebug: false, caller: caller)
+    }
+
     /// Use this function instead of `log` to indicate that calls to this method can be removed from the codebase
     /// at some point in the near future. The reason to have this function is to have a clean log and avoid clutering it
     /// with useless entries. If you want to add meaningful permanent logs, use the `log` function instead.
