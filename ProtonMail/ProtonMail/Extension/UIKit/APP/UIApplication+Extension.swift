@@ -21,17 +21,7 @@ extension UIApplication {
     var topMostWindow: UIWindow? {
         if let windowScene = UIApplication.shared.connectedScenes
             .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
-            let windows = windowScene.windows.sorted(by: { $0.windowLevel > $1.windowLevel })
-            #if DEBUG_ENTERPRISE
-            // Because the window from the LifeTimeTracker.
-            if let topWindow = windows.dropFirst().first {
-                return topWindow
-            }
-            #else
-            if let topWindow = windows.first {
-                return topWindow
-            }
-            #endif
+            return windowScene.windows.first(where: { $0.isKeyWindow })
         }
         return nil
     }
