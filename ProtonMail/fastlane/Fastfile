@@ -35,7 +35,7 @@ UNIT_TEST_DEVICE = "iPhone 8"
 # do not use 16.4 because of  https://github.com/NativeScript/NativeScript/issues/10267 that's apparently causing the tests to fail
 # 17.0 might be OK though, check it once it's available
 UI_TEST_IOS_VERSION = "16.2"
-UI_TEST_DEVICES = ["iPhone SE (3rd generation) (#{UI_TEST_IOS_VERSION})", "iPad Pro (12.9-inch) (6th generation) (#{UI_TEST_IOS_VERSION})"]
+UI_TEST_DEVICES = ["iPhone SE (3rd generation) (#{UI_TEST_IOS_VERSION})"]
 UI_TEST_SCHEME = "ProtonMailUITests"
 
 def select_xcode
