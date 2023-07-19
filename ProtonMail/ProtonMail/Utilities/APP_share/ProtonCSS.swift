@@ -51,7 +51,6 @@ enum ProtonCSS {
         var darkTextColor = ColorProvider.TextNorm.toHex()
         var darkBrandColor = ColorProvider.BrandNorm.toHex()
 
-        if #available(iOS 13.0, *) {
             let trait = UITraitCollection(userInterfaceStyle: .dark)
             darkBackgroundColor = ColorProvider.BackgroundNorm.resolvedColor(with: trait).toHex()
             darkTextColor = ColorProvider.TextNorm.resolvedColor(with: trait).toHex()
@@ -61,7 +60,6 @@ enum ProtonCSS {
             backgroundColor = ColorProvider.BackgroundNorm.resolvedColor(with: lightTrait).toHex()
             textColor = ColorProvider.TextNorm.resolvedColor(with: lightTrait).toHex()
             brandColor = ColorProvider.BrandNorm.resolvedColor(with: lightTrait).toHex()
-        }
 
         return content
             .replacingOccurrences(of: "\n", with: "")
@@ -80,13 +78,8 @@ enum ProtonCSS {
 
         let content = try String(contentsOfFile: bundle, encoding: .utf8)
 
-        let brandColor: String
-        if #available(iOS 13.0, *) {
             let trait = UITraitCollection(userInterfaceStyle: .light)
-            brandColor = ColorProvider.BrandNorm.resolvedColor(with: trait).toHex()
-        } else {
-            brandColor = ColorProvider.BrandNorm.toHex()
-        }
+        let brandColor = ColorProvider.BrandNorm.resolvedColor(with: trait).toHex()
         return content
             .replacingOccurrences(of: "\n", with: "")
             .replacingOccurrences(of: "{{proton-brand-color}}", with: brandColor)

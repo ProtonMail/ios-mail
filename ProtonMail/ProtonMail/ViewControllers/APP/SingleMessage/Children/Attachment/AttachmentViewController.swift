@@ -82,9 +82,7 @@ class AttachmentViewController: UIViewController {
 extension AttachmentViewController: CustomViewPrintable {
     func printPageRenderer() -> CustomViewPrintRenderer {
         let newView = AttachmentView()
-        if #available(iOS 13, *) {
             newView.overrideUserInterfaceStyle = .light
-        }
         self.setup(view: newView, with: viewModel)
         newView.backgroundColor = .white
         return CustomViewPrintRenderer(newView)

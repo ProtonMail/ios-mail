@@ -72,7 +72,7 @@ final class PMDatePicker: UIView {
             self.layoutIfNeeded()
         }
         if #available(iOS 15, *) {
-        } else if #available(iOS 14, *) {
+        } else {
             NotificationCenter.default.addKeyboardObserver(self)
         }
     }

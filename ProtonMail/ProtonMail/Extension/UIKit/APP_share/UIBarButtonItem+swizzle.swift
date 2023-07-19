@@ -25,16 +25,13 @@ extension UIBarButtonItem {
     // Since our app is not that deep doesn't get many benefits from it
     // Use the swizzle method to disable the menu for the whole app
     static func enableMenuSwizzle() {
-        if #available(iOS 14.0, *) {
             exchange(
                 #selector(setter: UIBarButtonItem.menu),
                 with: #selector(setter: UIBarButtonItem.swizzledMenu),
                 in: UIBarButtonItem.self
             )
-        }
     }
 
-    @available(iOS 14.0, *)
     private static func exchange(
         _ selector1: Selector,
         with selector2: Selector,
@@ -55,7 +52,6 @@ extension UIBarButtonItem {
         method_exchangeImplementations(method, swizzled)
     }
 
-    @available(iOS 14.0, *)
     @objc dynamic var swizzledMenu: UIMenu? {
         get {
             return self.swizzledMenu

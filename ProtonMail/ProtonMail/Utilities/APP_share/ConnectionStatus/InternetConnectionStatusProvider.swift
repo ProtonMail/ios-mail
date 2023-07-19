@@ -103,7 +103,6 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
 }
 
 // MARK: - NWPathMonitor
-@available(iOS 12.0, *)
 extension InternetConnectionStatusProvider {
     private func startPathMonitor(_ monitor: ConnectionMonitor) {
         monitor.pathUpdateClosure = { [weak self] path in

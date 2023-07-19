@@ -53,12 +53,7 @@ extension UITableView {
 
     func makeLoadingFooterView() -> UIView {
         let view = UIView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 72))
-        let loadingActivityView: UIActivityIndicatorView
-        if #available(iOS 13.0, *) {
-            loadingActivityView = UIActivityIndicatorView(style: .medium)
-        } else {
-            loadingActivityView = UIActivityIndicatorView(style: .white)
-        }
+        let loadingActivityView = UIActivityIndicatorView(style: .medium)
         loadingActivityView.color = ColorProvider.BrandNorm
         view.addSubview(loadingActivityView)
 

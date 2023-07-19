@@ -22,7 +22,6 @@
 
 import UIKit
 
-@available(iOS 11.0, *)
 class DropLandingZone: UIVisualEffectView {
     convenience init(frame: CGRect) {
         let blur = UIBlurEffect(style: .prominent)

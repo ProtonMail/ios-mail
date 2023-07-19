@@ -82,9 +82,7 @@ class SkeletonViewController: ProtonMailTableViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = LocalString._menu_inbox_title
-        }
         self.title = LocalString._menu_inbox_title
         self.view.backgroundColor = ColorProvider.BackgroundNorm
     }

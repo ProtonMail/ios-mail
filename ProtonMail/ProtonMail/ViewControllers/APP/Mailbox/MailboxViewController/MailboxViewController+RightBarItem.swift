@@ -112,23 +112,13 @@ extension MailboxViewController {
     }
 
     private func setupEllipsisMenuBarItem() -> UIBarButtonItem {
-        let item: UIBarButtonItem
-        if #available(iOS 14.0, *) {
             let menu = self.setupEllipsisMenu()
-            item = UIBarButtonItem(title: nil, image: IconProvider.threeDotsHorizontal, primaryAction: nil, menu: menu)
-        } else {
-            item = IconProvider.threeDotsHorizontal.toUIBarButtonItem(
-                target: self,
-                action: #selector(ellipsisMenuTapped(sender:)),
-                tintColor: ColorProvider.IconNorm,
-                backgroundSquareSize: 40)
-        }
+        let item = UIBarButtonItem(title: nil, image: IconProvider.threeDotsHorizontal, primaryAction: nil, menu: menu)
         item.accessibilityLabel = "MailboxViewController.ellipsisMenuBarItem"
         item.tag = BarButtonType.ellipsis.rawValue
         return item
     }
 
-    @available(iOS 14.0, *)
     private func setupEllipsisMenu() -> UIMenu {
         let composeAction = UIAction(title: LocalString._compose_message, image: IconProvider.penSquare, state: .off) { [weak self]_ in
             self?.composeButtonTapped()

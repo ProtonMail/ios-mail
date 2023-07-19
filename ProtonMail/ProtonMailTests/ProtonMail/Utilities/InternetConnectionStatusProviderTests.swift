@@ -3,7 +3,6 @@ import XCTest
 import Network
 import ProtonCore_TestingToolkit
 
-@available(iOS 12.0, *)
 class InternetConnectionStatusProviderTests: XCTestCase {
 
     var sut: InternetConnectionStatusProvider!

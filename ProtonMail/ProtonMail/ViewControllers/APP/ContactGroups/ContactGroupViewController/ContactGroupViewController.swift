@@ -323,13 +323,6 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         searchController = UISearchController(searchResultsController: nil)
         searchController?.searchBar.placeholder = LocalString._general_search_placeholder
 
-        if #available(iOS 13.0, *) {
-            // Terminating app due to uncaught exception 'NSGenericException', reason: 'Access to UISearchBar's set_cancelButtonText: ivar is prohibited. This is an application bug'
-        } else {
-            searchController?.searchBar.setValue(LocalString._general_done_button,
-                                                forKey: "_cancelButtonText")
-        }
-
         searchController?.searchResultsUpdater = self
         searchController?.obscuresBackgroundDuringPresentation = false
         searchController?.searchBar.delegate = self
@@ -403,10 +396,9 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         let nav = UINavigationController(rootViewController: newView)
         present(nav, animated: true)
 
-        if #available(iOS 13, *) { // detect view dismiss above iOS 13
+            // detect view dismiss above iOS 13
             nav.children[0].presentationController?.delegate = self
             nav.presentationController?.delegate = self
-        }
     }
 
     func selectRow(at indexPath: IndexPath, groupID: String) {
@@ -637,8 +629,6 @@ extension ContactGroupsViewController: NSNotificationCenterKeyboardObserverProto
     }
 }
 
-// detect view dismiss above iOS 13
-@available(iOS 13, *)
 extension ContactGroupsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         isOnMainView = true

@@ -280,7 +280,6 @@ class MenuViewModelTests: XCTestCase {
         XCTAssertEqual(sut.getIconColor(of: label), ColorProvider.SidebarIconWeak)
     }
 
-    @available(iOS 13.0, *)
     func testGetIconColor_fromLabelWithoutCustomIconColor_withLabelSelected_getSelectedDefaultColor() {
         let label = MenuLabel(id: "",
                               name: "",
@@ -311,7 +310,6 @@ class MenuViewModelTests: XCTestCase {
         XCTAssertEqual(sut.getIconColor(of: label), UIColor(hexColorCode: color))
     }
 
-    @available(iOS 13.0, *)
     func testGetIconColor_fromLabelWithCustomIconColor_withLabelSelected_getCustomColor() {
         let color = "#303239"
         let label = MenuLabel(id: "",

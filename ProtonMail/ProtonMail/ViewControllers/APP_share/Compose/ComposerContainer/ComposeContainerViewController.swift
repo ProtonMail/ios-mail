@@ -141,9 +141,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 13.0, *) {
             self.isModalInPresentation = true
-        }
         self.tableView.backgroundColor = .clear
         self.tableView.separatorStyle = .none
         self.tableView.dropDelegate = self
@@ -193,9 +191,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         super.viewDidAppear(animated)
         self.startAutoSync()
         #if !APP_EXTENSION
-        if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = LocalString._general_draft_action
-        }
         #endif
 
         generateAccessibilityIdentifiers()
@@ -496,7 +492,6 @@ extension ComposeContainerViewController {
 // MARK: - UITableViewDropDelegate
 
 extension ComposeContainerViewController: UITableViewDropDelegate {
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
                    canHandle session: UIDropSession) -> Bool {
         // return true only if all the files are supported
@@ -504,14 +499,12 @@ extension ComposeContainerViewController: UITableViewDropDelegate {
         return self.viewModel.filesAreSupported(from: itemProviders)
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
                    dropSessionDidUpdate session: UIDropSession,
                    withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
         return UITableViewDropProposal(operation: .copy, intent: .insertIntoDestinationIndexPath)
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, dropSessionDidEnter session: UIDropSession) {
         if self.dropLandingZone == nil {
             var dropFrame = self.tableView.frame
@@ -527,14 +520,12 @@ extension ComposeContainerViewController: UITableViewDropDelegate {
         }
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, dropSessionDidExit session: UIDropSession) {
         UIView.animate(withDuration: 0.3, animations: {
             self.dropLandingZone?.alpha = 0.0
         })
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, dropSessionDidEnd session: UIDropSession) {
         UIView.animate(withDuration: 0.3, animations: {
             self.dropLandingZone?.alpha = 0.0
@@ -544,7 +535,6 @@ extension ComposeContainerViewController: UITableViewDropDelegate {
         }
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
                    performDropWith coordinator: UITableViewDropCoordinator) {
         DispatchQueue.main.async {

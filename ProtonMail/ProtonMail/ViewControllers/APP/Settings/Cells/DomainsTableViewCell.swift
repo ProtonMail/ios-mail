@@ -29,13 +29,11 @@ import UIKit
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        if #available(iOS 10, *) {
             self.domainText.font = UIFont.preferredFont(for: .footnote, weight: .regular)
             self.domainText.adjustsFontForContentSizeCategory = true
 
             self.defaultMark.font = UIFont.preferredFont(for: .footnote, weight: .regular)
             self.defaultMark.adjustsFontForContentSizeCategory = true
-        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

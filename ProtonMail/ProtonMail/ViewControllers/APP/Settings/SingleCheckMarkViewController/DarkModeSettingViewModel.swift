@@ -68,8 +68,6 @@ final class DarkModeSettingViewModel: SettingsSingleCheckMarkVMProtocol {
         guard let newStatus = options[safe: indexPath.row],
               newStatus != darkModeCache.darkModeStatus else { return }
         darkModeCache.darkModeStatus = newStatus
-        if #available(iOS 13, *) {
             NotificationCenter.default.post(name: .shouldUpdateUserInterfaceStyle, object: nil)
-        }
     }
 }

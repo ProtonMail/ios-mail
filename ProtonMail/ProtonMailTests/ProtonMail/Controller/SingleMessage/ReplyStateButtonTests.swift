@@ -19,7 +19,6 @@ import XCTest
 import ProtonCore_UIFoundations
 @testable import ProtonMail
 
-@available(iOS 13.0, *)
 final class ReplyStateButtonTests: XCTestCase {
     func testInitializingFromMoreThanOneContactFalseShouldReturnTheReplyCase() {
         let state = HeaderContainerView.ReplyState.from(moreThanOneContact: false, isScheduled: false)

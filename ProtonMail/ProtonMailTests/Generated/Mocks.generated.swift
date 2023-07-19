@@ -177,11 +177,6 @@ class MockCachedUserDataProvider: CachedUserDataProvider {
 }
 
 class MockConnectionMonitor: ConnectionMonitor {
-    @PropertyStub(\MockConnectionMonitor.currentNWPath, initialGet: nil) var currentNWPathStub
-    var currentNWPath: NWPathProtocol? {
-        currentNWPathStub()
-    }
-
     @PropertyStub(\MockConnectionMonitor.pathUpdateClosure, initialGet: nil) var pathUpdateClosureStub
     var pathUpdateClosure: ((_ newPath: NWPathProtocol) -> Void)? {
         get {

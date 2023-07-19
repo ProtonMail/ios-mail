@@ -29,9 +29,7 @@ extension NSUserActivity {
         activity.isEligibleForHandoff = true
         activity.isEligibleForSearch = false
         activity.isEligibleForPublicIndexing = false
-        if #available(iOS 12.0, *) {
             activity.isEligibleForPrediction = false
-        }
 
         let deeplink = DeepLink(String(describing: MenuViewController.self))
         deeplink.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.inbox))

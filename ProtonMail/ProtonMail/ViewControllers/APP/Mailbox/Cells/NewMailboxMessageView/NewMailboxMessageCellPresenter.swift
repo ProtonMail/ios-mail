@@ -64,12 +64,8 @@ class NewMailboxMessageCellPresenter {
                 view.checkBoxView.tickImageView.image = nil
             }
             view.checkBoxView.backgroundColor = backgroundColor
-            if #available(iOS 13, *) {
                 view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
                     .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
-            } else {
-                view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
-            }
         case .scheduled:
             view.scheduledIconView.isHidden = false
             view.scheduledContainer.isHidden = false

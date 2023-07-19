@@ -30,10 +30,7 @@ final class OnboardViewController: UIViewController, UIScrollViewDelegate {
     private(set) lazy var customView = OnboardView()
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if #available(iOS 13, *) {
             return .darkContent
-        }
-        return .lightContent
     }
 
     private let onboardingList: [Onboarding]

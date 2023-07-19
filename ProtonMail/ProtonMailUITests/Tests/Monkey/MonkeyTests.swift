@@ -22,8 +22,6 @@ import ProtonCore_Environment
 import ProtonCore_QuarkCommands
 import ProtonCore_TestingToolkit
 
-
-@available(iOS 15.0, *)
 class MonkeyTests : BaseMonkey, QuarkTestable  {
 
     private lazy var quarkCommands = QuarkCommands(doh: env.doh)

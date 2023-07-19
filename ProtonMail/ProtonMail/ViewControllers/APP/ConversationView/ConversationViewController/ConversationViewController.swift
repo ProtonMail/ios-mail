@@ -265,24 +265,11 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     }
 
     private func registerNotification() {
-        if #available(iOS 13.0, *) {
             NotificationCenter.default
                 .addObserver(self,
                              selector: #selector(willBecomeActive),
                              name: UIScene.willEnterForegroundNotification,
                              object: nil)
-        } else {
-            NotificationCenter.default
-                .addObserver(self,
-                             selector: #selector(willBecomeActive),
-                             name: UIApplication.willEnterForegroundNotification,
-                             object: nil)
-        }
-        NotificationCenter.default
-            .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
-                         name: UIContentSizeCategory.didChangeNotification,
-                         object: nil)
     }
 
     private func setupViewModel() {
@@ -361,11 +348,6 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
             viewModel.fetchConversationDetails(completion: nil)
             shouldReloadWhenAppIsActive = false
         }
-    }
-
-    @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
-        refreshNavigationViewIfNeeded(forceUpdate: true)
     }
 
     required init?(coder: NSCoder) { nil }
