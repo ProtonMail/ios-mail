@@ -57,9 +57,7 @@ class MessageDecrypter {
                 let (body, attachments) = postProcessMIME(messageData: messageData)
                 return ((body, attachments), messageData.signatureVerificationResult)
             } catch {
-                // NOTE, decryption function will be called multiple times
-                // Reports on the Sentry could be triple than real situation
-                PMAssertionFailure(error)
+                SystemLogger.log(error: error, category: .encryption)
                 // do not throw here, make a Hail Mary fallback to the non-MIME decryption method
             }
         }
@@ -73,9 +71,13 @@ class MessageDecrypter {
             let processedBody = postProcessNonMIME(decryptedBody: decryptedBody, isPlainText: message.isPlainText)
             return ((processedBody, nil), signatureVerificationResult)
         } catch {
-            SystemLogger.log(message: error.localizedDescription)
+            SystemLogger.log(error: error, category: .encryption)
 
             if keyRingWasCached {
+                SystemLogger.log(
+                    message: "Decryption failed while using a cached key ring, discarding...",
+                    category: .encryption
+                )
                 keyFactory.removeKeyRingFromCache(addressID: message.addressID)
                 return try decryptAndVerify(message: message, verificationKeys: verificationKeys)
             } else {
