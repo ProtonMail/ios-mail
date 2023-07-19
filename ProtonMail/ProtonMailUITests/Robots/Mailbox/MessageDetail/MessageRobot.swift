@@ -7,6 +7,7 @@
 //
 
 import fusion
+import XCTest
 
 fileprivate struct id {
     /// Navigation Bar buttons
@@ -23,12 +24,18 @@ fileprivate struct id {
     static let replyButtonIdentifier = "SingleMessageFooterButtons.replyButton"
     static let replyAllButtonIdentifier = "SingleMessageFooterButtons.replyAllButton"
     static let forwardButtonIdentifier = "SingleMessageFooterButtons.forwardButton"
+    
+    static let trackerShieldImageIdentifier = "ic-shield-filled"
+    static let trackerStaticTextLabel = "31 email trackers blocked"
+    static let trackerShevronImageIdentifier = "ic-chevron-right-filled"
 }
 
 /*
  MessageRobot class contains actions and verifications for Message detail view funcctionality.
  */
 class MessageRobot: CoreElements {
+    
+    var verify = Verify()
     
     func addMessageToFolder(_ folderName: String) -> MessageRobot {
         openFoldersModal()
@@ -113,6 +120,21 @@ class MessageRobot: CoreElements {
         button(folder).tap()
         return LabelFolderRobot()
     }
+
+    func clickFilledEmailTrackerShieldIcon() -> Self {
+        image(id.trackerShieldImageIdentifier).waitForHittable().tap()
+        return self
+    }
+
+    func clickEmailTrackerShevronImage() -> EmailTrackingProtectionRobot {
+        image(id.trackerShevronImageIdentifier).waitForEnabled().tap()
+        return EmailTrackingProtectionRobot()
+    }
+    
+    func clickAttachmentsText(_ text: String) -> MessageAttachmentsOverviewRobot {
+        staticText(text).tap()
+        return MessageAttachmentsOverviewRobot()
+    }
     
     class MessageMoreOptions: CoreElements {
 
@@ -165,6 +187,21 @@ class MessageRobot: CoreElements {
         override func tapKeyboardDoneButton() -> AddNewFolderRobot {
             super.tapKeyboardDoneButton()
             return AddNewFolderRobot()
+        }
+    }
+    
+    class Verify: CoreElements {
+
+        func messageBodyWithStaticTextExists(_ text: String) {
+            webView().byIndex(0).onDescendant(staticText(text)).checkExists().checkHasLabel(text)
+        }
+        
+        func messageBodyWithLinkExists(_ label: String) {
+            webView().byIndex(0).onDescendant(link(label)).checkExists()
+        }
+
+        func attachmentWithLabelExistInMessageBody(label: String) {
+            webView().byIndex(0).onDescendant(staticText(label)).checkExists().checkHasLabel(label)
         }
     }
 }

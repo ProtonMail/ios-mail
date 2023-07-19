@@ -17,9 +17,10 @@
 
 import LifetimeTracker
 import ProtonCore_UIFoundations
+import ProtonCore_Foundations
 import UIKit
 
-class TrackerListViewController: UIViewController, LifetimeTrackable {
+class TrackerListViewController: UIViewController, LifetimeTrackable, AccessibleView {
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
@@ -97,6 +98,7 @@ class TrackerListViewController: UIViewController, LifetimeTrackable {
                          selector: #selector(preferredContentSizeChanged(_:)),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
+        generateAccessibilityIdentifiers()
     }
 
     @objc

@@ -51,7 +51,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
     func testEditDraftMultipleTimes() throws {
         runTestWithScenario(.qaMail001) {
             let plusUser = users["plus"]!
-            let freeUser = users["free"]!
+            let freeUser = users["pro"]!
             
             let editOneRecipient = plusUser.email
             let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
@@ -269,7 +269,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     /// TestId: 35854
     func testEditDraftWithEnabledPublicKeyMultipleTimesAndSend() {
-        let editOneRecipient = users["free"]!.email
+        let editOneRecipient = users["pro"]!.email
         let editTwoRecipient = users["plus"]!.email
         let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
         let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"

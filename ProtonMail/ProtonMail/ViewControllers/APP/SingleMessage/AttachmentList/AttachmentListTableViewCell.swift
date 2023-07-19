@@ -21,9 +21,10 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import ProtonCore_UIFoundations
+import ProtonCore_Foundations
 import UIKit
 
-class AttachmentListTableViewCell: UITableViewCell {
+class AttachmentListTableViewCell: UITableViewCell, AccessibleCell {
 
     static var CellID: String {
         return "\(self)"
@@ -73,5 +74,6 @@ class AttachmentListTableViewCell: UITableViewCell {
             fileNameLabel.textColor = ColorProvider.TextNorm
             fileSizeLabel.textColor = ColorProvider.TextWeak
         }
+        generateCellAccessibilityIdentifiers(fileName)
     }
 }

@@ -46,7 +46,7 @@ class AccountDeletionSuccessfulTests: FixtureAuthenticatedTestCase {
 
     func testSecondUserInboxIsShownAfterSuccessfulDeletionOfFirstUser() {
         runTestWithScenario(.qaMail001) {
-            let freeUser = users["free"]!
+            let freeUser = users["plus"]!
 
             InboxRobot()
                 .menuDrawer()
