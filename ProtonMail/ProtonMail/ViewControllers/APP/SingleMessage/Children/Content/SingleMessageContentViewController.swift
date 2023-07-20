@@ -8,13 +8,18 @@ class SingleMessageContentViewController: UIViewController {
 
     private var headerViewController: HeaderViewController? {
         didSet {
-            guard let headerViewController = headerViewController else {
+            guard
+                let newController = headerViewController
+            else {
+                return
+            }
+            if let oldController = oldValue, oldController === newController {
                 return
             }
 
             headerAnimationOn ?
-                changeHeader(oldController: oldValue, newController: headerViewController) :
-                manageHeaderViewControllers(oldController: oldValue, newController: headerViewController)
+                changeHeader(oldController: oldValue, newController: newController) :
+                manageHeaderViewControllers(oldController: oldValue, newController: newController)
         }
     }
 
