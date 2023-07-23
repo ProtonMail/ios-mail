@@ -93,7 +93,7 @@ class SingleMessageViewModel {
     var messageTitle: NSAttributedString {
         let style = FontManager.MessageHeader.alignment(.center)
         let attributed = message.title.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
-        let range = NSRange(location: 0, length: message.title.count)
+        let range = NSRange(location: 0, length: (message.title as NSString).length)
         attributed.addAttributes(style, range: range)
         return attributed
     }

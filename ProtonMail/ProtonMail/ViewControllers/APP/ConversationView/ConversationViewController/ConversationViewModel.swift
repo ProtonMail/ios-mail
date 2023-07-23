@@ -42,7 +42,10 @@ class ConversationViewModel {
     var detailedNavigationViewType: NavigationViewType {
         let subjectStyle = FontManager.DefaultSmallStrong.lineBreakMode(.byTruncatingTail)
         let subject = conversation.subject.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
-        subject.addAttributes(subjectStyle, range: NSRange(location: 0, length: conversation.subject.count))
+        subject.addAttributes(
+            subjectStyle,
+            range: NSRange(location: 0, length: (conversation.subject as NSString).length)
+        )
 
         return .detailed(
             subject: subject,

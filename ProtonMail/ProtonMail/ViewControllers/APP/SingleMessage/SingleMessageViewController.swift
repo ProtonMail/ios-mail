@@ -144,7 +144,10 @@ final class SingleMessageViewController: UIViewController, UIScrollViewDelegate,
         let attributed = viewModel.message.title
             .keywordHighlighting
             .asAttributedString(keywords: viewModel.highlightedKeywords)
-        attributed.addAttributes(style, range: NSRange(location: 0, length: viewModel.message.title.count))
+        attributed.addAttributes(
+            style,
+            range: NSRange(location: 0, length: (viewModel.message.title as NSString).length)
+        )
         navigationTitleLabel.label.attributedText = attributed
         navigationTitleLabel.label.lineBreakMode = .byTruncatingTail
 
