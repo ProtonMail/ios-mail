@@ -155,15 +155,8 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
 // MARK: cleanup
 
 extension IncomingDefaultService {
-    func cleanUp() -> Promise<Void> {
-        Promise { seal in
-            do {
-                try hardDelete(query: nil, includeSoftDeleted: true)
-                seal.fulfill_()
-            } catch {
-                seal.reject(error)
-            }
-        }
+    func cleanUp() throws {
+        try hardDelete(query: nil, includeSoftDeleted: true)
     }
 
     static func cleanUpAll() {

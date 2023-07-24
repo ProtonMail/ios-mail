@@ -863,8 +863,8 @@ class MockLabelPublisherProtocol: LabelPublisherProtocol {
 }
 
 class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
-    @FuncStub(MockLastUpdatedStoreProtocol.cleanUp, initialReturn: Promise<Void>()) var cleanUpStub
-    func cleanUp(userId: UserID) -> Promise<Void> {
+    @FuncStub(MockLastUpdatedStoreProtocol.cleanUp) var cleanUpStub
+    func cleanUp(userId: UserID) {
         cleanUpStub(userId)
     }
 
@@ -926,8 +926,8 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
 }
 
 class MockLocalMessageDataServiceProtocol: LocalMessageDataServiceProtocol {
-    @FuncStub(MockLocalMessageDataServiceProtocol.cleanMessage, initialReturn: Promise<Void>()) var cleanMessageStub
-    func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
+    @FuncStub(MockLocalMessageDataServiceProtocol.cleanMessage) var cleanMessageStub
+    func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) {
         cleanMessageStub(removeAllDraft, cleanBadgeAndNotifications)
     }
 

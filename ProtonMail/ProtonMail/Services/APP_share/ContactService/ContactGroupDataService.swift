@@ -32,19 +32,16 @@ protocol ContactGroupsProviderProtocol: AnyObject {
 }
 
 class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
-    func cleanUp() -> Promise<Void> {
-        return Promise { seal in
-            self.coreDataService.enqueueOnRootSavingContext { context in
+    func cleanUp() {
+            coreDataService.performAndWaitOnRootSavingContext { context in
                 let groups = self.labelDataService.getAllLabels(of: .contactGroup, context: context)
                 groups.forEach {
                     context.delete($0)
                 }
-                seal.fulfill_()
             }
-        }
     }
 
-    static func cleanUpAll() -> Promise<Void> {
+    static func cleanUpAll()  {
         // FIXME: this will remove not only contactGroups but all other labels as well
         return LabelsDataService.cleanUpAll()
     }

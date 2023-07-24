@@ -421,7 +421,12 @@ extension UsersManager {
     }
 
     func clean() -> Promise<Void> {
-        return UserManager.cleanUpAll().ensure {
+        Promise { seal in
+            Task {
+                await UserManager.cleanUpAll()
+                seal.fulfill_()
+            }
+        }.ensure {
             sharedServices.get(by: CoreDataService.self).resetMainContextIfNeeded()
 
             self.users = []

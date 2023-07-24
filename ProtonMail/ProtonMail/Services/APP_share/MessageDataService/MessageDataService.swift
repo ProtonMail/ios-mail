@@ -82,7 +82,7 @@ protocol MessageDataServiceProtocol: Service {
 
 // sourcery: mock
 protocol LocalMessageDataServiceProtocol: Service {
-    func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) -> Promise<Void>
+    func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool)
     func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message]
 }
 
@@ -658,11 +658,10 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
      3. hacked action detacted
      4. use wraped manully.
      */
-    func cleanUp() -> Promise<Void> {
-        return self.cleanMessage(cleanBadgeAndNotifications: true).done { _ in
+    func cleanUp() {
+        cleanMessage(cleanBadgeAndNotifications: true)
             self.lastUpdatedStore.removeUpdateTime(by: self.userID)
             self.signout()
-        }
     }
 
     func signin() {
@@ -673,24 +672,21 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         self.queue(.signout)
     }
 
-    static func cleanUpAll() -> Promise<Void> {
-        return Promise { seal in
-            let queueManager = sharedServices.get(by: QueueManager.self)
-            queueManager.clearAll {
-                let coreDataService = sharedServices.get(by: CoreDataService.self)
-                coreDataService.enqueueOnRootSavingContext { context in
-                    Message.deleteAll(in: context)
-                    Conversation.deleteAll(in: context)
-                    _ = context.saveUpstreamIfNeeded()
-                    seal.fulfill_()
-                }
-            }
+    static func cleanUpAll() async {
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
+        let queueManager = sharedServices.get(by: QueueManager.self)
+
+        await queueManager.clearAll()
+
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            Message.deleteAll(in: context)
+            Conversation.deleteAll(in: context)
+            _ = context.saveUpstreamIfNeeded()
         }
     }
 
-    func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
-        return Promise { seal in
-            self.contextProvider.performOnRootSavingContext { context in
+    func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) {
+            self.contextProvider.performAndWaitOnRootSavingContext { context in
                 self.removeMessageFromDB(context: context, removeAllDraft: removeAllDraft)
 
                 let contextLabelFetch = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
@@ -718,8 +714,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 if cleanBadgeAndNotifications {
                     UIApplication.setBadge(badge: 0)
                 }
-                seal.fulfill_()
-            }
         }
     }
 
@@ -1485,7 +1479,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             let completionBlock: () -> Void = {
                 self.labelDataService.fetchV4Labels { _ in
-                    self.contactDataService.cleanUp().ensure {
+                    self.contactDataService.cleanUp()
                         self.contactDataService.fetchContacts { error in
                             if error == nil {
                                 self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID)
@@ -1494,7 +1488,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 completion(error)
                             }
                         }
-                    }.cauterize()
                 }
             }
 
@@ -1507,9 +1500,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     completionBlock()
                 },
                 onDownload: {
-                    self.cleanMessage(cleanBadgeAndNotifications: true).then { _ -> Promise<Void> in
+                    self.cleanMessage(cleanBadgeAndNotifications: true)
                         self.contactDataService.cleanUp()
-                    }.cauterize()
                 }
             )
         }
