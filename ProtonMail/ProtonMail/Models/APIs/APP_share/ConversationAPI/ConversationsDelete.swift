@@ -25,10 +25,9 @@ import Foundation
 import ProtonCore_Networking
 
 /// Delete trashed messages in an array of conversations
-///
-/// Note that a maximum of 50 conversation IDs can be passed by request.
 class ConversationDeleteRequest: Request {
-    /// max for 50 ids
+    static let maxNumberOfConversations: Int = 50
+
     private let conversationIDs: [String]
     private let labelID: String
 
