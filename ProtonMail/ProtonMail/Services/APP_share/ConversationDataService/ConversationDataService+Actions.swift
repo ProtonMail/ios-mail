@@ -23,17 +23,36 @@
 import ProtonCore_Networking
 
 extension ConversationDataService {
-    func deleteConversations(with conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
-        let request = ConversationDeleteRequest(conversationIDs: conversationIDs.map(\.rawValue), labelID: labelID.rawValue)
-        self.apiService.perform(request: request, response: ConversationDeleteResponse()) { _, response in
-            if let err = response.error {
-                completion?(.failure(err))
-                return
-            }
+    func deleteConversations(
+        with conversationIDs: [ConversationID],
+        labelID: LabelID,
+        completion: ((Result<Void, Error>) -> Void)?
+    ) {
+        let requests = conversationIDs
+            .map(\.rawValue)
+            .chunked(into: ConversationDeleteRequest.maxNumberOfConversations)
+            .map({ ConversationDeleteRequest(conversationIDs: $0, labelID: labelID.rawValue) })
 
-            guard response.results != nil else {
-                let err = NSError.protonMailError(1000, localizedDescription: "Parsing error")
-                completion?(.failure(err))
+        let group = DispatchGroup()
+        var requestError = [NSError]()
+        requests.forEach { [unowned self] request in
+            group.enter()
+            self.apiService.perform(
+                request: request,
+                response: ConversationDeleteResponse()
+            ) { [unowned self] (_, response) in
+                self.serialQueue.sync {
+                    if let error = response.error {
+                        requestError.append(error.toNSError)
+                    }
+                }
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) {
+            if let firstReturnedError = requestError.first {
+                completion?(.failure(firstReturnedError))
                 return
             }
             completion?(.success(()))
