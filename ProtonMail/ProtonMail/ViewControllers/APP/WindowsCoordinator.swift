@@ -141,7 +141,7 @@ class WindowsCoordinator {
                 self.appWindow = nil
                 // TODO: refactor SignInCoordinatorEnvironment init
                 let signInEnvironment = SignInCoordinatorEnvironment.live(
-                    services: sharedServices, forceUpgradeDelegate: ForceUpgradeManager.shared.forceUpgradeHelper
+                    services: sharedServices
                 )
                 let coordinator: SignInCoordinator = .loginFlowForFirstAccount(
                     startingPoint: signInDestination, environment: signInEnvironment

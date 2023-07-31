@@ -23,8 +23,7 @@ extension UIViewController {
         InternetConnectionStatusProvider.shared.status.isConnected
     }
 
-    func setPresentationStyleForSelfController(_ selfController: UIViewController,
-                                               presentingController: UIViewController,
+    func setPresentationStyleForSelfController(presentingController: UIViewController,
                                                style: UIModalPresentationStyle = .overCurrentContext) {
         presentingController.providesPresentationContextTransitionStyle = true
         presentingController.definesPresentationContext = true

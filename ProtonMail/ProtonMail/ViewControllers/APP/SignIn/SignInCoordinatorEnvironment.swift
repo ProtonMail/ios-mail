@@ -69,8 +69,7 @@ struct SignInCoordinatorEnvironment {
 extension SignInCoordinatorEnvironment {
     // swiftlint:disable function_body_length
     static func live(
-        services: ServiceFactory,
-        forceUpgradeDelegate: ForceUpgradeDelegate
+        services: ServiceFactory
     ) -> SignInCoordinatorEnvironment {
         let apiService = PMAPIService.unauthorized
         return .init(services: services,

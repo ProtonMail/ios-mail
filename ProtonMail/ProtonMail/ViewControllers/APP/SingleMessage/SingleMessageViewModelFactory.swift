@@ -60,8 +60,6 @@ class SingleMessageContentViewModelFactory {
 }
 
 class SingleMessageViewModelFactory {
-    private let components = SingleMessageComponentsFactory()
-
     func createViewModel(labelId: LabelID,
                          message: MessageEntity,
                          user: UserManager,

@@ -19,14 +19,12 @@ import ProtonCore_UIFoundations
 import UIKit
 
 final class PagesSpotlightView: UIView {
-    private let flipIcon: Bool
     private let iconView = UIImageView(image: nil)
     private let mockToolBar = UIView(frame: .zero)
     private let mockTitleView = UIView(frame: .zero)
     var mockTitleViewHeight: NSLayoutConstraint?
 
     init(flipIcon: Bool) {
-        self.flipIcon = flipIcon
         if flipIcon {
             self.iconView.image = IconProvider.swipeLeft.withHorizontallyFlippedOrientation()
         } else {

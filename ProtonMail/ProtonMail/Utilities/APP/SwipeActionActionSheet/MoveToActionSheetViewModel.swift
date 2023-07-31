@@ -56,7 +56,6 @@ struct MoveToActionSheetViewModelMessages: MoveToActionSheetViewModel {
     let isInherit: Bool
 
     init(menuLabels: [MenuLabel],
-         messages: [MessageEntity],
          isEnableColor: Bool,
          isInherit: Bool) {
         self.isInherit = isInherit
@@ -71,7 +70,6 @@ struct MoveToActionSheetViewModelConversations: MoveToActionSheetViewModel {
     let isInherit: Bool
 
     init(menuLabels: [MenuLabel],
-         conversations: [ConversationEntity],
          isEnableColor: Bool,
          isInherit: Bool) {
         self.isInherit = isInherit

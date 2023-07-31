@@ -84,11 +84,6 @@ class MockBackendConfigurationCacheProtocol: BackendConfigurationCacheProtocol {
         readEnvironmentStub()
     }
 
-    @FuncStub(MockBackendConfigurationCacheProtocol.write) var writeStub
-    func write(environment: Environment) {
-        writeStub(environment)
-    }
-
 }
 
 class MockBlockedSenderCacheUpdaterDelegate: BlockedSenderCacheUpdaterDelegate {

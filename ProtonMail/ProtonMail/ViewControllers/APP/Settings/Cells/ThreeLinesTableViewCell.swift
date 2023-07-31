@@ -19,10 +19,6 @@ import ProtonCore_UIFoundations
 import UIKit
 
 class ThreeLinesTableViewCell: UITableViewCell {
-    static var CellID: String {
-        return "\(self)"
-    }
-
     var topLabel: UILabel!
     var middleLabel: UILabel!
     var bottomLabel: UILabel!

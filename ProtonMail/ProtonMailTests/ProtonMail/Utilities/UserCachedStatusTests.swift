@@ -93,3 +93,21 @@ class UserCachedStatusTests: XCTestCase {
         )
     }
 }
+
+private extension UserCachedStatus {
+    func fetchValueOf<T>(userID: UserID, key: String, defaultValue: T) -> T {
+        guard let dict = getShared().object(forKey: key) as? [String: T] else {
+            return defaultValue
+        }
+        return dict[userID.rawValue] ?? defaultValue
+    }
+
+    func setValueOf<T>(userID: UserID, value: T, key: String) {
+        var dictionaryToUpdate: [String: T] = [:]
+        if let dict = getShared().object(forKey: key) as? [String: T] {
+            dictionaryToUpdate = dict
+        }
+        dictionaryToUpdate[userID.rawValue] = value
+        getShared().setValue(dictionaryToUpdate, forKey: key)
+    }
+}

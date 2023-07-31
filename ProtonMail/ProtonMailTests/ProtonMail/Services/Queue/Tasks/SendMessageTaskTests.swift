@@ -36,10 +36,6 @@ final class SendMessageTaskTests: XCTestCase {
     private var mockLocalNotificationService: LocalNotificationService!
     private var mockUndoActionManager: MockUndoActionManager!
     private var mockNotificationCenter: NotificationCenter!
-    private var mockQueueManager: QueueManager!
-
-    private var mockMessagesQueue: PMPersistentQueue!
-    private var mockMiscQueue: PMPersistentQueue!
 
     private let dummyID = "dummyID"
     private let dummyMessageURI = "dummyURI"
@@ -72,9 +68,6 @@ final class SendMessageTaskTests: XCTestCase {
             notificationHandler: mockNotificationHandler
         )
         mockUndoActionManager = MockUndoActionManager()
-        mockMessagesQueue = PMPersistentQueue(queueName: "")
-        mockMiscQueue = PMPersistentQueue(queueName: "")
-        mockQueueManager = QueueManager(messageQueue: mockMessagesQueue, miscQueue: mockMiscQueue)
         mockNotificationCenter = NotificationCenter()
 
         // Configurations
@@ -93,9 +86,6 @@ final class SendMessageTaskTests: XCTestCase {
         mockNotificationHandler = nil
         mockLocalNotificationService = nil
         mockUndoActionManager = nil
-        mockMessagesQueue = nil
-        mockMiscQueue = nil
-        mockQueueManager = nil
         mockNotificationCenter = nil
         sut = nil
     }
@@ -287,7 +277,6 @@ extension SendMessageTaskTests {
             localNotificationService: mockLocalNotificationService,
             eventsFetching: mockEventsService,
             undoActionManager: mockUndoActionManager,
-            queueManager: mockQueueManager,
             notificationCenter: mockNotificationCenter
         )
         return SendMessageTask(dependencies: taskDependencies)

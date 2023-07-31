@@ -1272,7 +1272,6 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
         }
         let moveToViewModel = MoveToActionSheetViewModelMessages(
             menuLabels: menuLabels,
-            messages: [message],
             isEnableColor: isEnableColor,
             isInherit: isInherit
         )
@@ -1319,7 +1318,6 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 
         let moveToViewModel = MoveToActionSheetViewModelMessages(
             menuLabels: viewModel.getFolderMenuItems(),
-            messages: messagesOfConversation,
             isEnableColor: isEnableColor,
             isInherit: isInherit
         )

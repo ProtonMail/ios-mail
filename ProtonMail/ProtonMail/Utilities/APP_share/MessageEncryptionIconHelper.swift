@@ -267,7 +267,7 @@ struct MessageEncryptionIconHelper {
         }
     }
 
-    func sendStatusIconInfo(email: String, sendPreferences: SendPreferences) -> EncryptionIconStatus? {
+    func sendStatusIconInfo(sendPreferences: SendPreferences) -> EncryptionIconStatus? {
         if let error = sendPreferences.error {
             return .init(iconColor: .error,
                          icon: IconProvider.lockExclamationFilled,

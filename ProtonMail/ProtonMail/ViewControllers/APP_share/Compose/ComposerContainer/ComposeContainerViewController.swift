@@ -606,14 +606,6 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
 // MARK: - AttachmentController protocol
 
 extension ComposeContainerViewController: AttachmentController {
-    func error(title: String, description: String) {
-        let alert = description.alertController(title)
-        alert.addOKAction()
-        DispatchQueue.main.async {
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
-
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
         return Promise { [weak self] seal in
             guard let self = self else {

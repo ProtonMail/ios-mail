@@ -21,7 +21,6 @@ import ProtonCore_Environment
 // sourcery: mock
 protocol BackendConfigurationCacheProtocol {
     func readEnvironment() -> Environment?
-    func write(environment: Environment)
 }
 
 struct BackendConfigurationCache: BackendConfigurationCacheProtocol {
@@ -41,11 +40,6 @@ struct BackendConfigurationCache: BackendConfigurationCacheProtocol {
         guard let environment = userDefaults.string(forKey: Key.environment.rawValue) else { return nil }
         let customDomain = userDefaults.string(forKey: Key.environmentCustomDomain.rawValue)
         return Environment(caseValue: environment, customDomain: customDomain)
-    }
-
-    func write(environment: Environment) {
-        userDefaults.setValue(environment.caseValue, forKey: Key.environment.rawValue)
-        userDefaults.setValue(environment.customDomain, forKey: Key.environmentCustomDomain.rawValue)
     }
 }
 
@@ -71,15 +65,6 @@ private extension Environment {
             return "passProd"
         case .custom:
             return "custom"
-        }
-    }
-
-    var customDomain: String? {
-        switch self {
-        case .mailProd, .vpnProd, .driveProd, .calendarProd, .black, .blackPayment, .passProd:
-            return nil
-        case .custom(let customDomain):
-            return customDomain
         }
     }
 

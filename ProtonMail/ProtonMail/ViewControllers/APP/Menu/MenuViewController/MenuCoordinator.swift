@@ -629,7 +629,7 @@ extension MenuCoordinator {
 
     private func navigateToAddAccount(mail: String) {
         let signInEnvironment = SignInCoordinatorEnvironment.live(
-            services: sharedServices, forceUpgradeDelegate: ForceUpgradeManager.shared.forceUpgradeHelper
+            services: sharedServices
         )
 
         let coordinator: SignInCoordinator = .loginFlowForSecondAndAnotherAccount(
