@@ -65,14 +65,6 @@ extension UserInfo {
         true
     }
 
-    static var isRotateScreenEnabled: Bool {
-#if DEBUG_ENTERPRISE
-        true
-#else
-        false
-#endif
-    }
-
     static var isAutoDeleteEnabled: Bool {
         #if DEBUG_ENTERPRISE
         true
