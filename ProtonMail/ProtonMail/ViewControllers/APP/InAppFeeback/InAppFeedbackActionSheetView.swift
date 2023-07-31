@@ -174,7 +174,8 @@ final class InAppFeedbackActionSheetView: UIView, AccessibleView {
 
         static var closeButton: UIButton {
             let button = UIButton()
-            button.setImage(IconProvider.cross.sd_tintedImage(with: ColorProvider.IconNorm), for: .normal)
+            button.setImage(IconProvider.cross, for: .normal)
+            button.tintColor = ColorProvider.IconNorm
             return button
         }
     }
