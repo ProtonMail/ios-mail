@@ -24,11 +24,14 @@ import Foundation
 
 protocol MoveToActionSheetProtocol: AnyObject {
     var user: UserManager { get }
-    var selectedMoveToFolder: MenuLabel? { get set }
 
-    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool)
-    func handleMoveToAction(conversations: [ConversationEntity], isFromSwipeAction: Bool, completion: (() -> Void)?)
-    func updateSelectedMoveToDestination(menuLabel: MenuLabel?, isOn: Bool)
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool)
+    func handleMoveToAction(
+        conversations: [ConversationEntity],
+        to folder: MenuLabel,
+        isFromSwipeAction: Bool,
+        completion: (() -> Void)?
+    )
 }
 
 extension MoveToActionSheetProtocol {
@@ -53,9 +56,5 @@ extension MoveToActionSheetProtocol {
         let datas: [MenuLabel] = Array(labels: folders, previousRawData: [])
         let (_, folderItems) = datas.sortoutData()
         return folderItems
-    }
-
-    func updateSelectedMoveToDestination(menuLabel: MenuLabel?, isOn: Bool) {
-        selectedMoveToFolder = isOn ? menuLabel : nil
     }
 }

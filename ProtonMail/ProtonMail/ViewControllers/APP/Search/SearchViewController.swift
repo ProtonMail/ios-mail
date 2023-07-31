@@ -385,45 +385,39 @@ extension SearchViewController {
 
     private func showMoveToActionSheet(messages: [MessageEntity], isEnableColor: Bool, isInherit: Bool) {
         guard let handler = moveToActionHandler else { return }
-        let moveToViewModel =
-            MoveToActionSheetViewModelMessages(menuLabels: handler.getFolderMenuItems(),
-                                               messages: messages,
-                                               isEnableColor: isEnableColor,
-                                               isInherit: isInherit)
-        moveToActionSheetPresenter
-            .present(on: self.navigationController ?? self,
-                     viewModel: moveToViewModel,
-                     addNewFolder: { [weak self] in
-                        self?.pendingActionAfterDismissal = { [weak self] in
-                            self?.showMoveToActionSheet(messages: messages,
-                                                        isEnableColor: isEnableColor,
-                                                        isInherit: isInherit)
-                        }
-                        self?.presentCreateFolder(type: .folder)
-                     },
-                     selected: { menuLabel, isOn in
-                        handler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
-                     },
-                     cancel: { [weak self] isHavingUnsavedChanges in
-                        if isHavingUnsavedChanges {
-                            self?.showDiscardAlert(handleDiscard: {
-                                handler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
-                                self?.dismissActionSheet()
-                            })
-                        } else {
-                            self?.dismissActionSheet()
-                        }
-                     },
-                     done: { [weak self] isHavingUnsavedChanges in
-                        defer {
-                            self?.dismissActionSheet()
-                            self?.cancelButtonTapped()
-                        }
-                        guard isHavingUnsavedChanges else {
-                            return
-                        }
-                        handler.handleMoveToAction(messages: messages, isFromSwipeAction: false)
-                     })
+        let moveToViewModel = MoveToActionSheetViewModelMessages(
+            menuLabels: handler.getFolderMenuItems(),
+            messages: messages,
+            isEnableColor: isEnableColor,
+            isInherit: isInherit
+        )
+
+        moveToActionSheetPresenter.present(
+            on: self.navigationController ?? self,
+            viewModel: moveToViewModel,
+            addNewFolder: { [weak self] in
+                self?.pendingActionAfterDismissal = { [weak self] in
+                    self?.showMoveToActionSheet(messages: messages,
+                                                isEnableColor: isEnableColor,
+                                                isInherit: isInherit)
+                }
+                self?.presentCreateFolder(type: .folder)
+            },
+            selected: { [weak self] menuLabel, isSelected in
+                guard isSelected else { return }
+                self?.didSelectFolderToMoveTo(folder: menuLabel, messages: messages)
+            },
+            cancel: { [weak self] in
+                self?.dismissActionSheet()
+            }
+        )
+    }
+
+    private func didSelectFolderToMoveTo(folder: MenuLabel, messages: [MessageEntity]) {
+        moveToActionHandler?.handleMoveToAction(messages: messages, to: folder, isFromSwipeAction: false)
+
+        dismissActionSheet()
+        cancelButtonTapped()
     }
 
     private var labelAsActionHandler: LabelAsActionSheetProtocol? {

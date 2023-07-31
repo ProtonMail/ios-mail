@@ -749,12 +749,10 @@ class MailboxViewModelTests: XCTestCase {
                                       type: 0,
                                       order: 0,
                                       notify: false)
-        // select the folder to move
-        sut.updateSelectedMoveToDestination(menuLabel: labelToMoveTo, isOn: true)
         let expectation1 = expectation(description: "Closure called")
         let conversationToMove = ConversationEntity.make(conversationID: "1")
 
-        sut.handleMoveToAction(conversations: [conversationToMove], isFromSwipeAction: false) {
+        sut.handleMoveToAction(conversations: [conversationToMove], to: labelToMoveTo, isFromSwipeAction: false) {
             XCTAssertTrue(self.conversationProviderMock.moveStub.wasCalledExactlyOnce)
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.moveStub.lastArguments)
@@ -768,20 +766,6 @@ class MailboxViewModelTests: XCTestCase {
             } catch {
                 XCTFail("Should not reach here")
             }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-        XCTAssertNil(self.sut.selectedMoveToFolder)
-    }
-
-    func testHandleConversationMoveToAction_withNoDestination() {
-        let expectation1 = expectation(description: "Closure called")
-        let conversationToMove = ConversationEntity.make(conversationID: "1")
-
-        XCTAssertNil(self.sut.selectedMoveToFolder)
-        sut.handleMoveToAction(conversations: [conversationToMove], isFromSwipeAction: false) {
-            XCTAssertFalse(self.conversationProviderMock.moveStub.wasCalledExactlyOnce)
-            XCTAssertFalse(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)

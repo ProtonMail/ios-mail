@@ -42,7 +42,6 @@ class SingleMessageViewModel {
 
     var refreshView: (() -> Void)?
 
-    var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
 
     private lazy var dateFormatter: DateFormatter = {
@@ -376,9 +375,12 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
 // MARK: - Move to functions
 extension SingleMessageViewModel: MoveToActionSheetProtocol {
 
-    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
-        guard let destination = selectedMoveToFolder else { return }
-        messageService.move(messages: messages, to: destination.location.labelID, queue: true)
+    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, isFromSwipeAction: Bool, completion: (() -> Void)?) {
+
+    }
+
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool) {
+        messageService.move(messages: messages, to: folder.location.labelID, queue: true)
     }
 
     func handleMoveToAction(conversations: [ConversationEntity], isFromSwipeAction: Bool, completion: (() -> Void)?) {

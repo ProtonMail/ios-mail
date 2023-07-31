@@ -22,26 +22,29 @@
 
 // MARK: - Move to functions
 extension MailboxViewModel: MoveToActionSheetProtocol {
+
     var labelId: LabelID {
         return labelID
     }
 
-    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
-        guard let destination = selectedMoveToFolder else { return }
-        messageService.move(messages: messages, to: destination.location.labelID, isSwipeAction: isFromSwipeAction, queue: true)
-        selectedMoveToFolder = nil
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool) {
+        let folderID = folder.location.labelID
+        messageService.move(messages: messages, to: folderID, isSwipeAction: isFromSwipeAction, queue: true)
     }
 
-    func handleMoveToAction(conversations: [ConversationEntity], isFromSwipeAction: Bool, completion: (() -> Void)? = nil) {
-        guard let destination = selectedMoveToFolder else {
-            completion?()
-            return
-        }
-        conversationProvider.move(conversationIDs: conversations.map(\.conversationID),
-                                  from: labelId,
-                                  to: destination.location.labelID,
-                                  isSwipeAction: isFromSwipeAction,
-                                  callOrigin: "MailboxViewModel - handleMoveToAction") { [weak self] result in
+    func handleMoveToAction(
+        conversations: [ConversationEntity],
+        to folder: MenuLabel,
+        isFromSwipeAction: Bool,
+        completion: (() -> Void)?
+    ) {
+        conversationProvider.move(
+            conversationIDs: conversations.map(\.conversationID),
+            from: labelId,
+            to: folder.location.labelID,
+            isSwipeAction: isFromSwipeAction,
+            callOrigin: "MailboxViewModel - handleMoveToAction"
+        ) { [weak self] result in
             defer {
                 completion?()
             }
@@ -50,10 +53,5 @@ extension MailboxViewModel: MoveToActionSheetProtocol {
                 self.eventsService.fetchEvents(labelID: self.labelId)
             }
         }
-        /*
-         We pass the empty string because we don't have the source folder here
-         The same is done for messages in `move(messages: [Message], to tLabel: String, queue: Bool = true)`
-         */
-        selectedMoveToFolder = nil
     }
 }
