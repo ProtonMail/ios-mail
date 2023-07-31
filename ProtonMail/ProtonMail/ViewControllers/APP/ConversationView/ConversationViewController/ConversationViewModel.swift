@@ -68,7 +68,6 @@ class ConversationViewModel {
     private let sharedContactGroups: [ContactGroupVO]
     let coordinator: ConversationCoordinatorProtocol
     private(set) weak var tableView: UITableView?
-    var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
     var isTrashFolder: Bool { self.labelId == LabelLocation.trash.labelID }
     weak var conversationViewController: ConversationViewController?
@@ -1160,23 +1159,25 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
 // MARK: - Move TO Action Sheet Implementation
 extension ConversationViewModel: MoveToActionSheetProtocol {
-    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
-        guard let destination = selectedMoveToFolder else { return }
-        user.messageService.move(messages: messages,
-                                 to: destination.location.labelID,
-                                 isSwipeAction: isFromSwipeAction)
+
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool) {
+        user.messageService.move(messages: messages, to: folder.location.labelID, isSwipeAction: isFromSwipeAction)
     }
 
-    func handleMoveToAction(conversations: [ConversationEntity],
-                            isFromSwipeAction: Bool,
-                            completion: (() -> Void)? = nil) {
-        guard let destination = selectedMoveToFolder else { return }
+    func handleMoveToAction(
+        conversations: [ConversationEntity],
+        to folder: MenuLabel,
+        isFromSwipeAction: Bool,
+        completion: (() -> Void)? = nil
+    ) {
         let ids = conversations.map(\.conversationID)
-        conversationService.move(conversationIDs: ids,
-                                 from: "",
-                                 to: destination.location.labelID,
-                                 isSwipeAction: isFromSwipeAction,
-                                 callOrigin: "ConversationViewModel - moveTo") { [weak self] result in
+        conversationService.move(
+            conversationIDs: ids,
+            from: "",
+            to: folder.location.labelID,
+            isSwipeAction: isFromSwipeAction,
+            callOrigin: "ConversationViewModel - moveTo"
+        ) { [weak self] result in
             guard let self = self else { return }
             if (try? result.get()) != nil {
                 self.eventsService.fetchEvents(labelID: self.labelId)

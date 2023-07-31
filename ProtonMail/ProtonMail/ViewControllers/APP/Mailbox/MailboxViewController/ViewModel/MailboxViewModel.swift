@@ -67,7 +67,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
 
     private(set) var selectedIDs: Set<String> = Set()
 
-    var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
 
     private let lastUpdatedStore: LastUpdatedStoreProtocol

@@ -102,7 +102,6 @@ final class SearchViewModel: NSObject {
     private let sharedReplacingEmailsMap: [String: EmailEntity]
     private var userHasClosedESIndexingBanner = false
 
-    var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
     var labelID: LabelID { Message.Location.allmail.labelID }
     var viewMode: ViewMode { self.user.getCurrentViewMode() }
@@ -476,16 +475,12 @@ extension SearchViewModel: SearchVMProtocol {
 
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: MoveToActionSheetProtocol {
-    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
-        guard let destination = selectedMoveToFolder else { return }
-        messageService.move(messages: messages, to: destination.location.labelID, queue: true)
-        selectedMoveToFolder = nil
+    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, isFromSwipeAction: Bool, completion: (() -> Void)?) {
+        // search view doesn't support conversation mode
     }
 
-    func handleMoveToAction(conversations: [ConversationEntity],
-                            isFromSwipeAction: Bool,
-                            completion: (() -> Void)? = nil) {
-        // search view doesn't support conversation mode
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool) {
+        messageService.move(messages: messages, to: folder.location.labelID, queue: true)
     }
 }
 

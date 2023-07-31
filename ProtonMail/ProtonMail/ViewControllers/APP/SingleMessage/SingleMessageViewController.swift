@@ -579,7 +579,6 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
         return viewModel
     }
 
-    // swiftlint:disable:next function_body_length
     func showMoveToActionSheet() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
@@ -608,59 +607,48 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
                     self.showAlertFolderCreationNotAllowed()
                 }
             },
-            selected: { [weak self] menuLabel, isOn in
-                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+            selected: { [weak self] menuLabel, isSelected in
+                guard isSelected else { return }
+                self?.didSelectFolderToMoveTo(folder: menuLabel)
             },
-            cancel: { [weak self] isHavingUnsavedChanges in
-                if isHavingUnsavedChanges {
-                    self?.showDiscardAlert(handleDiscard: {
-                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
-                        self?.dismissActionSheet()
-                    })
-                } else {
-                    self?.dismissActionSheet()
-                }
-            },
-            done: { [weak self] isHavingUnsavedChanges in
-                defer {
-                    self?.dismissActionSheet()
-                    self?.viewModel.navigateToNextMessage(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    )
-                }
-                guard isHavingUnsavedChanges,
-                      let msg = self?.viewModel.message,
-                      let destinationId = self?.moveToActionHandler.selectedMoveToFolder?.location.labelID else {
-                    return
-                }
+            cancel: { [weak self] in
+                self?.dismissActionSheet()
+            }
+        )
+    }
 
-                let continueAction: () -> Void = { [weak self] in
-                    self?.moveToActionHandler
-                        .handleMoveToAction(messages: [msg],
-                                            isFromSwipeAction: false)
-                }
-
-                if self?.moveToActionHandler.selectedMoveToFolder?.location == .trash {
-                    self?.viewModel.searchForScheduled(displayAlert: {
-                        self?.displayScheduledAlert(scheduledNum: 1) {
-                            self?.showMessageMoved(title: LocalString._message_moved_to_drafts)
-                            continueAction()
-                        }
-                    }, continueAction: {
-                        self?.showMessageMoved(title: LocalString._messages_has_been_moved,
-                                               undoActionType: .custom(destinationId))
-                        continueAction()
-
-                    })
-                } else {
-                    self?.showMessageMoved(title: LocalString._messages_has_been_moved,
-                                           undoActionType: .custom(destinationId))
-                    continueAction()
-                }
+    private func didSelectFolderToMoveTo(folder: MenuLabel) {
+        defer {
+            dismissActionSheet()
+            viewModel.navigateToNextMessage(isInPageView: isInPageView, popCurrentView: {
+                self.navigationController?.popViewController(animated: true)
             })
+        }
+
+        let message = viewModel.message
+        let destinationId = folder.location.labelID
+
+        let continueAction: () -> Void = { [weak self] in
+            self?.moveToActionHandler.handleMoveToAction(messages: [message], to: folder, isFromSwipeAction: false)
+        }
+
+        if folder.location == .trash {
+            viewModel.searchForScheduled(
+                displayAlert: { [weak self] in
+                    self?.displayScheduledAlert(scheduledNum: 1) {
+                        self?.showMessageMoved(title: LocalString._message_moved_to_drafts)
+                        continueAction()
+                    }
+                },
+                continueAction: { [weak self] in
+                    let title = LocalString._messages_has_been_moved
+                    self?.showMessageMoved(title: title, undoActionType: .custom(destinationId))
+                    continueAction()
+                })
+        } else {
+            showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .custom(destinationId))
+            continueAction()
+        }
     }
 
     private func allowToCreateFolders(existingFolders: Int) -> Bool {

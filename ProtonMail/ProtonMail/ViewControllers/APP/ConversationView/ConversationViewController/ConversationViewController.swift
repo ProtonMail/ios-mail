@@ -1292,36 +1292,26 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                     self.showAlertFolderCreationNotAllowed()
                 }
             },
-            selected: { [weak self] menuLabel, isOn in
-                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+            selected: { [weak self] menuLabel, isSelected in
+                guard isSelected else { return }
+                self?.didSelectFolderToMoveToForMessage(folder: menuLabel, message: message)
             },
-            cancel: { [weak self] isHavingUnsavedChanges in
-                if isHavingUnsavedChanges {
-                    self?.showDiscardAlert(handleDiscard: {
-                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
-                        self?.dismissActionSheet()
-                    })
-                } else {
-                    self?.dismissActionSheet()
-                }
-            },
-            done: { [weak self] isHavingUnsavedChanges in
-                defer {
-                    self?.dismissActionSheet()
-                    if !(self?.isInPageView ?? false) {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                }
-                guard isHavingUnsavedChanges else {
-                    return
-                }
-                self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
-                self?.moveToActionHandler.handleMoveToAction(messages: [message], isFromSwipeAction: false)
+            cancel: { [weak self] in
+                self?.dismissActionSheet()
             }
         )
     }
 
-    // swiftlint:disable:next function_body_length
+    private func didSelectFolderToMoveToForMessage(folder: MenuLabel, message: MessageEntity) {
+        viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
+        moveToActionHandler.handleMoveToAction(messages: [message], to: folder, isFromSwipeAction: false)
+
+        dismissActionSheet()
+        if !isInPageView {
+            navigationController?.popViewController(animated: true)
+        }
+    }
+
     private func showMoveToActionSheetForConversation() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
@@ -1349,55 +1339,50 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                     self.showAlertFolderCreationNotAllowed()
                 }
             },
-            selected: { [weak self] menuLabel, isOn in
-                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+            selected: { [weak self] menuLabel, isSelected in
+                guard isSelected else { return }
+                self?.didSelectFolderToMoveToForConversation(folder: menuLabel)
             },
-            cancel: { [weak self] isHavingUnsavedChanges in
-                if isHavingUnsavedChanges {
-                    self?.showDiscardAlert(handleDiscard: {
-                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
-                        self?.dismissActionSheet()
-                    })
-                } else {
-                    self?.dismissActionSheet()
-                }
-            },
-            done: { [weak self] isHavingUnsavedChanges in
-                defer {
-                    self?.dismissActionSheet()
-                    if !(self?.isInPageView ?? false) {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                }
-                guard isHavingUnsavedChanges,
-                      let conversation = self?.viewModel.conversation,
-                      let destinationId = self?.moveToActionHandler.selectedMoveToFolder?.location.labelID
-                else {
-                    return
-                }
-
-                let continueAction: () -> Void = { [weak self] in
-                    self?.moveToActionHandler.handleMoveToAction(conversations: [conversation],
-                                                                 isFromSwipeAction: false,
-                                                                 completion: nil)
-                    self?.showMessageMoved(title: LocalString._messages_has_been_moved,
-                                           undoActionType: .custom(destinationId))
-                }
-
-                self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
-                if self?.moveToActionHandler.selectedMoveToFolder?.location == .trash {
-                    self?.viewModel.searchForScheduled(conversation: conversation,
-                                                       displayAlert: { scheduledNum in
-                                                           self?.displayScheduledAlert(
-                                                            scheduledNum: scheduledNum,
-                                                            continueAction: continueAction
-                                                           )
-                                                       }, continueAction: continueAction)
-                } else {
-                    continueAction()
-                }
+            cancel: { [weak self] in
+                self?.dismissActionSheet()
             }
         )
+    }
+
+    private func didSelectFolderToMoveToForConversation(folder: MenuLabel) {
+        defer {
+            dismissActionSheet()
+            if !isInPageView {
+                navigationController?.popViewController(animated: true)
+            }
+        }
+
+        let conversation = viewModel.conversation
+        let continueAction: () -> Void = { [weak self] in
+            self?.moveToActionHandler.handleMoveToAction(
+                conversations: [conversation],
+                to: folder,
+                isFromSwipeAction: false,
+                completion: nil
+            )
+            self?.showMessageMoved(
+                title: LocalString._messages_has_been_moved,
+                undoActionType: .custom(folder.location.labelID)
+            )
+        }
+
+        viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
+        if folder.location == .trash {
+            viewModel.searchForScheduled(
+                conversation: conversation,
+                displayAlert: { [weak self] scheduledNum in
+                    self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
+                },
+                continueAction: continueAction
+            )
+        } else {
+            continueAction()
+        }
     }
 }
 
