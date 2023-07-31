@@ -54,6 +54,9 @@ extension ServiceFactory {
                 lastUpdatedStore: factory.get(),
                 usersManager: factory.get(),
                 queueManager: factory.get(),
+                // TODO: pass the dependencies properly through the entire chain
+                // swiftlint:disable:next force_cast
+                dependencies: (UIApplication.shared.delegate as! AppDelegate).dependencies,
                 sideMenu: sideMenu,
                 menuWidth: menuWidth
             )

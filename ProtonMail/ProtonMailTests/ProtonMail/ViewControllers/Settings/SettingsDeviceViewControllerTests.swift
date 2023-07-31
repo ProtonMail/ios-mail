@@ -46,11 +46,14 @@ class SettingsDeviceViewControllerTests: XCTestCase {
             lockCacheStatus: MockLockCacheStatus(),
             dependencies: .init(cleanCache: mockCleanCache)
         )
+        let globalContainer = GlobalContainer()
+        globalContainer.usersManagerFactory.register { self.mockUsers }
+        let userContainer = UserContainer(userManager: mockUser, globalContainer: globalContainer)
         settingsDeviceCoordinatorMock = MockSettingsDeviceCoordinator(
             navigationController: nil,
             user: mockUser,
-            usersManager: mockUsers,
-            services: ServiceFactory()
+            services: ServiceFactory(),
+            dependencies: userContainer
         )
         sut = SettingsDeviceViewController(
             viewModel: viewModel,

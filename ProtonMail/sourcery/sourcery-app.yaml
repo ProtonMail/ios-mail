@@ -1,0 +1,9 @@
+sources:
+    - ../ProtonMail
+    - ../Push
+    - ../PushService
+    - ../Share
+    - ../Siri
+templates:
+    - app
+output: ../ProtonMail/Generated/APP

@@ -31,8 +31,11 @@ protocol SettingsAccountCoordinatorProtocol: AnyObject {
 }
 
 class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
+    typealias Dependencies = HasKeyMakerProtocol & HasUsersManager & BlockedSendersViewModel.Dependencies
+
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
+    private let dependencies: Dependencies
 
     private var user: UserManager {
         users.firstUser!
@@ -61,9 +64,10 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case autoDeleteSpamTrash
     }
 
-    init(navigationController: UINavigationController?, services: ServiceFactory) {
+    init(navigationController: UINavigationController?, dependencies: Dependencies) {
         self.navigationController = navigationController
-        users = services.get()
+        self.dependencies = dependencies
+        users = dependencies.usersManager
         viewModel = SettingsAccountViewModelImpl(user: users.firstUser!)
     }
 
@@ -129,28 +133,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func openBlockList() {
-        let blockedSendersPublisher = BlockedSendersPublisher(
-            contextProvider: sharedServices.get(by: CoreDataService.self),
-            userID: user.userID
-        )
-
-        let incomingDefaultService = user.incomingDefaultService
-
-        let unblockSender = UnblockSender(
-            dependencies: .init(
-                incomingDefaultService: incomingDefaultService,
-                queueManager: sharedServices.get(by: QueueManager.self),
-                userInfo: user.userInfo
-            )
-        )
-
-        let viewModel = BlockedSendersViewModel(
-            dependencies: .init(
-                blockedSendersPublisher: blockedSendersPublisher,
-                cacheUpdater: user.blockedSenderCacheUpdater,
-                unblockSender: unblockSender
-            )
-        )
+        let viewModel = BlockedSendersViewModel(dependencies: dependencies)
         let viewController = BlockedSendersViewController(viewModel: viewModel)
         navigationController?.show(viewController, sender: nil)
     }

@@ -58,6 +58,9 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
         }
     }
 
+    // MenuCoordinator needs everything in order to build `UserContainer`
+    typealias Dependencies = GlobalContainer
+
     private(set) var viewController: MenuViewController?
     private let viewModel: MenuVMProtocol
 
@@ -67,6 +70,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     private let coreDataService: CoreDataContextProviderProtocol
     private let lastUpdatedStore: LastUpdatedStoreProtocol
     private let usersManager: UsersManager
+    private let dependencies: Dependencies
     var pendingActionAfterDismissal: (() -> Void)?
     private var mailboxCoordinator: MailboxCoordinator?
     let sideMenu: PMSideMenuController
@@ -80,6 +84,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
          lastUpdatedStore: LastUpdatedStoreProtocol,
          usersManager: UsersManager,
          queueManager: QueueManager,
+         dependencies: Dependencies,
          sideMenu: PMSideMenuController,
          menuWidth: CGFloat) {
         // Setup side menu setting
@@ -96,6 +101,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
         self.menuWidth = menuWidth
         self.sideMenu = sideMenu
 
+        self.dependencies = dependencies
         self.services = services
         self.coreDataService = coreDataService
         self.pushService = pushService
@@ -564,8 +570,8 @@ extension MenuCoordinator {
         let settings = SettingsDeviceCoordinator(
             navigationController: navigation,
             user: userManager,
-            usersManager: usersManager,
-            services: services
+            services: services,
+            dependencies: UserContainer(userManager: userManager, globalContainer: dependencies)
         )
         settings.start()
         self.settingsDeviceCoordinator = settings

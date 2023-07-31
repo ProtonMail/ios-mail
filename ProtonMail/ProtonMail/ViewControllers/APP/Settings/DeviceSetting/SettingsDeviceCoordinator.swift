@@ -33,20 +33,23 @@ class SettingsDeviceCoordinator {
         case darkMode = "settings_dark_mode"
     }
 
-    private let usersManager: UsersManager
+    // TODO: dependencies should only include a factory
+    typealias Dependencies = SettingsAccountCoordinator.Dependencies
+
     private let userManager: UserManager
     private let services: ServiceFactory
+    private let dependencies: Dependencies
 
     private weak var navigationController: UINavigationController?
 
     init(navigationController: UINavigationController?,
          user: UserManager,
-         usersManager: UsersManager,
-         services: ServiceFactory) {
+         services: ServiceFactory,
+         dependencies: Dependencies) {
         self.navigationController = navigationController
         self.userManager = user
-        self.usersManager = usersManager
         self.services = services
+        self.dependencies = dependencies
     }
 
     func start() {
@@ -54,7 +57,7 @@ class SettingsDeviceCoordinator {
             user: userManager,
             biometricStatus: UIDevice.current,
             lockCacheStatus: services.get(by: Keymaker.self),
-            dependencies: .init(cleanCache: CleanCache(dependencies: .init(usersManager: usersManager)))
+            dependencies: .init(cleanCache: CleanCache(dependencies: .init(usersManager: dependencies.usersManager)))
         )
 
         let viewController = SettingsDeviceViewController(viewModel: viewModel, coordinator: self)
@@ -89,7 +92,10 @@ class SettingsDeviceCoordinator {
     }
 
     private func openAccount(deepLink: DeepLink?) {
-        let accountSettings = SettingsAccountCoordinator(navigationController: self.navigationController, services: self.services)
+        let accountSettings = SettingsAccountCoordinator(
+            navigationController: self.navigationController,
+            dependencies: dependencies
+        )
         accountSettings.start(animated: deepLink == nil)
         accountSettings.follow(deepLink: deepLink)
     }
@@ -115,7 +121,7 @@ class SettingsDeviceCoordinator {
     }
 
     private func openGesture() {
-        let apiServices = usersManager.users.map(\.apiService)
+        let apiServices = dependencies.usersManager.users.map(\.apiService)
         guard !apiServices.isEmpty else {
             return
         }

@@ -22,13 +22,17 @@
       "Enterprise Release": "release"
    },
    "packages": {
-      "LifetimeTracker": {
-         "url": "https://github.com/krzysztofzablocki/LifetimeTracker.git",
-         "version": "1.8.1"
-      },
       "Difference": {
          "url": "https://github.com/krzysztofzablocki/Difference.git",
          "version": "1.0.2"
+      },
+      "Factory": {
+         "url": "https://github.com/hmlongco/Factory.git",
+         "version": "2.2.0"
+      },
+      "LifetimeTracker": {
+         "url": "https://github.com/krzysztofzablocki/LifetimeTracker.git",
+         "version": "1.8.1"
       }
    },
    "configFiles": {

@@ -46,6 +46,9 @@ class AppDelegate: UIResponder {
     private var currentState: UIApplication.State = .active
     private var purgeOldMessages: PurgeOldMessagesUseCase?
 
+    // TODO: make private
+    let dependencies = GlobalContainer()
+
     override init() {
         injectDefaultCryptoImplementation()
         super.init()
@@ -87,8 +90,7 @@ extension AppDelegate: UIApplicationDelegate {
         SystemLogger.log(message: message, category: .appLifeCycle)
         sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
 
-        let coreKeyMaker = Keymaker(autolocker: Autolocker(lockTimeProvider: userCachedStatus),
-                                keychain: KeychainWrapper.keychain)
+        let coreKeyMaker = dependencies.keyMaker
         sharedServices.add(Keymaker.self, for: coreKeyMaker)
         sharedServices.add(KeyMakerProtocol.self, for: coreKeyMaker)
 
@@ -97,14 +99,8 @@ extension AppDelegate: UIApplicationDelegate {
             coreKeyMaker.activate(NoneProtection()) { _ in }
         }
 
-        let usersManager = UsersManager(
-            doh: BackendConfiguration.shared.doh,
-            userDataCache: UserDataCache(keyMaker: coreKeyMaker),
-            coreKeyMaker: coreKeyMaker
-        )
-        let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
-        let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
-        let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
+        let usersManager = dependencies.usersManager
+        let queueManager = dependencies.queueManager
         sharedServices.add(QueueManager.self, for: queueManager)
         let dependencies = PushNotificationService.Dependencies(
             lockCacheStatus: coreKeyMaker,
