@@ -30,6 +30,7 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
     let name: String
     let kind: Kind?
     let body: String
+    let keyValues: [String: String]
 
     init(_ string: String) {
         let components = string.components(separatedBy: ":")
@@ -37,25 +38,21 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         self.body = Array(components[1...]).joined(separator: ":").trimmingCharacters(in: .whitespaces)
         self.kind = Kind(rawValue: self.name.lowercased())
         self.raw = string
-    }
 
-    var keyValues: [String: String] {
         let trimThese = CharacterSet(charactersIn: "\"").union(.whitespacesAndNewlines)
         let commaComponents = self.body.components(separatedBy: ",")
         let seimcolonComponents = self.body.components(separatedBy: ";")
-        let components = seimcolonComponents.count > 1 ? seimcolonComponents : commaComponents
-        var results: [String: String] = [:]
+        let kvComponents = seimcolonComponents.count > 1 ? seimcolonComponents : commaComponents
 
-        for component in components {
+        keyValues = kvComponents.reduce(into: [:], { results, component in
             let pieces = component.components(separatedBy: "=")
-            guard pieces.count >= 2 else { continue }
+            guard pieces.count >= 2 else { return }
             guard let key = pieces[0]
                 .trimmingCharacters(in: trimThese)
                 .components(separatedBy: .whitespaces)
-                .last else { continue }
+                .last else { return }
             results[key] = Array(pieces[1...]).joined(separator: "=").trimmingCharacters(in: trimThese)
-        }
-        return results
+        })
     }
 
     var description: String {
