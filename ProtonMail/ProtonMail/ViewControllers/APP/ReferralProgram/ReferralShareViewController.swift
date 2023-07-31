@@ -48,12 +48,6 @@ final class ReferralShareViewController: UIViewController {
         setUpCloseButton(showCloseButton: true, action: #selector(self.dismissView))
         setupView()
         setupActions()
-
-        NotificationCenter.default
-            .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
-                         name: UIContentSizeCategory.didChangeNotification,
-                         object: nil)
     }
 
     private func setupView() {
@@ -127,12 +121,5 @@ final class ReferralShareViewController: UIViewController {
     @objc
     private func openTermsAndConditions() {
         openLink(Link.ReferralProgram.referralTermsAndConditions)
-    }
-
-    @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
-        // The following elements can't reflect font size changed automatically
-        // Reset font when event happened
-        customView.setupFont()
     }
 }
