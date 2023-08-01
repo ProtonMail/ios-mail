@@ -66,7 +66,7 @@ final class CSSMagicTest: XCTestCase {
         """
         var document = CSSMagic.parse(htmlString: html)
         css = CSSMagic.generateCSSForDarkMode(document: document)
-        expected = "div.a[style*=\"background-color: hsl(0, 0%, 100%)\"] { background-color: hsla(230, 12%, 10%, 1.0) !important }"
+        expected = "div.a[style*=\"background-color: hsl(0, 0%, 100%)\"] { background-color: #1C1B24 !important }"
         XCTAssertEqual(css, "@media (prefers-color-scheme: dark) { \(expected) }")
 
         html = """
@@ -109,7 +109,7 @@ final class CSSMagicTest: XCTestCase {
         """
         document = CSSMagic.parse(htmlString: html)
         css = CSSMagic.generateCSSForDarkMode(document: document)
-        expected = "@media (prefers-color-scheme: dark) { div.a[style*=\"background-color: white\"] { background-color: hsla(230, 12%, 10%, 1.0) !important } }"
+        expected = "@media (prefers-color-scheme: dark) { div.a[style*=\"background-color: white\"] { background-color: #1C1B24 !important } }"
         XCTAssertEqual(css, expected)
     }
 }
@@ -153,7 +153,7 @@ extension CSSMagicTest {
         XCTAssertEqual(styleCSS, expected)
         newStyleCSS = try XCTUnwrap(CSSMagic.getDarkModeCSSDictFrom(styleCSS: styleCSS), "Should have value")
         var result = try XCTUnwrap(newStyleCSS[".email"])
-        XCTAssertEqual(result, ["background-color: hsla(230, 12%, 10%, 1.0) !important"])
+        XCTAssertEqual(result, ["background-color: #1C1B24 !important"])
 
         html = """
         <html>
@@ -180,7 +180,7 @@ extension CSSMagicTest {
         XCTAssertEqual(newStyleCSS.count, 2)
         for newStyle in newStyleCSS {
             if newStyle.key == "#content,\n            .mailbody" {
-                XCTAssertEqual(newStyle.value, ["background-color: hsla(230, 12%, 10%, 1.0) !important"])
+                XCTAssertEqual(newStyle.value, ["background-color: #1C1B24 !important"])
             } else if newStyle.key == ".a .b" {
                 XCTAssertEqual(newStyle.value, ["background-color: hsla(122, 33%, 30%, 1.0) !important"])
             } else {
@@ -328,7 +328,7 @@ extension CSSMagicTest {
 
         result = CSSMagic.getDarkModeColor(from: "white", isForeground: false)
         XCTAssertNotNil(result)
-        XCTAssertEqual(result, "hsla(230, 12%, 10%, 1.0)")
+        XCTAssertEqual(result, "#1C1B24")
 
         result = CSSMagic.getDarkModeColor(from: "whitdilfjele", isForeground: true)
         XCTAssertNil(result)
@@ -350,14 +350,14 @@ extension CSSMagicTest {
         XCTAssertEqual(result, "hsla(51, 100%, 30%, 0.5)")
 
         result = CSSMagic.getDarkModeColor(from: "fff", isForeground: false)
-        XCTAssertEqual(result, "hsla(230, 12%, 10%, 1.0)")
+        XCTAssertEqual(result, "#1C1B24")
 
         result = CSSMagic.getDarkModeColor(from: "fff !important", isForeground: false)
-        XCTAssertEqual(result, "hsla(230, 12%, 10%, 1.0)")
+        XCTAssertEqual(result, "#1C1B24")
 
         result = CSSMagic.getDarkModeColor(from: "#fff", isForeground: false)
         XCTAssertNotNil(result)
-        XCTAssertEqual(result, "hsla(230, 12%, 10%, 1.0)")
+        XCTAssertEqual(result, "#1C1B24")
     }
 }
 
@@ -591,6 +591,10 @@ extension CSSMagicTest {
         hsla = HSLA(h: 20, s: 50, l: 93, a: 1)
         result = CSSMagic.hslaForDarkMode(hsla: hsla, isForeground: false)
         XCTAssertEqual(result, "hsla(20, 50%, 30%, 1.0)")
+
+        hsla = HSLA(h: 0, s: 0, l: 100, a: 1)
+        result = CSSMagic.hslaForDarkMode(hsla: hsla, isForeground: false)
+        XCTAssertEqual(result, "#1C1B24")
     }
 }
 
