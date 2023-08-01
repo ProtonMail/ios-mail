@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_UIFoundations
 import SwiftSoup
 
 private enum CSSKeys: String {
@@ -703,6 +704,11 @@ extension CSSMagic {
     }
 
     static func hslaForDarkMode(hsla: HSLA, isForeground: Bool) -> String {
+        if hsla.color.toHex() == "#FFFFFF" && !isForeground {
+            let trait = UITraitCollection(userInterfaceStyle: .dark)
+            let color = ColorProvider.BackgroundNorm.resolvedColor(with: trait)
+            return color.toHex()
+        }
         var l = hsla.l
         let isAchromatic = hsla.s <= 5
         switch (isForeground, isAchromatic) {
