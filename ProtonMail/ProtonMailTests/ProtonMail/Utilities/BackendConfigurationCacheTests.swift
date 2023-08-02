@@ -58,15 +58,4 @@ class BackendConfigurationCacheTests: XCTestCase {
         mockUserDefaults.set("custom", forKey: "environment")
         XCTAssert(sut.readEnvironment() == nil)
     }
-
-    func testWriteEnvironment_whenDeclaredEnvIsUsed_writesInUserDefaults() {
-        sut.write(environment: .black)
-        XCTAssert(mockUserDefaults.string(forKey: "environment") == "black")
-    }
-
-    func testWriteEnvironment_whenCustomEnvIsUsed_writesInUserDefaults() {
-        sut.write(environment: .custom(customDomain))
-        XCTAssert(mockUserDefaults.string(forKey: "environment") == "custom")
-        XCTAssert(mockUserDefaults.string(forKey: "environmentCustomDomain") == customDomain)
-    }
 }

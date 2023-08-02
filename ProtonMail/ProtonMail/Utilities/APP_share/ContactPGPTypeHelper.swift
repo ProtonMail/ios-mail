@@ -110,7 +110,7 @@ struct ContactPGPTypeHelper {
                                         isMessageHavingPWD: isMessageHavingPwd)
 
                 let helper = MessageEncryptionIconHelper()
-                let statusIcon = helper.sendStatusIconInfo(email: email, sendPreferences: sendPreferences)
+                let statusIcon = helper.sendStatusIconInfo(sendPreferences: sendPreferences)
                 completion(statusIcon, nil)
             }
         }

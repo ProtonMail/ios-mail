@@ -97,7 +97,6 @@ final class SearchViewModel: NSObject {
     }
 
     private var dbContents: [LocalObjectsIndexRow] = []
-    private var currentPage = 0
     private var query = ""
     private let sharedReplacingEmailsMap: [String: EmailEntity]
     private var userHasClosedESIndexingBanner = false
@@ -109,7 +108,6 @@ final class SearchViewModel: NSObject {
         self.messages.filter { selectedIDs.contains($0.messageID.rawValue) }
     }
 
-    private let internetStatusProvider: InternetConnectionStatusProvider
     private var currentFetchedSearchResultPage: UInt = 0
     /// use this flag to stop the search query being triggered by `loadMoreDataIfNeeded`.
     private(set) var searchIsDone = false
@@ -119,13 +117,11 @@ final class SearchViewModel: NSObject {
         serviceFactory: ServiceFactory,
         user: UserManager,
         coreDataContextProvider: CoreDataContextProviderProtocol,
-        internetStatusProvider: InternetConnectionStatusProvider,
         dependencies: Dependencies
     ) {
         self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
-        self.internetStatusProvider = internetStatusProvider
         self.dependencies = dependencies
         self.sharedReplacingEmailsMap = user.contactService.allAccountEmails()
             .reduce(into: [:]) { partialResult, email in

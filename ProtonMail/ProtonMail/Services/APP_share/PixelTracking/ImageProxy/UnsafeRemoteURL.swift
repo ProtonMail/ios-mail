@@ -19,14 +19,6 @@ import Foundation
 
 struct UnsafeRemoteURL: Hashable {
     let value: String
-
-    init(value: Substring) {
-        self.value = String(value)
-    }
-
-    init(value: String) {
-        self.value = value
-    }
 }
 
 extension UnsafeRemoteURL: Comparable {

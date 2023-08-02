@@ -183,9 +183,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         self.isOnMainView = true
 
         let newView = ContactImportViewController(user: viewModel.user)
-        self.setPresentationStyleForSelfController(self,
-                                                   presentingController: newView,
-                                                   style: .overFullScreen)
+        setPresentationStyleForSelfController(presentingController: newView, style: .overFullScreen)
         newView.reloadAllContact = { [weak self] in
             self?.tableView.reloadData()
         }

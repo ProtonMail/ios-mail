@@ -1750,7 +1750,6 @@ extension MailboxViewController {
         }
         let moveToViewModel = MoveToActionSheetViewModelMessages(
             menuLabels: menuLabels,
-            messages: messages,
             isEnableColor: isEnableColor,
             isInherit: isInherit
         )
@@ -1835,7 +1834,6 @@ extension MailboxViewController {
     ) {
         let moveToViewModel = MoveToActionSheetViewModelConversations(
             menuLabels: moveToActionHandler.getFolderMenuItems(),
-            conversations: conversations,
             isEnableColor: isEnableColor,
             isInherit: isInherit
         )

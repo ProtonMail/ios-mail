@@ -90,16 +90,6 @@ final class PagesViewController<
         }
     }
 
-    private func getNextViewController() -> UIViewController? {
-        guard let current = viewControllers?.first else { return nil }
-        switch viewModel.viewMode {
-        case .singleMessage:
-            return singleMessageVC(baseOn: current, offset: 1).0
-        case .conversation:
-            return conversationVC(baseOn: current, offset: 1).0
-        }
-    }
-
     // MARK: UIPageViewControllerDelegate
     func pageViewController(
         _ pageViewController: UIPageViewController,

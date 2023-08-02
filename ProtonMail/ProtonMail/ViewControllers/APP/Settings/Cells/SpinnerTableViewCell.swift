@@ -19,10 +19,6 @@ import ProtonCore_UIFoundations
 import UIKit
 
 class SpinnerTableViewCell: UITableViewCell {
-    static var CellID: String {
-        return "\(self)"
-    }
-
     var topLabel: UILabel!
     var bottomLabel: UILabel!
     var activityIndicator: UIActivityIndicatorView!

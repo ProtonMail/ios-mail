@@ -202,7 +202,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                 showComposer(viewModel: viewModel, navigationVC: nav)
             }
         case .composeMailto where path.value != nil:
-            followToComposeMailTo(path: path.value, deeplink: deeplink)
+            followToComposeMailTo(path: path.value)
         case .composeScheduledMessage where path.value != nil:
             guard let messageID = path.value,
                   let originalScheduledTime = path.states?["originalScheduledTime"] as? Date else {
@@ -291,7 +291,6 @@ extension MailboxCoordinator {
             serviceFactory: services,
             user: viewModel.user,
             coreDataContextProvider: coreDataService,
-            internetStatusProvider: .shared,
             dependencies: .init(
                 coreKeyMaker: services.get(),
                 fetchMessageDetail: FetchMessageDetail(
@@ -375,7 +374,7 @@ extension MailboxCoordinator {
         }
     }
 
-    private func followToComposeMailTo(path: String?, deeplink: DeepLink) {
+    private func followToComposeMailTo(path: String?) {
         if let msgID = path,
            let existingMsg = Message.messageForMessageID(msgID, inManagedObjectContext: contextProvider.mainContext) {
             navigateToComposer(existingMessage: existingMsg)

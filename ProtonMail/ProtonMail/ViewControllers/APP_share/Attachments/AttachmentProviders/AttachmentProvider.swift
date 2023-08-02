@@ -32,6 +32,5 @@ protocol AttachmentProvider {
 protocol AttachmentController: AnyObject {
     func present(_ controller: UIViewController, animated: Bool, completion: (() -> Void)?)
     func error(_ description: String)
-    func error(title: String, description: String)
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void>
 }

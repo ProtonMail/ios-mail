@@ -387,7 +387,6 @@ extension SearchViewController {
         guard let handler = moveToActionHandler else { return }
         let moveToViewModel = MoveToActionSheetViewModelMessages(
             menuLabels: handler.getFolderMenuItems(),
-            messages: messages,
             isEnableColor: isEnableColor,
             isInherit: isInherit
         )

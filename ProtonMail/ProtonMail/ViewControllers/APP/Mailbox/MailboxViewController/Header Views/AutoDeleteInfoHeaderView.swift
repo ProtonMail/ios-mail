@@ -101,11 +101,6 @@ class AutoDeleteInfoHeaderView: UIView {
 }
 
 extension AutoDeleteInfoHeaderView {
-    enum EmptyButtonType {
-        case spam
-        case trash
-    }
-
     class SubviewsFactory {
         static var trashIconImageView: UIView {
             let imageView = UIImageView()

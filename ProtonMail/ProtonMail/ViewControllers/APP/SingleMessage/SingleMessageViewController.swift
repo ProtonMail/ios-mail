@@ -591,7 +591,6 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
         }
         let moveToViewModel = MoveToActionSheetViewModelMessages(
             menuLabels: menuLabels,
-            messages: [viewModel.message],
             isEnableColor: isEnableColor,
             isInherit: isInherit
         )

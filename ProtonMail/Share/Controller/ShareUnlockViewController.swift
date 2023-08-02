@@ -235,10 +235,6 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
 }
 
 extension ShareUnlockViewController: AttachmentController, FileImporter {
-    func error(title: String, description: String) {
-        self.localized_errors.append(description)
-    }
-
     func error(_ description: String) {
         self.localized_errors.append(description)
     }

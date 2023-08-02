@@ -201,21 +201,18 @@ final class MainQueueHandler: QueueHandler {
                                   messageIDs: itemIDs,
                                   UID: UID,
                                   shouldFetchEvent: shouldFetch ?? false,
-                                  isSwipeAction: isSwipeAction,
                                   completion: completeHandler)
             case .unlabel(let currentLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
                 self.unLabelMessage(LabelID(currentLabelID),
                                     messageIDs: itemIDs,
                                     UID: UID,
                                     shouldFetchEvent: shouldFetch ?? false,
-                                    isSwipeAction: isSwipeAction,
                                     completion: completeHandler)
             case .folder(let nextLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
                 self.labelMessage(LabelID(nextLabelID),
                                   messageIDs: itemIDs,
                                   UID: UID,
                                   shouldFetchEvent: shouldFetch ?? false,
-                                  isSwipeAction: isSwipeAction,
                                   completion: completeHandler)
             case .updateLabel(let labelID, let name, let color):
                 self.updateLabel(labelID: labelID, name: name, color: color, completion: completeHandler)
@@ -768,7 +765,6 @@ extension MainQueueHandler {
                                   messageIDs: [String],
                                   UID: String,
                                   shouldFetchEvent: Bool,
-                                  isSwipeAction: Bool,
                                   completion: @escaping Completion) {
         guard user?.userInfo.userId == UID else {
             completion(NSError.userLoggedOut())
@@ -798,7 +794,6 @@ extension MainQueueHandler {
                                     messageIDs: [String],
                                     UID: String,
                                     shouldFetchEvent: Bool,
-                                    isSwipeAction: Bool,
                                     completion: @escaping Completion) {
         guard user?.userInfo.userId == UID else {
             completion(NSError.userLoggedOut())

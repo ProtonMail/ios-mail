@@ -107,8 +107,6 @@ class EmailHeaderView: UIView, AccessibleView {
     fileprivate let kEmailHeaderViewMarginRight: CGFloat = -16.0
 
     fileprivate let kEmailTitleViewMarginRight: CGFloat = -8.0
-    fileprivate let kEmailFavoriteButtonHeight: CGFloat = 44
-    fileprivate let kEmailFavoriteButtonWidth: CGFloat = 52
     fileprivate let kEmailRecipientsViewMarginTop: CGFloat = 6.0
     fileprivate let kEmailTimeViewMarginTop: CGFloat = 6.0
     fileprivate let kEmailDetailButtonMarginLeft: CGFloat = 5.0
@@ -138,7 +136,6 @@ class EmailHeaderView: UIView, AccessibleView {
     internal let section : Int = 1
     
     fileprivate var date : Date!
-    fileprivate var starred : Bool!
     
     fileprivate var hasExpiration : Bool = false
     fileprivate var hasShowImageCheck : Bool = true
@@ -291,7 +288,6 @@ class EmailHeaderView: UIView, AccessibleView {
         // init data
         self.title = ""
         self.date = Date()
-        self.starred = false
         self.attachmentCount = 0
 
         self.addSubviews()
@@ -364,8 +360,6 @@ class EmailHeaderView: UIView, AccessibleView {
         } else {
             self.date = Date()
         }
-
-        self.starred = isStarred
 
         self.emailTitle.text = title
 

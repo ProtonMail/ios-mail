@@ -475,13 +475,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         return contextLabel.conversation
     }
 
-    func isObjectUpdated(objectID: ObjectID) -> Bool {
-        guard let obj = try? self.fetchedResultsController?.managedObjectContext.existingObject(with: objectID.rawValue) else {
-            return false
-        }
-        return obj.isUpdated
-    }
-
     // MARK: - operations
 
     /// clean up the rate/review items

@@ -19,10 +19,6 @@ import ProtonCore_UIFoundations
 import UIKit
 
 class ProgressBarButtonTableViewCell: UITableViewCell {
-    static var CellID: String {
-        return "\(self)"
-    }
-
     typealias ButtonActionBlock = () -> Void
 
     var callback: ButtonActionBlock?

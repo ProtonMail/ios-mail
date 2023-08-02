@@ -295,3 +295,13 @@ extension ComposeViewModelTests {
         )
     }
 }
+
+private extension URL {
+    func hasGPSData() -> Bool {
+        guard let source = CGImageSourceCreateWithURL(self as CFURL, nil),
+              let metaData = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [String: Any] else {
+            return false
+        }
+        return metaData[kCGImagePropertyGPSDictionary as String] != nil
+    }
+}

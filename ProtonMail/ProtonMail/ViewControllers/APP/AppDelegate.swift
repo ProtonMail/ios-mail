@@ -42,9 +42,6 @@ import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
-        return self.coordinator.currentWindow
-    }
     lazy var coordinator: WindowsCoordinator = WindowsCoordinator(factory: sharedServices)
     private var currentState: UIApplication.State = .active
     private var purgeOldMessages: PurgeOldMessagesUseCase?
