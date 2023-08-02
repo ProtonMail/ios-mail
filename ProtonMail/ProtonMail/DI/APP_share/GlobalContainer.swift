@@ -36,9 +36,15 @@ final class GlobalContainer: ManagedContainer {
     var keyMakerFactory: Factory<KeyMakerProtocol> {
         self {
             Keymaker(
-                autolocker: Autolocker(lockTimeProvider: userCachedStatus),
+                autolocker: Autolocker(lockTimeProvider: self.userCachedStatus),
                 keychain: KeychainWrapper.keychain
             )
+        }
+    }
+
+    var lockCacheStatusFactory: Factory<LockCacheStatus> {
+        self {
+            self.keyMaker
         }
     }
 
@@ -54,9 +60,15 @@ final class GlobalContainer: ManagedContainer {
         self {
             UsersManager(
                 doh: BackendConfiguration.shared.doh,
-                userDataCache: UserDataCache(keyMaker: self.keyMakerFactory()),
-                coreKeyMaker: self.keyMakerFactory()
+                userDataCache: UserDataCache(keyMaker: self.keyMaker),
+                coreKeyMaker: self.keyMaker
             )
+        }
+    }
+
+    var userCachedStatusFactory: Factory<UserCachedStatus> {
+        self {
+            UserCachedStatus()
         }
     }
 

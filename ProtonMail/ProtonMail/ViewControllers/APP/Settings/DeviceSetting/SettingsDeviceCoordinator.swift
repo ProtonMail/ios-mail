@@ -33,34 +33,21 @@ class SettingsDeviceCoordinator {
         case darkMode = "settings_dark_mode"
     }
 
-    // TODO: dependencies should only include a factory
-    typealias Dependencies = SettingsAccountCoordinator.Dependencies
+    // TODO: dependencies should only include a factory and other coordinator's dependencies
+    typealias Dependencies = HasUserManager & HasSettingsViewsFactory & HasUserCachedStatus & SettingsAccountCoordinator.Dependencies
 
-    private let userManager: UserManager
-    private let services: ServiceFactory
     private let dependencies: Dependencies
 
     private weak var navigationController: UINavigationController?
 
     init(navigationController: UINavigationController?,
-         user: UserManager,
-         services: ServiceFactory,
          dependencies: Dependencies) {
         self.navigationController = navigationController
-        self.userManager = user
-        self.services = services
         self.dependencies = dependencies
     }
 
     func start() {
-        let viewModel = SettingsDeviceViewModel(
-            user: userManager,
-            biometricStatus: UIDevice.current,
-            lockCacheStatus: services.get(by: Keymaker.self),
-            dependencies: .init(cleanCache: CleanCache(dependencies: .init(usersManager: dependencies.usersManager)))
-        )
-
-        let viewController = SettingsDeviceViewController(viewModel: viewModel, coordinator: self)
+        let viewController = dependencies.settingsViewsFactory.makeDeviceView(coordinator: self)
         navigationController?.pushViewController(viewController, animated: false)
     }
 
@@ -101,51 +88,43 @@ class SettingsDeviceCoordinator {
     }
 
     private func openAutoLock() {
-        let lockSetting = SettingsLockRouter(navigationController: self.navigationController, coreKeyMaker: services.get())
+        let lockSetting = SettingsLockRouter(
+            navigationController: navigationController,
+            coreKeyMaker: dependencies.keyMaker
+        )
         lockSetting.start()
     }
 
     private func openCombineContacts() {
-        let viewModel = ContactCombineViewModel(combineContactCache: services.userCachedStatus)
-        let viewController = SwitchToggleViewController(viewModel: viewModel)
+        let viewController = dependencies.settingsViewsFactory.makeContactCombineView()
         navigationController?.show(viewController, sender: nil)
     }
 
     private func openAlternativeRouting() {
-        let viewModel = NetworkSettingViewModel(
-            userCache: services.userCachedStatus,
-            dohSetting: BackendConfiguration.shared.doh
-        )
-        let controller = SwitchToggleViewController(viewModel: viewModel)
+        let controller = dependencies.settingsViewsFactory.makeNetworkSettingView()
         navigationController?.show(controller, sender: nil)
     }
 
     private func openGesture() {
-        let apiServices = dependencies.usersManager.users.map(\.apiService)
-        guard !apiServices.isEmpty else {
-            return
-        }
         let coordinator = SettingsGesturesCoordinator(
-            navigationController: self.navigationController,
-            userInfo: userManager.userInfo,
-            apiServices: apiServices,
-            swipeActionCache: services.userCachedStatus
+            navigationController: navigationController,
+            dependencies: dependencies
         )
         coordinator.start()
     }
 
     private func openDarkMode() {
-        let viewModel = DarkModeSettingViewModel(darkModeCache: services.userCachedStatus)
-        let viewController = SettingsSingleCheckMarkViewController(viewModel: viewModel)
+        let viewController = dependencies.settingsViewsFactory.makeDarkModeSettingView()
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
+    // TODO: introduce toolbar setting view factory
     func openToolbarCustomizationView() {
         let viewModel = ToolbarSettingViewModel(
-            infoBubbleViewStatusProvider: services.userCachedStatus,
-            toolbarActionProvider: userManager,
+            infoBubbleViewStatusProvider: dependencies.userCachedStatus,
+            toolbarActionProvider: dependencies.user,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
-                dependencies: .init(user: userManager)
+                dependencies: .init(user: dependencies.user)
             )
         )
         let viewController = ToolbarSettingViewController(viewModel: viewModel)
@@ -153,8 +132,7 @@ class SettingsDeviceCoordinator {
     }
 
     func openApplicationLogsView() {
-        let viewModel = ApplicationLogsViewModel()
-        let viewController = ApplicationLogsViewController(viewModel: viewModel)
+        let viewController = dependencies.settingsViewsFactory.makeApplicationLogsView()
         navigationController?.pushViewController(viewController, animated: true)
     }
 }

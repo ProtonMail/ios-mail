@@ -573,8 +573,6 @@ extension MenuCoordinator {
 
         let settings = SettingsDeviceCoordinator(
             navigationController: navigation,
-            user: userManager,
-            services: services,
             dependencies: userContainer(for: userManager)
         )
         settings.start()

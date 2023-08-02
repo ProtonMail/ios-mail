@@ -36,16 +36,28 @@ class SettingsSwipeActionSelectViewModelTests: XCTestCase {
     var selectedAction: SwipeActionItems = .left
     var saveSwipeActionSettingForUsersUseCaseMock: MockSaveSwipeActionSettingForUsersUseCase!
 
+    private var globalContainer: GlobalContainer!
+
     override func setUp() {
+        super.setUp()
+
         swipeActionCacheStub = SwipeActionCacheStub()
         saveSwipeActionSettingForUsersUseCaseMock = MockSaveSwipeActionSettingForUsersUseCase()
-        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: selectedAction, dependencies: .init(saveSwipeActionSetting: saveSwipeActionSettingForUsersUseCaseMock))
+
+        globalContainer = .init()
+        globalContainer.swipeActionCacheFactory.register { self.swipeActionCacheStub }
+        globalContainer.saveSwipeActionSettingFactory.register { self.saveSwipeActionSettingForUsersUseCaseMock }
+
+        sut = SettingsSwipeActionSelectViewModelImpl(dependencies: globalContainer, selectedAction: selectedAction)
     }
 
     override func tearDown() {
         sut = nil
         swipeActionCacheStub = nil
         saveSwipeActionSettingForUsersUseCaseMock = nil
+        globalContainer = nil
+
+        super.tearDown()
     }
 
     func testGetCurrentAction() {
@@ -70,7 +82,7 @@ class SettingsSwipeActionSelectViewModelTests: XCTestCase {
     }
 
     func testRightToLeftGetCurrentAction() {
-        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: .right, dependencies: .init(saveSwipeActionSetting: saveSwipeActionSettingForUsersUseCaseMock))
+        sut = SettingsSwipeActionSelectViewModelImpl(dependencies: globalContainer, selectedAction: .right)
 
         swipeActionCacheStub.leftToRightSwipeActionType = .moveTo
 
@@ -78,7 +90,7 @@ class SettingsSwipeActionSelectViewModelTests: XCTestCase {
     }
 
     func testUpdateRightToLeftSwipeAction() throws {
-        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: .right, dependencies: .init(saveSwipeActionSetting: saveSwipeActionSettingForUsersUseCaseMock))
+        sut = SettingsSwipeActionSelectViewModelImpl(dependencies: globalContainer, selectedAction: .right)
         saveSwipeActionSettingForUsersUseCaseMock.callExecute.bodyIs { _, _, completion  in
             completion(.success)
         }

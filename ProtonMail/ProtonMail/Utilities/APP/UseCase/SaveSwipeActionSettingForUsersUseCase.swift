@@ -45,6 +45,8 @@ enum UpdateSwipeActionError: Error, Equatable {
 }
 
 final class SaveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
+    typealias Dependencies = HasSwipeActionCacheProtocol & HasUsersManager
+
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
@@ -89,7 +91,7 @@ final class SaveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
 
         let group = DispatchGroup()
         var lastError: NSError?
-        dependencies.usersApiServices.forEach({ apiService in
+        dependencies.usersManager.users.map(\.apiService).forEach({ apiService in
             group.enter()
             apiService.perform(
                 request: request,
@@ -115,18 +117,5 @@ final class SaveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
 extension SaveSwipeActionSetting {
     struct Parameters: Equatable {
         let preference: SwipeActionPreference
-    }
-
-    struct Dependencies {
-        let swipeActionCache: SwipeActionCacheProtocol
-        let usersApiServices: [APIService]
-
-        init(
-            swipeActionCache: SwipeActionCacheProtocol,
-            usersApiServices: [APIService]
-        ) {
-            self.swipeActionCache = swipeActionCache
-            self.usersApiServices = usersApiServices
-        }
     }
 }

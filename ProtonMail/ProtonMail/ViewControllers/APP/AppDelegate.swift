@@ -111,7 +111,7 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(UsersManager.self, for: usersManager)
         let dependencies = PushNotificationService.Dependencies(lockCacheStatus: coreKeyMaker)
         sharedServices.add(PushNotificationService.self, for: PushNotificationService(dependencies: dependencies))
-        let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: userCachedStatus))
+        let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: self.dependencies)
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager,
                                                                   contactCacheStatus: userCachedStatus,
                                                                   queueHandlerRegister: queueManager,

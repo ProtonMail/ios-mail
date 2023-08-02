@@ -49,6 +49,22 @@ extension UserContainer: HasKeyMakerProtocol {
     }
 }
 
+protocol HasLockCacheStatus {
+    var lockCacheStatus: LockCacheStatus { get }
+}
+
+extension GlobalContainer: HasLockCacheStatus {
+    var lockCacheStatus: LockCacheStatus {
+        lockCacheStatusFactory()
+    }
+}
+
+extension UserContainer: HasLockCacheStatus {
+    var lockCacheStatus: LockCacheStatus {
+        globalContainer.lockCacheStatus
+    }
+}
+
 protocol HasQueueManager {
     var queueManager: QueueManager { get }
 }
@@ -78,6 +94,22 @@ extension GlobalContainer: HasUsersManager {
 extension UserContainer: HasUsersManager {
     var usersManager: UsersManager {
         globalContainer.usersManager
+    }
+}
+
+protocol HasUserCachedStatus {
+    var userCachedStatus: UserCachedStatus { get }
+}
+
+extension GlobalContainer: HasUserCachedStatus {
+    var userCachedStatus: UserCachedStatus {
+        userCachedStatusFactory()
+    }
+}
+
+extension UserContainer: HasUserCachedStatus {
+    var userCachedStatus: UserCachedStatus {
+        globalContainer.userCachedStatus
     }
 }
 

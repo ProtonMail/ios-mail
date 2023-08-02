@@ -34,6 +34,8 @@ protocol SettingsSwipeActionSelectViewModel {
 }
 
 class SettingsSwipeActionSelectViewModelImpl: SettingsSwipeActionSelectViewModel {
+    typealias Dependencies = HasSwipeActionCacheProtocol & HasSaveSwipeActionSettingForUsersUseCase
+
     private let dependencies: Dependencies
     private(set) var settingSwipeActions: [SwipeActionSettingType] = [
         .none,
@@ -46,16 +48,9 @@ class SettingsSwipeActionSelectViewModelImpl: SettingsSwipeActionSelectViewModel
         .spam
     ]
 
-    private var swipeActionsCache: SwipeActionCacheProtocol
-
     let selectedAction: SwipeActionItems
 
-    init(
-        cache: SwipeActionCacheProtocol,
-        selectedAction: SwipeActionItems,
-        dependencies: Dependencies
-    ) {
-        self.swipeActionsCache = cache
+    init(dependencies: Dependencies, selectedAction: SwipeActionItems) {
         self.selectedAction = selectedAction
         self.dependencies = dependencies
     }
@@ -80,9 +75,9 @@ class SettingsSwipeActionSelectViewModelImpl: SettingsSwipeActionSelectViewModel
 
     func currentAction() -> SwipeActionSettingType {
         if self.selectedAction == .left,
-           let action = swipeActionsCache.rightToLeftSwipeActionType {
+           let action = dependencies.swipeActionCache.rightToLeftSwipeActionType {
             return action
-        } else if let action = swipeActionsCache.leftToRightSwipeActionType {
+        } else if let action = dependencies.swipeActionCache.leftToRightSwipeActionType {
             return action
         } else {
             return .none
@@ -91,12 +86,5 @@ class SettingsSwipeActionSelectViewModelImpl: SettingsSwipeActionSelectViewModel
 
     func isActionSyncable(_ action: SwipeActionSettingType) -> Bool {
         return action.isSyncable
-    }
-}
-
-extension SettingsSwipeActionSelectViewModelImpl {
-
-    struct Dependencies {
-        let saveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase
     }
 }

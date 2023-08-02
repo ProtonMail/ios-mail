@@ -22,7 +22,7 @@ Proton Mail iOS client for encrypted email.
 
 The application contains the following features among others (some are only available to paid users): create new accounts, sign in to multiple accounts, read and compose emails, schedule emails to be sent at a specific time, protect emails with a password, set emails expiration time, organise emails with labels and folders, manage contacts, change account settings, and many more...
 
-Currently the application supports iOS version 11 and above
+Currently the application supports iOS version 14 and above
 
 ## Project setup
 
@@ -32,20 +32,18 @@ Currently the application supports iOS version 11 and above
 
 `mint bootstrap`
 
-3. [DOMPurify](https://github.com/cure53/DOMPurify) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier. After cloning the repository run these two commands:  
+3. [DOMPurify](https://github.com/cure53/DOMPurify) and Cocoapods are pre-downloaded. We are using git submodules for tracking DOMPurifier. After cloning the repository run these two commands:
 
 `git submodule init`
 `git submodule update`
 
-4. We are using [XcodeGen](https://github.com/yonaskolb/XcodeGen) to generate Xcode project. To create the corresponding project files run: 
+4. We are using [XcodeGen](https://github.com/yonaskolb/XcodeGen) to generate Xcode project. To create the corresponding project files run:
 
 `sh ProtonMail/xcodeGenHelper.sh`
 
 ## Running Proton Mail
 
 1. In order to run the project you will need first to set your own provisioning profile. You can do that in the `Signing & Capabilities` settings of the `ProtonMail` target.
-
-2. For development purposes we have Core Data's concurrency flag enabled. That could occasionaly crash the application. If you want to disable the flag, go to the `ProtonMail` scheme and uncheck the laujnch argument `-com.apple.CoreData.ConcurrencyDebug 1`
 
 ## Dependencies
 
@@ -84,4 +82,3 @@ You can follow this link to download Proton Mail from the [Apple Store](https://
 - [Steven](https://github.com/Linquas)
 - [Jacek](https://github.com/jacekkra)
 - [Xavi](https://github.com/xavigil)
-

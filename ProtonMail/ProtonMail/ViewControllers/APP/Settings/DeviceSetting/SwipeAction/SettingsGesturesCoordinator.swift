@@ -25,12 +25,12 @@ import ProtonCore_Services
 import UIKit
 
 class SettingsGesturesCoordinator {
+    typealias Dependencies = HasSettingsViewsFactory
+
     internal weak var viewController: SettingsGesturesViewController?
 
     private weak var navigationController: UINavigationController?
-    private let userInfo: UserInfo
-    private let apiServices: [APIService]
-    private let swipeActionCache: SwipeActionCacheProtocol
+    private let dependencies: Dependencies
 
     enum Destination: String {
         case actionSelection
@@ -38,20 +38,14 @@ class SettingsGesturesCoordinator {
 
     init(
         navigationController: UINavigationController?,
-        userInfo: UserInfo,
-        apiServices: [APIService],
-        swipeActionCache: SwipeActionCacheProtocol
+        dependencies: Dependencies
     ) {
         self.navigationController = navigationController
-        self.userInfo = userInfo
-        self.apiServices = apiServices
-        self.swipeActionCache = swipeActionCache
+        self.dependencies = dependencies
     }
 
     func start() {
-        let viewModel = SettingsGestureViewModelImpl(cache: swipeActionCache,
-                                                     swipeActionInfo: userInfo)
-        let viewController = SettingsGesturesViewController(viewModel: viewModel, coordinator: self)
+        let viewController = dependencies.settingsViewsFactory.makeGesturesView(coordinator: self)
 
         self.viewController = viewController
 
@@ -66,20 +60,9 @@ class SettingsGesturesCoordinator {
                 return
             }
 
-            let dependencies = SettingsSwipeActionSelectViewModelImpl.Dependencies(
-                saveSwipeActionSetting: SaveSwipeActionSetting(
-                    dependencies: SaveSwipeActionSetting.Dependencies(
-                        swipeActionCache: swipeActionCache,
-                        usersApiServices: apiServices
-                    )
-                )
+            let viewController = dependencies.settingsViewsFactory.makeSwipeActionSelectView(
+                selectedAction: selectedAction
             )
-            let viewModel = SettingsSwipeActionSelectViewModelImpl(
-                cache: swipeActionCache,
-                selectedAction: selectedAction,
-                dependencies: dependencies
-            )
-            let viewController = SettingsSwipeActionSelectController(viewModel: viewModel)
             self.viewController?.navigationController?.pushViewController(viewController, animated: true)
         }
     }

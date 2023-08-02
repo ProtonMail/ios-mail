@@ -16,6 +16,30 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
+import UIKit
 
 extension GlobalContainer {
+    var biometricStatusProviderFactory: Factory<BiometricStatusProvider> {
+        self {
+            UIDevice.current
+        }
+    }
+
+    var cleanCacheFactory: Factory<CleanCache> {
+        self {
+            CleanCache(dependencies: .init(usersManager: self.usersManager))
+        }
+    }
+
+    var saveSwipeActionSettingFactory: Factory<SaveSwipeActionSettingForUsersUseCase> {
+        self {
+            SaveSwipeActionSetting(dependencies: self)
+        }
+    }
+
+    var swipeActionCacheFactory: Factory<SwipeActionCacheProtocol> {
+        self {
+            self.userCachedStatus
+        }
+    }
 }

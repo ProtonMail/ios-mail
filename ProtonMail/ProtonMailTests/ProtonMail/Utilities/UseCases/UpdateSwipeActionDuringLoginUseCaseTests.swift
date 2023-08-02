@@ -25,7 +25,9 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
     override func setUp() {
         super.setUp()
         stubSwipeActionCache = SwipeActionCacheStub()
-        sut = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: stubSwipeActionCache))
+        let globalContainer = GlobalContainer()
+        globalContainer.swipeActionCacheFactory.register { self.stubSwipeActionCache }
+        sut = UpdateSwipeActionDuringLogin(dependencies: globalContainer)
     }
 
     override func tearDown() {

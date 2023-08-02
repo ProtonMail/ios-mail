@@ -30,7 +30,17 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         firstUserAPI = APIServiceMock()
         secondUserAPI = APIServiceMock()
         swipeActionCacheStub = SwipeActionCacheStub()
-        sut = SaveSwipeActionSetting(dependencies: .init(swipeActionCache: swipeActionCacheStub, usersApiServices: [firstUserAPI, secondUserAPI]))
+
+        let globalContainer = GlobalContainer()
+
+        for apiService: APIServiceMock in [firstUserAPI, secondUserAPI] {
+            let user = UserManager(api: apiService, role: .none)
+            globalContainer.usersManager.add(newUser: user)
+        }
+
+        globalContainer.swipeActionCacheFactory.register { self.swipeActionCacheStub }
+
+        sut = SaveSwipeActionSetting(dependencies: globalContainer)
     }
 
     override func tearDown() {

@@ -26,10 +26,13 @@ extension UserContainer {
 
     var blockedSendersPublisherFactory: Factory<BlockedSendersPublisher> {
         self {
-            BlockedSendersPublisher(
-                contextProvider: sharedServices.get(by: CoreDataService.self),
-                userID: self.user.userID
-            )
+            BlockedSendersPublisher(contextProvider: self.contextProvider, userID: self.user.userID)
+        }
+    }
+
+    var settingsViewsFactoryFactory: Factory<SettingsViewsFactory> {
+        self {
+            SettingsViewsFactory(dependencies: self)
         }
     }
 
@@ -38,7 +41,7 @@ extension UserContainer {
             UnblockSender(
                 dependencies: .init(
                     incomingDefaultService: self.user.incomingDefaultService,
-                    queueManager: self.globalContainer.queueManagerFactory(),
+                    queueManager: self.queueManager,
                     userInfo: self.user.userInfo
                 )
             )

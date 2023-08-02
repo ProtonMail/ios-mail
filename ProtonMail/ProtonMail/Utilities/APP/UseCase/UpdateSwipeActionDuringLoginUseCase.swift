@@ -26,7 +26,7 @@ typealias UpdateSwipeActionDuringLoginUseCase = UseCase<Void, UpdateSwipeActionD
 /// as the current active account. If the account is the first account logs into the app, it will update
 /// the cache to stores the actions from the user's setting.
 final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
-    private var dependencies: Dependencies
+    typealias Dependencies = HasSwipeActionCacheProtocol & HasSaveSwipeActionSettingForUsersUseCase
 
     private struct SwipeInfoHelper {
         let activeUserRightSwipeAction: SwipeActionSettingType?
@@ -34,6 +34,8 @@ final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
         let newUserRightSwipeAction: SwipeActionSettingType?
         let newUserLeftSwipeAction: SwipeActionSettingType?
     }
+
+    private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
@@ -61,15 +63,9 @@ final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
             dependencies.swipeActionCache.rightToLeftSwipeActionType = info.newUserLeftSwipeAction
             callback(.success)
         } else {
-            let useCaseDependencies = SaveSwipeActionSetting.Dependencies(
-                swipeActionCache: dependencies.swipeActionCache,
-                usersApiServices: [params.newUserApiService]
-            )
-            let saveSwipeAction = SaveSwipeActionSetting(dependencies: useCaseDependencies)
-
-            saveRightSwipeAction(info: info, saveSwipeAction: saveSwipeAction) { [weak self] in
+            saveRightSwipeAction(info: info) { [weak self] in
                 params.newUserInfo.swipeRight = params.activeUserInfo.swipeRight
-                self?.saveLeftSwipeAction(info: info, saveSwipeAction: saveSwipeAction) {
+                self?.saveLeftSwipeAction(info: info) {
                     params.newUserInfo.swipeLeft = params.activeUserInfo.swipeLeft
                     callback(.success)
                 }
@@ -79,12 +75,11 @@ final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
 
     private func saveRightSwipeAction(
         info: SwipeInfoHelper,
-        saveSwipeAction: SaveSwipeActionSetting,
         completion: @escaping () -> Void
     ) {
         if let currentRightSwipeAction = dependencies.swipeActionCache.leftToRightSwipeActionType,
            currentRightSwipeAction != info.newUserRightSwipeAction {
-            saveSwipeAction.execute(params: .init(preference: .right(currentRightSwipeAction))) { _ in
+            dependencies.saveSwipeActionSetting.execute(params: .init(preference: .right(currentRightSwipeAction))) { _ in
                 completion()
             }
         } else {
@@ -94,12 +89,11 @@ final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
 
     private func saveLeftSwipeAction(
         info: SwipeInfoHelper,
-        saveSwipeAction: SaveSwipeActionSetting,
         completion: @escaping () -> Void
     ) {
         if let currentLeftSwipeAction = dependencies.swipeActionCache.rightToLeftSwipeActionType,
            currentLeftSwipeAction != info.newUserLeftSwipeAction {
-            saveSwipeAction.execute(params: .init(preference: .left(currentLeftSwipeAction))) { _ in
+            dependencies.saveSwipeActionSetting.execute(params: .init(preference: .left(currentLeftSwipeAction))) { _ in
                 completion()
             }
         } else {
@@ -113,9 +107,5 @@ extension UpdateSwipeActionDuringLogin {
         let activeUserInfo: UserInfo
         let newUserInfo: UserInfo
         let newUserApiService: APIService
-    }
-
-    struct Dependencies {
-        var swipeActionCache: SwipeActionCacheProtocol
     }
 }
