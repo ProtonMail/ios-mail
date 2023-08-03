@@ -51,7 +51,10 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
                 .trimmingCharacters(in: trimThese)
                 .components(separatedBy: .whitespaces)
                 .last else { return }
-            results[key] = Array(pieces[1...]).joined(separator: "=").trimmingCharacters(in: trimThese)
+            results[key] = Array(pieces[1...])
+                .joined(separator: "=")
+                .trimmingCharacters(in: trimThese)
+                .removingBinaryEncoding
         })
     }
 
@@ -75,5 +78,87 @@ extension Array where Element == Header {
 
     subscript(_ kind: Header.Kind) -> Header? {
         self.first(where: { $0.kind == kind })
+    }
+}
+
+private extension String {
+    static let binaryEncodingRegex: NSRegularExpression = {
+        let pattern = #"""
+=\?
+(?<charset>[^?]*)
+\?
+(?<encoding>[BQ])
+\?
+(?<encodedText>[^?]*)
+\?=
+"""#
+        do {
+            return try NSRegularExpression(
+                pattern: pattern,
+                options: [.allowCommentsAndWhitespace, .caseInsensitive]
+            )
+        } catch {
+            fatalError("\(error)")
+        }
+    }()
+
+    var removingBinaryEncoding: Self {
+        var output = self
+        var startingIndex = output.startIndex
+
+        while true {
+            let nsRange =  NSRange(startingIndex..<output.endIndex, in: output)
+            
+            guard
+                let match = Self.binaryEncodingRegex.firstMatch(in: output, range: nsRange),
+                let rangeToReplace = Range(match.range, in: output)
+            else {
+                break
+            }
+
+            let charset = output[match.range(withName: "charset")]
+            let encoding = output[match.range(withName: "encoding")]
+            let encodedText = output[match.range(withName: "encodedText")]
+
+            let decodedText: String?
+
+            switch encoding.uppercased() {
+            case "B":
+                let stringEncoding = String.Encoding(ianaCharSetName: charset) ?? .utf8
+                if let data = Data(base64Encoded: encodedText) {
+                    decodedText = String(data: data, encoding: stringEncoding)
+                } else {
+                    decodedText = nil
+                }
+            case "Q":
+                decodedText = encodedText.replacingOccurrences(of: "=", with: "%").removingPercentEncoding
+            default:
+                decodedText = nil
+            }
+
+            if let decodedText {
+                output.replaceSubrange(rangeToReplace, with: decodedText)
+            } else if !ProcessInfo.isRunningUnitTests {
+                PMAssertionFailure("Decoding error - charset:\(charset), encoding:\(encoding)")
+            }
+
+            // this is to avoid infinite loops
+            startingIndex = output.index(after: rangeToReplace.lowerBound)
+        }
+
+        return output
+    }
+}
+
+private extension String.Encoding {
+    init?(ianaCharSetName: String) {
+        let cfStringEncoding = CFStringConvertIANACharSetNameToEncoding(ianaCharSetName as CFString)
+
+        guard cfStringEncoding != kCFStringEncodingInvalidId else {
+            return nil
+        }
+
+        let nsStringEncoding = CFStringConvertEncodingToNSStringEncoding(cfStringEncoding)
+        self.init(rawValue: nsStringEncoding)
     }
 }
