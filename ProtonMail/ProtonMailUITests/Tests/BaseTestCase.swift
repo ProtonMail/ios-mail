@@ -30,7 +30,7 @@ var dynamicDomain: String {
 /**
  Parent class for all the test classes.
  */
-class BaseTestCase: CoreTestCase, QuarkTestable {
+class BaseTestCase: CoreTestCase {
     
     var launchArguments = ["-clear_all_preference", "YES"]
     var humanVerificationStubs = false
@@ -41,6 +41,8 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
 
     var env: Environment = .black
     lazy var quarkCommands = QuarkCommands(doh: env.doh)
+    var quarkCommandTwo = Quark()
+
 
     func terminateApp() {
         app.terminate()
@@ -85,6 +87,8 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
 
         env = Environment.custom(dynamicDomain)
         quarkCommands = QuarkCommands(doh: env.doh)
+        quarkCommandTwo = Quark()
+            .baseUrl("https://\(dynamicDomain)/api/internal/quark")
 
         handleInterruption()
         disableJail()
@@ -170,17 +174,11 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
 
     private func disableJail() {
         if !wasJailDisabled {
-            let expectQuarkCommandToFinish = expectation(description: "Quark command should finish")
-            var quarkCommandResult: Result<UnbanDetails, UnbanError>?
-            
-            QuarkCommands.disableJail(currentlyUsedHostUrl: env.doh.getCurrentlyUsedHostUrl()) { result in
-                quarkCommandResult = result
-                expectQuarkCommandToFinish.fulfill()
+            do {
+                try quarkCommandTwo.jailUnban()
             }
-            wait(for: [expectQuarkCommandToFinish], timeout: 30.0)
-            if case .failure(let error) = quarkCommandResult {
-                XCTFail("Cannot unban \(#function) because of \(error.localizedDescription)")
-                return
+            catch {
+                XCTFail(error.localizedDescription)
             }
             wasJailDisabled = true
         }
@@ -192,7 +190,7 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
     var scenario: MailScenario = .qaMail001
     var plan: UserPlan { .mailpro2022 }
     var isSubscriptionIncluded: Bool { true }
-    var user: User?
+    var user: User = User()
 
     override func setUp() {
         super.setUp()
@@ -204,42 +202,63 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
         testBlock()
     }
 
-    private func createUserAndLogin() {
+    func createUser(scenarioName: String, plan: UserPlan, isEnableEarlyAccess: Bool) -> User {
+        var user: User = User()
+
         do {
             if scenario.name.starts(with: "qa-mail-web")  {
-                user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+                let response = try quarkCommandTwo.createUserWithFixturesLoad(name: scenarioName)
+
+                if let name = response?.name, let password = response?.password, let decryptedUserId = response?.decryptedUserId {
+                    user.name = name
+                    user.password = password
+                    user.id = Int(decryptedUserId)
+                } else {
+                    XCTFail("Wrong response \(String(describing: response))")
+                }
+
+                try quarkCommandTwo.enableSubscription(id: user.id!, plan: plan.rawValue)
+                try quarkCommandTwo.enableEarlyAccess(username: user.name)
+
             } else {
-                user = try createUserWithiOSFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+                quarkCommandTwo = Quark()
+                    .baseUrl("https://\(dynamicDomain)/internal-api/quark")
+
+                let fixtureUsers = try quarkCommandTwo.createUserWithiOSFixturesLoad(name: scenarioName)
+
+                if let users = fixtureUsers?.users {
+                    for fixtureUser in users {
+
+                        // TODO: update for user list
+                        user.name = fixtureUser.name
+                        user.password = fixtureUser.password
+                        user.id = fixtureUser.id.raw
+
+                        try quarkCommandTwo.enableSubscription(id: Int(fixtureUser.id.raw), plan: plan.rawValue)
+                        try quarkCommandTwo.enableEarlyAccess(username: fixtureUser.name)
+                    }
+                }
             }
         }
         catch {
             XCTFail(error.localizedDescription)
         }
 
-        login(user: user!)
+        return user
+    }
+
+    private func createUserAndLogin() {
+        user = createUser(scenarioName: scenario.name, plan: plan, isEnableEarlyAccess: true)
+        login(user: user)
     }
 
     override func tearDown() {
         do {
-            try deleteUser(domain: dynamicDomain, user)
+            try quarkCommandTwo.deleteUser(id: user.id!)
         }
         catch {
             XCTFail(error.localizedDescription)
         }
         super.tearDown()
-    }
-
-    open override func record(_ issue: XCTIssue) {
-        var myIssue = issue
-        var issueDescription: String = "\n"
-        issueDescription.append("User:")
-        issueDescription.append("\n")
-        issueDescription.append(user.debugDescription)
-        issueDescription.append("\n\n")
-        issueDescription.append("Failure:")
-        issueDescription.append("\n\(myIssue.compactDescription)")
-
-        myIssue.compactDescription = issueDescription
-        super.record(myIssue)
     }
 }

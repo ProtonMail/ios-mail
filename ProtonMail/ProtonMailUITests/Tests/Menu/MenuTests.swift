@@ -21,7 +21,7 @@ class MenuTests: FixtureAuthenticatedTestCase {
             InboxRobot()
                 .menuDrawer()
                 .settings()
-                .selectAccount(user!.email)
+                .selectAccount(user.email)
                 .displayName()
                 .setDisplayNameTextTo(newDisplayName)
                 .save()
@@ -43,7 +43,7 @@ class MenuTests: FixtureAuthenticatedTestCase {
             let menuAccountListRobot = InboxRobot()
                 .menuDrawer()
                 .settings()
-                .selectAccount(user!.email)
+                .selectAccount(user.email)
                 .displayName()
                 .setDisplayNameTextTo(newDisplayName)
                 .save()
@@ -58,15 +58,15 @@ class MenuTests: FixtureAuthenticatedTestCase {
             menuAccountListRobot
                 .dismiss()
                 .settings()
-                .selectAccount(user!.email)
+                .selectAccount(user.email)
                 .displayName()
-                .setDisplayNameTextTo(user!.name)
+                .setDisplayNameTextTo(user.name)
                 .save()
                 .navigateBackToSettings()
                 .close()
                 .menuDrawer()
                 .accountsList()
-                .verify.accountShortNameIsCorrect(user!.name)
+                .verify.accountShortNameIsCorrect(user.name)
         }
     }
 }

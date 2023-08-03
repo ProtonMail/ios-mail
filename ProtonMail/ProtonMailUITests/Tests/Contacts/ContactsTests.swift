@@ -16,10 +16,10 @@ class ContactsTests : FixtureAuthenticatedTestCase {
                 .menuDrawer()
                 .contacts()
                 .addContact()
-                .setNameEmailAndSave(user!.name, user!.email)
+                .setNameEmailAndSave(user.name, user.email)
                 .contactsView()
-                .deleteContact(user!.name)
-                .verify.contactDoesNotExists(user!.name)
+                .deleteContact(user.name)
+                .verify.contactDoesNotExists(user.name)
         }
     }
 

@@ -23,7 +23,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .sendMessage(user!.pmMeEmail, subject)
+                .sendMessage(user.pmMeEmail, subject)
                 .menuDrawer()
                 .sent()
                 .verify.messageWithSubjectExists(subject)
@@ -34,7 +34,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.pgpinlineDrafts) {
             InboxRobot()
                 .compose()
-                .sendMessage(user!.pmMeEmail, subject)
+                .sendMessage(user.pmMeEmail, subject)
                 .menuDrawer()
                 .sent()
                 .verify.messageWithSubjectExists(subject)
@@ -58,7 +58,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.pgpmime) {
             InboxRobot()
                 .compose()
-                .sendMessage(user!.pmMeEmail, subject)
+                .sendMessage(user.pmMeEmail, subject)
                 .menuDrawer()
                 .sent()
                 .verify.messageWithSubjectExists(subject)
@@ -86,7 +86,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .sendMessageWithPassword(user!.email, subject, body, password, hint)
+                .sendMessageWithPassword(user.email, subject, body, password, hint)
                 .menuDrawer()
                 .sent()
                 .refreshMailbox()
@@ -98,7 +98,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .sendMessageExpiryTimeInDays(user!.email, subject, body, expirePeriod: .oneDay)
+                .sendMessageExpiryTimeInDays(user.email, subject, body, expirePeriod: .oneDay)
                 .menuDrawer()
                 .sent()
                 .refreshMailbox()
@@ -112,7 +112,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .sendMessageEOAndExpiryTime(user!.email, subject, password, hint, expirePeriod: .oneDay)
+                .sendMessageEOAndExpiryTime(user.email, subject, password, hint, expirePeriod: .oneDay)
                 .menuDrawer()
                 .sent()
                 .refreshMailbox()
@@ -139,7 +139,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .sendMessageWithAttachments(user!.email, subject, attachmentsAmount: 2)
+                .sendMessageWithAttachments(user.email, subject, attachmentsAmount: 2)
                 .menuDrawer()
                 .sent()
                 .refreshMailbox()
@@ -183,7 +183,7 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.qaMail001) {
             InboxRobot()
                 .compose()
-                .sendMessageEOAndExpiryTimeWithAttachment(user!.email, subject, password, hint, expirePeriod: .oneDay)
+                .sendMessageEOAndExpiryTimeWithAttachment(user.email, subject, password, hint, expirePeriod: .oneDay)
                 .menuDrawer()
                 .sent()
                 .refreshMailbox()
@@ -196,8 +196,8 @@ class SendNewMessageTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.pgpinline) {
             InboxRobot()
                 .compose()
-                .changeFromAddressTo(user!.pmMeEmail)
-                .sendMessage(user!.email, subject)
+                .changeFromAddressTo(user.pmMeEmail)
+                .sendMessage(user.email, subject)
                 .menuDrawer()
                 .sent()
                 .verify.messageExists(subject)

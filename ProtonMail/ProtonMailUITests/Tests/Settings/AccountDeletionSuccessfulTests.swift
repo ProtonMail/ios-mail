@@ -27,7 +27,7 @@ class AccountDeletionSuccessfulTests: FixtureAuthenticatedTestCase {
             InboxRobot()
                 .menuDrawer()
                 .settings()
-                .selectAccount(user!.email)
+                .selectAccount(user.email)
 
             accountDeletionRobot
                 .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
@@ -38,7 +38,7 @@ class AccountDeletionSuccessfulTests: FixtureAuthenticatedTestCase {
                 .fillInDeletionEmail()
                 .confirmBeingAwareAccountDeletionIsPermanent()
                 .tapDeleteAccountButton(to: AccountDeletionWebViewRobot.self)
-                .fillInDeletionPassword(user!.password)
+                .fillInDeletionPassword(user.password)
                 .tapAuthenticateButton(to: LoginRobot.self)
                 .verify.loginScreenIsShown()
         }
@@ -56,10 +56,10 @@ class AccountDeletionSuccessfulTests: FixtureAuthenticatedTestCase {
                 .connectOnePassAccount(freeUser)
                 .menuDrawer()
                 .accountsList()
-                .switchToAccount(user!)
+                .switchToAccount(user)
                 .menuDrawer()
                 .settings()
-                .selectAccount(user!.email)
+                .selectAccount(user.email)
 
             accountDeletionRobot
                 .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
@@ -70,7 +70,7 @@ class AccountDeletionSuccessfulTests: FixtureAuthenticatedTestCase {
                 .fillInDeletionEmail()
                 .confirmBeingAwareAccountDeletionIsPermanent()
                 .tapDeleteAccountButton(to: AccountDeletionWebViewRobot.self)
-                .fillInDeletionPassword(user!.password)
+                .fillInDeletionPassword(user.password)
                 .tapAuthenticateButton(to: InboxRobot.self)
                 .verify.inboxShown()
                 .menuDrawer()

@@ -54,6 +54,9 @@ struct User: Decodable {
     var twoFARecoveryCodes: [String]?
     var numberOfImportedMails: Int?
     var quarkURL: URL?
+    var isExternal: Bool = false
+    var passphrase: String = ""
+    var recoveryEmail: String = ""
 
     enum CodingKeys: String, CodingKey {
         case name = "UserName"

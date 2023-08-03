@@ -20,7 +20,7 @@ class ForwardMessageTests: FixtureAuthenticatedTestCase {
             InboxRobot()
                 .clickMessageBySubject(scenario.subject)
                 .forward()
-                .recipients(user!.email)
+                .recipients(user.email)
                 .sendMessageFromMessageRobot()
                 .navigateBackToInbox()
                 .menuDrawer()

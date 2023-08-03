@@ -17,17 +17,22 @@
 
 import Foundation
 
-struct QuarkUserResponse: Codable {
-    let users: [QuarkUser]
-}
+private let coreSettingsUpdate: String = "raw::core:user:settings:update"
 
-struct QuarkUser: Codable {
-    let ID: Id
-    let name: String
-    let password: String
-}
+extension Quark {
 
-struct Id: Codable {
-    let encrypted: String
-    let raw: Int
+    @discardableResult
+    func enableEarlyAccess(username: String) throws -> (data: Data, response: URLResponse) {
+
+        let args = [
+            "--user=\(username)",
+            "--early-access=1"
+        ]
+
+        let request = try route(coreSettingsUpdate)
+            .args(args)
+            .build()
+
+        return try executeQuarkRequest(request)
+    }
 }

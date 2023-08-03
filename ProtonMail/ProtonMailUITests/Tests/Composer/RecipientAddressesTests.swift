@@ -14,14 +14,14 @@ class RecipientAddressesTests: FixtureAuthenticatedTestCase {
         runTestWithScenario(.pgpmime) {
             InboxRobot()
                 .compose()
-                .recipients(user!.email)
+                .recipients(user.email)
                 .verify.invalidAddressToastIsNotShown()
         }
     }
     
     func testNonExistingRecepient() {
         runTestWithScenario(.pgpmime) {
-            let recipient = "not_\(user!.email)"
+            let recipient = "not_\(user.email)"
 
             InboxRobot()
                 .compose()
