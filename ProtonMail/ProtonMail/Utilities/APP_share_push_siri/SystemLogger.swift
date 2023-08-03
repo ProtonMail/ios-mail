@@ -21,6 +21,7 @@ import ProtonCore_Log
 final class SystemLogger {
     private static let shared = SystemLogger()
     private(set) static var isLoggingEnabled: Bool = true
+    private let serialQueue = DispatchQueue(label: "ch.protonmail.protonmail.SystemLogger")
 
     private var loggers = [String: Any]()
     private var bundleId: String {
@@ -56,10 +57,14 @@ final class SystemLogger {
     @available(iOS 15, *)
     private func osLog(for category: Category?) -> Logger {
         let category = "[Proton] \(category?.rawValue ?? "")"
-        if !loggers.keys.contains(category) {
-            loggers[category] = Logger(subsystem: bundleId, category: category)
+        var logger: Logger?
+        serialQueue.sync {
+            if !loggers.keys.contains(category) {
+                loggers[category] = Logger(subsystem: bundleId, category: category)
+            }
+            logger = loggers[category] as? Logger
         }
-        return loggers[category] as? Logger ?? Logger()
+        return logger ?? Logger()
     }
 
     // MARK: Public methods
