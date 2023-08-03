@@ -65,7 +65,6 @@ class SettingsGesturesCoordinator {
             guard let selectedAction = viewController?.selectedAction else {
                 return
             }
-            let viewController = SettingsSwipeActionSelectController()
 
             let dependencies = SettingsSwipeActionSelectViewModelImpl.Dependencies(
                 saveSwipeActionSetting: SaveSwipeActionSetting(
@@ -80,7 +79,7 @@ class SettingsGesturesCoordinator {
                 selectedAction: selectedAction,
                 dependencies: dependencies
             )
-            viewController.setModel(vm: viewModel)
+            let viewController = SettingsSwipeActionSelectController(viewModel: viewModel)
             self.viewController?.navigationController?.pushViewController(viewController, animated: true)
         }
     }
