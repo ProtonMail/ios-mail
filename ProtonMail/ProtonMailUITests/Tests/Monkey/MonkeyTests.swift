@@ -22,20 +22,37 @@ import ProtonCore_Environment
 import ProtonCore_QuarkCommands
 import ProtonCore_TestingToolkit
 
-class MonkeyTests : BaseMonkey, QuarkTestable  {
 
-    private lazy var quarkCommands = QuarkCommands(doh: env.doh)
-    private var env: Environment = .black
-    private var user: User?
+@available(iOS 15.0, *)
+class MonkeyTests : BaseMonkey  {
+
+    private var user: User = User()
     private var scenario: MailScenario { .qaMail006 }
     private var isSubscriptionIncluded: Bool { true }
     private let apiDomainKey = "MAIL_APP_API_DOMAIN"
+    private var quarkCommandTwo: Quark = Quark()
+    private var plan: UserPlan = .mail2022
 
     override func setUp() {
         super.setUp()
         setupTest()
         do {
-            user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
+
+            quarkCommandTwo = Quark()
+                .baseUrl("https://\(dynamicDomain)/api/internal/quark")
+
+            let response = try quarkCommandTwo.createUserWithFixturesLoad(name: scenario.name)
+
+            if let name = response?.name, let password = response?.password, let decryptedUserId = response?.decryptedUserId {
+                user.name = name
+                user.password = password
+                user.id = Int(decryptedUserId)
+            } else {
+                XCTFail("Wrong response \(String(describing: response))")
+            }
+
+            try quarkCommandTwo.enableSubscription(id: Int(user.id!), plan: plan.rawValue)
+            try quarkCommandTwo.enableEarlyAccess(username: user.name)
         }
         catch {
             XCTFail(error.localizedDescription)
@@ -44,7 +61,7 @@ class MonkeyTests : BaseMonkey, QuarkTestable  {
 
     override func tearDown() {
         do {
-            try deleteUser(domain: dynamicDomain, user)
+            try quarkCommandTwo.deleteUser(id: user.id!)
         }
         catch {
             XCTFail(error.localizedDescription)
@@ -58,9 +75,6 @@ class MonkeyTests : BaseMonkey, QuarkTestable  {
 
     func setupTest() {
         app.launch()
-
-        env = Environment.custom(dynamicDomain)
-        quarkCommands = QuarkCommands(doh: env.doh)
     }
 
     override var app: XCUIApplication { get {
@@ -87,7 +101,7 @@ class MonkeyTests : BaseMonkey, QuarkTestable  {
     func testMonkey() {
 
         LoginRobot()
-            .loginUser(user!)
+            .loginUser(user)
 
         randomTouches()
     }

@@ -49,7 +49,7 @@ final class NoUnauthSessionTests: FixtureAuthenticatedTestCase {
     // TODO: approach test author to understand why it is failing
     func xtestRefreshingAndOpeningMailWorks() {
         runTestWithScenario(.qaMail001) {
-            CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user!, environment: env)
+            CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user, environment: env)
         }
     }
 }
@@ -63,7 +63,7 @@ final class UnauthSessionTests: FixtureAuthenticatedTestCase {
     
     func testRefreshingAndOpeningMailWorks() {
         runTestWithScenario(.qaMail001) {
-            CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user!, environment: env)
+            CommonUnauthSessionTests.testBasicOperationsOnAccountAndMailWork(user, environment: env)
         }
     }
 }

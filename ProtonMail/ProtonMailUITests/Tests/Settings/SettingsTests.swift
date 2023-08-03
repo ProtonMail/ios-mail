@@ -48,7 +48,7 @@ class SettingsTests : FixtureAuthenticatedTestCase {
 
     @MainActor
     func testEnableAndDisablePinForMultipleAccounts() throws {
-        let secondAccount = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
+        let secondAccount = createUser(scenarioName: scenario.name, plan: UserPlan.mailpro2022, isEnableEarlyAccess: false)
 
         MenuRobot()
             .accountsList()
@@ -71,7 +71,7 @@ class SettingsTests : FixtureAuthenticatedTestCase {
         
             .menuDrawer()
             .accountsList()
-            .switchToAccount(user!)
+            .switchToAccount(user)
             .menuDrawer()
             .settings()
             .pin()
@@ -105,7 +105,7 @@ class SettingsTests : FixtureAuthenticatedTestCase {
     func testBlockList() {
         MenuRobot()
             .settings()
-            .selectAccount(user!.email)
+            .selectAccount(user.email)
             .blockList()
             .pullDownToRefresh()
             .verify

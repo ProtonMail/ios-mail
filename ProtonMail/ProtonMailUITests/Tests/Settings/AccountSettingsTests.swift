@@ -19,14 +19,14 @@ class AccountSettingsTests: FixtureAuthenticatedTestCase {
             InboxRobot()
                 .menuDrawer()
                 .settings()
-                .selectAccount(user!.email)
+                .selectAccount(user.email)
         }
     }
 
     func xtestChangeSignlePassword() {
         accountSettingsRobot
             .singlePassword()
-            .changePassword(user: user!)
+            .changePassword(user: user)
             .verify.settingsOpened()
     }
 
@@ -34,18 +34,18 @@ class AccountSettingsTests: FixtureAuthenticatedTestCase {
         accountSettingsRobot
             .recoveryEmail()
             .changeRecoveryEmail(testData.twoPassUser)
-            .verify.recoveryEmailChangedTo(user!.email)
+            .verify.recoveryEmailChangedTo(user.email)
     }
 
     // TODO: This test case requires account with many aliases in order to navigate to Default email address selection.
     func xtestNavigateToDefaultEmailAddress() {
         accountSettingsRobot
             .defaultEmailAddress()
-            .verify.changeDefaultAddressViewShown(user!.email)
+            .verify.changeDefaultAddressViewShown(user.email)
     }
 
     func testChangeDisplayName() {
-        let newDisplayName = "\(user!.name)-\(StringUtils().randomAlphanumericString())"
+        let newDisplayName = "\(user.name)-\(StringUtils().randomAlphanumericString())"
         accountSettingsRobot
             .displayName()
             .setDisplayNameTextTo(newDisplayName)
@@ -54,9 +54,9 @@ class AccountSettingsTests: FixtureAuthenticatedTestCase {
 
         accountSettingsRobot
             .displayName()
-            .setDisplayNameTextTo(user!.name)
+            .setDisplayNameTextTo(user.name)
             .save()
-            .verify.displayNameShownWithText(user!.name)
+            .verify.displayNameShownWithText(user.name)
     }
 
     func testSwitchSignatureToggleOn() {
