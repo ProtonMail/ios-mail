@@ -39,6 +39,8 @@ protocol SearchViewUIProtocol: UIViewController {
 }
 
 class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver, ScheduledAlertPresenter, LifetimeTrackable {
+    typealias Dependencies = SingleMessageCoordinator.Dependencies
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
@@ -61,11 +63,13 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private let cellPresenter = NewMailboxMessageCellPresenter()
     var pendingActionAfterDismissal: (() -> Void)?
     private let serviceFactory: ServiceFactory
+    private let dependencies: Dependencies
 
-    init(viewModel: SearchVMProtocol, serviceFactory: ServiceFactory) {
+    init(viewModel: SearchVMProtocol, serviceFactory: ServiceFactory, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.serviceFactory = serviceFactory
         self.customView = .init()
+        self.dependencies = dependencies
 
         super.init(nibName: nil, bundle: nil)
         self.viewModel.uiDelegate = self
@@ -540,6 +544,7 @@ extension SearchViewController {
             message: message,
             user: self.viewModel.user,
             infoBubbleViewStatusProvider: userCachedStatus,
+            dependencies: dependencies,
             highlightedKeywords: query.components(separatedBy: .whitespacesAndNewlines)
         )
         coordinator.goToDraft = { [weak self] msgID, _ in
@@ -576,6 +581,7 @@ extension SearchViewController {
                     infoBubbleViewStatusProvider: userCachedStatus,
                     highlightedKeywords: self.query.components(separatedBy: .whitespacesAndNewlines),
                     contextProvider: sharedServices.get(by: CoreDataService.self),
+                    dependencies: self.dependencies,
                     targetID: messageID,
                     serviceFactory: self.serviceFactory
                 )

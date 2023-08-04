@@ -85,6 +85,16 @@ extension UserContainer: HasBlockedSendersPublisher {
     }
 }
 
+protocol HasContactViewsFactory {
+    var contactViewsFactory: ContactViewsFactory { get }
+}
+
+extension UserContainer: HasContactViewsFactory {
+    var contactViewsFactory: ContactViewsFactory {
+        contactViewsFactoryFactory()
+    }
+}
+
 protocol HasSettingsViewsFactory {
     var settingsViewsFactory: SettingsViewsFactory { get }
 }

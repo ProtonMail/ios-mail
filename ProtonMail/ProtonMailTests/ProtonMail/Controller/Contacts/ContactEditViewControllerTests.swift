@@ -26,9 +26,9 @@ final class ContactEditViewControllerTests: XCTestCase {
     private var sut: ContactEditViewController!
     private var viewModel: ContactEditViewModel!
     private var mockUser: UserManager!
-    private var mockApi: APIServiceMock!
     private var fakeCoreDataService: CoreDataService!
     private var mockContactService: MockContactDataServiceProtocol!
+    private var userContainer: UserContainer!
 
     private let firstName = String.randomString(20)
     private let lastName = String.randomString(20)
@@ -36,8 +36,7 @@ final class ContactEditViewControllerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        mockApi = .init()
-        mockUser = .init(api: mockApi, role: .none)
+        mockUser = .init(api: APIServiceMock(), role: .none)
         fakeCoreDataService = CoreDataService(
             container: MockCoreDataStore.testPersistentContainer
         )
@@ -50,6 +49,20 @@ final class ContactEditViewControllerTests: XCTestCase {
         mockUser.authCredential.mailboxpassword = ContactParserTestData.passphrase.value
         mockContactService = .init()
         mockContactService.queueAddContactStub.bodyIs { _, _, _, _, _ in nil }
+
+        let globalContainer = GlobalContainer()
+        userContainer = UserContainer(userManager: mockUser, globalContainer: globalContainer)
+    }
+
+    override func tearDown() {
+        sut = nil
+        fakeCoreDataService = nil
+        mockContactService = nil
+        mockUser = nil
+        userContainer = nil
+        viewModel = nil
+
+        super.tearDown()
     }
 
     func testCreateNewContact_noDisplayNameIsEntered_alertBannerShouldBeShown() {
@@ -61,7 +74,7 @@ final class ContactEditViewControllerTests: XCTestCase {
                 contactService: mockContactService
             )
         )
-        sut = .init(viewModel: viewModel)
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
         sut.loadViewIfNeeded()
 
         clickDone()
@@ -193,7 +206,7 @@ final class ContactEditViewControllerTests: XCTestCase {
                 contactService: mockContactService
             )
         )
-        sut = .init(viewModel: viewModel)
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
         sut.loadViewIfNeeded()
 
         sut.customView.displayNameField.simulateType(text: "")
@@ -206,7 +219,6 @@ final class ContactEditViewControllerTests: XCTestCase {
     }
 
     func testEditContact_ChangeAllField_vCardDatasAreCorrect() throws {
-        setupNewContactSUT()
         let vCardData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nITEM1.CATEGORIES:\r\nEND:VCARD\r\n"
         let vCardSignedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nFN:DisplayName\r\nItem1.EMAIL;TYPE=:test@pm.me\r\nEND:VCARD\r\n"
         let vCardSignedAndEncryptedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nN:LastName;FirstName\r\nURL:www.proton.me\r\nBDAY;VALUE=text:1990-10-22\r\nGENDER:Gender\r\nTITLE:Title\r\nNICKNAME:NickName\r\nADR;TYPE=:;;Street;City;State;000;Country\r\nORG:Organization\r\nTEL:090000000\r\nORG:Organization2\r\nTITLE:Title2\r\nNICKNAME:NickName2\r\nEND:VCARD\r\n"
@@ -226,7 +238,7 @@ final class ContactEditViewControllerTests: XCTestCase {
                 contactService: mockContactService
             )
         )
-        sut = .init(viewModel: viewModel)
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
         sut.loadViewIfNeeded()
 
         // Enter random data
@@ -393,7 +405,7 @@ extension ContactEditViewControllerTests {
                 contactService: mockContactService
             )
         )
-        sut = .init(viewModel: viewModel)
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
         sut.loadViewIfNeeded()
     }
 

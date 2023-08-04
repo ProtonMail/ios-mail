@@ -38,11 +38,14 @@ protocol ContactGroupsUIProtocol: UIViewController {
  the update will be performed immediately and automatically by core data
  */
 final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSaveHintProtocol, LifetimeTrackable {
+    typealias Dependencies = HasContactViewsFactory
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
     private let viewModel: ContactGroupsViewModel
+    private let dependencies: Dependencies
     private var queryString = ""
     private var paymentsUI: PaymentsUI?
 
@@ -71,8 +74,9 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     @IBOutlet private var searchViewConstraint: NSLayoutConstraint!
     @IBOutlet private var tableView: UITableView!
 
-    init(viewModel: ContactGroupsViewModel) {
+    init(viewModel: ContactGroupsViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
+        self.dependencies = dependencies
         super.init(nibName: "ContactGroupsViewController", bundle: nil)
         trackLifetime()
     }
@@ -362,13 +366,13 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
 
     override func addContactGroupTapped() {
         if viewModel.user.hasPaidMailPlan {
-            let viewModel = ContactGroupEditViewModelImpl(state: .create,
-                                                          user: viewModel.user,
-                                                          groupID: nil,
-                                                          name: nil,
-                                                          color: nil,
-                                                          emailIDs: Set<EmailEntity>())
-            let newView = ContactGroupEditViewController(viewModel: viewModel)
+            let newView = dependencies.contactViewsFactory.makeGroupEditView(
+                state: .create,
+                groupID: nil,
+                name: nil,
+                color: nil,
+                emailIDs: []
+            )
             let nav = UINavigationController(rootViewController: newView)
             present(nav, animated: true, completion: nil)
         } else {
@@ -379,7 +383,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     override func showContactImportView() {
         isOnMainView = true
 
-        let newView = ContactImportViewController(user: viewModel.user)
+        let newView = dependencies.contactViewsFactory.makeImportView()
         setPresentationStyleForSelfController(presentingController: newView, style: .overFullScreen)
         newView.reloadAllContact = { [weak self] in
             self?.tableView.reloadData()
@@ -388,15 +392,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     }
 
     override func addContactTapped() {
-        let viewModel = ContactEditViewModel(
-            contactEntity: nil,
-            dependencies: .init(
-                user: viewModel.user,
-                contextProvider: CoreDataService.shared,
-                contactService: viewModel.user.contactService
-            )
-        )
-        let newView = ContactEditViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeEditView(contact: nil)
         let nav = UINavigationController(rootViewController: newView)
         present(nav, animated: true)
 
@@ -596,10 +592,7 @@ extension ContactGroupsViewController: UITableViewDelegate {
     }
 
     private func presentContactGroupDetailView(label: LabelEntity) {
-        let viewModel = ContactGroupDetailViewModel(user: viewModel.user,
-                                                    contactGroup: label,
-                                                    labelsDataService: viewModel.user.labelService)
-        let newView = ContactGroupDetailViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeGroupDetailView(label: label)
         show(newView, sender: nil)
         isOnMainView = false
     }

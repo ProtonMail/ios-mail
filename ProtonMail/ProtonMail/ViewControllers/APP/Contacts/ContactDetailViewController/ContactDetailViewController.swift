@@ -27,11 +27,14 @@ import ProtonCore_UIFoundations
 import UIKit
 
 final class ContactDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView, LifetimeTrackable {
+    typealias Dependencies = HasContactViewsFactory
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
     private let viewModel: ContactDetailsViewModel
+    private let dependencies: Dependencies
 
     fileprivate let kContactDetailsHeaderView: String = "ContactSectionHeadView"
     fileprivate let kContactDetailsHeaderID: String = "contact_section_head_view"
@@ -58,8 +61,9 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
     private var doneItem: UIBarButtonItem?
     private var loaded = false
 
-    init(viewModel: ContactDetailsViewModel) {
+    init(viewModel: ContactDetailsViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
+        self.dependencies = dependencies
         super.init(nibName: "ContactDetailViewController", bundle: nil)
         self.viewModel.reloadView = { [weak self] in
             self?.configHeader()
@@ -306,15 +310,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
     }
 
     @objc func didTapEditButton(sender: UIBarButtonItem) {
-        let viewModel = ContactEditViewModel(
-            contactEntity: viewModel.contact,
-            dependencies: .init(
-                user: viewModel.user,
-                contextProvider: sharedServices.get(by: CoreDataService.self),
-                contactService: viewModel.user.contactService
-            )
-        )
-        let newView = ContactEditViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeEditView(contact: viewModel.contact)
         newView.delegate = self
         let nav = UINavigationController(rootViewController: newView)
         present(nav, animated: true, completion: nil)

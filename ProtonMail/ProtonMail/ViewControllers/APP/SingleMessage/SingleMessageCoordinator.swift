@@ -25,6 +25,7 @@ import SafariServices
 import UIKit
 
 class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
+    typealias Dependencies = HasContactViewsFactory
 
     weak var viewController: SingleMessageViewController?
 
@@ -39,6 +40,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     var goToDraft: ((MessageID, Date?) -> Void)?
     private let composerFactory: ComposerDependenciesFactory
     private let factory: ServiceFactory
+    private let dependencies: Dependencies
 
     init(
         serviceFactory: ServiceFactory,
@@ -49,6 +51,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         coreDataService: CoreDataService =
         sharedServices.get(by: CoreDataService.self),
+        dependencies: Dependencies,
         highlightedKeywords: [String] = []
     ) {
         self.navigationController = navigationController
@@ -60,6 +63,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.highlightedKeywords = highlightedKeywords
         self.composerFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
         self.factory = serviceFactory
+        self.dependencies = dependencies
     }
 
     func start() {
@@ -148,15 +152,7 @@ extension SingleMessageCoordinator {
     }
 
     private func presentAddContacts(with contact: ContactVO) {
-        let viewModel = ContactEditViewModel(
-            contactVO: contact,
-            dependencies: .init(
-                user: user,
-                contextProvider: coreDataService,
-                contactService: user.contactService
-            )
-        )
-        let newView = ContactEditViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeEditView(contact: contact)
         let nav = UINavigationController(rootViewController: newView)
         self.viewController?.present(nav, animated: true)
     }

@@ -30,6 +30,12 @@ extension UserContainer {
         }
     }
 
+    var contactViewsFactoryFactory: Factory<ContactViewsFactory> {
+        self {
+            ContactViewsFactory(dependencies: self)
+        }
+    }
+
     var settingsViewsFactoryFactory: Factory<SettingsViewsFactory> {
         self {
             SettingsViewsFactory(dependencies: self)

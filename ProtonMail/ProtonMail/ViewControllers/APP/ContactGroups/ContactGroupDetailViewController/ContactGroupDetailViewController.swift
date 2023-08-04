@@ -28,11 +28,14 @@ import ProtonCore_UIFoundations
 import UIKit
 
 final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView, LifetimeTrackable {
+    typealias Dependencies = HasContactViewsFactory
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
     var viewModel: ContactGroupDetailVMProtocol!
+    private let dependencies: Dependencies
 
     @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var groupNameLabel: UILabel!
@@ -46,8 +49,9 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
 
     private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
 
-    init(viewModel: ContactGroupDetailVMProtocol) {
+    init(viewModel: ContactGroupDetailVMProtocol, dependencies: Dependencies) {
         self.viewModel = viewModel
+        self.dependencies = dependencies
         super.init(nibName: "ContactGroupDetailViewController", bundle: nil)
         self.viewModel.reloadView = { [weak self] in
             self?.reload()
@@ -128,13 +132,13 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
             presentPlanUpgrade()
             return
         }
-        let viewModel = ContactGroupEditViewModelImpl(state: .edit,
-                                                      user: viewModel.user,
-                                                      groupID: viewModel.groupID.rawValue,
-                                                      name: viewModel.name,
-                                                      color: viewModel.color,
-                                                      emailIDs: Set(viewModel.emails))
-        let newView = ContactGroupEditViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeGroupEditView(
+            state: .edit,
+            groupID: viewModel.groupID.rawValue,
+            name: viewModel.name,
+            color: viewModel.color,
+            emailIDs: Set(viewModel.emails)
+        )
         newView.delegate = self
         let nav = UINavigationController(rootViewController: newView)
         self.present(nav, animated: true, completion: nil)

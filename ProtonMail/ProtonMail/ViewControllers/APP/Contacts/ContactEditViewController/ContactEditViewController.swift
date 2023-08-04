@@ -28,7 +28,11 @@ protocol ContactEditViewControllerDelegate: AnyObject {
 }
 
 final class ContactEditViewController: UIViewController, AccessibleView {
+    typealias Dependencies = HasContactViewsFactory
+
     weak var delegate: ContactEditViewControllerDelegate?
+
+    private let dependencies: Dependencies
 
     private let viewModel: ContactEditViewModel
     private(set) lazy var customView = NewContactEditView()
@@ -39,8 +43,9 @@ final class ContactEditViewController: UIViewController, AccessibleView {
     private var newIndexPath: IndexPath?
     private var activeTextComponent: UIResponder?
 
-    init(viewModel: ContactEditViewModel) {
+    init(viewModel: ContactEditViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
+        self.dependencies = dependencies
         super.init(nibName: nil, bundle: nil)
         trackLifetime()
     }
@@ -510,13 +515,11 @@ extension ContactEditViewController: ContactEditCellDelegate {
         let groupCountInformation = viewModel.getAllContactGroupCounts()
         let selectedGroupIDs = sender.getCurrentlySelectedContactGroupsID()
 
-        let contactGroupViewModel = ContactGroupMutiSelectViewModelImpl(
-            user: viewModel.dependencies.user,
+        let contactGroupView = dependencies.contactViewsFactory.makeGroupMutiSelectView(
             groupCountInformation: groupCountInformation,
             selectedGroupIDs: selectedGroupIDs,
             refreshHandler: refreshHandler
         )
-        let contactGroupView = ContactGroupsViewController(viewModel: contactGroupViewModel)
         let contactGroupNav = UINavigationController(rootViewController: contactGroupView)
         show(contactGroupNav, sender: nil)
     }
@@ -526,8 +529,7 @@ extension ContactEditViewController: ContactEditCellDelegate {
     }
 
     private func presentContactTypeView(type: ContactEditTypeInterface) {
-        let viewModel = ContactTypeViewModelImpl(t: type)
-        let newView = ContactTypeViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeTypeView(type: type)
         newView.delegate = self
         self.show(newView, sender: nil)
     }

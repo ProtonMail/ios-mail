@@ -251,12 +251,17 @@ final class SingleMessageViewModelTests: XCTestCase {
         messageObject.unRead = false
         let message = message ?? MessageEntity(messageObject)
 
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.contextProviderMock }
+        let userContainer = UserContainer(userManager: fakeUser, globalContainer: globalContainer)
+
         coordinatorMock = SingleMessageCoordinator(serviceFactory: sharedServices,
                                                    navigationController: UINavigationController(),
                                                    labelId: labelID,
                                                    message: message,
                                                    user: fakeUser,
-                                                   infoBubbleViewStatusProvider: toolbarCustomizationInfoBubbleViewStatusProvider)
+                                                   infoBubbleViewStatusProvider: toolbarCustomizationInfoBubbleViewStatusProvider,
+                                                   dependencies: userContainer)
 
         let context = SingleMessageContentViewContext(labelId: labelID, message: message, viewMode: .singleMessage)
 

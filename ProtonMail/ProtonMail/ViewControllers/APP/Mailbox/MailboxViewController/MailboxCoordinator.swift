@@ -39,7 +39,7 @@ protocol MailboxCoordinatorProtocol: AnyObject {
 }
 
 class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserver {
-    typealias Dependencies = HasInternetConnectionStatusProviderProtocol
+    typealias Dependencies = HasInternetConnectionStatusProviderProtocol & SingleMessageCoordinator.Dependencies
 
     let viewModel: MailboxViewModel
     var services: ServiceFactory
@@ -334,7 +334,11 @@ extension MailboxCoordinator {
                 userIntroductionProgressProvider: services.userCachedStatus
             )
         )
-        let viewController = SearchViewController(viewModel: viewModel, serviceFactory: services)
+        let viewController = SearchViewController(
+            viewModel: viewModel,
+            serviceFactory: services,
+            dependencies: dependencies
+        )
         viewModel.uiDelegate = viewController
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalTransitionStyle = .coverVertical
@@ -589,7 +593,8 @@ extension MailboxCoordinator {
             labelId: viewModel.labelID,
             message: message,
             user: viewModel.user,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
+            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
+            dependencies: dependencies
         )
         coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
             self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduleTime)
@@ -608,6 +613,7 @@ extension MailboxCoordinator {
             internetStatusProvider: .shared,
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             contextProvider: contextProvider,
+            dependencies: dependencies,
             targetID: targetID,
             serviceFactory: services
         )
@@ -655,7 +661,7 @@ extension MailboxCoordinator {
         // if a placeholder VC is there, it has been presented with a push animation; avoid doing a 2nd one
         let animated = !(viewControllers.last is MessagePlaceholderVC)
         viewControllers.removeAll { !($0 is MailboxViewController) }
-        let page = PagesViewController(viewModel: pageVM, services: services)
+        let page = PagesViewController(viewModel: pageVM, services: services, dependencies: dependencies)
         viewControllers.append(page)
         navigationController.setViewControllers(viewControllers, animated: animated)
     }

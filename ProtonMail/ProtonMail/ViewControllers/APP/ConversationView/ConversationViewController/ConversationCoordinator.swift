@@ -9,6 +9,7 @@ protocol ConversationCoordinatorProtocol: AnyObject {
 }
 
 class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordinatorProtocol {
+    typealias Dependencies = HasContactViewsFactory
 
     weak var viewController: ConversationViewController?
 
@@ -22,6 +23,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let highlightedKeywords: [String]
     private let contextProvider: CoreDataContextProviderProtocol
     private let composerFactory: ComposerDependenciesFactory
+    private let dependencies: Dependencies
     var pendingActionAfterDismissal: (() -> Void)?
     var goToDraft: ((MessageID, Date?) -> Void)?
 
@@ -34,6 +36,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         highlightedKeywords: [String] = [],
         contextProvider: CoreDataContextProviderProtocol,
+        dependencies: Dependencies,
         targetID: MessageID? = nil,
         serviceFactory: ServiceFactory
     ) {
@@ -47,6 +50,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.highlightedKeywords = highlightedKeywords
         self.contextProvider = contextProvider
         self.composerFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
+        self.dependencies = dependencies
     }
 
     func start() {
@@ -225,15 +229,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentAddContacts(with contact: ContactVO) {
-        let viewModel = ContactEditViewModel(
-            contactVO: contact,
-            dependencies: .init(
-                user: user,
-                contextProvider: sharedServices.get(by: CoreDataService.self),
-                contactService: user.contactService
-            )
-        )
-        let newView = ContactEditViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeEditView(contact: contact)
         let nav = UINavigationController(rootViewController: newView)
         self.viewController?.present(nav, animated: true)
     }

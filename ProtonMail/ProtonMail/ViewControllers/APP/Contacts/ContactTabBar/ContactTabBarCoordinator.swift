@@ -25,7 +25,7 @@ import SideMenuSwift
 import UIKit
 
 final class ContactTabBarCoordinator {
-    typealias Dependencies = HasUserManager & HasCoreDataContextProviderProtocol
+    typealias Dependencies = HasContactViewsFactory
 
     weak var viewController: ContactTabBarViewController?
     weak var sideMenu: SideMenuController?
@@ -51,16 +51,11 @@ final class ContactTabBarCoordinator {
 
     func makeChildViewControllers() -> [UINavigationController] {
         var result: [UINavigationController] = []
-        let contactsViewModel = ContactsViewModelImpl(
-            user: dependencies.user,
-            coreDataService: dependencies.contextProvider
-        )
-        let contactView = ContactsViewController(viewModel: contactsViewModel)
+        let contactView = dependencies.contactViewsFactory.makeContactsView()
         let contactsNav = UINavigationController(rootViewController: contactView)
         result.append(contactsNav)
 
-        let contactGroupViewModel = ContactGroupsViewModelImpl(user: dependencies.user)
-        let contactGroupView = ContactGroupsViewController(viewModel: contactGroupViewModel)
+        let contactGroupView = dependencies.contactViewsFactory.makeGroupsView()
         let contactGroupNav = UINavigationController(rootViewController: contactGroupView)
         result.append(contactGroupNav)
 

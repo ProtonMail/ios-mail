@@ -29,12 +29,15 @@ final class PagesViewController<
    UIPageViewControllerDelegate,
    UIPageViewControllerDataSource,
    LifetimeTrackable {
+    typealias Dependencies = SingleMessageCoordinator.Dependencies
+
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
     private let viewModel: PagesViewModel<IDType, EntityType, FetchResultType>
     private var services: ServiceFactory
+    private let dependencies: Dependencies
     private var titleViewObserver: NSKeyValueObservation?
     private var spotlight: PagesSpotlightView?
     // Message objectID or ContextLabel objectID
@@ -46,9 +49,10 @@ final class PagesViewController<
     /// Shouldn't cause any display issue
     private var pageCache: [String: PageCacheType] = [:]
 
-    init(viewModel: PagesViewModel<IDType, EntityType, FetchResultType>, services: ServiceFactory) {
+    init(viewModel: PagesViewModel<IDType, EntityType, FetchResultType>, services: ServiceFactory, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.services = services
+        self.dependencies = dependencies
         super.init(
             transitionStyle: .scroll,
             navigationOrientation: .horizontal,
@@ -171,7 +175,8 @@ extension PagesViewController {
             labelId: viewModel.labelID,
             message: message,
             user: viewModel.user,
-            infoBubbleViewStatusProvider: viewModel.infoBubbleViewStatusProvider
+            infoBubbleViewStatusProvider: viewModel.infoBubbleViewStatusProvider,
+            dependencies: dependencies
         )
         coordinator.goToDraft = viewModel.goToDraft
         let controller = coordinator.makeSingleMessageVC()
@@ -226,6 +231,7 @@ extension PagesViewController {
             internetStatusProvider: .shared,
             infoBubbleViewStatusProvider: viewModel.infoBubbleViewStatusProvider,
             contextProvider: services.get(by: CoreDataService.self),
+            dependencies: dependencies,
             targetID: targetMessageID,
             serviceFactory: services
         )
