@@ -85,6 +85,7 @@ extension ContextLabelEntity {
         userID: UserID = .init(rawValue: .init()),
         order: Int = .init(),
         objectID: ObjectID = .init(rawValue: .init()),
+        expirationTime: Date? = nil,
         isSoftDeleted: Bool = .init()
     ) -> Self {
         ContextLabelEntity(
@@ -98,6 +99,7 @@ extension ContextLabelEntity {
             userID: userID,
             order: order,
             objectID: objectID,
+            expirationTime: expirationTime,
             isSoftDeleted: isSoftDeleted
         )
     }
@@ -253,7 +255,7 @@ extension MessageEntity {
         spamScore: SpamScore = .pmSpoof,
         rawHeader: String? = nil,
         rawParsedHeaders: String? = nil,
-        rawFlag: Int = .init(),
+        rawFlag: Int64 = .init(),
         time: Date? = nil,
         expirationTime: Date? = nil,
         order: Int = .init(),

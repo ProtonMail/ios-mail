@@ -280,15 +280,17 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         var output: [TagUIModel] = []
 
         if let expirationTime = conversation.expirationTime {
-            let title = expirationTime.countExpirationTime(processInfo: userCachedStatus)
-            let expirationDateTag = TagUIModel(
-                title: title,
-                titleColor: ColorProvider.InteractionStrong,
-                titleWeight: .regular,
-                icon: IconProvider.hourglass,
-                tagColor: ColorProvider.InteractionWeak
-            )
-            output.append(expirationDateTag)
+            if conversation.isExpiring() {
+                let title = expirationTime.countExpirationTime(processInfo: userCachedStatus)
+                let expirationDateTag = TagUIModel(
+                    title: title,
+                    titleColor: ColorProvider.InteractionStrong,
+                    titleWeight: .regular,
+                    icon: IconProvider.hourglass,
+                    tagColor: ColorProvider.InteractionWeak
+                )
+                output.append(expirationDateTag)
+            }
         }
 
         do {

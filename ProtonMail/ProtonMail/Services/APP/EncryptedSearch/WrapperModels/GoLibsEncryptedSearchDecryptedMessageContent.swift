@@ -28,7 +28,7 @@ class GoLibsEncryptedSearchDecryptedMessageContent: EncryptedsearchDecryptedMess
         bccListValue: GoLibsEncryptedSearchRecipientList?,
         addressID: String?,
         conversationID: String?,
-        flags: Int,
+        flags: Int64,
         unread: Bool,
         isStarred: Bool,
         isReplied: Bool,
