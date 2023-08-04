@@ -22,8 +22,8 @@
 
 import UIKit
 
-@objc protocol ContactCollectionViewDelegateFlowLayout: NSObjectProtocol {
-    @objc func collectionView(collectionView: UICollectionView?, willChangeContentSizeTo newSize: CGSize)
+protocol ContactCollectionViewDelegateFlowLayout {
+    func collectionView(collectionView: UICollectionView?, willChangeContentSizeTo newSize: CGSize)
 }
 
 class ContactCollectionViewFlowLayout: UICollectionViewFlowLayout {
@@ -54,6 +54,12 @@ class ContactCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
             leftMargin += layoutAttribute.frame.width + minimumInteritemSpacing
             maxY = max(layoutAttribute.frame.maxY, maxY)
+
+            if layoutAttribute.size.width < 0 || layoutAttribute.size.height < 0 {
+                PMAssertionFailure("layoutAttributesForElements - invalid size: \(layoutAttribute.size)")
+                layoutAttribute.size.width = max(layoutAttribute.size.width, 0)
+                layoutAttribute.size.height = max(layoutAttribute.size.height, 0)
+            }
         }
 
         return attributes
@@ -64,9 +70,25 @@ class ContactCollectionViewFlowLayout: UICollectionViewFlowLayout {
     }
 
     override func finalizeCollectionViewUpdates() {
+        defer {
+            super.finalizeCollectionViewUpdates()
+        }
+
+        guard collectionViewContentSize.width >= 0, collectionViewContentSize.height >= 0 else {
+            PMAssertionFailure("Flow layout - invalid size: \(collectionViewContentSize)")
+            return
+        }
+
         if let delegate = self.collectionView?.delegate as? ContactCollectionViewDelegateFlowLayout {
-            if delegate.responds(to: #selector(ContactCollectionViewDelegateFlowLayout.collectionView(collectionView:willChangeContentSizeTo:))) {
-                delegate.collectionView(collectionView: self.collectionView, willChangeContentSizeTo: self.collectionViewContentSize)
+            do {
+                try ObjC.catchException {
+                    delegate.collectionView(
+                        collectionView: self.collectionView,
+                        willChangeContentSizeTo: self.collectionViewContentSize
+                    )
+                }
+            } catch {
+                PMAssertionFailure(error)
             }
         }
     }
