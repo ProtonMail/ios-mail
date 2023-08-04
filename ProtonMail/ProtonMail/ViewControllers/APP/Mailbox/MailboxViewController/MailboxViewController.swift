@@ -25,9 +25,10 @@ import CoreData
 import LifetimeTracker
 import ProtonCore_Crypto
 import ProtonCore_DataModel
+import ProtonCore_Networking
+import ProtonCore_PaymentsUI
 import ProtonCore_Services
 import ProtonCore_UIFoundations
-import ProtonCore_Networking
 import ProtonMailAnalytics
 import SkeletonView
 import SwipyCell
@@ -459,6 +460,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.refreshControl.tintColorDidChange()
 
         self.view.backgroundColor = ColorProvider.BackgroundNorm
+        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
 
         self.tableView.addSubview(self.refreshControl)
         self.tableView.delegate = self
@@ -2568,13 +2570,50 @@ extension MailboxViewController {
     func bannerHeaderView() -> UIView? {
         switch viewModel.headerBanner {
         case .upsellBanner:
-            return AutoDeleteUpsellHeaderView()
+            let headerView = AutoDeleteUpsellHeaderView()
+            headerView.learnMoreButtonAction = { [weak self] in
+                guard let self else { return }
+                let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
+                    guard let self else { return }
+                    self.presentPayments(for: self.viewModel.user)
+                }
+                upsellSheet.present(on: self.navigationController!.view)
+            }
+            return headerView
         case .promptBanner:
-            return AutoDeletePromptHeaderView()
+            let promptBanner = AutoDeletePromptHeaderView()
+            promptBanner.enableButtonAction = { [weak self] in
+                guard let self else { return }
+                let alert = self.viewModel.alertToConfirmEnabling { [weak self] error in
+                    if error == nil {
+                        self?.viewModel.user.isAutoDeleteEnabled = true
+                        self?.tableView.reloadData()
+                    }
+                }
+                self.present(alert, animated: true)
+            }
+            promptBanner.noThanksButtonAction = { [weak self] in
+                guard let self else { return }
+                self.viewModel.updateAutoDeleteSetting(to: false, for: self.viewModel.user, completion: { [weak self] error in
+                    if error == nil {
+                        self?.viewModel.user.isAutoDeleteEnabled = false
+                        self?.tableView.reloadData()
+                    }
+                })
+            }
+            return promptBanner
         case .infoBanner(.spam):
-            return AutoDeleteSpamInfoHeaderView()
+            let infoBanner = AutoDeleteSpamInfoHeaderView()
+            infoBanner.emptyButtonAction = { [weak self] in
+                self?.clickEmptyFolderAction()
+            }
+            return infoBanner
         case .infoBanner(.trash):
-            return AutoDeleteTrashInfoHeaderView()
+            let infoBanner = AutoDeleteTrashInfoHeaderView()
+            infoBanner.emptyButtonAction = { [weak self] in
+                self?.clickEmptyFolderAction()
+            }
+            return infoBanner
         case .none:
             return nil
         }
@@ -2644,5 +2683,15 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
         let width = titleWidth + 16 + (isInUnreadFilter ? 16 : 0)
         unreadFilterButtonWidth.constant = width
         self.unreadFilterButton.layer.cornerRadius = self.unreadFilterButton.frame.height / 2
+    }
+}
+
+extension UIViewController {
+    func presentPayments(for user: UserManager) {
+        let paymentsUI = PaymentsUI(payments: user.payments,
+                                    clientApp: .mail,
+                                    shownPlanNames: Constants.shownPlanNames,
+                                    customization: .empty)
+        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in }
     }
 }
