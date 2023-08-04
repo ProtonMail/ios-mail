@@ -114,6 +114,14 @@ extension ConversationEntity {
         }
         return matchedLabel.messageCount
     }
+
+    func isExpiring() -> Bool {
+        contextLabelRelations.contains(where: { contextLabelEntity in
+            contextLabelEntity.expirationTime == expirationTime &&
+            ( contextLabelEntity.labelID.rawValue == LabelLocation.trash.rawLabelID ||
+              contextLabelEntity.labelID.rawValue == LabelLocation.spam.rawLabelID)
+        }) == false
+    }
 }
 
 // MARK: - Senders

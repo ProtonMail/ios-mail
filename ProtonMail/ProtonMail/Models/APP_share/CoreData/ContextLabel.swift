@@ -36,6 +36,7 @@ class ContextLabel: NSManagedObject {
     @NSManaged var userID: String
     @NSManaged var order: NSNumber
     @NSManaged var isSoftDeleted: Bool
+    @NSManaged var expirationTime: Date?
 
     enum Attributes {
         static let entityName = String(describing: ContextLabel.self)

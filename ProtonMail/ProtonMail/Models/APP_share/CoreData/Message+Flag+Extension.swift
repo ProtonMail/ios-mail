@@ -26,7 +26,7 @@ extension Message {
 
     /// Flags
     struct Flag: OptionSet {
-        let rawValue: Int
+        let rawValue: Int64
 
         /// whether a message is received
         static let received    = Flag(rawValue: 1 << 0 ) // const FLAG_RECEIVED = 1; //this it TYPE:INBOXS
@@ -75,11 +75,16 @@ extension Message {
 
         // Incoming mail is marked as phishing by anti-spam filters.
         static let autoPhishing = Flag(rawValue: 1 << 30)
+
+        // If the expiration time (when applicable), is frozen or not.
+        // Frozen means that it's a self destructing message
+        // Not frozen means that it's an auto-deleting message
+        static let isExpirationTimeFrozen = Flag(rawValue: 1 << 32)
     }
 
     var flag: Flag {
         get {
-            return Flag(rawValue: self.flags.intValue)
+            return Flag(rawValue: self.flags.int64Value)
         }
         set {
             self.flags = NSNumber(value: newValue.rawValue)

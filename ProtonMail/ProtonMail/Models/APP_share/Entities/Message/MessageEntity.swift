@@ -57,7 +57,7 @@ struct MessageEntity: Equatable, Hashable {
     let rawHeader: String?
     let rawParsedHeaders: String?
 
-    let rawFlag: Int
+    let rawFlag: Int64
     var flag: MessageFlag { MessageFlag(rawValue: rawFlag) }
 
     let time: Date?
@@ -155,7 +155,7 @@ extension MessageEntity {
         self.rawHeader = message.header
         self.rawParsedHeaders = message.parsedHeaders
 
-        self.rawFlag = message.flags.intValue
+        self.rawFlag = message.flags.int64Value
 
         self.time = message.time
         self.expirationTime = message.expirationTime

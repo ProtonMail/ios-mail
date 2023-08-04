@@ -59,7 +59,7 @@ final class ESMessage: Codable {
     private(set) var spamScore: Int? = 0
     private(set) var addressID: String? = ""
     private(set) var numAttachments: Int = 0
-    private(set) var flags: Int = 0
+    private(set) var flags: Int64 = 0
     private(set) var labelIDs: Set<String> = Set<String>()
     private(set) var externalID: String? = ""
     // public var unsubscribeMethods: String?
@@ -130,7 +130,7 @@ final class ESMessage: Codable {
          spamScore: Int?,
          addressID: String?,
          numAttachments: Int,
-         flags: Int,
+         flags: Int64,
          labelIDs: Set<String>,
          externalID: String?,
          body: String?,

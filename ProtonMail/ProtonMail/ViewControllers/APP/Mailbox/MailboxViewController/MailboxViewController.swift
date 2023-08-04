@@ -2218,7 +2218,7 @@ extension MailboxViewController {
 extension MailboxViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if bannerHeaderView() != nil {
+        if UserInfo.isAutoDeleteEnabled && bannerHeaderView() != nil {
             return UITableView.automaticDimension
         } else {
             return 0
@@ -2226,7 +2226,11 @@ extension MailboxViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        bannerHeaderView()
+        if UserInfo.isAutoDeleteEnabled {
+            return bannerHeaderView()
+        } else {
+            return nil
+        }
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

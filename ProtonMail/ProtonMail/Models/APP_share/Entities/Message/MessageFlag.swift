@@ -18,7 +18,7 @@
 import Foundation
 
 struct MessageFlag: OptionSet, Equatable, Hashable {
-    let rawValue: Int
+    let rawValue: Int64
 
     /// whether a message is received
     ///
@@ -118,95 +118,101 @@ struct MessageFlag: OptionSet, Equatable, Hashable {
     static let autoPhishing = MessageFlag(rawValue: 1 << 30)
     static let manualPhishing = MessageFlag(rawValue: 1 << 31)
 
+    static let isExpirationTimeFrozen = MessageFlag(rawValue: 1 << 32)
+
     var description: String {
-        var out = "Raw: \(rawValue), contains:"
+        var outFlags: [String] = []
         if self.contains(.received) {
-            out += "FLAG_RECEIVED, "
+            outFlags.append("FLAG_RECEIVED")
         }
         if self.contains(.sent) {
-            out += "FLAG_SENT, "
+            outFlags.append("FLAG_SENT")
         }
         if self.contains(.internal) {
-            out += "FLAG_INTERNAL, "
+            outFlags.append("FLAG_INTERNAL")
         }
         if self.contains(.e2e) {
-            out += "FLAG_E2E, "
+            outFlags.append("FLAG_E2E")
         }
         if self.contains(.auto) {
-            out += "FLAG_AUTO, "
+            outFlags.append("FLAG_AUTO")
         }
         if self.contains(.replied) {
-            out += "FLAG_REPLIED, "
+            outFlags.append("FLAG_REPLIED")
         }
         if self.contains(.repliedAll) {
-            out += "FLAG_REPLIEDALL, "
+            outFlags.append("FLAG_REPLIEDALL")
         }
         if self.contains(.forwarded) {
-            out += "FLAG_FORWARDED, "
+            outFlags.append("FLAG_FORWARDED")
         }
         if self.contains(.autoReplied) {
-            out += "FLAG_AUTOREPLIED, "
+            outFlags.append("FLAG_AUTOREPLIED")
         }
         if self.contains(.imported) {
-            out += "FLAG_IMPORTED, "
+            outFlags.append("FLAG_IMPORTED")
         }
         if self.contains(.opened) {
-            out += "FLAG_OPENED, "
+            outFlags.append("FLAG_OPENED")
         }
         if self.contains(.receiptSent) {
-            out += "FLAG_RECEIPT_SENT, "
+            outFlags.append("FLAG_RECEIPT_SENT")
         }
         if self.contains(.notified) {
-            out += "FLAG_NOTIFIED, "
+            outFlags.append("FLAG_NOTIFIED")
         }
         if self.contains(.touched) {
-            out += "FLAG_TOUCHED, "
+            outFlags.append("FLAG_TOUCHED")
         }
         if self.contains(.receipt) {
-            out += "FLAG_RECEIPT, "
+            outFlags.append("FLAG_RECEIPT")
         }
         if self.contains(.proton) {
-            out += "FLAG_PROTON, "
+            outFlags.append("FLAG_PROTON")
         }
         if self.contains(.receiptRequest) {
-            out += "FLAG_RECEIPT_REQUEST, "
+            outFlags.append("FLAG_RECEIPT_REQUEST")
         }
         if self.contains(.publicKey) {
-            out += "FLAG_PUBLIC_KEY, "
+            outFlags.append("FLAG_PUBLIC_KEY")
         }
         if self.contains(.sign) {
-            out += "FLAG_SIGN, "
+            outFlags.append("FLAG_SIGN")
         }
         if self.contains(.unsubscribed) {
-            out += "FLAG_UNSUBSCRIBED, "
+            outFlags.append("FLAG_UNSUBSCRIBED")
         }
         if self.contains(.scheduledSend) {
-            out += "FLAG_SCHEDULED_SEND, "
+            outFlags.append("FLAG_SCHEDULED_SEND")
         }
         if self.contains(.spfFail) {
-            out += "FLAG_SPF_FAIL, "
+            outFlags.append("FLAG_SPF_FAIL")
         }
         if self.contains(.dkimFail) {
-            out += "FLAG_DKIM_FAIL, "
+            outFlags.append("FLAG_DKIM_FAIL")
         }
         if self.contains(.dmarcFailed) {
-            out += "FLAG_DMARC_FAILED, "
+            outFlags.append("FLAG_DMARC_FAILED")
         }
         if self.contains(.hamManual) {
-            out += "FLAG_HAM_MANUAL, "
+            outFlags.append("FLAG_HAM_MANUAL")
         }
         if self.contains(.spamAuto) {
-            out += "FLAG_SPAM_AUTO, "
+            outFlags.append("FLAG_SPAM_AUTO")
         }
         if self.contains(.spamManual) {
-            out += "FLAG_SPAM_MANUAL, "
+            outFlags.append("FLAG_SPAM_MANUAL")
         }
         if self.contains(.autoPhishing) {
-            out += "FLAG_AUTO_PHISHING, "
+            outFlags.append("FLAG_AUTO_PHISHING")
         }
         if self.contains(.manualPhishing) {
-            out += "FLAG_MANUAL_PHISHING"
+            outFlags.append("FLAG_MANUAL_PHISHING")
         }
-        return out
+        if self.contains(.isExpirationTimeFrozen) {
+            outFlags.append("FLAG_IS_EXPIRATION_TIME_FROZEN")
+        }
+        
+        return "Raw: \(rawValue), contains: \(outFlags.joined(separator: ", "))"
     }
 }
