@@ -28,6 +28,7 @@ class AutoDeleteUpsellHeaderView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = ColorProvider.BackgroundNorm
         addViews()
         buildLayout()
         setupViewsAndControls()
@@ -54,12 +55,12 @@ class AutoDeleteUpsellHeaderView: UIView {
             upsellLabel.leadingAnchor.constraint(equalTo: logoImageView.trailingAnchor, constant: 12),
             upsellLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
             upsellLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
-            learnMoreButton.leadingAnchor.constraint(equalTo: upsellLabel.leadingAnchor),
-            learnMoreButton.topAnchor.constraint(greaterThanOrEqualTo: logoImageView.bottomAnchor, constant: 12),
-            learnMoreButton.topAnchor.constraint(greaterThanOrEqualTo: upsellLabel.bottomAnchor, constant: 12),
-            learnMoreButton.topAnchor.constraint(lessThanOrEqualTo: logoImageView.bottomAnchor, constant: 12),
-            learnMoreButton.topAnchor.constraint(lessThanOrEqualTo: upsellLabel.bottomAnchor, constant: 12),
-            learnMoreButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12)
+            learnMoreButton.leadingAnchor.constraint(equalTo: upsellLabel.leadingAnchor, constant: -16),
+            learnMoreButton.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: -8)
+                .setPriority(as: .defaultLow),
+            learnMoreButton.topAnchor.constraint(equalTo: upsellLabel.bottomAnchor, constant: -8)
+                .setPriority(as: .defaultLow),
+            learnMoreButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 4)
         ].activate()
     }
 
@@ -97,9 +98,11 @@ extension AutoDeleteUpsellHeaderView {
         }
 
         static var learnMoreButton: UIButton {
-            let button = UIButton()
-            let style = FontManager.Caption.foregroundColor(ColorProvider.TextAccent)
-            button.setAttributedTitle(L11n.AutoDeleteBanners.learnMore.apply(style: style), for: .normal)
+            let button = ProtonButton()
+            button.setMode(mode: .text)
+            button.setTitle(L11n.AutoDeleteBanners.learnMore, for: .normal)
+            button.titleLabel?.adjustsFontForContentSizeCategory = true
+            button.sizeToFit()
             return button
         }
     }

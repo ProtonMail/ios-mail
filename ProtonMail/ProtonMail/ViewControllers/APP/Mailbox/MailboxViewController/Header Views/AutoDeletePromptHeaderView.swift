@@ -30,6 +30,7 @@ class AutoDeletePromptHeaderView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = ColorProvider.BackgroundNorm
         addViews()
         buildLayout()
         setupViewsAndControls()
@@ -59,10 +60,10 @@ class AutoDeletePromptHeaderView: UIView {
             promptLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
             enableButton.heightAnchor.constraint(equalToConstant: 32),
             enableButton.leadingAnchor.constraint(equalTo: logoImageView.leadingAnchor),
-            enableButton.topAnchor.constraint(lessThanOrEqualTo: logoImageView.bottomAnchor, constant: 12),
-            enableButton.topAnchor.constraint(lessThanOrEqualTo: promptLabel.bottomAnchor, constant: 12),
-            enableButton.topAnchor.constraint(greaterThanOrEqualTo: logoImageView.bottomAnchor, constant: 12),
-            enableButton.topAnchor.constraint(greaterThanOrEqualTo: promptLabel.bottomAnchor, constant: 12),
+            enableButton.topAnchor.constraint(greaterThanOrEqualTo: logoImageView.bottomAnchor, constant: 12)
+                .setPriority(as: .defaultLow),
+            enableButton.topAnchor.constraint(greaterThanOrEqualTo: promptLabel.bottomAnchor, constant: 12)
+                .setPriority(as: .defaultLow),
             enableButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12),
             noThanksButton.leadingAnchor.constraint(equalTo: enableButton.trailingAnchor, constant: 12),
             noThanksButton.topAnchor.constraint(equalTo: enableButton.topAnchor),
@@ -113,20 +114,26 @@ extension AutoDeletePromptHeaderView {
         }
 
         static var enableButton: UIButton {
-            let button = UIButton()
-            let style = FontManager.Caption.foregroundColor(ColorProvider.TextInverted)
-            button.setBackgroundImage(UIImage.colored(with: ColorProvider.InteractionNorm), for: .normal)
-            button.roundCorner(8)
-            button.setAttributedTitle(L11n.AutoDeleteBanners.enableButtonTitle.apply(style: style), for: .normal)
+            let button = ProtonButton()
+            button.setMode(mode: .solid)
+            button.setTitle(L11n.AutoDeleteBanners.enableButtonTitle, for: .normal)
+            button.titleLabel?.adjustsFontForContentSizeCategory = true
+            button.titleLabel?.adjustsFontSizeToFitWidth = true
+            button.titleLabel?.numberOfLines = 1
             return button
         }
 
         static var noThanksButton: UIButton {
-            let button = UIButton()
-            let style = FontManager.Caption.foregroundColor(ColorProvider.TextNorm)
+            let button = ProtonButton()
+            button.setMode(mode: .outlined)
+            button.layer.borderWidth = 0
             button.setBackgroundImage(UIImage.colored(with: ColorProvider.InteractionWeak), for: .normal)
-            button.roundCorner(8)
-            button.setAttributedTitle(L11n.AutoDeleteBanners.noThanksButtonTitle.apply(style: style), for: .normal)
+            button.setTitleColor(ColorProvider.TextNorm, for: .normal)
+            button.setTitleColor(ColorProvider.TextNorm, for: .highlighted)
+            button.setTitle(L11n.AutoDeleteBanners.noThanksButtonTitle, for: .normal)
+            button.titleLabel?.adjustsFontForContentSizeCategory = true
+            button.titleLabel?.adjustsFontSizeToFitWidth = true
+            button.titleLabel?.numberOfLines = 1
             return button
         }
     }

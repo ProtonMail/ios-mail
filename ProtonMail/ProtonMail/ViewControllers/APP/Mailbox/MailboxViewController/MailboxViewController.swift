@@ -87,7 +87,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private var hasNetworking = true
     private var configuredActions: [SwipyCellDirection: SwipeActionSettingType] = [:]
 
-    // MAKR : - Private views
+    // MARK: - Private views
     private var refreshControl: UIRefreshControl!
 
     // MARK: - Left bar button
@@ -226,14 +226,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         SkeletonAppearance.default.renderSingleLineAsView = true
 
-        self.tableView.separatorColor = ColorProvider.InteractionWeak
+        self.tableView.separatorStyle = .none
         self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         if #available(iOS 15.0, *) {
             self.tableView.isPrefetchingEnabled = false
         }
 
-            self.loadDiffableDataSource()
+        self.loadDiffableDataSource()
 
         self.updateNavigationController(viewModel.listEditing)
 
@@ -2215,6 +2215,18 @@ extension MailboxViewController {
 
 extension MailboxViewController: UITableViewDelegate {
 
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if bannerHeaderView() != nil {
+            return UITableView.automaticDimension
+        } else {
+            return 0
+        }
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        bannerHeaderView()
+    }
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if viewModel.labelID == LabelLocation.scheduled.labelID {
             // 1. The limitation of scheduled messages is 100
@@ -2546,6 +2558,25 @@ extension MailboxViewController {
                 guard let self = self else { return }
                 self.inAppFeedbackScheduler?.markAsFeedbackSubmitted()
             }
+        }
+    }
+}
+
+// MARK: - Auto-Delete Banners
+
+extension MailboxViewController {
+    func bannerHeaderView() -> UIView? {
+        switch viewModel.headerBanner {
+        case .upsellBanner:
+            return AutoDeleteUpsellHeaderView()
+        case .promptBanner:
+            return AutoDeletePromptHeaderView()
+        case .infoBanner(.spam):
+            return AutoDeleteSpamInfoHeaderView()
+        case .infoBanner(.trash):
+            return AutoDeleteTrashInfoHeaderView()
+        case .none:
+            return nil
         }
     }
 }

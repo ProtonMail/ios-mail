@@ -19,10 +19,16 @@ import Foundation
 
 // sourcery: mock
 protocol AutoDeleteSpamAndTrashDaysProvider {
+    var isAutoDeleteImplicitlyDisabled: Bool { get }
     var isAutoDeleteEnabled: Bool { get set }
 }
 
 extension UserManager: AutoDeleteSpamAndTrashDaysProvider {
+
+    var isAutoDeleteImplicitlyDisabled: Bool {
+        mailSettings.autoDeleteSpamTrashDays == .implicitlyDisabled
+    }
+
     var isAutoDeleteEnabled: Bool {
         get {
             return mailSettings.autoDeleteSpamTrashDays.isEnabled
