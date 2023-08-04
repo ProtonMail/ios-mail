@@ -33,10 +33,12 @@ class NewMailboxMessageCellContentView: UIView {
     let checkBoxView = NewMailboxMessageCheckBoxView()
     let scheduledIconView = SubviewsFactory.scheduledIconView
     let scheduledContainer = SubviewsFactory.scheduledContainer
+    let separatorView = UIView()
 
     init() {
         super.init(frame: .zero)
         backgroundColor = ColorProvider.BackgroundNorm
+        separatorView.backgroundColor = ColorProvider.InteractionWeak
         addSubviews()
         setUpLayout()
     }
@@ -44,6 +46,7 @@ class NewMailboxMessageCellContentView: UIView {
     private func addSubviews() {
         addSubview(messageContentView)
         addSubview(leftContainer)
+        addSubview(separatorView)
         leftContainer.addSubview(initialsContainer)
         leftContainer.addSubview(checkBoxView)
         leftContainer.addSubview(scheduledIconView)
@@ -91,6 +94,14 @@ class NewMailboxMessageCellContentView: UIView {
             initialsLabel.trailingAnchor.constraint(equalTo: initialsContainer.trailingAnchor, constant: -2),
             initialsLabel.centerYAnchor.constraint(equalTo: initialsContainer.centerYAnchor)
         ].activate()
+
+        [
+            separatorView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            separatorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            separatorView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            separatorView.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale)
+        ]
+            .activate()
 
         senderImageView.fillSuperview()
     }

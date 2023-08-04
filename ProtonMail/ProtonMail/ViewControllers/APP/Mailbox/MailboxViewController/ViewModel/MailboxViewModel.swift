@@ -1136,6 +1136,46 @@ extension MailboxViewModel {
     }
 }
 
+// MARK: - Auto-Delete Spam & Trash Banners
+
+extension MailboxViewModel {
+    enum InfoBannerType {
+        case spam
+        case trash
+    }
+
+    enum BannerToDisplay {
+        case upsellBanner
+        case promptBanner
+        case infoBanner(InfoBannerType)
+    }
+
+    var headerBanner: BannerToDisplay? {
+        guard UserInfo.isAutoDeleteEnabled else {
+            return nil
+        }
+
+        let infoBannerType: InfoBannerType
+        if self.labelID == LabelLocation.spam.labelID {
+            infoBannerType = .spam
+        } else if self.labelID == LabelLocation.trash.labelID {
+            infoBannerType = .trash
+        } else {
+            return nil
+        }
+
+        if !user.isPaid {
+            return .upsellBanner
+        } else if user.isAutoDeleteImplicitlyDisabled {
+            return .promptBanner
+        } else if user.isAutoDeleteEnabled {
+            return .infoBanner(infoBannerType)
+        } else {
+            return nil
+        }
+    }
+}
+
 // MARK: - Misc
 
 extension String {

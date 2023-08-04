@@ -48,6 +48,11 @@ class MockAppRatingWrapper: AppRatingWrapper {
 }
 
 class MockAutoDeleteSpamAndTrashDaysProvider: AutoDeleteSpamAndTrashDaysProvider {
+    @PropertyStub(\MockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteImplicitlyDisabled, initialGet: Bool()) var isAutoDeleteImplicitlyDisabledStub
+    var isAutoDeleteImplicitlyDisabled: Bool {
+        isAutoDeleteImplicitlyDisabledStub()
+    }
+
     @PropertyStub(\MockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled, initialGet: Bool()) var isAutoDeleteEnabledStub
     var isAutoDeleteEnabled: Bool {
         get {

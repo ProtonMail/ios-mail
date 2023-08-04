@@ -20,18 +20,22 @@ import UIKit
 
 class AutoDeleteSpamInfoHeaderView: AutoDeleteInfoHeaderView {
     override class var emptyButton: UIButton {
-        let button = UIButton()
-        let style = FontManager.Caption.foregroundColor(ColorProvider.TextAccent)
-        button.setAttributedTitle(L11n.AutoDeleteBanners.emptySpam.apply(style: style), for: .normal)
+        let button = ProtonButton()
+        button.setMode(mode: .text)
+        button.setTitle(L11n.AutoDeleteBanners.emptySpam, for: .normal)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.sizeToFit()
         return button
     }
 }
 
 class AutoDeleteTrashInfoHeaderView: AutoDeleteInfoHeaderView {
     override class var emptyButton: UIButton {
-        let button = UIButton()
-        let style = FontManager.Caption.foregroundColor(ColorProvider.TextAccent)
-        button.setAttributedTitle(L11n.AutoDeleteBanners.emptyTrash.apply(style: style), for: .normal)
+        let button = ProtonButton()
+        button.setMode(mode: .text)
+        button.setTitle(L11n.AutoDeleteBanners.emptyTrash, for: .normal)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.sizeToFit()
         return button
     }
 }
@@ -46,6 +50,7 @@ class AutoDeleteInfoHeaderView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = ColorProvider.BackgroundNorm
         addViews()
         buildLayout()
         setupViewsAndControls()
@@ -72,9 +77,9 @@ class AutoDeleteInfoHeaderView: UIView {
             infoLabel.leadingAnchor.constraint(equalTo: trashImageView.trailingAnchor, constant: 12),
             infoLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
             infoLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
-            emptyButton.leadingAnchor.constraint(equalTo: infoLabel.leadingAnchor),
-            emptyButton.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 12),
-            emptyButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -12)
+            emptyButton.leadingAnchor.constraint(equalTo: infoLabel.leadingAnchor, constant: -16),
+            emptyButton.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: -8),
+            emptyButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 4)
         ].activate()
     }
 
