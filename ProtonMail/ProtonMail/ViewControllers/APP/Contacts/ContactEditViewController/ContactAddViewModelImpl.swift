@@ -44,7 +44,7 @@ class ContactAddViewModelImpl: ContactEditViewModel {
     var profile: ContactEditProfile = ContactEditProfile(n_displayname: "")
     var profilePicture: UIImage?
 
-    override init(user: UserManager, coreDataService: CoreDataService) {
+    override init(user: UserManager, coreDataService: CoreDataContextProviderProtocol) {
         super.init(user: user, coreDataService: coreDataService)
         self.contactEntity = nil
     }

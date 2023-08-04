@@ -21,6 +21,18 @@ import ProtonCore_Keymaker
 final class GlobalContainer: ManagedContainer {
     let manager = ContainerManager()
 
+    var contextProviderFactory: Factory<CoreDataContextProviderProtocol> {
+        self {
+            CoreDataService.shared
+        }
+    }
+
+    var internetConnectionStatusProviderFactory: Factory<InternetConnectionStatusProviderProtocol> {
+        self {
+            InternetConnectionStatusProvider.shared
+        }
+    }
+
     var keyMakerFactory: Factory<KeyMakerProtocol> {
         self {
             Keymaker(

@@ -87,6 +87,11 @@ class MailboxCoordinatorTests: XCTestCase {
                                                  0
                                              })
 
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { contextProviderMock }
+        globalContainer.internetConnectionStatusProviderFactory.register { self.connectionStatusProviderMock }
+        let userContainer = UserContainer(userManager: dummyUser, globalContainer: globalContainer)
+
         sut = MailboxCoordinator(sideMenu: nil,
                                  nav: uiNavigationControllerMock,
                                  viewController: mailboxViewControllerMock,
@@ -94,7 +99,7 @@ class MailboxCoordinatorTests: XCTestCase {
                                  services: dummyServices,
                                  contextProvider: contextProviderMock,
                                  infoBubbleViewStatusProvider: infoBubbleViewStatusProviderMock,
-                                 internetStatusProvider: connectionStatusProviderMock,
+                                 dependencies: userContainer,
                                  getApplicationState: {
             return self.applicationStateStub
         })

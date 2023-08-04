@@ -41,7 +41,7 @@ protocol ContactParserResultDelegate: AnyObject {
 }
 
 protocol ContactParserProtocol {
-    func parsePlainTextContact(data: String, coreDataService: CoreDataService, contactID: ContactID)
+    func parsePlainTextContact(data: String, coreDataService: CoreDataContextProviderProtocol, contactID: ContactID)
     func parseEncryptedOnlyContact(card: CardData, passphrase: Passphrase, userKeys: [ArmoredKey]) throws
     func parseSignAndEncryptContact(card: CardData,
                                     passphrase: Passphrase,
@@ -65,7 +65,7 @@ final class ContactParser: ContactParserProtocol {
         self.resultDelegate = resultDelegate
     }
 
-    func parsePlainTextContact(data: String, coreDataService: CoreDataService, contactID: ContactID) {
+    func parsePlainTextContact(data: String, coreDataService: CoreDataContextProviderProtocol, contactID: ContactID) {
         guard let vCard = PMNIEzvcard.parseFirst(data) else { return }
 
         let emails = vCard.getEmails()

@@ -78,6 +78,9 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     private var currentLocation: MenuLabel?
     weak var delegate: MenuCoordinatorDelegate?
 
+    // do not access directly, to be used through userContainer(for:)
+    private var cachedUserContainer: UserContainer?
+
     init(services: ServiceFactory,
          pushService: PushNotificationService,
          coreDataService: CoreDataContextProviderProtocol,
@@ -531,7 +534,8 @@ extension MenuCoordinator {
             viewModel: viewModel,
             services: self.services,
             contextProvider: coreDataService,
-            infoBubbleViewStatusProvider: userCachedStatus
+            infoBubbleViewStatusProvider: userCachedStatus,
+            dependencies: userContainer(for: user)
         )
         mailbox.start()
         if let deeplink = deepLink {
@@ -571,7 +575,7 @@ extension MenuCoordinator {
             navigationController: navigation,
             user: userManager,
             services: services,
-            dependencies: UserContainer(userManager: userManager, globalContainer: dependencies)
+            dependencies: userContainer(for: userManager)
         )
         settings.start()
         self.settingsDeviceCoordinator = settings
@@ -597,8 +601,7 @@ extension MenuCoordinator {
         }
         let contacts = ContactTabBarCoordinator(sideMenu: viewController?.sideMenuController,
                                                 vc: view,
-                                                services: services,
-                                                user: user)
+                                                dependencies: userContainer(for: user))
         contacts.start()
         self.setupContentVC(destination: view)
     }
@@ -760,6 +763,16 @@ extension MenuCoordinator {
         let navigation = UINavigationController(rootViewController: view)
         navigation.modalPresentationStyle = .fullScreen
         sideMenu.present(navigation, animated: true)
+    }
+
+    private func userContainer(for user: UserManager) -> UserContainer {
+        if let cachedUserContainer, cachedUserContainer.user.userID == user.userID {
+            return cachedUserContainer
+        } else {
+            let newUserContainer = UserContainer(userManager: user, globalContainer: dependencies)
+            cachedUserContainer = newUserContainer
+            return newUserContainer
+        }
     }
 }
 

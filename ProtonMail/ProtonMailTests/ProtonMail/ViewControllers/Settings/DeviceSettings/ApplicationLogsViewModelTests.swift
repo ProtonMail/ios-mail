@@ -42,7 +42,7 @@ final class ApplicationLogsViewModelTests: XCTestCase {
     /// This test assumes the app will write at least one log message when launched
     func testInput_viewWillAppear_itShouldPublishLogsContent() throws {
         let expectation = expectation(description: "Awaiting value")
-        sut.output.content.sink { contentValue in
+        sut.output.content.first().sink { contentValue in
             XCTAssertNotNil(contentValue)
             expectation.fulfill()
         }.store(in: &cancellables)

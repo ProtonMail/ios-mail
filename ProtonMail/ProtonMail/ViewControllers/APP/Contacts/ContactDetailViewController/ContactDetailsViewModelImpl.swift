@@ -65,7 +65,7 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
 
     private let contactFetchedController: NSFetchedResultsController<Contact>
 
-    init(contact: ContactEntity, user: UserManager, coreDataService: CoreDataService) {
+    init(contact: ContactEntity, user: UserManager, coreDataService: CoreDataContextProviderProtocol) {
         self.contactService = user.contactService
         contactFetchedController = contactService.contactFetchedController(by: contact.contactID)
 

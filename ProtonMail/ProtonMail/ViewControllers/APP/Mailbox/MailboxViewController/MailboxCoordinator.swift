@@ -39,10 +39,11 @@ protocol MailboxCoordinatorProtocol: AnyObject {
 }
 
 class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserver {
+    typealias Dependencies = HasInternetConnectionStatusProviderProtocol
+
     let viewModel: MailboxViewModel
     var services: ServiceFactory
     private let contextProvider: CoreDataContextProviderProtocol
-    private let internetStatusProvider: InternetConnectionStatusProviderProtocol
 
     weak var viewController: MailboxViewController?
     private(set) weak var navigation: UINavigationController?
@@ -56,6 +57,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
 
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
     private let composerFactory: ComposerDependenciesFactory
+    private let dependencies: Dependencies
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
@@ -64,7 +66,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
          services: ServiceFactory,
          contextProvider: CoreDataContextProviderProtocol,
          infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-         internetStatusProvider: InternetConnectionStatusProviderProtocol = InternetConnectionStatusProvider.shared,
+         dependencies: Dependencies,
          getApplicationState: @escaping () -> UIApplication.State = {
         return UIApplication.shared.applicationState
     }
@@ -75,10 +77,10 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         self.viewModel = viewModel
         self.services = services
         self.contextProvider = contextProvider
-        self.internetStatusProvider = internetStatusProvider
         self.getApplicationState = getApplicationState
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.composerFactory = services.makeComposeViewModelDependenciesFactory()
+        self.dependencies = dependencies
     }
 
     enum Destination: String {
@@ -276,7 +278,7 @@ extension MailboxCoordinator {
             contextProvider: contextProvider,
             isEditingScheduleMsg: isEditingScheduleMsg,
             userIntroductionProgressProvider: services.userCachedStatus,
-            internetStatusProvider: internetStatusProvider,
+            internetStatusProvider: dependencies.internetConnectionStatusProvider,
             coreKeyMaker: services.get(),
             darkModeCache: services.userCachedStatus,
             mobileSignatureCache: services.userCachedStatus,
@@ -311,7 +313,7 @@ extension MailboxCoordinator {
                         senderImageService: .init(
                             dependencies: .init(
                                 apiService: viewModel.user.apiService,
-                                internetStatusProvider: internetStatusProvider
+                                internetStatusProvider: dependencies.internetConnectionStatusProvider
                             )
                         ),
                         mailSettings: viewModel.user.mailSettings
@@ -340,7 +342,7 @@ extension MailboxCoordinator {
     }
 
     func fetchConversationFromBEIfNeeded(conversationID: ConversationID, goToDetailPage: @escaping () -> Void) {
-        guard internetStatusProvider.status.isConnected else {
+        guard dependencies.internetConnectionStatusProvider.status.isConnected else {
             goToDetailPage()
             return
         }
@@ -378,7 +380,7 @@ extension MailboxCoordinator {
                 contextProvider: contextProvider,
                 isEditingScheduleMsg: false,
                 userIntroductionProgressProvider: services.userCachedStatus,
-                internetStatusProvider: internetStatusProvider,
+                internetStatusProvider: dependencies.internetConnectionStatusProvider,
                 coreKeyMaker: services.get(),
                 darkModeCache: services.userCachedStatus,
                 mobileSignatureCache: services.userCachedStatus,

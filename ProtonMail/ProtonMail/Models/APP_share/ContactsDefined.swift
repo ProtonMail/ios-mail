@@ -104,7 +104,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     var mimeType: PMNIPMMimeType?
 
     private let delegate: ContactEditViewModelContactGroupDelegate?
-    private let coreDataService: CoreDataService
+    private let coreDataService: CoreDataContextProviderProtocol
 
     init(order: Int,
          type: ContactFieldType,
@@ -117,7 +117,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
          scheme: PMNIPMScheme?,
          mimeType: PMNIPMMimeType?,
          delegate: ContactEditViewModelContactGroupDelegate?,
-         coreDataService: CoreDataService) {
+         coreDataService: CoreDataContextProviderProtocol) {
         self.delegate = delegate
         self.coreDataService = coreDataService
 
