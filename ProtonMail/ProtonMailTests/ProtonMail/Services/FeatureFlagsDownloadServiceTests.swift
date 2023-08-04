@@ -17,6 +17,7 @@
 
 import XCTest
 @testable import ProtonMail
+import ProtonCore_Networking
 import ProtonCore_TestingToolkit
 
 class FeatureFlagsDownloadServiceTests: XCTestCase {
@@ -48,7 +49,7 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         sut = nil
     }
 
-    func testGetFeatureFlag() throws {
+    func testGetFeatureFlag_whenRequestSucceeds_itShouldStoreTheReceivedValues() throws {
         apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/core/v4/features") {
                 let response = FeatureFlagTestData.data
@@ -73,6 +74,23 @@ class FeatureFlagsDownloadServiceTests: XCTestCase {
         XCTAssertTrue(argument2.a1[.scheduleSend])
         XCTAssertFalse(argument2.a1[.appRating])
         XCTAssertEqual(argument2.a2, userID)
+    }
+
+    func testGetFeatureFlag_whenRequestFails_itShouldNotOverrideTheStoredValues() throws {
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+            guard path.contains("/core/v4/features") else {
+                XCTFail("Unexpected path")
+                return
+            }
+            completion(nil, .failure(.badResponse()))
+        }
+
+        let expectation1 = expectation(description: "Closure is called")
+        sut.getFeatureFlags { _ in
+            expectation1.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
+        XCTAssertTrue(featureFlagCache.storeFeatureFlagsStub.wasNotCalled)
     }
 
     func testFetchingFlagsIn5mins_receiveFetchingTooOften() {

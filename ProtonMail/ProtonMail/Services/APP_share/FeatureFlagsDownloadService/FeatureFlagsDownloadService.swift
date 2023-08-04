@@ -64,12 +64,12 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         }
 
         let request = FetchFeatureFlagsRequest()
-        apiService.perform(request: request, response: FeatureFlagsResponse()) { [weak self] task, response in
+        apiService.perform(request: request, response: FeatureFlagsResponse()) { [weak self] _, response in
             guard let self = self else {
                 completion?(FeatureFlagFetchingError.selfIsReleased)
                 return
             }
-            if let error = task?.error {
+            if let error = response.error {
                 completion?(error)
                 return
             }
