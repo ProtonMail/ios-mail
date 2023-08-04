@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -54,7 +55,19 @@ extension MessageEntity {
             .first(where: { $0 != .allmail && $0 != .starred })
 
         guard location == .draft else {
-            return location?.icon
+            let locationIcon = location?.icon
+            if locationIcon == IconProvider.trash {
+                if UserInfo.isAutoDeleteEnabled
+                    && (self.contains(location: .trash) || self.contains(location: .spam))
+                    && expirationTime != nil
+                    && flag.contains(.isExpirationTimeFrozen) == false {
+                    return IconProvider.trashClock
+                } else {
+                    return locationIcon
+                }
+            } else {
+                return locationIcon
+            }
         }
         if viewMode == .singleMessage {
            return IconProvider.pencil
