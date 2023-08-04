@@ -23,6 +23,7 @@
 import ProtonCore_AccountDeletion
 import ProtonCore_Log
 import ProtonCore_Networking
+import ProtonCore_PaymentsUI
 import UIKit
 
 // sourcery: mock
@@ -112,8 +113,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             if user.isPaid {
                 openAutoDeleteSettings()
             } else {
-                //TODO: Replace with upsell view
-                "Upgrade to benefit from Auto-Delete".toast(at: self.navigationController!.view)
+                presentAutoDeleteUpsellView()
             }
         }
     }
@@ -281,5 +281,22 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         let viewModel = NextMessageAfterMoveViewModel(user, apiService: user.apiService)
         let viewController = SwitchToggleViewController(viewModel: viewModel)
         navigationController?.show(viewController, sender: nil)
+    }
+
+    private func presentAutoDeleteUpsellView() {
+        guard let navController = navigationController else { return }
+        let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
+            guard let self else { return }
+            self.presentPayments()
+        }
+        upsellSheet.present(on: navController.view)
+    }
+
+    private func presentPayments() {
+        let paymentsUI = PaymentsUI(payments: user.payments,
+                                    clientApp: .mail,
+                                    shownPlanNames: Constants.shownPlanNames,
+                                    customization: .empty)
+        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in }
     }
 }
