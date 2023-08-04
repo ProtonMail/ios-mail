@@ -1174,6 +1174,37 @@ extension MailboxViewModel {
             return nil
         }
     }
+
+    func updateAutoDeleteSetting(to newStatus: Bool, for user: UserManager, completion: @escaping ((Error?) -> Void)) {
+        let request = UpdateAutoDeleteSpamAndTrashDaysRequest(shouldEnable: newStatus)
+        user.apiService.perform(
+            request: request,
+            response: VoidResponse()
+        ) { _, response in
+            DispatchQueue.main.async {
+                if let error = response.error {
+                    completion(error)
+                } else {
+                    completion(nil)
+                }
+            }
+        }
+    }
+
+    func alertToConfirmEnabling(completion: @escaping ((Error?) -> Void)) -> UIAlertController {
+        let alert = L11n.AutoDeleteSettings.enableAlertMessage.alertController()
+        alert.title = L11n.AutoDeleteSettings.enableAlertTitle
+        let cancelTitle = LocalString._general_cancel_button
+        let confirm = UIAlertAction(title: L11n.AutoDeleteSettings.enableAlertButton, style: .default) { _ in }
+        let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { [weak self] _ in
+            guard let self else { return }
+            self.updateAutoDeleteSetting(to: true, for: self.user, completion: { error in
+                completion(error)
+            })
+        }
+        [confirm, cancel].forEach(alert.addAction)
+        return alert
+    }
 }
 
 // MARK: - Misc
