@@ -96,7 +96,7 @@ class ConversationMessageCellPresenter {
     }
 
     private func presentTags(model: ConversationMessageModel, in view: ConversationMessageView) {
-        view.expirationView.isHidden = model.expirationTag == nil
+        view.expirationView.isHidden = model.expirationTag == nil || !model.isExpirationFrozen
 
         if let expirationTag = model.expirationTag {
             view.expirationView.tagLabel.set(text: expirationTag.title,
