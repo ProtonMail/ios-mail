@@ -1555,4 +1555,15 @@ enum L11n {
         static let emptySpam = NSLocalizedString("Empty spam", comment: "Title of button to empty spam folder")
         static let emptyTrash = NSLocalizedString("Empty trash", comment: "Title of button to empty trash folder")
     }
+
+    struct AutoDeleteUpsellSheet {
+        static let title = NSLocalizedString("Clear out the junk", comment: "Title of the sheet to advertise the auto delete feature to free users")
+        static let description = NSLocalizedString("Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.", comment: "Text content of the sheet to advertise the auto delete feature to free users")
+
+        static let upsellLineOne = NSLocalizedString("Up to 3 TB of storage", comment: "Text to advertise what upgrading will provide")
+        static let upsellLineTwo = NSLocalizedString("Up to 15 email addresses", comment: "Text to advertise what upgrading will provide")
+        static let upsellLineThree = NSLocalizedString("Unlimited folders and labels", comment: "Text to advertise what upgrading will provide")
+        static let upsellLineFour = NSLocalizedString("Custom email domains", comment: "Text to advertise what upgrading will provide")
+        static let upgradeButtonTitle = NSLocalizedString("Upgrade now", comment: "Title of button to upgrade to a paid plan")
+    }
 }

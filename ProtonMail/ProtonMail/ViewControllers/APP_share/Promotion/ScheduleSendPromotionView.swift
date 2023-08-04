@@ -256,7 +256,7 @@ private enum SubviewsFactory {
     }()
 
     static var upperView: UIImageView = {
-        let view = UIImageView(image: Asset.schedulePromotion.image)
+        let view = UIImageView(image: Asset.upsellPromotion.image)
         return view
     }()
 
