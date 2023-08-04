@@ -161,4 +161,10 @@ final class BannerViewModel {
     static func durationsBySecond(seconds: Int) -> (days: Int, hours: Int, minutes: Int) {
         return (seconds / (24 * 3_600), (seconds % (24 * 3_600)) / 3_600, seconds % 3_600 / 60)
     }
+
+    func isAutoDeletingMessage() -> Bool {
+        infoProvider?.message.expirationTime != nil
+        && (infoProvider?.message.contains(location: .trash) == true || infoProvider?.message.contains(location: .spam) == true)
+        && infoProvider?.message.flag.contains(.isExpirationTimeFrozen) == false
+    }
 }

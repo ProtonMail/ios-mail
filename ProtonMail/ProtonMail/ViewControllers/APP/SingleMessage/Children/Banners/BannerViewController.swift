@@ -233,7 +233,13 @@ final class BannerViewController: UIViewController {
 
     private func showExpirationBanner() {
         let title = BannerViewModel.calculateExpirationTitle(of: viewModel.getExpirationOffset())
-        let banner = CompactBannerView(appearance: .expiration,
+        let appearance: CompactBannerView.Appearance
+        if viewModel.isAutoDeletingMessage() {
+            appearance = .normal
+        } else {
+            appearance = .expiration
+        }
+        let banner = CompactBannerView(appearance: appearance,
                                        title: title,
                                        icon: IconProvider.hourglass,
                                        action: nil)
