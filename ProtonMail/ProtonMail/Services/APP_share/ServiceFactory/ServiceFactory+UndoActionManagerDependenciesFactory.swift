@@ -51,7 +51,9 @@ extension ServiceFactory {
                 coreKeyMaker: factory.get(),
                 darkModeCache: factory.userCachedStatus,
                 mobileSignatureCache: factory.userCachedStatus,
-                attachmentMetadataStrippingCache: factory.userCachedStatus
+                attachmentMetadataStrippingCache: factory.userCachedStatus,
+                featureFlagCache: factory.userCachedStatus,
+                userCachedStatusProvider: factory.userCachedStatus
             )
         }
     }

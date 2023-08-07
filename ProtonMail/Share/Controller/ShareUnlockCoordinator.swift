@@ -82,6 +82,8 @@ class ShareUnlockCoordinator {
             darkModeCache: services.userCachedStatus,
             mobileSignatureCache: services.userCachedStatus,
             attachmentMetadataStrippingCache: services.userCachedStatus,
+            featureFlagCache: services.userCachedStatus,
+            userCachedStatusProvider: services.userCachedStatus,
             navigationViewController: navigationController
         )
         navigationController.setViewControllers([composer], animated: true)

@@ -115,6 +115,8 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
             darkModeCache: sharedServices.userCachedStatus,
             mobileSignatureCache: sharedServices.userCachedStatus,
             attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
+            featureFlagCache: sharedServices.userCachedStatus,
+            userCachedStatusProvider: sharedServices.userCachedStatus,
             toContact: contactGroupVO
         )
 

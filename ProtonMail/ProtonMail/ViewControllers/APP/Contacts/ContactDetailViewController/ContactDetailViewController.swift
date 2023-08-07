@@ -299,6 +299,8 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
             darkModeCache: sharedServices.userCachedStatus,
             mobileSignatureCache: sharedServices.userCachedStatus,
             attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
+            featureFlagCache: sharedServices.userCachedStatus,
+            userCachedStatusProvider: sharedServices.userCachedStatus,
             toContact: contact
         )
         guard let nav = navigationController else {

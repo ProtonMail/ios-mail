@@ -73,7 +73,7 @@ class ComposeViewModel: NSObject {
         return composerMessageHelper.attachmentSize
     }
 
-    private var shouldStripMetaData: Bool {
+    var shouldStripMetaData: Bool {
         return dependencies.attachmentMetadataStrippingCache.metadataStripping == .stripMetadata
     }
 
@@ -1116,6 +1116,7 @@ extension ComposeViewModel {
         let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
         let darkModeCache: DarkModeCacheProtocol
         let attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol
+        let userCachedStatusProvider: UserCachedStatusProvider
     }
 
     struct EncodableRecipient: Encodable {

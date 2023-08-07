@@ -173,7 +173,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         guard let messageID = viewModel.composerMessageHelper.draft?.messageID else {
             return nil
         }
-        userCachedStatus.lastDraftMessageID = messageID.rawValue
+        viewModel.dependencies.userCachedStatusProvider.lastDraftMessageID = messageID.rawValue
 
         var contentVC: UIViewController?
         var navigationController: UINavigationController?
@@ -224,7 +224,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             }
         } else {
             if self.viewModel.isEmptyDraft() { return }
-            topVC.showDraftSaveHintBanner(cache: userCachedStatus,
+            topVC.showDraftSaveHintBanner(cache: viewModel.dependencies.userCachedStatusProvider,
                                           messageService: messageService,
                                           coreDataContextProvider: coreDataContextProvider)
         }
@@ -268,18 +268,20 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
                 }
                 isFromValid = false
                 if origAddr.email.lowercased().range(of: "@pm.me") != nil {
-                    guard userCachedStatus.isPMMEWarningDisabled == false else {
+                    guard viewModel.dependencies.userCachedStatusProvider.isPMMEWarningDisabled == false else {
                         return
                     }
                     let msg = String(format: LocalString._composer_sending_messages_from_a_paid_feature, origAddr.email, addr.email)
                     let alertController = msg.alertController(LocalString._general_notice_alert_title)
                     alertController.addOKAction()
                     alertController.addAction(
-                        UIAlertAction(title: LocalString._general_dont_remind_action,
-                                      style: .destructive,
-                                      handler: { _ in
-                                          userCachedStatus.isPMMEWarningDisabled = true
-                                      })
+                        UIAlertAction(
+                            title: LocalString._general_dont_remind_action,
+                            style: .destructive,
+                            handler: { [weak self] _ in
+                                self?.viewModel.dependencies.userCachedStatusProvider.isPMMEWarningDisabled = true
+                            }
+                        )
                     )
                     self.present(alertController, animated: true, completion: nil)
                 }
@@ -542,11 +544,10 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     func addInlineAttachment(_ sid: String, data: Data, completion: (() -> Void)?) {
         // Data.toAttachment will automatically increment number of attachments in the message
-        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         viewModel.composerMessageHelper.addAttachment(
             data: data,
             fileName: sid,
-            shouldStripMetaData: stripMetadata,
+            shouldStripMetaData: viewModel.shouldStripMetaData,
             type: "image/png",
             isInline: true
         ) { _ in
