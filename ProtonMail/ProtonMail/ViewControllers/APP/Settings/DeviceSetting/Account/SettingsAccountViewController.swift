@@ -323,7 +323,8 @@ extension SettingsAccountViewController {
         } else {
             onOffTitle = LocalString._settings_Off_title
         }
-        imageCell.configure(left: item.description, right: onOffTitle, leftImage: Asset.upgradeIcon.image)
+        let image = self.viewModel.isPaidUser ? nil : Asset.upgradeIcon.image
+        imageCell.configure(left: item.description, right: onOffTitle, leftImage: image)
         return imageCell
     }
 
