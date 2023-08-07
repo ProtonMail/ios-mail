@@ -633,8 +633,6 @@ extension ComposeContainerViewController: AttachmentController {
                     return
                 }
 
-                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-
                 var newAttachment: AttachmentEntity?
                 let attachmentGroup = DispatchGroup()
                 attachmentGroup.enter()
@@ -642,7 +640,7 @@ extension ComposeContainerViewController: AttachmentController {
                     fileData.contents.toAttachment(
                         context, fileName: fileData.name,
                         type: fileData.ext,
-                        stripMetadata: stripMetadata,
+                        stripMetadata: self.viewModel.shouldStripAttachmentMetadata,
                         isInline: false
                     ).done { attachment in
                         newAttachment = attachment

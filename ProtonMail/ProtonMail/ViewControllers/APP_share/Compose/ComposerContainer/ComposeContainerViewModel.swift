@@ -54,8 +54,12 @@ class ComposeContainerViewModel: TableContainerViewModel {
         dependencies.featureFlagCache.featureFlags(for: user.userID)[.scheduleSend]
     }
 
+    var shouldStripAttachmentMetadata: Bool {
+        dependencies.attachmentMetadataStripStatusProvider.metadataStripping == .stripMetadata
+    }
+
     init(
-        dependencies: Dependencies = .init(),
+        dependencies: Dependencies,
         router: ComposerRouter,
         editorViewModel: ComposeViewModel,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
@@ -160,9 +164,8 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
             self.showErrorBanner(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
             return Promise()
         }
-        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         return Promise { seal in
-            self.childViewModel.composerMessageHelper.addAttachment(fileData, shouldStripMetaData: stripMetadata) { _ in
+            self.childViewModel.composerMessageHelper.addAttachment(fileData, shouldStripMetaData: shouldStripAttachmentMetadata) { _ in
                 self.childViewModel.updateDraft()
                 seal.fulfill_()
             }
@@ -202,11 +205,6 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
 extension ComposeContainerViewModel {
     struct Dependencies {
         let featureFlagCache: FeatureFlagCache
-
-        init(
-            featureFlagCache: FeatureFlagCache = userCachedStatus
-        ) {
-            self.featureFlagCache = featureFlagCache
-        }
+        let attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol
     }
 }

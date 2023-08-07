@@ -28,7 +28,26 @@ import ProtonCore_Payments
 
 let userCachedStatus = UserCachedStatus()
 
-final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol {
+// sourcery: mock
+protocol UserCachedStatusProvider: AnyObject {
+    var keymakerRandomkey: String? { get set }
+    var primaryUserSessionId: String? { get set }
+    var isDohOn: Bool { get set }
+    var isCombineContactOn: Bool { get set }
+    var lastDraftMessageID: String? { get set }
+    var isPMMEWarningDisabled: Bool { get set }
+    var serverNotices: [String] { get set }
+    var serverNoticesNextTime: String { get set }
+
+    func getDefaultSignaureSwitchStatus(uid: String) -> Bool?
+    func setDefaultSignatureSwitchStatus(uid: String, value: Bool)
+    func removeDefaultSignatureSwitchStatus(uid: String)
+    func getIsCheckSpaceDisabledStatus(by uid: String) -> Bool?
+    func setIsCheckSpaceDisabledStatus(uid: String, value: Bool)
+    func removeIsCheckSpaceDisabledStatus(uid: String)
+}
+
+final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol, UserCachedStatusProvider {
     struct Key {
         // inuse
 //        static let lastCacheVersion = "last_cache_version" //user cache

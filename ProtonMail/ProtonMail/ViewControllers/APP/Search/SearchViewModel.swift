@@ -111,7 +111,7 @@ final class SearchViewModel: NSObject {
     private var currentFetchedSearchResultPage: UInt = 0
     /// use this flag to stop the search query being triggered by `loadMoreDataIfNeeded`.
     private(set) var searchIsDone = false
-    private let composeViewModelFactory: ComposeViewModelDependenciesFactory
+    private let composerFactory: ComposerDependenciesFactory
 
     init(
         serviceFactory: ServiceFactory,
@@ -119,7 +119,7 @@ final class SearchViewModel: NSObject {
         coreDataContextProvider: CoreDataContextProviderProtocol,
         dependencies: Dependencies
     ) {
-        self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
+        self.composerFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
         self.dependencies = dependencies
@@ -218,7 +218,7 @@ extension SearchViewModel: SearchVMProtocol {
             action: .openDraft,
             msgService: user.messageService,
             user: user,
-            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
+            dependencies: composerFactory.makeViewModelDependencies(user: user)
         )
     }
 
@@ -233,7 +233,7 @@ extension SearchViewModel: SearchVMProtocol {
             msgService: user.messageService,
             user: user,
             isEditingScheduleMsg: isEditingScheduleMsg,
-            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
+            dependencies: composerFactory.makeViewModelDependencies(user: user)
         )
     }
 

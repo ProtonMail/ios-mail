@@ -31,6 +31,8 @@ struct ComposerViewFactory {
         darkModeCache: DarkModeCacheProtocol,
         mobileSignatureCache: MobileSignatureCacheProtocol,
         attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
+        featureFlagCache: FeatureFlagCache,
+        userCachedStatusProvider: UserCachedStatusProvider,
         navigationViewController: UINavigationController
     ) -> ComposeContainerViewController {
         let childViewModel = ComposeViewModel(
@@ -57,7 +59,8 @@ struct ComposerViewFactory {
                             messageDecrypter: user.messageService.messageDecrypter
                         ),
                         userDataSource: user
-                    )
+                    ),
+                    attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
                 ), fetchMobileSignatureUseCase: FetchMobileSignature(
                     dependencies: .init(
                         coreKeyMaker: coreKeyMaker,
@@ -65,12 +68,17 @@ struct ComposerViewFactory {
                     )
                 ),
                 darkModeCache: darkModeCache,
-                attachmentMetadataStrippingCache: attachmentMetadataStrippingCache
+                attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
+                userCachedStatusProvider: userCachedStatusProvider
             )
         )
         let router = ComposerRouter()
         router.setupNavigation(navigationViewController)
         let viewModel = ComposeContainerViewModel(
+            dependencies: .init(
+                featureFlagCache: featureFlagCache,
+                attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
+            ),
             router: router,
             editorViewModel: childViewModel,
             userIntroductionProgressProvider: userIntroductionProgressProvider,
@@ -96,6 +104,8 @@ struct ComposerViewFactory {
         darkModeCache: DarkModeCacheProtocol,
         mobileSignatureCache: MobileSignatureCacheProtocol,
         attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
+        featureFlagCache: FeatureFlagCache,
+        userCachedStatusProvider: UserCachedStatusProvider,
         mailToUrl: URL? = nil,
         toContact: ContactPickerModelProtocol? = nil,
         originalScheduledTime: Date? = nil
@@ -124,7 +134,8 @@ struct ComposerViewFactory {
                             messageDecrypter: user.messageService.messageDecrypter
                         ),
                         userDataSource: user
-                    )
+                    ),
+                    attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
                 ), fetchMobileSignatureUseCase: FetchMobileSignature(
                     dependencies: .init(
                         coreKeyMaker: coreKeyMaker,
@@ -132,7 +143,8 @@ struct ComposerViewFactory {
                     )
                 ),
                 darkModeCache: darkModeCache,
-                attachmentMetadataStrippingCache: attachmentMetadataStrippingCache
+                attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
+                userCachedStatusProvider: userCachedStatusProvider
             )
         )
         if let url = mailToUrl {
@@ -144,17 +156,25 @@ struct ComposerViewFactory {
         return Self.makeComposer(
             childViewModel: childViewModel,
             contextProvider: contextProvider,
-            userIntroductionProgressProvider: userIntroductionProgressProvider
+            userIntroductionProgressProvider: userIntroductionProgressProvider,
+            attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
+            featureFlagCache: featureFlagCache
         )
     }
 
     static func makeComposer(
         childViewModel: ComposeViewModel,
         contextProvider: CoreDataContextProviderProtocol,
-        userIntroductionProgressProvider: UserIntroductionProgressProvider
+        userIntroductionProgressProvider: UserIntroductionProgressProvider,
+        attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
+        featureFlagCache: FeatureFlagCache
     ) -> UINavigationController {
         let router = ComposerRouter()
         let viewModel = ComposeContainerViewModel(
+            dependencies: .init(
+                featureFlagCache: featureFlagCache,
+                attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
+            ),
             router: router,
             editorViewModel: childViewModel,
             userIntroductionProgressProvider: userIntroductionProgressProvider,

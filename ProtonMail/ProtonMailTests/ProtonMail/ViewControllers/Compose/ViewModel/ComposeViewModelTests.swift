@@ -49,13 +49,14 @@ final class ComposeViewModelTests: XCTestCase {
             (message, nil)
         }
 
+        attachmentMetadataStrippingCache = .init()
         let helperDependencies = ComposerMessageHelper.Dependencies(
             messageDataService: fakeUserManager.messageService,
             cacheService: fakeUserManager.cacheService,
             contextProvider: mockCoreDataService,
-            copyMessage: copyMessage
+            copyMessage: copyMessage,
+            attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
         )
-        attachmentMetadataStrippingCache = .init()
         dependencies = ComposeViewModel.Dependencies(
             coreDataContextProvider: mockCoreDataService,
             coreKeyMaker: MockKeyMakerProtocol(),
@@ -69,7 +70,8 @@ final class ComposeViewModelTests: XCTestCase {
                 cache: MockMobileSignatureCacheProtocol()
             )),
             darkModeCache: MockDarkModeCacheProtocol(),
-            attachmentMetadataStrippingCache: attachmentMetadataStrippingCache
+            attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
+            userCachedStatusProvider: MockUserCachedStatusProvider()
         )
 
         self.message = testContext.performAndWait {

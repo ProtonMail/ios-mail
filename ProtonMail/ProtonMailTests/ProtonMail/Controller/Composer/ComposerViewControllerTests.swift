@@ -97,6 +97,8 @@ extension ComposerViewControllerTests {
             darkModeCache: MockDarkModeCacheProtocol(),
             mobileSignatureCache: MockMobileSignatureCacheProtocol(),
             attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock(),
+            featureFlagCache: MockFeatureFlagCache(),
+            userCachedStatusProvider: MockUserCachedStatusProvider(),
             originalScheduledTime: originalScheduledTime
         )
         sut = nav.topViewController as? ComposeContainerViewController

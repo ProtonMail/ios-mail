@@ -37,7 +37,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     var pendingActionAfterDismissal: (() -> Void)?
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     var goToDraft: ((MessageID, Date?) -> Void)?
-    private let composeViewModelFactory: ComposeViewModelDependenciesFactory
+    private let composerFactory: ComposerDependenciesFactory
     private let factory: ServiceFactory
 
     init(
@@ -58,7 +58,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.coreDataService = coreDataService
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.highlightedKeywords = highlightedKeywords
-        self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
+        self.composerFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
         self.factory = serviceFactory
     }
 
@@ -140,7 +140,7 @@ extension SingleMessageCoordinator {
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
+            dependencies: composerFactory.makeViewModelDependencies(user: user)
         )
         viewModel.addToContacts(contact)
 
@@ -184,7 +184,7 @@ extension SingleMessageCoordinator {
             action: composeAction,
             msgService: user.messageService,
             user: user,
-            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
+            dependencies: composerFactory.makeViewModelDependencies(user: user)
         )
 
         presentCompose(viewModel: viewModel)
@@ -223,7 +223,7 @@ extension SingleMessageCoordinator {
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
+            dependencies: composerFactory.makeViewModelDependencies(user: user)
         )
 
         mailToData.to.forEach { recipient in
@@ -253,7 +253,9 @@ extension SingleMessageCoordinator {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: coreDataService,
-            userIntroductionProgressProvider: factory.userCachedStatus
+            userIntroductionProgressProvider: factory.userCachedStatus,
+            attachmentMetadataStrippingCache: factory.userCachedStatus,
+            featureFlagCache: factory.userCachedStatus
         )
         viewController?.present(composer, animated: true)
     }

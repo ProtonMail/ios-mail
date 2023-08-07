@@ -1461,6 +1461,119 @@ class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
 
 }
 
+class MockUserCachedStatusProvider: UserCachedStatusProvider {
+    @PropertyStub(\MockUserCachedStatusProvider.keymakerRandomkey, initialGet: nil) var keymakerRandomkeyStub
+    var keymakerRandomkey: String? {
+        get {
+            keymakerRandomkeyStub()
+        }
+        set {
+            keymakerRandomkeyStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.primaryUserSessionId, initialGet: nil) var primaryUserSessionIdStub
+    var primaryUserSessionId: String? {
+        get {
+            primaryUserSessionIdStub()
+        }
+        set {
+            primaryUserSessionIdStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.isDohOn, initialGet: Bool()) var isDohOnStub
+    var isDohOn: Bool {
+        get {
+            isDohOnStub()
+        }
+        set {
+            isDohOnStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.isCombineContactOn, initialGet: Bool()) var isCombineContactOnStub
+    var isCombineContactOn: Bool {
+        get {
+            isCombineContactOnStub()
+        }
+        set {
+            isCombineContactOnStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.lastDraftMessageID, initialGet: nil) var lastDraftMessageIDStub
+    var lastDraftMessageID: String? {
+        get {
+            lastDraftMessageIDStub()
+        }
+        set {
+            lastDraftMessageIDStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.isPMMEWarningDisabled, initialGet: Bool()) var isPMMEWarningDisabledStub
+    var isPMMEWarningDisabled: Bool {
+        get {
+            isPMMEWarningDisabledStub()
+        }
+        set {
+            isPMMEWarningDisabledStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.serverNotices, initialGet: [String]()) var serverNoticesStub
+    var serverNotices: [String] {
+        get {
+            serverNoticesStub()
+        }
+        set {
+            serverNoticesStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.serverNoticesNextTime, initialGet: String()) var serverNoticesNextTimeStub
+    var serverNoticesNextTime: String {
+        get {
+            serverNoticesNextTimeStub()
+        }
+        set {
+            serverNoticesNextTimeStub(newValue)
+        }
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.getDefaultSignaureSwitchStatus, initialReturn: nil) var getDefaultSignaureSwitchStatusStub
+    func getDefaultSignaureSwitchStatus(uid: String) -> Bool? {
+        getDefaultSignaureSwitchStatusStub(uid)
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.setDefaultSignatureSwitchStatus) var setDefaultSignatureSwitchStatusStub
+    func setDefaultSignatureSwitchStatus(uid: String, value: Bool) {
+        setDefaultSignatureSwitchStatusStub(uid, value)
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.removeDefaultSignatureSwitchStatus) var removeDefaultSignatureSwitchStatusStub
+    func removeDefaultSignatureSwitchStatus(uid: String) {
+        removeDefaultSignatureSwitchStatusStub(uid)
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.getIsCheckSpaceDisabledStatus, initialReturn: nil) var getIsCheckSpaceDisabledStatusStub
+    func getIsCheckSpaceDisabledStatus(by uid: String) -> Bool? {
+        getIsCheckSpaceDisabledStatusStub(uid)
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.setIsCheckSpaceDisabledStatus) var setIsCheckSpaceDisabledStatusStub
+    func setIsCheckSpaceDisabledStatus(uid: String, value: Bool) {
+        setIsCheckSpaceDisabledStatusStub(uid, value)
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.removeIsCheckSpaceDisabledStatus) var removeIsCheckSpaceDisabledStatusStub
+    func removeIsCheckSpaceDisabledStatus(uid: String) {
+        removeIsCheckSpaceDisabledStatusStub(uid)
+    }
+
+}
+
 class MockUserFeedbackServiceProtocol: UserFeedbackServiceProtocol {
     @FuncStub(MockUserFeedbackServiceProtocol.send) var sendStub
     func send(_ feedback: UserFeedback, handler: @escaping (UserFeedbackServiceError?) -> Void) {

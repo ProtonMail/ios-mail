@@ -55,7 +55,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private var timeOfLastNavigationToMessageDetails: Date?
 
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
-    private let composeViewModelFactory: ComposeViewModelDependenciesFactory
+    private let composerFactory: ComposerDependenciesFactory
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
@@ -78,7 +78,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         self.internetStatusProvider = internetStatusProvider
         self.getApplicationState = getApplicationState
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
-        self.composeViewModelFactory = services.makeComposeViewModelDependenciesFactory()
+        self.composerFactory = services.makeComposeViewModelDependenciesFactory()
     }
 
     enum Destination: String {
@@ -197,7 +197,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                     action: existingMessage == nil ? .newDraft : .openDraft,
                     msgService: user.messageService,
                     user: user,
-                    dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
+                    dependencies: composerFactory.makeViewModelDependencies(user: user)
                 )
                 showComposer(viewModel: viewModel, navigationVC: nav)
             }
@@ -228,7 +228,10 @@ extension MailboxCoordinator {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: contextProvider,
-            userIntroductionProgressProvider: userCachedStatus)
+            userIntroductionProgressProvider: services.userCachedStatus,
+            attachmentMetadataStrippingCache: services.userCachedStatus,
+            featureFlagCache: services.userCachedStatus
+        )
         navigationVC.present(composer, animated: true)
     }
 
@@ -278,6 +281,8 @@ extension MailboxCoordinator {
             darkModeCache: services.userCachedStatus,
             mobileSignatureCache: services.userCachedStatus,
             attachmentMetadataStrippingCache: services.userCachedStatus,
+            featureFlagCache: services.userCachedStatus,
+            userCachedStatusProvider: services.userCachedStatus,
             originalScheduledTime: originalScheduledTime
         )
         navigationVC.present(composer, animated: true)
@@ -397,6 +402,8 @@ extension MailboxCoordinator {
                 darkModeCache: services.userCachedStatus,
                 mobileSignatureCache: services.userCachedStatus,
                 attachmentMetadataStrippingCache: services.userCachedStatus,
+                featureFlagCache: services.userCachedStatus,
+                userCachedStatusProvider: services.userCachedStatus,
                 mailToUrl: mailToURL
             )
             nav.present(composer, animated: true)
