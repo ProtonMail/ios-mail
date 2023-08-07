@@ -460,7 +460,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.refreshControl.tintColorDidChange()
 
         self.view.backgroundColor = ColorProvider.BackgroundNorm
-        self.tableView.backgroundColor = ColorProvider.BackgroundNorm
+        self.tableView.backgroundColor = UIColor.clear
 
         self.tableView.addSubview(self.refreshControl)
         self.tableView.delegate = self
