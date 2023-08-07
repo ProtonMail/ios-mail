@@ -2618,6 +2618,7 @@ extension MailboxViewController {
             infoBanner.emptyButtonAction = { [weak self] in
                 self?.clickEmptyFolderAction()
             }
+            let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
             infoBanner.toggleEmptyButton(shouldEnable: count > 0)
             return infoBanner
         case .infoBanner(.trash):
@@ -2625,6 +2626,7 @@ extension MailboxViewController {
             infoBanner.emptyButtonAction = { [weak self] in
                 self?.clickEmptyFolderAction()
             }
+            let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
             infoBanner.toggleEmptyButton(shouldEnable: count > 0)
             return infoBanner
         case .none:
