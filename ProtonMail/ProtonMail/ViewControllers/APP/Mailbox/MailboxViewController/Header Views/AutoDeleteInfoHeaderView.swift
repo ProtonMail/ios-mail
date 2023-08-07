@@ -103,6 +103,10 @@ class AutoDeleteInfoHeaderView: UIView {
     func emptyButtonTapped() {
         self.emptyButtonAction?()
     }
+
+    func toggleEmptyButton(shouldEnable: Bool) {
+        emptyButton.isEnabled = shouldEnable
+    }
 }
 
 extension AutoDeleteInfoHeaderView {

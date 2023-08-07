@@ -2618,12 +2618,14 @@ extension MailboxViewController {
             infoBanner.emptyButtonAction = { [weak self] in
                 self?.clickEmptyFolderAction()
             }
+            infoBanner.toggleEmptyButton(shouldEnable: count > 0)
             return infoBanner
         case .infoBanner(.trash):
             let infoBanner = AutoDeleteTrashInfoHeaderView()
             infoBanner.emptyButtonAction = { [weak self] in
                 self?.clickEmptyFolderAction()
             }
+            infoBanner.toggleEmptyButton(shouldEnable: count > 0)
             return infoBanner
         case .none:
             return nil
