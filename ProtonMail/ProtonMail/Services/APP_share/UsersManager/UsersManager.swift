@@ -150,10 +150,6 @@ class UsersManager: Service, UsersManagerProtocol {
         #if !APP_EXTENSION
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-
-        // We've been seeing crashes caused by CoreDataService not being ready by the time a UserManager is instantiated.
-        // Setting up the Core Data stack before the main key is available might mess up migration, however it's a lesser evil compared to a crash.
-        (UIApplication.shared.delegate as? AppDelegate)?.setupCoreData()
         #endif
 
         let newUser = UserManager(

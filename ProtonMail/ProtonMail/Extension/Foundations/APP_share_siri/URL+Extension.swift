@@ -25,12 +25,16 @@ import Foundation
 extension URL {
     mutating func excludeFromBackup() {
         do {
-            var resourceValues = URLResourceValues()
-            resourceValues.isExcludedFromBackup = true
-            try setResourceValues(resourceValues)
+            try excludeFromBackupThrowing()
         } catch {
             assert(false, " path: \(absoluteString) excludeFromBackup error: \(error)")
         }
+    }
+
+    mutating func excludeFromBackupThrowing() throws {
+        var resourceValues = URLResourceValues()
+        resourceValues.isExcludedFromBackup = true
+        try setResourceValues(resourceValues)
     }
 
     struct MailtoData {

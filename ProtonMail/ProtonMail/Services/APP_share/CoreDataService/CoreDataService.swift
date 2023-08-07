@@ -28,7 +28,7 @@ import LifetimeTracker
 #endif
 
 class CoreDataService: Service, CoreDataContextProviderProtocol {
-    static let shared = CoreDataService(container: CoreDataStore.shared.defaultContainer)
+    static let shared = CoreDataService(container: CoreDataStore.shared.container)
 
     static var useNewApproach: Bool {
         let isFeatureFlagOn: Bool = {

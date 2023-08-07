@@ -20,56 +20,63 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
 import CoreData
 import ProtonMailAnalytics
 import UIKit
 
-/// Provide the local store for core data.
 final class CoreDataStore {
     static let shared = CoreDataStore()
 
-    // MARK: Static attributes
+    let container = NSPersistentContainer(name: "ProtonMail")
 
-    private static let databaseName: String = "ProtonMail.sqlite"
-    private static var databaseUrl: URL {
-        FileManager.default.appGroupsDirectoryURL.appendingPathComponent(CoreDataStore.databaseName)
-    }
+    private var initialized = false
+    private let initializationQueue = DispatchQueue(label: "ch.protonmail.CoreDataStore.initialization")
+
+    private let databaseURL = FileManager.default.appGroupsDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
 
     private init() {
     }
 
-    static var managedObjectModel: NSManagedObjectModel = {
-        var modelURL = Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!
-        return NSManagedObjectModel(contentsOf: modelURL)!
-    }()
-
     static func deleteDataStore() {
+        do {
+            try shared.initialize()
+        } catch {
+            PMAssertionFailure(error)
+        }
+
         let dataProtectionStatus = establishDataProtectionStatus()
 
-        let persistentStoreCoordinator = shared.defaultContainer.persistentStoreCoordinator
+        let persistentStoreCoordinator = shared.container.persistentStoreCoordinator
+        let persistentStores = persistentStoreCoordinator.persistentStores
 
         SystemLogger.log(
-            message: "Deleting \(persistentStoreCoordinator.persistentStores.count) persistent data stores...",
+            message: "Deleting \(persistentStores.count) persistent data stores...",
             category: .coreData
         )
 
         do {
-            for persistentStore in persistentStoreCoordinator.persistentStores {
+            for persistentStore in persistentStores {
                 let url = persistentStoreCoordinator.url(for: persistentStore)
 
                 if #available(iOS 15.0, *) {
                     let storeType = NSPersistentStore.StoreType(rawValue: persistentStore.type)
                     try persistentStoreCoordinator.destroyPersistentStore(at: url, type: storeType)
+                    _ = try persistentStoreCoordinator.addPersistentStore(type: storeType, at: url)
                 } else {
-                    try persistentStoreCoordinator.destroyPersistentStore(at: url, ofType: persistentStore.type)
+                    let storeType = persistentStore.type
+                    try persistentStoreCoordinator.destroyPersistentStore(at: url, ofType: storeType)
+                    _ = try persistentStoreCoordinator.addPersistentStore(
+                        ofType: storeType,
+                        configurationName: nil,
+                        at: url
+                    )
                 }
 
                 SystemLogger.log(message: "Data store at \(url) deleted", category: .coreData)
             }
-
-            try shared.defaultContainer.loadPersistentStores()
         } catch {
+            PMAssertionFailure(error)
+
             reportPersistentContainerError(
                 message: "Error deleting data store: \(String(describing: error))",
                 dataProtectionStatus: dataProtectionStatus
@@ -77,37 +84,30 @@ final class CoreDataStore {
         }
     }
 
-    // MARK: Instance attributes
+    func initialize() throws {
+        try initializationQueue.sync {
+            guard !initialized else {
+                return
+            }
 
-    lazy var defaultContainer: NSPersistentContainer = {
-        SystemLogger.log(message: "Instantiating persistent container", category: .coreData)
-        return newPersistentContainer(
-            CoreDataStore.managedObjectModel,
-            name: CoreDataStore.databaseName,
-            url: CoreDataStore.databaseUrl
-        )
-    }()
+            initialized = true
 
+            SystemLogger.log(message: "Instantiating persistent container", category: .coreData)
+            var url = databaseURL
 
-    // MARK: Private methods
+            let description = NSPersistentStoreDescription(url: url)
+            description.shouldMigrateStoreAutomatically = true
+            description.shouldInferMappingModelAutomatically = true
+            container.persistentStoreDescriptions = [description]
 
-    private func newPersistentContainer(_ model: NSManagedObjectModel, name: String, url: URL) -> NSPersistentContainer {
-        var url = url
-        let container = NSPersistentContainer(name: name, managedObjectModel: model)
+            let dataProtectionStatus = Self.establishDataProtectionStatus()
 
-        let description = NSPersistentStoreDescription(url: url)
-        description.shouldMigrateStoreAutomatically = true
-        description.shouldInferMappingModelAutomatically = true
-        container.persistentStoreDescriptions = [description]
-
-        let dataProtectionStatus = Self.establishDataProtectionStatus()
-
-        do {
-            try container.loadPersistentStores()
-            url.excludeFromBackup()
-            container.viewContext.automaticallyMergesChangesFromParent = true
-            container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        } catch {
+            do {
+                try container.loadPersistentStores()
+                try url.excludeFromBackupThrowing()
+                container.viewContext.automaticallyMergesChangesFromParent = true
+                container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            } catch {
                 let err = String(describing: error)
                 CoreDataStore.reportPersistentContainerError(
                     message: "Error loading persistent store: \(err)",
@@ -115,9 +115,9 @@ final class CoreDataStore {
                 )
                 userCachedStatus.signOut()
                 userCachedStatus.cleanGlobal()
-                fatalError("Core Data store failed to load")
+                throw error
+            }
         }
-        return container
     }
 
     private static func establishDataProtectionStatus() -> String {
@@ -137,7 +137,7 @@ final class CoreDataStore {
 extension CoreDataStore: CoreDataMetadata {
     var sqliteFileSize: Measurement<UnitInformationStorage>? {
         do {
-            let dbValues = try CoreDataStore.databaseUrl.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
+            let dbValues = try databaseURL.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
             return Measurement(value: Double(dbValues.totalFileAllocatedSize!), unit: .bytes)
         } catch let error {
             PMAssertionFailure("CoreDataStore databaseSize error: \(error)")

@@ -30,7 +30,6 @@ import ProtonMailAnalytics
 import SafariServices
 
 protocol WindowsCoordinatorDelegate: AnyObject {
-    func setupCoreData()
     func currentApplicationState() -> UIApplication.State
 }
 
@@ -477,7 +476,6 @@ extension WindowsCoordinator {
         Breadcrumbs.shared.add(message: "WindowsCoordinator.lock called", to: .randomLogout)
         guard dependencies.usersManager.hasUsers() else {
             Breadcrumbs.shared.add(message: "WindowsCoordinator.lock no users found", to: .randomLogout)
-            delegate?.setupCoreData()
             navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
             return
         }

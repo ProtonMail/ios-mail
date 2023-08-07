@@ -20,16 +20,28 @@ import XCTest
 @testable import ProtonMail
 
 final class CoreDataStoreTests: XCTestCase {
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+
+        CoreDataStore.deleteDataStore()
+    }
+
     override func tearDownWithError() throws {
         CoreDataStore.deleteDataStore()
 
         try super.tearDownWithError()
     }
 
+    func testInitialize_whenCalledMultipleTimes_doesntCrash() throws {
+        let sut = CoreDataStore.shared
+
+        try sut.initialize()
+        try sut.initialize()
+    }
+
     func testDeletingDataStore_clearsEntities() throws {
         let sut = CoreDataStore.shared
-        let container = sut.defaultContainer
-        let coordinator = container.persistentStoreCoordinator
+        let container = sut.container
 
         let context = container.newBackgroundContext()
         try context.performAndWait {
@@ -53,7 +65,7 @@ final class CoreDataStoreTests: XCTestCase {
 
     func testDeletingDataStore_doesNotBreakSavingNewEntities() throws {
         let sut = CoreDataStore.shared
-        let container = sut.defaultContainer
+        let container = sut.container
 
         CoreDataStore.deleteDataStore()
 

@@ -24,7 +24,7 @@ final class MockCoreDataStore {
     /// Returns the same managed object defined in the main app to have the exact same
     /// functionality for tests.
     private static let managedObjectModel: NSManagedObjectModel = {
-        CoreDataStore.managedObjectModel
+        CoreDataStore.shared.container.managedObjectModel
     }()
 
     /// Returns an in memory persistent container.

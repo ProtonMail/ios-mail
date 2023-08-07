@@ -74,6 +74,12 @@ final class ShareAppCoordinator {
 
 extension ShareAppCoordinator: UnlockManagerDelegate {
     func setupCoreData() {
+        do {
+            try CoreDataStore.shared.initialize()
+        } catch {
+            fatalError("\(error)")
+        }
+
         sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
         let lastUpdatedStore = LastUpdatedStore(contextProvider: CoreDataService.shared)
