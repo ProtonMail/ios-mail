@@ -473,7 +473,7 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
     }
 
     func openUrl(_ url: URL) {
-        let browserSpecificUrl = viewModel.linkOpener.deeplink(to: url) ?? url
+        let browserSpecificUrl = viewModel.linkOpener.deeplink(to: url)
         switch viewModel.linkOpener {
         case .inAppSafari:
             let supports = ["https", "http"]

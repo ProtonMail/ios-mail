@@ -410,10 +410,8 @@ extension WindowsCoordinator {
 
     private func handleWebUrl(url: URL) {
         let linkOpener: LinkOpener = userCachedStatus.browser
-        guard let url = linkOpener.deeplink(to: url) else {
-            openUrl(url)
-            return
-        }
+        let url = linkOpener.deeplink(to: url)
+
         if linkOpener == .inAppSafari {
             presentInAppSafari(url: url)
         } else {
