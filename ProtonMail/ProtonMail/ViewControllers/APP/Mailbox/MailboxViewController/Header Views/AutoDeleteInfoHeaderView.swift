@@ -78,8 +78,8 @@ class AutoDeleteInfoHeaderView: UIView {
             infoLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
             infoLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
             emptyButton.leadingAnchor.constraint(equalTo: infoLabel.leadingAnchor, constant: -16),
-            emptyButton.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: -8),
-            emptyButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 4)
+            emptyButton.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 0),
+            emptyButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4)
         ].activate()
     }
 

@@ -56,11 +56,11 @@ class AutoDeleteUpsellHeaderView: UIView {
             upsellLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
             upsellLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
             learnMoreButton.leadingAnchor.constraint(equalTo: upsellLabel.leadingAnchor, constant: -16),
-            learnMoreButton.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: -8)
+            learnMoreButton.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 0)
                 .setPriority(as: .defaultLow),
-            learnMoreButton.topAnchor.constraint(equalTo: upsellLabel.bottomAnchor, constant: -8)
+            learnMoreButton.topAnchor.constraint(equalTo: upsellLabel.bottomAnchor, constant: 0)
                 .setPriority(as: .defaultLow),
-            learnMoreButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 4)
+            learnMoreButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4)
         ].activate()
     }
 
