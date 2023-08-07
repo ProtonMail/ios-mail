@@ -291,9 +291,9 @@ private enum SubviewFactory {
         case .two:
             icon = IconProvider.envelopes
         case .three:
-            icon = IconProvider.envelope
+            icon = IconProvider.folders
         case .four:
-            icon = IconProvider.calendarCheckmark
+            icon = IconProvider.globe
         }
         let image = UIImageView(image: icon)
         image.tintColor = ColorProvider.InteractionNorm
