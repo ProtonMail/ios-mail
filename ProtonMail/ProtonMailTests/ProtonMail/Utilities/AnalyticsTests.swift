@@ -77,19 +77,19 @@ class AnalyticsTests: XCTestCase {
 
     func testSendError_whenSetupCalled_shouldSendTheErrorSuccessfully() {
         sut.setup(isInDebug: false, environment: .production)
-        sut.sendError(.coreDataInitialisation(error: "error desc"))
-        XCTAssertEqual(analyticsMock.errorEvent, .coreDataInitialisation(error: "error desc"))
+        sut.sendError(.sendMessageFail(error: "error desc"))
+        XCTAssertEqual(analyticsMock.errorEvent, .sendMessageFail(error: "error desc"))
     }
 
     func testSendError_whenSetupNotCalled_shouldNotSendTheError() {
-        sut.sendError(.coreDataInitialisation(error: "error desc"))
+        sut.sendError(.sendMessageFail(error: "error desc"))
         XCTAssertNil(analyticsMock.errorEvent)
     }
 
     func testSendError_whenDisabled_shouldNotSendTheError() {
         sut.setup(isInDebug: false, environment: .production)
         sut.disableAnalytics()
-        sut.sendError(.coreDataInitialisation(error: "error desc"))
+        sut.sendError(.sendMessageFail(error: "error desc"))
         XCTAssertNil(analyticsMock.errorEvent)
     }
 }

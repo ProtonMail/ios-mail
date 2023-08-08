@@ -145,7 +145,7 @@ public enum UserKickedOutReason {
 public enum MailAnalyticsErrorEvent: Error {
 
     /// An error occurred during Core Data initial set up
-    case coreDataInitialisation(error: String)
+    case coreDataInitialisation(error: String, dataProtectionStatus: String)
 
     /// used to track when the app sends a conversation reqeust without a conversation ID.
     case abortedConversationRequest
@@ -195,8 +195,11 @@ public enum MailAnalyticsErrorEvent: Error {
     var extraInfo: [String: Any]? {
         let info: [String: Any]?
         switch self {
-        case .coreDataInitialisation(let error):
-            info = ["Custom Error": error]
+        case let .coreDataInitialisation(error, dataProtectionStatus):
+            info = [
+                "Custom Error": error,
+                "DataProtectionStatus": dataProtectionStatus
+            ]
         case .abortedConversationRequest, .conversationViewEndUpdatesCrash,
                 .sendMessageFail, .sendMessageResponseError, .sendMessageInvalidSignature:
             info = nil
