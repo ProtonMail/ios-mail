@@ -37,12 +37,9 @@ extension UserInfo {
         #endif
     }
 
-    static var isHighlightKeywordEnabled: Bool {
-        #if DEBUG_ENTERPRISE
-            return true
-        #else
-            return false
-        #endif
+    // Highlight body without encrypted search will give a wrong impression to user that we can search body without ES
+    static var isBodySearchKeywordHighlightEnabled: Bool {
+        false
     }
 
     static var isEncryptedSearchEnabled: Bool {
