@@ -25,7 +25,7 @@ import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 class MockMessageDataService: MessageDataServiceProtocol {
-    var messageDecrypter: MessageDecrypterProtocol {
+    var messageDecrypter: MessageDecrypter {
         return mockDecrypter
     }
     var mockDecrypter: MessageDecrypterMock!
@@ -143,11 +143,5 @@ class MockMessageDataService: MessageDataServiceProtocol {
     @FuncStub(MockMessageDataService.upload) var callUpload
     func upload(att: Attachment) {
         callUpload(att)
-    }
-}
-
-final class MockMessageDataAction: MessageDataActionProtocol {
-    func mark(messageObjectIDs: [NSManagedObjectID], labelID: LabelID, unRead: Bool) -> Bool {
-        return true
     }
 }

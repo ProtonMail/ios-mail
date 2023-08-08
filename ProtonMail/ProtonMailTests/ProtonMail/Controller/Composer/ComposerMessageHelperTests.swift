@@ -29,6 +29,8 @@ final class ComposerMessageHelperTests: XCTestCase {
     var testMessage: Message!
     var cacheServiceMock: MockCacheServiceProtocol!
 
+    private var copyMessage: MockCopyMessageUseCase!
+
     override func setUp() {
         super.setUp()
         contextProviderMock = MockCoreDataContextProvider()
@@ -36,16 +38,23 @@ final class ComposerMessageHelperTests: XCTestCase {
         messageDataServiceMock = MockMessageDataService()
         testMessage = createTestMessage()
         cacheServiceMock = .init()
+        copyMessage = .init()
         sut = ComposerMessageHelper(
             dependencies: .init(messageDataService: messageDataServiceMock,
                                 cacheService: cacheServiceMock,
-                                contextProvider: contextProviderMock),
+                                contextProvider: contextProviderMock,
+                                copyMessage: copyMessage),
             user: fakeUser)
+
+        copyMessage.executeStub.bodyIs { [unowned self] _, _ in
+            (self.testMessage, nil)
+        }
     }
 
     override func tearDownWithError() throws {
         try super.tearDownWithError()
         sut = nil
+        copyMessage = nil
         messageDataServiceMock = nil
         fakeUser = nil
         contextProviderMock = nil
@@ -185,29 +194,31 @@ final class ComposerMessageHelperTests: XCTestCase {
 
     func testCopyAndCreateDraft() throws {
         messageDataServiceMock.mockDecrypter = .init(userDataSource: fakeUser)
-        messageDataServiceMock.mockDecrypter.callCopy.bodyIs { _, _, _, _ in
-            self.testMessage
-        }
         let shouldCopyAttachment = Bool.random()
-        sut.copyAndCreateDraft(from: testMessage, shouldCopyAttachment: shouldCopyAttachment)
+        let action: ComposeMessageAction = shouldCopyAttachment ? .forward : .reply
+        try sut.copyAndCreateDraft(from: testMessage, action: action)
 
-        XCTAssertTrue(messageDataServiceMock.mockDecrypter.callCopy.wasCalledExactlyOnce)
-        let arguments = try XCTUnwrap(messageDataServiceMock.mockDecrypter.callCopy.lastArguments)
-        XCTAssertEqual(arguments.a1, testMessage)
-        XCTAssertEqual(arguments.a2, shouldCopyAttachment)
+        XCTAssertEqual(copyMessage.executeStub.callCounter, 1)
+        let arguments = try XCTUnwrap(copyMessage.executeStub.lastArguments)
+        let copyMessageParameters = arguments.value
+        XCTAssertEqual(copyMessageParameters.messageID.rawValue, testMessage.messageID)
+        XCTAssertEqual(copyMessageParameters.copyAttachments, shouldCopyAttachment)
     }
 
     func testUpdateAddressID() throws {
         let e = expectation(description: "Closure is called")
         let newAddressID = String.randomString(40)
+        let newAddress = String.randomString(20)
         sut.setNewMessage(objectID: testMessage.objectID)
 
-        sut.updateAddressID(addressID: newAddressID) {
+        sut.updateAddressID(addressID: newAddressID, emailAddress: newAddress) {
             e.fulfill()
         }
         waitForExpectations(timeout: 1)
 
         XCTAssertEqual(testMessage.nextAddressID, newAddressID)
+        let sender: [String: String] = try XCTUnwrap(testMessage.sender?.parseJSON())
+        XCTAssertEqual(sender["Address"], newAddress)
         XCTAssertTrue(messageDataServiceMock.callUpdateAttKeyPacket.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(messageDataServiceMock.callUpdateAttKeyPacket.lastArguments)
         XCTAssertEqual(argument.a1, MessageEntity(testMessage))
@@ -293,7 +304,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         messageDataServiceMock.mockDecrypter = .init(userDataSource: fakeUser)
         let decryptedBody = String.randomString(40)
         messageDataServiceMock.mockDecrypter.callDecrypt.bodyIs { _, _ in
-            decryptedBody
+            (decryptedBody, nil)
         }
 
         let result = sut.decryptBody()
@@ -367,9 +378,13 @@ final class ComposerMessageHelperTests: XCTestCase {
         sut.setNewMessage(objectID: testMessage.objectID)
         let e = expectation(description: "Closure is called")
         messageDataServiceMock.callDelete.bodyIs { _, _, _ in
-            testAttachment.message = Message(context: self.contextProviderMock.mainContext)
+            testAttachment.managedObjectContext!.delete(testAttachment)
             return Promise()
         }
+
+        let draftBeforeDeleting = try XCTUnwrap(sut.draft)
+        XCTAssertEqual(draftBeforeDeleting.numAttachments, 1)
+        XCTAssertNotEqual(sut.attachments, [])
 
         sut.removeAttachment(fileName: fineName, isRealAttachment: true) {
             e.fulfill()
@@ -378,6 +393,7 @@ final class ComposerMessageHelperTests: XCTestCase {
 
         let draft = try XCTUnwrap(sut.draft)
         XCTAssertEqual(draft.numAttachments, 0)
+        XCTAssertEqual(sut.attachments, [])
         XCTAssertTrue(messageDataServiceMock.callDelete.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(messageDataServiceMock.callDelete.lastArguments)
         XCTAssertEqual(argument.a1.name, AttachmentEntity(testAttachment).name)
@@ -469,6 +485,28 @@ final class ComposerMessageHelperTests: XCTestCase {
                         attachment2.order,
                         attachment3.order
                        ])
+    }
+
+    func testOriginalTo() throws {
+        let parentMessage = createTestMessage()
+        sut.setNewMessage(objectID: testMessage.objectID)
+        contextProviderMock.performAndWaitOnRootSavingContext() { context in
+            parentMessage.parsedHeaders = "{\"X-Original-To\": \"tester@pm.me\"}"
+            self.testMessage.orginalMessageID = parentMessage.messageID
+            try? context.save()
+        }
+        let originalTo = try XCTUnwrap(sut.originalTo())
+        XCTAssertEqual(originalTo, "tester@pm.me")
+    }
+
+    func testOriginalFrom() throws {
+        sut.setNewMessage(objectID: testMessage.objectID)
+        contextProviderMock.performAndWaitOnRootSavingContext { context in
+            self.testMessage.parsedHeaders = "{\"From\": \"嘟嘟 嘟嘟åöä 嘟大大大Pär⚾️🥎🏉🪀🥢🥡🍴🍽🍾🧊 <tester+a+b@protonmail.com>\"}"
+            try? context.save()
+        }
+        let originalFrom = try XCTUnwrap(sut.originalFrom())
+        XCTAssertEqual(originalFrom, "tester+a+b@protonmail.com")
     }
 }
 

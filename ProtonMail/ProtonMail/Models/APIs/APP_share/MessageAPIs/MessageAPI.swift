@@ -35,9 +35,9 @@ struct MessageAPI {
 
 final class SearchMessageRequest: Request {
     var keyword: String
-    var page: Int
+    var page: UInt
 
-    init(keyword: String, page: Int) {
+    init(keyword: String, page: UInt) {
         self.keyword = keyword
         self.page = page
     }
@@ -95,7 +95,9 @@ final class FetchMessagesByIDResponse: Response {
 final class FetchMessagesByLabelRequest: Request {
     let labelID: String!
     /// UNIX timestamp to filter messages at or earlier than timestamp
-    let endTime: Int
+    let endTime: Int?
+    /// UNIX timestamp to filter messages at or later than timestamp
+    let beginTime: Int?
     let isUnread: Bool?
     let pageSize: Int?
     /// return only messages older, in creation time (NOT timestamp), than EndID
@@ -108,7 +110,8 @@ final class FetchMessagesByLabelRequest: Request {
 
     init(
         labelID: String,
-        endTime: Int = 0,
+        endTime: Int?,
+        beginTime: Int? = nil,
         isUnread: Bool? = nil,
         pageSize: Int? = 50,
         endID: String? = nil,
@@ -117,6 +120,7 @@ final class FetchMessagesByLabelRequest: Request {
     ) {
         self.labelID = labelID
         self.endTime = endTime
+        self.beginTime = beginTime
         self.isUnread = isUnread
         self.pageSize = pageSize
         self.endID = endID
@@ -129,9 +133,12 @@ final class FetchMessagesByLabelRequest: Request {
         var out: [String: Any] = ["Sort": "Time",
                                   "Desc": desc]
         out["LabelID"] = self.labelID
-        if self.endTime > 0 {
-            let newTime = self.endTime - 1
+        if let endTime, endTime > 0 {
+            let newTime = endTime - 1
             out["End"] = newTime
+        }
+        if let beginTime {
+            out["Begin"] = beginTime
         }
         if let unread = self.isUnread, unread {
             out["Unread"] = 1
@@ -184,7 +191,12 @@ class CreateDraftRequest: Request {
 
         let fromAddress = fromAddress
         let name = fromAddress?.displayName ?? "unknown"
-        let address = fromAddress?.email ?? "unknown"
+        var address = fromAddress?.email ?? "unknown"
+
+        let entity = MessageEntity(message)
+        if let sender = try? entity.parseSender() {
+            address = sender.address
+        }
 
         messageDict["Sender"] = [
             "Name": name,

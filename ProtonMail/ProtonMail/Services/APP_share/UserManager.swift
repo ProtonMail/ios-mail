@@ -30,19 +30,14 @@ import ProtonCore_Networking
 import ProtonCore_Payments
 #endif
 import ProtonCore_Services
+import ProtonCore_Keymaker
 
 /// TODO:: this is temp
 protocol UserDataSource: AnyObject {
     var mailboxPassword: Passphrase { get }
-    var addressKeys: [Key] { get }
-    var userPrivateKeys: [ArmoredKey] { get }
     var userInfo: UserInfo { get }
     var authCredential: AuthCredential { get }
     var userID: UserID { get }
-
-    func getAddressKey(address_id: String) -> Key?
-    func getAllAddressKey(address_id: String) -> [Key]?
-    func getAddressPrivKey(address_id: String) -> String
 }
 
 protocol UserManagerSave: AnyObject {
@@ -87,7 +82,7 @@ class UserManager: Service {
                 })
             }
             wait.done {
-                userCachedStatus.removeMobileSignature(uid: self.userID.rawValue)
+                userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
@@ -135,9 +130,7 @@ class UserManager: Service {
 
     var isUserSelectedUnreadFilterInInbox = false
 
-    private var coreDataService: CoreDataService {
-        sharedServices.get(by: CoreDataService.self)
-    }
+    private let coreDataService: CoreDataContextProviderProtocol
 
     lazy var conversationStateService: ConversationStateService = { [unowned self] in
         return ConversationStateService(
@@ -229,7 +222,7 @@ class UserManager: Service {
     }()
 
     lazy var userService: UserDataService = { [unowned self] in
-        let service = UserDataService(check: false, api: self.apiService)
+        let service = UserDataService(apiService: apiService, coreKeyMaker: coreKeyMaker)
         return service
     }()
 
@@ -239,7 +232,13 @@ class UserManager: Service {
     }()
 
     lazy var cacheService: CacheService = { [unowned self] in
-        let service = CacheService(userID: self.userID)
+        let service = CacheService(
+            userID: self.userID,
+            dependencies: .init(
+                coreDataService: coreDataService,
+                lastUpdatedStore: lastUpdatedStore
+            )
+        )
         return service
     }()
 
@@ -266,10 +265,10 @@ class UserManager: Service {
     }()
 
     lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
+        let factory = sharedServices.makeUndoActionManagerDependenciesFactory()
         let manager = UndoActionManager(
-            apiService: self.apiService,
-            internetStatusProvider: sharedServices.get(),
-            contextProvider: coreDataService,
+            factory: factory,
+            dependencies: factory.makeDependencies(apiService: apiService),
             getEventFetching: { [weak self] in
                 self?.eventsService
             },
@@ -286,9 +285,11 @@ class UserManager: Service {
             apiService: self.apiService,
             sessionID: self.authCredential.sessionID,
             appRatingStatusProvider: userCachedStatus,
+            sendRefactorStatusProvider: userCachedStatus,
             scheduleSendEnableStatusProvider: userCachedStatus,
             userIntroductionProgressProvider: userCachedStatus,
-            senderImageEnableStatusProvider: userCachedStatus
+            senderImageEnableStatusProvider: userCachedStatus,
+            referralPromptProvider: userCachedStatus
         )
         service.register(newSubscriber: inAppFeedbackStateService)
         return service
@@ -343,6 +344,7 @@ class UserManager: Service {
     }
 
     var mailSettings: MailSettings
+    private let coreKeyMaker: KeyMakerProtocol
 
     init(
         api: APIService,
@@ -350,13 +352,17 @@ class UserManager: Service {
         authCredential: AuthCredential,
         mailSettings: MailSettings?,
         parent: UsersManager?,
-        appTelemetry: AppTelemetry = MailAppTelemetry()
+        appTelemetry: AppTelemetry = MailAppTelemetry(),
+        coreKeyMaker: KeyMakerProtocol,
+        coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
     ) {
         self.userInfo = userInfo
+        self.coreDataService = coreDataService
         self.apiService = api
         self.authCredential = authCredential
         self.mailSettings = mailSettings ?? .init()
         self.appTelemetry = appTelemetry
+        self.coreKeyMaker = coreKeyMaker
         self.authHelper = AuthHelper(authCredential: authCredential)
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
         self.apiService.authDelegate = authHelper
@@ -374,15 +380,19 @@ class UserManager: Service {
         role: UserInfo.OrganizationRole,
         userInfo: UserInfo = UserInfo.getDefault(),
         mailSettings: MailSettings = .init(),
-        appTelemetry: AppTelemetry = MailAppTelemetry()
+        appTelemetry: AppTelemetry = MailAppTelemetry(),
+        coreKeyMaker: KeyMakerProtocol,
+        coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
     ) {
         guard ProcessInfo.isRunningUnitTests || ProcessInfo.isRunningUITests else {
             fatalError("This initialization only for test")
         }
         userInfo.role = role.rawValue
         self.userInfo = userInfo
+        self.coreDataService = coreDataService
         self.apiService = api
         self.appTelemetry = appTelemetry
+        self.coreKeyMaker = coreKeyMaker
         self.authCredential = AuthCredential.none
         self.mailSettings = mailSettings
         self.authHelper = AuthHelper(authCredential: authCredential)
@@ -419,7 +429,7 @@ class UserManager: Service {
             userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
             // When app launch, the app will show a skeleton view
             // After getting setting data, show inbox
-            NotificationCenter.default.post(name: .fetchPrimaryUserSettings, object: nil)
+            NotificationCenter.default.post(name: .didFetchSettingsForPrimaryUser, object: nil)
             #endif
         }
     }
@@ -503,28 +513,6 @@ extension UserManager: UserDataSource {
 
     var hasPaidMailPlan: Bool {
         userInfo.role > 0 && userInfo.subscribed.contains(.mail)
-    }
-
-    func getAddressPrivKey(address_id: String) -> String {
-        return ""
-    }
-
-    func getAddressKey(address_id: String) -> Key? {
-        return self.userInfo.getAddressKey(address_id: address_id)
-    }
-
-    func getAllAddressKey(address_id: String) -> [Key]? {
-        return self.userInfo.getAllAddressKey(address_id: address_id)
-    }
-
-    var userPrivateKeys: [ArmoredKey] {
-        userInfo.userPrivateKeys
-    }
-
-    var addressKeys: [Key] {
-        get {
-            return self.userInfo.userAddresses.toKeys()
-        }
     }
 
     var mailboxPassword: Passphrase {
@@ -652,37 +640,15 @@ extension UserManager {
                 if let status = userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) {
                     return status
                 } else {
-                    // Migrate from local cache
-                    let status = self.userService.switchCacheOff == false
-                    userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: status)
-                    return status
+                    return false
                 }
             } else {
                 userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: true)
                 return true
-            } }
-        set {
-            userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
-        }
-    }
-
-    var mobileSignature: String {
-        get {
-            #if Enterprise
-            let isEnterprise = true
-            #else
-            let isEnterprise = false
-            #endif
-            let role = userInfo.role
-            if role > 0 || isEnterprise {
-                return userCachedStatus.getMobileSignature(by: userID.rawValue)
-            } else {
-                userCachedStatus.removeMobileSignature(uid: userID.rawValue)
-                return userCachedStatus.getMobileSignature(by: userID.rawValue)
             }
         }
         set {
-            userCachedStatus.setMobileSignature(uid: userID.rawValue, signature: newValue)
+            userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
         }
     }
 

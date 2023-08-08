@@ -68,7 +68,7 @@ struct Constants {
     }
 
     enum EncryptedSearch {
-        static let defaultStorageLimit: Int = 1_000_000_000 // 1000 MB
+        static let defaultStorageLimit = Measurement<UnitInformationStorage>(value: 1.0, unit: .gigabytes)
     }
 
     static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
@@ -83,11 +83,12 @@ struct Constants {
                                               "family2022",
                                               "visionary2022",
                                               "bundlepro2022"]
-    static let defaultLocale = "en"
 
     #if !APP_EXTENSION
     static let defaultToolbarActions: [MessageViewActionSheetAction] = [
         .markUnread, .trash, .moveTo, .labelAs
     ]
     #endif
+
+    static let defaultMobileSignature = "Sent from Proton Mail for iOS"
 }

@@ -122,7 +122,7 @@ extension CacheServiceTest {
 
         let contactDetailObject = testContactDetailData.parseObjectAny()!
         let updateExpect = expectation(description: "Update Contact Detail")
-        var contactToCheck: Contact?
+        var contactToCheck: ContactEntity?
         sut.updateContactDetail(serverResponse: contactDetailObject) { contact, error in
             contactToCheck = contact
             XCTAssertNil(error)

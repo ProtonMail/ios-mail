@@ -31,6 +31,8 @@ class UsersManagerTests: XCTestCase {
     let suiteName = String.randomString(10)
     var customCache: SharedCacheBase!
     var customKeyChain: Keychain!
+    var notificationCenter: NotificationCenter!
+    var keyMaker: Keymaker!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -40,11 +42,15 @@ class UsersManagerTests: XCTestCase {
         self.customCache = .init(userDefaults: .init(suiteName: suiteName)!)
         self.customKeyChain = .init(service: String.randomString(10),
                                     accessGroup: "2SB5Z68H26.ch.protonmail.protonmail")
+        self.notificationCenter = NotificationCenter()
+        self.keyMaker = .init(autolocker: nil, keychain: customKeyChain)
         sut = UsersManager(
             doh: doh,
             userDataCache: cachedUserDataProviderMock,
             userDefaultCache: customCache,
-            keychain: customKeyChain
+            keychain: customKeyChain,
+            notificationCenter: notificationCenter,
+            coreKeyMaker: keyMaker
         )
     }
 
@@ -62,6 +68,8 @@ class UsersManagerTests: XCTestCase {
         self.customCache = nil
         self.customKeyChain.removeEverything()
         self.customKeyChain = nil
+        notificationCenter = nil
+        keyMaker = nil
     }
 
     func testNumberOfFreeAccounts() {
@@ -286,7 +294,7 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user1)
         XCTAssertEqual(sut.users.count, 1)
         let expectation1 = expectation(description: "Closure is called")
-        expectation(forNotification: .didPrimaryAccountLogout, object: nil, handler: nil)
+        expectation(forNotification: .didSignOut, object: nil, notificationCenter: notificationCenter)
 
         sut.logout(user: user1) {
             XCTAssertTrue(self.sut.users.isEmpty)
@@ -354,7 +362,7 @@ class UsersManagerTests: XCTestCase {
         XCTAssertTrue(sut.hasUsers())
         XCTAssertEqual(sut.users.count, 1)
         XCTAssertEqual(sut.firstUser?.userID.rawValue, userID)
-        XCTAssertEqual(sut.firstUser?.mailSettings.nextMessageOnMove, true)
+        XCTAssertEqual(sut.firstUser?.mailSettings.nextMessageOnMove.isEnabled, true)
     }
 
     func testTryRestore_withDifferentOrderOfUserData_shouldFollowTheOrderOfAuthCredentials() throws {
@@ -386,7 +394,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     private func prepareUserDataInCacheWithDifferentOrder(userIDs: [String]) throws {
-        let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
         var userInfos: [UserInfo] = []
         var auths: [AuthCredential] = []
         for userID in userIDs {
@@ -403,7 +411,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     private func prepareUserDataInCache(userID: String, hasMailSetting: Bool) throws {
-        let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
         let auth = createAuth(userID: userID)
         let userInfo = createUserInfo(userID: userID)
 
@@ -412,7 +420,7 @@ class UsersManagerTests: XCTestCase {
         let lockedUserInfo = try Locked<[UserInfo]>(clearValue: [userInfo], with: mainKey)
         customCache.getShared().set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
         if hasMailSetting {
-            let mailSetting = MailSettings(nextMessageOnMove: true)
+            let mailSetting = MailSettings(nextMessageOnMove: .explicitlyEnabled)
             let value: [String: MailSettings] = [userID: mailSetting]
             let lockedMailSetting = try Locked<[String: MailSettings]>(clearValue: value, with: mainKey)
             customCache.getShared().set(lockedMailSetting.encryptedValue, forKey: UsersManager.CoderKey.mailSettingsStore)
@@ -420,7 +428,7 @@ class UsersManagerTests: XCTestCase {
     }
 
     private func prepareLegacyUserData(userID: String) throws {
-        let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin)!
+        let mainKey = keyMaker.mainKey(by: RandomPinProtection.randomPin)!
         let auth = createAuth(userID: userID)
         let userInfo = createUserInfo(userID: userID)
         let archived = auth.archive()
@@ -474,6 +482,7 @@ class UsersManagerTests: XCTestCase {
                            userInfo: userInfo,
                            authCredential: auth,
                            mailSettings: .init(),
-                           parent: sut)
+                           parent: sut,
+                           coreKeyMaker: MockKeyMakerProtocol())
     }
 }

@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_Keymaker
 import UIKit
 
 let sharedInternetReachability: Reachability = Reachability.forInternetConnection()
@@ -31,17 +32,37 @@ final class ShareAppCoordinator {
     private var nextCoordinator: ShareUnlockCoordinator?
 
     func start() {
-        self.loadUnlockCheckView()
 
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
 
-        let usersManager = UsersManager(doh: BackendConfiguration.shared.doh)
-        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
+        let keyMaker = Keymaker(
+            autolocker: Autolocker(lockTimeProvider: userCachedStatus),
+            keychain: KeychainWrapper.keychain
+        )
+        sharedServices.add(Keymaker.self, for: keyMaker)
+        sharedServices.add(KeyMakerProtocol.self, for: keyMaker)
+
+        let usersManager = UsersManager(
+            doh: BackendConfiguration.shared.doh,
+            userDataCache: UserDataCache(keyMaker: keyMaker),
+            coreKeyMaker: keyMaker
+        )
+        sharedServices.add(
+            UnlockManager.self,
+            for: UnlockManager(
+                cacheStatus: keyMaker,
+                delegate: self,
+                keyMaker: keyMaker,
+                pinFailedCountCache: userCachedStatus
+            )
+        )
         sharedServices.add(UsersManager.self, for: usersManager)
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
+
+        self.loadUnlockCheckView()
     }
 
     init(navigation: UINavigationController?) {
@@ -57,19 +78,27 @@ final class ShareAppCoordinator {
 
 extension ShareAppCoordinator: UnlockManagerDelegate {
     func setupCoreData() {
+        sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        sharedServices.add(LastUpdatedStore.self,
-                           for: LastUpdatedStore(contextProvider: sharedServices.get(by: CoreDataService.self)))
+        let lastUpdatedStore = LastUpdatedStore(contextProvider: CoreDataService.shared)
+        sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
+        sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
     }
 
     func isUserStored() -> Bool {
         return isUserCredentialStored
     }
 
-    func cleanAll() {
-        sharedServices.get(by: UsersManager.self).clean().cauterize()
-        keymaker.wipeMainKey()
-        keymaker.mainKeyExists()
+    func cleanAll(completion: @escaping () -> Void) {
+        let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
+        sharedServices.get(by: UsersManager.self)
+            .clean()
+            .ensure {
+                keyMaker.wipeMainKey()
+                _ = keyMaker.mainKeyExists()
+                completion()
+            }
+            .cauterize()
     }
 
     var isUserCredentialStored: Bool {
@@ -81,5 +110,11 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
             return sharedServices.get(by: UsersManager.self).isMailboxPasswordStored
         }
         return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty
+    }
+
+    func loadUserDataAfterUnlock() {
+        let usersManager = sharedServices.get(by: UsersManager.self)
+        usersManager.run()
+        usersManager.tryRestore()
     }
 }

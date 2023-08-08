@@ -26,7 +26,3 @@ import ProtonCore_Doh
 class DohStub: DohCacheProtocol {
     var isDohOn: Bool = true
 }
-
-class DohStatusStub: DohStatusProtocol {
-    var status: DoHStatus = .on
-}

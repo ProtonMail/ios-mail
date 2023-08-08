@@ -150,9 +150,9 @@ final class IncomingDefaultServiceTests: XCTestCase {
     func testHardDelete_removesExistingIncomingDefaults() throws {
         let incomingDefaultID = "the ID"
         storeStubbedObject(id: incomingDefaultID, time: .distantFuture)
-        try sut.hardDelete(query: .id(incomingDefaultID))
+        try sut.hardDelete(query: .id(incomingDefaultID), includeSoftDeleted: false)
 
-        XCTAssertEqual(try listStoredObjects().count, 0)
+        XCTAssertEqual(try listStoredObjects(), [])
     }
 
     func testPerformLocalUpdate_replacesExistingObject_thusClearingID() throws {

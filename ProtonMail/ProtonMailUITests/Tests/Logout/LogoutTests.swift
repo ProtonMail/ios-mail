@@ -8,7 +8,7 @@
 
 import ProtonCore_TestingToolkit
 
-class LogoutTests: CleanAuthenticatedTestCase {
+class LogoutTests: FixtureAuthenticatedTestCase {
     
     private let loginRobot = LoginRobot()
 

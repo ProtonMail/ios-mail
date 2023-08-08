@@ -35,14 +35,10 @@ struct BodyParts {
     let originalBody: String
 
     let bodyHasHistory: Bool
+    private var document: Document?
 
     init(originalBody: String) {
-        // Remove color related `!important`
         self.originalBody = originalBody
-            .preg_replace(
-                "((color|bgcolor|background-color|background|border): .*) (!important);?",
-                replaceto: "$1;"
-            )
         var bodyHasHistory = false
 
         do {
@@ -56,6 +52,7 @@ struct BodyParts {
                     break
                 }
             }
+            document = fullHTMLDocument
         } catch {
             assertionFailure("\(error)")
         }
@@ -63,8 +60,10 @@ struct BodyParts {
         self.bodyHasHistory = bodyHasHistory
     }
 
-    func darkModeCSS(body: String) -> String? {
-        let document = CSSMagic.parse(htmlString: body)
+    func darkModeCSS() -> String? {
+        guard let document = self.document else {
+            return nil
+        }
         let level = CSSMagic.darkStyleSupportLevel(document: document)
         let css: String?
         switch level {

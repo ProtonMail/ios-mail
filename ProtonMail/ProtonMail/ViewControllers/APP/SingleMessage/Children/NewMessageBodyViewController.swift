@@ -68,11 +68,19 @@ class NewMessageBodyViewController: UIViewController {
     private var defaultScale: CGFloat?
     private let viewMode: ViewMode
     private var expectedSwipeAction = PagesSwipeAction.noAction
+    private var webViewDefaultScollable = false
 
     var webViewIsLoaded: (() -> Void)?
 
     var isLoading: Bool {
         return webView?.isLoading ?? false
+    }
+
+    var isWebViewInDefaultScale: Bool {
+        guard let defaultScale = self.defaultScale, let scrollView = webView?.scrollView else {
+            return false
+        }
+        return round(scrollView.zoomScale * 1_000) / 1_000.0 == defaultScale
     }
 
     init(viewModel: NewMessageBodyViewModel, parentScrollView: ScrollableContainer, viewMode: ViewMode) {
@@ -120,6 +128,12 @@ class NewMessageBodyViewController: UIViewController {
         self.loader.observeHeight { [weak self] height in
             self?.updateViewHeight(to: height)
             self?.viewModel.recalculateCellHeight?(true)
+        }
+        loader.observeContentShouldBeScrollableByDefault { [weak self] shouldBeScrollableByDefault in
+            self?.webViewDefaultScollable = shouldBeScrollableByDefault
+            if self?.webView?.scrollView.isZooming == false {
+                webView.scrollView.isScrollEnabled = shouldBeScrollableByDefault
+            }
         }
 
         setupContentSizeObservation()
@@ -186,6 +200,7 @@ class NewMessageBodyViewController: UIViewController {
 
     private func updateViewHeight(to newHeight: CGFloat) {
         heightConstraint?.constant = newHeight
+        viewModel.recalculateCellHeight?(true)
     }
 
     private func prepareGestureRecognizer() {
@@ -221,6 +236,8 @@ class NewMessageBodyViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
                 self?.updateViewHeight(to: webView.scrollView.contentSize.height)
                 self?.viewModel.recalculateCellHeight?(true)
+                // Scroll the highlighted keyword in ES to the center of the webview.
+                self?.scrollTo(anchor: "es-autoscroll", in: webView)
                 self?.webViewIsLoaded?()
             }
         }
@@ -358,6 +375,15 @@ extension NewMessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
             completionHandler(.performDefaultHandling, challenge.proposedCredential)
         }
     }
+
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        webView.removeFromSuperview()
+        webView.stopLoading()
+        webView.uiDelegate = nil
+        webView.navigationDelegate = nil
+        self.webView = nil
+        reloadWebView(forceRecreate: true)
+    }
 }
 
 extension NewMessageBodyViewController {
@@ -438,9 +464,11 @@ extension NewMessageBodyViewController {
 
     private func scrollTo(anchor: String, in webView: WKWebView) {
         let script = """
-anchor = document.getElementById('\(anchor)')
-anchor.offsetTop
-"""
+        var anchor = document.getElementById('\(anchor)')
+        if (anchor != undefined) {
+          window.pageYOffset + anchor.getBoundingClientRect().top
+        }
+        """
 
         let javaScriptEnabledBefore = webView.configuration.preferences.javaScriptEnabled
         webView.configuration.preferences.javaScriptEnabled = true
@@ -522,15 +550,13 @@ extension NewMessageBodyViewController: UIScrollViewDelegate {
         self.updateViewHeight(to: scrollView.contentSize.height)
 
         // Work around for webview tap too sensitive
-        if let defaultScale = self.defaultScale {
-            if round(scrollView.zoomScale * 1_000) / 1_000.0 == defaultScale {
-                self.webView?.scrollView.isScrollEnabled = false
-                self.verticalRecognizer?.isEnabled = false
-                if self.originalHeight >= 0 {
-                    self.updateViewHeight(to: self.originalHeight)
-                }
-                return
+        if isWebViewInDefaultScale {
+            webView?.scrollView.isScrollEnabled = webViewDefaultScollable
+            verticalRecognizer?.isEnabled = false
+            if originalHeight >= 0 {
+                updateViewHeight(to: originalHeight)
             }
+            return
         }
         self.webView?.scrollView.isScrollEnabled = true
         self.verticalRecognizer?.isEnabled = true

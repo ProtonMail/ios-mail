@@ -1,4 +1,3 @@
-import ProtonCore_Common
 
 // sourcery: mock
 protocol ConversationStateProviderProtocol: AnyObject {

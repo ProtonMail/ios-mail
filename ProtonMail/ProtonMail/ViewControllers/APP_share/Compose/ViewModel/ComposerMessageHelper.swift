@@ -127,21 +127,35 @@ final class ComposerMessageHelper {
         }
     }
 
-    func copyAndCreateDraft(from message: Message, shouldCopyAttachment: Bool) {
-        var messageToAssign: Message?
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            messageToAssign = self.dependencies.messageDataService
-                .messageDecrypter.copy(
-                    message: message,
-                    copyAttachments: shouldCopyAttachment,
-                    context: context
-                )
-        }
+    func copyAndCreateDraft(from message: Message, action: ComposeMessageAction) throws {
+        let messageID = MessageID(message.messageID)
+
+        let (messageToAssign, mimeAttachments) = try dependencies.copyMessage.execute(
+            parameters: .init(copyAttachments: action == .forward, messageID: messageID)
+        )
+
         self.rawMessage = messageToAssign
         updateDraft()
+
+        updateMessageByMessageAction(action)
+
+        // TODO: MIME attachments should also be handled by CopyMessageUseCase instead of here
+        if action == ComposeMessageAction.forward {
+            /// add mime attachments if forward
+            if let mimeAtts = mimeAttachments {
+                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+                for mimeAtt in mimeAtts {
+                    addMimeAttachments(
+                        attachment: mimeAtt,
+                        shouldStripMetaData: stripMetadata,
+                        completion: { _ in }
+                    )
+                }
+            }
+        }
     }
 
-    func updateAddressID(addressID: String, completion: @escaping () -> Void) {
+    func updateAddressID(addressID: String, emailAddress: String, completion: @escaping () -> Void) {
         dependencies.contextProvider.performOnRootSavingContext { context in
             defer {
                 self.updateDraft()
@@ -150,6 +164,9 @@ final class ComposerMessageHelper {
             }
             guard let msg = self.rawMessage else { return }
             msg.nextAddressID = addressID
+            var sender: [String: Any] = msg.sender?.parseJSON() ?? [:]
+            sender["Address"] = emailAddress
+            msg.sender = sender.toString()
             _ = context.saveUpstreamIfNeeded()
             self.dependencies.messageDataService.updateAttKeyPacket(message: MessageEntity(msg), addressID: addressID)
         }
@@ -212,7 +229,7 @@ final class ComposerMessageHelper {
         var result = ""
         dependencies.contextProvider.performAndWaitOnRootSavingContext { _ in
             do {
-                result = try self.dependencies.messageDataService.messageDecrypter.decrypt(message: msg)
+                result = try self.dependencies.messageDataService.messageDecrypter.decrypt(messageObject: msg).body
             } catch {
                 result = msg.bodyToHtml()
             }
@@ -233,6 +250,46 @@ final class ComposerMessageHelper {
             message = MessageEntity(rawMessage)
         }
         return message
+    }
+
+    func originalTo() -> String? {
+        var originalTo: String?
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            guard let rawMessage = self.rawMessage,
+                  let originalID = rawMessage.orginalMessageID else {
+                return
+            }
+            let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, originalID)
+            fetchRequest.sortDescriptors = [
+                NSSortDescriptor(key: Message.Attributes.time, ascending: false),
+                NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
+            ]
+            guard
+                let originalMessage = try? fetchRequest.execute().first,
+                let parsedHeader = originalMessage.parsedHeaders,
+                let dict: [String: Any] = parsedHeader.parseJSON()
+            else { return }
+            originalTo = dict[MessageHeaderKey.originalTo] as? String
+        }
+        return originalTo
+    }
+
+    func originalFrom() -> String? {
+        var originalFrom: String?
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            guard let parsedHeader = self.rawMessage?.parsedHeaders,
+                  let headerDict: [String: Any] = parsedHeader.parseJSON(),
+                  let from = headerDict[MessageHeaderKey.from] as? String,
+                  let regex = try? NSRegularExpression(pattern: ".*<(.*)>"),
+                  let match = regex.firstMatch(in: from, range: NSRange(from.startIndex..<from.endIndex, in:from)),
+                  match.numberOfRanges == 2
+            else { return }
+            // from = "name <address>"
+            let range = match.range(at: 1)
+            originalFrom = (from as NSString).substring(with: range)
+        }
+        return originalFrom
     }
 }
 
@@ -367,8 +424,9 @@ extension ComposerMessageHelper {
             attachment.toAttachment(context: context, stripMetadata: shouldStripMetaData).done { attachment in
                 if let attachment = attachment {
                     self.addAttachment(attachment.objectID)
+                    self.updateAttachmentView?()
+                    self.updateDraft()
                 }
-                self.updateDraft()
                 completion(attachment)
             }.cauterize()
         }
@@ -458,5 +516,6 @@ extension ComposerMessageHelper {
         let messageDataService: MessageDataServiceProtocol
         let cacheService: CacheServiceProtocol
         let contextProvider: CoreDataContextProviderProtocol
+        let copyMessage: CopyMessageUseCase
     }
 }

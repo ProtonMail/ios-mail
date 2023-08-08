@@ -9,7 +9,7 @@ def proton_test_path
 end
 
 def proton_test_commit
-  "83c1dfb4"
+  "82ddf41"
 end
 
 def monkey_path
@@ -51,7 +51,6 @@ def common_pods
   pod "ProtonCore-Authentication-KeyGeneration/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-FeatureSwitch', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Authentication/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-Common', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-GoLibs/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Hash', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Keymaker/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
@@ -80,7 +79,7 @@ def pm_pods
   pod "ProtonCore-Payments/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-PaymentsUI/#{crypto_variant}", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
-  pod 'SideMenuSwift', '2.0.6'
+  pod 'SideMenuSwift', :git=> 'git@gitlab.protontech.ch:jchen/SideMenu.git', :tag=>'v2.0.9.autolayout'
   pod 'SwipyCell', :git=> 'git@gitlab.protontech.ch:jchen/SwipyCell.git', :commit => '923310a'
   pod "SkeletonView", '1.30.4'
   pod 'SQLite.swift', '~> 0.13.3'
@@ -139,6 +138,7 @@ target 'ProtonMailUITests' do
   pod 'ProtonCore-TestingToolkit/UITests/PaymentsUI', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
+  pod 'Yams', '5.0.5'
 end
 
 target 'Share' do

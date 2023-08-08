@@ -52,6 +52,7 @@ final class BlockedSendersViewController: ProtonMailTableViewController {
         view.backgroundColor = ColorProvider.BackgroundDeep
 
         viewModel.output.setUIDelegate(self)
+        viewModel.input.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -141,6 +142,10 @@ extension BlockedSendersViewController: BlockedSendersViewModelUIDelegate {
 
         tableView.backgroundView = backgroundView
         tableView.reloadData()
+    }
+
+    func showOfflineToast() {
+        showBanner(message: L11n.BlockSender.cannotRefreshWhileOffline, style: .info)
     }
 }
 

@@ -8,7 +8,7 @@
 
 import ProtonCore_TestingToolkit
 
-class AccountSettingsTests : CleanAuthenticatedTestCase {
+class AccountSettingsTests : FixtureAuthenticatedTestCase {
 
     private let accountSettingsRobot: AccountSettingsRobot = AccountSettingsRobot()
 
@@ -18,13 +18,13 @@ class AccountSettingsTests : CleanAuthenticatedTestCase {
         InboxRobot()
             .menuDrawer()
             .settings()
-            .selectAccount(user.email)
+            .selectAccount(user!.email)
     }
 
     func testChangeSignlePassword() {
         accountSettingsRobot
             .singlePassword()
-            .changePassword(user: user)
+            .changePassword(user: user!)
             .verify.settingsOpened()
     }
 
@@ -32,17 +32,17 @@ class AccountSettingsTests : CleanAuthenticatedTestCase {
         accountSettingsRobot
             .recoveryEmail()
             .changeRecoveryEmail(testData.twoPassUser)
-            .verify.recoveryEmailChangedTo(user.email)
+            .verify.recoveryEmailChangedTo(user!.email)
     }
 
     func testNavigateToDefaultEmailAddress() {
         accountSettingsRobot
             .defaultEmailAddress()
-            .verify.changeDefaultAddressViewShown(user.email)
+            .verify.changeDefaultAddressViewShown(user!.email)
     }
 
     func testChangeDisplayName() {
-        let newDisplayName = "\(user.name)-\(StringUtils().randomAlphanumericString())"
+        let newDisplayName = "\(user!.name)-\(StringUtils().randomAlphanumericString())"
         accountSettingsRobot
             .displayName()
             .setDisplayNameTextTo(newDisplayName)
@@ -51,9 +51,9 @@ class AccountSettingsTests : CleanAuthenticatedTestCase {
             
         accountSettingsRobot
             .displayName()
-            .setDisplayNameTextTo(user.name)
+            .setDisplayNameTextTo(user!.name)
             .save()
-            .verify.displayNameShownWithText(user.name)
+            .verify.displayNameShownWithText(user!.name)
     }
 
     func testSwitchSignatureToggleOn() {

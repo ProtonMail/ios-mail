@@ -33,13 +33,21 @@ protocol SettingsLockRouterProtocol {
 
 final class SettingsLockRouter: SettingsLockRouterProtocol {
     private weak var navigationController: UINavigationController?
+    private let coreKeyMaker: KeyMakerProtocol
 
-    init(navigationController: UINavigationController?) {
+    init(navigationController: UINavigationController?, coreKeyMaker: KeyMakerProtocol) {
+        self.coreKeyMaker = coreKeyMaker
         self.navigationController = navigationController
     }
 
     func start() {
-        let viewModel = SettingsLockViewModel(router: self, dependencies: .init(biometricStatus: UIDevice.current))
+        let viewModel = SettingsLockViewModel(
+            router: self,
+            dependencies: .init(
+                biometricStatus: UIDevice.current,
+                coreKeyMaker: coreKeyMaker
+            )
+        )
         let viewController = SettingsLockViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -49,7 +57,7 @@ final class SettingsLockRouter: SettingsLockRouterProtocol {
         case .pinCodeSetup:
             let nav = UINavigationController()
             nav.modalPresentationStyle = .fullScreen
-            let coordinator = PinCodeSetupCoordinator(nav: nav)
+            let coordinator = PinCodeSetupCoordinator(nav: nav, coreKeyMaker: coreKeyMaker)
             coordinator.start()
             self.navigationController?.present(nav, animated: true, completion: nil)
         }

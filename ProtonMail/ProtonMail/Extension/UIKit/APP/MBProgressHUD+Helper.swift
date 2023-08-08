@@ -35,7 +35,7 @@ extension MBProgressHUD {
     static func alert(errorString: String, at view: UIView? = nil) {
         var view = view
         if view == nil,
-           let window = UIApplication.shared.keyWindow {
+           let window = UIApplication.shared.topMostWindow {
             view = window
         }
         guard let _view = view else { return }
@@ -44,7 +44,8 @@ extension MBProgressHUD {
         hud.label.text = LocalString._general_alert_title
         hud.detailsLabel.text = errorString
         hud.removeFromSuperViewOnHide = true
-        hud.hide(animated: true, afterDelay: 3)
+        let delay = UIApplication.isTestingBuild ? 10.0 : 3.0
+        hud.hide(animated: true, afterDelay: delay)
     }
 }
 

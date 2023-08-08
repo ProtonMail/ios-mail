@@ -15,23 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import LifetimeTracker
 
-final class BlockedSendersViewModel: NSObject {
-    private  let dependencies: Dependencies
+final class BlockedSendersViewModel {
+    private let dependencies: Dependencies
+    private var cancellables = Set<AnyCancellable>()
 
-    private var cellModels: [BlockedSenderCellModel] {
-        switch state {
-        case .fetchInProgress:
-            return []
-        case .blockedSendersFetched(let models):
-            return models
+    private var cellModels: [BlockedSenderCellModel] = [] {
+        didSet {
+            notifyView()
         }
     }
 
-    private(set) var state: State = .fetchInProgress {
+    private var isRefreshInProgress = false {
         didSet {
-            uiDelegate?.refreshView(state: state)
+            notifyView()
         }
     }
 
@@ -40,35 +39,31 @@ final class BlockedSendersViewModel: NSObject {
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
 
-        super.init()
-
         trackLifetime()
     }
 
-    private func respondToCacheUpdater(state cacheUpdaterState: BlockedSenderCacheUpdater.State) {
-        switch cacheUpdaterState {
-        case .idle:
-            fetchBlockedSendersFromCoreData()
-        default:
-            state = .fetchInProgress
-        }
+    private func setupBinding() {
+        dependencies.blockedSendersPublisher.contentDidChange
+            .sink { [weak self] incomingDefaults in
+                self?.cellModels = incomingDefaults.map { incomingDefault in
+                    BlockedSenderCellModel(title: incomingDefault.email)
+                }
+            }
+            .store(in: &cancellables)
+
+        dependencies.blockedSendersPublisher.start()
     }
 
-    private func fetchBlockedSendersFromCoreData() {
-        let incomingDefaults: [IncomingDefaultEntity]
+    private func notifyView() {
+        uiDelegate?.refreshView(state: isRefreshInProgress ? .fetchInProgress : .blockedSendersFetched(cellModels))
+    }
 
-        do {
-            incomingDefaults = try dependencies.incomingDefaultService.listLocal(query: .location(.blocked))
-        } catch {
-            assertionFailure("\(error)")
-            incomingDefaults = []
+    private func respondToCacheUpdater(state cacheUpdaterState: BlockedSenderCacheUpdater.State) {
+        isRefreshInProgress = cacheUpdaterState != .idle
+
+        if cacheUpdaterState == .waitingToBecomeOnline {
+            uiDelegate?.showOfflineToast()
         }
-
-        let cellModels = incomingDefaults.map { incomingDefault in
-            BlockedSenderCellModel(title: incomingDefault.email)
-        }
-
-        state = .blockedSendersFetched(cellModels)
     }
 }
 
@@ -81,8 +76,10 @@ extension BlockedSendersViewModel: BlockedSendersViewModelInput {
         let senderEmail = cellModel.title
         let parameters = UnblockSender.Parameters(emailAddress: senderEmail)
         try dependencies.unblockSender.execute(parameters: parameters)
+    }
 
-        fetchBlockedSendersFromCoreData()
+    func viewDidLoad() {
+        setupBinding()
     }
 
     func viewWillAppear() {
@@ -137,8 +134,8 @@ extension BlockedSendersViewModel {
     }
 
     struct Dependencies {
+        let blockedSendersPublisher: BlockedSendersPublisher
         let cacheUpdater: BlockedSenderCacheUpdater
-        let incomingDefaultService: IncomingDefaultService
         let unblockSender: UnblockSender
     }
 

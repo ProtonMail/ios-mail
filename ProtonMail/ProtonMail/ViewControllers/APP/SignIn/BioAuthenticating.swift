@@ -24,6 +24,8 @@ import UIKit
 
 protocol BioAuthenticating: AnyObject {
     var notificationToken: NSObjectProtocol? { get set }
+    var unlockManager: UnlockManager { get }
+
     func authenticateUser()
 }
 extension BioAuthenticating where Self: UIViewController {
@@ -37,7 +39,7 @@ extension BioAuthenticating where Self: UIViewController {
         }()
 
         self.notificationToken = NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { [weak self] notification in
-            guard userCachedStatus.isTouchIDEnabled else { return }
+            guard self?.unlockManager.cacheStatus.isTouchIDEnabled == true else { return }
             self?.decideOnBioAuthentication()
         }
     }

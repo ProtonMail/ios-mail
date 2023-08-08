@@ -10,7 +10,6 @@ var CSS_URL = '((url|image-set)(\\(|&(#40|#x00028|lpar);))';
 var REGEXP_URL_ATTR = new RegExp(CSS_URL, 'gi');
 var REGEXP_HEIGHT_PERCENTAGE = /((?:min-|max-|line-)?height)\s*:\s*([\d.,]+%)/gi;
 var REGEXP_POSITION_ABSOLUTE = /position\s*:\s*absolute/gi;
-var REGEXP_MEDIA_DARK_STYLE = /\(\s*prefers-color-scheme\s*:\s*dark\s*\)/gi;
 
 var escape = function (string) {
     var UNESCAPE_HTML_REGEX = /[&<>"']/g;
@@ -122,8 +121,6 @@ var escapeForbiddenStyle = function (style) {
             }
             return "".concat(prop, ": unset");
         })
-        // "never" is not a valid value, it's meant to be invalid and break the media query
-        .replace(REGEXP_MEDIA_DARK_STYLE, '(prefers-color-scheme: never)');
     return parsedStyle;
 };
 

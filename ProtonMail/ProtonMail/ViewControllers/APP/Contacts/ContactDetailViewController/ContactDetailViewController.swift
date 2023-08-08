@@ -300,6 +300,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
             userIntroductionProgressProvider: userCachedStatus,
             scheduleSendEnableStatusProvider: userCachedStatus,
             internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+            coreKeyMaker: sharedServices.get(),
             toContact: contact
         )
         guard let nav = navigationController else {

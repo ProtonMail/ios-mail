@@ -25,9 +25,4 @@ final class UserInfoLocalFeatureFlagsTests: XCTestCase {
         // Please do not remove/disable this test until the local feature flag is replaced with an actually tested remote feature flag
         XCTAssertTrue(UserInfo.isInAppFeedbackEnabled)
     }
-
-    func testDiffableDataSourceShouldBeEnableUntilItIsFixed() {
-        // Please do not remove/disable this test until the local feature flag is replaced with an actually tested remote feature flag
-        XCTAssert(UserInfo.isDiffableDataSourceEnabled)
-    }
 }

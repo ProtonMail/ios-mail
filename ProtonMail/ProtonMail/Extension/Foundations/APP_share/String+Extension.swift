@@ -61,29 +61,11 @@ extension String {
     }
 
     /**
-     String extension check is email valid use the basic regex
-     
-     :returns: true | false
-     */
-    static let emailRegEx = "(?:[a-zA-Z0-9!#$%\\&‘*+/=?\\^_`{|}~-]+(?:\\.[a-zA-Z0-9!#$%\\&'*+/=?\\^_`{|}" +
-    "~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\" +
-    "x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-" +
-    "z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5" +
-    "]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-" +
-    "9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21" +
-    "-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
-    static let emailTest = NSPredicate(format: "SELF MATCHES[c] %@", String.emailRegEx)
-
-    func isValidEmail() -> Bool {
-        return String.emailTest.evaluate(with: self)
-    }
-
-    /**
      String extension for remove the whitespaces begain&end
-     
+
      Example:
      " adsf " => "adsf"
-     
+
      :returns: trimed string value
      */
     func trim() -> String {
@@ -106,7 +88,7 @@ extension String {
 
     /**
      String extension decode some encoded htme tags
-     
+
      :returns: String
      */
     func decodeHtml() -> String {
@@ -242,6 +224,12 @@ extension String {
         // should return the original string
         return self
     }
+
+    func insert(every: Int, with separator: String) -> String {
+        return String(stride(from: 0, to: Array(self).count, by: every).map {
+            Array(Array(self)[$0..<min($0 + every, Array(self).count)])
+        }.joined(separator: separator))
+    }
 }
 
 extension Array where Element == String {
@@ -253,7 +241,7 @@ extension Array where Element == String {
 extension String {
     /**
      String extension parse a json string to a list of dict
-     
+
      :returns: [ [String:String] ]
      */
     func parseJson() -> [[String: Any]]? {
@@ -271,9 +259,19 @@ extension String {
         return nil
     }
 
+    func parseJSON<T>() -> T? {
+        if isEmpty { return nil }
+        do {
+            let data = Data(self.utf8)
+            let decoded = try JSONSerialization.jsonObject(with: data, options: []) as? T
+            return decoded
+        } catch { }
+        return nil
+    }
+
     /**
      String extension formating the Json format contact for forwarding email.
-     
+
      :returns: String
      */
     func formatJsonContact(_ mailto: Bool = false) -> String {
@@ -289,6 +287,10 @@ extension String {
             }
         }
         return lists.joined(separator: ",")
+    }
+
+    subscript(value: NSRange) -> String {
+        (self as NSString).substring(with: value)
     }
 }
 

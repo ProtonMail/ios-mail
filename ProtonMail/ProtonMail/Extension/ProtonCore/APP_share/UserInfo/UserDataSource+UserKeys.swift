@@ -29,8 +29,8 @@ struct UserKeys: Equatable {
 extension UserManager {
     func toUserKeys() -> UserKeys {
         UserKeys(
-            privateKeys: userPrivateKeys,
-            addressesPrivateKeys: addressKeys,
+            privateKeys: userInfo.userPrivateKeys,
+            addressesPrivateKeys: userInfo.addressKeys,
             mailboxPassphrase: mailboxPassword
         )
     }

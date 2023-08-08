@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import LifetimeTracker
 import ProtonCore_DataModel
 
 // sourcery: mock
@@ -43,7 +42,7 @@ final class BlockedSenderCacheUpdater {
             guard oldValue != state else {
                 let errorMessage = "Setting \(oldValue) twice"
                 SystemLogger.log(message: errorMessage, category: .blockSender, isError: true)
-                assertionFailure(errorMessage)
+                PMAssertionFailure(errorMessage)
                 return
             }
 
@@ -86,8 +85,6 @@ final class BlockedSenderCacheUpdater {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-
-        trackLifetime()
     }
 
     /// parameter force: ignore the local flag that the fetch has been completed previously
@@ -117,7 +114,8 @@ final class BlockedSenderCacheUpdater {
 
     private func registerForConnectivityUpdates() {
         dependencies.internetConnectionStatusProvider.registerConnectionStatus(
-            observerID: observerID
+            observerID: observerID,
+            fireAfterRegister: true
         ) { [weak self] status in
             if status.isConnected {
                 self?.state = .updateInProgress
@@ -144,12 +142,6 @@ final class BlockedSenderCacheUpdater {
         Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { [weak self] _ in
             self?.state = .updateRequested
         }
-    }
-}
-
-extension BlockedSenderCacheUpdater: LifetimeTrackable {
-    static var lifetimeConfiguration: LifetimeConfiguration {
-        .init(maxCount: 1)
     }
 }
 

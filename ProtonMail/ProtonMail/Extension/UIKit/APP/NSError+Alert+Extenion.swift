@@ -48,7 +48,7 @@ extension NSError {
     }
 
     func alertErrorToast() {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+        guard let window = UIApplication.shared.topMostWindow else {
             return
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
@@ -56,24 +56,12 @@ extension NSError {
         hud.label.text = NSLocalizedString(localizedDescription, comment: "Title")
         hud.detailsLabel.text = description
         hud.removeFromSuperViewOnHide = true
-        hud.hide(animated: true, afterDelay: 3)
-    }
-
-    func alertHumanCheckErrorToast() {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
-            return
-        }
-        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = "\(LocalString._error_human_check_failed): \(self.localizedDescription)"
-        hud.removeFromSuperViewOnHide = true
-        hud.margin = 10
-        hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 3)
+        let delay = UIApplication.isTestingBuild ? 10.0 : 3.0
+        hud.hide(animated: true, afterDelay: delay)
     }
 
     class func alertMessageSentErrorToast() {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+        guard let window = UIApplication.shared.topMostWindow else {
             return
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
@@ -86,7 +74,7 @@ extension NSError {
     }
 
     class func alertMessageSentError(details: String) {
-        guard let window: UIWindow = UIApplication.shared.keyWindow else {
+        guard let window = UIApplication.shared.topMostWindow else {
             return
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
@@ -95,7 +83,8 @@ extension NSError {
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
         hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 2)
+        let delay = UIApplication.isTestingBuild ? 10.0 : 3.0
+        hud.hide(animated: true, afterDelay: delay)
     }
 
     class func alertSavingDraftError(details: String) {

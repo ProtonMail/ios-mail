@@ -34,7 +34,7 @@ PODS:
     - SDWebImage
     - SwiftyGif
   - EllipticCurveKeyPair (2.0)
-  - fusion (2.0.0)
+  - fusion (2.0.1)
   - Groot (3.0.1):
     - Groot/Swift (= 3.0.1)
   - Groot/Swift (3.0.1)
@@ -131,10 +131,6 @@ PODS:
   - ProtonCore-Challenge (5.2.0):
     - ProtonCore-DataModel (= 5.2.0)
     - ProtonCore-Foundations (= 5.2.0)
-    - ProtonCore-UIFoundations (= 5.2.0)
-  - ProtonCore-Common (5.2.0):
-    - ProtonCore-Networking (= 5.2.0)
-    - ProtonCore-Services (= 5.2.0)
     - ProtonCore-UIFoundations (= 5.2.0)
   - ProtonCore-CoreTranslation (5.2.0)
   - ProtonCore-DataModel (5.2.0):
@@ -335,7 +331,7 @@ PODS:
   - Sentry (7.31.2):
     - Sentry/Core (= 7.31.2)
   - Sentry/Core (7.31.2)
-  - SideMenuSwift (2.0.6)
+  - SideMenuSwift (2.0.9)
   - SkeletonView (1.30.4)
   - SQLite.swift (0.13.3):
     - SQLite.swift/standard (= 0.13.3)
@@ -345,11 +341,12 @@ PODS:
   - SwiftyGif (5.4.3)
   - SwipyCell (4.1.1)
   - TrustKit (2.0.0)
+  - Yams (5.0.5)
 
 DEPENDENCIES:
   - AwaitKit (from `https://github.com/yannickl/AwaitKit.git`, commit `4b725f40dd189f40c0962cba792f06a2073bd977`)
   - DKImagePickerController/PhotoGallery (= 4.3.4)
-  - "fusion (from `git@gitlab.protontech.ch:tpe/apple-fusion.git`, commit `83c1dfb4`)"
+  - "fusion (from `git@gitlab.protontech.ch:tpe/apple-fusion.git`, commit `82ddf41`)"
   - Groot (= 3.0.1)
   - "iosMonkey (from `git@gitlab.protontech.ch:tpe/ios-monkey.git`, commit `fa348f33`)"
   - MBProgressHUD (= 1.1.0)
@@ -361,7 +358,6 @@ DEPENDENCIES:
   - "ProtonCore-Authentication-KeyGeneration/Crypto+Search-Go1.20.2 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-Authentication/Crypto+Search-Go1.20.2 (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-Challenge (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
-  - "ProtonCore-Common (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-CoreTranslation (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-DataModel (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-Doh (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
@@ -400,13 +396,14 @@ DEPENDENCIES:
   - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `7.31.2.fork`)"
-  - SideMenuSwift (= 2.0.6)
+  - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.autolayout`)"
   - SkeletonView (= 1.30.4)
   - SQLite.swift (~> 0.13.3)
   - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `5.2.0`)"
   - SwiftSoup (~> 2.3)
   - "SwipyCell (from `git@gitlab.protontech.ch:jchen/SwipyCell.git`, commit `923310a`)"
   - TrustKit (from `https://github.com/ProtonMail/TrustKit.git`, branch `release/1.0.3`)
+  - Yams (= 5.0.5)
 
 SPEC REPOS:
   trunk:
@@ -421,18 +418,18 @@ SPEC REPOS:
     - PromiseKit
     - ReachabilitySwift
     - SDWebImage
-    - SideMenuSwift
     - SkeletonView
     - SQLite.swift
     - SwiftSoup
     - SwiftyGif
+    - Yams
 
 EXTERNAL SOURCES:
   AwaitKit:
     :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
     :git: https://github.com/yannickl/AwaitKit.git
   fusion:
-    :commit: 83c1dfb4
+    :commit: 82ddf41
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
   iosMonkey:
     :commit: fa348f33
@@ -453,9 +450,6 @@ EXTERNAL SOURCES:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
   ProtonCore-Challenge:
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 5.2.0
-  ProtonCore-Common:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
   ProtonCore-CoreTranslation:
@@ -536,6 +530,9 @@ EXTERNAL SOURCES:
   Sentry:
     :git: "git@gitlab.protontech.ch:jchen/sentry-cocoa.git"
     :tag: 7.31.2.fork
+  SideMenuSwift:
+    :git: "git@gitlab.protontech.ch:jchen/SideMenu.git"
+    :tag: v2.0.9.autolayout
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
@@ -551,7 +548,7 @@ CHECKOUT OPTIONS:
     :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
     :git: https://github.com/yannickl/AwaitKit.git
   fusion:
-    :commit: 83c1dfb4
+    :commit: 82ddf41
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
   iosMonkey:
     :commit: fa348f33
@@ -572,9 +569,6 @@ CHECKOUT OPTIONS:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
   ProtonCore-Challenge:
-    :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
-    :tag: 5.2.0
-  ProtonCore-Common:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
   ProtonCore-CoreTranslation:
@@ -655,6 +649,9 @@ CHECKOUT OPTIONS:
   Sentry:
     :git: "git@gitlab.protontech.ch:jchen/sentry-cocoa.git"
     :tag: 7.31.2.fork
+  SideMenuSwift:
+    :git: "git@gitlab.protontech.ch:jchen/SideMenu.git"
+    :tag: v2.0.9.autolayout
   swift-snapshot-testing:
     :git: "git@gitlab.protontech.ch:apple/shared/protoncore.git"
     :tag: 5.2.0
@@ -671,7 +668,7 @@ SPEC CHECKSUMS:
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
-  fusion: 094ff868fc1bc12ad68c403ff7be7af2da49a315
+  fusion: 4ce692b0bd8030d952dde9b4ceae3ab9fd3d2b72
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
   iosMonkey: bd2945d2c34f43236124bb1692923cd4aaa664b7
   lottie-ios: 9ae750cdc7820fecbd3c2f0cfc493038208fcdc4
@@ -684,7 +681,6 @@ SPEC CHECKSUMS:
   ProtonCore-Authentication: 2ce166be670e7539e78c84a0abedf28792a48193
   ProtonCore-Authentication-KeyGeneration: e833148abe12c917268f8a727b750bb5d11c4544
   ProtonCore-Challenge: 9bd3a2308129590099e6e4a483cca314dc3cf404
-  ProtonCore-Common: 28b84f999300ce4ab29a2b4d4309ab0fdb1439da
   ProtonCore-CoreTranslation: cdcde6c1f32ce04fd7bf91a15b7841846d04a4b1
   ProtonCore-DataModel: c04a291c0da17db008d4ac24c8c2c54c7cbf47d0
   ProtonCore-Doh: b0cf232b3480a72192a0255a22fcca388c7ed416
@@ -713,7 +709,7 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: af5bbffef2cde09f148d826f9733dcde1a9414cd
   Sentry: b15765d11769852fe78c9add942f7df60ed5dbf5
-  SideMenuSwift: f12ca1b11faad909bfc2878df37e0a1c40fa4570
+  SideMenuSwift: 39f1922e225da4aaa8b16591037a929defe960c9
   SkeletonView: 5a050f6411e697abd4cda0a8d767013399dccd69
   SQLite.swift: 903bfa3bc9ab06345fdfbb578e34f47cfcf417da
   swift-snapshot-testing: d388c9ff71363d8572312dcb45704bb5df021c8f
@@ -721,7 +717,8 @@ SPEC CHECKSUMS:
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
+  Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: 7ecc4083b7dd163a6721759b9c799d349e7cd2d1
+PODFILE CHECKSUM: d6b8f3b2ce9b633559402eeaee1a5fb2902c0ee1
 
 COCOAPODS: 1.12.0

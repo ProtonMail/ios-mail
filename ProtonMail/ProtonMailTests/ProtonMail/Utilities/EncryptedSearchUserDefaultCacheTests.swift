@@ -226,10 +226,10 @@ final class EncryptedSearchUserDefaultCacheTests: XCTestCase {
     func testStorageLimit() {
         XCTAssertEqual(sut.storageLimit, Constants.EncryptedSearch.defaultStorageLimit)
 
-        let newValue = 1000
+        let newValue = Measurement<UnitInformationStorage>(value: 1.0, unit: .kilobytes)
         sut.storageLimit = newValue
 
-        XCTAssertEqual(sut.storageLimit, 1000)
+        XCTAssertEqual(sut.storageLimit.converted(to: .bytes).value, 1000.0)
     }
 
     func testPauseIndexingDueToNetworkIssues() {
@@ -283,7 +283,7 @@ final class EncryptedSearchUserDefaultCacheTests: XCTestCase {
     }
 
     func testCleanGlobal() {
-        sut.storageLimit = 100
+        sut.storageLimit = Measurement<UnitInformationStorage>(value: 100.0, unit: .bytes)
         sut.pauseIndexingDueToNetworkIssues = true
         sut.pauseIndexingDueToLowBattery = true
         sut.pauseIndexingDueToOverHeating = true

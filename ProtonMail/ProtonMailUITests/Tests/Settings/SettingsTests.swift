@@ -8,17 +8,10 @@
 
 import ProtonCore_TestingToolkit
 
-class SettingsTests : BaseTestCase {
+class SettingsTests : FixtureAuthenticatedTestCase {
     
     private let correctPin = "0000"
     private let inboxRobot: InboxRobot = InboxRobot()
-    private let loginRobot = LoginRobot()
-
-    override func setUp() {
-        super.setUp()
-        loginRobot
-            .loginUser(testData.onePassUser)
-    }
 
     func testEditAutoLockTime() {
         inboxRobot
@@ -27,7 +20,7 @@ class SettingsTests : BaseTestCase {
             .pin()
             .enablePin()
             .setPin(correctPin)
-            .pinTimer()
+            .openPinTimerSelection()
             .selectAutoLockNone()
             .navigateUpToSettings()
             .close()
@@ -36,7 +29,7 @@ class SettingsTests : BaseTestCase {
             .menuDrawer()
             .settings()
             .pin()
-            .pinTimer()
+            .openPinTimerSelection()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
             .close()
@@ -45,9 +38,11 @@ class SettingsTests : BaseTestCase {
             .inputCorrectPin()
             .verify.inboxShown()
     }
-    
-    func testEnableAndDisablePinForMultipleAccounts() {
-        let secondAccount = testData.twoPassUser
+
+    @MainActor
+    func testEnableAndDisablePinForMultipleAccounts() throws {
+        let secondAccount = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
+
         inboxRobot
             .menuDrawer()
             .accountsList()
@@ -59,16 +54,17 @@ class SettingsTests : BaseTestCase {
             .pin()
             .enablePin()
             .setPin(correctPin)
-            .pinTimer()
+            .openPinTimerSelection()
             .selectAutolockEveryTime()
             .navigateUpToSettings()
             .close()
             .backgroundApp()
             .activateAppWithPin()
             .inputCorrectPin()
+            .verify.inboxShown()
             .menuDrawer()
             .accountsList()
-            .switchToAccount(testData.onePassUser)
+            .switchToAccount(user!)
             .menuDrawer()
             .settings()
             .pin()
@@ -102,12 +98,10 @@ class SettingsTests : BaseTestCase {
     }
 
     func testBlockList() {
-        let user = testData.onePassUser
-
         inboxRobot
             .menuDrawer()
             .settings()
-            .selectAccount(user.email)
+            .selectAccount(user!.email)
             .blockList()
             .pullDownToRefresh()
             .verify

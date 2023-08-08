@@ -30,17 +30,25 @@ func PMAssertionFailure(
     )
 #endif
 
-    SystemLogger.log(message: message, category: .assertionFailure, isError: true)
+    SystemLogger.log(
+        message: message,
+        category: .assertionFailure,
+        isError: true,
+        file: file,
+        function: caller,
+        line: Int(line),
+        column: 0
+    )
 
-    assertionFailure(message, file: file, line: line)
+    // The `Swift.` is needed here since there is a compiler bug that will make it crash on release build.
+    Swift.assertionFailure(message, file: file, line: line)
 }
 
 func PMAssertionFailure(
     _ error: Error,
-    userInfo: [AnyHashable: Any] = [:],
     caller: StaticString = #function,
     file: StaticString = #file,
     line: UInt = #line
 ) {
-    PMAssertionFailure("\(error)", userInfo: userInfo, caller: caller, file: file, line: line)
+    PMAssertionFailure("\(error)", caller: caller, file: file, line: line)
 }

@@ -293,12 +293,29 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         }
     }
 
-    /// Discards pending changes in the global read and write contexts
-    func rollbackAllContexts() throws {
-        try write { context in
-            context.rollback()
+    func performAndWaitOnRootSavingContext<T>(block: (_ context: NSManagedObjectContext) throws -> T) throws -> T {
+        let context = rootSavingContext
+
+        var result: Result<T, Error>!
+
+        context.performAndWait {
+            do {
+                result = .success(try block(context))
+            } catch {
+                result = .failure(error)
+            }
         }
-        mainContext.rollback()
+
+        return try result.get()
+    }
+
+    /// Discards pending changes in the global main context
+    func resetMainContextIfNeeded() {
+        mainContext.perform {
+            if self.mainContext.hasChanges {
+                self.mainContext.reset()
+            }
+        }
     }
 }
 

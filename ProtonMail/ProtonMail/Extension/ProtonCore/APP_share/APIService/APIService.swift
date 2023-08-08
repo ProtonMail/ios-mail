@@ -21,10 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import Foundation
-import TrustKit
 import ProtonCore_Authentication
 import ProtonCore_Challenge
+import ProtonCore_Environment
 import ProtonCore_Log
 import ProtonCore_Keymaker
 import ProtonCore_Networking
@@ -32,7 +31,7 @@ import ProtonCore_Services
 
 extension PMAPIService {
 
-    private static var authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService()
+    private static var authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService(coreKeyMaker: sharedServices.get())
 
     static var unauthorized: PMAPIService = {
         PMAPIService.setupTrustIfNeeded()
@@ -51,27 +50,13 @@ extension PMAPIService {
             )
         }
         #if !APP_EXTENSION
-        if let delegate = UIApplication.shared.delegate as? AppDelegate {
-            unauthorized.serviceDelegate = delegate
-        }
+        unauthorized.serviceDelegate = PMAPIService.ServiceDelegate.shared
         unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: unauthorized)
         unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
         unauthorized.authDelegate = authManagerForUnauthorizedAPIService.authDelegateForUnauthorized
         return unauthorized
     }()
-
-    static var shared: APIService {
-        // TODO:: fix me -- shouldn't have gloabl access
-        if let user = sharedServices.get(by: UsersManager.self).users.first {
-            return user.apiService
-        }
-        #if !APP_EXTENSION
-        self.unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: .unauthorized)
-        self.unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-        #endif
-        return self.unauthorized
-    }
 
     static func setupTrustIfNeeded() {
 //        #if DEBUG
@@ -81,7 +66,10 @@ extension PMAPIService {
         guard PMAPIService.trustKit == nil else { return }
         #if !APP_EXTENSION
         // For the extension, please check ShareExtensionEntry
-        let delegate = UIApplication.shared.delegate as? AppDelegate
+        guard let delegate = UIApplication.shared.delegate as? AppDelegate else {
+            assertionFailure("\(UIApplication.shared.delegate) is not an instance of AppDelegate!")
+            return
+        }
         TrustKitWrapper.start(delegate: delegate)
         #endif
     }
@@ -94,15 +82,16 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
     let initialSessionUID: String?
 
     let authDelegateForUnauthorized: AuthHelper
+    let coreKeyMaker: KeyMakerProtocol
 
-    init() {
-
+    init(coreKeyMaker: KeyMakerProtocol) {
+        self.coreKeyMaker = coreKeyMaker
         defer {
             let dispatchQueue = DispatchQueue(label: "me.proton.mail.queue.unauth-session-auth-helper-delegate")
             authDelegateForUnauthorized.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: dispatchQueue))
         }
 
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let data = SharedCacheBase.getDefault()?.data(forKey: key) else {
             self.authDelegateForUnauthorized = AuthHelper()
             self.initialSessionUID = nil
@@ -123,12 +112,45 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
     }
 
     func credentialsWereUpdated(authCredential: AuthCredential, credential _: Credential, for _: String) {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let lockedAuth = try? Locked<[AuthCredential]>(clearValue: [authCredential], with: mainKey) else { return }
         SharedCacheBase.getDefault()?.setValue(lockedAuth.encryptedValue, forKey: key)
     }
 
     func sessionWasInvalidated(for _: String, isAuthenticatedSession: Bool) {
         SharedCacheBase.getDefault()?.remove(forKey: key)
+    }
+}
+
+extension PMAPIService {
+    final class ServiceDelegate: APIServiceDelegate {
+        static let shared = ServiceDelegate()
+
+        var appVersion: String {
+            Constants.App.appVersion
+        }
+
+        var userAgent: String? {
+            UserAgent.default.ua
+        }
+
+        var locale: String {
+            LanguageManager().currentLanguageCode()
+        }
+
+        var additionalHeaders: [String : String]? {
+            nil
+        }
+
+        func onUpdate(serverTime: Int64) {
+            MailCrypto.updateTime(serverTime, processInfo: userCachedStatus)
+        }
+
+        func isReachable() -> Bool {
+            sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
+        }
+
+        func onDohTroubleshot() {
+        }
     }
 }

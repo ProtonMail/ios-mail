@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_Doh
 import ProtonCore_UIFoundations
 import enum ProtonCore_Utilities.Either
 
@@ -24,9 +24,9 @@ final class NetworkSettingViewModel: SwitchToggleVMProtocol {
     var output: SwitchToggleVMOutput { self }
 
     private var userCache: DohCacheProtocol
-    private var dohSetting: DohStatusProtocol
+    private var dohSetting: DoHInterface
 
-    init(userCache: DohCacheProtocol, dohSetting: DohStatusProtocol) {
+    init(userCache: DohCacheProtocol, dohSetting: DoHInterface) {
         self.userCache = userCache
         self.dohSetting = dohSetting
     }

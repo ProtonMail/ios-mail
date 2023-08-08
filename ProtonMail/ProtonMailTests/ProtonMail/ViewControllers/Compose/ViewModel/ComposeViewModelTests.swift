@@ -40,23 +40,40 @@ final class ComposeViewModelTests: XCTestCase {
         fakeUserManager = mockUserManager()
         contactProvider = .init(coreDataContextProvider: mockCoreDataService)
 
-        let dependency = ComposeViewModel.Dependencies.init(
+        let copyMessage = MockCopyMessageUseCase()
+
+        copyMessage.executeStub.bodyIs { [unowned self] _, _ in
+            (message, nil)
+        }
+
+        let helperDependencies = ComposerMessageHelper.Dependencies(
+            messageDataService: fakeUserManager.messageService,
+            cacheService: fakeUserManager.cacheService,
+            contextProvider: mockCoreDataService,
+            copyMessage: copyMessage
+        )
+
+        let dependencies = ComposeViewModel.Dependencies(
+            coreDataContextProvider: mockCoreDataService,
+            coreKeyMaker: MockKeyMakerProtocol(),
             fetchAndVerifyContacts: .init(),
             internetStatusProvider: .init(),
             fetchAttachment: .init(),
-            contactProvider: contactProvider)
+            contactProvider: contactProvider,
+            helperDependencies: helperDependencies,
+            fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: MockKeyMakerProtocol(), cache: MockMobileSignatureCacheProtocol()))
+        )
 
         self.message = testContext.performAndWait {
             Message(context: testContext)
         }
+
         sut = ComposeViewModel(
             msg: message,
             action: .openDraft,
             msgService: fakeUserManager.messageService,
             user: fakeUserManager,
-            coreDataContextProvider: mockCoreDataService,
-            internetStatusProvider: .init(),
-            dependencies: dependency
+            dependencies: dependencies
         )
     }
 
@@ -70,7 +87,7 @@ final class ComposeViewModelTests: XCTestCase {
         super.tearDown()
     }
 
-    func testGetAttachment() throws {
+    func testGetAttachment() {
         let attachment1 = Attachment(context: testContext)
         attachment1.order = 0
         attachment1.message = message
@@ -82,56 +99,66 @@ final class ComposeViewModelTests: XCTestCase {
         attachmentSoftDeleted.isSoftDeleted = true
         attachmentSoftDeleted.message = message
 
-        let result = try XCTUnwrap(sut.getAttachments())
+        let result = sut.getAttachments()
+        // TODO: fix this test and uncomment this line, or replace the test, it's not meaningful
+        // XCTAssertNotEqual(result, [])
         for index in result.indices {
             XCTAssertEqual(result[index].order, index)
         }
     }
-}
 
-// MARK: isEmptyDraft tests
+    func testGetAddressesWhenMessageHeaderContainsFrom() {
+        let addresses = generateAddress(number: 4)
+        fakeUserManager.userInfo.set(addresses: addresses)
 
-// The body decryption part and numAttachment are missing, seems no way to test
-private extension ComposeViewModelTests {
+        let addressID = addresses[0].addressID
+        let email1 = addresses[0].email
+        let parts = email1.components(separatedBy: "@")
+        let alias = "\(parts[0])+abcd@\(parts[1])"
+        testContext.performAndWait {
+            let obj = self.sut.composerMessageHelper.getRawMessageObject()
+            obj?.parsedHeaders = "{\"From\": \"Tester <\(alias)>\"}"
+        }
+        let lists = sut.getAddresses()
+        XCTAssertEqual(lists.count, 5)
+        XCTAssertEqual(lists[0].email, alias)
+        XCTAssertEqual(lists[0].addressID, addressID)
+        XCTAssertEqual(lists.filter { $0.addressID == addressID }.count, 2)
+    }
+
+    func testGetAddressesWhenMessageHeaderWithoutFrom() {
+        let addresses = generateAddress(number: Int.random(in: 2...8))
+        fakeUserManager.userInfo.set(addresses: addresses)
+
+        let lists = sut.getAddresses()
+        XCTAssertEqual(lists.count, addresses.count)
+        XCTAssertEqual(lists, addresses)
+    }
+
+    // MARK: isEmptyDraft tests
+
     func testIsEmptyDraft_messageInit() throws {
-        let user = mockUserManager()
-        let viewModel = ComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService, internetStatusProvider: .init())
-
-        XCTAssertTrue(viewModel.isEmptyDraft())
+        sut.initialize(message: message, action: .openDraft)
+        XCTAssertTrue(sut.isEmptyDraft())
     }
 
     func testIsEmptyDraft_subjectField() throws {
         message.title = "abc"
-        let user = mockUserManager()
-        let viewModel = ComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService, internetStatusProvider: .init())
-
-        XCTAssertFalse(viewModel.isEmptyDraft())
+        sut.initialize(message: message, action: .openDraft)
+        XCTAssertFalse(sut.isEmptyDraft())
     }
 
     func testIsEmptyDraft_recipientField() throws {
         message.toList = "[]"
         message.ccList = "[]"
         message.bccList = "[]"
-        let user = mockUserManager()
-        var viewModel = ComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService, internetStatusProvider: .init())
+        sut.initialize(message: message, action: .openDraft)
 
-        XCTAssertTrue(viewModel.isEmptyDraft())
-
-        message.toList = "eee"
-        message.ccList = "abc"
-        message.bccList = "fsx"
-        viewModel = ComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user, coreDataContextProvider: self.mockCoreDataService, internetStatusProvider: .init())
-        XCTAssertFalse(viewModel.isEmptyDraft())
+        XCTAssertTrue(sut.isEmptyDraft())
     }
 
     func testDecodingRecipients_prefersMatchingLocalContactName() throws {
-        let email = CoreDataService.shared.read { context in
-            let email = Email(context: context)
-            let contact = Contact(context: context)
-            contact.name = "My friend I don't like"
-            email.contact = contact
-            return EmailEntity(email: email)
-        }
+        let email = EmailEntity.make(contactName: "My friend I don't like")
 
         contactProvider.getEmailsByAddressStub.bodyIs { _, _, _ in
             [email]
@@ -168,11 +195,11 @@ private extension ComposeViewModelTests {
 }
 
 extension ComposeViewModelTests {
-    private func mockUserManager(addressID: String = UUID().uuidString) -> UserManager {
+    private func mockUserManager() -> UserManager {
         let userInfo = UserInfo.getDefault()
         userInfo.defaultSignature = "Hi"
         let key = Key(keyID: "keyID", privateKey: KeyTestData.privateKey1)
-        let address = Address(addressID: addressID,
+        let address = Address(addressID: UUID().uuidString,
                               domainID: "",
                               email: "",
                               send: .active,
@@ -186,5 +213,29 @@ extension ComposeViewModelTests {
                               keys: [key])
         userInfo.set(addresses: [address])
         return UserManager(api: self.apiMock, role: .owner, userInfo: userInfo)
+    }
+
+    func generateAddress(number: Int) -> [Address] {
+        let key = Key(keyID: "keyID", privateKey: KeyTestData.privateKey1)
+        let list = (0..<number).map { _ in
+            let id = UUID().uuidString
+            let domain = "\(String.randomString(3)).\(String.randomString(3))"
+            let userPart = String.randomString(5)
+            return Address(
+                addressID: id,
+                domainID: UUID().uuidString,
+                email: "\(userPart)@\(domain)",
+                send: .active,
+                receive: .active,
+                status: .enabled,
+                type: .protonDomain,
+                order: 0,
+                displayName: String.randomString(7),
+                signature: "Hello",
+                hasKeys: 1,
+                keys: [key]
+            )
+        }
+        return list
     }
 }

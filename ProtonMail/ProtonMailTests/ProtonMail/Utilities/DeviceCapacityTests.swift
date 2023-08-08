@@ -32,7 +32,8 @@ class DeviceCapacityTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
 
-        testDirectory = fileManager.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        testDirectory = URL(filePath: NSHomeDirectory(), directoryHint: .isDirectory)
+            .appendingPathComponent(UUID().uuidString)
         try fileManager.createDirectory(at: testDirectory, withIntermediateDirectories: true)
     }
 
@@ -48,15 +49,11 @@ class DeviceCapacityTests: XCTestCase {
         let freeSpaceBeforeWrite = SUT.Disk().availableCapacity
 
         let testData = Data("foo".utf8)
-        try testData.write(to: testFileURL)
+        try testData.write(to: testFileURL, options: .atomic)
 
         let freeSpaceAfterWrite = SUT.Disk().availableCapacity
 
-        let reductionInFreeSpace = freeSpaceBeforeWrite - freeSpaceAfterWrite
-        // Either of this assertions fails on some systems
-        guard [testData.count, 4096].contains(reductionInFreeSpace) else {
-            XCTFail("Unexpected value: \(reductionInFreeSpace)")
-            return
-        }
+        // we can't be specific, as on most systems the reduction is a multiple of 4096 instead of `testData.count`
+        XCTAssertLessThan(freeSpaceAfterWrite, freeSpaceBeforeWrite)
     }
 }

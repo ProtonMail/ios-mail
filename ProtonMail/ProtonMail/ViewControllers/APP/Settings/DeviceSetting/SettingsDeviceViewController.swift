@@ -111,28 +111,6 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
         dismiss(animated: true)
     }
 
-    private func inAppLanguage(_ indexPath: IndexPath) {
-        let current_language = LanguageManager().currentLanguage()
-        let title = LocalString._settings_current_language_is + current_language.nativeDescription
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-        for l in self.viewModel.languages {
-            if l != current_language {
-                alertController.addAction(UIAlertAction(title: l.nativeDescription, style: .default) { _ in
-                    _ = self.navigationController?.popViewController(animated: true)
-                    LanguageManager().saveLanguage(by: l.languageCode)
-                    LocalizedString.reset()
-                    self.updateTitle()
-                    self.tableView.reloadData()
-                })
-            }
-        }
-        let cell = tableView.cellForRow(at: indexPath)
-        alertController.popoverPresentationController?.sourceView = cell ?? self.view
-        alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
-        present(alertController, animated: true, completion: nil)
-    }
-
     @objc private func updateNotificationStatus(_ notification: NSNotification) {
         if let section = self.viewModel.sections.firstIndex(of: .general),
            let row = self.viewModel.generalSettings.firstIndex(of: .notification) {
@@ -234,6 +212,8 @@ extension SettingsDeviceViewController {
                     settingsGeneralCell.configure(right: status)
                 case .toolbar:
                     settingsGeneralCell.configure(left: item.description)
+                case .applicationLogs:
+                    settingsGeneralCell.configure(left: item.description)
                 }
             }
             return cell
@@ -265,9 +245,14 @@ extension SettingsDeviceViewController {
                         }
                     })
                 case .language:
-                    let language: ELanguage = LanguageManager().currentLanguage()
-                    cellToConfig.configure(right: language.nativeDescription, imageType: .system)
-                case .LocalizationPreview:
+                    let languageCode = LanguageManager().currentLanguageCode()
+                    let locale = Locale.autoupdatingCurrent
+                    if let userFriendlyLanguageName = locale.localizedString(forIdentifier: languageCode) {
+                        cellToConfig.configure(right: userFriendlyLanguageName.capitalized, imageType: .system)
+                    } else {
+                        PMAssertionFailure("Locale \(locale.identifier) has no localized string for \(languageCode)")
+                    }
+                case .localizationPreview:
                     cellToConfig.configure(right: "Test only", imageType: .system)
                 }
             }
@@ -361,6 +346,8 @@ extension SettingsDeviceViewController {
                 coordinator?.go(to: .swipeAction)
             case .toolbar:
                 coordinator?.openToolbarCustomizationView()
+            case .applicationLogs:
+                coordinator?.openApplicationLogsView()
             }
         case .general:
             let item = viewModel.generalSettings[row]
@@ -374,17 +361,9 @@ extension SettingsDeviceViewController {
                     UIApplication.shared.open(settingsUrl, completionHandler: nil)
                 }
             case .language:
-                #if targetEnvironment(simulator)
-                self.inAppLanguage(indexPath)
-                #else
-                if #available(iOS 13.0, *) {
-                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                } else {
-                    self.inAppLanguage(indexPath)
-                }
-                #endif
-            case .LocalizationPreview:
-                coordinator?.go(to: .LocalizationPreview)
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            case .localizationPreview:
+                coordinator?.go(to: .localizationPreview)
             }
         case .clearCache:
             cleanCache()

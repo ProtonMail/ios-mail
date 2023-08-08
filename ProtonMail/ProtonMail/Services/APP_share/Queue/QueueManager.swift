@@ -30,13 +30,14 @@ protocol QueueHandler {
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void)
 }
 
+// sourcery: mock
 protocol QueueHandlerRegister {
     func registerHandler(_ handler: QueueHandler)
     func unregisterHandler(for userID: UserID)
 }
 
-/// This manager is used to handle the queue opeartions of all users.
-final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusInQueueProtocol, QueueHandlerRegister {
+/// This manager is used to handle the queue operations of all users.
+final class QueueManager: Service, UserStatusInQueueProtocol, QueueHandlerRegister {
 
     enum QueueStatus {
         case idle
@@ -68,7 +69,6 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
     private var readQueue: [ReadBlock] = []
     private var handlers: [UserID: QueueHandler] = [:]
     private var hasDequeued = false
-    var isRequiredHumanCheck = false
 
     // These two variables are used to prevent concurrent call of dequeue=
     private var isMessageRunning: Bool = false
@@ -93,16 +93,17 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
         #endif
     }
 
-    func addTask(_ task: Task, autoExecute: Bool = true) -> Bool {
-        self.queue.sync {
+    func addTask(_ task: Task, autoExecute: Bool = true, completion: ((Bool) -> Void)? = nil) {
+        queue.async {
             guard !task.userID.rawValue.isEmpty else {
-                return false
+                completion?(false)
+                return
             }
             let action = task.action
             switch action {
             case .saveDraft,
-                 .uploadAtt, .uploadPubkey, .deleteAtt, .updateAttKeyPacket,
-                 .send:
+                    .uploadAtt, .uploadPubkey, .deleteAtt, .updateAttKeyPacket,
+                    .send:
                 let dependencies = self.getMessageTasks(of: task.userID)
                     .filter { $0.messageID == task.messageID }
                     .map(\.uuid)
@@ -127,7 +128,7 @@ final class QueueManager: Service, HumanCheckStatusProviderProtocol, UserStatusI
             if autoExecute {
                 self.dequeueIfNeeded()
             }
-            return true
+            completion?(true)
         }
     }
 
@@ -323,10 +324,6 @@ extension QueueManager {
     }
 
     private func nextTask(from queue: PMPersistentQueueProtocol) -> Task? {
-        if isRequiredHumanCheck {
-            return nil
-        }
-
         // TODO: check dependency id, to skip or continue
         guard let next = queue.next() else {
             return nil
@@ -673,8 +670,9 @@ private extension Collection where Element == Any {
 
 // sourcery: mock
 protocol QueueManagerProtocol {
-    func addTask(_ task: QueueManager.Task, autoExecute: Bool) -> Bool
+    func addTask(_ task: QueueManager.Task, autoExecute: Bool, completion: ((Bool) -> Void)?)
     func addBlock(_ block: @escaping () -> Void)
+    func queue(_ readBlock: @escaping () -> Void)
 }
 
 extension QueueManager: QueueManagerProtocol {

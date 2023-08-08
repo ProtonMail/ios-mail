@@ -238,19 +238,19 @@ extension MessageEntity {
 
         return nil
     }
-}
 
-// MARK: - Sender related
-
-#if !APP_EXTENSION
-extension MessageEntity {
     func parseSender() throws -> Sender {
         guard let rawSender = self.rawSender else {
             throw SenderError.senderStringIsNil
         }
         return try Sender.decodeDictionary(jsonString: rawSender)
     }
+}
 
+// MARK: - Sender related
+
+#if !APP_EXTENSION
+extension MessageEntity {
     // Although the time complexity of high order function is O(N)
     // But keep in mind that tiny O(n) can add up to bigger blockers if you accumulate them
     // Do async approach when there is a performance issue
@@ -290,7 +290,7 @@ extension MessageEntity {
             // Get total count of this ContactGroup
             let totalContactCount = allGroupContacts
                 .first(where: { $0.contactTitle == group.contactTitle })?.contactCount ?? 0
-            let name = "\(groupName) (\(group.contactCount)/\(totalContactCount))"
+            let name = "\(groupName) (\(group.getSelectedEmailAddresses().count)/\(totalContactCount))"
             nameList.append(name)
         }
         return nameList

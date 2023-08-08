@@ -19,12 +19,19 @@ import Foundation
 
 /// Errors that can be returned by the SendMessageMetadata use case.
 enum PrepareSendMessageMetadataError: String, Error {
-    case messageIdEmptyForURI
-    case noSenderAddressFound
-    case noSenderAddressKeyFound
-    case splitMessageFail
-    case splitMessageKeyPacketFail
-    case splitMessageDataPacketFail
-    case bodySessionKeyFail
-    case decryptBodyFail
+    case messageIdEmptyForURI = "No message found for URI"
+    case noSenderAddressFound = "No sender address found"
+    case noSenderAddressKeyFound = "No sender address key found"
+    case splitMessageFail = "Split message fail"
+    case splitMessageKeyPacketFail = "Split message key packet fail"
+    case splitMessageDataPacketFail = "Split message data packet fail"
+    case bodySessionKeyFail = "Body session key fail"
+    case decryptBodyFail = "Decrypt body fail"
+}
+
+extension PrepareSendMessageMetadataError: LocalizedError {
+
+    var errorDescription: String? {
+        "PrepareSendMessageMetadataError: \(rawValue)"
+    }
 }

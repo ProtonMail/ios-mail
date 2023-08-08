@@ -2,6 +2,38 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%1$d conversation moved to %2$@</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%1$d conversation moved to %2$@</string>
+			<key>other</key>
+			<string>%1$d conversations moved to %2$@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+	</dict>
+	<key>%1$d message moved to %2$@</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%1$d message moved to %2$@</string>
+			<key>other</key>
+			<string>%1$d messages moved to %2$@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@</string>
+	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -59,7 +91,7 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d tentativa restante</string>
+			<string>%d tentativas restantes</string>
 			<key>other</key>
 			<string>%d tentativas restantes</string>
 		</dict>
@@ -94,22 +126,6 @@
 			<string>%d conversa etiquetada</string>
 			<key>other</key>
 			<string>%d conversas etiquetadas</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@</string>
-	</dict>
-	<key>%d conversation moved to %@</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d conversa movida para %@</string>
-			<key>other</key>
-			<string>%d conversas movidas para %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -211,22 +227,6 @@
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
-	</dict>
-	<key>%d message moved to %@</key>
-	<dict>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d mensagem movida para %@</string>
-			<key>other</key>
-			<string>%d mensagens movidas para %@</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
@@ -385,9 +385,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Proton found and blocked %d tracker on this message.</string>
+			<string>Proton encontrou e bloqueou %d rastreador nesta mensagem.</string>
 			<key>other</key>
-			<string>Proton found and blocked %d trackers on this message.</string>
+			<string>Proton encontrou e bloqueou %d rastreadores nesta mensagem.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -403,9 +403,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This %d message will move to Drafts and have its schedule removed.</string>
+			<string>%d mensagem será transferida para a pasta Rascunhos e o seu calendário será removido.</string>
 			<key>other</key>
-			<string>These %d messages will move to Drafts and have their schedule removed.</string>
+			<string>Estas %d mensagens serão transferidas para a pasta Rascunhos e o seu calendário será removido.</string>
 		</dict>
 	</dict>
 	<key>Updated %d min ago</key>
@@ -417,9 +417,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string>Actualizado há %d minuto</string>
+			<string>Atualizado há %d minuto</string>
 			<key>other</key>
-			<string>Actualizado há %d minutos</string>
+			<string>Atualizado há %d minutos</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@MINUTE@</string>

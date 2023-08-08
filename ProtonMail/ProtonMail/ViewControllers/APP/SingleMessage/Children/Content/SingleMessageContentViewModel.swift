@@ -1,3 +1,4 @@
+import Combine
 import ProtonCore_DataModel
 import ProtonCore_Networking
 
@@ -91,18 +92,13 @@ class SingleMessageContentViewModel {
 
     var webContentIsUpdated: (() -> Void)?
 
-    var isSenderCurrentlyBlocked: Bool {
-        do {
-            let incomingDefaultsForSenderEmail = try dependencies.incomingDefaultService.listLocal(
-                query: .email(messageInfoProvider.senderEmail)
-            )
-
-            return incomingDefaultsForSenderEmail.map(\.location).contains(.blocked)
-        } catch {
-            assertionFailure("\(error)")
-            return false
+    private(set) var isSenderCurrentlyBlocked = false {
+        didSet {
+            updateBannerStatus()
         }
     }
+
+    private var cancellables = Set<AnyCancellable>()
 
     init(context: SingleMessageContentViewContext,
          imageProxy: ImageProxy,
@@ -112,6 +108,7 @@ class SingleMessageContentViewModel {
          systemUpTime: SystemUpTimeProtocol,
          shouldOpenHistory: Bool = false,
          dependencies: Dependencies,
+         highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) {
         self.context = context
         self.user = user
@@ -138,8 +135,9 @@ class SingleMessageContentViewModel {
             user: user,
             systemUpTime: systemUpTime,
             labelID: context.labelId,
-            shouldOpenHistory: shouldOpenHistory,
-            dependencies: messageInfoProviderDependencies
+            dependencies: messageInfoProviderDependencies,
+            highlightedKeywords: highlightedKeywords,
+            shouldOpenHistory: shouldOpenHistory
         )
         imageProxy.set(delegate: messageInfoProvider)
         messageInfoProvider.initialize()
@@ -166,8 +164,10 @@ class SingleMessageContentViewModel {
                     self?.user.eventsService.fetchEvents(byLabel: Message.Location.allmail.labelID,
                                                          notificationMessageID: nil,
                                                          completion: { [weak self] _ in
-                        self?.hideProgressHub?()
-                        self?.goToDraft(msgID, .init(originalScheduledTime))
+                        DispatchQueue.main.async {
+                            self?.hideProgressHub?()
+                            self?.goToDraft(msgID, .init(originalScheduledTime))
+                        }
                     })
                 }
         }
@@ -191,16 +191,16 @@ class SingleMessageContentViewModel {
     }
 
     func viewDidLoad() {
-        becomeBlockedSenderCacheUpdaterDelegate()
+        setupBinding()
         downloadDetails()
     }
 
-    func viewWillAppear() {
-        becomeBlockedSenderCacheUpdaterDelegate()
-    }
+    private func setupBinding() {
+        dependencies.isSenderBlockedPublisher.isBlocked(senderEmailAddress: messageInfoProvider.senderEmail.string)
+            .sink { [weak self] in self?.isSenderCurrentlyBlocked = $0 }
+            .store(in: &cancellables)
 
-    private func becomeBlockedSenderCacheUpdaterDelegate() {
-        dependencies.blockedSenderCacheUpdater.delegate = self
+        dependencies.isSenderBlockedPublisher.start()
     }
 
     func downloadDetails() {
@@ -224,24 +224,24 @@ class SingleMessageContentViewModel {
         dependencies.fetchMessageDetail
             .callbackOn(.main)
             .execute(params: params) { [weak self] result in
-            guard let self = self else { return }
-
-            DispatchQueue.main.async {
+                guard let self = self else { return }
                 switch result {
                 case .success:
+                    if !self.isEmbedInConversationView {
+                        self.markReadIfNeeded()
+                    }
                     self.updateErrorBanner?(nil)
                 case .failure(let error):
                     self.updateErrorBanner?(error as NSError)
                     self.messageBodyViewModel.errorHappens()
                 }
-            }
         }
     }
 
     /// - param blocked: whether to block or unblock the sender
     /// - returns: true if action was successful (errors are handled by the view model)
     func updateSenderBlockedStatus(blocked: Bool) -> Bool {
-        let senderEmail = messageInfoProvider.senderEmail
+        let senderEmail = messageInfoProvider.senderEmail.string
 
         defer {
             updateBannerStatus()
@@ -340,14 +340,6 @@ class SingleMessageContentViewModel {
     }
 }
 
-extension SingleMessageContentViewModel: BlockedSenderCacheUpdaterDelegate {
-    func blockedSenderCacheUpdater(_ blockedSenderCacheUpdater: BlockedSenderCacheUpdater, didEnter newState: BlockedSenderCacheUpdater.State) {
-        if newState == .idle {
-            updateBannerStatus()
-        }
-    }
-}
-
 extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
     func update(renderStyle: MessageRenderStyle) {
         DispatchQueue.main.async {
@@ -419,9 +411,8 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
 extension SingleMessageContentViewModel {
     struct Dependencies {
         let blockSender: BlockSender
-        let blockedSenderCacheUpdater: BlockedSenderCacheUpdater
         let fetchMessageDetail: FetchMessageDetailUseCase
-        let incomingDefaultService: IncomingDefaultService
+        let isSenderBlockedPublisher: IsSenderBlockedPublisher
         let senderImageStatusProvider: SenderImageStatusProvider
         let unblockSender: UnblockSender
     }

@@ -24,13 +24,12 @@ protocol BlockedSendersViewModelProtocol: AnyObject {
 
 protocol BlockedSendersViewModelInput {
     func deleteRow(at indexPath: IndexPath) throws
+    func viewDidLoad()
     func viewWillAppear()
     func userDidPullToRefresh()
 }
 
 protocol BlockedSendersViewModelOutput {
-    var state: BlockedSendersViewModel.State { get }
-
     func numberOfRows() -> Int
     func setUIDelegate(_ delegate: BlockedSendersViewModelUIDelegate)
     func modelForCell(at indexPath: IndexPath) -> BlockedSendersViewModel.BlockedSenderCellModel
@@ -38,4 +37,5 @@ protocol BlockedSendersViewModelOutput {
 
 protocol BlockedSendersViewModelUIDelegate: AnyObject {
     func refreshView(state: BlockedSendersViewModel.State)
+    func showOfflineToast()
 }

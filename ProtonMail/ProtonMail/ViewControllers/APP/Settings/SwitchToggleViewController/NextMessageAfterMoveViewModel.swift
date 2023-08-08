@@ -20,8 +20,6 @@ import ProtonCore_Services
 import enum ProtonCore_Utilities.Either
 
 final class NextMessageAfterMoveViewModel: SwitchToggleVMProtocol, SwitchToggleVMOutput {
-
-
     var input: SwitchToggleVMInput { self }
     var output: SwitchToggleVMOutput { self }
     let title = L11n.NextMsgAfterMove.settingTitle

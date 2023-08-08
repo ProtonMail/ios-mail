@@ -22,6 +22,7 @@ private enum CSSKeys: String {
     case style, color, transparent, background, border
     case bgColor = "bgcolor"
     case backgroundColor = "background-color"
+    case borderColor = "border-color"
 
     case target, id, `class`
 }
@@ -214,6 +215,9 @@ struct CSSMagic {
         "wheat": HSLA(h: 39, s: 77, l: 83, a: 1),
         "white": HSLA(h: 0, s: 0, l: 100, a: 1),
         "whitesmoke": HSLA(h: 0, s: 0, l: 96, a: 1),
+        // Windowtext is not black, it is device default text color
+        // Value could change depends on user setting
+        "windowtext": HSLA(h: 0, s: 0, l: 0, a: 1),
         "yellow": HSLA(h: 60, s: 100, l: 50, a: 1),
         "yellowgreen": HSLA(h: 80, s: 61, l: 50, a: 1)
     ]
@@ -259,9 +263,6 @@ struct CSSMagic {
            content.preg_match(#"color-scheme:\s?\S{0,}\s?dark"#) {
             return .nativeSupport
         }
-        // The last condition is contrast between foreground and background
-        // But the calculation is not easy to do here
-        // Move the check to `hasGoodContrast(attributes:)` during generate dark mode css
         return .protonSupport
     }
 
@@ -269,6 +270,7 @@ struct CSSMagic {
     /// - Parameter document: Message html parsed document
     /// - Returns: CSS needs to be overridden
     static func generateCSSForDarkMode(document: Document?) -> String {
+        let startTime = Date().timeIntervalSinceReferenceDate
         guard let document = document else {
             return ""
         }
@@ -279,7 +281,7 @@ struct CSSMagic {
         let newStyleCSS = CSSMagic.assemble(cssDict: styleDict)
 
         let colorNodes = CSSMagic.getColorNodes(from: document)
-        guard let cssDict = CSSMagic.getDarkModeCSSDict(for: colorNodes) else {
+        guard let cssDict = CSSMagic.getDarkModeCSSDict(for: colorNodes, startTime: startTime) else {
             return ""
         }
         let inlineCSS = CSSMagic.assemble(cssDict: cssDict)
@@ -341,11 +343,10 @@ extension CSSMagic {
                   let selectorKey = data.first,
                   let selectorValue = data.last else { continue }
             let attributes = CSSMagic.splitInline(attributes: selectorValue)
-            guard hasGoodContrast(attributes: attributes) else {
-                continue
-            }
             let newAttributes = CSSMagic.switchToDarkModeStyle(attributes: attributes)
-            result[selectorKey] = newAttributes
+            if newAttributes.isEmpty { continue }
+            let previousResult = result[selectorKey] ?? []
+            result[selectorKey] = previousResult + newAttributes
         }
         return result
     }
@@ -353,9 +354,15 @@ extension CSSMagic {
     /// Get dark mode style css for each html nodes
     /// - Parameter colorNodes: nodes that contains color related attributes
     /// - Returns: dark mode css style or `nil` if one of nodes doesn't have good contrast
-    static func getDarkModeCSSDict(for colorNodes: [Element]) -> [String: [String]]? {
+    static func getDarkModeCSSDict(for colorNodes: [Element], startTime: TimeInterval) -> [String: [String]]? {
         var darkModeCSS: [String: [String]] = [:]
         for node in colorNodes {
+            let tolerationTime: TimeInterval = 7
+            guard Date().timeIntervalSinceReferenceDate - startTime <= tolerationTime else {
+                // If dark mode takes more than 7 seconds, stop calculating anymore
+                // It feels like doesn't load for forever   
+                return darkModeCSS
+            }
             guard let styleCSS = CSSMagic.getDarkModeCSS(from: node),
                   !styleCSS.isEmpty else {
                 continue
@@ -382,7 +389,6 @@ extension CSSMagic {
             if colorStyle.isEmpty == false {
                 attributes.append((CSSKeys.color.rawValue, colorStyle))
             }
-            guard hasGoodContrast(attributes: attributes) else { return [] }
             return CSSMagic.switchToDarkModeStyle(attributes: attributes)
         } catch {
             return []
@@ -398,11 +404,11 @@ extension CSSMagic {
         let backgroundKeys = [CSSKeys.backgroundColor.rawValue,
                               CSSKeys.bgColor.rawValue,
                               CSSKeys.background.rawValue]
-        let foregroundStyle = attributes.first(where: {$0.key == foregroundKey})?.value ?? "#000"
-        let backgroundStyle = attributes.first(where: {backgroundKeys.contains($0.key)})?.value ?? "#fff"
+        let foregroundStyle = attributes.first(where: {$0.key == foregroundKey})?.value ?? "#fff"
+        let backgroundStyle = attributes.first(where: {backgroundKeys.contains($0.key)})?.value ?? "#000"
 
-        let foregroundColor = parseAttribute(attribute: foregroundStyle)?.colorAttribute ?? "#000"
-        let backgroundColor = parseAttribute(attribute: backgroundStyle)?.colorAttribute ?? "#fff"
+        let foregroundColor = parseAttribute(attribute: foregroundStyle)?.colorAttribute ?? "#fff"
+        let backgroundColor = parseAttribute(attribute: backgroundStyle)?.colorAttribute ?? "#000"
         let color = getHSLA(attribute: foregroundColor) ?? HSLA(h: 0, s: 0, l: 100, a: 1)
         let background = getHSLA(attribute: backgroundColor) ?? HSLA(h: 0, s: 0, l: 0, a: 1)
 
@@ -416,41 +422,59 @@ extension CSSMagic {
         let lighter = max(colorRL, backgroundRL)
         let darker = min(colorRL, backgroundRL)
         let colorContrastRatio = (lighter + 0.05) / (darker + 0.05)
-        return colorContrastRatio >= 2
+        return colorContrastRatio >= 4.5
     }
 
     static func switchToDarkModeStyle(attributes: [CSSMagic.CSSAttribute]) -> [String] {
-        var cssArray: [String] = []
+        var darkForeground: CSSMagic.CSSAttribute?
+        var darkAttributes: [CSSMagic.CSSAttribute] = []
         let keywords = [CSSKeys.color.rawValue,
                         CSSKeys.backgroundColor.rawValue,
                         CSSKeys.bgColor.rawValue,
                         CSSKeys.background.rawValue,
-                        CSSKeys.border.rawValue]
+                        CSSKeys.border.rawValue,
+                        CSSKeys.borderColor.rawValue
+        ]
         for attribute in attributes {
-            guard keywords.contains(attribute.key) else { continue }
+            guard keywords.contains(attribute.key.lowercased()) else { continue }
             let color = attribute.value
             guard color != CSSKeys.transparent.rawValue else { continue }
-            let isForeground = attribute.key == CSSKeys.color.rawValue
+            let isForeground = attribute.key.lowercased() == CSSKeys.color.rawValue
             guard let hsla = CSSMagic.getDarkModeColor(from: color, isForeground: isForeground) else {
                 continue
             }
             var key = attribute.key
             if key == CSSKeys.bgColor.rawValue {
-                // bgcolor is decrypted, it will be overridden by background-color
+                // bgcolor is deprecated, it will be overridden by background-color
                 // So in theory, bgcolor and background-color won't use at the same time
                 key = CSSKeys.backgroundColor.rawValue
             }
-            cssArray.append("\(key): \(hsla) !important")
+            if key == CSSKeys.color.rawValue {
+                darkForeground = (key, hsla)
+            } else {
+                darkAttributes.append((key, hsla))
+            }
             if key == CSSKeys.border.rawValue {
                 attributes
                     .filter { $0.key.hasPrefix("\(CSSKeys.border.rawValue)-")}
                     .forEach { attribute in
-                        cssArray.append("\(attribute.key): \(attribute.value) !important")
+                        darkAttributes.append((attribute.key, attribute.value))
                     }
 
             }
         }
-        return cssArray
+        var isOriginalForegroundHasGoodDarkModeContrast = false
+        if let originalForegroundStyle = attributes.first(where: { $0.key == CSSKeys.color.rawValue })?.value {
+            isOriginalForegroundHasGoodDarkModeContrast = hasGoodContrast(
+                attributes: darkAttributes + [(CSSKeys.color.rawValue, originalForegroundStyle)]
+            )
+        }
+        var result = darkAttributes.map { "\($0.key): \($0.value) !important" }
+        if !isOriginalForegroundHasGoodDarkModeContrast,
+           let style = darkForeground {
+            result.append("\(style.key): \(style.value) !important")
+        }
+        return result
     }
 
     static func getHSLA(attribute: String) -> HSLA? {
@@ -479,6 +503,7 @@ extension CSSMagic {
     /// - Returns: HSLA representation, e.g. hsla(100, 50%, 62%, 0.5). Depends on the given value, return value is not always has alpha
     static func getDarkModeColor(from color: String, isForeground: Bool) -> String? {
         guard var (colorAttribute, index, others) = parseAttribute(attribute: color) else { return nil }
+        others.removeAll(where: { $0 == "!important"})
         guard let hsla = getHSLA(attribute: colorAttribute) else { return nil }
         let darkModeHSLA = CSSMagic.hslaForDarkMode(hsla: hsla, isForeground: isForeground)
         others.insert(darkModeHSLA, at: index)
@@ -543,7 +568,7 @@ extension CSSMagic {
     
      b: [0, 255] or [0%, 100%]
     
-     a: [0.0, 1.0] or [0%, 100%]
+     a: [0.0, 1.0] or [0%, 100%] or [0, 255]
      
      For r/ g/ b, they need to follow the same format, all int or all percentage
      
@@ -561,11 +586,20 @@ extension CSSMagic {
               let b = CSSMagic.normalize(value: bValue, maximum: 255) else {
                   return nil
               }
-        if let aValue = splitValues[safe: 3] {
-            if aValue.contains("%"),
-               let a = CSSMagic.normalize(value: aValue, maximum: 100) {
-                return (r, g, b, a)
-            } else if let a = Double(aValue) {
+        guard let aValue = splitValues[safe: 3] else {
+            return (r, g, b, 1)
+        }
+        if aValue.contains("%"),
+           let a = CSSMagic.normalize(value: aValue, maximum: 100) {
+            return (r, g, b, a)
+        } else if var a = Double(aValue) {
+            if a > 1 {
+                a = max(0, min(a, 255))
+                let aValue = "\(a)"
+                let value = CSSMagic.normalize(value: aValue, maximum: 255) ?? 1
+                return (r, g, b, value)
+            } else {
+                a = max(0, min(a, 1))
                 return (r, g, b, CGFloat(a))
             }
         }
@@ -638,14 +672,20 @@ extension CSSMagic {
 
         let s = Int(sValue * 100)
         let l = Int(lValue * 100)
-        if let a = values[safe: 3] {
-            if a.contains("%"),
-               let aValue = CSSMagic.getNormalizeFloat(from: a) {
-                return HSLA(h: h, s: s, l: l, a: aValue)
-            } else if let aValue = Double(a) {
-                return HSLA(h: h, s: s, l: l, a: CGFloat(aValue))
+        guard let a = values[safe: 3] else {
+            return HSLA(h: h, s: s, l: l, a: 1)
+        }
+        if a.contains("%"),
+           let aValue = CSSMagic.getNormalizeFloat(from: a) {
+            return HSLA(h: h, s: s, l: l, a: aValue)
+        } else if var aValue = Double(a) {
+            if aValue > 1 {
+                aValue = max(0, min(aValue, 255))
+                let value = CSSMagic.normalize(value: "\(aValue)", maximum: 255) ?? 1
+                return HSLA(h: h, s: s, l: l, a: value)
             } else {
-                return nil
+                aValue = max(0, min(aValue, 1))
+                return HSLA(h: h, s: s, l: l, a: aValue)
             }
         }
         return HSLA(h: h, s: s, l: l, a: 1)
@@ -661,7 +701,7 @@ extension CSSMagic {
             return "hsla(230, 12%, 10%, \(hsla.a))"
         case (true, false), (false, false):
             if isForeground {
-                l = max(l, 100)
+                l = max(l, 90)
             } else {
                 l = min(30, l)
             }
@@ -752,7 +792,9 @@ extension CSSMagic {
         }
         var anchor = node.tagNameNormal()
         if let classSet = try? node.classNames() {
-            let className = Array(classSet).joined(separator: ".")
+            let className = Array(classSet)
+                .filter { !$0.contains(check: "[") && !$0.contains(check: "[") }
+                .joined(separator: ".")
             if className.isEmpty == false {
                 anchor = "\(anchor).\(className)"
             }
@@ -763,18 +805,23 @@ extension CSSMagic {
         if let attributes = node.getAttributes()?.asList() {
             let selector = attributes
                 .filter({ attribute in
-                    let key = attribute.getKey()
+                    let key = attribute.getKey().lowercased()
                     let value = attribute.getValue()
                     let containQuotes = value.contains("\"") || value.contains("&quot;")
-                    return !ignoreKeys.contains(key) && !containQuotes
+                    return !ignoreKeys.contains(key) && !containQuotes && AllowedHTMLAttribute.keys.contains(key)
                 })
                 .map(anchorMapper(attribute:))
                 .joined(separator: "")
             anchor = "\(anchor)\(selector)"
         }
         // e.g. div.classA.classB[att="value1"][data="value2"]
-        if anchor == node.tagNameNormal() {
-            return (try? node.cssSelector()) ?? .empty
+        if anchor == node.tagNameNormal(),
+           let cssSelector = try? node.cssSelector() {
+            // Remove possible body class, webKit removes classes during render
+            // That makes css selector doesn't exist, dark mode css won't work correctly
+            // e.g. html > body.ltr > table.body
+            let processedSelector = cssSelector.preg_replace(#"(\s{1,}body)(\..*?)(\s{1,}>)"#, replaceto: "$1$3")
+            return processedSelector
         } else {
             return anchor
         }
@@ -801,7 +848,10 @@ extension CSSMagic {
                     }
                 }
             let assemble = values
-                .map { "[\(key)*=\"\($0.trim())\"]" }
+                .map { value in
+                    let text = value.preg_replace_none_regex("!important", replaceto: "").trim()
+                    return "[\(key)*=\"\(text)\"]"
+                }
                 .joined()
             return assemble
         } else {

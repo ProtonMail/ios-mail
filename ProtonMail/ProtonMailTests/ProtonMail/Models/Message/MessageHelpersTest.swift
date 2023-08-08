@@ -37,9 +37,9 @@ class MessageHelpersTest: XCTestCase {
 
            let fakeEmailData = testEmailData_aaa.parseObjectAny()!
            let fakeEmailEntity = prepareEmail(with: fakeEmailData)
-           let vo = ContactGroupVO(ID: "id", name: "groupA", groupSize: 5, color: "#000000")
+           let vo = ContactGroupVO(ID: "id", name: "groupA", groupSize: 6, color: "#000000")
            let name = fakeMsgEntity.allEmailAddresses([fakeEmailEntity.email: fakeEmailEntity], allGroupContacts: [vo])
-           XCTAssertEqual("groupA (0/5), test5", name)
+           XCTAssertEqual("groupA (5/6), test5", name)
        }
 
     func testRecipientsNameWithoutGroup_localContactWithoutTheAddress() {
@@ -63,8 +63,8 @@ class MessageHelpersTest: XCTestCase {
     }
 
     private func prepareMessage(with data: [String: Any]) -> MessageEntity {
-        coreDataService.enqueue { context in
-            guard let fakeMsg = try? GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: data, in: context) as? Message else {
+        try! coreDataService.performAndWaitOnRootSavingContext { context in
+            guard let fakeMsg = try GRTJSONSerialization.object(withEntityName: "Message", fromJSONDictionary: data, in: context) as? Message else {
                 fatalError("The fake data initialize failed")
             }
             return MessageEntity(fakeMsg)
@@ -72,8 +72,8 @@ class MessageHelpersTest: XCTestCase {
     }
 
     private func prepareEmail(with data: [String: Any]) -> EmailEntity {
-        coreDataService.enqueue { context in
-            guard let fakeEmail = try? GRTJSONSerialization.object(withEntityName: "Email", fromJSONDictionary: data, in: context) as? Email else {
+        try! coreDataService.performAndWaitOnRootSavingContext { context in
+            guard let fakeEmail = try GRTJSONSerialization.object(withEntityName: "Email", fromJSONDictionary: data, in: context) as? Email else {
                 fatalError("The fake data initialize failed")
             }
             return EmailEntity(email: fakeEmail)

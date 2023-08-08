@@ -77,14 +77,6 @@ extension NSManagedObjectContext {
         return nil
     }
 
-    func fetchedControllerEntityName<T: NSFetchRequestResult>(entityName: String, forKey key: String, forManagedObjectIDs objectIDs: [String]) -> NSFetchedResultsController<T> {
-        let fetchRequest = NSFetchRequest<T>(entityName: entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K in %@", key, objectIDs)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: key, ascending: false)]
-        fetchRequest.includesPropertyValues = false
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self, sectionNameKeyPath: nil, cacheName: nil)
-    }
-
     func saveUpstreamIfNeeded(
         caller: StaticString = #function,
         file: StaticString = #file,

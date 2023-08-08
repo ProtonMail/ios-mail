@@ -30,6 +30,11 @@ ENTERPRISE_PATH = "Enterprise.mobileprovision"
 ENTERPRISE_PUSH_SERVICE_PATH = "PushService.mobileprovision"
 ENTERPRISE_SHARE_PATH = "Share.mobileprovision"
 
+UNIT_TEST_SCHEME = "ProtonMailTests"
+UNIT_TEST_DEVICE = "iPhone 8"
+UI_TEST_DEVICE = "iPhone 14"
+UI_TEST_SCHEME = "ProtonMailUITests"
+
 def set_up_keychain(isEnterprise)
   create_keychain(
       name: DEVELOPER_KEYCHAIN_NAME,
@@ -203,6 +208,17 @@ def send_to_slack(success, changelog, exception, bundle_version)
   )
 end
 
+def build_for_testing
+  run_tests(
+    build_for_testing: true,
+    result_bundle: true,
+    scheme: UI_TEST_SCHEME,
+    device: UI_TEST_DEVICE,
+    result_bundle: true,
+    app_identifier: APP_IDENTIFIER
+  )
+end
+
 platform :ios do
   desc "Upload the debug app to Appetize"
   lane :upload_to_appetize do |options|
@@ -305,6 +321,16 @@ platform :ios do
     send_to_slack(true, changelog, "", bundle_version.strip)
   end
 
+  desc "Build debug apps for testing"
+  lane :build_for_testing do |options|
+    xcodes(
+      version: '14.2',
+      select_for_current_build_only: true,
+    )
+
+    build_for_testing
+  end
+
   desc "Build enterprise app"
   lane :enterprise do |options|
     xcodes(
@@ -344,11 +370,14 @@ platform :ios do
       version: '14.2',
       select_for_current_build_only: true,
     )
+
     run_tests(
-      device: "iPhone 8",
-      scheme: "ProtonMailTests",
+      device: UI_TEST_DEVICE,
+      scheme: UNIT_TEST_SCHEME,
       app_identifier: APP_IDENTIFIER,
-      reset_simulator: true
+      reset_simulator: true,
+      test_without_building: true,
+      output_directory: "../test_output/"
     )
 
     slather(cobertura_xml: true)
@@ -361,64 +390,24 @@ platform :ios do
       version: '14.2',
       select_for_current_build_only: true,
     )
-
-    scan(
-      device: "iPhone 14",
-      reset_simulator: true,
+    
+    run_tests(
+      scheme: UI_TEST_SCHEME,
+      skip_build: true,
+      prelaunch_simulator: true,
+      test_without_building: true,
       parallel_testing: true,
-      concurrent_workers: 3,
-      scheme: "ProtonMailUITests",
-      testplan: "SmokeTests",
+      concurrent_workers: options[:concurrent_workers],
+      device: UI_TEST_DEVICE,
+      testplan: options[:testplan],
       app_identifier: APP_IDENTIFIER,
       output_directory: "../test_output/TestResults",
       output_files: "report.xml",
-      result_bundle: true,
-      xcargs: "-quiet",
+      result_bundle: true
     )
 
     slather(cobertura_xml: true)
     slather(simple_output: true)
-  end
-
-  desc "Run feature ui test and get test coverage"
-  lane :feature_tests do |options|
-    xcodes(
-      version: '14.2',
-      select_for_current_build_only: true,
-    )
-
-    run_tests(
-      device: "iPhone 14",
-      reset_simulator: true,
-      parallel_testing: true,
-      concurrent_workers: ENV["NUMBER_OF_DEVICES"],
-      scheme: "ProtonMailUITests",
-      testplan: ENV["TEST_PLAN"],
-      app_identifier: APP_IDENTIFIER,
-      output_directory: "../test_output/TestResults",
-      output_files: "report.xml",
-      result_bundle: true
-    )
-  end
-
-  desc "Run Monkey tests"
-  lane :monkey_tests do |args|
-    xcodes(
-      version: '14.2',
-      select_for_current_build_only: true,
-    )
-
-     run_tests(
-      device: "iPhone 14",
-      reset_simulator: true,
-      concurrent_workers: ENV["NUMBER_OF_DEVICES"],
-      scheme: "ProtonMailUITests",
-      testplan: "MonkeyTests",
-      app_identifier: APP_IDENTIFIER,
-      output_directory: "../test_output/TestResults",
-      output_files: "report.xml",
-      result_bundle: true
-    )
   end
 
 end

@@ -23,19 +23,21 @@ protocol DownloadedMessagesViewModelProtocol {
 }
 
 protocol DownloadedMessagesViewModelInput {
-    func viewWillAppear()
-    func didChangeStorageLimitValue(newValue: ByteCount)
+    func didChangeStorageLimitValue(newValue: Measurement<UnitInformationStorage>)
     func didTapClearStorageUsed()
 }
 
 protocol DownloadedMessagesViewModelOutput {
     var sections: [DownloadedMessagesSection] { get }
-    var storageLimitSelected: ByteCount { get }
-    var localStorageUsed: ByteCount { get }
+    var storageLimitSelected: Measurement<UnitInformationStorage> { get }
+    var localStorageUsed: Measurement<UnitInformationStorage> { get }
+    var searchIndexState: EncryptedSearchIndexState { get }
+    var oldestMessageTime: String { get }
 
     func setUIDelegate(_ delegate: DownloadedMessagesUIProtocol)
 }
 
+// sourcery: mock
 protocol DownloadedMessagesUIProtocol: AnyObject {
     func reloadData()
 }

@@ -28,18 +28,18 @@ fileprivate struct id {
 /*
  MessageRobot class contains actions and verifications for Message detail view funcctionality.
  */
-class MessageRobot: MailboxRobotInterface {
+class MessageRobot: CoreElements {
     
     func addMessageToFolder(_ folderName: String) -> MessageRobot {
         openFoldersModal()
             .selectFolder(folderName)
-            .tapDoneSelectingFolderButton()
+            .tapDone()
     }
     
     func assignLabelToMessage(_ folderName: String) -> MessageRobot {
         openLabelsModal()
             .selectFolder(folderName)
-            .tapDoneSelectingLabelButton()
+            .tapDone()
     }
     
     func createFolder(_ folderName: String) -> MoveToFolderRobotInterface {

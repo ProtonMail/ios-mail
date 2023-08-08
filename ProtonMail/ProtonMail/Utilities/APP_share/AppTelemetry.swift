@@ -29,8 +29,7 @@ struct MailAppTelemetry: AppTelemetry {
     }
 
     func disable() {
-        // Temporarily commented out, check https://jira.protontech.ch/browse/MAILIOS-3057
-//        Analytics.shared.disableAnalytics()
-//        SystemLogger.disableLogging()
+        Analytics.shared.disableAnalytics()
+        SystemLogger.disableLogging()
     }
 }

@@ -19,6 +19,7 @@ import Groot
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_TestingToolkit
+import ProtonCore_UIFoundations
 import XCTest
 
 @testable import ProtonMail
@@ -86,7 +87,8 @@ final class MessageInfoProviderTest: XCTestCase {
                         mailSettings: user.mailSettings
                     )
                 )
-            )
+            ), 
+            highlightedKeywords: ["contact", "feng"]
         )
         delegateObject = ProviderDelegate()
         sut.set(delegate: delegateObject)
@@ -110,24 +112,46 @@ final class MessageInfoProviderTest: XCTestCase {
         try super.tearDownWithError()
     }
 
+    func checkHighlight(source: NSAttributedString?, expectedString: String, highlight: NSRange?) {
+        guard let source = source else {
+            XCTFail("Should have value")
+            return
+        }
+
+        if let highlight = highlight {
+            let expectations: [NSRange: XCTestExpectation] = [highlight: expectation(description: expectedString)]
+            let range = NSRange(location: 0, length: source.length)
+            source.enumerateAttribute(.backgroundColor, in: range) { value, highlightedRange, _ in
+                guard let color = value as? UIColor, color.rrggbbaa == "FFB84DFF" else { return }
+                guard let expectation = expectations[highlightedRange] else {
+                    XCTFail("Unexpected range highlighted: \(highlightedRange).")
+                    return
+                }
+                expectation.fulfill()
+            }
+        }
+
+        XCTAssertEqual(source.string, expectedString)
+    }
+
     func testBasicData() {
         XCTAssertEqual(sut.initials, "P")
-        XCTAssertEqual(sut.senderEmail, "contact@protonmail.ch")
+        checkHighlight(source: sut.senderEmail, expectedString: "contact@protonmail.ch", highlight: NSRange(location: 0, length: 7))
         XCTAssertEqual(sut.time, "May 02, 2018")
         XCTAssertEqual(sut.date, "May 2, 2018 at 4:43:19 PM")
         XCTAssertEqual(sut.originFolderTitle(isExpanded: false), "Inbox")
         XCTAssertEqual(sut.size, "2 KB")
-        XCTAssertEqual(sut.simpleRecipient, "cc name, feng88@proton.me")
+        checkHighlight(source: sut.simpleRecipient, expectedString: "cc name, feng88@proton.me", highlight: NSRange(location: 9, length: 4))
 
         let toList = sut.toData
         XCTAssertEqual(toList?.title, "To:")
         XCTAssertEqual(toList?.recipients.count, 1)
-        XCTAssertEqual(toList?.recipients.first?.name, "feng88@proton.me")
+        checkHighlight(source: toList?.recipients.first?.name, expectedString: "feng88@proton.me", highlight: NSRange(location: 0, length: 4))
 
         let ccList = sut.ccData
         XCTAssertEqual(ccList?.title, "Cc:")
         XCTAssertEqual(ccList?.recipients.count, 1)
-        XCTAssertEqual(ccList?.recipients.first?.name, "cc name")
+        waitForExpectations(timeout: 5.0, handler: nil)
     }
 
     func testPGPChecker_keysAPIFailedAndNoAddressKeys_failsVerification() async throws {
@@ -239,7 +263,10 @@ final class MessageInfoProviderTest: XCTestCase {
                                     senderImageService: .init(dependencies: .init(apiService: apiMock,
                                                                                   internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
                                     senderImageStatusProvider: MockSenderImageStatusProvider(),
-                                    mailSettings: user.mailSettings)))
+                                    mailSettings: user.mailSettings)
+                                )
+                               ),
+            highlightedKeywords: []
         )
 
         XCTAssertEqual(sut.remoteContentPolicy, .allowedAll)
@@ -377,7 +404,7 @@ extension MessageInfoProviderTest {
         user: UserManager
     ) throws -> MessageEntity {
         let encryptedBody = try Encryptor.encrypt(
-            publicKey: user.addressKeys.toArmoredPrivateKeys[0],
+            publicKey: user.userInfo.addressKeys.toArmoredPrivateKeys[0],
             cleartext: plaintextBody
         ).value
 

@@ -27,6 +27,10 @@ import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 import SideMenuSwift
 
+protocol MenuCoordinatorDelegate: AnyObject {
+    func lockTheScreen()
+}
+
 final class MenuCoordinator: CoordinatorDismissalObserver {
     enum Setup: String {
         case switchUser = "USER"
@@ -60,6 +64,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
     let sideMenu: PMSideMenuController
     private var settingsDeviceCoordinator: SettingsDeviceCoordinator?
     private var currentLocation: MenuLabel?
+    weak var delegate: MenuCoordinatorDelegate?
 
     init(services: ServiceFactory,
          pushService: PushNotificationService,
@@ -74,6 +79,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         SideMenuController.preferences.basic.position = .sideBySide
         SideMenuController.preferences.basic.enablePanGesture = true
         SideMenuController.preferences.basic.enableRubberEffectWhenPanning = false
+        SideMenuController.preferences.basic.shouldKeepMenuOpen = true
         SideMenuController.preferences.animation.shouldAddShadowWhenRevealing = true
         SideMenuController.preferences.animation.shadowColor = .black
         SideMenuController.preferences.animation.shadowAlpha = 0.52
@@ -87,9 +93,13 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         self.pushService = pushService
         self.lastUpdatedStore = lastUpdatedStore
         self.usersManager = usersManager
-        let viewModel = MenuViewModel(usersManager: usersManager,
-                                      userStatusInQueueProvider: queueManager,
-                                      coreDataContextProvider: coreDataService)
+        let viewModel = MenuViewModel(
+            usersManager: usersManager,
+            userStatusInQueueProvider: queueManager,
+            coreDataContextProvider: coreDataService,
+            coreKeyMaker: services.get(),
+            unlockManager: services.get()
+        )
         self.viewModel = viewModel
         viewModel.coordinator = self
     }
@@ -114,7 +124,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
     }
 
     func follow(_ deepLink: DeepLink) {
-        if self.pushService.hasCachedLaunchOptions() {
+        if self.pushService.hasCachedNotificationOptions() {
             self.pushService.processCachedLaunchOptions()
             return
         }
@@ -190,6 +200,10 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         }
     }
 
+    func lockTheScreen() {
+        delegate?.lockTheScreen()
+    }
+
     private func checkIsCurrentViewInInboxView() -> Bool {
         return ((sideMenu.contentViewController as? UINavigationController)?
                     .topViewController as? MailboxViewController)?.viewModel.labelID == Message.Location.inbox.labelID
@@ -238,13 +252,19 @@ extension MenuCoordinator {
               let folderID = node.value else {
             return node
         }
-        if currentLocation?.location.rawLabelID == folderID { return nil }
-        let location = LabelLocation(id: folderID, name: nil)
+        switchFolderIfNeeded(labelID: .init(folderID))
+        return nil
+    }
+
+    private func switchFolderIfNeeded(labelID: LabelID) {
+        guard currentLocation?.location.rawLabelID != labelID.rawValue else {
+            return
+        }
+        let location = LabelLocation(id: labelID.rawValue, name: nil)
         let menuLabel = MenuLabel(location: location)
         navigateToMailBox(labelInfo: menuLabel, deepLink: nil, isSwitchEvent: true)
         currentLocation = menuLabel
         viewModel.highlight(label: menuLabel)
-        return nil
     }
 
     private class func getLocation(by path: String, value: String?) -> MenuLabel? {
@@ -378,7 +398,6 @@ extension MenuCoordinator {
                 queueManager: services.get(by: QueueManager.self),
                 apiService: user.apiService,
                 contextProvider: coreDataService,
-                messageDataAction: user.messageService,
                 cacheService: user.cacheService
             )
         )
@@ -417,7 +436,6 @@ extension MenuCoordinator {
             pushService: pushService,
             coreDataContextProvider: coreDataService,
             lastUpdatedStore: lastUpdatedStore,
-            humanCheckStatusProvider: services.get(by: QueueManager.self),
             conversationStateProvider: userManager.conversationStateService,
             contactGroupProvider: userManager.contactGroupService,
             labelProvider: userManager.labelService,
@@ -428,10 +446,6 @@ extension MenuCoordinator {
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)
-            ),
-            senderImageService: .init(
-                dependencies: .init(apiService: userManager.apiService,
-                                    internetStatusProvider: InternetConnectionStatusProvider())
             ),
             totalUserCountClosure: { [weak self] in
                 return self?.usersManager.count ?? 0
@@ -629,15 +643,16 @@ extension MenuCoordinator {
     }
 
     private func navigateToTroubleshooting() {
-        let troubleshootingVC = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
-        troubleshootingVC.onDismiss = { [weak self] in
-            self?.navigateToAccountManager()
-        }
-        let navigationVC = UINavigationController(rootViewController: troubleshootingVC)
-        navigationVC.modalPresentationStyle = .fullScreen
-        sideMenu.present(navigationVC, animated: true) { [weak self] in
-            self?.sideMenu.hideMenu()
-        }
+        sideMenu.present(
+            doh: BackendConfiguration.shared.doh,
+            modalPresentationStyle: .fullScreen,
+            onPresent: { [weak self] in
+                self?.sideMenu.hideMenu()
+            },
+            onDismiss: { [weak self] in
+                self?.navigateToAccountManager()
+            }
+        )
     }
 
     private func navigateToCreateFolder(type: PMLabelType) {

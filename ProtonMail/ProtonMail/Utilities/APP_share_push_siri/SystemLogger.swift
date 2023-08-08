@@ -16,8 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import OSLog
+import ProtonCore_Log
 
-class SystemLogger {
+final class SystemLogger {
     private static let shared = SystemLogger()
     private(set) static var isLoggingEnabled: Bool = true
 
@@ -27,6 +28,30 @@ class SystemLogger {
     }
 
     // MARK: Private methods
+
+    static private func log(message: String, category: Category?, isError: Bool, isDebug: Bool, caller: Caller) {
+        guard isLoggingEnabled else { return }
+
+        // log the message in the unified logging system
+        if #available(iOS 15, *) {
+            let osLog = shared.osLog(for: category)
+            if isError {
+                osLog.error("\(message, privacy: .public)")
+            } else {
+                osLog.log("\(message, privacy: .public)")
+            }
+        }
+
+        // log the message in the log file
+        let fileMsg = "[\(category?.rawValue ?? "")] \(message)"
+        if isDebug {
+            PMLog.debug(fileMsg, file: caller.file, function: caller.function, line: caller.line, column: caller.column)
+        } else if isError {
+            PMLog.error(fileMsg, file: caller.file, function: caller.function, line: caller.line, column: caller.column)
+        } else {
+            PMLog.info(fileMsg, file: caller.file, function: caller.function, line: caller.line, column: caller.column)
+        }
+    }
 
     @available(iOS 15, *)
     private func osLog(for category: Category?) -> Logger {
@@ -45,33 +70,29 @@ class SystemLogger {
 
     static func disableLogging() {
         isLoggingEnabled = false
+        guard let logFile = PMLog.logFile else { return }
+        try? FileManager.default.removeItem(at: logFile)
     }
 
-    /// Log a message into the unified logging system for a specific category. It only works for iOS 15 and above.
+    /// Logs a message into the unified logging system and the log file
+    ///
+    /// The unified logging system only works for iOS 15+
+    ///
     /// - Parameters:
     ///   - message: log message in plain text.
-    ///   - redactedInfo: part of the log message that will show redacted with the `<private>` string.
     ///   - category: describes the scope for this message and helps filtering the system logs.
     ///   - isError: error logs show a visible indicator in the Console app.
-    static func log(message: String, redactedInfo: String? = nil, category: Category? = nil, isError: Bool = false) {
-        guard isLoggingEnabled else { return }
-        if #available(iOS 15, *) {
-            let osLog = shared.osLog(for: category)
-            let redacted = redactedInfo ?? ""
-            if isError {
-                if !redacted.isEmpty {
-                    osLog.error("\(message, privacy: .public) \(redacted, privacy: .private)")
-                } else {
-                    osLog.error("\(message, privacy: .public)")
-                }
-            } else {
-                if !redacted.isEmpty {
-                    osLog.log("\(message, privacy: .public) \(redacted, privacy: .private)")
-                } else {
-                    osLog.log("\(message, privacy: .public)")
-                }
-            }
-        }
+    static func log(
+        message: String,
+        category: Category? = nil,
+        isError: Bool = false,
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: Int = #line,
+        column: Int = #column
+    ) {
+        let caller = Caller(file: file, function: function, line: line, column: column)
+        log(message: message, category: category, isError: isError, isDebug: false, caller: caller)
     }
 
     /// Use this function instead of `log` to indicate that calls to this method can be removed from the codebase
@@ -80,9 +101,18 @@ class SystemLogger {
     ///
     /// **If you are reading this documentation because you found a call to this function that is unnecessary, delete it :)**
     ///
-    /// See `log(message:,isDataSensitive:,category:,isError:)` for more details on the parameters.
-    static func logTemporarily(message: String, redactedInfo: String? = nil, category: Category? = nil, isError: Bool = false) {
-        log(message: message, redactedInfo: redactedInfo, category: category, isError: isError)
+    /// See `log(message:,category:,isError:)` for more details on the parameters.
+    static func logTemporarily(
+        message: String,
+        category: Category? = nil,
+        isError: Bool = false,
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: Int = #line,
+        column: Int = #column
+    ) {
+        let caller = Caller(file: file, function: function, line: line, column: column)
+        log(message: message, category: category, isError: isError, isDebug: true, caller: caller)
     }
 }
 
@@ -99,5 +129,19 @@ extension SystemLogger {
         case queue = "Queue"
         case encryptedSearch = "EncryptedSearch"
         case blockSender = "BlockSender"
+    }
+
+    struct Caller {
+        let file: String
+        let function: String
+        let line: Int
+        let column: Int
+
+        init(file: StaticString, function: StaticString, line: Int, column: Int) {
+            self.file = "\(file)"
+            self.function = "\(function)"
+            self.line = line
+            self.column = column
+        }
     }
 }

@@ -34,7 +34,8 @@ class FetchLatestEventId: FetchLatestEventIdUseCase {
             if latestEvent.eventID.isEmpty {
                 callback(.success(latestEvent))
             } else {
-                self?.persistLastEventId(latestEvent: latestEvent, callback: callback)
+                self?.persistLastEventId(latestEvent: latestEvent)
+                callback(.success(latestEvent))
             }
         }
     }
@@ -42,14 +43,8 @@ class FetchLatestEventId: FetchLatestEventIdUseCase {
 
 extension FetchLatestEventId {
 
-    private func persistLastEventId(latestEvent: EventLatestIDResponse, callback: @escaping Callback) {
-        dependencies
-            .lastUpdatedStore
-            .updateEventID(by: userId, eventID: latestEvent.eventID)
-            .ensure {
-                callback(.success(latestEvent))
-            }
-            .cauterize()
+    private func persistLastEventId(latestEvent: EventLatestIDResponse) {
+        dependencies.lastUpdatedStore.updateEventID(by: userId, eventID: latestEvent.eventID)
     }
 }
 

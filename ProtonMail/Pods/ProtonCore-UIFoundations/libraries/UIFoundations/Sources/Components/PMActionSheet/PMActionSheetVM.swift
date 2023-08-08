@@ -169,9 +169,9 @@ extension PMActionSheetVM {
             }
             updateRows.append(i)
             itemToUpdate.markType = isSelected ? .checkMark : .none
-            if isSelected {
-                itemToUpdate.handler?(itemToUpdate)
-            }
+        }
+        if let selectedItem = itemGroups[safeIndex: indexPath.section]?.items[safeIndex: indexPath.row] {
+            selectedItem.handler?(selectedItem)
         }
         let updatePaths = updateRows
             .map { IndexPath(row: $0, section: indexPath.section) }

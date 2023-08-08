@@ -2,6 +2,46 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%1$d conversation moved to %2$@</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%1$d conversations moved to %2$@</string>
+			<key>many</key>
+			<string>%1$d conversations moved to %2$@</string>
+			<key>one</key>
+			<string>%1$d conversation moved to %2$@</string>
+			<key>other</key>
+			<string>%1$d conversations moved to %2$@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+	</dict>
+	<key>%1$d message moved to %2$@</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%1$d messages moved to %2$@</string>
+			<key>many</key>
+			<string>%1$d messages moved to %2$@</string>
+			<key>one</key>
+			<string>%1$d message moved to %2$@</string>
+			<key>other</key>
+			<string>%1$d messages moved to %2$@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@</string>
+	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -115,29 +155,9 @@
 			<key>many</key>
 			<string>%d wątków zostało oznaczonych</string>
 			<key>one</key>
-			<string>Wątek został oznaczony</string>
+			<string>%d wątek został oznaczony</string>
 			<key>other</key>
 			<string>%d wątków zostało oznaczonych</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@</string>
-	</dict>
-	<key>%d conversation moved to %@</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d wątki zostały przeniesione do folderu %@</string>
-			<key>many</key>
-			<string>%d wątków zostało przeniesionych do folderu %@</string>
-			<key>one</key>
-			<string>%d wątek został przeniesiony do folderu %@</string>
-			<key>other</key>
-			<string>%d wątków zostało przeniesionych do folderu %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -197,7 +217,7 @@
 			<key>many</key>
 			<string>Znaleziono %d elementów śledzących</string>
 			<key>one</key>
-			<string>Znaleziono element śledzący</string>
+			<string>Znaleziono %d element śledzący</string>
 			<key>other</key>
 			<string>Znaleziono %d elementów śledzących</string>
 			<key>zero</key>
@@ -257,32 +277,12 @@
 			<key>many</key>
 			<string>%d wiadomości zostało oznaczonych</string>
 			<key>one</key>
-			<string>Wiadomość została oznaczona</string>
+			<string>%d wiadomość została oznaczona</string>
 			<key>other</key>
 			<string>%d wiadomości zostało oznaczonych</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
-	</dict>
-	<key>%d message moved to %@</key>
-	<dict>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d wiadomości zostały przeniesione do folderu %@</string>
-			<key>many</key>
-			<string>%d wiadomości zostało przeniesionych do folderu %@</string>
-			<key>one</key>
-			<string>Wiadomość została przeniesiona do folderu %2$@</string>
-			<key>other</key>
-			<string>%d wiadomości zostało przeniesionych do folderu %@</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
@@ -299,7 +299,7 @@
 			<key>many</key>
 			<string>%d wiadomości zostało przeniesionych do Szkiców</string>
 			<key>one</key>
-			<string>Wiadomość została przeniesiona do Szkiców</string>
+			<string>%d wiadomość została przeniesiona do Szkiców</string>
 			<key>other</key>
 			<string>%d wiadomości zostało przeniesionych do Szkiców</string>
 		</dict>
@@ -419,7 +419,7 @@
 			<key>many</key>
 			<string>Czy na pewno chcesz trwale usunąć %d wątków?</string>
 			<key>one</key>
-			<string>Czy na pewno chcesz trwale usunąć wątek?</string>
+			<string>Czy na pewno chcesz trwale usunąć %d wątek?</string>
 			<key>other</key>
 			<string>Czy na pewno chcesz trwale usunąć %d wątków?</string>
 		</dict>
@@ -439,7 +439,7 @@
 			<key>many</key>
 			<string>Czy na pewno chcesz trwale usunąć %d wiadomości?</string>
 			<key>one</key>
-			<string>Czy na pewno chcesz trwale usunąć wiadomość?</string>
+			<string>Czy na pewno chcesz trwale usunąć %d wiadomość?</string>
 			<key>other</key>
 			<string>Czy na pewno chcesz trwale usunąć %d wiadomości?</string>
 		</dict>
@@ -459,7 +459,7 @@
 			<key>many</key>
 			<string>Za %d minut</string>
 			<key>one</key>
-			<string>Za minutę</string>
+			<string>Za %d minutę</string>
 			<key>other</key>
 			<string>Za %d minuty</string>
 			<key>zero</key>
@@ -503,7 +503,7 @@
 			<key>many</key>
 			<string>%d wiadomości zostanie przeniesionych do Szkiców i zaplanowane wysyłania zostaną usunięte.</string>
 			<key>one</key>
-			<string>Wiadomość zostanie przeniesiona do Szkiców i zaplanowane wysyłanie zostanie usunięte.</string>
+			<string>%d wiadomość zostanie przeniesiona do Szkiców i zaplanowane wysyłanie zostanie usunięte.</string>
 			<key>other</key>
 			<string>%d wiadomości zostanie przeniesionych do Szkiców i zaplanowane wysyłania zostaną usunięte.</string>
 		</dict>
@@ -521,7 +521,7 @@
 			<key>many</key>
 			<string>Zaktualizowano %d minut temu</string>
 			<key>one</key>
-			<string>Zaktualizowano minutę temu</string>
+			<string>Zaktualizowano %d minutę temu</string>
 			<key>other</key>
 			<string>Zaktualizowano %d minuty temu</string>
 		</dict>

@@ -34,8 +34,8 @@ extension ExpandedHeaderRecipientsRowViewModel {
             title: "\(LocalString._general_to_label):",
             recipients: [
                 ExpandedHeaderRecipientRowViewModel(
-                    name: LocalString._undisclosed_recipients,
-                    address: "",
+                    name: .init(string: LocalString._undisclosed_recipients),
+                    address: .init(string: ""),
                     contact: nil
                 )
             ]

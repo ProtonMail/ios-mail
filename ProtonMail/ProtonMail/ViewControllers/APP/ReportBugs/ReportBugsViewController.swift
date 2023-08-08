@@ -24,6 +24,7 @@ import Foundation
 import LifetimeTracker
 import MBProgressHUD
 import ProtonCore_Payments
+import ProtonCore_TroubleShooting
 import ProtonCore_UIFoundations
 import Reachability
 import SideMenuSwift
@@ -47,7 +48,11 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
 
     private var reportSent: Bool = false
 
+    private let doh = BackendConfiguration.shared.doh
+    private let troubleShootingHelper: TroubleShootingHelper
+
     init(user: UserManager) {
+        troubleShootingHelper = TroubleShootingHelper(doh: doh)
         self.user = user
 
         super.init(nibName: nil, bundle: nil)
@@ -72,7 +77,6 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         if cachedBugReport.cachedBug.isEmpty {
             addPlaceholder()
         } else {
-            removePlaceholder()
             textView.set(text: cachedBugReport.cachedBug, preferredFont: .body)
         }
         self.title = LocalString._menu_bugs_title
@@ -172,15 +176,11 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
     // MARK: - Private methods
 
     fileprivate func addPlaceholder() {
-        textView.set(text: LocalString._bug_description, preferredFont: .body, textColor: ColorProvider.TextHint)
-    }
-
-    fileprivate func removePlaceholder() {
-        textView.set(text: .empty, preferredFont: .body)
+        textView.set(text: L11n.BugReport.placeHolder, preferredFont: .body)
     }
 
     fileprivate func reset() {
-        removePlaceholder()
+        addPlaceholder()
         cachedBugReport.cachedBug = ""
         updateSendButtonForText(textView.text)
         resizeHeightIfNeeded()
@@ -188,7 +188,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
     }
 
     fileprivate func updateSendButtonForText(_ text: String?) {
-        sendButton.isEnabled = (text != nil) && !text!.isEmpty && !(text! == LocalString._bug_description)
+        sendButton.isEnabled = (text != nil) && !text!.isEmpty && !(text! == L11n.BugReport.placeHolder)
     }
 
     @objc
@@ -249,7 +249,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
     }
 
     private func checkDoh(_ error: NSError) -> Bool {
-        guard BackendConfiguration.shared.doh.errorIndicatesDoHSolvableProblem(error: error) else {
+        guard doh.errorIndicatesDoHSolvableProblem(error: error) else {
             return false
         }
 
@@ -257,11 +257,9 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         let alertController = UIAlertController(title: LocalString._protonmail,
                                                 message: message,
                                                 preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Troubleshoot", style: .default, handler: { action in
-            let troubleShootView = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
-            let nav = UINavigationController(rootViewController: troubleShootView)
-            self.present(nav, animated: true, completion: nil)
-        }))
+        alertController.addAction(UIAlertAction(title: "Troubleshoot", style: .default) { _ in
+            self.troubleShootingHelper.showTroubleShooting(over: self)
+        })
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { action in
 
         }))
@@ -310,12 +308,6 @@ extension ReportBugsViewController: UITextViewDelegate {
         cachedBugReport.cachedBug = changedText
         resizeHeightIfNeeded()
         return true
-    }
-
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == LocalString._bug_description {
-            removePlaceholder()
-        }
     }
 
     func textViewDidEndEditing(_ textView: UITextView) {

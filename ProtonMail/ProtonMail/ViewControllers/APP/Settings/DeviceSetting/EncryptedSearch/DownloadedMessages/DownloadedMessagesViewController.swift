@@ -45,11 +45,6 @@ final class DownloadedMessagesViewController: UITableViewController, AccessibleV
         viewModel.output.setUIDelegate(self)
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.input.viewWillAppear()
-    }
-
     private func setUpUI() {
         title = L11n.EncryptedSearch.downloaded_messages
         view.backgroundColor = ColorProvider.BackgroundSecondary
@@ -125,26 +120,17 @@ extension DownloadedMessagesViewController {
 
     private func cellForMessageHistory() -> EncryptedSearchDownloadedMessagesCell {
         let cell = tableView.dequeue(cellType: EncryptedSearchDownloadedMessagesCell.self)
-
-        // TODO: Pending. It depends on how the information is obtained in the VM and how it's exposed to the VC
-        // let messagesHistory = viewModel.ouput.messagesHistory
-        // cell.configure(info: messagesHistory.toDownloadedMessagesInfo())
-        cell.configure(
-            info: .init(
-                icon: .warning,
-                title: .messageHistory,
-                oldestMessage: .init(date: "Jan 27, 2023", highlight: true),
-                additionalInfo: .errorLowStorage
-            )
-        ) // for sample purposes
-
+        let searchIndexState = viewModel.output.searchIndexState
+        let cellInfo = searchIndexState.toDownloadedMessagesInfo(oldestMessageTime: viewModel.output.oldestMessageTime)
+        cell.configure( info: cellInfo)
         return cell
     }
 
     private func cellForStorageLimitCell() -> StorageLimitCell {
+        let bytes = Int(viewModel.output.storageLimitSelected.converted(to: .bytes).value)
         let cell = tableView.dequeue(cellType: StorageLimitCell.self)
         cell.delegate = self
-        cell.configure(storageLimit: viewModel.output.storageLimitSelected)
+        cell.configure(storageLimit: bytes)
         return cell
     }
 
@@ -186,13 +172,62 @@ extension DownloadedMessagesViewController: DownloadedMessagesUIProtocol {
 }
 
 extension DownloadedMessagesViewController: StorageLimitCellDelegate {
-    func didChangeStorageLimit(newLimit: ByteCount) {
-        viewModel.input.didChangeStorageLimitValue(newValue: newLimit)
+    func didChangeStorageLimit(newLimit: Int) {
+        let value = Measurement<UnitInformationStorage>(value: Double(newLimit), unit: .bytes)
+        viewModel.input.didChangeStorageLimitValue(newValue: value)
     }
 }
 
 extension DownloadedMessagesViewController: LocalStorageCellDelegate {
     func didTapClear(sender: LocalStorageCell) {
         showDeleteMessagesAlert()
+    }
+}
+
+private extension EncryptedSearchIndexState {
+
+    func toDownloadedMessagesInfo(
+        oldestMessageTime: String?
+    ) -> EncryptedSearchDownloadedMessagesCell.DownloadedMessagesInfo {
+        let oldestMessageInfo = oldestMessageTime ?? ""
+        switch self {
+        case .complete:
+            return EncryptedSearchDownloadedMessagesCell.DownloadedMessagesInfo(
+                icon: .success,
+                title: .downlodedMessages,
+                oldestMessage: .init(date: oldestMessageInfo, highlight: false),
+                additionalInfo: .allMessagesDownloaded
+            )
+        case .partial:
+            return .init(
+                icon: .warning,
+                title: .messageHistory,
+                oldestMessage: .init(date: oldestMessageInfo, highlight: true),
+                additionalInfo: .errorOutOfMemory
+            )
+        case .paused(let reason) where reason == .lowStorage:
+            return .init(
+                icon: .warning,
+                title: .messageHistory,
+                oldestMessage: .init(date: oldestMessageInfo, highlight: true),
+                additionalInfo: .errorLowStorage
+            )
+        case .creatingIndex, .paused, .downloadingNewMessage, .background, .backgroundStopped:
+            return .init(
+                icon: .success,
+                title: .messageHistory,
+                oldestMessage: .init(date: oldestMessageInfo, highlight: false),
+                additionalInfo: .downloadingInProgress
+            )
+        default:
+            PMAssertionFailure("invalid state \(self)")
+            // returning a dummy state
+            return .init(
+                icon: .warning,
+                title: .messageHistory,
+                oldestMessage: .init(date: nil, highlight: true),
+                additionalInfo: .errorLowStorage
+            )
+        }
     }
 }

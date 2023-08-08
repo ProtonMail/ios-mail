@@ -6,6 +6,12 @@
          "dependencies": [
             {
                "target": "ProtonMail"
+            },      
+            {
+               "target": "ProtonMailTests"
+            },       
+            {
+               "package": "Difference"
             }
          ],
          "sources": [
@@ -13,7 +19,8 @@
                "path": "ProtonMailUITests",
                "excludes": [
                   "Info.plist",
-                  "**/*.md"
+                  "**/*.md",
+                  "TestData/*",
                ]
             },
             "ProtonMail/Utilities/APP_share_push_uiTest",

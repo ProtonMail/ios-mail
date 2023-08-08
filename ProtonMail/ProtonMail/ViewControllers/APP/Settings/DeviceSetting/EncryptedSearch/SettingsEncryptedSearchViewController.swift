@@ -145,31 +145,23 @@ extension SettingsEncryptedSearchViewController {
     private func cellForDownloadProgress() -> EncryptedSearchDownloadProgressCell {
         let cell = tableView.dequeue(cellType: EncryptedSearchDownloadProgressCell.self)
         cell.delegate = self
-
-        // TODO: Pending. It depends on how the information is obtained in the VM and how it's exposed to the VC
-        // let downloadState = viewModel.ouput.downloadState
-        // cell.configureWith(state: downloadState.toDownloadingState())
-        cell.configureWith(state: .fetchingNewMessages) // for sample purposes
-
+        let searchIndexState = viewModel.output.searchIndexState
+        cell.configureWith(state: downloadingState(from: searchIndexState))
         downloadProgressCell = cell
         return cell
     }
 
     private func cellForDownloadedMessages() -> EncryptedSearchDownloadedMessagesCell {
         let cell = tableView.dequeue(cellType: EncryptedSearchDownloadedMessagesCell.self)
-
-        // TODO: Pending. It depends on how the information is obtained in the VM and how it's exposed to the VC
-        // let downloadedMessages = viewModel.ouput.downloadedMessages
-        // cell.configure(info: downloadedMessages.toDownloadedMessagesInfo())
+        let info = viewModel.output.downloadedMessagesInfo
         cell.configure(
             info: .init(
                 icon: .success,
                 title: .downlodedMessages,
-                oldestMessage: .init(date: "Jan 1st, 2023", highlight: false),
-                additionalInfo: .storageUsed(valueInMB: "145 MB")
+                oldestMessage: .init(date: info.oldesMessageTime, highlight: !info.isDownloadComplete),
+                additionalInfo: .storageUsed(valueInMB: info.indexSize)
             )
-        ) // for sample purposes
-
+        )
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -193,25 +185,21 @@ extension SettingsEncryptedSearchViewController {
     }
 
     private func showDisableEncryptedSearchAlertIfNeeded(for cellSwitch: UISwitch) {
-        if viewModel.output.isDownloadInProgress {
-            let alert = UIAlertController(
-                title: L11n.EncryptedSearch.disable_feature_alert_title,
-                message: L11n.EncryptedSearch.disable_feature_alert_message,
-                preferredStyle: .alert
-            )
-            let disable = LocalString._general_ok_action
-            let cancelTitle = L11n.EncryptedSearch.disable_feature_alert_button_cancel
-            let enable = UIAlertAction(title: disable, style: .destructive) { [weak self] _ in
-                self?.viewModel.input.didChangeEncryptedSearchValue(isNewStatusEnabled: false)
-            }
-            let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
-                cellSwitch.setOn(true, animated: true)
-            }
-            [enable, cancel].forEach(alert.addAction)
-            present(alert, animated: true, completion: nil)
-        } else {
-            viewModel.input.didChangeEncryptedSearchValue(isNewStatusEnabled: false)
+        let alert = UIAlertController(
+            title: L11n.EncryptedSearch.disable_feature_alert_title,
+            message: L11n.EncryptedSearch.disable_feature_alert_message,
+            preferredStyle: .alert
+        )
+        let disable = LocalString._general_ok_action
+        let cancelTitle = L11n.EncryptedSearch.disable_feature_alert_button_cancel
+        let enable = UIAlertAction(title: disable, style: .destructive) { [weak self] _ in
+            self?.viewModel.input.didChangeEncryptedSearchValue(isNewStatusEnabled: false)
         }
+        let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
+            cellSwitch.setOn(true, animated: true)
+        }
+        [enable, cancel].forEach(alert.addAction)
+        present(alert, animated: true, completion: nil)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -224,11 +212,25 @@ extension SettingsEncryptedSearchViewController {
 extension SettingsEncryptedSearchViewController: SettingsEncryptedSearchUIProtocol {
 
     func reloadData() {
-        tableView.reloadData()
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+
+    func updateDownloadState(state: EncryptedSearchIndexState) {
+        DispatchQueue.main.async {
+            self.downloadProgressCell?.configureWith(state: self.downloadingState(from: state))
+        }
     }
 
     func updateDownloadProgress(progress: EncryptedSearchDownloadProgress) {
-        downloadProgressCell?.updateDownloadingProgress(progress: progress.toDownloadingProgress())
+        DispatchQueue.main.async {
+            self.downloadProgressCell?.updateDownloadingProgress(progress: progress.toDownloadingProgress())
+            if let index = self.viewModel.output.sections.firstIndex(of: .downloadProgress) {
+                let downloadProgressCellIndex = IndexPath(item: 0, section: index)
+                self.tableView.reloadRows(at: [downloadProgressCellIndex], with: .none)
+            }
+        }
     }
 }
 
@@ -239,6 +241,67 @@ extension SettingsEncryptedSearchViewController: EncryptedSearchDownloadProgress
 
     func didTapResume() {
         viewModel.input.didTapResumeMessagesDownload()
+    }
+}
+
+extension SettingsEncryptedSearchViewController {
+
+    private func downloadProgress() -> EncryptedSearchDownloadProgress {
+        guard let progress = viewModel.output.searchIndexDownloadProgress else {
+            return EncryptedSearchDownloadProgress(
+                numMessagesDownloaded: 0,
+                totalMessages: 0,
+                timeRemaining: "",
+                percentageDownloaded: 0
+            )
+        }
+        return progress
+    }
+
+    private func downloadingState(
+        from state: EncryptedSearchIndexState
+    ) -> EncryptedSearchDownloadProgressCell.DownloadingState {
+        let downloadProgress = downloadProgress()
+        let result: EncryptedSearchDownloadProgressCell.DownloadingState?
+        switch state {
+        case .partial:
+            result = .error(
+                error: .init(
+                    message: L11n.EncryptedSearch.download_paused_low_storage,
+                    instructions: L11n.EncryptedSearch.download_paused_low_storage_advice,
+                    percentageDownloaded: downloadProgress.percentageDownloaded,
+                    showResumeButton: false
+                )
+            )
+        case .paused(let reason):
+            if let reason = reason {
+                result = reason.toDownloadingState(percentageDownloaded: downloadProgress.percentageDownloaded)
+            } else {
+                result = .manuallyPaused(progress: downloadProgress.toDownloadingProgress())
+            }
+        case .downloadingNewMessage:
+            result = .fetchingNewMessages
+        case .creatingIndex:
+            result = .downloading(progress: downloadProgress.toDownloadingProgress())
+        case .disabled, .complete, .undetermined, .background, .backgroundStopped:
+            result = nil
+        }
+        return result ?? .fetchingNewMessages
+    }
+}
+
+private extension BuildSearchIndex.InterruptReason {
+
+    func toDownloadingState(percentageDownloaded: Int) -> EncryptedSearchDownloadProgressCell.DownloadingState {
+        let showButton = contains(.noConnection) || contains(.noWiFi)
+        return .error(
+            error: .init(
+                message: stateDescription,
+                instructions: adviceDescription,
+                percentageDownloaded: percentageDownloaded,
+                showResumeButton: showButton
+            )
+        )
     }
 }
 

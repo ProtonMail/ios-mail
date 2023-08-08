@@ -30,6 +30,7 @@ class SingleMessageContentViewModelFactory {
         user: UserManager,
         internetStatusProvider: InternetConnectionStatusProvider,
         systemUpTime: SystemUpTimeProtocol,
+        highlightedKeywords: [String],
         shouldOpenHistory: Bool,
         senderImageStatusProvider: SenderImageStatusProvider,
         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void
@@ -53,6 +54,7 @@ class SingleMessageContentViewModelFactory {
                      shouldOpenHistory: shouldOpenHistory,
                      dependencies: components.contentViewModelDependencies(user: user,
                                                                            senderImageStatusProvider: senderImageStatusProvider),
+                     highlightedKeywords: highlightedKeywords,
                      goToDraft: goToDraft)
     }
 
@@ -66,6 +68,7 @@ class SingleMessageViewModelFactory {
                          user: UserManager,
                          systemUpTime: SystemUpTimeProtocol,
                          internetStatusProvider: InternetConnectionStatusProvider,
+                         highlightedKeywords: [String],
                          imageProxy: ImageProxy,
                          coordinator: SingleMessageCoordinator,
                          senderImageStatusProvider: SenderImageStatusProvider,
@@ -98,6 +101,7 @@ class SingleMessageViewModelFactory {
             nextMessageAfterMoveStatusProvider: user,
             dependencies: components.contentViewModelDependencies(user: user,
                                                                   senderImageStatusProvider: senderImageStatusProvider),
+            highlightedKeywords: highlightedKeywords,
             goToDraft: goToDraft
         )
     }
@@ -109,6 +113,7 @@ class SingleMessageComponentsFactory {
         user: UserManager,
         senderImageStatusProvider: SenderImageStatusProvider
     ) -> SingleMessageContentViewModel.Dependencies {
+        let contextProvider = sharedServices.get(by: CoreDataService.self)
         let incomingDefaultService = user.incomingDefaultService
         let queueManager = sharedServices.get(by: QueueManager.self)
 
@@ -124,8 +129,7 @@ class SingleMessageComponentsFactory {
             dependencies: .init(
                 queueManager: queueManager,
                 apiService: user.apiService,
-                contextProvider: sharedServices.get(by: CoreDataService.self),
-                messageDataAction: user.messageService,
+                contextProvider: contextProvider,
                 cacheService: user.cacheService
             )
         )
@@ -138,11 +142,12 @@ class SingleMessageComponentsFactory {
             )
         )
 
+        let isSenderBlockedPublisher = IsSenderBlockedPublisher(contextProvider: contextProvider, userID: user.userID)
+
         return .init(
             blockSender: blockSender,
-            blockedSenderCacheUpdater: user.blockedSenderCacheUpdater,
             fetchMessageDetail: fetchMessageDetail,
-            incomingDefaultService: incomingDefaultService,
+            isSenderBlockedPublisher: isSenderBlockedPublisher,
             senderImageStatusProvider: senderImageStatusProvider,
             unblockSender: unblockSender
         )

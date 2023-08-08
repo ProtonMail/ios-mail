@@ -28,7 +28,7 @@ class SettingsLockViewModelTests: XCTestCase {
     var sut: SettingsLockViewModel!
     var mockRouter: MockSettingsLockRouterProtocol!
     var biometricStub: BioMetricStatusStub!
-    var mockKeymaker: MockKeymakerProtocol!
+    var mockKeymaker: MockKeyMakerProtocol!
     var mockLockPreferences: MockLockPreferences!
     var mockNotificationCenter: NotificationCenter!
     var isAppKeyEnabled: Bool = false
@@ -39,7 +39,7 @@ class SettingsLockViewModelTests: XCTestCase {
         mockRouter = MockSettingsLockRouterProtocol()
         biometricStub = BioMetricStatusStub()
         biometricStub.biometricTypeStub = .faceID
-        mockKeymaker = MockKeymakerProtocol()
+        mockKeymaker = MockKeyMakerProtocol()
         mockKeymaker.activateStub.bodyIs { _, _, completion in completion(true) }
         mockKeymaker.deactivateStub.bodyIs { _, _ in return true }
         mockLockPreferences = MockLockPreferences()
@@ -50,7 +50,7 @@ class SettingsLockViewModelTests: XCTestCase {
             dependencies: .init(
                 biometricStatus: biometricStub,
                 userPreferences: mockLockPreferences,
-                coreKeymaker: mockKeymaker,
+                coreKeyMaker: mockKeymaker,
                 notificationCenter: mockNotificationCenter,
                 enableAppKeyFeature: isAppKeyFeatureEnabled
             )
@@ -88,27 +88,27 @@ class SettingsLockViewModelTests: XCTestCase {
     }
 
     func testViewWillAppear_whenPinEnabledAndAppKeyDisabled() {
-        mockLockPreferences.isPinCodeEnabledStub.fixture = true
+        mockKeymaker.isPinCodeEnabledStub.fixture = true
         sut.viewWillAppear()
         XCTAssert(sut.sections == [.protection, .changePin, .autoLockTime])
     }
 
     func testViewWillAppear_whenPinEnabledAndAppKeyEnabled() {
         isAppKeyEnabled = true
-        mockLockPreferences.isPinCodeEnabledStub.fixture = true
+        mockKeymaker.isPinCodeEnabledStub.fixture = true
         sut.viewWillAppear()
         XCTAssert(sut.sections == [.protection, .changePin, .appKeyProtection, .autoLockTime])
     }
 
     func testViewWillAppear_whenBiometricLockEnabledAndAppKeyDisabled() {
-        mockLockPreferences.isTouchIDEnabledStub.fixture = true
+        mockKeymaker.isTouchIDEnabledStub.fixture = true
         sut.viewWillAppear()
         XCTAssert(sut.sections == [.protection, .autoLockTime])
     }
 
     func testViewWillAppear_whenBiometricLockEnabledAndAppKeyEnabled() {
         isAppKeyEnabled = true
-        mockLockPreferences.isTouchIDEnabledStub.fixture = true
+        mockKeymaker.isTouchIDEnabledStub.fixture = true
         sut.viewWillAppear()
         XCTAssert(sut.sections == [.protection, .appKeyProtection, .autoLockTime])
     }

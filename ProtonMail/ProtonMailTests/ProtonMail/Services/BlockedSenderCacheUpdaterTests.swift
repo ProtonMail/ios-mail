@@ -84,7 +84,7 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
 
         var didRegainConnectivity: (() -> Void)!
 
-        internetStatusProvider.registerConnectionStatusStub.bodyIs { _, _, callback in
+        internetStatusProvider.registerConnectionStatusStub.bodyIs { _, _, _, callback in
             // we're capturing callback to run it later, thus simulating regaining connectivity
             didRegainConnectivity = {
                 callback(.connected)
@@ -194,6 +194,6 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
 
     /// This method is needed because side effects happen on a background queue
     private func waitForSideEffectsToOccur() {
-        Thread.sleep(forTimeInterval: 0.05)
+        Thread.sleep(forTimeInterval: 0.1)
     }
 }

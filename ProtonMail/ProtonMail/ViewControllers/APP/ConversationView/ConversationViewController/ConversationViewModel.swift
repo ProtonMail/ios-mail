@@ -40,8 +40,12 @@ class ConversationViewModel {
     }
 
     var detailedNavigationViewType: NavigationViewType {
-        .detailed(
-            subject: conversation.subject.apply(style: FontManager.DefaultSmallStrong.lineBreakMode(.byTruncatingTail)),
+        let subjectStyle = FontManager.DefaultSmallStrong.lineBreakMode(.byTruncatingTail)
+        let subject = conversation.subject.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
+        subject.addAttributes(subjectStyle, range: NSRange(location: 0, length: conversation.subject.count))
+
+        return .detailed(
+            subject: subject,
             numberOfMessages: messagesTitle.apply(style: FontManager.OverlineRegularTextWeak)
         )
     }
@@ -107,6 +111,13 @@ class ConversationViewModel {
             .allSatisfy(\.isSpam)
     }
 
+    var areAllMessagesInThreadInTheArchive: Bool {
+        guard !messagesDataSource.isEmpty else { return false }
+        return messagesDataSource
+            .compactMap(\.messageViewModel)
+            .allSatisfy { $0.message.contains(location: .archive) }
+    }
+
     let connectionStatusProvider: InternetConnectionStatusProvider
     private let observerID = UUID()
     var isInitialDataFetchCalled = false
@@ -124,6 +135,7 @@ class ConversationViewModel {
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
     private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
+    let highlightedKeywords: [String]
     let dependencies: Dependencies
 
     init(labelId: LabelID,
@@ -139,6 +151,7 @@ class ConversationViewModel {
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
+         highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void,
          dependencies: Dependencies) {
         self.labelId = labelId
@@ -148,6 +161,7 @@ class ConversationViewModel {
         self.contactService = user.contactService
         self.eventsService = user.eventsService
         self.contextProvider = contextProvider
+        self.highlightedKeywords = highlightedKeywords
         self.user = user
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation,
                                                                          contextProvider: contextProvider)
@@ -185,7 +199,16 @@ class ConversationViewModel {
             with: conversation.conversationID,
             includeBodyOf: nil,
             callOrigin: "ConversationViewModel"
-        ) { _ in
+        ) { [weak self] _ in
+            if let self {
+                let ids = self.messagesDataSource
+                    .filter { source in
+                        guard let id = source.message?.messageID else { return false }
+                        return self.messageIDsOfMarkedAsRead.contains(id)
+                    }
+                    .compactMap{ $0.message?.objectID.rawValue }
+                self.messageService.markLocally(messageObjectIDs: ids, labelID: self.labelId, unRead: false)
+            }
             if let completion = completion {
                 DispatchQueue.main.async(execute: completion)
             }
@@ -210,23 +233,27 @@ class ConversationViewModel {
 
     func observeConversationMessages(tableView: UITableView) {
         self.tableView = tableView
+        if conversationMessagesProvider.hasStartedObservingConversation {
+            conversationMessagesProvider.listenToCoreDataUpdates()
+            return
+        }
+
         conversationMessagesProvider.observe { [weak self] update in
-            if case .didUpdate = update {
-                self?.checkTrashedHintBanner()
-            }
             self?.perform(update: update, on: tableView)
             if case .didUpdate = update {
                 self?.checkTrashedHintBanner()
                 self?.reloadRowsIfNeeded()
+                self?.markMessagesReadIfNeeded()
             }
         } storedMessages: { [weak self] messages in
-            self?.checkTrashedHintBanner()
             var messageDataModels = messages.compactMap { self?.messageType(with: $0) }
 
             if messages.count == self?.conversation.messageCount {
                 _ = self?.expandSpecificMessage(dataModels: &messageDataModels)
             }
             self?.messagesDataSource = messageDataModels
+            self?.markMessagesReadIfNeeded()
+            self?.checkTrashedHintBanner()
         }
     }
 
@@ -243,6 +270,7 @@ class ConversationViewModel {
             replacingEmailsMap: sharedReplacingEmailsMap,
             contactGroups: sharedContactGroups,
             internetStatusProvider: connectionStatusProvider,
+            highlightedKeywords: highlightedKeywords,
             senderImageStatusProvider: dependencies.senderImageStatusProvider,
             goToDraft: goToDraft
         )
@@ -432,6 +460,18 @@ class ConversationViewModel {
                     case .failure:
                         completion(nil)
                     }
+            }
+    }
+
+    private func markMessagesReadIfNeeded() {
+        messagesDataSource
+            .compactMap { $0.messageViewModel?.state.expandedViewModel?.messageContent }
+            .forEach { model in
+                if messageIDsOfMarkedAsRead.contains(model.message.messageID) { return }
+                if model.message.unRead {
+                    messageIDsOfMarkedAsRead.append(model.message.messageID)
+                }
+                model.markReadIfNeeded()
             }
     }
 
@@ -799,7 +839,7 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
         let locationIsInArchive = labelId == Message.Location.archive.labelID
         let isConversationRead = !conversation.isUnread(labelID: labelId)
         let isConversationStarred = conversation.starred
-        let isInArchive = conversation.contains(of: .archive)
+        let isInArchive = areAllMessagesInThreadInTheArchive
         let isInTrash = areAllMessagesInThreadInTheTrash
         let isInSpam = conversation.contains(of: .spam)
 
@@ -896,7 +936,7 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
             return
         }
         DispatchQueue.main.async { [weak self] in
-            let userInfo = ["expectation": PagesSwipeAction.forward, "reload": true]
+            let userInfo: [String: Any] = ["expectation": PagesSwipeAction.forward, "reload": true]
             self?.dependencies.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
         }
     }

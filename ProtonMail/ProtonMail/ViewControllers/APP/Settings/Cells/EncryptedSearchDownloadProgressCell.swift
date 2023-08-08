@@ -98,6 +98,7 @@ final class EncryptedSearchDownloadProgressCell: UITableViewCell {
             pauseButton.isHidden = false
         case let .manuallyPaused(progress):
             updateDownloadingProgress(progress: progress)
+            downloadProgress.set(belowText: L11n.EncryptedSearch.download_paused)
             downloadProgress.isHidden = false
             resumeButton.isHidden = false
         case let .error(error):

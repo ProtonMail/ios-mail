@@ -15,44 +15,63 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCore_DataModel
 
 struct MailSettings: Parsable, Equatable {
-    let nextMessageOnMove: Bool
-    let hideSenderImages: Bool
+    private(set) var nextMessageOnMove: NextMessageOnMove
+    private(set) var hideSenderImages: Bool
+    private(set) var showMoved: ShowMoved
 
     enum CodingKeys: String, CodingKey {
         case nextMessageOnMove = "NextMessageOnMove"
         case hideSenderImages = "HideSenderImages"
+        case showMoved = "ShowMoved"
     }
 
     init(
-        nextMessageOnMove: Bool = DefaultValue.nextMessageOnMove,
-        hideSenderImages: Bool = DefaultValue.hideSenderImages
+        nextMessageOnMove: NextMessageOnMove = DefaultValue.nextMessageOnMove,
+        hideSenderImages: Bool = DefaultValue.hideSenderImages,
+        showMoved: ShowMoved = DefaultValue.showMoved
     ) {
         self.nextMessageOnMove = nextMessageOnMove
         self.hideSenderImages = hideSenderImages
+        self.showMoved = showMoved
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        nextMessageOnMove = container
-            .decodeIfPresentBoolOrIntToBool(forKey: .nextMessageOnMove, defaultValue: DefaultValue.nextMessageOnMove)
+        let nextMessageOnMoveValue = try container.decodeIfPresent(Int.self, forKey: .nextMessageOnMove)
+        nextMessageOnMove = NextMessageOnMove(rawValue: nextMessageOnMoveValue)
         hideSenderImages = container.decodeIfPresentBoolOrIntToBool(
             forKey: .hideSenderImages,
             defaultValue: DefaultValue.hideSenderImages
         )
+        let showMovedValue = try container.decodeIfPresent(Int.self, forKey: .showMoved)
+        showMoved = ShowMoved(rawValue: showMovedValue)
+    }
+
+    mutating func update(key: CodingKeys, to newValue: Bool) {
+        switch key {
+        case .nextMessageOnMove:
+            nextMessageOnMove = newValue ? .explicitlyEnabled : .explicitlyDisabled
+        case .hideSenderImages:
+            hideSenderImages = newValue
+        case .showMoved:
+            assertionFailure("Not suitable for this key")
+        }
     }
 
     struct DefaultValue {
-        static let nextMessageOnMove = false
+        static let nextMessageOnMove = NextMessageOnMove.implicitlyDisabled
         static let hideSenderImages = false
+        static let showMoved = ShowMoved.doNotKeep
     }
 }
 
 // sourcery: mock
 protocol MailSettingsHandler: AnyObject {
     var mailSettings: MailSettings { get set }
+    var userInfo: UserInfo { get }
 }
 
 extension UserManager: MailSettingsHandler {}

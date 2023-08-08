@@ -4,7 +4,6 @@ import SafariServices
 // sourcery: mock
 protocol ConversationCoordinatorProtocol: AnyObject {
     var pendingActionAfterDismissal: (() -> Void)? { get set }
-    var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)? { get set }
 
     func handle(navigationAction: ConversationNavigationAction)
 }
@@ -20,18 +19,24 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let targetID: MessageID?
     private let internetStatusProvider: InternetConnectionStatusProvider
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
+    private let highlightedKeywords: [String]
     private let contextProvider: CoreDataContextProviderProtocol
+    private let composeViewModelFactory: ComposeViewModelDependenciesFactory
     var pendingActionAfterDismissal: (() -> Void)?
     var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
 
-    init(labelId: LabelID,
-         navigationController: UINavigationController,
-         conversation: ConversationEntity,
-         user: UserManager,
-         internetStatusProvider: InternetConnectionStatusProvider,
-         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-         contextProvider: CoreDataContextProviderProtocol,
-         targetID: MessageID? = nil) {
+    init(
+        labelId: LabelID,
+        navigationController: UINavigationController,
+        conversation: ConversationEntity,
+        user: UserManager,
+        internetStatusProvider: InternetConnectionStatusProvider,
+        infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
+        highlightedKeywords: [String] = [],
+        contextProvider: CoreDataContextProviderProtocol,
+        targetID: MessageID? = nil,
+        serviceFactory: ServiceFactory
+    ) {
         self.labelId = labelId
         self.navigationController = navigationController
         self.conversation = conversation
@@ -39,10 +44,12 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.targetID = targetID
         self.internetStatusProvider = internetStatusProvider
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
+        self.highlightedKeywords = highlightedKeywords
         self.contextProvider = contextProvider
+        self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
     }
 
-    func start(openFromNotification: Bool = false) {
+    func start() {
         let viewController = makeConversationVC()
         self.viewController = viewController
         if navigationController?.viewControllers.last is MessagePlaceholderVC,
@@ -61,7 +68,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                 queueManager: sharedServices.get(by: QueueManager.self),
                 apiService: user.apiService,
                 contextProvider: sharedServices.get(by: CoreDataService.self),
-                messageDataAction: user.messageService,
                 cacheService: user.cacheService
             )
         )
@@ -99,6 +105,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
                 dependencies: .init(user: user)
             ),
             toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
+            highlightedKeywords: highlightedKeywords,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.navigationController?.popViewController(animated: false)
                 self?.goToDraft?(msgID, originalScheduledTime)
@@ -177,8 +184,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
-            internetStatusProvider: internetStatusProvider
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
         viewModel.addToContacts(contact)
 
@@ -191,8 +197,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
-            internetStatusProvider: internetStatusProvider
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
         viewModel.parse(mailToURL: mailToURL)
 
@@ -209,8 +214,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
             action: action,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: contextProvider,
-            internetStatusProvider: internetStatusProvider
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
 
         presentCompose(viewModel: viewModel)

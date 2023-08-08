@@ -46,7 +46,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                 fetchMessageDetail(params: params, callback: callback)
             }
         } else {
-            handleDownloaded(entity: params.message, callback: callback)
+            callback(.success(params.message))
         }
     }
 
@@ -59,32 +59,32 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                     callback(.failure(Errors.selfIsReleased))
                     return
                 }
-
-                    let response: JSONDictionary
-                    switch result {
-                    case .success(let value):
-                        response = value
-                    case .failure(let error):
-                        callback(.failure(error))
-                        return
-                    }
-                    guard let messageDict = response["Message"] as? [String: Any] else {
-                        callback(.failure(NSError.badResponse()))
-                        return
-                    }
-
-                    do {
-                        let handledMessage = try self.handle(
-                            messageDict: messageDict,
-                            messageObjectID: params.message.objectID,
-                            ignoreDownloaded: params.ignoreDownloaded,
-                            userID: params.userID
-                        )
-                        callback(.success(handledMessage))
-                    } catch {
-                        callback(.failure(error))
-                    }
+                
+                let response: JSONDictionary
+                switch result {
+                case .success(let value):
+                    response = value
+                case .failure(let error):
+                    callback(.failure(error))
+                    return
                 }
+                guard let messageDict = response["Message"] as? [String: Any] else {
+                    callback(.failure(NSError.badResponse()))
+                    return
+                }
+                
+                do {
+                    let handledMessage = try self.handle(
+                        messageDict: messageDict,
+                        messageObjectID: params.message.objectID,
+                        ignoreDownloaded: params.ignoreDownloaded,
+                        userID: params.userID
+                    )
+                    callback(.success(handledMessage))
+                } catch {
+                    callback(.failure(error))
+                }
+            }
     }
 
     private func handle(
@@ -93,10 +93,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         ignoreDownloaded: Bool,
         userID: UserID
     ) throws -> MessageEntity {
-        var result: Result<MessageEntity, Error>!
-
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            do {
+        try dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
                 guard let message = context.object(with: messageObjectID.rawValue) as? Message else {
                     throw Errors.coreDataObjectNotExist
                 }
@@ -107,8 +104,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                    case let responseInterval = TimeInterval(responseTime),
                    let cacheTime = message.time?.timeIntervalSince1970,
                    cacheTime > responseInterval {
-                    result = .success(MessageEntity(message))
-                    return
+                    return MessageEntity(message)
                 }
 
                 let uploadingAttachments = self.uploadingAttachment(from: message)
@@ -124,15 +120,9 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                 if let error = context.saveUpstreamIfNeeded() {
                     throw error
                 } else {
-                    result = .success(MessageEntity(message))
+                    return MessageEntity(message)
                 }
-            } catch {
-                result = .failure(error)
-            }
         }
-
-        let messageEntity = try result.get()
-        return try updatingUnread(message: messageEntity)
     }
 
     private func uploadingAttachment(from message: Message) -> [Attachment] {
@@ -168,55 +158,6 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
             .count
         message.numAttachments = NSNumber(value: attachmentCount)
     }
-
-    private func updatingUnread(message: MessageEntity) throws -> MessageEntity {
-        PushUpdater().remove(notificationIdentifiers: [message.messageID.notificationId])
-
-        guard message.unRead else {
-            return message
-        }
-
-        if let labelID = message.firstValidFolder() {
-            _ = dependencies.messageDataAction.mark(
-                messageObjectIDs: [message.objectID.rawValue],
-                labelID: labelID,
-                unRead: false
-            )
-        }
-
-        dependencies.cacheService.updateCounterSync(markUnRead: false, on: message.labels.map(\.labelID))
-
-        var result: Result<MessageEntity, Error>!
-
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            do {
-                guard let messageObject = try context.existingObject(with: message.objectID.rawValue) as? Message else {
-                    throw Errors.coreDataObjectNotExist
-                }
-
-                messageObject.unRead = false
-
-                result = .success(MessageEntity(messageObject))
-
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-            } catch {
-                result = .failure(error)
-            }
-        }
-
-        return try result.get()
-    }
-
-    private func handleDownloaded(entity: MessageEntity, callback: @escaping Callback) {
-        do {
-            let updated = try updatingUnread(message: entity)
-            callback(.success(updated))
-        } catch {
-            callback(.failure(error))
-        }
-    }
 }
 
 extension FetchMessageDetail {
@@ -244,13 +185,11 @@ extension FetchMessageDetail {
         let queueManager: QueueManagerProtocol?
         let apiService: APIService
         let contextProvider: CoreDataContextProviderProtocol
-        let messageDataAction: MessageDataActionProtocol
         let cacheService: CacheServiceProtocol
     }
 
     enum Errors: Error {
         case selfIsReleased
-        case emptyResponse
         case coreDataObjectNotExist
     }
 }

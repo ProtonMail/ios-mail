@@ -74,20 +74,28 @@ final class MenuViewModel: NSObject {
     }
 
     weak var coordinator: MenuCoordinator?
+    private let coreKeyMaker: KeyMakerProtocol
+    private let unlockManager: UnlockManager
 
-    init(usersManager: UsersManager,
-         userStatusInQueueProvider: UserStatusInQueueProtocol,
-         coreDataContextProvider: CoreDataContextProviderProtocol) {
+    init(
+        usersManager: UsersManager,
+        userStatusInQueueProvider: UserStatusInQueueProtocol,
+        coreDataContextProvider: CoreDataContextProviderProtocol,
+        coreKeyMaker: KeyMakerProtocol,
+        unlockManager: UnlockManager
+    ) {
         self.usersManager = usersManager
         self.userStatusInQueueProvider = userStatusInQueueProvider
         self.coreDataContextProvider = coreDataContextProvider
+        self.coreKeyMaker = coreKeyMaker
+        self.unlockManager = unlockManager
 
         self.sections = [.inboxes, .folders, .labels, .more]
         self.inboxItems = Self.inboxItems()
         let defaultInfo = MoreItemsInfo(userIsMember: nil,
                                         subscriptionAvailable: subscriptionAvailable,
-                                        isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
-                                        isTouchIDEnabled: userCachedStatus.isTouchIDEnabled,
+                                        isPinCodeEnabled: unlockManager.cacheStatus.isPinCodeEnabled,
+                                        isTouchIDEnabled: unlockManager.cacheStatus.isTouchIDEnabled,
                                         isReferralEligible: usersManager.firstUser?.userInfo.referralProgram?.eligible ?? false)
         self.moreItems = Self.moreItems(for: defaultInfo)
         super.init()
@@ -353,6 +361,14 @@ extension MenuViewModel: MenuVMProtocol {
     func go(to labelInfo: MenuLabel) {
         coordinator?.go(to: labelInfo, deepLink: nil)
     }
+
+    func lockTheScreen() {
+        // remove mainKey from memory
+        coreKeyMaker.lockTheApp()
+        // provoke mainKey obtaining
+        _ = unlockManager.isUnlocked()
+        coordinator?.lockTheScreen()
+    }
 }
 
 extension MenuViewModel: NSFetchedResultsControllerDelegate {
@@ -493,8 +509,8 @@ extension MenuViewModel {
     private func updateMoreItems(shouldReload: Bool = true) {
         let moreItemsInfo = MoreItemsInfo(userIsMember: currentUser?.userInfo.isMember ?? false,
                                           subscriptionAvailable: self.subscriptionAvailable,
-                                          isPinCodeEnabled: userCachedStatus.isPinCodeEnabled,
-                                          isTouchIDEnabled: userCachedStatus.isTouchIDEnabled,
+                                          isPinCodeEnabled: unlockManager.cacheStatus.isPinCodeEnabled,
+                                          isTouchIDEnabled: unlockManager.cacheStatus.isTouchIDEnabled,
                                           isReferralEligible: currentUser?.userInfo.referralProgram?.eligible ?? false)
         let newMore = Self.moreItems(for: moreItemsInfo)
         if newMore.count != self.moreItems.count {

@@ -288,6 +288,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Födelsedag";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Blockera";
+
 /* Settings row */
 "Block email tracking" = "Blockera e-postspårning";
 
@@ -297,14 +300,17 @@
 /* Button to block a sender */
 "Block sender" = "Blockera avsändare";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Blockera avsändare";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Blockerar avsändare från att se om och när du öppnade meddelandet";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Bläddra igenom trådade meddelanden i konversationsläge.";
 
-/* Title */
-"Bug Description" = "Felbeskrivning";
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---För att hjälpa oss att hjälpa dig, ange så många detaljer som möjligt---\n\nSammanfattning:\n\nHar problemet hänt mer än en gång: ja/nej\nSteg för att återskapa problemet:\nFörväntat resultat:\nFaktiskt resultat:\nKommentarer:";
 
 /* Title */
 "Bug Report Received" = "Felrapport mottagen";
@@ -526,6 +532,9 @@
 /* Alert title */
 "Creating label not allowed" = "Det är inte tillåtet att skapa etikett";
 
+/* Change language title */
+"Current Language: " = "Nuvarande språk: ";
+
 /* Placeholder */
 "Current password" = "Nuvarande lösenord";
 
@@ -700,6 +709,9 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Laddar ner metadata …";
 
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Laddar ner nya meddelanden...";
+
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Laddar ner e-postmeddelanden så du kan söka inom dessa. Meddelanden är krypterade och lagras lokalt. %1$@";
 
@@ -819,6 +831,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Ange ny PIN-kod";
 
+/* The title of the pin code view. */
+"Enter PIN" = "Ange PIN";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Ange ditt lösenord för att göra ändringar";
 
@@ -915,6 +930,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Gå till inställningar";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Gå till inloggning";
+
 /* Got it action */
 "Got it" = "Förstått";
 
@@ -1000,6 +1018,9 @@
 /* place holder */
 "Input Display Name…" = "Mata in visningsnamn…";
 
+/* place holder */
+"Input Notification Email…" = "Mata in e-postavisering…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Osäker anslutning";
 
@@ -1014,6 +1035,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Introducerar Protons uppfräschade utseende.\nMånga tjänster, ett uppdrag. Välkommen till ett Internet där integritet är standard.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Ogiltig e-postadress";
 
 /* update password error */
 "Invalid hashed password!" = "Ogiltigt hashat lösenord!";
@@ -1127,6 +1151,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Markera som oläst";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Kanske senare";
+
 /* menu title */
 "Menu" = "Meny";
 
@@ -1237,6 +1264,9 @@
 /* Contacts add new contact */
 "New contact" = "Ny kontakt";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Nya e-postmeddelanden från %@ kommer inte att levereras och kommer tas bort permanent. Hantera blockerade e-postadresser i inställningarna.";
+
 /* The title of create folder page */
 "New folder" = "Ny mapp";
 
@@ -1275,6 +1305,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Inga bilagor hittades";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Inga blockerade avsändare";
 
 /* Title */
 "No connectivity detected…" = "Ingen anslutning upptäcktes…";
@@ -1487,6 +1520,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Dela ditt problem.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Logga in på Proton Mail-appen.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Uppgradera till ett betalt paket för att använda mer än 3 mappar";
 
@@ -1684,7 +1720,7 @@
 /* Action */
 "Send anyway" = "Skicka ändå";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Skicka feedback";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1698,6 +1734,15 @@
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Skicka läskvitto";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "Avsändare %@ blockerad";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Avsändare %@ avblockerad";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Avsändare har blockerats";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verifiering av avsändaren misslyckades";
@@ -1777,6 +1822,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Visa mig";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Logga in igen för att fortsätta ta emot uppdateringar";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Logga ut";
@@ -1792,6 +1840,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Loggade ut från %1$@ och loggade in med %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Utloggad från %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Hoppa över";
@@ -1953,6 +2004,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Den URL du försöker komma åt är inte standard och kanske inte laddas korrekt. Vill du öppna den med enhetens standardwebbläsare?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Denna användare är redan inloggad";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Det finns oskickade meddelanden som går förlorade om du loggar ut";
 
@@ -1967,6 +2021,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Denna konversation innehåller kastade meddelanden";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Det här e-postmeddelandet har misslyckats med domänens autentiseringskrav. Det kan vara förfalskat eller felaktigt vidarebefordrat.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Det här e-postmeddelandet har misslyckats med domänens autentiseringskrav. Det kan vara förfalskat eller felaktigt vidarebefordrat.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denna e-post verkar komma från en Proton Mail-adress, men den kom utanför vårt system och misslyckades med våra autentiseringskrav. Den kan vara förfalskad eller felaktigt vidarebefordrad!";
@@ -2057,6 +2117,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Försök att ansluta till Proton från ett annat nätverk (eller använd %1$@ eller %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktivera den här funktionen för att automatiskt fylla i e-postadresser med kontakter från alla dina inloggade konton.";
+
 /* Placeholder */
 "Two Factor Code" = "Tvåfaktorskod";
 
@@ -2074,6 +2137,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Kan inte skicka e-postmeddelandet";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Avblockera";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Avblockera avsändare";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Hemliga mottagare";
@@ -2112,7 +2181,7 @@
 "Unstar" = "Ta bort stjärnmärkning";
 
 /* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Avregistrera dig från e-postlista";
+"Unsubscribe from mailing list" = "Avsluta prenumeration från e-postlista";
 
 /* Error message */
 "Unsupported file type" = "Filtyp stöds inte";
@@ -2128,6 +2197,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Uppdatera e-postavisering";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Uppdatering köad, inväntar anslutning...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Uppdaterad >1 timme sedan";
@@ -2250,7 +2322,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Du kan inte ställa in %@-adress som standard eftersom det är en betald funktion.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Du inaktiverade %@ i dina systeminställningar. %@ har använts för att skydda viktig kontoinformation. För åtkomst till ditt konto, gå till inställningar och återaktivera %@, eller logga in igen.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Du inaktiverade %1$@ i dina systeminställningar. %2$@ har använts för att skydda viktig kontoinformation. För att komma åt ditt konto, gå till inställningar och återaktivera %3$@ eller logga in igen.";
 
 /* Message */
 "You have %d new emails!" = "Du har %d nya e-postmeddelanden!";
@@ -2311,6 +2383,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Dina meddelanden laddas ner …";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Din integritet skyddas bättre om dina kontakter också använder Proton Mail. Bjud in dina vänner till Proton, så får ni båda premiumförmåner gratis.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session har löpt ut eftersom du har varit inaktiv ett tag eller för att den har återkallats. Logga in igen.";

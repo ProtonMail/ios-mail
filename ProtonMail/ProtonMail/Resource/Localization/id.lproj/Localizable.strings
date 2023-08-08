@@ -32,7 +32,7 @@
 "8 to 21 characters long" = "panjang antara 8 hingga 21 karakter";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Akses ke akun ini telah dinonaktifkan karena tagihan yang belum terbayar. Silakan masuk melalui proton.me untuk melunasi tagihan Anda.";
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Akses ke akun ini telah ditangguhkan karena adanya tagihan yang tertunggak. Silakan masuk melalui proton.me untuk melunasi tagihan Anda.";
 
 /* Account manager title */
 "Account" = "Akun";
@@ -122,6 +122,9 @@
 /* mail location title
    menu title */
 "All Mail" = "Seluruh Surat";
+
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Seluruh pengaturan perlindungan akan diatur ulang dan dihapus pada saat Anda keluar dari aplikasi.";
 
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Seluruh pesan Anda akan diunduh";
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Tanggal lahir";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Blokir";
+
 /* Settings row */
 "Block email tracking" = "Blokir pelacak email";
 
@@ -297,14 +303,17 @@
 /* Button to block a sender */
 "Block sender" = "Blokir pengirim";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Pengirim yang Diblokir";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Mencegah pengirim pesan untuk dapat mengetahui kapan dan apakah Anda telah membuka pesan yang bersangkutan";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Baca pesan berutas dengan mudah dalam mode percakapan.";
 
-/* Title */
-"Bug Description" = "Deskripsi Bug";
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Untuk membantu kami dalam menangani masalah Anda, mohon berikan informasi yang lengkap---\n\nRincian:\nMasalah terjadi lebih dari sekali: ya/tidak\nLangkah-langkah untuk mereproduksi masalah:\nHasil yang diharapkan:\nHasil yang terjadi:\nKomentar:";
 
 /* Title */
 "Bug Report Received" = "Laporan Bug Diterima";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Pembuatan label tidak diizinkan";
 
+/* Change language title */
+"Current Language: " = "Bahasa Saat Ini: ";
+
 /* Placeholder */
 "Current password" = "Kata sandi saat ini";
 
@@ -700,6 +712,9 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Mengunduh metadata ...";
 
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Mengunduh pesan baru...";
+
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Mengunduh email agar Anda dapat melakukan pencarian berdasarkan isi pesan yang ada. Seluruh pesan akan disimpan dan dienkripsi secara lokal. %1$@";
 
@@ -796,16 +811,16 @@
 "Encrypted contact details" = "Rincian kontak yang terenkripsi";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted" = "Dienkripsi ujung ke ujung";
+"End-to-end encrypted" = "Terenkripsi end-to-end";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted and signed message" = "Pesan ditandatangani dan dienkripsi ujung ke ujung";
+"End-to-end encrypted and signed message" = "Pesan ditandatangani dan dienkripsi secara end-to-end";
 
 /* encryption lock description */
 "End-to-end encrypted message" = "Pesan dienkripsi ujung ke ujung";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message from verified sender" = "Pesan terenkripsi ujung ke ujung dari pengirim terverifikasi";
+"End-to-end encrypted message from verified sender" = "Pesan terenkripsi secara end-to-end dari pengirim yang terverifikasi";
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "End-to-end encrypted to verified recipient" = "Dienkripsi ujung ke ujung untuk penerima terverifikasi";
@@ -818,6 +833,9 @@
 
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Masukkan kode PIN baru";
+
+/* The title of the pin code view. */
+"Enter PIN" = "Masukkan PIN";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Masukkan kata sandi Anda untuk menerapkan perubahan";
@@ -915,6 +933,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Ke pengaturan";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Tuju layar masuk";
+
 /* Got it action */
 "Got it" = "Dimengerti";
 
@@ -1000,6 +1021,9 @@
 /* place holder */
 "Input Display Name…" = "Masukkan Nama Tampilan…";
 
+/* place holder */
+"Input Notification Email…" = "Masukkan Email Notifikasi…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Koneksi tidak aman";
 
@@ -1014,6 +1038,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Memperkenalkan tampilan Proton yang baru.\nBerbagai layanan, satu misi. Selamat datang di Internet yang menjunjung privasi sebagai hal yang baku.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Alamat email tidak valid";
 
 /* update password error */
 "Invalid hashed password!" = "Kata sandi hashed tidak valid!";
@@ -1127,6 +1154,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Tandai belum dibaca";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Mungkin nanti";
+
 /* menu title */
 "Menu" = "Menu";
 
@@ -1226,7 +1256,7 @@
 "Move to…" = "Pindahkan ke…";
 
 /* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Tuju pesan berikutnya setelah perpindahan";
+"Navigate to next message after move" = "Tuju pesan berikutnya setelah pemindahan";
 
 /* Onboarding title */
 "Neat and tidy" = "Rapi dan teratur";
@@ -1236,6 +1266,9 @@
 
 /* Contacts add new contact */
 "New contact" = "Kontak baru";
+
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Email baru dari %@ tidak akan disampaikan kepada Anda dan akan dihapus secara permanen. Kelola daftar alamat email yang diblokir pada menu pengaturan.";
 
 /* The title of create folder page */
 "New folder" = "Folder baru";
@@ -1268,13 +1301,16 @@
 "Next" = "Selanjutnya";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "Pesan berikutnya setelah perpindahan";
+"Next message after move" = "Pesan berikutnya setelah pemindahan";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "Nama panggilan";
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Tidak ada sisipan yang ditemukan";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Tidak ada pengirim yang diblokir";
 
 /* Title */
 "No connectivity detected…" = "Tidak ada koneksivitas yang terdeteksi…";
@@ -1487,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Mohon ceritakan masalah yang Anda hadapi.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Silakan masuk ke aplikasi Proton Mail.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Mohon tingkatkan ke paket berbayar untuk dapat menggunakan lebih dari 3 folder";
 
@@ -1684,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Tetap kirim";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Kirim tanggapan";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1698,6 +1737,15 @@
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Kirim bukti baca";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "Pengirim %@ diblokir";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Blokir pengirim %@ dibuka";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Pengirim telah diblokir";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verifikasi Pengirim Gagal";
@@ -1724,10 +1772,10 @@
 "Sent" = "Terkirim";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption" = "Dikirim oleh Proton Mail dengan teknologi enkripsi nol akses";
+"Sent by Proton Mail with zero-access encryption" = "Dikirim oleh Proton Mail dengan teknologi enkripsi zero-access";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption to verified recipient" = "Dikirim oleh Proton Mail dengan teknologi enkripsi nol akses kepada penerima yang terverifikasi";
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Dikirim oleh Proton Mail dengan teknologi enkripsi zero-access kepada penerima yang terverifikasi";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Dikirim oleh Anda dengan enkripsi ujung ke ujung";
@@ -1777,6 +1825,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Tampilkan";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Silakan masuk kembali untuk tetap menerima pembaruan";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Keluar";
@@ -1792,6 +1843,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Keluar dari %1$@ dan masuk sebagai %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Anda telah keluar dari %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Lewati";
@@ -1845,7 +1899,7 @@
 "Storage Warning" = "Peringatan Ruang Penyimpanan";
 
 /* The message after tapping the encryption icon. */
-"Stored with zero-access encryption" = "Disimpan dengan enkripsi zero access";
+"Stored with zero-access encryption" = "Disimpan dengan enkripsi zero-access";
 
 /* contact placeholder */
 "Street" = "Jalan";
@@ -1953,6 +2007,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL yang hendak Anda akses tidak standar dan mungkin tidak akan dapat termuat sebagaimana mestinya. Apakah Anda ingin membukanya dengan browser default milik perangkat Anda?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Pengguna telah masuk";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Terdapat pesan tidak terkirim yang akan hilang apabila Anda keluar";
 
@@ -1967,6 +2024,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Percakapan ini berisi pesan yang telah dibuang";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Email ini telah gagal memenuhi persyaratan autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Email ini telah gagal memenuhi syarat autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Walaupun email ini sekilas terlihat seperti dikirim dari alamat Proton Mail, email ini sepertinya berasal dari luar sistem kami dan tidak memenuhi persyaratan autentikasi yang kami miliki. Email ini mungkin palsu atau tidak diteruskan dengan benar!";
@@ -2057,6 +2120,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Cobalah untuk terhubung ke Proton melalui jaringan yang berbeda (atau gunakan %1$@ atau %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktifkan fitur ini agar alamat email yang Anda ketik dapat dilengkapi secara otomatis dengan data kontak dari seluruh akun yang terhubung masuk.";
+
 /* Placeholder */
 "Two Factor Code" = "Kode Dua Faktor";
 
@@ -2075,6 +2141,12 @@
 /* error when sending the message */
 "Unable to send the email" = "Email tidak dapat dikirim";
 
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Buka Blokir";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Buka blokir pengirim";
+
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Penerima yang Dirahasiakan";
 
@@ -2091,7 +2163,7 @@
 "Unknown Error" = "Kesalahan yang Tidak Diketahui";
 
 /* The text for current selection of the storage limit of encrypted search when there is no limit. */
-"Unlimited" = "Tidak terbatas";
+"Unlimited" = "Tak terbatas";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Unlimited folders and labels" = "Tanpa batasan jumlah folder dan label";
@@ -2128,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Perbarui Email Notifikasi";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Pembaruan diantrekan, menunggu konektivitas...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Diperbarui >1 jam yang lalu";
@@ -2250,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Anda tidak dapat mengatur %@ sebagai alamat default karena pengaturan alamat merupakan fitur berbayar.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Anda menonaktifkan %@ pada pengaturan sistem. %@ telah digunakan untuk melindungi informasi akun yang penting. Untuk mengakses akun Anda, buka pengaturan dan aktifkan kembali %@, atau masuk ulang kembali.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Anda menonaktifkan %1$@ dalam pengaturan sistem. %2$@ telah digunakan untuk melindungi informasi akun yang penting. Untuk mengakses akun Anda, pergi ke pengaturan dan aktifkan ulang %3$@, atau masuk lagi.";
 
 /* Message */
 "You have %d new emails!" = "Anda memiliki %d email baru!";
@@ -2311,6 +2386,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Pesan Anda sedang diunduh...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Privasi Anda akan lebih terjamin apabila kontak Anda juga menggunakan Proton Mail. Undang teman Anda ke Proton, dan dapatkan berbagai keutamaan premium bagi Anda dan teman Anda secara cuma-cuma.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Sesi Anda telah kedaluwarsa karena Anda sudah lama tidak aktif atau izin sesi Anda telah dicabut. Silakan masuk lagi.";

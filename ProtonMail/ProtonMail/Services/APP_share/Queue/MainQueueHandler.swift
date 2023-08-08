@@ -25,7 +25,6 @@ import Groot
 import PromiseKit
 import ProtonCore_Crypto
 import ProtonCore_DataModel
-import ProtonCore_Keymaker
 import ProtonCore_Networking
 import ProtonCore_Services
 
@@ -33,7 +32,7 @@ final class MainQueueHandler: QueueHandler {
     typealias Completion = (Error?) -> Void
 
     let userID: UserID
-    private let coreDataService: CoreDataService
+    private let coreDataService: CoreDataContextProviderProtocol
     private let apiService: APIService
     private let messageDataService: MessageDataService
     private let conversationDataService: ConversationProvider
@@ -44,9 +43,10 @@ final class MainQueueHandler: QueueHandler {
     private let undoActionManager: UndoActionManagerProtocol
     private weak var user: UserManager?
     private let sendMessageResultHandler = SendMessageResultNotificationHandler()
+    private let sendMessageTask: SendMessageTask
     private let dependencies: Dependencies
 
-    init(coreDataService: CoreDataService,
+    init(coreDataService: CoreDataContextProviderProtocol,
          apiService: APIService,
          messageDataService: MessageDataService,
          conversationDataService: ConversationProvider,
@@ -66,6 +66,40 @@ final class MainQueueHandler: QueueHandler {
         self.contactGroupService = user.contactGroupService
         self.undoActionManager = undoActionManager
         self.user = user
+
+        let fetchMessageDetail = FetchMessageDetail(
+            dependencies: .init(
+                queueManager: ServiceFactory.default.get(by: QueueManager.self),
+                apiService: apiService,
+                contextProvider: coreDataService,
+                cacheService: user.cacheService
+            )
+        )
+        let sendUseCase = SendMessageBuilder.make(
+            userData: user,
+            apiService: apiService,
+            cacheService: user.cacheService,
+            contactProvider: contactService,
+            messageDataService: messageDataService
+        )
+        let isUserAuthenticated: (UserID) -> Bool = { [weak user] userID in
+            guard let userManager = user else {
+                return false
+            }
+            return userManager.userID == userID
+        }
+        let sendDepenedencies = SendMessageTask.Dependencies(
+            isUserAuthenticated: isUserAuthenticated,
+            messageDataService: messageDataService,
+            fetchMessageDetail: fetchMessageDetail,
+            sendMessage: sendUseCase,
+            localNotificationService: localNotificationService,
+            eventsFetching: user.eventsService,
+            undoActionManager: undoActionManager
+        )
+        self.sendMessageTask = SendMessageTask(dependencies: sendDepenedencies)
+        sendMessageResultHandler.startObservingResult()
+
         self.dependencies = Dependencies(incomingDefaultService: user.incomingDefaultService)
     }
 
@@ -130,11 +164,24 @@ final class MainQueueHandler: QueueHandler {
             case .updateAttKeyPacket(let messageObjectID, let addressID):
                 self.updateAttachmentKeyPacket(messageObjectID: messageObjectID, addressID: addressID, completion: completeHandler)
             case .send:
+                // This looks like duplicated but we need it
+                // Some how the value of deliveryTime in switch case .send(...) is wrong
+                // But correct in if case let
                 if case let .send(messageObjectID, deliveryTime) = action {
-                    // This looks like duplicated but we need it
-                    // Some how the value of deliveryTime in switch case .send(...) is wrong
-                    // But correct in if case let
-                    messageDataService.send(byID: messageObjectID, deliveryTime: deliveryTime, UID: UID, completion: completeHandler)
+                    let useSendRefactor = UIApplication.isDebugOrEnterprise ||
+                    dependencies.sendRefactorStatusProvider.isSendRefactorEnabled(userID: userID)
+
+                    if useSendRefactor {
+                        let params = SendMessageTask.Params(
+                            messageURI: messageObjectID,
+                            deliveryTime: deliveryTime,
+                            undoSendDelay: user?.userInfo.delaySendSeconds ?? 0,
+                            userID: UserID(rawValue: UID)
+                        )
+                        sendMessageTask.run(params: params, completion: completeHandler)
+                    } else {
+                        messageDataService.send(byID: messageObjectID, deliveryTime: deliveryTime, UID: UID, completion: completeHandler)
+                    }
                 }
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .trash, UID: UID, completion: completeHandler)
@@ -507,7 +554,7 @@ extension MainQueueHandler {
 
             let addressID = attachment.message.cachedAddress?.addressID ?? self.messageDataService.getUserAddressID(for: attachment.message)
             guard
-                let key = attachment.message.cachedAddress?.keys.first ?? self.user?.getAddressKey(address_id: addressID),
+                let key = attachment.message.cachedAddress?.keys.first ?? self.user?.userInfo.getAddressKey(address_id: addressID),
                 let passphrase = attachment.message.cachedPassphrase ?? self.user?.mailboxPassword,
                 let userKeys = (attachment.message.cachedUser ?? self.user?.userInfo)?.userPrivateKeys else {
                 completion(NSError.encryptionError())
@@ -631,8 +678,8 @@ extension MainQueueHandler {
 
                 for attachment in attachments where !attachment.isSoftDeleted && attachment.attachmentID != "0" {
                     guard let sessionPack = try attachment.getSession(
-                        userKeys: user.userPrivateKeys,
-                        keys: user.addressKeys,
+                        userKeys: user.userInfo.userPrivateKeys,
+                        keys: user.userInfo.addressKeys,
                         mailboxPassword: user.mailboxPassword
                     ) else {
                         continue
@@ -646,7 +693,7 @@ extension MainQueueHandler {
                     attachment.keyPacket = newKeyPack
                     attachment.keyChanged = true
                 }
-                let decryptedBody = try self.messageDataService.messageDecrypter.decrypt(message: message)
+                let decryptedBody = try self.messageDataService.messageDecrypter.decrypt(messageObject: message).body
                 message.addressID = addressID
                 if message.nextAddressID == addressID {
                     message.nextAddressID = nil
@@ -669,6 +716,7 @@ extension MainQueueHandler {
     }
 
     fileprivate func messageAction(_ managedObjectIds: [String], action: String, UID: String, completion: @escaping Completion) {
+        var messageIds: [String] = []
         coreDataService.performAndWaitOnRootSavingContext { context in
             let messages = managedObjectIds.compactMap { (id: String) -> Message? in
                 if let objectID = self.coreDataService.managedObjectIDForURIRepresentation(id),
@@ -677,21 +725,19 @@ extension MainQueueHandler {
                 }
                 return nil
             }
-
-            guard self.user?.userInfo.userId == UID else {
-                completion(NSError.userLoggedOut())
-                return
-            }
-
-            let messageIds = messages.map { $0.messageID }
-            guard messageIds.count > 0 else {
-                completion(nil)
-                return
-            }
-            let api = MessageActionRequest(action: action, ids: messageIds)
-            self.apiService.perform(request: api, response: VoidResponse()) { _, response in
-                completion(response.error)
-            }
+            messageIds = messages.map { $0.messageID }
+        }
+        guard user?.userInfo.userId == UID else {
+            completion(NSError.userLoggedOut())
+            return
+        }
+        guard messageIds.count > 0 else {
+            completion(nil)
+            return
+        }
+        let api = MessageActionRequest(action: action, ids: messageIds)
+        self.apiService.perform(request: api, response: VoidResponse()) { _, response in
+            completion(response.error)
         }
     }
 
@@ -1050,13 +1096,16 @@ extension MainQueueHandler {
     struct Dependencies {
         let actionRequest: ExecuteNotificationActionUseCase
         let incomingDefaultService: IncomingDefaultServiceProtocol
+        let sendRefactorStatusProvider: SendRefactorStatusProvider
 
         init(
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
-            incomingDefaultService: IncomingDefaultServiceProtocol
+            incomingDefaultService: IncomingDefaultServiceProtocol,
+            sendRefactorStatusProvider: SendRefactorStatusProvider = userCachedStatus
         ) {
             self.actionRequest = actionRequest
             self.incomingDefaultService = incomingDefaultService
+            self.sendRefactorStatusProvider = sendRefactorStatusProvider
         }
     }
 }
@@ -1074,6 +1123,5 @@ enum MainQueueHandlerHelper {
         let attachmentCount = message.numAttachments.intValue
         message.numAttachments = NSNumber(integerLiteral: max(attachmentCount - toBeDeleted.count, 0))
         _ = context.saveUpstreamIfNeeded()
-        context.refreshAllObjects()
     }
 }

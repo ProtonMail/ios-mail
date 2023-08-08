@@ -20,6 +20,11 @@ fileprivate struct id {
     static let trashButtonIdentifier = LocalString._menu_trash_title
     static let skipOnboardingButtonLabel = LocalString._skip_btn_title
     static let allowContacsAccessOkButtonLabel = LocalString._general_ok_action
+
+    // Referral prompt view elements identifiers
+    static let referralContainerViewIdentifier = "ReferralPromptView.containerView"
+    static let referralCloseButtonIdentifier = "ReferralPromptView.closeButton"
+    static let referralLaterButtonIdentifier = "ReferralPromptView.laterButton"
 }
 
 var subjects = [String]()
@@ -38,8 +43,12 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func clickMessageBySubject(_ subject: String) -> MessageRobot {
-        if !cell(id.mailboxMessageCellIdentifier(subject)).exists() {
-            return refreshMailbox().clickMessageBySubject(subject)
+        clickMessageBySubject(subject, retriesLeft: 3)
+    }
+
+    private func clickMessageBySubject(_ subject: String, retriesLeft: Int) -> MessageRobot {
+        if !cell(id.mailboxMessageCellIdentifier(subject)).exists(), retriesLeft > 0 {
+            return refreshMailbox().clickMessageBySubject(subject, retriesLeft: retriesLeft - 1)
         } else {
             cell(id.mailboxMessageCellIdentifier(subject))
                 .firstMatch()
@@ -112,6 +121,28 @@ class MailboxRobotInterface: CoreElements {
         sleep(3)    //It's always more stable when there is a small gap between background and foreground
         return PinRobot()
     }
+
+    class ReferralPromptViewRobotInterface: CoreElements {
+
+        @discardableResult
+        func dismissReferralByTapOutside() -> MailboxRobotInterface {
+            /// We try to tap to the top of the screen, ideally in the container view outside of the prompt view
+            app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.1)).tap()
+            return MailboxRobotInterface()
+        }
+
+        @discardableResult
+        func dismissReferralWithCloseButton() -> MailboxRobotInterface {
+            button(id.referralCloseButtonIdentifier).tap()
+            return MailboxRobotInterface()
+        }
+
+        @discardableResult
+        func dismissReferralWithLaterButton() -> MailboxRobotInterface {
+            button(id.referralLaterButtonIdentifier).tap()
+            return MailboxRobotInterface()
+        }
+    }
 }
 
 /**
@@ -120,7 +151,7 @@ class MailboxRobotInterface: CoreElements {
 class MailboxRobotVerifyInterface: CoreElements {
     
     func messageExists(_ subject: String) {
-        cell(id.mailboxMessageCellIdentifier(subject)).onChild(staticText(subject)).firstMatch().checkExists()
+        cell(id.mailboxMessageCellIdentifier(subject.replaceSpaces())).onChild(staticText(subject)).firstMatch().waitUntilExists().checkExists()
     }
     
     func messageIsEmpty() {
@@ -133,5 +164,9 @@ class MailboxRobotVerifyInterface: CoreElements {
 
     func mailboxLayoutShown(){
         ///TODO: add implementation
+    }
+
+    func referralPromptIsNotShown() {
+        button(id.referralCloseButtonIdentifier).checkDoesNotExist()
     }
 }

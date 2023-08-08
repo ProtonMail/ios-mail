@@ -227,7 +227,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        cell.backgroundColor = .white
+        cell.backgroundColor = ColorProvider.BackgroundNorm
+        cell.selectionStyle = .none
         return cell
     }
 

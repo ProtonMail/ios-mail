@@ -87,8 +87,15 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
     }
 
     init(name: String, email: String, isProtonMailContact: Bool = false) {
-        self.name = name
-        self.email = email
+        if name == email {
+            let (name, address) = ContactVO.extractMailAddress(from: name)
+            self.name = name
+            self.email = address
+        } else {
+            self.name = name
+            self.email = email
+        }
+
         self.isProtonMailContact = isProtonMailContact
 
         self.title = !name.isEmpty && name != " " ? name : email
@@ -114,6 +121,26 @@ class ContactVO: NSObject, ContactPickerModelProtocol {
 
     override var hash: Int {
         return (name + email).hashValue
+    }
+
+    static func extractMailAddress(from text: String) -> (name: String, address: String) {
+        if text.isValidEmail() {
+            return (text, text)
+        }
+
+        guard
+            let regex = try? RegularExpressionCache.regex(for: "(.*)<(.*)>", options: .allowCommentsAndWhitespace),
+            let match = regex.firstMatch(in: text, range: NSRange(location: 0, length: (text as NSString).length)),
+            match.numberOfRanges == 3
+        else { return (text, text) }
+        let name = text[match.range(at: 1)]
+        let address = text[match.range(at: 2)]
+
+        if address.isValidEmail() {
+            return (name.trim(), address.trim())
+        } else {
+            return (text, text)
+        }
     }
 }
 

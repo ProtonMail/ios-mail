@@ -84,10 +84,10 @@ final class SearchIndexDB {
         }
     }
 
-    var size: ByteCount? {
+    var size: Measurement<UnitInformationStorage>? {
         guard let path = dbPath,
               fileManager.fileExists(atPath: path.relativePath) else { return nil }
-        return path.fileSize as ByteCount
+        return path.fileSize
     }
 
     var dbExists: Bool {
@@ -95,19 +95,25 @@ final class SearchIndexDB {
         return fileManager.fileExists(atPath: path.relativePath)
     }
 
-    func numberOfEntries() throws -> Int {
-        let connection = try connectionToDB()
-        let numberOfEntries = try connection.scalar(messagesTable.count)
-        return numberOfEntries
+    func numberOfEntries() -> Int {
+        do {
+            let connection = try connectionToDB()
+            let numberOfEntries = try connection.scalar(messagesTable.count)
+            return numberOfEntries
+        } catch {
+            PMAssertionFailure(error)
+            return 0
+        }
     }
 
-    func shrinkSearchIndex(expectedSize: ByteCount) throws {
-        guard expectedSize > 0, let size = size, size > expectedSize else { return }
-        var sizeOfDeletedMessages: ByteCount = 0
+    func shrinkSearchIndex(expectedSize: Measurement<UnitInformationStorage>) throws {
+        guard expectedSize > .zero, let size = size, size > expectedSize else { return }
+        var sizeOfDeletedMessages: Measurement<UnitInformationStorage> = .zero
         var continueShrinking = true
         while continueShrinking {
             let messageSize = try estimateSizeOfOldestRowInSearchIndex()
-            sizeOfDeletedMessages += messageSize
+            // swiftlint:disable:next shorthand_operator
+            sizeOfDeletedMessages = sizeOfDeletedMessages + messageSize
             let deletedRowID = try removeOldestRowInSearchIndex()
             let isDatabaseStillTooBig = size - sizeOfDeletedMessages > expectedSize
             continueShrinking = deletedRowID > 0 && isDatabaseStillTooBig
@@ -202,9 +208,9 @@ final class SearchIndexDB {
         }
     }
 
-    func getDBParams() -> EncryptedSearchDBParams? {
+    func getDBParams() -> GoLibsEncryptedSearchDBParams? {
         guard let path = dbPath else { return nil }
-        return EncryptedSearchDBParams(
+        return GoLibsEncryptedSearchDBParams(
             path.relativePath,
             table: DatabaseConstants.TableSearchableMessages,
             id: DatabaseConstants.messageID,
@@ -218,21 +224,29 @@ final class SearchIndexDB {
     }
 
     /// - Returns: timestamp
-    func oldestMessageTime() -> Int? {
-        var timeStamp: Int?
-        do {
-            let time: Expression<CLong> = databaseSchema.time
-            let query = messagesTable.select(time).order(time.asc).limit(1)
-            let connection = try connectionToDB()
-            for result in try connection.prepare(query) {
-                timeStamp = result[time]
-                break
-            }
-        } catch {
-            log(message: "Get oldest message time failed: \(error)", isError: true)
-        }
-        return timeStamp
-    }
+    func newestMessageTime() -> Int? {
+         firstMessageTime(order: databaseSchema.time.desc)
+     }
+
+     func oldestMessageTime() -> Int? {
+         firstMessageTime(order: databaseSchema.time.asc)
+     }
+
+    private func firstMessageTime(order: Expressible) -> Int? {
+         var timeStamp: Int?
+         do {
+             let time: Expression<CLong> = databaseSchema.time
+             let query = messagesTable.select(time).order(order).limit(1)
+             let connection = try connectionToDB()
+             for result in try connection.prepare(query) {
+                 timeStamp = result[time]
+                 break
+             }
+         } catch {
+             log(message: "Get message time failed for order \(order): \(error)", isError: true)
+         }
+         return timeStamp
+     }
 
     func deleteSearchIndex() throws {
         forceCloseConnection()
@@ -243,6 +257,7 @@ final class SearchIndexDB {
         }
         do {
             try fileManager.removeItem(atPath: path.relativePath)
+            log(message: "Search index database deleted")
         } catch {
             log(message: "Error when deleting the search index: \(error)", isError: true)
             throw IndexError.databaseDeleteError(error)
@@ -326,7 +341,7 @@ extension SearchIndexDB {
 // MARK: - Shrink the size of the local db
 extension SearchIndexDB {
     /// - Returns: row size
-    private func estimateSizeOfOldestRowInSearchIndex() throws -> Int {
+    private func estimateSizeOfOldestRowInSearchIndex() throws -> Measurement<UnitInformationStorage> {
         var sizeOfRow: Int = 0
         let time: Expression<CLong> = databaseSchema.time
         let size: Expression<Int> = databaseSchema.encryptedContentSize
@@ -336,7 +351,7 @@ extension SearchIndexDB {
         for result in try connection.prepare(query) {
             sizeOfRow = result[size]
         }
-        return sizeOfRow
+        return Measurement<UnitInformationStorage>(value: Double(sizeOfRow), unit: .bytes)
     }
 
     /// - Returns: number of delete rows

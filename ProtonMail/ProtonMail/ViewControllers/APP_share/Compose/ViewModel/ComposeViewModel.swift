@@ -38,10 +38,9 @@ class ComposeViewModel: NSObject {
     private(set) var shareOverLimitationAttachment = false
     let composerMessageHelper: ComposerMessageHelper
     let messageService: MessageDataService
-    let coreDataContextProvider: CoreDataContextProviderProtocol
     let isEditingScheduleMsg: Bool
     let originalScheduledTime: OriginalScheduleDate?
-    private let dependencies: Dependencies
+    let dependencies: Dependencies
     var urlSchemesToBeHandle: Set<String> {
         let schemes: [HTTPRequestSecureLoader.ProtonScheme] = [.http, .https, .noProtocol]
         return Set(schemes.map(\.rawValue))
@@ -74,10 +73,6 @@ class ComposeViewModel: NSObject {
         return composerMessageHelper.attachmentSize
     }
 
-    var imageProxyEnabled: Bool {
-        return UserInfo.isImageProxyAvailable && user.userInfo.imageProxy.contains(.imageProxy)
-    }
-
     init(
         subject: String,
         body: String,
@@ -85,31 +80,18 @@ class ComposeViewModel: NSObject {
         action: ComposeMessageAction,
         msgService: MessageDataService,
         user: UserManager,
-        coreDataContextProvider: CoreDataContextProviderProtocol,
-        internetStatusProvider: InternetConnectionStatusProvider,
         originalScheduledTime: OriginalScheduleDate? = nil,
-        dependencies: Dependencies? = nil
+        dependencies: Dependencies
     ) {
         self.user = user
         self.messageService = msgService
-        self.coreDataContextProvider = coreDataContextProvider
         self.isEditingScheduleMsg = false
-        self.composerMessageHelper = ComposerMessageHelper(
-            dependencies: .init(
-                messageDataService: messageService,
-                cacheService: user.cacheService,
-                contextProvider: coreDataContextProvider
-            ),
-            user: user
-        )
+
         // We have dependencies as an optional input parameter to avoid making
         // a huge refactor but allowing the dependencies injection open for testing.
-        self.dependencies = dependencies ?? Dependencies(
-            fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
-            internetStatusProvider: internetStatusProvider,
-            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
-            contactProvider: user.contactService
-        )
+        self.dependencies = dependencies
+
+        composerMessageHelper = ComposerMessageHelper(dependencies: self.dependencies.helperDependencies, user: user)
 
         self.subject = subject
         self.body = body
@@ -147,37 +129,29 @@ class ComposeViewModel: NSObject {
         action: ComposeMessageAction,
         msgService: MessageDataService,
         user: UserManager,
-        coreDataContextProvider: CoreDataContextProviderProtocol,
-        internetStatusProvider: InternetConnectionStatusProvider,
         isEditingScheduleMsg: Bool = false,
         originalScheduledTime: OriginalScheduleDate? = nil,
-        dependencies: Dependencies? = nil
+        dependencies: Dependencies
     ) {
         self.user = user
         self.messageService = msgService
-        self.coreDataContextProvider = coreDataContextProvider
         self.isEditingScheduleMsg = isEditingScheduleMsg
         self.originalScheduledTime = originalScheduledTime
-        self.composerMessageHelper = ComposerMessageHelper(
-            dependencies: .init(
-                messageDataService: messageService,
-                cacheService: user.cacheService,
-                contextProvider: coreDataContextProvider
-            ),
-            user: user
-        )
 
         // We have dependencies as an optional input parameter to avoid making
         // a huge refactor but allowing the dependencies injection open for testing.
-        self.dependencies = dependencies ?? Dependencies(
-            fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
-            internetStatusProvider: internetStatusProvider,
-            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
-            contactProvider: user.contactService
-        )
+        self.dependencies = dependencies
+
+        composerMessageHelper = ComposerMessageHelper(dependencies: self.dependencies.helperDependencies, user: user)
 
         super.init()
 
+        // TODO: This method has side effects and as such should not be called in `init`.
+        // However, first we need to reduce the number of `ComposeViewModel.init` calls scattered across the code.
+        initialize(message: msg, action: action)
+    }
+
+    func initialize(message msg: Message?, action: ComposeMessageAction) {
         if msg == nil || msg?.draft == true {
             if let msg = msg {
                 self.composerMessageHelper.setNewMessage(objectID: msg.objectID)
@@ -189,22 +163,10 @@ class ComposeViewModel: NSObject {
                 fatalError("This should not happened.")
             }
 
-            composerMessageHelper.copyAndCreateDraft(from: msg,
-                                                     shouldCopyAttachment: action == ComposeMessageAction.forward)
-            composerMessageHelper.updateMessageByMessageAction(action)
-
-            if action == ComposeMessageAction.forward {
-                /// add mime attachments if forward
-                if let mimeAtts = msg.tempAtts {
-                    let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                    for mimeAtt in mimeAtts {
-                        composerMessageHelper.addMimeAttachments(
-                            attachment: mimeAtt,
-                            shouldStripMetaData: stripMetadata,
-                            completion: { _ in }
-                        )
-                    }
-                }
+            do {
+                try composerMessageHelper.copyAndCreateDraft(from: msg, action: action)
+            } catch {
+                PMAssertionFailure(error)
             }
         }
 
@@ -216,13 +178,16 @@ class ComposeViewModel: NSObject {
         self.updateContacts(fromSent)
     }
 
-    func getAttachments() -> [AttachmentEntity]? {
+    func getAttachments() -> [AttachmentEntity] {
         return composerMessageHelper.attachments
             .filter { !$0.isSoftDeleted }
             .sorted(by: { $0.order < $1.order })
     }
 
     func getAddresses() -> [Address] {
+        if let referenceAddress = composerMessageHelper.originalTo() ?? composerMessageHelper.originalFrom() {
+            return getFromAddressList(originalTo: referenceAddress)
+        }
         return self.user.addresses
     }
 
@@ -233,18 +198,62 @@ class ComposeViewModel: NSObject {
     }
 
     func getDefaultSendAddress() -> Address? {
-        if let draft = self.composerMessageHelper.draft {
-            var address: Address?
-            if let id = draft.nextAddressID {
-                address = self.user.userInfo.userAddresses.first(where: { $0.addressID == id })
-            }
-            return address ?? self.messageService.defaultUserAddress(of: draft.sendAddressID)
-        } else {
-            if let addr = self.user.userInfo.userAddresses.defaultSendAddress() {
-                return addr
-            }
+        guard let draft = composerMessageHelper.draft else {
+            return user.userInfo.userAddresses.defaultSendAddress()
         }
-        return nil
+
+        if let id = draft.nextAddressID,
+           let entity = composerMessageHelper.getMessageEntity(),
+           let sender = try? entity.parseSender(),
+           let address = user.userInfo.userAddresses.first(where: { $0.addressID == id && $0.email == sender.address }) {
+            return address
+        }
+        let referenceAddress = composerMessageHelper.originalTo() ?? composerMessageHelper.originalFrom() ?? ""
+        if let aliasAddress = getAddressFromPlusAlias(userAddress: user.addresses, originalAddress: referenceAddress) {
+            return aliasAddress
+        }
+        return messageService.defaultUserAddress(of: draft.sendAddressID)
+    }
+
+    private func getFromAddressList(originalTo: String?) -> [Address] {
+        var validUserAddress = user.addresses
+            .filter { $0.status == .enabled && $0.receive == .active && $0.send == .active }
+            .sorted(by: { $0.order >= $1.order })
+
+        if let aliasAddress = getAddressFromPlusAlias(
+            userAddress: validUserAddress,
+            originalAddress: originalTo ?? ""
+        ) {
+            validUserAddress.insert(aliasAddress, at: 0)
+        }
+        return validUserAddress
+    }
+
+    private func getAddressFromPlusAlias(userAddress: [Address], originalAddress: String) -> Address? {
+        guard let _ = originalAddress.firstIndex(of: "+"),
+              let _ = originalAddress.firstIndex(of: "@") else { return nil }
+        let normalizedAddress = originalAddress.canonicalizeEmail(scheme: .proton)
+        guard let address = userAddress
+            .first(where: { $0.email.canonicalizeEmail(scheme: .proton) == normalizedAddress })
+        else { return nil }
+        if address.email == originalAddress {
+            return nil
+        } else {
+            return Address(
+                addressID: address.addressID,
+                domainID: address.domainID,
+                email: originalAddress,
+                send: address.send,
+                receive: address.receive,
+                status: address.status,
+                type: address.type,
+                order: address.order,
+                displayName: address.displayName,
+                signature: address.signature,
+                hasKeys: address.hasKeys,
+                keys: address.keys
+            )
+        }
     }
 
     func fromAddress() -> Address? {
@@ -296,13 +305,14 @@ class ComposeViewModel: NSObject {
 
         switch messageAction {
         case .openDraft:
-            var css: String?
             let body = composerMessageHelper.decryptBody()
-            let document = CSSMagic.parse(htmlString: body)
-            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(document: document)
-            }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
+            let supplementCSS = supplementCSS(from: body)
+            return .init(
+                body: body,
+                remoteContentMode: globalRemoteContentMode,
+                messageDisplayMode: .expanded,
+                supplementCSS: supplementCSS
+            )
         case .reply, .replyAll:
             let msg = composerMessageHelper.draft!
             let body = composerMessageHelper.decryptBody()
@@ -321,12 +331,13 @@ class ComposeViewModel: NSObject {
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
 
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote>\(foot)"
-            var css: String?
-            let document = CSSMagic.parse(htmlString: result)
-            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(document: document)
-            }
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
+            let supplementCSS = supplementCSS(from: result)
+            return .init(
+                body: result,
+                remoteContentMode: globalRemoteContentMode,
+                messageDisplayMode: .expanded,
+                supplementCSS: supplementCSS
+            )
         case .forward:
             let msg = composerMessageHelper.draft!
             let clockFormat = using12hClockFormat() ? Constants.k12HourMinuteFormat : Constants.k24HourMinuteFormat
@@ -357,7 +368,14 @@ class ComposeViewModel: NSObject {
 
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
+
+            let supplementCSS = supplementCSS(from: result)
+            return .init(
+                body: result,
+                remoteContentMode: globalRemoteContentMode,
+                messageDisplayMode: .expanded,
+                supplementCSS: supplementCSS
+            )
         case .newDraft:
             if !self.body.isEmpty {
                 let newHTMLString = "\(head) \(self.body) \(signatureHtml) \(foot)"
@@ -365,12 +383,13 @@ class ComposeViewModel: NSObject {
                 return .init(body: newHTMLString, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded)
             }
             let body: String = signatureHtml.trim().isEmpty ? .empty : signatureHtml
-            var css: String?
-            let document = CSSMagic.parse(htmlString: body)
-            if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
-                css = CSSMagic.generateCSSForDarkMode(document: document)
-            }
-            return .init(body: body, remoteContentMode: globalRemoteContentMode, messageDisplayMode: .expanded, supplementCSS: css)
+            let supplementCSS = supplementCSS(from: body)
+            return .init(
+                body: body,
+                remoteContentMode: globalRemoteContentMode,
+                messageDisplayMode: .expanded,
+                supplementCSS: supplementCSS
+            )
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newHTMLString = """
@@ -387,6 +406,15 @@ class ComposeViewModel: NSObject {
         }
     }
 
+    private func supplementCSS(from html: String) -> String? {
+        var supplementCSS: String?
+        let document = CSSMagic.parse(htmlString: html)
+        if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+            supplementCSS = CSSMagic.generateCSSForDarkMode(document: document)
+        }
+        return supplementCSS
+    }
+
     func getNormalAttachmentNum() -> Int {
         guard let draft = self.composerMessageHelper.draft else { return 0 }
         let attachments = draft.attachments
@@ -401,9 +429,8 @@ class ComposeViewModel: NSObject {
         if getNormalAttachmentNum() > 0 { return false }
 
         let content = "\(subject) \(body.body(strippedFromQuotes: true))"
-        let language = LanguageManager().currentLanguage()
-        return AttachReminderHelper.hasAttachKeyword(content: content,
-                                                     language: language)
+        let language = LanguageManager().currentLanguageCode()
+        return AttachReminderHelper.hasAttachKeyword(content: content, language: language)
     }
 
     func isEmptyDraft() -> Bool {
@@ -477,7 +504,7 @@ extension ComposeViewModel {
         }
     }
 
-    func updateAddressID(_ addressId: String) -> Promise<Void> {
+    func updateAddressID(_ addressId: String, emailAddress: String) -> Promise<Void> {
         return Promise { [weak self] seal in
             guard self?.composerMessageHelper.draft != nil else {
                 let error = NSError(domain: "",
@@ -488,7 +515,7 @@ extension ComposeViewModel {
             }
             if self?.user.userInfo.userAddresses
                 .contains(where: { $0.addressID == addressId }) == true {
-                composerMessageHelper.updateAddressID(addressID: addressId) {
+                self?.composerMessageHelper.updateAddressID(addressID: addressId, emailAddress: emailAddress) {
                     seal.fulfill_()
                 }
             } else {
@@ -548,9 +575,14 @@ extension ComposeViewModel {
         var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
         signature = signature.ln2br()
 
-        var mobileSignature = self.user.showMobileSignature ?
-        "<div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
-        mobileSignature = mobileSignature.ln2br()
+        var userMobileSignature = String.empty
+        if user.showMobileSignature {
+            userMobileSignature = dependencies.fetchMobileSignatureUseCase.execute(
+                params: .init(userID: user.userID, isPaidUser: user.isPaid)
+            )
+        }
+
+        let mobileSignature = "<div id=\"protonmail_mobile_signature_block\"><div>\(userMobileSignature)</div></div>".ln2br()
 
         let defaultSignature = self.user.defaultSignatureStatus ?
         "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
@@ -763,7 +795,7 @@ extension ComposeViewModel {
             switch contact.modelType {
             case .contact:
                 let contact = contact as! ContactVO
-                let recipient = EncodableRecipient(address: contact.email, group: nil)
+                let recipient = EncodableRecipient(name: contact.name, address: contact.email, group: nil)
                 return [recipient]
             case .contactGroup:
                 let contactGroup = contact as! ContactGroupVO
@@ -823,7 +855,9 @@ extension ComposeViewModel {
                 out.append(contactGroup)
             }
         } catch {
-            assertionFailure("\(error)")
+            if !ProcessInfo.isRunningUnitTests {
+                assertionFailure("\(error)")
+            }
         }
         return out
     }
@@ -960,7 +994,7 @@ extension ComposeViewModel {
     }
 
     func embedInlineAttachments(in htmlEditor: HtmlEditorBehaviour) {
-        guard let attachments = getAttachments() else { return }
+        let attachments = getAttachments()
         let inlineAttachments = attachments
             .filter({ attachment in
                 guard let contentId = attachment.contentId else { return false }
@@ -1006,7 +1040,7 @@ extension ComposeViewModel {
 
     func shouldShowScheduleSendConfirmationAlert() -> Bool {
         return isEditingScheduleMsg && deliveryTime == nil
-	}
+    }
 
     func fetchContacts() {
         let service = user.contactService
@@ -1059,30 +1093,24 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     struct Dependencies {
+        let coreDataContextProvider: CoreDataContextProviderProtocol
+        let coreKeyMaker: KeyMakerProtocol
         let fetchAndVerifyContacts: FetchAndVerifyContactsUseCase
         let internetStatusProvider: InternetConnectionStatusProvider
         let fetchAttachment: FetchAttachmentUseCase
         let contactProvider: ContactProviderProtocol
-
-        init(
-            fetchAndVerifyContacts: FetchAndVerifyContactsUseCase,
-            internetStatusProvider: InternetConnectionStatusProvider,
-            fetchAttachment: FetchAttachmentUseCase,
-            contactProvider: ContactProviderProtocol
-        ) {
-            self.fetchAndVerifyContacts = fetchAndVerifyContacts
-            self.internetStatusProvider = internetStatusProvider
-            self.fetchAttachment = fetchAttachment
-            self.contactProvider = contactProvider
-        }
+        let helperDependencies: ComposerMessageHelper.Dependencies
+        let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
     }
 
     struct EncodableRecipient: Encodable {
         enum CodingKeys: String, CodingKey {
+            case name = "Name"
             case address = "Address"
             case group = "Group"
         }
 
+        let name: String
         let address: String
         let group: String?
     }

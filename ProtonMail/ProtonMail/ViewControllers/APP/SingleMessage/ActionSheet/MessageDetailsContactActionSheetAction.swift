@@ -27,4 +27,5 @@ enum MessageDetailsContactActionSheetAction {
     case composeTo
     case addToContacts
     case close
+    case unblockSender
 }

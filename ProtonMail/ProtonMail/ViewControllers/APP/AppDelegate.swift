@@ -44,7 +44,7 @@ class AppDelegate: UIResponder {
     var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
         return self.coordinator.currentWindow
     }
-    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices, darkModeCache: userCachedStatus)
+    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(factory: sharedServices)
     private var currentState: UIApplication.State = .active
     private var purgeOldMessages: PurgeOldMessagesUseCase?
 }
@@ -64,36 +64,6 @@ extension AppDelegate {
             self.coordinator.go(dest: .signInWindow(.form))
         }
     }
-}
-
-extension AppDelegate: APIServiceDelegate {
-    var additionalHeaders: [String: String]? { nil }
-
-    var locale: String {
-        return LanguageManager().currentLanguageCode() ?? "en"
-    }
-
-    func isReachable() -> Bool {
-        #if !APP_EXTENSION
-        return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
-        #else
-        return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
-        #endif
-    }
-
-    func onUpdate(serverTime: Int64) {
-        MailCrypto.updateTime(serverTime, processInfo: userCachedStatus)
-    }
-
-    var appVersion: String {
-        Constants.App.appVersion
-    }
-
-    var userAgent: String? {
-        UserAgent.default.ua
-    }
-
-    func onDohTroubleshot() { }
 }
 
 extension AppDelegate: TrustKitUIDelegate {
@@ -124,13 +94,36 @@ extension AppDelegate: UIApplicationDelegate {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
         SystemLogger.log(message: message, category: .appLifeCycle)
 
-        let usersManager = UsersManager(doh: BackendConfiguration.shared.doh)
+        let coreKeyMaker = Keymaker(autolocker: Autolocker(lockTimeProvider: userCachedStatus),
+                                keychain: KeychainWrapper.keychain)
+        sharedServices.add(Keymaker.self, for: coreKeyMaker)
+        sharedServices.add(KeyMakerProtocol.self, for: coreKeyMaker)
+
+        if ProcessInfo.isRunningUnitTests {
+            coreKeyMaker.wipeMainKey()
+            coreKeyMaker.activate(NoneProtection()) { _ in }
+        }
+
+        let usersManager = UsersManager(
+            doh: BackendConfiguration.shared.doh,
+            userDataCache: UserDataCache(keyMaker: coreKeyMaker),
+            coreKeyMaker: coreKeyMaker
+        )
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
-        sharedServices.add(PushNotificationService.self, for: PushNotificationService())
-        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
+        let dependencies = PushNotificationService.Dependencies(
+            lockCacheStatus: coreKeyMaker,
+            registerDevice: RegisterDevice(dependencies: .init(usersManager: usersManager))
+        )
+        sharedServices.add(PushNotificationService.self, for: PushNotificationService(dependencies: dependencies))
+        sharedServices.add(UnlockManager.self, for: UnlockManager(
+            cacheStatus: coreKeyMaker,
+            delegate: self,
+            keyMaker: coreKeyMaker,
+            pinFailedCountCache: userCachedStatus
+        ))
         sharedServices.add(UsersManager.self, for: usersManager)
         let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: userCachedStatus))
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager,
@@ -141,9 +134,13 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
         sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
         sharedServices.add(EncryptedSearchUserDefaultCache.self, for: EncryptedSearchUserDefaultCache())
+        sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
+        sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
 
 #if DEBUG
-        if !ProcessInfo.isRunningUnitTests {
+        if ProcessInfo.isRunningUnitTests {
+            sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
+        } else {
             let lifetimeTrackerIntegration = LifetimeTrackerDashboardIntegration(
                 visibility: .visibleWithIssuesDetected,
                 style: .circular
@@ -185,7 +182,7 @@ extension AppDelegate: UIApplicationDelegate {
                                                selector: #selector(didSignOutNotification(_:)),
                                                name: NSNotification.Name.didSignOut,
                                                object: nil)
-
+        coordinator.delegate = self
         if #available(iOS 13.0, *) {
             // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
         } else {
@@ -203,9 +200,20 @@ extension AppDelegate: UIApplicationDelegate {
         self.onLogout()
     }
 
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return .portrait
-    }
+    func application(
+          _ application: UIApplication,
+          supportedInterfaceOrientationsFor window: UIWindow?
+      ) -> UIInterfaceOrientationMask {
+          guard UserInfo.isRotateScreenEnabled else { return .portrait }
+          let viewController = window?.rootViewController
+          if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
+              return UIInterfaceOrientationMask.all
+          }
+          if viewController as? CoordinatorKeepingViewController<LockCoordinator> != nil {
+              return .portrait
+          }
+          return .all
+      }
 
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
@@ -227,7 +235,7 @@ extension AppDelegate: UIApplicationDelegate {
             let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
             deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
             deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepLink(deeplink)
             return true
         }
 
@@ -254,7 +262,8 @@ extension AppDelegate: UIApplicationDelegate {
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
         self.currentState = .background
-        keymaker.updateAutolockCountdownStart()
+
+        startAutoLockCountDownIfNeeded()
 
         let users: UsersManager = sharedServices.get()
         let queueManager: QueueManager = sharedServices.get()
@@ -293,7 +302,7 @@ extension AppDelegate: UIApplicationDelegate {
                      restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         if let data = userActivity.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
+            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
         }
         return true
     }
@@ -307,7 +316,8 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        configurePushService(launchOptions: nil)
+        let pushService: PushNotificationService = sharedServices.get()
+        pushService.registerIfAuthorized()
         self.currentState = .active
         let users: UsersManager = sharedServices.get()
         let queueManager = sharedServices.get(by: QueueManager.self)
@@ -342,6 +352,9 @@ extension AppDelegate: UIApplicationDelegate {
 
     // MARK: Notification methods
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        if ProcessInfo.isRunningUnitTests {
+            return
+        }
         let pushService: PushNotificationService = sharedServices.get()
         pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }
@@ -395,13 +408,30 @@ extension AppDelegate: UIApplicationDelegate {
                      completionHandler: @escaping (Bool) -> Void) {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
+            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
         }
         completionHandler(true)
     }
+
+    private func startAutoLockCountDownIfNeeded() {
+        let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
+        // When the app is launched without a lock set, the lock counter will immediately remove the mainKey, which triggers the app to display the lock screen.
+        // However, this behavior is not necessary if there is no lock set.
+        // We should only start the countdown when a lock has been set.
+        guard coreKeyMaker.isProtectorActive(PinProtection.self) ||
+                coreKeyMaker.isProtectorActive(BioProtection.self)
+        else {
+            return
+        }
+        coreKeyMaker.updateAutolockCountdownStart()
+    }
 }
 
-extension AppDelegate: UnlockManagerDelegate {
+extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
+    func currentApplicationState() -> UIApplication.State {
+        UIApplication.shared.applicationState
+    }
+
     func isUserStored() -> Bool {
         let users = sharedServices.get(by: UsersManager.self)
         if users.hasUserName() || users.hasUsers() {
@@ -418,18 +448,37 @@ extension AppDelegate: UnlockManagerDelegate {
         return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty
     }
 
-    func cleanAll() {
-        ///
+    func cleanAll(completion: @escaping () -> Void) {
         Breadcrumbs.shared.add(message: "AppDelegate.cleanAll called", to: .randomLogout)
-        sharedServices.get(by: UsersManager.self).clean().cauterize()
-        keymaker.wipeMainKey()
-        keymaker.mainKeyExists()
+        sharedServices.get(by: UsersManager.self).clean().ensure {
+            let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
+            coreKeyMaker.wipeMainKey()
+            coreKeyMaker.mainKeyExists()
+            completion()
+        }.cauterize()
     }
 
     func setupCoreData() {
+        sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        sharedServices.add(LastUpdatedStore.self,
-                           for: LastUpdatedStore(contextProvider: sharedServices.get(by: CoreDataService.self)))
+        let lastUpdatedStore = LastUpdatedStore(contextProvider: CoreDataService.shared)
+        sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
+        sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
+    }
+
+    func loadUserDataAfterUnlock() {
+        let usersManager = sharedServices.get(by: UsersManager.self)
+        usersManager.run()
+        usersManager.tryRestore()
+
+        #if !APP_EXTENSION
+        sharedServices.get(by: UsersManager.self).users.forEach {
+            $0.messageService.injectTransientValuesIntoMessages()
+        }
+        if let primaryUser = usersManager.firstUser {
+            primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
+        }
+        #endif
     }
 }
 
@@ -471,18 +520,22 @@ extension AppDelegate {
         Analytics.shared.setup(isInDebug: true, environment: .enterprise)
     #else
         Analytics.shared.setup(isInDebug: false, environment: .enterprise)
-        // This instruction is to disable PMLogs
-        PMLog.logsDirectory = nil
     #endif
 #else
     #if DEBUG
         Analytics.shared.setup(isInDebug: true, environment: .production)
     #else
         Analytics.shared.setup(isInDebug: false, environment: .production)
-        // This instruction is to disable PMLogs
-        PMLog.logsDirectory = nil
     #endif
 #endif
+
+        if !PMLog.isEnabled {
+            /**
+             We disable logs for builds that are distributed through the AppStore
+             to avoid high number of disk write operations.
+             */
+            PMLog.logsDirectory = nil
+        }
     }
 
     private func configureCrypto() {
@@ -511,21 +564,14 @@ extension AppDelegate {
     }
 
     private func configureLanguage() {
-        // setup language: iOS 13 allows setting language per-app in Settings.app, so we trust that value
-        // we still use LanguageManager because Bundle.main of Share extension will take the value from host application :(
-        if #available(iOS 13.0, *),
-            let code = Bundle.main.preferredLocalizations.first {
-            LanguageManager().saveLanguage(by: code)
-        }
-        //setup language
-        LanguageManager().setupCurrentLanguage()
+        LanguageManager().storePreferredLanguageToBeUsedByExtensions()
     }
 
     private func configurePushService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
-        let pushService : PushNotificationService = sharedServices.get()
+        let pushService: PushNotificationService = sharedServices.get()
         UNUserNotificationCenter.current().delegate = pushService
         pushService.registerForRemoteNotifications()
-        pushService.setLaunchOptions(launchOptions)
+        pushService.setNotificationFrom(launchOptions: launchOptions)
     }
 
     private func registerKeyMakerNotification() {
@@ -554,7 +600,8 @@ extension AppDelegate {
                 #endif
 
                 if self.currentState != .active {
-                    keymaker.updateAutolockCountdownStart()
+                    let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
+                    coreKeyMaker.updateAutolockCountdownStart()
                 }
             }
     }

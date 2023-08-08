@@ -302,7 +302,8 @@ extension PrepareSendRequestTests {
             authCredential: makeAuthCredential(),
             sendMetadata: makeSendMessageMetadata(config: config),
             scheduleSendDeliveryTime: dummyDeliveryTime,
-            undoSendDelay: dummySendDelay
+            undoSendDelay: dummySendDelay,
+            apiService: APIServiceMock()
         )
     }
 

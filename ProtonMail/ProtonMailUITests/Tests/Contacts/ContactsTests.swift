@@ -8,7 +8,7 @@
 
 import ProtonCore_TestingToolkit
 
-class ContactsTests : CleanAuthenticatedTestCase {
+class ContactsTests : FixtureAuthenticatedTestCase {
 
     private var contactsRobot = ContactsRobot()
 
@@ -20,17 +20,16 @@ class ContactsTests : CleanAuthenticatedTestCase {
     }
 
     func testCreateAndDeleteContact() {
-        let name = testData.alphaNumericString
-        let email = testData.newEmailAddress
         contactsRobot
             .addContact()
-            .setNameEmailAndSave(name, email)
+            .setNameEmailAndSave(user!.name, user!.email)
             .contactsView()
-            .deleteContact(name)
-            .verify.contactDoesNotExists(name)
+            .deleteContact(user!.name)
+            .verify.contactDoesNotExists(user!.name)
     }
 
-    func testEditContact() {
+    // enable and refactor to use quark commands back after the smoke set is finished
+    func xtestEditContact() {
         let name = testData.alphaNumericString
         let email = testData.newEmailAddress
         let editedName = testData.alphaNumericStringStartingFromX
@@ -64,7 +63,7 @@ class ContactsTests : CleanAuthenticatedTestCase {
             .verify.groupDoesNotExists(groupName)
     }
 
-    func testEditGroup() {
+    func xtestEditGroup() {
         let email = testData.newEmailAddress
         let groupName = testData.alphaNumericString
         let newGroupName = testData.alphaNumericString
@@ -86,7 +85,7 @@ class ContactsTests : CleanAuthenticatedTestCase {
             .verify.groupDoesNotExists(newGroupName)
     }
 
-    func testContactDetailSendMessage() {
+    func xtestContactDetailSendMessage() {
         let subject = testData.messageSubject
         let contactName = testData.internalEmailTrustedKeys.email
         contactsRobot
@@ -100,7 +99,7 @@ class ContactsTests : CleanAuthenticatedTestCase {
             .verify.messageWithSubjectExists(subject)
     }
 
-    func testContactGroupSendMessage() {
+    func xtestContactGroupSendMessage() {
         let subject = testData.messageSubject
         let groupName = "TestAutomation"
         contactsRobot

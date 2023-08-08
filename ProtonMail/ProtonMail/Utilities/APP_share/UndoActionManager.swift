@@ -51,9 +51,6 @@ final class UndoActionManager: UndoActionManagerProtocol {
         let bannerDisplayTime: Date
     }
 
-    private let apiService: APIService
-    private let internetStatusProvider: InternetConnectionStatusProvider
-    private let contextProvider: CoreDataContextProviderProtocol
     private var getEventFetching: () -> EventsFetching?
     private var getUserManager: () -> UserManager?
     private(set) weak var handler: UndoActionHandlerBase? {
@@ -63,17 +60,17 @@ final class UndoActionManager: UndoActionManagerProtocol {
     }
 
     private(set) var undoTitles: [UndoModel] = []
+    private let factory: UndoActionManagerDependenciesFactory
+    private let dependencies: Dependencies
 
     init(
-        apiService: APIService,
-        internetStatusProvider: InternetConnectionStatusProvider,
-        contextProvider: CoreDataContextProviderProtocol,
+        factory: UndoActionManagerDependenciesFactory,
+        dependencies: Dependencies,
         getEventFetching: @escaping () -> EventsFetching?,
         getUserManager: @escaping () -> UserManager?
     ) {
-        self.apiService = apiService
-        self.internetStatusProvider = internetStatusProvider
-        self.contextProvider = contextProvider
+        self.factory = factory
+        self.dependencies = dependencies
         self.getEventFetching = getEventFetching
         self.getUserManager = getUserManager
     }
@@ -147,7 +144,7 @@ final class UndoActionManager: UndoActionManagerProtocol {
             var atLeastOneRequestFailed = false
             requests.forEach { [unowned self] request in
                 group.enter()
-                self.apiService.exec(route: request) { (result: Result<UndoActionResponse, ResponseError>) in
+                self.dependencies.apiService.exec(route: request) { (result: Result<UndoActionResponse, ResponseError>) in
                     if result.error != nil {
                         atLeastOneRequestFailed = true
                     }
@@ -192,7 +189,7 @@ extension UndoActionManager {
     // The undo send action is time sensitive, put in queue doesn't make sense
     func requestUndoSendAction(messageID: MessageID, completion: ((Bool) -> Void)?) {
         let request = UndoSendRequest(messageID: messageID)
-        apiService.exec(route: request) { [weak self] (result: Result<UndoSendResponse, ResponseError>) in
+        dependencies.apiService.exec(route: request) { [weak self] (result: Result<UndoSendResponse, ResponseError>) in
             switch result {
             case .success:
                 let labelID = Message.Location.allmail.labelID
@@ -210,27 +207,17 @@ extension UndoActionManager {
 
     private func showComposer(for messageID: MessageID) {
         #if !APP_EXTENSION
-            guard let message = message(id: messageID),
-                  let user = getUserManager() else { return }
-
-            let composer = ComposerViewFactory.makeComposer(
-                msg: message,
-                action: .openDraft,
-                user: user,
-                contextProvider: contextProvider,
-                isEditingScheduleMsg: false,
-                userIntroductionProgressProvider: userCachedStatus,
-                scheduleSendEnableStatusProvider: userCachedStatus,
-                internetStatusProvider: internetStatusProvider
-            )
-
+        DispatchQueue.main.async {
+            guard let message = self.message(id: messageID), let user = self.getUserManager() else { return }
+            let composer = self.factory.makeComposer(user: user, message: message)
             guard let presentingVC = self.handler?.composerPresentingVC else { return }
             presentingVC.present(composer, animated: true)
+        }
         #endif
     }
 
     private func message(id messageID: MessageID) -> Message? {
-        let context = contextProvider.mainContext
+        let context = dependencies.contextProvider.mainContext
         return Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context)
     }
 }
@@ -277,5 +264,12 @@ extension UndoActionHandlerBase {
                     .forEach { $0.dismiss(animated: false) }
             }
         }
+    }
+}
+
+extension UndoActionManager {
+    struct Dependencies {
+        let contextProvider: CoreDataContextProviderProtocol
+        let apiService: APIService
     }
 }

@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Alle mails";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Alle beskyttelsesindstillinger vil blive nulstillet og slettet, når du logger ud af appen.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Alle dine beskeder er downloadet";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Fødselsdag";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Blokér";
+
 /* Settings row */
 "Block email tracking" = "Bloker sporing af e-mail";
 
@@ -297,14 +303,17 @@
 /* Button to block a sender */
 "Block sender" = "Blokér afsender";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Blokerede afsendere";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Blokerer afsendere fra at se, om og hvornår du har åbnet beskeden";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Gå hurtigt gennem tråd af meddelelser i samtaletilstand.";
 
-/* Title */
-"Bug Description" = "Fejlbeskriveslse";
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---For at hjælpe os med at hjælpe dig, oplys venligst flest mulig detaljer---\n\nOpsummer:\n\nEr problemet opstået flere gange: ja/nej\nHvilke handlinger får problemet til at opstå:\nForventet resultat:\nFaktiske resultat:\nKommentarer:";
 
 /* Title */
 "Bug Report Received" = "Fejlrapport modtaget";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Oprettelse af etiket ikke tilladt";
 
+/* Change language title */
+"Current Language: " = "Nuværende sprog: ";
+
 /* Placeholder */
 "Current password" = "Aktuel adgangskode";
 
@@ -700,6 +712,9 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Downloader metadata ...";
 
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Downloader nye beskeder...";
+
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Downloader e-mails, så du kan søge i dem. Beskederne er krypterede og lagres lokalt. %1$@";
 
@@ -819,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Indtast ny pinkode";
 
+/* The title of the pin code view. */
+"Enter PIN" = "Indtast PIN";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Angiv din adgangskode for at foretage ændringer";
 
@@ -915,6 +933,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Gå til indstillinger";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Gå til login";
+
 /* Got it action */
 "Got it" = "Forstået";
 
@@ -1000,6 +1021,9 @@
 /* place holder */
 "Input Display Name…" = "Angiv visningsnavn…";
 
+/* place holder */
+"Input Notification Email…" = "Angiv notifikations-e-mail…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Usikker forbindelse";
 
@@ -1014,6 +1038,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Vi præsenterer Proton's nye udseende.\nMange tjenester, én mission. Velkommen til et internet, hvor privatlivsbeskyttelse er standard.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Ugyldig adresse";
 
 /* update password error */
 "Invalid hashed password!" = "Ugyldig hashet adgangskode!";
@@ -1127,6 +1154,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Markér som ulæst";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Måske senere";
+
 /* menu title */
 "Menu" = "Menu";
 
@@ -1237,6 +1267,9 @@
 /* Contacts add new contact */
 "New contact" = "Ny kontakt";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Nye e-mails fra %@ vil ikke blive leveret og vil blive slettet permanent. Administrer blokerede e-mailadresser i indstillingerne.";
+
 /* The title of create folder page */
 "New folder" = "Ny mappe";
 
@@ -1275,6 +1308,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Ingen vedhæftning fundet";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Ingen blokerede afsendere";
 
 /* Title */
 "No connectivity detected…" = "Ingen forbindelse fundet…";
@@ -1487,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Del dit problem.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Log venligst ind i Proton Mail Appen.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Opgradér til et betalt abonnement for at bruge mere end 3 mapper";
 
@@ -1684,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Send alligevel";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Send feedback";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1698,6 +1737,15 @@
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Send læsekvittering";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "Afsender %@ blokeret";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Afsender %@ blokering fjernet";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Afsender er blevet blokeret";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Afsenderbekræftelse mislykkedes";
@@ -1777,6 +1825,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Vis mig";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Log ind igen for at fortsat at modtage opdateringer";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Log ud";
@@ -1792,6 +1843,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Logget ud fra %1$@ og logget ind med %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Logget ud af %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Spring over";
@@ -1953,6 +2007,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL'en, du forsøger at få adgang til, er ikke standard og kan måske ikke indlæses korrekt. Vil du åbne den ved hjælp af din enheds standardbrowser?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Brugeren er allerede logget ind";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Der er usendte beskeder, der vil gå tabt, hvis du logger ud";
 
@@ -1967,6 +2024,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Denne samtale indeholder slettede beskeder";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail bestod ikke sit domænes godkendelseskrav. Den kan være falsk eller ukorrekt videresendt.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Denne e-mail bestod ikke sit domænes godkendelseskrav. Den kan være falsk eller ukorrekt videresendt.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Denne e-mail ser ud til at være fra en Proton Mail-adresse, men den kom fra et sted uden for vores system og har ikke overholdt vores godkendelseskrav. Den kan være forfalsket eller ukorrekt videresendt!";
@@ -2057,6 +2120,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Prøv at forbinde til Proton fra et andet netværk (eller brug %1$@ eller %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Slå denne funktion til for at autoudfylde e-mailadresser vha. kontakter fra alle de konti, hvor du er logget ind.";
+
 /* Placeholder */
 "Two Factor Code" = "To-faktorkode";
 
@@ -2074,6 +2140,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Kan ikke sende e-mailen";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Fjern blokering";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Fjern blokering af afsender";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Oplyste modtagere";
@@ -2128,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Opdatér notifikations-e-mail";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Afventer internetforbindelse. Opdatering er sat i kø...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Opdateret for >1 time siden";
@@ -2250,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Du kan ikke angive %@-adressen som standard, da dette er en betalingsfunktion.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Du har deaktiveret %@ i dine systemindstillinger. %@ er blevet brugt til at beskytte vigtige kontooplysninger. Få adgang til din konto ved at gå til indstillinger og genaktivere %@ eller logge ind igen.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Du har deaktiveret %1$@ i dine systemindstillinger. %2$@ er blevet brugt til at beskytte vigtige kontooplysninger. Få adgang til din konto ved at gå til Indstillinger og genaktivere %3$@ eller logge ind igen.";
 
 /* Message */
 "You have %d new emails!" = "Du har %d nye e-mails!";
@@ -2311,6 +2386,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Din beskeder bliver downloadet...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Dir privatliv er bedre beskyttet, hvis dine kontakter også bruger Proton Mail. Inviter dine venner til at bruge Proton, så får I begge gratis premium fordele.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Din session er udløbet, fordi du har været inaktiv i et stykke tid, eller fordi den er blevet tilbagekaldt. Log venligst ind igen.";

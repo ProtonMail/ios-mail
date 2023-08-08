@@ -22,6 +22,7 @@
 
 import Foundation
 import ProtonCore_DataModel
+import ProtonCore_Log
 
 enum SettingDeviceSection: Int, CustomStringConvertible {
     case account = 0
@@ -51,6 +52,7 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
     case alternativeRouting
     case browser
     case toolbar
+    case applicationLogs
 
     var description: String {
         switch self {
@@ -68,6 +70,8 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
             return LocalString._alternative_routing
         case .toolbar:
             return LocalString._toolbar_customize_general_title
+        case .applicationLogs:
+            return L11n.Settings.applicationLogs
         }
     }
 }
@@ -75,7 +79,7 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
 enum GeneralSectionItem: Int, CustomStringConvertible {
     case notification = 0
     case language = 1
-    case LocalizationPreview = 2
+    case localizationPreview = 2
 
     var description: String {
         switch self {
@@ -83,7 +87,7 @@ enum GeneralSectionItem: Int, CustomStringConvertible {
             return LocalString._push_notification
         case .language:
             return LocalString._app_language
-        case .LocalizationPreview:
+        case .localizationPreview:
             return "Localization Preview"
         }
     }
@@ -95,11 +99,12 @@ final class SettingsDeviceViewModel {
     private(set) var generalSettings: [GeneralSectionItem] = [.notification, .language]
 
     private(set) var userManager: UserManager
-    private let users: UsersManager
     private let biometricStatus: BiometricStatusProvider
+    private let lockCacheStatus: LockCacheStatus
+    private let dependencies: Dependencies
 
     var lockOn: Bool {
-        return userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled
+        return lockCacheStatus.isPinCodeEnabled || lockCacheStatus.isTouchIDEnabled
     }
 
     var combineContactOn: Bool {
@@ -114,8 +119,6 @@ final class SettingsDeviceViewModel {
         let name = self.userManager.defaultDisplayName
         return name.isEmpty ? self.email : name
     }
-
-    let languages: [ELanguage] = ELanguage.allCases
 
     var isDohOn: Bool {
         BackendConfiguration.shared.doh.status == .on
@@ -132,20 +135,31 @@ final class SettingsDeviceViewModel {
         }
     }
 
-    init(user: UserManager, users: UsersManager, biometricStatus: BiometricStatusProvider) {
+    init(
+        user: UserManager,
+        biometricStatus: BiometricStatusProvider,
+        lockCacheStatus: LockCacheStatus,
+        dependencies: Dependencies
+    ) {
         self.userManager = user
-        self.users = users
         self.biometricStatus = biometricStatus
+        self.lockCacheStatus = lockCacheStatus
+        self.dependencies = dependencies
+
         if #available(iOS 13, *) {
             appSettings.insert(.darkMode, at: 0)
         }
 
         #if DEBUG_ENTERPRISE
-        generalSettings.append(.LocalizationPreview)
+        generalSettings.append(.localizationPreview)
         #endif
 
         if UserInfo.isToolbarCustomizationEnable {
             appSettings.append(.toolbar)
+        }
+
+        if PMLog.isEnabled {
+            appSettings.append(.applicationLogs)
         }
     }
 
@@ -161,33 +175,27 @@ final class SettingsDeviceViewModel {
     }
 
     func cleanCache(completion: ((Result<Void, NSError>) -> Void)?) {
-        var lastError: NSError?
-        let group = DispatchGroup()
-        for user in users.users {
-            group.enter()
-            user.messageService.cleanLocalMessageCache { error in
-                user.conversationService.cleanAll()
-                user.conversationService.fetchConversations(for: Message.Location.inbox.labelID,
-                                                            before: 0,
-                                                            unreadOnly: false,
-                                                            shouldReset: false) { result in
-                    switch result {
-                    case .failure(let error):
-                        lastError = error as NSError
-                    case .success:
-                        break
-                    }
-                    group.leave()
-                }
+        dependencies
+            .cleanCache
+            .callbackOn(.main)
+            .execute(params: Void()) { result in
+            switch result {
+            case .success:
+                completion?(.success(()))
+            case .failure(let error):
+                completion?(.failure(error as NSError))
             }
         }
-        group.notify(queue: .main) {
-            ImageProxyCache.shared.purge()
-            if let error = lastError {
-                completion?(.failure(error))
-            } else {
-                completion?(.success(()))
-            }
+    }
+}
+
+extension SettingsDeviceViewModel {
+
+    struct Dependencies {
+        let cleanCache: CleanCacheUseCase
+
+        init(cleanCache: CleanCacheUseCase) {
+            self.cleanCache = cleanCache
         }
     }
 }

@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import CryptoKit
 import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Services
@@ -78,7 +77,6 @@ final class ESMessage: Codable {
     var isStarred: Bool? = false
     // swiftlint:disable discouraged_optional_boolean
     var isDetailsDownloaded: Bool? = false
-    // var tempAtts: [MimeAttachment]? = nil
 
     enum CodingKeys: String, CodingKey {
         case id = "ID"
@@ -172,7 +170,6 @@ final class ESMessage: Codable {
 }
 
 extension ESMessage {
-    // swiftlint:disable next function_body_length
     func toEntity() -> MessageEntity {
         assert(addressID != nil)
         assert(userID != nil)

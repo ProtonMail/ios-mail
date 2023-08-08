@@ -27,8 +27,6 @@ import ProtonCore_Services
 import ProtonCore_UIFoundations
 import UIKit
 
-var sharedUserDataService: UserDataService!
-
 class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     private weak var coordinator: ShareUnlockCoordinator?
 
@@ -62,8 +60,9 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        sharedUserDataService = UserDataService(api: PMAPIService.shared)
-        LanguageManager().setupCurrentLanguage()
+        // TODO: Refactor the view to pass the dependency from init
+        let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
+        LanguageManager().translateBundleToPreferredLanguageOfTheMainApp()
         configureNavigationBar()
 
         let bioView = BioCodeView(frame: .zero)
@@ -101,7 +100,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
                     return
                 }
                 guard sharedServices.get(by: UsersManager.self).hasUsers() else {
-                    self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_signin_first)
+                    self.showErrorAndQuit(errorMsg: L11n.Error.sign_in_message)
                     return
                 }
                 self.loginCheck()

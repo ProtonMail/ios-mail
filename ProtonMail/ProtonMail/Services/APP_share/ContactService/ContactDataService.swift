@@ -49,7 +49,7 @@ class ContactDataService: Service {
 
     private let addressBookService: AddressBookService
     private let labelDataService: LabelsDataService
-    private let coreDataService: CoreDataService
+    private let coreDataService: CoreDataContextProviderProtocol
     private let apiService: APIService
     private let userInfo: UserInfo
     private let contactCacheStatus: ContactCacheStatusProtocol
@@ -60,7 +60,7 @@ class ContactDataService: Service {
         UserID(userInfo.userId)
     }
 
-    init(api: APIService, labelDataService: LabelsDataService, userInfo: UserInfo, coreDataService: CoreDataService, contactCacheStatus: ContactCacheStatusProtocol, cacheService: CacheService, queueManager: QueueManager) {
+    init(api: APIService, labelDataService: LabelsDataService, userInfo: UserInfo, coreDataService: CoreDataContextProviderProtocol, contactCacheStatus: ContactCacheStatusProtocol, cacheService: CacheService, queueManager: QueueManager) {
         self.userInfo = userInfo
         self.apiService = api
         self.addressBookService = AddressBookService()
@@ -77,22 +77,24 @@ class ContactDataService: Service {
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
             self.contactCacheStatus.contactsCached = 0
+            let userID = userID.rawValue
+
             self.coreDataService.performOnRootSavingContext { context in
-                let fetch1 = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
-                fetch1.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.userID.rawValue)
-                let request1 = NSBatchDeleteRequest(fetchRequest: fetch1)
-                try? context.executeAndMergeChanges(using: request1)
-
-                let fetch2 = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
-                fetch2.predicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID.rawValue)
-                let request2 = NSBatchDeleteRequest(fetchRequest: fetch2)
-                try? context.executeAndMergeChanges(using: request2)
-
-                let fetch3 = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
-                fetch3.predicate = NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, self.userID.rawValue)
-                let request3 = NSBatchDeleteRequest(fetchRequest: fetch3)
-                try? context.executeAndMergeChanges(using: request3)
-
+                Contact.delete(
+                    in: context,
+                    basedOn: NSPredicate(format: "%K == %@", Contact.Attributes.userID, userID)
+                )
+                
+                Email.delete(
+                    in: context,
+                    basedOn: NSPredicate(format: "%K == %@", Email.Attributes.userID, userID)
+                )
+                
+                LabelUpdate.delete(
+                    in: context,
+                    basedOn: NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, userID)
+                )
+                
                 seal.fulfill_()
             }
         }
@@ -235,10 +237,11 @@ class ContactDataService: Service {
         self.apiService.perform(request: api, response: VoidResponse()) { [weak self] _, response in
             guard let self = self else { return }
             if let error = response.error {
-                if error.responseCode == 13043 { // doesn't exist
+                if error.responseCode == 13043 ||
+                    error.responseCode == APIErrorCode.resourceDoesNotExist { // doesn't exist
                     self.cacheService.deleteContact(by: contactID) { _ in
                         DispatchQueue.main.async {
-                            completion(error.toNSError)
+                            completion(nil)
                         }
                     }
                 } else {
@@ -418,7 +421,7 @@ class ContactDataService: Service {
                         if let err = error {
                             seal.reject(err)
                         } else if let c = contact {
-                            seal.fulfill(ContactEntity(contact: c))
+                            seal.fulfill(c)
                         } else {
                             fatalError()
                         }
@@ -513,17 +516,6 @@ class ContactDataService: Service {
         }
         return []
     }
-
-    private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext, isContactCombine: Bool) -> [Email] {
-        let fetchRequest = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
-        let predicate = isContactCombine ? nil : NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID.rawValue)
-        fetchRequest.predicate = predicate
-        do {
-            return try context.fetch(fetchRequest)
-        } catch {
-        }
-        return []
-    }
 }
 
 // MRAK: Queue related
@@ -532,8 +524,8 @@ extension ContactDataService {
     func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], importedFromDevice: Bool) -> NSError? {
         let userID = self.userID
         var error: NSError?
-        coreDataService.performAndWaitOnRootSavingContext { [weak self] context in
-            guard let self = self else { return }
+        var objectID: String?
+        coreDataService.performAndWaitOnRootSavingContext { context in
             do {
                 let contact = try Contact.makeTempContact(context: context,
                                                           userID: userID.rawValue,
@@ -544,27 +536,29 @@ extension ContactDataService {
                     error = err
                     return
                 }
-                let objectID = contact.objectID.uriRepresentation().absoluteString
-                let action: MessageAction = .addContact(objectID: objectID,
-                                                        cardDatas: cardDatas,
-                                                        importFromDevice: importedFromDevice)
-                let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
-                _ = self.queueManager?.addTask(task)
+                objectID = contact.objectID.uriRepresentation().absoluteString
             } catch {
                 return
             }
+        }
+        if let objectID = objectID {
+            let action: MessageAction = .addContact(objectID: objectID,
+                                                    cardDatas: cardDatas,
+                                                    importFromDevice: importedFromDevice)
+            let task = QueueManager.Task(messageID: "", action: action, userID: userID, dependencyIDs: [], isConversation: false)
+            _ = self.queueManager?.addTask(task)
         }
         return error
     }
 
     func queueUpdate(objectID: NSManagedObjectID, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?) {
-        coreDataService.performOnRootSavingContext { [weak self] context in
-            guard let self = self else { return }
+        var result: Swift.Result<Void, NSError>!
+        coreDataService.performAndWaitOnRootSavingContext { context in
             do {
                 guard let contactInContext = try context.existingObject(with: objectID) as? Contact else {
                     let error = NSError(domain: "", code: -1,
                                         localizedDescription: LocalString._error_no_object)
-                    completion?(error)
+                    result = .failure(error)
                     return
                 }
                 contactInContext.cardData = try cardDatas.toJSONString()
@@ -578,43 +572,62 @@ extension ContactDataService {
                 // CacheService > updateContact(contactID:...)
                 _ = emails.map { $0.makeTempEmail(context: context, contact: contactInContext) }
                 if let error = context.saveUpstreamIfNeeded() {
-                    completion?(error)
+                    result = .failure(error)
                 } else {
-                    let idString = objectID.uriRepresentation().absoluteString
-                    let action: MessageAction = .updateContact(objectID: idString,
-                                                               cardDatas: cardDatas)
-                    let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
-                    _ = self.queueManager?.addTask(task)
-                    completion?(nil)
+                    result = .success(())
                 }
             } catch {
-                completion?(error as NSError)
+                result = .failure(error as NSError)
             }
+        }
+
+        switch result {
+        case .failure(let error):
+            completion?(error)
+        case .success(_):
+            let idString = objectID.uriRepresentation().absoluteString
+            let action: MessageAction = .updateContact(objectID: idString,
+                                                       cardDatas: cardDatas)
+            let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+            _ = self.queueManager?.addTask(task)
+            completion?(nil)
+        case .none:
+            break
         }
     }
 
     func queueDelete(objectID: NSManagedObjectID, completion: ContactDeleteComplete?) {
-        coreDataService.performOnRootSavingContext { context in
+        var result: Swift.Result<Void, NSError>!
+        coreDataService.performAndWaitOnRootSavingContext { context in
             do {
                 guard let contactInContext = try context.existingObject(with: objectID) as? Contact else {
                     let error = NSError(domain: "", code: -1,
                                         localizedDescription: LocalString._error_no_object)
-                    completion?(error)
+                    result = .failure(error)
                     return
                 }
                 contactInContext.isSoftDeleted = true
                 if let error = context.saveUpstreamIfNeeded() {
-                    completion?(error as NSError)
-                    return
+                    result = .failure(error as NSError)
+                } else {
+                    result = .success(())
                 }
-                let idString = objectID.uriRepresentation().absoluteString
-                let action: MessageAction = .deleteContact(objectID: idString)
-                let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
-                _ = self.queueManager?.addTask(task)
-                completion?(nil)
             } catch {
-                completion?(error as NSError)
+                result = .failure(error as NSError)
             }
+        }
+
+        switch result {
+        case .failure(let error):
+            completion?(error)
+        case .success(_):
+            let idString = objectID.uriRepresentation().absoluteString
+            let action: MessageAction = .deleteContact(objectID: idString)
+            let task = QueueManager.Task(messageID: "", action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
+            _ = self.queueManager?.addTask(task)
+            completion?(nil)
+        case .none:
+            break
         }
     }
     #endif

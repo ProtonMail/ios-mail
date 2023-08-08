@@ -114,6 +114,9 @@
    menu title */
 "All Mail" = "Akk iznan";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Meṛṛa iɣewwaren n ummesten ad alsen awennez syen ad ttwasefḍen mi ara teffɣeḍ seg tuqqna seg usnas.";
+
 /* network troubleshot cell title */
 "Allow alternative routing" = "Rnu aseglu amlellay";
 
@@ -258,6 +261,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Amulli";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Sewḥel";
+
 /* Settings row */
 "Block email tracking" = "Sewḥel aḍfar n yimaylen";
 
@@ -267,14 +273,14 @@
 /* Button to block a sender */
 "Block sender" = "Sewḥel amazan";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Sewḥel imazanen";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Yessewḥal imazanen ɣef tmeẓriwt ma teldiḍ izen neɣ melmi t-teldiḍ";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Wali iznan deg uskar n udiwenni.";
-
-/* Title */
-"Bug Description" = "Aglam n ubug";
 
 /* Title */
 "Bug Report Received" = "Tuzna n ubug tettwarmes";
@@ -490,6 +496,9 @@
 /* Alert title */
 "Creating label not allowed" = "Asnulfu n tebzimt ur yurig ara";
 
+/* Change language title */
+"Current Language: " = "Tutlayt tamirant: ";
+
 /* Placeholder */
 "Current password" = "Awal uffir amiran";
 
@@ -648,6 +657,9 @@
 
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Asader n taffa meta ...";
+
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Asader n yiznan imaynuten...";
 
 /* Action */
 "Draft" = "Arewway";
@@ -846,6 +858,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Ddu s iɣewwaren";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Ddu ɣer tuqqna";
+
 /* Got it action */
 "Got it" = "Gziɣ";
 
@@ -916,6 +931,9 @@
 /* place holder */
 "Input Display Name…" = "Sekcem isem n uskan…";
 
+/* place holder */
+"Input Notification Email…" = "Sekcem imayl n ulɣu…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Tuqqna tɣrelsant";
 
@@ -930,6 +948,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Ha-t-a wudem amaynut n Proton.\nAṭas n yimeẓla, yiwet n tuɣdaḍt. Ansuf ɣer internet anida aqader n tudert tabaḍnit d nettat i d llsas.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Yir tansa imayl";
 
 /* update password error */
 "Invalid hashed password!" = "Awal uffir adwayan mačči d ameɣtu!";
@@ -1037,6 +1058,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Creḍ ur yettwaγra ara";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Ahat ticki";
+
 /* menu title */
 "Menu" = "Umuɣ";
 
@@ -1084,6 +1108,9 @@
 
 /* Description after message have been sent */
 "Message sent" = "Izen yettwazen";
+
+/* Text for the search info banner when indexing is stopped because of storage limit reached. */
+"Messages from before " = "Iznan iqburen ";
 
 /* default vcard types */
 "Mobile" = "Aziraz";
@@ -1531,8 +1558,14 @@
 /* Action */
 "Send anyway" = "Azen akken ibɣu yili";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Azen-d iwinniten inek•inem";
+
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "Azen imir";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Azen imir?";
 
 /* Description */
 "Send message without subject?" = "Azen izen s war asentel?";
@@ -2039,9 +2072,6 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Ur tezmireḍ ara ad tesbaduḍ tansa %@ am tansa tamezwert acku d tawuri n lexlaṣ.";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Tessenseḍ %@ deg yiɣewwaren n unagraw-inek·inem. %@ yettuseqdec i ummesten n telɣut n umiḍan yesɛan azal. I unekcum ɣer umiḍan-ik·im, rzu ɣer yiɣewwaren syen ales armad n %@ neɣ ales tuqqna.";
-
 /* Message */
 "You have %d new emails!" = "Ɣur-k %d imaylen imaynuten!";
 
@@ -2105,3 +2135,7 @@
 /* contact placeholder */
 "ZIP" = "Tangalt n lpusṭa";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in.";
+
+"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

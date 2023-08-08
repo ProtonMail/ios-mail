@@ -11,36 +11,28 @@ import XCTest
 
 import ProtonCore_TestingToolkit
 
-class ReplyToMessageTests: BaseTestCase {
-    
+class ReplyToMessageTests: FixtureAuthenticatedTestCase {
+
+    override var scenario: MailScenario { .qaMail002 }
     let folder = "TestAutomationFolder"
     
-    override func setUp() {
-        super.setUp()
-    }
-    
-    // ID: 31748
     func testReplyTextMessage() {
-        let user = testData.onePassUser
-        let subject = "Text message"
-        let replySubject = String(format: "Re: %@ \(Date().millisecondsSince1970)", subject)
-        
-        LoginRobot()
-            .loginUser(user)
-            .menuDrawer()
-            .folderOrLabel(folder)
-            .clickMessageBySubject(subject)
+        let subject = "Re: \(scenario.subject)"
+
+        InboxRobot()
+            .clickMessageByIndex(0)
             .reply()
-            .changeSubjectTo(replySubject)
-            .sendReplyMessage()
-            .navigateBackToLabelOrFolder(folder)
+            .changeSubjectTo(subject)
+            .sendMessageFromMessageRobot()
+            .navigateBackToInbox()
             .menuDrawer()
-            .inbox()
-            .verify.messageExists(replySubject)
+            .sent()
+            .verify.messageExists(subject)
     }
-    
+
+    // TODO: backend need a message with public key 
     // ID: 31750
-    func testReplyMessageWithPublicKey() {
+    func xtestReplyMessageWithPublicKey() {
         let user = testData.twoPassUser
         let subject = "Text message"
         let replySubject = String(format: "Re: %@ \(Date().millisecondsSince1970)", subject)
@@ -53,14 +45,15 @@ class ReplyToMessageTests: BaseTestCase {
             .clickMessageBySubject(subject)
             .reply()
             .changeSubjectTo(replySubject)
-            .sendReplyMessage()
+            .sendMessageFromMessageRobot()
             .navigateBackToLabelOrFolder(folder)
             .menuDrawer()
             .inbox()
             .verify.messageExists(replySubject)
     }
-    
-    func testReplyAllMessage(){
+
+    // TODO: backend need a message with multiple from field
+    func xtestReplyAllMessage(){
         let user = testData.onePassUser
         let subject = "Text message"
         let replySubject = String(format: "Re: %@ \(Date().millisecondsSince1970)", subject)
@@ -72,13 +65,14 @@ class ReplyToMessageTests: BaseTestCase {
             .clickMessageBySubject(subject)
             .replyAll()
             .changeSubjectTo(replySubject)
-            .sendReplyMessage()
+            .sendMessageFromMessageRobot()
             .navigateBackToLabelOrFolder(folder)
             .menuDrawer()
             .inbox()
             .verify.messageExists(replySubject)
     }
-    
+
+    // TODO: backend need a message with an attachment
     //ID: 31750
     func testReplyMessageWithAttachments() {
         let user = testData.onePassUser
@@ -92,7 +86,7 @@ class ReplyToMessageTests: BaseTestCase {
             .clickMessageBySubject(subject)
             .reply()
             .changeSubjectTo(replySubject)
-            .sendReplyMessage()
+            .sendMessageFromMessageRobot()
             .navigateBackToLabelOrFolder(folder)
             .menuDrawer()
             .inbox()

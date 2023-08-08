@@ -40,106 +40,6 @@ final class String_ExtensionTests: XCTestCase {
         XCTAssertFalse("Test mail".hasFwd())
     }
 
-    func testValidEmailAddresses() {
-        XCTAssertTrue("jovan@a.org".isValidEmail())
-        XCTAssertTrue("jovan@a.co.il".isValidEmail())
-        XCTAssertTrue("foo@baz.com".isValidEmail())
-        XCTAssertTrue("foo.bar@baz.com".isValidEmail())
-        XCTAssertTrue("foo@bar.baz.com".isValidEmail())
-        XCTAssertTrue("foo+bar@baz.com".isValidEmail())
-        XCTAssertTrue("foo@123.456.789.123".isValidEmail())
-        XCTAssertTrue("\"foo\"@baz.com".isValidEmail())
-        XCTAssertTrue("123456789@baz.com".isValidEmail())
-        XCTAssertTrue("foo@baz-quz.com".isValidEmail())
-        XCTAssertTrue("_@baz.com".isValidEmail())
-        XCTAssertTrue("________@baz.com".isValidEmail())
-        XCTAssertTrue("foo@baz.name".isValidEmail())
-        XCTAssertTrue("foo@baz.co.uk".isValidEmail())
-        XCTAssertTrue("foo-bar@baz.com".isValidEmail())
-        XCTAssertTrue("baz.com@baz.com".isValidEmail())
-        XCTAssertTrue("foo.bar+qux@baz.com".isValidEmail())
-        XCTAssertTrue("foo.bar-qux@baz.com".isValidEmail())
-        XCTAssertTrue("f@baz.com".isValidEmail())
-        XCTAssertTrue("_foo@baz.com".isValidEmail())
-        XCTAssertTrue("foo/bar=qux@baz.com".isValidEmail())
-        XCTAssertTrue("foo@bar--baz.com".isValidEmail())
-        XCTAssertTrue("foob*ar@baz.com".isValidEmail())
-        XCTAssertTrue("\"foo@bar\"@baz.com".isValidEmail())
-        XCTAssertTrue("user.name+tag+sorting@example.com".isValidEmail())
-        XCTAssertTrue("example-indeed@strange-example.com".isValidEmail())
-        XCTAssertTrue("example@s.example".isValidEmail())
-    }
-
-    /// some addresses are valid in RFC, but it is ok we don't pass it they are too strange
-    func testStrangeEmailAddresses() {
-        // The address is only valid according to the broad definition of RFC 5322. It is otherwise invalid.
-        XCTAssertFalse("foo@[123.456.789.123]".isValidEmail())
-        // Address contains deprecated elements but may still be valid in restricted contexts
-        XCTAssertFalse("foo.\"bar\"@baz.com".isValidEmail())
-        // Address contains deprecated elements but may still be valid in restricted contexts
-        XCTAssertFalse("\"foo.(),:;<>[]\".FOO.\"foo@\\ \"FOO\".foo\"@baz.qux.com".isValidEmail())
-        // Address is valid for SMTP but has unusual elements
-        XCTAssertFalse("\" \"@baz.com".isValidEmail())
-        // Address contains deprecated elements but may still be valid in restricted contexts
-        XCTAssertFalse("foo.\"bar\\ qux\"@baz.com".isValidEmail())
-        // Address contains deprecated elements but may still be valid in restricted contexts
-        XCTAssertFalse("foo.bar.\"bux\".bar.com@baz.com".isValidEmail())
-        // Address contains deprecated elements but may still be valid in restricted contexts
-        XCTAssertFalse("much.\"more\\ unusual\"@example.com".isValidEmail())
-        // Address contains deprecated elements but may still be valid in restricted contexts
-        XCTAssertFalse("very.unusual.\"@\".unusual.com@example.com".isValidEmail())
-        // Address is valid for SMTP but has unusual elements
-        XCTAssertFalse("\"very.(),:;<>[]\\\".VERY.\\\"very@\\\\ \\\"very\\\".unusual\"@strange.example.com".isValidEmail())
-        // Address is valid for SMTP but has unusual elements
-        XCTAssertFalse("admin@mailserver1".isValidEmail())
-        XCTAssertFalse("#!$%&'*+-/=?^_`{}|~@example.org".isValidEmail())
-        XCTAssertFalse("\"()<>[]:,;@\\\\\\\"!#$%&'-/=?^_`{}| ~.a\"@example.org".isValidEmail())
-    }
-
-    // List of Invalid Email Addresses
-    func testInvalidEmailAddresses() {
-        XCTAssertFalse("jovan@a".isValidEmail())
-        XCTAssertFalse("@jovan".isValidEmail())
-        XCTAssertFalse("@jovan.ch".isValidEmail())
-
-        XCTAssertFalse("plainaddress".isValidEmail())
-        XCTAssertFalse("#@%^%#$@#$@#.com".isValidEmail())
-        XCTAssertFalse("@example.com".isValidEmail())
-        XCTAssertFalse("Joe Smith <email@example.com>".isValidEmail())
-        XCTAssertFalse("email.example.com".isValidEmail())
-        XCTAssertFalse("email@example@example.com".isValidEmail())
-        XCTAssertFalse(".email@example.com".isValidEmail())
-        XCTAssertFalse("email.@example.com".isValidEmail())
-        XCTAssertFalse("email..email@example.com".isValidEmail())
-        XCTAssertFalse("あいうえお@example.com".isValidEmail())
-        XCTAssertFalse("email@example.com (Joe Smith)".isValidEmail())
-        XCTAssertFalse("email@example".isValidEmail())
-        XCTAssertFalse("email@-example.com".isValidEmail())
-        XCTAssertFalse("email@example..com".isValidEmail())
-        XCTAssertFalse("Abc..123@example.com".isValidEmail())
-        XCTAssertFalse("foo.bar@baz.com.".isValidEmail())
-
-        XCTAssertFalse("a\"b(c)d,e:f;g<h>I[j\\k]l@baz.com".isValidEmail())
-        XCTAssertFalse("foo bar@baz.com".isValidEmail())
-        XCTAssertFalse("foo@baz.com-".isValidEmail())
-        XCTAssertFalse("foo@baz,qux.com".isValidEmail())
-        XCTAssertFalse("foo\\@bar@baz.com".isValidEmail())
-        XCTAssertFalse("foo.bar".isValidEmail())
-        XCTAssertFalse("@".isValidEmail())
-        XCTAssertFalse("@@".isValidEmail())
-        XCTAssertFalse(".@".isValidEmail())
-        XCTAssertFalse("A@b@c@example.com".isValidEmail())
-        // (quoted strings must be dot separated or the only element making up the local-part)
-        XCTAssertFalse("just\"not\"right@example.com".isValidEmail())
-        // (spaces, quotes, and backslashes may only exist when within quoted strings and preceded by a backslash)
-        XCTAssertFalse("this is\"not\\allowed@example.com".isValidEmail())
-        // (even if escaped (preceded by a backslash), spaces, quotes, and backslashes must still be contained by quotes)
-        XCTAssertFalse("this\\ still\"not\\allowed@example.com".isValidEmail())
-        XCTAssertFalse("”(),:;<>[\\]@example.com".isValidEmail())
-        XCTAssertFalse("just”not”right@example.com".isValidEmail())
-        XCTAssertFalse("this\\ is\"really\"not\\allowed@example.com".isValidEmail())
-    }
-
     func testTrim() {
         XCTAssertEqual("  abc ".trim(), "abc")
         XCTAssertEqual("　　 abc 　　".trim(), "abc")
@@ -237,6 +137,33 @@ final class String_ExtensionTests: XCTestCase {
         XCTAssertEqual(dict["age"] as? Int, 100)
     }
 
+    func testParseJSON() {
+        var str = "{\"Name\": \"tester\", \"device\": \"iPhone\"}"
+        guard let result1: [String: String] = str.parseJSON() else {
+            XCTFail("Should parse success")
+            return
+        }
+        XCTAssertEqual(result1["Name"], "tester")
+        XCTAssertEqual(result1["device"], "iPhone")
+
+        str = "[{\"Name\": \"name1\"}, {\"age\": 3}]"
+        guard let result2: [[String: Any]] = str.parseJSON() else {
+            XCTFail("Should parse success")
+            return
+        }
+        XCTAssertEqual(result2.count, 2)
+        XCTAssertEqual(result2[0]["Name"] as? String, "name1")
+        XCTAssertEqual(result2[1]["age"] as? Int, 3)
+
+        str = ""
+        let result3: [String: Any]? = str.parseJSON()
+        XCTAssertNil(result3)
+
+        str = "[{\"Name\": \"name1\"}, {\"age\": 3}]"
+        let result4: [String: String]? = str.parseJSON()
+        XCTAssertNil(result4)
+    }
+
     func testCommaSeparatedListShouldJoinWithComma() {
         XCTAssertEqual(["foo", "bar"].asCommaSeparatedList(trailingSpace: false), "foo,bar")
     }
@@ -277,6 +204,22 @@ final class String_ExtensionTests: XCTestCase {
         str = "Tester name "
         result = str.removeMailToIfNeeded()
         XCTAssertEqual(result, str)
+    }
+
+    func testInsert() {
+        let str = "abcde"
+        let temp1 = str.insert(every: 2, with: "@@")
+        XCTAssertEqual(temp1, "ab@@cd@@e")
+        let temp2 = str.insert(every: 3, with: "###")
+        XCTAssertEqual(temp2, "abc###de")
+    }
+
+    func testSubscriptRange() {
+        let str = "abcdefghijk"
+        let range1 = NSRange(location: 0, length: 3)
+        XCTAssertEqual(str[range1], "abc")
+        let range2 = NSRange(location: 5, length: 2)
+        XCTAssertEqual(str[range2], "fg")
     }
 }
 

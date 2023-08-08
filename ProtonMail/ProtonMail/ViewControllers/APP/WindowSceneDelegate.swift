@@ -25,13 +25,7 @@ import UIKit
 @available(iOS 13.0, *)
 class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     lazy var coordinator: WindowsCoordinator = {
-        if UIDevice.current.stateRestorationPolicy == .multiwindow {
-            // each window scene has it's own windowCoordinator
-            return WindowsCoordinator(services: sharedServices, darkModeCache: userCachedStatus)
-        } else {
-            // windowCoordinator is shared across whole app
-            return (UIApplication.shared.delegate as? AppDelegate)!.coordinator
-        }
+        return (UIApplication.shared.delegate as? AppDelegate)!.coordinator
     }()
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -44,7 +38,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         if let data = userActivity.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepLink(deeplink)
         } else {
             self.coordinator.start()
         }
@@ -56,10 +50,20 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
                      completionHandler: @escaping (Bool) -> Void) {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
+            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
             completionHandler(true)
         } else {
             completionHandler(false)
+        }
+    }
+
+    // Multiple windows support is disabled temporary in 4.7.0
+    // But if user has created multiple windows in 4.6.0
+    // They will hit black screen issue after updating to 4.7.0
+    // Use this function to destroy other inactivate sessions
+    private func onlyKeepOneActivateSession(session: UISceneSession) {
+        for openSession in UIApplication.shared.openSessions where openSession != session {
+            UIApplication.shared.requestSceneSessionDestruction(openSession, options: nil) { _ in }
         }
     }
 
@@ -69,7 +73,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         let notificationInfo = connectionOptions.notificationResponse?.notification.request.content.userInfo
         if let userInfo = notificationInfo {
             sharedServices.get(by: PushNotificationService.self)
-                            .setNotificationOptions(userInfo, fetchCompletionHandler: { /* nothing */ })
+                .setNotification(userInfo, fetchCompletionHandler: {})
         }
 
         if let shortcutItem = connectionOptions.shortcutItem,
@@ -96,13 +100,14 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         _ = connectionOptions.urlContexts.first { context in
             self.handleUrlOpen(context.url)
         }
+        onlyKeepOneActivateSession(session: session)
     }
 
     // handle the shorcut item in scene(_:willConnectTo:options:)
     func handleShortcutAction(shortcutItem: UIApplicationShortcutItem) {
         if let data = shortcutItem.userInfo?["deeplink"] as? Data,
            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeeplink(deeplink)
+            self.coordinator.followDeepLink(deeplink)
         } else {
             self.coordinator.start()
         }
@@ -137,7 +142,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
             deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
             deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
-            self.coordinator.followDeepDeeplinkIfNeeded(deeplink)
+            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
             return true
         }
 

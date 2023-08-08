@@ -28,6 +28,7 @@ struct ComposerViewFactory {
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
         scheduleSendStatusProvider: ScheduleSendEnableStatusProvider,
         internetStatusProvider: InternetConnectionStatusProvider,
+        coreKeyMaker: KeyMakerProtocol,
         navigationViewController: UINavigationController
     ) -> ComposeContainerViewController {
         let childViewModel = ComposeViewModel(
@@ -37,8 +38,31 @@ struct ComposerViewFactory {
             action: .newDraftFromShare,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: contextProvider,
-            internetStatusProvider: internetStatusProvider
+            dependencies: .init(
+                coreDataContextProvider: contextProvider,
+                coreKeyMaker: coreKeyMaker,
+                fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
+                internetStatusProvider: internetStatusProvider,
+                fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
+                contactProvider: user.contactService,
+                helperDependencies: .init(
+                    messageDataService: user.messageService,
+                    cacheService: user.cacheService,
+                    contextProvider: contextProvider,
+                    copyMessage: CopyMessage(
+                        dependencies: .init(
+                            contextProvider: contextProvider,
+                            messageDecrypter: user.messageService.messageDecrypter
+                        ),
+                        userDataSource: user
+                    )
+                ), fetchMobileSignatureUseCase: FetchMobileSignature(
+                    dependencies: .init(
+                        coreKeyMaker: coreKeyMaker,
+                        cache: userCachedStatus
+                    )
+                )
+            )
         )
         let router = ComposerRouter()
         router.setupNavigation(navigationViewController)
@@ -46,7 +70,8 @@ struct ComposerViewFactory {
             router: router,
             editorViewModel: childViewModel,
             userIntroductionProgressProvider: userIntroductionProgressProvider,
-            scheduleSendStatusProvider: scheduleSendStatusProvider
+            scheduleSendStatusProvider: scheduleSendStatusProvider,
+            contextProvider: contextProvider
         )
         let controller = ComposeContainerViewController(
             viewModel: viewModel,
@@ -65,6 +90,7 @@ struct ComposerViewFactory {
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
         scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
         internetStatusProvider: InternetConnectionStatusProvider,
+        coreKeyMaker: KeyMakerProtocol,
         mailToUrl: URL? = nil,
         toContact: ContactPickerModelProtocol? = nil
     ) -> UINavigationController {
@@ -73,9 +99,32 @@ struct ComposerViewFactory {
             action: action,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: contextProvider,
-            internetStatusProvider: internetStatusProvider,
-            isEditingScheduleMsg: isEditingScheduleMsg
+            isEditingScheduleMsg: isEditingScheduleMsg,
+            dependencies: .init(
+                coreDataContextProvider: contextProvider,
+                coreKeyMaker: coreKeyMaker,
+                fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
+                internetStatusProvider: internetStatusProvider,
+                fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
+                contactProvider: user.contactService,
+                helperDependencies: .init(
+                    messageDataService: user.messageService,
+                    cacheService: user.cacheService,
+                    contextProvider: contextProvider,
+                    copyMessage: CopyMessage(
+                        dependencies: .init(
+                            contextProvider: contextProvider,
+                            messageDecrypter: user.messageService.messageDecrypter
+                        ),
+                        userDataSource: user
+                    )
+                ), fetchMobileSignatureUseCase: FetchMobileSignature(
+                    dependencies: .init(
+                        coreKeyMaker: coreKeyMaker,
+                        cache: userCachedStatus
+                    )
+                )
+            )
         )
         if let url = mailToUrl {
             childViewModel.parse(mailToURL: url)
@@ -102,7 +151,8 @@ struct ComposerViewFactory {
             router: router,
             editorViewModel: childViewModel,
             userIntroductionProgressProvider: userIntroductionProgressProvider,
-            scheduleSendStatusProvider: scheduleSendEnableStatusProvider
+            scheduleSendStatusProvider: scheduleSendEnableStatusProvider,
+            contextProvider: contextProvider
         )
         let controller = ComposeContainerViewController(
             viewModel: viewModel,

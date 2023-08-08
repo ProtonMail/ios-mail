@@ -13,23 +13,24 @@ import fusion
 import ProtonCore_Environment
 import ProtonCore_QuarkCommands
 import ProtonCore_TestingToolkit
+import Yams
 
 let apiDomainKey = "MAIL_APP_API_DOMAIN"
 var environmentFileName = "environment"
 var credentialsFileName = "credentials"
 let credentialsBlackFileName = "credentials_black"
 let testData = TestData()
+var users: [String: TestUser] = [:]
 
-var dynamicDomain: String? {
-    let domain = ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"]
-    return domain?.isEmpty == false ? domain : ""
+var dynamicDomain: String {
+    ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] ?? ""
 }
 
 /**
  Parent class for all the test classes.
  */
 class BaseTestCase: CoreTestCase, QuarkTestable {
-
+    
     var launchArguments = ["-clear_all_preference", "YES"]
     var humanVerificationStubs = false
     var forceUpgradeStubs = false
@@ -40,27 +41,18 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
     var env: Environment = .black
     lazy var quarkCommands = QuarkCommands(doh: env.doh)
 
-    @MainActor
-    override func setUp() async throws {
-        try await super.setUp()
-        continueAfterFailure = false
-
-        setupTest()
-    }
-
-    @MainActor
-    func login(user: User) {
-        loginRobot
-            .loginUser(user)
-    }
-
-    @MainActor
     func terminateApp() {
         app.terminate()
     }
 
-    @MainActor
-    func setupTest() {
+    /// Runs only once per test run.
+    override class func setUp() {
+        getTestUsersFromYamlFiles()
+    }
+
+    /// Runs before eact test case.
+    override func setUp() {
+        super.setUp()
 
         continueAfterFailure = false
 
@@ -70,8 +62,10 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         app.launchArguments.append("-skipTour")
         app.launchArguments.append("-toolbarSpotlightOff")
         app.launchArguments.append("-uiTests")
+        app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])
+        app.launchArguments.append(contentsOf: ["-AppleLanguages", "(en)"])
 
-        app.launchEnvironment[apiDomainKey] = dynamicDomain!
+        app.launchEnvironment[apiDomainKey] = dynamicDomain
 
         if humanVerificationStubs {
             app.launchEnvironment["HumanVerificationStubs"] = "1"
@@ -82,21 +76,25 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         }
         app.launch()
 
-        env = Environment.custom(dynamicDomain!)
+        env = Environment.custom(dynamicDomain)
         quarkCommands = QuarkCommands(doh: env.doh)
 
         handleInterruption()
     }
 
-    override func tearDown() async throws {
-        await terminateApp()
-        try await super.tearDown()
+    override func tearDown() {
+        terminateApp()
+        super.tearDown()
     }
 
     func handleInterruption() {
         let labels = [LocalString._skip_btn_title, "Allow Access to All Photos", "Select Photos...", "Don’t Allow", "Keep Current Selection",LocalString._send_anyway, LocalString._general_ok_action, LocalString._hide]
         /// Adds UI interruption monitor that queries all buttons and clicks if identifier is in the labels array. It is triggered when system alert interrupts the test execution.
         addUIMonitor(elementQueryToTap: XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons, identifiers: labels)
+    }
+    
+    fileprivate func login(user: User) {
+        loginRobot.loginUser(user)
     }
 
     private func loadUser(userKey: String) -> String {
@@ -123,46 +121,73 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         }
         return params[key]
     }
-}
+    
+    private static func getYamlFiles(in folderURL: URL) -> [URL] {
+        var files: [URL] = []
 
-@available(iOS 16.0, *)
-class CleanAuthenticatedTestCase: BaseTestCase {
+        let fileManager = FileManager.default
+        if let enumerator = fileManager.enumerator(at: folderURL, includingPropertiesForKeys: nil) {
+            for case let fileURL as URL in enumerator {
+                if fileURL.lastPathComponent == "user.yml" {
+                    files.append(fileURL)
+                }
+            }
+        }
 
-    var user: User = User(name: StringUtils().randomAlphanumericString(length: 8), password: StringUtils().randomAlphanumericString(length: 8), mailboxPassword: "", twoFASecurityKey: "")
-
-    override func setUp() async throws {
-        try await super.setUp()
-
-        quarkCommands.createUser(username: user.name, password: user.password, protonPlanName: UserPlan.mailpro2022.rawValue)
-
-        login(user: user)
+        return files
     }
+    
+    private static func getTestUsersFromYamlFiles() {
+        // Get "protonmail-ios/ProtonMail/" path to later locate "protonmail-ios/ProtonMail/TestData".
+        let uiTestsFolderPath = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().path
+        let folderUrl = URL(fileURLWithPath: "\(uiTestsFolderPath)/TestData")
+        var userYamlFiles: [URL]
 
-    override func tearDown() async throws {
-        try await deleteUser(domain: dynamicDomain!, user)
-        try await super.tearDown()
+        userYamlFiles = getYamlFiles(in: folderUrl)
+        
+        XCTAssertTrue(userYamlFiles.count > 0, "Attempted to parse user.yml files from TestData repository but was not able to find any.")
+
+        for file in userYamlFiles {
+            do {
+                if let data = try String(contentsOf: file).data(using: .utf8) {
+                    let user = try YAMLDecoder().decode(TestUser.self, from: data)
+                    users[user.user.name] = user
+                }
+            } catch {
+                print("Error deserializing YAML: \(error.localizedDescription)")
+            }
+        }
     }
 }
 
 @available(iOS 16.0, *)
 class FixtureAuthenticatedTestCase: BaseTestCase {
 
-    var user: User?
     var scenario: MailScenario { .qaMail001 }
+    var plan: UserPlan { .mailpro2022 }
     var isSubscriptionIncluded: Bool { true }
+    var user: User?
 
-    override func setUp() async throws {
-        let user = try await createUserWithFixturesLoad(domain: dynamicDomain!, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
-        self.user = user
+    override func setUp() {
+        super.setUp()
+        do {
+            user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
 
-        try await super.setUp()
-
-        login(user: user)
+        login(user: user!)
     }
 
-    override func tearDown() async throws {
-        try await deleteUser(domain: dynamicDomain!, user)
-        try await super.tearDown()
+    override func tearDown() {
+        do {
+            try deleteUser(domain: dynamicDomain, user)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
+        super.tearDown()
     }
 
     open override func record(_ issue: XCTIssue) {
@@ -180,3 +205,47 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
     }
 }
 
+@available(iOS 16.0, *)
+class NewFixtureAuthenticatedTestCase: BaseTestCase {
+
+    var scenario: MailScenario { .trashOneMessage }
+    var plan: UserPlan { .mailpro2022 }
+    var isSubscriptionIncluded: Bool { true }
+    var user: User?
+
+    override func setUp() {
+        super.setUp()
+        do {
+            user = try createUserWithiOSFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
+
+        login(user: user!)
+    }
+
+    override func tearDown() {
+        do {
+            try deleteUser(domain: dynamicDomain, user)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
+        super.tearDown()
+    }
+
+    open override func record(_ issue: XCTIssue) {
+        var myIssue = issue
+        var issueDescription: String = "\n"
+        issueDescription.append("User:")
+        issueDescription.append("\n")
+        issueDescription.append(user.debugDescription)
+        issueDescription.append("\n\n")
+        issueDescription.append("Failure:")
+        issueDescription.append("\n\(myIssue.compactDescription)")
+
+        myIssue.compactDescription = issueDescription
+        super.record(myIssue)
+    }
+}

@@ -45,7 +45,6 @@ public struct ResponseError: Error, Equatable {
 
     public let userFacingMessage: String?
     public let underlyingError: NSError?
-
     public var bestShotAtReasonableErrorCode: Int {
         responseCode ?? httpCode ?? underlyingError?.code ?? (self as NSError).code
     }

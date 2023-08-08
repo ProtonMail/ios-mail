@@ -19,21 +19,21 @@ import ProtonCore_Services
 
 enum FeatureFlagKey: String, CaseIterable {
     case appRating = "RatingIOSMail"
+    case sendRefactor = "SendMessageRefactor"
     case inAppFeedback = "InAppFeedbackIOS"
     case scheduleSend = "ScheduledSendFreemium"
     case senderImage = "ShowSenderImages"
+    case referralPrompt = "ReferralActionSheetShouldBePresentedIOS"
 }
 
+// sourcery: mock
 protocol FeatureFlagsSubscribeProtocol: AnyObject {
     func handleNewFeatureFlags(_ featureFlags: [String: Any])
 }
 
 // sourcery: mock
 protocol FeatureFlagsDownloadServiceProtocol {
-    typealias FeatureFlagsDownloadCompletion =
-        (Result<FeatureFlagsResponse, FeatureFlagsDownloadService.FeatureFlagFetchingError>) -> Void
-
-    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping FeatureFlagsDownloadCompletion)
+    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping (Error?) -> Void)
 }
 
 /// This class is used to download the feature flags from the BE and send the flags to the subscribed objects.
@@ -47,26 +47,32 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     }
     private(set) var lastFetchingTime: Date?
     private let appRatingStatusProvider: AppRatingStatusProvider
+    private let sendRefactorStatusProvider: SendRefactorStatusProvider
     private let scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
     private let senderImageEnableStatusProvider: SenderImageStatusProvider
+    private let referralPromptProvider: ReferralPromptProvider
 
     init(
         userID: UserID,
         apiService: APIService,
         sessionID: String,
         appRatingStatusProvider: AppRatingStatusProvider,
+        sendRefactorStatusProvider: SendRefactorStatusProvider,
         scheduleSendEnableStatusProvider: ScheduleSendEnableStatusProvider,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        senderImageEnableStatusProvider: SenderImageStatusProvider
+        senderImageEnableStatusProvider: SenderImageStatusProvider,
+        referralPromptProvider: ReferralPromptProvider
     ) {
         self.userID = userID
         self.apiService = apiService
         self.sessionID = sessionID
         self.appRatingStatusProvider = appRatingStatusProvider
+        self.sendRefactorStatusProvider = sendRefactorStatusProvider
         self.scheduleSendEnableStatusProvider = scheduleSendEnableStatusProvider
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.senderImageEnableStatusProvider = senderImageEnableStatusProvider
+        self.referralPromptProvider = referralPromptProvider
     }
 
     func register(newSubscriber: FeatureFlagsSubscribeProtocol) {
@@ -75,25 +81,24 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
 
     enum FeatureFlagFetchingError: Error {
         case fetchingTooOften
-        case networkError(Error)
         case selfIsReleased
     }
 
-    func getFeatureFlags(completion: (FeatureFlagsDownloadCompletion)?) {
+    func getFeatureFlags(completion: ((Error?) -> Void)?) {
         if let time = self.lastFetchingTime,
             Date().timeIntervalSince1970 - time.timeIntervalSince1970 > 300.0 {
-            completion?(.failure(.fetchingTooOften))
+            completion?(FeatureFlagFetchingError.fetchingTooOften)
             return
         }
 
         let request = FetchFeatureFlagsRequest()
         apiService.perform(request: request, response: FeatureFlagsResponse()) { [weak self] task, response in
             guard let self = self else {
-                completion?(.failure(.selfIsReleased))
+                completion?(FeatureFlagFetchingError.selfIsReleased)
                 return
             }
             if let error = task?.error {
-                completion?(.failure(.networkError(error)))
+                completion?(error)
                 return
             }
 
@@ -136,6 +141,10 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
                 self.appRatingStatusProvider.setIsAppRatingEnabled(appRatingStatus)
             }
 
+            if let sendRefactor = response.result[FeatureFlagKey.sendRefactor.rawValue] as? Bool {
+                self.sendRefactorStatusProvider.setIsSendRefactorEnabled(userID: self.userID, value: sendRefactor)
+            }
+
             if let isSenderImageEnable = response.result[FeatureFlagKey.senderImage.rawValue] as? Bool {
                 self.senderImageEnableStatusProvider.setIsSenderImageEnable(
                     enable: isSenderImageEnable,
@@ -143,22 +152,24 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
                 )
             }
 
-            completion?(.success(response))
+            if let isReferralPromptAvailable = response.result[FeatureFlagKey.referralPrompt.rawValue] as? Bool {
+                self.referralPromptProvider.setIsReferralPromptEnabled(
+                    enabled: isReferralPromptAvailable,
+                    userID: self.userID
+                )
+            }
+
+            completion?(nil)
         }
     }
 
-    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping FeatureFlagsDownloadCompletion) {
-        let request = UpdateFeatureFlagsRequest(featureFlagName: FeatureFlagKey.appRating.rawValue, value: value)
+    func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping (Error?) -> Void) {
+        let request = UpdateFeatureFlagsRequest(featureFlagName: key.rawValue, value: value)
         apiService.perform(
             request: request,
-            response: FeatureFlagsResponse(),
             callCompletionBlockUsing: .immediateExecutor
-        ) { task, response in
-            if let error = task?.error {
-                completion(.failure(.networkError(error)))
-            } else {
-                completion(.success(response))
-            }
+        ) { task, _ in
+            completion(task?.error)
         }
     }
 

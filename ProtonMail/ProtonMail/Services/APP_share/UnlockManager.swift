@@ -35,53 +35,65 @@ enum SignInUIFlow: Int {
     case restore = 2
 }
 
-protocol CacheStatusInject {
-    var isPinCodeEnabled: Bool { get }
-    var isTouchIDEnabled: Bool { get }
-    var isAppKeyEnabled: Bool { get }
+// sourcery: mock
+protocol PinFailedCountCache {
     var pinFailedCount: Int { get set }
-
-    /// Returns `true` if there is some kind of protection to access the app, but
-    /// the main key is accessible without the user having to interact to unlock the app.
-    var isAppLockedAndAppKeyDisabled: Bool { get }
-
-    /// Returns `true` if there is some kind of protection to access the app, and
-    /// the main key is only accessible if user interacts to unlock the app (e.g. enters pin, uses FaceID,...)
-    var isAppLockedAndAppKeyEnabled: Bool { get }
 }
 
+// sourcery: mock
 protocol UnlockManagerDelegate: AnyObject {
-    func cleanAll()
+    func cleanAll(completion: @escaping () -> Void)
     func isUserStored() -> Bool
     func isMailboxPasswordStored(forUser uid: String?) -> Bool
     func setupCoreData()
+    func loadUserDataAfterUnlock()
 }
 
-class UnlockManager: Service {
-    var cacheStatus: CacheStatusInject
-    private var mutex = UnsafeMutablePointer<pthread_mutex_t>.allocate(capacity: 1)
+// sourcery: mock
+protocol LAContextProtocol: AnyObject {
+    func canEvaluatePolicy(_ policy: LAPolicy, error: NSErrorPointer) -> Bool
+}
+
+extension LAContext: LAContextProtocol {}
+
+final class UnlockManager: Service {
+    private(set) var cacheStatus: LockCacheStatus
     unowned let delegate: UnlockManagerDelegate
+    private let keyMaker: KeyMakerProtocol
+    private let localAuthenticationContext: LAContextProtocol
+    private let notificationCenter: NotificationCenter
+    private var pinFailedCountCache: PinFailedCountCache
 
     static var shared: UnlockManager {
         return sharedServices.get(by: UnlockManager.self)
     }
 
-    init(cacheStatus: CacheStatusInject, delegate: UnlockManagerDelegate) {
+    init(
+        cacheStatus: LockCacheStatus,
+        delegate: UnlockManagerDelegate,
+        keyMaker: KeyMakerProtocol,
+        pinFailedCountCache: PinFailedCountCache,
+        localAuthenticationContext: LAContextProtocol = LAContext(),
+        notificationCenter: NotificationCenter = .default
+    ) {
         self.cacheStatus = cacheStatus
         self.delegate = delegate
+        self.keyMaker = keyMaker
+        self.pinFailedCountCache = pinFailedCountCache
 
-        mutex.initialize(to: pthread_mutex_t())
-        pthread_mutex_init(mutex, nil)
+        self.localAuthenticationContext = localAuthenticationContext
+        self.notificationCenter = notificationCenter
+
         #if !APP_EXTENSION
         trackLifetime()
         #endif
     }
 
-    internal func isUnlocked() -> Bool {
-        return self.validate(mainKey: keymaker.mainKey(by: nil))
+    func isUnlocked() -> Bool {
+        return validate(mainKey: keyMaker.mainKey(by: nil))
     }
 
-    internal func getUnlockFlow() -> SignInUIFlow {
+    func getUnlockFlow() -> SignInUIFlow {
         migrateProtectionSetting()
         if cacheStatus.isPinCodeEnabled {
             return SignInUIFlow.requirePin
@@ -92,52 +104,55 @@ class UnlockManager: Service {
         return SignInUIFlow.restore
     }
 
-    internal func match(userInputPin: String, completion: @escaping (Bool) -> Void) {
+    func match(userInputPin: String, completion: @escaping (Bool) -> Void) {
         guard !userInputPin.isEmpty else {
-            cacheStatus.pinFailedCount += 1
+            pinFailedCountCache.pinFailedCount += 1
             completion(false)
             return
         }
-        keymaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
+        keyMaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
             guard self.validate(mainKey: key) else {
                 userCachedStatus.pinFailedCount += 1
                 completion(false)
                 return
             }
-            self.cacheStatus.pinFailedCount = 0
+            self.pinFailedCountCache.pinFailedCount = 0
             completion(true)
         }
     }
 
     private func migrateProtectionSetting() {
         if cacheStatus.isPinCodeEnabled && cacheStatus.isTouchIDEnabled {
-            keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
+            _ = keyMaker.deactivate(PinProtection(pin: "doesnotmatter"))
         }
     }
 
     private func validate(mainKey: MainKey?) -> Bool {
         guard let _ = mainKey else { // currently enough: key is Array and will be nil in case it was unlocked incorrectly
-            keymaker.lockTheApp() // remember to remove invalid key in case validation will become more complex
+            keyMaker.lockTheApp() // remember to remove invalid key in case validation will become more complex
             return false
         }
         return true
     }
 
-    internal func biometricAuthentication(requestMailboxPassword: @escaping () -> Void) {
-        self.biometricAuthentication(afterBioAuthPassed: { self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword) })
+    func biometricAuthentication(requestMailboxPassword: @escaping () -> Void) {
+        biometricAuthentication(afterBioAuthPassed: { self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword) })
     }
 
     var isRequestingBiometricAuthentication: Bool = false
-    internal func biometricAuthentication(afterBioAuthPassed: @escaping () -> Void) {
+    func biometricAuthentication(afterBioAuthPassed: @escaping () -> Void) {
         var error: NSError?
-        guard LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            assert(false, "LAContext canEvaluatePolicy is false")
+        guard localAuthenticationContext.canEvaluatePolicy(
+            .deviceOwnerAuthenticationWithBiometrics,
+            error: &error
+        ) else {
+            assertionFailure("LAContext canEvaluatePolicy is false")
             return
         }
 
-        guard !self.isRequestingBiometricAuthentication else { return }
-        self.isRequestingBiometricAuthentication = true
-        keymaker.obtainMainKey(with: BioProtection()) { key in
+        guard !isRequestingBiometricAuthentication else { return }
+        isRequestingBiometricAuthentication = true
+        keyMaker.obtainMainKey(with: BioProtection()) { key in
             defer {
                 self.isRequestingBiometricAuthentication = false
             }
@@ -146,34 +161,64 @@ class UnlockManager: Service {
         }
     }
 
-    internal func initiateUnlock(flow signinFlow: SignInUIFlow,
-                                 requestPin: @escaping () -> Void,
-                                 requestMailboxPassword: @escaping () -> Void) {
-        if userCachedStatus.isAppLockedAndAppKeyDisabled {
-            unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
+    func initiateUnlock(
+        flow signInFlow: SignInUIFlow,
+        requestPin: @escaping () -> Void,
+        requestMailboxPassword: @escaping () -> Void
+    ) {
+        if cacheStatus.isAppLockedAndAppKeyDisabled {
+            unlockIfRememberedCredentials(
+                requestMailboxPassword: requestMailboxPassword,
+                unlocked: {
+                    switch signInFlow {
+                    case .requirePin:
+                        requestPin()
+                    case .requireTouchID:
+                        self.biometricAuthentication(afterBioAuthPassed: {
+                            self.unlockIfRememberedCredentials(
+                                requestMailboxPassword: requestMailboxPassword,
+                                unlocked: {
+                                    self.notificationCenter.post(name: Notification.Name.didUnlock, object: nil)
+                                }
+                            )
+                        })
+                    case .restore:
+                        assertionFailure("Should not reach here.")
+                    }
+                }
+            )
         } else {
-            switch signinFlow {
+            switch signInFlow {
             case .requirePin:
                 requestPin()
-
             case .requireTouchID:
-                self.biometricAuthentication(requestMailboxPassword: requestMailboxPassword) // will send message
-
+                biometricAuthentication(requestMailboxPassword: requestMailboxPassword)
             case .restore:
-                self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
+                unlockIfRememberedCredentials(
+                    requestMailboxPassword: requestMailboxPassword,
+                    unlockFailed: {
+                        self.notificationCenter.post(
+                            name: Notification.Name.didSignOut,
+                            object: nil
+                        )
+                    }
+                )
             }
         }
     }
 
-    internal func unlockIfRememberedCredentials(forUser uid: String? = nil,
-                                                requestMailboxPassword: () -> Void,
-                                                unlockFailed: (() -> Void)? = nil,
-                                                unlocked: (() -> Void)? = nil) {
+    func unlockIfRememberedCredentials(
+        forUser uid: String? = nil,
+        requestMailboxPassword: () -> Void,
+        unlockFailed: (() -> Void)? = nil,
+        unlocked: (() -> Void)? = nil
+    ) {
         Breadcrumbs.shared.add(message: "UnlockManager.unlockIfRememberedCredentials called", to: .randomLogout)
-        guard keymaker.mainKeyExists(), self.delegate.isUserStored() else {
+        guard keyMaker.mainKeyExists(), delegate.isUserStored() else {
             delegate.setupCoreData()
-            delegate.cleanAll()
-            unlockFailed?()
+            delegate.cleanAll {
+                unlockFailed?()
+            }
             return
         }
 
@@ -185,24 +230,12 @@ class UnlockManager: Service {
 
         delegate.setupCoreData()
 
-        cacheStatus.pinFailedCount = 0
+        pinFailedCountCache.pinFailedCount = 0
 
-        // need move to delegation
-        let usersManager = sharedServices.get(by: UsersManager.self)
-        usersManager.run()
-        usersManager.tryRestore()
+        delegate.loadUserDataAfterUnlock()
 
-        #if !APP_EXTENSION
-        sharedServices.get(by: UsersManager.self).users.forEach {
-            $0.messageService.injectTransientValuesIntoMessages()
-        }
-        if let primaryUser = usersManager.firstUser {
-            primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
-        }
-        #endif
-
-        if !userCachedStatus.isTouchIDEnabled && !userCachedStatus.isPinCodeEnabled {
-            NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
+        if !cacheStatus.isTouchIDEnabled && !cacheStatus.isPinCodeEnabled {
+            notificationCenter.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
         }
         unlocked?()
     }

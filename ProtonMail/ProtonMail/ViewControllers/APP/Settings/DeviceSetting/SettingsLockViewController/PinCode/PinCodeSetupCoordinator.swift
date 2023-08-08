@@ -33,10 +33,10 @@ class PinCodeSetupCoordinator {
 
     var navigationController: UINavigationController?
 
-    init(nav: UINavigationController) {
+    init(nav: UINavigationController, coreKeyMaker: KeyMakerProtocol) {
         self.navigationController = nav
         self.viewController = PinCodeSetUpViewController(nibName: "PinCodeSetUpViewController", bundle: nil)
-        self.pinCodeSetupViewModel = SetPinCodeModelImpl()
+        self.pinCodeSetupViewModel = SetPinCodeModelImpl(coreKeyMaker: coreKeyMaker)
         self.viewController?.viewModel = self.pinCodeSetupViewModel
     }
 

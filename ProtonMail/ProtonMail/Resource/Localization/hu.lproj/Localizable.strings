@@ -304,9 +304,6 @@
 "Breeze through threaded messages in conversation mode." = "Beszélgetés üzemmódban könnyedén átfuthat a szálankénti üzeneteken.";
 
 /* Title */
-"Bug Description" = "Hiba leírása";
-
-/* Title */
 "Bug Report Received" = "Hibajelentés megérkezett";
 
 /* The title of cached data in local storage settings */
@@ -949,7 +946,7 @@
 "Human Check Warning" = "Robot ellenőrzés figyelmeztetés";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "A Proton Mailt használom és gondoltam, hogy neked is tetszeni fog. Ez egy biztonságos e-mail szolgáltatás, amely védi a magánéleted. Regisztrálj ezen a linken, hogy 1 hónapig ingyen használhasd a prémium funkciókat is:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "A Proton Mailt használom és gondoltam, hogy neked is tetszeni fog. Ez egy biztonságos e-mail szolgáltatás, amely védi a magánéleted. Regisztrálj ezen a hivatkozáson, hogy 1 hónapig ingyen használhasd a prémium funkciókat is:";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Amennyiben a WiFi kapcsolata megszakad, a letöltés mobil hálózaton fog folytatódni.";
@@ -1014,6 +1011,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "A Proton új megjelenésének bemutatása.\nSok szolgáltatás, egy küldetés. Üdvözli az az internet, amelyen az adatvédelem alapértelmezett.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Érvénytelen e-mail cím";
 
 /* update password error */
 "Invalid hashed password!" = "Érvénytelen hash-elt jelszó!";
@@ -1681,7 +1681,7 @@
 /* Action */
 "Send anyway" = "Küldés mindenképpen";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Visszajelzés küldése";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -2246,9 +2246,6 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "%@ cím nem állítható be az alapértelmezettként, mert ez egy fizetős szolgáltatás.";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Kikapcsolta a %@-t a rendszerbeállításokban. A %@ fontos fiókinformációk védelméhez volt beállítva. Ahhoz, hogy hozzáférhessen a fiókjához, aktiválja a %@-t a beállításokban, vagy jelentkezzen be újra.";
-
 /* Message */
 "You have %d new emails!" = "%d új üzenete van!";
 
@@ -2315,3 +2312,7 @@
 /* contact placeholder */
 "ZIP" = "Irányítószám";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in.";
+
+"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

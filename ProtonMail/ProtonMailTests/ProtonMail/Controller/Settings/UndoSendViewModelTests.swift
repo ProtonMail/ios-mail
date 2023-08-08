@@ -15,19 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
-@testable import ProtonMail
+import ProtonCore_Keymaker
 import ProtonCore_TestingToolkit
+@testable import ProtonMail
+import XCTest
 
 final class UndoSendViewModelTests: XCTestCase {
     private var sut: UndoSendSettingViewModel!
     private var user: UserManager!
     private var apiService: APIServiceMock!
     private var uiMock: SettingsSingleCheckMarkUIMock!
+    private var keyMaker: Keymaker!
+    private var keyChain: KeychainWrapper!
 
     override func setUpWithError() throws {
         apiService = APIServiceMock()
-        user = UserManager(api: apiService, role: .member)
+        keyChain = .makeTestingKeychain()
+        keyMaker = .init(autolocker: nil, keychain: keyChain)
+        user = UserManager(api: apiService, role: .member, coreKeyMaker: keyMaker)
         sut = UndoSendSettingViewModel(user: user, delaySeconds: 0)
         uiMock = SettingsSingleCheckMarkUIMock()
         sut.set(uiDelegate: uiMock)
@@ -38,6 +43,9 @@ final class UndoSendViewModelTests: XCTestCase {
         user = nil
         sut = nil
         uiMock = nil
+        keyMaker = nil
+        keyChain.removeEverything()
+        keyChain = nil
     }
 
     func testHeaderFooter() throws {

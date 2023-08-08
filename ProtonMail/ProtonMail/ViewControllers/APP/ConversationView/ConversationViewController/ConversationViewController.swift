@@ -91,17 +91,6 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
 
         viewModel.fetchConversationDetails { [weak self] in
             self?.viewModel.isInitialDataFetchCalled = true
-            delay(0.5) { // wait a bit for the UI to update
-                self?.viewModel.messagesDataSource
-                    .compactMap {
-                        $0.messageViewModel?.state.expandedViewModel?.messageContent
-                    }.forEach { model in
-                        if model.message.unRead {
-                            self?.viewModel.messageIDsOfMarkedAsRead.append(model.message.messageID)
-                        }
-                        model.markReadIfNeeded()
-                    }
-            }
         }
 
         registerNotification()
@@ -263,7 +252,10 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         customView.tableView.register(cellType: ConversationViewTrashedHintCell.self)
 
         let headerView = ConversationViewHeaderView()
-        headerView.titleTextView.set(text: viewModel.conversation.subject, preferredFont: .title3)
+        let subject = viewModel.conversation.subject
+            .keywordHighlighting
+            .asAttributedString(keywords: viewModel.highlightedKeywords)
+        headerView.titleTextView.set(text: subject, preferredFont: .title3)
         headerView.titleTextView.textAlignment = .center
         customView.tableView.tableHeaderView = headerView
     }
@@ -561,16 +553,22 @@ private extension ConversationViewController {
             }
             let customView = cell.customView
             collapsedViewModel.reloadView = { [weak self] model in
-                self?.conversationMessageCellPresenter.present(model: model, in: customView)
+                self?.conversationMessageCellPresenter.present(
+                    model: model,
+                    in: customView,
+                    highlightedKeywords: self?.viewModel.highlightedKeywords ?? []
+                )
             }
             cell.cellReuse = { [weak collapsedViewModel] in
                 collapsedViewModel?.reloadView = nil
             }
             let model = collapsedViewModel.model(customFolderLabels: self.viewModel.customFolders)
-            conversationMessageCellPresenter.present(model: model, in: cell.customView)
-
+            conversationMessageCellPresenter.present(
+                model: model,
+                in: cell.customView,
+                highlightedKeywords: viewModel.highlightedKeywords
+            )
             showSenderImageIfNeeded(in: cell, message: viewModel.message)
-
             return cell
         case .expanded(let expandedViewModel):
             let cell = tableView.dequeue(cellType: ConversationExpandedMessageCell.self)
@@ -731,7 +729,8 @@ private extension ConversationViewController {
     }
 
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
-        guard !viewModel.user.shouldMoveToNextMessageAfterMove else {
+        guard UserInfo.isConversationSwipeEnabled,
+              !viewModel.user.shouldMoveToNextMessageAfterMove else {
             return
         }
         if var type = undoActionType {
@@ -748,7 +747,7 @@ private extension ConversationViewController {
             viewModel.user.undoActionManager.addTitleWithAction(title: title, action: type)
         }
         let banner = PMBanner(message: title, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
-        banner.show(at: .bottom, on: self)
+        banner.show(at: .bottom, on: self.navigationController ?? self)
     }
 
     private func showSenderImageIfNeeded(in cell: ConversationMessageCell, message: MessageEntity) {
@@ -1141,7 +1140,7 @@ enum ActionSheetDataSource {
 
 extension ConversationViewController: ContentPrintable {}
 
-extension ConversationViewController: LabelAsActionSheetPresentProtocol {
+extension ConversationViewController {
     var labelAsActionHandler: LabelAsActionSheetProtocol {
         return viewModel
     }
@@ -1309,8 +1308,12 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
     private func showMoveToActionSheet(for message: MessageEntity) {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
+        var menuLabels = viewModel.getFolderMenuItems()
+        if message.isSent {
+            menuLabels.removeAll(where: { $0.location == .inbox })
+        }
         let moveToViewModel = MoveToActionSheetViewModelMessages(
-            menuLabels: viewModel.getFolderMenuItems(),
+            menuLabels: menuLabels,
             messages: [message],
             isEnableColor: isEnableColor,
             isInherit: isInherit
@@ -1347,6 +1350,12 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             done: { [weak self] isHavingUnsavedChanges in
                 defer {
                     self?.dismissActionSheet()
+                    self?.viewModel.navigateToNextConversation(
+                        isInPageView: self?.isInPageView ?? false,
+                        popCurrentView: {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    )
                 }
                 guard isHavingUnsavedChanges else {
                     return

@@ -1,10 +1,13 @@
 import CoreData
+import LocalAuthentication
 import ProtonCore_Crypto
 import ProtonCore_Environment
-import ProtonCore_PaymentsUI
-import ProtonCore_TestingToolkit
 import ProtonCore_Keymaker
+import ProtonCore_PaymentsUI
+import ProtonCore_Services
+import ProtonCore_TestingToolkit
 
+import class PromiseKit.Promise
 import class ProtonCore_DataModel.UserInfo
 
 @testable import ProtonMail

@@ -33,30 +33,35 @@ class MonkeyTests : BaseMonkey, QuarkTestable  {
     private var isSubscriptionIncluded: Bool { true }
     private let apiDomainKey = "MAIL_APP_API_DOMAIN"
 
-    override func setUp() async throws {
-        try await super.setUp()
-
-        await setupTest()
-        let user = try await createUserWithFixturesLoad(domain: dynamicDomain!, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
-        self.user = user
+    override func setUp() {
+        super.setUp()
+        setupTest()
+        do {
+            user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: UserPlan.mailpro2022, scenario: scenario, isEnableEarlyAccess: false)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
     }
 
-    override func tearDown() async throws {
-        await terminateApp()
-        try await deleteUser(domain: dynamicDomain!, user)
-        try await super.tearDown()
+    override func tearDown() {
+        do {
+            try deleteUser(domain: dynamicDomain, user)
+        }
+        catch {
+            XCTFail(error.localizedDescription)
+        }
+        super.tearDown()
     }
 
-    @MainActor
     func terminateApp() {
         app.terminate()
     }
 
-    @MainActor
     func setupTest() {
         app.launch()
 
-        env = Environment.custom(dynamicDomain!)
+        env = Environment.custom(dynamicDomain)
         quarkCommands = QuarkCommands(doh: env.doh)
     }
 
@@ -64,7 +69,7 @@ class MonkeyTests : BaseMonkey, QuarkTestable  {
         let launchArguments = ["-clear_all_preference", "YES", "-uiTests", "-skipTour"]
         let app =  XCUIApplication()
 
-        app.launchEnvironment[apiDomainKey] = dynamicDomain!
+        app.launchEnvironment[apiDomainKey] = dynamicDomain
         launchArguments.forEach { app.launchArguments.append($0) }
 
         return app }

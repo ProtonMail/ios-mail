@@ -24,7 +24,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
     var mockFetchLatestEventId: MockFetchLatestEventId!
     var mockFetchMessages: MockFetchMessages!
     var mockLocalMessagesService: MockLocalMessageDataService!
-    var mockLastUpdatedStore: MockLastUpdatedStore!
+    var mockLastUpdatedStore: MockLastUpdatedStoreProtocol!
     var mockContactProvider: MockContactProvider!
     var mockLabelProvider: MockLabelProviderProtocol!
 
@@ -35,7 +35,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         mockFetchLatestEventId = MockFetchLatestEventId()
         mockFetchMessages = MockFetchMessages()
         mockLocalMessagesService = MockLocalMessageDataService()
-        mockLastUpdatedStore = MockLastUpdatedStore()
+        mockLastUpdatedStore = MockLastUpdatedStoreProtocol()
         mockContactProvider = MockContactProvider(coreDataContextProvider: MockCoreDataContextProvider())
         mockLabelProvider = MockLabelProviderProtocol()
 
@@ -159,10 +159,10 @@ final class FetchMessagesWithResetTests: XCTestCase {
 
         XCTAssertEqual(mockLabelProvider.fetchV4LabelsStub.callCounter, 0)
 
-        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadWasCalled)
+        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalled)
     }
 
-    func testExecute_whenFetchMessagesFails() {
+    func testExecute_whenFetchMessagesFails_andRefreshContacts() {
         let expectation = expectation(description: "callback is called")
 
         mockFetchMessages.result = .failure(NSError.badResponse())
@@ -170,7 +170,36 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let params = FetchMessagesWithReset.Params(
             endTime: 0,
             fetchOnlyUnreadMessages: Bool.random(),
-            refetchContacts: Bool.random(),
+            refetchContacts: true,
+            removeAllDrafts: Bool.random()
+        )
+        sut.execute(params: params) { _ in
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: timeout)
+
+        XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertTrue(mockFetchMessages.executeWasCalled)
+
+        XCTAssertFalse(mockLocalMessagesService.wasCleanMessageCalled)
+
+        XCTAssertTrue(mockContactProvider.wasCleanUpCalled)
+        XCTAssertTrue(mockContactProvider.isFetchContactsCalled)
+
+        XCTAssertEqual(mockLabelProvider.fetchV4LabelsStub.callCounter, 1)
+
+        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalled)
+    }
+
+    func testExecute_whenFetchMessagesFails_andDoNotRefreshContacts() {
+        let expectation = expectation(description: "callback is called")
+
+        mockFetchMessages.result = .failure(NSError.badResponse())
+
+        let params = FetchMessagesWithReset.Params(
+            endTime: 0,
+            fetchOnlyUnreadMessages: Bool.random(),
+            refetchContacts: false,
             removeAllDrafts: Bool.random()
         )
         sut.execute(params: params) { _ in
@@ -188,7 +217,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
 
         XCTAssertEqual(mockLabelProvider.fetchV4LabelsStub.callCounter, 1)
 
-        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadWasCalled)
+        XCTAssertFalse(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalled)
     }
 }
 
@@ -203,7 +232,7 @@ extension FetchMessagesWithResetTests {
         XCTAssert(mockContactProvider.wasCleanUpCalled == value)
         XCTAssert(mockContactProvider.isFetchContactsCalled == value)
 
-        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadWasCalled)
+        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalledExactlyOnce)
     }
 
     private func checkMocksForRemoveAllDraft(whenRemoveAllDraftIs value: Bool) {
@@ -214,7 +243,7 @@ extension FetchMessagesWithResetTests {
         XCTAssert(mockLocalMessagesService.removeAllDraftValue == value)
         XCTAssertFalse(mockLocalMessagesService.cleanBadgeAndNotificationsValue)
 
-        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadWasCalled)
+        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalledExactlyOnce)
     }
 
     private func makeDependencies(

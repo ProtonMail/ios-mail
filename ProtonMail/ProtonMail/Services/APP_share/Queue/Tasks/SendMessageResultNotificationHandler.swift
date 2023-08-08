@@ -21,7 +21,7 @@ import UIKit
 
 final class SendMessageResultNotificationHandler {
 
-    init() {
+    func startObservingResult() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(sendMessageTaskNotification),

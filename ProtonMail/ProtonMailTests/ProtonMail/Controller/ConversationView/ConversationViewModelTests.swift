@@ -87,6 +87,7 @@ class ConversationViewModelTests: XCTestCase {
                                     toolbarActionProvider: toolbarActionProviderMock,
                                     saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                     toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
+                                    highlightedKeywords: [],
                                     goToDraft: { _, _ in },
                                     dependencies: dependencies)
 
@@ -290,6 +291,30 @@ class ConversationViewModelTests: XCTestCase {
 
         let result = sut.toolbarActionTypes()
         XCTAssertEqual(result, [.inbox, .spam, .more])
+    }
+
+    func testToolbarActionTypes_inInbox_toolbarHasArchive_oneOfMessagesIsArchived_shouldKeepArchiveAction() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        toolbarActionProviderMock.messageToolbarActions = [.archive]
+        sut.messagesDataSource = [
+            .message(viewModel: makeFakeViewModel(location: .archive, multipleRecipients: true)),
+            .message(viewModel: makeFakeViewModel(location: .inbox, multipleRecipients: true))
+        ]
+
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.archive, .more])
+    }
+
+    func testToolbarActionTypes_inInbox_toolbarHasArchive_AllMessagesAreArchived_archiveShouldBeConveredToMoveToInbox() {
+        makeSUT(labelID: Message.Location.inbox.labelID)
+        toolbarActionProviderMock.messageToolbarActions = [.archive]
+        sut.messagesDataSource = [
+            .message(viewModel: makeFakeViewModel(location: .archive, multipleRecipients: true)),
+            .message(viewModel: makeFakeViewModel(location: .archive, multipleRecipients: true))
+        ]
+
+        let result = sut.toolbarActionTypes()
+        XCTAssertEqual(result, [.inbox, .more])
     }
 
     func testToolbarCustomizationCurrentTypes_notContainsMoreAction() {
@@ -850,6 +875,7 @@ class ConversationViewModelTests: XCTestCase {
                                     toolbarActionProvider: toolbarActionProviderMock,
                                     saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                     toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
+                                    highlightedKeywords: [],
                                     goToDraft: { _, _ in },
                                     dependencies: dependencies)
     }
@@ -874,6 +900,7 @@ class ConversationViewModelTests: XCTestCase {
             replacingEmailsMap: [:],
             contactGroups: [],
             internetStatusProvider: fakeInternetProvider,
+            highlightedKeywords: [],
             senderImageStatusProvider: mockSenderImageStatusProvider,
             goToDraft: { _, _ in })
         if isExpanded {

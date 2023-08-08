@@ -108,12 +108,6 @@ class SingleMessageContentViewController: UIViewController {
         viewModel.viewDidLoad()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        viewModel.viewWillAppear()
-    }
-
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         if #available(iOS 12.0, *) {
             let isDarkModeStyle = traitCollection.userInterfaceStyle == .dark
@@ -374,24 +368,24 @@ class SingleMessageContentViewController: UIViewController {
     private func presentActionSheet(context: MessageHeaderContactContext) {
         let title: String
         let showOfficialBadge: Bool
-        let showOptionToBlockSender: Bool
+        let senderBlockStatus: PMActionSheet.SenderBlockStatus
 
         switch context {
         case .recipient(let contactVO):
             title = contactVO.title
             showOfficialBadge = false
-            showOptionToBlockSender = false
+            senderBlockStatus = .notApplicable
         case .sender(let sender):
-            title = viewModel.messageInfoProvider.senderName
+            title = viewModel.messageInfoProvider.senderName.string
             showOfficialBadge = sender.isFromProton
-            showOptionToBlockSender = !viewModel.isSenderCurrentlyBlocked
+            senderBlockStatus = viewModel.isSenderCurrentlyBlocked ? .blocked : .notBlocked
         }
 
         let actionSheet = PMActionSheet.messageDetailsContact(
             title: title,
             subtitle: context.contact.subtitle,
             showOfficialBadge: showOfficialBadge,
-            showOptionToBlockSender: showOptionToBlockSender
+            senderBlockStatus: senderBlockStatus
         ) { [weak self] action in
             self?.dismissActionSheet()
             self?.handleAction(context: context, action: action)
@@ -418,11 +412,13 @@ class SingleMessageContentViewController: UIViewController {
             UIPasteboard.general.string = context.contact.name
         case .close:
             break
+        case .unblockSender:
+            unblockSender()
         }
     }
 
     private func blockSenderTapped() {
-        let senderEmail = viewModel.messageInfoProvider.senderEmail
+        let senderEmail = viewModel.messageInfoProvider.senderEmail.string
 
         let alert = UIAlertController(
             title: L11n.BlockSender.blockActionTitleLong,
@@ -439,17 +435,29 @@ class SingleMessageContentViewController: UIViewController {
             guard let self = self else { return }
 
             if self.viewModel.updateSenderBlockedStatus(blocked: true) {
-                let banner = PMBanner(
-                    message: String(format: L11n.BlockSender.successfulBlockConfirmation, senderEmail),
-                    style: PMBannerNewStyle.info,
-                    bannerHandler: PMBanner.dismiss
-                )
-                banner.show(at: .bottom, on: self)
+                self.showBottomToast(message: String(format: L11n.BlockSender.successfulBlockConfirmation, senderEmail))
             }
         }
         alert.addAction(confirmAction)
 
         present(alert, animated: true)
+    }
+
+    private func showBottomToast(message: String) {
+        let banner = PMBanner(message: message, style: PMBannerNewStyle.info, bannerHandler: PMBanner.dismiss)
+
+        let toastPresenter: UIViewController
+
+        if let singleMessageViewController = parent as? SingleMessageViewController {
+            toastPresenter = singleMessageViewController
+        } else if let conversationViewController = parent?.parent as? ConversationViewController {
+            toastPresenter = conversationViewController
+        } else {
+            PMAssertionFailure("Cannot find a suitable parent")
+            toastPresenter = parent ?? self
+        }
+
+        banner.show(at: .bottom, on: toastPresenter)
     }
 
     @objc
@@ -571,15 +579,12 @@ extension SingleMessageContentViewController: BannerViewControllerDelegate {
             return
         }
 
-        let banner = PMBanner(
+        showBottomToast(
             message: String(
                 format: L11n.BlockSender.successfulUnblockConfirmation,
-                viewModel.messageInfoProvider.senderEmail
-            ),
-            style: PMBannerNewStyle.info,
-            bannerHandler: PMBanner.dismiss
+                viewModel.messageInfoProvider.senderEmail.string
+            )
         )
-        banner.show(at: .bottom, on: self)
     }
 }
 

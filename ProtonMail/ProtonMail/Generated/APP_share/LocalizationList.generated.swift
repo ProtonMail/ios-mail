@@ -345,7 +345,6 @@ struct LocalizationList {
         "LocalizedString._sending_message": LocalString._sending_message,
         "LocalizedString._closing_draft": LocalString._closing_draft,
         "LocalizedString._please_wait_in_foreground": LocalString._please_wait_in_foreground,
-        "LocalizedString._bug_description": LocalString._bug_description,
         "LocalizedString._bug_report_received": LocalString._bug_report_received,
         "LocalizedString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system": LocalString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system,
         "LocalizedString._offline_bug_report": LocalString._offline_bug_report,
@@ -359,7 +358,6 @@ struct LocalizationList {
         "LocalizedString._share_alert": LocalString._share_alert,
         "LocalizedString._failed_to_determine_file_type": LocalString._failed_to_determine_file_type,
         "LocalizedString._unsupported_file": LocalString._unsupported_file,
-        "LocalizedString._please_use_protonmail_app_signin_first": LocalString._please_use_protonmail_app_signin_first,
         "LocalizedString._cant_copy_the_file": LocalString._cant_copy_the_file,
         "LocalizedString._no_photo_library_permission_content": LocalString._no_photo_library_permission_content,
         "LocalizedString._no_photo_library_permission_title": LocalString._no_photo_library_permission_title,
@@ -754,11 +752,13 @@ struct LocalizationList {
         "L11n.BlockSender.blockActionTitleShort": L11n.BlockSender.blockActionTitleShort,
         "L11n.BlockSender.blockListSettingsItem": L11n.BlockSender.blockListSettingsItem,
         "L11n.BlockSender.blockListScreenTitle": L11n.BlockSender.blockListScreenTitle,
+        "L11n.BlockSender.cannotRefreshWhileOffline": L11n.BlockSender.cannotRefreshWhileOffline,
         "L11n.BlockSender.emptyList": L11n.BlockSender.emptyList,
         "L11n.BlockSender.explanation": L11n.BlockSender.explanation,
         "L11n.BlockSender.senderIsBlockedBanner": L11n.BlockSender.senderIsBlockedBanner,
         "L11n.BlockSender.successfulBlockConfirmation": L11n.BlockSender.successfulBlockConfirmation,
         "L11n.BlockSender.successfulUnblockConfirmation": L11n.BlockSender.successfulUnblockConfirmation,
+        "L11n.BlockSender.unblockActionTitleLong": L11n.BlockSender.unblockActionTitleLong,
         "L11n.BlockSender.unblockActionTitleShort": L11n.BlockSender.unblockActionTitleShort,
         // L11n.EmailTrackerProtection
         "L11n.EmailTrackerProtection.title": L11n.EmailTrackerProtection.title,
@@ -867,17 +867,24 @@ struct LocalizationList {
         "L11n.EncryptedSearch.estimating_time_remaining": L11n.EncryptedSearch.estimating_time_remaining,
         // L11n.Settings
         "L11n.Settings.passwordUpdated": L11n.Settings.passwordUpdated,
+        "L11n.Settings.local_storage_clearing_cache": L11n.Settings.local_storage_clearing_cache,
+        "L11n.Settings.applicationLogs": L11n.Settings.applicationLogs,
         // L11n.NextMsgAfterMove
         "L11n.NextMsgAfterMove.settingTitle": L11n.NextMsgAfterMove.settingTitle,
         "L11n.NextMsgAfterMove.rowTitle": L11n.NextMsgAfterMove.rowTitle,
         "L11n.NextMsgAfterMove.rowFooterTitle": L11n.NextMsgAfterMove.rowFooterTitle,
         // L11n.Error
         "L11n.Error.cant_open_message": L11n.Error.cant_open_message,
+        "L11n.Error.sign_in_message": L11n.Error.sign_in_message,
         // L11n.ActionSheetActionTitle
         "L11n.ActionSheetActionTitle.reply_in_conversation": L11n.ActionSheetActionTitle.reply_in_conversation,
         "L11n.ActionSheetActionTitle.forward_in_conversation": L11n.ActionSheetActionTitle.forward_in_conversation,
         "L11n.ActionSheetActionTitle.replyAll_in_conversation": L11n.ActionSheetActionTitle.replyAll_in_conversation,
         // L11n.Toolbar
         "L11n.Toolbar.customizeSpotlight": L11n.Toolbar.customizeSpotlight,
+        // L11n.PinCodeView
+        "L11n.PinCodeView.title": L11n.PinCodeView.title,
+        // L11n.BugReport
+        "L11n.BugReport.placeHolder": L11n.BugReport.placeHolder,
     ]
 }

@@ -152,7 +152,6 @@ public enum MailAnalyticsErrorEvent: Error {
 
     // called MenuViewModel.menuItem(indexPath:) method with a nonexistent index path
     case invalidMenuItemRequested(section: String, row: Int, itemCount: Int, caller: StaticString)
-    case decryptMIMEFailed(error: String, messageID: String)
     case coreDataSavingError(error: Error, caller: StaticString, file: StaticString, line: UInt)
 
     // send message
@@ -177,8 +176,6 @@ public enum MailAnalyticsErrorEvent: Error {
             return "Aborted request without conversation ID"
         case .invalidMenuItemRequested:
             return "Invalid menu item requested"
-        case .decryptMIMEFailed:
-            return "Decrypt MIME failed"
         case .coreDataSavingError:
             return "Core Data saving error"
         case .sendMessageFail(let error):
@@ -209,11 +206,6 @@ public enum MailAnalyticsErrorEvent: Error {
                 "Row": row,
                 "ItemCount": itemCount,
                 "Caller": caller
-            ]
-        case let .decryptMIMEFailed(error, messageID):
-            info = [
-                "Error": error,
-                "MessageID": messageID
             ]
         case let .coreDataSavingError(error, caller, file, line):
             info = [

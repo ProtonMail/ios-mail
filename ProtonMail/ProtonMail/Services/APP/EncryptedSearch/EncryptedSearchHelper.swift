@@ -23,38 +23,28 @@ enum EncryptedSearchHelper {
         from message: MessageEntity,
         cleanedBody: String,
         userID: UserID
-    ) -> EncryptedSearchEncryptedMessageContent? {
+    ) -> GoLibsEncryptedSearchEncryptedMessageContent? {
         guard let msgSender = try? message.parseSender() else {
             return nil
         }
-        let sender = EncryptedSearchRecipient(msgSender.name, email: msgSender.address)
+        let sender = GoLibsEncryptedSearchRecipient(msgSender.name, email: msgSender.address)
 
-        let toList = EncryptedSearchRecipientList()
+        var toList: GoLibsEncryptedSearchRecipientList?
         if let toListJsonDict = message.rawTOList.parseJson() {
-            toListJsonDict.forEach { contact in
-                let recipient = EncryptedSearchRecipient(contact["Name"] as? String ?? "",
-                                                         email: contact["Address"] as? String ?? "")
-                toList.add(user: recipient)
-            }
-        }
-        let ccList = EncryptedSearchRecipientList()
-        if let ccListJsonDict = message.rawCCList.parseJson() {
-            ccListJsonDict.forEach { contact in
-                let recipient = EncryptedSearchRecipient(contact["Name"] as? String ?? "",
-                                                         email: contact["Address"] as? String ?? "")
-                ccList.add(user: recipient)
-            }
-        }
-        let bccList = EncryptedSearchRecipientList()
-        if let bccListJsonDict = message.rawBCCList.parseJson() {
-            bccListJsonDict.forEach { contact in
-                let recipient = EncryptedSearchRecipient(contact["Name"] as? String ?? "",
-                                                         email: contact["Address"] as? String ?? "")
-                bccList.add(user: recipient)
-            }
+            toList = convertRawListToESList(rawList: toListJsonDict)
         }
 
-        let decryptedMessageContent = EncryptedSearchDecryptedMessageContent(
+        var ccList: GoLibsEncryptedSearchRecipientList?
+        if let ccListJsonDict = message.rawCCList.parseJson() {
+            ccList = convertRawListToESList(rawList: ccListJsonDict)
+        }
+
+        var bccList: GoLibsEncryptedSearchRecipientList?
+        if let bccListJsonDict = message.rawBCCList.parseJson() {
+            bccList = convertRawListToESList(rawList: bccListJsonDict)
+        }
+
+        let decryptedMessageContent = GoLibsEncryptedSearchDecryptedMessageContent(
             message.title,
             bodyValue: cleanedBody,
             senderValue: sender,
@@ -74,25 +64,37 @@ enum EncryptedSearchHelper {
         )
 
         let cipher = Self.getEncryptedCipher(userID: userID)
-        var encryptedMessageContent: EncryptedSearchEncryptedMessageContent?
+        var encryptedMessageContent: GoLibsEncryptedSearchEncryptedMessageContent?
 
         encryptedMessageContent = try? cipher?.encrypt(decryptedMessageContent)
 
         return encryptedMessageContent
     }
 
-    static func getEncryptedCipher(userID: UserID) -> EncryptedSearchAESGCMCipher? {
-        var cipher: EncryptedSearchAESGCMCipher?
+    static func convertRawListToESList(rawList: [[String: Any]]) -> GoLibsEncryptedSearchRecipientList {
+        let list = GoLibsEncryptedSearchRecipientList()
+        rawList.forEach { contact in
+            let recipient = GoLibsEncryptedSearchRecipient(
+                contact["Name"] as? String ?? "",
+                email: contact["Address"] as? String ?? ""
+            )
+            list.add(user: recipient)
+        }
+        return list
+    }
+
+    static func getEncryptedCipher(userID: UserID) -> GoLibsEncryptedSearchAESGCMCipher? {
+        var cipher: GoLibsEncryptedSearchAESGCMCipher?
         let key = retrieveSearchIndexKey(userID: userID)
         guard let key = key else {
             return nil
         }
-        cipher = EncryptedSearchAESGCMCipher(key)
+        cipher = GoLibsEncryptedSearchAESGCMCipher(key)
         return cipher
     }
 
     static func generateSearchIndexKey(userID: UserID) -> Data? {
-        let keyLength: Int = 32
+        let keyLength = 32
         var error: NSError?
         let bytes: Data? = CryptoRandomToken(keyLength, &error)
 
@@ -110,8 +112,22 @@ enum EncryptedSearchHelper {
         var key: Data? = KeychainWrapper.keychain.data(forKey: "searchIndexKey_" + userID.rawValue)
         // Check if user already has an key - otherwise generate one
         if key == nil {
-            key = self.generateSearchIndexKey(userID: userID)
+            key = generateSearchIndexKey(userID: userID)
         }
         return key
+    }
+
+    /// - Parameters:
+    ///   - processedQuery: the search query string
+    ///   - contextSize: the number of the search result that is shown in the result page.
+    /// - Returns: searcher object created by the crypto library
+    static func createSearcher(
+        processedQuery: [String],
+        contextSize: Int = 100
+    ) -> GoLibsEncryptedSearchSimpleSearcher? {
+        let keywords = GoLibsEncryptedSearchStringList()
+        processedQuery.forEach { keywords.add($0) }
+
+        return GoLibsEncryptedSearchSimpleSearcher(keywords, contextSize: contextSize)
     }
 }

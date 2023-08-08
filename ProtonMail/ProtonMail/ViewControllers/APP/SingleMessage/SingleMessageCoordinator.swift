@@ -32,13 +32,16 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     let message: MessageEntity
     private let coreDataService: CoreDataService
     private let user: UserManager
+    private let highlightedKeywords: [String]
     private weak var navigationController: UINavigationController?
     private let internetStatusProvider: InternetConnectionStatusProvider
     var pendingActionAfterDismissal: (() -> Void)?
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     var goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
+    private let composeViewModelFactory: ComposeViewModelDependenciesFactory
 
     init(
+        serviceFactory: ServiceFactory,
         navigationController: UINavigationController,
         labelId: LabelID,
         message: MessageEntity,
@@ -46,7 +49,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         coreDataService: CoreDataService =
         sharedServices.get(by: CoreDataService.self),
-        internetStatusProvider: InternetConnectionStatusProvider = sharedServices.get()
+        internetStatusProvider: InternetConnectionStatusProvider = sharedServices.get(),
+        highlightedKeywords: [String] = []
     ) {
         self.navigationController = navigationController
         self.labelId = labelId
@@ -55,6 +59,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.coreDataService = coreDataService
         self.internetStatusProvider = internetStatusProvider
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
+        self.highlightedKeywords = highlightedKeywords
+        self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
     }
 
     func start() {
@@ -62,7 +68,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.viewController = viewController
         if navigationController?.viewControllers.last is MessagePlaceholderVC,
            var viewControllers = navigationController?.viewControllers {
-            _ = viewControllers.popLast()
+            viewControllers.removeAll(where: { $0 is MessagePlaceholderVC })
             viewControllers.append(viewController)
             navigationController?.setViewControllers(viewControllers, animated: false)
         } else {
@@ -78,6 +84,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
             user: user,
             systemUpTime: userCachedStatus,
             internetStatusProvider: internetStatusProvider,
+            highlightedKeywords: highlightedKeywords,
             imageProxy: .init(dependencies: .init(apiService: user.apiService)),
             coordinator: self,
             senderImageStatusProvider: userCachedStatus,
@@ -137,8 +144,7 @@ extension SingleMessageCoordinator {
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
-            internetStatusProvider: internetStatusProvider
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
         viewModel.addToContacts(contact)
 
@@ -182,8 +188,7 @@ extension SingleMessageCoordinator {
             action: composeAction,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: sharedServices.get(by: CoreDataService.self),
-            internetStatusProvider: internetStatusProvider
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
 
         presentCompose(viewModel: viewModel)
@@ -217,14 +222,12 @@ extension SingleMessageCoordinator {
     private func presentCompose(mailToURL: URL) {
         guard let mailToData = mailToURL.parseMailtoLink() else { return }
 
-        let coreDataService = sharedServices.get(by: CoreDataService.self)
         let viewModel = ComposeViewModel(
             msg: nil,
             action: .newDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: coreDataService,
-            internetStatusProvider: internetStatusProvider
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
 
         mailToData.to.forEach { recipient in

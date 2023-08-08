@@ -87,9 +87,11 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private let cellPresenter = NewMailboxMessageCellPresenter()
     var pendingActionAfterDismissal: (() -> Void)?
+    private let serviceFactory: ServiceFactory
 
-    init(viewModel: SearchVMProtocol) {
+    init(viewModel: SearchVMProtocol, serviceFactory: ServiceFactory) {
         self.viewModel = viewModel
+        self.serviceFactory = serviceFactory
 
         super.init(nibName: nil, bundle: nil)
         self.viewModel.uiDelegate = self
@@ -593,11 +595,13 @@ extension SearchViewController {
         self.updateTapped(status: false)
         guard let navigationController = navigationController else { return }
         let coordinator = SingleMessageCoordinator(
+            serviceFactory: serviceFactory,
             navigationController: navigationController,
             labelId: "",
             message: message,
             user: self.viewModel.user,
-            infoBubbleViewStatusProvider: userCachedStatus
+            infoBubbleViewStatusProvider: userCachedStatus,
+            highlightedKeywords: query.components(separatedBy: .whitespacesAndNewlines)
         )
         coordinator.goToDraft = { [weak self] msgID, _ in
             guard let self = self else { return }
@@ -631,8 +635,10 @@ extension SearchViewController {
                     user: self.viewModel.user,
                     internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
                     infoBubbleViewStatusProvider: userCachedStatus,
+                    highlightedKeywords: [self.query],
                     contextProvider: sharedServices.get(by: CoreDataService.self),
-                    targetID: messageID
+                    targetID: messageID,
+                    serviceFactory: self.serviceFactory
                 )
                 coordinator.goToDraft = { [weak self] msgID, _ in
                     guard let self = self else { return }
@@ -770,7 +776,11 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 
         let message = self.viewModel.messages[indexPath.row]
         let viewModel = self.viewModel.getMessageCellViewModel(message: message)
-        cellPresenter.present(viewModel: viewModel, in: mailboxCell.customView)
+        cellPresenter.present(
+            viewModel: viewModel,
+            in: mailboxCell.customView,
+            highlightedKeywords: query.components(separatedBy: .whitespacesAndNewlines)
+        )
 
         showSenderImageIfNeeded(in: mailboxCell, item: .message(message))
 

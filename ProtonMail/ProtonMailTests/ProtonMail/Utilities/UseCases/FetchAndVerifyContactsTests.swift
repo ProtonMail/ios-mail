@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
 import ProtonCore_DataModel
 import ProtonCore_TestingToolkit
 import XCTest
@@ -27,7 +26,6 @@ final class FetchAndVerifyContactsTests: XCTestCase {
     private var mockApiService: APIServiceMock!
     private var mockApiServiceShouldReturnError: Bool!
     private var mockContactProvider: MockContactProvider!
-    private var mockContext: NSManagedObjectContext!
 
     private static let mockValidCardData = CardData(
         type: .SignedOnly,
@@ -49,7 +47,6 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         mockContactProvider = MockContactProvider(coreDataContextProvider: coreDataContextProvider)
         mockApiService = makeMockApiService()
         mockApiServiceShouldReturnError = false
-        mockContext = MockCoreDataStore.testPersistentContainer.viewContext
         sut = makeSUT()
     }
 
@@ -58,7 +55,6 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         sut = nil
         mockApiService = nil
         mockContactProvider = nil
-        mockContext = nil
     }
 
     func testExecute_whenNoEmailsPassed_returnsEmptyArray() async {
@@ -71,7 +67,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
 
     func testExecute_whenEmailsExistInContactsAndHasSendPreferences_makesTheExpectedRequests() async {
         let dummyEmails = [emailUsedInSignedCardData, dummyEmail]
-        sutUpdateMockContactProvider(with: dummyEmails, hasSendPreferences: true, isContactDownloaded: false)
+        sutUpdateMockContactProvider(with: dummyEmails, hasSendPreferences: true)
 
         let _ = await withCheckedContinuation { continuation in
             self.sut.execute(params: .init(emailAddresses: dummyEmails), callback: continuation.resume(returning:))
@@ -81,7 +77,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
 
     func testExecute_whenEmailExistsInContactsAndHasSendPreferences_returnsThePreContact() async {
         let dummyEmails = [emailUsedInSignedCardData]
-        sutUpdateMockContactProvider(with: dummyEmails, hasSendPreferences: true, isContactDownloaded: false)
+        sutUpdateMockContactProvider(with: dummyEmails, hasSendPreferences: true)
 
         let result = await withCheckedContinuation { continuation in
             self.sut.execute(params: .init(emailAddresses: dummyEmails), callback: continuation.resume(returning:))
@@ -93,7 +89,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
 
     func testExecute_whenEmailExistsInContactsButFetchContactFails_returnsThePreContact() async {
         let dummyEmails = [emailUsedInSignedCardData]
-        sutUpdateMockContactProvider(with: dummyEmails, hasSendPreferences: true, isContactDownloaded: false)
+        sutUpdateMockContactProvider(with: dummyEmails, hasSendPreferences: true)
         mockApiServiceShouldReturnError = true
 
         let result = await withCheckedContinuation { continuation in
@@ -109,8 +105,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
         sutUpdateMockContactProvider(
             with: dummyEmails,
             mockCardData: mockInvalidCardData,
-            hasSendPreferences: true,
-            isContactDownloaded: false
+            hasSendPreferences: true
         )
 
         let result = await withCheckedContinuation { continuation in
@@ -122,7 +117,7 @@ final class FetchAndVerifyContactsTests: XCTestCase {
 
     func testExecute_whenEmailExistsInContactsAndHasNotSendPreferences_returnsThePreContact() async {
         let dummyEmails = [emailUsedInSignedCardData]
-        sutUpdateMockContactProvider(with: dummyEmails, hasSendPreferences: false, isContactDownloaded: false)
+        sutUpdateMockContactProvider(with: dummyEmails, hasSendPreferences: false)
 
         let result = await withCheckedContinuation { continuation in
             self.sut.execute(params: .init(emailAddresses: dummyEmails), callback: continuation.resume(returning:))
@@ -178,7 +173,7 @@ extension FetchAndVerifyContactsTests {
     private func makeMockCacheService() -> MockCacheServiceProtocol {
         let mockCacheService = MockCacheServiceProtocol()
         mockCacheService.updateContactDetailStub.bodyIs { _, _, completion in
-            let contactToReturn = Contact(context: self.mockContext)
+            let contactToReturn = ContactEntity.make()
             completion?(contactToReturn, nil)
         }
         return mockCacheService
@@ -188,18 +183,14 @@ extension FetchAndVerifyContactsTests {
         with emails: [String],
         existsInContacts: Bool = true,
         mockCardData: CardData = mockValidCardData,
-        hasSendPreferences: Bool = true,
-        isContactDownloaded: Bool = false
+        hasSendPreferences: Bool = true
     ) {
         let emails = makeMockEmails(
             emails,
-            hasSendPreferences: existsInContacts && hasSendPreferences,
-            isContactDownloaded: existsInContacts && isContactDownloaded
+            hasSendPreferences: existsInContacts && hasSendPreferences
         )
         mockContactProvider.getEmailsByAddressStub.bodyIs { _, _, _ in
-            self.mockContext.performAndWait {
-                emails.map(EmailEntity.init)
-            }
+            emails
         }
         if existsInContacts {
             mockContactProvider.allContactsToReturn = makeMockContacts(
@@ -209,29 +200,23 @@ extension FetchAndVerifyContactsTests {
         }
     }
 
-    private func makeMockEmails(_ emails: [String], hasSendPreferences: Bool, isContactDownloaded: Bool) -> [Email] {
-        mockContext.performAndWait {
-            emails.map { email in
-                let newEmail = Email(context: mockContext)
-                newEmail.email = email
-                newEmail.contactID = String.randomString(10)
-                newEmail.defaults = hasSendPreferences ? 0 : 1
-                newEmail.contact.isDownloaded = isContactDownloaded
-                return newEmail
-            }
+    private func makeMockEmails(_ emails: [String], hasSendPreferences: Bool) -> [EmailEntity] {
+        emails.map { email in
+            EmailEntity.make(
+                contactID: ContactID(String.randomString(10)),
+                email: email,
+                defaults: !hasSendPreferences
+            )
         }
     }
 
-    private func makeMockContacts(with emails: [Email], mockCardData: CardData) -> [ContactEntity] {
-        mockContext.performAndWait {
-            emails.map { email in
-                let newContact = Contact(context: mockContext)
-                newContact.contactID = email.contactID
-                newContact.emails = [email]
-                newContact.cardData = try! [mockCardData].toJSONString()
-                return newContact
-            }
-            .map(ContactEntity.init)
+    private func makeMockContacts(with emails: [EmailEntity], mockCardData: CardData) -> [ContactEntity] {
+        emails.map { email in
+            ContactEntity.make(
+                contactID: email.contactID,
+                cardData: try! [mockCardData].toJSONString(),
+                emailRelations: [email]
+            )
         }
     }
 }

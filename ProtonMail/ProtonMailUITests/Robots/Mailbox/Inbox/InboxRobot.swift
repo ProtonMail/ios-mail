@@ -60,4 +60,25 @@ class InboxRobot : MailboxRobotInterface {
             return InboxRobot()
         }
     }
+
+    class MailboxReferralPromptRobot: ReferralPromptViewRobotInterface {
+        @discardableResult
+        override func dismissReferralByTapOutside() -> InboxRobot {
+            super.dismissReferralByTapOutside()
+            return InboxRobot()
+        }
+
+        @discardableResult
+        override func dismissReferralWithCloseButton() -> InboxRobot {
+            super.dismissReferralWithCloseButton()
+            return InboxRobot()
+        }
+
+        @discardableResult
+        override func dismissReferralWithLaterButton() -> InboxRobot {
+            super.dismissReferralWithLaterButton()
+            return InboxRobot()
+        }
+
+    }
 }

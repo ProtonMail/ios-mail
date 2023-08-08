@@ -37,7 +37,6 @@ protocol HtmlEditorBehaviourDelegate: AnyObject {
     func removeInlineAttachment(_ sid: String, completion: (() -> Void)?)
 }
 
-/// Html editor
 class HtmlEditorBehaviour: NSObject {
     typealias LoadCompletion = (Swift.Result<Void, Error>) -> Void
 
@@ -60,21 +59,24 @@ class HtmlEditorBehaviour: NSObject {
     )
     @objc private(set) dynamic var contentHeight: CGFloat = 0
 
-    //
     private weak var webView: WKWebView?
 
-    //
     weak var delegate: HtmlEditorBehaviourDelegate?
 
+    private var isImageProxyEnabled: Bool {
+        return contentHTML.contentLoadingType == .proxy ||
+            contentHTML.contentLoadingType == .proxyDryRun
+    }
+
     // fixes retain cycle: userContentController retains his message handlers
-    internal func eject() {
+    func eject() {
         self.webView?.configuration.userContentController.remove(MessageTopics.addImage)
         self.webView?.configuration.userContentController.remove(MessageTopics.removeImage)
         self.webView?.configuration.userContentController.remove(MessageTopics.moveCaret)
         self.webView?.configuration.userContentController.remove(MessageTopics.heightUpdated)
     }
 
-    internal func setup(webView: WKWebView) {
+    func setup(webView: WKWebView) {
         self.webView = webView
         webView.scrollView.keyboardDismissMode = .interactive
         webView.configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
@@ -101,13 +103,13 @@ class HtmlEditorBehaviour: NSObject {
     private func htmlToInject() -> String? {
         // Load editor 3 parts
         do {
-            let html = try Bundle.loadResource(named: "HtmlEditor", ofType: "html")
+            let html = Bundle.loadResource(named: "HtmlEditor", ofType: "html")
             let css = try ProtonCSS.htmlEditor.content()
 
-            let script = try Bundle.loadResource(named: "HtmlEditor", ofType: "js")
-            let purifier = try Bundle.loadResource(named: "purify.min", ofType: "js")
-            let jsQuotes = try Bundle.loadResource(named: "QuoteBreaker", ofType: "js")
-            let escape = try Bundle.loadResource(named: "Escape", ofType: "js")
+            let script = Bundle.loadResource(named: "HtmlEditor", ofType: "js")
+            let purifier = Bundle.loadResource(named: "purify.min", ofType: "js")
+            let jsQuotes = Bundle.loadResource(named: "QuoteBreaker", ofType: "js")
+            let escape = Bundle.loadResource(named: "Escape", ofType: "js")
 
             let fullScript = [jsQuotes, script, purifier, escape].joined(separator: "\n")
             let editor = html.preg_replace_none_regex("<!--ReplaceToSytle-->", replaceto: css)
@@ -125,7 +127,9 @@ class HtmlEditorBehaviour: NSObject {
 
     private func updateFontSize() {
         let font = UIFont.preferredFont(for: .callout, weight: .regular)
-        run(with: "html_editor.update_font_size(\(font.pointSize));").cauterize()
+        let temp = UILabel(font: font, text: "temp", textColor: .black)
+        temp.adjustsFontForContentSizeCategory = true
+        run(with: "html_editor.update_font_size(\(temp.font.pointSize));").cauterize()
     }
 
     /// try to hide the input accessory from the wkwebview when keyboard appear
@@ -225,9 +229,9 @@ class HtmlEditorBehaviour: NSObject {
                 return Promise()
             }
         }.then { () -> Promise<Void> in
-            let isImageProxyEnable = self.contentHTML.contentLoadingType == .proxy ||
-                self.contentHTML.contentLoadingType == .proxyDryRun
-            return self.run(with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(DomPurifyConfig.composer.value), \(isImageProxyEnable));")
+            return self.run(
+                with: "html_editor.setHtml('\(self.contentHTML.bodyForJS)', \(DomPurifyConfig.composer.value), \(self.isImageProxyEnabled));"
+            )
         }.then { _ -> Promise<CGFloat> in
             self.run(with: "document.body.scrollWidth")
         }.then { width -> Promise<Void> in
@@ -266,6 +270,9 @@ class HtmlEditorBehaviour: NSObject {
         // Use batch process to add the percent encoding to solve the memory issue
         let escapedBlob: String = blob.batchAddingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
 
+        let cid = isImageProxyEnabled ? "proton-\(cid)" : cid
+
+        // add proton prefix to cid since the DOMPurify will add the prefix to the link.
         self.run(with: "html_editor.updateEncodedEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { _ in
         }
     }

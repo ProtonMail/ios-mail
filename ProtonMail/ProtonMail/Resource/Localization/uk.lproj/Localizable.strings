@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Уся пошта";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Усі параметри захисту будуть скинуті та стерті одразу після виходу з програми.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Усі повідомлення завантажено";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "День народження";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Блокувати";
+
 /* Settings row */
 "Block email tracking" = "Блокувати відстеження листів";
 
@@ -297,14 +303,17 @@
 /* Button to block a sender */
 "Block sender" = "Блокувати відправника";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Заблоковані відправники";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Не дозволяє відправникам бачити чи ви відкрили повідомлення";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Переглядайте ланцюжки повідомлень у режимі розмови.";
 
-/* Title */
-"Bug Description" = "Опис помилки";
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Допоможіть нам усунути вашу проблему, надавши якомога більше подробиць---\n\nПідсумок:\n\nЧи траплялася проблема більше одного разу: так/ні \nКроки для відтворення проблеми: \nОчікуваний результат: \nФактичний результат: \nКоментарі:";
 
 /* Title */
 "Bug Report Received" = "Звіт про помилку отримано";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Створення мітки не дозволено";
 
+/* Change language title */
+"Current Language: " = "Поточна мова: ";
+
 /* Placeholder */
 "Current password" = "Поточний пароль";
 
@@ -700,6 +712,9 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Завантаження метаданих ...";
 
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Завантаження нових повідомлень...";
+
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Завантажує повідомлення, щоб ви могли шукати у їх вмісті. Повідомлення шифруються і зберігаються локально. %1$@";
 
@@ -819,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Введіть ПІН-код";
 
+/* The title of the pin code view. */
+"Enter PIN" = "Введіть PIN";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Введіть свій пароль для виконання змін";
 
@@ -915,6 +933,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Перейти до параметрів";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Перейти до входу";
+
 /* Got it action */
 "Got it" = "Зрозуміло";
 
@@ -1000,6 +1021,9 @@
 /* place holder */
 "Input Display Name…" = "Введіть ім'я…";
 
+/* place holder */
+"Input Notification Email…" = "Введіть е-пошту для сповіщень…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Незахищене з'єднання";
 
@@ -1014,6 +1038,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Представляємо оновлений вигляд Proton.\nБагато служб, одна місія. Ласкаво просимо до інтернету, де приватність — це стандарт.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Недійсна адреса електронної пошти";
 
 /* update password error */
 "Invalid hashed password!" = "Неправильний хешований пароль!";
@@ -1127,6 +1154,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Позначити непрочитаним";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Можливо пізніше";
+
 /* menu title */
 "Menu" = "Меню";
 
@@ -1237,6 +1267,9 @@
 /* Contacts add new contact */
 "New contact" = "Новий контакт";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Нові листи від %@ не доставлятимуться й остаточно видалятимуться. Керуйте заблокованими адресами відправників у параметрах програми.";
+
 /* The title of create folder page */
 "New folder" = "Нова тека";
 
@@ -1275,6 +1308,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Вкладення не знайдено";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Немає заблокованих відправників";
 
 /* Title */
 "No connectivity detected…" = "Не виявлено зʼєднання…";
@@ -1487,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Будь ласка, розкажіть про свою проблему.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Увійдіть до застосунку Proton Mail.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Передплатіть тарифний план, щоб використовувати більше ніж 3 теки";
 
@@ -1684,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Все одно надіслати";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Надіслати відгук";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1698,6 +1737,15 @@
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Надіслати підтвердження прочитання";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "Відправника %@ заблоковано";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Відправника %@ розблоковано";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Відправника заблоковано";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Не вдалося перевірити відправника";
@@ -1777,6 +1825,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Показати мені";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Повторно увійдіть, щоб і надалі отримувати оновлення";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Вийти";
@@ -1792,6 +1843,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Ви вийшли з %1$@ і увійшли з %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Ви вийшли з %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Пропустити";
@@ -1953,6 +2007,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL-адреса, яку ви намагаєтесь відвідати, нестандартна і може завантажитися неналежним чином. Ви хочете відкрити її у своєму типовому браузері?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Користувач вже увійшов";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "У вас є не надіслані повідомлення, які будуть втрачені після виходу";
 
@@ -1967,6 +2024,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Ця розмова містить видалені повідомлення";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Цей лист не задовольняє вимог перевірки свого домену. Він міг бути підроблений або неправильно пересланий.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Цей лист не пройшов вимоги перевірки свого домену. Він міг бути підроблений або неправильно пересланий.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Схоже, цей лист надіслано з адреси Proton Mail, але він надійшов з-за меж нашої системи та не відповідає нашим вимогам перевірки. Він може бути підроблений або неправильно пересланий!";
@@ -2057,6 +2120,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Спробуйте під'єднатися до Proton з іншої мережі (або скористайтеся %1$@ або %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Увімкніть цю функцію для автозавершення адрес електронної пошти, використовуючи контакти з усіх облікових записів, до яких ви ввійшли.";
+
 /* Placeholder */
 "Two Factor Code" = "Код двоетапної перевірки";
 
@@ -2074,6 +2140,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Не вдається надіслати е-пошту";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Розблокувати";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Розблокувати відправника";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Приховані отримувачі";
@@ -2128,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Оновити адресу для сповіщень";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Очікується з'єднання для чергового оновлення...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Оновлено >1 годину тому";
@@ -2250,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Ви не можете встановити адресу %@ типовою, тому що це платна функція.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Ви вимкнули %@ в параметрах системи. %@ використовується для захисту важливої інформації облікового запису. Щоб отримати доступ до свого облікового запису, перейдіть до параметрів і повторно активуйте %@, або увійдіть знову.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Ви вимкнули %1$@ в параметрах системи. %2$@ використовується для захисту важливої інформації облікового запису. Щоб отримати доступ до свого облікового запису, перейдіть до параметрів і повторно активуйте %3$@, або увійдіть знову.";
 
 /* Message */
 "You have %d new emails!" = "У вас %d нових листів!";
@@ -2311,6 +2386,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Ваші повідомлення завантажуються...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Ваша приватність захищається надійніше, якщо ваші контакти також користуються Proton Mail. Запросіть друзів до Proton і разом отримайте преміум безплатно.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Термін дії вашого сеансу завершився, тому що ви були неактивні деякий час, або через відкликання доступу. Увійдіть знову.";

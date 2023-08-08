@@ -94,7 +94,7 @@ class ContactsRobot: CoreElements {
         }
         
         private func clickDeleteButton() -> ContactsView {
-            button(id.deleteButtonText).tap()
+            button(id.deleteButtonText).waitForHittable().tap()
             return ContactsView()
         }
         
@@ -107,10 +107,11 @@ class ContactsRobot: CoreElements {
 
             func contactExists(_ name: String) {
                 cell(id.contactCellIdentifier(name)).firstMatch().swipeUpUntilVisible().checkExists()
+                cell(id.contactCellIdentifier(name)).firstMatch().checkIsHittable()
             }
 
             func contactDoesNotExists(_ name: String) {
-                cell(id.contactCellIdentifier(name)).firstMatch().waitUntilGone()
+                cell(id.contactCellIdentifier(name)).waitForNotHittable()
             }
         }
     }
@@ -164,7 +165,7 @@ class ContactsRobot: CoreElements {
         class Verify: CoreElements {
 
             func groupDoesNotExists(_ name: String) {
-                cell(id.groupCellIdentifier(name)).waitUntilGone()
+                XCTAssertFalse(cell(id.groupCellIdentifier(name)).hittable())
             }
         }
     }

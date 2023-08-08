@@ -27,6 +27,8 @@
       "selectedTests" : [
         "ContactsTests\/testContactDetailSendMessage()",
         "ContactsTests\/testContactGroupSendMessage()",
+        "ContactsTests\/testCreateAndDeleteContact()",
+        "ContactsTests\/testCreateAndDeleteGroup()",
         "ContactsTests\/testCreateContact()",
         "ContactsTests\/testCreateGroup()",
         "ContactsTests\/testDeleteContact()",

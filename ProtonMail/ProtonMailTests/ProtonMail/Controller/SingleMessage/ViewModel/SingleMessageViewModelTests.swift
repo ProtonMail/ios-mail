@@ -269,7 +269,8 @@ final class SingleMessageViewModelTests: XCTestCase {
             attachments: .init()
         )
 
-        coordinatorMock = SingleMessageCoordinator(navigationController: UINavigationController(),
+        coordinatorMock = SingleMessageCoordinator(serviceFactory: sharedServices,
+                                                   navigationController: UINavigationController(),
                                                    labelId: labelID,
                                                    message: message,
                                                    user: fakeUser,
@@ -290,6 +291,7 @@ final class SingleMessageViewModelTests: XCTestCase {
             coordinator: coordinatorMock,
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
             dependencies: components.contentViewModelDependencies(user: fakeUser, senderImageStatusProvider: mockSenderImageStatusProvider),
+            highlightedKeywords: [],
             goToDraft: { _, _ in },
             notificationCenter: notificationCenterMock
         )

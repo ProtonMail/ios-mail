@@ -197,7 +197,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
             queue: mockQueueManager,
             actionRequest: mockExecuteNotificationAction,
             isNetworkAvailable: { self.mockIsNetworkAvailable },
-            cacheStatusInject: mockCacheStatusInject,
+            lockCacheStatus: mockCacheStatusInject,
             notificationCenter: mockNotificationCenter,
             userNotificationCenter: mockUserNotificationCenter,
             isNotificationActionsFeatureEnabled: true
@@ -235,7 +235,8 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
             userInfo: userInfo,
             authCredential: auth,
             mailSettings: nil,
-            parent: nil
+            parent: nil,
+            coreKeyMaker: MockKeyMakerProtocol()
         )
     }
 }

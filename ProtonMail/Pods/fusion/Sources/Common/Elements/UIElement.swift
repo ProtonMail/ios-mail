@@ -452,6 +452,7 @@ open class UIElement {
 
     @discardableResult
     public func checkDoesNotExist(file: StaticString = #filePath, line: UInt = #line) -> UIElement {
+        shouldWaitForExistance = false
         XCTAssertFalse(
             uiElement()!.exists,
             "Expected element \(uiElement().debugDescription) to not exist but it exists.",
@@ -608,6 +609,16 @@ open class UIElement {
         line: UInt = #line
     ) -> UIElement {
         Wait(time: time).forElementToBeHittable(uiElement()!, file, line)
+        return self
+    }
+
+    @discardableResult
+    public func waitForNotHittable(
+        time: TimeInterval = 10.0,
+        file: StaticString = #filePath,
+        line: UInt = #line
+    ) -> UIElement {
+        Wait(time: time).forElementToBeNotHittable(uiElement()!, file, line)
         return self
     }
 

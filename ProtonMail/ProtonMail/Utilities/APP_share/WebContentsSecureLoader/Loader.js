@@ -53,3 +53,19 @@ var beforeSanitizeElements = function (node) {
 
     return element;
 };
+
+var escapeForbiddenStyleInElement = function (node) {
+    // We only work on elements
+    if (node.nodeType !== 1) {
+        return node;
+    }
+
+    const element = node;
+    // Manage styles element
+    console.log(element);
+    if (element.tagName === 'STYLE') {
+        const escaped = escapeForbiddenStyle(escapeURLinStyle(element.innerHTML || ''));
+        element.innerHTML = escaped;
+    }
+    return element;
+};

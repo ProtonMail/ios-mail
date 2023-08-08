@@ -88,12 +88,10 @@ extension ConversationDataService {
                     }
                 }
 
-                var conversationSavingResult: Result<(Date, Date?)?, Error>!
+                let conversationsTimeRange: (startTime: Date, endTime: Date?)? = try self.contextProvider
+                    .performAndWaitOnRootSavingContext(block: { [weak self] context in
+                        guard let self = self else { return nil }
 
-                self.contextProvider.performAndWaitOnRootSavingContext { [weak self] context in
-                    guard let self = self else { return }
-
-                    do {
                         if let conversations = try GRTJSONSerialization.objects(
                             withEntityName: Conversation.Attributes.entityName,
                             fromJSONArray: conversationsDict,
@@ -113,17 +111,16 @@ extension ConversationDataService {
                             } else if let lastConversation = conversations.last, let firstConversation = conversations.first {
                                 let startTime = firstConversation.getTime(labelID: labelID.rawValue) ?? Date()
                                 let endTime = lastConversation.getTime(labelID: labelID.rawValue)
-                                conversationSavingResult = .success((startTime, endTime))
+                                return (startTime, endTime)
                             } else {
-                                conversationSavingResult = .success(nil)
+                                return nil
                             }
+                        } else {
+                            return nil
                         }
-                    } catch {
-                        conversationSavingResult = .failure(error)
-                    }
-                }
+                    })
 
-                if let (startTime, endTime) = try conversationSavingResult.get() {
+                if let (startTime, endTime) = conversationsTimeRange {
                     self.lastUpdatedStore.updateLastUpdatedTime(
                         labelID: labelID,
                         isUnread: unreadOnly,

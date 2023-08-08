@@ -54,7 +54,6 @@ final class IndexSingleMessageDetailOperation: AsyncOperation {
                 )
                 self.result = .failure(error)
             case .success(let message):
-                self.log(message: "indexSingleMessageDetailOperation \(self.message.id) success")
                 self.result = .success(message)
             }
             self.finish()

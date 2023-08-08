@@ -20,7 +20,7 @@ import UserNotifications
 final class PushNotificationActionsHandler {
     private let dependencies: Dependencies
 
-    init(dependencies: Dependencies = Dependencies()) {
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
 
         let notificationsToObserve: [Notification.Name] = [
@@ -48,7 +48,7 @@ final class PushNotificationActionsHandler {
             removePushNotificationActions()
             return
         }
-        if dependencies.cacheStatusInject.isAppLockedAndAppKeyEnabled {
+        if dependencies.lockCacheStatus.isAppLockedAndAppKeyEnabled {
             /// We don't show notification actions if extra security is enabled (FaceId, TouchId, PIN code, ... ).
             /// The reason for that is that the user's access token for API requests is encrypted and not accessible
             /// without user interaction. Therefore, it has been decided to not show notification actions because we
@@ -110,7 +110,7 @@ private extension PushNotificationActionsHandler {
             dependencyIDs: [],
             isConversation: false
         )
-        _ = dependencies.queue.addTask(task, autoExecute: true)
+        dependencies.queue.addTask(task, autoExecute: true, completion: nil)
         SystemLogger.log(message: "Action enqueued \(action)", category: .pushNotification)
     }
 
@@ -165,7 +165,7 @@ extension PushNotificationActionsHandler {
         let queue: QueueManagerProtocol
         let actionRequest: ExecuteNotificationActionUseCase
         let isNetworkAvailable: (() -> Bool)
-        let cacheStatusInject: CacheStatusInject
+        let lockCacheStatus: LockCacheStatus
         let notificationCenter: NotificationCenter
         let userNotificationCenter: UNUserNotificationCenter
         let isNotificationActionsFeatureEnabled: Bool
@@ -177,7 +177,7 @@ extension PushNotificationActionsHandler {
                 let status = InternetConnectionStatusProvider()
                 return status.currentStatus.isConnected
             },
-            cacheStatusInject: CacheStatusInject = userCachedStatus,
+            lockCacheStatus: LockCacheStatus,
             notificationCenter: NotificationCenter = NotificationCenter.default,
             userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current(),
             isNotificationActionsFeatureEnabled: Bool = true
@@ -185,7 +185,7 @@ extension PushNotificationActionsHandler {
             self.queue = queue
             self.actionRequest = actionRequest
             self.isNetworkAvailable = isNetworkAvailable
-            self.cacheStatusInject = cacheStatusInject
+            self.lockCacheStatus = lockCacheStatus
             self.notificationCenter = notificationCenter
             self.userNotificationCenter = userNotificationCenter
             self.isNotificationActionsFeatureEnabled = isNotificationActionsFeatureEnabled

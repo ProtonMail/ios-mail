@@ -6,6 +6,7 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
     private let conversation: ConversationEntity
     private var conversationUpdate: ((ConversationUpdateType) -> Void)?
     private let contextProvider: CoreDataContextProviderProtocol
+    var hasStartedObservingConversation: Bool { conversationUpdate != nil }
 
     private lazy var fetchedController: NSFetchedResultsController<Message> = {
         let context = contextProvider.mainContext
@@ -52,6 +53,10 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
 
     func stopObserve() {
         fetchedController.delegate = nil
+    }
+
+    func listenToCoreDataUpdates() {
+        fetchedController.delegate = self
     }
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {

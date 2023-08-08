@@ -23,6 +23,7 @@
 import Foundation
 import CoreData
 
+// sourcery: CoreDataHelpers
 class Contact: NSManagedObject {
     @NSManaged var userID: String
     @NSManaged var contactID: String
@@ -55,6 +56,5 @@ class Contact: NSManagedObject {
 }
 
 extension Contact: CoreDataIdentifiable {
-    static let entityName: String = Contact.Attributes.entityName
     static let attributeIdName: String = Contact.Attributes.contactID
 }

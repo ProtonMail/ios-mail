@@ -23,7 +23,7 @@ class ManageAddressesRobot: CoreElements {
     }
     
     func clickContact(_ withEmail: String) -> ManageAddressesRobot {
-        cell(id.contactCellIdentifier(withEmail)).tap()
+        cell(id.contactCellIdentifier(withEmail)).firstMatch().tap()
         return self
     }
 

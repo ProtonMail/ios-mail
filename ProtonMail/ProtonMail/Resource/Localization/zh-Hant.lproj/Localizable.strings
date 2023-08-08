@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "所有郵件";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "登出應用程式後，所有保護設定將會被重設。";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "所有您的郵件已下載";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "生日";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "封鎖";
+
 /* Settings row */
 "Block email tracking" = "封鎖郵件追蹤";
 
@@ -297,14 +303,17 @@
 /* Button to block a sender */
 "Block sender" = "封鎖寄件者";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "已封鎖的寄件者";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "阻止寄件人得知您閱讀此封郵件。";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "交談模式將說明您輕鬆瀏覽，並管理郵件往來。";
 
-/* Title */
-"Bug Description" = "錯誤描述";
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---為了讓我們能協助你解決問題, 請盡可能提供所有細節---\n\n摘要:\n\n之前是否發生過相同問題: 是/否\n重現此問題之操作步驟:\n預期結果:\n實際結果:\n其他說明:";
 
 /* Title */
 "Bug Report Received" = "已收到您的錯誤回報";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "不允許建立標籤";
 
+/* Change language title */
+"Current Language: " = "目前語言：";
+
 /* Placeholder */
 "Current password" = "目前密碼";
 
@@ -700,6 +712,9 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "下載中繼資料…";
 
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "下載新郵件…";
+
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "下載電子郵件以便您可以在其中進行搜尋。郵件加密過並儲存在本地端。%1$@";
 
@@ -819,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "輸入新的 PIN 碼";
 
+/* The title of the pin code view. */
+"Enter PIN" = "輸入 PIN 碼";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "輸入您的密碼以作變更";
 
@@ -876,6 +894,9 @@
 /* forward action */
 "Forward" = "轉寄";
 
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "轉寄 (最新交談訊息相關人等)";
+
 /* forwarded message title */
 "Forwarded message" = "已轉發的訊息";
 
@@ -911,6 +932,9 @@
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "前往設定";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "前往登入介面";
 
 /* Got it action */
 "Got it" = "了解";
@@ -997,6 +1021,9 @@
 /* place holder */
 "Input Display Name…" = "輸入顯示名稱…";
 
+/* place holder */
+"Input Notification Email…" = "輸入通知電郵…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "不安全的連線";
 
@@ -1011,6 +1038,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Proton 新樣貌隆重登場！\n多種服務，單一使命。歡迎蒞臨隱私為本的網路世界。";
+
+/* The error message is shown in composer */
+"Invalid email address" = "無效的電郵位址";
 
 /* update password error */
 "Invalid hashed password!" = "無效的雜湊密碼！";
@@ -1124,6 +1154,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "標記為未讀";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "稍後再考慮";
+
 /* menu title */
 "Menu" = "選單";
 
@@ -1206,7 +1239,7 @@
 "Move to" = "移至";
 
 /* Action title of move to archive */
-"Move to archive" = "移至封存";
+"Move to archive" = "移至封存檔";
 
 /* The title of the remove action in action sheet */
 "Move to inbox" = "移至收件匣";
@@ -1233,6 +1266,9 @@
 
 /* Contacts add new contact */
 "New contact" = "加入聯絡人";
+
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "來自%@的新郵件都不會被傳送，且會被永久刪除。在設定頁面管理封鎖的郵箱地址。";
 
 /* The title of create folder page */
 "New folder" = "加入資料夾";
@@ -1265,13 +1301,16 @@
 "Next" = "下一個";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "移動後移至新訊息";
+"Next message after move" = "郵件移動後跳至新訊息";
 
 /* contacts talbe cell Nickname title */
 "Nickname" = "暱稱";
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "找不到附件";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "沒有已封鎖的寄件者";
 
 /* Title */
 "No connectivity detected…" = "未偵測到網際網路連線…";
@@ -1484,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "請詳述您遇到的問題。";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "請登入 Proton Mail";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "請升級至付費方案以使用超過 3 個資料夾";
 
@@ -1585,8 +1627,14 @@
 /* reply action */
 "Reply" = "回覆";
 
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "回覆 (傳送至最新交談訊息)";
+
 /* reply all action */
 "Reply all" = "全部回覆";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "回覆全部 (最新交談訊息裡相關人等)";
 
 /* menu title */
 "Report a problem" = "回報問題";
@@ -1675,7 +1723,7 @@
 /* Action */
 "Send anyway" = "仍然傳送";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "傳送意見反饋";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1689,6 +1737,15 @@
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "傳送已讀回條";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "寄件者%@已封鎖";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "寄件者%@已解除封鎖";
+
+/* Banner in the message view */
+"Sender has been blocked" = "寄件者已被封鎖";
 
 /* encryption lock description */
 "Sender Verification Failed" = "寄件人驗證失敗";
@@ -1768,6 +1825,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "顯示更多";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "再次登錄以持續接收更新";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "登出";
@@ -1783,6 +1843,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "登出 %1$@ 並登入 %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "已從 %@ 登出";
 
 /* skip button title in onboarding page */
 "Skip" = "略過";
@@ -1944,6 +2007,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "您所要開啟的網址可能未符合標準規範，因此無法正常加載。是否仍然要使用預設瀏覽器開啟？";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "該使用者已登入";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "如果您現在登出，將會遺失仍未傳送的郵件";
 
@@ -1958,6 +2024,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "此交談群組包含已移至「垃圾桶」的郵件";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "此電郵未能通過其網域的認證需求。可能是因為遭人假冒或不當轉寄。";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "此電郵未能通過其網域的認證需求。可能是因為遭人假冒或不當轉寄。";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "此信件看似由 Proton Mail 寄出的 ，但卻並非由我們的系統寄出，而且未能通過我們的認證需求。這可能是偽造或不當轉寄的郵件！";
@@ -2046,7 +2118,10 @@
 "Trusted keys are not valid for sending" = "已信任的密鑰用於寄送時無效";
 
 /* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用ProtonVPN and Tor）。";
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用 %1$@ 或 %2$@）。";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "啟用此功能，以使用已登入帳號中的聯絡人，自動填入電子郵件地址。";
 
 /* Placeholder */
 "Two Factor Code" = "兩步驟驗證碼";
@@ -2065,6 +2140,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "無法寄送信件";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "解除封鎖";
+
+/* Button to unblock a sender */
+"Unblock sender" = "解除封鎖寄件者";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "非公開收件者";
@@ -2119,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "更新電郵通知";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "已送出更新指令, 等待網路連線中...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "更新於 >1 小時前";
@@ -2240,9 +2324,6 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您目前無法將 %@ 設為預設位址，因為這是付費功能。";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "您在系統設定裡停用了 %@。%@ 已被使用於保護重要的帳號資訊上。若要存取您的帳號，請前往「前定」重新啟用%@或重新登入。";
-
 /* Message */
 "You have %d new emails!" = "您有 %d 封新郵件！";
 
@@ -2303,9 +2384,14 @@
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "您的訊息正在下載...";
 
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "如果聯絡人也使用 Proton Mail，我們更能保護你的隱私。邀請朋友加入 Proton ，雙方都能免費獲得高級會員福利。";
+
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "由於您長時間沒有進行任何操作，您的交談已過期或是被撤銷。請重新登入。";
 
 /* contact placeholder */
-"ZIP" = "美國郵區編號";
+"ZIP" = "郵遞區號";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系統設定裡停用了%1$@ 。%2$@ 被使用在保護重要的帳號資訊上。要存取您的帳號，要去設定裡重新啟動%3$@ ，或是重新登入。";

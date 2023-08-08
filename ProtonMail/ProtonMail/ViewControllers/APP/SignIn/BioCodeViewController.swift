@@ -28,7 +28,7 @@ final class BioCodeViewController: UIViewController, BioCodeViewDelegate {
     weak var delegate: PinCodeViewControllerDelegate?
     var bioCodeView: BioCodeView?
     var notificationToken: NSObjectProtocol?
-    private let unlockManager: UnlockManager
+    let unlockManager: UnlockManager
 
     init(unlockManager: UnlockManager,
          delegate: PinCodeViewControllerDelegate) {

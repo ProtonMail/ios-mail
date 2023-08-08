@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Common
 import ProtonCore_DataModel
 
 extension UserInfo {
@@ -28,14 +27,6 @@ extension UserInfo {
             return false
         }
         return true
-    }
-
-    static var isDiffableDataSourceEnabled: Bool {
-        if #available(iOS 13, *) {
-            return true
-        } else {
-            return false
-        }
     }
 
     static var isToolbarCustomizationEnable: Bool {
@@ -56,11 +47,18 @@ extension UserInfo {
 
     /// Swipe to show previous / next conversation or messages
     static var isConversationSwipeEnabled: Bool {
-        #if DEBUG
+        #if DEBUG_ENTERPRISE
         return true
         #else
         return false
         #endif
+    }
+
+    static var isHighlightKeywordEnabled: Bool {
+        #if DEBUG_ENTERPRISE
+            return true
+        #endif
+            return false
     }
 
     static var isEncryptedSearchEnabled: Bool {
@@ -69,22 +67,22 @@ extension UserInfo {
 //        #else
 //        return false
 //        #endif
-        return false // uncomment code above when the feature is functional
+        return false
     }
 
     static var isSenderImageEnabled: Bool {
-        #if DEBUG_ENTERPRISE
         return true
-        #else
-        return false
-        #endif
     }
 
     static var isBlockSenderEnabled: Bool {
-        #if DEBUG_ENTERPRISE
-        return true
-        #else
-        return false
-        #endif
+        true
+    }
+
+    static var isRotateScreenEnabled: Bool {
+#if DEBUG_ENTERPRISE
+        true
+#else
+        false
+#endif
     }
 }

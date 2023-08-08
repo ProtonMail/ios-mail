@@ -18,7 +18,7 @@
 import Foundation
 
 protocol DiskUsageProtocol {
-    var availableCapacity: ByteCount { get }
+    var availableCapacity: Measurement<UnitInformationStorage> { get }
     var isLowOnFreeSpace: Bool { get }
 }
 
@@ -30,13 +30,17 @@ protocol MemoryUsageProtocol {
 
 enum DeviceCapacity {
     struct Disk: DiskUsageProtocol {
-        var availableCapacity: ByteCount {
+        var availableCapacity: Measurement<UnitInformationStorage> {
             let homeDirectoryURL = URL(fileURLWithPath: NSHomeDirectory())
-            return homeDirectoryURL.value(forKey: .volumeAvailableCapacityKey, keyPath: \.volumeAvailableCapacity) ?? 0
+            let bytes = homeDirectoryURL.value(
+                forKey: .volumeAvailableCapacityKey,
+                keyPath: \.volumeAvailableCapacity
+            ) ?? 0
+            return .init(value: Double(bytes), unit: .bytes)
         }
 
         var isLowOnFreeSpace: Bool {
-            let lowStorageLimit = 100_000_000
+            let lowStorageLimit = Measurement<UnitInformationStorage>(value: 100, unit: .megabytes)
             return availableCapacity < lowStorageLimit
         }
     }
@@ -63,6 +67,20 @@ enum DeviceCapacity {
             assert(result == KERN_SUCCESS)
 
             return UInt(taskInfo.phys_footprint)
+        }
+
+        // Returns the total available memory on device
+        var availableMemory: Double {
+            var taskInfo = task_vm_info_data_t()
+            var count = mach_msg_type_number_t(MemoryLayout<task_vm_info>.size) / 4
+            _ = withUnsafeMutablePointer(to: &taskInfo) {
+                $0.withMemoryRebound(to: integer_t.self, capacity: 1) {
+                    task_info(mach_task_self_, task_flavor_t(TASK_VM_INFO), $0, &count)
+                }
+            }
+            let usedMegabytes = taskInfo.resident_size / (1_024 * 1_024)
+            let totalMb = ProcessInfo.processInfo.physicalMemory / (1_024 * 1_024)
+            return Double(totalMb - usedMegabytes)
         }
 
 #if DEBUG

@@ -8,26 +8,24 @@
 
 import ProtonCore_TestingToolkit
 
-import Foundation
-
-class DraftsTests: BaseTestCase {
-
-    private let loginRobot = LoginRobot()
+class DraftsTests: FixtureAuthenticatedTestCase {
     private var subject = String()
     private var body = String()
     private var to = String()
+
+    private var composerRobot: ComposerRobot!
 
     override func setUp() {
         super.setUp()
         subject = testData.messageSubject
         body = testData.messageBody
         to = testData.twoPassUser.email
+
+        composerRobot = InboxRobot().compose()
     }
 
     func testSaveDraft() {
-        loginRobot
-            .loginUser(testData.onePassUser)
-            .compose()
+        composerRobot
             .draftToSubjectBody(to, subject, body)
             .tapCancel()
             .menuDrawer()
@@ -36,9 +34,7 @@ class DraftsTests: BaseTestCase {
     }
 
     func testSaveDraftWithAttachment() {
-        loginRobot
-            .loginUser(testData.onePassUser)
-            .compose()
+        composerRobot
             .draftToSubjectBodyAttachment(to,subject, body)
             .tapCancel()
             .menuDrawer()
@@ -47,9 +43,7 @@ class DraftsTests: BaseTestCase {
     }
 
     func testOpenDraftFromSearch() {
-        loginRobot
-            .loginUser(testData.onePassUser)
-            .compose()
+        composerRobot
             .draftSubjectBody(subject, body)
             .tapCancel()
             .menuDrawer()
@@ -61,9 +55,7 @@ class DraftsTests: BaseTestCase {
     }
 
     func testSendDraftWithAttachment() {
-        loginRobot
-            .loginUser(testData.onePassUser)
-            .compose()
+        composerRobot
             .draftToSubjectBodyAttachment(to, subject, body)
             .tapCancel()
             .menuDrawer()
@@ -79,9 +71,7 @@ class DraftsTests: BaseTestCase {
     // 34849
     func testAddRecipientsToDraft() {
         let to = testData.internalEmailTrustedKeys.email
-        loginRobot
-            .loginUser(testData.onePassUser)
-            .compose()
+        composerRobot
             .draftSubjectBody(subject, body)
             .tapCancel()
             .menuDrawer()
@@ -95,9 +85,7 @@ class DraftsTests: BaseTestCase {
     func disabledChangeDraftSender() {
         let onePassUserSecondEmail = "2\(testData.onePassUser.email)"
 
-        loginRobot
-            .loginUser(testData.onePassUser)
-            .compose()
+        composerRobot
             .draftSubjectBody(subject, body)
             .tapCancel()
             .menuDrawer()
@@ -112,9 +100,7 @@ class DraftsTests: BaseTestCase {
     func testChangeDraftSubjectAndSendMessage() {
         let newSubject = testData.messageSubject
 
-        loginRobot
-            .loginUser(testData.onePassUser)
-            .compose()
+        composerRobot
             .draftToSubjectBody(to, subject, body)
             .tapCancel()
             .menuDrawer()
@@ -130,9 +116,7 @@ class DraftsTests: BaseTestCase {
     /// TestId: 34636
     func testSaveDraftWithoutSubject() {
         let noSubject = "(No Subject)"
-        loginRobot
-            .loginUser(testData.onePassUser)
-            .compose()
+        composerRobot
             .draftToBody(to, body)
             .tapCancel()
             .menuDrawer()
@@ -146,9 +130,7 @@ class DraftsTests: BaseTestCase {
     
     /// TestId: 34640
     func testMinimiseAppWhileComposingDraft() {
-        loginRobot
-            .loginUser(testData.onePassUser)
-            .compose()
+        composerRobot
             .draftToSubjectBody(to, subject, body)
             .backgroundApp()
             .foregroundApp()
@@ -162,9 +144,7 @@ class DraftsTests: BaseTestCase {
     func testEditDraftMinimiseAppAndSend() {
         let newRecipient = testData.onePassUserWith2Fa.email
         let newSubject = testData.newMessageSubject
-        loginRobot
-            .loginUser(testData.onePassUser)
-            .compose()
+        composerRobot
             .draftToSubjectBody(to, subject, body)
             .backgroundApp()
             .foregroundApp()
@@ -186,9 +166,7 @@ class DraftsTests: BaseTestCase {
         let editTwoRecipient = testData.twoPassUserWith2Fa.email
         let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
         let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
-        loginRobot
-            .loginUser(testData.onePassUser)
-            .compose()
+        composerRobot
             .draftToSubjectBody(to, subject, body)
             .tapCancel()
             .menuDrawer()
@@ -208,9 +186,7 @@ class DraftsTests: BaseTestCase {
     func testEditEveryFieldInDraftWithEnabledPublicKeyAndSend() {
         let newRecipient = testData.onePassUserWith2Fa.email
         let newSubject = testData.newMessageSubject
-        loginRobot
-            .loginTwoPasswordUser(testData.twoPassUser)
-            .compose()
+        composerRobot
             .draftToSubjectBody(testData.onePassUser.email, subject, body)
             .tapCancel()
             .menuDrawer()
@@ -232,9 +208,7 @@ class DraftsTests: BaseTestCase {
         let editTwoRecipient = testData.onePassUser.email
         let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
         let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
-        loginRobot
-            .loginTwoPasswordUser(testData.twoPassUser)
-            .compose()
+        composerRobot
             .draftToSubjectBody(testData.onePassUser.email, subject, body)
             .tapCancel()
             .menuDrawer()

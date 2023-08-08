@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Alle Nachrichten";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Alle Schutzeinstellungen werden beim Abmelden von der App zurückgesetzt und gelöscht.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Alle deine Nachrichten wurden heruntergeladen.";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Geburtstag";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Blockieren";
+
 /* Settings row */
 "Block email tracking" = "E-Mail-Tracking blockieren";
 
@@ -297,14 +303,17 @@
 /* Button to block a sender */
 "Block sender" = "Absender sperren";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Blockierte Absender";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Verhindert, dass der Absender erfährt, ob und wann du die Nachricht geöffnet hast";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Blättere im Unterhaltungsmodus durch zusammenhängende Nachrichten.";
 
-/* Title */
-"Bug Description" = "Beschreibung des Fehlers";
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Um uns zu helfen, dir zu helfen, gib bitte so viele Details wie möglich an---\n\nZusammenfassung:\n\nIst das Problem mehr als einmal aufgetreten: ja/nein\nSchritte zur Reproduktion des Problems:\nErwartetes Ergebnis:\nTatsächliches Ergebnis:\nKommentare:";
 
 /* Title */
 "Bug Report Received" = "Fehlerbericht erhalten";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Das Erstellen von Kategorien ist nicht erlaubt";
 
+/* Change language title */
+"Current Language: " = "Aktuelle Sprache: ";
+
 /* Placeholder */
 "Current password" = "Aktuelles Passwort";
 
@@ -700,6 +712,9 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Lade Metadaten herunter...";
 
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Lade neue Nachrichten herunter...";
+
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Lädt E-Mails herunter, sodass du sie durchsuchen kannst. Nachrichten werden verschlüsselt und lokal gespeichert. %1$@";
 
@@ -819,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Neuen PIN-Code eingeben";
 
+/* The title of the pin code view. */
+"Enter PIN" = "PIN eingeben";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Gib dein Passwort ein, um Änderungen vornehmen zu können";
 
@@ -915,6 +933,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Zu den Einstellungen";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Zur Anmeldung";
+
 /* Got it action */
 "Got it" = "Verstanden";
 
@@ -1000,6 +1021,9 @@
 /* place holder */
 "Input Display Name…" = "Anzeigename eingeben …";
 
+/* place holder */
+"Input Notification Email…" = "Benachrichtigungs-E-Mail-Adresse eingeben…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Unverschlüsselte Verbindung";
 
@@ -1014,6 +1038,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Proton präsentiert sein neues Design. Viele Dienste, eine Mission. Willkommen bei einem Internet, bei dem der Schutz der Privatsphäre Standard ist.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Ungültige E-Mail-Adresse";
 
 /* update password error */
 "Invalid hashed password!" = "Ungültiger Passwordhash!";
@@ -1127,6 +1154,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Als ungelesen kennzeichnen";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Vielleicht später";
+
 /* menu title */
 "Menu" = "Menü";
 
@@ -1237,6 +1267,9 @@
 /* Contacts add new contact */
 "New contact" = "Neuer Kontakt";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Neue E-Mails von %@ werden nicht zugestellt und dauerhaft gelöscht. Verwalte blockierte E-Mail-Adressen in den Einstellungen.";
+
 /* The title of create folder page */
 "New folder" = "Neuer Ordner";
 
@@ -1275,6 +1308,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Kein Anhang gefunden";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Keine blockierten Absender";
 
 /* Title */
 "No connectivity detected…" = "Keine Verbindung gefunden…";
@@ -1487,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Bitte schildere uns dein Problem.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Bitte melde dich in der Proton Mail-App an.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Bitte wechsle zu einem kostenpflichtigen Abonnement, um mehr als 3 Ordner zu verwenden";
 
@@ -1684,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Trotzdem senden";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Feedback senden";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1698,6 +1737,15 @@
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Lesebestätigung senden";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "Absender %@ blockiert";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Absender %@ entblockt";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Der Absender wurde blockiert";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Die Überprüfung des Absenders ist fehlgeschlagen";
@@ -1777,6 +1825,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Mir anzeigen";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Melde dich erneut an, um weiterhin Updates zu erhalten.";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Abmelden";
@@ -1792,6 +1843,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Von %1$@ ab- und bei %2$@ angemeldet";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Abgemeldet von %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Überspringen";
@@ -1953,6 +2007,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Die URL, auf die du versuchst zuzugreifen, entspricht nicht dem Standard und wird möglicherweise nicht richtig geladen. Möchtest du diese Adresse jetzt mit dem Standardbrowser deines Geräts öffnen?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Der Benutzer ist bereits angemeldet";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Es gibt noch nicht gesendete Nachrichten, die verloren gehen, sobald du dich abmeldest";
 
@@ -1967,6 +2024,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Dieses Thema enthält gelöschte Nachrichten";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail hat die Domain-Authentifizierungsanforderungen nicht bestanden. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Diese E-Mail hat die Domain-Authentifizierungsanforderungen nicht bestanden. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Diese E-Mail scheint von einer Proton Mail-Adresse zu stammen, kam jedoch von außerhalb unseres Systems und entspricht nicht unseren Authentifizierungsanforderungen. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein!";
@@ -2057,6 +2120,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Versuche dich von einem anderen Netzwerk aus mit Proton zu verbinden (oder verwende %1$@ oder %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktiviere diese Funktion, um E-Mail-Adressen aus Kontakten von all deinen angemeldeten Konten automatisch zu vervollständigen.";
+
 /* Placeholder */
 "Two Factor Code" = "Zwei-Faktor-Code";
 
@@ -2074,6 +2140,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Fehler beim Senden der E-Mail";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Entblocken";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Absender entsperren";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Verborgene Empfänger";
@@ -2128,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Benachrichtigungs-E-Mail-Adresse aktualisieren";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Aktualisierung eingereiht, warte auf Verbindung...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Vor >1 Stunde aktualisiert";
@@ -2250,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "Du kannst die %@-Adresse nicht als Standard festlegen, da es sich um eine kostenpflichtige Funktion handelt.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Du hast %@ in deinen Systemeinstellungen deaktiviert. %@ wurde verwendet, um wichtige Kontoinformationen zu schützen. Um auf dein Konto zuzugreifen, wechsle in die Einstellungen und aktiviere %@ wieder oder melde dich erneut an.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Du hast %1$@ in deinen Systemeinstellungen deaktiviert. %2$@ wurde verwendet, um wichtige Kontoinformationen zu schützen. Um auf dein Konto zuzugreifen, öffne die Einstellungen und reaktiviere %3$@ oder melde dich erneut an.";
 
 /* Message */
 "You have %d new emails!" = "Du hast %d neue Nachrichten!";
@@ -2311,6 +2386,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Deine Nachrichten werden heruntergeladen...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Deine Privatsphäre ist besser geschützt, wenn deine Kontakte ebenfalls Proton Mail verwenden. Lade deine Freunde zu Proton ein, und ihr beide profitiert kostenlos von den Premium-Vorteilen.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Deine Sitzung ist aufgrund einer längeren Inaktivität oder eines Widerrufs abgelaufen. Bitte melde dich erneut an.";

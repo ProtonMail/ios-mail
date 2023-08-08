@@ -58,6 +58,7 @@ final class SenderImageRequest: Request {
         if let uid = self.uid {
             urlComponents?.queryItems?.append(URLQueryItem(name: "UID", value: uid))
         }
+        urlComponents?.queryItems?.append(URLQueryItem(name: "Format", value: "png"))
         return urlComponents?.url?.absoluteString ?? ""
     }
 

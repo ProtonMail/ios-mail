@@ -29,11 +29,11 @@ extension APIErrorCode {
     static let forcePasswordChange = 2011
     /// The error means "Message has already been sent"
     static let alreadyExist = 2500
+    static let resourceDoesNotExist = 2501
     static let invalidRequirements = 2000
 
     // Device token
     static let deviceTokenIsInvalid = 11210
-    static let deviceTokenDoesNotExist = 2501
 
     static let deviceHavingLowConnectivity = 111222333
 }

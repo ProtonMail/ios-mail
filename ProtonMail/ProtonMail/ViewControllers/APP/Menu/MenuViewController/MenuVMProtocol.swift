@@ -47,7 +47,6 @@ protocol MenuVMProtocol: AnyObject {
     func highlight(label: MenuLabel)
     func appVersion() -> String
     func getAccountList() -> [AccountSwitcher.AccountData]
-    func getUnread(of userID: String) -> Int
     func activateUser(id: UserID)
     func prepareLogin(userID: UserID)
     func prepareLogin(mail: String)
@@ -55,6 +54,7 @@ protocol MenuVMProtocol: AnyObject {
     func getIconColor(of label: MenuLabel) -> UIColor
     func allowToCreate(type: PMLabelType) -> Bool
     func go(to labelInfo: MenuLabel)
+    func lockTheScreen()
 }
 
 extension MenuVMProtocol {

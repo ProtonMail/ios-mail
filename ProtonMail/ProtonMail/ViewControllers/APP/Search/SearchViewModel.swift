@@ -68,8 +68,10 @@ final class SearchViewModel: NSObject {
     let coreDataContextProvider: CoreDataContextProviderProtocol
 
     weak var uiDelegate: SearchViewUIProtocol?
+    private(set) var messageIDs = Set<MessageID>()
     private(set) var messages: [MessageEntity] = [] {
         didSet {
+            messageIDs = Set(messages.map(\.messageID))
             assert(Thread.isMainThread)
             uiDelegate?.reloadTable()
         }
@@ -78,7 +80,7 @@ final class SearchViewModel: NSObject {
     private(set) var selectedIDs: Set<String> = []
     private var fetchController: NSFetchedResultsController<Message>?
     private var messageService: MessageDataService { self.user.messageService }
-    private let localObjectIndexing: Progress = Progress(totalUnitCount: 1)
+    private let localObjectIndexing: Progress = .init(totalUnitCount: 1)
     private var localObjectsIndexingObserver: NSKeyValueObservation? {
         didSet {
             DispatchQueue.main.async { [weak self] in
@@ -87,6 +89,7 @@ final class SearchViewModel: NSObject {
             }
         }
     }
+
     private var dbContents: [LocalObjectsIndexRow] = []
     private var currentPage = 0
     private var query = ""
@@ -99,14 +102,21 @@ final class SearchViewModel: NSObject {
     var selectedMessages: [MessageEntity] {
         self.messages.filter { selectedIDs.contains($0.messageID.rawValue) }
     }
+
     private let internetStatusProvider: InternetConnectionStatusProvider
+    private var currentFetchedSearchResultPage: UInt = 0
+    /// use this flag to stop the search query being triggered by `loadMoreDataIfNeeded`.
+    private(set) var searchIsDone = false
+    private let composeViewModelFactory: ComposeViewModelDependenciesFactory
 
     init(
+        serviceFactory: ServiceFactory,
         user: UserManager,
         coreDataContextProvider: CoreDataContextProviderProtocol,
         internetStatusProvider: InternetConnectionStatusProvider,
         dependencies: Dependencies
     ) {
+        self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
         self.internetStatusProvider = internetStatusProvider
@@ -122,7 +132,7 @@ extension SearchViewModel: SearchVMProtocol {
     func viewDidLoad() {
         self.indexLocalObjects { [weak self] in
             guard let self = self,
-                  self.messages.isEmpty ,
+                  self.messages.isEmpty,
                   !self.query.isEmpty else { return }
             self.fetchLocalObjects()
         }
@@ -142,46 +152,46 @@ extension SearchViewModel: SearchVMProtocol {
         self.uiDelegate?.activityIndicator(isAnimating: true)
 
         self.query = query
-        let pageToLoad = fromStart ? 0: self.currentPage + 1
-        let service = user.messageService
-        service.search(query, page: pageToLoad) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.uiDelegate?.activityIndicator(isAnimating: false)
 
-                guard let self = self, let newMessages = try? result.get() else {
+        let pageToLoad = fromStart ? 0 : self.currentFetchedSearchResultPage + 1
+        if fromStart {
+            searchIsDone = false
+        }
+
+        guard !searchIsDone else {
+            return
+        }
+
+        dependencies.messageSearch
+            .callbackOn(.main)
+            .execute(
+                params: .init(query: query, page: currentFetchedSearchResultPage)
+            ) { [weak self] result in
+                self?.uiDelegate?.activityIndicator(isAnimating: false)
+                guard
+                    let self = self,
+                    let newMessages = try? result.get(),
+                    !newMessages.isEmpty else {
                     if pageToLoad == 0 {
                         self?.fetchLocalObjects()
                     }
+                    self?.searchIsDone = true
                     return
                 }
-                self.currentPage = pageToLoad
+                self.currentFetchedSearchResultPage = pageToLoad
 
-                if newMessages.isEmpty {
-                    if pageToLoad == 0 {
-                        self.messages = []
-                    }
-                    return
-                }
+                self.messages.append(
+                    contentsOf: newMessages.filter { !self.messageIDs.contains($0.messageID) }
+                )
 
-                self.coreDataContextProvider.performOnRootSavingContext { context in
-                    let newMessageEntities = newMessages.map(MessageEntity.init)
-
-                    DispatchQueue.main.async {
-                        if pageToLoad > 0 {
-                            self.messages.append(contentsOf: newMessageEntities)
-                        } else {
-                            self.messages = newMessageEntities
-                        }
-                        let ids = self.messages.map(\.messageID)
-                        self.updateFetchController(messageIDs: ids)
-                    }
-                }
+                let ids = self.messages.map(\.messageID)
+                self.updateFetchController(messageIDs: ids)
             }
-        }
     }
 
     func loadMoreDataIfNeeded(currentRow: Int) {
-        if self.messages.count - 1 <= currentRow {
+        if self.messages.count - 1 <= currentRow,
+           !searchIsDone {
             self.fetchRemoteData(query: self.query, fromStart: false)
         }
     }
@@ -198,7 +208,7 @@ extension SearchViewModel: SearchVMProtocol {
 
     func getComposeViewModel(message: MessageEntity) -> ComposeViewModel? {
         guard let msgObject = coreDataContextProvider.mainContext
-                .object(with: message.objectID.rawValue) as? Message else {
+            .object(with: message.objectID.rawValue) as? Message else {
             return nil
         }
         return ComposeViewModel(
@@ -206,8 +216,7 @@ extension SearchViewModel: SearchVMProtocol {
             action: .openDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: coreDataContextProvider,
-            internetStatusProvider: internetStatusProvider
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
     }
 
@@ -221,9 +230,8 @@ extension SearchViewModel: SearchVMProtocol {
             action: .openDraft,
             msgService: user.messageService,
             user: user,
-            coreDataContextProvider: coreDataContextProvider,
-            internetStatusProvider: internetStatusProvider,
-            isEditingScheduleMsg: isEditingScheduleMsg
+            isEditingScheduleMsg: isEditingScheduleMsg,
+            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
         )
     }
 
@@ -262,6 +270,7 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     // MARK: Action bar / sheet related
+
     // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
     func isSelected(messageID: String) -> Bool {
         self.selectedIDs.contains(messageID)
@@ -410,9 +419,9 @@ extension SearchViewModel: SearchVMProtocol {
 }
 
 // MARK: Action bar / sheet related
+
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: MoveToActionSheetProtocol {
-
     func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
         guard let destination = selectedMoveToFolder else { return }
         messageService.move(messages: messages, to: destination.location.labelID, queue: true)
@@ -427,6 +436,7 @@ extension SearchViewModel: MoveToActionSheetProtocol {
 }
 
 // MARK: Action bar / sheet related
+
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: LabelAsActionSheetProtocol {
     func handleLabelAsAction(messages: [MessageEntity],
@@ -436,13 +446,13 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
             if selectedLabelAsLabels
                 .contains(where: { $0.rawLabelID == label.location.rawLabelID }) {
                 // Add to message which does not have this label
-                let messageToApply = messages.filter({ !$0.contains(location: label.location) })
+                let messageToApply = messages.filter { !$0.contains(location: label.location) }
                 messageService.label(messages: messageToApply,
                                      label: label.location.labelID,
                                      apply: true,
                                      shouldFetchEvent: false)
             } else if markType != .dash { // Ignore the option in dash
-                let messageToRemove = messages.filter({ $0.contains(location: label.location) })
+                let messageToRemove = messages.filter { $0.contains(location: label.location) }
                 messageService.label(messages: messageToRemove,
                                      label: label.location.labelID,
                                      apply: false,
@@ -471,6 +481,7 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
 }
 
 // MARK: Action bar / sheet related
+
 extension SearchViewModel {
     private func selectionContainsReadMessages() -> Bool {
         selectedMessages.contains { !$0.unRead }
@@ -533,7 +544,7 @@ extension SearchViewModel {
                 let result = try context.fetch(overallCountRequest)
                 count = (result.first as? Int) ?? 1
             } catch {
-                assert(false, "Failed to fetch message dicts")
+                assertionFailure("Failed to fetch message dicts")
             }
         }
 
@@ -563,7 +574,7 @@ extension SearchViewModel {
         coreDataContextProvider.performOnRootSavingContext { context in
             self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
             guard let indexRaw = try? context.execute(async),
-                let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
+                  let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
                 self.localObjectIndexing.resignCurrent()
                 return
             }
@@ -571,11 +582,12 @@ extension SearchViewModel {
             self.localObjectIndexing.resignCurrent()
             self.localObjectsIndexingObserver = index.progress?.observe(
                 \Progress.completedUnitCount,
-                options: NSKeyValueObservingOptions.new) { [weak self] progress, _ in
-                    DispatchQueue.main.async {
-                        let completionRate = Float(progress.completedUnitCount) / Float(count)
-                        self?.uiDelegate?.update(progress: completionRate)
-                    }
+                options: NSKeyValueObservingOptions.new
+            ) { [weak self] progress, _ in
+                DispatchQueue.main.async {
+                    let completionRate = Float(progress.completedUnitCount) / Float(count)
+                    self?.uiDelegate?.update(progress: completionRate)
+                }
             }
         }
     }
@@ -591,7 +603,7 @@ extension SearchViewModel {
         let messageIds: [NSManagedObjectID] = self.dbContents.compactMap {
             for field in fieldsToMatchQueryAgainst {
                 if let value = $0[field] as? String,
-                    value.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) != nil {
+                   value.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) != nil {
                     return $0["objectID"] as? NSManagedObjectID
                 }
             }
@@ -632,8 +644,7 @@ extension SearchViewModel {
         self.fetchController?.delegate = self
         do {
             try self.fetchController?.performFetch()
-        } catch {
-        }
+        } catch {}
     }
 
     private func date(of message: MessageEntity, weekStart: WeekStart) -> String {
@@ -653,7 +664,9 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
 
 extension SearchViewModel {
     struct Dependencies {
+        let coreKeyMaker: KeyMakerProtocol
         let fetchMessageDetail: FetchMessageDetailUseCase
         let fetchSenderImage: FetchSenderImageUseCase
+        let messageSearch: SearchUseCase
     }
 }

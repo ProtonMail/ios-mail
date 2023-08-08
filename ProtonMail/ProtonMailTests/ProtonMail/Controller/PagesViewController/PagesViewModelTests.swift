@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
 import Groot
 import ProtonCore_DataModel
 import ProtonCore_Networking
@@ -55,7 +54,8 @@ final class PagesViewModelTests: XCTestCase {
             authCredential: auth,
             mailSettings: nil,
             parent: nil,
-            appTelemetry: MailAppTelemetry()
+            appTelemetry: MailAppTelemetry(),
+            coreKeyMaker: MockKeyMakerProtocol()
         )
         userIntroduction = MockUserIntroductionProgressProvider()
         toolbarStatusProvider = MockToolbarCustomizationInfoBubbleViewStatusProvider()

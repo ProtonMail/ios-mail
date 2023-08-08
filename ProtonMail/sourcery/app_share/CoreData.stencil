@@ -1,0 +1,39 @@
+import CoreData
+
+{% for type in types.based.NSManagedObject where type|annotated:"CoreDataHelpers" %}
+extension {{ type.name }}: DeletableManagedObject {
+    static var entityName: String { "{{ type.name }}" }
+
+    static func makeFetchRequest() -> NSFetchRequest<{{ type.name }}> {
+        NSFetchRequest<{{ type.name }}>(entityName: entityName)
+    }
+}
+
+{% endfor %}
+protocol DeletableManagedObject: NSManagedObject {
+    static var entityName: String { get }
+}
+
+extension DeletableManagedObject {
+    static func delete(in context: NSManagedObjectContext, basedOn predicate: NSPredicate) {
+        deleteWithOptionalPredicate(in: context, predicate: predicate)
+    }
+
+    static func deleteAll(in context: NSManagedObjectContext) {
+        deleteWithOptionalPredicate(in: context, predicate: nil)
+    }
+
+    private static func deleteWithOptionalPredicate(in context: NSManagedObjectContext, predicate: NSPredicate?) {
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
+        fetchRequest.predicate = predicate
+
+        do {
+            let objectsToDelete = try context.fetch(fetchRequest)
+            for objectToDelete in objectsToDelete {
+                context.delete(objectToDelete)
+            }
+        } catch {
+            PMAssertionFailure(error)
+        }
+    }
+}

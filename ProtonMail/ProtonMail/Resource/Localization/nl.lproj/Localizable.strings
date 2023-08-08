@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Alle berichten";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Alle beveiligingsinstellingen worden gereset en gewist bij het uitloggen van de app.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Al uw berichten zijn gedownload";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Verjaardag";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Blokkeer";
+
 /* Settings row */
 "Block email tracking" = "Blokkeer e-mailtracking";
 
@@ -297,14 +303,17 @@
 /* Button to block a sender */
 "Block sender" = "Blokkeer afzender";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Geblokkeerd afzenders";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Blokkeert dat afzenders kunnen zien of en wanneer u het bericht hebt geopend";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Snel scrollen door berichten in een thread in conversatiemodus.";
 
-/* Title */
-"Bug Description" = "Omschrijving van de bug";
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "----Geef zoveel mogelijk gegevens op om ons u te kunnen laten helpen----\n\nSamenvatting:\n\nHeeft het probleem zich meer dan één keer voorgedaan: ja/nee\nStappen om het probleem te reproduceren:\nVerwacht resultaat:\nDaadwerkelijk resultaat:\nOpmerkingen:";
 
 /* Title */
 "Bug Report Received" = "Bugmelding ontvangen";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Label aanmaken is niet toegestaan";
 
+/* Change language title */
+"Current Language: " = "Huidige taal: ";
+
 /* Placeholder */
 "Current password" = "Huidig wachtwoord";
 
@@ -700,6 +712,9 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Metagegevens downloaden...";
 
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Nieuwe berichten downloaden...";
+
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Downloadt e-mails zodat ze kunnen worden doorzocht. De berichten worden versleuteld en lokaal opgeslagen. %1$@";
 
@@ -819,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Voer nieuwe PIN-code in";
 
+/* The title of the pin code view. */
+"Enter PIN" = "PIN Invoeren";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Voer uw wachtwoord in om wijzigingen aan te brengen";
 
@@ -915,6 +933,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Ga naar instellingen";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Ga naar inloggen";
+
 /* Got it action */
 "Got it" = "Begrepen";
 
@@ -1000,6 +1021,9 @@
 /* place holder */
 "Input Display Name…" = "Weergavenaam invoeren…";
 
+/* place holder */
+"Input Notification Email…" = "Notificatie e-mailadres invoeren…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Onveilige verbinding";
 
@@ -1014,6 +1038,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Ontdek de nieuwe look van Proton.\nVeel diensten, één missie. Welkom in een internetomgeving waar privacy de standaard is.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Ongeldig e-mailadres";
 
 /* update password error */
 "Invalid hashed password!" = "Ongeldige wachtwoordhash!";
@@ -1127,6 +1154,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Markeer als ongelezen";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Misschien later";
+
 /* menu title */
 "Menu" = "Menu";
 
@@ -1237,6 +1267,9 @@
 /* Contacts add new contact */
 "New contact" = "Nieuw contactpersoon";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Nieuwe e-mails van %@ worden niet afgeleverd en worden permanent verwijderd. Beheer geblokkeerde e-mailadressen in de instellingen.";
+
 /* The title of create folder page */
 "New folder" = "Nieuwe map";
 
@@ -1275,6 +1308,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Geen bijlage gevonden";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Geen geblokkeerde afzenders";
 
 /* Title */
 "No connectivity detected…" = "Geen netwerkverbinding gedetecteerd…";
@@ -1487,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Deel uw probleem.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Log in op de Proton Mail-app";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Gelieve te upgraden naar een betaald abonnement om meer dan 3 mappen te gebruiken";
 
@@ -1684,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Toch verzenden";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Feedback versturen";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1698,6 +1737,15 @@
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Leesbevestiging verzenden";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "Afzender %@ geblokkeerd";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Afzender %@ gedeblokkeerd";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Afzender is geblokkeerd";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Verificatie van afzender is mislukt";
@@ -1777,6 +1825,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Laat mij zien";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Meld opnieuw aan om updates blijven ontvangen";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Uitloggen";
@@ -1792,6 +1843,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Afgemeld bij %1$@ en ingelogd met %2$@";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Afgemeld van %@";
 
 /* skip button title in onboarding page */
 "Skip" = "Overslaan";
@@ -1953,6 +2007,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "De URL die u probeert te openen is niet standaard en kan mogelijk niet correct geladen worden. Wilt u deze openen met de standaard browser van uw apparaat?";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "De gebruiker is al ingelogd.";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Er zijn niet-verzonden berichten die verloren gaan als u u uitlogt";
 
@@ -1967,6 +2024,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Dit gesprek bevat verwijderde berichten";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Dit e-mailadres gebruikt foutieve domeininstellingen. Het kan een nepbericht zijn, of het is op de verkeerde manier doorgestuurd.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Dit e-mailadres gebruikt foutieve domeininstellingen. Het kan een nepbericht zijn, of het is op de verkeerde manier doorgestuurd.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Deze e-mail lijkt afkomstig van een Proton Mail-adres maar kwam van buiten ons systeem en voldoet niet aan onze authenticatie-vereisten. Mogelijk werd deze gespoofed of onjuist doorgestuurd!";
@@ -2057,6 +2120,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Probeer verbinding te maken met Proton vanuit een ander netwerk (of gebruik %1$@ of %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Schakel deze functie in om e-mailadressen automatisch aan te vullen met behulp van contacten van al uw ingelogde accounts.";
+
 /* Placeholder */
 "Two Factor Code" = "Tweestapsverificatie code";
 
@@ -2074,6 +2140,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "E-mail kon niet worden verzonden";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Deblokkeer";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Afzender deblokkeren";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Niet-openbaar gemaakte ontvangers";
@@ -2128,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Notificatie-e-mailadres bijwerken";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Update in de wachtrij gezet, wachten op netwerkverbinding...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Bijgewerkt >1 uur geleden";
@@ -2250,7 +2325,7 @@
 "You can't set %@ address as default because it is a paid feature." = "U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "U heeft %@ uitgeschakeld in uw systeeminstellingen. %@ is gebruikt om belangrijke accountgegevens te beschermen. Om toegang te krijgen tot uw account gaat u naar instellingen en reactiveer %@ of log opnieuw in.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "U hebt %1$@ uitgeschakeld in uw systeeminstellingen. %2$@ is gebruikt om belangrijke accountinformatie te beschermen. Om toegang te krijgen tot uw account, gaat u naar de instellingen en heractiveert u %3$@, of u meldt zich opnieuw aan.";
 
 /* Message */
 "You have %d new emails!" = "U heeft %d nieuwe e-mails!";
@@ -2311,6 +2386,9 @@
 
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Uw berichten worden gedownload...";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Uw privacy is beter beschermd als u uw contacten ook Proton Mail gebruiken. Nodig uw vrienden uit voor Proton en ontvang allebei gratis premium voordelen.";
 
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Uw sessie is verlopen omdat u al een tijdje inactief bent of omdat deze is ingetrokken. Log opnieuw in.";

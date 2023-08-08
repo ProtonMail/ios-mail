@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "すべてのメール";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "アプリからサインアウトすると、すべての保護設定がリセットされ、消去されます。";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "すべてのメッセージがダウンロードされました";
 
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "誕生日";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "ブロック";
+
 /* Settings row */
 "Block email tracking" = "メールのトラッキングをブロック";
 
@@ -297,14 +303,17 @@
 /* Button to block a sender */
 "Block sender" = "差出人をブロック";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "ブロックした差出人";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "あなたがメッセージを閲覧したかどうか、いつ閲覧したかを送信者が確認できないようにします";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "会話モードでスレッドのメッセージを読み進めることができます。";
 
-/* Title */
-"Bug Description" = "バグの説明";
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---お役に立てるように、できるだけ多くの詳細をお知らせください---\n\n概要:\n\n問題は複数回発生したか: はい/いいえ\n問題を再現する手順:\n期待された結果:\n実際の結果:\nコメント:";
 
 /* Title */
 "Bug Report Received" = "バグレポートを受け取りました";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "ラベルを作成できません。";
 
+/* Change language title */
+"Current Language: " = "現在の言語 ";
+
 /* Placeholder */
 "Current password" = "現在のパスワード";
 
@@ -700,6 +712,9 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "メタデータをダウンロードしています...";
 
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "新しいメッセージをダウンロード中…";
+
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "メールをダウンロードすると、メールの内容を検索できます。暗号化されたメッセージがローカルに保存されます。%1$@";
 
@@ -819,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "新しいPIN コードの入力";
 
+/* The title of the pin code view. */
+"Enter PIN" = "PINコードを入力";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "変更するためにはパスワードを入力してください。";
 
@@ -915,6 +933,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "設定を開く";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "サインインに移動";
+
 /* Got it action */
 "Got it" = "はい";
 
@@ -1000,6 +1021,9 @@
 /* place holder */
 "Input Display Name…" = "表示名を入力…";
 
+/* place holder */
+"Input Notification Email…" = "通知メールを入力…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "安全ではない接続";
 
@@ -1014,6 +1038,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "新しい外観になった Proton をご紹介します。\nたくさんのサービス、1 つのミッション。どこでもプライベートなインターネットへようこそ。";
+
+/* The error message is shown in composer */
+"Invalid email address" = "無効なメールアドレスです";
 
 /* update password error */
 "Invalid hashed password!" = "無効なハッシュ化されたパスワードです";
@@ -1127,6 +1154,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "未読にする";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "後で行う";
+
 /* menu title */
 "Menu" = "メニュー";
 
@@ -1237,6 +1267,9 @@
 /* Contacts add new contact */
 "New contact" = "新しい連絡先";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "%@ からの新しいメールは配信されず、完全に削除されます。 設定でブロックしたメールアドレスを管理してください。";
+
 /* The title of create folder page */
 "New folder" = "新しいフォルダー";
 
@@ -1275,6 +1308,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "添付ファイルが見つかりませんでした";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "ブロックした差出人はいません";
 
 /* Title */
 "No connectivity detected…" = "接続を検出できません…";
@@ -1487,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "問題をシェアしてください。";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Proton Mailアプリへサインインしてください。";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "3 つ以上のフォルダーを使うには有料プランにアップグレードしてください";
 
@@ -1663,6 +1702,9 @@
    The title of encrypted search in settings */
 "Search message content" = "メッセージ内容の検索";
 
+/* Text for the banner when content search is slow. */
+"Search taking too long? %1$@ from this search for faster results." = "検索に時間がかかりすぎていませんか? この検索から %1$@ を検索すると、より速くなります。";
+
 /* The link in local storage downloaded messages. */
 "See details" = "詳細を表示";
 
@@ -1681,7 +1723,7 @@
 /* Action */
 "Send anyway" = "このまま送信";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "フィードバックを送信";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1695,6 +1737,15 @@
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "開封確認を送信する";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "差出人 %@ をブロックしました";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "差出人 %@ のブロックを解除しました。";
+
+/* Banner in the message view */
+"Sender has been blocked" = "差出人はブロックされました。";
 
 /* encryption lock description */
 "Sender Verification Failed" = "送信者検証に失敗";
@@ -1756,6 +1807,9 @@
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "よく使う機能をスワイプ操作に割り当ててください。";
 
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "スケジュールを設定しましょう";
+
 /* menu title */
 "Settings" = "設定";
 
@@ -1770,6 +1824,9 @@
 
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "表示する";
+
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "更新を受け取るためには再度サインインしてください";
 
 /* Alert title to confirm signout
    menu title */
@@ -1787,6 +1844,9 @@
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "%1$@ から %2$@ に切り替えました";
 
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "%@ からサインアウトしました";
+
 /* skip button title in onboarding page */
 "Skip" = "スキップ";
 
@@ -1794,7 +1854,7 @@
 "Snooze" = "通知の休止";
 
 /* The banner shown in case of proxy failure */
-"Some images could not be loaded with tracking protection." = "一部の画像はトラッキング防止により読み込まれませんでした。";
+"Some images could not be loaded with tracking protection." = "トラッキング防止が一部の画像の読み込みをブロックしました。";
 
 /* menu title */
 "Spam" = "迷惑メール";
@@ -1947,6 +2007,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "アクセスしようとしているURLは標準ではないため、正しく読み込まれない可能性があります。 端末の既定のブラウザで開きますか？";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "このユーザーは既にサインイン済みです";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "サインアウトした場合に失われる未送信のメッセージがあります。";
 
@@ -1961,6 +2024,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "この会話には、ごみ箱に入れたメッセージが含まれています";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "メールのドメイン認証の要求に失敗しました。なりすましや不適切な転送の可能性があります。";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "メールのドメイン認証に失敗しました。このメールは不適切に転送されたものか、なりすましの恐れがあります。";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "このメールは Proton Mail のアドレスが送信元になっていますが、外部から送信されたもので認証に失敗しています。不適切に転送されたものか、なりすましの恐れがあります。";
@@ -2051,6 +2120,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "別のネットワークから Proton への接続を試してください (または %1$@ や %2$@ をお試しください)";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "この機能を有効にすると、ログイン済みアカウントの連絡先のメールアドレスの自動補完を利用することができます。";
+
 /* Placeholder */
 "Two Factor Code" = "二段階認証コード";
 
@@ -2068,6 +2140,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "メールを送信できません";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "ブロックを解除する";
+
+/* Button to unblock a sender */
+"Unblock sender" = "差出人のブロックを解除する";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "非公開の宛先";
@@ -2122,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "通知用メールアドレスを更新してください";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "更新は予約され、接続するまで待機中です...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "1 時間前に更新";
@@ -2243,9 +2324,6 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "有料機能のため、%@ を既定のアドレスに設定できません。";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "システム設定で %@ が無効にされました。%@ は重要なアカウント情報を保護するために使用されています。アカウントにアクセスするには、設定を開き %@ を有効にするか、もう一度ログインしてください。";
-
 /* Message */
 "You have %d new emails!" = "%d 件の新着メールがあります";
 
@@ -2306,9 +2384,14 @@
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "メッセージをダウンロード中...";
 
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "さらなるプライバシー保護へ、友達と一緒にProtonMailを使いましょう。招待すると招待された人もあなたもプレミアムプランが使えます。";
+
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "しばらくの間未使用だったか失効させられているため、セッションが無効になりました。再度ログインしてください";
 
 /* contact placeholder */
 "ZIP" = "郵便番号";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "システム設定で %1$@を無効になっています。%2$@は重要なアカウント情報を保護するために使用されています。 アカウントにアクセスするには、設定を開き%3$@を再度有効にするか、再度ログインしてください。";

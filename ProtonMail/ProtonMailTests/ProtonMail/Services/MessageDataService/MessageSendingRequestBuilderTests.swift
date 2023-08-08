@@ -17,17 +17,19 @@
 
 import CoreData
 import GoLibs
-import XCTest
-@testable import ProtonMail
+import PromiseKit
 import ProtonCore_Crypto
 import ProtonCore_DataModel
-import PromiseKit
+import ProtonCore_TestingToolkit
+@testable import ProtonMail
+import XCTest
 
 class MessageSendingRequestBuilderTests: XCTestCase {
 
     var sut: MessageSendingRequestBuilder!
     private var mockFetchAttachment: MockFetchAttachment!
     private var context: NSManagedObjectContext!
+    private var mockApi: APIServiceMock!
 
     let testBody = "body".data(using: .utf8)!
     let testSession = "session".data(using: .utf8)!
@@ -38,7 +40,8 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         mockFetchAttachment = MockFetchAttachment()
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
+        mockApi = .init()
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
         testPublicKey = try XCTUnwrap(CryptoKey(fromArmored: OpenPGPDefines.publicKey))
     }
 
@@ -112,7 +115,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testContains() throws {
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
         XCTAssertTrue(sut.addressSendPreferences.isEmpty)
         XCTAssertFalse(sut.contains(type: .pgpMIME))
         let testPreferences = SendPreferences(encrypt: true,
@@ -341,7 +344,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
     func testGeneratePackageBuilder_EOAddress() throws {
         let testEOPassword = Passphrase(value: "EO PWD")
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
         sut.set(password: testEOPassword, hint: nil)
 
         let eoPreference = SendPreferences(encrypt: false,
@@ -369,7 +372,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     func testGeneratePackageBuilder_ClearAddress() throws {
-        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment))
+        sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
 
         let clearPreference = SendPreferences(encrypt: false,
                                               sign: false,
@@ -577,6 +580,30 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         setupTestBody()
 
         XCTAssertThrowsError(try sut.generatePackageBuilder())
+    }
+
+    func testExtractBase64() throws {
+        let html = #"<html><head></head><body><div>hi test</div><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAAEAQMAAACeIXx6AAAAA1BMVEVwcFynaTGjAAAACklEQVQI12OAAgAACAABod4nnQAAAABJRU5ErkJgggrr" alt="" /></body></html>"#
+        let boundary = sut.generateMessageBoundaryString()
+        let (updatedBody, inlines) = sut.extractBase64(clearBody: html, boundary: boundary)
+        XCTAssertEqual(inlines.count, 1)
+        let inline = try XCTUnwrap(inlines.first)
+        let regex = try RegularExpressionCache.regex(for: #"cid:(.*?)""#, options: .allowCommentsAndWhitespace)
+        guard
+            let match = regex.firstMatch(in: updatedBody, range: .init(location: 0, length: updatedBody.count)),
+            match.numberOfRanges == 2
+        else {
+            XCTFail("Unexpected")
+            return
+        }
+        let cid = updatedBody[match.range(at: 1)]
+        let expectedPrefix = #"\r\nContent-Type: image/png; name=".{8}"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: inline; filename=".{8}"\r\nContent-ID: <"#
+        let expectedSuffix = "\r\n\r\niVBORw0KGgoAAAANSUhEUgAAAAIAAAAEAQMAAACeIXx6AAAAA1BMVEVwcFynaTGj\r\nAAAACklEQVQI12OAAgAACAABod4nnQAAAABJRU5ErkJgggrr\r\n"
+        let expected = "--\(boundary)\(expectedPrefix)\(cid)"
+        XCTAssertTrue(inline.preg_match(expected))
+        // Somehow regular expression doesn't work with this suffix
+        // Workaround to verify
+        XCTAssertTrue(inline.hasSuffix(expectedSuffix))
     }
 
     private func setupTestBody() {

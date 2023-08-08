@@ -23,7 +23,7 @@ import class ProtonCore_Services.APIErrorCode
 /// Object responsible for triggering the actual send action. SendMessageTask also
 /// manages anything related to the before and after of the actual send request,
 /// specifically alerts/notifications and error management.
-class SendMessageTask {
+final class SendMessageTask {
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
@@ -182,10 +182,7 @@ extension SendMessageTask {
 
     private func handleApiError(message: MessageEntity, error: ResponseError) -> Error? {
         var hasErrorBeenProcessed: Bool = false
-        if error.responseCode == APIErrorCode.humanVerificationRequired {
-            dependencies.queueManager.isRequiredHumanCheck = true
-            notifySendMessageError(error, message: message)
-        } else if error.responseCode == APIErrorCode.alreadyExist {
+        if error.responseCode == APIErrorCode.alreadyExist {
             hasErrorBeenProcessed = true
             unscheduleNotification(messageID: message.messageID)
         } else if error.responseCode == APIErrorCode.invalidRequirements {
@@ -299,6 +296,13 @@ extension SendMessageTask {
     }
 }
 
-enum SendMessageTaskError: Error {
-    case noMessageFoundForURI
+enum SendMessageTaskError: String, Error {
+    case noMessageFoundForURI = "No message found"
+}
+
+extension SendMessageTaskError: LocalizedError {
+
+    var errorDescription: String? {
+        "SendMessageTaskError: \(rawValue)"
+    }
 }

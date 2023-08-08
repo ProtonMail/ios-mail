@@ -25,7 +25,6 @@ final class ConversationDataServiceTests: XCTestCase {
     var userID = UserID("user1")
     var mockApiService: APIServiceMock!
     var mockContextProvider: MockCoreDataContextProvider!
-    var mockLastUpdatedStore: MockLastUpdatedStore!
     var mockEventsService: MockEventsService!
     var fakeUndoActionManager: UndoActionManagerProtocol!
 
@@ -33,18 +32,19 @@ final class ConversationDataServiceTests: XCTestCase {
         super.setUp()
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
-        mockLastUpdatedStore = MockLastUpdatedStore()
         mockEventsService = MockEventsService()
-        fakeUndoActionManager = UndoActionManager(apiService: mockApiService,
-                                                  internetStatusProvider: .init(),
-                                                  contextProvider: mockContextProvider,
-                                                  getEventFetching: {return nil},
-                                                  getUserManager: {return nil})
+        let factory = sharedServices.makeUndoActionManagerDependenciesFactory()
+        fakeUndoActionManager = UndoActionManager(
+            factory: factory,
+            dependencies: factory.makeDependencies(apiService: mockApiService),
+            getEventFetching: { nil },
+            getUserManager: { nil }
+        )
         let mockContactCacheStatus = MockContactCacheStatusProtocol()
         sut = ConversationDataService(api: mockApiService,
                                       userID: userID,
                                       contextProvider: mockContextProvider,
-                                      lastUpdatedStore: mockLastUpdatedStore,
+                                      lastUpdatedStore: MockLastUpdatedStoreProtocol(),
                                       messageDataService: MockMessageDataService(),
                                       eventsService: mockEventsService,
                                       undoActionManager: fakeUndoActionManager,
@@ -56,7 +56,6 @@ final class ConversationDataServiceTests: XCTestCase {
         sut = nil
         mockApiService = nil
         mockContextProvider = nil
-        mockLastUpdatedStore = nil
         mockEventsService = nil
         fakeUndoActionManager = nil
     }

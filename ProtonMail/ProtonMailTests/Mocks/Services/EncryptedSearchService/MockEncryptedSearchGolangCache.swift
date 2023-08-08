@@ -20,33 +20,33 @@ import ProtonCore_TestingToolkit
 @testable import ProtonMail
 import GoLibs
 
-class MockEncryptedSearchGolangCache: EncryptedSearchGolangCacheProtocol {
+class MockEncryptedSearchGolangCache: GoLibsEncryptedSearchCache {
     @FuncStub(MockEncryptedSearchGolangCache.deleteAll) var callDeleteAll
-    func deleteAll() {
+    override func deleteAll() {
         callDeleteAll()
     }
 
     @ThrowingFuncStub(MockEncryptedSearchGolangCache.cacheIndexIntoDB) var callCacheIndex
-    func cacheIndexIntoDB(
-        dbParams: EncryptedSearchDBParams?,
-        cipher: EncryptedSearchAESGCMCipher?,
+    override func cacheIndexIntoDB(
+        dbParams: GoLibsEncryptedSearchDBParams?,
+        cipher: GoLibsEncryptedSearchAESGCMCipher?,
         batchSize: Int
     ) throws {
         try callCacheIndex(dbParams, cipher, batchSize)
     }
 
     @FuncStub(MockEncryptedSearchGolangCache.deleteMessage(_:), initialReturn: false) var callDeleteMessage
-    func deleteMessage(_ id: String?) -> Bool {
+    override func deleteMessage(_ id: String?) -> Bool {
         return callDeleteMessage(id)
     }
 
     @FuncStub(MockEncryptedSearchGolangCache.isBuilt, initialReturn: false) var callIsBuilt
-    func isBuilt() -> Bool {
+    override func isBuilt() -> Bool {
         return callIsBuilt()
     }
 
     @FuncStub(MockEncryptedSearchGolangCache.updateCache) var callUpdateCache
-    func updateCache(messageToInsert: ProtonMail.EncryptedSearchMessage?) {
+    override func updateCache(messageToInsert: ProtonMail.GoLibsEncryptedSearchMessage?) {
         callUpdateCache(messageToInsert)
     }
 }

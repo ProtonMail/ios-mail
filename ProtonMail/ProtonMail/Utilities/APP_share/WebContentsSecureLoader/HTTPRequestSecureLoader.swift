@@ -40,6 +40,8 @@ import WebKit
 class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessageHandler {
     internal let renderedContents = RenderedContents()
     private var heightChanged: ((CGFloat) -> Void)?
+    /// Callback to update the webview is scrollable when the rendering is done.
+    private var contentShouldBeScrollableByDefaultChanged: ((Bool) -> Void)?
 
     private weak var webView: WKWebView?
     private var blockRules: WKContentRuleList?
@@ -97,11 +99,13 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
                     .addAction(key: .type, value: .ignorePreviousRules)
             )
         let blockRules = builder.export() ?? ""
-        WKContentRuleListStore.default().compileContentRuleList(forIdentifier: "ContentBlockingRules", encodedContentRuleList: blockRules) { contentRuleList, error in
+        WKContentRuleListStore.default().compileContentRuleList(forIdentifier: "ContentBlockingRules-\(urlString)", encodedContentRuleList: blockRules) { contentRuleList, error in
             guard error == nil, let compiledRule = contentRuleList else {
                 assert(error == nil, "Error compiling content blocker rules: \(error!.localizedDescription)")
                 return
             }
+            guard let latestRequest = self.schemeHandler.latestRequest,
+                  compiledRule.identifier.hasSuffix(latestRequest) else { return }
             self.blockRules = compiledRule
             self.prepareRendering(contents, into: webView.configuration)
             webView.load(request)
@@ -110,6 +114,10 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
 
     func observeHeight(_ callBack: @escaping ((CGFloat) -> Void)) {
         self.heightChanged = callBack
+    }
+
+    func observeContentShouldBeScrollableByDefault(_ callBack: @escaping ((Bool) -> Void)) {
+        self.contentShouldBeScrollableByDefaultChanged = callBack
     }
 
     private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
@@ -124,8 +132,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             css = WebContents.cssLightModeOnly
         case .dark:
             css = WebContents.css
-            if let supplementCSS = contents.supplementCSS,
-               !supplementCSS.isEmpty {
+            if let supplementCSS = contents.supplementCSS {
                 css += supplementCSS
             } else {
                 // means this message doesn't support dark mode style
@@ -149,10 +156,34 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         }
 
         css = css.replacingOccurrences(of: "{{screen-width}}", with: "\(Int(screenWidth))px")
+        var loggerCode: String = .empty
+        #if DEBUG
+        loggerCode = """
+            // Print log on console
+            var console = {};
+            console.log = function(message){window.webkit.messageHandlers['logger'].postMessage(message)};
+        """
+        #endif
+
         let sanitizeRaw = """
+        \(loggerCode)
+        // Remove color related `!important`
+        let targetDOMs = document.querySelectorAll('*:not(html):not(head):not(body):not(script):not(meta):not(title)')
+        for (var i = 0, max = targetDOMs.length; i < max; i++) {
+            let dom = targetDOMs[i]
+            if (!dom.style.cssText.includes('!important')) { continue }
+            let css = dom.getAttribute('style').replace(/((color|bgcolor|background-color|background|border):.*?) (!important)/g, "$1")
+            dom.setAttribute('style', css);
+        }
+
+        // Purify message head
         var dirty = document.documentElement.outerHTML.toString();
+        DOMPurify.addHook('beforeSanitizeElements', escapeForbiddenStyleInElement);
         let protonizer = DOMPurify.sanitize(dirty, \(DomPurifyConfig.protonizer.value));
+        DOMPurify.removeHook('beforeSanitizeElements');
         let messageHead = protonizer.querySelector('head').innerHTML.trim()
+
+        // Purify message body
         var clean0 = DOMPurify.sanitize(dirty, \(DomPurifyConfig.imageCache.value));
         \(imageProxyCodeBlock)
         var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
@@ -183,6 +214,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
                 items[i].style.height = "auto";
             };
         };
+
         window.webkit.messageHandlers.loaded.postMessage({'preheight': ratio * rects.height, 'clearBody': document.documentElement.outerHTML.toString()});
         """
 
@@ -192,13 +224,25 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         config.userContentController.addUserScript(WebContents.escapeJS)
         config.userContentController.addUserScript(WebContents.loaderJS)
         config.userContentController.addUserScript(sanitize)
+        #if DEBUG
+        config.userContentController.removeScriptMessageHandler(forName: "logger")
+        config.userContentController.add(self, name: "logger")
+        #endif
 
         config.userContentController.add(self.blockRules!)
     }
 
+    private func handleConsoleLogFromJS(message: WKScriptMessage) {
+        guard let body = message.body as? String, message.name == "logger" else {
+            assertionFailure("Unexpected message sent from JS")
+            return
+        }
+        print("WebView log:\(body)")
+    }
+
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         guard let dict = message.body as? [String: Any] else {
-            assertionFailure("Unexpected message sent from JS")
+            handleConsoleLogFromJS(message: message)
             return
         }
 
@@ -221,7 +265,9 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
                     let result = searchBlockQuote(document);
 
                     // Hide the history of the message.
-                    document.body.innerHTML = result[0];
+                    if (result !== null) {
+                        document.body.innerHTML = result[0];
+                    }
                 """
             }
 
@@ -248,7 +294,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
                         }
                     });
 
-                    window.webkit.messageHandlers.loaded.postMessage({'height': height, 'refHeight': refHeight});
+                    window.webkit.messageHandlers.loaded.postMessage({'height': height, 'refHeight': refHeight, 'contentShouldBeScrollableByDefault': ratio < 1});
             """
 
             userContentController.addUserScript(WebContents.blockQuoteJS)
@@ -273,6 +319,12 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             let refHeight = (dict["refHeight"] as? CGFloat) ?? CGFloat(height)
             let res = refHeight > 32 ? refHeight : CGFloat(height)
             self.heightChanged?(res)
+        }
+        if let contentShouldBeScrollableByDefault = dict["contentShouldBeScrollableByDefault"] as? Bool {
+            // The contentShouldBeScrollableByDefault means that the webview should be scrollable after rendering by default.
+            // It also means that the content width can not be fully displayed on the device.
+            // We will allow the user to scroll the content by default.
+            contentShouldBeScrollableByDefaultChanged?(contentShouldBeScrollableByDefault)
         }
     }
 

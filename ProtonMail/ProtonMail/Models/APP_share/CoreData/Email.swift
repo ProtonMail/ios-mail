@@ -23,6 +23,7 @@
 import Foundation
 import CoreData
 
+// sourcery: CoreDataHelpers
 class Email: NSManagedObject {
     @NSManaged var userID: String
     @NSManaged var contactID: String

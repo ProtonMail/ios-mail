@@ -632,7 +632,7 @@ class LocalizedString {
 
     lazy var _unlock_required = NSLocalizedString("Unlock required", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
-    lazy var _enable_faceid_in_settings = NSLocalizedString("You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in.", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
+    lazy var _enable_faceid_in_settings = NSLocalizedString("You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in.", comment: "Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings")
 
     lazy var _lock_wipe_desc = NSLocalizedString("All protection settings will be reset and wiped upon signing out of the app.", comment: "A description string in pin & faceID setting page")
 
@@ -809,9 +809,6 @@ class LocalizedString {
     // "This can take a while, please do not dismiss the app"
     lazy var _please_wait_in_foreground = NSLocalizedString("Please keep Proton Mail open until the operation is done.", comment: "Alert message")
 
-    /// "Bug Description"
-    lazy var _bug_description = NSLocalizedString("Bug Description", comment: "Title")
-
     /// "Bug Report Received"
     lazy var _bug_report_received = NSLocalizedString("Bug Report Received", comment: "Title")
 
@@ -849,9 +846,6 @@ class LocalizedString {
 
     /// "Unsupported file type"
     lazy var _unsupported_file = NSLocalizedString("Unsupported file type", comment: "Error message")
-
-    /// "Please use Proton Mail App signin first"
-    lazy var _please_use_protonmail_app_signin_first = NSLocalizedString("Please use Proton Mail App sign-in first.", comment: "Description")
 
     /// "Can't copy the file"
     lazy var _cant_copy_the_file = NSLocalizedString("Can't copy the file", comment: "Error")
@@ -1278,7 +1272,7 @@ class LocalizedString {
     lazy var _send_feedback = NSLocalizedString("Send feedback", comment: "Title of button to send feedback")
     lazy var _feedback_awful = NSLocalizedString("Awful", comment: "Example feedback")
     lazy var _feedback_wonderful = NSLocalizedString("Wonderful", comment: "Example feedback")
-    lazy var _provide_feedback = NSLocalizedString("Send feedback", comment: "Title of menu action to trigger feedback view")
+    lazy var _provide_feedback = _send_feedback
     lazy var _thank_you_feedback = NSLocalizedString("Thank you for your feedback!", comment: "Comment in banner thanking user for providing feedback")
     lazy var collalse_message_title_in_converation_view = NSLocalizedString("Collapse message", comment: "The title of button to collapse the expanded message in conversation view for VoiceOver.")
 
@@ -1290,8 +1284,8 @@ class LocalizedString {
     lazy var _inbox_swipe_to_trash_banner_title = NSLocalizedString("Message moved to trash", comment: "The title of banner that is shown after using swipe action to trash a message")
     lazy var _inbox_swipe_to_archive_banner_title = NSLocalizedString("1 message moved to archive", comment: "The title of banner that is shown after using swipe action to archive a message")
     lazy var _inbox_swipe_to_spam_banner_title = NSLocalizedString("1 Message moved to spam", comment: "The title of banner that is shown after using swipe action to spam a message")
-    lazy var _inbox_swipe_to_move_banner_title = NSLocalizedString("%d message moved to %@", comment: "The title of swipe banner after swiping to move messages")
-    lazy var _inbox_swipe_to_move_conversation_banner_title = NSLocalizedString("%d conversation moved to %@", comment: "The title of swipe banner after swiping to move conversations")
+    lazy var _inbox_swipe_to_move_banner_title = NSLocalizedString("%1$d message moved to %2$@", comment: "The title of swipe banner after swiping to move messages")
+    lazy var _inbox_swipe_to_move_conversation_banner_title = NSLocalizedString("%1$d conversation moved to %2$@", comment: "The title of swipe banner after swiping to move conversations")
     lazy var _inbox_swipe_to_label_banner_title = NSLocalizedString("%d message labeled", comment: "The title of swipe banner after swiping to label messages")
     lazy var _inbox_swipe_to_label_conversation_banner_title = NSLocalizedString("%d conversation labeled", comment: "The title of swipe banner after swiping to label conversations")
 
@@ -1437,11 +1431,13 @@ enum L11n {
         static let blockActionTitleShort = NSLocalizedString("Block", comment: "Button to block a sender, keep it short to fit in the UI")
         static let blockListSettingsItem = NSLocalizedString("Block list", comment: "Settings item to open blocked sender list")
         static let blockListScreenTitle = NSLocalizedString("Blocked Senders", comment: "Title of the blocked sender list screen")
+        static let cannotRefreshWhileOffline = NSLocalizedString("Update queued, awaiting connectivity...", comment: "Shown when the user attempts to manually refresh the list of blocked senders while offline")
         static let emptyList = NSLocalizedString("No blocked senders", comment: "Placeholder for empty sender list")
         static let explanation = NSLocalizedString("New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings.", comment: "")
         static let senderIsBlockedBanner = NSLocalizedString("Sender has been blocked", comment: "Banner in the message view")
         static let successfulBlockConfirmation = NSLocalizedString("Sender %@ blocked", comment: "Toast confirming the block")
         static let successfulUnblockConfirmation = NSLocalizedString("Sender %@ unblocked", comment: "Toast confirming the unblock")
+        static let unblockActionTitleLong = NSLocalizedString("Unblock sender", comment: "Button to unblock a sender")
         static let unblockActionTitleShort = NSLocalizedString("Unblock", comment: "Button to unblock a sender, keep it short to fit in the UI")
     }
 
@@ -1471,7 +1467,7 @@ enum L11n {
         static let termsAndConditionTitle = NSLocalizedString("Terms & conditions", comment: "The title of the terms and conditions button in referral share view.")
         static let shareContent = NSLocalizedString("I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:", comment: "The content that is shared through the action: `Share the link`")
 
-        static let promptContent = NSLocalizedString("Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will both get premium benefits for free.", comment: "The content of the referral prompt view.")
+        static let promptContent = NSLocalizedString("Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free.", comment: "The content of the referral prompt view.")
         static let referAFriend = NSLocalizedString("Refer a friend", comment: "The title of the refer button in referral prompt view.")
         static let maybeLater = NSLocalizedString("Maybe later", comment: "The title of the maybe later button in referral prompt view.")
 	}
@@ -1572,6 +1568,8 @@ enum L11n {
 
     struct Settings {
         static let passwordUpdated = NSLocalizedString("Password updated", comment: "Message to show to user after updating password.")
+        static let local_storage_clearing_cache = NSLocalizedString("Clearing cache…", comment: "Alert message when local cache is deleted")
+        static let applicationLogs = NSLocalizedString("Application logs", comment: "Title for application logs settings option")
     }
 
     struct NextMsgAfterMove {
@@ -1582,6 +1580,7 @@ enum L11n {
 
     struct Error {
         static let cant_open_message = NSLocalizedString("Couldn't open the message, try again.", comment: "Error message when open message failed")
+        static let sign_in_message = NSLocalizedString("Please sign in to the Proton Mail app.", comment: "Error message when user open the share extension without account logged in.")
     }
 
     struct ActionSheetActionTitle {
@@ -1592,5 +1591,16 @@ enum L11n {
 
     struct Toolbar {
         static let customizeSpotlight = NSLocalizedString("Customize (verb)", comment: "The action title of the button on the toolbar customization spotlight view. (verb)")
+    }
+
+    struct PinCodeView {
+        static let title = NSLocalizedString("Enter PIN", comment: "The title of the pin code view.")
+	}
+
+    struct BugReport {
+        static let placeHolder = NSLocalizedString(
+            "Bug Report Place Holder",
+            comment: "The place holder text in the bug report view."
+        )
     }
 }

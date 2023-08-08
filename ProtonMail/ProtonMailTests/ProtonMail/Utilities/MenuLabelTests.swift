@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import CoreData
 import Groot
 @testable import ProtonMail
 import XCTest
@@ -35,7 +34,7 @@ final class MenuLabelTests: XCTestCase {
 
         let parsedLabel = testV4LabelData.parseJson()!
 
-        try coreDataService.enqueue { testContext in
+        try coreDataService.performAndWaitOnRootSavingContext { testContext in
             let labels = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: parsedLabel, in: testContext)
             guard let rawData = labels as? [Label] else {
                 XCTAssert(false, "Initialization failed")

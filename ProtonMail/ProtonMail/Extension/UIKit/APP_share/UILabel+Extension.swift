@@ -58,8 +58,16 @@ extension UILabel {
         textColor: UIColor = ColorProvider.TextNorm,
         lineBreakMode: NSLineBreakMode = .byTruncatingTail
     ) {
-        self.attributedText = text
-        apply(textStyle: preferredFont, weight: weight, textColor: textColor, lineBreakMode: lineBreakMode)
+        let copiedText = NSMutableAttributedString(attributedString: text)
+        let wholeRange = NSRange(location: 0, length: (text.string as NSString).length)
+        copiedText.addAttribute(.foregroundColor, value: textColor, range: wholeRange)
+        text.enumerateAttribute(.backgroundColor, in: wholeRange) { value, range, _ in
+            if value == nil { return }
+            copiedText.addAttribute(.foregroundColor, value: String.highlightTextColor, range: range)
+        }
+        self.attributedText = copiedText
+        self.font = .adjustedFont(forTextStyle: preferredFont, weight: weight)
+        self.adjustsFontForContentSizeCategory = true
     }
 
     private func apply(

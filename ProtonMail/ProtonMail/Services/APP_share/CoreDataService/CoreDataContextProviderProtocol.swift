@@ -18,13 +18,14 @@
 import CoreData
 import Foundation
 
-protocol CoreDataContextProviderProtocol {
+protocol CoreDataContextProviderProtocol: Service {
     var mainContext: NSManagedObjectContext { get }
 
     func enqueueOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID?
     func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
     func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void)
+    func performAndWaitOnRootSavingContext<T>(block: (_ context: NSManagedObjectContext) throws -> T) throws -> T
     func read<T>(block: (NSManagedObjectContext) -> T) -> T
     func read<T>(block: (NSManagedObjectContext) throws -> T) throws -> T
 }

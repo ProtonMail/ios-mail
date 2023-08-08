@@ -25,11 +25,10 @@ protocol NextMessageAfterMoveStatusProvider {
 extension UserManager: NextMessageAfterMoveStatusProvider {
     var shouldMoveToNextMessageAfterMove: Bool {
         get {
-            return mailSettings.nextMessageOnMove
+            return mailSettings.nextMessageOnMove.isEnabled
         }
         set {
-            let newSetting = MailSettings(nextMessageOnMove: newValue)
-            mailSettings = newSetting
+            mailSettings.update(key: .nextMessageOnMove, to: newValue)
         }
     }
 }

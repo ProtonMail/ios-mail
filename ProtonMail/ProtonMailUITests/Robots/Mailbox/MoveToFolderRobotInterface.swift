@@ -10,7 +10,7 @@ import fusion
 
 fileprivate struct id {
     /// Move to folder dialog identifiers
-    static let addFolderButtonIdentifier = LocalString._move_to_new_folder
+    static let addFolderButtonIdentifier = "itemIndex_0.0"
     static let addLabelButtonIdentifier = LocalString._label_as_new_label
     static let applyMoveToFolderButtonIdentifier = "LabelsViewController.applyButton"
     static let cancelMoveToFolderButtonIdentifier = "LabelsViewController.cancelButton"
@@ -27,7 +27,7 @@ fileprivate struct id {
 
 /**
  Parent class for Label and Folder dialogs in all the Mailbox Robot classes like Inbox, Sent, Trash, etc.
-*/
+ */
 class MoveToFolderRobotInterface: CoreElements {
     
     @discardableResult
@@ -97,13 +97,7 @@ class MoveToFolderRobotInterface: CoreElements {
     }
     
     @discardableResult
-    func tapDoneSelectingFolderButton() -> MessageRobot {
-        button(id.doneButtonLabel).waitForHittable().tap()
-        return MessageRobot()
-    }
-    
-    @discardableResult
-    func tapDoneSelectingLabelButton() -> MessageRobot {
+    func tapDone() -> MessageRobot {
         button(id.doneButtonLabel).waitForHittable().tap()
         return MessageRobot()
     }

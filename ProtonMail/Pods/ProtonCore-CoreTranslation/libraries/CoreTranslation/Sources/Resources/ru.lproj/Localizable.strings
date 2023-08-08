@@ -191,10 +191,10 @@
 "Enter the 6-digit code." = "Введите код из шести цифр.";
 
 /* Verification */
-"Enter the verification code that was sent to %@" = "Введите код подтверждения, отправленный на $%@";
+"Enter the verification code that was sent to %@" = "Введите код подтверждения, отправленный на %@";
 
 /* Enter email code label */
-"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Введите код подтверждения, который был отправлен на $%@. Если вы не нашли его во Входящих, пожалуйста, проверьте Спам.";
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Введите код подтверждения, который был отправлен на %@. Если вы не нашли его во Входящих, пожалуйста, проверьте Спам.";
 
 /* Login screen subtitle */
 "Enter your Proton Account details." = "Введите информацию о вашем аккаунте Proton.";
@@ -408,7 +408,7 @@
 "Password is too short. Should have at least %@ characters.\nPlease try again." = "Пароль слишком короткий. Должно быть не менее %@ символов.\nПожалуйста, попробуйте еще раз.";
 
 /* Password too short error */
-"Password must contain at least %@ characters." = "Пароль должен содержать хотя бы $%@ символов.";
+"Password must contain at least %@ characters." = "Пароль должен содержать хотя бы %@ символов.";
 
 /* Password field hint about minimum length */
 "Password must contain at least 8 characters" = "Пароль должен содержать хотя бы 8 символов";

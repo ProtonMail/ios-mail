@@ -46,7 +46,7 @@ enum ConnectionStatus: Int {
 protocol InternetConnectionStatusProviderProtocol {
     var currentStatus: ConnectionStatus { get }
 
-    func registerConnectionStatus(observerID: UUID, callback: @escaping (ConnectionStatus) -> Void)
+    func registerConnectionStatus(observerID: UUID, fireAfterRegister: Bool, callback: @escaping (ConnectionStatus) -> Void)
     func unregisterObserver(observerID: UUID)
 }
 
@@ -81,9 +81,12 @@ class InternetConnectionStatusProvider: InternetConnectionStatusProviderProtocol
 
     - parameter observerID: Each observing object should store its own UUID to avoid accidentally registering multiple times and to allow unregistering.
      */
-    func registerConnectionStatus(observerID: UUID, callback: @escaping ((ConnectionStatus) -> Void)) {
+    func registerConnectionStatus(observerID: UUID, fireAfterRegister: Bool = true, callback: @escaping ((ConnectionStatus) -> Void)) {
         callbacksToNotify[observerID] = callback
-        callback(currentStatus)
+        if fireAfterRegister {
+            callback(currentStatus)
+        }
+
     }
 
     func unregisterObserver(observerID: UUID) {

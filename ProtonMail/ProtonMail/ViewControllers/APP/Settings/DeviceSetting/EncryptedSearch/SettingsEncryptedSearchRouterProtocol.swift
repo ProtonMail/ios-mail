@@ -17,8 +17,9 @@
 
 import UIKit
 
+// sourcery: mock
 protocol SettingsEncryptedSearchRouterProtocol {
-    func navigateToDownloadedMessages()
+    func navigateToDownloadedMessages(userID: UserID, state: EncryptedSearchIndexState)
 }
 
 final class SettingsEncryptedSearchRouter: SettingsEncryptedSearchRouterProtocol {
@@ -28,9 +29,14 @@ final class SettingsEncryptedSearchRouter: SettingsEncryptedSearchRouterProtocol
         self.navigationController = navigationController
     }
 
-    func navigateToDownloadedMessages() {
+    func navigateToDownloadedMessages(userID: UserID, state: EncryptedSearchIndexState) {
         guard let navController = navigationController else { return }
-        let viewModel = DownloadedMessagesViewModel(dependencies: .init())
+        let router = DownloadedMessagesRouter(navigationController: navController)
+        let viewModel = DownloadedMessagesViewModel(
+            router: router,
+            searchIndexState: state,
+            dependencies: .init(userID: userID)
+        )
         let viewController = DownloadedMessagesViewController(viewModel: viewModel)
         navController.pushViewController(viewController, animated: true)
     }

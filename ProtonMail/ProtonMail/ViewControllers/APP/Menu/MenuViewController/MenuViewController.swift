@@ -110,7 +110,12 @@ final class MenuViewController: UIViewController, AccessibleView {
         self.viewModel.set(menuWidth: properWidth)
     }
 
-    static func calcProperMenuWidth(keyWindow: UIWindow? = UIApplication.shared.keyWindow, referenceWidth: CGFloat? = nil, expectedMenuWidth: CGFloat = 327) -> CGFloat {
+    static func calcProperMenuWidth(
+        keyWindow: UIWindow? = UIApplication.shared.keyWindow,
+        referenceWidth: CGFloat? = nil,
+        expectedMenuWidth: CGFloat = 327
+    ) -> CGFloat {
+
         let windowWidth = referenceWidth ?? keyWindow?.bounds.width ?? expectedMenuWidth
         let menuWidth = min(expectedMenuWidth, windowWidth)
         return menuWidth
@@ -385,8 +390,7 @@ extension MenuViewController: UITableViewDelegate, UITableViewDataSource, MenuIt
         }
         switch label.location {
         case .lockapp:
-            keymaker.lockTheApp() // remove mainKey from memory
-            _ = sharedServices.get(by: UnlockManager.self).isUnlocked() // provoke mainKey obtaining
+            viewModel.lockTheScreen()
             self.closeMenu()
         case .signout:
             let cell = tableView.cellForRow(at: indexPath)

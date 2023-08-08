@@ -106,7 +106,7 @@ extension Attachment {
                 kCGImagePropertyTIFFArtist: nil,
                 kCGImagePropertyTIFFCopyright: nil,
                 kCGImagePropertyTIFFSoftware: nil
-            ],
+            ] as [CFString: Any?],
 
             kCGImagePropertyPNGDictionary: [
                 kCGImagePropertyPNGAuthor: nil,
@@ -116,7 +116,7 @@ extension Attachment {
                 kCGImagePropertyPNGDescription: nil,
                 kCGImagePropertyPNGModificationTime: nil,
                 kCGImagePropertyPNGTitle: nil
-            ],
+            ] as [CFString: Any?],
 
             // camera makers
             kCGImagePropertyMakerCanonDictionary: nil,

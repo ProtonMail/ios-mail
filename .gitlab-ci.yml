@@ -1,15 +1,21 @@
 # See https://confluence.protontech.ch/pages/viewpage.action?pageId=121918293
 
+variables:
+  LANG: "en_US.UTF-8"
+  GEM_HOME: "$CI_PROJECT_DIR/gem"
+  ATLAS_DEPLOY_LIST: ""
+  ATLAS_LINK_APP: mail
+  ATLAS_DEPLOY_ENV: "true"
+  TEST_DATA_URL: "https://$GIT_CI_USERNAME:$PRIVATE_TOKEN_GITLAB_API_PROTON_CI@$GITLAB_HTTPS"
+
 stages:
   - i18n
   - linting
-  - deploy
   - build
+  - deploy
   - test
   - report
   - cleanup
-  - testflight
-  - enterprise
   - distribute
   - bot
 
@@ -25,6 +31,8 @@ stages:
 .setup_project: &setup_project
   - *setup_basic_tools
   - *setup_ruby
+
+  - git config --global url."$TEST_DATA_URL".insteadOf "testdata-repo:"
 
   - git submodule init
   - git submodule update --init --recursive
@@ -74,13 +82,6 @@ include:
   - project: "tpe/testmo-reporter"
     file: '/scenarios/testmo-script.yml'
 
-variables:
-  LANG: "en_US.UTF-8"
-  GEM_HOME: "$CI_PROJECT_DIR/gem"
-  ATLAS_DEPLOY_LIST: ""
-  ATLAS_LINK_APP: mail
-  ATLAS_DEPLOY_ENV: "true"
-
 workflow:
   rules:
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
@@ -106,8 +107,25 @@ linting:
   tags:
     - iOS_ARM_TAIPEI
 
+build:debug:for-testing:
+  stage: build
+  allow_failure: false
+  interruptible: true
+  artifacts:
+    untracked: true
+    when: on_success
+    paths:
+      - test_output/
+    expire_in: 1 day
+  before_script:
+    - *setup_project
+  script:
+    - cd ProtonMail
+    - bundle exec fastlane build_for_testing
+  tags:
+    - iOS_BUILD
+
 test:unit:
-  dependencies: []
   stage: test
   coverage: '/Test Coverage: \d*.\d*%/'
   only:
@@ -118,8 +136,6 @@ test:unit:
     - merge_requests
   except:
     - schedules
-  variables:
-    GIT_DEPTH: 1
   artifacts:
     reports:
       coverage_report:
@@ -137,6 +153,9 @@ test:unit:
     - iOS_ARM_TAIPEI
 
 test:ui:smoke:
+  dependencies:
+    - deploy:review
+    - build:debug:for-testing
   stage: test
   except:
     - schedules
@@ -147,8 +166,6 @@ test:ui:smoke:
       - develop
       - /^release\/.*$/
       - merge_requests
-  variables:
-    GIT_DEPTH: 1
   artifacts:
     when: always
     name: "test-report"
@@ -163,10 +180,11 @@ test:ui:smoke:
         - test_output/TestResults/report.xml
   before_script:
     - *setup_project
-    - *prepare_users_for_ui_tests
   script:
+    - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
     - cd ProtonMail
-    - bundle exec fastlane ui_test
+    - bundle install
+    - bundle exec fastlane ui_test testplan:"SmokeTests" concurrent_workers:"2"
   tags:
     - iOS_UITEST
   allow_failure: true
@@ -190,11 +208,12 @@ report:slack:smoke:
   allow_failure: true
 
 test:ui:feature:
+  dependencies:
+    - deploy:review
+    - build:debug:for-testing
   stage: test
-  rules: 
+  rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
-  variables:
-    GIT_DEPTH: 1
   artifacts:
     when: always
     name: "test-report"
@@ -204,19 +223,20 @@ test:ui:feature:
     reports:
       junit: test_output/TestResults/report.xml
   before_script:
-    - *setup_project
-    - *prepare_users_for_ui_tests
     - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
   script:
     - cd ProtonMail
-    - bundle exec fastlane feature_tests
+    - bundle exec fastlane ui_test testplan:$TEST_PLAN concurrent_workers:$NUMBER_OF_DEVICES
   tags:
     - iOS_UITEST
 
 test:ui:monkey:
+  dependencies:
+    - deploy:review
+    - build:debug:for-testing
   timeout: 2 hours
   stage: test
-  rules: 
+  rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "monkey"'
   artifacts:
     when: always
@@ -226,20 +246,15 @@ test:ui:monkey:
     expire_in: 10 days
     reports:
       junit: test_output/TestResults/report.xml
-  before_script:
-    - *setup_project
-    - *prepare_users_for_ui_tests
   script:
     - cd ProtonMail
-    - bundle exec fastlane monkey_tests
+    - bundle exec fastlane ui_test testplan:MonkeyTests concurrent_workers:1
   tags:
     - iOS_UITEST
 
 report:slack:feature:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
-  variables:
-    GIT_DEPTH: 1
   rules:
     - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
       when: always
@@ -289,10 +304,8 @@ appetize:start:
     name: review/$CI_COMMIT_REF_NAME
     on_stop: appetize:stop
     url: $APPETIZE_APP_URL?osVersion=16.2&device=iphone14
-  variables:
-    GIT_DEPTH: 1
   rules:
-    - if: '$CI_PIPELINE_SOURCE != "schedule"'
+    - if: $CI_MERGE_REQUEST_ID
       when: manual
       allow_failure: true
   before_script:
@@ -309,28 +322,30 @@ appetize:start:
     - iOS_ARM_TAIPEI
 
 appetize:stop:
-  dependencies: []
-  stage: .post
+  stage: distribute
   environment:
     name: review/$CI_COMMIT_REF_NAME
     action: stop
   rules:
-    - when: manual
+    - if: $CI_MERGE_REQUEST_ID
+      when: manual
       allow_failure: true
   variables:
     GIT_STRATEGY: none
   script:
-    - curl -X DELETE --fail https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_PUBLIC_KEY
+    - curl -X DELETE --fail "https://$APPETIZE_API_TOKEN@api.appetize.io/v1/apps/$APPETIZE_PUBLIC_KEY"
   tags:
     # anything that has `curl` basically, apparently without this tag, it's possible to get a runner that doesn't have it
     - iOS_ARM_TAIPEI
 
 # --- Build app and send to testflight
-testflight:build:upload:
+testflight:alpha:
   dependencies: []
-  stage: testflight
+  needs: []
+  stage: distribute
   variables:
     GIT_STRATEGY: clone
+    GIT_DEPTH: "0"
   rules:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: manual
@@ -351,7 +366,7 @@ testflight:build:upload:
 # TODO: this is almost identical to testflight:build:upload:, perhaps we can combine them
 nightly-build-and-upload:
   dependencies: []
-  stage: testflight
+  stage: distribute
   only:
     refs:
       - schedules
@@ -370,11 +385,10 @@ nightly-build-and-upload:
     - iOS_ARM_TAIPEI
 
 # --- Build enterprise app for test and upload
-enterprise:test:
+firebase:qa:
   dependencies: []
-  stage: enterprise
-  variables:
-    GIT_DEPTH: 1
+  needs: []
+  stage: distribute
   rules:
     - if: '$CI_PIPELINE_SOURCE != "schedule"'
       when: manual

@@ -31,7 +31,7 @@ protocol CacheServiceProtocol: Service {
     func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?)
     func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?)
     func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?)
-    func updateContactDetail(serverResponse: [String: Any], completion: ((Contact?, NSError?) -> Void)?)
+    func updateContactDetail(serverResponse: [String: Any], completion: ((ContactEntity?, NSError?) -> Void)?)
     func parseMessagesResponse(
         labelID: LabelID,
         isUnread: Bool,
@@ -173,25 +173,25 @@ class CacheService: CacheServiceProtocol {
     }
 
     func mark(messageObjectID: NSManagedObjectID, labelID: LabelID, unRead: Bool, context: NSManagedObjectContext) -> Bool {
-            guard let msgToUpdate = try? context.existingObject(with: messageObjectID) as? Message else {
-                return false
-            }
+        guard let msgToUpdate = try? context.existingObject(with: messageObjectID) as? Message else {
+            return false
+        }
 
-            guard msgToUpdate.unRead != unRead else {
-                return true
-            }
+        guard msgToUpdate.unRead != unRead else {
+            return true
+        }
 
-            msgToUpdate.unRead = unRead
+        msgToUpdate.unRead = unRead
 
-            if unRead == false {
-                PushUpdater().remove(notificationIdentifiers: [msgToUpdate.notificationId])
-            }
-            if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
-                conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID.rawValue)
-            }
-            self.updateCounterSync(markUnRead: unRead, on: msgToUpdate.getLabelIDs().map { LabelID($0) })
+        if unRead == false {
+            PushUpdater().remove(notificationIdentifiers: [msgToUpdate.notificationId])
+        }
+        if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
+            conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID.rawValue)
+        }
+        self.updateCounterSync(markUnRead: unRead, on: msgToUpdate.getLabelIDs().map { LabelID($0) })
 
-        if let error = context.saveUpstreamIfNeeded(){
+        if let error = context.saveUpstreamIfNeeded() {
             assertionFailure("\(error)")
             return false
         } else {
@@ -456,10 +456,7 @@ extension CacheService {
             }
         }
 
-        var result: Result<(Date, Date)?, Error>!
-
-        coreDataService.performAndWaitOnRootSavingContext { context in
-            do {
+        let timeRange: (Date, Date)? = try coreDataService.performAndWaitOnRootSavingContext { context in
                 if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                     for msg in messages {
                         // mark the status of metadata being set
@@ -468,20 +465,16 @@ extension CacheService {
                     _ = context.saveUpstreamIfNeeded()
 
                     if let lastMsg = messages.last, let firstMsg = messages.first {
-                        result = .success((firstMsg.time ?? Date(), lastMsg.time ?? Date()))
+                        return (firstMsg.time ?? Date(), lastMsg.time ?? Date())
                     } else {
-                        result = .success(nil)
+                        return nil
                     }
                 } else {
-                    result = .success(nil)
+                    return nil
                 }
-            } catch {
-                result = .failure(error)
-            }
         }
 
-            switch result {
-            case let .success(.some((startTime, endTime))):
+            if let (startTime, endTime) = timeRange {
                 self.lastUpdatedStore.updateLastUpdatedTime(
                     labelID: labelID,
                     isUnread: isUnread,
@@ -491,12 +484,6 @@ extension CacheService {
                     userID: self.userID,
                     type: .singleMessage
                 )
-            case .success(.none):
-                break
-            case .failure(let error):
-                throw error
-            case .none:
-                fatalError("result should have been set by now!")
             }
     }
 }
@@ -619,7 +606,6 @@ extension CacheService {
             } catch {
             }
             DispatchQueue.main.async {
-                self.coreDataService.mainContext.refreshAllObjects()
                 completion?()
             }
         }
@@ -725,7 +711,7 @@ extension CacheService {
         }
     }
 
-    func updateContactDetail(serverResponse: [String: Any], completion: ((Contact?, NSError?) -> Void)?) {
+    func updateContactDetail(serverResponse: [String: Any], completion: ((ContactEntity?, NSError?) -> Void)?) {
         coreDataService.performOnRootSavingContext { context in
             do {
                 if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: serverResponse, in: context) as? Contact {
@@ -734,7 +720,7 @@ extension CacheService {
                     if let error = context.saveUpstreamIfNeeded() {
                         completion?(nil, error)
                     } else {
-                        completion?(contact, nil)
+                        completion?(ContactEntity(contact: contact), nil)
                     }
                 } else {
                     completion?(nil, NSError.unableToParseResponse(serverResponse))

@@ -53,37 +53,6 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         mainContext
     }
 
-    func enqueue<T>(block: @escaping (NSManagedObjectContext) -> T) -> T {
-        var output: T!
-
-        serialQueue.addOperation { [weak self] in
-            guard let self = self else { return }
-
-            let context = self.container.newBackgroundContext()
-
-            output = context.performAndWait {
-                block(context)
-            }
-        }
-
-        serialQueue.waitUntilAllOperationsAreFinished()
-
-        return output
-    }
-
-    func enqueue<T>(block: @escaping (NSManagedObjectContext) throws -> T) throws -> T {
-        let result = enqueue { (context: NSManagedObjectContext) -> Result<T, Error> in
-            do {
-                let output = try block(context)
-                return .success(output)
-            } catch {
-                return .failure(error)
-            }
-        }
-
-        return try result.get()
-    }
-
     func enqueueOnRootSavingContext(block: (NSManagedObjectContext) -> Void) {
         let context = rootSavingContext
 
@@ -113,6 +82,14 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
 
         context.performAndWait {
             block(context)
+        }
+    }
+
+    func performAndWaitOnRootSavingContext<T>(block: (_ context: NSManagedObjectContext) throws -> T) throws -> T {
+        let context = rootSavingContext
+
+        return try context.performAndWait {
+            try block(context)
         }
     }
 

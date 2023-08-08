@@ -97,7 +97,7 @@ final class SearchIndexDBTests: XCTestCase {
         createDB()
         XCTAssertThrowsError(try sut.removeEntryFromSearchIndex(
             isEncryptedSearchOn: false,
-            currentState: .downloading,
+            currentState: .creatingIndex,
             messageID: MessageID("r")
         ))
         XCTAssertThrowsError(try sut.removeEntryFromSearchIndex(
@@ -127,14 +127,14 @@ final class SearchIndexDBTests: XCTestCase {
         for id in messages.reversed() {
             let isDeleted = try sut.removeEntryFromSearchIndex(
                 isEncryptedSearchOn: true,
-                currentState: .downloading,
+                currentState: .creatingIndex,
                 messageID: id
             )
             XCTAssertTrue(isDeleted)
         }
         let isDeleted = try sut.removeEntryFromSearchIndex(
             isEncryptedSearchOn: true,
-            currentState: .downloading,
+            currentState: .creatingIndex,
             messageID: MessageID("unknown")
         )
         XCTAssertFalse(isDeleted)
@@ -162,7 +162,7 @@ final class SearchIndexDBTests: XCTestCase {
         }
         let oldestTime = try XCTUnwrap(sut.oldestMessageTime())
         XCTAssertEqual(oldestTime, 2)
-        let number = try sut.numberOfEntries()
+        let number = sut.numberOfEntries()
         XCTAssertEqual(number, 6)
     }
 
@@ -187,8 +187,8 @@ final class SearchIndexDBTests: XCTestCase {
             XCTAssertEqual(rowID, index + 1)
         }
         // Default size on my mac is 12288, not sure if it changes on the other mac
-        let defaultDBSize: ByteCount = 12_288
-        let expectedSize: ByteCount = defaultDBSize + 30
+        let defaultDBSize: Measurement<UnitInformationStorage> = .init(value: 12.288, unit: .kilobytes)
+        let expectedSize: Measurement<UnitInformationStorage> = defaultDBSize + .init(value: 30, unit: .bytes)
         try sut.shrinkSearchIndex(expectedSize: expectedSize)
         let dbSize = try XCTUnwrap(sut.size)
         XCTAssertLessThanOrEqual(dbSize, expectedSize)
@@ -198,7 +198,7 @@ final class SearchIndexDBTests: XCTestCase {
         createDB()
         let messages = (0...5).map { MessageID("message\($0)") }
         for (index, id) in messages.enumerated() {
-            var time = (index + 1) * 2000
+            let time = (index + 1) * 2000
             let rowID = try sut.addNewEntryToSearchIndex(
                 messageID: id,
                 time: time,
@@ -216,7 +216,7 @@ final class SearchIndexDBTests: XCTestCase {
             let id = messages[index]
             let isDeleted = try sut.removeEntryFromSearchIndex(
                 isEncryptedSearchOn: true,
-                currentState: .downloading,
+                currentState: .creatingIndex,
                 messageID: id
             )
             XCTAssertTrue(isDeleted)

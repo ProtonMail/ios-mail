@@ -30,6 +30,7 @@ class EOAddressBuilder: PackageBuilder {
 
     /// prepared attachment list
     let preAttachments: [PreAttachment]
+    let apiService: APIService
 
     init(type: PGPScheme,
          email: String,
@@ -38,12 +39,14 @@ class EOAddressBuilder: PackageBuilder {
          algo: Algorithm,
          password: Passphrase,
          atts: [PreAttachment],
-         passwordHint: String?) {
+         passwordHint: String?,
+         apiService: APIService) {
         self.session = session
         self.algo = algo
         self.password = password
         self.preAttachments = atts
         self.passwordHint = passwordHint
+        self.apiService = apiService
         super.init(type: type, email: email, sendPreferences: sendPreferences)
     }
 
@@ -59,7 +62,7 @@ class EOAddressBuilder: PackageBuilder {
 
             // start build auth package
             let authModuls: AuthModulusResponse = try `await`(
-                PMAPIService.shared.run(route: AuthAPI.Router.modulus)
+                self.apiService.run(route: AuthAPI.Router.modulus)
             )
             guard let modulsId = authModuls.ModulusID else {
                 throw UpdatePasswordError.invalidModulusID.error

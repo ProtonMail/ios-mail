@@ -34,7 +34,7 @@ protocol IncomingDefaultServiceProtocol {
         completion: @escaping (Error?) -> Void
     )
     func softDelete(query: IncomingDefaultService.Query) throws
-    func hardDelete(query: IncomingDefaultService.Query?) throws
+    func hardDelete(query: IncomingDefaultService.Query?, includeSoftDeleted: Bool) throws
     func performRemoteDeletion(emailAddress: String, completion: @escaping (Error?) -> Void)
 }
 
@@ -125,9 +125,9 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
         }
     }
 
-    func hardDelete(query: Query?) throws {
+    func hardDelete(query: Query?, includeSoftDeleted: Bool) throws {
         try writeToDatabase { context in
-            try self.find(query: query, in: context, includeSoftDeleted: true).forEach(context.delete)
+            try self.find(query: query, in: context, includeSoftDeleted: includeSoftDeleted).forEach(context.delete)
         }
     }
 
@@ -165,7 +165,7 @@ extension IncomingDefaultService {
     func cleanUp() -> Promise<Void> {
         Promise { seal in
             do {
-                try hardDelete(query: nil)
+                try hardDelete(query: nil, includeSoftDeleted: true)
                 seal.fulfill_()
             } catch {
                 seal.reject(error)
@@ -184,24 +184,14 @@ extension IncomingDefaultService {
 // MARK: internals
 
 extension IncomingDefaultService {
-    private func writeToDatabase(block: @escaping (NSManagedObjectContext) throws -> Void) throws {
-        var result: Result<Void, Error>!
+    private func writeToDatabase(block: (NSManagedObjectContext) throws -> Void) throws {
+        try dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            try block(context)
 
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            do {
-                try block(context)
-
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-
-                result = .success(())
-            } catch {
-                result = .failure(error)
+            if let error = context.saveUpstreamIfNeeded() {
+                throw error
             }
         }
-
-        try result.get()
     }
 
     private func fetchAndStoreRecursively(

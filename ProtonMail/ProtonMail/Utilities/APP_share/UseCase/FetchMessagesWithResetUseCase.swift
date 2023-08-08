@@ -44,42 +44,44 @@ extension FetchMessagesWithReset {
                 return
             }
             self.dependencies.labelProvider.fetchV4Labels { _ in
-                self.dependencies.fetchMessages.execute(
-                    endTime: params.endTime,
-                    isUnread: params.fetchOnlyUnreadMessages,
-                    callback: { result in
-                        if let error = result.error {
-                            callback(.failure(error))
-                        } else {
-                            callback(.success(Void()))
-                        }
-                    },
-                    onMessagesRequestSuccess: {
-                        self.removePersistedMessages(
-                            cleanContact: params.refetchContacts,
-                            removeAllDraft: params.removeAllDrafts
-                        )
-                    })
+                _ = self.cleanContactIfNeeded(cleanContact: params.refetchContacts).done { _ in
+                    self.dependencies.fetchMessages.execute(
+                        endTime: params.endTime,
+                        isUnread: params.fetchOnlyUnreadMessages,
+                        callback: { result in
+                            if let error = result.error {
+                                callback(.failure(error))
+                            } else {
+                                callback(.success(Void()))
+                            }
+                        },
+                        onMessagesRequestSuccess: {
+                            self.removePersistedMessages(removeAllDraft: params.removeAllDrafts)
+                        })
+                }
             }
         }
     }
 
-    private func removePersistedMessages(cleanContact: Bool, removeAllDraft: Bool) {
+    private func removePersistedMessages(removeAllDraft: Bool) {
         dependencies.localMessageDataService.cleanMessage(
             removeAllDraft: removeAllDraft,
             cleanBadgeAndNotifications: false
         ).then { _ -> Promise<Void> in
             self.dependencies.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID)
-            if cleanContact {
-                return self.dependencies.contactProvider.cleanUp()
-            } else {
-                return Promise<Void>()
-            }
-        }.ensure {
-            if cleanContact {
-                self.dependencies.contactProvider.fetchContacts(completion: nil)
-            }
+            return Promise<Void>()
         }.cauterize()
+    }
+
+    private func cleanContactIfNeeded(cleanContact: Bool) -> Promise<Void> {
+        guard cleanContact else { return Promise() }
+        return Promise { seal in
+            _ = self.dependencies.contactProvider.cleanUp().done { _ in
+                self.dependencies.contactProvider.fetchContacts { _ in
+                    seal.fulfill_()
+                }
+            }
+        }
     }
 }
 

@@ -40,4 +40,17 @@ final class KeychainWrapper: Keychain {
 
         super.init(service: service, accessGroup: group)
     }
+
+    override init(service: String, accessGroup: String) {
+        super.init(service: service, accessGroup: accessGroup)
+    }
+
+#if DEBUG
+    static func makeTestingKeychain() -> KeychainWrapper {
+        KeychainWrapper(
+            service: "ch.protonmail.\(UUID().uuidString)",
+            accessGroup: "2SB5Z68H26.ch.protonmail.protonmail"
+        )
+    }
+#endif
 }

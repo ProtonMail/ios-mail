@@ -34,17 +34,14 @@ class AppCacheService: Service {
     }
     private let userDefault = SharedCacheBase()
     private let coreDataCache: CoreDataCache
-    private let appCache: AppCache
 
     init() {
         self.coreDataCache = CoreDataCache()
-        self.appCache = AppCache()
     }
 
     func restoreCacheWhenAppStart() {
         self.checkSettingsBundle()
         self.coreDataCache.run()
-        self.appCache.run()
     }
 
     private func checkSettingsBundle() {

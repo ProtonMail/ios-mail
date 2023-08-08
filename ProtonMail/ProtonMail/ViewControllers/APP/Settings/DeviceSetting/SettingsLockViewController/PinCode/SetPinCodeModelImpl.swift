@@ -25,10 +25,15 @@ import ProtonCore_Keymaker
 
 class SetPinCodeModelImpl: PinCodeViewModel {
 
+    private let coreKeyMaker: KeyMakerProtocol
     var currentStep: PinCodeStep = .enterPin
 
     var enterPin: String = ""
     var reEnterPin: String = ""
+
+    init(coreKeyMaker: KeyMakerProtocol) {
+        self.coreKeyMaker = coreKeyMaker
+    }
 
     override func cancel() -> String {
         return currentStep == .enterPin ? LocalString._general_create_action : LocalString._general_confirm_action
@@ -66,8 +71,8 @@ class SetPinCodeModelImpl: PinCodeViewModel {
     override func done(completion: @escaping (Bool) -> Void) {
         self.isPinMatched { matched in
             if matched {
-                keymaker.deactivate(BioProtection())
-                keymaker.activate(PinProtection(pin: self.enterPin)) { [unowned self] activated in
+                _ = self.coreKeyMaker.deactivate(BioProtection())
+                self.coreKeyMaker.activate(PinProtection(pin: self.enterPin)) { [unowned self] activated in
                     if activated {
                         NotificationCenter.default.post(name: .appLockProtectionEnabled, object: nil, userInfo: nil)
                     }
@@ -82,7 +87,7 @@ class SetPinCodeModelImpl: PinCodeViewModel {
     private func disableAppKey(completion: (() -> Void)?) {
         userCachedStatus.keymakerRandomkey = String.randomString(32)
         if let randomProtection = RandomPinProtection.randomPin {
-            keymaker.activate(randomProtection) { activated in
+            coreKeyMaker.activate(randomProtection) { activated in
                 guard activated else {
                     completion?()
                     return

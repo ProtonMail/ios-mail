@@ -204,7 +204,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     private func showContactDetailView(contact: ContactEntity) {
         let viewModel = ContactDetailsViewModelImpl(contact: contact,
                                                     user: viewModel.user,
-                                                    coreDateService: viewModel.coreDataService)
+                                                    coreDataService: viewModel.coreDataService)
         let newView = ContactDetailViewController(viewModel: viewModel)
         self.show(newView, sender: nil)
         isOnMainView = false
@@ -248,6 +248,38 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
                 self?.refreshControl?.endRefreshing()
             }
         }
+    }
+
+    private func showDeleteContactAlert(for contact: ContactEntity) {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(
+            UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil)
+        )
+        alertController.addAction(
+            UIAlertAction(
+                title: LocalString._delete_contact,
+                style: .destructive,
+                handler: { _ in
+                    MBProgressHUD.showAdded(to: self.view, animated: true)
+                    self.viewModel.delete(contactID: contact.contactID, complete: { error in
+                        MBProgressHUD.hide(for: self.view, animated: true)
+                        if let err = error {
+                            err.alert(at: self.view)
+                        }
+                    })
+                }
+            )
+        )
+
+        alertController.popoverPresentationController?.sourceView = tableView
+        alertController.popoverPresentationController?.sourceRect = CGRect(
+            x: tableView.bounds.midX,
+            y: tableView.bounds.maxY - 100,
+            width: 0,
+            height: 0
+        )
+        alertController.assignActionsAccessibilityIdentifiers()
+        present(alertController, animated: true, completion: nil)
     }
 }
 
@@ -307,34 +339,23 @@ extension ContactsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {}
 
-    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteClosure = { (_: UITableViewRowAction!, indexPath: IndexPath!) in
-            if let contact = self.viewModel.item(index: indexPath) {
-                let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-                alertController.addAction(UIAlertAction(title: LocalString._delete_contact,
-                                                        style: .destructive, handler: { _ in
-                                                            MBProgressHUD.showAdded(to: self.view, animated: true)
-                                                            self.viewModel.delete(contactID: contact.contactID, complete: { error in
-                                                                MBProgressHUD.hide(for: self.view, animated: true)
-                                                                if let err = error {
-                                                                    err.alert(at: self.view)
-                                                                }
-                                                            })
-                                                        }))
-
-                alertController.popoverPresentationController?.sourceView = self.tableView
-                alertController.popoverPresentationController?.sourceRect = CGRect(x: self.tableView.bounds.midX, y: self.tableView.bounds.maxY - 100, width: 0, height: 0)
-                alertController.assignActionsAccessibilityIdentifiers()
-
-                self.present(alertController, animated: true, completion: nil)
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        let contextItem = UIContextualAction(
+            style: .destructive,
+            title: LocalString._general_delete_action
+        ) { [weak self] action, view, completion in
+            guard let self,
+                  let contact = self.viewModel.item(index: indexPath) else {
+                completion(false)
+                return
             }
+            self.showDeleteContactAlert(for: contact)
+            completion(true)
         }
-
-        let deleteAction = UITableViewRowAction(style: .default,
-                                                title: LocalString._general_delete_action,
-                                                handler: deleteClosure)
-        return [deleteAction]
+        return UISwipeActionsConfiguration(actions: [contextItem])
     }
 
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -387,8 +408,6 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
     }
 }
 
-// detect view dismiss above iOS 13
-@available(iOS 13, *)
 extension ContactsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         self.isOnMainView = true

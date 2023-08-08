@@ -27,12 +27,16 @@ class NewMailboxMessageCellPresenter {
 
     private let tagsPresenter = TagsPresenter()
 
-    func present(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageCellContentView) {
+    func present(
+        viewModel: NewMailboxMessageViewModel,
+        in view: NewMailboxMessageCellContentView,
+        highlightedKeywords: [String] = []
+    ) {
         view.initialsLabel.set(text: viewModel.initial,
                                preferredFont: .footnote,
                                weight: .regular)
         view.initialsLabel.textAlignment = .center
-        presentContent(viewModel: viewModel, in: view.messageContentView)
+        presentContent(viewModel: viewModel, in: view.messageContentView, highlightedKeywords: highlightedKeywords)
         presentTags(tags: viewModel.tags, in: view.messageContentView)
         presentSelectionStyle(style: viewModel.style, in: view)
     }
@@ -95,7 +99,11 @@ class NewMailboxMessageCellPresenter {
     }
 
     // swiftlint:disable function_body_length
-    private func presentContent(viewModel: NewMailboxMessageViewModel, in view: NewMailboxMessageContentView) {
+    private func presentContent(
+        viewModel: NewMailboxMessageViewModel,
+        in view: NewMailboxMessageContentView,
+        highlightedKeywords: [String] = []
+    ) {
         view.forwardImageView.tintColor = viewModel.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
         view.forwardImageView.isHidden = !viewModel.isForwarded
 
@@ -106,9 +114,9 @@ class NewMailboxMessageCellPresenter {
         view.replyAllImageView.isHidden = !viewModel.isReplyAll
 
         let color: UIColor = viewModel.isRead ? ColorProvider.TextWeak : ColorProvider.TextNorm
-
         view.configureSenderRow(
             components: viewModel.sender,
+            highlightedKeywords: highlightedKeywords,
             preferredFont: .body,
             weight: viewModel.isRead ? .regular : .bold,
             textColor: color
@@ -131,7 +139,7 @@ class NewMailboxMessageCellPresenter {
                                textColor: color)
         }
 
-        view.titleLabel.set(text: viewModel.topic,
+        view.titleLabel.set(text: viewModel.topic.keywordHighlighting.asAttributedString(keywords: highlightedKeywords),
                             preferredFont: .subheadline,
                             weight: weight,
                             textColor: color)

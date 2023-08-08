@@ -211,7 +211,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             return
         }
         let messageService = self.viewModel.user.messageService
-        let coreDataContextProvider = viewModel.coreDataContextProvider
+        let coreDataContextProvider = viewModel.dependencies.coreDataContextProvider
         if self.dismissBySending {
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()
@@ -259,7 +259,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         self.headerView.updateFromValue(addr.email, pickerEnabled: true)
         if let origAddr = self.viewModel.fromAddress() {
             if origAddr.send == .inactive {
-                self.viewModel.updateAddressID(addr.addressID).done {
+                self.viewModel.updateAddressID(addr.addressID, emailAddress: addr.email).done {
                     //
                 }.catch { _ in
                     if self.viewModel.messageAction != .openDraft {
@@ -283,6 +283,8 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
                     )
                     self.present(alertController, animated: true, completion: nil)
                 }
+            } else if origAddr.addressID == addr.addressID {
+                viewModel.updateAddressID(addr.addressID, emailAddress: addr.email).cauterize()
             }
         }
         // update draft if first time create
@@ -522,17 +524,17 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     }
 
     private func checkEmbedImageEdit(_ original: String, edited: String) {
-        if let atts = viewModel.getAttachments() {
-            for att in atts {
-                if let contentID = att.getContentID(),
-                   !contentID.isEmpty && att.isInline {
-                    if original.contains(contentID) {
-                        if !edited.contains(contentID) {
-                            self.viewModel.deleteAttachment(att).cauterize()
-                        }
-                    }
-                }
+        let atts = viewModel.getAttachments()
+        for att in atts {
+            guard
+                let contentID = att.getContentID(),
+                !contentID.isEmpty && att.isInline,
+                original.contains(contentID),
+                !edited.contains(contentID) else {
+                continue
             }
+
+            viewModel.deleteAttachment(att).cauterize()
         }
     }
 
@@ -555,7 +557,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     func removeInlineAttachment(_ sid: String, completion: (() -> Void)?) {
         // find attachment to remove
-        guard let attachment = self.viewModel.getAttachments()?
+        guard let attachment = self.viewModel.getAttachments()
             .first(where: { $0.name.hasPrefix(sid) }) else {
             completion?()
             return
@@ -869,7 +871,7 @@ extension ComposeContentViewController: ComposeViewDelegate {
 
     private func updateSenderMail(addr: Address, complete: (() -> Void)?) {
         self.queue.sync { [weak self] in
-            self?.viewModel.updateAddressID(addr.addressID)
+            self?.viewModel.updateAddressID(addr.addressID, emailAddress: addr.email)
                 .done { _ in
                     self?.headerView.updateFromValue(addr.email, pickerEnabled: true)
                 }

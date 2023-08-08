@@ -18,7 +18,7 @@
 import UIKit
 
 protocol SettingsLocalStorageRouterProtocol {
-    func navigateToDownloadedMessages()
+    func navigateToDownloadedMessages(userID: UserID, state: EncryptedSearchIndexState)
 }
 
 final class SettingsLocalStorageRouter: SettingsLocalStorageRouterProtocol {
@@ -28,9 +28,14 @@ final class SettingsLocalStorageRouter: SettingsLocalStorageRouterProtocol {
         self.navigationController = navigationController
     }
 
-    func navigateToDownloadedMessages() {
+    func navigateToDownloadedMessages(userID: UserID, state: EncryptedSearchIndexState) {
         guard let navController = navigationController else { return }
-        let viewModel = DownloadedMessagesViewModel(dependencies: .init())
+        let router = DownloadedMessagesRouter(navigationController: navController)
+        let viewModel = DownloadedMessagesViewModel(
+            router: router,
+            searchIndexState: state,
+            dependencies: .init(userID: userID)
+        )
         let viewController = DownloadedMessagesViewController(viewModel: viewModel)
         navController.pushViewController(viewController, animated: true)
     }

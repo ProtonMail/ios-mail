@@ -46,10 +46,10 @@ class String_KeywordHighlightingTests: XCTestCase {
 <html>
 <head></head>
 <body>
-<p><span>Hello <mark style="background-color: #8A6EFF4D" id="es-autoscroll">😀</mark>,</span></p>
-<p><span>You have 1 new message(s) in your inbox and <mark style="background-color: #8A6EFF4D" id="es-autoscroll">custom</mark> <mark style="background-color: #8A6EFF4D" id="es-autoscroll">folder</mark>s.</span></p>
+<p><span>Hello <mark style="background-color: #FFB84DFF; color: #0C0C14FF" id="es-autoscroll">😀</mark>,</span></p>
+<p><span>You have 1 new message(s) in your inbox and <mark style="background-color: #FFB84DFF; color: #0C0C14FF" id="es-autoscroll">custom</mark> <mark style="background-color: #FFB84DFF; color: #0C0C14FF" id="es-autoscroll">folder</mark>s.</span></p>
 <p>Please log in at <a href="https://mail.proton.me">https://mail.proton.me</a> to check them. These notifications can be turned off by logging into your account and disabling the daily notification setting.</p>
-<p><span>Best regards <mark style="background-color: #8A6EFF4D" id="es-autoscroll">😀</mark>,</span></p>
+<p><span>Best regards <mark style="background-color: #FFB84DFF; color: #0C0C14FF" id="es-autoscroll">😀</mark>,</span></p>
 <p>The ProtonMail Team</p>
 </body>
 </html>
@@ -73,7 +73,7 @@ class String_KeywordHighlightingTests: XCTestCase {
         ]
 
         result.enumerateAttribute(.backgroundColor, in: range) { value, highlightedRange, _ in
-            guard let color = value as? UIColor, color.rrggbbaa == "8A6EFF4D" else {
+            guard let color = value as? UIColor, color.rrggbbaa == "FFB84DFF" else {
                 return
             }
 

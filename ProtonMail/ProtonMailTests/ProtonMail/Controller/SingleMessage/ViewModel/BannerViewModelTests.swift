@@ -22,8 +22,6 @@ import ProtonCore_TestingToolkit
 
 class BannerViewModelTests: XCTestCase {
     var sut: BannerViewModel!
-    var mockMessage: MessageEntity!
-    var rawMessage: Message!
     var unsubscribeHandlerMock: MockUnsubscribeActionHandler!
     var markLegitimateHandlerMock: MockMarkLegitimateActionHandler!
     var receiptHandlerMock: MockReceiptActionHandler!
@@ -36,10 +34,6 @@ class BannerViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        let testContext = MockCoreDataStore.testPersistentContainer.viewContext
-
-        rawMessage = Message(context: testContext)
-        mockMessage = nil
         unsubscribeHandlerMock = MockUnsubscribeActionHandler()
         markLegitimateHandlerMock = MockMarkLegitimateActionHandler()
         receiptHandlerMock = MockReceiptActionHandler()
@@ -47,19 +41,11 @@ class BannerViewModelTests: XCTestCase {
         userManagerMock = UserManager(api: apiServiceMock, role: .none)
         systemUpTimeMock = SystemUpTimeMock(localServerTime: 0, localSystemUpTime: 0, systemUpTime: 0)
         mockSenderImageStatusProvider = .init()
-
-        let scheduledLabel = Label(context: testContext)
-        scheduledLabel.labelID = "12"
-        let inboxLabel = Label(context: testContext)
-        inboxLabel.labelID = "0"
-        _ = testContext.saveUpstreamIfNeeded()
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        mockMessage = nil
-        rawMessage = nil
         unsubscribeHandlerMock = nil
         markLegitimateHandlerMock = nil
         receiptHandlerMock = nil
@@ -111,33 +97,34 @@ class BannerViewModelTests: XCTestCase {
     }
 
     func testScheduledSendingTime_timeIsNil_returnNil() {
-        rawMessage.time = nil
-        createSUT()
+        let message = MessageEntity.make(time: nil)
+        createSUT(mockMessage: message)
 
         XCTAssertNil(sut.scheduledSendingTime)
     }
 
     func testScheduledSendingTime_timeIsNotNil_notInScheduled_returnNil() {
-        rawMessage.time = Date()
-        _ = rawMessage.add(labelID: "0")
+        let message = MessageEntity.make(time: Date(), labels: [.make(labelID: "0")])
 
-        createSUT()
+        createSUT(mockMessage: message)
         XCTAssertNil(sut.scheduledSendingTime)
     }
 
     func testScheduledSendingTime_messageHasTime_returnNonNil() {
-        rawMessage.time = Date(timeIntervalSince1970: 12849012491)
-        _ = rawMessage.add(labelID: "12")
+        let message = MessageEntity.make(
+            time: Date(timeIntervalSince1970: 12849012491),
+            labels: [.make(labelID: "12")]
+        )
 
-        createSUT()
+        createSUT(mockMessage: message)
         XCTAssertNotNil(sut.scheduledSendingTime)
     }
 
     func testSpamType_withDmarcFailed_returnSameType() {
         var flag = Message.Flag()
         flag.insert(.dmarcFailed)
-        rawMessage.flag = flag
-        createSUT()
+        let message = MessageEntity.make(rawFlag: flag.rawValue)
+        createSUT(mockMessage: message)
 
         XCTAssertEqual(sut.spamType, .dmarcFailed)
     }
@@ -146,16 +133,16 @@ class BannerViewModelTests: XCTestCase {
         var flag = Message.Flag()
         flag.insert(.dmarcFailed)
         flag.insert(.dmarcPass)
-        rawMessage.flag = flag
-        createSUT()
+        let message = MessageEntity.make(rawFlag: flag.rawValue)
+        createSUT(mockMessage: message)
         XCTAssertNil(sut.spamType)
     }
 
     func testSpamType_withPhishing_returnSameType() {
         var flag = Message.Flag()
         flag.insert(.autoPhishing)
-        rawMessage.flag = flag
-        createSUT()
+        let message = MessageEntity.make(rawFlag: flag.rawValue)
+        createSUT(mockMessage: message)
 
         XCTAssertEqual(sut.spamType, .autoPhishing)
     }
@@ -164,33 +151,35 @@ class BannerViewModelTests: XCTestCase {
         var flag = Message.Flag()
         flag.insert(.autoPhishing)
         flag.insert(.hamManual)
-        rawMessage.flag = flag
-        createSUT()
+        let message = MessageEntity.make(rawFlag: flag.rawValue)
+        createSUT(mockMessage: message)
 
         XCTAssertNil(sut.spamType)
     }
 
     func testIsAutoReply_sameAsMessage() {
-        createSUT()
+        let mockMessage = MessageEntity.make()
+        createSUT(mockMessage: mockMessage)
         XCTAssertEqual(sut.isAutoReply, mockMessage.isAutoReply)
     }
 
     func testMarkAsLegitimate() {
-        createSUT()
+        let mockMessage = MessageEntity.make(messageID: .init(rawValue: UUID().uuidString))
+        createSUT(mockMessage: mockMessage)
         sut.markAsLegitimate()
         XCTAssertTrue(markLegitimateHandlerMock.markAsLegitimateStub.wasCalledExactlyOnce)
         XCTAssertEqual(markLegitimateHandlerMock.markAsLegitimateStub.lastArguments?.a1, mockMessage.messageID)
     }
 
     func testSendReceipt() {
-        createSUT()
+        let mockMessage = MessageEntity.make(messageID: .init(rawValue: UUID().uuidString))
+        createSUT(mockMessage: mockMessage)
         sut.sendReceipt()
         XCTAssertTrue(receiptHandlerMock.sendReceiptStub.wasCalledExactlyOnce)
         XCTAssertEqual(receiptHandlerMock.sendReceiptStub.lastArguments?.a1, mockMessage.messageID)
     }
 
-    private func createSUT() {
-        mockMessage = MessageEntity(rawMessage)
+    private func createSUT(mockMessage: MessageEntity) {
         mockFetchAttachment = MockFetchAttachment()
         sut = BannerViewModel(shouldAutoLoadRemoteContent: false,
                               expirationTime: nil,
@@ -214,7 +203,8 @@ class BannerViewModelTests: XCTestCase {
                             senderImageStatusProvider: mockSenderImageStatusProvider,
                             mailSettings: userManagerMock.mailSettings)
                     )
-                )
+                ),
+                highlightedKeywords: []
             )
         )
     }

@@ -335,9 +335,6 @@
 "Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
 
 /* Title */
-"Bug Description" = "Bug Description";
-
-/* Title */
 "Bug Report Received" = "Bug Report Received";
 
 /* The title of cached data in local storage settings */
@@ -1530,9 +1527,6 @@
 /* The message about the app is not having the permission to access photo library */
 "Proton Mail needs photo library access in your device settings." = "Proton Mail needs photo library access in your device settings.";
 
-/* Title of menu action to trigger feedback view */
-"Send feedback" = "Send feedback";
-
 /* network troubleshot cell title */
 "Proxy/Firewall interference" = "Proxy/Firewall interference";
 
@@ -2199,7 +2193,7 @@
 "You can't set %@ address as default because it is a paid feature." = "You can't set %@ address as default because it is a paid feature.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in.";
 
 /* Message */
 "You have %d new emails!" = "You have %d new emails!";
@@ -2268,3 +2262,5 @@
 "…[Show full message]" = "…[Show full message]";
 
 "Customize (verb)" = "Customize";
+
+"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

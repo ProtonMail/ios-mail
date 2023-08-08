@@ -19,6 +19,7 @@ import Foundation
 import ProtonCore_DataModel
 import ProtonCore_Services
 
+// sourcery: mock
 protocol UpdateSwipeActionDuringLoginUseCase: UseCase {
 
     func execute(

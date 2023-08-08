@@ -93,13 +93,13 @@ class UsersManager: Service {
         return self.users.count
     }
 
-    let internetConnectionStatusProvider: InternetConnectionStatusProvider
-
     // Used to check if the account is already being deleted.
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
     private let userDataCache: CachedUserDataProvider
     private let userDefaultCache: SharedCacheBase
     private let keychain: Keychain
+    private let notificationCenter: NotificationCenter
+    private let coreKeyMaker: KeyMakerProtocol
 
     #if !APP_EXTENSION
     private var encryptedSearchCache: EncryptedSearchUserCache {
@@ -109,20 +109,22 @@ class UsersManager: Service {
 
     init(
         doh: DoHInterface,
-        userDataCache: CachedUserDataProvider = UserDataCache(),
-        internetConnectionStatusProvider: InternetConnectionStatusProvider = .init(),
+        userDataCache: CachedUserDataProvider,
         userDefaultCache: SharedCacheBase = .init(),
-        keychain: Keychain = KeychainWrapper.keychain
+        keychain: Keychain = KeychainWrapper.keychain,
+        notificationCenter: NotificationCenter = .default,
+        coreKeyMaker: KeyMakerProtocol
     ) {
         self.doh = doh
         self.doh.status = userCachedStatus.isDohOn ? .on : .off
         /// for migrate
         self.latestVersion = Version.version
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
-        self.internetConnectionStatusProvider = internetConnectionStatusProvider
         self.userDataCache = userDataCache
         self.userDefaultCache = userDefaultCache
         self.keychain = keychain
+        self.notificationCenter = notificationCenter
+        self.coreKeyMaker = coreKeyMaker
         setupValueTransforms()
         #if !APP_EXTENSION
         trackLifetime()
@@ -142,7 +144,7 @@ class UsersManager: Service {
         let apiService = PMAPIService.createAPIService(
             doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
         )
-        apiService.serviceDelegate = self
+        apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
         #if !APP_EXTENSION
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
@@ -157,7 +159,8 @@ class UsersManager: Service {
             userInfo: user,
             authCredential: auth,
             mailSettings: mailSettings,
-            parent: self
+            parent: self,
+            coreKeyMaker: coreKeyMaker
         )
         self.add(newUser: newUser)
     }
@@ -232,7 +235,7 @@ class UsersManager: Service {
 
     func tryRestore() {
         // try new version first
-        guard keymaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
+        guard coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) != nil else {
             return
         }
 
@@ -255,7 +258,7 @@ class UsersManager: Service {
                     sessionUID: session,
                     challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
                 )
-                apiService.serviceDelegate = self
+                apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
                 #if !APP_EXTENSION
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
@@ -265,7 +268,8 @@ class UsersManager: Service {
                     userInfo: cachedUserData.userInfo,
                     authCredential: cachedUserData.authCredentials,
                     mailSettings: cachedUserData.mailSettings,
-                    parent: self
+                    parent: self,
+                    coreKeyMaker: coreKeyMaker
                 )
                 newUser.delegate = self
                 self.users.append(newUser)
@@ -278,7 +282,7 @@ class UsersManager: Service {
     }
 
     func save() {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             return
         }
 
@@ -323,8 +327,6 @@ extension UsersManager: UserManagerSave {
 
 /// cache login check
 extension UsersManager {
-    func launchCleanUpIfNeeded() {}
-
     func logout(user: UserManager,
                 shouldShowAccountSwitchAlert: Bool = false,
                 completion: (() -> Void)?) {
@@ -347,21 +349,31 @@ extension UsersManager {
                 self.remove(user: userToDelete)
             }
 
-            if self.users.isEmpty {
-                _ = self.clean().cauterize()
-            } else if shouldShowAccountSwitchAlert {
+#if !APP_EXTENSION
+            ImageProxyCache.shared.purge()
+            SenderImageCache.shared.purge()
+#endif
+
+            guard !self.users.isEmpty else {
+                _ = self.clean().ensure {
+                    self.notificationCenter.post(
+                        name: Notification.Name.didSignOut,
+                        object: self
+                    )
+                    completion?()
+                }.cauterize()
+                return
+            }
+
+            if shouldShowAccountSwitchAlert {
                 String(format: LocalString._signout_account_switched_when_token_revoked,
                        arguments: [userToDelete.defaultEmail,
                                    self.users.first?.defaultEmail ?? ""]).alertToast()
             }
 
             if isPrimaryAccountLogout && user.userInfo.delinquentParsed.isAvailable {
-                NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
+                self.notificationCenter.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
             }
-            #if !APP_EXTENSION
-            ImageProxyCache.shared.purge()
-            SenderImageCache.shared.purge()
-            #endif
             completion?()
         }.cauterize()
     }
@@ -402,7 +414,7 @@ extension UsersManager {
 
     func clean() -> Promise<Void> {
         return UserManager.cleanUpAll().ensure {
-            try? sharedServices.get(by: CoreDataService.self).rollbackAllContexts()
+            sharedServices.get(by: CoreDataService.self).resetMainContextIfNeeded()
 
             self.users = []
             self.save()
@@ -424,7 +436,7 @@ extension UsersManager {
             #endif
 
             if !ProcessInfo.isRunningUnitTests {
-                keymaker.wipeMainKey()
+                self.coreKeyMaker.wipeMainKey()
             }
             // good opportunity to remove all temp folders
             FileManager.default.cleanTemporaryDirectory()
@@ -487,7 +499,7 @@ extension UsersManager {
     }
 
     private func loadUserDataFromCache() -> [CachedUserData]? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             return nil
         }
         let authDataInUserDefault = userDefaultCache.getShared().data(forKey: CoderKey.authKeychainStore)
@@ -587,13 +599,13 @@ extension UsersManager {
             sessionUID: sessionID,
             challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
         )
-        apiService.serviceDelegate = self
+        apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
 #if !APP_EXTENSION
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
 #endif
         if let oldMailBoxPassword = oldMailboxPassword() {
-            auth.udpate(password: oldMailBoxPassword)
+            auth.update(password: oldMailBoxPassword)
         }
         userInfo.twoFactor = userDefaultCache.getShared().integer(forKey: CoderKey.twoFAStatus)
         userInfo.passwordMode = userDefaultCache.getShared().integer(forKey: CoderKey.userPasswordMode)
@@ -602,7 +614,8 @@ extension UsersManager {
             userInfo: userInfo,
             authCredential: auth,
             mailSettings: nil,
-            parent: self
+            parent: self,
+            coreKeyMaker: coreKeyMaker
         )
         user.delegate = self
         return user
@@ -626,7 +639,7 @@ extension UsersManager {
     }
 
     private func oldUserInfo() -> UserInfo? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let cypherData = userDefaultCache.getShared().data(forKey: CoderKey.userInfo)
         else {
             return nil
@@ -637,7 +650,7 @@ extension UsersManager {
     }
 
     private func oldAuthFetch() -> AuthCredential? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let encryptedData = keychain.data(forKey: CoderKey.keychainStore),
               case let locked = Locked<Data>(encryptedValue: encryptedData),
               let data = try? locked.unlock(with: mainKey),
@@ -650,7 +663,7 @@ extension UsersManager {
 
     private func oldMailboxPassword() -> String? {
         guard let cypherBits = keychain.data(forKey: CoderKey.mailboxPassword),
-              let key = keymaker.mainKey(by: RandomPinProtection.randomPin)
+              let key = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin)
         else {
             return nil
         }
@@ -663,7 +676,7 @@ extension UsersManager {
 extension UsersManager {
     // swiftlint:disable cyclomatic_complexity function_body_length
     func migrate_0_1() -> Bool {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin) else {
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             return false
         }
 
@@ -674,7 +687,6 @@ extension UsersManager {
         if let legacyName = oldUserNameLegacy(), let locked = try? Locked(clearValue: legacyName, with: mainKey) {
             keychain.set(locked.encryptedValue, forKey: CoderKey.username)
         }
-        userCachedStatus.migrateLegacy()
 
         // check the older auth and older user format first
         if let oldAuth = oldAuthFetchLegacy(), let user = oldUserInfoLegacy() {
@@ -682,7 +694,7 @@ extension UsersManager {
             let apiService = PMAPIService.createAPIService(
                 doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
             )
-            apiService.serviceDelegate = self
+            apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
             #if !APP_EXTENSION
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
             apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
@@ -692,11 +704,12 @@ extension UsersManager {
                 userInfo: user,
                 authCredential: oldAuth,
                 mailSettings: nil,
-                parent: self
+                parent: self,
+                coreKeyMaker: coreKeyMaker
             )
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
-                oldAuth.udpate(password: pwd)
+                oldAuth.update(password: pwd)
             }
             user.twoFactor = userDefaultCache.getShared().integer(forKey: CoderKey.twoFAStatus)
             user.passwordMode = userDefaultCache.getShared().integer(forKey: CoderKey.userPasswordMode)
@@ -740,7 +753,7 @@ extension UsersManager {
                     sessionUID: session,
                     challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
                 )
-                apiService.serviceDelegate = self
+                apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
                 #if !APP_EXTENSION
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
@@ -750,7 +763,8 @@ extension UsersManager {
                     userInfo: user,
                     authCredential: auth,
                     mailSettings: nil,
-                    parent: self
+                    parent: self,
+                    coreKeyMaker: coreKeyMaker
                 )
                 newUser.delegate = self
                 self.users.append(newUser)
@@ -770,7 +784,7 @@ extension UsersManager {
     }
 
     func oldAuthFetchLegacy() -> AuthCredential? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let encryptedData = keychain.data(forKey: CoderKey.keychainStore),
               case let locked = Locked<Data>(encryptedValue: encryptedData),
               let data = try? locked.lagcyUnlock(with: mainKey),
@@ -782,7 +796,7 @@ extension UsersManager {
     }
 
     private func oldUserInfoLegacy() -> UserInfo? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let cypherData = userDefaultCache.getShared().data(forKey: CoderKey.userInfo)
         else {
             return nil
@@ -793,7 +807,7 @@ extension UsersManager {
 
     private func oldMailboxPasswordLegacy() -> String? {
         guard let cypherBits = keychain.data(forKey: CoderKey.mailboxPassword),
-              let key = keymaker.mainKey(by: RandomPinProtection.randomPin)
+              let key = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin)
         else {
             return nil
         }
@@ -802,7 +816,7 @@ extension UsersManager {
     }
 
     private func oldUserNameLegacy() -> String? {
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let cypherData = userDefaultCache.getShared().data(forKey: CoderKey.username)
         else {
             return nil
@@ -814,7 +828,7 @@ extension UsersManager {
 
     func disconnectedUsersLegacy() -> [DisconnectedUserHandle] {
         // this locking/unlocking can be refactored to be @propertyWrapper on Swift 5.1
-        guard let mainKey = keymaker.mainKey(by: RandomPinProtection.randomPin),
+        guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let encryptedData = keychain.data(forKey: CoderKey.disconnectedUsers),
               case let locked = Locked<Data>(encryptedValue: encryptedData),
               let data = try? locked.lagcyUnlock(with: mainKey),
@@ -836,49 +850,13 @@ extension UsersManager {
               !self.users.isEmpty
         else {
             if let randomProtection = RandomPinProtection.randomPin {
-                keymaker.deactivate(randomProtection)
+                coreKeyMaker.deactivate(randomProtection)
             }
             userCachedStatus.keymakerRandomkey = nil
             RandomPinProtection.removeCyphertext(from: keychain)
             return
         }
     }
-}
-
-// MARK: - APIServiceDelegate
-extension UsersManager: APIServiceDelegate {
-    var additionalHeaders: [String: String]? { nil }
-
-    var locale: String {
-        if let local = LanguageManager().currentLanguageCode() {
-            return local
-        } else {
-            return Constants.defaultLocale
-        }
-    }
-
-    func isReachable() -> Bool {
-        return internetConnectionStatusProvider.currentStatus != .notConnected
-    }
-
-    func onUpdate(serverTime: Int64) {
-        #if !APP_EXTENSION
-        let processInfo = userCachedStatus
-        #else
-        let processInfo = userCachedStatus as? SystemUpTimeProtocol
-        #endif
-        MailCrypto.updateTime(serverTime, processInfo: processInfo)
-    }
-
-    var appVersion: String {
-        Constants.App.appVersion
-    }
-
-    var userAgent: String? {
-        UserAgent.default.ua
-    }
-
-    func onDohTroubleshot() {}
 }
 
 #if !APP_EXTENSION

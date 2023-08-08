@@ -19,13 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import CoreData
 import Groot
 @testable import ProtonMail
 import XCTest
 
 class CacheServiceParsingTests: XCTestCase {
-    var lastUpdatedStore: MockLastUpdatedStore!
+    var lastUpdatedStore: MockLastUpdatedStoreProtocol!
     var sut: CacheService!
     var testContext: NSManagedObjectContext!
 
@@ -33,7 +32,7 @@ class CacheServiceParsingTests: XCTestCase {
         let coreDataService = MockCoreDataContextProvider()
         testContext = coreDataService.viewContext
 
-        lastUpdatedStore = MockLastUpdatedStore(context: testContext)
+        lastUpdatedStore = MockLastUpdatedStoreProtocol()
 
         let dependencies = CacheService.Dependencies(
             coreDataService: coreDataService,
@@ -47,7 +46,6 @@ class CacheServiceParsingTests: XCTestCase {
 
         sut = nil
         testContext = nil
-        lastUpdatedStore.resetUnreadCounts()
         lastUpdatedStore = nil
     }
 
@@ -60,10 +58,15 @@ class CacheServiceParsingTests: XCTestCase {
             idsOfMessagesBeingSent: []
         )
 
-        let lastUpdate: LabelCountEntity = try XCTUnwrap(lastUpdatedStore.lastUpdate(by: Message.Location.inbox.labelID, userID: sut.userID, type: .singleMessage))
-        XCTAssertFalse(lastUpdate.isNew)
-        XCTAssertEqual(lastUpdate.startTime, Date(timeIntervalSince1970: 1614266155))
-        XCTAssertEqual(lastUpdate.endTime, Date(timeIntervalSince1970: 1614093303))
+        XCTAssertEqual(lastUpdatedStore.updateLastUpdatedTimeStub.callCounter, 1)
+        let lastUpdate = try XCTUnwrap(lastUpdatedStore.updateLastUpdatedTimeStub.lastArguments)
+        XCTAssertEqual(lastUpdate.a1, Message.Location.inbox.labelID)
+        XCTAssertEqual(lastUpdate.a2, false)
+        XCTAssertEqual(lastUpdate.a3, Date(timeIntervalSince1970: 1614266155))
+        XCTAssertEqual(lastUpdate.a4, Date(timeIntervalSince1970: 1614093303))
+        XCTAssertEqual(lastUpdate.a5, 614)
+        XCTAssertEqual(lastUpdate.a6, sut.userID)
+        XCTAssertEqual(lastUpdate.a7, .singleMessage)
 
         let msgs = fetchMessgaes(by: .inbox)
         let msgIDsToMatch = ["Wv3p2AFdMVM-4SLmbVTC1ibPp0a4cfD4phT3rYshtMm5C-ZryQcomqBgie-JWH1pZFWszFrq52cQtIMX4KA38w==", "bzW4_jl_7LfKJCWmE8C0kKgA8XfZ9aGEiXiat3h3XKz9A-9KJ1MYLgBDpYWWDkOiC0EtlzWFSDcp6vL24W_C_w==", "3oGie5p95xf4he7137pkQpuXEdY0cDfDWQuC2japrDWHUoc1DyFAh54HvW9chauqNKHcO7KT48ETNJvc7KakUA==", "ylgAmW17HJcRJSj5FFx5XILy0WmIqXEXzNfqoR_UO1hqkeemUhN7gbGwF8-2OfFMAdJnT5MFopsMeJKG7XN2gg=="]

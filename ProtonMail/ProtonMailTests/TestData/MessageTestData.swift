@@ -689,3 +689,63 @@ let testSentMessageWithToCCAndBCC = """
   ]
 }
 """
+
+enum MessageTestData {
+    static func messageMetaData(
+        sender: String,
+        recipient: String,
+        messageID: String = "cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q=="
+    ) -> String {
+        """
+        {
+        "IsForwarded" : 0,
+        "IsEncrypted" : 1,
+        "ExpirationTime" : 0,
+        "ReplyTo" : {
+        "Address" : "\(sender)",
+        "Name" : "ProtonMail"
+        },
+        "Subject" : "Important phishing warning for all ProtonMail users",
+        "BCCList" : [
+        ],
+        "Size" : 2217,
+        "ToList" : [
+        {
+        "Address" : "\(recipient)",
+        "Name" : "",
+        "Group" : ""
+        }
+        ],
+        "Order" : 200441873160,
+        "IsRepliedAll" : 0,
+        "ExternalID" : "MQV54A1N98S8ASTB7Z183NM1MG@protonmail.ch",
+        "AddressID" : "hbBwBsOdTi5cDhhZcF28yrJ50AZQ8jhXF4d0P7OaUcCS5iv2N8hN_FjvAyPMt8EiP5ch_E_81gHZAjK4D3gfzw==",
+        "Location" : 0,
+        "LabelIDs" : [
+        "0",
+        "5",
+        "10"
+        ],
+        "Time" : 1525279399,
+        "NumAttachments" : 0,
+        "SenderAddress" : "\(sender)",
+        "MIMEType" : "texthtml",
+        "Starred" : 1,
+        "Unread" : 0,
+        "ID" : "\(messageID)",
+        "ConversationID" : "3Spjf96LXv8EDUylCxJkKsL7x9IgBac_0z416buSBBMwAkbh_dHh2Ng7O6ss70yhlaLBht0hiJqvqbxoBKtb9Q==",
+        "Flags" : 13,
+        "SenderName" : "ProtonMail",
+        "SpamScore" : 0,
+        "Type" : 0,
+        "CCList" : [
+        ],
+        "Sender" : {
+        "Address" : "\(sender)",
+        "Name" : "ProtonMail"
+        },
+        "IsReplied" : 0
+        }
+        """
+    }
+}

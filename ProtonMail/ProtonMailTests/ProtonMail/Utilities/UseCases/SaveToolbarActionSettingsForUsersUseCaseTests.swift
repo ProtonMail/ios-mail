@@ -31,16 +31,16 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
         super.setUp()
         firstUserAPI = APIServiceMock()
         firstUserInfo = makeUserInfo(userID: firstUserID)
-        firstUserMailSettings = .init(nextMessageOnMove: false)
+        firstUserMailSettings = .init(nextMessageOnMove: .explicitlyDisabled)
         sut = SaveToolbarActionSettings(
             dependencies: .init(apiService: firstUserAPI,
-                                userInfo: firstUserInfo,
                                 mailSettingsHandler: UserManager(
                                     api: firstUserAPI,
                                     userInfo: firstUserInfo,
                                     authCredential: .none,
                                     mailSettings: nil,
-                                    parent: nil
+                                    parent: nil,
+                                    coreKeyMaker: MockKeyMakerProtocol()
                                 ))
         )
     }

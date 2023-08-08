@@ -27,6 +27,7 @@ class SettingsDeviceViewControllerTests: XCTestCase {
     var mockApiService: APIServiceMock!
     var mockUsers: UsersManager!
     var mockDoh: DohMock!
+    var mockCleanCache: MockCleanCacheUseCase!
     var stubBioStatus: BioMetricStatusStub!
     var settingsDeviceCoordinatorMock: MockSettingsDeviceCoordinator!
 
@@ -34,13 +35,17 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         super.setUp()
         mockDoh = DohMock()
         mockApiService = APIServiceMock()
-        mockUser = UserManager(api: mockApiService, role: .none)
-        mockUsers = UsersManager(doh: mockDoh)
+        mockUser = UserManager(api: mockApiService, role: .none, coreKeyMaker: MockKeyMakerProtocol())
+        mockUsers = UsersManager(doh: mockDoh, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
         mockUsers.add(newUser: mockUser)
+        mockCleanCache = MockCleanCacheUseCase()
         stubBioStatus = BioMetricStatusStub()
-        viewModel = SettingsDeviceViewModel(user: mockUser,
-                                            users: mockUsers,
-                                            biometricStatus: stubBioStatus)
+        viewModel = SettingsDeviceViewModel(
+            user: mockUser,
+            biometricStatus: stubBioStatus,
+            lockCacheStatus: MockLockCacheStatus(),
+            dependencies: .init(cleanCache: mockCleanCache)
+        )
         settingsDeviceCoordinatorMock = MockSettingsDeviceCoordinator(
             navigationController: nil,
             user: mockUser,
@@ -61,6 +66,7 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         mockUser = nil
         mockApiService = nil
         mockDoh = nil
+        mockCleanCache = nil
         stubBioStatus = nil
         settingsDeviceCoordinatorMock = nil
     }
@@ -69,7 +75,7 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
 
         XCTAssertEqual(sut.tableView.numberOfSections, 4)
-        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 1), 7)
+        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 1), 8)
 
         let cell = try XCTUnwrap(sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 6, section: 1)) as? SettingsGeneralCell)
         XCTAssertEqual(cell.leftTextValue(), LocalString._toolbar_customize_general_title)

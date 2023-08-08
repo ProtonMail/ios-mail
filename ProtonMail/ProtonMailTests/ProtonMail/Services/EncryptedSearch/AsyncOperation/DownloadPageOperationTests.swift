@@ -208,9 +208,7 @@ extension DownloadPageOperationTests {
         expectedEndTime: Int,
         expectedPageSize: Int
     ) throws {
-        guard path == "/mail/v4/messages" else {
-            throw "Unexpected path"
-        }
+        XCTAssertEqual(path, "/mail/v4/messages")
         let endTime = try XCTUnwrap(reqParams["End"] as? Int)
         XCTAssertEqual(endTime + 1, expectedEndTime)
         let pageSize = try XCTUnwrap(reqParams["PageSize"] as? Int)
@@ -225,6 +223,7 @@ extension DownloadPageOperationTests {
         let operation = DownloadPageOperation(
             apiService: apiService,
             endTime: endTime,
+            beginTime: nil,
             labelID: labelID,
             pageSize: pageSize,
             userID: userID

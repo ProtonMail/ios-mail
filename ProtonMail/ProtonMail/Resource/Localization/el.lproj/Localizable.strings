@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "Όλα τα μηνύματα";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Θα γίνει επαναφορά όλων των ρυθμίσεων προστασίας κατά την αποσύνδεση από την εφαρμογή.";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "Ελήφθησαν όλα τα μηνύματά σας";
 
@@ -178,7 +181,7 @@
 "Appearance" = "Εμφάνιση";
 
 /* Settings lock AppKey description */
-"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "Το AppKey προστατεύει περαιτέρω τις πληροφορίες Proton σε περίπτωση περίπλοκων επιθέσεων, όπως ένας εισβολέας που αντιγράφει τα περιεχόμενα της συσκευής σας";
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "Το AppKey προστατεύει περαιτέρω τις πληροφορίες Proton σε περίπτωση περίπλοκων επιθέσεων, όπως ένας εισβολέας που αντιγράφει τα περιεχόμενα της συσκευής σας. %1$@";
 
 /* Settings lock AppKey feature */
 "AppKey protection" = "AppKey προστασία";
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "Γενέθλια";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Αποκλεισμός";
+
 /* Settings row */
 "Block email tracking" = "Φραγή ιχνηλάτησης μηνυμάτων";
 
@@ -297,14 +303,17 @@
 /* Button to block a sender */
 "Block sender" = "Αποκλεισμός αποστολέα";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Αποκλεισμένοι Αποστολείς";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "Αποκλείει στους αποστολείς τη γνώση του αν και πότε ανοίξατε το μήνυμα";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Περάστε τα μηνύματα με νήματα στη λειτουργία συνομιλίας.";
 
-/* Title */
-"Bug Description" = "Περιγραφή Σφάλματος";
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Για να μας βοηθήσετε να σας βοηθήσουμε, δώστε όσο το δυνατόν περισσότερες λεπτομέρειες---\nΠερίληψη:\nΈχει συμβεί το πρόβλημα περισσότερες από μία φορές: ναι/όχι\nΒήματα για την αναπαραγωγή του προβλήματος:\nΑναμενόμενο αποτέλεσμα:\nΠραγματικό αποτέλεσμα:\nΣχόλια:";
 
 /* Title */
 "Bug Report Received" = "Η αναφορά σφάλματος ελήφθη";
@@ -526,6 +535,9 @@
 /* Alert title */
 "Creating label not allowed" = "Δεν επιτρέπεται η δημιουργία ετικέτας";
 
+/* Change language title */
+"Current Language: " = "Τρέχουσα γλώσσα: ";
+
 /* Placeholder */
 "Current password" = "Τρέχων κωδικός πρόσβασης";
 
@@ -700,6 +712,9 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "Λήψη μεταδεδομένων ...";
 
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "Λήψη νέων μηνυμάτων...";
+
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "Κατεβάζει μηνύματα ηλεκτρονικού ταχυδρομείου, ώστε να μπορείτε να κάνετε αναζήτηση σε αυτά. Τα μηνύματα κρυπτογραφούνται και αποθηκεύονται τοπικά. %1$@";
 
@@ -819,6 +834,9 @@
 /* The title of textfield of PIN code setup1 */
 "Enter new PIN code" = "Εισαγωγή νέου κωδικού ΡΙΝ";
 
+/* The title of the pin code view. */
+"Enter PIN" = "Εισαγωγή PIN";
+
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Για να κάνετε αλλαγές, εισάγετε τον κωδικό πρόσβασής σας";
 
@@ -915,6 +933,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "Μετάβαση στις ρυθμίσεις";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Μετάβαση στην είσοδο";
+
 /* Got it action */
 "Got it" = "Το κατάλαβα";
 
@@ -1000,6 +1021,9 @@
 /* place holder */
 "Input Display Name…" = "Εισαγωγή Ονόματος Εμφάνισης…";
 
+/* place holder */
+"Input Notification Email…" = "Εισαγωγή E-mail ειδοποίησης…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "Μη διασφαλισμένη σύνδεση";
 
@@ -1014,6 +1038,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Παρουσίαση ανανεωμένης όψης του Proton.\nΠολλές υπηρεσίες, μία αποστολή. Καλώς ήρθατε σε ένα Διαδίκτυο όπου η ιδιωτικότητα είναι η προεπιλογή.";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Μη έγκυρη διεύθυνση email";
 
 /* update password error */
 "Invalid hashed password!" = "Μη έγκυρος hashed κωδικός πρόσβασης!";
@@ -1127,6 +1154,9 @@
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Σήμανση ως μη διαβασμένο";
 
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Ίσως αργότερα";
+
 /* menu title */
 "Menu" = "Μενού";
 
@@ -1237,6 +1267,9 @@
 /* Contacts add new contact */
 "New contact" = "Νέα επαφή";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Τα νέα μηνύματα ηλεκτρονικού ταχυδρομείου από το %@ δε θα παραδοθούν και θα διαγραφούν οριστικά. Διαχειριστείτε αποκλεισμένες διευθύνσεις email στις ρυθμίσεις.";
+
 /* The title of create folder page */
 "New folder" = "Νέος φάκελος";
 
@@ -1275,6 +1308,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "Κανένα συνημμένο";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Δεν υπάρχουν αποκλεισμένοι αποστολείς";
 
 /* Title */
 "No connectivity detected…" = "Δεν εντοπίστηκε σύνδεση…";
@@ -1487,6 +1523,9 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Παρακαλούμε μοιραστείτε το πρόβλημά σας.";
 
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Συνδεθείτε στην εφαρμογή Proton Mail \n*.*, please add*.*.";
+
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Για χρήση άνω των 3 φακέλων, παρακαλούμε αναβαθμίστε σε πρόγραμμα επί πληρωμή";
 
@@ -1684,7 +1723,7 @@
 /* Action */
 "Send anyway" = "Αποστολή οπωσδήποτε";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
+/* Title of button to send feedback */
 "Send feedback" = "Αποστολή σχολίων";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
@@ -1698,6 +1737,15 @@
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "Αποστολή αποδεικτικού ανάγνωσης";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "Ο Αποστολέας %@ αποκλείστηκε";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Ο Αποστολέας %@ δεν είναι αποκλεισμένος πια";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Ο αποστολέας έχει αποκλειστεί";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Η επαλήθευση του αποστολέα απέτυχε";
@@ -1777,6 +1825,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "Δείξε μου";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Εισέλθετε ξανά για να συνεχίσετε να λαμβάνετε ενημερώσεις";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "Αποσύνδεση";
@@ -1793,6 +1844,9 @@
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "Αποσυνδεθήκατε από το %1$@ και συνδεθήκατε με το %2$@";
 
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Έχετε εξέλθει από το %@";
+
 /* skip button title in onboarding page */
 "Skip" = "Παράλειψη";
 
@@ -1803,7 +1857,7 @@
 "Some images could not be loaded with tracking protection." = "Ορισμένες εικόνες απέτυχαν να φορτωθούν με προστασία παρακολούθησης.";
 
 /* menu title */
-"Spam" = "Ανεπιθύμητα";
+"Spam" = "Ενοχλητικά";
 
 /* The title of the star action in action sheet
    VoiceOver title of star button in the message view */
@@ -1953,6 +2007,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Η διεύθυνση URL στην οποία προσπαθείτε να αποκτήσετε πρόσβαση δεν είναι τυπική και ενδέχεται να μην φορτώσει σωστά. Θέλετε να το ανοίξετε χρησιμοποιώντας το προεπιλεγμένο πρόγραμμα περιήγησης της συσκευής σας;";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Ο χρήστης έχει συνδεθεί ήδη";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Υπάρχουν μη απεσταλμένα μηνύματα που θα χαθούν εάν εξέλθετε";
 
@@ -1967,6 +2024,12 @@
 
 /* No comment provided by engineer. */
 "This conversation contains trashed messages" = "Αυτή η συνομιλία περιέχει διαγραμμένα μηνύματα";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Αυτό το μήνυμα απέτυχε στις απαιτήσεις ταυτοποίησης του τομέα του. Ίσως έχει πλαστογραφηθεί ή προωθηθεί ακατάλληλα.";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Αυτό το μήνυμα απέτυχε στις απαιτήσεις ταυτοποίησης του τομέα του. Ίσως έχει πλαστογραφηθεί ή προωθηθεί ακατάλληλα.";
 
 /* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Αυτό το μήνυμα φαίνεται να στάλθηκε από μια διεύθυνση του Proton Mail, όμως προήλθε έξω από το σύστημά μας και απέτυχε τις απαιτήσεις μας για ταυτοποίηση. Ίσως έχει πλαστογραφηθεί ή προωθηθεί ακατάλληλα!";
@@ -2057,6 +2120,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Δοκιμάστε να συνδεθείτε στο Proton από διαφορετικό δίκτυο (ή χρησιμοποιήστε το %1$@ ή το %2$@).";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Ενεργοποιήστε αυτή τη λειτουργία για να συμπληρώνετε αυτόματα τις διευθύνσεις e-mail χρησιμοποιώντας επαφές από όλους τους συνδεδεμένους λογαριασμούς σας.";
+
 /* Placeholder */
 "Two Factor Code" = "Κωδικός Δύο Παραγόντων (2FA)";
 
@@ -2074,6 +2140,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "Δεν είναι δυνατή η αποστολή του E-mail";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Κατάργηση από αποκλεισμό";
+
+/* Button to unblock a sender */
+"Unblock sender" = "Ξεμπλοκάρισμα αποστολέα\n*.*, add trasnlation *.*";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Μη κοινοποιημένοι παραλήπτες";
@@ -2128,6 +2200,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "Ενημέρωση E-mail ειδοποίησης";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Ενημέρωση σε ουρά, αναμονή συνδεσιμότητας...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "Ενημερώθηκε πριν από >1 ώρες";
@@ -2249,9 +2324,6 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "Δεν μπορείτε να ορίσετε τη διεύθυνση %@ ως προεπιλεγμένη, καθώς αυτό είναι μια λειτουργία επί πληρωμή.";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "Απενεργοποιείτε το %@ στις ρυθμίσεις dου συστήματός σας. Το %@ έχει χρησιμοποιηθεί για την προστασία σημαντικdν πληροφοριών λογαριασμού. Για πρόσβαση στον λογαριασμό σας, μεταβείτε στις ρυθμίσεις και ενεργοποιήστε ξανά το %@ ή συνδεθείτε ξανά.";
-
 /* Message */
 "You have %d new emails!" = "Έχετε %d νέα E-mail!";
 
@@ -2312,9 +2384,14 @@
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "Γίνεται λήψη των μηνυμάτων σας...";
 
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Το απόρρητό σας προστατεύεται καλύτερα εάν οι επαφές σας χρησιμοποιούν επίσης Proton Mail. Προσκαλέστε τους φίλους σας στο Proton και θα λάβετε και οι δύο δωρεάν premium οφέλη.";
+
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Η περίοδος λειτουργίας σας έχει λήξει επειδή δεν έχετε κάνει κάποια ενέργεια για λίγο ή επειδή έχει ανακληθεί. Συνδεθείτε ξανά.";
 
 /* contact placeholder */
 "ZIP" = "T.K";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Απενεργοποιήσατε το %1$@ στις ρυθμίσεις του συστήματός σας. Το %2$@ έχει χρησιμοποιηθεί για την προστασία σημαντικών πληροφοριών λογαριασμού. Για πρόσβαση στον λογαριασμό σας, μεταβείτε στις ρυθμίσεις και ενεργοποιήστε ξανά το %3$@, ή συνδεθείτε ξανά.";

@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Common
+import ProtonCore_Keymaker
 import UIKit
 
 class SettingsDeviceCoordinator {
@@ -31,7 +31,7 @@ class SettingsDeviceCoordinator {
         case alternativeRouting = "settings_alternative_routing"
         case swipeAction = "settings_swipe_action"
         case darkMode = "settings_dark_mode"
-        case LocalizationPreview = "languageDebug"
+        case localizationPreview = "languageDebug"
     }
 
     private let usersManager: UsersManager
@@ -51,9 +51,12 @@ class SettingsDeviceCoordinator {
     }
 
     func start() {
-        let viewModel = SettingsDeviceViewModel(user: userManager,
-                                                users: usersManager,
-                                                biometricStatus: UIDevice.current)
+        let viewModel = SettingsDeviceViewModel(
+            user: userManager,
+            biometricStatus: UIDevice.current,
+            lockCacheStatus: services.get(by: Keymaker.self),
+            dependencies: .init(cleanCache: CleanCache(dependencies: .init(usersManager: usersManager)))
+        )
 
         let viewController = SettingsDeviceViewController(viewModel: viewModel, coordinator: self)
         navigationController?.pushViewController(viewController, animated: false)
@@ -73,7 +76,7 @@ class SettingsDeviceCoordinator {
             openGesture()
         case .darkMode:
             openDarkMode()
-        case .LocalizationPreview:
+        case .localizationPreview:
             openLocalizationPreview()
         }
     }
@@ -95,7 +98,7 @@ class SettingsDeviceCoordinator {
     }
 
     private func openAutoLock() {
-        let lockSetting = SettingsLockRouter(navigationController: self.navigationController)
+        let lockSetting = SettingsLockRouter(navigationController: self.navigationController, coreKeyMaker: services.get())
         lockSetting.start()
     }
 
@@ -144,6 +147,12 @@ class SettingsDeviceCoordinator {
         )
         let viewController = ToolbarSettingViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    func openApplicationLogsView() {
+        let viewModel = ApplicationLogsViewModel()
+        let viewController = ApplicationLogsViewController(viewModel: viewModel)
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 

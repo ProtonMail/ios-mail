@@ -29,7 +29,7 @@ final class RefetchAllBlockedSenders: RefetchAllBlockedSendersUseCase {
 
     func execute(completion: @escaping (Error?) -> Void) {
         do {
-            try dependencies.incomingDefaultService.hardDelete(query: .location(.blocked))
+            try dependencies.incomingDefaultService.hardDelete(query: .location(.blocked), includeSoftDeleted: false)
 
             dependencies.incomingDefaultService.fetchAll(location: .blocked, completion: completion)
         } catch {

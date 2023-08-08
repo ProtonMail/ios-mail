@@ -185,7 +185,7 @@
 "Enter the verification code that was sent to %@" = "Írja be a %@ címre küldött ellenőrző kódot";
 
 /* Enter email code label */
-"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Adja meg a $%@ címre küldött ellenőrző kódot. Ha nem találja az e-mailt, ellenőrizze a Levélszemét mappában.";
+"Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Adja meg a %@ címre küldött ellenőrző kódot. Ha nem találja az e-mailt, ellenőrizze a Levélszemét mappában.";
 
 /* Login screen subtitle */
 "Enter your Proton Account details." = "Írja be a Proton fiókja adatait.";

@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import UIKit
 import ProtonCore_UIFoundations
+import UIKit
 
 final class MessagePlaceholderView: UIView {
     let toolBar = SubviewsFactory.toolBar
@@ -51,20 +51,6 @@ final class MessagePlaceholderView: UIView {
 }
 
 private enum SubviewsFactory {
-
-    static var tableView: UITableView {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.tableFooterView = UIView()
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = ColorProvider.BackgroundSecondary
-        return tableView
-    }
-
-    static var separator: UIView {
-        let view = UIView(frame: .zero)
-        view.backgroundColor = ColorProvider.Shade20
-        return view
-    }
 
     static var toolBar: PMToolBarView {
         let toolbar = PMToolBarView()

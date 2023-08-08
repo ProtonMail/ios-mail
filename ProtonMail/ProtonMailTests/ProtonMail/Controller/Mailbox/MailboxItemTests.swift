@@ -15,43 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import CoreData
 import XCTest
 
 @testable import ProtonMail
 
 class MailboxItemTests: XCTestCase {
-    private var conversation: Conversation!
-    private var message: Message!
-    private var testContext: NSManagedObjectContext!
-
-    private let conversationID = "some conversation ID"
-    private let messageID = "some message ID"
+    private let conversationID = ConversationID("some conversation ID")
+    private let messageID = MessageID("some message ID")
     private let inboxLabel = Message.Location.inbox.labelID
-
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-
-        testContext = MockCoreDataStore.testPersistentContainer.viewContext
-
-        conversation = Conversation(context: testContext)
-        conversation.conversationID = conversationID
-        conversation.applyLabelChanges(labelID: inboxLabel.rawValue, apply: true)
-
-        message = Message(context: testContext)
-        message.messageID = messageID
-        message.conversationID = conversationID
-    }
-
-    override func tearDownWithError() throws {
-        testContext.registeredObjects.forEach(testContext.delete)
-
-        conversation = nil
-        message = nil
-        testContext = nil
-
-        try super.tearDownWithError()
-    }
 
     func testExpirationTime_message() {
         let date = Date()
@@ -90,77 +61,73 @@ class MailboxItemTests: XCTestCase {
     }
 
     func testIsStarred_message() throws {
-        let nonStarredMessage = MessageEntity(message)
+        let nonStarredMessage = MessageEntity.make()
         let nonStarredSUT = MailboxItem.message(nonStarredMessage)
         XCTAssertFalse(nonStarredSUT.isStarred)
 
-        let starredLabel = Label(context: testContext)
-        starredLabel.labelID = Message.Location.starred.rawValue
-        message.add(labelID: starredLabel.labelID)
-
-        let starredMessageEntity = MessageEntity(message)
+        let starredMessageEntity = MessageEntity.make(
+            labels: [.make(labelID: LabelID(Message.Location.starred.rawValue))]
+        )
         let starredSUT = MailboxItem.message(starredMessageEntity)
         XCTAssert(starredSUT.isStarred)
     }
 
     func testIsStarred_conversation() throws {
-        let nonStarredConversation = ConversationEntity(conversation)
+        let nonStarredConversation = ConversationEntity.make()
         let nonStarredSUT = MailboxItem.conversation(nonStarredConversation)
         XCTAssertFalse(nonStarredSUT.isStarred)
 
-        conversation.applyLabelChanges(labelID: Message.Location.starred.rawValue, apply: true)
-
-        let starredConversationEntity = ConversationEntity(conversation)
+        let starredConversationEntity = ConversationEntity.make(
+            contextLabelRelations: [.make(labelID: LabelID(Message.Location.starred.rawValue))]
+        )
         let starredSUT = MailboxItem.conversation(starredConversationEntity)
         XCTAssert(starredSUT.isStarred)
     }
 
     func testItemID_message() throws {
-        let messageEntity = MessageEntity(message)
+        let messageEntity = MessageEntity.make(messageID: messageID)
         let sut = MailboxItem.message(messageEntity)
-        XCTAssertEqual(sut.itemID, messageID)
+        XCTAssertEqual(sut.itemID, messageID.rawValue)
     }
 
     func testItemID_conversation() throws {
-        let conversationEntity = ConversationEntity(conversation)
+        let conversationEntity = ConversationEntity.make(conversationID: conversationID)
         let sut = MailboxItem.conversation(conversationEntity)
-        XCTAssertEqual(sut.itemID, conversationID)
+        XCTAssertEqual(sut.itemID, conversationID.rawValue)
     }
 
     func testObjectID_message() throws {
-        let entity = MessageEntity(message)
+        let entity = MessageEntity.make()
         let sut = MailboxItem.message(entity)
-        XCTAssertEqual(sut.objectID.rawValue, message.objectID)
+        XCTAssertEqual(sut.objectID, entity.objectID)
     }
 
     func testObjectID_conversation() throws {
-        let entity = ConversationEntity(conversation)
+        let entity = ConversationEntity.make()
         let sut = MailboxItem.conversation(entity)
-        XCTAssertEqual(sut.objectID.rawValue, conversation.objectID)
+        XCTAssertEqual(sut.objectID, entity.objectID)
     }
 
     func testIsUnread_message() throws {
-        let unreadMessage = MessageEntity(message)
+        let unreadMessage = MessageEntity.make(unRead: true)
         let unreadSUT = MailboxItem.message(unreadMessage)
         XCTAssert(unreadSUT.isUnread(labelID: inboxLabel))
 
-        message.unRead = false
-
-        let readMessage = MessageEntity(message)
+        let readMessage = MessageEntity.make(unRead: false)
         let readSUT = MailboxItem.message(readMessage)
         XCTAssertFalse(readSUT.isUnread(labelID: inboxLabel))
     }
 
     func testIsUnread_conversation() throws {
-        conversation.applyMarksAsChanges(unRead: true, labelID: inboxLabel.rawValue)
-
-        let unreadConversation = ConversationEntity(conversation)
+        let unreadConversation = ConversationEntity.make(
+            contextLabelRelations: [.make(unreadCount: 1, labelID: inboxLabel)]
+        )
         let unreadSUT = MailboxItem.conversation(unreadConversation)
         XCTAssert(unreadSUT.isUnread(labelID: inboxLabel))
 
-        conversation.applyMarksAsChanges(unRead: false, labelID: inboxLabel.rawValue)
-
-        let readConversation = ConversationEntity(conversation)
+        let readConversation = ConversationEntity.make(
+            contextLabelRelations: [.make(unreadCount: 0, labelID: inboxLabel)]
+        )
         let readSUT = MailboxItem.conversation(readConversation)
         XCTAssertFalse(readSUT.isUnread(labelID: inboxLabel))
     }

@@ -41,11 +41,12 @@ fileprivate struct id {
     static func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
     static func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
     static func folderLabelCellIdentifier(_ name: String) -> String { return "MenuItemTableViewCell.\(name)" }
+    static let lockTheAppIdentifier = "MenuItemTableViewCell.Lock_The_App"
 }
 
 /**
  Represents Menu view.
-*/
+ */
 class MenuRobot: CoreElements {
     
     var verify = Verify()
@@ -109,6 +110,11 @@ class MenuRobot: CoreElements {
         cell(id.folderLabelCellIdentifier(name.replacingOccurrences(of: " ", with: "_"))).swipeUpUntilVisible().tap()
         return LabelFolderRobot()
     }
+
+    func lockTheApp() -> PinInputRobot {
+        cell(id.lockTheAppIdentifier).swipeUpUntilVisible().tap()
+        return PinInputRobot()
+    }
     
     @discardableResult
     func reports() -> ReportRobot {
@@ -160,22 +166,16 @@ class MenuRobot: CoreElements {
          */
         class Verify: CoreElements {
 
-            func accountAdded(_ user: User) {
-                staticText(user.name)
-                    .checkExists()
-                staticText(user.email)
-                    .checkExists()
+            func accountName(_ user: User) -> MenuAccountListRobot{
+                staticText(user.email).checkExists()
+                return MenuAccountListRobot()
             }
-            
-            func accountAdded(_ primaryUser: User, _ secondaryUser: User) {
-                staticText(primaryUser.name)
-                    .checkExists()
-                staticText(primaryUser.email)
-                    .checkExists()
-                staticText(secondaryUser.name)
-                    .checkExists()
-                staticText(secondaryUser.email)
-                    .checkExists()
+
+            @discardableResult
+            func accountNameEmail(_ user: User) -> MenuAccountListRobot {
+                staticText(user.name).checkExists()
+                staticText(user.email).checkExists()
+                return MenuAccountListRobot()
             }
             
             func accountShortNameIsCorrect(_ shortName: String) {
@@ -183,10 +183,10 @@ class MenuRobot: CoreElements {
             }
             
             func accountAtPositionSignedOut(_ position: Int) {
-//                cell(id.userAccountCellIdentifier).byIndex(position)
-//                    .onChild(button(id.signInButtonIdentifier))
-//                    .checkExists()
-//                    .checkHasLabel(id.signInButtonLabel)
+                //                cell(id.userAccountCellIdentifier).byIndex(position)
+                //                    .onChild(button(id.signInButtonIdentifier))
+                //                    .checkExists()
+                //                    .checkHasLabel(id.signInButtonLabel)
             }
             
             func accountSignedOut(_ shortName: String) {
@@ -252,7 +252,7 @@ class MenuRobot: CoreElements {
     
     /**
      Contains all the validations that can be performed by MenuRobot.
-    */
+     */
     class Verify: CoreElements {
         func currentAccount(_ account: User) {
             button(id.primaryUserViewIdentifier).checkContainsLabel(account.name)

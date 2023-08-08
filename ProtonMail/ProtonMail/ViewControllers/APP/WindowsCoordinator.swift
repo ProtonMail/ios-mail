@@ -22,47 +22,28 @@
 
 import LifetimeTracker
 import MBProgressHUD
+import ProtonCore_DataModel
 import ProtonCore_Keymaker
 import ProtonCore_Networking
-import ProtonCore_DataModel
 import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 import SafariServices
 
-// this view controller is placed into AppWindow only until it is correctly loaded from storyboard or correctly restored with use of MainKey
-private class PlaceholderVC: UIViewController {
-    var color: UIColor = .blue
-
-    convenience init(color: UIColor) {
-        self.init()
-        self.color = color
-    }
-
-    override func loadView() {
-        view = UINib(nibName: "LaunchScreen", bundle: nil).instantiate(withOwner: nil, options: nil).first as? UIView
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        #if DEBUG
-        self.view.backgroundColor = color
-        #else
-        Snapshot().show(at: self.view)
-        #endif
-    }
+protocol WindowsCoordinatorDelegate: AnyObject {
+    func setupCoreData()
+    func currentApplicationState() -> UIApplication.State
 }
 
-class WindowsCoordinator: LifetimeTrackable {
-    class var lifetimeConfiguration: LifetimeConfiguration {
-        .init(maxCount: 1)
-    }
-
+class WindowsCoordinator {
     private lazy var snapshot = Snapshot()
     private var launchedByNotification = false
 
-    private var deeplink: DeepLink?
+    private var deepLink: DeepLink?
 
-    private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(color: .red), scene: nil) {
+    private(set) var appWindow: UIWindow! = UIWindow(
+        root: PlaceholderViewController(color: .red),
+        scene: nil
+    ) {
         didSet {
             guard appWindow == nil else { return }
             if let oldAppWindow = oldValue {
@@ -72,25 +53,17 @@ class WindowsCoordinator: LifetimeTrackable {
         }
     }
 
-    private var lockWindow: UIWindow?
-
-    private var services: ServiceFactory
-    private var darkModeCache: DarkModeCacheProtocol
+    private(set) var lockWindow: UIWindow?
     private var menuCoordinator: MenuCoordinator?
 
     var currentWindow: UIWindow? {
         didSet {
-            if #available(iOS 13, *) {
-                switch darkModeCache.darkModeStatus {
-
-                case .followSystem:
-                    self.currentWindow?.overrideUserInterfaceStyle = .unspecified
-                case .forceOn:
-                    self.currentWindow?.overrideUserInterfaceStyle = .dark
-                case .forceOff:
-                    self.currentWindow?.overrideUserInterfaceStyle = .light
-                }
-            } else if #available(iOS 13, *) {
+            switch dependencies.darkModeCache.darkModeStatus {
+            case .followSystem:
+                self.currentWindow?.overrideUserInterfaceStyle = .unspecified
+            case .forceOn:
+                self.currentWindow?.overrideUserInterfaceStyle = .dark
+            case .forceOff:
                 self.currentWindow?.overrideUserInterfaceStyle = .light
             }
             self.currentWindow?.makeKeyAndVisible()
@@ -104,7 +77,7 @@ class WindowsCoordinator: LifetimeTrackable {
         case lockWindow, appWindow, signInWindow(SignInDestination)
     }
 
-    internal var scene: AnyObject? {
+    var scene: AnyObject? {
         didSet {
             // UIWindowScene class is available on iOS 13 and newer, older platforms should not use this property
             if #available(iOS 13.0, *) {
@@ -114,187 +87,43 @@ class WindowsCoordinator: LifetimeTrackable {
             }
         }
     }
+    weak var delegate: WindowsCoordinatorDelegate?
+    private let factory: WindowsCoordinatorDependenciesFactory
+    private let dependencies: Dependencies
+    private let showPlaceHolderViewOnly: Bool
 
-    init(services: ServiceFactory,
-         darkModeCache: DarkModeCacheProtocol
-    ) {
-        defer {
-            NotificationCenter.default.addObserver(self, selector: #selector(requestMainKey), name: Keymaker.Const.requestMainKey, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
-            NotificationCenter.default.addObserver(forName: .didRevoke, object: nil, queue: .main) { [weak self] (noti) in
-                if let uid = noti.userInfo?["uid"] as? String {
-                    self?.didReceiveTokenRevoke(uid: uid)
-                }
-            }
-
-            NotificationCenter.default.addObserver(forName: .fetchPrimaryUserSettings, object: nil, queue: .main) { [weak self] _ in
-                if self?.arePrimaryUserSettingsFetched == false {
-                    self?.arePrimaryUserSettingsFetched = true
-                    self?.restoreAppStates()
-                }
-            }
-
-            NotificationCenter.default.addObserver(forName: .switchView, object: nil, queue: .main) { [weak self] notification in
-                self?.arePrimaryUserSettingsFetched = true
-                // trigger the menu to follow the deeplink or show inbox
-                self?.handleSwitchViewDeepLinkIfNeeded((notification.object as? DeepLink))
-            }
-
-            NotificationCenter.default.addObserver(forName: .scheduledMessageSucceed, object: nil, queue: .main) { [weak self] notification in
-                guard let tuple = notification.object as? (MessageID, Date, UserID) else { return }
-                self?.showScheduledSendSucceedBanner(
-                    messageID: tuple.0,
-                    deliveryTime: tuple.1,
-                    userID: tuple.2
-                )
-            }
-
-            NotificationCenter.default.addObserver(forName: .showScheduleSendUnavailable, object: nil, queue: .main) { [weak self] _ in
-                self?.showScheduledSendUnavailableAlert()
-            }
-
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(messageSendFailAddressValidationIncorrect),
-                name: .messageSendFailAddressValidationIncorrect,
-                object: nil
-            )
-
-            if #available(iOS 13.0, *) {
-                NotificationCenter.default.addObserver(
-                    self,
-                    selector: #selector(updateUserInterfaceStyle),
-                    name: .shouldUpdateUserInterfaceStyle,
-                    object: nil
-                )
-                // this is done by UISceneDelegate
-            } else {
-                NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground),
-                                                       name: UIApplication.willEnterForegroundNotification,
-                                                       object: nil)
-                NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground),
-                                                       name: UIApplication.didEnterBackgroundNotification,
-                                                       object: nil)
-            }
-        }
-        self.services = services
-        self.darkModeCache = darkModeCache
+    init(factory: ServiceFactory, showPlaceHolderViewOnly: Bool = ProcessInfo.isRunningUnitTests) {
+        self.showPlaceHolderViewOnly = showPlaceHolderViewOnly
+        self.factory = factory.makeWindowsCoordinatorDependenciesFactory()
+        self.dependencies = self.factory.makeWindowsCoordinatorDependencies()
+        setupNotifications()
         trackLifetime()
     }
 
     func start(launchedByNotification: Bool = false) {
         self.launchedByNotification = launchedByNotification
-        let placeholder = UIWindow(root: PlaceholderVC(color: .white), scene: self.scene)
+        let placeholder = UIWindow(root: PlaceholderViewController(color: .white), scene: self.scene)
         self.currentWindow = placeholder
 
-        // some cache may need user to unlock first. so this need to move to after windows showup
-        let usersManager: UsersManager = self.services.get()
-        usersManager.launchCleanUpIfNeeded()
-
-        if ProcessInfo.isRunningUnitTests {
+        if showPlaceHolderViewOnly {
             // While running the unit test, call this to generate the main key.
-            keymaker.mainKeyExists()
+            _ = dependencies.coreKeyMaker.mainKeyExists()
             return
         }
 
-        // we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
+        // We should not trigger the touch id here. because it is also done in the sign in vc. If we need to check lock, we just go to lock screen first.
         // clean this up later.
 
-        let unlockManager: UnlockManager = self.services.get()
-        let flow = unlockManager.getUnlockFlow()
+        let flow = dependencies.unlockManager.getUnlockFlow()
         Breadcrumbs.shared.add(message: "WindowsCoordinator.start unlockFlow = \(flow)", to: .randomLogout)
-        if userCachedStatus.isAppLockedAndAppKeyEnabled {
+        if dependencies.lockCache.isAppLockedAndAppKeyEnabled {
             self.lock()
         } else {
             DispatchQueue.main.async {
                 // initiate unlock process which will send .didUnlock or .requestMainKey eventually
-                unlockManager.initiateUnlock(flow: flow,
+                self.dependencies.unlockManager.initiateUnlock(flow: flow,
                                              requestPin: self.lock,
                                              requestMailboxPassword: self.lock)
-            }
-        }
-    }
-
-    @objc func willEnterForeground() {
-        self.snapshot.remove()
-    }
-
-    @objc func didEnterBackground() {
-        if let vc = self.currentWindow?.topmostViewController(),
-           !(vc is ComposeContainerViewController) {
-            vc.view.endEditing(true)
-        }
-        if let window = self.currentWindow {
-            self.snapshot.show(at: window)
-        }
-    }
-
-    @objc private func requestMainKey() {
-        Breadcrumbs.shared.add(message: "WindowsCoordinator requestMainKey received", to: .randomLogout)
-        lock()
-    }
-
-    @objc func lock() {
-        Breadcrumbs.shared.add(message: "WindowsCoordinator.lock called", to: .randomLogout)
-        guard sharedServices.get(by: UsersManager.self).hasUsers() else {
-            Breadcrumbs.shared.add(message: "WindowsCoordinator.lock no users found", to: .randomLogout)
-            keymaker.wipeMainKey()
-            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
-            return
-        }
-        self.go(dest: .lockWindow)
-    }
-
-    @objc func unlock() {
-        self.lockWindow = nil
-        let usersManager: UsersManager = self.services.get()
-
-        guard usersManager.hasUsers() else {
-            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
-            return
-        }
-        if usersManager.count <= 0 {
-            _ = usersManager.clean()
-            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
-        } else {
-            // To register again in case the registration on app launch didn't go through because the app was locked
-            let pushService: PushNotificationService = sharedServices.get()
-            UNUserNotificationCenter.current().delegate = pushService
-            pushService.registerForRemoteNotifications()
-            self.go(dest: .appWindow)
-        }
-    }
-
-    @objc func didReceiveTokenRevoke(uid: String) {
-        let usersManager: UsersManager = services.get()
-        let queueManager: QueueManager = services.get()
-
-        if let user = usersManager.getUser(by: uid),
-           !usersManager.loggingOutUserIDs.contains(user.userID) {
-            let shouldShowBadTokenAlert = usersManager.count == 1
-
-            Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
-
-            queueManager.unregisterHandler(for: user.userID)
-            usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
-                guard let self = self else { return }
-                guard let appWindow = self.appWindow else {return}
-
-                if usersManager.hasUsers() {
-                    appWindow.enumerateViewControllerHierarchy { controller, stop in
-                        if let menu = controller as? MenuViewController {
-                            // Work Around: trigger viewDidLoad of menu view controller
-                            _ = menu.view
-                            menu.navigateTo(label: MenuLabel(location: .inbox))
-                        }
-                    }
-                }
-                if shouldShowBadTokenAlert {
-                    NSError.alertBadToken()
-                }
-
-                let handler = LocalNotificationService(userID: user.userID)
-                handler.showSessionRevokeNotification(email: user.defaultEmail)
             }
         }
     }
@@ -315,6 +144,7 @@ class WindowsCoordinator: LifetimeTrackable {
                 }
                 self.lockWindow = nil
                 self.appWindow = nil
+                // TODO: refactor SignInCoordinatorEnvironment init
                 let signInEnvironment = SignInCoordinatorEnvironment.live(
                     services: sharedServices, forceUpgradeDelegate: ForceUpgradeManager.shared.forceUpgradeHelper
                 )
@@ -326,17 +156,17 @@ class WindowsCoordinator: LifetimeTrackable {
                         self?.go(dest: .appWindow)
                         delay(1) {
                             // Waiting for init of Menu coordinate to receive the notification
-                            NotificationCenter.default.post(name: .switchView, object: nil)
+                            self?.dependencies.notificationCenter.post(name: .switchView, object: nil)
                         }
                     case .userWantsToGoToTroubleshooting:
-                        let troubleshootingVC = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
-                        troubleshootingVC.onDismiss = { [weak self] in
-                            // restart the process after user returns from troubleshooting
-                            self?.go(dest: .signInWindow(signInDestination))
-                        }
-                        let navigationVC = UINavigationController(rootViewController: troubleshootingVC)
-                        navigationVC.modalPresentationStyle = .fullScreen
-                        self?.currentWindow?.rootViewController?.present(navigationVC, animated: true, completion: nil)
+                        self?.currentWindow?.rootViewController?.present(
+                            doh: BackendConfiguration.shared.doh,
+                            modalPresentationStyle: .fullScreen,
+                            onDismiss: { [weak self] in
+                                // restart the process after user returns from troubleshooting
+                                self?.go(dest: .signInWindow(signInDestination))
+                            }
+                        )
                     case .alreadyLoggedIn, .loggedInFreeAccountsLimitReached, .errored:
                         // not sure what else I can do here instead of restarting the process
                         self?.navigateToSignInFormAndReport(reason: .unexpected(description: "\(flowResult)"))
@@ -357,40 +187,44 @@ class WindowsCoordinator: LifetimeTrackable {
                 }
                 guard self.lockWindow == nil else {
                     guard let lockVC = self.currentWindow?.rootViewController as? LockCoordinator.VC,
-                          lockVC.coordinator.startedOrSheduledForAStart == false
+                          lockVC.coordinator.startedOrScheduledForAStart == false
                     else {
                         return
                     }
                     lockVC.coordinator.start()
                     return
                 }
-                let coordinator = LockCoordinator(services: sharedServices) { [weak self] flowResult in
-                    switch flowResult {
-                    case .mailbox:
-                        self?.go(dest: .appWindow)
-                    case .mailboxPassword:
-                        self?.go(dest: .signInWindow(.mailboxPassword))
-                    case .signIn(let reason):
-                        self?.navigateToSignInFormAndReport(reason: .afterLockScreen(description: reason))
+
+                let coordinator = self.factory.makeLockCoordinator(
+                    finishLockFlow: { [weak self] flowResult in
+                        switch flowResult {
+                        case .mailbox:
+                            self?.go(dest: .appWindow)
+                        case .mailboxPassword:
+                            self?.go(dest: .signInWindow(.mailboxPassword))
+                        case .signIn(let reason):
+                            self?.navigateToSignInFormAndReport(reason: .afterLockScreen(description: reason))
+                        }
                     }
-                }
+                )
                 let lock = UIWindow(root: coordinator.actualViewController, scene: self.scene)
                 self.lockWindow?.rootViewController?.presentedViewController?.dismiss(animated: false)
                 self.lockWindow = lock
-                coordinator.startedOrSheduledForAStart = true
+                coordinator.startedOrScheduledForAStart = true
                 self.navigate(from: self.currentWindow, to: lock, animated: false) { [weak coordinator] in
                     if UIApplication.shared.applicationState != .background {
                         coordinator?.start()
                     } else {
-                        coordinator?.startedOrSheduledForAStart = false
+                        coordinator?.startedOrScheduledForAStart = false
                     }
                 }
 
             case .appWindow:
                 self.lockWindow = nil
-                if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderVC {
-                    let root = PMSideMenuController()
-                    let coordinator = WindowsCoordinator.makeMenuCoordinator(sideMenu: root)
+                if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderViewController {
+                    let root = PMSideMenuController(isUserInfoAlreadyFetched: self.arePrimaryUserSettingsFetched)
+                    let coordinator = self.factory.makeMenuCoordinator(sideMenu: root)
+                    coordinator.delegate = self
                     self.menuCoordinator = coordinator
                     coordinator.start(launchedByNotification: self.launchedByNotification)
                     self.appWindow = UIWindow(root: root, scene: self.scene)
@@ -399,7 +233,7 @@ class WindowsCoordinator: LifetimeTrackable {
                 if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
                 }
-                if self.navigate(from: self.currentWindow, to: self.appWindow, animated: true), let deeplink = self.deeplink {
+                if self.navigate(from: self.currentWindow, to: self.appWindow, animated: true), let deeplink = self.deepLink {
                     self.handleDeepLinkIfNeeded(deeplink)
                 }
             }
@@ -411,7 +245,7 @@ class WindowsCoordinator: LifetimeTrackable {
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
             if let _ = controller as? MenuViewController,
                let coordinator = self.menuCoordinator {
-                coordinator.handleSwitchView(deepLink: self.deeplink)
+                coordinator.handleSwitchView(deepLink: self.deepLink)
                 stop = true
             }
         }
@@ -452,27 +286,127 @@ class WindowsCoordinator: LifetimeTrackable {
         return true
     }
 
-    internal func followDeeplink(_ deeplink: DeepLink) {
-        self.deeplink = deeplink
-        _ = deeplink.popFirst
+    private func setupNotifications() {
+        dependencies.notificationCenter.addObserver(
+            self,
+            selector: #selector(unlock),
+            name: .didUnlock,
+            object: nil
+        )
+        dependencies.notificationCenter.addObserver(
+            forName: .didRevoke,
+            object: nil,
+            queue: .main
+        ) { [weak self] noti in
+            if let uid = noti.userInfo?["uid"] as? String {
+                self?.didReceiveTokenRevoke(uid: uid)
+            }
+        }
+
+        dependencies.notificationCenter.addObserver(
+            forName: .didFetchSettingsForPrimaryUser,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            if self?.arePrimaryUserSettingsFetched == false {
+                self?.arePrimaryUserSettingsFetched = true
+                self?.restoreAppStates()
+            }
+        }
+
+        dependencies.notificationCenter.addObserver(
+            forName: .switchView,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            self?.arePrimaryUserSettingsFetched = true
+            // trigger the menu to follow the deeplink or show inbox
+            self?.handleSwitchViewDeepLinkIfNeeded(notification.object as? DeepLink)
+        }
+
+        dependencies.notificationCenter.addObserver(
+            forName: .scheduledMessageSucceed,
+            object: nil,
+            queue: .main
+        ) { [weak self] notification in
+            guard let tuple = notification.object as? (MessageID, Date, UserID) else { return }
+            self?.showScheduledSendSucceedBanner(
+                messageID: tuple.0,
+                deliveryTime: tuple.1,
+                userID: tuple.2
+            )
+        }
+
+        dependencies.notificationCenter.addObserver(
+            forName: .showScheduleSendUnavailable,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.showScheduledSendUnavailableAlert()
+        }
+
+        dependencies.notificationCenter.addObserver(
+            self,
+            selector: #selector(messageSendFailAddressValidationIncorrect),
+            name: .messageSendFailAddressValidationIncorrect,
+            object: nil
+        )
+
+        // This will be triggered when the keymaker clear the mainkey from the memory.
+        // We will lock the app at this moment.
+        dependencies.notificationCenter.addObserver(
+            forName: Keymaker.Const.removedMainKeyFromMemory,
+            object: nil,
+            queue: .main) { _ in
+                self.lock()
+            }
+
+        if #available(iOS 13.0, *) {
+            dependencies.notificationCenter.addObserver(
+                self,
+                selector: #selector(updateUserInterfaceStyle),
+                name: .shouldUpdateUserInterfaceStyle,
+                object: nil
+            )
+            // this is done by UISceneDelegate
+        } else {
+            dependencies.notificationCenter.addObserver(
+                self, selector: #selector(willEnterForeground),
+                name: UIApplication.willEnterForegroundNotification,
+                object: nil
+            )
+            dependencies.notificationCenter.addObserver(
+                self, selector: #selector(didEnterBackground),
+                name: UIApplication.didEnterBackgroundNotification,
+                object: nil
+            )
+        }
+    }
+}
+
+// MARK: DeepLink methods
+extension WindowsCoordinator {
+    func followDeepLink(_ deepLink: DeepLink) {
+        self.deepLink = deepLink
+        _ = deepLink.popFirst
         self.start()
     }
 
-    func followDeepDeeplinkIfNeeded(_ deeplink: DeepLink) {
-        self.deeplink = deeplink
-        _ = deeplink.popFirst
+    func followDeepDeepLinkIfNeeded(_ deepLink: DeepLink) {
+        self.deepLink = deepLink
+        _ = deepLink.popFirst
 
         if arePrimaryUserSettingsFetched {
             start()
         }
     }
 
-    private func handleDeepLinkIfNeeded(_ deeplink: DeepLink) {
+    private func handleDeepLinkIfNeeded(_ deepLink: DeepLink) {
         guard arePrimaryUserSettingsFetched else { return }
         self.appWindow.enumerateViewControllerHierarchy { controller, stop in
             if let _ = controller as? MenuViewController,
-                let coordinator = self.menuCoordinator {
-                coordinator.follow(deeplink)
+               let coordinator = self.menuCoordinator {
+                coordinator.follow(deepLink)
                 stop = true
             }
         }
@@ -508,7 +442,7 @@ class WindowsCoordinator: LifetimeTrackable {
 
     private func openUrl(_ url: URL) {
         guard UIApplication.shared.canOpenURL(url) else {
-            SystemLogger.log(message: "url can't be opened by the system", redactedInfo: url.absoluteString, isError: true)
+            SystemLogger.log(message: "url can't be opened by the system: \(url.absoluteString)", isError: true)
             return
         }
         DispatchQueue.main.async {
@@ -524,9 +458,9 @@ class WindowsCoordinator: LifetimeTrackable {
     }
 
     private func handleSwitchViewDeepLinkIfNeeded(_ deepLink: DeepLink?) {
-        self.deeplink = deepLink
+        self.deepLink = deepLink
         if let url = shouldOpenURL(deepLink: deepLink) {
-            self.deeplink = nil
+            self.deepLink = nil
             handleWebUrl(url: url)
             return
         }
@@ -541,11 +475,97 @@ class WindowsCoordinator: LifetimeTrackable {
             }
         }
     }
+}
 
-	@objc
+// MARK: Actions
+extension WindowsCoordinator {
+    @objc
+    func willEnterForeground() {
+        self.snapshot.remove()
+    }
+
+    @objc
+    func didEnterBackground() {
+        if let vc = self.currentWindow?.topmostViewController(),
+           !(vc is ComposeContainerViewController) {
+            vc.view.endEditing(true)
+        }
+        if let window = self.currentWindow {
+            self.snapshot.show(at: window)
+        }
+    }
+
+    @objc
+    private func lock() {
+        Breadcrumbs.shared.add(message: "WindowsCoordinator.lock called", to: .randomLogout)
+        guard dependencies.usersManager.hasUsers() else {
+            Breadcrumbs.shared.add(message: "WindowsCoordinator.lock no users found", to: .randomLogout)
+            delegate?.setupCoreData()
+            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
+            return
+        }
+        // The mainkey could be removed while changing the protection of the app.
+        // When the mainkey is removed in the background, that means the app should be locked.
+        if delegate?.currentApplicationState() != .active && !showPlaceHolderViewOnly {
+            go(dest: .lockWindow)
+        }
+    }
+
+    @objc
+    private func unlock() {
+        self.lockWindow = nil
+
+        guard dependencies.usersManager.hasUsers() else {
+            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
+            return
+        }
+        if dependencies.usersManager.count <= 0 {
+            _ = dependencies.usersManager.clean()
+            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
+        } else {
+            // To register again in case the registration on app launch didn't go through because the app was locked
+            UNUserNotificationCenter.current().delegate = dependencies.pushService
+            dependencies.pushService.registerForRemoteNotifications()
+            self.go(dest: .appWindow)
+        }
+    }
+
+    @objc
+    private func didReceiveTokenRevoke(uid: String) {
+        if let user = dependencies.usersManager.getUser(by: uid),
+           !dependencies.usersManager.loggingOutUserIDs.contains(user.userID) {
+            let shouldShowBadTokenAlert = dependencies.usersManager.count == 1
+
+            Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
+
+            dependencies.queueManager.unregisterHandler(for: user.userID)
+            dependencies.usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
+                guard let self = self else { return }
+                guard let appWindow = self.appWindow else {return}
+
+                if self.dependencies.usersManager.hasUsers() {
+                    appWindow.enumerateViewControllerHierarchy { controller, stop in
+                        if let menu = controller as? MenuViewController {
+                            // Work Around: trigger viewDidLoad of menu view controller
+                            _ = menu.view
+                            menu.navigateTo(label: MenuLabel(location: .inbox))
+                        }
+                    }
+                }
+                if shouldShowBadTokenAlert {
+                    NSError.alertBadToken()
+                }
+
+                let handler = LocalNotificationService(userID: user.userID)
+                handler.showSessionRevokeNotification(email: user.defaultEmail)
+            }
+        }
+    }
+
+    @objc
     private func updateUserInterfaceStyle() {
         guard #available(iOS 13, *) else { return }
-        switch darkModeCache.darkModeStatus {
+        switch dependencies.darkModeCache.darkModeStatus {
         case .followSystem:
             currentWindow?.overrideUserInterfaceStyle = .unspecified
         case .forceOff:
@@ -553,24 +573,6 @@ class WindowsCoordinator: LifetimeTrackable {
         case .forceOn:
             currentWindow?.overrideUserInterfaceStyle = .dark
         }
-    }
-
-    static func makeMenuCoordinator(sideMenu: PMSideMenuController) -> MenuCoordinator {
-        let usersManager = sharedServices.get(by: UsersManager.self)
-        let pushService = sharedServices.get(by: PushNotificationService.self)
-        let coreDataService = sharedServices.get(by: CoreDataService.self)
-        let lateUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
-        let queueManager = sharedServices.get(by: QueueManager.self)
-        let menuWidth = MenuViewController.calcProperMenuWidth()
-        let coordinator = MenuCoordinator(services: sharedServices,
-                                          pushService: pushService,
-                                          coreDataService: coreDataService,
-                                          lastUpdatedStore: lateUpdatedStore,
-                                          usersManager: usersManager,
-                                          queueManager: queueManager,
-                                          sideMenu: sideMenu,
-                                          menuWidth: menuWidth)
-        return coordinator
     }
 }
 
@@ -612,7 +614,7 @@ extension WindowsCoordinator {
                           value: messageID.rawValue,
                           states: ["originalScheduledTime": deliveryTime])
                 )
-                NotificationCenter.default.post(name: .switchView, object: deepLink)
+                self.dependencies.notificationCenter.post(name: .switchView, object: deepLink)
             }
             banner.dismiss()
         }
@@ -632,7 +634,7 @@ extension WindowsCoordinator {
     @objc private func messageSendFailAddressValidationIncorrect() {
         let title = LocalString._address_invalid_error_to_draft_action_title
         let toDraftAction = UIAlertAction(title: title, style: .default) { (_) in
-            NotificationCenter.default.post(
+            self.dependencies.notificationCenter.post(
                 name: .switchView,
                 object: DeepLink(
                     String(describing: MailboxViewController.self),
@@ -652,7 +654,7 @@ extension WindowsCoordinator {
         userID: UserID,
         completion: @escaping () -> Void
     ) {
-        let users = sharedServices.get(by: UsersManager.self)
+        let users = dependencies.usersManager
         let user = users.getUser(by: userID)
         user?.messageService.undoSend(
             of: messageID,
@@ -668,5 +670,28 @@ extension WindowsCoordinator {
                     })
             }
         )
+    }
+}
+
+extension WindowsCoordinator: MenuCoordinatorDelegate {
+    func lockTheScreen() {
+        go(dest: .lockWindow)
+    }
+
+	struct Dependencies {
+        let usersManager: UsersManager
+        let pushService: PushNotificationService
+        let queueManager: QueueManager
+        let unlockManager: UnlockManager
+        let darkModeCache: DarkModeCacheProtocol
+        let lockCache: LockCacheStatus
+        let notificationCenter: NotificationCenter
+        let coreKeyMaker: KeyMakerProtocol
+    }
+}
+
+extension WindowsCoordinator: LifetimeTrackable {
+    class var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
     }
 }

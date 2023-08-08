@@ -37,7 +37,6 @@ final class SendMessageTaskTests: XCTestCase {
     private var mockUndoActionManager: MockUndoActionManager!
     private var mockNotificationCenter: NotificationCenter!
     private var mockQueueManager: QueueManager!
-    private let mockCoreDataService = MockCoreDataContextProvider()
 
     private var mockMessagesQueue: PMPersistentQueue!
     private var mockMiscQueue: PMPersistentQueue!
@@ -47,7 +46,7 @@ final class SendMessageTaskTests: XCTestCase {
 
     private lazy var dummyMessageSendingData: MessageSendingData = {
         .init(
-            message: MessageEntity(Message(context: mockCoreDataService.mainContext)),
+            message: .make(),
             cachedUserInfo: nil,
             cachedAuthCredential: nil,
             cachedSenderAddress: nil,
@@ -202,27 +201,6 @@ final class SendMessageTaskTests: XCTestCase {
             XCTAssertTrue(mockNotificationHandler.callAdd.wasCalledExactlyOnce)
             expect.fulfill()
         }
-        waitForExpectations(timeout: waitTimeout)
-    }
-
-    func testRun_whenSendRequestFails_forHumanVerification_queueManagerIsFlagged() {
-        let expect = expectation(description: "")
-        mockSendMessageUseCase.result = .failure(makeAPIError(with: APIErrorCode.humanVerificationRequired))
-        sut.run(params: makeDummyParams()) { [unowned self] error in
-            XCTAssert(self.mockQueueManager.isRequiredHumanCheck == true)
-            XCTAssertNotNil(error)
-            expect.fulfill()
-        }
-        waitForExpectations(timeout: waitTimeout)
-    }
-
-    func testRun_whenSendRequestFails_forHumanVerification_failNotificationIsSent() {
-        let expect = expectation(description: "")
-        mockNotificationCenter.addObserver(forName: .sendMessageTaskFail, object: nil, queue: nil) { _ in
-            expect.fulfill()
-        }
-        mockSendMessageUseCase.result = .failure(makeAPIError(with: APIErrorCode.humanVerificationRequired))
-        sut.run(params: makeDummyParams()) { _ in }
         waitForExpectations(timeout: waitTimeout)
     }
 

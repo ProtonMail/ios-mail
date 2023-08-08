@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_Services
 import SkeletonView
 import ProtonCore_UIFoundations
 import UIKit
@@ -29,13 +30,23 @@ class SkeletonViewController: ProtonMailTableViewController {
     private(set) var timeout: Int = 10
     private(set) var timer: Timer?
     private(set) var isEnabledTimeout = true
+    private let isUserInfoAlreadyFetched: Bool
 
     class func instance(timeout: Int = 10, isEnabledTimeout: Bool = true) -> SkeletonViewController {
-        let skeletonVC = SkeletonViewController(style: .plain)
+        let skeletonVC = SkeletonViewController(isUserInfoAlreadyFetched: false)
         skeletonVC.timeout = timeout
         skeletonVC.isEnabledTimeout = isEnabledTimeout
         _ = UINavigationController(rootViewController: skeletonVC)
         return skeletonVC
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    init(isUserInfoAlreadyFetched: Bool) {
+        self.isUserInfoAlreadyFetched = isUserInfoAlreadyFetched
+        super.init(style: .plain)
     }
 
     override func viewDidLoad() {
@@ -49,18 +60,24 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
 
-        guard let delegate = UIApplication.shared.delegate as? AppDelegate,
-              delegate.isReachable() else {
+        guard
+            PMAPIService.ServiceDelegate.shared.isReachable(),
+            !isUserInfoAlreadyFetched
+        else {
             // If device has connection, skeleton view will be dismissed after fetching user info
             // If device doesn't have connection, doesn't need to waste time to wait
-            NotificationCenter.default.post(name: .switchView, object: nil)
+            dismissView()
             return
         }
 
         guard isEnabledTimeout else { return }
         self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(self.timeout), repeats: false) { _ in
-            NotificationCenter.default.post(name: .switchView, object: nil)
+            self.dismissView()
         }
+    }
+
+    private func dismissView() {
+        NotificationCenter.default.post(name: .switchView, object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -93,6 +110,7 @@ class SkeletonViewController: ProtonMailTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         cell.showAnimatedGradientSkeleton()
         cell.contentView.backgroundColor = ColorProvider.BackgroundNorm
+        cell.backgroundColor = ColorProvider.BackgroundNorm
         return cell
     }
 

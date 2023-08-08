@@ -121,6 +121,11 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func openBlockList() {
+        let blockedSendersPublisher = BlockedSendersPublisher(
+            contextProvider: sharedServices.get(by: CoreDataService.self),
+            userID: user.userID
+        )
+
         let incomingDefaultService = user.incomingDefaultService
 
         let unblockSender = UnblockSender(
@@ -133,8 +138,8 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
 
         let viewModel = BlockedSendersViewModel(
             dependencies: .init(
+                blockedSendersPublisher: blockedSendersPublisher,
                 cacheUpdater: user.blockedSenderCacheUpdater,
-                incomingDefaultService: incomingDefaultService,
                 unblockSender: unblockSender
             )
         )
@@ -150,7 +155,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
 
     private func openSettingDetail<T: SettingDetailsViewModel>(ofType viewModelType: T.Type) {
         let sdvc = SettingDetailViewController(nibName: nil, bundle: nil)
-        sdvc.setViewModel(viewModelType.init(user: user))
+        sdvc.setViewModel(viewModelType.init(user: user, coreKeyMaker: sharedServices.get()))
         self.navigationController?.show(sdvc, sender: nil)
     }
 
@@ -189,7 +194,10 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     func openSearchContent() {
         guard let navController = navigationController else { return }
         let router = SettingsEncryptedSearchRouter(navigationController: navController)
-        let viewModel = SettingsEncryptedSearchViewModel(router: router, dependencies: .init())
+        let viewModel = SettingsEncryptedSearchViewModel(
+            router: router,
+            dependencies: .init(userID: user.userID)
+        )
         let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
         navController.pushViewController(viewController, animated: true)
     }
@@ -197,7 +205,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     func openLocalStorage() {
         guard let navController = navigationController else { return }
         let router = SettingsLocalStorageRouter(navigationController: navController)
-        let viewModel = SettingsLocalStorageViewModel(router: router, dependencies: .init())
+        let viewModel = SettingsLocalStorageViewModel(router: router, dependencies: .init(userID: user.userID))
         let viewController = SettingsLocalStorageViewController(viewModel: viewModel)
         navController.pushViewController(viewController, animated: true)
     }
@@ -235,7 +243,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case .sessionForkingError(let errorMessage):
             message = errorMessage
         case .cannotDeleteYourself(let reason):
-            message = reason.networkResponseMessageForTheUser
+            message = reason.localizedDescription
         case .deletionFailure(let errorMessage):
             message = errorMessage
         case .closedByUser:

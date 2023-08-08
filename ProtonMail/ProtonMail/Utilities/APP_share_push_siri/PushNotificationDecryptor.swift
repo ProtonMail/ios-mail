@@ -25,7 +25,7 @@ import Foundation
 /// Since push notifications are not stored in iOS internals for long, we do not care about these properties safety.
 /// They are used for encryption of data-in-the-air and are changed at least per session.
 /// On the other hand, they should be available to all of our extensions even when the app is locked.
-class PushNotificationDecryptor {
+final class PushNotificationDecryptor {
 
     enum Key {
         static let encryptionKit     = "pushNotificationEncryptionKit"
@@ -40,20 +40,12 @@ class PushNotificationDecryptor {
     func encryptionKit(forSession uid: String) -> EncryptionKit? {
         guard let allSettings = Self.saver.get(),
             let settings = allSettings.first(where: { $0.UID == uid}) else {
-            SystemLogger.log(message: "encryption kit not found", redactedInfo: "uid: \(uid)", category: .encryption, isError: true)
+            let errorMessage = "encryption kit not found, uid: \(uid.redacted)"
+            SystemLogger.log(message: errorMessage, category: .encryption, isError: true)
             return nil
         }
 
         return settings.encryptionKit
-    }
-
-    func markEncryptionKitForUnsubscribing(forSession uid: String) {
-        guard let deviceToken = Self.deviceTokenSaver.get() else { return }
-        let settings = PushSubscriptionSettings(token: deviceToken, UID: uid)
-
-        var outdated = Self.outdater.get() ?? []
-        outdated.insert(settings)
-        Self.outdater.set(newValue: outdated)
     }
 
     func wipeEncryptionKit() {

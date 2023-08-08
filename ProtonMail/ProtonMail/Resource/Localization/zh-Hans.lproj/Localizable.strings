@@ -123,6 +123,9 @@
    menu title */
 "All Mail" = "所有邮件";
 
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "退出账户后所有防护设置都将被清除。";
+
 /* The status text of message history in downloaded messages if all messages are downloaded */
 "All your messages are downloaded" = "所有的邮件已下载";
 
@@ -163,13 +166,13 @@
 "API Server not reachable…" = "API 服务器无法访问...";
 
 /* security title in settings */
-"App PIN" = "App PIN码";
+"App PIN" = "应用口令";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN码 & Face ID";
+"App PIN & Face ID" = "应用口令与 Face ID";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN码 & Touch ID";
+"App PIN & Touch ID" = "应用口令与 Touch ID";
 
 /* section title in settings */
 "App settings" = "应用设置";
@@ -226,7 +229,7 @@
 "At least one email address in the group could not be found." = "群组中部分邮箱地址未找到。";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "部分收件人的电子邮件地址格式不正确，请重新检查。";
+"At least one recipient email address is improperly formatted, please double check them." = "部分收件人的邮箱地址格式不正确，请重新检查。";
 
 /* incorrect email format error while sending */
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "部分收件人的邮箱地址/域名不存在或格式不正确，因此邮件已被存为草稿。";
@@ -288,6 +291,9 @@
 /* contacts talbe cell Birthday title */
 "Birthday" = "生日";
 
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "屏蔽";
+
 /* Settings row */
 "Block email tracking" = "阻止电子邮件追踪";
 
@@ -297,14 +303,14 @@
 /* Button to block a sender */
 "Block sender" = "屏蔽发件人";
 
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "已屏蔽的发件人";
+
 /* Spotlight explanation of the feature */
 "Blocks senders from seeing if and when you opened the message" = "阻止发件人查看您是否以及何时打开过邮件。";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "会话模式能帮助您轻松应对各方的往来邮件。";
-
-/* Title */
-"Bug Description" = "问题描述";
 
 /* Title */
 "Bug Report Received" = "反馈已收到";
@@ -391,7 +397,7 @@
 "Change Password" = "更改密码";
 
 /* The title of change PIN code option in security settings */
-"Change PIN code" = "更改 PIN 码";
+"Change PIN code" = "更改口令";
 
 /* Title */
 "Change sender address to…" = "将发件人地址改为…";
@@ -417,7 +423,7 @@
 "Clear" = "清除";
 
 /* cell title in device setting */
-"Clear local cache" = "清除本地缓存";
+"Clear local cache" = "清除本机缓存";
 
 /* Menu action to remove text formatting */
 "Clear Style" = "清除格式";
@@ -526,6 +532,9 @@
 /* Alert title */
 "Creating label not allowed" = "未能创建标签";
 
+/* Change language title */
+"Current Language: " = "当前语言：";
+
 /* Placeholder */
 "Current password" = "当前密码";
 
@@ -579,7 +588,7 @@
 "Default browser" = "默认浏览器";
 
 /* Placeholder */
-"Define Hint (Optional)" = "密码提示（选填）";
+"Define Hint (Optional)" = "密码提示（非必填）";
 
 /* general delete action
    The title of the delete action in action sheet
@@ -700,6 +709,9 @@
 /* The text when metadata indexing is in progress. */
 "Downloading metadata ..." = "正在下载元数据...";
 
+/* The text to download new message when search index is refreshed. */
+"Downloading new messages..." = "正在下载新邮件...";
+
 /* The footer of encrypted search in settings */
 "Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "下载邮件以便搜索邮件内容。所有邮件均已加密且仅保存在此设备上。%1$@";
 
@@ -814,16 +826,19 @@
 "Enter" = "进入";
 
 /* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "请输入 4-21 个字符的 PIN 码。";
+"Enter a PIN code with min 4 characters and max 21 characters." = "请输入 4 至 21 个字符的口令，用于打开应用时验证身份。";
 
 /* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "输入新 PIN 码";
+"Enter new PIN code" = "输入新口令";
+
+/* The title of the pin code view. */
+"Enter PIN" = "输入口令";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "请输入您的密码以进行更改";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "输入 PIN 码解锁收件箱。";
+"Enter your PIN to unlock your inbox." = "输入口令即可解锁邮箱。";
 
 /* No comment provided by engineer. */
 "Enter your signature here" = "请在此处输入您的签名";
@@ -915,6 +930,9 @@
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "Go to settings" = "前往设置";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "转至登录界面";
+
 /* Got it action */
 "Got it" = "知道了";
 
@@ -983,7 +1001,7 @@
 "Inbox" = "收件箱";
 
 /* Error */
-"Incorrect PIN." = "PIN 码不正确。";
+"Incorrect PIN." = "口令不正确。";
 
 /* The foot of downloaded messages in local storage settings */
 "Information about how much storage space this Proton Mail account is using on your device." = "关于此 Proton Mail 账户在你的设备上使用多少存储空间的信息。";
@@ -1000,6 +1018,9 @@
 /* place holder */
 "Input Display Name…" = "输入您的称呼…";
 
+/* place holder */
+"Input Notification Email…" = "输入通知邮箱…";
+
 /* Cert pinning failed alert title */
 "Insecure connection" = "连接不安全";
 
@@ -1014,6 +1035,9 @@
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Proton 界面现已焕然一新。\n服务繁多，使命不变。欢迎进入隐私优先的互联网。";
+
+/* The error message is shown in composer */
+"Invalid email address" = "无效的邮件地址";
 
 /* update password error */
 "Invalid hashed password!" = "哈希密码无效!";
@@ -1088,7 +1112,7 @@
 "Loading…" = "加载中...";
 
 /* The title of local storage in settings */
-"Local storage" = "本地储存";
+"Local storage" = "本机存储空间";
 
 /* cell title in device settings */
 "Local storage limit" = "本机存储限制";
@@ -1126,6 +1150,9 @@
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "标为未读";
+
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "以后再说";
 
 /* menu title */
 "Menu" = "菜单";
@@ -1237,6 +1264,9 @@
 /* Contacts add new contact */
 "New contact" = "新建联系人";
 
+/* No comment provided by engineer. */
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "今后来自 %@ 的邮件将被直接删除，不再收取。已屏蔽的邮箱可以在设置中管理。";
+
 /* The title of create folder page */
 "New folder" = "新建文件夹";
 
@@ -1275,6 +1305,9 @@
 
 /* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
 "No attachment found" = "未找到附件";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "尚未屏蔽任何发件人";
 
 /* Title */
 "No connectivity detected…" = "未检测到网络连接…";
@@ -1446,10 +1479,10 @@
 "Phone number" = "电话号码";
 
 /* The protection title of PIN code protection */
-"PIN code" = "PIN 码";
+"PIN code" = "口令";
 
 /* Description */
-"PIN code can't be empty." = "PIN 码不能为空。";
+"PIN code can't be empty." = "口令不能为空。";
 
 /* The error message of entering a long pin */
 "PIN is too long" = "口令太长";
@@ -1486,6 +1519,9 @@
 
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "请说明您的问题。";
+
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "请先登录 Proton Mail 账户。";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "请开通付费账户以使用 3 个以上文件夹";
@@ -1583,7 +1619,7 @@
 
 /* The title of PIN code setup2 view
    The title of textfield of PIN code setup2 */
-"Repeat PIN code" = "确认 PIN 码";
+"Repeat PIN code" = "确认口令";
 
 /* reply action */
 "Reply" = "回复";
@@ -1684,8 +1720,8 @@
 /* Action */
 "Send anyway" = "仍然发送";
 
-/* Title of menu action to trigger feedback viewTitle of button to send feedback */
-"Send feedback" = "发送反馈";
+/* Title of button to send feedback */
+"Send feedback" = "评价应用";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
 "Send immediately" = "立即发送";
@@ -1698,6 +1734,15 @@
 
 /* Title of the banner which is displayed when sender of the message requests a read receipt */
 "Send read receipt" = "发送回执";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "发件人 %@ 已被屏蔽";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "发件人 %@ 已取消屏蔽";
+
+/* Banner in the message view */
+"Sender has been blocked" = "发件人已在屏蔽名单中";
 
 /* encryption lock description */
 "Sender Verification Failed" = "发件人验证失败";
@@ -1754,7 +1799,7 @@
 "Set Password" = "设置密码";
 
 /* The title of PIN code setup1 view */
-"Set PIN code" = "设置 PIN 码";
+"Set PIN code" = "设置口令";
 
 /* No comment provided by engineer. */
 "Set up swipe gestures to access most used actions." = "设置滑动手势来执行常用操作。";
@@ -1777,6 +1822,9 @@
 /* The button title of the conversation notice view shown in the conversation view. */
 "Show me" = "展开";
 
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "重新登录即可继续接收邮件提醒";
+
 /* Alert title to confirm signout
    menu title */
 "Sign out" = "退出";
@@ -1792,6 +1840,9 @@
 
 /* Alert when auth token is revoked and switch to another */
 "Signed out from %@ and signed in with %@" = "已从 %1$@ 退出 并以 %2$@ 登录";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "%@ 账户已退出登录";
 
 /* skip button title in onboarding page */
 "Skip" = "跳过";
@@ -1861,7 +1912,7 @@
 
 /* menu title
    The title of a subscription plans screen */
-"Subscription" = "订购";
+"Subscription" = "账户等级";
 
 /* cell title in app settings */
 "Swipe actions" = "滑动操作";
@@ -1933,7 +1984,7 @@
 "The password must be between 8 and 21 characters long" = "密码长度必须介于 8 到 21 个字符之间";
 
 /* The error message of entering an invalid password */
-"The PIN codes must match!" = "两次输入的 PIN 码必须一致！";
+"The PIN codes must match!" = "两次输入的口令必须一致！";
 
 /* update password error */
 "The private key update failed." = "私钥更新失败。";
@@ -1953,6 +2004,9 @@
 /* Unsupported url alert message */
 "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "您即将打开非标准 URL，可能无法正常加载。确定要用默认的浏览器打开吗？";
 
+/* Alert when the account is already logged in */
+"The user is already signed in" = "该用户已登录";
+
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "仍有未发送的邮件，现在退出邮件将丢失";
 
@@ -1969,6 +2023,12 @@
 "This conversation contains trashed messages" = "此会话包含废弃的邮件";
 
 /* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。";
+
+/* spam score warning */
 "This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "这封邮件看似来自 Proton Mail 地址，但却是从我们的系统外部发来的，并且没能通过我们的验证。这可能是欺诈邮件，也可能是投递过程出现了问题。";
 
 /* Description for undo send */
@@ -1981,7 +2041,7 @@
 "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "此链接指向的网站可能会窃取您的密码、信用卡等信息。\n%@\n\n出于安全考虑，请不要打开此链接。";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "此邮件已取消定时发送。如果仍需稍后发送， 可以再次点击“定时发送”。";
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "此邮件已取消定时发送。如果仍需稍后发送，可以再次点击“定时发送”。";
 
 /* spam score warning */
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "此邮件可能具有欺诈性质，请检查发件人身份和邮件内容，确认信息真实性。";
@@ -2057,6 +2117,9 @@
 /* ISP problem description */
 "Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "尝试更换网络后再连接 Proton（或使用 %1$@ 或 %2$@）。";
 
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "开启后您登录的所有账户通讯录中的邮箱地址都可自动补全。";
+
 /* Placeholder */
 "Two Factor Code" = "双重验证码";
 
@@ -2074,6 +2137,12 @@
 
 /* error when sending the message */
 "Unable to send the email" = "无法发送电子邮件";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "解除屏蔽";
+
+/* Button to unblock a sender */
+"Unblock sender" = "取消屏蔽发件人";
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "非公开收件人";
@@ -2128,6 +2197,9 @@
 
 /* update notification email error title */
 "Update Notification Email" = "更改通知邮箱";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "正在等待网络连接完成更新...";
 
 /* The title of last update status of more than 1 hour */
 "Updated >1 hour ago" = "更新于 >1 小时前";
@@ -2249,9 +2321,6 @@
 /* pm.me upgrade warning in composer */
 "You can't set %@ address as default because it is a paid feature." = "您需要付费才能将 %@ 设为首选地址。";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %@ in your system settings. %@ has been used to protect important account information. To access your account, go to settings and reactivate %@, or log back in." = "您已在系统设置中关闭 %@。此账户已受 %@ 保护，请前往系统设置开启 %@ 或重新登录。";
-
 /* Message */
 "You have %d new emails!" = "您收到了 %d 封新邮件！";
 
@@ -2312,9 +2381,16 @@
 /* The status text of message history in downloaded messages if indexbuilding is in progress. */
 "Your messages are being downloaded..." = "正在为您下载邮件...";
 
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "如果您的联系人也加入 Proton Mail，您的隐私将得到更好的保护。不妨邀请好友注册 Proton，您与好友都能免费体验高级账户权益。";
+
 /* Description */
 "Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "您的账户因长时间未操作已自动退出，或已被其他设备下线。请重新登录。";
 
 /* contact placeholder */
 "ZIP" = "邮编";
 
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "您在系统设置中关闭了 %1$@，但您的账户信息已受到 %2$@ 保护。请在系统设置中再次开启 %3$@ 或重新登录解锁账户。";
+
+"Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

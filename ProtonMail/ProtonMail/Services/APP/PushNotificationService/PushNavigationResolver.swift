@@ -36,7 +36,7 @@ struct PushNavigationResolver {
                 handleOpenUrlRemoteNotification(url: content?.data.url, completion: completion)
             case .none:
                 let type = content?.type ?? "nil"
-                logPushNotificationError(message: "Unrecognized remote notification type.", redactedInfo: type)
+                logPushNotificationError(message: "Unrecognized remote notification type: \(type)")
                 completion(nil)
             }
         }
@@ -51,7 +51,7 @@ private extension PushNavigationResolver {
             return nil
         }
         guard let encryptionKit = dependencies.subscriptionsPack.encryptionKit(forUID: receiverId) else {
-            logPushNotificationError(message: "No encryption kit found.", redactedInfo: "uid: \(receiverId)")
+            logPushNotificationError(message: "No encryption kit found.")
             return nil
         }
         let decryptionKey = DecryptionKey(
@@ -65,7 +65,7 @@ private extension PushNavigationResolver {
             )
             return try PushContent(json: plaintext)
         } catch {
-            logPushNotificationError(message: "Fail decrypting message.", redactedInfo: String(describing: error))
+            logPushNotificationError(message: "Fail decrypting message. Error: \(String(describing: error))")
             return nil
         }
     }
@@ -108,7 +108,10 @@ private extension PushNavigationResolver {
             completion(link)
         case .failedToSend:
             let link = DeepLink(MenuCoordinator.Setup.switchUserFromNotification.rawValue, sender: uid)
-            link.append(.init(name: String(describing: MailboxViewController.self), value: Message.Location.draft.rawValue))
+            link.append(.init(
+                name: String(describing: MailboxViewController.self),
+                value: Message.Location.draft.rawValue
+            ))
             completion(link)
         case .none:
             logPushNotificationError(message: "Unrecognized local notification")
@@ -116,8 +119,8 @@ private extension PushNavigationResolver {
         }
     }
 
-    private func logPushNotificationError(message: String, redactedInfo: String? = nil) {
-        SystemLogger.log(message: message, redactedInfo: redactedInfo, category: .pushNotification, isError: true)
+    private func logPushNotificationError(message: String) {
+        SystemLogger.log(message: message, category: .pushNotification, isError: true)
     }
 }
 

@@ -20,11 +20,25 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import class ProtonCore_DataModel.UserInfo
+import ProtonCore_TroubleShooting
 import ProtonMailAnalytics
 import SideMenuSwift
-import class ProtonCore_DataModel.UserInfo
 
-class MailboxCoordinator: CoordinatorDismissalObserver {
+// sourcery: mock
+protocol MailboxCoordinatorProtocol: AnyObject {
+    var pendingActionAfterDismissal: (() -> Void)? { get set }
+    var conversationCoordinator: ConversationCoordinator? { get }
+    var singleMessageCoordinator: SingleMessageCoordinator? { get }
+
+    func go(to dest: MailboxCoordinator.Destination, sender: Any?)
+    func presentToolbarCustomizationView(
+        allActions: [MessageViewActionSheetAction],
+        currentActions: [MessageViewActionSheetAction]
+    )
+}
+
+class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserver {
     let viewModel: MailboxViewModel
     var services: ServiceFactory
     private let contextProvider: CoreDataContextProviderProtocol
@@ -38,6 +52,10 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
     private(set) var conversationCoordinator: ConversationCoordinator?
     private let getApplicationState: () -> UIApplication.State
     let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
+    private var timeOfLastNavigationToMessageDetails: Date?
+
+    private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
+    private let composeViewModelFactory: ComposeViewModelDependenciesFactory
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
@@ -60,6 +78,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
         self.internetStatusProvider = internetStatusProvider
         self.getApplicationState = getApplicationState
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
+        self.composeViewModelFactory = services.makeComposeViewModelDependenciesFactory()
     }
 
     enum Destination: String {
@@ -71,10 +90,10 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
         case details = "SingleMessageViewController"
         case onboardingForNew = "to_onboardingForNew_segue"
         case onboardingForUpdate = "to_onboardingForUpdate_segue"
-        case humanCheck = "toHumanCheckView"
         case troubleShoot = "toTroubleShootSegue"
         case newFolder = "toNewFolder"
         case newLabel = "toNewLabel"
+        case referAFriend = "referAFriend"
 
         init?(rawValue: String) {
             switch rawValue {
@@ -94,12 +113,12 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
                 self = .onboardingForNew
             case "to_onboardingForUpdate_segue":
                 self = .onboardingForUpdate
-            case "toHumanCheckView":
-                self = .humanCheck
             case "toTroubleShootSegue":
                 self = .troubleShoot
             case "composeScheduledMessage":
                 self = .composeScheduledMessage
+            case "referAFriend":
+                self = .referAFriend
             default:
                 return nil
             }
@@ -147,8 +166,8 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
             presentTroubleShootView()
         case .search:
             presentSearch()
-        case .humanCheck:
-            presentCaptcha()
+        case .referAFriend:
+            presentReferAFriend()
         }
     }
 
@@ -159,50 +178,43 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
         case .details:
             handleDetailDirectFromNotification(node: path)
             viewModel.resetNotificationMessage()
-        case .composeShow where path.value != nil:
-            if let messageID = path.value,
-               let nav = self.navigation,
-               case let user = self.viewModel.user,
-               case let msgService = user.messageService,
-               let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
-                let viewModel = ComposeViewModel(
-                    msg: message,
-                    action: .openDraft,
-                    msgService: msgService,
-                    user: user,
-                    coreDataContextProvider: contextProvider,
-                    internetStatusProvider: internetStatusProvider
-                )
-
-                showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
-            }
-        case .composeShow where path.value == nil:
+        case .composeShow:
             if let nav = self.navigation {
                 let user = self.viewModel.user
+
+                let existingMessage: Message?
+                if let messageID = path.value {
+                    existingMessage = user.messageService.fetchMessages(
+                        withIDs: [messageID],
+                        in: contextProvider.mainContext
+                    ).first
+                } else {
+                    existingMessage = nil
+                }
+
                 let viewModel = ComposeViewModel(
-                    msg: nil,
-                    action: .newDraft,
+                    msg: existingMessage,
+                    action: existingMessage == nil ? .newDraft : .openDraft,
                     msgService: user.messageService,
                     user: user,
-                    coreDataContextProvider: contextProvider,
-                    internetStatusProvider: internetStatusProvider
+                    dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
                 )
-                showComposer(viewModel: viewModel, navigationVC: nav, deepLink: deeplink)
+                showComposer(viewModel: viewModel, navigationVC: nav)
             }
         case .composeMailto where path.value != nil:
             followToComposeMailTo(path: path.value, deeplink: deeplink)
         case .composeScheduledMessage where path.value != nil:
             guard let messageID = path.value,
-                  let originalScheduledTime = path.states?["originalScheduledTime"] as? Date else {
+                  // TODO: do we need this check?
+                  path.states?["originalScheduledTime"] as? Date != nil else {
                 return
             }
-            if case let user = self.viewModel.user,
-               case let msgService = user.messageService,
-               let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
+            let user = self.viewModel.user
+            let msgService = user.messageService
+            if let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
                 navigateToComposer(
                     existingMessage: message,
-                    isEditingScheduleMsg: true,
-                    originalScheduledTime: .init(rawValue: originalScheduledTime)
+                    isEditingScheduleMsg: true
                 )
             }
         default:
@@ -212,9 +224,7 @@ class MailboxCoordinator: CoordinatorDismissalObserver {
 }
 
 extension MailboxCoordinator {
-    private func showComposer(viewModel: ComposeViewModel,
-                              navigationVC: UINavigationController,
-                              deepLink: DeepLink) {
+    private func showComposer(viewModel: ComposeViewModel, navigationVC: UINavigationController) {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: contextProvider,
@@ -251,10 +261,7 @@ extension MailboxCoordinator {
 
     private func navigateToComposer(
         existingMessage: Message?,
-        isEditingScheduleMsg: Bool = false,
-        isOpenedFromShare: Bool = false,
-        originalScheduledTime: OriginalScheduleDate? = nil
-    ) {
+        isEditingScheduleMsg: Bool = false) {
         guard let navigationVC = navigation else {
             return
         }
@@ -266,24 +273,28 @@ extension MailboxCoordinator {
             isEditingScheduleMsg: isEditingScheduleMsg,
             userIntroductionProgressProvider: userCachedStatus,
             scheduleSendEnableStatusProvider: userCachedStatus,
-            internetStatusProvider: internetStatusProvider
+            internetStatusProvider: internetStatusProvider,
+            coreKeyMaker: services.get()
         )
         navigationVC.present(composer, animated: true)
     }
 
     private func presentSearch() {
         let coreDataService = services.get(by: CoreDataService.self)
+        // TODO: get shared ES service.
+        let esService = EncryptedSearchService()
         let viewModel = SearchViewModel(
+            serviceFactory: services,
             user: viewModel.user,
             coreDataContextProvider: coreDataService,
             internetStatusProvider: services.get(),
             dependencies: .init(
+                coreKeyMaker: services.get(),
                 fetchMessageDetail: FetchMessageDetail(
                     dependencies: .init(
                         queueManager: services.get(by: QueueManager.self),
                         apiService: viewModel.user.apiService,
                         contextProvider: coreDataService,
-                        messageDataAction: viewModel.user.messageService,
                         cacheService: viewModel.user.cacheService
                     )
                 ),
@@ -298,23 +309,43 @@ extension MailboxCoordinator {
                         senderImageStatusProvider: userCachedStatus,
                         mailSettings: viewModel.user.mailSettings
                     )
+                ), messageSearch: MessageSearch(
+                    dependencies: .init(
+                        isESEnable: UserInfo.isEncryptedSearchEnabled,
+                        esDefaultCache: EncryptedSearchUserDefaultCache(),
+                        userID: viewModel.user.userID,
+                        backendSearch: BackendSearch(
+                            dependencies: .init(
+                                apiService: viewModel.user.apiService,
+                                contextProvider: coreDataService,
+                                userID: viewModel.user.userID
+                            )
+                        ),
+                        encryptedSearch: EncryptedSearch(
+                            dependencies: .init(
+                                encryptedSearchService: esService,
+                                contextProvider: coreDataService,
+                                userID: viewModel.user.userID,
+                                fetchMessageMetaData: FetchMessageMetaData(
+                                    params: .init(userID: viewModel.user.userID.rawValue),
+                                    dependencies: .init(
+                                        messageDataService: viewModel.user.messageService,
+                                        contextProvider: coreDataService
+                                    )
+                                ),
+                                messageDataService: viewModel.user.messageService
+                            )
+                        ), esStateProvider: esService
+                    )
                 )
             )
         )
-        let viewController = SearchViewController(viewModel: viewModel)
+        let viewController = SearchViewController(viewModel: viewModel, serviceFactory: services)
         viewModel.uiDelegate = viewController
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalTransitionStyle = .coverVertical
         navigationController.modalPresentationStyle = .fullScreen
         self.viewController?.present(navigationController, animated: true)
-    }
-
-    private func presentCaptcha() {
-        let next = MailboxCaptchaViewController()
-        let user = self.viewModel.user
-        next.viewModel = CaptchaViewModelImpl(api: user.apiService)
-        next.delegate = self.viewController
-        self.viewController?.present(next, animated: true)
     }
 
     func fetchConversationFromBEIfNeeded(conversationID: ConversationID, goToDetailPage: @escaping () -> Void) {
@@ -341,7 +372,7 @@ extension MailboxCoordinator {
     private func followToComposeMailTo(path: String?, deeplink: DeepLink) {
         if let msgID = path,
            let existingMsg = Message.messageForMessageID(msgID, inManagedObjectContext: contextProvider.mainContext) {
-            navigateToComposer(existingMessage: existingMsg, isOpenedFromShare: true)
+            navigateToComposer(existingMessage: existingMsg)
             return
         }
 
@@ -358,6 +389,7 @@ extension MailboxCoordinator {
                 userIntroductionProgressProvider: userCachedStatus,
                 scheduleSendEnableStatusProvider: userCachedStatus,
                 internetStatusProvider: internetStatusProvider,
+                coreKeyMaker: services.get(),
                 mailToUrl: mailToURL
             )
             nav.present(composer, animated: true)
@@ -365,9 +397,9 @@ extension MailboxCoordinator {
     }
 
     private func presentTroubleShootView() {
-        let view = NetworkTroubleShootViewController(viewModel: NetworkTroubleShootViewModel())
-        let nav = UINavigationController(rootViewController: view)
-        self.viewController?.present(nav, animated: true, completion: nil)
+        if let viewController = viewController {
+            troubleShootingHelper.showTroubleShooting(over: viewController)
+        }
     }
 
     func presentToolbarCustomizationView(
@@ -404,7 +436,10 @@ extension MailboxCoordinator {
         guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {
             return
         }
-        navigateToComposer(existingMessage: msg, isEditingScheduleMsg: true, originalScheduledTime: originalScheduledTime)
+        navigateToComposer(
+            existingMessage: msg,
+            isEditingScheduleMsg: true
+        )
     }
 }
 
@@ -433,8 +468,17 @@ extension MailboxCoordinator {
     }
 
     private func handleDetailDirectFromNotification(node: DeepLink.Node) {
+        if
+            let timeOfLastNavigationToMessageDetails,
+            Date().timeIntervalSince(timeOfLastNavigationToMessageDetails) < 3
+        {
+            return
+        }
+
+        timeOfLastNavigationToMessageDetails = Date()
+
         resetNavigationViewControllersIfNeeded()
-        presentMessagePlaceholder()
+        presentMessagePlaceholderIfNeeded()
 
         messageToShow(isNotification: true, node: node) { [weak self] message in
             guard let self = self,
@@ -451,8 +495,6 @@ extension MailboxCoordinator {
                 } else {
                     self.present(message: message)
                 }
-                let folderID = message.firstValidFolder()
-                self.switchFolderIfNeeded(folderID: folderID?.rawValue)
             case .conversation:
                 self.conversationToShow(isNotification: true, message: message) { [weak self] conversation in
                     guard let conversation = conversation else {
@@ -460,13 +502,12 @@ extension MailboxCoordinator {
                         L11n.Error.cant_open_message.alertToastBottom()
                         return
                     }
+
                     if UserInfo.isConversationSwipeEnabled {
                         self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
                     } else {
                         self?.present(conversation: conversation, targetID: messageID)
                     }
-                    let folderID = message.firstValidFolder()
-                    self?.switchFolderIfNeeded(folderID: folderID?.rawValue)
                 }
             }
         }
@@ -530,15 +571,12 @@ extension MailboxCoordinator {
             completion(nil)
             return
         }
-
-        viewModel.user.messageService.fetchNotificationMessageDetail(MessageID(messageID)) { [weak self] _ in
-            guard let self = self else { return }
-            if let message = Message.messageForMessageID(
-                messageID,
-                inManagedObjectContext: self.contextProvider.mainContext
-            ) {
-                completion(MessageEntity(message))
-            } else {
+        viewModel.user.messageService.fetchNotificationMessageDetail(MessageID(messageID)) { result in
+            switch result {
+            case .success(let message):
+                completion(message)
+            case .failure(let error):
+                SystemLogger.log(message: "\(error)", isError: true)
                 completion(nil)
             }
         }
@@ -547,6 +585,7 @@ extension MailboxCoordinator {
     private func present(message: MessageEntity) {
         guard let navigationController = viewController?.navigationController else { return }
         let coordinator = SingleMessageCoordinator(
+            serviceFactory: services,
             navigationController: navigationController,
             labelId: viewModel.labelID,
             message: message,
@@ -570,7 +609,8 @@ extension MailboxCoordinator {
             internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
             infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             contextProvider: contextProvider,
-            targetID: targetID
+            targetID: targetID,
+            serviceFactory: services
         )
         conversationCoordinator = coordinator
         coordinator.goToDraft = { [weak self] msgID, originalScheduledTime in
@@ -580,7 +620,6 @@ extension MailboxCoordinator {
     }
 
     private func presentPageViewsFor(message: MessageEntity) {
-        guard let navigationController = viewController?.navigationController else { return }
         let pageVM = MessagePagesViewModel(
             initialID: message.messageID,
             isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
@@ -596,7 +635,6 @@ extension MailboxCoordinator {
     }
 
     private func presentPageViewsFor(conversation: ConversationEntity, targetID: MessageID?) {
-        guard let navigationController = viewController?.navigationController else { return }
         let pageVM = ConversationPagesViewModel(
             initialID: conversation.conversationID,
             isUnread: viewController?.isShowingUnreadMessageOnly ?? false,
@@ -615,26 +653,31 @@ extension MailboxCoordinator {
     private func presentPageViews<T, U, V>(pageVM: PagesViewModel<T, U, V>) {
         guard let navigationController = viewController?.navigationController else { return }
         var viewControllers = navigationController.viewControllers
-        if viewControllers.last is MessagePlaceholderVC {
-            _ = viewControllers.removeLast()
-        }
+        // if a placeholder VC is there, it has been presented with a push animation; avoid doing a 2nd one
+        let animated = !(viewControllers.last is MessagePlaceholderVC)
+        viewControllers.removeAll { !($0 is MailboxViewController) }
         let page = PagesViewController(viewModel: pageVM, services: services)
         viewControllers.append(page)
-        navigationController.setViewControllers(viewControllers, animated: true)
+        navigationController.setViewControllers(viewControllers, animated: animated)
     }
 
-    private func presentMessagePlaceholder() {
-        guard let navigationController = viewController?.navigationController else { return }
+    private func presentMessagePlaceholderIfNeeded() {
+        guard let navigationController = viewController?.navigationController,
+              !navigationController.viewControllers.contains(where: { $0 is MessagePlaceholderVC }) else { return }
         let placeholder = MessagePlaceholderVC()
         navigationController.pushViewController(placeholder, animated: true)
     }
 
-    private func switchFolderIfNeeded(folderID: String?) {
-        // Wait 1 second for navigation.viewControllers update
-        delay(1) {
-            let link = DeepLink(MenuCoordinator.Setup.switchInboxFolder.rawValue, sender: folderID)
-            NotificationCenter.default.post(name: .switchView, object: link)
+    private func presentReferAFriend() {
+        guard let referralLink = viewController?.viewModel.user.userInfo.referralProgram?.link else {
+            return
         }
+        let view = ReferralShareViewController(
+            referralLink: referralLink
+        )
+        let navigation = UINavigationController(rootViewController: view)
+        navigation.modalPresentationStyle = .fullScreen
+        viewController?.present(navigation, animated: true)
     }
 
     private func resetNavigationViewControllersIfNeeded() {

@@ -22,7 +22,7 @@
 
 @testable import ProtonMail
 
-class CacheStatusStub: CacheStatusInject {
+class CacheStatusStub: LockCacheStatus {
     var isPinCodeEnabled: Bool {
         return isPinCodeEnabledStub
     }

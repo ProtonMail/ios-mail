@@ -77,8 +77,7 @@ final class MessageInfoProvider {
 
     private let contactService: ContactDataService
     private let contactGroupService: ContactGroupsDataService
-    private let messageDecrypter: MessageDecrypterProtocol
-    private let messageService: MessageDataService
+    private let messageDecrypter: MessageDecrypter
     private let userAddressUpdater: UserAddressUpdaterProtocol
     private let systemUpTime: SystemUpTimeProtocol
     private let user: UserManager
@@ -86,7 +85,7 @@ final class MessageInfoProvider {
     private weak var delegate: MessageInfoProviderDelegate?
     private var pgpChecker: MessageSenderPGPChecker?
     private let dependencies: Dependencies
-
+    private var highlightedKeywords: [String]
     private var shouldApplyImageProxy: Bool {
         let messageNotSentByUs = !message.isSent
         let remoteContentAllowed = remoteContentPolicy == .allowed
@@ -95,12 +94,13 @@ final class MessageInfoProvider {
 
     init(
         message: MessageEntity,
-        messageDecrypter: MessageDecrypterProtocol? = nil,
+        messageDecrypter: MessageDecrypter? = nil,
         user: UserManager,
         systemUpTime: SystemUpTimeProtocol,
         labelID: LabelID,
-        shouldOpenHistory: Bool = false,
-        dependencies: Dependencies
+        dependencies: Dependencies,
+        highlightedKeywords: [String],
+        shouldOpenHistory: Bool = false
     ) {
         self.message = message
         let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
@@ -109,8 +109,7 @@ final class MessageInfoProvider {
         self.user = user
         self.contactService = user.contactService
         self.contactGroupService = user.contactGroupService
-        self.messageService = user.messageService
-        self.messageDecrypter = messageDecrypter ?? messageService.messageDecrypter
+        self.messageDecrypter = messageDecrypter ?? user.messageService.messageDecrypter
 
         // If the message is sent by us, we do not use the image proxy to load the content.
         let imageProxyEnabled = UserInfo.isImageProxyAvailable &&
@@ -124,6 +123,7 @@ final class MessageInfoProvider {
         self.systemUpTime = systemUpTime
         self.labelID = labelID
         self.dependencies = dependencies
+        self.highlightedKeywords = highlightedKeywords
 
         if shouldOpenHistory {
             displayMode = .expanded
@@ -141,20 +141,21 @@ final class MessageInfoProvider {
         self.checkSenderPGP()
     }
 
-    lazy var senderName: String = {
+    lazy var senderName: NSAttributedString = {
         let sender: Sender
 
         do {
             sender = try message.parseSender()
         } catch {
             assertionFailure("\(error)")
-            return ""
+            return .init(string: "")
         }
 
         guard let contactName = contactService.getName(of: sender.address) else {
-            return sender.name.isEmpty ? sender.address : sender.name
+            let name = sender.name.isEmpty ? sender.address : sender.name
+            return name.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
         }
-        return contactName
+        return contactName.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
     }()
 
     private(set) var checkedSenderContact: CheckedSenderContact? {
@@ -163,15 +164,15 @@ final class MessageInfoProvider {
         }
     }
 
-    var initials: String { senderName.initials() }
+    var initials: String { senderName.string.initials() }
 
-    var senderEmail: String {
+    var senderEmail: NSAttributedString {
         do {
             let sender = try message.parseSender()
-            return sender.address
+            return sender.address.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
         } catch {
             assertionFailure("\(error)")
-            return ""
+            return .init(string: "")
         }
     }
 
@@ -234,7 +235,7 @@ final class MessageInfoProvider {
         contactService.allContactVOs()
     }
 
-    var simpleRecipient: String? {
+    var simpleRecipient: NSAttributedString? {
         let lists = ContactPickerModelHelper.contacts(from: message.rawCCList)
         + ContactPickerModelHelper.contacts(from: message.rawBCCList)
         + ContactPickerModelHelper.contacts(from: message.rawTOList)
@@ -243,7 +244,7 @@ final class MessageInfoProvider {
         let result = groupNames + receiver
         let name = result.isEmpty ? "" : result.asCommaSeparatedList(trailingSpace: true)
         let recipients = name.isEmpty ? LocalString._undisclosed_recipients : name
-        return recipients
+        return recipients.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
     }
 
     lazy var toData: ExpandedHeaderRecipientsRowViewModel? = {
@@ -410,12 +411,10 @@ extension MessageInfoProvider {
             return
         }
         remoteContentPolicy = policy
-        prepareDisplayBody()
     }
 
     func reloadImagesWithoutProtection() {
         remoteContentPolicy = .allowedAll
-        prepareDisplayBody()
 	}
 
     func fetchSenderImageIfNeeded(
@@ -455,7 +454,7 @@ extension MessageInfoProvider {
                 let groupName = recipient.contactTitle
                 let group = groupContacts.first(where: { $0.contactTitle == groupName })
                 let total = group?.contactCount ?? 0
-                let count = recipient.contactCount
+                let count = recipient.getSelectedEmailAddresses().count
                 let name = "\(groupName) (\(count)/\(total))"
                 return name
             }
@@ -494,8 +493,8 @@ extension MessageInfoProvider {
             let name = nameFromContact.isEmpty ? email : nameFromContact
             let contact = ContactVO(name: name, email: recipient.email)
             return ExpandedHeaderRecipientRowViewModel(
-                name: name,
-                address: emailToDisplay,
+                name: name.keywordHighlighting.asAttributedString(keywords: highlightedKeywords),
+                address: emailToDisplay.keywordHighlighting.asAttributedString(keywords: highlightedKeywords),
                 contact: contact
             )
         }
@@ -518,7 +517,8 @@ extension MessageInfoProvider {
 
             self.checkBannerStatus(decryptedBody)
 
-            guard self.embeddedContentPolicy == .allowed else {
+            guard self.embeddedContentPolicy == .allowed,
+                  !(self.inlineAttachments ?? []).isEmpty else {
                 self.updateWebContents()
                 return
             }
@@ -527,7 +527,10 @@ extension MessageInfoProvider {
                 // If embedded images haven't prepared
                 // Display content first
                 // Reload view after preparing
-                self.updateWebContents()
+                // If embedded images are cached, doesn't need to show blank content
+                if self.needsToDownloadEmbeddedImage() {
+                    self.updateWebContents()
+                }
                 self.downloadEmbedImage(self.message)
                 return
             }
@@ -599,6 +602,9 @@ extension MessageInfoProvider {
     }
 
     private func updateBodyParts(with newBody: String) {
+        guard newBody != bodyParts?.originalBody else {
+            return
+        }
         bodyParts = BodyParts(originalBody: newBody)
     }
 
@@ -626,9 +632,9 @@ extension MessageInfoProvider {
             contentLoadingType = .none
         }
 
-        let css = bodyParts?.darkModeCSS(body: body)
+        let css = bodyParts?.darkModeCSS()
         contents = WebContents(
-            body: body,
+            body: body.keywordHighlighting.usingCSS(keywords: highlightedKeywords),
             remoteContentMode: remoteContentPolicy,
             messageDisplayMode: displayMode,
             contentLoadingType: contentLoadingType,
@@ -721,6 +727,22 @@ extension MessageInfoProvider {
             self.updateBodyParts(with: updatedBody)
             self.updateWebContents()
         }
+    }
+
+    private func needsToDownloadEmbeddedImage() -> Bool {
+        guard let inlines = inlineAttachments,
+              !inlines.isEmpty else {
+            return false
+        }
+        var needsDownload = false
+        for inline in inlines {
+            let path = FileManager.default.attachmentDirectory.appendingPathComponent(inline.id.rawValue)
+            if !FileManager.default.fileExists(atPath: path.relativePath) {
+                needsDownload = true
+                break
+            }
+        }
+        return needsDownload
     }
 
     private func checkBannerStatus(_ bodyToCheck: String) {

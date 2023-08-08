@@ -1,3 +1,6 @@
 [submodule "DOMPurify"]
 	path = DOMPurify
 	url = https://github.com/cure53/DOMPurify
+[submodule "ProtonMail/ProtonMailUITests/TestData"]
+	path = ProtonMail/ProtonMailUITests/TestData
+	url = testdata-repo:tpe/TestData.git

@@ -2,6 +2,42 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%1$d conversation moved to %2$@</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%1$d conversations moved to %2$@</string>
+			<key>one</key>
+			<string>%1$d conversation moved to %2$@</string>
+			<key>other</key>
+			<string>%1$d conversations moved to %2$@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+	</dict>
+	<key>%1$d message moved to %2$@</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>few</key>
+			<string>%1$d messages moved to %2$@</string>
+			<key>one</key>
+			<string>%1$d message moved to %2$@</string>
+			<key>other</key>
+			<string>%1$d messages moved to %2$@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@</string>
+	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -15,7 +51,7 @@
 			<key>few</key>
 			<string>%d minute</string>
 			<key>one</key>
-			<string>Un minut</string>
+			<string>%d minut</string>
 			<key>other</key>
 			<string>%d de minute</string>
 		</dict>
@@ -33,7 +69,7 @@
 			<key>few</key>
 			<string>%d selectate</string>
 			<key>one</key>
-			<string>Unul selectat</string>
+			<string>%d selectat</string>
 			<key>other</key>
 			<string>%d selectate</string>
 		</dict>
@@ -51,7 +87,7 @@
 			<key>few</key>
 			<string>%d fișiere atașate</string>
 			<key>one</key>
-			<string>un fișier atașat</string>
+			<string>%d fișier atașat</string>
 			<key>other</key>
 			<string>%d de fișiere atașate</string>
 		</dict>
@@ -67,7 +103,7 @@
 			<key>few</key>
 			<string>Au mai rămas %d încercări</string>
 			<key>one</key>
-			<string>A mai rămas o încercare</string>
+			<string>Încercări rămase: %d</string>
 			<key>other</key>
 			<string>Au mai rămas %d de încercări</string>
 		</dict>
@@ -85,7 +121,7 @@
 			<key>few</key>
 			<string>Au mai rămas %d încercări până la ștergerea definitivă a datelor!</string>
 			<key>one</key>
-			<string>A mai rămas o încercare până la ștergerea definitivă a datelor!</string>
+			<string>Încercări rămase până la ștergerea definitivă a datelor: %d!</string>
 			<key>other</key>
 			<string>Au mai rămas %d de încercări până la ștergerea definitivă a datelor!</string>
 		</dict>
@@ -103,27 +139,9 @@
 			<key>few</key>
 			<string>%d conversații au fost etichetate.</string>
 			<key>one</key>
-			<string>Conversația a fost etichetată.</string>
+			<string>%d conversație a fost etichetată.</string>
 			<key>other</key>
 			<string>%d de conversații au fost etichetate.</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@</string>
-	</dict>
-	<key>%d conversation moved to %@</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d conversații au fost mutate în «%@».</string>
-			<key>one</key>
-			<string>%d conversație a fost mutată în «%@».</string>
-			<key>other</key>
-			<string>%d de conversații au fost mutate în «%@».</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -139,7 +157,7 @@
 			<key>few</key>
 			<string>%d zile</string>
 			<key>one</key>
-			<string>O zi</string>
+			<string>%d zi</string>
 			<key>other</key>
 			<string>%d de zile</string>
 		</dict>
@@ -159,7 +177,7 @@
 			<key>few</key>
 			<string>Au fost blocate %d funcții de monitorizare din e-mail.</string>
 			<key>one</key>
-			<string>A fost blocată o funcție de monitorizare din e-mail.</string>
+			<string>A fost blocată %d funcție de monitorizare din e-mail.</string>
 			<key>other</key>
 			<string>Au fost blocate %d de funcții de monitorizare din e-mail.</string>
 		</dict>
@@ -177,7 +195,7 @@
 			<key>few</key>
 			<string>S-au găsit %d funcții de monitorizare în e-mail.</string>
 			<key>one</key>
-			<string>S-a găsit o funcție de monitorizare în e-mail.</string>
+			<string>S-a găsit %d funcție de monitorizare în e-mail.</string>
 			<key>other</key>
 			<string>S-au găsit %d de funcții de monitorizare în e-mail.</string>
 			<key>zero</key>
@@ -195,7 +213,7 @@
 			<key>few</key>
 			<string>%d ore</string>
 			<key>one</key>
-			<string>O oră</string>
+			<string>%d oră</string>
 			<key>other</key>
 			<string>%d de ore</string>
 		</dict>
@@ -231,30 +249,12 @@
 			<key>few</key>
 			<string>S-au etichetat %d mesaje.</string>
 			<key>one</key>
-			<string>Mesajul a fost etichetat.</string>
+			<string>%d mesaj a fost etichetat.</string>
 			<key>other</key>
 			<string>S-au etichetat %d de mesaje.</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
-	</dict>
-	<key>%d message moved to %@</key>
-	<dict>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>S-au mutat %d mesaje în «%@».</string>
-			<key>one</key>
-			<string>Mesajul a fost mutat în «%2$@».</string>
-			<key>other</key>
-			<string>S-au mutat %d de mesaje în «%@».</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
@@ -269,7 +269,7 @@
 			<key>few</key>
 			<string>S-au mutat %d mesaje în «Ciorne».</string>
 			<key>one</key>
-			<string>Mesajul a fost mutat în «Ciorne».</string>
+			<string>%d mesaj a fost mutat în «Ciorne».</string>
 			<key>other</key>
 			<string>S-au mutat %d de mesaje în «Ciorne».</string>
 		</dict>
@@ -305,7 +305,7 @@
 			<key>few</key>
 			<string>%d secunde</string>
 			<key>one</key>
-			<string>o secundă</string>
+			<string>%d secundă</string>
 			<key>other</key>
 			<string>%d de secunde</string>
 		</dict>
@@ -375,11 +375,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Sigur doriți să ștergeți definitiv aceste %d conversații?</string>
+			<string>Sigur doriți să ștergeți definitiv %d conversații?</string>
 			<key>one</key>
-			<string>Sigur doriți să ștergeți definitiv această conversație?</string>
+			<string>Sigur doriți să ștergeți definitiv %d conversație?</string>
 			<key>other</key>
-			<string>Sigur doriți să ștergeți definitiv aceste %d de conversații?</string>
+			<string>Sigur doriți să ștergeți definitiv %d de conversații?</string>
 		</dict>
 	</dict>
 	<key>Are you sure you want to permanently delete %d message?</key>
@@ -393,11 +393,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Sigur doriți să ștergeți definitiv aceste %d mesaje?</string>
+			<string>Sigur doriți să ștergeți definitiv %d mesaje?</string>
 			<key>one</key>
-			<string>Sigur doriți să ștergeți definitiv acest mesaj?</string>
+			<string>Sigur doriți să ștergeți definitiv %d mesaj?</string>
 			<key>other</key>
-			<string>Sigur doriți să ștergeți definitiv aceste %d de mesaje?</string>
+			<string>Sigur doriți să ștergeți definitiv %d de mesaje?</string>
 		</dict>
 	</dict>
 	<key>In %d minutes</key>
@@ -413,7 +413,7 @@
 			<key>few</key>
 			<string>Peste %d minute</string>
 			<key>one</key>
-			<string>Peste un minut</string>
+			<string>Peste %d minut</string>
 			<key>other</key>
 			<string>Peste %d de minute</string>
 			<key>zero</key>
@@ -431,11 +431,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>few</key>
-			<string>Proton a găsit și blocat %d funcții de monitorizare în acest mesaj.</string>
+			<string>Funcții de monitorizare găsite și blocate în acest mesaj: %d.</string>
 			<key>one</key>
-			<string>Proton a găsit și blocat o funcție de monitorizare în acest mesaj.</string>
+			<string>Funcții de monitorizare găsite și blocate în acest mesaj: %d.</string>
 			<key>other</key>
-			<string>Proton a găsit și blocat %d de funcții de monitorizare în acest mesaj.</string>
+			<string>Funcții de monitorizare găsite și blocate în acest mesaj: %d.</string>
 			<key>zero</key>
 			<string>Proton did not find any trackers on this message.</string>
 		</dict>
@@ -453,7 +453,7 @@
 			<key>few</key>
 			<string>Aceste %d mesaje se vor muta în «Ciorne» și li se va elimina programarea.</string>
 			<key>one</key>
-			<string>Acest mesaj se va muta în «Ciorne» și i se va elimina programarea.</string>
+			<string>Se va muta în «Ciorne» %d mesaj și i se va elimina programarea.</string>
 			<key>other</key>
 			<string>Aceste %d de mesaje se vor muta în «Ciorne» și li se va elimina programarea.</string>
 		</dict>
@@ -469,7 +469,7 @@
 			<key>few</key>
 			<string>Actualizat în urmă cu %d minute</string>
 			<key>one</key>
-			<string>Actualizat în urmă cu un minut</string>
+			<string>Actualizat în urmă cu %d minut</string>
 			<key>other</key>
 			<string>Actualizat în urmă cu %d de minute</string>
 		</dict>

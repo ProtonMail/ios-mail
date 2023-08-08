@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
-import CoreData
 import Groot
 @testable import ProtonMail
 import ProtonCore_TestingToolkit
@@ -29,7 +28,6 @@ class MailboxViewModelTests: XCTestCase {
     var sut: MailboxViewModel!
     var apiServiceMock: APIServiceMock!
     var coreDataService: CoreDataService!
-    var humanCheckStatusProviderMock: HumanCheckStatusProviderProtocol!
     var userManagerMock: UserManager!
     var conversationStateProviderMock: MockConversationStateProviderProtocol!
     var contactGroupProviderMock: MockContactGroupsProviderProtocol!
@@ -81,9 +79,9 @@ class MailboxViewModelTests: XCTestCase {
                                       userInfo: stubUserInfo,
                                       authCredential: fakeAuth,
                                       mailSettings: nil,
-                                      parent: nil)
+                                      parent: nil,
+                                      coreKeyMaker: MockKeyMakerProtocol())
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
-        humanCheckStatusProviderMock = MockHumanCheckStatusProvider()
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
         labelProviderMock = MockLabelProviderProtocol()
@@ -146,7 +144,6 @@ class MailboxViewModelTests: XCTestCase {
         contactProviderMock = nil
         coreDataService = nil
         eventsServiceMock = nil
-        humanCheckStatusProviderMock = nil
         userManagerMock = nil
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
@@ -291,23 +288,6 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssertEqual(sut.locationViewMode, .singleMessage)
         conversationStateProviderMock.viewModeStub.fixture = .conversation
         XCTAssertEqual(sut.locationViewMode, .conversation)
-    }
-
-    func testGetIsRequiredHumanCheck() {
-        humanCheckStatusProviderMock.isRequiredHumanCheck = false
-        XCTAssertFalse(sut.isRequiredHumanCheck)
-
-        humanCheckStatusProviderMock.isRequiredHumanCheck = true
-        XCTAssertTrue(sut.isRequiredHumanCheck)
-    }
-
-    func testSetIsRequiredHumanCheck() {
-        humanCheckStatusProviderMock.isRequiredHumanCheck = false
-        sut.isRequiredHumanCheck = true
-        XCTAssertTrue(humanCheckStatusProviderMock.isRequiredHumanCheck)
-
-        sut.isRequiredHumanCheck = false
-        XCTAssertFalse(humanCheckStatusProviderMock.isRequiredHumanCheck)
     }
 
     func testGetIsCurrentUserSelectedUnreadFilterInInbox() {
@@ -521,15 +501,13 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetCustomFolders() {
-        let testData = Label(context: testContext)
-        testData.labelID = "1"
-        testData.name = "name1"
+        let testData = LabelEntity.make(labelID: "1", name: "name1")
         labelProviderMock.getCustomFoldersStub.bodyIs { _ in
-            [testData].map(LabelEntity.init(label:))
+            [testData]
         }
         createSut(labelID: "1", labelType: .folder, isCustom: false, labelName: nil)
 
-        XCTAssertEqual(sut.customFolders, [LabelEntity(label: testData)])
+        XCTAssertEqual(sut.customFolders, [testData])
     }
 
     func testFetchContacts() {
@@ -569,17 +547,53 @@ class MailboxViewModelTests: XCTestCase {
 
     func testMarkConversationAsRead() {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
-        createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
+        testContext.performAndWait {
+            _ = Conversation(
+                from: ConversationEntity.make(
+                    conversationID: "1",
+                    userID: userManagerMock.userID,
+                    contextLabelRelations: [
+                        .make(
+                            unreadCount: 0,
+                            conversationID: "1",
+                            labelID: "0",
+                            userID: userManagerMock.userID
+                        )
+                    ]
+                ),
+                context: testContext
+            )
+            _ = Conversation(
+                from: ConversationEntity.make(
+                    conversationID: "2",
+                    userID: userManagerMock.userID,
+                    contextLabelRelations: [
+                        .make(
+                            unreadCount: 1,
+                            conversationID: "2",
+                            labelID: "0",
+                            userID: userManagerMock.userID
+                        )
+                    ]
+                ),
+                context: testContext
+            )
+            try? testContext.save()
+        }
+        createSut(labelID: "0", labelType: .folder, isCustom: false, labelName: nil)
+        sut.setupFetchController(nil)
 
         let expectation1 = expectation(description: "Closure called")
         let ids = Set<String>(["1", "2"])
+        sut.select(id: "1")
+        sut.select(id: "2")
         sut.mark(IDs: ids, unread: false) {
             XCTAssertTrue(self.conversationProviderMock.markAsReadStub.wasCalledExactlyOnce)
             let argument = self.conversationProviderMock.markAsReadStub.lastArguments
             XCTAssertNotNil(argument)
-            XCTAssertTrue(argument?.first.contains("1") ?? false)
+            XCTAssertFalse(argument?.first.contains("1") ?? false)
             XCTAssertTrue(argument?.first.contains("2") ?? false)
-            XCTAssertEqual(argument?.a2, "1245")
+            XCTAssertEqual(argument?.a2, "0")
 
             XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
             XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -590,17 +604,53 @@ class MailboxViewModelTests: XCTestCase {
 
     func testMarkConversationAsUnread() {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
-        createSut(labelID: "1245", labelType: .folder, isCustom: false, labelName: nil)
+        testContext.performAndWait {
+            _ = Conversation(
+                from: ConversationEntity.make(
+                    conversationID: "1",
+                    userID: userManagerMock.userID,
+                    contextLabelRelations: [
+                        .make(
+                            unreadCount: 0,
+                            conversationID: "1",
+                            labelID: "0",
+                            userID: userManagerMock.userID
+                        )
+                    ]
+                ),
+                context: testContext
+            )
+            _ = Conversation(
+                from: ConversationEntity.make(
+                    conversationID: "2",
+                    userID: userManagerMock.userID,
+                    contextLabelRelations: [
+                        .make(
+                            unreadCount: 1,
+                            conversationID: "2",
+                            labelID: "0",
+                            userID: userManagerMock.userID
+                        )
+                    ]
+                ),
+                context: testContext
+            )
+            try? testContext.save()
+        }
+        createSut(labelID: "0", labelType: .folder, isCustom: false, labelName: nil)
+        sut.setupFetchController(nil)
 
         let expectation1 = expectation(description: "Closure called")
         let ids = Set<String>(["1", "2"])
+        sut.select(id: "1")
+        sut.select(id: "2")
         sut.mark(IDs: ids, unread: true) {
             XCTAssertTrue(self.conversationProviderMock.markAsUnreadStub.wasCalledExactlyOnce)
             let argument = self.conversationProviderMock.markAsUnreadStub.lastArguments
             XCTAssertNotNil(argument)
             XCTAssertTrue(argument?.first.contains("1") ?? false)
-            XCTAssertTrue(argument?.first.contains("2") ?? false)
-            XCTAssertEqual(argument?.a2, "1245")
+            XCTAssertFalse(argument?.first.contains("2") ?? false)
+            XCTAssertEqual(argument?.a2, "0")
 
             XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
             XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -697,10 +747,8 @@ class MailboxViewModelTests: XCTestCase {
                                       notify: false)
         // select the folder to move
         sut.updateSelectedMoveToDestination(menuLabel: labelToMoveTo, isOn: true)
-        let conversationObject = Conversation(context: testContext)
-        conversationObject.conversationID = "1"
         let expectation1 = expectation(description: "Closure called")
-        let conversationToMove = ConversationEntity(conversationObject)
+        let conversationToMove = ConversationEntity.make(conversationID: "1")
 
         sut.handleMoveToAction(conversations: [conversationToMove], isFromSwipeAction: false) {
             XCTAssertTrue(self.conversationProviderMock.moveStub.wasCalledExactlyOnce)
@@ -723,10 +771,8 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testHandleConversationMoveToAction_withNoDestination() {
-        let conversationObject = Conversation(context: testContext)
-        conversationObject.conversationID = "1"
         let expectation1 = expectation(description: "Closure called")
-        let conversationToMove = ConversationEntity(conversationObject)
+        let conversationToMove = ConversationEntity.make(conversationID: "1")
 
         XCTAssertNil(self.sut.selectedMoveToFolder)
         sut.handleMoveToAction(conversations: [conversationToMove], isFromSwipeAction: false) {
@@ -748,13 +794,11 @@ class MailboxViewModelTests: XCTestCase {
                                       order: 0,
                                       notify: false)
         let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
-        let conversationObject = Conversation(context: testContext)
-        conversationObject.conversationID = "1234"
         let label = LabelLocation(id: "label1", name: nil)
         // select label1
         sut.selectedLabelAsLabels.insert(label)
         let expectation1 = expectation(description: "Closure called")
-        let conversationToAddLabel = ConversationEntity(conversationObject)
+        let conversationToAddLabel = ConversationEntity.make(conversationID: "1234")
 
         sut.handleLabelAsAction(conversations: [conversationToAddLabel],
                                 shouldArchive: true,
@@ -1136,6 +1180,63 @@ class MailboxViewModelTests: XCTestCase {
         let params = try XCTUnwrap(mockFetchMessageDetail.params)
         XCTAssertFalse(params.ignoreDownloaded)
     }
+
+    func testMarkAsUnRead_selectOneReadAndOneUnreadMessage_onlyReadMessageIsMarkAsUnread() {
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        let readMsgIds = String.randomString(10)
+        let unreadMsgIds = String.randomString(10)
+        testContext.performAndWait {
+            let msg = MessageEntity.make(
+                messageID: .init(readMsgIds),
+                userID: userManagerMock.userID,
+                unRead: false,
+                labels: [LabelEntity.make(labelID: .init("0"))]
+            )
+            _ = Message(from: msg, context: testContext)
+
+            let unreadMsg = MessageEntity.make(
+                messageID: .init(unreadMsgIds),
+                userID: userManagerMock.userID,
+                unRead: true,
+                labels: [LabelEntity.make(labelID: .init("0"))]
+            )
+            _ = Message(from: unreadMsg, context: testContext)
+
+            try? testContext.save()
+        }
+        createSut(labelID: Message.Location.inbox.rawValue,
+                  labelType: .folder,
+                  isCustom: false,
+                  labelName: nil)
+        sut.setupFetchController(nil)
+        sut.select(id: readMsgIds)
+        sut.select(id: unreadMsgIds)
+        let e = expectation(description: "Closure is called")
+
+
+        XCTAssertEqual(sut.selectedIDs.count, 2)
+        XCTAssertEqual(sut.selectedConversations.count, 0)
+        XCTAssertEqual(sut.selectedMessages.count, 2)
+        sut.mark(IDs: .init([readMsgIds, unreadMsgIds]), unread: true) {
+            e.fulfill()
+        }
+        waitForExpectations(timeout: 1)
+
+        // Check if the message is updated
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            let msg = Message.messageForMessageID(
+                readMsgIds,
+                inManagedObjectContext: context
+            )
+            XCTAssertTrue(msg?.unRead ?? false)
+
+            let msg2 = Message.messageForMessageID(
+                unreadMsgIds,
+                inManagedObjectContext: context
+            )
+            XCTAssertTrue(msg2?.unRead ?? false)
+        }
+    }
 }
 
 extension MailboxViewModelTests {
@@ -1191,8 +1292,7 @@ extension MailboxViewModelTests {
                                userManager: userManagerMock,
                                pushService: MockPushNotificationService(),
                                coreDataContextProvider: coreDataService,
-                               lastUpdatedStore: MockLastUpdatedStore(),
-                               humanCheckStatusProvider: humanCheckStatusProviderMock,
+                               lastUpdatedStore: MockLastUpdatedStoreProtocol(),
                                conversationStateProvider: conversationStateProviderMock,
                                contactGroupProvider: contactGroupProviderMock,
                                labelProvider: labelProviderMock,
@@ -1203,7 +1303,6 @@ extension MailboxViewModelTests {
                                welcomeCarrouselCache: welcomeCarrouselCache,
                                toolbarActionProvider: toolbarActionProviderMock,
                                saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                               senderImageService: .init(dependencies: .init(apiService: userManagerMock.apiService, internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
                                totalUserCountClosure: {
             return totalUserCount
         })

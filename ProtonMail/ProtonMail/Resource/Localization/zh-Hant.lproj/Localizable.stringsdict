@@ -2,6 +2,34 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>%1$d conversation moved to %2$@</key>
+	<dict>
+		<key>Conversation</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%1$d conversations moved to %2$@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Conversation@</string>
+	</dict>
+	<key>%1$d message moved to %2$@</key>
+	<dict>
+		<key>MSG</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>other</key>
+			<string>%1$d messages moved to %2$@</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@MSG@</string>
+	</dict>
 	<key>%d Minutes</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -82,20 +110,6 @@
 			<string>u</string>
 			<key>other</key>
 			<string>%d 則對話已上標籤</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@</string>
-	</dict>
-	<key>%d conversation moved to %@</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>other</key>
-			<string>%d 則對話已移至 %@</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
@@ -185,20 +199,6 @@
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Message@</string>
-	</dict>
-	<key>%d message moved to %@</key>
-	<dict>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>other</key>
-			<string>%d 則訊息已移至 %@</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@</string>
 	</dict>
 	<key>%d message moved to Drafts</key>
 	<dict>
