@@ -16,4 +16,14 @@ struct ConversationMessageModel {
     let isScheduled: Bool
     let isSent: Bool
     let isExpirationFrozen: Bool
+
+    var isAutoDeletingMessage: Bool {
+        if (messageLocation == .trash || messageLocation == .spam )
+            && expirationTag != nil
+            && !isExpirationFrozen {
+            return true
+        } else {
+            return false
+        }
+    }
 }

@@ -80,17 +80,10 @@ class ConversationMessageCellPresenter {
     private func presentOrigin(model: ConversationMessageModel, in view: ConversationMessageView) {
         view.originImageView.isHidden = model.messageLocation == nil && model.isCustomFolderLocation == false
 
-        let isAutoDeletingMessage: Bool
-        if (model.messageLocation == .trash || model.messageLocation == .spam )
-            && model.expirationTag != nil
-            && !model.isExpirationFrozen {
-            isAutoDeletingMessage = true
-        } else {
-            isAutoDeletingMessage = false
-        }
         let originImage = model.isCustomFolderLocation ?
         IconProvider.folder :
-        model.messageLocation?.originImage(viewMode: .conversation, isAutoDeletingMessage: isAutoDeletingMessage)
+        model.messageLocation?.originImage(viewMode: .conversation,
+                                           isAutoDeletingMessage: model.isAutoDeletingMessage)
         view.originImageView.image = originImage
         view.originImageView.tintColor = model.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
     }
