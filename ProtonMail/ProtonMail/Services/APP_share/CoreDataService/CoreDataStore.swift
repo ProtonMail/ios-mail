@@ -23,6 +23,7 @@
 import Foundation
 import CoreData
 import ProtonMailAnalytics
+import UIKit
 
 /// Provide the local store for core data.
 final class CoreDataStore {
@@ -50,13 +51,18 @@ final class CoreDataStore {
     }()
 
     static func deleteDataStore() {
+        let dataProtectionStatus = establishDataProtectionStatus()
+
         do {
             try FileManager.default.removeItem(at: databaseUrl)
             try FileManager.default.removeItem(at: databaseShmUrl)
             try FileManager.default.removeItem(at: databaseWalUrl)
             SystemLogger.log(message: "Data store deleted", category: .coreData)
         } catch {
-            reportPersistentContainerError(message: "Error deleting data store: \(String(describing: error))")
+            reportPersistentContainerError(
+                message: "Error deleting data store: \(String(describing: error))",
+                dataProtectionStatus: dataProtectionStatus
+            )
         }
     }
 
@@ -83,10 +89,16 @@ final class CoreDataStore {
         description.shouldInferMappingModelAutomatically = true
 
         container.persistentStoreDescriptions = [description]
+
+        let dataProtectionStatus = Self.establishDataProtectionStatus()
+
         container.loadPersistentStores { (persistentStoreDescription, error) in
             if let error = error {
                 let err = String(describing: error)
-                CoreDataStore.reportPersistentContainerError(message: "Error loading persistent store: \(err)")
+                CoreDataStore.reportPersistentContainerError(
+                    message: "Error loading persistent store: \(err)",
+                    dataProtectionStatus: dataProtectionStatus
+                )
                 CoreDataStore.deleteDataStore()
                 userCachedStatus.signOut()
                 userCachedStatus.cleanGlobal()
@@ -100,9 +112,17 @@ final class CoreDataStore {
         return container
     }
 
-    private static func reportPersistentContainerError(message: String) {
+    private static func establishDataProtectionStatus() -> String {
+#if APP_EXTENSION
+        return "n/a (extension)"
+#else
+        return UIApplication.shared.isProtectedDataAvailable ? "on": "off"
+#endif
+    }
+
+    private static func reportPersistentContainerError(message: String, dataProtectionStatus: String) {
         SystemLogger.log(message: message, category: .coreData, isError: true)
-        Analytics.shared.sendError(.coreDataInitialisation(error: message))
+        Analytics.shared.sendError(.coreDataInitialisation(error: message, dataProtectionStatus: dataProtectionStatus))
     }
 }
 
