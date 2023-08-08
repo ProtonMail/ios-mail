@@ -113,7 +113,7 @@ extension AutoDeleteInfoHeaderView {
     class SubviewsFactory {
         static var trashIconImageView: UIView {
             let imageView = UIImageView()
-            imageView.image = Asset.trashIconClock.image
+            imageView.image = IconProvider.trashClock
             imageView.tintColor = ColorProvider.IconNorm
             return imageView
         }
