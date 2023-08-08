@@ -867,7 +867,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         case APIErrorCode.API_offline:
             showOfflineErrorMessage(error)
         case APIErrorCode.HTTP503, NSURLErrorBadServerResponse:
-            show503ErrorMessage()
+            showTimeOutOrProtonUnreachableBanner()
         case APIErrorCode.forcePasswordChange:
             showErrorMessage(error)
         default:
@@ -2016,10 +2016,6 @@ extension MailboxViewController {
         showRetryBanner(message: error.localizedDescription)
     }
 
-    private func show503ErrorMessage() {
-        showRetryBanner(message: LocalString._general_api_server_not_reachable)
-    }
-
     private func showRetryBanner(message: String) {
         guard UIApplication.shared.applicationState == .active else {
             return
@@ -2060,6 +2056,17 @@ extension MailboxViewController {
         self.newMessageCount = 0
         let message = count == 1 ? LocalString._messages_you_have_new_email : String(format: LocalString._messages_you_have_new_emails_with, count)
         message.alertToastBottom()
+    }
+
+    private func showTimeOutOrProtonUnreachableBanner() {
+        viewModel.isProtonUnreachable { [weak self] isProtonUnreachable in
+            guard let self else { return }
+            if isProtonUnreachable {
+                PMBanner.showProtonUnreachable(on: self)
+            } else {
+                self.showTimeOutErrorMessage()
+            }
+        }
     }
 }
 

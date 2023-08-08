@@ -788,6 +788,21 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
             self.dependencies.encryptedSearchService.initializeServiceStateIfNeeded()
         }
     }
+
+    func isProtonUnreachable(completion: @escaping (Bool) -> Void) {
+        guard
+            dependencies.featureFlagCache.isFeatureFlag(.protonUnreachableBanner, enabledForUserWithID: user.userID)
+        else {
+            completion(false)
+            return
+        }
+        Task { [weak self] in
+            let status = await self?.dependencies.checkProtonServerStatus.execute()
+            await MainActor.run {
+                completion(status == .serverDown)
+            }
+        }
+    }
 }
 
 // MARK: - Data fetching methods
@@ -1135,6 +1150,26 @@ extension MailboxViewModel {
         let fetchMessageDetail: FetchMessageDetailUseCase
         let fetchSenderImage: FetchSenderImageUseCase
         let encryptedSearchService: EncryptedSearchServiceProtocol
+        let checkProtonServerStatus: CheckProtonServerStatusUseCase
+        let featureFlagCache: FeatureFlagCache
+
+        init(
+            fetchMessages: FetchMessagesUseCase,
+            updateMailbox: UpdateMailboxUseCase,
+            fetchMessageDetail: FetchMessageDetailUseCase,
+            fetchSenderImage: FetchSenderImageUseCase,
+            encryptedSearchService: EncryptedSearchServiceProtocol = EncryptedSearchService.shared,
+            checkProtonServerStatus: CheckProtonServerStatusUseCase = CheckProtonServerStatus(),
+            featureFlagCache: FeatureFlagCache = sharedServices.get(by: UserCachedStatus.self)
+        ) {
+            self.fetchMessages = fetchMessages
+            self.updateMailbox = updateMailbox
+            self.fetchMessageDetail = fetchMessageDetail
+            self.fetchSenderImage = fetchSenderImage
+            self.encryptedSearchService = encryptedSearchService
+            self.checkProtonServerStatus = checkProtonServerStatus
+            self.featureFlagCache = featureFlagCache
+        }
     }
 }
 

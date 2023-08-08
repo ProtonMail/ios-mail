@@ -259,7 +259,7 @@ extension EventsService {
                         return
                     }
                     if let eventError = eventsRes.error {
-                        completion?(.failure(eventError.toNSError))
+                        completion?(.failure(eventError))
                     } else {
                         completion?(.success(["Notices": eventsRes.notices ?? [String](), "More": eventsRes.more]))
                     }

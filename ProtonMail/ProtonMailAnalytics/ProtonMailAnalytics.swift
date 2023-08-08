@@ -45,7 +45,13 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     public func track(event: MailAnalyticsEvent, trace: String?) {
         guard isEnabled else { return }
         let eventToSend = Sentry.Event(level: .info)
-        eventToSend.message = SentryMessage(formatted: "\(event.name) - \(event.description)")
+        let formattedMessage: String
+        if let description = event.description {
+            formattedMessage = "\(event.name) - \(description)"
+        } else {
+            formattedMessage = "\(event.name)"
+        }
+        eventToSend.message = SentryMessage(formatted: formattedMessage)
         // From the Sentry dashboard it is not possible to query using the `extra` field.
         eventToSend.extra = combinedExtra(extraInfo: nil, trace: trace)
         SentrySDK.capture(event: eventToSend)
@@ -90,6 +96,9 @@ public enum MailAnalyticsEvent {
 
     /// The user session has been terminated and the user has to authenticate again
     case userKickedOut(reason: UserKickedOutReason)
+
+    /// A message saying Proton is unreachable has been shown
+    case protonUnreachableBannerShown
 }
 
 extension MailAnalyticsEvent: Equatable {
@@ -106,14 +115,18 @@ private extension MailAnalyticsEvent {
         switch self {
         case .userKickedOut:
             message = "User kicked out"
+        case .protonUnreachableBannerShown:
+            message = "Proton unreachable banner shown"
         }
         return message
     }
 
-    var description: String {
+    var description: String? {
         switch self {
         case .userKickedOut(let reason):
             return "reason: \(reason.description)"
+        case .protonUnreachableBannerShown:
+            return nil
         }
     }
 }

@@ -361,6 +361,8 @@ class LocalizedString {
     lazy var _general_draft_action = NSLocalizedString("Draft", comment: "Action")
     /// "The request timed out."
     lazy var _general_request_timed_out = NSLocalizedString("The request timed out.", comment: "Title")
+    /// "Proton servers are not reachable"
+    lazy var _general_proton_unreachable = NSLocalizedString("Proton servers are unreachable.\nVisit our status page for details.", comment: "Message")
     /// "No connectivity detected…"
     lazy var _general_no_connectivity_detected = NSLocalizedString("No connectivity detected…", comment: "Title")
     /// "The Proton Mail current offline…"

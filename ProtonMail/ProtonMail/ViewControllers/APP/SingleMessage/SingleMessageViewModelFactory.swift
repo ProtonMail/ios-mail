@@ -167,7 +167,9 @@ class SingleMessageComponentsFactory {
             fetchMessageDetail: fetchMessageDetail,
             isSenderBlockedPublisher: isSenderBlockedPublisher,
             messageInfoProvider: messageInfoProvider,
-            unblockSender: unblockSender
+            unblockSender: unblockSender,
+            checkProtonServerStatus: CheckProtonServerStatus(),
+            featureFlagCache: sharedServices.userCachedStatus
         )
     }
 

@@ -299,6 +299,21 @@ class SingleMessageContentViewModel {
               messageInfoProvider.contents?.renderStyle == .dark else { return }
         sendDarkModeMetric(isApply: true)
     }
+
+    func isProtonUnreachable(completion: @escaping (Bool) -> Void) {
+        guard
+            dependencies.featureFlagCache.isFeatureFlag(.protonUnreachableBanner, enabledForUserWithID: user.userID)
+        else {
+            completion(false)
+            return
+        }
+        Task { [weak self] in
+            let status = await self?.dependencies.checkProtonServerStatus.execute()
+            await MainActor.run {
+                completion(status == .serverDown)
+            }
+        }
+    }
 }
 
 extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
@@ -398,5 +413,7 @@ extension SingleMessageContentViewModel {
         let isSenderBlockedPublisher: IsSenderBlockedPublisher
         let messageInfoProvider: MessageInfoProvider
         let unblockSender: UnblockSender
+        let checkProtonServerStatus: CheckProtonServerStatusUseCase
+        let featureFlagCache: FeatureFlagCache
     }
 }

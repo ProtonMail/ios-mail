@@ -1418,6 +1418,11 @@ class MockURLSessionProtocol: URLSessionProtocol {
         dataTaskStub(withRequest, completionHandler)
     }
 
+    @ThrowingFuncStub(MockURLSessionProtocol.data, initialReturn: .crash) var dataStub
+    func data(for request: URLRequest) throws -> (Data, URLResponse) {
+        try dataStub(request)
+    }
+
 }
 
 class MockUnlockManagerDelegate: UnlockManagerDelegate {
