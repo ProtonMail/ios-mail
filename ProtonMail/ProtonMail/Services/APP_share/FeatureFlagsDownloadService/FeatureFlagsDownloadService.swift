@@ -20,6 +20,7 @@ import ProtonCore_Services
 enum FeatureFlagKey: String, CaseIterable {
     case appRating = "RatingIOSMail"
     case sendRefactor = "SendMessageRefactor"
+    case protonUnreachableBanner = "ProtonUnreachableBanner"
     case modernizedCoreData = "ModernizedCoreData"
     case scheduleSend = "ScheduledSendFreemium"
     case senderImage = "ShowSenderImages"

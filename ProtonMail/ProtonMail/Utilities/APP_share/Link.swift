@@ -29,6 +29,7 @@ enum Link {
     static let encryptOutsideInfo = "https://proton.me/support/password-protected-emails"
     static let encryptedSearchInfo = "https://proton.me/support/search-message-content"
     static let promoteInMobilSignature = "https://proton.me/mail/home"
+    static let protonStatusPage = "https://status.proton.me"
 
     enum ReferralProgram {
         static let trackYourRewards = "https://account.proton.me/mail/referral"

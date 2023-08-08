@@ -80,6 +80,7 @@ class FeatureFlag<T>: FeatureFlags {
 class FeatureFlags {
     static let appRating = FeatureFlag<Bool>(code: .appRating, defaultValue: false)
     static let modernizedCoreData = FeatureFlag<Bool>(code: .modernizedCoreData, defaultValue: false)
+    static let protonUnreachableBanner = FeatureFlag<Bool>(code: .protonUnreachableBanner, defaultValue: false)
     static let referralPrompt = FeatureFlag<Bool>(code: .referralPrompt, defaultValue: false)
     static let scheduleSend = FeatureFlag<Bool>(code: .scheduleSend, defaultValue: false)
     static let senderImage = FeatureFlag<Bool>(code: .senderImage, defaultValue: false)

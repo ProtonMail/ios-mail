@@ -70,14 +70,33 @@ class SingleMessageContentViewController: UIViewController {
         view = customView
     }
 
+    private func showErrorOrProtonUnreachableBanner(error: NSError) {
+        if error.httpCode == 503 {
+            viewModel.isProtonUnreachable { [weak self] isProtonUnreachable in
+                guard let self else { return }
+                if isProtonUnreachable {
+                    PMBanner.showProtonUnreachable(on: self)
+                } else {
+                    self.showError(error: error)
+                }
+            }
+        } else {
+            showError(error: error)
+        }
+    }
+
+    private func showError(error: NSError) {
+        showBanner()
+        bannerViewController?.showErrorBanner(error: error)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         viewModel.set(uiDelegate: self)
         viewModel.updateErrorBanner = { [weak self] error in
             if let error = error {
-                self?.showBanner()
-                self?.bannerViewController?.showErrorBanner(error: error)
+                self?.showErrorOrProtonUnreachableBanner(error: error)
             } else {
                 self?.bannerViewController?.hideBanner(type: .error)
             }

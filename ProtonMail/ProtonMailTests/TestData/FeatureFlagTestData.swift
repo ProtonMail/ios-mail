@@ -69,6 +69,14 @@ enum FeatureFlagTestData {
                 "Global": false,
                 "Code": "ReferralActionSheetShouldBePresentedIOS",
                 "DefaultValue" :false
+            ],
+            [
+                "Writable": false,
+                "Type": "boolean",
+                "Value": false,
+                "Global": true,
+                "Code": "ProtonUnreachableBanner",
+                "DefaultValue": false
             ]
         ] as [[String: Any]]
     ]

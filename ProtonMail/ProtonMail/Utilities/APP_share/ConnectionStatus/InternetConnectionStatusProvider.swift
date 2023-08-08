@@ -13,6 +13,8 @@ protocol URLSessionProtocol {
         withRequest: URLRequest,
         completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void
     ) -> URLSessionDataTaskProtocol
+
+    func data(for request: URLRequest) async throws -> (Data, URLResponse)
 }
 extension URLSession: URLSessionProtocol {
     func dataTask(
