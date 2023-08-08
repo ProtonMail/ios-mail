@@ -221,6 +221,56 @@ final class MessageEntityTests: XCTestCase {
         XCTAssertEqual(authResults[2], "mailin010.protonmail.ch; spf=pass")
         XCTAssertEqual(authResults[4], "mailin010.protonmail.ch; dkim=pass")
     }
+
+    func testAutoDeletingMessageShouldBeTrueIfSpamWithExpirationTimeAndWithNonFrozenExpiration() {
+        let location = Message.Location.spam
+        let expirationTime = Date()
+        let isFrozenFalse = Int64.min
+        let sut = MessageEntity.make(rawFlag: isFrozenFalse,
+                                     expirationTime: expirationTime,
+                                     labels: [LabelEntity.make(labelID: location.labelID)])
+        XCTAssertTrue(sut.isAutoDeleting)
+    }
+
+    func testAutoDeletingMessageShouldBeTrueIfTrashWithExpirationTimeAndWithNonFrozenExpiration() {
+        let location = Message.Location.spam
+        let expirationTime = Date()
+        let isFrozenFalse = Int64.min
+        let sut = MessageEntity.make(rawFlag: isFrozenFalse,
+                                     expirationTime: expirationTime,
+                                     labels: [LabelEntity.make(labelID: location.labelID)])
+        XCTAssertTrue(sut.isAutoDeleting)
+    }
+
+    func testAutoDeletingMessageShouldBeFalseIfLocationOtherThanSpamTrash() {
+        let location = Message.Location.inbox
+        let expirationTime = Date()
+        let isFrozenFalse = Int64.min
+        let sut = MessageEntity.make(rawFlag: isFrozenFalse,
+                                     expirationTime: expirationTime,
+                                     labels: [LabelEntity.make(labelID: location.labelID)])
+        XCTAssertFalse(sut.isAutoDeleting)
+    }
+
+    func testAutoDeletingMessageShouldBeFalseIfExpirationTimeIsNil() {
+        let location = Message.Location.spam
+        let expirationTime: Date? = nil
+        let isFrozenFalse = Int64.min
+        let sut = MessageEntity.make(rawFlag: isFrozenFalse,
+                                     expirationTime: expirationTime,
+                                     labels: [LabelEntity.make(labelID: location.labelID)])
+        XCTAssertFalse(sut.isAutoDeleting)
+    }
+
+    func testAutoDeletingMessageShouldBeFalseIfExpirationTimeIsFrozen() {
+        let location = Message.Location.spam
+        let expirationTime = Date()
+        let isFrozenTrue = Int64.max
+        let sut = MessageEntity.make(rawFlag: isFrozenTrue,
+                                     expirationTime: expirationTime,
+                                     labels: [LabelEntity.make(labelID: location.labelID)])
+        XCTAssertFalse(sut.isAutoDeleting)
+    }
 }
 
 // MARK: extend variables tests

@@ -163,8 +163,6 @@ final class BannerViewModel {
     }
 
     func isAutoDeletingMessage() -> Bool {
-        infoProvider?.message.expirationTime != nil
-        && (infoProvider?.message.contains(location: .trash) == true || infoProvider?.message.contains(location: .spam) == true)
-        && infoProvider?.message.flag.contains(.isExpirationTimeFrozen) == false
+        infoProvider?.message.isAutoDeleting == true
     }
 }
