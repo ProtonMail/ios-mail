@@ -25,11 +25,11 @@ final class LockCoordinator: LifetimeTrackable {
 
     var startedOrScheduledForAStart: Bool = false
 
-    weak var viewController: VC?
+    private weak var viewController: VC?
 
     var actualViewController: VC { viewController ?? makeViewController() }
 
-    let finishLockFlow: (FlowResult) -> Void
+    private let finishLockFlow: (FlowResult) -> Void
 
     private let dependencies: Dependencies
 

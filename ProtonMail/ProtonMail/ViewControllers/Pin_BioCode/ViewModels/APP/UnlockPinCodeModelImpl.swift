@@ -23,7 +23,7 @@
 import LifetimeTracker
 import ProtonCore_UIFoundations
 
-class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
+final class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }

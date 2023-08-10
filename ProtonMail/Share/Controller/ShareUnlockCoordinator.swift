@@ -27,7 +27,7 @@ class ShareUnlockCoordinator {
     private var nextCoordinator: SharePinUnlockCoordinator?
 
     internal weak var navigationController: UINavigationController?
-    var services: ServiceFactory
+    private var services: ServiceFactory
 
     enum Destination: String {
         case pin, composer

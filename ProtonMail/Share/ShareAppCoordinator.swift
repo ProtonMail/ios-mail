@@ -26,7 +26,7 @@ import UIKit
 /// Main entry point to the app
 final class ShareAppCoordinator {
     // navigation controller instance -- entry
-    internal weak var navigationController: UINavigationController?
+    private(set) weak var navigationController: UINavigationController?
     private var nextCoordinator: ShareUnlockCoordinator?
 
     func start() {

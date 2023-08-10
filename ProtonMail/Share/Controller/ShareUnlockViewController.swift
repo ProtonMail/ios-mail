@@ -148,7 +148,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     }
 
     // set up UI only
-    internal func loginCheck() {
+    func loginCheck() {
         let unlockManager = sharedServices.get(by: UnlockManager.self)
         switch unlockManager.getUnlockFlow() {
         case .requirePin:

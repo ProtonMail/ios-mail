@@ -34,7 +34,7 @@ protocol WindowsCoordinatorDelegate: AnyObject {
     func currentApplicationState() -> UIApplication.State
 }
 
-class WindowsCoordinator {
+final class WindowsCoordinator {
     private lazy var snapshot = Snapshot()
     private var launchedByNotification = false
 
@@ -56,7 +56,7 @@ class WindowsCoordinator {
     private(set) var lockWindow: UIWindow?
     private var menuCoordinator: MenuCoordinator?
 
-    var currentWindow: UIWindow? {
+    private var currentWindow: UIWindow? {
         didSet {
             switch dependencies.darkModeCache.darkModeStatus {
             case .followSystem:

@@ -135,11 +135,11 @@ final class UnlockManager: Service {
         return true
     }
 
-    func biometricAuthentication(requestMailboxPassword: @escaping () -> Void) {
+    private func biometricAuthentication(requestMailboxPassword: @escaping () -> Void) {
         biometricAuthentication(afterBioAuthPassed: { self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword) })
     }
 
-    var isRequestingBiometricAuthentication: Bool = false
+    private var isRequestingBiometricAuthentication: Bool = false
     func biometricAuthentication(afterBioAuthPassed: @escaping () -> Void) {
         var error: NSError?
         guard localAuthenticationContext.canEvaluatePolicy(

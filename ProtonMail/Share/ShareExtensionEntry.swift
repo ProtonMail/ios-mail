@@ -29,7 +29,7 @@ import UIKit
 
 @objc(ShareExtensionEntry)
 class ShareExtensionEntry: UINavigationController {
-    var appCoordinator: ShareAppCoordinator?
+    private var appCoordinator: ShareAppCoordinator?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -63,7 +63,7 @@ class ShareExtensionEntry: UINavigationController {
         self.appCoordinator?.start()
     }
 
-    func configureCoreFeatureFlags() {
+    private func configureCoreFeatureFlags() {
         FeatureFactory.shared.enable(&.unauthSession)
     }
 }
