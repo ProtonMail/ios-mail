@@ -38,7 +38,10 @@ var beforeSanitizeElements = function (node) {
             // Don't update base64 string
             // Mainly for signature case
             try {
-                let _ = new URL(attribute);
+                let url = new URL(attribute);
+                if (url.protocol == 'data:') {
+                    throw `don't update base64 string`
+                }
                 const originalUrl = attribute;
                 const replacedUrl = 'proton-' + attribute;
                 element.setAttribute(item, replacedUrl || '');
