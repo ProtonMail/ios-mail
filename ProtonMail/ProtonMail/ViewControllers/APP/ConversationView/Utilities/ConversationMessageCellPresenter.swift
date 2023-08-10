@@ -81,13 +81,15 @@ class ConversationMessageCellPresenter {
         view.originImageView.isHidden = model.messageLocation == nil && model.isCustomFolderLocation == false
 
         let originImage = model.isCustomFolderLocation ?
-        IconProvider.folder : model.messageLocation?.originImage(viewMode: .conversation)
+        IconProvider.folder :
+        model.messageLocation?.originImage(viewMode: .conversation,
+                                           isAutoDeletingMessage: model.isAutoDeletingMessage)
         view.originImageView.image = originImage
         view.originImageView.tintColor = model.isRead ? ColorProvider.IconWeak : ColorProvider.IconNorm
     }
 
     private func presentTags(model: ConversationMessageModel, in view: ConversationMessageView) {
-        view.expirationView.isHidden = model.expirationTag == nil
+        view.expirationView.isHidden = model.expirationTag == nil || !model.isExpirationFrozen
 
         if let expirationTag = model.expirationTag {
             view.expirationView.tagLabel.set(text: expirationTag.title,

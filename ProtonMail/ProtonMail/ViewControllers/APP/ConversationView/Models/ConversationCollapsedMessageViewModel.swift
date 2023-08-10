@@ -66,7 +66,8 @@ class ConversationCollapsedMessageViewModel {
             expirationTag: message.createTagFromExpirationDate(),
             isDraft: message.isDraft,
             isScheduled: message.contains(location: .scheduled),
-            isSent: message.isSent
+            isSent: message.isSent,
+            isExpirationFrozen: message.flag.contains(.isExpirationTimeFrozen)
         )
     }
 
