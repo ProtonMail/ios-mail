@@ -20,25 +20,42 @@ import ProtonCore_Crypto
 @testable import ProtonMail
 
 final class PushNotificationHandlerTests: XCTestCase {
+    typealias InMemorySaver = PushNotificationServiceTests.InMemorySaver
+
     var sut: PushNotificationHandler!
-    private var mockEncryptionKitProvider: EncryptionKitProviderMock!
+    private var mockPushDecryptionKeysProvider: MockPushDecryptionKeysProvider!
+    private var mockKitSaver: InMemorySaver<Set<PushSubscriptionSettings>>!
+    private var mockFailedPushMarker: MockFailedPushDecryptionMarker!
+
+    private let dummyUID = UUID().uuidString
+    private let dummyKeyPair = DummyKeyPair()
 
     override func setUp() {
         super.setUp()
-        mockEncryptionKitProvider = EncryptionKitProviderMock()
+        mockPushDecryptionKeysProvider = .init()
+        mockPushDecryptionKeysProvider.pushNotificationsDecryptionKeysStub.fixture = [
+            DecryptionKey(
+                privateKey: ArmoredKey(value: dummyKeyPair.privateKey),
+                passphrase: Passphrase(value: dummyKeyPair.passphrase)
+            )
+        ]
+        mockKitSaver = .init()
+        mockFailedPushMarker = .init()
         let dependencies = PushNotificationHandler.Dependencies(
-            encryptionKitProvider: mockEncryptionKitProvider
+            decryptionKeysProvider: mockPushDecryptionKeysProvider,
+            oldEncryptionKitSaver: mockKitSaver,
+            failedPushDecryptionMarker: mockFailedPushMarker
         )
         sut = PushNotificationHandler(dependencies: dependencies)
     }
 
     override func tearDown() {
         super.tearDown()
+        mockPushDecryptionKeysProvider = nil
         sut = nil
-        mockEncryptionKitProvider = nil
     }
 
-    func testHandle_shouldProperlyDecryptNotification_whenIsEmailNotification() {
+    func testHandle_whenIsEmailNotification_shouldProperlyDecryptNotification() {
         let testBody = "Test subject"
         let testSender = "A sender"
         let identifier = UUID().uuidString
@@ -46,7 +63,7 @@ final class PushNotificationHandlerTests: XCTestCase {
 
         let expectation = self.expectation(description: "Decryption expectation")
         sut.handle(request: request) { decryptedContent in
-            XCTAssertEqual(decryptedContent.threadIdentifier, self.mockEncryptionKitProvider.UID)
+            XCTAssertEqual(decryptedContent.threadIdentifier, self.dummyUID)
             XCTAssertEqual(decryptedContent.title, testSender)
             XCTAssertEqual(decryptedContent.body, testBody)
             expectation.fulfill()
@@ -54,7 +71,7 @@ final class PushNotificationHandlerTests: XCTestCase {
         wait(for: [expectation], timeout: 1.0)
     }
 
-    func testHandle_shouldProperlyDecryptNotification_whenIsOpenUrlNotification() {
+    func testHandle_whenIsOpenUrlNotification_shouldProperlyDecryptNotification() {
         let expectedSender = "ProntonMail"
         let expectedBody = "New sign in to your account"
         let identifier = UUID().uuidString
@@ -62,9 +79,48 @@ final class PushNotificationHandlerTests: XCTestCase {
 
         let expectation = self.expectation(description: "Decryption expectation")
         sut.handle(request: request) { decryptedContent in
-            XCTAssertEqual(decryptedContent.threadIdentifier, self.mockEncryptionKitProvider.UID)
+            XCTAssertEqual(decryptedContent.threadIdentifier, self.dummyUID)
             XCTAssertEqual(decryptedContent.title, expectedSender)
             XCTAssertEqual(decryptedContent.body, expectedBody)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+    }
+
+    func testHandle_whenNotificationDecryptionFails_shouldMarkDecryptionFailed() {
+        let request = mailNotificationRequest(identifier: UUID().uuidString, sender: "", body: "")
+        mockPushDecryptionKeysProvider.pushNotificationsDecryptionKeysStub.fixture = []
+
+        let expectation = self.expectation(description: "Decryption expectation")
+        sut.handle(request: request) { decryptedContent in
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1.0)
+
+        XCTAssertEqual(mockFailedPushMarker.markPushNotificationDecryptionFailureStub.callCounter, 1)
+    }
+
+    /// This test checks that stored encryption kits before the push encryption refactor are also used to decrypt pushes
+    func testHandle_whenKeyInOldEncryptionKitSaverImplementation_shouldProperlyDecryptNotification() {
+        let testBody = "Test subject"
+        let testSender = "A sender"
+        let identifier = UUID().uuidString
+        let request = mailNotificationRequest(identifier: identifier, sender: testSender, body: testBody)
+
+        var pushSubscriptionSetting = PushSubscriptionSettings(token: "", UID: dummyUID)
+        pushSubscriptionSetting.encryptionKit = .init(
+            passphrase: dummyKeyPair.passphrase,
+            privateKey: dummyKeyPair.privateKey,
+            publicKey: dummyKeyPair.publicKey.value
+        )
+        mockKitSaver.set(newValue: Set([pushSubscriptionSetting]))
+        mockPushDecryptionKeysProvider.pushNotificationsDecryptionKeysStub.fixture = []
+
+        let expectation = self.expectation(description: "Decryption expectation")
+        sut.handle(request: request) { decryptedContent in
+            XCTAssertEqual(decryptedContent.threadIdentifier, self.dummyUID)
+            XCTAssertEqual(decryptedContent.title, testSender)
+            XCTAssertEqual(decryptedContent.body, testBody)
             expectation.fulfill()
         }
         wait(for: [expectation], timeout: 1.0)
@@ -96,11 +152,11 @@ private extension PushNotificationHandlerTests {
         }
         """
         let encryptedPayload = try! Encryptor.encrypt(
-            publicKey: mockEncryptionKitProvider.publicKey,
+            publicKey: dummyKeyPair.publicKey,
             cleartext: plainTextPayload
         ).value
         let userInfo: [NSString: Any?] = [
-            "UID": mockEncryptionKitProvider.UID,
+            "UID": dummyUID,
             "unreadConversations": nil,
             "unreadMessages": Int.random(in: 0..<100),
             "viewMode": Int.random(in: 0...1),
@@ -119,9 +175,9 @@ private extension PushNotificationHandlerTests {
 
     private func openUrlNotificationRequest(identifier: String, sender: String, body: String) -> UNNotificationRequest {
         let encryptedPayload = PushEncryptedMessageTestData
-            .openUrlNotification(with: mockEncryptionKitProvider, sender: sender, body: body)
+            .openUrlNotification(with: dummyKeyPair, sender: sender, body: body)
         let userInfo: [NSString: Any?] = [
-            "UID": mockEncryptionKitProvider.UID,
+            "UID": dummyUID,
             "unreadConversations": nil,
             "unreadMessages": Int.random(in: 0..<100),
             "viewMode": Int.random(in: 0...1),

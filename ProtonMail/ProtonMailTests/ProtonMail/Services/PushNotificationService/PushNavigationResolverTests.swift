@@ -16,24 +16,44 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import ProtonCore_Crypto
 import XCTest
 
 final class PushNavigationResolverTests: XCTestCase {
+    typealias InMemorySaver = PushNotificationServiceTests.InMemorySaver
+
     private var sut: PushNavigationResolver!
-    private var mockSubscriptionsPack: MockSubscriptionsPackProtocol!
+    private var mockPushDecryptionKeysProvider: MockPushDecryptionKeysProvider!
+    private var mockKitSaver: InMemorySaver<Set<PushSubscriptionSettings>>!
+    private var mockFailedPushMarker: MockFailedPushDecryptionMarker!
+
+    private let dummyUID = UUID().uuidString
+    private let dummyKeyPair = DummyKeyPair()
 
     override func setUp() {
         super.setUp()
-        mockSubscriptionsPack = MockSubscriptionsPackProtocol()
-        let dependencies = PushNavigationResolver.Dependencies(
-            subscriptionsPack: mockSubscriptionsPack
+        mockPushDecryptionKeysProvider = .init()
+        mockPushDecryptionKeysProvider.pushNotificationsDecryptionKeysStub.fixture = [
+            DecryptionKey(
+                privateKey: ArmoredKey(value: dummyKeyPair.privateKey),
+                passphrase: Passphrase(value: dummyKeyPair.passphrase)
+            )
+        ]
+        mockKitSaver = .init()
+        mockFailedPushMarker = .init()
+        let dependencies: PushNavigationResolver.Dependencies = .init(
+            decryptionKeysProvider: mockPushDecryptionKeysProvider,
+            oldEncryptionKitSaver: mockKitSaver,
+            failedPushDecryptionMarker: mockFailedPushMarker
         )
         sut = PushNavigationResolver(dependencies: dependencies)
     }
 
     override func tearDown() {
         super.tearDown()
-        mockSubscriptionsPack = nil
+        mockPushDecryptionKeysProvider = nil
+        mockKitSaver = nil
+        mockFailedPushMarker = nil
         sut = nil
     }
 
@@ -43,14 +63,10 @@ final class PushNavigationResolverTests: XCTestCase {
 
     func testMapNotificationToDeepLink_whenIsRemoteNotification_openUrl() {
         let expectedUrl = "https://giphy.com"
-        let encryptionKitProvider = EncryptionKitProviderMock()
-        let uid = encryptionKitProvider.UID
-        mockSubscriptionsPack.encryptionKitProvider = encryptionKitProvider
-
         let encryptedMessage = PushEncryptedMessageTestData
-            .openUrlNotification(with: encryptionKitProvider, url: expectedUrl)
+            .openUrlNotification(with: dummyKeyPair, url: expectedUrl)
         let pnPayload = try! PushNotificationPayload(
-            userInfo: ["UID": uid, "encryptedMessage": encryptedMessage!]
+            userInfo: ["UID": dummyUID, "encryptedMessage": encryptedMessage!]
         )
 
         let expectation = expectation(description: "deeplink callback is correct")
@@ -89,12 +105,48 @@ final class PushNavigationResolverTests: XCTestCase {
         }
         waitForExpectations(timeout: 0.5)
     }
-}
 
-private class MockSubscriptionsPackProtocol: SubscriptionsPackProtocol {
-    var encryptionKitProvider: EncryptionKitProviderMock?
+    func testMapNotificationToDeepLink_whenFailsToDecrypt_shouldMarkDecryptionFailed() {
+        let encryptedMessage = PushEncryptedMessageTestData
+            .openUrlNotification(with: dummyKeyPair, url: "https://giphy.com")
+        let pnPayload = try! PushNotificationPayload(
+            userInfo: ["UID": dummyUID, "encryptedMessage": encryptedMessage!]
+        )
+        mockPushDecryptionKeysProvider.pushNotificationsDecryptionKeysStub.fixture = []
 
-    func encryptionKit(forUID uid: String) -> EncryptionKit? {
-        encryptionKitProvider?.encryptionKit(forSession: uid)
+        let expectation = expectation(description: "deeplink callback is correct")
+        sut.mapNotificationToDeepLink(pnPayload) { deeplink in
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 0.5)
+
+        XCTAssertEqual(mockFailedPushMarker.markPushNotificationDecryptionFailureStub.callCounter, 1)
+    }
+
+    /// This test checks that stored encryption kits before the push encryption refactor are also used to decrypt pushes
+    func testMapNotificationToDeepLink_whenKeyInOldEncryptionKitSaver_shouldProperlyDecryptNotification() {
+        let expectedUrl = "https://giphy.com"
+        let encryptedMessage = PushEncryptedMessageTestData
+            .openUrlNotification(with: dummyKeyPair, url: expectedUrl)
+        let pnPayload = try! PushNotificationPayload(
+            userInfo: ["UID": dummyUID, "encryptedMessage": encryptedMessage!]
+        )
+
+        var pushSubscriptionSetting = PushSubscriptionSettings(token: "", UID: dummyUID)
+        pushSubscriptionSetting.encryptionKit = .init(
+            passphrase: dummyKeyPair.passphrase,
+            privateKey: dummyKeyPair.privateKey,
+            publicKey: dummyKeyPair.publicKey.value
+        )
+        mockKitSaver.set(newValue: Set([pushSubscriptionSetting]))
+        mockPushDecryptionKeysProvider.pushNotificationsDecryptionKeysStub.fixture = []
+
+        let expectation = expectation(description: "deeplink callback is correct")
+        sut.mapNotificationToDeepLink(pnPayload) { deeplink in
+            XCTAssert(deeplink != nil)
+            XCTAssert(deeplink!.head == DeepLink.Node(name: "toWebBrowser", value: expectedUrl))
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 0.5)
     }
 }

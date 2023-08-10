@@ -102,11 +102,6 @@ extension AppDelegate: UIApplicationDelegate {
         let usersManager = dependencies.usersManager
         let queueManager = dependencies.queueManager
         sharedServices.add(QueueManager.self, for: queueManager)
-        let dependencies = PushNotificationService.Dependencies(
-            lockCacheStatus: coreKeyMaker,
-            registerDevice: RegisterDevice(dependencies: .init(usersManager: usersManager))
-        )
-        sharedServices.add(PushNotificationService.self, for: PushNotificationService(dependencies: dependencies))
         sharedServices.add(UnlockManager.self, for: UnlockManager(
             cacheStatus: coreKeyMaker,
             delegate: self,
@@ -114,6 +109,8 @@ extension AppDelegate: UIApplicationDelegate {
             pinFailedCountCache: userCachedStatus
         ))
         sharedServices.add(UsersManager.self, for: usersManager)
+        let dependencies = PushNotificationService.Dependencies(lockCacheStatus: coreKeyMaker)
+        sharedServices.add(PushNotificationService.self, for: PushNotificationService(dependencies: dependencies))
         let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: userCachedStatus))
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager,
                                                                   contactCacheStatus: userCachedStatus,
@@ -163,7 +160,7 @@ extension AppDelegate: UIApplicationDelegate {
         self.registerKeyMakerNotification()
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didSignOutNotification(_:)),
-                                               name: NSNotification.Name.didSignOut,
+                                               name: .didSignOutLastAccount,
                                                object: nil)
         coordinator.delegate = self
 

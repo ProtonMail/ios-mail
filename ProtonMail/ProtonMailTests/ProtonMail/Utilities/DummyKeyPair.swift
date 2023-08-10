@@ -18,11 +18,9 @@
 import ProtonCore_Crypto
 @testable import ProtonMail
 
-final class EncryptionKitProviderMock: EncryptionKitProvider {
-    static let UID = "mockUID"
-    var UID: String { EncryptionKitProviderMock.UID }
-    private let passphrase = "39FA7B74-C560-4E56-A427-B3B2D59FCC5C"
-    private let privateKey = """
+struct DummyKeyPair {
+    let passphrase = "39FA7B74-C560-4E56-A427-B3B2D59FCC5C"
+    let privateKey = """
     -----BEGIN PGP PRIVATE KEY BLOCK-----
     Version: GopenPGP 2.2.4
     Comment: https://gopenpgp.org
@@ -62,11 +60,4 @@ final class EncryptionKitProviderMock: EncryptionKitProvider {
     =zmIB
     -----END PGP PUBLIC KEY BLOCK-----
     """)
-
-    func encryptionKit(forSession uid: String) -> EncryptionKit? {
-        guard uid == Self.UID else { return nil }
-        return EncryptionKit(passphrase: passphrase, privateKey: privateKey, publicKey: publicKey.value)
-    }
-
-    func markForUnsubscribing(uid: String) {}
 }

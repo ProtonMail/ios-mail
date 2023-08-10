@@ -260,30 +260,30 @@ final class PushEncryptionManagerTests: XCTestCase {
 
     // MARK: Tests for rotatePushNotificationsEncryptionKey
 
-    func testRotatePushNotificationsEncryptionKey_whenNoTokenHasBeenRegistered_itDoesNotRegisterAnyNewKey() {
+    func testRegisterDeviceAfterNewAccountSignIn_whenNoTokenHasBeenRegistered_itDoesNotRegisterAnyNewKey() {
         mockKitsSaver.set(newValue: [])
 
-        sut.rotatePushNotificationsEncryptionKey()
+        sut.registerDeviceAfterNewAccountSignIn()
         sleepToAllowAsyncTaskToFinish()
 
         XCTAssertEqual(mockDeviceRegistration.executeStub.callCounter, 0)
         XCTAssertEqual(mockKitsSaver.get()!.count, 0)
     }
 
-    func testRotatePushNotificationsEncryptionKey_whenTokenHasBeenRegistered_itRegistersTheSameTokenWithNewKey() {
+    func testRegisterDeviceAfterNewAccountSignIn_whenTokenHasBeenRegistered_itRegistersTheSameTokenAndSameKey() {
         prepareMockSessions(num: 1)
         setLastUsedDeviceToken(dummyDeviceToken)
         mockKitsSaver.set(newValue: [dummyEncryptionKit])
 
-        sut.rotatePushNotificationsEncryptionKey()
+        sut.registerDeviceAfterNewAccountSignIn()
         sleepToAllowAsyncTaskToFinish()
 
         XCTAssertEqual(mockDeviceRegistration.executeStub.callCounter, 1)
         XCTAssertEqual(mockDeviceRegistration.executeStub.lastArguments?.a2, dummyDeviceToken)
         let publicKeyUsed = mockDeviceRegistration.executeStub.lastArguments?.a3
         XCTAssertNotNil(publicKeyUsed)
-        XCTAssertNotEqual(publicKeyUsed, dummyEncryptionKit.publicKey)
-        XCTAssertEqual(mockKitsSaver.get()!.count, 2)
+        XCTAssertEqual(publicKeyUsed, dummyEncryptionKit.publicKey)
+        XCTAssertEqual(mockKitsSaver.get()!.count, 1)
     }
 
     // MARK: Tests for deleteAllCachedData

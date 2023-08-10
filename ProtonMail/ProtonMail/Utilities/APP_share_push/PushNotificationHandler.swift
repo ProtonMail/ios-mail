@@ -18,12 +18,6 @@
 import ProtonCore_Crypto
 import UserNotifications
 
-protocol EncryptionKitProvider {
-    func encryptionKit(forSession uid: String) -> EncryptionKit?
-}
-
-extension PushNotificationDecryptor: EncryptionKitProvider {}
-
 final class PushNotificationHandler {
 
     private enum PushManagementUnexpected: Error {
@@ -50,8 +44,10 @@ final class PushNotificationHandler {
             let uid = try uid(in: payload)
             bestContent.threadIdentifier = uid
 
-            let encryptionKit = try encryptionKit(for: uid)
-            let decryptedMessage = try decryptMessage(in: payload, encryptionKit: encryptionKit)
+            let decryptionKeys = dependencies
+                .decryptionKeysProvider
+                .decryptionKeysAppendingLegacyKey(from: dependencies.oldEncryptionKitSaver, forUID: uid)
+            let decryptedMessage = try decryptMessage(in: payload, decryptionKeys: decryptionKeys)
             let pushContent = try parseContent(with: decryptedMessage)
 
             populateNotification(content: bestContent, pushContent: pushContent)
@@ -97,30 +93,18 @@ private extension PushNotificationHandler {
         return uid
     }
 
-    private func encryptionKit(for uid: String) throws -> EncryptionKit {
-        guard let encryptionKit = dependencies.encryptionKitProvider.encryptionKit(forSession: uid) else {
-            SharedUserDefaults().setNeedsToRegisterAgain(for: uid)
-            throw PushManagementUnexpected.error(description: "no encryption kit for uid \(uid.redacted)")
-        }
-        return encryptionKit
-    }
-
-    private func decryptMessage(in payload: PushNotificationPayload, encryptionKit: EncryptionKit) throws -> String {
+    private func decryptMessage(in payload: PushNotificationPayload, decryptionKeys: [DecryptionKey]) throws -> String {
         guard let encryptedMessage = payload.encryptedMessage else {
             throw PushManagementUnexpected.error(description: "no encrypted message in payload")
         }
 
-        let decryptionKey = DecryptionKey(
-            privateKey: ArmoredKey(value: encryptionKit.privateKey),
-            passphrase: Passphrase(value: encryptionKit.passphrase)
-        )
-
         do {
             return try Decryptor.decrypt(
-                decryptionKeys: [decryptionKey],
+                decryptionKeys: decryptionKeys,
                 encrypted: ArmoredMessage(value: encryptedMessage)
             )
         } catch {
+            dependencies.failedPushDecryptionMarker.markPushNotificationDecryptionFailure()
             throw PushManagementUnexpected.error(description: "fail decrypting data")
         }
     }
@@ -186,15 +170,22 @@ private extension PushNotificationHandler {
 
 extension PushNotificationHandler {
     struct Dependencies {
-        let encryptionKitProvider: EncryptionKitProvider
+        let decryptionKeysProvider: PushDecryptionKeysProvider
+        /// this is the old way to store EncryptionKits for push notifications. We inject to read existing keys before the refactor
+        let oldEncryptionKitSaver: Saver<Set<PushSubscriptionSettings>>
         let cacheStatus: PushCacheStatus
+        let failedPushDecryptionMarker: FailedPushDecryptionMarker
 
         init(
-            encryptionKitProvider: EncryptionKitProvider = PushNotificationDecryptor(),
-            cacheStatus: PushCacheStatus = PushCacheStatus()
+            decryptionKeysProvider: PushDecryptionKeysProvider = PushEncryptionKitSaver.shared,
+            oldEncryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
+            cacheStatus: PushCacheStatus = PushCacheStatus(),
+            failedPushDecryptionMarker: FailedPushDecryptionMarker = SharedUserDefaults.shared
         ) {
-            self.encryptionKitProvider = encryptionKitProvider
+            self.decryptionKeysProvider = decryptionKeysProvider
+            self.oldEncryptionKitSaver = oldEncryptionKitSaver
             self.cacheStatus = cacheStatus
+            self.failedPushDecryptionMarker = failedPushDecryptionMarker
         }
     }
 

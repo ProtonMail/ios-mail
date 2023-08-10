@@ -29,7 +29,7 @@ final class PushNotificationActionsHandler {
             .appKeyEnabled,
             .appKeyDisabled,
             .didSignIn,
-            .didSignOut
+            .didSignOutLastAccount
         ]
         notificationsToObserve.forEach {
             dependencies.notificationCenter.addObserver(

@@ -38,12 +38,12 @@ extension Notification.Name {
         return .init(rawValue: "Application.CustomUrlSchema")
     }
 
-    /// notify did signout
-    static var didSignOut: Notification.Name {
-        return .init(rawValue: "UserDataServiceDidSignOutNotification")
+    /// indicates the last remaining account has signed out
+    static var didSignOutLastAccount: Notification.Name {
+        return .init(rawValue: "UserDataServiceDidSignOutLastAccountNotification")
     }
 
-    /// notify did signin
+    /// indicates an account has successfully signed in
     static var didSignIn: Notification.Name {
         return .init(rawValue: "UserDataServiceDidSignInNotification")
     }

@@ -359,7 +359,7 @@ extension UsersManager {
             guard !self.users.isEmpty else {
                 _ = self.clean().ensure {
                     self.notificationCenter.post(
-                        name: Notification.Name.didSignOut,
+                        name: .didSignOutLastAccount,
                         object: self
                     )
                     completion?()
@@ -453,7 +453,7 @@ extension UsersManager {
             #endif
 
             if !ProcessInfo.isRunningUnitTests {
-                NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
+                NotificationCenter.default.post(name: .didSignOutLastAccount, object: self)
             }
         }
     }

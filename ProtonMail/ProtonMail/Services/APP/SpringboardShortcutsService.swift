@@ -84,10 +84,13 @@ class SpringboardShortcutsService: NSObject, Service {
             self?.addShortcuts()
 
         })
-        NotificationCenter.default.addObserver(forName: .didSignOut, object: nil, queue: nil, using: { [weak self] _ in
-            self?.removeShortcuts()
-
-        })
+        NotificationCenter.default.addObserver(
+            forName: .didSignOutLastAccount,
+            object: nil,
+            queue: nil,
+            using: { [weak self] _ in
+                self?.removeShortcuts()
+            })
         trackLifetime()
     }
 

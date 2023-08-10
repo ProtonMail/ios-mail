@@ -21,63 +21,21 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
 import ProtonCore_Services
-import UIKit
 import UserNotifications
 
-class PushNotificationService: NSObject, Service, PushNotificationServiceProtocol {
-    typealias SubscriptionSettings = PushSubscriptionSettings
-    typealias UpdateSubscriptionTuple = (SubscriptionSettings, SubscriptionState)
-
-    let currentSubscriptions: SubscriptionsPack
-    private let deviceRegistrator: DeviceRegistrator
-    private let navigationResolver: PushNavigationResolver
+final class PushNotificationService: NSObject, Service, PushNotificationServiceProtocol {
     private let notificationActions: PushNotificationActionsHandler
-    private let notificationCenter: NotificationCenter
-    private let sessionIDProvider: SessionIdProvider
-    private let sharedUserDefaults = SharedUserDefaults()
-    private let signInProvider: SignInProvider
-    private let unlockProvider: UnlockProvider
-    private let deviceTokenSaver: Saver<String>
-    private let unlockQueue = DispatchQueue(label: "PushNotificationService.unlock")
 
-    /// The notification action is pending because the app has been just launched and can't make a request yet
+    /// Pending actions because the app has been just launched and can't make a request yet
+    private var deviceTokenRegistrationPendingUnlock: String?
     private var notificationActionPendingUnlock: PendingNotificationAction?
     private var notificationOptions: [AnyHashable: Any]?
-    private var latestDeviceToken: String? {
-        didSet {
-            // but we have to save one for PushNotificationDecryptor
-            self.deviceTokenSaver.set(newValue: latestDeviceToken)
-        }
-    }
 
+    private var debounceTimer: Timer?
     private let dependencies: Dependencies
 
-    init(
-        subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
-        encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
-        outdatedSaver: Saver<Set<SubscriptionSettings>> = PushNotificationDecryptor.outdater,
-        sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
-        // unregister call is unauthorized; register call is authorized one
-        // we will inject auth credentials into the call itself
-        deviceRegistrator: DeviceRegistrator = PMAPIService.unauthorized,
-        signInProvider: SignInProvider = SignInManagerProvider(),
-        deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
-        unlockProvider: UnlockProvider = UnlockManagerProvider(),
-        notificationCenter: NotificationCenter = NotificationCenter.default,
-        dependencies: Dependencies
-    ) {
-        self.currentSubscriptions = SubscriptionsPack(subscriptionSaver, encryptionKitSaver, outdatedSaver)
-        self.sessionIDProvider = sessionIDProvider
-        self.deviceRegistrator = deviceRegistrator
-        self.signInProvider = signInProvider
-        self.deviceTokenSaver = deviceTokenSaver
-        self.unlockProvider = unlockProvider
-        self.notificationCenter = notificationCenter
-        self.navigationResolver = PushNavigationResolver(
-            dependencies: PushNavigationResolver.Dependencies(subscriptionsPack: currentSubscriptions)
-        )
+    init(dependencies: Dependencies) {
         self.notificationActions = PushNotificationActionsHandler(
             dependencies: .init(lockCacheStatus: dependencies.lockCacheStatus)
         )
@@ -87,28 +45,36 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
 
         notificationActions.registerActions()
 
-        notificationCenter.addObserver(
-            self,
-            selector: #selector(prepareSettingsAndReportAsync),
-            name: NSNotification.Name.didUnlock,
-            object: nil
-        )
+        let notificationsToObserve: [Notification.Name] = [
+            .didSignIn,
+            .didUnlock,
+            .didSignOutLastAccount
+        ]
+        notificationsToObserve.forEach {
+            dependencies.notificationCenter.addObserver(
+                self,
+                selector: #selector(didObserveNotification(notification:)),
+                name: $0,
+                object: nil
+            )
+        }
     }
 
     // MARK: - register for notifications
     func registerForRemoteNotifications() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
             guard granted else {
-                SystemLogger.log(message: "User doesn't grant permission", category: .pushNotification)
+                SystemLogger.log(message: "push notification authorization is not granted", category: .pushNotification)
                 return
             }
             DispatchQueue.main.async {
-                SystemLogger.log(message: "Register for remote notifications", category: .pushNotification)
+                SystemLogger.log(
+                    message: "Requesting system to register for remote notifications",
+                    category: .pushNotification
+                )
                 UIApplication.shared.registerForRemoteNotifications()
             }
         }
-
-        reportOutdatedSettings()
     }
 
     func registerIfAuthorized() {
@@ -123,12 +89,14 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     }
 
     func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
-        let tokenHasChanged = latestDeviceToken != deviceToken
-        guard tokenHasChanged else { return }
-        SystemLogger.log(message: "Received new device token: \(deviceToken.redacted)", category: .pushNotification)
-        latestDeviceToken = deviceToken
-        if signInProvider.isSignedIn, unlockProvider.isUnlocked {
-            prepareSettingsAndReportAsync()
+        guard dependencies.signInProvider.isSignedIn, dependencies.unlockProvider.isUnlocked else {
+            deviceTokenRegistrationPendingUnlock = deviceToken
+            return
+        }
+        // we avoid calling the device registration flow in a quick sequence with a delay
+        debounceTimer?.invalidate()
+        debounceTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { [weak self] _ in
+            self?.dependencies.pushEncryptionManager.registerDeviceForNotifications(deviceToken: deviceToken)
         }
     }
 
@@ -163,49 +131,29 @@ class PushNotificationService: NSObject, Service, PushNotificationServiceProtoco
     }
 }
 
-// MARK: - Register / Unregister device token
+// MARK: - NotificationCenter observation
+
 extension PushNotificationService {
+
     @objc
-    private func prepareSettingsAndReportAsync() {
-        unlockQueue.async { [weak self] in
-            // cuz encryption kit generation can take significant time
-            self?.prepareSettingsAndReport()
+    private func didObserveNotification(notification: Notification) {
+        switch notification.name {
+        case .didSignIn:
+            didSignInAccount()
+        case .didUnlock:
+            didUnlockApp()
+        case .didSignOutLastAccount:
+            didSignOutLastAccount()
+        default:
+            PMAssertionFailure("\(notification.name) not expected")
         }
     }
 
-    private func prepareSettingsAndReport() {
-        guard let deviceToken = latestDeviceToken else { return }
-
-        let sessionIDs = sessionIDProvider.sessionIDs
-        if signInProvider.isSignedIn && sessionIDs.isEmpty { return }
-
-        let settingsWeNeedToHave = Set(sessionIDs.map { SubscriptionSettings(token: deviceToken, UID: $0) })
-
-        let outdateSettings = currentSubscriptions.settings().subtracting(settingsWeNeedToHave)
-        currentSubscriptions.outdate(outdateSettings)
-
-        let subscriptionsToKeep = currentSubscriptions.subscriptions.filter {
-            ($0.state == .reported || $0.state == .pending)
+    private func didUnlockApp() {
+        if let deviceToken = deviceTokenRegistrationPendingUnlock {
+            deviceTokenRegistrationPendingUnlock = nil
+            dependencies.pushEncryptionManager.registerDeviceForNotifications(deviceToken: deviceToken)
         }
-
-        // Always report all settings to make sure we don't miss any
-        let settingsToReport = Set(settingsWeNeedToHave.map { settings -> SubscriptionSettings in
-            // Those already reported will just be overridden, others will be registered
-            if sharedUserDefaults.shouldRegisterAgain(for: settings.UID) {
-                sharedUserDefaults.didRegister(for: settings.UID)
-                // Regenerate a key pair if the extension failed to decrypt notification payload
-                return generateEncryptionKit(for: settings)
-            } else {
-                if let alreadyReportedSetting = subscriptionsToKeep.first(where: { $0.settings == settings }),
-                   alreadyReportedSetting.settings.encryptionKit != nil {
-                    return alreadyReportedSetting.settings
-                } else {
-                    return generateEncryptionKit(for: settings)
-                }
-            }
-        })
-
-        reportSettings(settingsToReport: settingsToReport)
 
         if let notificationAction = notificationActionPendingUnlock {
             notificationActionPendingUnlock = nil
@@ -213,109 +161,17 @@ extension PushNotificationService {
         }
     }
 
-    private func generateEncryptionKit(
-        for settings: PushNotificationService.SubscriptionSettings
-    ) -> SubscriptionSettings {
-        var newSettings = settings
-        do {
-            try newSettings.generateEncryptionKit()
-        } catch {
-            assertionFailure("failed to generate encryption kit: \(error)")
-        }
-        return newSettings
+    private func didSignInAccount() {
+        dependencies.pushEncryptionManager.registerDeviceAfterNewAccountSignIn()
     }
 
-    private func reportSettings(settingsToReport: Set<PushNotificationService.SubscriptionSettings>) {
-        let settingsOutdated = currentSubscriptions.outdatedSettings
-        reportOutdatedSettings()
-        let result = report(settingsToReport)
-
-        Self.updateSettingsIfNeeded(
-            reportResult: result,
-            currentSubscriptions: currentSubscriptions.subscriptions
-        ) { [weak self] result in
-            self?.currentSubscriptions.update(result.0, toState: result.1)
-        }
-        currentSubscriptions.removeFromActiveSubscriptions(settingsOutdated)
-    }
-
-    // unregister on BE and validate local values
-    private func reportOutdatedSettings() {
-        currentSubscriptions.outdatedSettings.forEach { setting in
-            deviceRegistrator.deviceUnregister(setting) { [weak self] _, result in
-                var tokenDeleted = false
-                var tokenUnrecognized = false
-                switch result {
-                case .success:
-                    tokenDeleted = true
-                case .failure(let error):
-                    tokenUnrecognized = (error.code == APIErrorCode.resourceDoesNotExist
-                        || error.code == APIErrorCode.deviceTokenIsInvalid)
-                }
-                if tokenDeleted || tokenUnrecognized {
-                    self?.currentSubscriptions.removed(setting)
-                }
-            }
-        }
-    }
-
-    // register on BE and validate local values
-    private func report(
-        _ settingsToReport: Set<SubscriptionSettings>
-    ) -> [SubscriptionSettings: SubscriptionState] {
-        guard !Thread.isMainThread else {
-            assertionFailure("Should not call this method on main thread.")
-            return [:]
-        }
-
-        var reportResult: [SubscriptionSettings: SubscriptionState] = [:]
-
-        let group = DispatchGroup()
-        let serialQueue = DispatchQueue(label: "me.proton.reportEncryptionKit")
-        settingsToReport.forEach { settings in
-            group.enter()
-            reportResult[settings] = .pending
-            let params = RegisterDevice.Params(
-                uid: settings.UID,
-                deviceToken: settings.token,
-                publicEncryptionKey: settings.encryptionKit.publicKey
-            )
-            dependencies.registerDevice.callbackOn(serialQueue).execute(params: params) { result in
-                switch result {
-                case .success:
-                    reportResult[settings] = .reported
-                case .failure:
-                    reportResult[settings] = .notReported
-                }
-                group.leave()
-            }
-        }
-        group.wait()
-        return reportResult
-    }
-
-    static func updateSettingsIfNeeded(
-        reportResult: [PushNotificationService.SubscriptionSettings: PushNotificationService.SubscriptionState],
-        currentSubscriptions: Set<PushNotificationService.SubscriptionWithSettings>,
-        updateSubscriptionClosure: (UpdateSubscriptionTuple) -> Void
-    ) {
-        for result in reportResult {
-            // Check if the setting is already reported successfully before.
-            // If that's the case, ignore the result to prevent the failing result overriding the successful registration before.
-            let currentSubscription = currentSubscriptions.first(where: { $0.settings.UID == result.key.UID })
-            let isReportedBefore = currentSubscription?.state == .reported
-            let isEncryptionKitTheSame = currentSubscription?.settings.encryptionKit == result.key.encryptionKit
-
-            if isReportedBefore && isEncryptionKitTheSame {
-                continue
-            } else {
-                updateSubscriptionClosure((result.key, result.value))
-            }
-        }
+    private func didSignOutLastAccount() {
+        dependencies.pushEncryptionManager.deleteAllCachedData()
     }
 }
 
 // MARK: - UNUserNotificationCenterDelegate
+
 extension PushNotificationService: UNUserNotificationCenterDelegate {
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
@@ -372,8 +228,8 @@ extension PushNotificationService {
         }
         notificationOptions = nil
         completionHandler()
-        navigationResolver.mapNotificationToDeepLink(payload) { [weak self] deeplink in
-            self?.notificationCenter.post(name: .switchView, object: deeplink)
+        dependencies.navigationResolver.mapNotificationToDeepLink(payload) { [weak self] deeplink in
+            self?.dependencies.notificationCenter.post(name: .switchView, object: deeplink)
         }
     }
 
@@ -404,6 +260,7 @@ extension PushNotificationService {
 }
 
 // MARK: - Handle notification action
+
 extension PushNotificationService {
     private func handleNotificationAction(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
         let usersManager = sharedServices.get(by: UsersManager.self)
@@ -480,7 +337,27 @@ private extension PushNotificationService {
 
 extension PushNotificationService {
     struct Dependencies {
+        let signInProvider: SignInProvider
+        let unlockProvider: UnlockProvider
+        let pushEncryptionManager: PushEncryptionManagerProtocol
+        let navigationResolver: PushNavigationResolver
         let lockCacheStatus: LockCacheStatus
-        let registerDevice: RegisterDeviceUseCase
+        let notificationCenter: NotificationCenter
+
+        init(
+            signInProvider: SignInProvider = SignInManagerProvider(),
+            unlockProvider: UnlockProvider = UnlockManagerProvider(),
+            pushEncryptionManager: PushEncryptionManagerProtocol = PushEncryptionManager.shared,
+            navigationResolver: PushNavigationResolver = PushNavigationResolver(dependencies: .init()),
+            lockCacheStatus: LockCacheStatus,
+            notificationCenter: NotificationCenter = NotificationCenter.default
+        ) {
+            self.signInProvider = signInProvider
+            self.unlockProvider = unlockProvider
+            self.pushEncryptionManager = pushEncryptionManager
+            self.navigationResolver = navigationResolver
+            self.lockCacheStatus = lockCacheStatus
+            self.notificationCenter = notificationCenter
+        }
     }
 }

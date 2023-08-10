@@ -193,7 +193,7 @@ final class UnlockManager: Service {
                     requestMailboxPassword: requestMailboxPassword,
                     unlockFailed: {
                         self.notificationCenter.post(
-                            name: Notification.Name.didSignOut,
+                            name: .didSignOutLastAccount,
                             object: nil
                         )
                     }

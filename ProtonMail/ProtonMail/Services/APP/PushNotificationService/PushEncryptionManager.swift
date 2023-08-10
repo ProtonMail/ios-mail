@@ -18,6 +18,7 @@
 import OpenPGP
 import ProtonCore_Crypto
 
+// sourcery: mock
 protocol PushEncryptionManagerProtocol {
     /**
      This method will register the received `deviceToken` in the backend to use it for push notifications.
@@ -29,11 +30,14 @@ protocol PushEncryptionManagerProtocol {
      it will try the registration for all sessions again.
      */
     func registerDeviceForNotifications(deviceToken: String)
+
     /**
-     This method creates a new encryption key to be used in push notifications. All current sessions
-     will renew the encryption key to this new one.
+     Call this method every time there is a new account sign in.
+
+     This function will register for all authenticated sessions the latest known device token and public key.
      */
-    func rotatePushNotificationsEncryptionKey()
+    func registerDeviceAfterNewAccountSignIn()
+
     /**
      This method clears local stored data like device token, encryption keys and other flags
      */
@@ -53,7 +57,10 @@ final class PushEncryptionManager: PushEncryptionManagerProtocol {
 
     func registerDeviceForNotifications(deviceToken: String) {
         SystemLogger.log(message: "register device token: \(deviceToken.redacted)", category: .pushNotification)
-        guard shouldRegisterDevice(token: deviceToken) else { return }
+        guard shouldRegisterDevice(token: deviceToken) else {
+            SystemLogger.log(message: "no need to register device token", category: .pushNotification)
+            return
+        }
         Task {
             let rotateKey = dependencies.failedPushDecryptionProvider.hadPushNotificationDecryptionFailed
             guard let kit = kitForRegisteringDevice(rotateKey: rotateKey) else { return }
@@ -61,17 +68,20 @@ final class PushEncryptionManager: PushEncryptionManagerProtocol {
         }
     }
 
-    func rotatePushNotificationsEncryptionKey() {
-        SystemLogger.log(message: "rotate push notifications encryption kit", category: .encryption)
-        guard let lastRegisteredToken = lastRegisteredToken else { return }
+    func registerDeviceAfterNewAccountSignIn() {
+        SystemLogger.log(message: "register known device token for new sign in", category: .pushNotification)
+        guard let lastRegisteredToken = lastRegisteredToken else {
+            SystemLogger.log(message: "no device token found", category: .pushNotification, isError: true)
+            return
+        }
         Task {
-            guard let kit = kitForRegisteringDevice(rotateKey: true) else { return }
+            guard let kit = kitForRegisteringDevice(rotateKey: false) else { return }
             await updateTokensAndKitsForAllSessions(tokenToRegister: lastRegisteredToken, kit: kit)
         }
     }
 
     func deleteAllCachedData() {
-        SystemLogger.log(message: "delete push notifications local data", category: .encryption)
+        SystemLogger.log(message: "delete PushEncryptionManager local data", category: .encryption)
         serialQueue.sync {
             dependencies.encryptionKitsCache.set(newValue: [])
             dependencies.pushEncryptionProvider.lastRegisteredDeviceToken = nil

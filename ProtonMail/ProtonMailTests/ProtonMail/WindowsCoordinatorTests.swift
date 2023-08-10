@@ -72,7 +72,7 @@ final class WindowsCoordinatorTests: XCTestCase {
 
     func testStart_isRunningUnitTest_noUserStored_didNotReceiveSignOutNotification() {
         let e = expectation(
-            forNotification: .didSignOut,
+            forNotification: .didSignOutLastAccount,
             object: nil,
             notificationCenter: notificationCenter
         )
@@ -89,7 +89,7 @@ final class WindowsCoordinatorTests: XCTestCase {
 
     func testStart_withNoUserStored_receiveDidSignOutNotification() {
         expectation(
-            forNotification: .didSignOut,
+            forNotification: .didSignOutLastAccount,
             object: nil,
             notificationCenter: notificationCenter
         )
@@ -180,8 +180,7 @@ private extension WindowsCoordinatorTests {
             coreKeyMaker: keyMaker
         )
         let pushService = PushNotificationService(
-            notificationCenter: notificationCenter,
-            dependencies: .init(lockCacheStatus: keyMaker, registerDevice: MockRegisterDeviceUseCase())
+            dependencies: .init(lockCacheStatus: keyMaker, notificationCenter: notificationCenter)
         )
         let queueManager = QueueManager(messageQueue: MockPMPersistentQueueProtocol(), miscQueue: MockPMPersistentQueueProtocol())
         userDefaultMock = .init(suiteName: randomSuiteName)!

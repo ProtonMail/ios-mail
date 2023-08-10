@@ -50,22 +50,18 @@ private extension PushNavigationResolver {
             logPushNotificationError(message: "No encrypted message or uid found.")
             return nil
         }
-        guard let encryptionKit = dependencies.subscriptionsPack.encryptionKit(forUID: receiverId) else {
-            logPushNotificationError(message: "No encryption kit found.")
-            return nil
-        }
-        let decryptionKey = DecryptionKey(
-            privateKey: ArmoredKey(value: encryptionKit.privateKey),
-            passphrase: Passphrase(value: encryptionKit.passphrase)
-        )
+        let decryptionKeys = dependencies
+            .decryptionKeysProvider
+            .decryptionKeysAppendingLegacyKey(from: dependencies.oldEncryptionKitSaver, forUID: receiverId)
         do {
             let plaintext: String = try Decryptor.decrypt(
-                decryptionKeys: [decryptionKey],
+                decryptionKeys: decryptionKeys,
                 encrypted: ArmoredMessage(value: message)
             )
             return try PushContent(json: plaintext)
         } catch {
             logPushNotificationError(message: "Fail decrypting message. Error: \(String(describing: error))")
+            dependencies.failedPushDecryptionMarker.markPushNotificationDecryptionFailure()
             return nil
         }
     }
@@ -127,10 +123,19 @@ private extension PushNavigationResolver {
 extension PushNavigationResolver {
 
     struct Dependencies {
-        let subscriptionsPack: SubscriptionsPackProtocol
+        let decryptionKeysProvider: PushDecryptionKeysProvider
+        /// this is the old approach to store EncryptionKits for push notifications
+        let oldEncryptionKitSaver: Saver<Set<PushSubscriptionSettings>>
+        let failedPushDecryptionMarker: FailedPushDecryptionMarker
 
-        init(subscriptionsPack: SubscriptionsPackProtocol) {
-            self.subscriptionsPack = subscriptionsPack
+        init(
+            decryptionKeysProvider: PushDecryptionKeysProvider = PushEncryptionKitSaver.shared,
+            oldEncryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
+            failedPushDecryptionMarker: FailedPushDecryptionMarker = SharedUserDefaults.shared
+        ) {
+            self.decryptionKeysProvider = decryptionKeysProvider
+            self.oldEncryptionKitSaver = oldEncryptionKitSaver
+            self.failedPushDecryptionMarker = failedPushDecryptionMarker
         }
     }
 }

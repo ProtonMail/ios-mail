@@ -338,15 +338,18 @@ class MockDeviceRegistrationUseCase: DeviceRegistrationUseCase {
 
 }
 
+class MockFailedPushDecryptionMarker: FailedPushDecryptionMarker {
+    @FuncStub(MockFailedPushDecryptionMarker.markPushNotificationDecryptionFailure) var markPushNotificationDecryptionFailureStub
+    func markPushNotificationDecryptionFailure() {
+        markPushNotificationDecryptionFailureStub()
+    }
+
+}
+
 class MockFailedPushDecryptionProvider: FailedPushDecryptionProvider {
     @PropertyStub(\MockFailedPushDecryptionProvider.hadPushNotificationDecryptionFailed, initialGet: Bool()) var hadPushNotificationDecryptionFailedStub
     var hadPushNotificationDecryptionFailed: Bool {
         hadPushNotificationDecryptionFailedStub()
-    }
-
-    @FuncStub(MockFailedPushDecryptionProvider.markPushNotificationDecryptionFailure) var markPushNotificationDecryptionFailureStub
-    func markPushNotificationDecryptionFailure() {
-        markPushNotificationDecryptionFailureStub()
     }
 
     @FuncStub(MockFailedPushDecryptionProvider.clearPushNotificationDecryptionFailure) var clearPushNotificationDecryptionFailureStub
@@ -899,6 +902,32 @@ class MockPinFailedCountCache: PinFailedCountCache {
 
 }
 
+class MockPushDecryptionKeysProvider: PushDecryptionKeysProvider {
+    @PropertyStub(\MockPushDecryptionKeysProvider.pushNotificationsDecryptionKeys, initialGet: [DecryptionKey]()) var pushNotificationsDecryptionKeysStub
+    var pushNotificationsDecryptionKeys: [DecryptionKey] {
+        pushNotificationsDecryptionKeysStub()
+    }
+
+}
+
+class MockPushEncryptionManagerProtocol: PushEncryptionManagerProtocol {
+    @FuncStub(MockPushEncryptionManagerProtocol.registerDeviceForNotifications) var registerDeviceForNotificationsStub
+    func registerDeviceForNotifications(deviceToken: String) {
+        registerDeviceForNotificationsStub(deviceToken)
+    }
+
+    @FuncStub(MockPushEncryptionManagerProtocol.registerDeviceAfterNewAccountSignIn) var registerDeviceAfterNewAccountSignInStub
+    func registerDeviceAfterNewAccountSignIn() {
+        registerDeviceAfterNewAccountSignInStub()
+    }
+
+    @FuncStub(MockPushEncryptionManagerProtocol.deleteAllCachedData) var deleteAllCachedDataStub
+    func deleteAllCachedData() {
+        deleteAllCachedDataStub()
+    }
+
+}
+
 class MockQueueHandlerRegister: QueueHandlerRegister {
     @FuncStub(MockQueueHandlerRegister.registerHandler) var registerHandlerStub
     func registerHandler(_ handler: QueueHandler) {
@@ -1031,6 +1060,14 @@ class MockSideMenuProtocol: SideMenuProtocol {
 
 }
 
+class MockSignInProvider: SignInProvider {
+    @PropertyStub(\MockSignInProvider.isSignedIn, initialGet: Bool()) var isSignedInStub
+    var isSignedIn: Bool {
+        isSignedInStub()
+    }
+
+}
+
 class MockSwipeActionInfo: SwipeActionInfo {
     @PropertyStub(\MockSwipeActionInfo.swipeLeft, initialGet: Int()) var swipeLeftStub
     var swipeLeft: Int {
@@ -1102,6 +1139,14 @@ class MockUnlockManagerDelegate: UnlockManagerDelegate {
     @FuncStub(MockUnlockManagerDelegate.loadUserDataAfterUnlock) var loadUserDataAfterUnlockStub
     func loadUserDataAfterUnlock() {
         loadUserDataAfterUnlockStub()
+    }
+
+}
+
+class MockUnlockProvider: UnlockProvider {
+    @PropertyStub(\MockUnlockProvider.isUnlocked, initialGet: Bool()) var isUnlockedStub
+    var isUnlocked: Bool {
+        isUnlockedStub()
     }
 
 }

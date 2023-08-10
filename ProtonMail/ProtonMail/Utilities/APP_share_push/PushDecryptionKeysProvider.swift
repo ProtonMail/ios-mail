@@ -18,6 +18,7 @@
 import Foundation
 import ProtonCore_Crypto
 
+// sourcery: mock
 protocol PushDecryptionKeysProvider {
     var pushNotificationsDecryptionKeys: [DecryptionKey] { get }
 }

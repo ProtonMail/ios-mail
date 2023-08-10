@@ -1400,7 +1400,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     private func setupNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(MessageDataService.didSignOutNotification(_:)),
-                                               name: NSNotification.Name.didSignOut,
+                                               name: .didSignOutLastAccount,
                                                object: nil)
         // TODO: add monitoring for didBecomeActive
     }

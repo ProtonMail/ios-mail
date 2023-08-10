@@ -485,7 +485,7 @@ final class UnlockManagerTests: XCTestCase {
             completion()
         }
         expectation(
-            forNotification: .didSignOut,
+            forNotification: .didSignOutLastAccount,
             object: nil,
             notificationCenter: notificationCenter
         )

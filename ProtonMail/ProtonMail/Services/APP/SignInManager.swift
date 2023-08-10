@@ -33,16 +33,20 @@ class SignInManager: Service {
     let queueHandlerRegister: QueueHandlerRegister
     private var contactCacheStatus: ContactCacheStatusProtocol
     private let updateSwipeAction: UpdateSwipeActionDuringLoginUseCase
+    private let dependencies: Dependencies
 
-    init(usersManager: UsersManager,
-         contactCacheStatus: ContactCacheStatusProtocol,
-         queueHandlerRegister: QueueHandlerRegister,
-         updateSwipeActionUseCase: UpdateSwipeActionDuringLoginUseCase)
-    {
+    init(
+        usersManager: UsersManager,
+        contactCacheStatus: ContactCacheStatusProtocol,
+        queueHandlerRegister: QueueHandlerRegister,
+        updateSwipeActionUseCase: UpdateSwipeActionDuringLoginUseCase,
+        dependencies: Dependencies = .init()
+    ) {
         self.usersManager = usersManager
         self.contactCacheStatus = contactCacheStatus
         self.queueHandlerRegister = queueHandlerRegister
         self.updateSwipeAction = updateSwipeActionUseCase
+        self.dependencies = dependencies
         trackLifetime()
     }
 
@@ -82,6 +86,8 @@ class SignInManager: Service {
 
         self.usersManager.loggedIn()
         self.contactCacheStatus.contactsCached = 0
+
+        dependencies.notificationCenter.post(name: .didSignIn, object: nil)
 
         return .success
     }
@@ -149,6 +155,16 @@ extension SignInManager {
         case success
         case freeAccountsLimitReached
         case errorOccurred
+    }
+}
+
+extension SignInManager {
+    struct Dependencies {
+        let notificationCenter: NotificationCenter
+
+        init(notificationCenter: NotificationCenter = .default) {
+            self.notificationCenter = notificationCenter
+        }
     }
 }
 

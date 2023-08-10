@@ -229,7 +229,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         user.reportService.reportBug(text,
                                      username: String(username),
                                      email: self.user.defaultEmail,
-                                     lastReceivedPush: SharedUserDefaults().lastReceivedPushTimestamp,
+                                     lastReceivedPush: "n/a",
                                      reachabilityStatus: reachabilityStatus) { error in
             MBProgressHUD.hide(for: v, animated: true)
             self.sendButton.isEnabled = true
