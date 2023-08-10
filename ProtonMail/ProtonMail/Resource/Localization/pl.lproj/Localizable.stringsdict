@@ -162,26 +162,6 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
 	</dict>
-	<key>%d day</key>
-	<dict>
-		<key>DAY</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d dni</string>
-			<key>many</key>
-			<string>%d dni</string>
-			<key>one</key>
-			<string>%d dzień</string>
-			<key>other</key>
-			<string>%d dni</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@DAY@</string>
-	</dict>
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -223,26 +203,6 @@
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
-	</dict>
-	<key>%d hour</key>
-	<dict>
-		<key>HOUR</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d godziny</string>
-			<key>many</key>
-			<string>%d godzin</string>
-			<key>one</key>
-			<string>%d godzina</string>
-			<key>other</key>
-			<string>%d godziny</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@HOUR@</string>
 	</dict>
 	<key>%d member</key>
 	<dict>
@@ -303,26 +263,6 @@
 			<key>other</key>
 			<string>%d wiadomości zostało przeniesionych do Szkiców</string>
 		</dict>
-	</dict>
-	<key>%d min</key>
-	<dict>
-		<key>MINUTE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>%d minuty</string>
-			<key>many</key>
-			<string>%d minut</string>
-			<key>one</key>
-			<string>%d minuta</string>
-			<key>other</key>
-			<string>%d minuty</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
 	</dict>
 	<key>%d seconds</key>
 	<dict>

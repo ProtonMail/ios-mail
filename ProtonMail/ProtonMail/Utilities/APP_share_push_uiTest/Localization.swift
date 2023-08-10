@@ -998,12 +998,6 @@ class LocalizedString {
     lazy var _mailbox_draft_is_uploading = NSLocalizedString("Draft is still uploading…", comment: "title of toast message that user taps the message which is uploading")
     lazy var _mailbox_draft_is_sending = NSLocalizedString("Sending message…", comment: "content of the sending mesage that will display this text on the date label")
     lazy var _messages_validation_failed_try_again = NSLocalizedString("Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.", comment: "message shown in the notification when the recipient validation is failed while sending")
-    lazy var _week = NSLocalizedString("week", comment: "week")
-    lazy var _day = NSLocalizedString("%d day", comment: "day")
-
-    lazy var _hour = NSLocalizedString("%d hour", comment: "hour")
-
-    lazy var _minute = NSLocalizedString("%d min", comment: "minute")
 
     lazy var _unread_action = NSLocalizedString("unread", comment: "The unread title of unread action button in mailbox view")
 

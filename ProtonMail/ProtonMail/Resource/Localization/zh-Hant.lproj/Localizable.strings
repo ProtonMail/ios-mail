@@ -2315,9 +2315,6 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "我們建議為以下收件人設定密碼，又或者停用 PGP：";
 
-/* week */
-"week" = "週";
-
 /* Example feedback */
 "Wonderful" = "太棒了";
 

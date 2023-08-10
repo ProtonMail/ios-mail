@@ -2315,9 +2315,6 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Συνιστούμε να ορίσετε έναν κωδικό πρόσβασης ή να απενεργοποιρίσετε το PGP για τους ακόλουθους παραλήπτες:";
 
-/* week */
-"week" = "εβδομάδα";
-
 /* Example feedback */
 "Wonderful" = "Θαυμάσια";
 

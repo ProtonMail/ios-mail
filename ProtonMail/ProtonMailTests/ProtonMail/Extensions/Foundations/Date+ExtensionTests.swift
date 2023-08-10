@@ -150,7 +150,7 @@ final class Date_ExtensionTests: XCTestCase {
 
         let time = Date(timeIntervalSince1970: Double(interval) + 120.0)
         let result = time.countExpirationTime(processInfo: processInfo)
-        XCTAssertEqual(result, "3 mins")
+        XCTAssertEqual(result, "2 minutes")
     }
 
     func testCountExpirationTimeHourLevel() {

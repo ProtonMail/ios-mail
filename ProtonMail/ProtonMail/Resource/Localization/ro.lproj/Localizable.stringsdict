@@ -146,24 +146,6 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
 	</dict>
-	<key>%d day</key>
-	<dict>
-		<key>DAY</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d zile</string>
-			<key>one</key>
-			<string>%d zi</string>
-			<key>other</key>
-			<string>%d de zile</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@DAY@</string>
-	</dict>
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -201,24 +183,6 @@
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
-	</dict>
-	<key>%d hour</key>
-	<dict>
-		<key>HOUR</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>few</key>
-			<string>%d ore</string>
-			<key>one</key>
-			<string>%d oră</string>
-			<key>other</key>
-			<string>%d de ore</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@HOUR@</string>
 	</dict>
 	<key>%d member</key>
 	<dict>
@@ -273,24 +237,6 @@
 			<key>other</key>
 			<string>S-au mutat %d de mesaje în «Ciorne».</string>
 		</dict>
-	</dict>
-	<key>%d min</key>
-	<dict>
-		<key>MINUTE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>few</key>
-			<string>%d min</string>
-			<key>one</key>
-			<string>%d min</string>
-			<key>other</key>
-			<string>%d de min</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
 	</dict>
 	<key>%d seconds</key>
 	<dict>

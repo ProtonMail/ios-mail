@@ -2309,9 +2309,6 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "以下の宛先へ PGP を無効にして送信する場合、パスワードを設定することをおすすめします:";
 
-/* week */
-"week" = "週間";
-
 /* Example feedback */
 "Wonderful" = "すばらしい";
 

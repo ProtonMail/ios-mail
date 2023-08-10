@@ -107,9 +107,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d tentative restante avant l'effacement sécurisé des données !</string>
+			<string>%d tentative restante avant l&apos;effacement sécurisé des données !</string>
 			<key>other</key>
-			<string>%d tentatives restantes avant l'effacement sécurisé des données !</string>
+			<string>%d tentatives restantes avant l&apos;effacement sécurisé des données !</string>
 		</dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@ATTEMPT@</string>
@@ -130,22 +130,6 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
 	</dict>
-	<key>%d day</key>
-	<dict>
-		<key>DAY</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d jour</string>
-			<key>other</key>
-			<string>%d jours</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@DAY@</string>
-	</dict>
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -157,9 +141,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d traqueur d'e-mails bloqué</string>
+			<string>%d traqueur d&apos;e-mails bloqué</string>
 			<key>other</key>
-			<string>%d traqueurs d'e-mails bloqués</string>
+			<string>%d traqueurs d&apos;e-mails bloqués</string>
 		</dict>
 	</dict>
 	<key>%d email trackers found</key>
@@ -173,28 +157,12 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%d traqueur d'e-mails trouvé</string>
+			<string>%d traqueur d&apos;e-mails trouvé</string>
 			<key>other</key>
-			<string>%d traqueurs d'e-mails trouvés</string>
+			<string>%d traqueurs d&apos;e-mails trouvés</string>
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
-	</dict>
-	<key>%d hour</key>
-	<dict>
-		<key>HOUR</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d heure</string>
-			<key>other</key>
-			<string>%d heures</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@HOUR@</string>
 	</dict>
 	<key>%d member</key>
 	<dict>
@@ -243,22 +211,6 @@
 			<key>other</key>
 			<string>%d messages déplacés dans le dossier Brouillons.</string>
 		</dict>
-	</dict>
-	<key>%d min</key>
-	<dict>
-		<key>MINUTE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d min</string>
-			<key>other</key>
-			<string>%d min</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
 	</dict>
 	<key>%d seconds</key>
 	<dict>

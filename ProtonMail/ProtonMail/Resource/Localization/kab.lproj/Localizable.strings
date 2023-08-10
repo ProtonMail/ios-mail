@@ -2030,9 +2030,6 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Ad nsemter aseɣwer n wawal uffir, neɣ asexsi n PGP i yiuɣerwaḍen-agi:";
 
-/* week */
-"week" = "imalas";
-
 /* Example feedback */
 "Wonderful" = "Igerrez";
 

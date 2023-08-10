@@ -28,9 +28,6 @@
 /* Banner message */
 "%d message moved to Drafts" = "%d message moved to Drafts";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minutes" = "%d Minutes";
 
@@ -2134,9 +2131,6 @@
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "We recommend setting up a password instead, or disabling PGP for the following recipients:";
-
-/* week */
-"week" = "week";
 
 /* Example feedback */
 "Wonderful" = "Wonderful";

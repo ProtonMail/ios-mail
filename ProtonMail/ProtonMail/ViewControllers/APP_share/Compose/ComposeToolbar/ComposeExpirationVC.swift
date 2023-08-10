@@ -28,8 +28,15 @@ protocol ComposeExpirationDelegate: AnyObject {
 }
 
 final class ComposeExpirationVC: UIViewController {
+    private static let expirationTimeFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.weekOfMonth, .day, .hour]
+        formatter.maximumUnitCount = 1
+        formatter.unitsStyle = .full
+        return formatter
+    }()
 
-    enum ExpirationType {
+    enum ExpirationType: CaseIterable {
         case none
         case oneHour
         case oneDay
@@ -55,26 +62,30 @@ final class ComposeExpirationVC: UIViewController {
         }
 
         var title: String {
+            var dateComponents = DateComponents()
+
             switch self {
             case .none:
                 return LocalString._none
             case .oneHour:
-                return String.localizedStringWithFormat(LocalString._hour, 1)
+                dateComponents.hour = 1
             case .oneDay:
-                return String.localizedStringWithFormat(LocalString._day, 1)
+                dateComponents.day = 1
             case .threeDays:
-                return String.localizedStringWithFormat(LocalString._day, 3)
+                dateComponents.day = 3
             case .oneWeek:
-                return "1 \(LocalString._week)"
+                dateComponents.weekOfMonth = 1
             case .custom:
                 return LocalString._composer_expiration_custom
             }
+
+            return ComposeExpirationVC.expirationTimeFormatter.string(from: dateComponents) ?? ""
         }
     }
 
     private var tableView: UITableView?
     private var timePicker: UIPickerView?
-    private var rows: [ExpirationType] = []
+    private let rows = ExpirationType.allCases
     private var selectedType: ExpirationType = .none
     private let cellID = "ExpirationCell"
     private let cellHeight: CGFloat = 48
@@ -106,8 +117,6 @@ extension ComposeExpirationVC {
         self.setupNavigation()
         self.setupTableView()
 
-        self.rows = [.none, .oneHour, .oneDay,
-                     .threeDays, .oneWeek, .custom]
         self.selectedType = self.getSelectType()
         self.tableView?.reloadData()
         if self.selectedType == .custom {
@@ -290,8 +299,10 @@ extension ComposeExpirationVC: UIPickerViewDelegate, UIPickerViewDataSource {
             pickerLabel?.set(text: nil, preferredFont: .subheadline)
             pickerLabel?.textAlignment = .center
         }
-        let unit = component == 0 ? LocalString._day : LocalString._hour
-        pickerLabel?.text = String(format: unit, row)
+        var dateComponents = DateComponents()
+        let keyPath: WritableKeyPath<DateComponents, Int?> = [\.day, \.hour][component]
+        dateComponents[keyPath: keyPath] = row
+        pickerLabel?.text = Self.expirationTimeFormatter.string(from: dateComponents)
 
         return pickerLabel ?? UILabel()
     }

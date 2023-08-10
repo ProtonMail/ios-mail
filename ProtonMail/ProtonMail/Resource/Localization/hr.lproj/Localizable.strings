@@ -1640,9 +1640,6 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Umjesto toga preporučujemo postavljanje lozinke ili onemogućavanje PGP-a za sljedeće primatelje:";
 
-/* week */
-"week" = "tjedan";
-
 /* default vcard types */
 "Work" = "Posao";
 

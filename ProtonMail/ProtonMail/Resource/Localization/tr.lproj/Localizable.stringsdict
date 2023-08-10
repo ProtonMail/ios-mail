@@ -130,22 +130,6 @@
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@Conversation@</string>
 	</dict>
-	<key>%d day</key>
-	<dict>
-		<key>DAY</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d gün</string>
-			<key>other</key>
-			<string>%d gün</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@DAY@</string>
-	</dict>
 	<key>%d email trackers blocked</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -179,22 +163,6 @@
 			<key>zero</key>
 			<string>No email trackers found</string>
 		</dict>
-	</dict>
-	<key>%d hour</key>
-	<dict>
-		<key>HOUR</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d saat</string>
-			<key>other</key>
-			<string>%d saat</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@HOUR@</string>
 	</dict>
 	<key>%d member</key>
 	<dict>
@@ -243,22 +211,6 @@
 			<key>other</key>
 			<string>%d ileti Taslaklar kutusuna taşındı</string>
 		</dict>
-	</dict>
-	<key>%d min</key>
-	<dict>
-		<key>MINUTE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d dk</string>
-			<key>other</key>
-			<string>%d dk</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
 	</dict>
 	<key>%d seconds</key>
 	<dict>

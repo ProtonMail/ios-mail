@@ -100,6 +100,13 @@ extension Date {
 
 // MARK: Count expiration time
 extension Date {
+    private static let expirationTimeFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.day, .hour, .minute]
+        formatter.maximumUnitCount = 1
+        formatter.unitsStyle = .full
+        return formatter
+    }()
 
     static func getReferenceDate(connectionStatus: ConnectionStatus = InternetConnectionStatusProvider.shared.status,
                                  processInfo: SystemUpTimeProtocol?,
@@ -134,18 +141,6 @@ extension Date {
 
     func countExpirationTime(processInfo: SystemUpTimeProtocol?) -> String {
         let unixTime = Date.getReferenceDate(processInfo: processInfo)
-        let distance = unixTime.distance(to: self) + 60
-
-        if distance > 86_400 {
-            let day = Int(distance / 86_400)
-            return String.localizedStringWithFormat(LocalString._day, day)
-        } else if distance > 3_600 {
-            let hour = Int(distance / 3_600)
-            return String.localizedStringWithFormat(LocalString._hour, hour)
-        } else {
-            let minute = Int(distance / 60)
-            return String.localizedStringWithFormat(LocalString._minute, minute)
-        }
+        return Self.expirationTimeFormatter.string(from: unixTime, to: self)!
     }
-
 }

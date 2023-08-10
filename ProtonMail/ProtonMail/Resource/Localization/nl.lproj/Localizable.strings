@@ -2315,9 +2315,6 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "We raden aan om een wachtwoord in te stellen of PGP uit te schakelen voor de volgende ontvangers:";
 
-/* week */
-"week" = "week";
-
 /* Example feedback */
 "Wonderful" = "Uitstekend";
 
