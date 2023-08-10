@@ -1,20 +1,32 @@
 
 #import "SentryCoreDataTracker.h"
+#import "SentryFrame.h"
 #import "SentryHub+Private.h"
+#import "SentryInternalDefines.h"
 #import "SentryLog.h"
+#import "SentryNSProcessInfoWrapper.h"
 #import "SentryPredicateDescriptor.h"
 #import "SentrySDK+Private.h"
 #import "SentryScope+Private.h"
 #import "SentrySpanProtocol.h"
+@import SentryPrivate;
+#import "SentryStacktrace.h"
+#import "SentryThreadInspector.h"
+#import "SentryTraceOrigins.h"
 
 @implementation SentryCoreDataTracker {
     SentryPredicateDescriptor *predicateDescriptor;
+    SentryThreadInspector *_threadInspector;
+    SentryNSProcessInfoWrapper *_processInfoWrapper;
 }
 
-- (instancetype)init
+- (instancetype)initWithThreadInspector:(SentryThreadInspector *)threadInspector
+                     processInfoWrapper:(SentryNSProcessInfoWrapper *)processInfoWrapper;
 {
     if (self = [super init]) {
         predicateDescriptor = [[SentryPredicateDescriptor alloc] init];
+        _threadInspector = threadInspector;
+        _processInfoWrapper = processInfoWrapper;
     }
     return self;
 }
@@ -28,6 +40,7 @@
     [SentrySDK.currentHub.scope useSpan:^(id<SentrySpan> _Nullable span) {
         fetchSpan = [span startChildWithOperation:SENTRY_COREDATA_FETCH_OPERATION
                                       description:[self descriptionFromRequest:request]];
+        fetchSpan.origin = SentryTraceOriginAutoDBCoreData;
     }];
 
     if (fetchSpan) {
@@ -47,13 +60,14 @@
     NSArray *result = original(request, error);
 
     if (fetchSpan) {
-        [fetchSpan setDataValue:[NSNumber numberWithInteger:result.count] forKey:@"read_count"];
+        [self mainThreadExtraInfo:fetchSpan];
 
+        [fetchSpan setDataValue:[NSNumber numberWithInteger:result.count] forKey:@"read_count"];
         [fetchSpan
-            finishWithStatus:error != nil ? kSentrySpanStatusInternalError : kSentrySpanStatusOk];
+            finishWithStatus:result == nil ? kSentrySpanStatusInternalError : kSentrySpanStatusOk];
 
         SENTRY_LOG_DEBUG(@"SentryCoreDataTracker automatically finished span with status: %@",
-            error == nil ? @"ok" : @"error");
+            result == nil ? @"error" : @"ok");
     }
 
     return result;
@@ -73,7 +87,7 @@
             fetchSpan = [span startChildWithOperation:SENTRY_COREDATA_SAVE_OPERATION
                                           description:[self descriptionForOperations:operations
                                                                            inContext:context]];
-
+            fetchSpan.origin = SentryTraceOriginAutoDBCoreData;
             if (fetchSpan) {
                 [SentryLog
                     logWithMessage:[NSString
@@ -91,14 +105,28 @@
     BOOL result = original(error);
 
     if (fetchSpan) {
-        [fetchSpan
-            finishWithStatus:*error != nil ? kSentrySpanStatusInternalError : kSentrySpanStatusOk];
+        [self mainThreadExtraInfo:fetchSpan];
+        [fetchSpan finishWithStatus:result ? kSentrySpanStatusOk : kSentrySpanStatusInternalError];
 
         SENTRY_LOG_DEBUG(@"SentryCoreDataTracker automatically finished span with status: %@",
-            *error == nil ? @"ok" : @"error");
+            result ? @"ok" : @"error");
     }
 
     return result;
+}
+
+- (void)mainThreadExtraInfo:(SentrySpan *)span
+{
+    BOOL isMainThread = [NSThread isMainThread];
+
+    [span setDataValue:@(isMainThread) forKey:BLOCKED_MAIN_THREAD];
+
+    if (!isMainThread) {
+        return;
+    }
+
+    SentryStacktrace *stackTrace = [_threadInspector stacktraceForCurrentThreadAsyncUnsafe];
+    [span setFrames:stackTrace.frames];
 }
 
 - (NSString *)descriptionForOperations:
@@ -147,8 +175,9 @@
 {
     NSMutableDictionary<NSString *, NSNumber *> *result = [NSMutableDictionary new];
 
-    for (NSManagedObject *item in entities) {
-        NSString *cl = item.entity.name;
+    for (id item in entities) {
+        NSString *cl
+            = ((NSManagedObject *)item).entity.name ?: [SwiftDescriptor getObjectClassName:item];
         NSNumber *count = result[cl];
         result[cl] = [NSNumber numberWithInt:count.intValue + 1];
     }

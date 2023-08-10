@@ -224,6 +224,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SentryPrivate/SentryPrivate.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Enterprise Debug" ]]; then
@@ -275,6 +276,7 @@ if [[ "$CONFIGURATION" == "Enterprise Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SentryPrivate/SentryPrivate.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Enterprise Release" ]]; then
@@ -325,6 +327,7 @@ if [[ "$CONFIGURATION" == "Enterprise Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SentryPrivate/SentryPrivate.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -375,6 +378,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/SentryPrivate/SentryPrivate.framework"
   install_framework "${PODS_XCFRAMEWORKS_BUILD_DIR}/ProtonCore-OpenPGP/OpenPGP.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

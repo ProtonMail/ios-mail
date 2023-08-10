@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrashMonitorContext.h
 //
@@ -40,10 +41,6 @@ extern "C" {
 typedef struct SentryCrash_MonitorContext {
     /** Unique identifier for this event. */
     const char *eventID;
-    /**
-     If true, so reported user exception will have the current snapshot.
-     */
-    bool currentSnapshotUserReported;
 
     /** If true, the environment has crashed hard, and only async-safe
      *  functions should be used.

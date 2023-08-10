@@ -1,5 +1,6 @@
 source "https://rubygems.org"
 
+gem "ffi"
 gem "cocoapods"
 gem "fastlane"
 # a fork that handles absolute paths, needed for code coverage when building on two different machines

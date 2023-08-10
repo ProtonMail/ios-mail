@@ -10,7 +10,8 @@
     return [self initWithTotal:total
                         frozen:frozen
                           slow:slow
-               frameTimestamps:@[]
+           slowFrameTimestamps:@[]
+         frozenFrameTimestamps:@[]
            frameRateTimestamps:@[]];
 #    else
     if (self = [super init]) {
@@ -27,19 +28,32 @@
 - (instancetype)initWithTotal:(NSUInteger)total
                        frozen:(NSUInteger)frozen
                          slow:(NSUInteger)slow
-              frameTimestamps:(SentryFrameInfoTimeSeries *)frameTimestamps
+          slowFrameTimestamps:(SentryFrameInfoTimeSeries *)slowFrameTimestamps
+        frozenFrameTimestamps:(SentryFrameInfoTimeSeries *)frozenFrameTimestamps
           frameRateTimestamps:(SentryFrameInfoTimeSeries *)frameRateTimestamps
 {
     if (self = [super init]) {
         _total = total;
         _slow = slow;
         _frozen = frozen;
-        _frameTimestamps = frameTimestamps;
+        _slowFrameTimestamps = slowFrameTimestamps;
+        _frozenFrameTimestamps = frozenFrameTimestamps;
         _frameRateTimestamps = frameRateTimestamps;
     }
 
     return self;
 }
+
+- (nonnull id)copyWithZone:(nullable NSZone *)zone
+{
+    return [[SentryScreenFrames allocWithZone:zone] initWithTotal:_total
+                                                           frozen:_frozen
+                                                             slow:_slow
+                                              slowFrameTimestamps:[_slowFrameTimestamps copy]
+                                            frozenFrameTimestamps:[_frozenFrameTimestamps copy]
+                                              frameRateTimestamps:[_frameRateTimestamps copy]];
+}
+
 #    endif // SENTRY_TARGET_PROFILING_SUPPORTED
 
 @end

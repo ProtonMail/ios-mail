@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrash.h
 //
@@ -42,6 +43,8 @@ typedef enum {
 } SentryCrashCDeleteBehavior;
 
 static NSString *const SENTRYCRASH_REPORT_ATTACHMENTS_ITEM = @"attachments";
+
+@class SentryNSNotificationCenterWrapper;
 
 /**
  * Reports any crashes that occur in the application.
@@ -98,13 +101,6 @@ static NSString *const SENTRYCRASH_REPORT_ATTACHMENTS_ITEM = @"attachments";
  */
 @property (nonatomic, readwrite, assign) BOOL introspectMemory;
 
-/** If YES, monitor all Objective-C/Swift deallocations and keep track of any
- * accesses after deallocation.
- *
- * Default: NO
- */
-@property (nonatomic, readwrite, assign) BOOL catchZombies;
-
 /** List of Objective-C classes that should never be introspected.
  * Whenever a class in this list is encountered, only the class name will be
  * recorded. This can be useful for information security concerns.
@@ -139,10 +135,6 @@ static NSString *const SENTRYCRASH_REPORT_ATTACHMENTS_ITEM = @"attachments";
  */
 @property (nonatomic, readwrite, assign) SentryCrashReportWriteCallback onCrash;
 
-/** Add a copy of SentryCrash's console log messages to the crash report.
- */
-@property (nonatomic, readwrite, assign) BOOL addConsoleLogToReport;
-
 /** Print the previous app run log to the console when installing SentryCrash.
  *  This is primarily for debugging purposes.
  */
@@ -155,11 +147,6 @@ static NSString *const SENTRYCRASH_REPORT_ATTACHMENTS_ITEM = @"attachments";
 /** Exposes the uncaughtExceptionHandler if set from SentryCrash. Is nil if
  * debugger is running. **/
 @property (nonatomic, assign) NSUncaughtExceptionHandler *uncaughtExceptionHandler;
-
-/** Exposes the currentSnapshotUserReportedExceptionHandler if set from
- * SentryCrash. Is nil if debugger is running. **/
-@property (nonatomic, assign)
-    NSUncaughtExceptionHandler *currentSnapshotUserReportedExceptionHandler;
 
 #pragma mark - Information -
 
@@ -207,6 +194,15 @@ static NSString *const SENTRYCRASH_REPORT_ATTACHMENTS_ITEM = @"attachments";
  */
 - (BOOL)install;
 
+/**
+ * It's not really possible to completely uninstall SentryCrash. The best we can do is to deactivate
+ * all the monitors, keep track of the already installed monitors to install them again if someone
+ * calls install, clear the `onCrash` callback, and stop the SentryCrashCachedData. For the
+ * ``SentryCrashMonitorTypeMachException`` we let the exception threads running, but they don't
+ * report anything.
+ */
+- (void)uninstall;
+
 /** Send all outstanding crash reports to the current sink.
  * It will only attempt to send the most recent 5 reports. All others will be
  * deleted. Once the reports are successfully sent to the server, they may be
@@ -243,6 +239,12 @@ static NSString *const SENTRYCRASH_REPORT_ATTACHMENTS_ITEM = @"attachments";
  * @param reportID An ID of report to delete.
  */
 - (void)deleteReportWithID:(NSNumber *)reportID;
+
+/**
+ * Only needed for testing.
+ */
+- (void)setSentryNSNotificationCenterWrapper:
+    (SentryNSNotificationCenterWrapper *)notificationCenter;
 
 @end
 

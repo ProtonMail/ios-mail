@@ -6,7 +6,9 @@ NS_ASSUME_NONNULL_BEGIN
 NSString *nameForSentrySessionStatus(SentrySessionStatus status);
 
 @interface
-SentrySession (Private)
+SentrySession ()
+
+@property (nonatomic) NSUInteger errors;
 
 - (void)setFlagInit;
 

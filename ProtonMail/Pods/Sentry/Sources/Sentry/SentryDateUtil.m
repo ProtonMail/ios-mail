@@ -1,5 +1,6 @@
 #import "SentryDateUtil.h"
-#import "SentryCurrentDate.h"
+#import "SentryCurrentDateProvider.h"
+#import "SentryDependencyContainer.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -12,20 +13,21 @@ SentryDateUtil ()
 
 + (BOOL)isInFuture:(NSDate *_Nullable)date
 {
-    if (nil == date)
+    if (date == nil)
         return NO;
 
-    NSComparisonResult result = [[SentryCurrentDate date] compare:date];
+    NSComparisonResult result =
+        [[SentryDependencyContainer.sharedInstance.dateProvider date] compare:date];
     return result == NSOrderedAscending;
 }
 
 + (NSDate *_Nullable)getMaximumDate:(NSDate *_Nullable)first andOther:(NSDate *_Nullable)second
 {
-    if (nil == first && nil == second)
+    if (first == nil && second == nil)
         return nil;
-    if (nil == first)
+    if (first == nil)
         return second;
-    if (nil == second)
+    if (second == nil)
         return first;
 
     NSComparisonResult result = [first compare:second];

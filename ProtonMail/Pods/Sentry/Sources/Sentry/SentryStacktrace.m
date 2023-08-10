@@ -1,4 +1,5 @@
 #import "SentryStacktrace.h"
+#import "NSMutableDictionary+Sentry.h"
 #import "SentryFrame.h"
 #import "SentryLog.h"
 
@@ -17,8 +18,10 @@ NS_ASSUME_NONNULL_BEGIN
     return self;
 }
 
-/// This function fixes duplicate frames and removes the first duplicate
-/// https://github.com/kstenerud/KSCrash/blob/05cdc801cfc578d256f85de2e72ec7877cbe79f8/Source/KSCrash/Recording/Tools/KSStackCursor_MachineContext.c#L84
+/**
+ * This function fixes duplicate frames and removes the first duplicate
+ * https://github.com/kstenerud/KSCrash/blob/05cdc801cfc578d256f85de2e72ec7877cbe79f8/Source/KSCrash/Recording/Tools/KSStackCursor_MachineContext.c#L84
+ */
 - (void)fixDuplicateFrames
 {
     if (self.frames.count < 2 || nil == self.registers) {
@@ -55,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
     if (self.registers.count > 0) {
         [serializedData setValue:self.registers forKey:@"registers"];
     }
-    [serializedData setValue:self.snapshot forKey:@"snapshot"];
+    [serializedData setBoolValue:self.snapshot forKey:@"snapshot"];
 
     return serializedData;
 }

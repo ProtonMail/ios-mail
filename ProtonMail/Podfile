@@ -147,7 +147,7 @@ target 'Siri' do
 end
 
 target 'ProtonMailAnalytics' do
-  pod 'Sentry', :git => 'git@gitlab.protontech.ch:jchen/sentry-cocoa.git', :tag => '7.31.2.fork'
+  pod 'Sentry', :git => 'git@gitlab.protontech.ch:jchen/sentry-cocoa.git', :tag => '8.9.3.fork'
 end
 
 post_install do | installer |

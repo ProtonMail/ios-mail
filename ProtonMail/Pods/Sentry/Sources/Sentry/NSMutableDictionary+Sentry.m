@@ -18,4 +18,11 @@ NSMutableDictionary (Sentry)
     }];
 }
 
+- (void)setBoolValue:(nullable NSNumber *)value forKey:(NSString *)key
+{
+    if (value != nil) {
+        [self setValue:@([value boolValue]) forKey:key];
+    }
+}
+
 @end

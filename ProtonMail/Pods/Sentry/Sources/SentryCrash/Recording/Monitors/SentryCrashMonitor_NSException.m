@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrashMonitor_NSException.m
 //
@@ -56,7 +57,7 @@ static NSUncaughtExceptionHandler *g_previousUncaughtExceptionHandler;
  */
 
 static void
-handleException(NSException *exception, BOOL currentSnapshotUserReported)
+handleException(NSException *exception)
 {
     SentryCrashLOG_DEBUG(@"Trapped exception %@", exception);
     if (g_isEnabled) {
@@ -94,33 +95,22 @@ handleException(NSException *exception, BOOL currentSnapshotUserReported)
         crashContext->exceptionName = crashContext->NSException.name;
         crashContext->crashReason = [[exception reason] UTF8String];
         crashContext->stackCursor = &cursor;
-        crashContext->currentSnapshotUserReported = currentSnapshotUserReported;
 
         SentryCrashLOG_DEBUG(@"Calling main crash handler.");
         sentrycrashcm_handleException(crashContext);
 
         free(callstack);
-        if (currentSnapshotUserReported) {
-            sentrycrashmc_resumeEnvironment(threads, numThreads);
-        }
         if (g_previousUncaughtExceptionHandler != NULL) {
             SentryCrashLOG_DEBUG(@"Calling original exception handler.");
             g_previousUncaughtExceptionHandler(exception);
         }
-        sentrycrash_async_backtrace_decref(cursor.async_caller);
     }
-}
-
-static void
-handleCurrentSnapshotUserReportedException(NSException *exception)
-{
-    handleException(exception, true);
 }
 
 static void
 handleUncaughtException(NSException *exception)
 {
-    handleException(exception, false);
+    handleException(exception);
 }
 
 // ============================================================================
@@ -139,8 +129,6 @@ setEnabled(bool isEnabled)
             SentryCrashLOG_DEBUG(@"Setting new handler.");
             NSSetUncaughtExceptionHandler(&handleUncaughtException);
             SentryCrash.sharedInstance.uncaughtExceptionHandler = &handleUncaughtException;
-            SentryCrash.sharedInstance.currentSnapshotUserReportedExceptionHandler
-                = &handleCurrentSnapshotUserReportedException;
         } else {
             SentryCrashLOG_DEBUG(@"Restoring original handler.");
             NSSetUncaughtExceptionHandler(g_previousUncaughtExceptionHandler);
@@ -149,13 +137,13 @@ setEnabled(bool isEnabled)
 }
 
 static bool
-isEnabled()
+isEnabled(void)
 {
     return g_isEnabled;
 }
 
 SentryCrashMonitorAPI *
-sentrycrashcm_nsexception_getAPI()
+sentrycrashcm_nsexception_getAPI(void)
 {
     static SentryCrashMonitorAPI api = { .setEnabled = setEnabled, .isEnabled = isEnabled };
     return &api;

@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrashMachineContext.h
 //
@@ -39,6 +40,13 @@ extern "C" {
  */
 void sentrycrashmc_suspendEnvironment(
     thread_act_array_t *suspendedThreads, mach_msg_type_number_t *numSuspendedThreads);
+
+/**
+ Suspend the runtime environment only if the amount of threads is not higher than
+ maxSupportedThreads.
+ */
+void sentrycrashmc_suspendEnvironment_upToMaxSupportedThreads(thread_act_array_t *suspendedThreads,
+    mach_msg_type_number_t *numSuspendedThreads, mach_msg_type_number_t maxSupportedThreads);
 
 /** Resume the runtime environment.
  */
@@ -138,12 +146,6 @@ bool sentrycrashmc_canHaveCPUState(const struct SentryCrashMachineContext *const
  */
 bool sentrycrashmc_hasValidExceptionRegisters(
     const struct SentryCrashMachineContext *const context);
-
-/** Add a thread to the reserved threads list.
- *
- * @param thread The thread to add to the list.
- */
-void sentrycrashmc_addReservedThread(SentryCrashThread thread);
 
 #ifdef __cplusplus
 }

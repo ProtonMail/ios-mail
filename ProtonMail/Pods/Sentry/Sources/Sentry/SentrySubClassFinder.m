@@ -77,7 +77,7 @@ SentrySubClassFinder ()
 - (BOOL)isClass:(Class)childClass subClassOf:(Class)parentClass
 {
     if (!childClass || childClass == parentClass) {
-        return false;
+        return NO;
     }
 
     // Using a do while loop, like pointed out in Cocoa with Love

@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrashMonitor_CPPException.c
 //
@@ -80,7 +81,6 @@ void
 __cxa_throw(void *thrown_exception, std::type_info *tinfo, void (*dest)(void *))
 {
     if (g_captureNextStackTrace) {
-        sentrycrash_async_backtrace_decref(g_stackCursor.async_caller);
         sentrycrashsc_initSelfThread(&g_stackCursor, 1);
     }
 
@@ -92,6 +92,17 @@ __cxa_throw(void *thrown_exception, std::type_info *tinfo, void (*dest)(void *))
     orig_cxa_throw(thrown_exception, tinfo, dest);
     __builtin_unreachable();
 }
+}
+
+void
+sentrycrashcm_cppexception_callOriginalTerminationHandler(void)
+{
+    // Can be NULL as the return value of set_terminate can be a NULL pointer; see:
+    // https://en.cppreference.com/w/cpp/error/set_terminate
+    if (g_originalTerminateHandler != NULL) {
+        SentryCrashLOG_DEBUG("Calling original terminate handler.");
+        g_originalTerminateHandler();
+    }
 }
 
 static void
@@ -167,8 +178,7 @@ CPPExceptionTerminate(void)
     }
     sentrycrashmc_resumeEnvironment(threads, numThreads);
 
-    SentryCrashLOG_DEBUG("Calling original terminate handler.");
-    g_originalTerminateHandler();
+    sentrycrashcm_cppexception_callOriginalTerminationHandler();
 }
 
 // ============================================================================
@@ -176,7 +186,7 @@ CPPExceptionTerminate(void)
 // ============================================================================
 
 static void
-initialize()
+initialize(void)
 {
     static bool isInitialized = false;
     if (!isInitialized) {
@@ -197,19 +207,20 @@ setEnabled(bool isEnabled)
             g_originalTerminateHandler = std::set_terminate(CPPExceptionTerminate);
         } else {
             std::set_terminate(g_originalTerminateHandler);
+            g_originalTerminateHandler = NULL;
         }
         g_captureNextStackTrace = isEnabled;
     }
 }
 
 static bool
-isEnabled()
+isEnabled(void)
 {
     return g_isEnabled;
 }
 
 extern "C" SentryCrashMonitorAPI *
-sentrycrashcm_cppexception_getAPI()
+sentrycrashcm_cppexception_getAPI(void)
 {
     static SentryCrashMonitorAPI api = { .setEnabled = setEnabled, .isEnabled = isEnabled };
     return &api;

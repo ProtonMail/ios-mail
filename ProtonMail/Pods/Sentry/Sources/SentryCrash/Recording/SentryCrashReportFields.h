@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrashReportFields.h
 //
@@ -48,7 +49,6 @@
 #define SentryCrashExcType_Mach "mach"
 #define SentryCrashExcType_NSException "nsexception"
 #define SentryCrashExcType_Signal "signal"
-#define SentryCrashExcType_User "user"
 
 #pragma mark - Common -
 
@@ -133,7 +133,6 @@
 #define SentryCrashField_Reason "reason"
 #define SentryCrashField_Signal "signal"
 #define SentryCrashField_Subcode "subcode"
-#define SentryCrashField_UserReported "user_reported"
 
 #pragma mark - Process State -
 

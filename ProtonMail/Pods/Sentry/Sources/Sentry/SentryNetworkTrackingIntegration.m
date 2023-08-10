@@ -40,7 +40,7 @@
 
 - (SentryIntegrationOption)integrationOptions
 {
-    return kIntegrationOptionIsTracingEnabled | kIntegrationOptionEnableAutoPerformanceTracking
+    return kIntegrationOptionIsTracingEnabled | kIntegrationOptionEnableAutoPerformanceTracing
         | kIntegrationOptionEnableNetworkTracking;
 }
 

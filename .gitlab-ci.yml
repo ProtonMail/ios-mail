@@ -25,6 +25,7 @@ stages:
 
 .setup_ruby: &setup_ruby
   - cd ProtonMail
+  - bundle config --local build.ffi -- --enable-libffi-alloc
   - bundle install
   - cd ..
 

@@ -25,10 +25,15 @@ static SentryLogOutput *logOutput;
         logOutput = [[SentryLogOutput alloc] init];
     }
 
-    if (isDebug && level != kSentryLevelNone && level >= diagnosticLevel) {
+    if ([self willLogAtLevel:level]) {
         [logOutput log:[NSString stringWithFormat:@"[Sentry] [%@] %@", nameForSentryLevel(level),
                                  message]];
     }
+}
+
++ (BOOL)willLogAtLevel:(SentryLevel)level
+{
+    return isDebug && level != kSentryLevelNone && level >= diagnosticLevel;
 }
 
 // Internal and only needed for testing.

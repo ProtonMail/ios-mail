@@ -19,7 +19,7 @@ import Foundation
 import Sentry
 
 public protocol ProtonMailAnalyticsProtocol: AnyObject {
-    func setup(environment: String?, debug: Bool)
+    func setup(environment: String, debug: Bool)
     func track(event: MailAnalyticsEvent, trace: String?)
     func track(error: MailAnalyticsErrorEvent, trace: String?, fingerprint: Bool)
 }
@@ -32,12 +32,12 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         self.endPoint = endPoint
     }
 
-    public func setup(environment: String? = nil, debug: Bool = false) {
+    public func setup(environment: String, debug: Bool = false) {
         SentrySDK.start { options in
             options.dsn = self.endPoint
             options.debug = debug
             options.environment = environment
-            options.enableAutoPerformanceTracking = false
+            options.enableAutoPerformanceTracing = false
         }
         isEnabled = true
     }

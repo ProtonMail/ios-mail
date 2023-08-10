@@ -6,7 +6,11 @@
 #import "SentryTransport.h"
 #import <Foundation/Foundation.h>
 
-@class SentryOptions, SentryDispatchQueueWrapper, SentryNSURLRequestBuilder, SentryReachability;
+@class SentryOptions, SentryDispatchQueueWrapper, SentryNSURLRequestBuilder;
+
+#if !TARGET_OS_WATCH
+@class SentryReachability;
+#endif // !TARGET_OS_WATCH
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -21,7 +25,10 @@ SENTRY_NO_INIT
               rateLimits:(id<SentryRateLimits>)rateLimits
        envelopeRateLimit:(SentryEnvelopeRateLimit *)envelopeRateLimit
     dispatchQueueWrapper:(SentryDispatchQueueWrapper *)dispatchQueueWrapper
-            reachability:(SentryReachability *)reachability;
+#if !TARGET_OS_WATCH
+            reachability:(SentryReachability *)reachability
+#endif // !TARGET_OS_WATCH
+    ;
 
 @end
 

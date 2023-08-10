@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrashMonitor_MachException.c
 //
@@ -48,12 +49,19 @@
 #    define kThreadPrimary "SentryCrash Exception Handler (Primary)"
 #    define kThreadSecondary "SentryCrash Exception Handler (Secondary)"
 
+#    ifdef __LP64__
+#        define MACH_ERROR_CODE_MASK 0xFFFFFFFFFFFFFFFF
+#    else
+#        define MACH_ERROR_CODE_MASK 0xFFFFFFFF
+#    endif
+
 // ============================================================================
 #    pragma mark - Types -
 // ============================================================================
 
 /** A mach exception message (according to ux_exception.c, xnu-1699.22.81).
  */
+#    pragma pack(4)
 typedef struct {
     /** Mach header. */
     mach_msg_header_t header;
@@ -90,9 +98,11 @@ typedef struct {
     /** Padding to avoid RCV_TOO_LARGE. */
     char padding[512];
 } MachExceptionMessage;
+#    pragma pack()
 
 /** A mach reply message (according to ux_exception.c, xnu-1699.22.81).
  */
+#    pragma pack(4)
 typedef struct {
     /** Mach header. */
     mach_msg_header_t header;
@@ -103,12 +113,14 @@ typedef struct {
     /** Return code. */
     kern_return_t returnCode;
 } MachReplyMessage;
+#    pragma pack()
 
 // ============================================================================
 #    pragma mark - Globals -
 // ============================================================================
 
 static volatile bool g_isEnabled = false;
+static volatile bool g_isInstalled = false;
 
 static SentryCrash_MonitorContext g_monitorContext;
 static SentryCrashStackCursor g_stackCursor;
@@ -237,6 +249,42 @@ machExceptionForSignal(int sigNum)
 }
 
 // ============================================================================
+#    pragma mark - Reserved threads -
+// ============================================================================
+/**
+ * We only have reserved threads if SentryCrashCRASH_HAS_MACH.
+ */
+
+bool
+sentrycrashcm_isReservedThread(thread_t thread)
+{
+    return thread == g_primaryMachThread || thread == g_secondaryMachThread;
+}
+
+bool
+sentrycrashcm_hasReservedThreads(void)
+{
+    return g_primaryMachThread != 0 && g_secondaryMachThread != 0;
+}
+
+#else
+bool
+sentrycrashcm_isReservedThread(thread_t thread)
+{
+    return false;
+}
+
+bool
+sentrycrashcm_hasReservedThreads(void)
+{
+    return false;
+}
+
+#endif
+
+#if SentryCrashCRASH_HAS_MACH
+
+// ============================================================================
 #    pragma mark - Handler -
 // ============================================================================
 
@@ -273,8 +321,8 @@ handleExceptions(void *const userData)
         SentryCrashLOG_ERROR("mach_msg: %s", mach_error_string(kr));
     }
 
-    SentryCrashLOG_DEBUG("Trapped mach exception code 0x%x, subcode 0x%x", exceptionMessage.code[0],
-        exceptionMessage.code[1]);
+    SentryCrashLOG_DEBUG("Trapped mach exception code 0x%llx, subcode 0x%llx",
+        exceptionMessage.code[0], exceptionMessage.code[1]);
     if (g_isEnabled) {
         thread_act_array_t threads = NULL;
         mach_msg_type_number_t numThreads = 0;
@@ -293,8 +341,7 @@ handleExceptions(void *const userData)
             // ever fire?
             restoreExceptionPorts();
             if (thread_resume(g_secondaryMachThread) != KERN_SUCCESS) {
-                SentryCrashLOG_DEBUG("Could not activate secondary thread. "
-                                     "Restoring original exception ports.");
+                SentryCrashLOG_DEBUG("Could not activate secondary thread.");
             }
         } else {
             SentryCrashLOG_DEBUG("This is the secondary exception thread. "
@@ -311,7 +358,7 @@ handleExceptions(void *const userData)
         if (sentrycrashmc_getContextForThread(exceptionMessage.thread.name, machineContext, true)) {
             sentrycrashsc_initWithMachineContext(
                 &g_stackCursor, MAX_STACKTRACE_LENGTH, machineContext);
-            SentryCrashLOG_TRACE("Fault address 0x%x, instruction address 0x%x",
+            SentryCrashLOG_TRACE("Fault address %p, instruction address %p",
                 sentrycrashcpu_faultAddress(machineContext),
                 sentrycrashcpu_instructionAddress(machineContext));
             if (exceptionMessage.exception == EXC_BAD_ACCESS) {
@@ -326,8 +373,8 @@ handleExceptions(void *const userData)
         crashContext->eventID = eventID;
         crashContext->registersAreValid = true;
         crashContext->mach.type = exceptionMessage.exception;
-        crashContext->mach.code = exceptionMessage.code[0];
-        crashContext->mach.subcode = exceptionMessage.code[1];
+        crashContext->mach.code = exceptionMessage.code[0] & (int64_t)MACH_ERROR_CODE_MASK;
+        crashContext->mach.subcode = exceptionMessage.code[1] & (int64_t)MACH_ERROR_CODE_MASK;
         if (crashContext->mach.code == KERN_PROTECTION_FAILURE && crashContext->isStackOverflow) {
             // A stack overflow should return KERN_INVALID_ADDRESS, but
             // when a stack blasts through the guard pages at the top of the
@@ -343,7 +390,6 @@ handleExceptions(void *const userData)
         SentryCrashLOG_DEBUG("Crash handling complete. Restoring original handlers.");
         g_isHandlingCrash = false;
         sentrycrashmc_resumeEnvironment(threads, numThreads);
-        sentrycrash_async_backtrace_decref(g_stackCursor.async_caller);
     }
 
     SentryCrashLOG_DEBUG("Replying to mach exception message.");
@@ -363,7 +409,7 @@ handleExceptions(void *const userData)
 // ============================================================================
 
 static void
-uninstallExceptionHandler()
+uninstallExceptionHandler(void)
 {
     SentryCrashLOG_DEBUG("Uninstalling mach exception handler.");
 
@@ -400,7 +446,7 @@ uninstallExceptionHandler()
 }
 
 static bool
-installExceptionHandler()
+installExceptionHandler(void)
 {
     SentryCrashLOG_DEBUG("Installing mach exception handler.");
 
@@ -441,8 +487,8 @@ installExceptionHandler()
     }
 
     SentryCrashLOG_DEBUG("Installing port as exception handler.");
-    kr = task_set_exception_ports(
-        thisTask, mask, g_exceptionPort, EXCEPTION_DEFAULT, THREAD_STATE_NONE);
+    kr = task_set_exception_ports(thisTask, mask, g_exceptionPort,
+        (int)(EXCEPTION_DEFAULT | MACH_EXCEPTION_CODES), THREAD_STATE_NONE);
     if (kr != KERN_SUCCESS) {
         SentryCrashLOG_ERROR("task_set_exception_ports: %s", mach_error_string(kr));
         goto failed;
@@ -458,7 +504,6 @@ installExceptionHandler()
         goto failed;
     }
     g_secondaryMachThread = pthread_mach_thread_np(g_secondaryPThread);
-    sentrycrashmc_addReservedThread(g_secondaryMachThread);
 
     SentryCrashLOG_DEBUG("Creating primary exception thread.");
     error = pthread_create(&g_primaryPThread, &attr, &handleExceptions, kThreadPrimary);
@@ -468,9 +513,9 @@ installExceptionHandler()
     }
     pthread_attr_destroy(&attr);
     g_primaryMachThread = pthread_mach_thread_np(g_primaryPThread);
-    sentrycrashmc_addReservedThread(g_primaryMachThread);
 
     SentryCrashLOG_DEBUG("Mach exception handler installed.");
+    g_isInstalled = true;
     return true;
 
 failed:
@@ -485,22 +530,22 @@ failed:
 static void
 setEnabled(bool isEnabled)
 {
-    if (isEnabled != g_isEnabled) {
-        g_isEnabled = isEnabled;
-        if (isEnabled) {
-            sentrycrashid_generate(g_primaryEventID);
-            sentrycrashid_generate(g_secondaryEventID);
-            if (!installExceptionHandler()) {
-                return;
-            }
-        } else {
-            uninstallExceptionHandler();
-        }
+    g_isEnabled = isEnabled;
+    if (g_isEnabled && !g_isInstalled) {
+        sentrycrashid_generate(g_primaryEventID);
+        sentrycrashid_generate(g_secondaryEventID);
+        g_isEnabled = installExceptionHandler();
     }
+
+    // We don't call uninstallExceptionHandler by intention. Instead of canceling the exception
+    // handler threads and restarting them, we let them run. They won't do anything in
+    // handleExceptions when g_isEnabled is false. Trying to clean them up lead to weird crashes in
+    // tests cause sentrycrashmc_suspendEnvironment and sentrycrashmc_resumeEnvironment call
+    // sentrycrashcm_isReservedThread. Instead of fixing that, we let them run.
 }
 
 static bool
-isEnabled()
+isEnabled(void)
 {
     return g_isEnabled;
 }
@@ -518,7 +563,7 @@ addContextualInfoToEvent(struct SentryCrash_MonitorContext *eventContext)
 #endif
 
 SentryCrashMonitorAPI *
-sentrycrashcm_machexception_getAPI()
+sentrycrashcm_machexception_getAPI(void)
 {
     static SentryCrashMonitorAPI api = {
 #if SentryCrashCRASH_HAS_MACH

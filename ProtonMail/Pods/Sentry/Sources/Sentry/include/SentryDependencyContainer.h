@@ -1,13 +1,30 @@
 #import "SentryDefines.h"
-#import "SentryFileManager.h"
 #import "SentryRandom.h"
 
-@class SentryAppStateManager, SentryCrashWrapper, SentryThreadWrapper, SentrySwizzleWrapper,
-    SentryDispatchQueueWrapper, SentryDebugImageProvider, SentryANRTracker,
-    SentryNSNotificationCenterWrapper;
+@class SentryANRTracker;
+@class SentryAppStateManager;
+@class SentryCrashWrapper;
+@class SentryCurrentDateProvider;
+@class SentryDebugImageProvider;
+@class SentryDispatchFactory;
+@class SentryDispatchQueueWrapper;
+@class SentryFileManager;
+@class SentryNSNotificationCenterWrapper;
+@class SentryNSProcessInfoWrapper;
+@class SentryNSTimerFactory;
+@class SentrySwizzleWrapper;
+@class SentrySystemWrapper;
+@class SentryThreadWrapper;
+
+#if SENTRY_HAS_METRIC_KIT
+@class SentryMXManager;
+#endif // SENTRY_HAS_METRIC_KIT
 
 #if SENTRY_HAS_UIKIT
-@class SentryScreenshot, SentryUIApplication, SentryViewHierarchy;
+@class SentryFramesTracker;
+@class SentryScreenshot;
+@class SentryUIApplication;
+@class SentryViewHierarchy;
 #endif
 
 NS_ASSUME_NONNULL_BEGIN
@@ -32,14 +49,25 @@ SENTRY_NO_INIT
 @property (nonatomic, strong) SentryNSNotificationCenterWrapper *notificationCenterWrapper;
 @property (nonatomic, strong) SentryDebugImageProvider *debugImageProvider;
 @property (nonatomic, strong) SentryANRTracker *anrTracker;
+@property (nonatomic, strong) SentryNSProcessInfoWrapper *processInfoWrapper;
+@property (nonatomic, strong) SentrySystemWrapper *systemWrapper;
+@property (nonatomic, strong) SentryDispatchFactory *dispatchFactory;
+@property (nonatomic, strong) SentryNSTimerFactory *timerFactory;
+@property (nonatomic, strong) SentryCurrentDateProvider *dateProvider;
 
 #if SENTRY_HAS_UIKIT
+@property (nonatomic, strong) SentryFramesTracker *framesTracker;
 @property (nonatomic, strong) SentryScreenshot *screenshot;
 @property (nonatomic, strong) SentryViewHierarchy *viewHierarchy;
 @property (nonatomic, strong) SentryUIApplication *application;
 #endif
 
 - (SentryANRTracker *)getANRTracker:(NSTimeInterval)timeout;
+
+#if SENTRY_HAS_METRIC_KIT
+@property (nonatomic, strong) SentryMXManager *metricKitManager API_AVAILABLE(
+    ios(15.0), macos(12.0), macCatalyst(15.0)) API_UNAVAILABLE(tvos, watchos);
+#endif
 
 @end
 

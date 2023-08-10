@@ -14,7 +14,7 @@ SENTRY_NO_INIT
                       crashWrapper:(SentryCrashWrapper *)crashWrapper
                      dispatchQueue:(SentryDispatchQueueWrapper *)dispatchQueue;
 
-- (void)sendAllReports;
+- (void)sendAllReportsWithCompletion:(nullable SentryCrashReportFilterCompletion)onCompletion;
 
 @end
 

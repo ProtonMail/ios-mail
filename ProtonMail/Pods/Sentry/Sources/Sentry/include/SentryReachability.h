@@ -38,43 +38,36 @@ NSString *SentryConnectivityFlagRepresentation(SCNetworkReachabilityFlags flags)
 
 BOOL SentryConnectivityShouldReportChange(SCNetworkReachabilityFlags flags);
 
-#endif
-
 /**
- * Function signature to connectivity monitoring callback of SentryReachability
- *
- * @param connected YES if the monitored URL is reachable
+ * Function signature to connectivity monitoring callback of @c SentryReachability
+ * @param connected @c YES if the monitored URL is reachable
  * @param typeDescription a textual representation of the connection type
  */
 typedef void (^SentryConnectivityChangeBlock)(BOOL connected, NSString *typeDescription);
 
 /**
- * Monitors network connectivity using SCNetworkReachability callbacks,
+ * Monitors network connectivity using @c SCNetworkReachability callbacks,
  * providing a customizable callback block invoked when connectivity changes.
  */
 @interface SentryReachability : NSObject
 
-#if !TARGET_OS_WATCH
 /**
  * Invoke a block each time network connectivity changes
- *
- * @param URL   The URL monitored for changes. Should be equivalent to
- *              BugsnagConfiguration.notifyURL
+ * @param URL The URL monitored for changes. Should be equivalent to
+ * @c BugsnagConfiguration.notifyURL .
  * @param block The block called when connectivity changes
  */
 - (void)monitorURL:(NSURL *)URL usingCallback:(SentryConnectivityChangeBlock)block;
 
 /**
- * Stop monitoring the URL previously configured with monitorURL:usingCallback:
+ * Stop monitoring the URL previously configured with @c monitorURL:usingCallback:
  */
 - (void)stopMonitoring;
 
 - (NSString *)keyForInstance;
 
-#endif
-
 @end
 
-#if !TARGET_OS_WATCH
 NS_ASSUME_NONNULL_END
-#endif
+
+#endif // !TARGET_OS_WATCH

@@ -1,5 +1,14 @@
-#import "SentryId.h"
-#import "SentrySerializable.h"
+#if __has_include(<Sentry/SentrySerializable.h>)
+#    import <Sentry/SentrySerializable.h>
+#else
+#    import "SentrySerializable.h"
+#endif
+
+#if __has_include(<Sentry/SentryId.h>)
+#    import <Sentry/SentryId.h>
+#else
+#    import "SentryId.h"
+#endif
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -41,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Sample rate used for this trace.
  */
-@property (nullable, nonatomic) NSString *sampleRate;
+@property (nullable, nonatomic, strong) NSString *sampleRate;
 
 /**
  * Initializes a SentryTraceContext with given properties.

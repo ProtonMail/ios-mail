@@ -1,22 +1,30 @@
 #import "SentryANRTracker.h"
-#import "SentryDefaultCurrentDateProvider.h"
+#import "SentryCurrentDateProvider.h"
+#import "SentryDispatchFactory.h"
 #import "SentryDispatchQueueWrapper.h"
+#import "SentryDisplayLinkWrapper.h"
+#import "SentryNSProcessInfoWrapper.h"
+#import "SentryNSTimerFactory.h"
+#import "SentrySystemWrapper.h"
 #import "SentryUIApplication.h"
 #import <SentryAppStateManager.h>
 #import <SentryClient+Private.h>
 #import <SentryCrashWrapper.h>
 #import <SentryDebugImageProvider.h>
-#import <SentryDefaultCurrentDateProvider.h>
 #import <SentryDependencyContainer.h>
-#import <SentryDispatchQueueWrapper.h>
 #import <SentryHub.h>
 #import <SentryNSNotificationCenterWrapper.h>
 #import <SentrySDK+Private.h>
 #import <SentryScreenshot.h>
+#import <SentrySwift.h>
 #import <SentrySwizzleWrapper.h>
 #import <SentrySysctl.h>
 #import <SentryThreadWrapper.h>
 #import <SentryViewHierarchy.h>
+
+#if SENTRY_HAS_UIKIT
+#    import "SentryFramesTracker.h"
+#endif // SENTRY_HAS_UIKIT
 
 @implementation SentryDependencyContainer
 
@@ -62,13 +70,13 @@ static NSObject *sentryDependencyContainerLock;
     @synchronized(sentryDependencyContainerLock) {
         if (_appStateManager == nil) {
             SentryOptions *options = [[[SentrySDK currentHub] getClient] options];
-            _appStateManager = [[SentryAppStateManager alloc]
-                     initWithOptions:options
-                        crashWrapper:self.crashWrapper
-                         fileManager:self.fileManager
-                 currentDateProvider:[SentryDefaultCurrentDateProvider sharedInstance]
-                              sysctl:[[SentrySysctl alloc] init]
-                dispatchQueueWrapper:self.dispatchQueueWrapper];
+            _appStateManager =
+                [[SentryAppStateManager alloc] initWithOptions:options
+                                                  crashWrapper:self.crashWrapper
+                                                   fileManager:self.fileManager
+                                                        sysctl:[[SentrySysctl alloc] init]
+                                          dispatchQueueWrapper:self.dispatchQueueWrapper
+                                     notificationCenterWrapper:self.notificationCenterWrapper];
         }
         return _appStateManager;
     }
@@ -166,7 +174,20 @@ static NSObject *sentryDependencyContainerLock;
     }
     return _application;
 }
-#endif
+
+- (SentryFramesTracker *)framesTracker
+{
+    if (_framesTracker == nil) {
+        @synchronized(sentryDependencyContainerLock) {
+            if (_framesTracker == nil) {
+                _framesTracker = [[SentryFramesTracker alloc]
+                    initWithDisplayLinkWrapper:[[SentryDisplayLinkWrapper alloc] init]];
+            }
+        }
+    }
+    return _framesTracker;
+}
+#endif // SENTRY_HAS_UIKIT
 
 - (SentrySwizzleWrapper *)swizzleWrapper
 {
@@ -198,16 +219,95 @@ static NSObject *sentryDependencyContainerLock;
     if (_anrTracker == nil) {
         @synchronized(sentryDependencyContainerLock) {
             if (_anrTracker == nil) {
-                _anrTracker = [[SentryANRTracker alloc]
-                    initWithTimeoutInterval:timeout
-                        currentDateProvider:[SentryDefaultCurrentDateProvider sharedInstance]
-                               crashWrapper:self.crashWrapper
-                       dispatchQueueWrapper:[[SentryDispatchQueueWrapper alloc] init]
-                              threadWrapper:self.threadWrapper];
+                _anrTracker =
+                    [[SentryANRTracker alloc] initWithTimeoutInterval:timeout
+                                                         crashWrapper:self.crashWrapper
+                                                 dispatchQueueWrapper:self.dispatchQueueWrapper
+                                                        threadWrapper:self.threadWrapper];
             }
         }
     }
+
     return _anrTracker;
 }
+
+- (SentryNSProcessInfoWrapper *)processInfoWrapper
+{
+    if (_processInfoWrapper == nil) {
+        @synchronized(sentryDependencyContainerLock) {
+            if (_processInfoWrapper == nil) {
+                _processInfoWrapper = [[SentryNSProcessInfoWrapper alloc] init];
+            }
+        }
+    }
+    return _processInfoWrapper;
+}
+
+- (SentrySystemWrapper *)systemWrapper
+{
+    if (_systemWrapper == nil) {
+        @synchronized(sentryDependencyContainerLock) {
+            if (_systemWrapper == nil) {
+                _systemWrapper = [[SentrySystemWrapper alloc] init];
+            }
+        }
+    }
+    return _systemWrapper;
+}
+
+- (SentryDispatchFactory *)dispatchFactory
+{
+    if (_dispatchFactory == nil) {
+        @synchronized(sentryDependencyContainerLock) {
+            if (_dispatchFactory == nil) {
+                _dispatchFactory = [[SentryDispatchFactory alloc] init];
+            }
+        }
+    }
+    return _dispatchFactory;
+}
+
+- (SentryNSTimerFactory *)timerFactory
+{
+    if (_timerFactory == nil) {
+        @synchronized(sentryDependencyContainerLock) {
+            if (_timerFactory == nil) {
+                _timerFactory = [[SentryNSTimerFactory alloc] init];
+            }
+        }
+    }
+    return _timerFactory;
+}
+
+- (SentryCurrentDateProvider *)dateProvider
+{
+    if (_dateProvider == nil) {
+        @synchronized(sentryDependencyContainerLock) {
+            if (_dateProvider == nil) {
+                _dateProvider = [[SentryCurrentDateProvider alloc] init];
+            }
+        }
+    }
+    return _dateProvider;
+}
+
+#if SENTRY_HAS_METRIC_KIT
+- (SentryMXManager *)metricKitManager
+{
+    if (_metricKitManager == nil) {
+        @synchronized(sentryDependencyContainerLock) {
+            if (_metricKitManager == nil) {
+                // Disable crash diagnostics as we only use it for validation of the symbolication
+                // of stacktraces, because crashes are easy to trigger for MetricKit. We don't want
+                // crash reports of MetricKit in production as we have SentryCrash.
+                _metricKitManager = [[SentryMXManager alloc] initWithDisableCrashDiagnostics:YES];
+            }
+        }
+    }
+
+    return _metricKitManager;
+}
+
+#endif // SENTRY_HAS_METRIC_KIT
 
 @end

@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrashC.h
 //
@@ -47,6 +48,8 @@ extern "C" {
  * @return The crash types that are being handled.
  */
 SentryCrashMonitorType sentrycrash_install(const char *appName, const char *const installPath);
+
+void sentrycrash_uninstall(void);
 
 /** Set the crash types that will be handled.
  * Some crash types may not be enabled depending on circumstances (e.g. running
@@ -98,16 +101,9 @@ void sentrycrash_setDoNotIntrospectClasses(const char **doNotIntrospectClasses, 
  */
 void sentrycrash_setCrashNotifyCallback(const SentryCrashReportWriteCallback onCrashNotify);
 
-/** Set if SentryCrashLOG console messages should be appended to the report.
- *
- * @param shouldAddConsoleLogToReport If true, add the log to the report.
- */
-void sentrycrash_setAddConsoleLogToReport(bool shouldAddConsoleLogToReport);
-
 /** Set if SentryCrash should print the previous log to the console on startup.
  *  This is for debugging purposes.
  */
-void sentrycrash_setPrintPreviousLog(bool shouldPrintPreviousLog);
 
 /** Set the maximum number of reports allowed on disk before old ones get
  * deleted.
@@ -117,19 +113,31 @@ void sentrycrash_setPrintPreviousLog(bool shouldPrintPreviousLog);
 void sentrycrash_setMaxReportCount(int maxReportCount);
 
 /**
+ * @typedef SaveAttachmentCallback
+ *
+ * This typedef defines a function pointer to a callback that will be called during crashes
+ * to request extra attachments to be saved.
+ *
+ * @param directoryPath The path to a directory where the view hierarchy should be saved.
+ */
+typedef void (*SaveAttachmentCallback)(const char *directoryPath);
+
+/**
  * Set the callback to be called at the end of a crash to make the app save a screenshot;
  *
- * @param callback function pointer that will be called with a give path.
+ * @param callback function pointer that will be called with a path to a directory where the screen
+ * shot should be saved.
  */
-void sentrycrash_setSaveScreenshots(void (*callback)(const char *));
+void sentrycrash_setSaveScreenshots(SaveAttachmentCallback callback);
 
 /**
  * Set the callback to be called at the end of a crash to make the app save the view hierarchy
  * descriptions;
  *
- * @param callback function pointer that will be called with a give path.
+ * @param callback function pointer that will be called with a path to a directory where the view
+ * hierarchy should be saved.
  */
-void sentrycrash_setSaveViewHierarchy(void (*callback)(const char *));
+void sentrycrash_setSaveViewHierarchy(SaveAttachmentCallback callback);
 
 /** Report a custom, user defined exception.
  * This can be useful when dealing with scripting languages.

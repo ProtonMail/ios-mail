@@ -1,6 +1,8 @@
 #import "SentrySessionTracker.h"
 #import "SentryClient+Private.h"
 #import "SentryClient.h"
+#import "SentryCurrentDateProvider.h"
+#import "SentryDependencyContainer.h"
 #import "SentryFileManager.h"
 #import "SentryHub+Private.h"
 #import "SentryInternalNotificationNames.h"
@@ -18,7 +20,6 @@
 SentrySessionTracker ()
 
 @property (nonatomic, strong) SentryOptions *options;
-@property (nonatomic, strong) id<SentryCurrentDateProvider> currentDateProvider;
 @property (atomic, strong) NSDate *lastInForeground;
 @property (nonatomic, assign) BOOL wasDidBecomeActiveCalled;
 @property (nonatomic, assign) BOOL subscribedToNotifications;
@@ -29,12 +30,10 @@ SentrySessionTracker ()
 @implementation SentrySessionTracker
 
 - (instancetype)initWithOptions:(SentryOptions *)options
-            currentDateProvider:(id<SentryCurrentDateProvider>)currentDateProvider
              notificationCenter:(SentryNSNotificationCenterWrapper *)notificationCenter;
 {
     if (self = [super init]) {
         self.options = options;
-        self.currentDateProvider = currentDateProvider;
         self.wasDidBecomeActiveCalled = NO;
         self.notificationCenter = notificationCenter;
     }
@@ -132,18 +131,17 @@ SentrySessionTracker ()
 
 /**
  * It is called when an App. is receiving events / It is in the foreground and when we receive a
- * SentryHybridSdkDidBecomeActiveNotification. There is no guarantee that this method is called once
- * or twice. We need to ensure that we execute it only once.
- *
- * This also works when using SwiftUI or Scenes, as UIKit posts a didBecomeActiveNotification
- * regardless of whether your app uses scenes, see
+ * @c SentryHybridSdkDidBecomeActiveNotification. There is no guarantee that this method is called
+ * once or twice. We need to ensure that we execute it only once.
+ * @discussion This also works when using SwiftUI or Scenes, as UIKit posts a
+ * @c didBecomeActiveNotification regardless of whether your app uses scenes, see
  * https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622956-applicationdidbecomeactive.
- *
- * Hybrid SDKs must only post this notification if they are running in the foreground because the
- * auto session tracking logic doesn't support background tasks. Posting the notification from the
- * background would mess up the session stats. Hybrid SDKs must only post this notification if they
- * are running in the foreground because the auto session tracking logic doesn't support background
- * tasks. Posting the notification from the background would mess up the session stats.
+ * @warning Hybrid SDKs must only post this notification if they are running in the foreground
+ * because the auto session tracking logic doesn't support background tasks. Posting the
+ * notification from the background would mess up the session stats. Hybrid SDKs must only post this
+ * notification if they are running in the foreground because the auto session tracking logic
+ * doesn't support background tasks. Posting the notification from the background would mess up the
+ * session stats.
  */
 - (void)didBecomeActive
 {
@@ -168,7 +166,8 @@ SentrySessionTracker ()
         // in the background to start a new session or to keep the session open. We don't want a new
         // session if the user switches to another app for just a few seconds.
         NSTimeInterval secondsInBackground =
-            [[self.currentDateProvider date] timeIntervalSinceDate:self.lastInForeground];
+            [[SentryDependencyContainer.sharedInstance.dateProvider date]
+                timeIntervalSinceDate:self.lastInForeground];
 
         if (secondsInBackground * 1000 >= (double)(self.options.sessionTrackingIntervalMillis)) {
             [hub endSessionWithTimestamp:self.lastInForeground];
@@ -187,7 +186,7 @@ SentrySessionTracker ()
  */
 - (void)willResignActive
 {
-    self.lastInForeground = [self.currentDateProvider date];
+    self.lastInForeground = [SentryDependencyContainer.sharedInstance.dateProvider date];
     SentryHub *hub = [SentrySDK currentHub];
     [[[hub getClient] fileManager] storeTimestampLastInForeground:self.lastInForeground];
     self.wasDidBecomeActiveCalled = NO;
@@ -198,8 +197,9 @@ SentrySessionTracker ()
  */
 - (void)willTerminate
 {
-    NSDate *sessionEnded
-        = nil == self.lastInForeground ? [self.currentDateProvider date] : self.lastInForeground;
+    NSDate *sessionEnded = nil == self.lastInForeground
+        ? [SentryDependencyContainer.sharedInstance.dateProvider date]
+        : self.lastInForeground;
     SentryHub *hub = [SentrySDK currentHub];
     [hub endSessionWithTimestamp:sessionEnded];
     [[[hub getClient] fileManager] deleteTimestampLastInForeground];

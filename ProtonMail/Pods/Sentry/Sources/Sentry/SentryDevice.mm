@@ -26,7 +26,7 @@ namespace {
 /**
  * @brief Get an iOS hardware model name, or for mac devices, either the hardware model name or CPU
  * architecture of the device, depending on the option provided.
- * @note For an iOS CPU architecture name, `getArchitectureName` must be used.
+ * @note For an iOS CPU architecture name, @c getArchitectureName must be used.
  * @discussion The values returned are different between iOS and macOS depending on which option is
  * provided. Some examples of values returned on different devices:
  * @code
