@@ -58,12 +58,6 @@ protocol SearchVMProtocol: AnyObject {
         scale: CGFloat,
         completion: @escaping (UIImage?) -> Void
     )
-    func shouldShowEncryptedSearchSpotlight() -> Bool
-    func setEncryptedSearchSpotlightIsShown()
-    func shouldShowESIndexingBanner() -> Bool
-    func userCloseESIndexingBanner()
-    func currentEncryptedSearchIndexingState() -> EncryptedSearchIndexState
-    func oldestMessageTime() -> Int?
 }
 
 final class SearchViewModel: NSObject {
@@ -99,7 +93,6 @@ final class SearchViewModel: NSObject {
     private var dbContents: [LocalObjectsIndexRow] = []
     private var query = ""
     private let sharedReplacingEmailsMap: [String: EmailEntity]
-    private var userHasClosedESIndexingBanner = false
 
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
     var labelID: LabelID { Message.Location.allmail.labelID }
@@ -418,53 +411,6 @@ extension SearchViewModel: SearchVMProtocol {
                     }
                 }
     }
-
-    func shouldShowEncryptedSearchSpotlight() -> Bool {
-        guard
-            UserInfo.isEncryptedSearchEnabled,
-            dependencies.userIntroductionProgressProvider.shouldShowSpotlight(
-                for: .encryptedSearchAvailable,
-                toUserWith: user.userID
-            )
-        else { return false }
-        return true
-    }
-
-    func setEncryptedSearchSpotlightIsShown() {
-        dependencies.userIntroductionProgressProvider.markSpotlight(
-            for: .encryptedSearchAvailable,
-            asSeen: true,
-            byUserWith: user.userID
-        )
-    }
-
-    func shouldShowESIndexingBanner() -> Bool {
-        guard
-            UserInfo.isEncryptedSearchEnabled,
-            !userHasClosedESIndexingBanner
-        else { return false }
-        let state = dependencies.encryptedSearchService.indexBuildingState(for: user.userID)
-        let statesOfBannerShouldBeHidden: [EncryptedSearchIndexState] = [
-            .complete,
-            .undetermined,
-            .background,
-            .backgroundStopped,
-            .disabled
-        ]
-        return !statesOfBannerShouldBeHidden.contains(state)
-    }
-
-    func userCloseESIndexingBanner() {
-        userHasClosedESIndexingBanner = true
-    }
-
-    func currentEncryptedSearchIndexingState() -> EncryptedSearchIndexState {
-        dependencies.encryptedSearchService.indexBuildingState(for: user.userID)
-    }
-
-    func oldestMessageTime() -> Int? {
-        dependencies.encryptedSearchService.oldestMessageTime(for: user.userID)
-    }
 }
 
 // MARK: Action bar / sheet related
@@ -714,6 +660,5 @@ extension SearchViewModel {
         let fetchSenderImage: FetchSenderImageUseCase
         let messageSearch: SearchUseCase
         let userIntroductionProgressProvider: UserIntroductionProgressProvider
-        let encryptedSearchService: EncryptedSearchServiceProtocol
     }
 }

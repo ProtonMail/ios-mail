@@ -56,8 +56,6 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case folders = "folders_management"
         case conversation = "conversation_mode"
         case undoSend
-        case searchContent
-        case localStorage
         case deleteAccount
         case nextMsgAfterMove
         case blockList
@@ -104,10 +102,6 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             openConversationSettings()
         case .undoSend:
             openUndoSendSettings()
-        case .searchContent:
-            openSearchContent()
-        case .localStorage:
-            openLocalStorage()
         case .deleteAccount:
             openAccountDeletion()
         case .nextMsgAfterMove:
@@ -180,25 +174,6 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         let settingVC = SettingsSingleCheckMarkViewController(viewModel: viewModel)
         viewModel.set(uiDelegate: settingVC)
         self.navigationController?.pushViewController(settingVC, animated: true)
-    }
-
-    func openSearchContent() {
-        guard let navController = navigationController else { return }
-        let router = SettingsEncryptedSearchRouter(navigationController: navController)
-        let viewModel = SettingsEncryptedSearchViewModel(
-            router: router,
-            dependencies: .init(userID: user.userID)
-        )
-        let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
-        navController.pushViewController(viewController, animated: true)
-    }
-
-    func openLocalStorage() {
-        guard let navController = navigationController else { return }
-        let router = SettingsLocalStorageRouter(navigationController: navController)
-        let viewModel = SettingsLocalStorageViewModel(router: router, dependencies: .init(userID: user.userID))
-        let viewController = SettingsLocalStorageViewController(viewModel: viewModel)
-        navController.pushViewController(viewController, animated: true)
     }
 
     private func openAutoDeleteSettings() {

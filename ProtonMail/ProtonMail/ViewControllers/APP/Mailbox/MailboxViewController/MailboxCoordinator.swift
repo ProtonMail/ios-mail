@@ -291,7 +291,6 @@ extension MailboxCoordinator {
     private func presentSearch() {
         let coreDataService = services.get(by: CoreDataService.self)
         // TODO: get shared ES service.
-        let esService = EncryptedSearchService.shared
         let viewModel = SearchViewModel(
             serviceFactory: services,
             user: viewModel.user,
@@ -319,8 +318,6 @@ extension MailboxCoordinator {
                     )
                 ), messageSearch: MessageSearch(
                     dependencies: .init(
-                        isESEnable: UserInfo.isEncryptedSearchEnabled,
-                        esDefaultCache: EncryptedSearchUserDefaultCache(),
                         userID: viewModel.user.userID,
                         backendSearch: BackendSearch(
                             dependencies: .init(
@@ -328,26 +325,10 @@ extension MailboxCoordinator {
                                 contextProvider: coreDataService,
                                 userID: viewModel.user.userID
                             )
-                        ),
-                        encryptedSearch: EncryptedSearch(
-                            dependencies: .init(
-                                encryptedSearchService: esService,
-                                contextProvider: coreDataService,
-                                userID: viewModel.user.userID,
-                                fetchMessageMetaData: FetchMessageMetaData(
-                                    dependencies: .init(
-                                        userID: viewModel.user.userID,
-                                        messageDataService: viewModel.user.messageService,
-                                        contextProvider: coreDataService
-                                    )
-                                ),
-                                messageDataService: viewModel.user.messageService
-                            )
-                        ), esStateProvider: esService
+                        )
                     )
                 ),
-                userIntroductionProgressProvider: services.userCachedStatus,
-                encryptedSearchService: esService
+                userIntroductionProgressProvider: services.userCachedStatus
             )
         )
         let viewController = SearchViewController(viewModel: viewModel, serviceFactory: services)

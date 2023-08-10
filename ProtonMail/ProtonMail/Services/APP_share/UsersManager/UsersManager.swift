@@ -106,12 +106,6 @@ class UsersManager: Service, UsersManagerProtocol {
     private let notificationCenter: NotificationCenter
     private let coreKeyMaker: KeyMakerProtocol
 
-    #if !APP_EXTENSION
-    private var encryptedSearchCache: EncryptedSearchUserCache {
-        return sharedServices.get(by: EncryptedSearchUserDefaultCache.self)
-    }
-    #endif
-
     init(
         doh: DoHInterface,
         userDataCache: CachedUserDataProvider,
@@ -443,10 +437,6 @@ extension UsersManager {
 
             userCachedStatus.signOut()
             userCachedStatus.cleanGlobal()
-
-            #if !APP_EXTENSION
-            self.encryptedSearchCache.cleanGlobal()
-            #endif
 
             if !ProcessInfo.isRunningUnitTests {
                 self.coreKeyMaker.wipeMainKey()

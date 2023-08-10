@@ -42,18 +42,6 @@ extension UserInfo {
         false
     }
 
-    static var isEncryptedSearchEnabled: Bool {
-        if ProcessInfo.isRunningUnitTests {
-            return true
-        }
-//        #if DEBUG_ENTERPRISE
-//        return true
-//        #else
-//        return false
-//        #endif
-        return false
-    }
-
     static var isSenderImageEnabled: Bool {
         return true
     }

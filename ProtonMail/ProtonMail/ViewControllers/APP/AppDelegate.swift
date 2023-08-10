@@ -121,16 +121,7 @@ extension AppDelegate: UIApplicationDelegate {
                                                                   updateSwipeActionUseCase: updateSwipeActionUseCase))
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
-        sharedServices.add(EncryptedSearchUserDefaultCache.self, for: EncryptedSearchUserDefaultCache())
         sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
-        sharedServices.add(
-            BackgroundTaskHelper.self,
-            for: BackgroundTaskHelper(dependencies: .init(
-                coreKeyMaker: coreKeyMaker,
-                esService: EncryptedSearchService.shared,
-                usersManager: usersManager
-            ))
-        )
 
 #if DEBUG
         if ProcessInfo.isRunningUnitTests {
@@ -175,10 +166,6 @@ extension AppDelegate: UIApplicationDelegate {
                                                name: NSNotification.Name.didSignOut,
                                                object: nil)
         coordinator.delegate = self
-
-        let backgroundTaskHelper = sharedServices.get(by: BackgroundTaskHelper.self)
-        backgroundTaskHelper.registerBackgroundTask()
-
 
         UIBarButtonItem.enableMenuSwizzle()
         #if DEBUG
@@ -254,9 +241,6 @@ extension AppDelegate: UIApplicationDelegate {
         self.currentState = .background
 
         startAutoLockCountDownIfNeeded()
-
-        let backgroundTaskHelper = sharedServices.get(by: BackgroundTaskHelper.self)
-        backgroundTaskHelper.scheduleBackgroundProcessingIfNeeded()
 
         let users: UsersManager = sharedServices.get()
         let queueManager: QueueManager = sharedServices.get()

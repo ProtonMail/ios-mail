@@ -159,7 +159,6 @@ extension EventsService {
 
                 if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
                     let getLatestEventID = EventLatestIDRequest()
-                    self.dependencies.encryptedSearchServiceWrapper.rebuildSearchIndex(for: userManager.userID)
                     userManager.apiService.perform(request: getLatestEventID, response: EventLatestIDResponse()) { _, eventIDResponse in
                         if let err = eventIDResponse.error {
                             completion?(.failure(err.toNSError))
@@ -309,7 +308,6 @@ extension EventsService {
 
                 var messagesNoCache : [MessageID] = []
                 var removedMessages: [MessageID] = []
-                var hasNewComingMessage = false
                 var updatedMessages: [MessageEntity] = []
                 for message in messages {
                     let msg = MessageEvent(event: message)
@@ -328,7 +326,6 @@ extension EventsService {
                         }
                     case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update_draft), .some(IncrementalUpdateType.update_flags):
                         if IncrementalUpdateType.insert == msg.Action {
-                            hasNewComingMessage = true
                             if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
                                 if !cachedMessage.contains(label: .sent) {
                                     continue
@@ -419,11 +416,6 @@ extension EventsService {
                 }
 
                 let userID = userManager.userID
-                self.dependencies.encryptedSearchServiceWrapper.remove(messageIDs: removedMessages, for: userID)
-                self.dependencies.encryptedSearchServiceWrapper.update(drafts: updatedMessages, for: userID)
-                if hasNewComingMessage {
-                    self.dependencies.encryptedSearchServiceWrapper.fetchNewerMessage(for: userID)
-                }
                 self.dependencies
                     .fetchMessageMetaData
                     .execute(params: .init(messageIDs: messagesNoCache)) { _ in }

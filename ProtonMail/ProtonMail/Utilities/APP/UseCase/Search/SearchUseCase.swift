@@ -30,43 +30,17 @@ final class MessageSearch: SearchUseCase {
         params: Params,
         callback: @escaping UseCase<[MessageEntity], Params>.Callback
     ) {
-        guard dependencies.isESEnable,
-              isEncryptedSearchOn(),
-              shouldDoContentSearch() else {
-            dependencies.backendSearch.execute(
-                params: .init(query: params.query, page: params.page),
-                callback: callback
-            )
-            return
-        }
-        dependencies.encryptedSearch.execute(
+        dependencies.backendSearch.execute(
             params: .init(query: params.query, page: params.page),
             callback: callback
-        )
-    }
-
-    private func isEncryptedSearchOn() -> Bool {
-        dependencies.esDefaultCache.isEncryptedSearchOn(
-            of: dependencies.userID
-        )
-    }
-
-    private func shouldDoContentSearch() -> Bool {
-        let expectedState: [EncryptedSearchIndexState] = [.complete, .partial]
-        return expectedState.contains(
-            dependencies.esStateProvider.indexBuildingState(for: dependencies.userID)
         )
     }
 }
 
 extension MessageSearch {
     struct Dependencies {
-        let isESEnable: Bool
-        let esDefaultCache: EncryptedSearchUserCache
         let userID: UserID
         let backendSearch: BackendSearchUseCase
-        let encryptedSearch: EncryptedSearchUseCase
-        let esStateProvider: EncryptedSearchStateProvider
     }
 
     struct Params {

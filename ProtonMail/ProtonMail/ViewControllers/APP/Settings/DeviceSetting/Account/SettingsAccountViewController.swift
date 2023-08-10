@@ -419,10 +419,6 @@ extension SettingsAccountViewController {
             self.coordinator.go(to: .conversation)
         case .undoSend:
             self.coordinator.go(to: .undoSend)
-        case .searchContent:
-            self.coordinator.go(to: .searchContent)
-        case .localStorage:
-            self.coordinator.go(to: .localStorage)
         case .nextMsgAfterMove:
             coordinator.go(to: .nextMsgAfterMove)
         case .blockList:

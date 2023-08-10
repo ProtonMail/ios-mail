@@ -71,7 +71,6 @@ class UserManager: Service {
             self.deactivatePayments()
             #if !APP_EXTENSION
             self.payments.planService.currentSubscription = nil
-            self.encryptedSearchCache.logout(of: userID)
             #endif
                 userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
@@ -310,10 +309,6 @@ class UserManager: Service {
             NotificationCenter.default.post(name: .switchView, object: link)
         }
     )
-
-    private var encryptedSearchCache: EncryptedSearchUserCache {
-        return sharedServices.get(by: EncryptedSearchUserDefaultCache.self)
-    }
     #endif
 
     var hasTelemetryEnabled: Bool {
