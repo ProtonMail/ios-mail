@@ -38,7 +38,7 @@ def proton_core_version
 end
 
 def crypto_variant
-  "Crypto+Search-Go"
+  "Crypto-Go"
 end
 
 def app_share_push_siri_pods

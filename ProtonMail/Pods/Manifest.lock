@@ -72,9 +72,9 @@ PODS:
   - ProtonCore-Crypto (9.3.0):
     - ProtonCore-CryptoGoInterface (= 9.3.0)
     - ProtonCore-DataModel (= 9.3.0)
-  - "ProtonCore-CryptoGoImplementation/Crypto+Search-Go (9.3.0)":
+  - ProtonCore-CryptoGoImplementation/Crypto-Go (9.3.0):
     - ProtonCore-CryptoGoInterface (= 9.3.0)
-    - "ProtonCore-GoLibs/Crypto+Search-Go (= 9.3.0)"
+    - ProtonCore-GoLibs/Crypto-Go (= 9.3.0)
   - ProtonCore-CryptoGoInterface (9.3.0)
   - ProtonCore-DataModel (9.3.0):
     - ProtonCore-Utilities (= 9.3.0)
@@ -97,7 +97,7 @@ PODS:
     - ProtonCore-Log (= 9.3.0)
   - ProtonCore-GoLibs (9.3.0):
     - ProtonCore-GoLibs/ErrorWarningEmittingDefaultSubspec (= 9.3.0)
-  - "ProtonCore-GoLibs/Crypto+Search-Go (9.3.0)"
+  - ProtonCore-GoLibs/Crypto-Go (9.3.0)
   - ProtonCore-GoLibs/ErrorWarningEmittingDefaultSubspec (9.3.0)
   - ProtonCore-Hash (9.3.0)
   - ProtonCore-HumanVerification (9.3.0):
@@ -290,7 +290,7 @@ DEPENDENCIES:
   - "ProtonCore-Challenge (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
   - "ProtonCore-CoreTranslation (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
   - "ProtonCore-Crypto (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
-  - "ProtonCore-CryptoGoImplementation/Crypto+Search-Go (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
+  - "ProtonCore-CryptoGoImplementation/Crypto-Go (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
   - "ProtonCore-CryptoGoInterface (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
   - "ProtonCore-DataModel (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
   - "ProtonCore-Doh (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
@@ -670,6 +670,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: a0f212a4bd7561e5d344d90bb0a4e8986da65500
+PODFILE CHECKSUM: 4bede1824f1221824cc6ee5bf39b84f2c0c36489
 
 COCOAPODS: 1.12.1
