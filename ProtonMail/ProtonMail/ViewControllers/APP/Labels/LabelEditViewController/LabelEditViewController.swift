@@ -221,7 +221,7 @@ extension LabelEditViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         switch viewModel.output.sections[section] {
         case .palette, .colorInherited:
-            return PMHeaderView(title: LocalString._select_colour,
+            return PMHeaderView(title: LocalString._select_color,
                                 font: UIFont.preferredFont(for: .subheadline, weight: .regular))
         default:
             return PMHeaderView(title: "")

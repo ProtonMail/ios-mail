@@ -1745,7 +1745,7 @@
 "See progress." = "Voir l'état d'avancement.";
 
 /* section title */
-"Select colour" = "Sélectionner la couleur";
+"Select color" = "Sélectionner la couleur";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Sélectionné";

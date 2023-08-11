@@ -1745,7 +1745,7 @@
 "See progress." = "查看进度。";
 
 /* section title */
-"Select colour" = "选择颜色";
+"Select color" = "选择颜色";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "已选中";

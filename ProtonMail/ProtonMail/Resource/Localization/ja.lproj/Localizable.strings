@@ -1739,7 +1739,7 @@
 "See progress." = "状況を確認する。";
 
 /* section title */
-"Select colour" = "色を選択";
+"Select color" = "色を選択";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "選択済み";
