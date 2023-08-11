@@ -22,8 +22,8 @@
 
 import UIKit
 
-class ShareUnlockCoordinator {
-    var viewController: ShareUnlockViewController?
+final class ShareUnlockCoordinator {
+    private var viewController: ShareUnlockViewController?
     private var nextCoordinator: SharePinUnlockCoordinator?
 
     internal weak var navigationController: UINavigationController?

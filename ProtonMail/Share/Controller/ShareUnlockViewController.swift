@@ -76,8 +76,6 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel,
                                                                 target: self,
                                                                 action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
-
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didUnlock), name: NSNotification.Name.didUnlock, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -147,12 +145,10 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
         }
     }
 
-    // set up UI only
-    internal func loginCheck() {
+    private func loginCheck() {
         let unlockManager = sharedServices.get(by: UnlockManager.self)
         switch unlockManager.getUnlockFlow() {
         case .requirePin:
-            self.bioCodeView?.loginCheck(.requirePin)
             self.coordinator?.go(dest: .pin)
 
         case .requireTouchID:
@@ -160,7 +156,12 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
             self.authenticateUser()
 
         case .restore:
-            unlockManager.initiateUnlock(flow: .restore, requestPin: { }, requestMailboxPassword: {})
+            unlockManager.unlockIfRememberedCredentials(
+                requestMailboxPassword: { },
+                unlocked: { [weak self] in
+                    self?.navigateToComposer()
+                }
+            )
         }
     }
 
@@ -178,7 +179,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
         self.present(alertController, animated: true, completion: nil)
     }
 
-    func signInIfRememberedCredentials() {
+    func navigateToComposer() {
         self.coordinator?.go(dest: .composer)
     }
 
@@ -198,7 +199,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
         unlockManager.biometricAuthentication(afterBioAuthPassed: {
             unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { },
                                                         unlocked:  {
-                self.signInIfRememberedCredentials()
+                self.navigateToComposer()
             })
         })
     }
@@ -222,14 +223,6 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
                 NSAttributedString.Key.foregroundColor: ColorProvider.TextNorm as UIColor,
                 NSAttributedString.Key.font: Fonts.h2.regular
             ]
-        }
-    }
-
-    @objc private func didUnlock() {
-        DispatchQueue.main.async {
-            guard self.isUnlock == false else { return }
-            self.signInIfRememberedCredentials()
-            self.isUnlock = true
         }
     }
 }
