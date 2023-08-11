@@ -265,9 +265,6 @@ PODS:
   - SentryPrivate (8.9.3)
   - SideMenuSwift (2.0.9)
   - SkeletonView (1.30.4)
-  - SQLite.swift (0.13.3):
-    - SQLite.swift/standard (= 0.13.3)
-  - SQLite.swift/standard (0.13.3)
   - swift-snapshot-testing (1.10.0)
   - SwiftSoup (2.4.3)
   - SwipyCell (4.1.1)
@@ -332,7 +329,6 @@ DEPENDENCIES:
   - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `8.9.3.fork`)"
   - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.autolayout`)"
   - SkeletonView (= 1.30.4)
-  - SQLite.swift (~> 0.13.3)
   - "swift-snapshot-testing (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
   - SwiftSoup (~> 2.3)
   - "SwipyCell (from `git@gitlab.protontech.ch:jchen/SwipyCell.git`, commit `923310a`)"
@@ -352,7 +348,6 @@ SPEC REPOS:
     - SDWebImage
     - SentryPrivate
     - SkeletonView
-    - SQLite.swift
     - SwiftSoup
     - Yams
 
@@ -663,13 +658,12 @@ SPEC CHECKSUMS:
   SentryPrivate: 9a76def09fb08f9501997b8df946e8097947b94f
   SideMenuSwift: 39f1922e225da4aaa8b16591037a929defe960c9
   SkeletonView: 5a050f6411e697abd4cda0a8d767013399dccd69
-  SQLite.swift: 903bfa3bc9ab06345fdfbb578e34f47cfcf417da
   swift-snapshot-testing: d388c9ff71363d8572312dcb45704bb5df021c8f
   SwiftSoup: 3384f2e618cfc1b3cbc7852c16692fe8de13fb8f
   SwipyCell: 36fc45960901c3a566ee221cf2053dd77b52ba92
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: 4bede1824f1221824cc6ee5bf39b84f2c0c36489
+PODFILE CHECKSUM: 34c328634e75e490e4cc0268c522b169ec04b571
 
 COCOAPODS: 1.12.1
