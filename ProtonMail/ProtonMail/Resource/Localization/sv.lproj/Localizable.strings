@@ -2435,3 +2435,4 @@
 /* contact placeholder */
 "ZIP" = "Postnummer";
 
+"Proton servers are unreachable.\nVisit our status page for details." = "Protonservrar går inte att nå.\nBesök vår statussida för mer information.";

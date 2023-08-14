@@ -2438,3 +2438,4 @@
 /* contact placeholder */
 "ZIP" = "Поштовий індекс";
 
+"Proton servers are unreachable.\nVisit our status page for details." = "Сервери Proton недоступні.\nВідвідайте нашу сторінку статусу для подробиць.";

@@ -2438,3 +2438,4 @@
 /* contact placeholder */
 "ZIP" = "郵遞區號";
 
+"Proton servers are unreachable.\nVisit our status page for details." = "Proton伺服器目前關閉。\n請參考狀態頁面獲得詳細資料。";

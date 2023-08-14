@@ -2435,3 +2435,4 @@
 /* contact placeholder */
 "ZIP" = "CAP";
 
+"Proton servers are unreachable.\nVisit our status page for details." = "I server Proton non sono raggiungibili.\nVisita la nostra pagina di stato per i dettagli.";

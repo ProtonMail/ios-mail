@@ -2438,3 +2438,4 @@
 /* contact placeholder */
 "ZIP" = "Code postal";
 
+"Proton servers are unreachable.\nVisit our status page for details." = "Les serveurs de Proton ne sont pas accessibles.\nConsultez notre page d'état pour plus de détails.";
