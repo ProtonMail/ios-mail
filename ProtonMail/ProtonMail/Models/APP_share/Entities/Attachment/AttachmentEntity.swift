@@ -111,4 +111,46 @@ extension AttachmentEntity {
         }
         return false
     }
+
+    /// Application folder could be changed by system.
+    /// When this happens, original localURL can no longer be used.
+    /// Assemble new path with original localURL.
+    func filePathByLocalURL() -> URL? {
+        if ProcessInfo.isRunningUnitTests {
+            // PrepareSendMetadataTests
+            return localURL
+        }
+        #if APP_EXTENSION
+        // Share extension doesn't have recovery situation
+        // Also its path is different from main app
+        return localURL
+        #else
+        guard let localURL = self.localURL else { return nil }
+
+        let nameUUID = localURL.deletingPathExtension().lastPathComponent
+        do {
+            let writeURL = try FileManager.default.url(
+                for: .cachesDirectory,
+                in: .userDomainMask,
+                appropriateFor: nil,
+                create: true
+            ).appendingPathComponent(String(nameUUID))
+            return writeURL
+        } catch {
+            return nil
+        }
+        #endif
+    }
+
+    mutating func writeToLocalURL(data: Data) throws {
+        let writeURL = try FileManager.default.url(
+            for: .cachesDirectory,
+            in: .userDomainMask,
+            appropriateFor: nil,
+            create: true
+        )
+            .appendingPathComponent(UUID().uuidString)
+        try data.write(to: writeURL)
+        self.localURL = writeURL
+    }
 }

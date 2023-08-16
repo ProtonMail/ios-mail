@@ -46,6 +46,7 @@ final class SendMessageTaskTests: XCTestCase {
             cachedUserInfo: nil,
             cachedAuthCredential: nil,
             cachedSenderAddress: nil,
+            cachedPassphrase: nil,
             defaultSenderAddress: nil
         )
     }()

@@ -101,6 +101,7 @@ final class SendMessageTask {
                     cachedUserInfo: messageSendingData.cachedUserInfo,
                     cachedAuthCredential: messageSendingData.cachedAuthCredential,
                     cachedSenderAddress: messageSendingData.cachedSenderAddress,
+                    cachedPassphrase: messageSendingData.cachedPassphrase,
                     defaultSenderAddress: messageSendingData.defaultSenderAddress
                 )
                 completion(newMessageSendingData)

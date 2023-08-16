@@ -225,6 +225,7 @@ extension PrepareSendMetadataTests {
             cachedUserInfo: nil,
             cachedAuthCredential: nil,
             cachedSenderAddress: nil,
+            cachedPassphrase: nil,
             defaultSenderAddress: senderAddress
         )
         return messageSendingData
@@ -263,7 +264,8 @@ extension PrepareSendMetadataTests {
         attachment.attachmentID = dummyAttachmentId
         attachment.localURL = Bundle(for: PrepareSendMetadataTests.self)
             .url(forResource: "plainData", withExtension: "txt")!
-        let encryption: (keyPacket: Data, url: URL)! = try! attachment.encrypt(byKey: dummySenderAddressKey)
+
+        let encryption: (keyPacket: Data, url: URL)! = try! AttachmentCrypto.encrypt(attachment: AttachmentEntity(attachment), with: dummySenderAddressKey)
         attachment.keyPacket = Based64.encode(raw: encryption.keyPacket)
         return attachment
     }

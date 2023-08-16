@@ -36,7 +36,12 @@ extension APIErrorCode {
     static let deviceTokenIsInvalid = 11210
 
     static let deviceHavingLowConnectivity = 111222333
-    static let storageLimitExceeded = 2024
+    /// Total size or number of attachments exceeds limit
+    /// Maximum size is 25mb
+    /// Maximum number is 100 attachments
+    static let tooManyAttachments = 2024
+    /// For example, trying to upload attachment when account storage usage is 101mb/100mb
+    static let accountStorageQuotaExceeded = 11100
 }
 
 // MARK: - NSError APIService extension

@@ -84,56 +84,6 @@ extension Attachment {
     }
 
     // Mark : functions
-    func encrypt(byKey key: Key) throws -> (Data, URL)? {
-        let path = filePathByLocalURL()
-        if let clearData = self.fileData, path == nil {
-            try writeToLocalURL(data: clearData)
-            self.fileData = nil
-        }
-        guard let localURL = path else {
-            return nil
-        }
-
-        var error: NSError?
-        let key = CryptoGo.CryptoNewKeyFromArmored(key.publicKey, &error)
-        if let err = error {
-            throw err
-        }
-
-        let keyRing = CryptoGo.CryptoNewKeyRing(key, &error)
-        if let err = error {
-            throw err
-        }
-
-        guard let aKeyRing = keyRing else {
-            return nil
-        }
-
-        let cipherURL = localURL.appendingPathExtension("cipher")
-        let keyPacket = try AttachmentStreamingEncryptor.encryptStream(localURL, cipherURL, aKeyRing, 2_000_000)
-
-        return (keyPacket, cipherURL)
-    }
-
-    func sign(byKey key: Key, userKeys: [ArmoredKey], passphrase: Passphrase) -> Data? {
-        do {
-            let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: passphrase)
-            let signingKey = SigningKey(privateKey: ArmoredKey(value: key.privateKey), passphrase: addressKeyPassphrase)
-            let dataToSign: Data
-            if let fileData = fileData {
-                dataToSign = fileData
-            } else if let localURL = filePathByLocalURL() {
-                dataToSign = try Data(contentsOf: localURL)
-            } else {
-                return nil
-            }
-            let armoredSignature = try Sign.signDetached(signingKey: signingKey, plainData: dataToSign)
-            return armoredSignature.value.unArmor
-        } catch {
-            return nil
-        }
-    }
-
     func getSession(userKeys: [ArmoredKey], keys: [Key], mailboxPassword: Passphrase) throws -> SessionKey? {
         guard let keyPacket = self.keyPacket else {
             return nil

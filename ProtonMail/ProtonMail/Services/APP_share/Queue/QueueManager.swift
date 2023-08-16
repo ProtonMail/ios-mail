@@ -56,8 +56,11 @@ final class QueueManager: Service, UserStatusInQueueProtocol, QueueHandlerRegist
     private let internetStatusProvider = InternetConnectionStatusProvider.shared
     private var connectionStatus: ConnectionStatus? {
         willSet {
-            guard let previousStatus = connectionStatus,
-                  let nextStatus = newValue else { return }
+            guard
+                let previousStatus = connectionStatus,
+                let nextStatus = newValue,
+                handlers.count > 0
+            else { return }
             if previousStatus.isConnected == false && nextStatus.isConnected {
                 // connection is back
                 dequeueIfNeeded()

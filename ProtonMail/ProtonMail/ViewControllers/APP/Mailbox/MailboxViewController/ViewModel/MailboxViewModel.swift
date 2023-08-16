@@ -857,6 +857,7 @@ extension MailboxViewModel {
         let params: FetchMessageDetail.Params = .init(
             userID: user.userID,
             message: message,
+            hasToBeQueued: false,
             ignoreDownloaded: message.isDraft
         )
         dependencies.fetchMessageDetail

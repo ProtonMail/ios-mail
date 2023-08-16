@@ -144,4 +144,34 @@ class MockMessageDataService: MessageDataServiceProtocol {
     func upload(att: Attachment) {
         callUpload(att)
     }
+
+    @ThrowingFuncStub(MockMessageDataService.getMessage, initialReturn: Message()) var getMessageStub
+    func getMessage(for messageID: ProtonMail.MessageID) throws -> ProtonMail.Message {
+        try getMessageStub(messageID)
+    }
+
+    @ThrowingFuncStub(MockMessageDataService.getMessageEntity, initialReturn: MessageEntity(Message())) var getMessageEntityStub
+    func getMessageEntity(for messageID: ProtonMail.MessageID) throws -> ProtonMail.MessageEntity {
+        try getMessageEntityStub(messageID)
+    }
+
+    @ThrowingFuncStub(MockMessageDataService.getAttachmentEntity, initialReturn: nil) var getAttachmentEntityStub
+    func getAttachmentEntity(for uri: String) throws -> ProtonMail.AttachmentEntity? {
+        try getAttachmentEntityStub(uri)
+    }
+
+    @FuncStub(MockMessageDataService.removeAttachmentFromDB) var removeAttachmentFromDBStub
+    func removeAttachmentFromDB(objectIDs: [ProtonMail.ObjectID]) {
+        removeAttachmentFromDBStub(objectIDs)
+    }
+
+    @FuncStub(MockMessageDataService.updateAttachment) var updateAttachmentStub
+    func updateAttachment(by uploadResponse: ProtonMail.UploadAttachment.UploadingResponse, attachmentObjectID: ProtonMail.ObjectID) {
+        updateAttachmentStub(uploadResponse, attachmentObjectID)
+    }
+
+    @FuncStub(MockMessageDataService.removeAllAttachmentsNotUploaded) var removeAllAttachmentsNotUploadedStub
+    func removeAllAttachmentsNotUploaded(messageID: ProtonMail.MessageID) {
+        removeAllAttachmentsNotUploadedStub(messageID)
+    }
 }

@@ -50,6 +50,12 @@ protocol MessageDataServiceProtocol: Service {
     func idsOfMessagesBeingSent() -> [String]
 
     func getMessageSendingData(for uri: String) -> MessageSendingData?
+    func getMessage(for messageID: MessageID) throws -> Message
+    func getMessageEntity(for messageID: MessageID) throws -> MessageEntity
+    func getAttachmentEntity(for uri: String) throws -> AttachmentEntity?
+    func removeAttachmentFromDB(objectIDs: [ObjectID])
+    func updateAttachment(by uploadResponse: UploadAttachment.UploadingResponse, attachmentObjectID: ObjectID)
+    func removeAllAttachmentsNotUploaded(messageID: MessageID)
 
     func updateMessageAfterSend(
         message: MessageEntity,
@@ -846,10 +852,98 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 cachedUserInfo: message.cachedUser,
                 cachedAuthCredential: message.cachedAuthCredential,
                 cachedSenderAddress: message.cachedAddress,
+                cachedPassphrase: message.cachedPassphrase,
                 defaultSenderAddress: self?.defaultUserAddress(of: msg.addressID)
             )
         }
         return messageSendingData
+    }
+
+    func getMessage(for messageID: MessageID) throws -> Message {
+        try contextProvider.performAndWaitOnRootSavingContext { _ in
+            let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID.rawValue)
+            fetchRequest.sortDescriptors = [
+                NSSortDescriptor(key: Message.Attributes.time, ascending: false),
+                NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
+            ]
+            let messages = try fetchRequest.execute()
+            guard let first = messages.first else {
+                throw NSError(domain: "proton.ch", code: APIErrorCode.resourceDoesNotExist)
+            }
+            return first
+        }
+    }
+
+    func getMessageEntity(for messageID: MessageID) throws -> MessageEntity {
+        let message = try getMessage(for: messageID)
+        return try contextProvider.performAndWaitOnRootSavingContext { _ in
+            return MessageEntity(message)
+        }
+    }
+
+    func getAttachmentEntity(for uri: String) throws -> AttachmentEntity? {
+        try contextProvider.performAndWaitOnRootSavingContext { [weak self] context in
+            guard let objectID = self?.contextProvider.managedObjectIDForURIRepresentation(uri),
+                  let attachment = context.find(with: objectID) as? Attachment else {
+                return nil
+            }
+            return AttachmentEntity(attachment)
+        }
+    }
+
+    func removeAttachmentFromDB(objectIDs: [ObjectID]) {
+        contextProvider.performOnRootSavingContext { context in
+            for objectID in objectIDs {
+                guard let attachment = context.find(with: objectID.rawValue) as? Attachment else { continue }
+                context.delete(attachment)
+            }
+            _ = context.saveUpstreamIfNeeded()
+        }
+    }
+
+    func updateAttachment(by uploadResponse: UploadAttachment.UploadingResponse, attachmentObjectID: ObjectID) {
+        guard
+            let attachmentDict = uploadResponse.response["Attachment"] as? [String: Any],
+            let id = attachmentDict["ID"] as? String
+        else {
+            return
+        }
+        contextProvider.performAndWaitOnRootSavingContext { context in
+            guard let attachment = context.find(with: attachmentObjectID.rawValue) as? Attachment else {
+                // User could log out
+                return
+            }
+            attachment.attachmentID = id
+            attachment.keyPacket = uploadResponse.keyPacket
+                .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+            attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
+
+            // proper headers from BE - important for inline attachments
+            if let headerInfoDict = attachmentDict["Headers"] as? Dictionary<String, String> {
+                attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
+            }
+            attachment.cleanLocalURLs()
+
+            _ = context.saveUpstreamIfNeeded()
+            NotificationCenter
+                .default
+                .post(
+                    name: .attachmentUploaded,
+                    object: nil,
+                    userInfo: [
+                        "objectID": attachment.objectID.uriRepresentation().absoluteString,
+                        "attachmentID": attachment.attachmentID
+                    ]
+                )
+        }
+    }
+
+    func removeAllAttachmentsNotUploaded(messageID: MessageID) {
+        guard let message = try? getMessage(for: messageID) else { return }
+        try? contextProvider.performAndWaitOnRootSavingContext { context in
+            try? MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: message, context: context)
+        }
     }
 
     func updateMessageAfterSend(
