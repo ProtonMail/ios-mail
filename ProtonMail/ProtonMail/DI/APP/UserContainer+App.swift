@@ -36,6 +36,65 @@ extension UserContainer {
         }
     }
 
+    var fetchSenderImageFactory: Factory<FetchSenderImage> {
+        self {
+            FetchSenderImage(
+                dependencies: .init(
+                    featureFlagCache: self.featureFlagCache,
+                    senderImageService: .init(
+                        dependencies: .init(
+                            apiService: self.user.apiService,
+                            internetStatusProvider: self.internetConnectionStatusProvider
+                        )
+                    ),
+                    mailSettings: self.user.mailSettings
+                )
+            )
+        }
+    }
+
+    var fetchMessageDetailFactory: Factory<FetchMessageDetail> {
+        self {
+            FetchMessageDetail(
+                dependencies: .init(
+                    queueManager: self.queueManager,
+                    apiService: self.user.apiService,
+                    contextProvider: self.contextProvider,
+                    cacheService: self.user.cacheService
+                )
+            )
+        }
+    }
+
+    var imageProxyFactory: Factory<ImageProxy> {
+        self {
+            ImageProxy(dependencies: .init(apiService: self.user.apiService))
+        }
+    }
+
+    var messageSearchFactory: Factory<SearchUseCase> {
+        self {
+            MessageSearch(
+                dependencies: .init(
+                    userID: self.user.userID,
+                    backendSearch: BackendSearch(
+                        dependencies: .init(
+                            apiService: self.user.apiService,
+                            contextProvider: self.contextProvider,
+                            userID: self.user.userID
+                        )
+                    )
+                )
+            )
+        }
+    }
+
+    var nextMessageAfterMoveStatusProviderFactory: Factory<NextMessageAfterMoveStatusProvider> {
+        self {
+            self.user
+        }
+    }
+
     var settingsViewsFactoryFactory: Factory<SettingsViewsFactory> {
         self {
             SettingsViewsFactory(dependencies: self)

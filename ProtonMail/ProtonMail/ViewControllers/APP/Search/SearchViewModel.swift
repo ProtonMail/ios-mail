@@ -61,11 +61,16 @@ protocol SearchVMProtocol: AnyObject {
 }
 
 final class SearchViewModel: NSObject {
+    typealias Dependencies = HasSearchUseCase
+    & HasFetchMessageDetail
+    & HasFetchSenderImage
+    & HasUserManager
+    & HasCoreDataContextProviderProtocol
+
     typealias LocalObjectsIndexRow = [String: Any]
 
     private let dependencies: Dependencies
     let user: UserManager
-    let coreDataContextProvider: CoreDataContextProviderProtocol
 
     weak var uiDelegate: SearchViewUIProtocol?
     private(set) var messageIDs = Set<MessageID>()
@@ -105,14 +110,9 @@ final class SearchViewModel: NSObject {
     /// use this flag to stop the search query being triggered by `loadMoreDataIfNeeded`.
     private(set) var searchIsDone = false
 
-    init(
-        user: UserManager,
-        coreDataContextProvider: CoreDataContextProviderProtocol,
-        dependencies: Dependencies
-    ) {
-        self.user = user
-        self.coreDataContextProvider = coreDataContextProvider
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
+        user = dependencies.user
         self.sharedReplacingEmailsMap = user.contactService.allAccountEmails()
             .reduce(into: [:]) { partialResult, email in
                 partialResult[email.email] = EmailEntity(email: email)
@@ -199,7 +199,7 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     func getMessageObject(message: MessageEntity) -> Message? {
-        guard let msgObject = coreDataContextProvider.mainContext
+        guard let msgObject = dependencies.contextProvider.mainContext
             .object(with: message.objectID.rawValue) as? Message else {
             return nil
         }
@@ -207,8 +207,10 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     func getMessageObject(by msgID: MessageID) -> Message? {
-        guard let msg = Message.messageForMessageID(msgID.rawValue,
-                                                    inManagedObjectContext: coreDataContextProvider.mainContext) else {
+        guard let msg = Message.messageForMessageID(
+            msgID.rawValue,
+            inManagedObjectContext: dependencies.contextProvider.mainContext
+        ) else {
             return nil
         }
         return msg
@@ -509,7 +511,7 @@ extension SearchViewModel {
     // swiftlint:disable function_body_length
     private func indexLocalObjects(_ completion: @escaping () -> Void) {
         var count = 0
-        coreDataContextProvider.performAndWaitOnRootSavingContext { context in
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             overallCountRequest.resultType = .countResultType
             overallCountRequest.predicate = NSPredicate(format: "%K == %@",
@@ -546,7 +548,7 @@ extension SearchViewModel {
             completion()
         })
 
-        coreDataContextProvider.performOnRootSavingContext { context in
+        dependencies.contextProvider.performOnRootSavingContext { context in
             self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
             guard let indexRaw = try? context.execute(async),
                   let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
@@ -585,7 +587,7 @@ extension SearchViewModel {
             return nil
         }
 
-        let context = coreDataContextProvider.mainContext
+        let context = dependencies.contextProvider.mainContext
         context.performAndWait {
             self.messages = messageIds.compactMap { oldId -> Message? in
                 let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
@@ -603,7 +605,7 @@ extension SearchViewModel {
             self.fetchController = nil
         }
 
-        let context = coreDataContextProvider.mainContext
+        let context = dependencies.contextProvider.mainContext
         let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         let ids = messageIDs.map { $0.rawValue }
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, ids)
@@ -634,13 +636,5 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
             self.messages = dbObjects.map(MessageEntity.init)
         }
         self.uiDelegate?.refreshActionBarItems()
-    }
-}
-
-extension SearchViewModel {
-    struct Dependencies {
-        let fetchMessageDetail: FetchMessageDetailUseCase
-        let fetchSenderImage: FetchSenderImageUseCase
-        let messageSearch: SearchUseCase
     }
 }

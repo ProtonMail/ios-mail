@@ -365,7 +365,6 @@ extension MenuCoordinator {
         }
     }
 
-    // swiftlint:disable:next function_body_length
     private func mailBoxVMDependencies(user: UserManager, labelID: LabelID) -> MailboxViewModel.Dependencies {
         let userID = user.userID
 
@@ -415,30 +414,12 @@ extension MenuCoordinator {
                                 fetchMessage: fetchMessagesForUpdate,
                                 fetchLatestEventID: fetchLatestEvent)
         )
-        let fetchMessageDetail = FetchMessageDetail(
-            dependencies: .init(
-                queueManager: services.get(by: QueueManager.self),
-                apiService: user.apiService,
-                contextProvider: coreDataService,
-                cacheService: user.cacheService
-            )
-        )
+        let userContainer = userContainer(for: user)
         let mailboxVMDependencies = MailboxViewModel.Dependencies(
             fetchMessages: fetchMessages,
             updateMailbox: updateMailbox,
-            fetchMessageDetail: fetchMessageDetail,
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(
-                    featureFlagCache: services.userCachedStatus,
-                    senderImageService: .init(
-                        dependencies: .init(
-                            apiService: user.apiService,
-                            internetStatusProvider: InternetConnectionStatusProvider.shared
-                        )
-                    ),
-                    mailSettings: user.mailSettings
-                )
-            )
+            fetchMessageDetail: userContainer.fetchMessageDetail,
+            fetchSenderImage: userContainer.fetchSenderImage
         )
         return mailboxVMDependencies
     }
@@ -532,8 +513,6 @@ extension MenuCoordinator {
             nav: navigation,
             viewController: view,
             viewModel: viewModel,
-            services: self.services,
-            contextProvider: coreDataService,
             dependencies: userContainer(for: user)
         )
         mailbox.start()

@@ -25,11 +25,8 @@ class ConversationViewModelTests: XCTestCase {
     private var sut: ConversationViewModel!
     var contextProviderMock: MockCoreDataContextProvider!
     var featureFlagCache: MockFeatureFlagCache!
-    var labelProviderMock: MockLabelProviderProtocol!
     var messageMock: MessageEntity!
     var internetStatusProviderMock: MockInternetConnectionStatusProviderProtocol!
-    var connectionMonitor: MockConnectionMonitor!
-    var toolbarCustomizeSpotlightStatusProviderMock: MockToolbarCustomizeSpotlightStatusProvider!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var userManagerStub: UserManager!
@@ -53,15 +50,12 @@ class ConversationViewModelTests: XCTestCase {
         userManagerStub = UserManager(api: apiServiceMock, role: .none)
         internetStatusProviderMock = .init()
         internetStatusProviderMock.statusStub.fixture = .connectedViaWiFi
-        labelProviderMock = MockLabelProviderProtocol()
-        toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
         coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
         nextMessageAfterMoveStatusProviderMock = .init()
         notificationCenterMock = .init()
-        connectionMonitor = MockConnectionMonitor()
         makeSUT(labelID: "", conversation: fakeConversationObject)
 
         // Prepare for api mock to write image data to disk
@@ -73,14 +67,11 @@ class ConversationViewModelTests: XCTestCase {
     override func tearDownWithError() throws {
         sut = nil
         featureFlagCache = nil
-        labelProviderMock = nil
         messageMock = nil
         internetStatusProviderMock = nil
-        toolbarCustomizeSpotlightStatusProviderMock = nil
         toolbarActionProviderMock = nil
         userManagerStub = nil
         apiServiceMock = nil
-        connectionMonitor = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
         try super.tearDownWithError()
@@ -820,35 +811,28 @@ class ConversationViewModelTests: XCTestCase {
         let fakeUser = UserManager(api: apiServiceMock, role: .none)
         userManagerStub = fakeUser
 
-        let dependencies = ConversationViewModel.Dependencies(
-            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
-            nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            notificationCenter: notificationCenterMock,
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(
-                    featureFlagCache: featureFlagCache,
-                    senderImageService: .init(dependencies: .init(apiService: fakeUser.apiService, internetStatusProvider: internetStatusProviderMock)),
-                    mailSettings: fakeUser.mailSettings
-                )
-            )
-        )
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.contextProviderMock }
+        globalContainer.featureFlagCacheFactory.register { self.featureFlagCache }
+        globalContainer.internetConnectionStatusProviderFactory.register { self.internetStatusProviderMock }
+        globalContainer.notificationCenterFactory.register { self.notificationCenterMock }
+        globalContainer.userIntroductionProgressProviderFactory.register { self.userIntroductionProgressProviderMock }
+
+        let userContainer = UserContainer(userManager: fakeUser, globalContainer: globalContainer)
+        userContainer.nextMessageAfterMoveStatusProviderFactory.register { self.nextMessageAfterMoveStatusProviderMock }
 
         sut = ConversationViewModel(labelId: labelID,
                                     conversation: fakeConversation,
                                     coordinator: coordinatorMock,
-                                    user: fakeUser,
-                                    contextProvider: contextProviderMock,
-                                    internetStatusProvider: internetStatusProviderMock,
                                     conversationStateProvider: MockConversationStateProviderProtocol(),
-                                    labelProvider: labelProviderMock,
-                                    userIntroductionProgressProvider: userIntroductionProgressProviderMock,
+                                    labelProvider: MockLabelProviderProtocol(),
                                     targetID: nil,
                                     toolbarActionProvider: toolbarActionProviderMock,
                                     saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                                    toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
+                                    toolbarCustomizeSpotlightStatusProvider: MockToolbarCustomizeSpotlightStatusProvider(),
                                     highlightedKeywords: [],
                                     goToDraft: { _, _ in },
-                                    dependencies: dependencies)
+                                    dependencies: userContainer)
     }
 
     private func makeFakeViewModel(
@@ -856,19 +840,21 @@ class ConversationViewModelTests: XCTestCase {
         location: Message.Location = .inbox,
         multipleRecipients: Bool = false
     ) -> ConversationMessageViewModel {
-        let fakeInternetProvider = InternetConnectionStatusProvider(connectionMonitor: connectionMonitor)
+        let fakeInternetProvider = InternetConnectionStatusProvider(connectionMonitor: MockConnectionMonitor())
         let fakeUserManager = UserManager(api: APIServiceMock(), role: .none)
         userManagerStub = fakeUserManager
+
+        let globalContainer = GlobalContainer()
+        let userContainer = UserContainer(userManager: fakeUserManager, globalContainer: globalContainer)
 
         let fakeMessageEntity = makeMessageMock(location: location, multipleRecipients: multipleRecipients)
         messageMock = fakeMessageEntity
         let viewModel = ConversationMessageViewModel(
             labelId: "",
             message: fakeMessageEntity,
-            user: fakeUserManager,
             replacingEmailsMap: [:],
             contactGroups: [],
-            internetStatusProvider: fakeInternetProvider,
+            dependencies: userContainer,
             highlightedKeywords: [],
             goToDraft: { _, _ in })
         if isExpanded {

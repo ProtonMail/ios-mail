@@ -255,7 +255,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         coordinatorMock = SingleMessageCoordinator(navigationController: UINavigationController(),
                                                    labelId: labelID,
                                                    message: message,
-                                                   user: fakeUser,
                                                    dependencies: userContainer)
 
         let context = SingleMessageContentViewContext(labelId: labelID, message: message, viewMode: .singleMessage)
@@ -270,10 +269,8 @@ final class SingleMessageViewModelTests: XCTestCase {
             toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProvider,
             coordinator: coordinatorMock,
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            contentViewModel: SingleMessageContentViewModelFactory().createViewModel(
+            contentViewModel: SingleMessageContentViewModelFactory(dependencies: userContainer).createViewModel(
                 context: context,
-                user: fakeUser,
-                internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
                 highlightedKeywords: [],
                 goToDraft: { _, _ in }
             ),

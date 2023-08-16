@@ -24,6 +24,7 @@ final class ComposerViewFactory {
     & HasInternetConnectionStatusProviderProtocol
     & HasKeyMakerProtocol
     & HasUserCachedStatus
+    & HasFetchAttachment
 
     private let dependencies: Dependencies
 
@@ -108,7 +109,7 @@ final class ComposerViewFactory {
                 user: dependencies.user
             ),
             internetStatusProvider: dependencies.internetConnectionStatusProvider,
-            fetchAttachment: FetchAttachment(dependencies: .init(apiService: dependencies.user.apiService)),
+            fetchAttachment: dependencies.fetchAttachment,
             contactProvider: dependencies.user.contactService,
             helperDependencies: .init(
                 messageDataService: dependencies.user.messageService,

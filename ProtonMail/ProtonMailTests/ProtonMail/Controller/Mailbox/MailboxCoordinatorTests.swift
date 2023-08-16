@@ -95,8 +95,6 @@ class MailboxCoordinatorTests: XCTestCase {
                                  nav: uiNavigationControllerMock,
                                  viewController: mailboxViewControllerMock,
                                  viewModel: viewModelMock,
-                                 services: dummyServices,
-                                 contextProvider: contextProviderMock,
                                  dependencies: userContainer,
                                  getApplicationState: {
             return self.applicationStateStub

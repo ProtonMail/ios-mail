@@ -31,6 +31,18 @@ extension GlobalContainer {
         }
     }
 
+    var darkModeCacheFactory: Factory<DarkModeCacheProtocol> {
+        self {
+            self.userCachedStatus
+        }
+    }
+
+    var notificationCenterFactory: Factory<NotificationCenter> {
+        self {
+            .default
+        }
+    }
+
     var saveSwipeActionSettingFactory: Factory<SaveSwipeActionSettingForUsersUseCase> {
         self {
             SaveSwipeActionSetting(dependencies: self)

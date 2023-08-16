@@ -23,35 +23,37 @@
 import UIKit
 
 class SingleMessageContentViewModelFactory {
-    private let components = SingleMessageComponentsFactory()
+    typealias Dependencies = SingleMessageComponentsFactory.Dependencies & HasInternetConnectionStatusProviderProtocol
+
+    private let components: SingleMessageComponentsFactory
+    private let dependencies: Dependencies
+
+    init(dependencies: Dependencies) {
+        components = SingleMessageComponentsFactory(dependencies: dependencies)
+        self.dependencies = dependencies
+    }
 
     func createViewModel(
         context: SingleMessageContentViewContext,
-        user: UserManager,
-        internetStatusProvider: InternetConnectionStatusProviderProtocol,
         highlightedKeywords: [String],
         goToDraft: @escaping (MessageID, Date?) -> Void
     ) -> SingleMessageContentViewModel {
-        let imageProxy = ImageProxy(dependencies: .init(apiService: user.apiService))
         let childViewModels = SingleMessageChildViewModels(
             messageBody: components.messageBody(
                 spamType: context.message.spam,
-                user: user,
-                imageProxy: imageProxy
+                user: dependencies.user,
+                imageProxy: dependencies.imageProxy
             ),
-            bannerViewModel: components.banner(labelId: context.labelId, message: context.message, user: user),
+            bannerViewModel: components.banner(labelId: context.labelId, message: context.message),
             attachments: .init()
         )
         return .init(context: context,
                      childViewModels: childViewModels,
-                     user: user,
-                     internetStatusProvider: internetStatusProvider,
+                     user: dependencies.user,
+                     internetStatusProvider: dependencies.internetConnectionStatusProvider,
                      dependencies: components.contentViewModelDependencies(
                         context: context,
-                        internetStatusProvider: internetStatusProvider,
-                        highlightedKeywords: highlightedKeywords,
-                        imageProxy: imageProxy,
-                        user: user
+                        highlightedKeywords: highlightedKeywords
                      ),
                      highlightedKeywords: highlightedKeywords,
                      goToDraft: goToDraft)
@@ -60,10 +62,16 @@ class SingleMessageContentViewModelFactory {
 }
 
 class SingleMessageViewModelFactory {
+    typealias Dependencies = SingleMessageContentViewModelFactory.Dependencies
+
+    private let dependencies: Dependencies
+
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
+    }
+
     func createViewModel(labelId: LabelID,
                          message: MessageEntity,
-                         user: UserManager,
-                         internetStatusProvider: InternetConnectionStatusProviderProtocol,
                          highlightedKeywords: [String],
                          coordinator: SingleMessageCoordinator,
                          goToDraft: @escaping (MessageID, Date?) -> Void) -> SingleMessageViewModel {
@@ -72,6 +80,7 @@ class SingleMessageViewModelFactory {
             message: message,
             viewMode: .singleMessage
         )
+        let user = dependencies.user
         return .init(
             labelId: labelId,
             message: message,
@@ -84,10 +93,8 @@ class SingleMessageViewModelFactory {
             toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
             coordinator: coordinator,
             nextMessageAfterMoveStatusProvider: user,
-            contentViewModel: SingleMessageContentViewModelFactory().createViewModel(
+            contentViewModel: SingleMessageContentViewModelFactory(dependencies: dependencies).createViewModel(
                 context: contentContext,
-                user: user,
-                internetStatusProvider: internetStatusProvider,
                 highlightedKeywords: highlightedKeywords,
                 goToDraft: goToDraft
             ),
@@ -98,16 +105,27 @@ class SingleMessageViewModelFactory {
 }
 
 class SingleMessageComponentsFactory {
+    typealias Dependencies = MessageInfoProvider.Dependencies
+    & HasCoreDataContextProviderProtocol
+    & HasFeatureFlagCache
+    & HasFetchMessageDetail
+    & HasQueueManager
+    & HasUnblockSender
+
+    private let dependencies: Dependencies
+
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
+    }
+
     func contentViewModelDependencies(
         context: SingleMessageContentViewContext,
-        internetStatusProvider: InternetConnectionStatusProviderProtocol,
-        highlightedKeywords: [String],
-        imageProxy: ImageProxy,
-        user: UserManager
+        highlightedKeywords: [String]
     ) -> SingleMessageContentViewModel.Dependencies {
-        let contextProvider = sharedServices.get(by: CoreDataService.self)
-        let incomingDefaultService = user.incomingDefaultService
-        let queueManager = sharedServices.get(by: QueueManager.self)
+        let contextProvider = dependencies.contextProvider
+        let incomingDefaultService = dependencies.user.incomingDefaultService
+        let queueManager = dependencies.queueManager
+        let user = dependencies.user
 
         let blockSender = BlockSender(
             dependencies: .init(
@@ -117,59 +135,24 @@ class SingleMessageComponentsFactory {
             )
         )
 
-        let fetchMessageDetail = FetchMessageDetail(
-            dependencies: .init(
-                queueManager: queueManager,
-                apiService: user.apiService,
-                contextProvider: contextProvider,
-                cacheService: user.cacheService
-            )
-        )
-
-        let unblockSender = UnblockSender(
-            dependencies: .init(
-                incomingDefaultService: incomingDefaultService,
-                queueManager: queueManager,
-                userInfo: user.userInfo
-            )
-        )
-
         let isSenderBlockedPublisher = IsSenderBlockedPublisher(contextProvider: contextProvider, userID: user.userID)
-
-        let messageInfoProviderDependencies = MessageInfoProvider.Dependencies(
-            imageProxy: imageProxy,
-            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(
-                    featureFlagCache: sharedServices.userCachedStatus,
-                    senderImageService: .init(
-                        dependencies: .init(
-                            apiService: user.apiService,
-                            internetStatusProvider: internetStatusProvider
-                        )
-                    ),
-                    mailSettings: user.mailSettings
-                )
-            ), darkModeCache: sharedServices.userCachedStatus
-        )
 
         let messageInfoProvider = MessageInfoProvider(
             message: context.message,
-            user: user,
             systemUpTime: sharedServices.userCachedStatus,
             labelID: context.labelId,
-            dependencies: messageInfoProviderDependencies,
+            dependencies: dependencies,
             highlightedKeywords: highlightedKeywords
         )
 
         return .init(
             blockSender: blockSender,
-            fetchMessageDetail: fetchMessageDetail,
+            fetchMessageDetail: dependencies.fetchMessageDetail,
             isSenderBlockedPublisher: isSenderBlockedPublisher,
             messageInfoProvider: messageInfoProvider,
-            unblockSender: unblockSender,
+            unblockSender: dependencies.unblockSender,
             checkProtonServerStatus: CheckProtonServerStatus(),
-            featureFlagCache: sharedServices.userCachedStatus
+            featureFlagCache: dependencies.featureFlagCache
         )
     }
 
@@ -187,7 +170,8 @@ class SingleMessageComponentsFactory {
         )
     }
 
-    func banner(labelId: LabelID, message: MessageEntity, user: UserManager) -> BannerViewModel {
+    func banner(labelId: LabelID, message: MessageEntity) -> BannerViewModel {
+        let user = dependencies.user
         let unsubscribeService = UnsubscribeService(
             labelId: labelId,
             apiService: user.apiService,

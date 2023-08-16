@@ -185,26 +185,16 @@ class BannerViewModelTests: XCTestCase {
                               markLegitimateActionHandler: markLegitimateHandlerMock,
                               receiptActionHandler: receiptHandlerMock,
                               urlOpener: UIApplication.shared)
+
+        let globalContainer = GlobalContainer()
+        let userContainer = UserContainer(userManager: userManagerMock, globalContainer: globalContainer)
+
         sut.providerHasChanged(
             provider: .init(
                 message: mockMessage,
-                user: userManagerMock,
                 systemUpTime: systemUpTimeMock,
                 labelID: "",
-                dependencies: .init(
-                    imageProxy: .init(dependencies: .init(apiService: apiServiceMock)),
-                    fetchAttachment: mockFetchAttachment,
-                    fetchSenderImage: FetchSenderImage(
-                        dependencies: .init(
-                            featureFlagCache: MockFeatureFlagCache(),
-                            senderImageService: .init(dependencies: .init(
-                                apiService: userManagerMock.apiService,
-                                internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
-                            )),
-                            mailSettings: userManagerMock.mailSettings)
-                    ),
-                    darkModeCache: MockDarkModeCacheProtocol()
-                ),
+                dependencies: userContainer,
                 highlightedKeywords: []
             )
         )

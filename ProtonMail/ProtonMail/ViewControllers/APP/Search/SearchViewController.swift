@@ -39,7 +39,7 @@ protocol SearchViewUIProtocol: UIViewController {
 }
 
 class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver, ScheduledAlertPresenter, LifetimeTrackable {
-    typealias Dependencies = SingleMessageCoordinator.Dependencies
+    typealias Dependencies = ConversationCoordinator.Dependencies
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -62,12 +62,10 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private let cellPresenter = NewMailboxMessageCellPresenter()
     var pendingActionAfterDismissal: (() -> Void)?
-    private let serviceFactory: ServiceFactory
     private let dependencies: Dependencies
 
-    init(viewModel: SearchVMProtocol, serviceFactory: ServiceFactory, dependencies: Dependencies) {
+    init(viewModel: SearchVMProtocol, dependencies: Dependencies) {
         self.viewModel = viewModel
-        self.serviceFactory = serviceFactory
         self.customView = .init()
         self.dependencies = dependencies
 
@@ -533,7 +531,6 @@ extension SearchViewController {
             navigationController: navigationController,
             labelId: "",
             message: message,
-            user: self.viewModel.user,
             dependencies: dependencies,
             highlightedKeywords: query.components(separatedBy: .whitespacesAndNewlines)
         )
@@ -566,10 +563,7 @@ extension SearchViewController {
                     labelId: self.viewModel.labelID,
                     navigationController: navigation,
                     conversation: conversation,
-                    user: self.viewModel.user,
-                    internetStatusProvider: .shared,
                     highlightedKeywords: self.query.components(separatedBy: .whitespacesAndNewlines),
-                    contextProvider: sharedServices.get(by: CoreDataService.self),
                     dependencies: self.dependencies,
                     targetID: messageID
                 )

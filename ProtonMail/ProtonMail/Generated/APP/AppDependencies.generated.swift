@@ -33,6 +33,38 @@ extension UserContainer: HasCleanCache {
     }
 }
 
+protocol HasDarkModeCacheProtocol {
+    var darkModeCache: DarkModeCacheProtocol { get }
+}
+
+extension GlobalContainer: HasDarkModeCacheProtocol {
+    var darkModeCache: DarkModeCacheProtocol {
+        darkModeCacheFactory()
+    }
+}
+
+extension UserContainer: HasDarkModeCacheProtocol {
+    var darkModeCache: DarkModeCacheProtocol {
+        globalContainer.darkModeCache
+    }
+}
+
+protocol HasNotificationCenter {
+    var notificationCenter: NotificationCenter { get }
+}
+
+extension GlobalContainer: HasNotificationCenter {
+    var notificationCenter: NotificationCenter {
+        notificationCenterFactory()
+    }
+}
+
+extension UserContainer: HasNotificationCenter {
+    var notificationCenter: NotificationCenter {
+        globalContainer.notificationCenter
+    }
+}
+
 protocol HasSaveSwipeActionSettingForUsersUseCase {
     var saveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase { get }
 }
@@ -108,6 +140,56 @@ protocol HasContactViewsFactory {
 extension UserContainer: HasContactViewsFactory {
     var contactViewsFactory: ContactViewsFactory {
         contactViewsFactoryFactory()
+    }
+}
+
+protocol HasFetchSenderImage {
+    var fetchSenderImage: FetchSenderImage { get }
+}
+
+extension UserContainer: HasFetchSenderImage {
+    var fetchSenderImage: FetchSenderImage {
+        fetchSenderImageFactory()
+    }
+}
+
+protocol HasFetchMessageDetail {
+    var fetchMessageDetail: FetchMessageDetail { get }
+}
+
+extension UserContainer: HasFetchMessageDetail {
+    var fetchMessageDetail: FetchMessageDetail {
+        fetchMessageDetailFactory()
+    }
+}
+
+protocol HasImageProxy {
+    var imageProxy: ImageProxy { get }
+}
+
+extension UserContainer: HasImageProxy {
+    var imageProxy: ImageProxy {
+        imageProxyFactory()
+    }
+}
+
+protocol HasSearchUseCase {
+    var messageSearch: SearchUseCase { get }
+}
+
+extension UserContainer: HasSearchUseCase {
+    var messageSearch: SearchUseCase {
+        messageSearchFactory()
+    }
+}
+
+protocol HasNextMessageAfterMoveStatusProvider {
+    var nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider { get }
+}
+
+extension UserContainer: HasNextMessageAfterMoveStatusProvider {
+    var nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider {
+        nextMessageAfterMoveStatusProviderFactory()
     }
 }
 

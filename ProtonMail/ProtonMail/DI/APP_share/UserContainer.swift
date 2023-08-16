@@ -28,6 +28,18 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var fetchAndVerifyContactsFactory: Factory<FetchAndVerifyContacts> {
+        self {
+            FetchAndVerifyContacts(user: self.user)
+        }
+    }
+
+    var fetchAttachmentFactory: Factory<FetchAttachment> {
+        self {
+            FetchAttachment(dependencies: .init(apiService: self.user.apiService))
+        }
+    }
+
     var userFactory: Factory<UserManager> {
         self {
             self.userManager

@@ -32,9 +32,8 @@ final class MessageInfoProviderTest: XCTestCase {
     private var messageDecrypter: MessageDecrypterMock!
     private var sut: MessageInfoProvider!
     private var user: UserManager!
-    private var mockFetchAttachment: MockFetchAttachment!
     private var imageTempUrl: URL!
-    private var internetConnectionProvider: MockInternetConnectionStatusProviderProtocol!
+    private var userContainer: UserContainer!
 
     private let systemUpTime = SystemUpTimeMock(
         localServerTime: TimeInterval(1635745851),
@@ -48,13 +47,10 @@ final class MessageInfoProviderTest: XCTestCase {
 
         LocaleEnvironment.locale = { .enUS }
         LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-        LocaleEnvironment.locale = { .enUS }
 
         apiMock = APIServiceMock()
         apiMock.sessionUIDStub.fixture = String.randomString(10)
         apiMock.dohInterfaceStub.fixture = DohMock()
-        internetConnectionProvider = MockInternetConnectionStatusProviderProtocol()
-        internetConnectionProvider.statusStub.fixture = .connectedViaWiFi
 
         featureFlagCache = .init()
 
@@ -69,30 +65,18 @@ final class MessageInfoProviderTest: XCTestCase {
         )
 
         messageDecrypter = MessageDecrypterMock(userDataSource: user)
-        mockFetchAttachment = MockFetchAttachment()
+
+        let globalContainer = GlobalContainer()
+        globalContainer.featureFlagCacheFactory.register { self.featureFlagCache }
+
+        userContainer = UserContainer(userManager: user, globalContainer: globalContainer)
 
         sut = MessageInfoProvider(
             message: message,
             messageDecrypter: messageDecrypter,
-            user: user,
             systemUpTime: systemUpTime,
             labelID: labelID,
-            dependencies: .init(
-                imageProxy: .init(dependencies: .init(apiService: apiMock)),
-                fetchAttachment: mockFetchAttachment,
-                fetchSenderImage: FetchSenderImage(
-                    dependencies: .init(
-                        featureFlagCache: featureFlagCache,
-                        senderImageService: .init(
-                            dependencies: .init(
-                                apiService: user.apiService,
-                                internetStatusProvider: internetConnectionProvider)
-                        ),
-                        mailSettings: user.mailSettings
-                    )
-                ),
-                darkModeCache: MockDarkModeCacheProtocol()
-            ),
+            dependencies: userContainer,
             highlightedKeywords: ["contact", "feng"],
             dateFormatter: .init()
         )
@@ -113,7 +97,7 @@ final class MessageInfoProviderTest: XCTestCase {
         message = nil
         messageDecrypter = nil
         user = nil
-        internetConnectionProvider = nil
+        userContainer = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
         try super.tearDownWithError()
@@ -263,26 +247,9 @@ final class MessageInfoProviderTest: XCTestCase {
         sut = MessageInfoProvider(
             message: message,
             messageDecrypter: messageDecrypter,
-            user: user,
             systemUpTime: systemUpTime,
             labelID: labelID,
-            dependencies: .init(
-                imageProxy: .init(dependencies: .init(apiService: apiMock)),
-                fetchAttachment: mockFetchAttachment,
-                fetchSenderImage: FetchSenderImage(
-                    dependencies: .init(
-                        featureFlagCache: MockFeatureFlagCache(),
-                        senderImageService: .init(
-                            dependencies: .init(
-                                apiService: apiMock,
-                                internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
-                            )
-                        ),
-                        mailSettings: user.mailSettings
-                    )
-                ),
-                darkModeCache: MockDarkModeCacheProtocol()
-            ),
+            dependencies: userContainer,
             highlightedKeywords: []
         )
 

@@ -40,11 +40,12 @@ protocol MailboxCoordinatorProtocol: AnyObject {
 
 class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserver {
     typealias Dependencies = HasInternetConnectionStatusProviderProtocol
+    & SearchViewController.Dependencies
+    & SearchViewModel.Dependencies
     & SingleMessageCoordinator.Dependencies
     & HasToolbarSettingViewFactory
 
     let viewModel: MailboxViewModel
-    var services: ServiceFactory
     private let contextProvider: CoreDataContextProviderProtocol
 
     weak var viewController: MailboxViewController?
@@ -63,8 +64,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
          nav: UINavigationController?,
          viewController: MailboxViewController,
          viewModel: MailboxViewModel,
-         services: ServiceFactory,
-         contextProvider: CoreDataContextProviderProtocol,
          dependencies: Dependencies,
          getApplicationState: @escaping () -> UIApplication.State = {
         return UIApplication.shared.applicationState
@@ -74,8 +73,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         self.navigation = nav
         self.viewController = viewController
         self.viewModel = viewModel
-        self.services = services
-        self.contextProvider = contextProvider
+        self.contextProvider = dependencies.contextProvider
         self.getApplicationState = getApplicationState
         self.dependencies = dependencies
     }
@@ -265,49 +263,8 @@ extension MailboxCoordinator {
     }
 
     private func presentSearch() {
-        let coreDataService = services.get(by: CoreDataService.self)
-        let viewModel = SearchViewModel(
-            user: viewModel.user,
-            coreDataContextProvider: coreDataService,
-            dependencies: .init(
-                fetchMessageDetail: FetchMessageDetail(
-                    dependencies: .init(
-                        queueManager: services.get(by: QueueManager.self),
-                        apiService: viewModel.user.apiService,
-                        contextProvider: coreDataService,
-                        cacheService: viewModel.user.cacheService
-                    )
-                ),
-                fetchSenderImage: FetchSenderImage(
-                    dependencies: .init(
-                        featureFlagCache: services.userCachedStatus,
-                        senderImageService: .init(
-                            dependencies: .init(
-                                apiService: viewModel.user.apiService,
-                                internetStatusProvider: dependencies.internetConnectionStatusProvider
-                            )
-                        ),
-                        mailSettings: viewModel.user.mailSettings
-                    )
-                ), messageSearch: MessageSearch(
-                    dependencies: .init(
-                        userID: viewModel.user.userID,
-                        backendSearch: BackendSearch(
-                            dependencies: .init(
-                                apiService: viewModel.user.apiService,
-                                contextProvider: coreDataService,
-                                userID: viewModel.user.userID
-                            )
-                        )
-                    )
-                )
-            )
-        )
-        let viewController = SearchViewController(
-            viewModel: viewModel,
-            serviceFactory: services,
-            dependencies: dependencies
-        )
+        let viewModel = SearchViewModel(dependencies: dependencies)
+        let viewController = SearchViewController(viewModel: viewModel, dependencies: dependencies)
         viewModel.uiDelegate = viewController
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalTransitionStyle = .coverVertical
@@ -544,7 +501,6 @@ extension MailboxCoordinator {
             navigationController: navigationController,
             labelId: viewModel.labelID,
             message: message,
-            user: viewModel.user,
             dependencies: dependencies
         )
         coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
@@ -560,9 +516,6 @@ extension MailboxCoordinator {
             labelId: viewModel.labelID,
             navigationController: navigationController,
             conversation: conversation,
-            user: viewModel.user,
-            internetStatusProvider: .shared,
-            contextProvider: contextProvider,
             dependencies: dependencies,
             targetID: targetID
         )
@@ -608,7 +561,7 @@ extension MailboxCoordinator {
         // if a placeholder VC is there, it has been presented with a push animation; avoid doing a 2nd one
         let animated = !(viewControllers.last is MessagePlaceholderVC)
         viewControllers.removeAll { !($0 is MailboxViewController) }
-        let page = PagesViewController(viewModel: pageVM, services: services, dependencies: dependencies)
+        let page = PagesViewController(viewModel: pageVM, dependencies: dependencies)
         viewControllers.append(page)
         navigationController.setViewControllers(viewControllers, animated: animated)
     }

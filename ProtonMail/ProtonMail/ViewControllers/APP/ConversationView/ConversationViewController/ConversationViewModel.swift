@@ -11,6 +11,13 @@ enum MessageDisplayRule {
 
 // swiftlint:disable type_body_length
 class ConversationViewModel {
+    typealias Dependencies = ConversationMessageViewModel.Dependencies
+    & HasFetchSenderImage
+    & HasFetchMessageDetail
+    & HasNextMessageAfterMoveStatusProvider
+    & HasNotificationCenter
+    & HasUserIntroductionProgressProvider
+
     var headerSectionDataSource: [ConversationViewItemType] = []
     var messagesDataSource: [ConversationViewItemType] = [] {
         didSet {
@@ -69,7 +76,6 @@ class ConversationViewModel {
     private let conversationService: ConversationProvider
     private let eventsService: EventsFetching
     private let contactService: ContactDataService
-    private let contextProvider: CoreDataContextProviderProtocol
     private let sharedReplacingEmailsMap: [String: EmailEntity]
     private let sharedContactGroups: [ContactGroupVO]
     let coordinator: ConversationCoordinatorProtocol
@@ -124,7 +130,6 @@ class ConversationViewModel {
             .allSatisfy { $0.message.contains(location: .archive) }
     }
 
-    let connectionStatusProvider: InternetConnectionStatusProviderProtocol
     private let observerID = UUID()
     var isInitialDataFetchCalled = false
     private let conversationStateProvider: ConversationStateProviderProtocol
@@ -137,24 +142,19 @@ class ConversationViewModel {
         labelProvider.getCustomFolders()
     }()
     let labelProvider: LabelProviderProtocol
-    private let userIntroductionProgressProvider: UserIntroductionProgressProvider
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
     private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
     let highlightedKeywords: [String]
-    let dependencies: Dependencies
+    private let dependencies: Dependencies
     private var isApplicationActive: (() -> Bool)?
     private var reloadWhenAppIsActive: (() -> Void)?
 
     init(labelId: LabelID,
          conversation: ConversationEntity,
          coordinator: ConversationCoordinatorProtocol,
-         user: UserManager,
-         contextProvider: CoreDataContextProviderProtocol,
-         internetStatusProvider: InternetConnectionStatusProviderProtocol,
          conversationStateProvider: ConversationStateProviderProtocol,
          labelProvider: LabelProviderProtocol,
-         userIntroductionProgressProvider: UserIntroductionProgressProvider,
          targetID: MessageID?,
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
@@ -164,13 +164,13 @@ class ConversationViewModel {
          dependencies: Dependencies) {
         self.labelId = labelId
         self.conversation = conversation
+        user = dependencies.user
         self.messageService = user.messageService
         self.conversationService = user.conversationService
         self.contactService = user.contactService
         self.eventsService = user.eventsService
-        self.contextProvider = contextProvider
+        let contextProvider = dependencies.contextProvider
         self.highlightedKeywords = highlightedKeywords
-        self.user = user
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation,
                                                                          contextProvider: contextProvider)
         self.conversationUpdateProvider = ConversationUpdateProvider(conversationID: conversation.conversationID,
@@ -184,12 +184,10 @@ class ConversationViewModel {
         self.conversationStateProvider = conversationStateProvider
         self.goToDraft = goToDraft
         self.labelProvider = labelProvider
-        self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.dependencies = dependencies
         headerSectionDataSource = []
 
         recordNumOfMessages = conversation.messageCount
-        self.connectionStatusProvider = internetStatusProvider
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
         self.toolbarCustomizeSpotlightStatusProvider = toolbarCustomizeSpotlightStatusProvider
@@ -279,10 +277,9 @@ class ConversationViewModel {
         let viewModel = ConversationMessageViewModel(
             labelId: labelId,
             message: message,
-            user: user,
             replacingEmailsMap: sharedReplacingEmailsMap,
             contactGroups: sharedContactGroups,
-            internetStatusProvider: connectionStatusProvider,
+            dependencies: dependencies,
             highlightedKeywords: highlightedKeywords,
             goToDraft: goToDraft
         )
@@ -324,7 +321,7 @@ class ConversationViewModel {
     ) {
         self.isApplicationActive = isApplicationActive
         self.reloadWhenAppIsActive = reloadWhenAppIsActive
-        connectionStatusProvider.register(receiver: self, fireWhenRegister: true)
+        dependencies.internetConnectionStatusProvider.register(receiver: self, fireWhenRegister: true)
     }
 
     func areAllMessagesIn(location: LabelLocation) -> Bool {
@@ -348,7 +345,7 @@ class ConversationViewModel {
             return false
         }
 
-        if userIntroductionProgressProvider.shouldShowSpotlight(for: .toolbarCustomization, toUserWith: user.userID) {
+        if dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .toolbarCustomization, toUserWith: user.userID) {
             return true
         }
 
@@ -366,7 +363,7 @@ class ConversationViewModel {
     }
 
     func setToolbarCustomizeSpotlightViewIsShown() {
-        userIntroductionProgressProvider.markSpotlight(
+        dependencies.userIntroductionProgressProvider.markSpotlight(
             for: .toolbarCustomization,
             asSeen: true,
             byUserWith: user.userID
@@ -576,7 +573,7 @@ class ConversationViewModel {
             return messageType(with: newMessage)
         }
         if self.messagesDataSource.isEmpty {
-            contextProvider.performOnRootSavingContext { [weak self] context in
+            dependencies.contextProvider.performOnRootSavingContext { [weak self] context in
                 guard let self = self,
                       let object = try? context.existingObject(with: self.conversation.objectID.rawValue) else {
                           self?.dismissView?()
@@ -1270,13 +1267,6 @@ extension ConversationViewModel: ConversationStateServiceDelegate {
 }
 
 extension ConversationViewModel {
-    struct Dependencies {
-        let fetchMessageDetail: FetchMessageDetailUseCase
-        let nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
-        let notificationCenter: NotificationCenter
-        let fetchSenderImage: FetchSenderImageUseCase
-    }
-
     enum CellVisibility {
         /// The cell is fully visible.
         case full

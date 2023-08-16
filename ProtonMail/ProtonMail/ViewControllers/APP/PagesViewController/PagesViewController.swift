@@ -29,14 +29,13 @@ final class PagesViewController<
    UIPageViewControllerDelegate,
    UIPageViewControllerDataSource,
    LifetimeTrackable {
-    typealias Dependencies = SingleMessageCoordinator.Dependencies
+    typealias Dependencies = SingleMessageCoordinator.Dependencies & ConversationCoordinator.Dependencies
 
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
     private let viewModel: PagesViewModel<IDType, EntityType, FetchResultType>
-    private var services: ServiceFactory
     private let dependencies: Dependencies
     private var titleViewObserver: NSKeyValueObservation?
     private var spotlight: PagesSpotlightView?
@@ -49,9 +48,8 @@ final class PagesViewController<
     /// Shouldn't cause any display issue
     private var pageCache: [String: PageCacheType] = [:]
 
-    init(viewModel: PagesViewModel<IDType, EntityType, FetchResultType>, services: ServiceFactory, dependencies: Dependencies) {
+    init(viewModel: PagesViewModel<IDType, EntityType, FetchResultType>, dependencies: Dependencies) {
         self.viewModel = viewModel
-        self.services = services
         self.dependencies = dependencies
         super.init(
             transitionStyle: .scroll,
@@ -173,7 +171,6 @@ extension PagesViewController {
             navigationController: navigationController,
             labelId: viewModel.labelID,
             message: message,
-            user: viewModel.user,
             dependencies: dependencies
         )
         coordinator.goToDraft = viewModel.goToDraft
@@ -225,9 +222,6 @@ extension PagesViewController {
             labelId: viewModel.labelID,
             navigationController: navigationController,
             conversation: conversation,
-            user: viewModel.user,
-            internetStatusProvider: .shared,
-            contextProvider: services.get(by: CoreDataService.self),
             dependencies: dependencies,
             targetID: targetMessageID
         )

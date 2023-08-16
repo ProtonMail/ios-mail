@@ -171,6 +171,26 @@ extension UserContainer: HasComposerViewFactory {
     }
 }
 
+protocol HasFetchAndVerifyContacts {
+    var fetchAndVerifyContacts: FetchAndVerifyContacts { get }
+}
+
+extension UserContainer: HasFetchAndVerifyContacts {
+    var fetchAndVerifyContacts: FetchAndVerifyContacts {
+        fetchAndVerifyContactsFactory()
+    }
+}
+
+protocol HasFetchAttachment {
+    var fetchAttachment: FetchAttachment { get }
+}
+
+extension UserContainer: HasFetchAttachment {
+    var fetchAttachment: FetchAttachment {
+        fetchAttachmentFactory()
+    }
+}
+
 protocol HasUserManager {
     var user: UserManager { get }
 }

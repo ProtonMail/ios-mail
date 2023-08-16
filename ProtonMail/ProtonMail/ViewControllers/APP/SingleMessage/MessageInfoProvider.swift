@@ -40,6 +40,11 @@ private enum EmbeddedDownloadStatus {
 
 // swiftlint:disable:next type_body_length
 final class MessageInfoProvider {
+    typealias Dependencies = MessageSenderPGPChecker.Dependencies
+    & HasDarkModeCacheProtocol
+    & HasFetchSenderImage
+    & HasImageProxy
+
     private(set) var message: MessageEntity {
         willSet {
             let bodyHasChanged = message.body != newValue.body
@@ -52,9 +57,7 @@ final class MessageInfoProvider {
         didSet {
             let bodyHasChanged = message.body != oldValue.body
             if bodyHasChanged || bodyParts == nil {
-                let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
-                let checkerDependencies = MessageSenderPGPChecker.Dependencies(fetchAttachment: fetchAttachment)
-                pgpChecker = MessageSenderPGPChecker(message: message, user: user, dependencies: checkerDependencies)
+                pgpChecker = MessageSenderPGPChecker(message: message, dependencies: dependencies)
                 prepareDisplayBody()
                 checkSenderPGP()
             }
@@ -97,7 +100,6 @@ final class MessageInfoProvider {
     init(
         message: MessageEntity,
         messageDecrypter: MessageDecrypter? = nil,
-        user: UserManager,
         systemUpTime: SystemUpTimeProtocol,
         labelID: LabelID,
         dependencies: Dependencies,
@@ -105,10 +107,8 @@ final class MessageInfoProvider {
         dateFormatter: PMDateFormatter = .shared
     ) {
         self.message = message
-        let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
-        let checkerDependencies = MessageSenderPGPChecker.Dependencies(fetchAttachment: fetchAttachment)
-        self.pgpChecker = MessageSenderPGPChecker(message: message, user: user, dependencies: checkerDependencies)
-        self.user = user
+        pgpChecker = MessageSenderPGPChecker(message: message, dependencies: dependencies)
+        self.user = dependencies.user
         self.contactService = user.contactService
         self.contactGroupService = user.contactGroupService
         self.messageDecrypter = messageDecrypter ?? user.messageService.messageDecrypter
@@ -754,14 +754,5 @@ extension MessageInfoProvider: ImageProxyDelegate {
         shouldShowImageProxyFailedBanner = output.hasEncounteredErrors
         trackerProtectionSummary = output.summary
         delegate?.updateBannerStatus()
-    }
-}
-
-extension MessageInfoProvider {
-    struct Dependencies {
-        let imageProxy: ImageProxy
-        let fetchAttachment: FetchAttachmentUseCase
-        let fetchSenderImage: FetchSenderImageUseCase
-        let darkModeCache: DarkModeCacheProtocol
     }
 }
