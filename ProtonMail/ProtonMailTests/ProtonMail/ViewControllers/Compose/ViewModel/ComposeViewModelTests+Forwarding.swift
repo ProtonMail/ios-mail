@@ -25,6 +25,7 @@ import XCTest
 
 final class ComposeViewModelTests_Forwarding: XCTestCase {
     private var mockCoreDataService: MockCoreDataContextProvider!
+    private var composerViewFactory: ComposerViewFactory!
     private var user: UserManager!
 
     private var testContext: NSManagedObjectContext {
@@ -36,6 +37,11 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
 
         mockCoreDataService = .init()
         user = UserManager(api: APIServiceMock(), role: .member)
+
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.mockCoreDataService }
+        let userContainer = UserContainer(userManager: user, globalContainer: globalContainer)
+        composerViewFactory = userContainer.composerViewFactory
 
         let keyPair = try MailCrypto.generateRandomKeyPair()
         let key = Key(keyID: "1", privateKey: keyPair.privateKey)
@@ -60,6 +66,7 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
 
     override func tearDownWithError() throws {
         mockCoreDataService = nil
+        composerViewFactory = nil
         user = nil
 
         try super.tearDownWithError()
@@ -101,41 +108,10 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
     }
 
     private func makeSUT(message: Message) -> ComposeViewModel {
-        let contactProvider = MockContactProvider(coreDataContextProvider: mockCoreDataService)
-
-        let copyMessage = CopyMessage(
-            dependencies: .init(
-                contextProvider: mockCoreDataService,
-                messageDecrypter: user.messageService.messageDecrypter
-            ),
-            userDataSource: user
-        )
-
-        let dependencies = ComposeViewModel.Dependencies.init(
-            coreDataContextProvider: mockCoreDataService,
-            coreKeyMaker: MockKeyMakerProtocol(),
-            fetchAndVerifyContacts: .init(),
-            internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
-            fetchAttachment: .init(),
-            contactProvider: contactProvider,
-            helperDependencies: .init(
-                messageDataService: user.messageService,
-                cacheService: user.cacheService,
-                contextProvider: mockCoreDataService,
-                copyMessage: copyMessage,
-                attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingMock()
-            ), fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: MockKeyMakerProtocol(), cache: MockMobileSignatureCacheProtocol())),
-            darkModeCache: MockDarkModeCacheProtocol(),
-            attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock(),
-            userCachedStatusProvider: MockUserCachedStatusProvider()
-        )
-
-        return ComposeViewModel(
+        ComposeViewModel(
             msg: message,
             action: .forward,
-            msgService: user.messageService,
-            user: user,
-            dependencies: dependencies
+            dependencies: composerViewFactory.composeViewModelDependencies
         )
     }
 

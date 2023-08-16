@@ -25,20 +25,18 @@ import SafariServices
 import UIKit
 
 class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
-    typealias Dependencies = HasContactViewsFactory
+    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory
 
     weak var viewController: SingleMessageViewController?
 
     private let labelId: LabelID
     let message: MessageEntity
-    private let coreDataService: CoreDataService
     private let user: UserManager
     private let highlightedKeywords: [String]
     private weak var navigationController: UINavigationController?
     var pendingActionAfterDismissal: (() -> Void)?
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     var goToDraft: ((MessageID, Date?) -> Void)?
-    private let composerFactory: ComposerDependenciesFactory
     private let factory: ServiceFactory
     private let dependencies: Dependencies
 
@@ -49,8 +47,6 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         message: MessageEntity,
         user: UserManager,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        coreDataService: CoreDataService =
-        sharedServices.get(by: CoreDataService.self),
         dependencies: Dependencies,
         highlightedKeywords: [String] = []
     ) {
@@ -58,10 +54,8 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.labelId = labelId
         self.message = message
         self.user = user
-        self.coreDataService = coreDataService
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.highlightedKeywords = highlightedKeywords
-        self.composerFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
         self.factory = serviceFactory
         self.dependencies = dependencies
     }
@@ -139,16 +133,12 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 // MARK: - Private functions
 extension SingleMessageCoordinator {
     private func presentCompose(with contact: ContactVO) {
-        let viewModel = ComposeViewModel(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: nil,
             action: .newDraft,
-            msgService: user.messageService,
-            user: user,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
+            toContact: contact
         )
-        viewModel.addToContacts(contact)
-
-        presentCompose(viewModel: viewModel)
+        viewController?.present(composer, animated: true)
     }
 
     private func presentAddContacts(with contact: ContactVO) {
@@ -180,15 +170,9 @@ extension SingleMessageCoordinator {
         }
         let contextProvider = sharedServices.get(by: CoreDataService.self)
         guard let msg = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else { return }
-        let viewModel = ComposeViewModel(
-            msg: msg,
-            action: composeAction,
-            msgService: user.messageService,
-            user: user,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
-        )
 
-        presentCompose(viewModel: viewModel)
+        let composer = dependencies.composerViewFactory.makeComposer(msg: msg, action: composeAction)
+        viewController?.present(composer, animated: true)
     }
 
     private func presentAttachmentListView(decryptedBody: String?, attachments: [AttachmentInfo]) {
@@ -217,47 +201,7 @@ extension SingleMessageCoordinator {
     }
 
     private func presentCompose(mailToURL: URL) {
-        guard let mailToData = mailToURL.parseMailtoLink() else { return }
-
-        let viewModel = ComposeViewModel(
-            msg: nil,
-            action: .newDraft,
-            msgService: user.messageService,
-            user: user,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
-        )
-
-        mailToData.to.forEach { recipient in
-            viewModel.addToContacts(ContactVO(name: recipient, email: recipient))
-        }
-
-        mailToData.cc.forEach { recipient in
-            viewModel.addCcContacts(ContactVO(name: recipient, email: recipient))
-        }
-
-        mailToData.bcc.forEach { recipient in
-            viewModel.addBccContacts(ContactVO(name: recipient, email: recipient))
-        }
-
-        if let subject = mailToData.subject {
-            viewModel.setSubject(subject)
-        }
-
-        if let body = mailToData.body {
-            viewModel.setBody(body)
-        }
-
-        presentCompose(viewModel: viewModel)
-    }
-
-    private func presentCompose(viewModel: ComposeViewModel) {
-        let composer = ComposerViewFactory.makeComposer(
-            childViewModel: viewModel,
-            contextProvider: coreDataService,
-            userIntroductionProgressProvider: factory.userCachedStatus,
-            attachmentMetadataStrippingCache: factory.userCachedStatus,
-            featureFlagCache: factory.userCachedStatus
-        )
+        let composer = dependencies.composerViewFactory.makeComposer(msg: nil, action: .newDraft, mailToUrl: mailToURL)
         viewController?.present(composer, animated: true)
     }
 

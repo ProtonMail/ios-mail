@@ -26,20 +26,14 @@ final class ConversationDataServiceTests: XCTestCase {
     var mockApiService: APIServiceMock!
     var mockContextProvider: MockCoreDataContextProvider!
     var mockEventsService: MockEventsService!
-    var fakeUndoActionManager: UndoActionManagerProtocol!
 
     override func setUp() {
         super.setUp()
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
         mockEventsService = MockEventsService()
-        let factory = sharedServices.makeUndoActionManagerDependenciesFactory()
-        fakeUndoActionManager = UndoActionManager(
-            factory: factory,
-            dependencies: factory.makeDependencies(apiService: mockApiService),
-            getEventFetching: { nil },
-            getUserManager: { nil }
-        )
+        let user = UserManager(api: mockApiService, role: .none)
+
         let mockContactCacheStatus = MockContactCacheStatusProtocol()
         sut = ConversationDataService(api: mockApiService,
                                       userID: userID,
@@ -47,7 +41,7 @@ final class ConversationDataServiceTests: XCTestCase {
                                       lastUpdatedStore: MockLastUpdatedStoreProtocol(),
                                       messageDataService: MockMessageDataService(),
                                       eventsService: mockEventsService,
-                                      undoActionManager: fakeUndoActionManager,
+                                      undoActionManager: MockUndoActionManager(),
                                       contactCacheStatus: mockContactCacheStatus)
     }
 
@@ -57,7 +51,6 @@ final class ConversationDataServiceTests: XCTestCase {
         mockApiService = nil
         mockContextProvider = nil
         mockEventsService = nil
-        fakeUndoActionManager = nil
     }
 
     func testFilterMessagesDictionary() {

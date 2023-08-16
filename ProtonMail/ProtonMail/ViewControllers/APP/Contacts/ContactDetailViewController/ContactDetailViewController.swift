@@ -27,7 +27,7 @@ import ProtonCore_UIFoundations
 import UIKit
 
 final class ContactDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView, LifetimeTrackable {
-    typealias Dependencies = HasContactViewsFactory
+    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -286,21 +286,10 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
     }
 
     private func presentComposer(contact: ContactVO) {
-        let user = self.viewModel.user
-        let composer = ComposerViewFactory.makeComposer(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: nil,
             action: .newDraft,
-            user: user,
-            contextProvider: viewModel.coreDataService,
             isEditingScheduleMsg: false,
-            userIntroductionProgressProvider: userCachedStatus,
-            internetStatusProvider: InternetConnectionStatusProvider.shared,
-            coreKeyMaker: sharedServices.get(),
-            darkModeCache: sharedServices.userCachedStatus,
-            mobileSignatureCache: sharedServices.userCachedStatus,
-            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
-            featureFlagCache: sharedServices.userCachedStatus,
-            userCachedStatusProvider: sharedServices.userCachedStatus,
             toContact: contact
         )
         guard let nav = navigationController else {

@@ -22,6 +22,12 @@ final class UserContainer: ManagedContainer {
     let userManager: UserManager
     let globalContainer: GlobalContainer
 
+    var composerViewFactoryFactory: Factory<ComposerViewFactory> {
+        self {
+            ComposerViewFactory(dependencies: self)
+        }
+    }
+
     var userFactory: Factory<UserManager> {
         self {
             self.userManager

@@ -28,7 +28,7 @@ import ProtonCore_UIFoundations
 import UIKit
 
 final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView, LifetimeTrackable {
-    typealias Dependencies = HasContactViewsFactory
+    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -103,24 +103,13 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
             return
         }
 
-        let user = self.viewModel.user
         let contactGroupVO = ContactGroupVO(ID: self.viewModel.groupID.rawValue, name: self.viewModel.name)
         contactGroupVO.selectAllEmailFromGroup()
 
-        let composer = ComposerViewFactory.makeComposer(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: nil,
             action: .newDraft,
-            user: user,
-            contextProvider: sharedServices.get(by: CoreDataService.self),
             isEditingScheduleMsg: false,
-            userIntroductionProgressProvider: userCachedStatus,
-            internetStatusProvider: InternetConnectionStatusProvider.shared,
-            coreKeyMaker: sharedServices.get(),
-            darkModeCache: sharedServices.userCachedStatus,
-            mobileSignatureCache: sharedServices.userCachedStatus,
-            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
-            featureFlagCache: sharedServices.userCachedStatus,
-            userCachedStatusProvider: sharedServices.userCachedStatus,
             toContact: contactGroupVO
         )
 

@@ -58,8 +58,8 @@ final class ComposeViewModelTests: XCTestCase {
             attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
         )
         dependencies = ComposeViewModel.Dependencies(
+            user: fakeUserManager,
             coreDataContextProvider: mockCoreDataService,
-            coreKeyMaker: MockKeyMakerProtocol(),
             fetchAndVerifyContacts: .init(),
             internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
             fetchAttachment: .init(),
@@ -81,8 +81,6 @@ final class ComposeViewModelTests: XCTestCase {
         sut = ComposeViewModel(
             msg: message,
             action: .openDraft,
-            msgService: fakeUserManager.messageService,
-            user: fakeUserManager,
             dependencies: dependencies
         )
     }
@@ -214,8 +212,6 @@ final class ComposeViewModelTests: XCTestCase {
             body: "",
             files: [fileData],
             action: .newDraftFromShare,
-            msgService: fakeUserManager.messageService,
-            user: fakeUserManager,
             dependencies: dependencies
         )
         sut.composerMessageHelper.updateAttachmentView = {

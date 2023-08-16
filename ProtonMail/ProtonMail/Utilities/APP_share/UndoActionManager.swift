@@ -59,16 +59,13 @@ final class UndoActionManager: UndoActionManagerProtocol {
     }
 
     private(set) var undoTitles: [UndoModel] = []
-    private let factory: UndoActionManagerDependenciesFactory
     private let dependencies: Dependencies
 
     init(
-        factory: UndoActionManagerDependenciesFactory,
         dependencies: Dependencies,
         getEventFetching: @escaping () -> EventsFetching?,
         getUserManager: @escaping () -> UserManager?
     ) {
-        self.factory = factory
         self.dependencies = dependencies
         self.getEventFetching = getEventFetching
         self.getUserManager = getUserManager
@@ -208,8 +205,21 @@ extension UndoActionManager {
     private func showComposer(for messageID: MessageID) {
         #if !APP_EXTENSION
         DispatchQueue.main.async {
+            // TODO: do not pass UserManager like this, pass ComposerViewFactory as a property of Dependencies
+            // currently we're doing it like this to avoid a dependency cycle
+            // it has to do with how UserManager retains the services
             guard let message = self.message(id: messageID), let user = self.getUserManager() else { return }
-            let composer = self.factory.makeComposer(user: user, message: message)
+            // swiftlint:disable:next force_cast
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            let globalContainer = appDelegate.dependencies
+            let userContainer = UserContainer(userManager: user, globalContainer: globalContainer)
+            let composerViewFactory = userContainer.composerViewFactory
+            let composer = composerViewFactory.makeComposer(
+                msg: message,
+                action: .openDraft,
+                isEditingScheduleMsg: false
+            )
+
             guard let presentingVC = self.handler?.composerPresentingVC else { return }
             presentingVC.present(composer, animated: true)
         }

@@ -56,7 +56,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private var timeOfLastNavigationToMessageDetails: Date?
 
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
-    private let composerFactory: ComposerDependenciesFactory
     private let dependencies: Dependencies
 
     init(sideMenu: SideMenuController?,
@@ -79,7 +78,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         self.contextProvider = contextProvider
         self.getApplicationState = getApplicationState
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
-        self.composerFactory = services.makeComposeViewModelDependenciesFactory()
         self.dependencies = dependencies
     }
 
@@ -194,14 +192,11 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                     existingMessage = nil
                 }
 
-                let viewModel = ComposeViewModel(
+                let composer = dependencies.composerViewFactory.makeComposer(
                     msg: existingMessage,
-                    action: existingMessage == nil ? .newDraft : .openDraft,
-                    msgService: user.messageService,
-                    user: user,
-                    dependencies: composerFactory.makeViewModelDependencies(user: user)
+                    action: existingMessage == nil ? .newDraft : .openDraft
                 )
-                showComposer(viewModel: viewModel, navigationVC: nav)
+                nav.present(composer, animated: true)
             }
         case .composeMailto where path.value != nil:
             followToComposeMailTo(path: path.value)
@@ -226,17 +221,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
 }
 
 extension MailboxCoordinator {
-    private func showComposer(viewModel: ComposeViewModel, navigationVC: UINavigationController) {
-        let composer = ComposerViewFactory.makeComposer(
-            childViewModel: viewModel,
-            contextProvider: contextProvider,
-            userIntroductionProgressProvider: services.userCachedStatus,
-            attachmentMetadataStrippingCache: services.userCachedStatus,
-            featureFlagCache: services.userCachedStatus
-        )
-        navigationVC.present(composer, animated: true)
-    }
-
     private func presentCreateFolder(type: PMLabelType) {
         let user = self.viewModel.user
         let folderLabels = user.labelService.getMenuFolderLabels()
@@ -271,20 +255,10 @@ extension MailboxCoordinator {
         guard let navigationVC = navigation else {
             return
         }
-        let composer = ComposerViewFactory.makeComposer(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: existingMessage,
             action: existingMessage == nil ? .newDraft : .openDraft,
-            user: viewModel.user,
-            contextProvider: contextProvider,
             isEditingScheduleMsg: isEditingScheduleMsg,
-            userIntroductionProgressProvider: services.userCachedStatus,
-            internetStatusProvider: dependencies.internetConnectionStatusProvider,
-            coreKeyMaker: services.get(),
-            darkModeCache: services.userCachedStatus,
-            mobileSignatureCache: services.userCachedStatus,
-            attachmentMetadataStrippingCache: services.userCachedStatus,
-            featureFlagCache: services.userCachedStatus,
-            userCachedStatusProvider: services.userCachedStatus,
             originalScheduledTime: originalScheduledTime,
             composerDelegate: viewController
         )
@@ -293,13 +267,10 @@ extension MailboxCoordinator {
 
     private func presentSearch() {
         let coreDataService = services.get(by: CoreDataService.self)
-        // TODO: get shared ES service.
         let viewModel = SearchViewModel(
-            serviceFactory: services,
             user: viewModel.user,
             coreDataContextProvider: coreDataService,
             dependencies: .init(
-                coreKeyMaker: services.get(),
                 fetchMessageDetail: FetchMessageDetail(
                     dependencies: .init(
                         queueManager: services.get(by: QueueManager.self),
@@ -330,8 +301,7 @@ extension MailboxCoordinator {
                             )
                         )
                     )
-                ),
-                userIntroductionProgressProvider: services.userCachedStatus
+                )
             )
         )
         let viewController = SearchViewController(
@@ -377,21 +347,10 @@ extension MailboxCoordinator {
         if let nav = self.navigation,
            let value = path,
            let mailToURL = URL(string: value) {
-            let user = self.viewModel.user
-            let composer = ComposerViewFactory.makeComposer(
+            let composer = dependencies.composerViewFactory.makeComposer(
                 msg: nil,
                 action: .newDraft,
-                user: user,
-                contextProvider: contextProvider,
                 isEditingScheduleMsg: false,
-                userIntroductionProgressProvider: services.userCachedStatus,
-                internetStatusProvider: dependencies.internetConnectionStatusProvider,
-                coreKeyMaker: services.get(),
-                darkModeCache: services.userCachedStatus,
-                mobileSignatureCache: services.userCachedStatus,
-                attachmentMetadataStrippingCache: services.userCachedStatus,
-                featureFlagCache: services.userCachedStatus,
-                userCachedStatusProvider: services.userCachedStatus,
                 mailToUrl: mailToURL
             )
             nav.present(composer, animated: true)

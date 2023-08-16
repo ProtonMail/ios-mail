@@ -34,8 +34,8 @@ protocol SearchVMProtocol: AnyObject {
     func fetchRemoteData(query: String, fromStart: Bool)
     func loadMoreDataIfNeeded(currentRow: Int)
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback)
-    func getComposeViewModel(message: MessageEntity) -> ComposeViewModel?
-    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ComposeViewModel?
+    func getMessageObject(message: MessageEntity) -> Message?
+    func getMessageObject(by msgID: MessageID) -> Message?
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
 
     // Select / action bar / action sheet related
@@ -104,15 +104,12 @@ final class SearchViewModel: NSObject {
     private var currentFetchedSearchResultPage: UInt = 0
     /// use this flag to stop the search query being triggered by `loadMoreDataIfNeeded`.
     private(set) var searchIsDone = false
-    private let composerFactory: ComposerDependenciesFactory
 
     init(
-        serviceFactory: ServiceFactory,
         user: UserManager,
         coreDataContextProvider: CoreDataContextProviderProtocol,
         dependencies: Dependencies
     ) {
-        self.composerFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
         self.dependencies = dependencies
@@ -201,33 +198,20 @@ extension SearchViewModel: SearchVMProtocol {
             .execute(params: params, callback: callback)
     }
 
-    func getComposeViewModel(message: MessageEntity) -> ComposeViewModel? {
+    func getMessageObject(message: MessageEntity) -> Message? {
         guard let msgObject = coreDataContextProvider.mainContext
             .object(with: message.objectID.rawValue) as? Message else {
             return nil
         }
-        return ComposeViewModel(
-            msg: msgObject,
-            action: .openDraft,
-            msgService: user.messageService,
-            user: user,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
-        )
+        return msgObject
     }
 
-    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ComposeViewModel? {
+    func getMessageObject(by msgID: MessageID) -> Message? {
         guard let msg = Message.messageForMessageID(msgID.rawValue,
                                                     inManagedObjectContext: coreDataContextProvider.mainContext) else {
             return nil
         }
-        return ComposeViewModel(
-            msg: msg,
-            action: .openDraft,
-            msgService: user.messageService,
-            user: user,
-            isEditingScheduleMsg: isEditingScheduleMsg,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
-        )
+        return msg
     }
 
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {
@@ -655,10 +639,8 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
 
 extension SearchViewModel {
     struct Dependencies {
-        let coreKeyMaker: KeyMakerProtocol
         let fetchMessageDetail: FetchMessageDetailUseCase
         let fetchSenderImage: FetchSenderImageUseCase
         let messageSearch: SearchUseCase
-        let userIntroductionProgressProvider: UserIntroductionProgressProvider
     }
 }

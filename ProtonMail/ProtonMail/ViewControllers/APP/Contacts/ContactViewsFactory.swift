@@ -21,6 +21,7 @@ final class ContactViewsFactory {
     typealias Dependencies = ContactEditViewController.Dependencies
     & HasUserManager
     & HasCoreDataContextProviderProtocol
+    & ContactGroupDetailViewController.Dependencies
 
     private let dependencies: Dependencies
 

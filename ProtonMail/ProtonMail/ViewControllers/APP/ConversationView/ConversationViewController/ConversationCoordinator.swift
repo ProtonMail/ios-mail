@@ -9,7 +9,7 @@ protocol ConversationCoordinatorProtocol: AnyObject {
 }
 
 class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordinatorProtocol {
-    typealias Dependencies = HasContactViewsFactory
+    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory
 
     weak var viewController: ConversationViewController?
 
@@ -22,7 +22,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     private let highlightedKeywords: [String]
     private let contextProvider: CoreDataContextProviderProtocol
-    private let composerFactory: ComposerDependenciesFactory
     private let dependencies: Dependencies
     var pendingActionAfterDismissal: (() -> Void)?
     var goToDraft: ((MessageID, Date?) -> Void)?
@@ -49,7 +48,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.highlightedKeywords = highlightedKeywords
         self.contextProvider = contextProvider
-        self.composerFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
         self.dependencies = dependencies
     }
 
@@ -182,29 +180,21 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentCompose(with contact: ContactVO) {
-        let viewModel = ComposeViewModel(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: nil,
             action: .newDraft,
-            msgService: user.messageService,
-            user: user,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
+            toContact: contact
         )
-        viewModel.addToContacts(contact)
-
-        presentCompose(viewModel: viewModel)
+        viewController?.present(composer, animated: true)
     }
 
     private func presentCompose(with mailToURL: URL) {
-        let viewModel = ComposeViewModel(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: nil,
             action: .newDraft,
-            msgService: user.messageService,
-            user: user,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
+            mailToUrl: mailToURL
         )
-        viewModel.parse(mailToURL: mailToURL)
-
-        presentCompose(viewModel: viewModel)
+        viewController?.present(composer, animated: true)
     }
 
     private func presentCompose(message: MessageEntity, action: ComposeMessageAction) {
@@ -212,19 +202,10 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         guard let rawMessage = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else {
             return
         }
-        let viewModel = ComposeViewModel(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: rawMessage,
-            action: action,
-            msgService: user.messageService,
-            user: user,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
+            action: action
         )
-
-        presentCompose(viewModel: viewModel)
-    }
-
-    private func presentCompose(viewModel: ComposeViewModel) {
-        let composer = composerFactory.makeComposer(viewModel: viewModel)
         viewController?.present(composer, animated: true)
     }
 

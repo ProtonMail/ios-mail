@@ -82,13 +82,11 @@ class ComposeViewModel: NSObject {
         body: String,
         files: [FileData],
         action: ComposeMessageAction,
-        msgService: MessageDataService,
-        user: UserManager,
         originalScheduledTime: Date? = nil,
         dependencies: Dependencies
     ) {
-        self.user = user
-        self.messageService = msgService
+        self.user = dependencies.user
+        messageService = dependencies.user.messageService
         self.isEditingScheduleMsg = false
 
         // We have dependencies as an optional input parameter to avoid making
@@ -130,14 +128,12 @@ class ComposeViewModel: NSObject {
     init(
         msg: Message?,
         action: ComposeMessageAction,
-        msgService: MessageDataService,
-        user: UserManager,
         isEditingScheduleMsg: Bool = false,
         originalScheduledTime: Date? = nil,
         dependencies: Dependencies
     ) {
-        self.user = user
-        self.messageService = msgService
+        self.user = dependencies.user
+        messageService = dependencies.user.messageService
         self.isEditingScheduleMsg = isEditingScheduleMsg
         self.originalScheduledTime = originalScheduledTime
 
@@ -1111,8 +1107,8 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     struct Dependencies {
+        let user: UserManager
         let coreDataContextProvider: CoreDataContextProviderProtocol
-        let coreKeyMaker: KeyMakerProtocol
         let fetchAndVerifyContacts: FetchAndVerifyContactsUseCase
         let internetStatusProvider: InternetConnectionStatusProviderProtocol
         let fetchAttachment: FetchAttachmentUseCase

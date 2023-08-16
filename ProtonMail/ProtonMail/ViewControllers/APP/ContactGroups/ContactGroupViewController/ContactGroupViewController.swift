@@ -38,7 +38,7 @@ protocol ContactGroupsUIProtocol: UIViewController {
  the update will be performed immediately and automatically by core data
  */
 final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSaveHintProtocol, LifetimeTrackable {
-    typealias Dependencies = HasContactViewsFactory
+    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -480,20 +480,10 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
         let user = self.viewModel.user
         let contactGroupVO = ContactGroupVO.init(ID: ID, name: name)
         contactGroupVO.selectAllEmailFromGroup()
-        let composer = ComposerViewFactory.makeComposer(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: nil,
             action: .newDraft,
-            user: user,
-            contextProvider: sharedServices.get(by: CoreDataService.self),
             isEditingScheduleMsg: false,
-            userIntroductionProgressProvider: sharedServices.userCachedStatus,
-            internetStatusProvider: internetConnectionStatusProvider,
-            coreKeyMaker: sharedServices.get(),
-            darkModeCache: sharedServices.userCachedStatus,
-            mobileSignatureCache: sharedServices.userCachedStatus,
-            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
-            featureFlagCache: sharedServices.userCachedStatus,
-            userCachedStatusProvider: sharedServices.userCachedStatus,
             toContact: contactGroupVO
         )
 

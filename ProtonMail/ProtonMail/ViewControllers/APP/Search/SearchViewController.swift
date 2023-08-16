@@ -499,29 +499,21 @@ extension SearchViewController {
         })
     }
     private func showComposer(message: MessageEntity) {
-        guard let viewModel = self.viewModel.getComposeViewModel(message: message),
+        guard let message = viewModel.getMessageObject(message: message),
               let navigationController = self.navigationController else { return }
-        let composer = ComposerViewFactory.makeComposer(
-            childViewModel: viewModel,
-            contextProvider: sharedServices.get(by: CoreDataService.self),
-            userIntroductionProgressProvider: serviceFactory.userCachedStatus,
-            attachmentMetadataStrippingCache: serviceFactory.userCachedStatus,
-            featureFlagCache: serviceFactory.userCachedStatus
-        )
+        let composer = dependencies.composerViewFactory.makeComposer(msg: message, action: .openDraft)
         navigationController.present(composer, animated: true)
     }
 
     private func showComposer(msgID: MessageID) {
-        guard let viewModel = self.viewModel.getComposeViewModel(by: msgID, isEditingScheduleMsg: true),
+        guard let message = viewModel.getMessageObject(by: msgID),
               let navigationController = self.navigationController else {
             return
         }
-        let composer = ComposerViewFactory.makeComposer(
-            childViewModel: viewModel,
-            contextProvider: sharedServices.get(by: CoreDataService.self),
-            userIntroductionProgressProvider: serviceFactory.userCachedStatus,
-            attachmentMetadataStrippingCache: serviceFactory.userCachedStatus,
-            featureFlagCache: serviceFactory.userCachedStatus
+        let composer = dependencies.composerViewFactory.makeComposer(
+            msg: message,
+            action: .openDraft,
+            isEditingScheduleMsg: true
         )
         navigationController.present(composer, animated: true)
     }

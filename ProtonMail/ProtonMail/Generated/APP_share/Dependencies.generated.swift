@@ -1,6 +1,22 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 
+protocol HasAttachmentMetadataStrippingProtocol {
+    var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol { get }
+}
+
+extension GlobalContainer: HasAttachmentMetadataStrippingProtocol {
+    var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol {
+        attachmentMetadataStripStatusProviderFactory()
+    }
+}
+
+extension UserContainer: HasAttachmentMetadataStrippingProtocol {
+    var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol {
+        globalContainer.attachmentMetadataStripStatusProvider
+    }
+}
+
 protocol HasCoreDataContextProviderProtocol {
     var contextProvider: CoreDataContextProviderProtocol { get }
 }
@@ -14,6 +30,22 @@ extension GlobalContainer: HasCoreDataContextProviderProtocol {
 extension UserContainer: HasCoreDataContextProviderProtocol {
     var contextProvider: CoreDataContextProviderProtocol {
         globalContainer.contextProvider
+    }
+}
+
+protocol HasFeatureFlagCache {
+    var featureFlagCache: FeatureFlagCache { get }
+}
+
+extension GlobalContainer: HasFeatureFlagCache {
+    var featureFlagCache: FeatureFlagCache {
+        featureFlagCacheFactory()
+    }
+}
+
+extension UserContainer: HasFeatureFlagCache {
+    var featureFlagCache: FeatureFlagCache {
+        globalContainer.featureFlagCache
     }
 }
 
@@ -110,6 +142,32 @@ extension GlobalContainer: HasUserCachedStatus {
 extension UserContainer: HasUserCachedStatus {
     var userCachedStatus: UserCachedStatus {
         globalContainer.userCachedStatus
+    }
+}
+
+protocol HasUserIntroductionProgressProvider {
+    var userIntroductionProgressProvider: UserIntroductionProgressProvider { get }
+}
+
+extension GlobalContainer: HasUserIntroductionProgressProvider {
+    var userIntroductionProgressProvider: UserIntroductionProgressProvider {
+        userIntroductionProgressProviderFactory()
+    }
+}
+
+extension UserContainer: HasUserIntroductionProgressProvider {
+    var userIntroductionProgressProvider: UserIntroductionProgressProvider {
+        globalContainer.userIntroductionProgressProvider
+    }
+}
+
+protocol HasComposerViewFactory {
+    var composerViewFactory: ComposerViewFactory { get }
+}
+
+extension UserContainer: HasComposerViewFactory {
+    var composerViewFactory: ComposerViewFactory {
+        composerViewFactoryFactory()
     }
 }
 

@@ -266,10 +266,8 @@ class UserManager: Service, ObservableObject {
     }()
 
     lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
-        let factory = sharedServices.makeUndoActionManagerDependenciesFactory()
         let manager = UndoActionManager(
-            factory: factory,
-            dependencies: factory.makeDependencies(apiService: apiService),
+            dependencies: .init(contextProvider: self.coreDataService, apiService: self.apiService),
             getEventFetching: { [weak self] in
                 self?.eventsService
             },

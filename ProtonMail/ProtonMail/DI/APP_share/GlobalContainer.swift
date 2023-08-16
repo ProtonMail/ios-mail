@@ -21,9 +21,21 @@ import ProtonCore_Keymaker
 final class GlobalContainer: ManagedContainer {
     let manager = ContainerManager()
 
+    var attachmentMetadataStripStatusProviderFactory: Factory<AttachmentMetadataStrippingProtocol> {
+        self {
+            self.userCachedStatus
+        }
+    }
+
     var contextProviderFactory: Factory<CoreDataContextProviderProtocol> {
         self {
             CoreDataService.shared
+        }
+    }
+
+    var featureFlagCacheFactory: Factory<FeatureFlagCache> {
+        self {
+            self.userCachedStatus
         }
     }
 
@@ -69,6 +81,12 @@ final class GlobalContainer: ManagedContainer {
     var userCachedStatusFactory: Factory<UserCachedStatus> {
         self {
             UserCachedStatus()
+        }
+    }
+
+    var userIntroductionProgressProviderFactory: Factory<UserIntroductionProgressProvider> {
+        self {
+            self.userCachedStatus
         }
     }
 

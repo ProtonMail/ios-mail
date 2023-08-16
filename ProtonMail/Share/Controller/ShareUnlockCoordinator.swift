@@ -23,20 +23,24 @@
 import UIKit
 
 final class ShareUnlockCoordinator {
+    typealias Dependencies = GlobalContainer
+
     private var viewController: ShareUnlockViewController?
     private var nextCoordinator: SharePinUnlockCoordinator?
 
     internal weak var navigationController: UINavigationController?
+    private let dependencies: Dependencies
     private var services: ServiceFactory
 
     enum Destination: String {
         case pin, composer
     }
 
-    init(navigation: UINavigationController?, services: ServiceFactory) {
+    init(navigation: UINavigationController?, services: ServiceFactory, dependencies: Dependencies) {
         // parent navigation
         self.navigationController = navigation
         self.services = services
+        self.dependencies = dependencies
         // create self view controller
         self.viewController = ShareUnlockViewController(nibName: "ShareUnlockViewController", bundle: nil)
     }
@@ -67,23 +71,12 @@ final class ShareUnlockCoordinator {
             return
         }
 
-        let coreDataService = self.services.get(by: CoreDataService.self)
-        let internetStatusProvider = InternetConnectionStatusProvider.shared
-        let coreKeyMaker: KeyMakerProtocol = services.get()
-        let composer = ComposerViewFactory.makeComposer(
+        let userContainer = UserContainer(userManager: user, globalContainer: dependencies)
+
+        let composer = userContainer.composerViewFactory.makeComposer(
             subject: controller.inputSubject,
             body: controller.inputContent,
             files: controller.files,
-            user: user,
-            contextProvider: coreDataService,
-            userIntroductionProgressProvider: services.userCachedStatus,
-            internetStatusProvider: internetStatusProvider,
-            coreKeyMaker: coreKeyMaker,
-            darkModeCache: services.userCachedStatus,
-            mobileSignatureCache: services.userCachedStatus,
-            attachmentMetadataStrippingCache: services.userCachedStatus,
-            featureFlagCache: services.userCachedStatus,
-            userCachedStatusProvider: services.userCachedStatus,
             navigationViewController: navigationController
         )
         navigationController.setViewControllers([composer], animated: true)

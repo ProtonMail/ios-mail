@@ -29,25 +29,16 @@ final class ShareAppCoordinator {
     private(set) weak var navigationController: UINavigationController?
     private var nextCoordinator: ShareUnlockCoordinator?
 
+    private let dependencies = GlobalContainer()
+
     func start() {
         sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
-        let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
-        let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
-        let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
-        sharedServices.add(QueueManager.self, for: queueManager)
+        sharedServices.add(QueueManager.self, for: dependencies.queueManager)
 
-        let keyMaker = Keymaker(
-            autolocker: Autolocker(lockTimeProvider: sharedServices.userCachedStatus),
-            keychain: KeychainWrapper.keychain
-        )
+        let keyMaker = dependencies.keyMaker
         sharedServices.add(Keymaker.self, for: keyMaker)
         sharedServices.add(KeyMakerProtocol.self, for: keyMaker)
 
-        let usersManager = UsersManager(
-            doh: BackendConfiguration.shared.doh,
-            userDataCache: UserDataCache(keyMaker: keyMaker),
-            coreKeyMaker: keyMaker
-        )
 
         let unlockManager = UnlockManager(
             cacheStatus: keyMaker,
@@ -57,7 +48,7 @@ final class ShareAppCoordinator {
         unlockManager.delegate = self
         sharedServices.add(UnlockManager.self, for: unlockManager)
 
-        sharedServices.add(UsersManager.self, for: usersManager)
+        sharedServices.add(UsersManager.self, for: dependencies.usersManager)
         self.loadUnlockCheckView()
     }
 
@@ -67,7 +58,11 @@ final class ShareAppCoordinator {
 
     private func loadUnlockCheckView() {
         // create next coordinator
-        self.nextCoordinator = ShareUnlockCoordinator(navigation: navigationController, services: sharedServices)
+        nextCoordinator = ShareUnlockCoordinator(
+            navigation: navigationController,
+            services: sharedServices,
+            dependencies: dependencies
+        )
         self.nextCoordinator?.start()
     }
 }
