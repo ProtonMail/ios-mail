@@ -77,6 +77,14 @@ enum FeatureFlagTestData {
                 "Global": true,
                 "Code": "ProtonUnreachableBanner",
                 "DefaultValue": false
+            ],
+            [
+                "Writable": false,
+                "Type": "integer",
+                "Value": 0,
+                "Global": true,
+                "Code": "iOSMailboxPrefetchSize",
+                "DefaultValue": 0
             ]
         ] as [[String: Any]]
     ]

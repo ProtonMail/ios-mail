@@ -25,6 +25,7 @@ enum FeatureFlagKey: String, CaseIterable {
     case scheduleSend = "ScheduledSendFreemium"
     case senderImage = "ShowSenderImages"
     case referralPrompt = "ReferralActionSheetShouldBePresentedIOS"
+    case mailboxPrefetchSize = "iOSMailboxPrefetchSize"
 }
 
 // sourcery: mock
