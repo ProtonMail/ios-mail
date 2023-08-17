@@ -46,7 +46,17 @@ final class FetchSenderImage: FetchSenderImageUseCase {
             completion: { result in
                 switch result {
                 case .success(let imageData):
-                    callback(.success(UIImage(data: imageData)))
+                    if let image = UIImage(data: imageData) {
+                        if #available(iOS 15.0, *) {
+                            image.prepareForDisplay(completionHandler: { preparedImage in
+                                callback(.success(preparedImage))
+                            })
+                        } else {
+                            callback(.success(image))
+                        }
+                    } else {
+                        callback(.success(nil))
+                    }
                 case .failure(let error):
                     callback(.failure(error))
                 }

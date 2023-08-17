@@ -230,9 +230,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.tableView.separatorStyle = .none
         self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
-        if #available(iOS 15.0, *) {
-            self.tableView.isPrefetchingEnabled = false
-        }
 
         self.loadDiffableDataSource()
 
