@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import VCard
 import ProtonCore_Crypto
 import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
+import VCard
 
 struct ContactDecryptionResult {
     let decryptedText: String?
@@ -34,6 +34,7 @@ protocol ContactParserResultDelegate: AnyObject {
     func append(fields: [ContactEditField])
     func append(notes: [ContactEditNote])
     func append(urls: [ContactEditUrl])
+    func append(structuredName: ContactEditStructuredName)
 
     func update(verifyType3: Bool)
     func update(decryptionError: Bool)
@@ -41,16 +42,28 @@ protocol ContactParserResultDelegate: AnyObject {
 }
 
 protocol ContactParserProtocol {
-    func parsePlainTextContact(data: String, coreDataService: CoreDataContextProviderProtocol, contactID: ContactID)
-    func parseEncryptedOnlyContact(card: CardData, passphrase: Passphrase, userKeys: [ArmoredKey]) throws
-    func parseSignAndEncryptContact(card: CardData,
-                                    passphrase: Passphrase,
-                                    firstUserKey: ArmoredKey?,
-                                    userKeys: [ArmoredKey]) throws
-    func verifySignature(signature: ArmoredSignature,
-                         plainText: String,
-                         userKeys: [ArmoredKey],
-                         passphrase: Passphrase) -> Bool
+    func parsePlainTextContact(
+        data: String,
+        coreDataService: CoreDataContextProviderProtocol,
+        contactID: ContactID
+    )
+    func parseEncryptedOnlyContact(
+        card: CardData,
+        passphrase: Passphrase,
+        userKeys: [ArmoredKey]
+    ) throws
+    func parseSignAndEncryptContact(
+        card: CardData,
+        passphrase: Passphrase,
+        firstUserKey: ArmoredKey?,
+        userKeys: [ArmoredKey]
+    ) throws
+    func verifySignature(
+        signature: ArmoredSignature,
+        plainText: String,
+        userKeys: [ArmoredKey],
+        passphrase: Passphrase
+    ) -> Bool
 }
 
 final class ContactParser: ContactParserProtocol {
@@ -65,39 +78,51 @@ final class ContactParser: ContactParserProtocol {
         self.resultDelegate = resultDelegate
     }
 
-    func parsePlainTextContact(data: String, coreDataService: CoreDataContextProviderProtocol, contactID: ContactID) {
+    func parsePlainTextContact(
+        data: String,
+        coreDataService: CoreDataContextProviderProtocol,
+        contactID: ContactID
+    ) {
         guard let vCard = PMNIEzvcard.parseFirst(data) else { return }
 
         let emails = vCard.getEmails()
-        var order: Int = 1
+        var order = 1
         var contactEmails: [ContactEditEmail] = []
         for email in emails {
             let types = email.getTypes()
             let typeRaw = types.isEmpty ? "" : (types.first ?? "")
             let type = ContactFieldType.get(raw: typeRaw)
 
-            let object = ContactEditEmail(order: order,
-                                          type: type == .empty ? .email : type,
-                                          email: email.getValue(),
-                                          isNew: false,
-                                          keys: nil,
-                                          contactID: contactID.rawValue,
-                                          encrypt: nil,
-                                          sign: nil,
-                                          scheme: nil,
-                                          mimeType: nil,
-                                          delegate: nil,
-                                          coreDataService: coreDataService)
+            let object = ContactEditEmail(
+                order: order,
+                type: type == .empty ? .email : type,
+                email: email.getValue(),
+                isNew: false,
+                keys: nil,
+                contactID: contactID.rawValue,
+                encrypt: nil,
+                sign: nil,
+                scheme: nil,
+                mimeType: nil,
+                delegate: nil,
+                coreDataService: coreDataService
+            )
             contactEmails.append(object)
             order += 1
         }
         self.resultDelegate?.append(emails: contactEmails)
     }
 
-    func parseEncryptedOnlyContact(card: CardData, passphrase: Passphrase, userKeys: [ArmoredKey]) throws {
-        let decryptionResult = self.decryptMessage(encryptedText: card.data,
-                                                   passphrase: passphrase,
-                                                   userKeys: userKeys)
+    func parseEncryptedOnlyContact(
+        card: CardData,
+        passphrase: Passphrase,
+        userKeys: [ArmoredKey]
+    ) throws {
+        let decryptionResult = self.decryptMessage(
+            encryptedText: card.data,
+            passphrase: passphrase,
+            userKeys: userKeys
+        )
         self.resultDelegate?.update(decryptionError: decryptionResult.decryptError)
         guard let decryptedText = decryptionResult.decryptedText else {
             throw ParserError.decryptionFailed
@@ -105,36 +130,44 @@ final class ContactParser: ContactParserProtocol {
         try self.parseDecryptedContact(data: decryptedText)
     }
 
-    func parseSignAndEncryptContact(card: CardData,
-                                    passphrase: Passphrase,
-                                    firstUserKey: ArmoredKey?,
-                                    userKeys: [ArmoredKey]) throws {
+    func parseSignAndEncryptContact(
+        card: CardData,
+        passphrase: Passphrase,
+        firstUserKey: ArmoredKey?,
+        userKeys: [ArmoredKey]
+    ) throws {
         guard let firstUserKey = firstUserKey else {
             throw ParserError.userKeyNotProvided
         }
 
-        let decryptionResult = self.decryptMessage(encryptedText: card.data,
-                                                   passphrase: passphrase,
-                                                   userKeys: userKeys)
+        let decryptionResult = self.decryptMessage(
+            encryptedText: card.data,
+            passphrase: passphrase,
+            userKeys: userKeys
+        )
         self.resultDelegate?.update(decryptionError: decryptionResult.decryptError)
         let key = decryptionResult.signKey ?? firstUserKey
         guard let decryptedText = decryptionResult.decryptedText else {
             throw ParserError.decryptionFailed
         }
 
-        let verifyType3 = self.verifyDetached(signature: ArmoredSignature(value: card.signature),
-                                              plainText: decryptedText,
-                                              key: key)
+        let verifyType3 = self.verifyDetached(
+            signature: ArmoredSignature(value: card.signature),
+            plainText: decryptedText,
+            key: key
+        )
         self.resultDelegate?.update(verifyType3: verifyType3)
 
         try self.parseDecryptedContact(data: decryptedText)
     }
 
-    func verifySignature(signature: ArmoredSignature,
-                         plainText: String,
-                         userKeys: [ArmoredKey],
-                         passphrase: Passphrase) -> Bool {
-        var isVerified = true
+    func verifySignature(
+        signature: ArmoredSignature,
+        plainText: String,
+        userKeys: [ArmoredKey],
+        passphrase: Passphrase
+    ) -> Bool {
+        var isVerified = false
         for key in userKeys {
             do {
                 isVerified = try Sign.verifyDetached(
@@ -159,6 +192,7 @@ final class ContactParser: ContactParserProtocol {
 }
 
 // MARK: Decrypted contact
+
 // Private functions
 extension ContactParser {
     enum VCardTypes: String {
@@ -172,9 +206,14 @@ extension ContactParser {
         case gender = "Gender"
         case url = "Url"
         case photo = "Photo"
+        case structuredName = "StructuredName"
     }
 
-    private func verifyDetached(signature: ArmoredSignature, plainText: String, key: ArmoredKey) -> Bool {
+    private func verifyDetached(
+        signature: ArmoredSignature,
+        plainText: String,
+        key: ArmoredKey
+    ) -> Bool {
         do {
             return try Sign.verifyDetached(
                 signature: signature,
@@ -187,9 +226,11 @@ extension ContactParser {
         }
     }
 
-    private func decryptMessage(encryptedText: String,
-                                passphrase: Passphrase,
-                                userKeys: [ArmoredKey]) -> ContactDecryptionResult {
+    private func decryptMessage(
+        encryptedText: String,
+        passphrase: Passphrase,
+        userKeys: [ArmoredKey]
+    ) -> ContactDecryptionResult {
         var decryptedText: String?
         var signKey: ArmoredKey?
         var decryptError = false
@@ -203,7 +244,11 @@ extension ContactParser {
                 decryptError = true
             }
         }
-        return ContactDecryptionResult(decryptedText: decryptedText, signKey: signKey, decryptError: decryptError)
+        return ContactDecryptionResult(
+            decryptedText: decryptedText,
+            signKey: signKey,
+            decryptError: decryptError
+        )
     }
 
     private func parseDecryptedContact(data: String) throws {
@@ -212,36 +257,39 @@ extension ContactParser {
                   let vCard = PMNIEzvcard.parseFirst(data) else { return }
             self.parse(types: vCard.getPropertyTypes(), vCard: vCard)
             self.parse(customs: vCard.getCustoms())
-            self.parse(note: vCard.getNote())
+            self.parse(notes: vCard.getNotes())
         }
     }
 
     private func parse(types: [String], vCard: PMNIVCard) {
-        for type in types {
-            guard let vCardType = VCardTypes(rawValue: type) else { continue }
-            switch vCardType {
-            case .telephone:
-                self.parse(telephones: vCard.getTelephoneNumbers())
-            case .address:
-                self.parse(addresses: vCard.getAddresses())
-            case .organization:
-                self.parse(organization: vCard.getOrganization())
-            case .title:
-                self.parse(title: vCard.getTitle())
-            case .nickname:
-                self.parse(nickName: vCard.getNickname())
-            case .birthday:
-                self.parse(birthdays: vCard.getBirthdays())
-            case .anniversary:
-                break
-            case .gender:
-                self.parse(gender: vCard.getGender())
-            case .url:
-                self.parse(urls: vCard.getUrls())
-            case .photo:
-                self.parse(photo: vCard.getPhoto())
+        types
+            .compactMap { VCardTypes(rawValue: $0) }
+            .forEach { vCardType in
+                switch vCardType {
+                case .telephone:
+                    self.parse(telephones: vCard.getTelephoneNumbers())
+                case .address:
+                    self.parse(addresses: vCard.getAddresses())
+                case .organization:
+                    self.parse(organization: vCard.getOrganization())
+                case .title:
+                    self.parse(title: vCard.getTitle())
+                case .nickname:
+                    self.parse(nickName: vCard.getNickname())
+                case .birthday:
+                    self.parse(birthdays: vCard.getBirthdays())
+                case .anniversary:
+                    break
+                case .gender:
+                    self.parse(gender: vCard.getGender())
+                case .url:
+                    self.parse(urls: vCard.getUrls())
+                case .photo:
+                    self.parse(photo: vCard.getPhoto())
+                case .structuredName:
+                    self.parse(structuredName: vCard.getStructuredName())
+                }
             }
-        }
     }
 
     private func parse(telephones: [PMNITelephone]) {
@@ -387,10 +435,19 @@ extension ContactParser {
         self.resultDelegate?.append(fields: results)
     }
 
-    private func parse(note: PMNINote?) {
-        guard let note = note else { return }
-        let contactEditNote = ContactEditNote(note: note.getNote(), isNew: false)
-        contactEditNote.isNew = false
-        self.resultDelegate?.append(notes: [contactEditNote])
+    private func parse(notes: [PMNINote]) {
+        guard !notes.isEmpty else { return }
+        let notesToAdd = notes.map { ContactEditNote(note: $0.getNote(), isNew: false) }
+        self.resultDelegate?.append(notes: notesToAdd)
+    }
+
+    private func parse(structuredName: PMNIStructuredName?) {
+        guard let structuredName = structuredName else { return }
+        let contactEditStructuredName = ContactEditStructuredName(
+            firstName: structuredName.getGiven(),
+            lastName: structuredName.getFamily(),
+            isNew: false
+        )
+        resultDelegate?.append(structuredName: contactEditStructuredName)
     }
 }

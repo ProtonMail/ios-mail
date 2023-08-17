@@ -40,16 +40,17 @@ class ContactEditViewModelImpl: ContactEditViewModel {
     var addresses: [ContactEditAddress] = []
     var informations: [ContactEditInformation] = []
     var fields: [ContactEditField] = []
-    var notes: ContactEditNote = ContactEditNote(note: "", isNew: false)
+    var notes: [ContactEditNote] = []
     var profile: ContactEditProfile = ContactEditProfile(n_displayname: "")
     var urls: [ContactEditUrl] = []
+    var structuredName: ContactEditStructuredName?
     var contactGroupData: [String:(name: String, color: String, count: Int)] = [:]
     var profilePicture: UIImage? = nil
     var origProfilePicture: UIImage? = nil
-    
+
     var origvCard2 : PMNIVCard?
     var origvCard3 : PMNIVCard?
-    
+
     init(contactEntity: ContactEntity?, user: UserManager, coreDataService: CoreDataService) {
         super.init(user: user, coreDataService: coreDataService)
         self.contactEntity = contactEntity
@@ -140,7 +141,7 @@ class ContactEditViewModelImpl: ContactEditViewModel {
         return fields
     }
 
-    override func getNotes() -> ContactEditNote {
+    override func getNotes() -> [ContactEditNote] {
         return notes
     }
 
@@ -261,289 +262,6 @@ class ContactEditViewModelImpl: ContactEditViewModel {
             for (index, mail) in self.emails.enumerated() {
                 mail.update(order: index)
             }
-            var cards: [CardData] = []
-
-            // contact group, card type 0
-            let vCard0 = PMNIVCard.createInstance()
-            if let vCard0 = vCard0 {
-                for (i, email) in getEmails().enumerated() {
-                    let group = "ITEM\(i + 1)"
-
-                    let newCategories = PMNICategories.createInstance(group,
-                                                                      value: email.getContactGroupNames())
-                    vCard0.add(newCategories)
-                }
-
-                let vcard0Str = PMNIEzvcard.write(vCard0)
-                let card0 = CardData(type: .PlainText,
-                                     data: vcard0Str,
-                                     signature: "")
-
-                cards.append(card0)
-            }
-
-            if origvCard2 == nil {
-                origvCard2 = PMNIVCard.createInstance()
-            }
-
-            let userInfo = self.user.userInfo
-
-            guard let userkey = userInfo.firstUserKey() else {
-                return; // with error
-            }
-
-            let signingKey = SigningKey(
-                privateKey: ArmoredKey(value: userkey.privateKey),
-                passphrase: user.mailboxPassword
-            )
-
-            let onError: (NSError) -> Void = { error in
-                DispatchQueue.main.async {
-                    complete(error)
-                }
-            }
-
-            var uid: PMNIUid?
-            if let vcard2 = origvCard2 {
-
-                var defaultName = LocalString._general_unknown_title
-                // TODO::need to check the old email's group id
-                var i: Int = 1
-                var newEmails: [PMNIEmail] = []
-                vcard2.clearEmails()
-                vcard2.clearKeys()
-                vcard2.clearPMSign()
-                vcard2.clearPMEncrypt()
-                vcard2.clearPMScheme()
-                vcard2.clearPMMimeType()
-
-                // update
-                for email in getEmails() {
-                    if email.newEmail.isEmpty || !email.newEmail.isValidEmail() {
-                        onError(RuntimeError.invalidEmail.toError())
-                        return
-                    }
-                    let group = "Item\(i)"
-                    let em = email.newEmail
-                    if !em.isEmpty {
-                        defaultName = em
-                        let m = PMNIEmail.createInstance(email.newType.vcardType, email: email.newEmail, group: group)!
-                        newEmails.append(m)
-
-                        if let keys = email.keys {
-                            for k in keys {
-                                k.setGroup(group)
-                                vcard2.add(k)
-                            }
-                        }
-
-                        if let sign = email.sign {
-                            sign.setGroup(group)
-                            vcard2.add(sign)
-                        }
-
-                        if let encrypt = email.encrypt {
-                            encrypt.setGroup(group)
-                            vcard2.add(encrypt)
-                        }
-
-                        if let scheme = email.scheme {
-                            scheme.setGroup(group)
-                            vcard2.add(scheme)
-                        }
-                        if let mime = email.mimeType {
-                            mime.setGroup(group)
-                            vcard2.add(mime)
-                        }
-
-                        i += 1
-                    }
-                }
-
-                // replace emails
-                vcard2.setEmails(newEmails)
-
-                if let fn = PMNIFormattedName.createInstance(profile.newDisplayName.isEmpty ? defaultName : profile.newDisplayName) {
-                    vcard2.setFormattedName(fn)
-                }
-
-                // get uid first if null create a new one
-                uid = vcard2.getUid()
-                if uid == nil || uid!.getValue() == "" {
-                    let newuid = "protonmail-ios-" + UUID().uuidString
-                    let uuid = PMNIUid.createInstance(newuid)
-                    vcard2.setUid(uuid)
-                    uid = uuid
-                }
-
-                // add others later
-                let vcard2Str = PMNIEzvcard.write(vcard2)
-
-                let signed_vcard2: ArmoredSignature
-                do {
-                    signed_vcard2 = try Sign.signDetached(signingKey: signingKey, plainText: vcard2Str)
-                } catch {
-                    onError(error as NSError)
-                    return
-                }
-
-                // card 2 object
-                let card2 = CardData(type: .SignedOnly,
-                                     data: vcard2Str,
-                                     signature: signed_vcard2.value)
-
-                cards.append(card2)
-            }
-
-            // start type 3 vcard
-            var isCard3Set: Bool = false
-            if origvCard3 == nil {
-                origvCard3 = PMNIVCard.createInstance()
-            }
-
-            if let vcard3 = origvCard3 {
-                var newCells: [PMNITelephone] = []
-                for cell in cells {
-                    if !cell.isEmpty() {
-                        let c = PMNITelephone.createInstance(cell.newType.vcardType, number: cell.newPhone)!
-                        newCells.append(c)
-                        isCard3Set = true
-                    }
-                }
-                // replace all cells
-                if newCells.count > 0 {
-                    vcard3.setTelephones(newCells)
-                } else {
-                    vcard3.clearTelephones()
-                }
-
-                var newAddrs: [PMNIAddress] = []
-                for addr in addresses {
-                    if !addr.isEmpty() {
-                        let a = PMNIAddress.createInstance(addr.newType.vcardType,
-                                                           street: addr.newStreet,
-                                                           extendstreet: addr.newStreetTwo,
-                                                           locality: addr.newLocality,
-                                                           region: addr.newRegion,
-                                                           zip: addr.newPostal,
-                                                           country: addr.newCountry,
-                                                           pobox: "")!
-                        newAddrs.append(a)
-                        isCard3Set = true
-                    }
-                }
-                // replace all addresses
-                if newAddrs.count > 0 {
-                    vcard3.setAddresses(newAddrs)
-                } else {
-                    vcard3.clearAddresses()
-                }
-
-                vcard3.clearOrganizations()
-                vcard3.clearNickname()
-                vcard3.clearTitle()
-                vcard3.clearBirthdays()
-                vcard3.clearGender()
-
-                for info in informations {
-                    if !info.isEmpty() {
-                        switch info.infoType {
-                        case .organization:
-                            let org = PMNIOrganization.createInstance("", value: info.newValue)!
-                            vcard3.setOrganizations([org])
-                            isCard3Set = true
-                        case .nickname:
-                            let nn = PMNINickname.createInstance("", value: info.newValue)!
-                            vcard3.setNickname(nn)
-                            isCard3Set = true
-                        case .title:
-                            let t = PMNITitle.createInstance("", value: info.newValue)!
-                            vcard3.setTitle(t)
-                            isCard3Set = true
-                        case .birthday:
-                            let b = PMNIBirthday.createInstance("", date: info.newValue)!
-                            vcard3.setBirthdays([b])
-                            isCard3Set = true
-                        case .anniversary:
-                            //                        let a = PMNIAnniversary.createInstance("", date: info.newValue)!
-                            //                        vcard3.seta
-                            //                        isCard3Set = true
-                            break
-                        case .gender:
-                            let g = PMNIGender.createInstance(info.newValue, text: "")!
-                            vcard3.setGender(g)
-                            isCard3Set = true
-                        }
-                    }
-                }
-
-                var newUrls: [PMNIUrl] = []
-                for url in urls {
-                    if !url.isEmpty() {
-                        if let u = PMNIUrl.createInstance(url.newType.vcardType, value: url.newUrl) {
-                            newUrls.append(u)
-                            isCard3Set = true
-                        }
-                    }
-                }
-                // replace all urls
-                if newUrls.count > 0 {
-                    vcard3.setUrls(newUrls)
-                } else {
-                    vcard3.clearUrls()
-                }
-
-                let n = PMNINote.createInstance("", note: notes.newNote)!
-                vcard3.setNote(n)
-                isCard3Set = true
-
-                for field in fields {
-                    let f = PMNIPMCustom.createInstance(field.newType.vcardType, value: field.newField)
-                    vcard3.add(f)
-                    isCard3Set = true
-                }
-
-//                if uid == nil || uid!.getValue() == "" {
-//                    let newuid = "protonmail-ios-" + UUID().uuidString
-//                    let uuid = PMNIUid.createInstance(newuid)
-//                    vcard3.setUid(uuid)
-//                    uid = uuid
-//                }
-
-                // profile image
-                vcard3.clearPhotos()
-                if let profilePicture = profilePicture,
-                    let compressedImage = UIImage.resize(image: profilePicture,
-                                                         targetSize: CGSize.init(width: 60, height: 60)),
-                    let jpegData = compressedImage.jpegData(compressionQuality: 0.5) {
-                    let image = PMNIPhoto.createInstance(jpegData,
-                                                         type: "JPEG",
-                                                         isBinary: true)
-                    vcard3.setPhoto(image)
-                    isCard3Set = true
-                }
-
-                let vcard3Str = PMNIEzvcard.write(vcard3)
-
-                let encrypted_vcard3, signed_vcard3: String
-                do {
-                    encrypted_vcard3 = try vcard3Str.encryptNonOptional(
-                        withPubKey: userkey.publicKey,
-                        privateKey: "",
-                        passphrase: ""
-                    )
-                    signed_vcard3 = try Sign.signDetached(signingKey: signingKey, plainText: vcard3Str).value
-                } catch {
-                    onError(error as NSError)
-                    return
-                }
-
-                // card 3 object
-                let card3 = CardData(type: .SignAndEncrypt, data: encrypted_vcard3, signature: signed_vcard3)
-                if isCard3Set {
-                    cards.append(card3)
-                }
-            }
 
             let completion = { (error: NSError?) in
                 // The data merge to mainContext take some time
@@ -558,14 +276,318 @@ class ContactEditViewModelImpl: ContactEditViewModel {
                     }
                 }
             }
-            self.user.contactService.queueUpdate(objectID: c.objectID.rawValue,
-                                                 cardDatas: cards,
-                                                 newName: self.profile.newDisplayName,
-                                                 emails: self.emails,
-                                                 completion: completion)
+            do {
+                let cards = try prepareCardDatas()
+
+                self.user.contactService.queueUpdate(
+                    objectID: c.objectID.rawValue,
+                    cardDatas: cards,
+                    newName: self.profile.newDisplayName,
+                    emails: self.emails,
+                    completion: completion
+                )
+            } catch {
+                complete(error as NSError)
+            }
         } else {
             // pop error
         }
+    }
+
+    func prepareCardDatas() throws -> [CardData] {
+        var cards: [CardData] = []
+
+        // contact group, card type 0
+        let vCard0 = PMNIVCard.createInstance()
+        if let vCard0 = vCard0 {
+            for (i, email) in getEmails().enumerated() {
+                let group = "ITEM\(i + 1)"
+
+                let newCategories = PMNICategories.createInstance(group,
+                                                                  value: email.getContactGroupNames())
+                vCard0.add(newCategories)
+            }
+
+            let vcard0Str = PMNIEzvcard.write(vCard0)
+            let card0 = CardData(type: .PlainText,
+                                 data: vcard0Str,
+                                 signature: "")
+
+            cards.append(card0)
+        }
+
+        if origvCard2 == nil {
+            origvCard2 = PMNIVCard.createInstance()
+        }
+
+        let userInfo = self.user.userInfo
+
+        guard let userkey = userInfo.firstUserKey() else {
+            throw NSError(
+                domain: "",
+                code: 999,
+                localizedDescription: "User key not found"
+            )
+        }
+
+        let signingKey = SigningKey(
+            privateKey: ArmoredKey(value: userkey.privateKey),
+            passphrase: user.mailboxPassword
+        )
+
+        var uid: PMNIUid?
+        if let vcard2 = origvCard2 {
+
+            var defaultName = LocalString._general_unknown_title
+            // TODO::need to check the old email's group id
+            var i: Int = 1
+            var newEmails: [PMNIEmail] = []
+            vcard2.clearEmails()
+            vcard2.clearKeys()
+            vcard2.clearPMSign()
+            vcard2.clearPMEncrypt()
+            vcard2.clearPMScheme()
+            vcard2.clearPMMimeType()
+
+            // update
+            for email in getEmails() {
+                if email.newEmail.isEmpty || !email.newEmail.isValidEmail() {
+                    throw RuntimeError.invalidEmail.toError()
+                }
+                let group = "Item\(i)"
+                let em = email.newEmail
+                if !em.isEmpty {
+                    defaultName = em
+                    let m = PMNIEmail.createInstance(email.newType.vcardType, email: email.newEmail, group: group)!
+                    newEmails.append(m)
+
+                    if let keys = email.keys {
+                        for k in keys {
+                            k.setGroup(group)
+                            vcard2.add(k)
+                        }
+                    }
+
+                    if let sign = email.sign {
+                        sign.setGroup(group)
+                        vcard2.add(sign)
+                    }
+
+                    if let encrypt = email.encrypt {
+                        encrypt.setGroup(group)
+                        vcard2.add(encrypt)
+                    }
+
+                    if let scheme = email.scheme {
+                        scheme.setGroup(group)
+                        vcard2.add(scheme)
+                    }
+                    if let mime = email.mimeType {
+                        mime.setGroup(group)
+                        vcard2.add(mime)
+                    }
+
+                    i += 1
+                }
+            }
+
+            // replace emails
+            vcard2.setEmails(newEmails)
+
+            if let fn = PMNIFormattedName.createInstance(profile.newDisplayName.isEmpty ? defaultName : profile.newDisplayName) {
+                vcard2.setFormattedName(fn)
+            }
+
+            // get uid first if null create a new one
+            uid = vcard2.getUid()
+            if uid == nil || uid!.getValue() == "" {
+                let newuid = "protonmail-ios-" + UUID().uuidString
+                let uuid = PMNIUid.createInstance(newuid)
+                vcard2.setUid(uuid)
+                uid = uuid
+            }
+
+            // add others later
+            let vcard2Str = PMNIEzvcard.write(vcard2)
+
+            let signed_vcard2: ArmoredSignature
+            do {
+                signed_vcard2 = try Sign.signDetached(signingKey: signingKey, plainText: vcard2Str)
+            } catch {
+                throw error as NSError
+            }
+
+            // card 2 object
+            let card2 = CardData(type: .SignedOnly,
+                                 data: vcard2Str,
+                                 signature: signed_vcard2.value)
+
+            cards.append(card2)
+        }
+
+        // start type 3 vcard
+        var isCard3Set: Bool = false
+        if origvCard3 == nil {
+            origvCard3 = PMNIVCard.createInstance()
+        }
+
+        if let vcard3 = origvCard3 {
+            var newCells: [PMNITelephone] = []
+            for cell in cells {
+                if !cell.isEmpty() {
+                    let c = PMNITelephone.createInstance(cell.newType.vcardType, number: cell.newPhone)!
+                    newCells.append(c)
+                    isCard3Set = true
+                }
+            }
+            // replace all cells
+            if newCells.count > 0 {
+                vcard3.setTelephones(newCells)
+            } else {
+                vcard3.clearTelephones()
+            }
+
+            var newAddrs: [PMNIAddress] = []
+            for addr in addresses {
+                if !addr.isEmpty() {
+                    let a = PMNIAddress.createInstance(addr.newType.vcardType,
+                                                       street: addr.newStreet,
+                                                       extendstreet: addr.newStreetTwo,
+                                                       locality: addr.newLocality,
+                                                       region: addr.newRegion,
+                                                       zip: addr.newPostal,
+                                                       country: addr.newCountry,
+                                                       pobox: "")!
+                    newAddrs.append(a)
+                    isCard3Set = true
+                }
+            }
+            // replace all addresses
+            if newAddrs.count > 0 {
+                vcard3.setAddresses(newAddrs)
+            } else {
+                vcard3.clearAddresses()
+            }
+
+            vcard3.clearOrganizations()
+            vcard3.clearNickname()
+            vcard3.clearTitle()
+            vcard3.clearBirthdays()
+            vcard3.clearGender()
+
+            for info in informations {
+                if !info.isEmpty() {
+                    switch info.infoType {
+                    case .organization:
+                        let org = PMNIOrganization.createInstance("", value: info.newValue)!
+                        vcard3.setOrganizations([org])
+                        isCard3Set = true
+                    case .nickname:
+                        let nn = PMNINickname.createInstance("", value: info.newValue)!
+                        vcard3.setNickname(nn)
+                        isCard3Set = true
+                    case .title:
+                        let t = PMNITitle.createInstance("", value: info.newValue)!
+                        vcard3.setTitle(t)
+                        isCard3Set = true
+                    case .birthday:
+                        let b = PMNIBirthday.createInstance("", date: info.newValue)!
+                        vcard3.setBirthdays([b])
+                        isCard3Set = true
+                    case .anniversary:
+                        //                        let a = PMNIAnniversary.createInstance("", date: info.newValue)!
+                        //                        vcard3.seta
+                        //                        isCard3Set = true
+                        break
+                    case .gender:
+                        let g = PMNIGender.createInstance(info.newValue, text: "")!
+                        vcard3.setGender(g)
+                        isCard3Set = true
+                    }
+                }
+            }
+
+            var newUrls: [PMNIUrl] = []
+            for url in urls {
+                if !url.isEmpty() {
+                    if let u = PMNIUrl.createInstance(url.newType.vcardType, value: url.newUrl) {
+                        newUrls.append(u)
+                        isCard3Set = true
+                    }
+                }
+            }
+            // replace all urls
+            if newUrls.count > 0 {
+                vcard3.setUrls(newUrls)
+            } else {
+                vcard3.clearUrls()
+            }
+
+            if !notes.isEmpty {
+                notes.forEach { note in
+                    if let rawNote = PMNINote.createInstance("", note: note.newNote) {
+                        vcard3.add(rawNote)
+                        isCard3Set = true
+                    }
+                }
+            }
+
+            for field in fields {
+                let f = PMNIPMCustom.createInstance(field.newType.vcardType, value: field.newField)
+                vcard3.add(f)
+                isCard3Set = true
+            }
+
+            //                if uid == nil || uid!.getValue() == "" {
+            //                    let newuid = "protonmail-ios-" + UUID().uuidString
+            //                    let uuid = PMNIUid.createInstance(newuid)
+            //                    vcard3.setUid(uuid)
+            //                    uid = uuid
+            //                }
+
+            // profile image
+            vcard3.clearPhotos()
+            if let profilePicture = profilePicture,
+               let compressedImage = UIImage.resize(image: profilePicture,
+                                                    targetSize: CGSize.init(width: 60, height: 60)),
+               let jpegData = compressedImage.jpegData(compressionQuality: 0.5) {
+                let image = PMNIPhoto.createInstance(jpegData,
+                                                     type: "JPEG",
+                                                     isBinary: true)
+                vcard3.setPhoto(image)
+                isCard3Set = true
+            }
+
+            // TODO: Handle the structuredName here in the future
+            if let structuredName = self.structuredName {
+                let rawStructuredName = PMNIStructuredName.createInstance()
+                rawStructuredName?.setGiven(structuredName.firstName)
+                rawStructuredName?.setFamily(structuredName.lastName)
+                vcard3.setStructuredName(rawStructuredName)
+                isCard3Set = true
+            }
+
+            let vcard3Str = PMNIEzvcard.write(vcard3)
+
+            let encrypted_vcard3, signed_vcard3: String
+            do {
+                encrypted_vcard3 = try vcard3Str.encryptNonOptional(
+                    withPubKey: userkey.publicKey,
+                    privateKey: "",
+                    passphrase: ""
+                )
+                signed_vcard3 = try Sign.signDetached(signingKey: signingKey, plainText: vcard3Str).value
+            } catch {
+                throw error as NSError
+            }
+
+            // card 3 object
+            let card3 = CardData(type: .SignAndEncrypt, data: encrypted_vcard3, signature: signed_vcard3)
+            if isCard3Set {
+                cards.append(card3)
+            }
+        }
+        return cards
     }
 
     override func delete(complete: @escaping ContactEditSaveComplete) {
@@ -618,6 +640,10 @@ class ContactEditViewModelImpl: ContactEditViewModel {
 }
 
 extension ContactEditViewModelImpl: ContactParserResultDelegate {
+    func append(structuredName: ContactEditStructuredName) {
+        self.structuredName = structuredName
+    }
+
     func append(emails: [ContactEditEmail]) {
         self.emails.append(contentsOf: emails)
     }
@@ -639,8 +665,7 @@ extension ContactEditViewModelImpl: ContactParserResultDelegate {
     }
 
     func append(notes: [ContactEditNote]) {
-        guard let note = notes.first else { return }
-        self.notes = note
+        self.notes.append(contentsOf: notes)
     }
 
     func append(urls: [ContactEditUrl]) {

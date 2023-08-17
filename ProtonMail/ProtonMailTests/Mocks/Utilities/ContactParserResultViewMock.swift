@@ -27,6 +27,7 @@ final class ContactParserResultViewMock: ContactParserResultDelegate {
     private(set) var fields: [ContactEditField] = []
     private(set) var notes: [ContactEditNote] = []
     private(set) var urls: [ContactEditUrl] = []
+    private(set) var structuredName: ContactEditStructuredName?
     private(set) var profilePicture: UIImage?
     private(set) var verifyType2: Bool = true
     private(set) var verifyType3: Bool = true
@@ -58,6 +59,10 @@ final class ContactParserResultViewMock: ContactParserResultDelegate {
 
     func append(urls: [ContactEditUrl]) {
         self.urls.append(contentsOf: urls)
+    }
+
+    func append(structuredName: ContactEditStructuredName) {
+        self.structuredName = structuredName
     }
 
     func update(verifyType3: Bool) {

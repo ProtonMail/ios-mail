@@ -385,6 +385,10 @@ extension ContactDetailsViewModelImpl: NSFetchedResultsControllerDelegate {
 }
 
 extension ContactDetailsViewModelImpl: ContactParserResultDelegate {
+    func append(structuredName: ContactEditStructuredName) {
+        // TODO: show structuredName
+    }
+
     func append(emails: [ContactEditEmail]) {
         self.origEmails.append(contentsOf: emails)
     }
