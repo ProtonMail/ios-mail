@@ -39,14 +39,8 @@ final class ShareAppCoordinator {
         sharedServices.add(Keymaker.self, for: keyMaker)
         sharedServices.add(KeyMakerProtocol.self, for: keyMaker)
 
-
-        let unlockManager = UnlockManager(
-            cacheStatus: keyMaker,
-            keyMaker: keyMaker,
-            pinFailedCountCache: sharedServices.userCachedStatus
-        )
+        let unlockManager = dependencies.unlockManager
         unlockManager.delegate = self
-        sharedServices.add(UnlockManager.self, for: unlockManager)
 
         sharedServices.add(UsersManager.self, for: dependencies.usersManager)
         self.loadUnlockCheckView()
@@ -60,7 +54,6 @@ final class ShareAppCoordinator {
         // create next coordinator
         nextCoordinator = ShareUnlockCoordinator(
             navigation: navigationController,
-            services: sharedServices,
             dependencies: dependencies
         )
         self.nextCoordinator?.start()
@@ -77,7 +70,7 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
 
         sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        let lastUpdatedStore = LastUpdatedStore(contextProvider: CoreDataService.shared)
+        let lastUpdatedStore = dependencies.lastUpdatedStore
         sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
         sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
     }

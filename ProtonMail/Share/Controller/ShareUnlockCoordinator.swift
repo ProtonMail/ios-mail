@@ -30,19 +30,17 @@ final class ShareUnlockCoordinator {
 
     internal weak var navigationController: UINavigationController?
     private let dependencies: Dependencies
-    private var services: ServiceFactory
 
     enum Destination: String {
         case pin, composer
     }
 
-    init(navigation: UINavigationController?, services: ServiceFactory, dependencies: Dependencies) {
+    init(navigation: UINavigationController?, dependencies: Dependencies) {
         // parent navigation
         self.navigationController = navigation
-        self.services = services
         self.dependencies = dependencies
         // create self view controller
-        self.viewController = ShareUnlockViewController(nibName: "ShareUnlockViewController", bundle: nil)
+        self.viewController = ShareUnlockViewController(dependencies: dependencies)
     }
 
     func start() {
@@ -56,8 +54,8 @@ final class ShareUnlockCoordinator {
         guard let navigationController = self.navigationController else { return }
         let pinView = SharePinUnlockCoordinator(navigation: navigationController,
                                                 vm: ShareUnlockPinCodeModelImpl(
-                                                    unlock: services.get(),
-                                                    pinFailedCountCache: services.userCachedStatus
+                                                    unlock: dependencies.unlockManager,
+                                                    pinFailedCountCache: dependencies.pinFailedCountCache
                                                 ),
                                                 delegate: self)
         self.nextCoordinator = pinView
@@ -67,7 +65,7 @@ final class ShareUnlockCoordinator {
     private func gotoComposer() {
         guard let controller = self.viewController,
               let navigationController = self.navigationController,
-              let user = self.services.get(by: UsersManager.self).firstUser else {
+              let user = dependencies.usersManager.firstUser else {
             return
         }
 
@@ -97,7 +95,7 @@ extension ShareUnlockCoordinator: SharePinUnlockViewControllerDelegate {
         guard let bundleID = Bundle.main.bundleIdentifier else {
             fatalError("Should have value")
         }
-        let users = self.services.get(by: UsersManager.self)
+        let users = dependencies.usersManager
         users.clean().done { [weak self] _ in
             let error = NSError(domain: bundleID, code: 0)
             self?.viewController?.extensionContext?.cancelRequest(withError: error)
@@ -105,7 +103,7 @@ extension ShareUnlockCoordinator: SharePinUnlockViewControllerDelegate {
     }
 
     func next() {
-        UnlockManager.shared.unlockIfRememberedCredentials(
+        dependencies.unlockManager.unlockIfRememberedCredentials(
             requestMailboxPassword: { },
             unlocked: {
                 self.go(dest: .composer)

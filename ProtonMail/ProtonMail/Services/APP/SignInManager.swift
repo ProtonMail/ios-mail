@@ -29,7 +29,7 @@ import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
 
-class SignInManager: Service {
+class SignInManager {
     let usersManager: UsersManager
     let queueHandlerRegister: QueueHandlerRegister
     private var contactCacheStatus: ContactCacheStatusProtocol

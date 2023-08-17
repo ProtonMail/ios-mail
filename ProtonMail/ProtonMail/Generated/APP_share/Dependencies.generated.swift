@@ -81,6 +81,22 @@ extension UserContainer: HasKeyMakerProtocol {
     }
 }
 
+protocol HasLastUpdatedStore {
+    var lastUpdatedStore: LastUpdatedStore { get }
+}
+
+extension GlobalContainer: HasLastUpdatedStore {
+    var lastUpdatedStore: LastUpdatedStore {
+        lastUpdatedStoreFactory()
+    }
+}
+
+extension UserContainer: HasLastUpdatedStore {
+    var lastUpdatedStore: LastUpdatedStore {
+        globalContainer.lastUpdatedStore
+    }
+}
+
 protocol HasLockCacheStatus {
     var lockCacheStatus: LockCacheStatus { get }
 }
@@ -97,6 +113,38 @@ extension UserContainer: HasLockCacheStatus {
     }
 }
 
+protocol HasNotificationCenter {
+    var notificationCenter: NotificationCenter { get }
+}
+
+extension GlobalContainer: HasNotificationCenter {
+    var notificationCenter: NotificationCenter {
+        notificationCenterFactory()
+    }
+}
+
+extension UserContainer: HasNotificationCenter {
+    var notificationCenter: NotificationCenter {
+        globalContainer.notificationCenter
+    }
+}
+
+protocol HasPinFailedCountCache {
+    var pinFailedCountCache: PinFailedCountCache { get }
+}
+
+extension GlobalContainer: HasPinFailedCountCache {
+    var pinFailedCountCache: PinFailedCountCache {
+        pinFailedCountCacheFactory()
+    }
+}
+
+extension UserContainer: HasPinFailedCountCache {
+    var pinFailedCountCache: PinFailedCountCache {
+        globalContainer.pinFailedCountCache
+    }
+}
+
 protocol HasQueueManager {
     var queueManager: QueueManager { get }
 }
@@ -110,6 +158,22 @@ extension GlobalContainer: HasQueueManager {
 extension UserContainer: HasQueueManager {
     var queueManager: QueueManager {
         globalContainer.queueManager
+    }
+}
+
+protocol HasUnlockManager {
+    var unlockManager: UnlockManager { get }
+}
+
+extension GlobalContainer: HasUnlockManager {
+    var unlockManager: UnlockManager {
+        unlockManagerFactory()
+    }
+}
+
+extension UserContainer: HasUnlockManager {
+    var unlockManager: UnlockManager {
+        globalContainer.unlockManager
     }
 }
 

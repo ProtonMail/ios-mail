@@ -42,7 +42,7 @@ import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(factory: sharedServices)
+    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(dependencies: dependencies)
     private var currentState: UIApplication.State = .active
     private var purgeOldMessages: PurgeOldMessagesUseCase?
 
@@ -103,24 +103,13 @@ extension AppDelegate: UIApplicationDelegate {
         let queueManager = dependencies.queueManager
         sharedServices.add(QueueManager.self, for: queueManager)
 
-        let unlockManager = UnlockManager(
-            cacheStatus: coreKeyMaker,
-            keyMaker: coreKeyMaker,
-            pinFailedCountCache: userCachedStatus
-        )
+        let unlockManager = dependencies.unlockManager
         unlockManager.delegate = self
-        sharedServices.add(UnlockManager.self, for: unlockManager)
 
         sharedServices.add(UsersManager.self, for: usersManager)
-        let dependencies = PushNotificationService.Dependencies(lockCacheStatus: coreKeyMaker)
-        sharedServices.add(PushNotificationService.self, for: PushNotificationService(dependencies: dependencies))
-        let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: self.dependencies)
-        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager,
-                                                                  contactCacheStatus: userCachedStatus,
-                                                                  queueHandlerRegister: queueManager,
-                                                                  updateSwipeActionUseCase: updateSwipeActionUseCase))
+        sharedServices.add(PushNotificationService.self, for: dependencies.pushService)
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
-        sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
+        sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl(dependencies: self.dependencies))
         sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
 
 #if DEBUG
@@ -236,8 +225,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        let pushService: PushNotificationService = sharedServices.get()
-        pushService.registerIfAuthorized()
+        dependencies.pushService.registerIfAuthorized()
         self.currentState = .active
         if let user = dependencies.usersManager.firstUser {
             dependencies.queueManager.enterForeground()
@@ -273,8 +261,7 @@ extension AppDelegate: UIApplicationDelegate {
         if ProcessInfo.isRunningUnitTests {
             return
         }
-        let pushService: PushNotificationService = sharedServices.get()
-        pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
+        dependencies.pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }
 
     func application(_ application: UIApplication,
@@ -356,7 +343,7 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
 
         sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        let lastUpdatedStore = LastUpdatedStore(contextProvider: CoreDataService.shared)
+        let lastUpdatedStore = dependencies.lastUpdatedStore
         sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
         sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
     }
@@ -463,7 +450,7 @@ extension AppDelegate {
     }
 
     private func configurePushService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
-        let pushService: PushNotificationService = sharedServices.get()
+        let pushService = dependencies.pushService
         UNUserNotificationCenter.current().delegate = pushService
         pushService.registerForRemoteNotifications()
         pushService.setNotificationFrom(launchOptions: launchOptions)

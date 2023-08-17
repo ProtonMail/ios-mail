@@ -65,11 +65,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     private let viewModel: MenuVMProtocol
 
     private var menuWidth: CGFloat
-    let services: ServiceFactory
-    private let pushService: PushNotificationService
-    private let coreDataService: CoreDataContextProviderProtocol
-    private let lastUpdatedStore: LastUpdatedStoreProtocol
-    private let usersManager: UsersManager
     private let dependencies: Dependencies
     var pendingActionAfterDismissal: (() -> Void)?
     private var mailboxCoordinator: MailboxCoordinator?
@@ -81,15 +76,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     // do not access directly, to be used through userContainer(for:)
     private var cachedUserContainer: UserContainer?
 
-    init(services: ServiceFactory,
-         pushService: PushNotificationService,
-         coreDataService: CoreDataContextProviderProtocol,
-         lastUpdatedStore: LastUpdatedStoreProtocol,
-         usersManager: UsersManager,
-         queueManager: QueueManager,
-         dependencies: Dependencies,
-         sideMenu: PMSideMenuController,
-         menuWidth: CGFloat) {
+    init(dependencies: Dependencies, sideMenu: PMSideMenuController, menuWidth: CGFloat) {
         // Setup side menu setting
         SideMenuController.preferences.basic.menuWidth = menuWidth
         SideMenuController.preferences.basic.position = .sideBySide
@@ -105,17 +92,12 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
         self.sideMenu = sideMenu
 
         self.dependencies = dependencies
-        self.services = services
-        self.coreDataService = coreDataService
-        self.pushService = pushService
-        self.lastUpdatedStore = lastUpdatedStore
-        self.usersManager = usersManager
         let viewModel = MenuViewModel(
-            usersManager: usersManager,
-            userStatusInQueueProvider: queueManager,
-            coreDataContextProvider: coreDataService,
-            coreKeyMaker: services.get(),
-            unlockManager: services.get()
+            usersManager: dependencies.usersManager,
+            userStatusInQueueProvider: dependencies.queueManager,
+            coreDataContextProvider: dependencies.contextProvider,
+            coreKeyMaker: dependencies.keyMaker,
+            unlockManager: dependencies.unlockManager
         )
         self.viewModel = viewModel
         viewModel.coordinator = self
@@ -141,8 +123,8 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     }
 
     func follow(_ deepLink: DeepLink) {
-        if self.pushService.hasCachedNotificationOptions() {
-            self.pushService.processCachedLaunchOptions()
+        if dependencies.pushService.hasCachedNotificationOptions() {
+            dependencies.pushService.processCachedLaunchOptions()
             return
         }
         var start = deepLink.popFirst
@@ -243,7 +225,7 @@ extension MenuCoordinator {
             return node
         }
 
-        guard let user = self.usersManager.getUser(by: sessionID) else {
+        guard let user = dependencies.usersManager.getUser(by: sessionID) else {
             return node
         }
 
@@ -251,7 +233,7 @@ extension MenuCoordinator {
         case .switchUser:
             viewModel.activateUser(id: user.userID)
         case .switchUserFromNotification:
-            let isAnotherUser = self.usersManager.firstUser?.userInfo.userId ?? "" != user.userInfo.userId
+            let isAnotherUser = dependencies.usersManager.firstUser?.userInfo.userId ?? "" != user.userInfo.userId
             viewModel.activateUser(id: user.userID)
             // viewController?.setupLabelsIfViewIsLoaded()
             // rebase todo, check MR 496
@@ -326,7 +308,7 @@ extension MenuCoordinator {
     }
 
     private func queryLabel(id: LabelID) -> LabelEntity? {
-        guard let user = self.usersManager.firstUser else {
+        guard let user = dependencies.usersManager.firstUser else {
             return nil
         }
         let labelService = user.labelService
@@ -402,7 +384,7 @@ extension MenuCoordinator {
             )
         )
 
-        let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: self.coreDataService)
+        let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: dependencies.contextProvider)
 
         let updateMailbox = UpdateMailbox(
             dependencies: .init(labelID: labelID,
@@ -436,9 +418,9 @@ extension MenuCoordinator {
             label: labelInfo,
             labelType: labelType,
             userManager: userManager,
-            pushService: pushService,
-            coreDataContextProvider: coreDataService,
-            lastUpdatedStore: lastUpdatedStore,
+            pushService: dependencies.pushService,
+            coreDataContextProvider: dependencies.contextProvider,
+            lastUpdatedStore: dependencies.lastUpdatedStore,
             conversationStateProvider: userManager.conversationStateService,
             contactGroupProvider: userManager.contactGroupService,
             labelProvider: userManager.labelService,
@@ -446,13 +428,13 @@ extension MenuCoordinator {
             conversationProvider: userManager.conversationService,
             eventsService: userManager.eventsService,
             dependencies: mailboxVMDependencies,
-            welcomeCarrouselCache: services.userCachedStatus,
+            welcomeCarrouselCache: dependencies.userCachedStatus,
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)
             ),
             totalUserCountClosure: { [weak self] in
-                return self?.usersManager.count ?? 0
+                return self?.dependencies.usersManager.count ?? 0
             }
         )
     }
@@ -480,7 +462,7 @@ extension MenuCoordinator {
             navigation = UINavigationController(rootViewController: view)
         }
 
-        guard let user = self.usersManager.firstUser else {
+        guard let user = dependencies.usersManager.firstUser else {
             return
         }
 
@@ -524,7 +506,7 @@ extension MenuCoordinator {
     }
 
     private func navigateToSubscribe() {
-        guard let user = self.usersManager.firstUser,
+        guard let user = dependencies.usersManager.firstUser,
               let sideMenuViewController = viewController?.sideMenuController else { return }
         let paymentsUI = PaymentsUI(
             payments: user.payments,
@@ -544,8 +526,7 @@ extension MenuCoordinator {
         let navigation = UINavigationController()
         navigation.modalPresentationStyle = .fullScreen
 
-        let usersManager = services.get(by: UsersManager.self)
-        guard let userManager = usersManager.firstUser else {
+        guard let userManager = dependencies.usersManager.firstUser else {
             return
         }
 
@@ -572,7 +553,7 @@ extension MenuCoordinator {
 
     private func navigateToContact() {
         let view = ContactTabBarViewController()
-        guard let user = self.usersManager.firstUser else {
+        guard let user = dependencies.usersManager.firstUser else {
             return
         }
         let contacts = ContactTabBarCoordinator(sideMenu: viewController?.sideMenuController,
@@ -583,7 +564,7 @@ extension MenuCoordinator {
     }
 
     private func navigateToBugReport() {
-        guard let user = self.usersManager.firstUser else {
+        guard let user = dependencies.usersManager.firstUser else {
             return
         }
 
@@ -613,7 +594,7 @@ extension MenuCoordinator {
 
     private func navigateToAddAccount(mail: String) {
         let signInEnvironment = SignInCoordinatorEnvironment.live(
-            services: sharedServices
+            dependencies: dependencies
         )
 
         let coordinator: SignInCoordinator = .loginFlowForSecondAndAnotherAccount(
@@ -641,7 +622,7 @@ extension MenuCoordinator {
         view.modalPresentationStyle = .overCurrentContext
         sideMenu.present(view, animated: false) { [weak self] in
             self?.sideMenu.hideMenu()
-            self?.usersManager.firstUser?.deactivatePayments()
+            self?.dependencies.usersManager.firstUser?.deactivatePayments()
             coordinator.start()
         }
     }
@@ -681,7 +662,7 @@ extension MenuCoordinator {
     }
 
     private func scrollToLatestMessageInConversationViewIfPossible(_ deepLink: DeepLink?) -> Bool {
-        guard self.usersManager.firstUser?.conversationStateService.viewMode == .conversation,
+        guard dependencies.usersManager.firstUser?.conversationStateService.viewMode == .conversation,
               let deepLink = deepLink
         else {
             return false
@@ -697,6 +678,8 @@ extension MenuCoordinator {
                 path = path?.next
             }
         }
+
+        let coreDataService = dependencies.contextProvider
 
         guard let messageId = messageId,
               let message = Message.messageForMessageID(messageId, inManagedObjectContext: coreDataService.mainContext)
@@ -729,7 +712,7 @@ extension MenuCoordinator {
     }
 
     private func navigateToReferralView() {
-        guard let referralLink = usersManager.firstUser?
+        guard let referralLink = dependencies.usersManager.firstUser?
             .userInfo.referralProgram?.link else {
             return
         }
@@ -754,7 +737,7 @@ extension MenuCoordinator {
 
 extension MenuCoordinator: SignInCoordinatorDelegate {
     func didStop() {
-        guard let user = self.usersManager.firstUser else {
+        guard let user = dependencies.usersManager.firstUser else {
             return
         }
         self.viewModel.activateUser(id: UserID(user.userInfo.userId))

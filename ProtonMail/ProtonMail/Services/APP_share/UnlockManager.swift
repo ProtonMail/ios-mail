@@ -61,7 +61,7 @@ protocol LAContextProtocol: AnyObject {
 
 extension LAContext: LAContextProtocol {}
 
-final class UnlockManager: Service {
+final class UnlockManager {
     weak var delegate: UnlockManagerDelegate?
 
     private(set) var cacheStatus: LockCacheStatus
@@ -69,10 +69,6 @@ final class UnlockManager: Service {
     private let localAuthenticationContext: LAContextProtocol
     private let notificationCenter: NotificationCenter
     private var pinFailedCountCache: PinFailedCountCache
-
-    static var shared: UnlockManager {
-        return sharedServices.get(by: UnlockManager.self)
-    }
 
     init(
         cacheStatus: LockCacheStatus,

@@ -54,9 +54,27 @@ final class GlobalContainer: ManagedContainer {
         }
     }
 
+    var lastUpdatedStoreFactory: Factory<LastUpdatedStore> {
+        self {
+            LastUpdatedStore(contextProvider: self.contextProvider)
+        }
+    }
+
     var lockCacheStatusFactory: Factory<LockCacheStatus> {
         self {
             self.keyMaker
+        }
+    }
+
+    var notificationCenterFactory: Factory<NotificationCenter> {
+        self {
+            .default
+        }
+    }
+
+    var pinFailedCountCacheFactory: Factory<PinFailedCountCache> {
+        self {
+            self.userCachedStatus
         }
     }
 
@@ -65,6 +83,17 @@ final class GlobalContainer: ManagedContainer {
             let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
             let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
             return QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
+        }
+    }
+
+    var unlockManagerFactory: Factory<UnlockManager> {
+        self {
+            UnlockManager(
+                cacheStatus: self.lockCacheStatus,
+                keyMaker: self.keyMaker,
+                pinFailedCountCache: self.userCachedStatus,
+                notificationCenter: self.notificationCenter
+            )
         }
     }
 
@@ -91,6 +120,6 @@ final class GlobalContainer: ManagedContainer {
     }
 
     init() {
-        manager.defaultScope = .shared
+        manager.defaultScope = .cached
     }
 }

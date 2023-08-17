@@ -34,6 +34,8 @@ protocol WindowsCoordinatorDelegate: AnyObject {
 }
 
 final class WindowsCoordinator {
+    typealias Dependencies = MenuCoordinator.Dependencies
+
     private lazy var snapshot = Snapshot()
     private var launchedByNotification = false
 
@@ -82,14 +84,12 @@ final class WindowsCoordinator {
         }
     }
     weak var delegate: WindowsCoordinatorDelegate?
-    private let factory: WindowsCoordinatorDependenciesFactory
     private let dependencies: Dependencies
     private let showPlaceHolderViewOnly: Bool
 
-    init(factory: ServiceFactory, showPlaceHolderViewOnly: Bool = ProcessInfo.isRunningUnitTests) {
+    init(dependencies: Dependencies, showPlaceHolderViewOnly: Bool = ProcessInfo.isRunningUnitTests) {
         self.showPlaceHolderViewOnly = showPlaceHolderViewOnly
-        self.factory = factory.makeWindowsCoordinatorDependenciesFactory()
-        self.dependencies = self.factory.makeWindowsCoordinatorDependencies()
+        self.dependencies = dependencies
         setupNotifications()
         trackLifetime()
     }
@@ -101,7 +101,7 @@ final class WindowsCoordinator {
 
         if showPlaceHolderViewOnly {
             // While running the unit test, call this to generate the main key.
-            _ = dependencies.coreKeyMaker.mainKeyExists()
+            _ = dependencies.keyMaker.mainKeyExists()
             return
         }
 
@@ -110,7 +110,7 @@ final class WindowsCoordinator {
 
         let flow = dependencies.unlockManager.getUnlockFlow()
         Breadcrumbs.shared.add(message: "WindowsCoordinator.start unlockFlow = \(flow)", to: .randomLogout)
-        if dependencies.lockCache.isAppLockedAndAppKeyEnabled {
+        if dependencies.lockCacheStatus.isAppLockedAndAppKeyEnabled {
             self.lock()
         } else {
             DispatchQueue.main.async {
@@ -141,7 +141,7 @@ final class WindowsCoordinator {
                 self.appWindow = nil
                 // TODO: refactor SignInCoordinatorEnvironment init
                 let signInEnvironment = SignInCoordinatorEnvironment.live(
-                    services: sharedServices
+                    dependencies: self.dependencies
                 )
                 let coordinator: SignInCoordinator = .loginFlowForFirstAccount(
                     startingPoint: signInDestination, environment: signInEnvironment
@@ -190,7 +190,8 @@ final class WindowsCoordinator {
                     return
                 }
 
-                let coordinator = self.factory.makeLockCoordinator(
+                let coordinator = LockCoordinator(
+                    dependencies: self.dependencies,
                     finishLockFlow: { [weak self] flowResult in
                         switch flowResult {
                         case .mailbox:
@@ -218,7 +219,12 @@ final class WindowsCoordinator {
                 self.lockWindow = nil
                 if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderViewController {
                     let root = PMSideMenuController(isUserInfoAlreadyFetched: self.arePrimaryUserSettingsFetched)
-                    let coordinator = self.factory.makeMenuCoordinator(sideMenu: root)
+                    let menuWidth = MenuViewController.calcProperMenuWidth()
+                    let coordinator = MenuCoordinator(
+                        dependencies: self.dependencies,
+                        sideMenu: root,
+                        menuWidth: menuWidth
+                    )
                     coordinator.delegate = self
                     self.menuCoordinator = coordinator
                     coordinator.start(launchedByNotification: self.launchedByNotification)
@@ -651,17 +657,6 @@ extension WindowsCoordinator {
 extension WindowsCoordinator: MenuCoordinatorDelegate {
     func lockTheScreen() {
         go(dest: .lockWindow)
-    }
-
-	struct Dependencies {
-        let usersManager: UsersManager
-        let pushService: PushNotificationService
-        let queueManager: QueueManager
-        let unlockManager: UnlockManager
-        let darkModeCache: DarkModeCacheProtocol
-        let lockCache: LockCacheStatus
-        let notificationCenter: NotificationCenter
-        let coreKeyMaker: KeyMakerProtocol
     }
 }
 

@@ -17,6 +17,7 @@ final class LockCoordinator: LifetimeTrackable {
         case mailbox
     }
 
+    typealias Dependencies = UnlockPinCodeModelImpl.Dependencies & HasUsersManager
     typealias VC = CoordinatorKeepingViewController<LockCoordinator>
 
     class var lifetimeConfiguration: LifetimeConfiguration {
@@ -74,8 +75,8 @@ final class LockCoordinator: LifetimeTrackable {
 
     private func goToPin() {
         if actualViewController.presentedViewController is PinCodeViewController { return }
-        let pinVC = PinCodeViewController(unlockManager: UnlockManager.shared,
-                                          viewModel: UnlockPinCodeModelImpl(pinFailedCountCache: dependencies.pinFailedCountCache),
+        let pinVC = PinCodeViewController(unlockManager: dependencies.unlockManager,
+                                          viewModel: UnlockPinCodeModelImpl(dependencies: dependencies),
                                           delegate: self)
         pinVC.modalPresentationStyle = .fullScreen
         actualViewController.present(pinVC, animated: true, completion: nil)
@@ -83,8 +84,7 @@ final class LockCoordinator: LifetimeTrackable {
 
     private func goToTouchId() {
         if (actualViewController.presentedViewController as? UINavigationController)?.viewControllers.first is BioCodeViewController { return }
-        let bioCodeVC = BioCodeViewController(unlockManager: UnlockManager.shared,
-                                              delegate: self)
+        let bioCodeVC = BioCodeViewController(unlockManager: dependencies.unlockManager, delegate: self)
         let navigationVC = UINavigationController(rootViewController: bioCodeVC)
         navigationVC.modalPresentationStyle = .fullScreen
         actualViewController.present(navigationVC, animated: true, completion: nil)
@@ -119,13 +119,5 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
             completion()
             self?.finishLockFlow(.signIn(reason: "PinCodeViewControllerDelegate.cancel"))
         }
-    }
-}
-
-extension LockCoordinator {
-    struct Dependencies {
-        let unlockManager: UnlockManager
-        let usersManager: UsersManager
-        let pinFailedCountCache: PinFailedCountCache
     }
 }

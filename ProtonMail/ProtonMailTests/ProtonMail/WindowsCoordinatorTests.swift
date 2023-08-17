@@ -24,16 +24,17 @@ import XCTest
 final class WindowsCoordinatorTests: XCTestCase {
     private var sut: WindowsCoordinator!
     private var notificationCenter: NotificationCenter!
-    private var serviceFactory: ServiceFactory!
+    private var globalContainer: GlobalContainer!
+    private var unlockManager: UnlockManager!
     private var usersManager: UsersManager!
     private var unlockManagerDelegateMock: MockUnlockManagerDelegate!
     private var keyMaker: Keymaker!
     private var keyChain: KeychainWrapper!
-    private var randomSuiteName = String.randomString(10)
-    private var userDefaultMock: UserDefaults!
     private var cacheStatusStub: CacheStatusStub!
 
     override func setUp() async throws {
+        try await super.setUp()
+
         keyChain = KeychainWrapper(
             service: "ch.protonmail.test",
             accessGroup: "2SB5Z68H26.ch.protonmail.protonmail"
@@ -42,27 +43,27 @@ final class WindowsCoordinatorTests: XCTestCase {
             autolocker: Autolocker(lockTimeProvider: userCachedStatus),
             keychain: keyChain
         )
-        serviceFactory = .init()
+        globalContainer = .init()
         notificationCenter = NotificationCenter()
         unlockManagerDelegateMock = .init()
         cacheStatusStub = .init()
-        await setupServiceFactory()
+        await setupDependencies()
         await MainActor.run(body: {
-            sut = .init(factory: serviceFactory)
+            sut = .init(dependencies: globalContainer)
         })
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        serviceFactory = nil
+        globalContainer = nil
         notificationCenter = nil
+        unlockManager = nil
         unlockManagerDelegateMock = nil
+        usersManager = nil
         keyMaker = nil
         keyChain.removeEverything()
         keyChain = nil
-        userDefaultMock.removePersistentDomain(forName: randomSuiteName)
-        userDefaultMock = nil
         cacheStatusStub = nil
     }
 
@@ -164,41 +165,18 @@ final class WindowsCoordinatorTests: XCTestCase {
 
 private extension WindowsCoordinatorTests {
     func setupSUT(showPlaceHolderViewOnly: Bool) {
-        sut = .init(factory: serviceFactory, showPlaceHolderViewOnly: showPlaceHolderViewOnly)
+        sut = .init(dependencies: globalContainer, showPlaceHolderViewOnly: showPlaceHolderViewOnly)
     }
 
-    func setupServiceFactory() async {
-        let unlockManager = UnlockManager(
-            cacheStatus: cacheStatusStub,
-            keyMaker: keyMaker, pinFailedCountCache: MockPinFailedCountCache(),
-            notificationCenter: notificationCenter
-        )
-        unlockManager.delegate = unlockManagerDelegateMock
-        usersManager = UsersManager(
-            doh: DohInterfaceMock(),
-            userDataCache: UserDataCache(keyMaker: keyMaker, keychain: keyChain),
-            coreKeyMaker: keyMaker
-        )
-        let pushService = PushNotificationService(
-            dependencies: .init(lockCacheStatus: keyMaker, notificationCenter: notificationCenter)
-        )
-        let queueManager = QueueManager(messageQueue: MockPMPersistentQueueProtocol(), miscQueue: MockPMPersistentQueueProtocol())
-        userDefaultMock = .init(suiteName: randomSuiteName)!
-        let darkModeCache = UserCachedStatus(userDefaults: userDefaultMock)
-        let coreDataService = MockCoreDataContextProvider()
-        let lastUpdatedStore = LastUpdatedStore(contextProvider: coreDataService)
+    func setupDependencies() async {
+        globalContainer.keyMakerFactory.register { self.keyMaker }
+        globalContainer.lockCacheStatusFactory.register { self.cacheStatusStub }
+        globalContainer.notificationCenterFactory.register { self.notificationCenter }
 
-        serviceFactory.add(UsersManager.self, for: usersManager)
-        serviceFactory.add(PushNotificationService.self, for: pushService)
-        serviceFactory.add(QueueManager.self, for: queueManager)
-        serviceFactory.add(UserCachedStatus.self, for: darkModeCache)
-        serviceFactory.add(MockCoreDataContextProvider.self, for: coreDataService)
-        serviceFactory.add(CoreDataContextProviderProtocol.self, for: coreDataService)
-        serviceFactory.add(LastUpdatedStore.self, for: lastUpdatedStore)
-        serviceFactory.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
-        serviceFactory.add(UnlockManager.self, for: unlockManager)
-        serviceFactory.add(NotificationCenter.self, for: notificationCenter)
-        serviceFactory.add(KeyMakerProtocol.self, for: keyMaker)
+        unlockManager = globalContainer.unlockManager
+        unlockManager.delegate = unlockManagerDelegateMock
+        usersManager = globalContainer.usersManager
+
         return await withCheckedContinuation { continuation in
             keyMaker.activate(RandomPinProtection(pin: String.randomString(32), keychain: keyChain)) { success in
                 continuation.resume()

@@ -37,15 +37,32 @@ extension GlobalContainer {
         }
     }
 
-    var notificationCenterFactory: Factory<NotificationCenter> {
+    var pushServiceFactory: Factory<PushNotificationService> {
         self {
-            .default
+            let dependencies = PushNotificationService.Dependencies(
+                usersManager: self.usersManager,
+                unlockProvider: self.unlockManager,
+                lockCacheStatus: self.keyMaker
+            )
+            return PushNotificationService(dependencies: dependencies)
         }
     }
 
     var saveSwipeActionSettingFactory: Factory<SaveSwipeActionSettingForUsersUseCase> {
         self {
             SaveSwipeActionSetting(dependencies: self)
+        }
+    }
+
+    var signInManagerFactory: Factory<SignInManager> {
+        self {
+            let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: self)
+            return SignInManager(
+                usersManager: self.usersManager,
+                contactCacheStatus: self.userCachedStatus,
+                queueHandlerRegister: self.queueManager,
+                updateSwipeActionUseCase: updateSwipeActionUseCase
+            )
         }
     }
 

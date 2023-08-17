@@ -32,7 +32,6 @@ class MailboxCoordinatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        let dummyServices = ServiceFactory()
         dummyAPIService = APIServiceMock()
         let dummyUser = UserManager(api: dummyAPIService, role: .none)
 

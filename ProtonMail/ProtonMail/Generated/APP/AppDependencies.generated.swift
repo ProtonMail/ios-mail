@@ -49,19 +49,19 @@ extension UserContainer: HasDarkModeCacheProtocol {
     }
 }
 
-protocol HasNotificationCenter {
-    var notificationCenter: NotificationCenter { get }
+protocol HasPushNotificationService {
+    var pushService: PushNotificationService { get }
 }
 
-extension GlobalContainer: HasNotificationCenter {
-    var notificationCenter: NotificationCenter {
-        notificationCenterFactory()
+extension GlobalContainer: HasPushNotificationService {
+    var pushService: PushNotificationService {
+        pushServiceFactory()
     }
 }
 
-extension UserContainer: HasNotificationCenter {
-    var notificationCenter: NotificationCenter {
-        globalContainer.notificationCenter
+extension UserContainer: HasPushNotificationService {
+    var pushService: PushNotificationService {
+        globalContainer.pushService
     }
 }
 
@@ -78,6 +78,22 @@ extension GlobalContainer: HasSaveSwipeActionSettingForUsersUseCase {
 extension UserContainer: HasSaveSwipeActionSettingForUsersUseCase {
     var saveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
         globalContainer.saveSwipeActionSetting
+    }
+}
+
+protocol HasSignInManager {
+    var signInManager: SignInManager { get }
+}
+
+extension GlobalContainer: HasSignInManager {
+    var signInManager: SignInManager {
+        signInManagerFactory()
+    }
+}
+
+extension UserContainer: HasSignInManager {
+    var signInManager: SignInManager {
+        globalContainer.signInManager
     }
 }
 

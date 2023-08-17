@@ -1083,14 +1083,6 @@ class MockSideMenuProtocol: SideMenuProtocol {
 
 }
 
-class MockSignInProvider: SignInProvider {
-    @PropertyStub(\MockSignInProvider.isSignedIn, initialGet: Bool()) var isSignedInStub
-    var isSignedIn: Bool {
-        isSignedInStub()
-    }
-
-}
-
 class MockSwipeActionInfo: SwipeActionInfo {
     @PropertyStub(\MockSwipeActionInfo.swipeLeft, initialGet: Int()) var swipeLeftStub
     var swipeLeft: Int {
@@ -1167,8 +1159,8 @@ class MockUnlockManagerDelegate: UnlockManagerDelegate {
 }
 
 class MockUnlockProvider: UnlockProvider {
-    @PropertyStub(\MockUnlockProvider.isUnlocked, initialGet: Bool()) var isUnlockedStub
-    var isUnlocked: Bool {
+    @FuncStub(MockUnlockProvider.isUnlocked, initialReturn: Bool()) var isUnlockedStub
+    func isUnlocked() -> Bool {
         isUnlockedStub()
     }
 
