@@ -38,12 +38,12 @@ final class UnlockManagerTests: XCTestCase {
         pinFailedCountCacheMock = .init()
         sut = .init(
             cacheStatus: cacheMock,
-            delegate: delegateMock,
             keyMaker: keyMakerMock,
             pinFailedCountCache: pinFailedCountCacheMock,
             localAuthenticationContext: LAContextMock,
             notificationCenter: notificationCenter
         )
+        sut.delegate = delegateMock
     }
 
     override func tearDown() {

@@ -57,8 +57,9 @@ protocol LAContextProtocol: AnyObject {
 extension LAContext: LAContextProtocol {}
 
 final class UnlockManager: Service {
+    weak var delegate: UnlockManagerDelegate?
+
     private(set) var cacheStatus: LockCacheStatus
-    unowned let delegate: UnlockManagerDelegate
     private let keyMaker: KeyMakerProtocol
     private let localAuthenticationContext: LAContextProtocol
     private let notificationCenter: NotificationCenter
@@ -70,14 +71,12 @@ final class UnlockManager: Service {
 
     init(
         cacheStatus: LockCacheStatus,
-        delegate: UnlockManagerDelegate,
         keyMaker: KeyMakerProtocol,
         pinFailedCountCache: PinFailedCountCache,
         localAuthenticationContext: LAContextProtocol = LAContext(),
         notificationCenter: NotificationCenter = .default
     ) {
         self.cacheStatus = cacheStatus
-        self.delegate = delegate
         self.keyMaker = keyMaker
         self.pinFailedCountCache = pinFailedCountCache
 
@@ -209,6 +208,11 @@ final class UnlockManager: Service {
         unlocked: (() -> Void)? = nil
     ) {
         Breadcrumbs.shared.add(message: "UnlockManager.unlockIfRememberedCredentials called", to: .randomLogout)
+        guard let delegate else {
+            unlockFailed?()
+            return
+        }
+
         guard keyMaker.mainKeyExists(), delegate.isUserStored() else {
             delegate.setupCoreData()
             delegate.cleanAll {
@@ -217,7 +221,7 @@ final class UnlockManager: Service {
             return
         }
 
-        guard self.delegate.isMailboxPasswordStored(forUser: uid) else { // this will provoke mainKey obtention
+        guard delegate.isMailboxPasswordStored(forUser: uid) else { // this will provoke mainKey obtention
             delegate.setupCoreData()
             requestMailboxPassword()
             return

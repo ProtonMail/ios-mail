@@ -170,10 +170,10 @@ private extension WindowsCoordinatorTests {
     func setupServiceFactory() async {
         let unlockManager = UnlockManager(
             cacheStatus: cacheStatusStub,
-            delegate: unlockManagerDelegateMock,
             keyMaker: keyMaker, pinFailedCountCache: MockPinFailedCountCache(),
             notificationCenter: notificationCenter
         )
+        unlockManager.delegate = unlockManagerDelegateMock
         usersManager = UsersManager(
             doh: DohInterfaceMock(),
             userDataCache: UserDataCache(keyMaker: keyMaker, keychain: keyChain),

@@ -102,12 +102,15 @@ extension AppDelegate: UIApplicationDelegate {
         let usersManager = dependencies.usersManager
         let queueManager = dependencies.queueManager
         sharedServices.add(QueueManager.self, for: queueManager)
-        sharedServices.add(UnlockManager.self, for: UnlockManager(
+
+        let unlockManager = UnlockManager(
             cacheStatus: coreKeyMaker,
-            delegate: self,
             keyMaker: coreKeyMaker,
             pinFailedCountCache: userCachedStatus
-        ))
+        )
+        unlockManager.delegate = self
+        sharedServices.add(UnlockManager.self, for: unlockManager)
+
         sharedServices.add(UsersManager.self, for: usersManager)
         let dependencies = PushNotificationService.Dependencies(lockCacheStatus: coreKeyMaker)
         sharedServices.add(PushNotificationService.self, for: PushNotificationService(dependencies: dependencies))

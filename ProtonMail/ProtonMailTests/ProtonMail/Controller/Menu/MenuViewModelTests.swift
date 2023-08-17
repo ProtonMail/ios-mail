@@ -48,7 +48,7 @@ class MenuViewModelTests: XCTestCase {
             userStatusInQueueProvider: userStatusInQueueProviderMock,
             coreDataContextProvider: coreDataContextProviderMock,
             coreKeyMaker: MockKeyMakerProtocol(),
-            unlockManager: .init(cacheStatus: CacheStatusStub(), delegate: MockUnlockManagerDelegate(), keyMaker: MockKeyMakerProtocol(), pinFailedCountCache: MockPinFailedCountCache()))
+            unlockManager: .init(cacheStatus: CacheStatusStub(), keyMaker: MockKeyMakerProtocol(), pinFailedCountCache: MockPinFailedCountCache()))
         sut.setUserEnableColorClosure {
             return self.enableColorStub
         }

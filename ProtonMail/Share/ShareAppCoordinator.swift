@@ -48,15 +48,15 @@ final class ShareAppCoordinator {
             userDataCache: UserDataCache(keyMaker: keyMaker),
             coreKeyMaker: keyMaker
         )
-        sharedServices.add(
-            UnlockManager.self,
-            for: UnlockManager(
-                cacheStatus: keyMaker,
-                delegate: self,
-                keyMaker: keyMaker,
-                pinFailedCountCache: sharedServices.userCachedStatus
-            )
+
+        let unlockManager = UnlockManager(
+            cacheStatus: keyMaker,
+            keyMaker: keyMaker,
+            pinFailedCountCache: sharedServices.userCachedStatus
         )
+        unlockManager.delegate = self
+        sharedServices.add(UnlockManager.self, for: unlockManager)
+
         sharedServices.add(UsersManager.self, for: usersManager)
         self.loadUnlockCheckView()
     }
