@@ -122,7 +122,7 @@ extension AutoDeleteInfoHeaderView {
             let label = UILabel()
             label.numberOfLines = 0
             let style = FontManager.Caption.foregroundColor(ColorProvider.TextNorm)
-            label.set(text: L11n.AutoDeleteBanners.enabledInfoText.apply(style: style), preferredFont: .footnote)
+            label.set(text: L11n.AutoDeleteBanners.enabledInfoText.apply(style: style), preferredFont: .body)
             return label
         }
     }
