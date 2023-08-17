@@ -23,7 +23,7 @@
 import Foundation
 import PromiseKit
 import CoreData
-import OpenPGP
+import VCard
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Payments

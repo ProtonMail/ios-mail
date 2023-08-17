@@ -22,7 +22,7 @@
 
 import CoreData
 import Foundation
-import OpenPGP
+import VCard
 
 enum ContactEditSectionType: Int {
     case display_name = 0

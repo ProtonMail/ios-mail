@@ -22,7 +22,7 @@
 
 import ProtonCore_Crypto
 import UIKit
-import OpenPGP
+import VCard
 
 class ContactAddViewModelImpl: ContactEditViewModel {
     var sections: [ContactEditSectionType] = [.emails,

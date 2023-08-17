@@ -17,7 +17,7 @@
 
 import Contacts
 import Foundation
-import OpenPGP
+import VCard
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 
