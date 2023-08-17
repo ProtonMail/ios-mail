@@ -23,6 +23,7 @@
 import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import SkeletonView
 import TrustKit
 import UIKit
 import WebKit
@@ -39,7 +40,7 @@ class NewMessageBodyViewController: UIViewController {
     private weak var scrollViewContainer: ScrollableContainer!
     private lazy var customView = NewMessageBodyView()
 
-    private lazy var loader: WebContentsSecureLoader = {
+    private lazy var loader: HTTPRequestSecureLoader = {
         HTTPRequestSecureLoader(schemeHandler: .init(
             userKeys: viewModel.userKeys,
             imageProxy: viewModel.imageProxy
@@ -89,6 +90,7 @@ class NewMessageBodyViewController: UIViewController {
         self.viewMode = viewMode
         super.init(nibName: nil, bundle: nil)
         viewModel.delegate = self
+        loader.delegate = self
     }
 
     deinit {
@@ -152,11 +154,11 @@ class NewMessageBodyViewController: UIViewController {
         self.heightConstraint = heightConstraint
     }
 
-    private func prepareWebView(with loader: WebContentsSecureLoader? = nil) {
+    private func prepareWebView(with loader: HTTPRequestSecureLoader? = nil) {
         view.removeConstraints(view.constraints.filter({ $0.firstAnchor == view.heightAnchor }))
 
         self.heightConstraint?.isActive = false
-        let heightConstraint = view.heightAnchor.constraint(equalToConstant: 50)
+        let heightConstraint = view.heightAnchor.constraint(equalToConstant: 500)
         heightConstraint.priority = .init(999.0)
         [heightConstraint].activate()
         self.heightConstraint = heightConstraint
@@ -189,6 +191,7 @@ class NewMessageBodyViewController: UIViewController {
             webView.scrollView.showsHorizontalScrollIndicator = true
 
             self.customView.embed(webView)
+            showSkeletonView(in: webView)
         }
 
         if viewMode == .singleMessage {
@@ -614,6 +617,33 @@ extension NewMessageBodyViewController: UIGestureRecognizerDelegate {
         // this will prevent our gesture recognizer from blocking webView's built-in gesture resognizers
         return self.webView?.scrollView.gestureRecognizers?
             .filter { !($0 is UITapGestureRecognizer) }.contains(otherGestureRecognizer) ?? false
+    }
+}
+
+// MARK: - HTTPRequestSecureLoaderDelegate
+extension NewMessageBodyViewController: HTTPRequestSecureLoaderDelegate {
+    func showSkeletonView(in webView: WKWebView) {
+        let label = UILabel(frame: .zero)
+        label.numberOfLines = 0
+        label.isSkeletonable = true
+        label.linesCornerRadius = 5
+        label.lastLineFillPercent = 30
+        label.skeletonTextNumberOfLines = 5
+        webView.addSubview(label)
+        [
+            label.topAnchor.constraint(equalTo: webView.topAnchor, constant: 4),
+            label.bottomAnchor.constraint(equalTo: webView.bottomAnchor, constant: 0),
+            label.leadingAnchor.constraint(equalTo: webView.leadingAnchor, constant: 16),
+            label.trailingAnchor.constraint(equalTo: webView.trailingAnchor, constant: -16)
+        ].activate()
+        label.showAnimatedGradientSkeleton()
+    }
+
+    func hideSkeletonView(in webView: WKWebView) {
+        webView.subviews.compactMap { $0 as? UILabel }.forEach { view in
+            view.stopSkeletonAnimation()
+            view.removeFromSuperview()
+        }
     }
 }
 

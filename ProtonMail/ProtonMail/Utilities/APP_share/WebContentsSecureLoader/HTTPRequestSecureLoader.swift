@@ -31,20 +31,20 @@ import WebKit
 /// 4. DOMPurifier sanitizes contents, once sanitization is complete, css is injected into required contents
 /// 5. webView switches off content rule list and reloads sanitized contents body
 ///
-/// Why this is good:
-/// - object-oriented approach to CSP and blocking of early resources loading
-///
-/// Why that is not perfect:
-/// - WKContentRuleList and WKURLSchemeHandler are not supported until iOS 11
-///
-class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessageHandler {
-    internal let renderedContents = RenderedContents()
+
+protocol HTTPRequestSecureLoaderDelegate: AnyObject {
+    func showSkeletonView(in webView: WKWebView)
+    func hideSkeletonView(in webView: WKWebView)
+}
+
+final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
     private var heightChanged: ((CGFloat) -> Void)?
     /// Callback to update the webview is scrollable when the rendering is done.
     private var contentShouldBeScrollableByDefaultChanged: ((Bool) -> Void)?
 
     private weak var webView: WKWebView?
     private var blockRules: WKContentRuleList?
+    weak var delegate: HTTPRequestSecureLoaderDelegate?
 
     enum ProtonScheme: String {
         case http = "proton-http"
@@ -63,10 +63,9 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     }
 
     func load(contents: WebContents, in webView: WKWebView) {
-        addSpinnerIfNeeded(to: webView)
+        delegate?.showSkeletonView(in: webView)
 
         self.webView?.stopLoading()
-        self.renderedContents.invalidate()
         self.webView?.configuration.userContentController.removeAllUserScripts()
         self.webView?.loadHTMLString("", baseURL: URL(string: "about:blank")!)
 
@@ -317,17 +316,14 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             schemeHandler.loopbacks[url] = data
 
             self.webView?.load(request)
-
-            removeAllSpinners()
-        }
-        if let preheight = dict["preheight"] as? Double {
-            self.renderedContents.preheight = CGFloat(preheight)
         }
         if let height = dict["height"] as? Double {
-            self.renderedContents.height = CGFloat(height)
             let refHeight = (dict["refHeight"] as? CGFloat) ?? CGFloat(height)
             let res = refHeight > 32 ? refHeight : CGFloat(height)
             self.heightChanged?(res)
+            if let webView = self.webView {
+                self.delegate?.hideSkeletonView(in: webView)
+            }
         }
         if let contentShouldBeScrollableByDefault = dict["contentShouldBeScrollableByDefault"] as? Bool {
             // The contentShouldBeScrollableByDefault means that the webview should be scrollable after rendering by default.
@@ -365,24 +361,10 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         )
     }
 
-    private func addSpinnerIfNeeded(to webView: WKWebView) {
-        guard webView.subviews.compactMap({ $0 as? UIActivityIndicatorView }).isEmpty else {
-            return
-        }
-        let spinner = UIActivityIndicatorView()
-        webView.addSubview(spinner)
-        spinner.translatesAutoresizingMaskIntoConstraints = false
-        [
-            spinner.topAnchor.constraint(equalTo: webView.topAnchor, constant: 4),
-            spinner.centerXAnchor.constraint(equalTo: webView.centerXAnchor)
-        ].activate()
-        spinner.startAnimating()
-    }
-
-    private func removeAllSpinners() {
-        self.webView?.subviews.compactMap { $0 as? UIActivityIndicatorView }.forEach { view in
-            view.stopAnimating()
-            view.removeFromSuperview()
-        }
+    func eject(from config: WKWebViewConfiguration) {
+        config.userContentController.removeScriptMessageHandler(forName: "loaded")
+#if DEBUG
+        config.userContentController.removeScriptMessageHandler(forName: "logger")
+#endif
     }
 }

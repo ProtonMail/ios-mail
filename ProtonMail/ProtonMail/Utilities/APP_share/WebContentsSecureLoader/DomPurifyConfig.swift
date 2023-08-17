@@ -23,31 +23,6 @@
 import Foundation
 import WebKit
 
-class RenderedContents: NSObject {
-    @objc internal dynamic var preheight: CGFloat = 0.1
-    @objc internal dynamic var height: CGFloat = 0.1
-
-    internal func invalidate() {
-        self.preheight = 0.1
-        self.height = 0.1
-    }
-}
-
-protocol WebContentsSecureLoader {
-    func load(contents: WebContents, in webView: WKWebView)
-    func inject(into config: WKWebViewConfiguration)
-    func observeHeight(_ callBack: @escaping ((CGFloat) -> Void))
-    func observeContentShouldBeScrollableByDefault(_ callBack: @escaping ((Bool) -> Void))
-}
-extension WebContentsSecureLoader {
-    func eject(from config: WKWebViewConfiguration) {
-        config.userContentController.removeScriptMessageHandler(forName: "loaded")
-        #if DEBUG
-        config.userContentController.removeScriptMessageHandler(forName: "logger")
-        #endif
-    }
-}
-
 enum DomPurifyConfig {
     case `default`, protonizer, imageCache, composer
 

@@ -62,7 +62,7 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
     }
 
     func prepareWebView(
-        with loader: WebContentsSecureLoader? = nil,
+        with loader: HTTPRequestSecureLoader? = nil,
         urlHandler: WKURLSchemeHandler? = nil,
         urlSchemesToBeHandled: Set<String> = []
     ) {
