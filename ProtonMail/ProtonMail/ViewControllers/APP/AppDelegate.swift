@@ -239,9 +239,6 @@ extension AppDelegate: UIApplicationDelegate {
 
         startAutoLockCountDownIfNeeded()
 
-        let users: UsersManager = sharedServices.get()
-        let queueManager: QueueManager = sharedServices.get()
-
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask { }
         let delayedCompletion: () -> Void = {
@@ -249,10 +246,8 @@ extension AppDelegate: UIApplicationDelegate {
             taskID = .invalid
         }
 
-        if let user = users.firstUser {
-            let coreDataService: CoreDataService = sharedServices.get()
-            self.purgeOldMessages = PurgeOldMessages(user: user,
-                                                     coreDataService: coreDataService)
+        if let user = dependencies.usersManager.firstUser {
+            self.purgeOldMessages = PurgeOldMessages(user: user, coreDataService: dependencies.contextProvider)
             self.purgeOldMessages?.execute(
                 params: (),
                 callback: { [weak self] _ in
@@ -262,7 +257,7 @@ extension AppDelegate: UIApplicationDelegate {
             user.cacheService.cleanOldAttachment()
             user.messageService.updateMessageCount()
 
-            queueManager.backgroundFetch(remainingTime: {
+            dependencies.queueManager.backgroundFetch(remainingTime: {
                 application.backgroundTimeRemaining
             }, notify: {
                 delayedCompletion()
@@ -296,10 +291,8 @@ extension AppDelegate: UIApplicationDelegate {
         let pushService: PushNotificationService = sharedServices.get()
         pushService.registerIfAuthorized()
         self.currentState = .active
-        let users: UsersManager = sharedServices.get()
-        let queueManager = sharedServices.get(by: QueueManager.self)
-        if let user = users.firstUser {
-            queueManager.enterForeground()
+        if let user = dependencies.usersManager.firstUser {
+            dependencies.queueManager.enterForeground()
             user.refreshFeatureFlags()
 
             if UserInfo.isBlockSenderEnabled {
@@ -374,7 +367,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     private func startAutoLockCountDownIfNeeded() {
-        let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
+        let coreKeyMaker = dependencies.keyMaker
         // When the app is launched without a lock set, the lock counter will immediately remove the mainKey, which triggers the app to display the lock screen.
         // However, this behavior is not necessary if there is no lock set.
         // We should only start the countdown when a lock has been set.
@@ -393,7 +386,7 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     }
 
     func isUserStored() -> Bool {
-        let users = sharedServices.get(by: UsersManager.self)
+        let users = dependencies.usersManager
         if users.hasUserName() || users.hasUsers() {
             return true
         }
@@ -401,17 +394,17 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     }
 
     func isMailboxPasswordStored(forUser uid: String?) -> Bool {
-        let users = sharedServices.get(by: UsersManager.self)
+        let users = dependencies.usersManager
         guard let _ = uid else {
             return users.isPasswordStored || users.hasUserName() // || users.isMailboxPasswordStored
         }
-        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty
+        return !(dependencies.usersManager.users.last?.mailboxPassword.value ?? "").isEmpty
     }
 
     func cleanAll(completion: @escaping () -> Void) {
         Breadcrumbs.shared.add(message: "AppDelegate.cleanAll called", to: .randomLogout)
-        sharedServices.get(by: UsersManager.self).clean().ensure {
-            let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
+        dependencies.usersManager.clean().ensure {
+            let coreKeyMaker = self.dependencies.keyMaker
             coreKeyMaker.wipeMainKey()
             _ = coreKeyMaker.mainKeyExists()
             completion()
@@ -433,12 +426,12 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     }
 
     func loadUserDataAfterUnlock() {
-        let usersManager = sharedServices.get(by: UsersManager.self)
+        let usersManager = dependencies.usersManager
         usersManager.run()
         usersManager.tryRestore()
 
         #if !APP_EXTENSION
-        sharedServices.get(by: UsersManager.self).users.forEach {
+        dependencies.usersManager.users.forEach {
             $0.messageService.injectTransientValuesIntoMessages()
         }
         if let primaryUser = usersManager.firstUser {
@@ -566,8 +559,7 @@ extension AppDelegate {
                 #endif
 
                 if self.currentState != .active {
-                    let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
-                    coreKeyMaker.updateAutolockCountdownStart()
+                    self.dependencies.keyMaker.updateAutolockCountdownStart()
                 }
             }
     }
