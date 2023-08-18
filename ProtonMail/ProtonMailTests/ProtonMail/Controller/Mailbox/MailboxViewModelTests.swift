@@ -43,6 +43,7 @@ class MailboxViewModelTests: XCTestCase {
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var imageTempUrl: URL!
     var mockFetchMessageDetail: MockFetchMessageDetail!
+    var mockLoadedMessage: Message!
 
     var testContext: NSManagedObjectContext {
         coreDataService.mainContext
@@ -96,7 +97,7 @@ class MailboxViewModelTests: XCTestCase {
         welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        try loadTestMessage() // one message
+        mockLoadedMessage = try loadTestMessage() // one message
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
                   isCustom: false,
@@ -532,7 +533,7 @@ class MailboxViewModelTests: XCTestCase {
     func testTrashFromActionSheet_trashedSelectedConversations() {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
 
-        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3)
+        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3, unread: false)
         sut.setupFetchController(nil)
 
         for id in conversationIDs {
@@ -724,7 +725,7 @@ class MailboxViewModelTests: XCTestCase {
     func testDeleteConversationPermanently() throws {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
 
-        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3)
+        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3, unread: false)
         sut.setupFetchController(nil)
 
         for id in conversationIDs {
@@ -1295,18 +1296,104 @@ class MailboxViewModelTests: XCTestCase {
 
         XCTAssertFalse(sut.selectedIDs.isEmpty)
     }
+
+    func testItemsToPrefetchShouldFetchConversationsInConversationMode() {
+        /// Given conversation mode and a random number of conversations, no matter their read status,
+        /// and a random number of messages, no matter their read status
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
+
+        let conversations = setupConversations(labelID: Message.Location.inbox.rawValue, count: Int.random(in: 0..<100), unread: Bool.random())
+        _ = setupMessages(labelID: Message.Location.inbox.rawValue, count: Int.random(in: 0..<100), unread: Bool.random())
+        sut.setupFetchController(nil)
+
+        /// When determinining items to prefetch
+        let itemsToPrefetch = sut.itemsToPrefetch()
+
+        /// Then those should be conversations in equal number
+
+        XCTAssertEqual(itemsToPrefetch.count, conversations.count)
+        XCTAssertTrue(itemsToPrefetch.areAllConversations)
+    }
+
+    func testItemsToPrefetchShouldFetchMessagesInSingleMessageMode() {
+        /// Given single message mode and a random number of conversations, no matter their read status,
+        /// and a random number of messages, no matter their read status
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+
+        _ = setupConversations(labelID: Message.Location.inbox.rawValue,
+                               count: Int.random(in: 0..<100),
+                               unread: Bool.random())
+        let messages = setupMessages(labelID: Message.Location.inbox.rawValue,
+                                     count: Int.random(in: 0..<100),
+                                     unread: Bool.random())
+        sut.setupFetchController(nil)
+
+        /// When determinining items to prefetch
+        let itemsToPrefetch = sut.itemsToPrefetch()
+
+        /// Then those should be messages in equal number + 1 for the default one that is inserted during setup
+        XCTAssertEqual(itemsToPrefetch.count, messages.count + 1)
+        XCTAssertTrue(itemsToPrefetch.areAllMessages)
+    }
+
+    func testItemsToPrefetchShouldReturnUnreadConversationsFirstAndInTheSameOrder() {
+        /// Given conversation mode and a random number of read conversations, and a random number of unread conversations
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
+        let readConversations = setupConversations(labelID: Message.Location.inbox.rawValue,
+                                                   count: Int.random(in: 0..<100),
+                                                   unread: false)
+        let unreadConversations = setupConversations(labelID: Message.Location.inbox.rawValue,
+                                                     count: Int.random(in: 0..<100),
+                                                     unread: true)
+        sut.setupFetchController(nil)
+
+        /// When determining items to prefetch
+        let itemsToPrefetch = sut.itemsToPrefetch()
+
+        /// Unread conversations should be first and in the same order (time + order)
+        let conversationEntities = itemsToPrefetch.allConversations
+        XCTAssertEqual(conversationEntities.prefix(unreadConversations.count).map(\.conversationID.rawValue),
+                       unreadConversations)
+        XCTAssertEqual(conversationEntities.dropFirst(unreadConversations.count).map(\.conversationID.rawValue),
+                       readConversations)
+    }
+
+    func testItemsToPrefetchShouldReturnUnreadMessagesFirstAndInTheSameOrder() {
+        /// Given single message mode and a random number of read messages, and a random number of unread messages
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        let unreadMessages = setupMessages(labelID: Message.Location.inbox.rawValue,
+                                           count: Int.random(in: 0..<100),
+                                           unread: true)
+        let readMessages = setupMessages(labelID: Message.Location.inbox.rawValue,
+                                         count: Int.random(in: 0..<100),
+                                         unread: false)
+        let defaultMockMessage = self.mockLoadedMessage // Message loaded by default is setup, unread one
+        sut.setupFetchController(nil)
+
+        /// When determining items to prefetch
+        let itemsToPrefetch = sut.itemsToPrefetch()
+
+        /// Unread messages should be first and in the same order (time + order)
+        let messageEntities = itemsToPrefetch.allMessages
+        XCTAssertEqual(messageEntities.prefix(unreadMessages.count).map(\.messageID.rawValue),
+                       unreadMessages)
+        XCTAssertEqual(messageEntities.dropFirst(unreadMessages.count).dropLast(1).map(\.messageID.rawValue),
+                       readMessages)
+        XCTAssertEqual(messageEntities.last?.messageID.rawValue, defaultMockMessage?.messageID)
+    }
 }
 
 extension MailboxViewModelTests {
-    func loadTestMessage() throws {
+    func loadTestMessage() throws -> Message {
         let parsedObject = testMessageMetaData.parseObjectAny()!
         let testMessage = try GRTJSONSerialization
             .object(withEntityName: "Message",
                     fromJSONDictionary: parsedObject,
-                    in: testContext) as? Message
-        testMessage?.userID = "1"
-        testMessage?.messageStatus = 1
+                    in: testContext) as! Message
+        testMessage.userID = "1"
+        testMessage.messageStatus = 1
         try testContext.save()
+        return testMessage
     }
 
     func createSut(labelID: String,
@@ -1367,17 +1454,33 @@ extension MailboxViewModelTests {
         })
     }
 
-    func setupConversations(labelID: String, count: Int) -> [String] {
-        return (0..<count).map { unreadState in
+    func setupConversations(labelID: String, count: Int, unread: Bool) -> [String] {
+        return (0..<count).map { currentIndex in
             let conversation = Conversation(context: testContext)
             conversation.conversationID = UUID().uuidString
 
             let contextLabel = ContextLabel(context: testContext)
             contextLabel.labelID = labelID
             contextLabel.conversation = conversation
-            contextLabel.userID = "1"
-
+            contextLabel.userID = self.userManagerMock.userID.rawValue
+            contextLabel.unreadCount = unread ? 1 : 0
+            /// Time is monotously decreasing to simulate inserting from newest to oldest, to facilitate order testing
+            contextLabel.time = Date(timeIntervalSince1970: Date().timeIntervalSince1970 - Double(currentIndex))
             return conversation.conversationID
+        }
+    }
+
+    func setupMessages(labelID: String, count: Int, unread: Bool) -> [String] {
+        return (0..<count).map { currentIndex in
+            let message = Message(context: testContext)
+            message.messageID = UUID().uuidString
+            message.userID = self.userManagerMock.userID.rawValue
+            message.messageStatus = 1
+            message.unRead = unread
+            message.add(labelID: labelID)
+            /// Time is monotously decreasing to simulate inserting from newest to oldest, to facilitate order testing
+            message.time = Date(timeIntervalSince1970: Date().timeIntervalSince1970 - Double(currentIndex))
+            return message.messageID
         }
     }
 }

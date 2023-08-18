@@ -145,4 +145,121 @@ class MailboxItemTests: XCTestCase {
         let sut = MailboxItem.conversation(entity)
         XCTAssertEqual(sut.time(labelID: inboxLabel), date)
     }
+
+    func testToConversationShouldMatchConversation() {
+        let conversationEntity = ConversationEntity.make()
+
+        let sut = MailboxItem.conversation(conversationEntity)
+
+        XCTAssertEqual(sut.toConversation, conversationEntity)
+    }
+
+    func testToConversationShouldNotMatchMessage() {
+        let messageEntity = MessageEntity.make()
+
+        let sut = MailboxItem.message(messageEntity)
+
+        XCTAssertNil(sut.toConversation)
+    }
+
+    func testToMessageShouldMatchMessage() {
+        let messageEntity = MessageEntity.make()
+
+        let sut = MailboxItem.message(messageEntity)
+
+        XCTAssertEqual(sut.toMessage, messageEntity)
+    }
+
+    func testToMessageShouldNotMatchConversation() {
+        let conversationEntity = ConversationEntity.make()
+
+        let sut = MailboxItem.conversation(conversationEntity)
+
+        XCTAssertNil(sut.toMessage)
+    }
+
+    func testIsConversationShouldMatchConversation() {
+        let conversationEntity = ConversationEntity.make()
+
+        let sut = MailboxItem.conversation(conversationEntity)
+
+        XCTAssertTrue(sut.isConversation)
+    }
+
+    func testIsConversationShouldNotMatchMessage() {
+        let messageEntity = MessageEntity.make()
+
+        let sut = MailboxItem.message(messageEntity)
+
+        XCTAssertFalse(sut.isConversation)
+    }
+
+    func testIsMessageShouldMatchMessage() {
+        let messageEntity = MessageEntity.make()
+
+        let sut = MailboxItem.message(messageEntity)
+
+        XCTAssertTrue(sut.isMessage)
+    }
+
+    func testIsMessageShouldNotMatchConversation() {
+        let conversationEntity = ConversationEntity.make()
+
+        let sut = MailboxItem.conversation(conversationEntity)
+
+        XCTAssertFalse(sut.isMessage)
+    }
+
+    func testAreAllConversationsShouldReturnTrueOnlyIfAllItemsAreConversations() {
+        let conversationEntity = ConversationEntity.make()
+
+        let sut = [MailboxItem.conversation(conversationEntity)]
+
+        XCTAssertTrue(sut.areAllConversations)
+    }
+
+    func testAreAllConversationsShouldReturnFalseIfOneElementIsMessage() {
+        let conversationEntity = ConversationEntity.make()
+        let messageEntity = MessageEntity.make()
+
+        let sut: [MailboxItem] = [.conversation(conversationEntity), .message(messageEntity)]
+
+        XCTAssertFalse(sut.areAllConversations)
+    }
+
+    func testAreAllMessagesShouldReturnTrueOnlyIfAllItemsAreMessages() {
+        let messageEntity = MessageEntity.make()
+
+        let sut = [MailboxItem.message(messageEntity)]
+
+        XCTAssertTrue(sut.areAllMessages)
+    }
+
+    func testAreAllMessagesShouldReturnFalseIfOneElementIsConversation() {
+        let conversationEntity = ConversationEntity.make()
+        let messageEntity = MessageEntity.make()
+
+        let sut: [MailboxItem] = [.conversation(conversationEntity), .message(messageEntity)]
+
+        XCTAssertFalse(sut.areAllMessages)
+    }
+
+    func testAllConversationsShouldFilterOutMessages() {
+        let conversationEntity = ConversationEntity.make()
+        let messageEntity = MessageEntity.make()
+
+        let sut: [MailboxItem] = [.conversation(conversationEntity), .message(messageEntity)]
+
+        XCTAssertEqual(sut.allConversations.count, 1)
+    }
+
+    func testAllMessagesShouldFilterOutConversations() {
+        let conversationEntity = ConversationEntity.make()
+        let messageEntity = MessageEntity.make()
+
+        let sut: [MailboxItem] = [.conversation(conversationEntity), .message(messageEntity)]
+
+        XCTAssertEqual(sut.allMessages.count, 1)
+    }
+    
 }

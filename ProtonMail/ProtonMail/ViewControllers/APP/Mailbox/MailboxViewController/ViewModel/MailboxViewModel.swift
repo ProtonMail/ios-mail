@@ -1236,6 +1236,34 @@ extension MailboxViewModel {
     }
 }
 
+// MARK: - Prefetch
+
+extension MailboxViewModel {
+    func itemsToPrefetch() -> [MailboxItem] {
+        switch self.locationViewMode {
+        case .conversation:
+            let allConversations = fetchedResultsController?
+                .fetchedObjects?
+                .compactMap { $0 as? ContextLabel }
+                .compactMap(\.conversation)
+                .map(ConversationEntity.init) ?? []
+            let unreadConversations = allConversations.filter { $0.isUnread(labelID: labelID) == true }
+            let readConversations = allConversations.filter { $0.isUnread(labelID: labelID) == false }
+            let orderedConversations = unreadConversations.appending(readConversations)
+            return orderedConversations.map { MailboxItem.conversation($0) }
+        case .singleMessage:
+            let allMessages = fetchedResultsController?
+                .fetchedObjects?
+                .compactMap { $0 as? Message }
+                .map(MessageEntity.init) ?? []
+            let unreadMessages = allMessages.filter { $0.unRead == true }
+            let readMessages = allMessages.filter { $0.unRead == false }
+            let orderedMessages = unreadMessages.appending(readMessages)
+            return orderedMessages.map { MailboxItem.message($0) }
+        }
+    }
+}
+
 // MARK: - Misc
 
 extension String {
