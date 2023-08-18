@@ -102,14 +102,21 @@ final class AutoDeleteUpsellSheetView: UIView, AccessibleView {
         let margin: CGFloat = 16
         let buttonHeight: CGFloat = 48
 
-        let containerHeightFactor = 0.65
         let illustrationHeightFactor = 0.25
-        [
-            containerView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: containerHeightFactor),
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerBottomConstraint,
 
+        let iPadSpecificConstraints = [
+            containerView.widthAnchor.constraint(equalToConstant: 375),
+            containerView.centerXAnchor.constraint(equalTo: centerXAnchor)
+        ]
+
+        let iPhoneSpecificConstraint = [
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor)
+        ]
+
+        let remainingConstraints =
+        [
+            bottomConstraint,
             illustration.topAnchor.constraint(equalTo: containerView.topAnchor),
             illustration.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             illustration.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
@@ -142,7 +149,13 @@ final class AutoDeleteUpsellSheetView: UIView, AccessibleView {
             upgradeButton.trailingAnchor.constraint(equalTo: upgradeContainerView.trailingAnchor, constant: -margin),
             upgradeButton.bottomAnchor.constraint(equalTo: upgradeContainerView.bottomAnchor, constant: -margin),
             upgradeButton.heightAnchor.constraint(lessThanOrEqualToConstant: buttonHeight)
-        ].activate()
+        ]
+
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            iPadSpecificConstraints.appending(remainingConstraints).activate()
+        } else {
+            iPhoneSpecificConstraint.appending(remainingConstraints).activate()
+        }
     }
 
     private func setupFont() {
@@ -175,7 +188,7 @@ extension AutoDeleteUpsellSheetView: UIGestureRecognizerDelegate {
             // Check user tap position is gray overlay or container view
             let point = gestureRecognizer.location(in: containerView)
             // tap gray overlay
-            if point.y < 0 {
+            if point.y < 0 || point.x < 0 || point.x > containerView.frame.width {
                 return true
             }
         }
