@@ -278,7 +278,7 @@ class UsersManager: Service, UsersManagerProtocol {
             }
         }
 
-        self.users.forEach { $0.fetchUserInfo() }
+        self.users.forEach { user in Task { await user.fetchUserInfo() } }
         self.users.first?.cacheService.cleanSoftDeletedMessagesAndConversation()
         self.loggedIn()
     }

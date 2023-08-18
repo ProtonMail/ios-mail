@@ -744,10 +744,12 @@ extension EventsService {
                         guard let user = self.userManager else {
                             break
                         }
-                        do {
-                            try `await`(user.userService.activeUserKeys(userInfo: user.userInfo, auth: user.authCredential))
-                        } catch {
-                            PMAssertionFailure(error)
+                        Task {
+                            do {
+                                try await user.userService.activeUserKeys(userInfo: user.userInfo, auth: user.authCredential)
+                            } catch {
+                                PMAssertionFailure(error)
+                            }
                         }
                     default:
                         break

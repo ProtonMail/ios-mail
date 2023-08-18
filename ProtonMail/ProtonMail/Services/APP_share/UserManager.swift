@@ -61,7 +61,7 @@ class UserManager: Service {
             guard let self = self else { return }
             self.eventsService.stop()
             self.localNotificationService.cleanUp()
-            
+
             messageService.cleanUp()
             labelService.cleanUp()
             contactService.cleanUp()
@@ -392,24 +392,23 @@ class UserManager: Service {
         return authCredential.sessionID == uid
     }
 
-    func fetchUserInfo() {
+    @MainActor
+    func fetchUserInfo() async {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
-        _ = self.userService.fetchUserInfo(auth: self.authCredential).done { [weak self] tuple in
-            guard let info = tuple.0 else { return }
-            self?.userInfo = info
-            self?.mailSettings = tuple.1
-            self?.save()
-            #if !APP_EXTENSION
-            guard let self = self,
-                  let firstUser = self.parentManager?.firstUser,
-                  firstUser.userID == self.userID else { return }
-            self.activatePayments()
-            userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
-            // When app launch, the app will show a skeleton view
-            // After getting setting data, show inbox
-            NotificationCenter.default.post(name: .didFetchSettingsForPrimaryUser, object: nil)
-            #endif
-        }
+        let tuple = await self.userService.fetchUserInfo(auth: self.authCredential)
+        guard let info = tuple.0 else { return }
+        self.userInfo = info
+        self.mailSettings = tuple.1
+        self.save()
+        #if !APP_EXTENSION
+        guard let firstUser = self.parentManager?.firstUser,
+              firstUser.userID == self.userID else { return }
+        self.activatePayments()
+        userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
+        // When app launch, the app will show a skeleton view
+        // After getting setting data, show inbox
+        NotificationCenter.default.post(name: .didFetchSettingsForPrimaryUser, object: nil)
+        #endif
     }
 
     func resignAsActiveUser() {

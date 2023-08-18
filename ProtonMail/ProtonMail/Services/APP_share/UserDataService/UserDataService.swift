@@ -37,7 +37,7 @@ class UserDataService: Service {
     private let userDataServiceQueue = DispatchQueue.init(label: "UserDataServiceQueue", qos: .utility)
 
     struct CoderKey {// Conflict with Key object
-        static let defaultSignatureStatus    = "defaultSignatureStatus" 
+        static let defaultSignatureStatus    = "defaultSignatureStatus"
     }
 
     var defaultSignatureStauts: Bool = SharedCacheBase.getDefault().bool(forKey: CoderKey.defaultSignatureStatus) {
@@ -53,27 +53,32 @@ class UserDataService: Service {
         self.coreKeyMaker = coreKeyMaker
     }
 
-    func fetchUserInfo(auth: AuthCredential? = nil) -> Promise<(UserInfo?, MailSettings)> {
-        return async {
-            let addressesApi = GetAddressesRequest()
-            let userApi = GetUserInfoRequest()
-            let userSettingsApi = GetUserSettings()
-            let mailSettingsApi = GetMailSettings()
+    func fetchUserInfo(auth: AuthCredential? = nil) async -> (UserInfo?, MailSettings) {
+        let addressesRequest = GetAddressesRequest()
+        async let addressesResponse = await self.apiService.perform(request: addressesRequest, response: AddressesResponse()).1
 
-            let addressesResponse: AddressesResponse = try `await`(self.apiService.run(route: addressesApi))
-            let userInfoResponse: GetUserInfoResponse = try `await`(self.apiService.run(route: userApi))
-            let userSettingsResponse: SettingsResponse = try `await`(self.apiService.run(route: userSettingsApi))
-            let mailSettingsResponse: MailSettingsResponse = try `await`(self.apiService.run(route: mailSettingsApi))
+        let userInfoRequest = GetUserInfoRequest()
+        async let userInfoResponse = await self.apiService.perform(request: userInfoRequest, response: GetUserInfoResponse()).1
 
-            userInfoResponse.userInfo?.set(addresses: addressesResponse.addresses)
-            userInfoResponse.userInfo?.parse(userSettings: userSettingsResponse.userSettings)
-            userInfoResponse.userInfo?.parse(mailSettings: mailSettingsResponse.mailSettings)
+        let userSettingsRequest = GetUserSettings()
+        async let userSettingsResponse = await self.apiService.perform(request: userSettingsRequest, response: SettingsResponse()).1
 
-            let mailSettings = try? MailSettings(dict: mailSettingsResponse.mailSettings ?? [:])
+        let mailSettingsRequest = GetMailSettings()
+        async let mailSettingsResponse = await self.apiService.perform(request: mailSettingsRequest, response: MailSettingsResponse()).1
 
-            try `await`(self.activeUserKeys(userInfo: userInfoResponse.userInfo, auth: auth))
-            return (userInfoResponse.userInfo, mailSettings ?? .init())
+        await userInfoResponse.userInfo?.set(addresses: addressesResponse.addresses)
+        await userInfoResponse.userInfo?.parse(userSettings: userSettingsResponse.userSettings)
+        await userInfoResponse.userInfo?.parse(mailSettings: mailSettingsResponse.mailSettings)
+
+        let mailSettings = try? await MailSettings(dict: mailSettingsResponse.mailSettings ?? [:])
+
+        do {
+            try await self.activeUserKeys(userInfo: userInfoResponse.userInfo, auth: auth)
+        } catch {
+            PMAssertionFailure(error)
         }
+
+        return await (userInfoResponse.userInfo, mailSettings ?? .init())
     }
 
     func fetchSettings(
@@ -95,57 +100,53 @@ class UserDataService: Service {
         }
     }
 
-    func activeUserKeys(userInfo: UserInfo?, auth: AuthCredential? = nil) -> Promise<Void> {
-        return async {
-            guard let user = userInfo, let pwd = auth?.mailboxpassword else {
-                return
-            }
-            let passphrase = Passphrase(value: pwd)
-            for addr in user.userAddresses {
-                for index in addr.keys.indices {
-                    let key = addr.keys[index]
-                    if let activation = key.activation {
-                        let decryptionKeys = user.userPrivateKeys.map {
-                            DecryptionKey(privateKey: $0, passphrase: passphrase)
-                        }
-                        let token: String = try Decryptor.decrypt(
-                            decryptionKeys: decryptionKeys,
-                            encrypted: ArmoredMessage(value: activation)
-                        )
-                        let new_private_key = try Crypto.updatePassphrase(
-                            privateKey: ArmoredKey(value: key.privateKey),
-                            oldPassphrase: Passphrase(value: token),
-                            newPassphrase: passphrase
-                        )
-                        let keylist: [[String: Any]] = [[
-                            "Fingerprint": key.fingerprint,
-                            "Primary": 1,
-                            "Flags": 3
-                        ]]
-                        let jsonKeylist = keylist.json()
-                        let signed = try Sign.signDetached(
-                            signingKey: SigningKey(privateKey: new_private_key, passphrase: passphrase),
-                            plainText: jsonKeylist
-                        )
-                        let signedKeyList: [String: Any] = [
-                            "Data": jsonKeylist,
-                            "Signature": signed
-                        ]
-                        let api = ActivateKey(
-                            addrID: key.keyID,
-                            privKey: new_private_key.value,
-                            signedKL: signedKeyList
-                        )
-                        api.auth = auth
+    @MainActor
+    func activeUserKeys(userInfo: UserInfo?, auth: AuthCredential? = nil) async throws {
+        guard let user = userInfo, let pwd = auth?.mailboxpassword else {
+            return
+        }
+        let passphrase = Passphrase(value: pwd)
+        for userAddress in user.userAddresses {
+            for index in userAddress.keys.indices {
+                let key = userAddress.keys[index]
+                if let activation = key.activation {
+                    let decryptionKeys = user.userPrivateKeys.map {
+                        DecryptionKey(privateKey: $0, passphrase: passphrase)
+                    }
+                    let token: String = try Decryptor.decrypt(
+                        decryptionKeys: decryptionKeys,
+                        encrypted: ArmoredMessage(value: activation)
+                    )
+                    let new_private_key = try Crypto.updatePassphrase(
+                        privateKey: ArmoredKey(value: key.privateKey),
+                        oldPassphrase: Passphrase(value: token),
+                        newPassphrase: passphrase
+                    )
+                    let keylist: [[String: Any]] = [[
+                        "Fingerprint": key.fingerprint,
+                        "Primary": 1,
+                        "Flags": 3
+                    ]]
+                    let jsonKeylist = keylist.json()
+                    let signed = try Sign.signDetached(
+                        signingKey: SigningKey(privateKey: new_private_key, passphrase: passphrase),
+                        plainText: jsonKeylist
+                    )
+                    let signedKeyList: [String: Any] = [
+                        "Data": jsonKeylist,
+                        "Signature": signed
+                    ]
+                    let activateKeyRequest = ActivateKey(
+                        addrID: key.keyID,
+                        privKey: new_private_key.value,
+                        signedKL: signedKeyList
+                    )
+                    activateKeyRequest.auth = auth
 
-                        do {
-                            let activateKeyResponse = try `await`(self.apiService.run(route: api))
-                            if activateKeyResponse.responseCode == 1000 {
-                                addr.keys[index].privateKey = new_private_key.value
-                                addr.keys[index].activation = nil
-                            }
-                        } catch {
-                        }
+                    let activateKeyResponse = await self.apiService.perform(request: activateKeyRequest, response: Response()).1
+                    if activateKeyResponse.responseCode == 1000 {
+                        userAddress.keys[index].privateKey = new_private_key.value
+                        userAddress.keys[index].activation = nil
                     }
                 }
             }

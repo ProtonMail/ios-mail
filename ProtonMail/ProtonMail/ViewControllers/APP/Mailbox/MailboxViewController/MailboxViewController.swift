@@ -883,7 +883,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         replacingEmailsMap = generateEmailsMap()
         // to update used space, pull down will wipe event data
         // so the latest used space can't update by event api
-        self.viewModel.user.fetchUserInfo()
+        Task {
+            await self.viewModel.user.fetchUserInfo()
+        }
         hideSelectionMode()
         forceRefreshAllMessages()
         self.viewModel.user.labelService.fetchV4Labels()
