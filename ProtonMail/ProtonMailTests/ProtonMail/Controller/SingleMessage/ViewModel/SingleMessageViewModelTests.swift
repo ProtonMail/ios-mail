@@ -26,7 +26,6 @@ final class SingleMessageViewModelTests: XCTestCase {
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var toolbarCustomizeSpotlightStatusProvider: MockToolbarCustomizeSpotlightStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
-    var toolbarCustomizationInfoBubbleViewStatusProvider: MockToolbarCustomizationInfoBubbleViewStatusProvider!
     var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
     var coordinatorMock: SingleMessageCoordinator!
     var notificationCenterMock: NotificationCenter!
@@ -38,7 +37,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         toolbarCustomizeSpotlightStatusProvider = MockToolbarCustomizeSpotlightStatusProvider()
         userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
-        toolbarCustomizationInfoBubbleViewStatusProvider = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         nextMessageAfterMoveStatusProviderMock = .init()
         notificationCenterMock = .init()
     }
@@ -50,7 +48,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         toolbarProviderMock = nil
         saveToolbarActionUseCaseMock = nil
         toolbarCustomizeSpotlightStatusProvider = nil
-        toolbarCustomizationInfoBubbleViewStatusProvider = nil
         notificationCenterMock = nil
     }
 
@@ -255,12 +252,10 @@ final class SingleMessageViewModelTests: XCTestCase {
         globalContainer.contextProviderFactory.register { self.contextProviderMock }
         let userContainer = UserContainer(userManager: fakeUser, globalContainer: globalContainer)
 
-        coordinatorMock = SingleMessageCoordinator(serviceFactory: sharedServices,
-                                                   navigationController: UINavigationController(),
+        coordinatorMock = SingleMessageCoordinator(navigationController: UINavigationController(),
                                                    labelId: labelID,
                                                    message: message,
                                                    user: fakeUser,
-                                                   infoBubbleViewStatusProvider: toolbarCustomizationInfoBubbleViewStatusProvider,
                                                    dependencies: userContainer)
 
         let context = SingleMessageContentViewContext(labelId: labelID, message: message, viewMode: .singleMessage)

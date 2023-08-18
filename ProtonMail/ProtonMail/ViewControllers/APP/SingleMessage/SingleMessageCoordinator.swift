@@ -25,7 +25,7 @@ import SafariServices
 import UIKit
 
 class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
-    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory
+    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory & HasToolbarSettingViewFactory
 
     weak var viewController: SingleMessageViewController?
 
@@ -35,18 +35,14 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     private let highlightedKeywords: [String]
     private weak var navigationController: UINavigationController?
     var pendingActionAfterDismissal: (() -> Void)?
-    private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     var goToDraft: ((MessageID, Date?) -> Void)?
-    private let factory: ServiceFactory
     private let dependencies: Dependencies
 
     init(
-        serviceFactory: ServiceFactory,
         navigationController: UINavigationController,
         labelId: LabelID,
         message: MessageEntity,
         user: UserManager,
-        infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         dependencies: Dependencies,
         highlightedKeywords: [String] = []
     ) {
@@ -54,9 +50,7 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
         self.labelId = labelId
         self.message = message
         self.user = user
-        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.highlightedKeywords = highlightedKeywords
-        self.factory = serviceFactory
         self.dependencies = dependencies
     }
 
@@ -222,14 +216,9 @@ extension SingleMessageCoordinator {
         allActions: [MessageViewActionSheetAction],
         currentActions: [MessageViewActionSheetAction]
     ) {
-        let viewController = ToolbarCustomizeViewController<MessageViewActionSheetAction>(
-            viewModel: .init(
-                currentActions: currentActions,
-                allActions: allActions,
-                actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
-                defaultActions: MessageViewActionSheetAction.defaultActions,
-                infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
-            )
+        let viewController = dependencies.toolbarSettingViewFactory.makeCustomizeView(
+            currentActions: currentActions,
+            allActions: allActions
         )
         viewController.customizationIsDone = { [weak self] result in
             self?.viewController?.showProgressHud()
@@ -248,12 +237,7 @@ extension SingleMessageCoordinator {
     }
 
     private func presentToolbarCustomizationSettingView() {
-        let viewModel = ToolbarSettingViewModel(
-            infoBubbleViewStatusProvider: factory.userCachedStatus,
-            toolbarActionProvider: user,
-            saveToolbarActionUseCase: SaveToolbarActionSettings(dependencies: .init(user: user))
-        )
-        let settingView = ToolbarSettingViewController(viewModel: viewModel)
+        let settingView = dependencies.toolbarSettingViewFactory.makeSettingView()
         self.viewController?.navigationController?.pushViewController(settingView, animated: true)
     }
 }

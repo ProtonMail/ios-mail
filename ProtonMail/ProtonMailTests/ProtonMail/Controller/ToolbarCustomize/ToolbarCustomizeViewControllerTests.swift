@@ -20,23 +20,24 @@ import XCTest
 
 final class ToolbarCustomizeViewControllerTests: XCTestCase {
     var sut: ToolbarCustomizeViewController<MessageViewActionSheetAction>!
-    var viewModel: ToolbarCustomizeViewModel<MessageViewActionSheetAction>!
-    var toolbarCustomizationInfoBubbleViewStatusProviderMock: MockToolbarCustomizationInfoBubbleViewStatusProvider!
 
     override func setUp() {
         super.setUp()
-        toolbarCustomizationInfoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
-        viewModel = ToolbarCustomizeViewModel<MessageViewActionSheetAction>(
+        let globalContainer = GlobalContainer()
+        globalContainer.toolbarCustomizationInfoBubbleViewStatusProviderFactory.register {
+            MockToolbarCustomizationInfoBubbleViewStatusProvider()
+        }
+
+        let viewModel = ToolbarCustomizeViewModel<MessageViewActionSheetAction>(
             currentActions: [],
             allActions: [],
-            actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
-            defaultActions: [],
-            infoBubbleViewStatusProvider: toolbarCustomizationInfoBubbleViewStatusProviderMock
+            dependencies: globalContainer
         )
         sut = ToolbarCustomizeViewController<MessageViewActionSheetAction>(viewModel: viewModel)
     }
 
     override func tearDown() {
+        sut = nil
         super.tearDown()
     }
 

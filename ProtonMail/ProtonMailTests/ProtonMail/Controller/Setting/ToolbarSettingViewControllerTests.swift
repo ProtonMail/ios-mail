@@ -22,29 +22,19 @@ import ProtonCore_TestingToolkit
 
 final class ToolbarSettingViewControllerTests: XCTestCase {
     var sut: ToolbarSettingViewController!
-    var viewModel: ToolbarSettingViewModel!
-    var infoBubbleViewStatusStub: MockToolbarCustomizationInfoBubbleViewStatusProvider!
-    var mockApiService: APIServiceMock!
     var mockUser: UserManager!
-    var mockSaveToolbarActionSettings: MockSaveToolbarActionSettingsForUsersUseCase!
 
     override func setUp() {
         super.setUp()
-        mockApiService = APIServiceMock()
+        let mockApiService = APIServiceMock()
         mockUser = UserManager(api: mockApiService, role: .none)
-        infoBubbleViewStatusStub = MockToolbarCustomizationInfoBubbleViewStatusProvider()
-        mockSaveToolbarActionSettings = MockSaveToolbarActionSettingsForUsersUseCase()
         makeSUT()
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        viewModel = nil
-        infoBubbleViewStatusStub = nil
-        mockSaveToolbarActionSettings = nil
         mockUser = nil
-        mockApiService = nil
     }
 
     func testInit_hasTwoSegment_firstOneIsSelected() {
@@ -130,11 +120,8 @@ final class ToolbarSettingViewControllerTests: XCTestCase {
     }
 
     private func makeSUT() {
-        viewModel = ToolbarSettingViewModel(
-            infoBubbleViewStatusProvider: infoBubbleViewStatusStub,
-            toolbarActionProvider: mockUser,
-            saveToolbarActionUseCase: mockSaveToolbarActionSettings
-        )
-        sut = ToolbarSettingViewController(viewModel: viewModel)
+        let globalContainer = GlobalContainer()
+        let userContainer = UserContainer(userManager: mockUser, globalContainer: globalContainer)
+        sut = userContainer.toolbarSettingViewFactory.makeSettingView()
     }
 }

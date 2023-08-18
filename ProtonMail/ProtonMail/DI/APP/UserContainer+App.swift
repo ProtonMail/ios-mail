@@ -42,6 +42,24 @@ extension UserContainer {
         }
     }
 
+    var saveToolbarActionSettingsFactory: Factory<SaveToolbarActionSettings> {
+        self {
+            SaveToolbarActionSettings(dependencies: .init(user: self.user))
+        }
+    }
+
+    var toolbarActionProviderFactory: Factory<ToolbarActionProvider> {
+        self {
+            self.user
+        }
+    }
+
+    var toolbarSettingViewFactoryFactory: Factory<ToolbarSettingViewFactory> {
+        self {
+            ToolbarSettingViewFactory(dependencies: self)
+        }
+    }
+
     var unblockSenderFactory: Factory<UnblockSender> {
         self {
             UnblockSender(

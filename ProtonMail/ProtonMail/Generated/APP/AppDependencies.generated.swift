@@ -65,6 +65,22 @@ extension UserContainer: HasSwipeActionCacheProtocol {
     }
 }
 
+protocol HasToolbarCustomizationInfoBubbleViewStatusProvider {
+    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider { get }
+}
+
+extension GlobalContainer: HasToolbarCustomizationInfoBubbleViewStatusProvider {
+    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
+        toolbarCustomizationInfoBubbleViewStatusProviderFactory()
+    }
+}
+
+extension UserContainer: HasToolbarCustomizationInfoBubbleViewStatusProvider {
+    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
+        globalContainer.toolbarCustomizationInfoBubbleViewStatusProvider
+    }
+}
+
 protocol HasBlockedSenderCacheUpdater {
     var blockedSenderCacheUpdater: BlockedSenderCacheUpdater { get }
 }
@@ -102,6 +118,36 @@ protocol HasSettingsViewsFactory {
 extension UserContainer: HasSettingsViewsFactory {
     var settingsViewsFactory: SettingsViewsFactory {
         settingsViewsFactoryFactory()
+    }
+}
+
+protocol HasSaveToolbarActionSettings {
+    var saveToolbarActionSettings: SaveToolbarActionSettings { get }
+}
+
+extension UserContainer: HasSaveToolbarActionSettings {
+    var saveToolbarActionSettings: SaveToolbarActionSettings {
+        saveToolbarActionSettingsFactory()
+    }
+}
+
+protocol HasToolbarActionProvider {
+    var toolbarActionProvider: ToolbarActionProvider { get }
+}
+
+extension UserContainer: HasToolbarActionProvider {
+    var toolbarActionProvider: ToolbarActionProvider {
+        toolbarActionProviderFactory()
+    }
+}
+
+protocol HasToolbarSettingViewFactory {
+    var toolbarSettingViewFactory: ToolbarSettingViewFactory { get }
+}
+
+extension UserContainer: HasToolbarSettingViewFactory {
+    var toolbarSettingViewFactory: ToolbarSettingViewFactory {
+        toolbarSettingViewFactoryFactory()
     }
 }
 

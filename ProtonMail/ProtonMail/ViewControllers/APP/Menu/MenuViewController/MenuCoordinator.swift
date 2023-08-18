@@ -534,7 +534,6 @@ extension MenuCoordinator {
             viewModel: viewModel,
             services: self.services,
             contextProvider: coreDataService,
-            infoBubbleViewStatusProvider: userCachedStatus,
             dependencies: userContainer(for: user)
         )
         mailbox.start()

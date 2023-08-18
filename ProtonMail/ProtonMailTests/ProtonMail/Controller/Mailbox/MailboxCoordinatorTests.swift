@@ -47,7 +47,6 @@ class MailboxCoordinatorTests: XCTestCase {
         let contactProviderMock = MockContactProvider(coreDataContextProvider: contextProviderMock)
         let conversationProviderMock = MockConversationProvider()
         let eventServiceMock = EventsServiceMock()
-        let infoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         let toolbarActionProviderMock = MockToolbarActionProvider()
         let saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         connectionStatusProviderMock = MockInternetConnectionStatusProviderProtocol()
@@ -98,7 +97,6 @@ class MailboxCoordinatorTests: XCTestCase {
                                  viewModel: viewModelMock,
                                  services: dummyServices,
                                  contextProvider: contextProviderMock,
-                                 infoBubbleViewStatusProvider: infoBubbleViewStatusProviderMock,
                                  dependencies: userContainer,
                                  getApplicationState: {
             return self.applicationStateStub

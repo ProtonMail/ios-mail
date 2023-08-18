@@ -9,7 +9,7 @@ protocol ConversationCoordinatorProtocol: AnyObject {
 }
 
 class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordinatorProtocol {
-    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory
+    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory & HasToolbarSettingViewFactory
 
     weak var viewController: ConversationViewController?
 
@@ -19,7 +19,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     private let user: UserManager
     private let targetID: MessageID?
     private let internetStatusProvider: InternetConnectionStatusProvider
-    private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     private let highlightedKeywords: [String]
     private let contextProvider: CoreDataContextProviderProtocol
     private let dependencies: Dependencies
@@ -32,12 +31,10 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         conversation: ConversationEntity,
         user: UserManager,
         internetStatusProvider: InternetConnectionStatusProvider,
-        infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         highlightedKeywords: [String] = [],
         contextProvider: CoreDataContextProviderProtocol,
         dependencies: Dependencies,
-        targetID: MessageID? = nil,
-        serviceFactory: ServiceFactory
+        targetID: MessageID? = nil
     ) {
         self.labelId = labelId
         self.navigationController = navigationController
@@ -45,7 +42,6 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         self.user = user
         self.targetID = targetID
         self.internetStatusProvider = internetStatusProvider
-        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.highlightedKeywords = highlightedKeywords
         self.contextProvider = contextProvider
         self.dependencies = dependencies
@@ -243,14 +239,9 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
         allActions: [MessageViewActionSheetAction],
         currentActions: [MessageViewActionSheetAction]
     ) {
-        let view = ToolbarCustomizeViewController<MessageViewActionSheetAction>(
-            viewModel: .init(
-                currentActions: currentActions,
-                allActions: allActions,
-                actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
-                defaultActions: MessageViewActionSheetAction.defaultActions,
-                infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
-            )
+        let view = dependencies.toolbarSettingViewFactory.makeCustomizeView(
+            currentActions: currentActions,
+            allActions: allActions
         )
         view.customizationIsDone = { [weak self] result in
             self?.viewController?.showProgressHud()
@@ -270,12 +261,7 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentToolbarCustomizationSettingView() {
-        let viewModel = ToolbarSettingViewModel(
-            infoBubbleViewStatusProvider: userCachedStatus,
-            toolbarActionProvider: user,
-            saveToolbarActionUseCase: SaveToolbarActionSettings(dependencies: .init(user: user))
-        )
-        let settingView = ToolbarSettingViewController(viewModel: viewModel)
+        let settingView = dependencies.toolbarSettingViewFactory.makeSettingView()
         self.viewController?.navigationController?.pushViewController(settingView, animated: true)
     }
 }

@@ -33,8 +33,7 @@ class SettingsDeviceCoordinator {
         case darkMode = "settings_dark_mode"
     }
 
-    // TODO: dependencies should only include a factory and other coordinator's dependencies
-    typealias Dependencies = HasUserManager & HasSettingsViewsFactory & HasUserCachedStatus & SettingsAccountCoordinator.Dependencies
+    typealias Dependencies = HasSettingsViewsFactory & HasToolbarSettingViewFactory & SettingsAccountCoordinator.Dependencies
 
     private let dependencies: Dependencies
 
@@ -118,16 +117,8 @@ class SettingsDeviceCoordinator {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 
-    // TODO: introduce toolbar setting view factory
     func openToolbarCustomizationView() {
-        let viewModel = ToolbarSettingViewModel(
-            infoBubbleViewStatusProvider: dependencies.userCachedStatus,
-            toolbarActionProvider: dependencies.user,
-            saveToolbarActionUseCase: SaveToolbarActionSettings(
-                dependencies: .init(user: dependencies.user)
-            )
-        )
-        let viewController = ToolbarSettingViewController(viewModel: viewModel)
+        let viewController = dependencies.toolbarSettingViewFactory.makeSettingView()
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 

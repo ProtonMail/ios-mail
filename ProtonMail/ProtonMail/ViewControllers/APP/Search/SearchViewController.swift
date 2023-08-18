@@ -530,12 +530,10 @@ extension SearchViewController {
         self.updateTapped(status: false)
         guard let navigationController = navigationController else { return }
         let coordinator = SingleMessageCoordinator(
-            serviceFactory: serviceFactory,
             navigationController: navigationController,
             labelId: "",
             message: message,
             user: self.viewModel.user,
-            infoBubbleViewStatusProvider: userCachedStatus,
             dependencies: dependencies,
             highlightedKeywords: query.components(separatedBy: .whitespacesAndNewlines)
         )
@@ -570,12 +568,10 @@ extension SearchViewController {
                     conversation: conversation,
                     user: self.viewModel.user,
                     internetStatusProvider: .shared,
-                    infoBubbleViewStatusProvider: userCachedStatus,
                     highlightedKeywords: self.query.components(separatedBy: .whitespacesAndNewlines),
                     contextProvider: sharedServices.get(by: CoreDataService.self),
                     dependencies: self.dependencies,
-                    targetID: messageID,
-                    serviceFactory: self.serviceFactory
+                    targetID: messageID
                 )
                 coordinator.goToDraft = { [weak self] msgID, _ in
                     guard let self = self else { return }

@@ -39,7 +39,9 @@ protocol MailboxCoordinatorProtocol: AnyObject {
 }
 
 class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserver {
-    typealias Dependencies = HasInternetConnectionStatusProviderProtocol & SingleMessageCoordinator.Dependencies
+    typealias Dependencies = HasInternetConnectionStatusProviderProtocol
+    & SingleMessageCoordinator.Dependencies
+    & HasToolbarSettingViewFactory
 
     let viewModel: MailboxViewModel
     var services: ServiceFactory
@@ -52,7 +54,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private(set) var singleMessageCoordinator: SingleMessageCoordinator?
     private(set) var conversationCoordinator: ConversationCoordinator?
     private let getApplicationState: () -> UIApplication.State
-    let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     private var timeOfLastNavigationToMessageDetails: Date?
 
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
@@ -64,7 +65,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
          viewModel: MailboxViewModel,
          services: ServiceFactory,
          contextProvider: CoreDataContextProviderProtocol,
-         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
          dependencies: Dependencies,
          getApplicationState: @escaping () -> UIApplication.State = {
         return UIApplication.shared.applicationState
@@ -77,7 +77,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         self.services = services
         self.contextProvider = contextProvider
         self.getApplicationState = getApplicationState
-        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.dependencies = dependencies
     }
 
@@ -367,14 +366,9 @@ extension MailboxCoordinator {
         allActions: [MessageViewActionSheetAction],
         currentActions: [MessageViewActionSheetAction]
     ) {
-        let view = ToolbarCustomizeViewController<MessageViewActionSheetAction>(
-            viewModel: .init(
-                currentActions: currentActions,
-                allActions: allActions,
-                actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
-                defaultActions: MessageViewActionSheetAction.defaultActions,
-                infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
-            )
+        let view = dependencies.toolbarSettingViewFactory.makeCustomizeView(
+            currentActions: currentActions,
+            allActions: allActions
         )
         view.customizationIsDone = { [weak self] result in
             self?.viewController?.showProgressHud()
@@ -547,12 +541,10 @@ extension MailboxCoordinator {
     private func present(message: MessageEntity) {
         guard let navigationController = viewController?.navigationController else { return }
         let coordinator = SingleMessageCoordinator(
-            serviceFactory: services,
             navigationController: navigationController,
             labelId: viewModel.labelID,
             message: message,
             user: viewModel.user,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             dependencies: dependencies
         )
         coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
@@ -570,11 +562,9 @@ extension MailboxCoordinator {
             conversation: conversation,
             user: viewModel.user,
             internetStatusProvider: .shared,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             contextProvider: contextProvider,
             dependencies: dependencies,
-            targetID: targetID,
-            serviceFactory: services
+            targetID: targetID
         )
         conversationCoordinator = coordinator
         coordinator.goToDraft = { [weak self] msgID, originalScheduledTime in
@@ -590,7 +580,6 @@ extension MailboxCoordinator {
             labelID: viewModel.labelID,
             user: viewModel.user,
             userIntroduction: userCachedStatus,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
@@ -606,7 +595,6 @@ extension MailboxCoordinator {
             user: viewModel.user,
             targetMessageID: targetID,
             userIntroduction: userCachedStatus,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }

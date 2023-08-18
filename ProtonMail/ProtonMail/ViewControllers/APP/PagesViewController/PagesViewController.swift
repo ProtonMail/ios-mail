@@ -170,12 +170,10 @@ extension PagesViewController {
         }
         guard let navigationController = self.navigationController else { return nil }
         let coordinator = SingleMessageCoordinator(
-            serviceFactory: services,
             navigationController: navigationController,
             labelId: viewModel.labelID,
             message: message,
             user: viewModel.user,
-            infoBubbleViewStatusProvider: viewModel.infoBubbleViewStatusProvider,
             dependencies: dependencies
         )
         coordinator.goToDraft = viewModel.goToDraft
@@ -229,11 +227,9 @@ extension PagesViewController {
             conversation: conversation,
             user: viewModel.user,
             internetStatusProvider: .shared,
-            infoBubbleViewStatusProvider: viewModel.infoBubbleViewStatusProvider,
             contextProvider: services.get(by: CoreDataService.self),
             dependencies: dependencies,
-            targetID: targetMessageID,
-            serviceFactory: services
+            targetID: targetMessageID
         )
         coordinator.goToDraft = viewModel.goToDraft
         let controller = coordinator.makeConversationVC()

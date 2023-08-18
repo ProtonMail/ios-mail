@@ -42,4 +42,10 @@ extension GlobalContainer {
             self.userCachedStatus
         }
     }
+
+    var toolbarCustomizationInfoBubbleViewStatusProviderFactory: Factory<ToolbarCustomizationInfoBubbleViewStatusProvider> {
+        self {
+            self.userCachedStatus
+        }
+    }
 }
