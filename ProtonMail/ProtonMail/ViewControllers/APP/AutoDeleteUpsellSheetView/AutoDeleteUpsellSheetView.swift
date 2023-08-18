@@ -237,19 +237,19 @@ private enum SubviewFactory {
         }
     }
 
-    static var containerView: UIView = {
+    static var containerView: UIView {
         let view = UIView()
         view.backgroundColor = ColorProvider.BackgroundNorm
         view.roundCorner(8.0)
         return view
-    }()
+    }
 
-    static var closeButton: UIButton = {
+    static var closeButton: UIButton {
         let button = UIButton()
         button.setImage(IconProvider.cross, for: .normal)
         button.tintColor = ColorProvider.White
         return button
-    }()
+    }
 
     static var illustrationView: UIImageView {
         let image = UIImageView(image: Asset.upsellPromotion.image)
