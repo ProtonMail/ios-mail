@@ -51,7 +51,7 @@ extension FetchMessagesWithReset {
                                 endTime: params.endTime,
                                 isUnread: params.fetchOnlyUnreadMessages,
                                 onMessagesRequestSuccess: {
-                                    self.removePersistedMessages(removeAllDraft: params.removeAllDrafts)
+                                    self.removePersistedMessages()
                                 }
                             )
                         ) { result in
@@ -66,9 +66,9 @@ extension FetchMessagesWithReset {
         }
     }
 
-    private func removePersistedMessages(removeAllDraft: Bool) {
+    private func removePersistedMessages() {
         dependencies.localMessageDataService.cleanMessage(
-            removeAllDraft: removeAllDraft,
+            removeAllDraft: false,
             cleanBadgeAndNotifications: false
         )
             self.dependencies.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID)
@@ -93,7 +93,6 @@ extension FetchMessagesWithReset {
         let endTime: Int
         let fetchOnlyUnreadMessages: Bool
         let refetchContacts: Bool
-        let removeAllDrafts: Bool
     }
 
     struct Dependencies {

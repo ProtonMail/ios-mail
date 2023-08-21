@@ -78,7 +78,6 @@ final class UpdateMailbox: UpdateMailboxUseCase {
         guard self.isEventIDValid else {
             self.fetchDataWithReset(time: time,
                                     cleanContact: false,
-                                    removeAllDraft: false,
                                     unreadOnly: false) { [weak self] error in
                 self?.handleFetchMessageResponse(error: error, errorHandler: errorHandler)
                 self?.isFetching = false
@@ -105,7 +104,6 @@ final class UpdateMailbox: UpdateMailboxUseCase {
 
         self.fetchDataWithReset(time: time,
                                 cleanContact: true,
-                                removeAllDraft: false,
                                 unreadOnly: showUnreadOnly) { [weak self] error in
             self?.handleFetchMessageResponse(error: error, errorHandler: errorHandler)
             self?.isFetching = false
@@ -207,7 +205,6 @@ extension UpdateMailbox {
 
     private func fetchDataWithReset(time: Int,
                                     cleanContact: Bool,
-                                    removeAllDraft: Bool,
                                     unreadOnly: Bool,
                                     completion: @escaping (Error?) -> Void) {
 
@@ -217,8 +214,7 @@ extension UpdateMailbox {
             let params = FetchMessagesWithReset.Params(
                 endTime: time,
                 fetchOnlyUnreadMessages: unreadOnly,
-                refetchContacts: cleanContact,
-                removeAllDrafts: removeAllDraft
+                refetchContacts: cleanContact
             )
             self.dependencies
                 .fetchMessageWithReset
