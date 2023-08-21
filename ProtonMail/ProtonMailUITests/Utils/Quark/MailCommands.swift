@@ -16,12 +16,27 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import RegexBuilder
 import XCTest
 
 private let qaFixturesLoad = "raw::qa:fixtures:load"
 private let doctrineFixturesLoad = "raw::doctrine:fixtures:load"
+private let makeDelinquent = "payments:make-delinquent"
+private let createSeedSubscriber = "payments:seed-subscriber"
 
 extension Quark {
+    
+    enum DelinquentState: Int {
+        case paid = 0
+        /// unpaid invoice available for 7 days or less
+        case availableLessThan7Days
+        /// unpaid invoice with payment overdue for more than 7 days
+        case overdueMoreThan7Days
+        /// unpaid invoice with payment overdue for more than 14 days, the user is considered Delinquent
+        case overdueMoreThan14Days
+        /// unpaid invoice with payment not received for more than 30 days, the user is considered Delinquent
+        case overdueMoreThan30Days
+    }
 
     func createUserWithiOSFixturesLoad(name: String) throws ->  MailQuarkResponse? {
 
@@ -65,6 +80,69 @@ extension Quark {
             }
 
             return response
+        } catch {
+            throw error
+        }
+    }
+    
+    func createSeedSubscribeUser(username: String, password: String, state: DelinquentState) throws -> User {
+        let args = [
+            "username=\(username)&password=\(password)&state=\(state)"
+        ]
+        
+        let request = try route(createSeedSubscriber)
+            .args(args)
+            .build()
+        
+        do {
+            let (textData, urlResponse) = try executeQuarkRequest(request)
+            let jsonData = try? makeQuarkCommandTextToJson(data: textData)
+            guard let responseHTML = String(data: textData, encoding: .utf8) else {
+                throw QuarkError(urlResponse: urlResponse, message: "Update delinquent state failed")
+            }
+            
+            var createdUser = User()
+            createdUser.name = username
+            createdUser.password = password
+            let idRef = Reference(Int.self)
+            let regex = Regex {
+                "User `\(username)` (ID "
+                
+                TryCapture(as: idRef) {
+                    OneOrMore(.digit)
+                } transform: { match in
+                    Int(match)
+                }
+            }
+            if let result = responseHTML.firstMatch(of: regex) {
+                let id = result[idRef]
+                createdUser.id = id
+            } else {
+                throw NSError(domain: "proton.test", code: -1)
+            }
+            return createdUser
+        } catch {
+            throw error
+        }
+    }
+    
+    func updateDelinquentState(state: DelinquentState, for username: String) throws {
+        let args = [
+            "username=\(username)&&--delinquentState=\(state.rawValue)"
+        ]
+        
+        let request = try route(makeDelinquent)
+            .args(args)
+            .build()
+        
+        do {
+            let (textData, urlResponse) = try executeQuarkRequest(request)
+            guard
+                let responseHTML = String(data: textData, encoding: .utf8),
+                responseHTML.contains("Done")
+            else {
+                throw QuarkError(urlResponse: urlResponse, message: "Update delinquent state failed")
+            }
         } catch {
             throw error
         }

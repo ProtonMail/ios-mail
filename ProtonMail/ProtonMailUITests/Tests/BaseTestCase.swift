@@ -42,6 +42,7 @@ class BaseTestCase: CoreTestCase {
     var env: Environment = .black
     lazy var quarkCommands = QuarkCommands(doh: env.doh)
     var quarkCommandTwo = Quark()
+    private static var didTryToDisableAutoFillPassword = false
 
 
     func terminateApp() {
@@ -51,7 +52,10 @@ class BaseTestCase: CoreTestCase {
     /// Runs only once per test run.
     override class func setUp() {
         super.setUp()
-
+        if !didTryToDisableAutoFillPassword {
+            disableAutoFillPasswords()
+            didTryToDisableAutoFillPassword = true
+        }
         getTestUsersFromYamlFiles()
     }
 
@@ -183,6 +187,29 @@ class BaseTestCase: CoreTestCase {
             wasJailDisabled = true
         }
     }
+    
+    private static func disableAutoFillPasswords() {
+        let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+
+        settingsApp.launch()
+        settingsApp.tables.staticTexts["PASSWORDS"].tap()
+
+        let passcodeInput = springboard.secureTextFields["Passcode field"]
+        passcodeInput.tap()
+        passcodeInput.typeText("1\r")
+
+        let button = settingsApp.tables.cells["PasswordOptionsCell"].buttons["chevron"]
+        _ = button.waitForExistence(timeout: 1)
+        button.tap()
+
+        let autoFillPasswordSwitch = settingsApp.switches["AutoFill Passwords"]
+        if autoFillPasswordSwitch.isSwitchOn {
+            autoFillPasswordSwitch.tap()
+        }
+
+        settingsApp.terminate()
+    }
 }
 
 class FixtureAuthenticatedTestCase: BaseTestCase {
@@ -253,12 +280,22 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
     }
 
     override func tearDown() {
+        defer { super.tearDown() }
+        guard let id = user.id else { return }
         do {
-            try quarkCommandTwo.deleteUser(id: user.id!)
+            try quarkCommandTwo.deleteUser(id: id)
         }
         catch {
             XCTFail(error.localizedDescription)
         }
-        super.tearDown()
     }
+}
+
+private extension XCUIElement {
+
+    var isSwitchOn: Bool {
+        let switchValue = value as? String
+        return switchValue == "1"
+    }
+
 }
