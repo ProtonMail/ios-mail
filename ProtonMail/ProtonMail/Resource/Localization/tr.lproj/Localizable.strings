@@ -1,72 +1,276 @@
-/* Text for the search info banner when indexing is stopped because of storage limit reached. */
-", will not be searched. To search within them, increase the %1$@" = ", aranamayacak. Bunlarda arama yapabilmek için %1$@nı artırın";
+/* link opeining confirmation */
 
-/* Button title to show full encrypted message body when decryption failed */
-"…[Show full message]" = "…[İletinin tümünü göster]";
+"You are about to launch the web browser and navigate to" = "Tarayıcıyı açmak ve şuraya gitmek üzeresiniz";
 
-/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "E, MMM d, yyyy 'tarihinde' %@ 'saatinde'";
+/* link opeining confirmation */
+"Request link confirmation" = "Bağlantı onayı istensin";
 
-/* Message for the alert to delete all downloaded messages. */
-"'Search message content' will be disabled. It can be enabled again from settings and all messages will have to be downloaded again." = "'İleti içeriğinde arama' devre dışı bırakılacak. Ayarlar bölümünden yeniden etkinleştirilebilir ve tüm iletilerin yeniden indirilmesi gerekir.";
+/* Title in settings */
+"Display Name" = "Görüntülenecek ad";
 
-/* The text combining size of index and storage limit */
-"%@ of %@" = "%1$@ / %2$@";
+/* place holder */
+"Input Display Name…" = "Görüntülenecek adı yazın…";
 
-/* Drag and drop zone for attachments */
-"+ Drop here to add as attachment" = "+ Dosyayı eklemek için sürükleyip buraya bırakın";
+/* Title in signature settings */
+"Signature" = "İmza";
 
-/* Text for the estimated time label if less than one minute is remaining */
-"<1 minute remaining" = "<1 dakika kaldı";
+/* Title */
+"Enable signature" = "İmza kullanılsın";
 
-/* The time label for message is about to be sent less in 1 minute in the list view. */
-"<1m" = "<1d";
+/* No comment provided by engineer. */
+"Enter your signature here" = "İmzanızı buraya yazın";
 
-/* The title of banner that is shown after using swipe action to archive a message */
-"1 message moved to archive" = "1 ileti arşivlendi";
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Mobil imza";
 
-/* The title of banner that is shown after using swipe action to spam a message */
-"1 Message moved to spam" = "1 ileti İstenmeyen kutusuna taşındı";
+/* Title */
+"Recovery email" = "Kurtarma e-posta adresi";
+
+/* Title */
+"Enable email notices" = "E-posta bildirimleri kullanılsın";
+
+/* place holder */
+"Input Notification Email…" = "Bildirim e-posta adresini yazın…";
+
+/* Placeholder */
+"Current password" = "Geçerli parola";
+
+/* Placeholder */
+"New password" = "Yeni parola";
+
+/* Placeholder */
+"Confirm new password" = "Yeni parola onayı";
+
+/* Settings row */
+"Remove image metadata" = "Görsel üst verilerini kaldır";
+
+/* Settings row */
+"Block email tracking" = "E-postanın izlenmesi engellensin";
+
+/* Settings row */
+"Default browser" = "Varsayılan tarayıcı";
+
+/* menu title */
+"Menu" = "Menü";
+
+/* menu title */
+"Report a problem" = "Sorun bildirin";
+
+/* menu title */
+"Inbox" = "Gelen kutusu";
+
+/* menu title */
+"Starred" = "Yıldızlı";
+
+/* menu title */
+"Archive" = "Arşivle";
+
+/* menu title */
+"Drafts" = "Taslaklar";
+
+/* mail location title */
+"All Mail" = "Tüm e-postalar";
+
+/* menu title */
+"Sent" = "Gönderilmiş";
+
+/* mail location desc */
+"Trash" = "Çöp kutusu";
+
+/* menu title */
+"Spam" = "İstenmeyen";
+
+/* Action and title */
+"Contacts" = "Kişiler";
+
+/* menu title (contact groups) */
+"Groups" = "Gruplar";
+
+/* menu title */
+"Settings" = "Ayarlar";
+
+/* Alert title to confirm signout */
+"Sign out" = "Oturumu kapat";
+
+/* menu title */
+"Lock The App" = "Uygulamayı kilitle";
+
+/* menu title */
+"Subscription" = "Abonelik";
+
+/* menu title */
+"Manage accounts" = "Hesap yönetimi";
+
+/* menu title */
+"Add attachment" = "Dosya ekle";
+
+/* menu title */
+"Refer a friend" = "Arkadaşınıza önerin";
+
+/* mail location title */
+"Scheduled" = "Zamanlanmış";
+
+/* Description after message have been sent */
+"Message sent" = "İleti gönderildi";
+
+/* Description */
+"Sent Failed" = "Gönderilemedi";
+
+/* Description */
+"Email failed to send. Message saved as draft." = "E-posta gönderilemedi. İleti taslak olarak kaydedildi.";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Burada görülecek bir şey yok";
+
+/* The subtitle will be shown when folder doesnt have emails */
+"This folder is empty" = "Bu klasör boş";
+
+/* The title of empty inbox */
+"You are all caught up!" = "Her şeyi gördünüz!";
+
+/* The subtitle of empty inbox */
+"Time to relax" = "Rahatlama zamanı";
+
+/* Action */
+"Undo" = "Geri al";
+
+/* Title */
+"Message has been deleted." = "İleti silindi.";
+
+/* Title */
+"Message has been moved." = "İleti taşındı.";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "İleti geri alınamayacak şekilde silinecek. Emin misiniz?";
+
+/* Title */
+"You have a new email!" = "Yeni bir e-postanız var!";
+
+/* Message */
+"You have %d new emails!" = "%d yeni e-postanız var!";
+
+/* abbreviation of reply: */
+"Re:" = "Ynt:";
+
+/* abbreviation of forward: */
+"Fw:" = "İlt:";
+
+/* Title */
+"wrote:" = "şunu yazdı:";
+
+/* At {time}, e.g.: At 19:00 */
+"At %@" = "%@ saatinde";
+
+/* On {date}, e.g.: On Aug 14 */
+"On %@" = "%@ tarihinde";
+
+/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
+"On %@ at %@" = "%1$@ tarihinde %2$@ saatinde";
+
+/* message Date: text */
+"Date:" = "Tarih:";
+
+/* subject: text when forward */
+"Subject:" = "Konu:";
+
+/* forwarded message title */
+"Forwarded message" = "Yönlendirilen ileti";
+
+/* Title */
+"Set Password" = "Parola ayarla";
+
+/* Description */
+"Set a password to encrypt this message for non-Proton Mail users." = "Proton Mail kullanmayan kişiler için bu iletiyi şifreleyecek bir parola ayarlayın.";
+
+/* Placeholder */
+"Message Password" = "İleti Parolası";
 
 /* Placeholder */
 "8 to 21 characters long" = "8 ile 21 karakter uzunluğunda";
 
-/* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen proton.me üzerinden oturum açın.";
+/* Error message */
+"The password must be between 8 and 21 characters long" = "Parola uzunluğu 8 ile 21 karakter arasında olmalıdır";
 
-/* Account manager title */
-"Account" = "Hesap";
+/* textview title */
+"Repeat password" = "Parola onayı";
 
-/* section title in settings */
-"Account settings" = "Hesap ayarları";
+/* Placeholder */
+"Passwords must match" = "Parola ile onayı aynı değil";
 
-/* The title of toast message that is shown after the undo action is done */
-"Action reverted" = "İşlem geri alındı";
+/* Error message */
+"The 2 passwords are not matching" = "Parola ile onayı aynı değil";
 
-/* new contacts add Anniversary */
-"Add anniversary" = "Yıldönümü ekle";
+/* action title */
+"Remove password" = "Parolayı kaldır";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
-"Add attachment" = "Dosya ekle";
+/* title */
+"Password Hint" = "Parola ipucu";
+
+/* button title */
+"Apply Password" = "Parolayı uygula";
+
+/* Action */
+"Compose" = "Oluştur";
+
+/* Composer expiration page title */
+"Message expiration" = "İleti geçerlilik süresi";
+
+/* contacts default label type */
+"Custom" = "Özel";
+
+/* Description */
+"Send message without subject?" = "İleti, konu olmadan gönderilsin mi?";
+
+/* Description */
+"You need at least one recipient to send" = "Göndermek için en az bir alıcı gereklidir";
+
+/* Title */
+"Change sender address to…" = "Gönderici adresini şuna değiştir…";
+
+/* Error */
+"Upgrade to a paid plan to send from your %@ address" = "%@ adresinden ileti gönderebilmek için ücretli bir tarifeye yükseltin";
+
+/* pm.me upgrade warning in composer */
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "%1$@ adresinden ileti göndermek ücretli bir özelliktir. İletiniz %2$@ varsayılan adresinizden gönderilecek";
+
+/* Title */
+"From" = "Kimden";
+
+/* Title */
+"Bcc" = "Gizli kopya";
+
+/* Placeholder */
+"Subject" = "Konu";
+
+/* hint message */
+"Draft saved" = "Taslak kaydedildi";
+
+/* Placeholder */
+"Define Hint (Optional)" = "İpucu belirtin (isteğe bağlı)";
+
+/* Menu action to remove text formatting */
+"Clear Style" = "Biçemi temizle";
+
+/* new contacts add Organization  */
+"Add organization" = "Kuruluş ekle";
+
+/* new contacts add Nickname */
+"Add nickname" = "Takma ad ekle";
+
+/* new contacts add Title */
+"Add title" = "Başlık ekle";
 
 /* new contacts add Birthday */
 "Add birthday" = "Doğum günü ekle";
 
-/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
-"Add CC and BCC" = "Kopya ve Gizli kopya ekle";
-
-/* The title for the view where user can manage emails in the contact group */
-"Add contacts" = "Kişi ekle";
-
-/* Action */
-"Add Folder" = "Klasör ekle";
+/* new contacts add Anniversary */
+"Add anniversary" = "Yıldönümü ekle";
 
 /* new contacts add Gender */
 "Add gender" = "Cinsiyet ekle";
 
-/* add label action */
-"Add Label" = "Etiket ekle";
+/* Contacts add new contact */
+"New contact" = "Yeni kişi";
 
 /* add new address action */
 "Add new address" = "Yeni adres ekle";
@@ -77,207 +281,230 @@
 /* new email action */
 "Add new email" = "Yeni e-posta ekle";
 
-/* new field action */
-"Add new field" = "Yeni alan ekle";
-
 /* new phone action */
 "Add new phone number" = "Yeni telefon numarası ekle";
 
-/* action */
-"Add new URL" = "Yeni bağlantı ekle";
+/* new field action */
+"Add new field" = "Yeni alan ekle";
 
-/* new contacts add Nickname */
-"Add nickname" = "Takma ad ekle";
+/* default vcard types */
+"Personal" = "Kişisel";
 
-/* new contacts add Organization */
-"Add organization" = "Kuruluş ekle";
+/* default vcard types */
+"Work" = "İş";
 
-/* The button text for add profile picture */
-"Add photo" = "Fotoğraf ekle";
+/* default vcard types */
+"Email" = "E-posta";
 
-/* mark message star */
-"Add Star" = "Yıldız koy";
+/* default vcard types */
+"Other" = "Diğer";
 
-/* new contacts add Title */
-"Add title" = "Başlık ekle";
+/* default vcard types */
+"Phone" = "Telefon";
 
-/* Title */
-"Add to contacts" = "Kişilere ekle";
+/* default vcard types */
+"Mobile" = "Cep telefonu";
+
+/* default vcard types */
+"Fax" = "Faks";
 
 /* default vcard types */
 "Address" = "Adres";
 
-/* cell title in device settings */
-"Addresses" = "Adresler";
+/* default vcard types */
+"URL" = "İnternet adresi";
 
-/* Settings lock advanced settings section */
-"Advanced settings" = "Gelişmiş ayarlar";
-
-/* Title */
-"Alert" = "Uyarı";
+/* default vcard types */
+"Internet" = "İnternet";
 
 /* Title */
 "All contacts are imported" = "Tüm kişiler içe aktarıldı";
 
-/* mail location title
-   menu title */
-"All Mail" = "Tüm e-postalar";
+/* contact placeholder */
+"Street" = "Sokak";
 
-/* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "Uygulama oturumu kapatıldıktan sonra tüm koruma ayarları sıfırlanacak ve silinecek.";
+/* contact placeholder */
+"City" = "İl";
 
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Tüm iletileriniz indirildi";
+/* contact placeholder */
+"State" = "Bölge";
 
-/* network troubleshot cell title */
-"Allow alternative routing" = "Alternatif yöneltme kullanılabilsin";
+/* contact placeholder */
+"ZIP" = "Posta kodu";
 
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Çevrim dışı iken daha önce açılmış ek dosyaların açılabilmesini sağlar.";
+/* contact placeholder */
+"Country" = "Ülke";
 
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Çevrim dışı iken daha önce açılmış iletilerin açılabilmesini sağlar.";
+/* contacts talbe cell Organization title */
+"Organization" = "Kuruluş";
 
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "İletilerinizde arama yapabilmenizi sağlar. %1$@";
+/* contacts talbe cell Nickname title */
+"Nickname" = "Takma ad";
 
-/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Ayrıca arşivlensin mi?";
+/* contacts talbe cell Title title */
+"Title" = "Başlık";
 
-/* cell title in app settings */
-"Alternative routing" = "Alternatif yöneltme";
-
-/* The title of always off option in dark mode setting */
-"Always off" = "Hep kapalı";
-
-/* The title of always on option in dark mode setting */
-"Always on" = "Hep açık";
+/* contacts talbe cell Birthday title */
+"Birthday" = "Doğum günü";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Yıl dönümü";
 
-/* network troubleshot cell title */
-"Antivirus interference" = "Antivirüs etkileşimi";
+/* contacts talbe cell gender title */
+"Gender" = "Cinsiyet";
 
-/* Alert message when user tries to discard unsaved changes */
-"Any unsaved changes will be lost." = "Kaydedilmemiş tüm değişiklikler silinecek.";
+/* Send an email to the current contact (button title text) */
+"Email contact" = "E-posta kişisi";
+
+/* Call the contact (button title text) */
+"Call contact" = "Kişiyi ara";
+
+/* contact detail view, email addresses section title */
+"Email addresses" = "E-posta adresleri";
+
+/* The button text for add profile picture */
+"Add photo" = "Fotoğraf ekle";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Fotoğrafı düzenle";
+
+/* contact section title */
+"Encrypted contact details" = "Şifrelenmiş kişi bilgileri";
+
+/* action */
+"Share contact" = "Kişiyi paylaş";
+
+/* title */
+"Notes" = "Notlar";
+
+/* Action */
+"Upload device contacts" = "Aygıt kişilerini yükle";
+
+/* top right action text */
+"Create" = "Ekle";
+
+/* add label action */
+"Add Label" = "Etiket ekle";
+
+/* Action */
+"Add Folder" = "Klasör ekle";
+
+/* place holder */
+"Folder Name" = "Klasör adı";
+
+/* createing lable input place holder */
+"Label Name" = "Etiket adı";
 
 /* when server not reachable */
 "API Server not reachable…" = "API sunucusuna erişilemiyor…";
 
-/* security title in settings */
-"App PIN" = "Uygulama PIN kodu";
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen proton.me üzerinden oturum açın.";
 
-/* security title in settings */
-"App PIN & Face ID" = "Uygulama PIN kodu ve Face ID";
+/* Title */
+"Alert" = "Uyarı";
 
-/* security title in settings */
-"App PIN & Touch ID" = "Uygulama PIN kodu ve Touch ID";
+/* Done action */
+"Done" = "Tamam";
 
-/* section title in settings */
-"App settings" = "Uygulama ayarları";
+/* Button to cancel encrypted search */
+"Cancel" = "İptal";
 
-/* The title of section inside the dark mode setting page */
-"Appearance" = "Görünüm";
+/* Got it action */
+"Got it" = "Anladım";
 
-/* Settings lock AppKey description */
-"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey, bir saldırganın aygıtınızın içeriğini kopyalaması gibi özenli saldırılara uğramanız durumunda Proton bilgilerinizi daha iyi korur. %1$@";
+/* Open action */
+"Open" = "Aç";
 
-/* Settings lock AppKey feature */
-"AppKey protection" = "AppKey koruması";
-
-/* Title for application logs settings option */
-"Application logs" = "Uygulama günlüğü kayıtları";
+/* remove action */
+"Remove" = "Kaldır";
 
 /* Apply action */
 "Apply" = "Uygula";
 
-/* Title */
-"Apply Labels" = "Etiketleri uygula";
+/* reply action */
+"Reply" = "Yanıtla";
 
-/* button title */
-"Apply Password" = "Parolayı uygula";
+/* reply all action */
+"Reply all" = "Tümünü yanıtla";
 
-/* menu title
-   Push notification action to archive
-   The title of the archive action in action sheet */
-"Archive" = "Arşivle";
+/* forward action */
+"Forward" = "İlet";
 
-/* Push notification action archive */
-"Archive (verb)" = "Arşivle";
+/* message From: field text */
+"From:" = "Kimden:";
 
-/* Alert to confirm sign out when only one account signed in */
-"Are you sure you want to sign out %@?" = "%@ oturumunu kapatmak istediğinize emin misiniz?";
+/* message To: feild */
+"To" = "Kime";
 
-/* Alert to confirm sign out
-   Alert when sign out non-primary account from account manager */
-"Are you sure you want to sign out?" = "Oturumu kapatmak istediğinize emin misiniz?";
+/* message Cc: feild */
+"Cc" = "Kopya";
 
-/* One of the schedule time options */
-"As scheduled" = "Zamanlandığı gibi";
+/* message Bcc: feild */
+"Bcc:" = "Gizli kopya:";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "Saat: %@";
+/* general delete action */
+"Delete" = "Sil";
 
-/* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Gruptaki en az bir e-posta adresi bulunamadı";
+/* general close action */
+"Close" = "Kapat";
 
-/* incorrect email format error while sending */
-"At least one email address in the group could not be found." = "Gruptaki en az bir e-posta adresi bulunamadı.";
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Bir süredir etkin olmadığınızdan ya da kapatıldığından oturumunuzun süresi dolmuş. Lütfen yeniden oturum açın.";
 
-/* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "En az bir alıcı adresinin biçimi yanlış. Lütfen adresleri iki kez kontrol edin.";
-
-/* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "En az bir alıcının e-posta adresi ya da etki alanı bulunamadı veya biçimi hatalı. İleti taslaklar kutusuna taşındı.";
-
-/* No comment provided by engineer. */
-"attachment" = "ek dosya";
-
-/* Alert title when attachment upload failed */
-"Attachment failure" = "Dosya eklenemedi";
-
-/* Drag and drop zone for attachments */
-"Attachment imported" = "Ek dosya içe aktarıldı";
+/* Springboard (3D Touch) shortcuts action */
+"Search" = "Arama";
 
 /* Alert title */
-"Attachment limit" = "Ek dosya sınırlaması";
+"Notice" = "Dikkat";
 
-/* No comment provided by engineer. */
-"attachments" = "ek dosyalar";
+/* Action */
+"Don't remind me again" = "Bir daha hatırlatma";
 
-/* The title of attachments in local storage settings */
-"Attachments" = "Ek dosyalar";
+/* Action */
+"Send" = "Gönder";
+
+/* Action */
+"Schedule send" = "Gönderimi zamanla";
+
+/* Alert title */
+"Message saved to Drafts" = "İleti taslaklar kutusuna kaydedildi";
+
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Gönderilecek çok fazla ileti var.\nLütfen, bu iletiyi zamanlamak için başka bir ileti gönderilene kadar bekleyin.";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "Gönderilme zamanı en az 5 dakika sonra olmalıdır.";
+
+/* Action */
+"Send anyway" = "Yine de gönder";
 
 /* Title */
-"Authentication" = "Kimlik doğrulaması";
+"Confirmation" = "Onayla";
+
+/* Action */
+"Draft" = "Taslak";
 
 /* Title */
-"Auto Lock Time" = "Otomatik kilitleme süresi";
+"The request timed out." = "İstek zaman aşımına uğradı.";
 
-/* The title of the setting of the auto-delete option */
-"Auto-delete" = "Otomatik sil";
+/* Message */
+"Proton servers are unreachable.\nVisit our status page for details." = "Proton sunucuları çalışmıyor.\nAyrıntılı bilgi almak için durum sayfamıza bakın.";
 
-/* The title of the row inside the setting page of auto delete option */
-"Auto-delete unwanted messages" = "İstenmeyen iletiler otomatik olarak silinsin";
+/* Title */
+"No connectivity detected…" = "Herhangi bir bağlantı bulunamadı…";
 
-/* settings general section title */
-"Auto-load embedded images" = "Gömülü görseller otomatik olarak yüklensin";
+/* Title */
+"Proton Mail is currently offline…" = "Proton Mail şu anda çevrim dışı…";
 
-/* settings general section title */
-"Auto-load remote content" = "Uzak içerik otomatik olarak yüklensin";
+/* Title */
+"Save" = "Kaydet";
 
-/* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Çöp kutusunda 30 günden uzun süre kalan iletileri otomatik olarak silin.";
+/* Action */
+"Edit" = "Düzenle";
 
-/* The title of the section header in the toolbar customize view. */
-"Available actions" = "Yapılabilecek işlemler";
-
-/* Example feedback */
-"Awful" = "Çok kötü";
-
-/* top left back button */
-"Back" = "Geri";
+/* Error message */
+"Invalid username!" = "Kullanıcı adı geçersiz!";
 
 /* Error title */
 "Bad parameter" = "Parametre hatalı";
@@ -288,68 +515,317 @@
 /* Error Description */
 "Bad response" = "Yanıt hatalı";
 
+/* Description */
+"Can't find the value from the response body" = "Değer yanıt gövdesinden bulunamadı";
+
+/* no object error, local only , this could be not translated! */
+"no object" = "nesne yok";
+
+/* Description */
+"Unable to parse response" = "Yanıt işlenemedi";
+
+/* Description */
+"Unable to parse the response object:\n%@" = "Yanıt nesnesi işlenemedi: \n%@";
+
+/* spam score warning */
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, bir Proton Mail adresinden gelmiş gibi görünüyor. Ancak sistemimizin dışından geldi ve kimlik doğrulama gereksinimlerini karşılayamadı. Sahte ya da doğru olmayan şekilde iletilmiş olabilir!";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Bu e-posta, etki alanının kimlik doğrulama gereksinimlerini karşılayamadı. E-posta, sahte ya da hatalı iletilmiş olabilir.";
+
+/* spam score warning */
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Bu ileti, bir kimlik avı girişimi olabilir. Lütfen göründüğü gibi olduklarından emin olmak için gönderici adresini ve ileti içeriğini kontrol edin.";
+
+/* Description */
+"Sending Message" = "İleti gönderiliyor";
+
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Çevrim dışı. İleti gönderilmek üzere kuyruğa alındı";
+
+/* Description */
+"Message sending failed. Please try again." = "İleti gönderilemedi. Lütfen yeniden deneyin.";
+
+/* import contact title */
+"Importing Contacts" = "Kişiler içe aktarılıyor";
+
 /* Title */
-"Bcc" = "Gizli kopya";
+"Reading device contacts data…" = "Aygıt kişileri verileri okunuyor…";
 
-/* message Bcc: feild */
-"Bcc:" = "Gizli kopya:";
+/* Description */
+"Do you want to cancel the process?" = "İşlemi iptal etmek istiyor musunuz?";
 
-/* contacts talbe cell Birthday title */
-"Birthday" = "Doğum günü";
+/* Hint when users create / edit contact offline  */
+"Contact saved, will be synced when connection is available" = "Kişi kaydedildi. Bağlantı kurulduğunda eşitlenecek";
 
-/* Button to block a sender, keep it short to fit in the UI */
-"Block" = "Engelle";
+/* Hint when users delete contact offline  */
+"Contact deleted, will be synced when connection is available" = "Kişi silindi. Bağlantı kurulduğunda eşitlenecek";
 
-/* Settings row */
-"Block email tracking" = "E-postanın izlenmesi engellensin";
+/* Action */
+"Confirm" = "Onayla";
 
-/* Settings item to open blocked sender list */
-"Block list" = "Engellenmiş adresler listesi";
+/* Title */
+"Canceling" = "İptal ediliyor";
 
-/* Button to block a sender */
-"Block sender" = "Göndericiyi engelle";
+/* title, default display name */
+"Unknown" = "Bilinmiyor";
 
-/* Title of the blocked sender list screen */
-"Blocked Senders" = "Engellenmiş göndericiler";
+/* Action */
+"Import Error" = "İçe aktarma sorunu";
 
-/* Spotlight explanation of the feature */
-"Blocks senders from seeing if and when you opened the message" = "Göndericilerin iletiyi açıp açmadığınızı ve ne zaman açtığınızı görmesini engeller";
+/* Action */
+"OK" = "Tamam";
+
+/* Action */
+"Later" = "Daha sonra";
+
+/* Action */
+"Disabled" = "Kapalı";
+
+/* contact placeholder */
+"Email address" = "E-posta adresi";
+
+/* top left back button */
+"Back" = "Geri";
+
+/* A *short* description saying that there is no contact group associated with this contact email */
+"None" = "Yok";
+
+/* lock app option */
+"Every time enter app" = "Uygulamaya her girişte";
+
+/* Title */
+"Default" = "Varsayılan";
+
+/* Title */
+"Set" = "Ayarla";
+
+/* Title */
+"Resetting message cache…" = "İleti ön belleği sıfırlanıyor…";
+
+/* Title */
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "Seçtiğiniz tarayıcı kaldırıldığında bu seçenek Safari olarak ayarlanır.";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Erişmeye çalıştığınız adres standart olmadığından düzgün yüklenmeyebilir. Adresi aygıtınızın varsayılan tarayıcısı ile açmak ister misiniz?";
+
+/* Title */
+"Auto Lock Time" = "Otomatik kilitleme süresi";
+
+/* Title */
+"Change default address to…" = "Varsayılan adresi şuna değiştir…";
+
+/* pm.me upgrade warning in composer */
+"You can't set %@ address as default because it is a paid feature." = "Ücretli bir özellik olduğundan %@ adresini varsayılan olarak ayarlayamazsınız.";
+
+/* Action */
+"Continue" = "İlerle";
+
+/* error message */
+"Please input a valid email address." = "Lütfen geçerli bir e-posta adresi yazın.";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Gelen kutunuzun kilidini açmak için PIN kodunuzu yazın.";
+
+/* Error */
+"Incorrect PIN." = "PIN kodu yanlış.";
+
+/* Description */
+"Upload iOS contacts to Proton Mail?" = "iOS kişileri Proton Mail üzerine yüklensin mi?";
+
+/* Title-Contacts */
+"Delete contact" = "Kişiyi sil";
+
+/* Description */
+"PIN code can't be empty." = "PIN kodu boş olamaz.";
+
+/* Error */
+"Unknown Error" = "Bilinmeyen sorun";
+
+/* Action */
+"Load remote content" = "Uzak içeriği yükle";
+
+/* settings general section title */
+"Change password" = "Parolayı değiştir";
+
+/* Title */
+"Current sign-in password" = "Geçerli oturum açma parolası";
+
+/* Title */
+"New sign-in password" = "Yeni oturum açma parolası";
+
+/* Title */
+"Confirm new sign-in password" = "Yeni oturum açma parolası onayı";
+
+/* Title */
+"New mailbox password" = "Yeni posta kutusu parolası";
+
+/* Title */
+"Confirm new mailbox password" = "Yeni posta kutusu parolası onayı";
+
+/* error when sending the message */
+"Unable to send the email" = "E-posta gönderilemedi";
+
+/* Title */
+"Star/unstar" = "Yıldız koy/kaldır";
+
+/* Title */
+"Proton Mail" = "Proton Mail";
+
+/* Title */
+"Remind Me Later" = "Daha sonra hatırlat";
+
+/* Title */
+"Don't Show Again" = "Bir daha gösterme";
+
+/* Onboarding title */
+"Easily up-to-date" = "Kolayca güncel";
+
+/* Onboarding title */
+"Privacy for all" = "Herkes için gizlilik";
+
+/* Onboarding title */
+"Neat and tidy" = "Temiz ve düzenli";
+
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "Güncellenmiş Proton, birleşik koruma";
 
 /* Onboarding content */
 "Breeze through threaded messages in conversation mode." = "Yazışma kipinde, ileti dizileri arasında hızla gezinin.";
 
-/* The place holder text in the bug report view. */
-"Bug Report Place Holder" = "---Size yardımcı olabilmemiz için lütfen olabildiğince çok ayrıntı verin---\n\nÖzet:\n\nSorun bir kereden fazla oldu mu: Evet/Hayır\nSorunu yeniden oluşturma adımları:\nBeklenen sonuç:\nGerçekleşen sonuç:\nYorumlar:";
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Sorunsuz uçtan uca şifrelemenin tadını çıkarmak için tanıdıklarınızı Proton Mail kullanmaya davet edin ya da gönderdiğiniz iletilere parola koruması ekleyin.";
 
-/* Title */
-"Bug Report Received" = "Hata raporu alındı";
+/* Onboarding content */
+"File, label, and color code messages to create your perfect, custom inbox." = "Gelen kutunuzu mükemmelleştirmek için iletileri dosyalayın, etiketleyin ve renklendirin.";
 
-/* The title of cached data in local storage settings */
-"Cached data" = "Ön belleğe alınmış veriler";
+/* Welcome to rebranding content */
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Yenilenmiş Proton böyle görünüyor. \nBirçok hizmet, tek amaç. Gizliliğe odaklanmış internet fikrine hoş geldiniz.";
 
-/* Call the contact (button title text) */
-"Call contact" = "Kişiyi ara";
+/* skip button title in onboarding page */
+"Skip" = "Atla";
 
-/* Error */
-"Can't copy the file" = "Dosya kopyalanamadı";
+/* title of the next button */
+"Next" = "İleri";
 
-/* update password error */
-"Can't create a SRP Client" = "SRP istemcisi oluşturulamadı";
-
-/* update password error */
-"Can't create a SRP verifier!" = "SRP doğrulayıcısı oluşturulamadı!";
-
-/* When quick look attachment but can't decrypt it! */
-"Can't decrypt this attachment!" = "Bu ek dosyanın şifresi çözülemedi!";
-
-/* The error message will be shown when the deletionn of the contact group through API failed */
-"Can't delete contact group through API" = "Kişi grubu API aracılığıyla silinemedi";
+/* title of the next button */
+"Get Started" = "Başlayalım";
 
 /* Description */
-"Can't find the value from the response body" = "Değer yanıt gövdesinden bulunamadı";
+"Unable to edit this message offline" = "Bu ileti çevrim dışı düzenlenemedi";
 
-/* when quick look attachment but can't find the data */
-"Can't find this attachment!" = "Bu ek dosya bulunamadı!";
+/* like Date: 2017-10-10 */
+"Date: %@" = "Tarih: %@";
+
+/* Title */
+"Details" = "Ayrıntılar";
+
+/* Title */
+"Hide details" = "Ayrıntıları gizle";
+
+/* contact placeholder */
+"Phone number" = "Telefon numarası";
+
+/* Contacts Edit contact */
+"Edit Contact" = "Kişiyi düzenle";
+
+/* Action */
+"Discard changes" = "Değişiklikleri sil";
+
+/* Action */
+"Discard" = "Sil";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Yok sayıldı";
+
+/* action */
+"Add new URL" = "Yeni bağlantı ekle";
+
+/* settings general section title */
+"Change account password" = "Hesap parolasını değiştir";
+
+/* settings general section title */
+"Change mailbox password" = "Posta kutusu parolasını değiştir";
+
+/* settings general section title */
+"Auto-load remote content" = "Uzak içerik otomatik olarak yüklensin";
+
+/* settings general section title */
+"Auto-load embedded images" = "Gömülü görseller otomatik olarak yüklensin";
+
+/* settings swipe actions section title */
+"Left to Right" = "Soldan sağa";
+
+/* settings swipe actions section title */
+"Right to Left" = "Sağdan sola";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Kilidin açılması gerekli";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "%1$@ sistem ayarlarından kapatılmış. %2$@ önemli hesap bilgilerinizi korumak için kullanılır. Hesabınıza erişmek için, ayarlar bölümüne giderek %3$@ özelliğini açın ya da yeniden oturum açın.";
+
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "Uygulama oturumu kapatıldıktan sonra tüm koruma ayarları sıfırlanacak ve silinecek.";
+
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Zamanlama";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Ayarlara git";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Oturum açmaya git";
+
+/* Confirmation message */
+"You have unsaved changes. Do you want to save it?" = "Kaydedilmemiş değişiklikleriniz var. Kaydetmek ister misiniz?";
+
+/* title */
+"Save Changes" = "Değişiklikleri kaydet";
+
+/* Title */
+"Recovery Code" = "Kurtarma kodu";
+
+/* Placeholder */
+"Two Factor Code" = "İki adımlı doğrulama kodu";
+
+/* Title */
+"Authentication" = "Kimlik doğrulaması";
+
+/* Action in 2fa popup view */
+"Enter" = "Yazın";
+
+/* Title */
+"Storage Warning" = "Depolama alanı uyarısı";
+
+/* Content of space warning */
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Depolama alanınızın (%@), tamamını kullandınız. Lütfen e-posta gönderip almayı sürdürebilmek için tarifenizi yükseltin.";
+
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Depolama alanınızın (%2$@), %1$d[%1$i] kadarını kullanıyorsunuz. Lütfen e-posta gönderip almayı sürdürebilmek için tarifenizi yükseltin.";
+
+/* Alert title */
+"Storage full" = "Depolama alanı dolu";
+
+/* Storage warning */
+"Storage quota exceeded" = "Depolama alanı kotası aşıldı";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Lütfen tarifenizi yükseltin";
+
+/* Content of storage full alert */
+"Please upgrade your plan to continue to send and receive emails." = "Lütfen e-posta gönderip almayı sürdürebilmek için tarifenizi yükseltin.";
+
+/* Title */
+"Warning" = "Uyarı";
+
+/* Action */
+"Hide" = "Gizle";
+
+/* Action */
+"Show" = "Göster";
+
+/* update password error title */
+"Change Password" = "Parolayı değiştir";
 
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Modül kimliği alınamadı!";
@@ -358,231 +834,58 @@
 "Can't get a Modulus!" = "Bir modül alınamadı!";
 
 /* update password error */
-"Can't get user auth info" = "Kullanıcı kimlik doğrulama bilgileri alınamadı";
+"Invalid hashed password!" = "Karılmış parola geçersiz!";
 
-/* Error */
-"Can't load the file" = "Dosya yüklenemedi";
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Yeni parola en az 8 karakter uzunluğunda olmalıdır";
 
-/* Error */
-"Can't open the file" = "Dosya açılamadı";
+/* update password error */
+"Can't create a SRP verifier!" = "SRP doğrulayıcısı oluşturulamadı!";
 
-/* The error message will be shown when the update of the contact group through API failed */
-"Can't update contact group through the API" = "Kişi grubu API aracılığıyla güncellenemedi";
+/* update password error */
+"Can't create a SRP Client" = "SRP istemcisi oluşturulamadı";
 
-/* Button to cancel encrypted search
-   Cancel action
-   general cancel action
-   Title for the alert button to cancel delete all downloaded messages.
-   Title for the alert button to cancel disable content search. */
-"Cancel" = "İptal";
+/* update password error */
+"The password is wrong." = "Parola yanlış.";
 
-/* Action */
-"Cancel Check" = "Kontrolü iptal et";
+/* update password error */
+"The new password does not match." = "Yeni parola eşleşmiyor.";
 
-/* Title */
-"Canceling" = "İptal ediliyor";
+/* update password error */
+"The new password can't be empty." = "Yeni parola boş olamaz.";
 
-/* Warning message */
-"Cannot empty folder right now." = "Klasör şu anda boşaltılamıyor.";
+/* update password error */
+"The private key update failed." = "Kişisel anahtar güncellenemedi.";
 
-/* message Cc: feild
-   Title */
-"Cc" = "Kopya";
+/* update password error */
+"Password update failed" = "Parola güncellenemedi";
 
-/* settings general section title */
-"Change account password" = "Hesap parolasını değiştir";
+/* update notification email error title */
+"Update Notification Email" = "Bildirim e-posta adresini güncelle";
 
 /* Title */
-"Change default address to…" = "Varsayılan adresi şuna değiştir…";
+"Apply Labels" = "Etiketleri uygula";
 
-/* settings general section title */
-"Change mailbox password" = "Posta kutusu parolasını değiştir";
+/* Title of the view showing the message header */
+"Message headers" = "İleti üst bilgileri";
 
-/* settings general section title
-   title */
-"Change password" = "Parolayı değiştir";
+/* Title of the view showing the message HTML source */
+"HTML" = "HTML";
 
-/* update password error title */
-"Change Password" = "Parolayı değiştir";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "PIN kodunu değiştir";
-
-/* Title */
-"Change sender address to…" = "Gönderici adresini şuna değiştir…";
-
-/* Text for status label when low battery */
-"Charge your device or resume manually." = "Aygıtınızı şarj edin ya da el ile sürdürün.";
-
-/* Action */
-"Check Again" = "Yeniden denetle";
-
-/* Proton is down description. */
-"Check Proton Status for our system status." = "Sistemimizin durumunu görmek için Proton durumu sayfasına bakın.";
-
-/* The title of the button in the composer that can select different sender address. */
-"Choose different sender address" = "Farklı bir gönderici adresi seçin";
-
-/* contact placeholder */
-"City" = "İl";
-
-/* The title of the button in local storage attachments
-   The title of the button in local storage cached data
-   The title of the button to clear the search index */
-"Clear" = "Temizle";
-
-/* cell title in device setting */
-"Clear local cache" = "Yerel ön belleği temizle";
-
-/* Menu action to remove text formatting */
-"Clear Style" = "Biçemi temizle";
-
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Ön bellek temizleniyor…";
-
-/* general close action */
-"Close" = "Kapat";
-
-/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
-"Close CC and BCC" = "Kopya ve gizli kopyayı kapat";
-
-/* the message will show when closing a draft from the share extension */
-"Closing" = "Kapatılıyor";
-
-/* The title of voice over action of collapsing the folder */
-"Collapse folder" = "Klasörü daralt";
-
-/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
-"Collapse message" = "İletiyi daralt";
-
-/* cell title in device settings
-   The title of combined contact in settings */
-"Combined contacts" = "Birleştirilmiş kişiler";
-
-/* Action
-   Springboard (3D Touch) shortcuts action */
-"Compose" = "Oluştur";
-
-/* An action title shows in ellipsis menu */
-"Compose message" = "İleti oluştur";
-
-/* Title */
-"Compose to" = "Şunun için oluştur";
-
-/* Action
-   The title of button of PIN code setup2 */
-"Confirm" = "Onayla";
-
-/* Title */
-"Confirm new mailbox password" = "Yeni posta kutusu parolası onayı";
-
-/* Placeholder */
-"Confirm new password" = "Yeni parola onayı";
-
-/* Title */
-"Confirm new sign-in password" = "Yeni oturum açma parolası onayı";
+/* Title of the view showing the message body */
+"Message body" = "İleti içeriği";
 
 /* alert title */
 "Confirm phishing report" = "Kimlik avı girişimi bildirimini onayla";
 
-/* Title */
-"Confirmation" = "Onayla";
+/* alert message */
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Bir iletiyi kimlik avı girişimi olarak bildirdiğinizde, ileti bize gönderilir. Böylece onu inceleyebilir ve süzgeçlerimizi geliştirebiliriz. Bu durum iletinin tüm içeriğini görebileceğimi anlamına gelir.";
 
-/* Text for status label when no wifi is available */
-"Connect to WiFi or enable \"Download via mobile data\"." = "WiFi bağlantısı kurun ya da \"Mobil veri ile indirilsin\" seçeneğini etkinleştirin.";
+/* error title */
+"Verification error" = "Doğrulama sorunu";
 
-/* Hint when users delete contact offline */
-"Contact deleted, will be synced when connection is available" = "Kişi silindi. Bağlantı kurulduğunda eşitlenecek";
-
-/* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Kişi kaydedildi. Bağlantı kurulduğunda eşitlenecek";
-
-/* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Bizimle doğrudan destek isteği formu, e-posta (support@protonmail.zendesk.com) ya da Twitter aracılığıyla görüşebilirsiniz.";
-
-/* Action and title
-   menu title */
-"Contacts" = "Kişiler";
-
-/* The title of the pop up when encrypted search is available. */
-"Content search available" = "İçerik araması yapılabilir";
-
-/* Action
-   The title of button of PIN code setup1 */
-"Continue" = "İlerle";
-
-/* No comment provided by engineer. */
-"Conversation grouping" = "Yazışmalar gruplansın";
-
-/* No comment provided by engineer. */
-"Conversation mode" = "Yazışma kipi";
-
-/* The title of the conversation notice view shown in the conversation view. */
-"Conversations are optional" = "Yazışmaları gruplandırmak isteğe bağlıdır";
-
-/* Title */
-"Copy" = "Kopyala";
-
-/* Title */
-"Copy address" = "Adresi kopyala";
-
-/* Title */
-"Copy name" = "Adı kopyala";
-
-/* Error message when open message failed */
-"Couldn't open the message, try again." = "İleti açılamadı. Yeniden deneyin.";
-
-/* contact placeholder */
-"Country" = "Ülke";
-
-/* top right action text */
-"Create" = "Ekle";
-
-/* Alert title */
-"Creating folder not allowed" = "Klasör oluşturmaya izin verilmiyor";
-
-/* Alert title */
-"Creating label not allowed" = "Etiket oluşturmaya izin verilmiyor";
-
-/* Change language title */
-"Current Language: " = "Geçerli dil: ";
-
-/* Placeholder */
-"Current password" = "Geçerli parola";
-
-/* No comment provided by engineer. */
-"Current Recovery Email" = "Geçerli kurtarma e-postası";
-
-/* The text for current selection of the storage limit of encrypted search */
-"Current selection: " = "Geçerli seçim: ";
-
-/* Title */
-"Current sign-in password" = "Geçerli oturum açma parolası";
-
-/* contacts default label type
-   Custom option for time config picker */
-"Custom" = "Özel";
-
-/* The action title of the button on the toolbar customization spotlight view. (verb) */
-"Customize (verb)" = "Özelleştir";
-
-/* The title of the item in the App settings section of the device setting view. */
-"Customize toolbar" = "Araç çubuğunu özelleştir";
-
-/* Title */
-"Cut" = "Kes";
-
-/* cell title in app setting */
-"Dark mode" = "Koyu kip";
-
-/* message Date: text */
-"Date:" = "Tarih:";
-
-/* like Date: 2017-10-10 */
-"Date: %@" = "Tarih: %@";
-
-/* days */
-"days" = "gün";
+/* error details */
+"Verification of this content’s signature failed" = "Bu içeriğin imzası doğrulanamadı";
 
 /* error title */
 "Decryption error" = "Şifre çözme sorunu";
@@ -593,420 +896,197 @@
 /* error details */
 "Decryption of this message's encrypted content failed." = "Bu iletinin şifrelenmiş içeriğinin şifresi çözülemedi.";
 
-/* Title */
-"Default" = "Varsayılan";
-
-/* Settings row */
-"Default browser" = "Varsayılan tarayıcı";
-
-/* Placeholder */
-"Define Hint (Optional)" = "İpucu belirtin (isteğe bağlı)";
-
-/* general delete action
-   The title of the delete action in action sheet
-   Title for the alert button to delete all downloaded messages. */
-"Delete" = "Sil";
-
-/* Title of message permanent deletion alert, plural */
-"Delete %d Messages" = "%d iletiyi sil";
-
-/* Title for the alert to delete all downloaded messages. */
-"Delete all downloaded messages?" = "İndirilmiş tüm iletiler silinsin mi?";
-
-/* Title-Contacts */
-"Delete contact" = "Kişiyi sil";
-
-/* The description of the button for deleting the contact group */
-"Delete contact group" = "Kişi grubunu sil";
-
-/* The title of delete folder button */
-"Delete folder" = "Klasörü sil";
-
-/* The title of delete label button */
-"Delete label" = "Etiketi sil";
-
-/* Title of message permanent deletion alert, singular */
-"Delete message" = "İletiyi sil";
-
-/* Title of the alert to confirm enabling of the auto delete option */
-"Delete messages?" = "İletiler silinsin mi?";
+/* error title */
+"Logs" = "Günlük kayıtları";
 
 /* Title */
-"Details" = "Ayrıntılar";
-
-/* Button to disable auto delete */
-"Disable" = "Kapat";
-
-/* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "Vekil sunucuları veya güvenlik duvarlarını devre dışı bırakın ya da ağ yöneticinizle görüşün.";
-
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Otomatik silme kapatılsın mı?";
-
-/* Cert pinning failed alert message */
-"Disable Validation" = "Doğrulamayı devre dışı bırak";
-
-/* Action
-   The text for downloaded messages in local storage when encrypted search is disabled. */
-"Disabled" = "Devre dışı";
-
-/* Message for the alert to disable content search. */
-"Disabling the feature now will delete the messages that have already been downloaded." = "Bu özellik devre dışı bırakıldığında indirilmiş olan iletiler silinir.";
-
-/* Action */
-"Discard" = "Sil";
-
-/* Action */
-"Discard changes" = "Değişiklikleri sil";
-
-/* Message shown to user after discarding action is done */
-"Discarded" = "Yok sayıldı";
-
-/* AppKey disclaimer title when turning on */
-"Disclaimer" = "Sorumluluk reddi";
-
-/* The voiceover title of the dismiss keyboard action */
-"Dismiss keyboard" = "Klavyeyi yok say";
-
-/* Title in settings */
-"Display Name" = "Görüntülenecek ad";
-
-/* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "Bu dosyayı ek dosyalar içinden kaldırmak istediğinize emin misiniz?";
-
-/* Description */
-"Do you want to cancel the process?" = "İşlemi iptal etmek istiyor musunuz?";
-
-/* Warning message */
-"Do you want to discard the changes?" = "Değişiklikleri silmek istiyor musunuz?";
-
-/* No comment provided by engineer. */
-"Do you want to discard your changes?" = "Değişikliklerinizi silmek istiyor musunuz?";
-
-/* Alert body for no attachment found */
-"Do you want to send your message anyway?" = "İletinizi yine de göndermek istiyor musunuz?";
-
-/* Action */
-"Don't remind me again" = "Bir daha hatırlatma";
+"normal attachments" = "normal ek dosyalar";
 
 /* Title */
-"Don't Show Again" = "Bir daha gösterme";
-
-/* Done action */
-"Done" = "Tamam";
-
-/* Text for status label when pause button is pressed */
-"Download paused" = "İndirme duraklatıldı";
-
-/* Text for estimate time label when low battery */
-"Download paused: Low battery" = "İndirme duraklatıldı: Pil düzeyi düşük";
-
-/* Text for estimate time label when no internet connection is available */
-"Download paused: No connectivity" = "İndirme duraklatıldı: Bağlantı yok";
-
-/* Text for estimate time label when no wifi is available */
-"Download paused: No WiFi detected" = "İndirme duraklatıldı: WiFi bağlantısı yok";
-
-/* Text for estimate time label when storage is full */
-"Download paused: Storage full" = "İndirme duraklatıldı: Depolama alanı dolu";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "İndirme ilerlemesi";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Mobil veri ile indir";
-
-/* cell title in device settings
-   The title of downloaded messages in local storage settings
-   The title of downloaded messages in settings */
-"Downloaded messages" = "İndirilmiş iletiler";
-
-/* Title for the alert to disable content search. */
-"Downloaded messages will be deleted" = "İndirilmiş iletiler silinecek";
-
-/* The text for the number of downloaded messages. */
-"Downloading message %1d out of %2d" = "%1$d / %2$d ileti indiriliyor";
-
-/* The text when metadata indexing is in progress. */
-"Downloading metadata ..." = "Üst veriler indiriliyor...";
-
-/* The text to download new message when search index is refreshed. */
-"Downloading new messages..." = "Yeni iletiler indiriliyor...";
-
-/* The footer of encrypted search in settings */
-"Downloads emails so you can search within them. Messages are encrypted and stored locally. %1$@" = "E-postaları indirirerek arama yapılabilmesini sağlar. İletiler şifrelenmiş biçimde yerel olarak kaydedilir. %1$@";
-
-/* Action */
-"Draft" = "Taslak";
-
-/* title of toast message that user taps the message which is uploading */
-"Draft is still uploading…" = "Taslak hala yükleniyor…";
-
-/* hint message */
-"Draft saved" = "Taslak kaydedildi";
-
-/* menu title */
-"Drafts" = "Taslaklar";
-
-/* Onboarding title */
-"Easily up-to-date" = "Kolayca güncel";
-
-/* Action
-   The button title of the scheduled message banner. */
-"Edit" = "Düzenle";
-
-/* The title for the view where user can select the color for the group */
-"Edit avatar" = "Avatarı düzenle";
-
-/* Contacts Edit contact */
-"Edit Contact" = "Kişiyi düzenle";
-
-/* The title of edit folder page */
-"Edit folder" = "Klasörü düzenle";
-
-/* The title for the contact group editing view */
-"Edit group" = "Grubu düzenle";
-
-/* The title of edit label page */
-"Edit label" = "Etiketi düzenle";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Fotoğrafı düzenle";
-
-/* default vcard types */
-"Email" = "E-posta";
-
-/* contact placeholder */
-"Email address" = "E-posta adresi";
-
-/* The error message while calculating the encryption preferences */
-"Email address disabled" = "E-posta adresi devre dışı";
-
-/* contact detail view, email addresses section title */
-"Email addresses" = "E-posta adresleri";
-
-/* Send an email to the current contact (button title text) */
-"Email contact" = "E-posta kişisi";
-
-/* Description */
-"Email failed to send. Message saved as draft." = "E-posta gönderilemedi. İleti taslak olarak kaydedildi.";
-
-/* Tracker protection feature explanation */
-"Email trackers can violate your privacy." = "E-posta izleyiciler gizliliğinizi tehlikeye düşürebilir.";
-
-/* Name of the feature */
-"Email tracking protection" = "E-posta izleme koruması";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Silinmek üzere zamanlanmış e-postalar çöp kutusu ve istenmeyen klasöründe kalacak.";
-
-/* Title of button to empty spam folder */
-"Empty spam" = "İstenmeyen kutusunu boşalt";
-
-/* An action title shows in ellipsis menu */
-"Empty Spam" = "İstenmeyen kutusunu boşalt";
-
-/* Alert title */
-"Empty spam folder" = "İstenmeyen kutusunu boşalt";
-
-/* Title of button to empty trash folder */
-"Empty trash" = "Çöp kutusunu boşalt";
-
-/* An action title shows in ellipsis menu */
-"Empty Trash" = "Çöp kutusunu boşalt";
-
-/* Alert title */
-"Empty trash folder" = "Çöp kutusunu boşalt";
-
-/* Button to enable encrypted search
-   The title of the button to move to settings and enable encrypted search. */
-"Enable" = "Etkinleştir";
-
-/* Title for the alert to enable encrypted search */
-"Enable content search" = "İçerik araması yapılabilsin";
-
-/* Title */
-"Enable email notices" = "E-posta bildirimleri kullanılsın";
-
-/* Title */
-"Enable signature" = "İmza kullanılsın";
-
-/* The footer shown when there is not result in the inbox */
-"Encrypted by Proton" = "Proton tarafından şifrelendi";
-
-/* contact section title */
-"Encrypted contact details" = "Şifrelenmiş kişi bilgileri";
-
-/* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted" = "Uçtan uca şifrelenmiş";
-
-/* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted and signed message" = "Uçtan uca şifrelenmiş ve imzalanmış ileti";
-
-/* encryption lock description */
-"End-to-end encrypted message" = "Uçtan uca şifrelenmiş ileti";
-
-/* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message from verified sender" = "Doğrulanmış göndericiden uçtan uca şifrelenmiş ileti";
-
-/* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted to verified recipient" = "Doğrulanmış alıcıya uçtan uca şifrelenmiş";
-
-/* Action in 2fa popup view */
-"Enter" = "Yazın";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "4 ile 21 karakter arasında bir PIN kodu yazın.";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Yeni PIN kodunu yazın";
-
-/* The content of the re auth alert */
-"Enter your password to make changes" = "Değişiklik yapmak için parolanızı yazın";
-
-/* Title */
-"Enter your PIN to unlock your inbox." = "Gelen kutunuzun kilidini açmak için PIN kodunuzu yazın.";
-
-/* No comment provided by engineer. */
-"Enter your signature here" = "İmzanızı buraya yazın";
-
-/* Title of alert in share extension. */
-"Error" = "Hata";
-
-/* incorrect email format error in composer */
-"Error sending" = "Gönderim sorunu";
-
-/* The default text while estimating the time remaining */
-"Estimating time remaining ..." = "Kalan süre öngörülüyor...";
-
-/* lock app option */
-"Every time enter app" = "Uygulamaya her girişte";
-
-/* Text for the link in the banner when content search is slow. */
-"Exclude message content" = "İleti içeriği katılmasın";
-
-/* The title of voice over action of expanding the folder */
-"Expand folder" = "Klasörü genişlet";
-
-/* alert title */
-"Expiration not supported" = "Geçerlilik süresi desteklenmiyor";
-
-/* Error message */
-"Failed to determine type of file" = "Dosya türü belirlenemedi";
-
-/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Failed to load content!\nPlease try again." = "İçerik yüklenemedi!\nLütfen yeniden deneyin.";
-
-/* default vcard types */
-"Fax" = "Faks";
-
-/* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "Gelen kutunuzu mükemmelleştirmek için iletileri dosyalayın, etiketleyin ve renklendirin.";
-
-/* place holder */
-"Folder Name" = "Klasör adı";
-
-/* VoiceOver: email belongs to folders */
-"Folders" = "Klasörler";
-
-/* The title of follow system option in dark mode setting */
-"Follow device setting" = "Aygıt ayarına uyulsun";
-
-/* The title of alert that the app is not having the permission to access photo library */
-"Forbidden" = "İzin verilmemiş";
-
-/* forward action */
-"Forward" = "İlet";
-
-/* The action title in the action sheet of the forward action in conversation view. */
-"Forward (last message)" = "İlet (son ileti)";
-
-/* forwarded message title */
-"Forwarded message" = "Yönlendirilen ileti";
-
-/* Text for status label when storage is full */
-"Free up at least 100 MB of storage to continue." = "İlerlemek için en az 100 MB depolama alanı boşaltın.";
-
-/* Title */
-"From" = "Kimden";
+"inline attachments" = "satır arası ek dosyalar";
 
 /* Title */
 "From your photo library" = "Fotoğraflarınızdan seçin";
 
-/* message From: field text */
-"From:" = "Kimden:";
+/* Title */
+"Take new photo" = "Yeni fotoğraf çek";
 
-/* abbreviation of forward: */
-"Fw:" = "İlt:";
+/* Title */
+"Import from…" = "Şuradan içe aktar…";
 
-/* contacts talbe cell gender title */
-"Gender" = "Cinsiyet";
+/* Alert title */
+"Attachment limit" = "Ek dosya sınırlaması";
 
-/* section title in settings */
-"General settings" = "Genel ayarlar";
+/* Description */
+"The size limit for attachments is 25 MB." = "Ek dosyaların boyutu 25 MB ile sınırlıdır.";
 
-/* title of the next button */
-"Get Started" = "Başlayalım";
+/* Error */
+"Can't load the file" = "Dosya yüklenemedi";
 
-/* The title of the button to cancel the action of opening the link in spam mail. */
-"Go back (recommended)" = "Geri dön (önerilir)";
+/* Error */
+"Can't open the file" = "Dosya açılamadı";
 
-/* title of alert acton of incorrect email format error */
-"Go to drafts" = "Taslaklar kutusuna git";
+/* Action */
+"Learn more" = "Ayrıntılı bilgi alın";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "Ayarlara git";
+/* Action */
+"Retry" = "Yeniden dene";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to sign in" = "Oturum açmaya git";
-
-/* Got it action */
-"Got it" = "Anladım";
-
-/* network troubleshot cell title */
-"Government block" = "Hükümet engellemesi";
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+"'On' E, MMM d, yyyy 'at' %@" = "E, MMM d, yyyy 'tarihinde' %@ 'saatinde'";
 
 /* No comment provided by engineer. */
-"Group emails from the same conversation together." = "Aynı yazışma içindeki e-postaları gruplar.";
+"Message expired" = "İletinin süresi dolmuş";
+
+/* expiration time count down */
+"This message will expire in %dD %dH %dM" = "Bu ileti %1$d gün %2$d saat %3$d dakika sonra geçersiz olacak";
+
+/* Action */
+"Sign Out" = "Oturumu kapat";
+
+/* Alert title */
+"Sending in progress" = "Gönderiliyor";
+
+/* the message will show when closing a draft from the share extension */
+"Closing" = "Kapatılıyor";
+
+/* Alert message */
+"Please keep Proton Mail open until the operation is done." = "Lütfen işlem tamamlanana kadar Proton Mail uygulamasını açık tutun.";
+
+/* Title */
+"Bug Report Received" = "Hata raporu alındı";
+
+/* No comment provided by engineer. */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Hata bildiriminde bulunduğunuz için teşekkür ederiz. Bildiriminiz hata izleme sistemimize eklendi.";
+
+/* Title of the alert when the device is offline */
+"Offline" = "Çevrim dışı";
+
+/* Title */
+"Label as…" = "Etiketle…";
+
+/* Title */
+"Move to…" = "Şuraya taşı…";
+
+/* Action */
+"Mark as read/unread" = "Okunmuş/okunmamış olarak işaretle";
+
+/* Action title of move to archive */
+"Move to archive" = "Arşivle";
+
+/* Action title of move to spam */
+"Move to spam" = "İstenmeyen kutusuna taşı";
+
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Failed to load content!\nPlease try again." = "İçerik yüklenemedi!\nLütfen yeniden deneyin.";
+
+/* Title of alert in share extension. */
+"Error" = "Hata";
+
+/* Error message */
+"Failed to determine type of file" = "Dosya türü belirlenemedi";
+
+/* Error message */
+"Unsupported file type" = "Dosya biçimi desteklenmiyor";
+
+/* Error */
+"Can't copy the file" = "Dosya kopyalanamadı";
+
+/* Title */
+"Copy address" = "Adresi kopyala";
+
+/* Title */
+"Copy name" = "Adı kopyala";
+
+/* Title */
+"Copy" = "Kopyala";
+
+/* Title */
+"Cut" = "Kes";
+
+/* Title */
+"Compose to" = "Şunun için oluştur";
+
+/* Title */
+"Add to contacts" = "Kişilere ekle";
+
+/* encryption lock description */
+"Sender Verification Failed" = "Gönderici doğrulanamadı";
+
+/* encryption lock description */
+"End-to-end encrypted message" = "Uçtan uca şifrelenmiş ileti";
+
+/* alert title */
+"Expiration not supported" = "Geçerlilik süresi desteklenmiyor";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead for the following recipients:" = "Bunun yerine, şu alıcılar için bir parola ayarlanmasını öneriyoruz:";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Bunun yerine şu alıcılar için bir parola ayarlanmasını ya da PGP şifrelemesinin kapatılmasını öneriyoruz:";
+
+/* A option title that enable/disable notification feature */
+"Notifications" = "Bildirimler";
+
+/* VoiceOver: email belongs to folders */
+"Folders" = "Klasörler";
+
+/* VoiceOver: email has lables */
+"Labels" = "Etiketler";
+
+/* Error message */
+"Is this bug report about an in-app purchase?" = "Bu hata bildirimi uygulama içi satın alma işlemiyle mi ilgili?";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Satın alma sırasında App Store tarafından uygulamaya sağlanan teknik verileri eklemeyi kabul ederseniz, Müşteri destek ekibimiz hizmet tarifenizi el ile kullanıma almaya çalışır. Bu verilerde iTunes hesabınız, Apple kimliğiniz, bağlı ödeme kartlarınız veya diğer kullanıcı bilgileriniz hakkında herhangi bir ayrıntı bulunmaz. Teknik veriler yalnızca App Store sunucularında işlemin gerçekleştirildiğini denetlememize ve doğrulamamıza yardımcı olur.";
+
+/* Error message */
+"Yes, attach details of payment" = "Evet, ödeme ayrıntıları eklensin";
+
+/* Error message */
+"No, not related to in-app purchase" = "Hayır, uygulama içi satın alma işlemiyle ilgili değil";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Grup adı";
 
-/* menu title (contact groups) */
-"Groups" = "Gruplar";
+/* The title for the contact group creation view */
+"New group" = "Yeni grup";
 
-/* Action */
-"Hide" = "Gizle";
+/* The title for the contact group editing view */
+"Edit group" = "Grubu düzenle";
 
-/* Title */
-"Hide details" = "Ayrıntıları gizle";
+/* The title for the view where user can manage emails in the contact group */
+"Manage addresses" = "Adres yönetimi";
 
-/* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Hide My Email takma adları";
+/* The title for the view where user can manage emails in the contact group */
+"Add contacts" = "Kişi ekle";
 
-/* Prompt of user feedback view */
-"How would you describe your experience with the new Proton Mail?" = "Yeni Proton Mail ile yaşadığınız deneyimi nasıl değerlendirirsiniz?";
+/* The title for the view where user can select the color for the group */
+"Edit avatar" = "Avatarı düzenle";
 
-/* Description */
-"Human Check Failed" = "İnsan doğrulaması başarısız oldu";
+/* The description of the button for deleting the contact group */
+"Delete contact group" = "Kişi grubunu sil";
 
-/* human check warning title */
-"Human Check Warning" = "İnsan doğrulaması uyarısı";
+/* The message will show up when the user attempts to create a contact group without any email selected */
+"Please select at least one email for the contact group" = "Lütfen kişi grubu için en az bir e-posta adresi seçin";
 
-/* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Bir süredir gizliliğimi koruyan Proton Mail e-posta hizmetini kullanıyorum ve senin de beğeneceğini düşündüm. Ücretli özellikleri bir ay süreyle ücretsiz olarak kullanmak için bu bağlantıya giderek bir hesap açabilirsin:";
+/* The message will show up when the user attempts to create a contact group without any name specified */
+"Please provide a group name" = "Lütfen bir grup adı yazın";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "WiFi bağlantınız kesilirse indirme işlemi mobil veri üzerinden yapılır.";
+/* The error message will be shown when the update of the contact group through API failed */
+"Can't update contact group through the API" = "Kişi grubu API aracılığıyla güncellenemedi";
 
-/* The title of the button to open the link in spam mail. */
-"Ignore warning and continue" = "Uyarıyı yok sayıp ilerle";
+/* The error message will be shown when the deletionn of the contact group through API failed */
+"Can't delete contact group through API" = "Kişi grubu API aracılığıyla silinemedi";
 
-/* Action */
-"Import Error" = "İçe aktarma sorunu";
+/* Internal type casting error */
+"Type casting error" = "Tür döküm hatası";
 
-/* Title */
-"Import from…" = "Şuradan içe aktar…";
+/* The preconditions are not met */
+"Internal Error" = "İç sorun";
+
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Dosyayı eklemek için sürükleyip buraya bırakın";
 
 /* Downloading attachments from cloud */
 "Importing" = "İçe aktarılıyor";
@@ -1014,550 +1094,344 @@
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Ek dosya içe aktarılıyor, biraz zaman alabilir";
 
-/* import contact title */
-"Importing Contacts" = "Kişiler içe aktarılıyor";
-
-/* alternative routing description
-   The footer of alternative routing setting */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Bu seçenek ile, Proton sitelerinin engellenmiş olması durumunda, uygulama Proton ağına ulaşmak için alternatif ağ yöneltmesini dener. Güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilir. Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir. %1$@";
-
-/* One of schedule time options */
-"In the morning" = "Sabahları";
-
-/* menu title */
-"Inbox" = "Gelen kutusu";
-
-/* Error */
-"Incorrect PIN." = "PIN kodu yanlış.";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Proton Mail hesabınızın bu aygıt üzerinde ne kadar depolama alanı kullandığı hakkında bilgiler.";
-
-/* Option title */
-"Inherit color from parent folder" = "Üst klasörün rengi devralınsın";
-
-/* A label message */
-"Inherited from parent folder" = "Üst klasörden devralındı";
-
-/* Title */
-"inline attachments" = "satır arası ek dosyalar";
-
-/* place holder */
-"Input Display Name…" = "Görüntülenecek adı yazın…";
-
-/* place holder */
-"Input Notification Email…" = "Bildirim e-posta adresini yazın…";
-
-/* Cert pinning failed alert title */
-"Insecure connection" = "Güvenli olmayan bağlantı";
-
-/* The preconditions are not met */
-"Internal Error" = "İç sorun";
-
-/* default vcard types */
-"Internet" = "İnternet";
-
-/* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "İnternet hizmeti sağlayıcı (ISP) sorunu";
-
-/* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Yenilenmiş Proton böyle görünüyor. \nBirçok hizmet, tek amaç. Gizliliğe odaklanmış internet fikrine hoş geldiniz.";
-
-/* The error message is shown in composer */
-"Invalid email address" = "E-posta adresi geçersiz";
-
-/* update password error */
-"Invalid hashed password!" = "Karılmış parola geçersiz!";
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Ek dosya içe aktarıldı";
 
 /* Invalid URL error when click a url in contact */
 "Invalid URL" = "Adres geçersiz";
 
-/* Error message */
-"Invalid username!" = "Kullanıcı adı geçersiz!";
-
-/* The article title of the referral share view. */
-"Invite friends to Proton,\n get up to $90 in credits!" = "Arkadaşlarınıza Proton önerin,\n $90 tutarına kadar kredi kazanın!";
-
-/* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Sorunsuz uçtan uca şifrelemenin tadını çıkarmak için tanıdıklarınızı Proton Mail kullanmaya çağırın ya da gönderdiğiniz iletilere parola koruması ekleyin.";
-
-/* The article content of the referral share view. */
-"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Arkadaşlarınızı Proton kullanmaya davet edin: Mail Plus tarifesini ücretsiz olarak denesinler. Ücretli bir tarifeye abone olurlarsa siz de kredi kazanın.";
-
-/* Error message */
-"Is this bug report about an in-app purchase?" = "Bu hata bildirimi uygulama içi satın alma işlemiyle mi ilgili?";
-
-/* No comment provided by engineer. */
-"Label as" = "Şöyle etiketlensin";
-
-/* Title */
-"Label as…" = "Etiketle…";
-
-/* createing lable input place holder */
-"Label Name" = "Etiket adı";
-
-/* VoiceOver: email has lables */
-"Labels" = "Etiketler";
-
-/* cell title in device settings */
-"Language" = "Dil";
-
-/* Action */
-"Later" = "Daha sonra";
-
-/* Action
-   alternative routing link name in description
-   The title of learn more link */
-"Learn more" = "Ayrıntılı bilgi alın";
-
-/* The title of learn more link */
-"Learn more." = "Ayrıntılı bilgi alın.";
-
-/* settings swipe actions section title */
-"Left to Right" = "Soldan sağa";
-
-/* The time label for message is about to be sent less in 1 minute not in the list view. */
-"less than 1 minute" = "1 dakikadan az";
-
-/* Title of alert when the free account limit is reached */
-"Limit reached" = "Sınıra ulaşıldı";
-
-/* The banner title after tapping link copy button in referral share view. */
-"Link copied." = "Bağlantı kopyalandı.";
-
-/* Button inside the banner */
-"Load" = "Yükle";
-
-/* The title of loading embedded image banner. */
-"Load embedded images" = "Gömülü görselleri yükle";
-
-/* Action
-   The title of loading remote content banner. */
-"Load remote content" = "Uzak içeriği yükle";
-
-/* No comment provided by engineer. */
-"Loading…" = "Yükleniyor…";
-
-/* The title of local storage in settings */
-"Local storage" = "Yerel depolama alanı";
-
-/* cell title in device settings */
-"Local storage limit" = "Yerel depolama alanı sınırı";
-
-/* Text for the link to show when indexing is stopped because of storage limit reached. */
-"local storage limit." = "yerel depolama alanı sınırı.";
-
-/* menu title */
-"Lock The App" = "Uygulamayı kilitle";
-
-/* error title */
-"Logs" = "Günlük kayıtları";
-
-/* cell title in device settings */
-"Mailbox" = "Posta kutusu";
-
-/* No comment provided by engineer. */
-"Manage" = "Yönet";
-
-/* menu title */
-"Manage accounts" = "Hesap yönetimi";
-
-/* The title for the view where user can manage emails in the contact group */
-"Manage addresses" = "Adres yönetimi";
-
-/* No comment provided by engineer. */
-"Mark as legitimate" = "Göründüğü gibi olarak işaretle";
-
-/* Push notification action mark as read
-   The title of the read action in action sheet */
-"Mark as read" = "Okunmuş olarak işaretle";
-
-/* Action */
-"Mark as read/unread" = "Okunmuş/okunmamış olarak işaretle";
-
-/* The title of the unread action in action sheet */
-"Mark as unread" = "Okunmamış olarak işaretle";
-
-/* The title of the maybe later button in referral prompt view. */
-"Maybe later" = "Belki daha sonra";
-
-/* menu title */
-"Menu" = "Menü";
-
-/* The title of the first item in the segment control of the Customize toolbar setting view. */
-"Message" = "İleti";
-
-/* No comment provided by engineer. */
-"Message actions" = "İleti işlemleri";
-
-/* Title of the view showing the message body */
-"Message body" = "İleti içeriği";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "İleti gönderilemedi. En az bir alıcı e-posta adresi/etki alanı bulunamadı ya da biçimi hatalı.";
-
-/* Text for the search info banner when indexing is paused. */
-"Message downloading paused. Find out how to %1$@" = "İletilerin indirilmesi duraklatıldı. Nasıl %1$@ öğrenin";
-
-/* Composer expiration page title */
-"Message expiration" = "İleti geçerlilik süresi";
-
-/* No comment provided by engineer. */
-"Message expired" = "İletinin süresi dolmuş";
-
-/* Title */
-"Message has been deleted." = "İleti silindi.";
-
-/* Title */
-"Message has been moved." = "İleti taşındı.";
-
-/* Title of the view showing the message header */
-"Message headers" = "İleti üst bilgileri";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "İleti geçmişi";
-
-/* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "İleti çöpe atıldı";
-
-/* Placeholder */
-"Message Password" = "İleti Parolası";
-
-/* Alert title */
-"Message saved to Drafts" = "İleti taslaklar kutusuna kaydedildi";
-
-/* Description */
-"Message sending failed. Please try again." = "İleti gönderilemedi. Lütfen yeniden deneyin.";
-
-/* Description after message have been sent */
-"Message sent" = "İleti gönderildi";
-
-/* Text for the search info banner when indexing is ongoing. */
-"Messages are being downloaded for content search. Some results may not be shown. %1$@" = "İletiler içeriklerinin aranabilmesi için indirildi. Bazı sonuçlar görüntülenmeyebilir. %1$@";
-
-/* Text for the search info banner when indexing is stopped because of storage limit reached. */
-"Messages from before " = "Şundan önceki iletiler ";
-
-/* Text for the search info banner when indexing is stopped because of storage exceeded. */
-"Messages from before %@, will not be searched. To search within them, free up storage space on this device." = "%@ öncesindeki iletiler aranamayacak. Bunlarda arama yapabilmek için bu aygıt üzerinde boş alan açın.";
-
-/* The footer title of the setting row of the auto delete option */
-"Messages in trash or spam longer than 30 days will be automatically deleted." = "Çöp ve istenmeyen kutularında 30 günden uzun süre kalan iletiler otomatik olarak silinir.";
-
-/* Text to inform users they have the auto delete feature enabled */
-"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Çöp ve istenmeyen kutularında 30 günden uzun süredir duran iletiler otomatik olarak silinir.";
-
-/* Text for the alert to enable encrypted search */
-"Messages will download via WiFi. This could take some time and your device may heat up slightly. You can pause the action at any time." = "İletiler WiFi ile indirilecek. Bu işlem biraz zaman alabilir ve aygıtınızın hafifçe ısınmasına neden olabilir. İşlemi istediğiniz zaman duraklatabilirsiniz.";
-
-/* default vcard types */
-"Mobile" = "Cep telefonu";
-
-/* Mobile Signature title in settings */
-"Mobile Signature" = "Mobil imza";
-
-/* scheduled send message at next monday morning Action, e.g. Monday (Jan 27) at 08:15 */
-"Monday (%@) at 08:%02d" = "Pazartesi (%1$@) saat 08:%2$d";
-
 /* More actions button */
 "More" = "Diğer";
 
-/* No comment provided by engineer. */
-"Move message" = "İletiyi taşı";
+/* Local notification title */
+"Problem sending message" = "İleti gönderme sorunu";
 
-/* No comment provided by engineer. */
-"Move to" = "Şuraya taşınsın";
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "İletinizi, büyük olasılıkla zayıf bir ağ bağlantısı nedeniyle gönderemedik. İletiniz taslaklar kutusuna kaydedildi ve uygulamayı bir sonraki açışınızda otomatik olarak gönderilecek.";
 
-/* Action title of move to archive */
-"Move to archive" = "Arşivle";
+/* Alert to confirm signout */
+"You will be switched to %@" = "%@ hesabına geçeceksiniz";
 
-/* The title of the remove action in action sheet */
-"Move to inbox" = "Gelen kutusuna taşı";
+/* Alert to confirm sign out */
+"Are you sure you want to sign out?" = "Oturumu kapatmak istediğinize emin misiniz?";
 
-/* Action title of move to spam
-   The title of the spam action in action sheet */
-"Move to spam" = "İstenmeyen kutusuna taşı";
+/* Alert to confirm sign out when only one account signed in */
+"Are you sure you want to sign out %@?" = "%@ oturumunu kapatmak istediğinize emin misiniz?";
 
-/* Push notification action move to trash
-   The title of the remove action in action sheet */
-"Move to trash" = "Çöpe at";
-
-/* Title */
-"Move to…" = "Şuraya taşı…";
-
-/* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Taşımadan sonra bir sonraki iletiye geç";
-
-/* Onboarding title */
-"Neat and tidy" = "Temiz ve düzenli";
-
-/* The title of alternative routing settings */
-"Networking" = "Ağ iletişimi";
-
-/* Contacts add new contact */
-"New contact" = "Yeni kişi";
-
-/* No comment provided by engineer. */
-"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "%@ tarafından gönderilen yeni e-postalar alınmayacak ve kalıcı olarak silinecek. Engellenen e-posta adreslerini ayarlar bölümünden yönetebilirsiniz.";
-
-/* The title of create folder page */
-"New folder" = "Yeni klasör";
-
-/* No comment provided by engineer. */
-"New Folder" = "Yeni klasör";
-
-/* The title for the contact group creation view */
-"New group" = "Yeni grup";
-
-/* The title of create label page */
-"New label" = "Yeni etiket";
-
-/* No comment provided by engineer. */
-"New Label" = "Yeni etiket";
-
-/* Title */
-"New mailbox password" = "Yeni posta kutusu parolası";
-
-/* The title of the button that shows in the conversation view when there is new message coming. */
-"New Message" = "Yeni ileti";
-
-/* Placeholder */
-"New password" = "Yeni parola";
-
-/* Title */
-"New sign-in password" = "Yeni oturum açma parolası";
-
-/* title of the next button */
-"Next" = "İleri";
-
-/* The title of the setting of the next msg after move */
-"Next message after move" = "Taşımadan sonra bir sonraki ileti";
-
-/* contacts talbe cell Nickname title */
-"Nickname" = "Takma ad";
-
-/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
-"No attachment found" = "Herhangi bir ek dosya bulunamadı";
-
-/* Placeholder for empty sender list */
-"No blocked senders" = "Engellenmiş bir gönderici yok";
-
-/* Title */
-"No connectivity detected…" = "Herhangi bir bağlantı bulunamadı…";
-
-/* Short hint in the header view */
-"No email trackers found" = "Herhangi bir e-posta izleyici bulunamadı";
-
-/* network troubleshot cell title */
-"No internet connection" = "İnternet bağlantısı yok";
-
-/* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "İç kullanıcı için herhangi bir anahtar alınamadı";
-
-/* no object error, local only , this could be not translated! */
-"no object" = "nesne yok";
-
-/* Placeholder if message sender is empty */
-"No Recipient" = "Alıcı yok";
-
-/* zero messages matching search query */
-"No results found" = "Herhangi bir sonuç bulunamadı";
-
-/* The error message while calculating the encryption preferences */
-"No valid keys retrieved for internal user" = "İç kullanıcı için geçerli bir anahtar alınamadı";
-
-/* The error message while calculating the encryption preferences */
-"No WKD key retrieved for user is valid for sending" = "İç kullanıcı için geçerli WKD bir gönderim anahtarı alınamadı";
-
-/* Error message */
-"No, not related to in-app purchase" = "Hayır, uygulama içi satın alma işlemiyle ilgili değil";
-
-/* Title of button to discard auto delete option */
-"No, thanks" = "Hayır, teşekkürler";
-
-/* A *short* description saying that there is no contact group associated with this contact email
-   Action title of none
-   The protection title of None protection
-   Title */
-"None" = "Yok";
-
-/* Title */
-"normal attachments" = "normal ek dosyalar";
-
-/* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "İstenmeyen değil (Gelen kutusuna taşı)";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Tüm iletiler indirilemedi. İletileri indirmek için aygıt üzerinde boş depolama alanı açın.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Tüm iletiler indirilemedi. İletileri indirmek için aşağıdaki depolama alanı sınırını artırın.";
-
-/* No comment provided by engineer. */
-"Not set" = "Ayarlanmamış";
-
-/* title */
-"Notes" = "Notlar";
-
-/* The title will be shown when foler doesnt have emails */
-"Nothing to see here" = "Burada görülecek bir şey yok";
-
-/* Alert title */
-"Notice" = "Dikkat";
-
-/* AppKey disclaimer when turning on */
-"Notification actions and other background processes will become unavailable" = "Bildirim işlemleri ve diğer arka plan işlemleri kullanılamaz olacak";
-
-/* A option title that enable/disable notification feature
-   cell title in device settings */
-"Notifications" = "Bildirimler";
-
-/* The title of Off setting options */
-"Off" = "Kapalı";
-
-/* Official badge next to sender's name */
-"Official" = "Resmi";
-
-/* Title of the alert when the device is offline */
-"Offline" = "Çevrim dışı";
-
-/* Sending message when device doesn't have netowrk connection description */
-"Offline, message queued for sending" = "Çevrim dışı. İleti gönderilmek üzere kuyruğa alındı";
-
-/* Action */
-"OK" = "Tamam";
-
-/* The text for determining the oldest message in the encrypted search index */
-"Oldest message: " = "En eski ileti: ";
-
-/* The title of On setting options */
-"On" = "Açık";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "%@ tarihinde";
-
-/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
-"On %@ at %@" = "%1$@ tarihinde %2$@ saatinde";
-
-/* Alert when the free account limit is reached */
-"Only one free account can be added" = "Yalnızca bir tane ücretsiz hesap eklenebilir";
-
-/* Open action */
-"Open" = "Aç";
-
-/* VoiceOver title of account switcher button in the menu */
-"Open account switcher" = "Hesap değiştiriciyi aç";
-
-/* contacts talbe cell Organization title */
-"Organization" = "Kuruluş";
-
-/* default vcard types */
-"Other" = "Diğer";
-
-/* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Satın alma sırasında App Store tarafından uygulamaya sağlanan teknik verileri eklemeyi kabul ederseniz, Müşteri destek ekibimiz hizmet tarifenizi el ile etkinleştirmeye çalışır. Bu verilerde iTunes hesabınız, Apple kimliğiniz, bağlı ödeme kartlarınız veya diğer kullanıcı bilgileriniz hakkında herhangi bir ayrıntı bulunmaz. Teknik veriler yalnızca App Store sunucularında işlemin gerçekleştirildiğini denetlememize ve doğrulamamıza yardımcı olur.";
-
-/* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Sistemimiz bu iletiyi bir kimlik avı girişimi olarak işaretledi. Lütfen göründüğü gibi olup olmadığını kontrol edin.";
-
-/* Setting option title of folder setting page */
-"Parent folder" = "Üst klasör";
-
-/* title */
-"Password Hint" = "Parola ipucu";
-
-/* update password error */
-"Password update failed" = "Parola güncellenemedi";
-
-/* Message to show to user after updating password. */
-"Password updated" = "Parola güncellendi";
-
-/* Placeholder */
-"Passwords must match" = "Parola ile onayı aynı değil";
-
-/* Text for pause button */
-"Pause" = "Duraklat";
-
-/* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Bir ileti taşındığında (arşivleme gibi) bir sonraki iletiye geçilir.";
-
-/* default vcard types */
-"Personal" = "Kişisel";
-
-/* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted" = "PGP ile şifrelenmiş";
-
-/* The message after tapping the encryption icon of message received. */
-"PGP-encrypted and signed message" = "PGP ile şifrelenmiş ve imzalanmış ileti";
-
-/* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message" = "PGP ile şifrelenmiş ileti";
-
-/* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message from verified sender" = "Doğrulanmış göndericiden PGP ile şifrelenmiş ileti";
-
-/* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted to verified recipient" = "Doğrulanmış alıcıya PGP ile şifrelenmiş";
-
-/* The message after tapping the encryption icon of recipient in composer. */
-"PGP-signed" = "PGP ile imzalanmış";
-
-/* The message after tapping the encryption icon of message received. */
-"PGP-signed message from verified sender" = "Doğrulanmış göndericiden PGP ile imzalanmış ileti";
-
-/* The message after tapping the encryption icon of message received. */
-"PGP-signed message. Sender verification failed" = "PGP ile imzalanmış ileti. Gönderici doğrulanamadı";
-
-/* default vcard types */
-"Phone" = "Telefon";
-
-/* contact placeholder */
-"Phone number" = "Telefon numarası";
-
-/* The protection title of PIN code protection */
-"PIN code" = "PIN kodu";
-
-/* Description */
-"PIN code can't be empty." = "PIN kodu boş olamaz.";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN kodu çok uzun";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN kodu çok kısa";
-
-/* Alert message is shown when the device doesn't have network connection */
-"Please connect and retry" = "Lütfen bağlantı kurup yeniden deneyin";
-
-/* Text for status label when no internet connection is available */
-"Please connect to the internet to continue." = "Lütfen işlemi sürdürmek için internet bağlantısı kurun.";
-
-/* error message */
-"Please input a valid email address." = "Lütfen geçerli bir e-posta adresi yazın.";
-
-/* Alert message */
-"Please keep Proton Mail open until the operation is done." = "Lütfen işlem tamamlanana kadar Proton Mail uygulamasını açık tutun.";
-
-/* no internet connection description */
-"Please make sure that your internet connection is working." = "Lütfen internet bağlantınızın çalıştığından emin olun.";
-
-/* The message will show up when the user attempts to create a contact group without any name specified */
-"Please provide a group name" = "Lütfen bir grup adı yazın";
+/* Alert to confirm signout with pending message in the queue */
+"There are unsent messages that will be lost if you sign out" = "Gönderilmemiş iletiler var. Oturumu kapatırsanız bunlar silinecek";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
 "Please select at least one email" = "Lütfen en az bir e-posta adresi seçin";
 
-/* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Lütfen kişi grubu için en az bir e-posta adresi seçin";
+/* Alert when auth token is revoked and switch to another */
+"Signed out from %@ and signed in with %@" = "%1$@ oturumu kapatıldı ve %2$@ ile oturum açıldı";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "'%@' hesabına geçildi";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Güvenli olmayan bağlantı";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS sertifikası doğrulanamadı. İnternet bağlantınız izlenebilir. Güvenliğiniz için uygulama geçici olarak engellendi.\n\nHemen ağları değiştirin.";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "TLS sertifikası doğrulanamadı. İnternet bağlantınız izlenebilir. Güvenliğiniz için uygulama geçici olarak engellendi.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Doğrulamayı kapat";
+
+/* Account manager title */
+"Account" = "Hesap";
+
+/* Alert when the account is already logged in */
+"The user is already signed in" = "Kullanıcı zaten oturum açmış";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "Sınıra ulaşıldı";
+
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Yalnızca bir tane ücretsiz hesap eklenebilir";
+
+/* section title in settings */
+"Account settings" = "Hesap ayarları";
+
+/* section title in settings */
+"App settings" = "Uygulama ayarları";
+
+/* section title in settings */
+"General settings" = "Genel ayarlar";
+
+/* security title in settings */
+"App PIN" = "Uygulama PIN kodu";
+
+/* security title in settings */
+"App PIN & Touch ID" = "Uygulama PIN kodu ve Touch ID";
+
+/* security title in settings */
+"App PIN & Face ID" = "Uygulama PIN kodu ve Face ID";
+
+/* cell title in device settings */
+"Language" = "Dil";
+
+/* cell title in device settings */
+"Combined contacts" = "Birleştirilmiş kişiler";
+
+/* cell title in app settings */
+"Swipe actions" = "Kaydırma işlemleri";
+
+/* cell title in app settings */
+"Alternative routing" = "Alternatif yöneltme";
+
+/* cell title in device settings */
+"Storage" = "Depolama alanı";
+
+/* cell title in device settings */
+"Addresses" = "Adresler";
+
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Ertele";
+
+/* cell title in device settings */
+"Mailbox" = "Posta kutusu";
+
+/* cell title in device settings */
+"Privacy" = "Gizlilik";
+
+/* cell title in device settings */
+"Local storage limit" = "Yerel depolama alanı sınırı";
+
+/* cell title in device setting */
+"Clear local cache" = "Yerel ön belleği temizle";
+
+/* cell title in app setting */
+"Dark mode" = "Koyu kip";
+
+/* network troubleshot cell title */
+"Allow alternative routing" = "Alternatif yöneltme kullanılabilsin";
+
+/* network troubleshot cell title */
+"No internet connection" = "İnternet bağlantısı yok";
+
+/* The error message is shown in composer */
+"Recipient not found" = "Alıcı bulunamadı";
+
+/* The error message is shown in composer */
+"Invalid email address" = "E-posta adresi geçersiz";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "En az bir alıcı adresinin biçimi yanlış. Lütfen adresleri iki kez kontrol edin.";
+
+/* incorrect email format error in composer */
+"Error sending" = "Gönderim sorunu";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Gruptaki en az bir e-posta adresi bulunamadı";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "En az bir alıcının e-posta adresi ya da etki alanı bulunamadı veya biçimi hatalı. İleti taslaklar kutusuna taşındı.";
+
+/* incorrect email format error while sending */
+"You have entered at least one invalid email address. Please verify your recipients." = "En az bir geçersiz e-posta adresi yazdınız. Lütfen alıcılarınızı doğrulayın.";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found." = "Gruptaki en az bir e-posta adresi bulunamadı.";
+
+/* incorrect email format error while sending */
+"You have entered at least one unknown recipient. Please verify your recipients." = "En az bir bilinmeyen alıcı yazdınız. Lütfen alıcılarınızı doğrulayın.";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Gönderilemedi";
+
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Taslaklar kutusuna git";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading…" = "Taslak hala yükleniyor…";
+
+/* content of the sending mesage that will display this text on the date label */
+"Sending message…" = "İleti gönderiliyor…";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "İleti gönderilemedi. En az bir alıcı e-posta adresi/etki alanı bulunamadı ya da biçimi hatalı.";
+
+/* The unread title of unread action button in mailbox view */
+"unread" = "okunmamış";
+
+/* The title of navigation bar title of mailbox view while selecting the message */
+"Selected" = "Seçilmiş";
+
+/* The title of last update status of more than 1 hour */
+"Updated >1 hour ago" = "1 saatten önce güncellendi";
+
+/* The title of last update status of updated just now */
+"Updated just now" = "Az önce güncellendi";
+
+/* The text shown on the mailbox when the device is in offline mode */
+"You are offline" = "Çevrim dışısınız";
+
+/* The footer shown when there is not result in the inbox */
+"Encrypted by Proton" = "Proton tarafından şifrelendi";
+
+/* The text shown on the mailbox when the primary user changed */
+"Signed in as %@" = "%@ olarak oturum açıldı";
+
+/* The title of the star action in action sheet */
+"Star" = "Yıldız koy/kaldır";
+
+/* The title of the star action in action sheet */
+"Unstar" = "Yıldızı kaldır";
+
+/* The title of the unread action in action sheet */
+"Mark as unread" = "Okunmamış olarak işaretle";
+
+/* Push notification action mark as read */
+"Mark as read" = "Okunmuş olarak işaretle";
+
+/* Push notification action move to trash */
+"Move to trash" = "Çöpe at";
+
+/* The title of the remove action in action sheet */
+"Move to inbox" = "Gelen kutusuna taşı";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "İletiyi açık kipte görüntüle";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "İletiyi koyu kipte görüntüle";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği açın.";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "PIN kodu ayarla";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Yeni PIN kodunu yazın";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "4 ile 21 karakter arasında bir PIN kodu yazın.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN kodu çok kısa";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN kodu çok uzun";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "PIN kodu onayı";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN kodu ile onayı aynı değil!";
+
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Bu seçenek ile, Proton sitelerinin engellenmiş olması durumunda, uygulama Proton ağına ulaşmak için alternatif ağ yöneltmesini dener. Güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilir. Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir. %1$@";
+
+/* The title of alternative routing settings */
+"Networking" = "Ağ iletişimi";
+
+/* The title of On setting options */
+"On" = "Açık";
+
+/* The title of Off setting options */
+"Off" = "Kapalı";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "PIN kodunu değiştir";
+
+/* The title of re auth alert */
+"Re-authenticate" = "Kimliği yeniden doğrula";
+
+/* The content of the re auth alert */
+"Enter your password to make changes" = "Değişiklik yapmak için parolanızı yazın";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Okundu bilgisi gönderilsin";
+
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Okundu bilgisi gönderildi";
+
+/* Message of a banner which is displayed on the messages list when offline */
+"We have trouble connecting to the servers. Please reconnect." = "Sunucularla bağlantı kurmakta sorun yaşıyoruz. Lütfen yeniden bağlanın.";
+
+/* Title of message permanent deletion alert, singular */
+"Delete message" = "İletiyi sil";
+
+/* Title of message permanent deletion alert, plural */
+"Delete %d Messages" = "%d iletiyi sil";
+
+/* No comment provided by engineer. */
+"Current Recovery Email" = "Geçerli kurtarma e-postası";
+
+/* No comment provided by engineer. */
+"Recovery enabled" = "Kurtarma özelliği açıldı";
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Lütfen bir kurtarma / bildirim e-posta adresi ayarlayın";
 
-/* The body of the email draft created in the network troubleshoot view. */
-"Please share your problem." = "Lütfen sorununuzu paylaşın.";
+/* No comment provided by engineer. */
+"Unread" = "Okunmamış";
 
-/* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Lütfen Proton Mail uygulamasında oturum açın.";
+/* No comment provided by engineer. */
+"Read" = "Okunmuş";
+
+/* No comment provided by engineer. */
+"Set up swipe gestures to access most used actions." = "Sık kullanılan işlemler için kaydırma hareketlerini ayarlayın.";
+
+/* No comment provided by engineer. */
+"Tap here to set" = "Ayarlamak için buraya dokunun";
+
+/* No comment provided by engineer. */
+"Not set" = "Ayarlanmamış";
+
+/* The section title of folder manager table */
+"Your folders" = "Klasörleriniz";
+
+/* The title of create folder page */
+"New folder" = "Yeni klasör";
+
+/* The title of edit folder page */
+"Edit folder" = "Klasörü düzenle";
+
+/* The title of delete folder button */
+"Delete folder" = "Klasörü sil";
+
+/* The section title of label manager table */
+"Your labels" = "Etiketleriniz";
+
+/* The title of create label page */
+"New label" = "Yeni etiket";
+
+/* The title of edit label page */
+"Edit label" = "Etiketi düzenle";
+
+/* The title of delete label button */
+"Delete label" = "Etiketi sil";
+
+/* The button to enable label list reorder */
+"Reorder" = "Sıralamayı değiştir";
+
+/* Setting option title of folder setting page */
+"Parent folder" = "Üst klasör";
+
+/* Alert message when user tries to delete folder */
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Bu işlem geri alınamaz. Bu klasöre kaydedilmiş e-postalar silinmeyecek ve Tüm e-postalar kutusundan erişilebilecek.";
+
+/* Alert message when user tries to delete label */
+"This action cannot be undone." = "Bu işlem geri alınamaz.";
+
+/* Alert message when user tries to discard unsaved changes */
+"Any unsaved changes will be lost." = "Kaydedilmemiş tüm değişiklikler silinecek.";
+
+/* A label message */
+"Inherited from parent folder" = "Üst klasörden devralındı";
+
+/* Alert title */
+"Creating folder not allowed" = "Klasör oluşturmaya izin verilmiyor";
+
+/* Alert title */
+"Creating label not allowed" = "Etiket oluşturmaya izin verilmiyor";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Lütfen 3 klasörden fazlasını kullanmak için ücretli bir tarifeye yükseltin";
@@ -1565,247 +1439,290 @@
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 labels" = "Lütfen 3 etiketten fazlasını kullanmak için ücretli bir tarifeye yükseltin";
 
-/* Content of storage full alert */
-"Please upgrade your plan" = "Lütfen tarifenizi yükseltin";
+/* Alert message is shown when the device doesn't have network connection */
+"Please connect and retry" = "Lütfen bağlantı kurup yeniden deneyin";
 
-/* Content of storage full alert */
-"Please upgrade your plan to continue to send and receive emails." = "Lütfen e-posta gönderip almayı sürdürebilmek için tarifenizi yükseltin.";
+/* Option title */
+"Use folder colors" = "Klasör renkleri kullanılsın";
 
-/* Description */
-"Please use Proton Mail App sign-in first." = "Lütfen önce Proton Mail uygulamasında oturum açın.";
-
-/* No comment provided by engineer. */
-"Print" = "Yazdır";
-
-/* cell title in device settings */
-"Privacy" = "Gizlilik";
-
-/* Onboarding title */
-"Privacy for all" = "Herkes için gizlilik";
-
-/* Local notification title */
-"Problem sending message" = "İleti gönderme sorunu";
-
-/* Settings lock protection section */
-"Protection" = "Koruma";
-
-/* network troubleshot cell title */
-"Proton is down" = "Proton çalışmıyor";
-
-/* Title */
-"Proton Mail is currently offline…" = "Proton Mail şu anda çevrim dışı…";
-
-/* The message about the app is not having the permission to access photo library */
-"Proton Mail needs photo library access in your device settings." = "Proton Mail aygıt ayarlarınızdan fotoğraf kitaplığına erişme iznine gerek duyuyor.";
-
-/* Name of the link of Proton Status */
-"Proton Status" = "Proton durumu";
-
-/* network troubleshot cell title */
-"Proxy/Firewall interference" = "Vekil sunucu/güvenlik duvarı etkileşimi";
-
-/* The title of re auth alert */
-"Re-authenticate" = "Kimliği yeniden doğrula";
-
-/* abbreviation of reply: */
-"Re:" = "Ynt:";
-
-/* No comment provided by engineer. */
-"Read" = "Okunmuş";
-
-/* Title */
-"Reading device contacts data…" = "Aygıt kişileri verileri okunuyor…";
-
-/* A label text which is displayed after sending read receipt to sender */
-"Receipt sent" = "Okundu bilgisi gönderildi";
-
-/* The error message is shown in composer */
-"Recipient not found" = "Alıcı bulunamadı";
-
-/* Title */
-"Recovery Code" = "Kurtarma kodu";
-
-/* Title */
-"Recovery email" = "Kurtarma e-posta adresi";
-
-/* No comment provided by engineer. */
-"Recovery enabled" = "Kurtarma etkileştirildi";
-
-/* menu title
-   The title of the refer button in referral prompt view. */
-"Refer a friend" = "Arkadaşınıza önerin";
-
-/* Title */
-"Remind Me Later" = "Daha sonra hatırlat";
-
-/* remove action */
-"Remove" = "Kaldır";
-
-/* Settings row */
-"Remove image metadata" = "Görsel üst verilerini kaldır";
-
-/* action title */
-"Remove password" = "Parolayı kaldır";
-
-/* The button to enable label list reorder */
-"Reorder" = "Sıralamayı değiştir";
-
-/* textview title */
-"Repeat password" = "Parola onayı";
-
-/* The title of PIN code setup2 view
-   The title of textfield of PIN code setup2 */
-"Repeat PIN code" = "PIN kodu onayı";
-
-/* reply action */
-"Reply" = "Yanıtla";
-
-/* The action title in the action sheet of the reply action in conversation view. */
-"Reply (to last message)" = "Yanıtla (son iletiyi)";
-
-/* reply all action */
-"Reply all" = "Tümünü yanıtla";
-
-/* The action title in the action sheet of the reply action in conversation view. */
-"Reply all (to last message)" = "Tümünü yanıtla (son iletiyi)";
-
-/* menu title */
-"Report a problem" = "Sorun bildirin";
-
-/* No comment provided by engineer. */
-"Report phishing" = "Kimlik avı girişimi bildir";
-
-/* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Bir iletiyi kimlik avı girişimi olarak bildirdiğinizde, ileti bize gönderilir. Böylece onu inceleyebilir ve süzgeçlerimizi geliştirebiliriz. Bu durum iletinin tüm içeriğini görebileceğimi anlamına gelir.";
-
-/* link opeining confirmation */
-"Request link confirmation" = "Bağlantı onayı istensin";
-
-/* The title of the reset button in toolbar customization view. */
-"Reset to default" = "Varsayılana sıfırla";
-
-/* The title of the alert after tapping reset in toolbar customization view. */
-"Reset to default?" = "Varsayılana sıfırlansın mı?";
-
-/* Title */
-"Resetting message cache…" = "İleti ön belleği sıfırlanıyor…";
-
-/* Text for resume button */
-"Resume" = "Sürdür";
-
-/* Text for the link to show when indexing is paused. */
-"resume manually." = "el ile sürdür.";
-
-/* Action */
-"Retry" = "Yeniden dene";
-
-/* settings swipe actions section title */
-"Right to Left" = "Sağdan sola";
-
-/* Title */
-"Save" = "Kaydet";
-
-/* No comment provided by engineer. */
-"Save as PDF" = "PDF olarak kaydet";
-
-/* title */
-"Save Changes" = "Değişiklikleri kaydet";
-
-/* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "İletileri istediğiniz zamanda gönderin";
-
-/* Action
-   The action title of the alert of the user trying to send a message that was schedule-send. */
-"Schedule send" = "Gönderimi zamanla";
-
-/* The title of the alert that will be shown when user tries to delete a scheduled message. */
-"Schedule will be removed" = "Zamanlama kaldırılacak";
-
-/* mail location title */
-"Scheduled" = "Zamanlanmış";
-
-/* The title of the banner that will be shown when you schedule a message. */
-"Scheduling message..." = "İleti zamanlanıyor...";
-
-/* Springboard (3D Touch) shortcuts action
-   Title */
-"Search" = "Arama";
-
-/* cell title in device settings
-   The title of encrypted search in settings */
-"Search message content" = "İleti içeriğinde arama";
-
-/* Text for the banner when content search is slow. */
-"Search taking too long? %1$@ from this search for faster results." = "Arama çok uzun mu sürüyor? Bu aramanın daha hızlı yapılabilmesi için %1$@.";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Ayrıntıları görüntüle";
-
-/* Text for the link to show the current indexing progress */
-"See progress." = "İlerlemeyi görüntüle.";
+/* Option title */
+"Inherit color from parent folder" = "Üst klasörün rengi devralınsın";
 
 /* section title */
 "Select color" = "Renk seçin";
 
-/* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Seçilmiş";
+/* No comment provided by engineer. */
+"You are not connected. We cannot display the content of your message." = "Bağlantınız yok. İletinizin içeriğini görüntüleyemiyoruz.";
 
-/* Action */
-"Send" = "Gönder";
+/* No comment provided by engineer. */
+"Do you really want to remove this file from attachments?" = "Bu dosyayı ek dosyalar içinden kaldırmak istediğinize emin misiniz?";
 
-/* Action */
-"Send anyway" = "Yine de gönder";
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Gömülü görselleri yükle";
 
-/* Title of button to send feedback */
-"Send feedback" = "Geri bildirimi gönder";
+/* No comment provided by engineer. */
+"This conversation contains trashed messages" = "Bu yazışmada, çöpe atılmış iletiler var";
 
-/* The action title of the alert of the user trying to send a message that was schedule-send. */
-"Send immediately" = "Hemen gönder";
+/* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Bu yazışmada çöpe atılmamış iletiler var.";
 
-/* The alert title of the user trying to send a message that was schedule-send. */
-"Send immediately?" = "Hemen gönderilsin mi?";
+/* No comment provided by engineer. */
+"Message actions" = "İleti işlemleri";
 
-/* Description */
-"Send message without subject?" = "İleti, konu olmadan gönderilsin mi?";
+/* No comment provided by engineer. */
+"Manage" = "Yönet";
 
-/* Title of the banner which is displayed when sender of the message requests a read receipt */
-"Send read receipt" = "Okundu bilgisi gönderilsin";
+/* No comment provided by engineer. */
+"Move message" = "İletiyi taşı";
 
-/* Toast confirming the block */
-"Sender %@ blocked" = "%@ göndericisi engellendi";
+/* No comment provided by engineer. */
+"Print" = "Yazdır";
 
-/* Toast confirming the unblock */
-"Sender %@ unblocked" = "%@ göndericisinin engellemesi kaldırıldı";
+/* No comment provided by engineer. */
+"Save as PDF" = "PDF olarak kaydet";
 
-/* Banner in the message view */
-"Sender has been blocked" = "Gönderici engellendi";
+/* No comment provided by engineer. */
+"View headers" = "Üst bilgileri görüntüle";
 
-/* encryption lock description */
-"Sender Verification Failed" = "Gönderici doğrulanamadı";
+/* No comment provided by engineer. */
+"View HTML" = "HTML olarak görüntüle";
 
-/* title of incorrect email format error while sending */
-"Sending failed" = "Gönderilemedi";
+/* No comment provided by engineer. */
+"Report phishing" = "Kimlik avı girişimi bildir";
 
-/* Alert title */
-"Sending in progress" = "Gönderiliyor";
+/* No comment provided by engineer. */
+"Not a spam (move to inbox)" = "İstenmeyen değil (Gelen kutusuna taşı)";
 
-/* Description */
-"Sending Message" = "İleti gönderiliyor";
+/* No comment provided by engineer. */
+"Move to" = "Şuraya taşınsın";
 
-/* content of the sending mesage that will display this text on the date label */
-"Sending message…" = "İleti gönderiliyor…";
+/* No comment provided by engineer. */
+"Do you want to discard your changes?" = "Değişikliklerinizi silmek istiyor musunuz?";
 
-/* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "%1$@ adresinden ileti göndermek ücretli bir özelliktir. İletiniz %2$@ varsayılan adresinizden gönderilecek";
+/* No comment provided by engineer. */
+"Your changes will be discarded" = "Yaptığınız değişiklikler silinecek";
+
+/* No comment provided by engineer. */
+"Label as" = "Şöyle etiketlensin";
+
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Ayrıca arşivlensin mi?";
+
+/* No comment provided by engineer. */
+"New Label" = "Yeni etiket";
+
+/* No comment provided by engineer. */
+"Undisclosed Recipients" = "Gizli alıcılar";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "E-posta listesinin aboneliğinden ayrıl";
+
+/* No comment provided by engineer. */
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Sistemimiz bu iletiyi bir kimlik avı girişimi olarak işaretledi. Lütfen göründüğü gibi olup olmadığını kontrol edin.";
+
+/* No comment provided by engineer. */
+"Mark as legitimate" = "Göründüğü gibi olarak işaretle";
+
+/* The title of auto reply banner */
+"This message was automatically generated" = "Bu ileti otomatik olarak oluşturulmuştur";
+
+/* Warning message */
+"Do you want to discard the changes?" = "Değişiklikleri silmek istiyor musunuz?";
+
+/* No comment provided by engineer. */
+"Group emails from the same conversation together." = "Aynı yazışma içindeki e-postaları gruplar.";
+
+/* No comment provided by engineer. */
+"Conversation grouping" = "Yazışmalar gruplansın";
+
+/* No comment provided by engineer. */
+"Conversation mode" = "Yazışma kipi";
+
+/* No comment provided by engineer. */
+"Undo send" = "Göndermeyi geri alma süresi";
+
+/* The protection title of PIN code protection */
+"PIN code" = "PIN kodu";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "Yeni ileti";
+
+/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
+"Switch selection mode" = "Seçim kipine geç";
+
+/* No comment provided by engineer. */
+"Yesterday" = "Dün";
+
+/* VoiceOver title of account switcher button in the menu */
+"Open account switcher" = "Hesap değiştiriciyi aç";
 
 /* text displayed in composer when attachments are uploading */
 "Sending will be available\nwhen attachments are uploaded" = "Ek dosyalar yüklendiğinde \ngönderim yapılabilecek";
 
-/* menu title */
-"Sent" = "Gönderilmiş";
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Dosya eklenemedi";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Şu dosyalar eklenemedi:";
+
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Klasörü genişlet";
+
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Klasörü daralt";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Okunmamış süzgecine geç";
+
+/* Title of user feedback view */
+"Your feedback" = "Geri bildiriminiz";
+
+/* Prompt of user feedback view */
+"How would you describe your experience with the new Proton Mail?" = "Yeni Proton Mail ile yaşadığınız deneyimi nasıl değerlendirirsiniz?";
+
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Bize deneyimlerinizi anlatın. (İsteğe bağlı)";
+
+/* Title of button to send feedback */
+"Send feedback" = "Geri bildirimi gönder";
+
+/* Example feedback */
+"Awful" = "Çok kötü";
+
+/* Example feedback */
+"Wonderful" = "Çok iyi";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Geri bildiriminiz için teşekkürler!";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "İletiyi daralt";
+
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Görünüm";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Aygıt ayarına uyulsun";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Hep açık";
+
+/* The title of always off option in dark mode setting */
+"Always off" = "Hep kapalı";
+
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "İleti çöpe atıldı";
+
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 ileti arşivlendi";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 ileti İstenmeyen kutusuna taşındı";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "İşlem geri alındı";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "İleti oluştur";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Çöp kutusunu boşalt";
+
+/* Alert title */
+"Empty trash folder" = "Çöp kutusunu boşalt";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "İstenmeyen kutusunu boşalt";
+
+/* Alert title */
+"Empty spam folder" = "İstenmeyen kutusunu boşalt";
+
+/* Warning message */
+"Cannot empty folder right now." = "Klasör şu anda boşaltılamıyor.";
+
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[İletinin tümünü göster]";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "%@ oturumu kapatıldı";
+
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Güncellemeleri almayı sürdürmek için yeniden oturum açın";
+
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Herhangi bir ek dosya bulunamadı";
+
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "İletinizi yine de göndermek istiyor musunuz?";
+
+/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
+"Add CC and BCC" = "Kopya ve Gizli kopya ekle";
+
+/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
+"Close CC and BCC" = "Kopya ve gizli kopyayı kapat";
+
+/* The title of the button in the composer that can select different sender address. */
+"Choose different sender address" = "Farklı bir gönderici adresi seçin";
+
+/* The voiceiver title of the add password button in the tool bar of composer. */
+"Set mail password" = "E-posta için parola ayarla";
+
+/* The voiceiver title of the add expiration button in the tool bar of composer */
+"Set mail expiration" = "E-posta geçerlilik süresini ayarla";
+
+/* The voiceover title of the dismiss keyboard action */
+"Dismiss keyboard" = "Klavyeyi yok say";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Uyarı: Sahte olma olasılığı bulunan şüpheli site";
+
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Bu bağlantı, parola ve kredi kartı gibi bilgilerinizi çalmayı deneyen bir siteye gidiyor olabilir..\n%@\n\nGüvenliğiniz için daha ileri gitmeyin.";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Uyarıyı yok sayıp ilerle";
+
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Geri dön (önerilir)";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Bu özellik, e-postalarınızı göndermeyi geciktirerek belirtilen süre içinde göndermeyi geri alma olanağı sağlar.";
+
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "Bu ileti %1$@ tarihinde, %2$@ saatinde gönderilecek";
+
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "Bugün, %@";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "Yarın, %@";
+
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Zamanlama kaldırılacak";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Hemen gönderilsin mi?";
+
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "İletinin gönderilme zamanlaması kaldırıldı. Daha sonra gönderilmesini istiyorsanız \"Zamanlanmış gönderim\" üzerine dokunabilirsiniz";
+
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "Hemen gönder";
+
+/* The content of the introducation view of the schedule send */
+"You can now schedule your messages to be sent later" = "Artık iletileri daha sonra gönderilmek üzere zamanlayabilirsiniz";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "İleti zamanlanıyor...";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption" = "Proton Mail tarafından sıfır erişim şifrelemesi ile gönderildi";
+"Sent by you with end-to-end encryption to verified recipient" = "Doğrulanmış alıcıya uçtan uca şifrelenmiş olarak gönderdiniz";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption to verified recipient" = "Proton Mail tarafından doğrulanmış alıcıya sıfır erişim şifrelemesi ile gönderildi";
@@ -1814,624 +1731,405 @@
 "Sent by you with end-to-end encryption" = "Sizin tarafınızdan uçtan uca şifreleme ile gönderildi";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption to verified recipient" = "Doğrulanmış alıcıya uçtan uca şifrelenmiş olarak gönderdiniz";
-
-/* Description */
-"Sent Failed" = "Gönderilemedi";
-
-/* Title */
-"Set" = "Ayarla";
-
-/* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Proton Mail kullanmayan kişiler için bu iletiyi şifreleyecek bir parola ayarlayın.";
-
-/* The voiceiver title of the add expiration button in the tool bar of composer */
-"Set mail expiration" = "E-posta geçerlilik süresini ayarla";
-
-/* The voiceiver title of the add password button in the tool bar of composer. */
-"Set mail password" = "E-posta için parola ayarla";
-
-/* Title */
-"Set Password" = "Parola ayarla";
-
-/* The title of PIN code setup1 view */
-"Set PIN code" = "PIN kodu ayarla";
-
-/* No comment provided by engineer. */
-"Set up swipe gestures to access most used actions." = "Sık kullanılan işlemler için kaydırma hareketlerini ayarlayın.";
-
-/* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Kendi zamanlamanızı yapın";
-
-/* menu title */
-"Settings" = "Ayarlar";
-
-/* The title of the share button in referral share view. */
-"Share" = "Paylaş";
-
-/* action */
-"Share contact" = "Kişiyi paylaş";
-
-/* Action */
-"Show" = "Göster";
-
-/* The button title of the conversation notice view shown in the conversation view. */
-"Show me" = "Nasıl olduğunu göster";
-
-/* The body of notification that will show when the token of one account is revoked */
-"Sign in again to keep receiving updates" = "Güncellemeleri almayı sürdürmek için yeniden oturum açın";
-
-/* Alert title to confirm signout
-   menu title */
-"Sign out" = "Oturumu kapat";
-
-/* Action */
-"Sign Out" = "Oturumu kapat";
-
-/* Title in signature settings */
-"Signature" = "İmza";
-
-/* The text shown on the mailbox when the primary user changed */
-"Signed in as %@" = "%@ olarak oturum açıldı";
-
-/* Alert when auth token is revoked and switch to another */
-"Signed out from %@ and signed in with %@" = "%1$@ oturumu kapatıldı ve %2$@ ile oturum açıldı";
-
-/* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "%@ oturumu kapatıldı";
-
-/* skip button title in onboarding page */
-"Skip" = "Atla";
-
-/* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "Ertele";
-
-/* The banner shown in case of proxy failure */
-"Some images could not be loaded with tracking protection." = "İzleyici koruması nedeniyle bazı görseller yüklenemedi.";
-
-/* menu title */
-"Spam" = "İstenmeyen";
-
-/* The title of the star action in action sheet
-   VoiceOver title of star button in the message view */
-"Star" = "Yıldız koy/kaldır";
-
-/* Title */
-"Star/unstar" = "Yıldız koy/kaldır";
-
-/* menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
-"Starred" = "Yıldızlı";
-
-/* contact placeholder */
-"State" = "Bölge";
-
-/* network troubleshot cell title */
-"Still can't find a solution" = "Hala bir çözüm bulunamadı";
-
-/* cell title in device settings */
-"Storage" = "Depolama alanı";
-
-/* Alert title */
-"Storage full" = "Depolama alanı dolu";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Depolama alanı sınırı";
-
-/* Storage warning */
-"Storage quota exceeded" = "Depolama alanı kotası aşıldı";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Kullanılan depolama alanı";
-
-/* The text for determining the size of the encrypted search index */
-"Storage used: " = "Kullanılan depolama alanı: ";
-
-/* Title */
-"Storage Warning" = "Depolama alanı uyarısı";
+"Sent by Proton Mail with zero-access encryption" = "Proton Mail tarafından sıfır erişim şifrelemesi ile gönderildi";
 
 /* The message after tapping the encryption icon. */
 "Stored with zero-access encryption" = "Sıfır erişim şifrelemesiyle kaydedildi";
 
-/* contact placeholder */
-"Street" = "Sokak";
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "Doğrulanmış göndericiden uçtan uca şifrelenmiş ileti";
 
-/* Placeholder */
-"Subject" = "Konu";
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted and signed message" = "Uçtan uca şifrelenmiş ve imzalanmış ileti";
 
-/* subject: text when forward */
-"Subject:" = "Konu:";
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "Doğrulanmış göndericiden PGP ile şifrelenmiş ileti";
 
-/* The subject of the email draft created in the network troubleshoot view. */
-"Subject..." = "Konu...";
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted and signed message" = "PGP ile şifrelenmiş ve imzalanmış ileti";
 
-/* menu title
-   The title of a subscription plans screen */
-"Subscription" = "Abonelik";
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "Doğrulanmış göndericiden PGP ile imzalanmış ileti";
 
-/* cell title in app settings */
-"Swipe actions" = "Kaydırma işlemleri";
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP ile şifrelenmiş ileti";
 
-/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
-"Switch selection mode" = "Seçim kipine geç";
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "PGP ile imzalanmış ileti. Gönderici doğrulanamadı";
 
-/* The title of voice over action that switches the unread filter status in the inbox */
-"Switch unread filter" = "Okunmamış süzgecine geç";
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "Doğrulanmış alıcıya uçtan uca şifrelenmiş";
 
-/* Alert when switched account by clicking notification of another account */
-"Switched to account '%@'" = "'%@' hesabına geçildi";
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "Uçtan uca şifrelenmiş";
 
-/* Error */
-"System can't copy the file" = "Sistem dosyayı kopyalayamadı";
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "Doğrulanmış alıcıya PGP ile şifrelenmiş";
 
-/* Title */
-"Take new photo" = "Yeni fotoğraf çek";
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP ile şifrelenmiş";
 
-/* No comment provided by engineer. */
-"Tap here to set" = "Ayarlamak için buraya dokunun";
-
-/* Placeholder in text view destined to gather written user feedback */
-"Tell us about your experience. (Optional)" = "Bize deneyimlerinizi anlatın. (İsteğe bağlı)";
-
-/* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Virüsten koruma uygulamanızı geçici olarak devre dışı bırakın ya da kaldırın.";
-
-/* The title of the terms and conditions button in referral share view. */
-"Terms & conditions" = "Hüküm ve koşullar";
-
-/* No comment provided by engineer. */
-"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Hata bildiriminde bulunduğunuz için teşekkür ederiz. Bildiriminiz hata izleme sistemimize eklendi.";
-
-/* Comment in banner thanking user for providing feedback */
-"Thank you for your feedback!" = "Geri bildiriminiz için teşekkürler!";
-
-/* Error message */
-"The 2 passwords are not matching" = "Parola ile onayı aynı değil";
-
-/* The content of the alert after tapping reset in toolbar customization view. */
-"The actions in the toolbar will be reset to default" = "Araç çubuğu varsayılan işlemlere sıfırlanacak";
-
-/* Info banner to inform the user that indexing might be stopped when the app is closed. */
-"The download will stop if the Proton Mail app is closed." = "Proton Mail uygulaması kapatılırsa indirme işlemi durdurulur.";
-
-/* Description */
-"The draft cache is broken. Please try again." = "Taslak ön belleği bozuldu. Lütfen yeniden deneyin.";
-
-/* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "Şu dosyalar eklenemedi:";
-
-/* The alert title of user trying to open a scheduled-send message after its time is up. */
-"The message is being sent and will move to the Sent folder once sending is complete." = "İleti gönderiliyor. Gönderim tamamlandığında ileti Gönderilmiş kutusuna taşınacak.";
-
-/* update password error */
-"The new password can't be empty." = "Yeni parola boş olamaz.";
-
-/* update password error */
-"The new password does not match." = "Yeni parola eşleşmiyor.";
-
-/* update password error */
-"The new password needs to be at least 8 characters long" = "Yeni parola en az 8 karakter uzunluğunda olmalıdır";
-
-/* update password error */
-"The password is wrong." = "Parola yanlış.";
-
-/* Error message */
-"The password must be between 8 and 21 characters long" = "Parola uzunluğu 8 ile 21 karakter arasında olmalıdır";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN kodu ile onayı aynı değil!";
-
-/* update password error */
-"The private key update failed." = "Kişisel anahtar güncellenemedi.";
-
-/* Title */
-"The request timed out." = "İstek zaman aşımına uğradı.";
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP ile imzalanmış";
 
 /* The error message while calculating the encryption preferences */
-"The sending key is not valid" = "Gönderim anahtarı geçersiz";
+"Email address disabled" = "E-posta adresi kullanımdan kaldırıldı";
 
-/* Warning message */
-"The sending time needs to be at least 5 minutes in the future." = "Gönderilme zamanı en az 5 dakika sonra olmalıdır.";
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "İç kullanıcı için herhangi bir anahtar alınamadı";
 
-/* Description */
-"The size limit for attachments is 25 MB." = "Ek dosyaların boyutu 25 MB ile sınırlıdır.";
-
-/* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Erişmeye çalıştığınız adres standart olmadığından düzgün yüklenmeyebilir. Adresi aygıtınızın varsayılan tarayıcısı ile açmak ister misiniz?";
-
-/* Alert when the account is already logged in */
-"The user is already signed in" = "Kullanıcı zaten oturum açmış";
-
-/* Alert to confirm signout with pending message in the queue */
-"There are unsent messages that will be lost if you sign out" = "Gönderilmemiş iletiler var. Oturumu kapatırsanız bunlar silinecek";
-
-/* Alert message when user tries to delete label */
-"This action cannot be undone." = "Bu işlem geri alınamaz.";
-
-/* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Bu işlem geri alınamaz. Bu klasöre kaydedilmiş e-postalar silinmeyecek ve Tüm e-postalar kutusundan erişilebilecek.";
-
-/* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "Bu yazışmada çöpe atılmamış iletiler var.";
-
-/* No comment provided by engineer. */
-"This conversation contains trashed messages" = "Bu yazışmada, çöpe atılmış iletiler var";
-
-/* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, etki alanının kimlik doğrulama gereksinimlerini karşılayamadı. E-posta, sahte ya da hatalı iletilmiş olabilir.";
-
-/* The error message that the incoming mail failed dmarc authentication */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Bu e-posta, etki alanının kimlik doğrulama gereksinimlerini karşılayamadı. E-posta, sahte ya da hatalı iletilmiş olabilir.";
-
-/* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, bir Proton Mail adresinden gelmiş gibi görünüyor. Ancak sistemimizin dışından geldi ve kimlik doğrulama gereksinimlerini karşılayamadı. Sahte ya da doğru olmayan şekilde iletilmiş olabilir!";
-
-/* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Bu özellik, e-postalarınızı göndermeyi geciktirerek belirtilen süre içinde göndermeyi geri alma olanağı sağlar.";
-
-/* The subtitle will be shown when folder doesnt have emails */
-"This folder is empty" = "Bu klasör boş";
-
-/* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Bu bağlantı, parola ve kredi kartı gibi bilgilerinizi çalmayı deneyen bir siteye gidiyor olabilir..\n%@\n\nGüvenliğiniz için daha ileri gitmeyin.";
-
-/* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "İletinin gönderilme zamanlaması kaldırıldı. Daha sonra gönderilmesini istiyorsanız \"Zamanlanmış gönderim\" üzerine dokunabilirsiniz";
-
-/* spam score warning */
-"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Bu ileti, bir kimlik avı girişimi olabilir. Lütfen göründüğü gibi olduklarından emin olmak için gönderici adresini ve ileti içeriğini kontrol edin.";
-
-/* The title of auto reply banner */
-"This message was automatically generated" = "Bu ileti otomatik olarak oluşturulmuştur";
-
-/* The title of the scheduled message banner. */
-"This message will be sent on %@ at %@" = "Bu ileti %1$@ tarihinde, %2$@ saatinde gönderilecek";
-
-/* expiration time count down */
-"This message will expire in %dD %dH %dM" = "Bu ileti %1$d gün %2$d saat %3$d dakika sonra geçersiz olacak";
-
-/* Title */
-"This preference will fallback to Safari if the browser of choice is uninstalled." = "Seçtiğiniz tarayıcı kaldırıldığında bu seçenek Safari olarak ayarlanır.";
-
-/* The title of the info label in the second segment of the Customize toolbar setting view. */
-"This toolbar appears when selecting multiple messages in your inbox." = "Bu araç çubuğu, gelen kutunuzda birden fazla ileti seçtiğinizde görünür.";
-
-/* The title of the info label in the first segment of the Customize toolbar setting view. */
-"This toolbar is visible when reading a message." = "Bu araç çubuğu bir ileti okunurken görünür.";
-
-/* Message of the alert to confirm enabling of the auto delete option */
-"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Bu işlem, şu anda bu klasörlerde bulunanlarla birlikte çöp veya istenmeyen kutularında 30 günden uzun süre kalan tüm iletileri siler.";
-
-/* The subtitle of empty inbox */
-"Time to relax" = "Rahatlama zamanı";
-
-/* A section title for timing section to set auto lock timing */
-"Timing" = "Zamanlama";
-
-/* contacts talbe cell Title title */
-"Title" = "Başlık";
-
-/* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "TLS sertifikası doğrulanamadı. İnternet bağlantınız izlenebilir. Güvenliğiniz için uygulama geçici olarak devre dışı bırakıldı.";
-
-/* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS sertifikası doğrulanamadı. İnternet bağlantınız izlenebilir. Güvenliğiniz için uygulama geçici olarak devre dışı bırakıldı.\n\nHemen ağları değiştirin.";
-
-/* message To: feild
-   Title */
-"To" = "Kime";
-
-/* The title of the time label of the scheduled message that is about to be sent today. */
-"Today, %@" = "Bugün, %@";
-
-/* One of schedule time options */
-"Tomorrow" = "Yarın";
-
-/* scheduled send message at tomorrow morning Action */
-"Tomorrow at 08:%02d AM" = "Bugün saat 08:%02d ÖÖ";
-
-/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
-"Tomorrow, %@" = "Yarın, %@";
-
-/* Alert message */
-"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Gönderilecek çok fazla ileti var.\nLütfen, bu iletiyi zamanlamak için başka bir ileti gönderilene kadar bekleyin.";
-
-/* The title of the section header in the toolbar customize view. */
-"Toolbar actions (select up to 5)" = "Araç çubuğu işlemleri (en fazla 5 tane seçin)";
-
-/* The title of the track reward button in referral share view. */
-"Track your rewards" = "Ödüllerinizi izleyin";
-
-/* mail location desc
-   menu title */
-"Trash" = "Çöp kutusu";
-
-/* network troubleshot view title */
-"TroubleShooting" = "Sorun giderme";
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "İç kullanıcı için geçerli bir anahtar alınamadı";
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Güvenilen anahtarlar gönderim için geçerli değil";
 
-/* The sub title of the search view if there is no result. */
-"Try a different search term." = "Farklı bir ifade ile aramayı deneyin.";
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "İç kullanıcı için geçerli WKD bir gönderim anahtarı alınamadı";
 
-/* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Farklı bir ağ kullanarak Proton bağlantısı kurmayı deneyin (ayrıca %1$@ ya da %2$@ kullanabilirsiniz).";
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Gönderim anahtarı geçersiz";
 
-/* The footer of combined contact in settings */
-"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği etkinleştirin.";
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1d";
 
-/* Placeholder */
-"Two Factor Code" = "İki adımlı doğrulama kodu";
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "1 dakikadan az";
 
-/* Internal type casting error */
-"Type casting error" = "Tür döküm hatası";
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "İleti gönderiliyor. Gönderim tamamlandığında ileti Gönderilmiş kutusuna taşınacak.";
 
-/* Description */
-"Unable to edit this message offline" = "Bu ileti çevrim dışı düzenlenemedi";
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "WiFi bağlantınız kesilirse indirme işlemi mobil veri üzerinden yapılır.";
 
-/* Description */
-"Unable to parse response" = "Yanıt işlenemedi";
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Mobil veri ile indir";
 
-/* Description */
-"Unable to parse the response object:\n%@" = "Yanıt nesnesi işlenemedi: \n%@";
+/* The title of downloaded messages in settings */
+"Download progress" = "İndirme ilerlemesi";
 
-/* error when sending the message */
-"Unable to send the email" = "E-posta gönderilemedi";
+/* The title of message history in settings for encrypted search */
+"Message history" = "İleti geçmişi";
 
-/* Button to unblock a sender, keep it short to fit in the UI */
-"Unblock" = "Engellemeyi kaldır";
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Depolama alanı sınırı";
+
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Kullanılan depolama alanı";
+
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "Tüm iletileriniz indirildi";
+
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Tüm iletiler indirilemedi. İletileri indirmek için aygıt üzerinde boş depolama alanı açın.";
+
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Tüm iletiler indirilemedi. İletileri indirmek için aşağıdaki depolama alanı sınırını artırın.";
+
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "Herhangi bir iletiniz yok.";
+
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "İletileriniz indiriliyor...";
+
+/* The title of cached data in local storage settings */
+"Cached data" = "Ön belleğe alınmış veriler";
+
+/* The title of attachments in local storage settings */
+"Attachments" = "Ek dosyalar";
+
+/* cell title in device settings */
+"Downloaded messages" = "İndirilmiş iletiler";
+
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Proton Mail hesabınızın bu aygıt üzerinde ne kadar depolama alanı kullandığı hakkında bilgiler.";
+
+/* The title of the button in local storage attachments */
+"Clear" = "Temizle";
+
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Çevrim dışı iken daha önce açılmış iletilerin açılabilmesini sağlar.";
+
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Çevrim dışı iken daha önce açılmış ek dosyaların açılabilmesini sağlar.";
+
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "İletilerinizde arama yapabilmenizi sağlar. %1$@";
+
+/* The link in local storage downloaded messages. */
+"See details" = "Ayrıntıları görüntüle";
+
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Araç çubuğu işlemleri (en fazla 5 tane seçin)";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Yapılabilecek işlemler";
+
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "Araç çubuğunuzdaki işlemleri seçebilir ve yeniden düzenleyebilirsiniz";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Varsayılana sıfırlansın mı?";
+
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "Araç çubuğu varsayılan işlemlere sıfırlanacak";
+
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Varsayılana sıfırla";
+
+/* The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Araç çubuğunu özelleştir";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "İleti";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "Bu araç çubuğu bir ileti okunurken görünür.";
+
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "Bu araç çubuğu, gelen kutunuzda birden fazla ileti seçtiğinizde görünür.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "Şimdi bu araç çubuğundaki işlemleri seçebilir ve yeniden düzenleyebilirsiniz";
+
+/* Button to block a sender */
+"Block sender" = "Göndericiyi engelle";
+
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Engelle";
+
+/* Settings item to open blocked sender list */
+"Block list" = "Engellenmiş adresler listesi";
+
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Engellenmiş göndericiler";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Güncelleme sıraya alındı. Bağlantı kurulması bekleniyor...";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "Engellenmiş bir gönderici yok";
+
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "%@ tarafından gönderilen yeni e-postalar alınmayacak ve kalıcı olarak silinecek. Engellenen e-posta adreslerini ayarlar bölümünden yönetebilirsiniz.";
+
+/* Banner in the message view */
+"Sender has been blocked" = "Gönderici engellendi";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "%@ göndericisi engellendi";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "%@ göndericisinin engellemesi kaldırıldı";
 
 /* Button to unblock a sender */
 "Unblock sender" = "Göndericinin engelini kaldır";
 
-/* No comment provided by engineer. */
-"Undisclosed Recipients" = "Gizli alıcılar";
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Engellemeyi kaldır";
 
-/* Action */
-"Undo" = "Geri al";
+/* Name of the feature */
+"Email tracking protection" = "E-posta izleme koruması";
 
-/* No comment provided by engineer. */
-"Undo send" = "Göndermeyi geri alma süresi";
+/* Short hint in the header view */
+"No email trackers found" = "Herhangi bir e-posta izleyici bulunamadı";
 
-/* title, default display name */
-"Unknown" = "Bilinmiyor";
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "E-posta izleyiciler gizliliğinizi tehlikeye düşürebilir.";
 
-/* Error */
-"Unknown Error" = "Bilinmeyen sorun";
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "İzleyici koruması nedeniyle bazı görseller yüklenemedi.";
 
-/* The text for current selection of the storage limit of encrypted search when there is no limit. */
-"Unlimited" = "Sınırsız";
+/* Button inside the banner */
+"Load" = "Yükle";
 
-/* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Sınırsız klasör ve etiket";
+/* Official badge next to sender's name */
+"Official" = "Resmi";
+
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Bağlantı kopyalandı.";
+
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "Arkadaşlarınıza Proton önerin,\n $90 tutarına kadar kredi kazanın!";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Arkadaşlarınızı Proton kullanmaya davet edin: Mail Plus tarifesini ücretsiz olarak denesinler. Ücretli bir tarifeye abone olurlarsa siz de kredi kazanın.";
+
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "Davet bağlantınız";
+
+/* The title of the share button in referral share view. */
+"Share" = "Paylaş";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Ödüllerinizi izleyin";
+
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Hüküm ve koşullar";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Bir süredir gizliliğimi koruyan Proton Mail e-posta hizmetini kullanıyorum ve senin de beğeneceğini düşündüm. Ücretli özellikleri bir ay süreyle ücretsiz olarak kullanmak için bu bağlantıya giderek bir hesap açabilirsin:";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Kişileriniz de Proton Mail kullanıyorsa gizliliğiniz daha iyi korunur. Arkadaşlarınızı Proton kullanmaya davet edin ve ücretli özelliklerden ücretsiz olarak yararlanın.";
+
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Belki daha sonra";
+
+/* Settings lock protection section */
+"Protection" = "Koruma";
+
+/* Settings lock advanced settings section */
+"Advanced settings" = "Gelişmiş ayarlar";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey koruması";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey, bir saldırganın aygıtınızın içeriğini kopyalaması gibi özenli saldırılara uğramanız durumunda Proton bilgilerinizi daha iyi korur. %1$@";
+
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Sorumluluk reddi";
+
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Bildirim işlemleri ve diğer arka plan işlemleri kullanılamaz olacak";
+
+/* One of schedule time options */
+"Tomorrow" = "Yarın";
+
+/* One of the schedule time options */
+"As scheduled" = "Zamanlandığı gibi";
+
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Kendi zamanlamanızı yapın";
 
 /* The content of the up sell content of the scheduled send. */
 "Unlock custom message scheduling and other benefits when you upgrade your plan." = "Tarifenizi yükselttiğinizde özel ileti zamanlaması ve ek faydalara erişebilirsiniz.";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Unlock required" = "Kilidin açılması gerekli";
-
-/* The unread title of unread action button in mailbox view */
-"unread" = "okunmamış";
-
-/* No comment provided by engineer. */
-"Unread" = "Okunmamış";
-
-/* The title of the star action in action sheet */
-"Unstar" = "Yıldızı kaldır";
-
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "E-posta listesinin aboneliğinden ayrıl";
-
-/* Error message */
-"Unsupported file type" = "Dosya biçimi desteklenmiyor";
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Şimdi yükselt";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "3 özel e-posta etki alanına kadar";
+"Schedule messages at any time" = "İletileri istediğiniz zamanda gönderin";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Sınırsız klasör ve etiket";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "500 GB depolama alanına kadar";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 15 email addresses" = "15 e-posta adresine kadar";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 500 GB of storage" = "500 GB depolama alanına kadar";
+"Up to 3 custom email domains" = "3 özel e-posta etki alanına kadar";
 
-/* update notification email error title */
-"Update Notification Email" = "Bildirim e-posta adresini güncelle";
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email takma adları";
 
-/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
-"Update queued, awaiting connectivity..." = "Güncelleme sıraya alındı. Bağlantı kurulması bekleniyor...";
+/* One of schedule time options */
+"In the morning" = "Sabahları";
 
-/* The title of last update status of more than 1 hour */
-"Updated >1 hour ago" = ">1 saat önce güncellendi";
+/* Push notification action archive */
+"Archive (verb)" = "Arşivle";
 
-/* The title of last update status of updated just now */
-"Updated just now" = "Az önce güncellendi";
+/* Message to show to user after updating password. */
+"Password updated" = "Parola güncellendi";
 
-/* Welcome to rebranding title */
-"Updated Proton, unified protection" = "Güncellenmiş Proton, birleşik koruma";
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Ön bellek temizleniyor…";
 
-/* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Şimdi yükselt";
+/* Title for application logs settings option */
+"Application logs" = "Uygulama günlüğü kayıtları";
 
-/* Error */
-"Upgrade to a paid plan to send from your %@ address" = "%@ adresinden gönderebilmek için ücretli bir tarifeye yükseltin";
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Taşımadan sonra bir sonraki ileti";
+
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Taşımadan sonra bir sonraki iletiye geç";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Bir ileti taşındığında (arşivleme gibi) bir sonraki iletiye geçilir.";
+
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "İleti açılamadı. Yeniden deneyin.";
+
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Lütfen Proton Mail uygulamasında oturum açın.";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Yanıtla (son iletiyi)";
+
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "İlet (son ileti)";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Tümünü yanıtla (son iletiyi)";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Özelleştir";
+
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "---Size yardımcı olabilmemiz için lütfen olabildiğince çok ayrıntı verin---\n\nÖzet:\n\nSorun bir kereden fazla oldu mu: Evet/Hayır\nSorunu yeniden oluşturma adımları:\nBeklenen sonuç:\nGerçekleşen sonuç:\nYorumlar:";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Farklı bir ifade ile aramayı deneyin.";
+
+/* zero messages matching search query */
+"No results found" = "Herhangi bir sonuç bulunamadı";
+
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Otomatik sil";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "İstenmeyen iletiler otomatik olarak silinsin";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Çöp ve istenmeyen kutularında 30 günden uzun süre kalan iletiler otomatik olarak silinir.";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "İletiler silinsin mi?";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "Bu işlem, şu anda bu klasörlerde bulunanlarla birlikte çöp veya istenmeyen kutularında 30 günden uzun süre kalan tüm iletileri siler.";
+
+/* Button to enable encrypted search */
+"Enable" = "Aç";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Otomatik silme kapatılsın mı?";
+
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Silinmek üzere zamanlanmış e-postalar çöp kutusu ve istenmeyen klasöründe kalacak.";
+
+/* Button to disable auto delete */
+"Disable" = "Kapat";
 
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Çöp veya istenmeyen kutularında 30 günden uzun süredir duran iletilerin otomatik olarak silinmesi için tarifenizi yükseltin.";
 
-/* Action */
-"Upload device contacts" = "Aygıt kişilerini yükle";
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Çöp kutusunda 30 günden uzun süre kalan iletileri otomatik olarak silin.";
 
-/* Description */
-"Upload iOS contacts to Proton Mail?" = "iOS kişileri Proton Mail üzerine yüklensin mi?";
+/* Title of button to discard auto delete option */
+"No, thanks" = "Hayır, teşekkürler";
 
-/* default vcard types */
-"URL" = "İnternet adresi";
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Çöp ve istenmeyen kutularında 30 günden uzun süredir duran iletiler otomatik olarak silinir.";
 
-/* Option title */
-"Use folder colors" = "Klasör renkleri kullanılsın";
+/* Title of button to empty spam folder */
+"Empty spam" = "İstenmeyen kutusunu boşalt";
 
-/* error title */
-"Verification error" = "Doğrulama sorunu";
+/* Title of button to empty trash folder */
+"Empty trash" = "Çöp kutusunu boşalt";
 
-/* error details */
-"Verification of this content’s signature failed" = "Bu içeriğin imzası doğrulanamadı";
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Çöpleri temizleyin";
 
-/* View action for view scheduled message. */
-"View" = "Görüntüle";
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Çöp ve istenmeyen kutularındaki 30 günden eski iletileri otomatik olarak temizleyin. Tarifenizi yükselterek bunun gibi başka ek faydalardan yararlanın.";
 
-/* No comment provided by engineer. */
-"View headers" = "Üst bilgileri görüntüle";
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "3 TB depolama alanına kadar";
 
-/* No comment provided by engineer. */
-"View HTML" = "HTML olarak görüntüle";
-
-/* The title of the view message in dark mode action in action sheet */
-"View message in Dark mode" = "İletiyi koyu kipte görüntüle";
-
-/* The title of the view message in light mode action in action sheet */
-"View message in Light mode" = "İletiyi açık kipte görüntüle";
-
-/* Title */
-"Warning" = "Uyarı";
-
-/* human check warning description */
-"Warning: Before you pass the human check you can't send email!" = "Uyarı: İnsan doğrulamasını tamamlamadan e-posta gönderemezsiniz!";
-
-/* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Uyarı: Sahte olma olasılığı bulunan şüpheli site";
-
-/* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "İletinizi, büyük olasılıkla zayıf bir ağ bağlantısı nedeniyle gönderemedik. İletiniz taslaklar kutusuna kaydedildi ve uygulamayı bir sonraki açışınızda otomatik olarak gönderilecek.";
-
-/* Message of a banner which is displayed on the messages list when offline */
-"We have trouble connecting to the servers. Please reconnect." = "Sunucularla bağlantı kurmakta sorun yaşıyoruz. Lütfen yeniden bağlanın.";
-
-/* alert body before list of addresses */
-"We recommend setting up a password instead for the following recipients:" = "Bunun yerine, şu alıcılar için bir parola ayarlanmasını öneriyoruz:";
-
-/* alert body before list of addresses */
-"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Bunun yerine şu alıcılar için bir parola ayarlanmasını ya da PGP şifrelemesinin devre dışı bırakılmasını öneriyoruz:";
-
-/* Example feedback */
-"Wonderful" = "Çok iyi";
-
-/* default vcard types */
-"Work" = "İş";
-
-/* Title */
-"wrote:" = "şunu yazdı:";
-
-/* Error message */
-"Yes, attach details of payment" = "Evet, ödeme ayrıntıları eklensin";
-
-/* No comment provided by engineer. */
-"Yesterday" = "Dün";
-
-/* link opeining confirmation */
-"You are about to launch the web browser and navigate to" = "Tarayıcıyı açmak ve şuraya gitmek üzeresiniz";
-
-/* The title of empty inbox */
-"You are all caught up!" = "Herşeyi gördünüz!";
-
-/* No comment provided by engineer. */
-"You are not connected. We cannot display the content of your message." = "Bağlantınız yok. İletinizin içeriğini görüntüleyemiyoruz.";
-
-/* The text shown on the mailbox when the device is in offline mode */
-"You are offline" = "Çevrim dışısınız";
-
-/* The title of the info bubble view in toolbar customization view. */
-"You can choose and rearrange the actions in your toolbar" = "Araç çubuğunuzdaki işlemleri seçebilir ve yeniden düzenleyebilirsiniz";
-
-/* The message of the conversation notice view shown in the conversation view. */
-"You can disable conversations from settings any time." = "Yazışmaları gruplama özelliğini istediğiniz zaman ayarlar bölümünden kapatabilirsiniz.";
-
-/* The content of the Customize toolbar spotlight view. */
-"You can now choose and rearrange the actions in this bar" = "Şimdi bu araç çubuğundaki işlemleri seçebilir ve yeniden düzenleyebilirsiniz";
-
-/* The content of the introducation view of the schedule send */
-"You can now schedule your messages to be sent later" = "Artık iletileri daha sonra gönderilmek üzere zamanlayabilirsiniz";
-
-/* The description of encrypted search at the pop up. */
-"You can now search within your messages. This feature can be enabled from settings at any time." = "Artık iletileriniz içinde arama yapabilirsiniz. Bu özelliği istediğiniz zaman ayarlar bölümünden etkinleştirebilirsiniz.";
-
-/* Explanation of downloaded messages for encrypted search */
-"You can search within downloaded messages. For all other messages, only the recipient list and subject line will be searched." = "İndirilmiş iletilerde arama yapabilirsiniz. Diğer tüm iletiler için yalnız alıcı listesi ve konu satırında arama yapılabilir.";
-
-/* pm.me upgrade warning in composer */
-"You can't set %@ address as default because it is a paid feature." = "Ücretli bir özellik olduğundan %@ adresini varsayılan olarak ayarlayamazsınız.";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Sistem ayarlarında %1$@ devre dışı bırakılmış. %2$@ önemli hesap bilgilerinizi korumak için kullanılır. Hesabınıza erişmek için, ayarlar bölümüne giderek %3$@ özelliğini etkinleştirin ya da yeniden oturum açın.";
-
-/* Message */
-"You have %d new emails!" = "%d yeni e-postanız var!";
-
-/* Title */
-"You have a new email!" = "Yeni bir e-postanız var!";
-
-/* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "En az bir geçersiz e-posta adresi yazdınız. Lütfen alıcılarınızı doğrulayın.";
-
-/* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "En az bir bilinmeyen alıcı yazdınız. Lütfen alıcılarınızı doğrulayın.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "Herhangi bir iletiniz yok.";
-
-/* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "Kaydedilmemiş değişiklikleriniz var. Kaydetmek ister misiniz?";
-
-/* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Depolama alanınızın (%2$@), %1$d%% kadarını kullanıyorsunuz. Lütfen e-posta gönderip almayı sürdürebilmek için tarifenizi yükseltin.";
-
-/* Content of space warning */
-"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Depolama alanınızın (%@), tamamını kullandınız. Lütfen e-posta gönderip almayı sürdürebilmek için tarifenizi yükseltin.";
-
-/* Description */
-"You need at least one recipient to send" = "Göndermek için en az bir alıcı gereklidir";
-
-/* Alert to confirm signout */
-"You will be switched to %@" = "%@ hesabına geçeceksiniz";
-
-/* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "İleti geri alınamayacak şekilde silinecek. Emin misiniz?";
-
-/* Title of the spotlight for tracker protection */
-"You’re safe from email trackers" = "E-posta izleyicilerinden korunuyorsunuz";
-
-/* No comment provided by engineer. */
-"Your changes will be discarded" = "Yaptığınız değişiklikler silinecek";
-
-/* Goverment blocking description */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ülkeniz Proton ağına erişimi engelliyor olabilir. Proton ağına erişmek için %1$@ (ya da başka bir VPN) ya da %2$@ kullanmayı deneyin.";
-
-/* Spotlight explanation of the feature */
-"Your emails now come with remote images loaded by default. Senders will not know if, where, or when you opened their emails.\nTo change this, go to Settings → Account settings → Privacy." = "E-postalarınız artık varsayılan olarak yüklenen uzak görseller ile geliyor. Göndericiler, e-postalarını açıp açmadığınızı, nerede veya ne zaman açtığınızı bilemezler.\nAyarlar → Hesap ayarları → Gizlilik bölümüne giderek bu seçeneği değiştirebilirsiniz.";
-
-/* Title of user feedback view */
-"Your feedback" = "Geri bildiriminiz";
-
-/* The section title of folder manager table */
-"Your folders" = "Klasörleriniz";
-
-/* The title link of the textfield of the referral link in referral share view. */
-"Your invite link" = "Davet bağlantınız";
-
-/* The section title of label manager table */
-"Your labels" = "Etiketleriniz";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "İletileriniz indiriliyor...";
-
-/* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Kişileriniz de Proton Mail kullanıyorsa gizliliğiniz daha iyi korunur. Arkadaşlarınızı Proton kullanmaya davet edin ve ücretli özelliklerden ücretsiz olarak yararlanın.";
-
-/* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Bir süredir etkin olmadığınızdan ya da kapatıldığından oturumunuzun süresi dolmuş. Lütfen yeniden oturum açın.";
-
-/* contact placeholder */
-"ZIP" = "Posta kodu";
-
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Özel e-posta etki alanları";

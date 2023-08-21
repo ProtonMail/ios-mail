@@ -13,9 +13,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d e-posta izleyici engellendi</string>
+        <string>%d rastreador de correo bloqueado</string>
         <key>other</key>
-        <string>%d e-posta izleyici engellendi</string>
+        <string>%d rastreadores de correo bloqueados</string>
       </dict>
     </dict>
     <key>%d email trackers found</key>
@@ -29,9 +29,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d e-posta izleyici bulundu</string>
+        <string>%d rastreador de correo encontrado</string>
         <key>other</key>
-        <string>%d e-posta izleyici bulundu</string>
+        <string>%d rastreadores de correo encontrados</string>
       </dict>
     </dict>
     <key>Proton found %d trackers on this message.</key>
@@ -45,9 +45,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Proton bu iletide %d izleyici buldu ve engelledi.</string>
+        <string>Proton encontró y bloqueó %d rastreador en este mensaje.</string>
         <key>other</key>
-        <string>Proton bu iletide %d izleyici buldu ve engelledi.</string>
+        <string>Proton encontró y bloqueó %d rastreadores en este mensaje.</string>
       </dict>
     </dict>
     <key>+%d others</key>
@@ -61,9 +61,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d kişi daha</string>
+        <string>%d otro</string>
         <key>other</key>
-        <string>%d kişi daha</string>
+        <string>%d otros</string>
       </dict>
     </dict>
     <key>Updated %d min ago</key>
@@ -77,9 +77,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>d</string>
         <key>one</key>
-        <string>%d dakika önce güncellendi</string>
+        <string>Actualizado hace %d min</string>
         <key>other</key>
-        <string>%d dakika önce güncellendi</string>
+        <string>Actualizado hace %d min</string>
       </dict>
     </dict>
     <key>%u message</key>
@@ -93,9 +93,9 @@
         <key>NSStringFormatSpecTypeKey</key>
         <string>NSStringPluralRuleType</string>
         <key>one</key>
-        <string>%u ileti</string>
+        <string>%u mensaje</string>
         <key>other</key>
-        <string>%u ileti</string>
+        <string>%u mensajes</string>
       </dict>
     </dict>
     <key>%u conversation</key>
@@ -109,9 +109,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%u yazışma</string>
+        <string>%u conversación</string>
         <key>other</key>
-        <string>%u yazışma</string>
+        <string>%u conversaciones</string>
       </dict>
     </dict>
     <key>%d attempt remaining</key>
@@ -125,9 +125,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d deneme hakkı kaldı</string>
+        <string>%d intento restante</string>
         <key>other</key>
-        <string>%d deneme hakkı kaldı</string>
+        <string>%d intentos restantes</string>
       </dict>
     </dict>
     <key>%d attempt remaining until secure data wipe!</key>
@@ -141,9 +141,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d deneme sonra veriler güvenli olarak silinecek!</string>
+        <string>¡%d intento restante hasta que los datos seguros se borren!</string>
         <key>other</key>
-        <string>%d deneme sonra veriler güvenli olarak silinecek!</string>
+        <string>¡%d intentos restantes hasta que los datos seguros se borren!</string>
       </dict>
     </dict>
     <key>%1$d message moved to %2$@</key>
@@ -157,9 +157,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%1$d ileti %2$@ içine taşındı</string>
+        <string>%1$d mensaje movido a %2$@</string>
         <key>other</key>
-        <string>%1$d ileti %2$@ içine taşındı</string>
+        <string>%1$d mensajes movidos a %2$@</string>
       </dict>
     </dict>
     <key>%1$d conversation moved to %2$@</key>
@@ -173,9 +173,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%1$d yazışma %2$@ içine taşındı</string>
+        <string>%1$d conversación movida a %2$@</string>
         <key>other</key>
-        <string>%1$d yazışma %2$@ içine taşındı</string>
+        <string>%1$d conversaciones movidas a %2$@</string>
       </dict>
     </dict>
     <key>%d message labeled</key>
@@ -189,9 +189,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d ileti etiketlendi</string>
+        <string>%d mensaje etiquetado</string>
         <key>other</key>
-        <string>%d ileti etiketlendi</string>
+        <string>%d mensajes etiquetados</string>
       </dict>
     </dict>
     <key>%d conversation labeled</key>
@@ -205,9 +205,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d yazışma etiketlendi</string>
+        <string>%d conversación etiquetada</string>
         <key>other</key>
-        <string>%d yazışma etiketlendi</string>
+        <string>%d conversaciones etiquetadas</string>
       </dict>
     </dict>
     <key>Are you sure you want to permanently delete %d message?</key>
@@ -221,9 +221,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d iletiyi kalıcı olarak silmek istediğinize emin misiniz?</string>
+        <string>¿En verdad desea eliminar permanentemente %d mensaje?</string>
         <key>other</key>
-        <string>%d iletiyi kalıcı olarak silmek istediğinize emin misiniz?</string>
+        <string>¿En verdad desea eliminar permanentemente %d mensajes?</string>
       </dict>
     </dict>
     <key>Are you sure you want to permanently delete %d conversation?</key>
@@ -237,9 +237,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d yazışmayı kalıcı olarak silmek istediğinize emin misiniz?</string>
+        <string>¿En verdad desea eliminar permanentemente %d conversación?</string>
         <key>other</key>
-        <string>%d yazışmayı kalıcı olarak silmek istediğinize emin misiniz?</string>
+        <string>¿En verdad desea eliminar permanentemente %d conversaciones?</string>
       </dict>
     </dict>
     <key>%d member</key>
@@ -253,9 +253,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d üye</string>
+        <string>%d miembro</string>
         <key>other</key>
-        <string>%d üye</string>
+        <string>%d miembros</string>
       </dict>
     </dict>
     <key>In %d minutes</key>
@@ -269,9 +269,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d dakika içinde</string>
+        <string>En %d minuto</string>
         <key>other</key>
-        <string>%d dakika içinde</string>
+        <string>En %d minutos</string>
       </dict>
     </dict>
     <key>These %d messages will move to Drafts and have their schedule removed.</key>
@@ -285,9 +285,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Bu %d ileti Taslaklar kutusuna taşınacak ve zamanlaması kaldırılacak.</string>
+        <string>%d mensaje se moverá a la carpeta Borradores y se eliminará su programación.</string>
         <key>other</key>
-        <string>Bu %d ileti Taslaklar kutusuna taşınacak ve zamanlamaları kaldırılacak.</string>
+        <string>Estos %d mensajes se moverán a la carpeta Borradores y se eliminarán sus programaciones.</string>
       </dict>
     </dict>
     <key>%d message moved to Drafts</key>
@@ -301,9 +301,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d ileti Taslaklar kutusuna taşındı</string>
+        <string>%d mensaje movido a Borradores</string>
         <key>other</key>
-        <string>%d ileti Taslaklar kutusuna taşındı</string>
+        <string>%d mensajes movidos a Borradores</string>
       </dict>
     </dict>
     <key>%d seconds</key>
@@ -317,9 +317,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d saniye</string>
+        <string>%d segundo</string>
         <key>other</key>
-        <string>%d saniye</string>
+        <string>%d segundos</string>
       </dict>
     </dict>
     <key>%d Selected</key>
@@ -333,9 +333,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d seçilmiş</string>
+        <string>%d seleccionado</string>
         <key>other</key>
-        <string>%d seçilmiş</string>
+        <string>%d seleccionados</string>
       </dict>
     </dict>
     <key>%d attachment</key>
@@ -349,9 +349,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d ek dosya</string>
+        <string>%d adjunto</string>
         <key>other</key>
-        <string>%d ek dosya</string>
+        <string>%d adjuntos</string>
       </dict>
     </dict>
     <key>%d Minutes</key>
@@ -365,9 +365,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>%d dakika</string>
+        <string>%d minuto</string>
         <key>other</key>
-        <string>%d dakika</string>
+        <string>%d minutos</string>
       </dict>
     </dict>
     <key>Are you sure you want to delete these %d messages permanently?</key>
@@ -381,9 +381,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Bu iletiyi kalıcı olarak silmek istediğinize emin misiniz?</string>
+        <string>¿En verdad desea eliminar este mensaje de forma permanente?</string>
         <key>other</key>
-        <string>Bu %d iletiyi kalıcı olarak silmek istediğinize emin misiniz?</string>
+        <string>¿En verdad desea eliminar estos %d mensajes de forma permanente?</string>
       </dict>
     </dict>
   </dict>
