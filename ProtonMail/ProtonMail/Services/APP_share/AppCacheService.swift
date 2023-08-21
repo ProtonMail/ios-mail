@@ -21,7 +21,6 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import OpenPGP
 
 class AppCacheService: Service {
 
@@ -69,6 +68,5 @@ class AppCacheService: Service {
         }
 
         UserDefaults.standard.setValue(Bundle.main.appVersion, forKey: Constants.SettingsBundleKeys.appVersion)
-        UserDefaults.standard.setValue(PMNLibVersion.getLibVersion(), forKey: Constants.SettingsBundleKeys.libVersion)
     }
 }

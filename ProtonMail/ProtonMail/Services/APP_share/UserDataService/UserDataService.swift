@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
-import OpenPGP
+
 import ProtonCore_APIClient
 import ProtonCore_Crypto
 import ProtonCore_CryptoGoInterface
@@ -293,8 +293,8 @@ class UserDataService: Service {
                 guard let new_moduls = authModuls.Modulus else {
                     throw UpdatePasswordError.invalidModulus.error
                 }
-                // generat new verifier
-                let new_salt: Data = PMNOpenPgp.randomBits(80) // for the login password needs to set 80 bits
+                // generate new verifier
+                let new_salt = try Crypto.random(byte: 10) // for the login password needs to set 80 bits
 
                 guard let auth = try SrpAuthForVerifier(new_password, new_moduls, new_salt) else {
                     throw UpdatePasswordError.cantHashPassword.error
@@ -429,8 +429,8 @@ class UserDataService: Service {
                     guard let new_moduls = authModuls.Modulus else {
                         throw UpdatePasswordError.invalidModulus.error
                     }
-                    // generat new verifier
-                    let new_lpwd_salt: Data = PMNOpenPgp.randomBits(80) // for the login password needs to set 80 bits
+                    // generate new verifier
+                    let new_lpwd_salt = try Crypto.random(byte: 10) // for the login password needs to set 80 bits
 
                     guard let auth = try SrpAuthForVerifier(newPassword, new_moduls, new_lpwd_salt) else {
                         throw UpdatePasswordError.cantHashPassword.error

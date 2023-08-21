@@ -22,6 +22,7 @@
 
 import Foundation
 import LifetimeTracker
+import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Login
@@ -54,7 +55,12 @@ class SignInManager: Service {
         var mailboxPassword = cleartextPassword
         if let keysalt = auth.passwordKeySalt, !keysalt.isEmpty {
             let keysalt_byte: Data = keysalt.decodeBase64()
-            mailboxPassword = PasswordUtils.getMailboxPassword(cleartextPassword, salt: keysalt_byte)
+            mailboxPassword = .init(
+                value: PasswordHash.hashPassword(
+                    cleartextPassword.value,
+                    salt: keysalt_byte
+                )
+            )
         }
         return mailboxPassword
     }

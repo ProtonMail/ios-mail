@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 
@@ -29,31 +30,39 @@ struct UserDataServiceKeyHelper {
 
     func updatePasswordV2(userKeys: [Key], oldPassword: Passphrase, newPassword: Passphrase) throws -> UpdatedKeyResult {
         let saltOfNewPassword = try Crypto.random(byte: 16) // mailbox pwd need 128 bits
-        let hashedNewPassword = PasswordUtils.getMailboxPassword(newPassword, salt: saltOfNewPassword)
-        let result = try Crypto.updateKeysPassword(userKeys, old_pass: oldPassword, new_pass: hashedNewPassword)
+        let hashedNewPassword = PasswordHash.hashPassword(newPassword.value, salt: saltOfNewPassword)
+        let result = try Crypto.updateKeysPassword(userKeys, old_pass: oldPassword, new_pass: .init(value: hashedNewPassword))
         let updatedKeys = result.filter({ $0.isUpdated == true })
         let originalKeys = result.filter({ $0.isUpdated == false })
-        return UpdatedKeyResult(saltOfNewPassword: saltOfNewPassword,
-                                hashedNewPassword: hashedNewPassword,
-                                updatedUserKeys: updatedKeys,
-                                originalUserKeys: originalKeys,
-                                updatedAddresses: nil)
+        return UpdatedKeyResult(
+            saltOfNewPassword: saltOfNewPassword,
+            hashedNewPassword: .init(value: hashedNewPassword),
+            updatedUserKeys: updatedKeys,
+            originalUserKeys: originalKeys,
+            updatedAddresses: nil
+        )
     }
 
     func updatePassword(userKeys: [Key], addressKeys: [Address], oldPassword: Passphrase, newPassword: Passphrase) throws -> UpdatedKeyResult {
         let saltOfNewPassword = try Crypto.random(byte: 16) // mailbox pwd need 128 bits
-        let hashedNewPassword = PasswordUtils.getMailboxPassword(newPassword, salt: saltOfNewPassword)
-        let userKeyResult = try Crypto.updateKeysPassword(userKeys, old_pass: oldPassword, new_pass: hashedNewPassword)
+        let hashedNewPassword = PasswordHash.hashPassword(newPassword.value, salt: saltOfNewPassword)
+        let userKeyResult = try Crypto.updateKeysPassword(userKeys, old_pass: oldPassword, new_pass: .init(value: hashedNewPassword))
         let updatedUserKeys = userKeyResult.filter({ $0.isUpdated == true })
         let originalUserKeys = userKeyResult.filter({ $0.isUpdated == false })
 
         let addressKeyResult = try
-        Crypto.updateAddrKeysPassword(addressKeys, old_pass: oldPassword, new_pass: hashedNewPassword)
+        Crypto.updateAddrKeysPassword(
+            addressKeys,
+            old_pass: oldPassword,
+            new_pass: .init(value: hashedNewPassword)
+        )
 
-        return UpdatedKeyResult(saltOfNewPassword: saltOfNewPassword,
-                                hashedNewPassword: hashedNewPassword,
-                                updatedUserKeys: updatedUserKeys,
-                                originalUserKeys: originalUserKeys,
-                                updatedAddresses: addressKeyResult)
+        return UpdatedKeyResult(
+            saltOfNewPassword: saltOfNewPassword,
+            hashedNewPassword: .init(value: hashedNewPassword),
+            updatedUserKeys: updatedUserKeys,
+            originalUserKeys: originalUserKeys,
+            updatedAddresses: addressKeyResult
+        )
     }
 }

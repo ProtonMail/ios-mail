@@ -21,9 +21,6 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-#if !APP_EXTENSION
-import OpenPGP
-#endif
 
 struct PushSubscriptionSettings: Hashable, Codable {
     let token, UID: String

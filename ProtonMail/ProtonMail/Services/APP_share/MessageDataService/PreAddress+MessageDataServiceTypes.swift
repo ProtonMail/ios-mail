@@ -21,7 +21,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import OpenPGP
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Hash
