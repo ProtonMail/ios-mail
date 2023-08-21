@@ -27,7 +27,8 @@ import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 import UIKit
 
-class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
+// swiftlint:disable:next type_body_length
+final class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     LifetimeTrackable, ScheduledAlertPresenter {
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 3)
@@ -272,6 +273,7 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
                              object: nil)
     }
 
+    // swiftlint:disable:next function_body_length
     private func setupViewModel() {
         viewModel.conversationIsReadyToBeDisplayed = { [weak self] in
              self?.displayConversation()
@@ -339,6 +341,20 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
                 }
 
             self?.navigationController?.popViewController(animated: true)
+        }
+
+        viewModel.showSpinner = { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                MBProgressHUD.showAdded(to: self.view, animated: true)
+            }
+        }
+
+        viewModel.hideSpinner = { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                MBProgressHUD.hide(for: self.view, animated: true)
+            }
         }
     }
 
@@ -446,7 +462,6 @@ private extension ConversationViewController {
                          Message.Location.starred.rawValue,
                          Message.HiddenLocation.sent.rawValue,
                          Message.HiddenLocation.draft.rawValue]
-        // swiftlint:disable sorted_first_last
         // Better to disable linter rule here keep it this way for readability
         guard let location = message.labels
             .sorted(by: { label1, label2 in

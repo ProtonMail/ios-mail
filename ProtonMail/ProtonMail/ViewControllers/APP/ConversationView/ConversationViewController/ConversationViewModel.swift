@@ -31,6 +31,9 @@ class ConversationViewModel {
 
     var showNewMessageArrivedFloaty: ((MessageID) -> Void)?
 
+    var showSpinner: (() -> Void)?
+    var hideSpinner: (() -> Void)?
+
     var messagesTitle: String {
         .localizedStringWithFormat(LocalString._general_message, conversation.messageCount)
     }
@@ -200,6 +203,9 @@ class ConversationViewModel {
     }
 
     func fetchConversationDetails(completion: (() -> Void)?) {
+        if messagesDataSource.isEmpty {
+            showSpinner?()
+        }
         conversationService.fetchConversation(
             with: conversation.conversationID,
             includeBodyOf: nil,
@@ -214,6 +220,8 @@ class ConversationViewModel {
                     .compactMap{ $0.message?.objectID.rawValue }
                 self.messageService.markLocally(messageObjectIDs: ids, labelID: self.labelId, unRead: false)
             }
+            self?.hideSpinner?()
+
             if let completion = completion {
                 DispatchQueue.main.async(execute: completion)
             }
