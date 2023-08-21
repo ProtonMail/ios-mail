@@ -172,13 +172,13 @@ final class FetchMessagesByLabelRequest: Request {
 /// create draft message request class -- MessageResponse
 class CreateDraftRequest: Request {
 
-    let message: Message
+    let message: MessageEntity
     let fromAddress: Address?
 
     /// TODO:: here need remove refrence of Message should create a Draft builder and a seperate package
     ///
     /// - Parameter message: Message
-    init(message: Message, fromAddr: Address?) {
+    init(message: MessageEntity, fromAddr: Address?) {
         self.message = message
         self.fromAddress = fromAddr
     }
@@ -193,8 +193,7 @@ class CreateDraftRequest: Request {
         let name = fromAddress?.displayName ?? "unknown"
         var address = fromAddress?.email ?? "unknown"
 
-        let entity = MessageEntity(message)
-        if let sender = try? entity.parseSender() {
+        if let sender = try? message.parseSender() {
             address = sender.address
         }
 
@@ -203,27 +202,25 @@ class CreateDraftRequest: Request {
             "Address": address
         ]
 
-        messageDict["ToList"]  = message.toList.parseJson()
-        messageDict["CCList"]  = message.ccList.parseJson()
-        messageDict["BCCList"] = message.bccList.parseJson()
+        messageDict["ToList"]  = message.rawTOList.parseJson()
+        messageDict["CCList"]  = message.rawCCList.parseJson()
+        messageDict["BCCList"] = message.rawBCCList.parseJson()
 
         var out: [String: Any] = ["Message": messageDict]
 
-        if let originalMsgID = message.orginalMessageID {
+        if let originalMsgID = message.originalMessageID?.rawValue {
             if !originalMsgID.isEmpty {
-                out["ParentID"] = message.orginalMessageID
+                out["ParentID"] = originalMsgID
                 out["Action"] = message.action ?? "0"  // {0|1|2} // Optional, reply = 0, reply all = 1, forward = 2 m
             }
         }
 
-        if let attachments = self.message.attachments.allObjects as? [Attachment] {
-            var AttachmentKeyPackets: [String: String] = [:]
-            for attachment in attachments where attachment.keyChanged {
-                AttachmentKeyPackets[attachment.attachmentID] = attachment.keyPacket
-            }
-            if !AttachmentKeyPackets.keys.isEmpty {
-                out["AttachmentKeyPackets"] = AttachmentKeyPackets
-            }
+        var AttachmentKeyPackets: [String: String] = [:]
+        for attachment in message.attachments where attachment.keyChanged {
+            AttachmentKeyPackets[attachment.id.rawValue] = attachment.keyPacket
+        }
+        if !AttachmentKeyPackets.keys.isEmpty {
+            out["AttachmentKeyPackets"] = AttachmentKeyPackets
         }
         return out
     }
@@ -242,13 +239,13 @@ class CreateDraftRequest: Request {
 /// message update draft api request
 final class UpdateDraftRequest: CreateDraftRequest {
 
-    convenience init(message: Message, fromAddr: Address?, authCredential: AuthCredential? = nil) {
+    convenience init(message: MessageEntity, fromAddr: Address?, authCredential: AuthCredential? = nil) {
         self.init(message: message, fromAddr: fromAddr)
         self.authCredential = authCredential
     }
 
     override var path: String {
-        return MessageAPI.path + "/" + message.messageID
+        return MessageAPI.path + "/" + message.messageID.rawValue
     }
 
     override var method: HTTPMethod {

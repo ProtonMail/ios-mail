@@ -657,11 +657,14 @@ extension ComposeContainerViewController: AttachmentController {
 
                 let group = DispatchGroup()
                 group.enter()
-                self.addAttachment(att) {
-                    self.updateCurrentAttachmentSize(completion: {
-                        group.leave()
-                    })
-                }
+                self.editor.collectDraftData().ensure { [weak self] in
+                    self?.viewModel.childViewModel.updateDraft()
+                    self?.addAttachment(att) {
+                        self?.updateCurrentAttachmentSize(completion: {
+                            group.leave()
+                        })
+                    }
+                }.cauterize()
                 group.wait()
                 seal.fulfill_()
             }

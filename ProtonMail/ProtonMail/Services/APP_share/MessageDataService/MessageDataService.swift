@@ -50,6 +50,7 @@ protocol MessageDataServiceProtocol: Service {
     func idsOfMessagesBeingSent() -> [String]
 
     func getMessageSendingData(for uri: String) -> MessageSendingData?
+    func deleteMessage(objectID: String)
     func getMessage(for messageID: MessageID) throws -> Message
     func getMessageEntity(for messageID: MessageID) throws -> MessageEntity
     func getAttachmentEntity(for uri: String) throws -> AttachmentEntity?
@@ -84,6 +85,8 @@ protocol MessageDataServiceProtocol: Service {
     func updateAttKeyPacket(message: MessageEntity, addressID: String)
     func delete(att: AttachmentEntity, messageID: MessageID) -> Promise<Void>
     func upload(att: Attachment)
+    func userAddress(of addressID: AddressID) -> Address?
+    func defaultUserAddress(of addressID: AddressID) -> Address?
 }
 
 // sourcery: mock
@@ -857,6 +860,17 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             )
         }
         return messageSendingData
+    }
+
+    func deleteMessage(objectID: String) {
+        contextProvider.performAndWaitOnRootSavingContext { [weak self] context in
+            guard let objectID = self?.contextProvider.managedObjectIDForURIRepresentation(objectID),
+                  let message = context.find(with: objectID) as? Message else {
+                return
+            }
+            context.delete(message)
+            _ = context.saveUpstreamIfNeeded()
+        }
     }
 
     func getMessage(for messageID: MessageID) throws -> Message {

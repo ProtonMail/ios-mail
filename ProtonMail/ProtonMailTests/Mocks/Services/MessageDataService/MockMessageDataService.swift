@@ -86,6 +86,11 @@ class MockMessageDataService: MessageDataServiceProtocol {
         return messageSendingDataResult
     }
 
+    @FuncStub(MockMessageDataService.deleteMessage) var deleteMessageStub
+    func deleteMessage(objectID: String) {
+        deleteMessageStub(objectID)
+    }
+
     @FuncStub(MockMessageDataService.updateMessageAfterSend(message:sendResponse:completionQueue:completion:)) var callUpdateMessageAfterSend
     func updateMessageAfterSend(
         message: MessageEntity,
@@ -143,6 +148,16 @@ class MockMessageDataService: MessageDataServiceProtocol {
     @FuncStub(MockMessageDataService.upload) var callUpload
     func upload(att: Attachment) {
         callUpload(att)
+    }
+
+    @FuncStub(MockMessageDataService.userAddress, initialReturn: nil) var userAddressStub
+    func userAddress(of addressID: AddressID) -> Address? {
+        return userAddressStub(addressID)
+    }
+
+    @FuncStub(MockMessageDataService.defaultUserAddress, initialReturn: nil) var defaultUserAddressStub
+    func defaultUserAddress(of addressID: AddressID) -> Address? {
+        return defaultUserAddressStub(addressID)
     }
 
     @ThrowingFuncStub(MockMessageDataService.getMessage, initialReturn: Message()) var getMessageStub

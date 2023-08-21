@@ -101,6 +101,14 @@ final class MainQueueHandler: QueueHandler {
         self.sendMessageTask = SendMessageTask(dependencies: sendDepenedencies)
         sendMessageResultHandler.startObservingResult()
 
+        let uploadDraftUseCase = UploadDraft(
+            dependencies: .init(
+                apiService: apiService,
+                coreDataService: coreDataService,
+                messageDataService: messageDataService
+            )
+        )
+
         let uploadAttachment = UploadAttachment(
             dependencies: .init(
                 messageDataService: user.messageService,
@@ -111,6 +119,7 @@ final class MainQueueHandler: QueueHandler {
         self.dependencies = Dependencies(
             featureFlagCache: featureFlagCache,
             incomingDefaultService: user.incomingDefaultService,
+            uploadDraft: uploadDraftUseCase,
             uploadAttachment: uploadAttachment
         )
     }
@@ -163,7 +172,7 @@ final class MainQueueHandler: QueueHandler {
         } else {
             switch action {
             case .saveDraft(let messageObjectID):
-                self.draft(save: messageObjectID, UID: UID, completion: completeHandler)
+                self.draft(save: messageObjectID, completion: completeHandler)
             case .uploadAtt(let attachmentObjectID), .uploadPubkey(let attachmentObjectID):
                 self.uploadAttachment(with: attachmentObjectID, UID: UID, completion: completeHandler)
             case .deleteAtt(let attachmentObjectID, let attachmentID):
@@ -321,155 +330,13 @@ extension MainQueueHandler {
 // MARK: queue actions for single message
 extension MainQueueHandler {
     /// - parameter messageObjectID: message objectID string
-    fileprivate func draft(save messageObjectID: String, UID: String, completion: @escaping Completion) {
-        var isAttachmentKeyChanged = false
-        self.coreDataService.enqueueOnRootSavingContext { context in
-            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(messageObjectID) else {
-                // error: while trying to get objectID
-                completion(NSError.badParameter(messageObjectID))
-                return
-            }
-
-            guard self.user?.userInfo.userId == UID else {
-                completion(NSError.userLoggedOut())
-                return
-            }
-
+    fileprivate func draft(save messageObjectID: String, completion: @escaping Completion) {
+        Task {
             do {
-                guard let message = try context.existingObject(with: objectID) as? Message else {
-                    // error: object is not a Message
-                    completion(NSError.badParameter(messageObjectID))
-                    return
-                }
-
-                let completionWrapper: JSONCompletion = { task, result in
-                    var mess: [String: Any]
-
-                    switch result {
-                    case .success(let response):
-                        mess = response
-                    case .failure(let err):
-                        DispatchQueue.main.async {
-                            NSError.alertSavingDraftError(details: err.localizedDescription)
-                        }
-
-                        if err.isStorageExceeded {
-                            context.delete(message)
-                            _ = context.saveUpstreamIfNeeded()
-                        }
-
-                        completion(err)
-                        return
-                    }
-                    guard let messageID = mess["ID"] as? String else {
-                        // The error is messageID missing from the response
-                        // But this is meanless to users
-                        // I think parse error is more understandable
-                        let parseError = NSError.unableToParseResponse("messageID")
-                        NSError.alertSavingDraftError(details: parseError.localizedDescription)
-                        completion(nil)
-                        return
-                    }
-
-                    assert(!messageID.isEmpty)
-
-                    guard let message = try? context.existingObject(with: objectID) as? Message else {
-                        // If the message is nil
-                        // That means this message is deleted
-                        // Don't handle response
-                        completion(nil)
-                        return
-                    }
-
-                    if message.messageID != messageID {
-                        // Cancel scheduled local notification and re-schedule
-                        self.localNotificationService
-                            .rescheduleMessage(oldID: message.messageID, details: .init(messageID: messageID, subtitle: message.title))
-                    }
-                    message.messageID = messageID
-                    message.isDetailDownloaded = true
-
-                    if let conversationID = mess["ConversationID"] as? String {
-                        message.conversationID = conversationID
-                    }
-                    mess.addAttachmentOrderField()
-
-                    var hasTemp = false
-                    let attachments = message.mutableSetValue(forKey: "attachments")
-                    for att in attachments {
-                        if let att = att as? Attachment {
-                            if att.isTemp {
-                                hasTemp = true
-                                context.delete(att)
-                            }
-                            // Prevent flag being overide if current call do not change the key
-                            if isAttachmentKeyChanged {
-                                att.keyChanged = false
-                            }
-                        }
-                    }
-
-                    if let subject = mess["Subject"] as? String {
-                        message.title = subject
-                    }
-                    if let timeValue = mess["Time"] {
-                        if let timeString = timeValue as? NSString {
-                            let time = timeString.doubleValue as TimeInterval
-                            if time != 0 {
-                                message.time = time.asDate()
-                            }
-                        } else if let dateNumber = timeValue as? NSNumber {
-                            let time = dateNumber.doubleValue as TimeInterval
-                            if time != 0 {
-                                message.time = time.asDate()
-                            }
-                        }
-                    }
-
-                    _ = context.saveUpstreamIfNeeded()
-
-                    if hasTemp {
-                        do {
-                            try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
-                            _ = context.saveUpstreamIfNeeded()
-                        } catch let exc as NSError {
-                            completion(exc)
-                            return
-                        }
-                    }
-                    completion(nil)
-                }
-
-                if let atts = message.attachments.allObjects as? [Attachment] {
-                    for att in atts {
-                        if att.keyChanged {
-                            isAttachmentKeyChanged = true
-                        }
-                    }
-                }
-
-                let addressID: AddressID = .init(message.addressID ?? .empty)
-                let address = self.messageDataService.userAddress(of: addressID) ?? message.cachedAddress ?? self.messageDataService.defaultUserAddress(of: addressID)
-                let request: Request
-                if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
-                    request = UpdateDraftRequest(message: message, fromAddr: address, authCredential: message.cachedAuthCredential)
-                } else {
-                    request = CreateDraftRequest(message: message, fromAddr: address)
-                }
-
-                self.apiService.perform(request: request, response: UpdateDraftResponse()) { task, response in
-                    context.perform {
-                        if let err = response.error {
-                            completionWrapper(task, .failure(err as NSError))
-                        } else {
-                            completionWrapper(task, .success(response.responseDict))
-                        }
-                    }
-                }
-            } catch let ex as NSError {
-                // error: context thrown trying to get Message
-                completion(ex)
-                return
+                try await self.dependencies.uploadDraft.execute(messageObjectID: messageObjectID)
+                completion(nil)
+            } catch {
+                completion(error)
             }
         }
     }
@@ -976,17 +843,20 @@ extension MainQueueHandler {
         let actionRequest: ExecuteNotificationActionUseCase
         let featureFlagCache: FeatureFlagCache
         let incomingDefaultService: IncomingDefaultServiceProtocol
+        let uploadDraft: UploadDraftUseCase
         let uploadAttachment: UploadAttachmentUseCase
 
         init(
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
             featureFlagCache: FeatureFlagCache,
             incomingDefaultService: IncomingDefaultServiceProtocol,
+            uploadDraft: UploadDraftUseCase,
             uploadAttachment: UploadAttachmentUseCase
         ) {
             self.actionRequest = actionRequest
             self.featureFlagCache = featureFlagCache
             self.incomingDefaultService = incomingDefaultService
+            self.uploadDraft = uploadDraft
             self.uploadAttachment = uploadAttachment
         }
     }
