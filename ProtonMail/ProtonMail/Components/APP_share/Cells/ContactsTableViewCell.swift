@@ -55,6 +55,7 @@ final class ContactsTableViewCell: UITableViewCell, AccessibleCell {
 
         nameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         emailLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        [nameLabel, emailLabel].forEach { $0?.adjustsFontForContentSizeCategory = true }
     }
 
     /// config cell when cellForRowAt
@@ -72,6 +73,7 @@ final class ContactsTableViewCell: UITableViewCell, AccessibleCell {
                                textAttributes: nameAttributed,
                                search: highlight,
                                font: UIFont.adjustedFont(forTextStyle: .body, weight: .bold))
+        nameLabel.font = .adjustedFont(forTextStyle: .body)
 
         var emailAttributes = FontManager.DefaultSmallWeak.addTruncatingTail()
         emailAttributes[.font] = UIFont.adjustedFont(forTextStyle: .footnote)
@@ -80,6 +82,8 @@ final class ContactsTableViewCell: UITableViewCell, AccessibleCell {
                                textAttributes: emailAttributes,
                                search: highlight,
                                font: UIFont.adjustedFont(forTextStyle: .footnote))
+        // In theory, the style should be `footnote` somehow DFS doesn't work in this style
+        emailLabel.font = .adjustedFont(forTextStyle: .caption1)
 
         // will be show the image
         if let color = color {

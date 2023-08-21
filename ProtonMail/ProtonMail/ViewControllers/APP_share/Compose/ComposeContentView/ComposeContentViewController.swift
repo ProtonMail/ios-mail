@@ -31,6 +31,7 @@ import CoreData
 import ProtonCore_DataModel
 import ProtonCore_Foundations
 import WebKit
+import ProtonCore_UIFoundations
 
 protocol ComposeContentViewControllerDelegate: AnyObject {
     func displayExpirationWarning()
@@ -51,6 +52,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     var encryptionConfirmPassword: String = ""
     var encryptionPasswordHint: String = ""
     private var dismissBySending = false
+    private var dfsWasEnabled = DFSSetting.enableDFS
 
     private let queue = DispatchQueue(label: "UpdateAddressIdQueue")
 
@@ -65,6 +67,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     init(viewModel: ComposeViewModel) {
         self.viewModel = viewModel
+        DFSSetting.enableDFS = true
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -165,7 +168,9 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             let presentingVC = self.presentingViewController
             self.handleHintBanner(presentingVC: presentingVC)
         }
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true) {
+            DFSSetting.enableDFS = self.dfsWasEnabled
+        }
     }
 
     private func findPreviousVC(presentingVC: UIViewController?) -> UIViewController? {
