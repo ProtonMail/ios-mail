@@ -717,44 +717,38 @@ extension EventsService {
         self.userManager?.updateFromEvents(mailSettingsRes: mailSettingEvent)
     }
 
-    fileprivate func processEvents(addresses: [[String: Any]]?){
+    private func processEvents(addresses: [[String: Any]]?){
         assertProperExecution()
 
-        guard let addrEvents = addresses else {
-            return
-        }
-                for addrEvent in addrEvents {
-                    let address = AddressEvent(event: addrEvent)
-                    switch address.action {
-                    case .delete:
-                        if let addrID = address.ID {
-                            self.userManager?.deleteFromEvents(addressIDRes: addrID)
-                        }
-                    case .insert, .update1:
-                        guard let addrID = address.ID, let addrDict = address.address else {
-                            break
-                        }
-                        let addrRes = AddressesResponse()
-                        _ = addrRes.parseAddr(res: addrDict)
-
-                        guard addrRes.addresses.count == 1, let parsedAddr = addrRes.addresses.first, parsedAddr.addressID == addrID else {
-                            break
-                        }
-                        self.userManager?.setFromEvents(addressRes: parsedAddr)
-                        guard let user = self.userManager else {
-                            break
-                        }
-                        Task {
-                            do {
-                                try await user.userService.activeUserKeys(userInfo: user.userInfo, auth: user.authCredential)
-                            } catch {
-                                PMAssertionFailure(error)
-                            }
-                        }
-                    default:
-                        break
+        guard let events = addresses else { return }
+        for eventDict in events {
+            let event = AddressEvent(event: eventDict)
+            switch event.action {
+            case .delete:
+                if let addressID = event.ID {
+                    self.userManager?.deleteFromEvents(addressIDRes: addressID)
+                }
+            case .create, .update:
+                guard
+                    let addressID = event.ID,
+                    let addressInfo = event.address,
+                    addressInfo.addresses.count == 1,
+                    let parsedAddress = addressInfo.addresses.first,
+                    parsedAddress.addressID == addressID,
+                    let user = self.userManager
+                else { continue }
+                user.setFromEvents(addressRes: parsedAddress)
+                Task {
+                    do {
+                        try await user.userService.activeUserKeys(userInfo: user.userInfo, auth: user.authCredential)
+                    } catch {
+                        PMAssertionFailure(error)
                     }
+                }
+            default:
+                break
             }
+        }
     }
 
     private func processEvents(incomingDefaults: [[String: Any]]?) {
@@ -764,7 +758,7 @@ extension EventsService {
                 for item in incomingDefaults {
                     let incomingDefaultEvent = IncomingDefaultEvent(event: item)
                     switch incomingDefaultEvent.action {
-                    case .insert, .update1:
+                    case .create, .update:
                         guard let incomingDefault = incomingDefaultEvent.incomingDefault else {
                             assertionFailure()
                             continue

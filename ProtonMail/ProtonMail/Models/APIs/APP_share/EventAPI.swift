@@ -147,10 +147,15 @@ final class EventCheckResponse: Response {
 /// TODO:: refactor the events they have same format
 
 enum EventAction: Int {
+    /// Contains the item ID to delete an item in a collection.
     case delete = 0
-    case insert = 1
-    case update1 = 2
-    case update2 = 3
+    /// Contains all properties to add an item in a collection
+    case create = 1
+    /// Contains all properties to update an item in a collection.
+    case update = 2
+    /// `UpdateFlags` doesn't contain all properties
+    /// So the client has to merge the data received with the model already stored in the cache
+    case updateFlags = 3
 
     case unknown = 255
 }
@@ -303,12 +308,21 @@ final class LabelEvent {
 }
 
 final class AddressEvent: Event {
-    var address: [String: Any]?
-    init(event: [String: Any]!) {
+    let address: AddressesResponse?
+
+    init(event: [String: Any]) {
+        if let addressDict = event["Address"] as? [String: Any] {
+            address = AddressesResponse()
+            _ = address?.parseAddr(res: addressDict)
+        } else {
+            address = nil
+        }
+        
         let actionInt = event["Action"] as? Int ?? 255
-        super.init(id: event["ID"] as? String,
-                   action: EventAction(rawValue: actionInt) ?? .unknown)
-        self.address = event["Address"] as? [String: Any]
+        super.init(
+            id: event["ID"] as? String,
+            action: EventAction(rawValue: actionInt) ?? .unknown
+        )
     }
 }
 
