@@ -28,7 +28,7 @@ import ProtonCore_UIFoundations
 import UIKit
 
 final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView, LifetimeTrackable {
-    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory & HasCoreDataContextProviderProtocol
+    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory & HasCoreDataContextProviderProtocol  & HasPaymentsUIFactory
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -174,16 +174,9 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
     }
 
     private func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(
-            payments: viewModel.user.payments,
-            clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames,
-            customization: .empty
-        )
-        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
-                                         backendFetch: true) { _ in }
+        paymentsUI = dependencies.paymentsUIFactory.makeView()
+        paymentsUI?.presentUpgradePlan()
     }
-
 }
 
 extension ContactGroupDetailViewController: UITableViewDataSource, UITableViewDelegate {

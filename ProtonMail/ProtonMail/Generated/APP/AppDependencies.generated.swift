@@ -209,6 +209,16 @@ extension UserContainer: HasNextMessageAfterMoveStatusProvider {
     }
 }
 
+protocol HasPaymentsUIFactory {
+    var paymentsUIFactory: PaymentsUIFactory { get }
+}
+
+extension UserContainer: HasPaymentsUIFactory {
+    var paymentsUIFactory: PaymentsUIFactory {
+        paymentsUIFactoryFactory()
+    }
+}
+
 protocol HasSettingsViewsFactory {
     var settingsViewsFactory: SettingsViewsFactory { get }
 }

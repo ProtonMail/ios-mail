@@ -23,7 +23,6 @@
 import Foundation
 import ProtonCore_AccountSwitcher
 import ProtonCore_Networking
-import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 import SideMenuSwift
 
@@ -446,19 +445,6 @@ extension MenuCoordinator {
             return
         }
 
-        let view = MailboxViewController()
-        view.scheduleUserFeedbackCallOnAppear = showFeedbackActionSheet
-        let navigation: UINavigationController
-        if isSwitchEvent,
-           let navigationController = self.mailboxCoordinator?.navigation {
-            var viewControllers = navigationController.viewControllers
-            viewControllers[0] = view
-            navigationController.setViewControllers(viewControllers, animated: false)
-            navigation = navigationController
-        } else {
-            navigation = UINavigationController(rootViewController: view)
-        }
-
         guard let user = dependencies.usersManager.firstUser else {
             return
         }
@@ -487,12 +473,27 @@ extension MenuCoordinator {
             return
         }
 
+        let userContainer = userContainer(for: user)
+
+        let view = MailboxViewController(viewModel: viewModel, dependencies: userContainer)
+        view.scheduleUserFeedbackCallOnAppear = showFeedbackActionSheet
+        let navigation: UINavigationController
+        if isSwitchEvent,
+           let navigationController = self.mailboxCoordinator?.navigation {
+            var viewControllers = navigationController.viewControllers
+            viewControllers[0] = view
+            navigationController.setViewControllers(viewControllers, animated: false)
+            navigation = navigationController
+        } else {
+            navigation = UINavigationController(rootViewController: view)
+        }
+
         let mailbox = MailboxCoordinator(
             sideMenu: self.viewController?.sideMenuController,
             nav: navigation,
             viewController: view,
             viewModel: viewModel,
-            dependencies: userContainer(for: user)
+            dependencies: userContainer
         )
         mailbox.start()
         if let deeplink = deepLink {
@@ -505,12 +506,7 @@ extension MenuCoordinator {
     private func navigateToSubscribe() {
         guard let user = dependencies.usersManager.firstUser,
               let sideMenuViewController = viewController?.sideMenuController else { return }
-        let paymentsUI = PaymentsUI(
-            payments: user.payments,
-            clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames,
-            customization: .empty
-        )
+        let paymentsUI = userContainer(for: user).paymentsUIFactory.makeView()
         let coordinator = StorefrontCoordinator(
             paymentsUI: paymentsUI,
             sideMenu: sideMenuViewController,

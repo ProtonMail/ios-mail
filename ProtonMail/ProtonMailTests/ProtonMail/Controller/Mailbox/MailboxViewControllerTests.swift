@@ -400,7 +400,9 @@ extension MailboxViewControllerTests {
         labelName: String?,
         totalUserCount: Int = 1
     ) {
-        sut = .init()
+        let globalContainer = GlobalContainer()
+        let userContainer = UserContainer(userManager: userManagerMock, globalContainer: globalContainer)
+
         let fetchMessage = MockFetchMessages()
         let updateMailbox = UpdateMailbox(dependencies: .init(
             labelID: labelID,
@@ -454,7 +456,8 @@ extension MailboxViewControllerTests {
                 totalUserCount
             }
         )
-        sut.set(viewModel: viewModel)
+
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
         sut.set(coordinator: fakeCoordinator)
     }
 }

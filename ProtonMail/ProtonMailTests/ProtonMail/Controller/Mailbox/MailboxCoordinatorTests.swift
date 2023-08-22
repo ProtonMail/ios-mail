@@ -39,8 +39,6 @@ class MailboxCoordinatorTests: XCTestCase {
         let lastUpdatedStoreMock = MockLastUpdatedStoreProtocol()
         let pushServiceMock = MockPushNotificationService()
         let contextProviderMock = MockCoreDataContextProvider()
-        let mailboxViewControllerMock = MailboxViewController()
-        uiNavigationControllerMock = .init(rootViewController: mailboxViewControllerMock)
         let contactGroupProviderMock = MockContactGroupsProviderProtocol()
         let labelProviderMock = MockLabelProviderProtocol()
         let contactProviderMock = MockContactProvider(coreDataContextProvider: contextProviderMock)
@@ -89,6 +87,9 @@ class MailboxCoordinatorTests: XCTestCase {
         globalContainer.contextProviderFactory.register { contextProviderMock }
         globalContainer.internetConnectionStatusProviderFactory.register { self.connectionStatusProviderMock }
         let userContainer = UserContainer(userManager: dummyUser, globalContainer: globalContainer)
+
+        let mailboxViewControllerMock = MailboxViewController(viewModel: viewModelMock, dependencies: userContainer)
+        uiNavigationControllerMock = .init(rootViewController: mailboxViewControllerMock)
 
         sut = MailboxCoordinator(sideMenu: nil,
                                  nav: uiNavigationControllerMock,

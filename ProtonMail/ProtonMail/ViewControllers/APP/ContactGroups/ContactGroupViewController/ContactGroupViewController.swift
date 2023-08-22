@@ -24,7 +24,6 @@ import CoreData
 import LifetimeTracker
 import MBProgressHUD
 import PromiseKit
-import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 import StoreKit
 import UIKit
@@ -38,7 +37,10 @@ protocol ContactGroupsUIProtocol: UIViewController {
  the update will be performed immediately and automatically by core data
  */
 final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSaveHintProtocol, LifetimeTrackable {
-    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory & HasCoreDataContextProviderProtocol
+    typealias Dependencies = HasComposerViewFactory
+    & HasContactViewsFactory
+    & HasCoreDataContextProviderProtocol
+    & ContactsAndGroupsSharedCode.Dependencies
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -47,7 +49,6 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     private let viewModel: ContactGroupsViewModel
     private let dependencies: Dependencies
     private var queryString = ""
-    private var paymentsUI: PaymentsUI?
 
     // long press related vars
     private var isEditingState: Bool = false
@@ -77,7 +78,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     init(viewModel: ContactGroupsViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.dependencies = dependencies
-        super.init(nibName: "ContactGroupsViewController", bundle: nil)
+        super.init(dependencies: dependencies, nibName: "ContactGroupsViewController")
         trackLifetime()
     }
 
@@ -112,7 +113,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         } else {
             prepareRefreshController()
             prepareLongPressGesture()
-            prepareNavigationItemRightDefault(viewModel.user)
+            prepareNavigationItemRightDefault()
             updateNavigationBar()
         }
 
@@ -133,17 +134,6 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         viewModel.timerStop()
         viewModel.save()
         NotificationCenter.default.removeKeyboardObserver(self)
-    }
-
-    override func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(
-            payments: viewModel.user.payments,
-            clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames,
-            customization: .empty
-        )
-        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
-                                         backendFetch: true) { _ in }
     }
 
     private func prepareRefreshController() {

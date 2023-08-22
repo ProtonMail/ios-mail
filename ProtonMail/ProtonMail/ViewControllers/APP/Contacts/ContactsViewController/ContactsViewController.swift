@@ -32,7 +32,7 @@ protocol ContactsVCUIProtocol: AnyObject {
 }
 
 final class ContactsViewController: ContactsAndGroupsSharedCode {
-    typealias Dependencies = HasContactViewsFactory
+    typealias Dependencies = HasContactViewsFactory & ContactsAndGroupsSharedCode.Dependencies
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -57,7 +57,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     init(viewModel: ContactsViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
         self.dependencies = dependencies
-        super.init(nibName: "ContactsViewController", bundle: nil)
+        super.init(dependencies: dependencies, nibName: "ContactsViewController")
         trackLifetime()
     }
 
@@ -105,7 +105,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
 
         setupMenuButton()
 
-        prepareNavigationItemRightDefault(self.viewModel.user)
+        prepareNavigationItemRightDefault()
 
         generateAccessibilityIdentifiers()
         navigationItem.assignNavItemIndentifiers()

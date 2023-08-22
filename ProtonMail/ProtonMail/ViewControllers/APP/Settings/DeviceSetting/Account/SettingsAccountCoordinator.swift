@@ -32,11 +32,16 @@ protocol SettingsAccountCoordinatorProtocol: AnyObject {
 }
 
 class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
-    typealias Dependencies = HasKeyMakerProtocol & HasUsersManager & BlockedSendersViewModel.Dependencies
+    typealias Dependencies = HasKeyMakerProtocol
+    & HasPaymentsUIFactory
+    & HasUsersManager
+    & BlockedSendersViewModel.Dependencies
 
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
     private let dependencies: Dependencies
+
+    private var paymentsUI: PaymentsUI?
 
     private var user: UserManager {
         users.firstUser!
@@ -139,8 +144,8 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func openSettingDetail<T: SettingDetailsViewModel>(ofType viewModelType: T.Type) {
-        let sdvc = SettingDetailViewController(nibName: nil, bundle: nil)
-        sdvc.setViewModel(viewModelType.init(user: user, coreKeyMaker: sharedServices.get()))
+        let viewModel = viewModelType.init(user: user, coreKeyMaker: dependencies.keyMaker)
+        let sdvc = SettingDetailViewController(viewModel: viewModel, dependencies: dependencies)
         self.navigationController?.show(sdvc, sender: nil)
     }
 
@@ -251,10 +256,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func presentPayments() {
-        let paymentsUI = PaymentsUI(payments: user.payments,
-                                    clientApp: .mail,
-                                    shownPlanNames: Constants.shownPlanNames,
-                                    customization: .empty)
-        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in }
+        paymentsUI = dependencies.paymentsUIFactory.makeView()
+        paymentsUI?.presentUpgradePlan()
     }
 }

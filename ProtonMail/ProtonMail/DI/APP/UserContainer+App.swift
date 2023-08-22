@@ -95,6 +95,12 @@ extension UserContainer {
         }
     }
 
+    var paymentsUIFactoryFactory: Factory<PaymentsUIFactory> {
+        self {
+            PaymentsUIFactory(dependencies: self)
+        }
+    }
+
     var settingsViewsFactoryFactory: Factory<SettingsViewsFactory> {
         self {
             SettingsViewsFactory(dependencies: self)

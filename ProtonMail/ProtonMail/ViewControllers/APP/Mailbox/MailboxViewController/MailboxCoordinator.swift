@@ -124,7 +124,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
 
     /// if called from a segue prepare don't call push again
     func start() {
-        viewController?.set(viewModel: viewModel)
         self.viewController?.set(coordinator: self)
 
         if let navigation = self.navigation, self.sideMenu != nil {

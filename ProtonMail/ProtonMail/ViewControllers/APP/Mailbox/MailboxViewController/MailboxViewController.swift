@@ -33,24 +33,20 @@ import SkeletonView
 import SwipyCell
 import UIKit
 
-class MailboxViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
+class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
+    typealias Dependencies = HasPaymentsUIFactory
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
-    typealias viewModelType = MailboxViewModel
-
-    private(set) var viewModel: MailboxViewModel!
+    let viewModel: MailboxViewModel
+    private let dependencies: Dependencies
 
     private weak var coordinator: MailboxCoordinatorProtocol?
 
     func set(coordinator: MailboxCoordinatorProtocol) {
         self.coordinator = coordinator
-    }
-
-    func set(viewModel: MailboxViewModel) {
-        self.viewModel = viewModel
-        viewModel.uiDelegate = self
     }
 
     private lazy var replacingEmails: [EmailEntity] = viewModel.allEmails
@@ -111,6 +107,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private let mailListActionSheetPresenter = MailListActionSheetPresenter()
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
+    private var paymentsUI: PaymentsUI?
     private var referralProgramPresenter: ReferralProgramPromptPresenter?
 
     private var isSwipingCell = false {
@@ -143,8 +140,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    init(viewModel: MailboxViewModel, dependencies: Dependencies) {
+        self.viewModel = viewModel
+        self.dependencies = dependencies
+        super.init(nibName: nil, bundle: nil)
+        viewModel.uiDelegate = self
         trackLifetime()
     }
 
@@ -153,7 +153,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     deinit {
-        self.viewModel?.resetFetchedController()
+        viewModel.resetFetchedController()
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -196,7 +196,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        assert(self.viewModel != nil)
         assert(self.coordinator != nil)
         emptyBackButtonTitleForNextView()
 
@@ -2555,7 +2554,7 @@ extension MailboxViewController {
                 guard let self else { return }
                 let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
                     guard let self else { return }
-                    self.presentPayments(for: self.viewModel.user)
+                    self.presentPayments()
                 }
                 upsellSheet.present(on: self.navigationController!.view)
             }
@@ -2597,6 +2596,11 @@ extension MailboxViewController {
         case .none:
             return nil
         }
+    }
+
+    private func presentPayments() {
+        paymentsUI = dependencies.paymentsUIFactory.makeView()
+        paymentsUI?.presentUpgradePlan()
     }
 }
 
@@ -2669,15 +2673,5 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
 extension MailboxViewController: ComposeContainerViewControllerDelegate {
     func composerVillDismiss() {
         getLatestMessages()
-    }
-}
-
-extension UIViewController {
-    func presentPayments(for user: UserManager) {
-        let paymentsUI = PaymentsUI(payments: user.payments,
-                                    clientApp: .mail,
-                                    shownPlanNames: Constants.shownPlanNames,
-                                    customization: .empty)
-        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in }
     }
 }
