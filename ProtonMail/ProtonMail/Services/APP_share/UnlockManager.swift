@@ -173,6 +173,7 @@ final class UnlockManager: Service {
                     case .requirePin:
                         requestPin()
                     case .requireTouchID:
+                        requestPin()
                         self.biometricAuthentication(afterBioAuthPassed: {
                             self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
                         })

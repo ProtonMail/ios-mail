@@ -249,10 +249,10 @@ extension MenuCoordinator {
 
         switch dest {
         case .switchUser:
-            self.usersManager.active(by: sessionID)
+            viewModel.activateUser(id: user.userID)
         case .switchUserFromNotification:
             let isAnotherUser = self.usersManager.firstUser?.userInfo.userId ?? "" != user.userInfo.userId
-            self.usersManager.active(by: sessionID)
+            viewModel.activateUser(id: user.userID)
             // viewController?.setupLabelsIfViewIsLoaded()
             // rebase todo, check MR 496
             if isAnotherUser {

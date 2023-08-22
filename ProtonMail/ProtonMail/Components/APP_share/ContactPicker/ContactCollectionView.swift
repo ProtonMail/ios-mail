@@ -443,7 +443,8 @@ extension ContactCollectionView: UICollectionViewDelegateFlowLayout {
                 widthForItem = self.prototypeCell.widthForCellWithContact(model: model)
             }
         }
-        return CGSize(width: min(self.maxContentWidth, widthForItem), height: CGFloat(self.cellHeight))
+        let itemWidth = max(0, min(self.maxContentWidth, widthForItem))
+        return CGSize(width: itemWidth, height: CGFloat(self.cellHeight))
     }
 }
 
