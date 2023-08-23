@@ -275,7 +275,7 @@ extension AppleContactParser {
                                 scheme: nil,
                                 mimeType: nil,
                                 delegate: nil,
-                                coreDataService: service)
+                                contextProvider: service)
     }
 
     /// Transfer EItem prefix to item prefix

@@ -26,7 +26,7 @@ import ProtonCore_UIFoundations
 final class ContactEditEmailCell: UITableViewCell, AccessibleCell {
     fileprivate var email: ContactEditEmail!
 
-    fileprivate weak var delegate: ContactEditCellDelegate?
+    weak var delegate: ContactEditCellDelegate?
 
     @IBOutlet var groupButton: UIButton!
     @IBOutlet var iconStackView: UIStackView!

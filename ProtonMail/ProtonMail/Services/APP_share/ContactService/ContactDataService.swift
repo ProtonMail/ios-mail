@@ -45,6 +45,15 @@ protocol ContactProviderProtocol: AnyObject {
     func cleanUp()
 }
 
+// sourcery:mock
+protocol ContactDataServiceProtocol: AnyObject {
+    #if !APP_EXTENSION
+    func queueUpdate(objectID: NSManagedObjectID, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?)
+    func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], importedFromDevice: Bool) -> NSError?
+    func queueDelete(objectID: NSManagedObjectID, completion: ContactDeleteComplete?)
+    #endif
+}
+
 class ContactDataService: Service {
 
     private let addressBookService: AddressBookService
@@ -83,12 +92,12 @@ class ContactDataService: Service {
                     in: context,
                     basedOn: NSPredicate(format: "%K == %@", Contact.Attributes.userID, userID)
                 )
-                
+
                 Email.delete(
                     in: context,
                     basedOn: NSPredicate(format: "%K == %@", Email.Attributes.userID, userID)
                 )
-                
+
                 LabelUpdate.delete(
                     in: context,
                     basedOn: NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, userID)
@@ -241,7 +250,7 @@ class ContactDataService: Service {
                         let contact = Contact.contactForContactID(contactID.rawValue, inManagedObjectContext: context)
                         contact?.isSoftDeleted = false
                         _ = context.saveUpstreamIfNeeded()
-                        
+
                         DispatchQueue.main.async {
                             completion(error.toNSError)
                         }
@@ -511,7 +520,7 @@ class ContactDataService: Service {
 }
 
 // MRAK: Queue related
-extension ContactDataService {
+extension ContactDataService: ContactDataServiceProtocol {
     #if !APP_EXTENSION
     func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], importedFromDevice: Bool) -> NSError? {
         let userID = self.userID

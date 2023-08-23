@@ -25,7 +25,7 @@ import ProtonCore_UIFoundations
 final class ContactEditPhoneCell: UITableViewCell {
 
     fileprivate var phone: ContactEditPhone!
-    fileprivate var delegate: ContactEditCellDelegate?
+    weak var delegate: ContactEditCellDelegate?
 
     @IBOutlet weak var typeLabel: UILabel!
     @IBOutlet weak var typeButton: UIButton!

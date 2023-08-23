@@ -225,9 +225,14 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentAddContacts(with contact: ContactVO) {
-        let viewModel = ContactAddViewModelImpl(contactVO: contact,
-                                                user: user,
-                                                coreDataService: sharedServices.get(by: CoreDataService.self))
+        let viewModel = ContactEditViewModel(
+            contactVO: contact,
+            dependencies: .init(
+                user: user,
+                contextProvider: sharedServices.get(by: CoreDataService.self),
+                contactService: user.contactService
+            )
+        )
         let newView = ContactEditViewController(viewModel: viewModel)
         let nav = UINavigationController(rootViewController: newView)
         self.viewController?.present(nav, animated: true)

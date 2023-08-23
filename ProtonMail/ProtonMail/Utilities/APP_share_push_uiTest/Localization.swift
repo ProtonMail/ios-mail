@@ -273,9 +273,6 @@ class LocalizedString {
     lazy var _contacts_call_contact_title = NSLocalizedString("Call contact", comment: "Call the contact (button title text)")
     /// "Email addresses"
     lazy var _contacts_email_addresses_title = NSLocalizedString("Email addresses", comment: "contact detail view, email addresses section title")
-    /// "Profile picture"
-    lazy var _contacts_add_profile_picture = NSLocalizedString("Add photo", comment: "The button text for add profile picture")
-    lazy var _contacts_edit_profile_picture = NSLocalizedString("Edit photo", comment: "The button text for edit profile picture")
     /// "Encrypted Contact Details"
     lazy var _contacts_encrypted_contact_details_title = NSLocalizedString("Encrypted contact details", comment: "contact section title")
     /// "Share Contact"
@@ -1497,5 +1494,14 @@ enum L11n {
         static let upsellLineThree = NSLocalizedString("Unlimited folders and labels", comment: "Text to advertise what upgrading will provide")
         static let upsellLineFour = NSLocalizedString("Custom email domains", comment: "Text to advertise what upgrading will provide")
         static let upgradeButtonTitle = NSLocalizedString("Upgrade now", comment: "Title of button to upgrade to a paid plan")
+    }
+
+    struct ContactEdit {
+        static let displayNamePlaceholder = NSLocalizedString("Display name", comment: "The placeholder for the display name text field in contact edit view.")
+        static let firstNamePlaceholder = NSLocalizedString("First name", comment: "The placeholder for the first name text field in contact edit view.")
+        static let lastNamePlaceholder = NSLocalizedString("Last name", comment: "The placeholder for the last name text field in contact edit view.")
+        static let emptyDisplayNameError = NSLocalizedString("Display name field cannot be empty", comment: "The error message that is shown when no display name provided in contact edit view")
+        static let addPhoto = NSLocalizedString("Add photo", comment: "The button text for add profile picture in contact edit view")
+        static let editPhoto = NSLocalizedString("Edit photo", comment: "The button text for edit profile picture in contact edit view")
     }
 }

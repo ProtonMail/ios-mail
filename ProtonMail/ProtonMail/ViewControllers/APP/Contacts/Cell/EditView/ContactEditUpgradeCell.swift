@@ -27,7 +27,7 @@ final class ContactEditUpgradeCell: UITableViewCell {
     @IBOutlet weak var frameView: UIView!
     @IBOutlet weak var upgradeButton: UIButton!
 
-    private var delegate: ContactUpgradeCellDelegate?
+    private weak var delegate: ContactUpgradeCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -26,22 +26,27 @@ import VCard
 
 enum ContactEditSectionType: Int {
     case display_name = 0
-    case emails = 1
-    case encrypted_header = 2
-    case cellphone = 3
-    case home_address = 4
-    case information = 5  // org, birthday, anniversary, nickname, title and may add more prebuild types later.
-    case custom_field = 6 // string field
-    case notes = 7
-    case delete = 8
-    case upgrade = 9
-    case share = 10
-    case url = 11 // links
-    case type2_warning = 12
-    case type3_error = 13
-    case type3_warning = 14
-    case email_header = 15
-    case debuginfo = 16
+    case emails
+    case encrypted_header
+    case cellphone
+    case home_address
+    case custom_field // string field
+    case notes
+    case delete
+    case upgrade
+    case share
+    case url // links
+    case type2_warning
+    case type3_error
+    case type3_warning
+    case email_header
+    case debuginfo
+    case birthday
+    case organization
+    case nickName
+    case title
+    case gender
+    case addNewField
 }
 
 protocol ContactEditTypeInterface {
@@ -104,7 +109,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     var mimeType: PMNIPMMimeType?
 
     private let delegate: ContactEditViewModelContactGroupDelegate?
-    private let coreDataService: CoreDataContextProviderProtocol
+    private let contextProvider: CoreDataContextProviderProtocol
 
     init(order: Int,
          type: ContactFieldType,
@@ -117,9 +122,9 @@ final class ContactEditEmail: ContactEditTypeInterface {
          scheme: PMNIPMScheme?,
          mimeType: PMNIPMMimeType?,
          delegate: ContactEditViewModelContactGroupDelegate?,
-         coreDataService: CoreDataContextProviderProtocol) {
+         contextProvider: CoreDataContextProviderProtocol) {
         self.delegate = delegate
-        self.coreDataService = coreDataService
+        self.contextProvider = contextProvider
 
         self.newOrder = order
         self.newType = type
@@ -173,7 +178,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
         // we decide to stick with using core data information for now
         origContactGroupIDs.removeAll()
 
-        let context = self.coreDataService.mainContext
+        let context = self.contextProvider.mainContext
         let emailObject = Email.EmailForAddressWithContact(self.newEmail,
                                                            contactID: contactID,
                                                            inManagedObjectContext: context)
@@ -191,7 +196,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getContactGroupNames() -> [String] {
         var result: [String] = []
         for labelID in newContactGroupIDs {
-            let context = self.coreDataService.mainContext
+            let context = self.contextProvider.mainContext
             if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
                 result.append(label.name)
             }
@@ -214,7 +219,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getCurrentlySelectedContactGroupColors() -> [String] {
         var colors = [String]()
 
-        let context = self.coreDataService.mainContext
+        let context = self.contextProvider.mainContext
         for ID in newContactGroupIDs {
             let label = Label.labelForLabelID(ID, inManagedObjectContext: context)
 
@@ -632,9 +637,9 @@ final class ContactEditNote {
 }
 
 final class ContactEditStructuredName {
-    private(set) var firstName = ""
+    var firstName = ""
     private(set) var originalFirstName = ""
-    private(set) var lastName = ""
+    var lastName = ""
     private(set) var originalLastName = ""
     private(set) var isNew = false
 
@@ -656,5 +661,9 @@ final class ContactEditStructuredName {
             return false
         }
         return true
+    }
+
+    func isEmpty() -> Bool {
+        return firstName.isEmpty && lastName.isEmpty
     }
 }

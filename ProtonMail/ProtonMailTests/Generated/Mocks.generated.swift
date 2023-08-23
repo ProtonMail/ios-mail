@@ -202,6 +202,24 @@ class MockContactCacheStatusProtocol: ContactCacheStatusProtocol {
 
 }
 
+class MockContactDataServiceProtocol: ContactDataServiceProtocol {
+    @FuncStub(MockContactDataServiceProtocol.queueUpdate) var queueUpdateStub
+    func queueUpdate(objectID: NSManagedObjectID, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?) {
+        queueUpdateStub(objectID, cardDatas, newName, emails, completion)
+    }
+
+    @FuncStub(MockContactDataServiceProtocol.queueAddContact, initialReturn: nil) var queueAddContactStub
+    func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], importedFromDevice: Bool) -> NSError? {
+        queueAddContactStub(cardDatas, name, emails, importedFromDevice)
+    }
+
+    @FuncStub(MockContactDataServiceProtocol.queueDelete) var queueDeleteStub
+    func queueDelete(objectID: NSManagedObjectID, completion: ContactDeleteComplete?) {
+        queueDeleteStub(objectID, completion)
+    }
+
+}
+
 class MockContactGroupsProviderProtocol: ContactGroupsProviderProtocol {
     @FuncStub(MockContactGroupsProviderProtocol.getAllContactGroupVOs, initialReturn: [ContactGroupVO]()) var getAllContactGroupVOsStub
     func getAllContactGroupVOs() -> [ContactGroupVO] {

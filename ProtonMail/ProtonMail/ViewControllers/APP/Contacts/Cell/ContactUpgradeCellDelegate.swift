@@ -22,6 +22,6 @@
 
 import Foundation
 
-protocol ContactUpgradeCellDelegate {
+protocol ContactUpgradeCellDelegate: AnyObject {
     func upgrade()
 }

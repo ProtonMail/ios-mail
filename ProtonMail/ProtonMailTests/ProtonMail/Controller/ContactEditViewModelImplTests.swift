@@ -23,7 +23,7 @@ import XCTest
 
 final class ContactEditViewModelImplTests: XCTestCase {
 
-    private var sut: ContactEditViewModelImpl!
+    private var sut: ContactEditViewModel!
     private var fakeCoreDataService: CoreDataService!
     private var mockUser: UserManager!
     private var mockApi: APIServiceMock!
@@ -57,8 +57,11 @@ final class ContactEditViewModelImplTests: XCTestCase {
         let cardData = try XCTUnwrap(try generateTestData(vcard: vCardData))
         sut = .init(
             contactEntity: .make(cardData: cardData),
-            user: mockUser,
-            coreDataService: fakeCoreDataService
+            dependencies: .init(
+                user: mockUser,
+                contextProvider: fakeCoreDataService,
+                contactService: mockUser.contactService
+            )
         )
 
         wait(self.sut.structuredName != nil)
@@ -83,8 +86,11 @@ final class ContactEditViewModelImplTests: XCTestCase {
         let cardData = try XCTUnwrap(try generateTestData(vcard: vCardData))
         sut = .init(
             contactEntity: .make(cardData: cardData),
-            user: mockUser,
-            coreDataService: fakeCoreDataService
+            dependencies: .init(
+                user: mockUser,
+                contextProvider: fakeCoreDataService,
+                contactService: mockUser.contactService
+            )
         )
         wait(self.sut.notes.isEmpty == false)
 

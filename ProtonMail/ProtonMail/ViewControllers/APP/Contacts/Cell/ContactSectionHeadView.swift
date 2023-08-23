@@ -24,14 +24,9 @@ import ProtonCore_UIFoundations
 
 class ContactSectionHeadView: UITableViewHeaderFooterView {
     @IBOutlet var headerLabel: UILabel!
-    @IBOutlet var signMark: UIImageView!
 
-    func configHeader(title: String, signed: Bool) {
+    func configHeader(title: String) {
         contentView.backgroundColor = ColorProvider.BackgroundNorm
-        headerLabel.attributedText = title.apply(style: FontManager.DefaultSmallWeak.foregroundColor(ColorProvider.InteractionNorm))
-        signMark.isHidden = !signed
-
-        // disable for now
-        signMark.isHidden = true
+        headerLabel.attributedText = title.apply(style: FontManager.DefaultSmallWeak)
     }
 }

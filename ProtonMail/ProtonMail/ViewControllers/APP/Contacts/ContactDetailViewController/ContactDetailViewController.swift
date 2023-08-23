@@ -185,7 +185,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
     /// config header after got contact details
     private func configHeader() {
         // shortname / image
-        if let profilePicture = viewModel.getProfilePicture() {
+        if let profilePicture = viewModel.profilePicture {
             // show profile picture
             shortNameLabel.isHidden = true
             profilePictureImageView.isHidden = false
@@ -207,7 +207,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
         fullNameLabel.attributedText = viewModel.getProfile().newDisplayName.apply(style: attributes)
 
         // email contact
-        if viewModel.getEmails().count == 0 {
+        if viewModel.emails.count == 0 {
             // no email in contact, disable sending button
             sendToPrimaryEmailButton.isUserInteractionEnabled = false
             emailContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
@@ -217,7 +217,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
         }
 
         // call contact
-        if viewModel.getPhones().count == 0 {
+        if viewModel.phones.count == 0 {
             // no tel in contact, disable
             callContactButton.isUserInteractionEnabled = false
             callContactImageView.backgroundColor = UIColor.lightGray // TODO: fix gray
@@ -249,7 +249,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
             LocalString._storage_exceeded.alertToastBottom()
             return
         }
-        let emails = viewModel.getEmails()
+        let emails = viewModel.emails
         let email = emails[0]
         let contact = viewModel.contact
         let contactVO = ContactVO(name: contact.name,
@@ -259,7 +259,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
     }
 
     @IBAction func didTapCallContactButton(_ sender: UIButton) {
-        if let phone = viewModel.getPhones().first {
+        if let phone = viewModel.phones.first {
             systemPhoneCall(phone: phone)
         }
     }
@@ -310,9 +310,14 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
     }
 
     @objc func didTapEditButton(sender: UIBarButtonItem) {
-        let viewModel = ContactEditViewModelImpl(contactEntity: viewModel.getContact(),
-                                                 user: viewModel.user,
-                                                 coreDataService: sharedServices.get(by: CoreDataService.self))
+        let viewModel = ContactEditViewModel(
+            contactEntity: viewModel.contact,
+            dependencies: .init(
+                user: viewModel.user,
+                contextProvider: sharedServices.get(by: CoreDataService.self),
+                contactService: viewModel.user.contactService
+            )
+        )
         let newView = ContactEditViewController(viewModel: viewModel)
         newView.delegate = self
         let nav = UINavigationController(rootViewController: newView)
@@ -357,66 +362,70 @@ extension ContactDetailViewController: UITableViewDataSource {
         let s = viewModel.sections()[section]
         switch s {
         case .type2_warning:
-            return viewModel.statusType2() ? 0 : 1
+            return viewModel.verifyType2 ? 0 : 1
         case .type3_warning:
             if !viewModel.type3Error() {
-                return viewModel.statusType3() ? 0 : 1
+                return viewModel.verifyType3 ? 0 : 1
             }
             return 0
         case .type3_error:
             return viewModel.type3Error() ? 1 : 0
         case .debuginfo:
-            return viewModel.debugging() ? 1 : 0
+            return 0
         case .emails:
-            return viewModel.getEmails().count
+            return viewModel.emails.count
         case .cellphone:
-            return viewModel.getPhones().count
+            return viewModel.phones.count
         case .home_address:
-            return viewModel.getAddresses().count
-        case .information:
-            return viewModel.getInformations().count
+            return viewModel.addresses.count
         case .custom_field:
-            return viewModel.getFields().count
+            return viewModel.fields.count
         case .notes:
-            return viewModel.getNotes().count
+            return viewModel.notes.count
         case .url:
-            return viewModel.getUrls().count
+            return viewModel.urls.count
         case .display_name, .upgrade, .share:
             return 1
         case .email_header, .encrypted_header, .delete:
+            return 0
+        case .birthday:
+            return viewModel.birthday == nil ? 0 : 1
+        case .organization:
+            return viewModel.organizations.count
+        case .nickName:
+            return viewModel.nickNames.count
+        case .title:
+            return viewModel.titles.count
+        case .gender:
+            return viewModel.gender == nil ? 0 : 1
+        case .addNewField:
             return 0
         }
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier: kContactDetailsHeaderID) as? ContactSectionHeadView
-        let s = viewModel.sections()[section]
-        switch s {
+        let sectionType = viewModel.sections()[section]
+        switch sectionType {
         case .email_header:
-            let signed = viewModel.statusType2()
-            cell?.configHeader(title: LocalString._contacts_email_addresses_title, signed: signed)
-        case .encrypted_header:
-            let signed = viewModel.statusType3()
-            cell?.configHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: signed)
+            cell?.configHeader(title: LocalString._contacts_email_addresses_title)
+        case .encrypted_header where viewModel.hasEncryptedContacts():
+            cell?.configHeader(title: LocalString._contacts_encrypted_contact_details_title)
+        case .share:
+            cell?.configHeader(title: "")
         default:
-            cell?.configHeader(title: "", signed: false)
+            return nil
         }
         return cell
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let s = viewModel.sections()[section]
-        switch s {
-        case .email_header, .share:
+        let sectionType = viewModel.sections()[section]
+        switch sectionType {
+        case .share:
             return 38.0
-        case .encrypted_header:
-            if viewModel.hasEncryptedContacts() {
-                return 38.0
-            } else {
-                return 0
-            }
         default:
-            return 0
+            return UITableView.automaticDimension
         }
     }
 
@@ -460,7 +469,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         } else if s == .emails {
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsEmailCell, for: indexPath) as! ContactDetailDisplayEmailCell
 
-            let emails = viewModel.getEmails()
+            let emails = viewModel.emails
             let email = emails[row]
             let colors = emails[row].getCurrentlySelectedContactGroupColors()
             cell.configCell(title: email.newType.title, value: email.newEmail, contactGroupColors: colors)
@@ -472,39 +481,66 @@ extension ContactDetailViewController: UITableViewDataSource {
         cell.selectionStyle = .none
         switch s {
         case .cellphone:
-            let cells = viewModel.getPhones()
+            let cells = viewModel.phones
             let tel = cells[row]
             cell.configCell(title: tel.newType.title, value: tel.newPhone)
             cell.selectionStyle = .default
         case .home_address:
-            let addrs = viewModel.getAddresses()
+            let addrs = viewModel.addresses
             let addr = addrs[row]
             cell.configCell(title: addr.newType.title, value: addr.fullAddress())
             cell.selectionStyle = .default
-        case .information:
-            let infos = viewModel.getInformations()
-            let info = infos[row]
-            cell.configCell(title: info.infoType.title, value: info.newValue)
+        case .gender:
+            cell.configCell(
+                title: viewModel.gender?.infoType.title ?? .empty,
+                value: viewModel.gender?.newValue ?? .empty
+            )
+            cell.selectionStyle = .default
+        case .birthday:
+            cell.configCell(
+                title: viewModel.birthday?.infoType.title ?? .empty,
+                value: viewModel.birthday?.newValue ?? .empty
+            )
+            cell.selectionStyle = .default
+        case .organization:
+            let org = viewModel.organizations[row]
+            cell.configCell(
+                title: org.infoType.title,
+                value: org.newValue
+            )
+            cell.selectionStyle = .default
+        case .title:
+            let title = viewModel.titles[row]
+            cell.configCell(
+                title: title.infoType.title,
+                value: title.newValue
+            )
+            cell.selectionStyle = .default
+        case .nickName:
+            let nickName = viewModel.nickNames[row]
+            cell.configCell(
+                title: nickName.infoType.title,
+                value: nickName.newValue
+            )
             cell.selectionStyle = .default
         case .custom_field:
-            let fields = viewModel.getFields()
+            let fields = viewModel.fields
             let field = fields[row]
             cell.configCell(title: field.newType.title, value: field.newField)
             cell.selectionStyle = .default
         case .notes:
-            let notes = viewModel.getNotes()
+            let notes = viewModel.notes
             let note = notes[row]
             cell.configCell(title: LocalString._contacts_info_notes, value: note.newNote)
             cell.value.numberOfLines = 0
             cell.selectionStyle = .default
         case .url:
-            let urls = viewModel.getUrls()
+            let urls = viewModel.urls
             let url = urls[row]
             cell.configCell(title: url.newType.title, value: url.newUrl)
             cell.selectionStyle = .default
-
         case .email_header, .encrypted_header, .delete, .upgrade, .share,
-             .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails, .display_name:
+             .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails, .display_name, .addNewField:
             break
         }
         return cell
@@ -533,36 +569,29 @@ extension ContactDetailViewController: UITableViewDelegate {
             let s = viewModel.sections()[section]
             switch s {
             case .display_name:
-                let profile = viewModel.getProfile()
-                copyString = profile.newDisplayName
+                copyString = viewModel.getProfile().newDisplayName
             case .emails:
-                let emails = viewModel.getEmails()
-                let email = emails[row]
-                copyString = email.newEmail
+                copyString = viewModel.emails[row].newEmail
             case .cellphone:
-                let cells = viewModel.getPhones()
-                let tel = cells[row]
-                copyString = tel.newPhone
+                copyString = viewModel.phones[row].newPhone
             case .home_address:
-                let addrs = viewModel.getAddresses()
-                let addr = addrs[row]
-                copyString = addr.fullAddress()
-            case .information:
-                let infos = viewModel.getInformations()
-                let info = infos[row]
-                copyString = info.newValue
+                copyString = viewModel.addresses[row].fullAddress()
             case .custom_field:
-                let fields = viewModel.getFields()
-                let field = fields[row]
-                copyString = field.newField
+                copyString = viewModel.fields[row].newField
             case .notes:
-                let notes = viewModel.getNotes()
-                let note = notes[row]
-                copyString = note.newNote
+                copyString = viewModel.notes[row].newNote
             case .url:
-                let urls = viewModel.getUrls()
-                let url = urls[row]
-                copyString = url.newUrl
+                copyString = viewModel.urls[row].newUrl
+            case .organization:
+                copyString = viewModel.organizations[row].newValue
+            case .nickName:
+                copyString = viewModel.nickNames[row].newValue
+            case .gender:
+                copyString = viewModel.gender?.newValue ?? .empty
+            case .title:
+                copyString = viewModel.titles[row].newValue
+            case .birthday:
+                copyString = viewModel.birthday?.newValue ?? .empty
             default:
                 break
             }
@@ -575,15 +604,15 @@ extension ContactDetailViewController: UITableViewDelegate {
         let s = viewModel.sections()[indexPath.section]
         switch s {
         case .display_name, .emails, .cellphone, .home_address,
-             .information, .custom_field, .notes, .url,
-             .type2_warning, .type3_error, .type3_warning, .debuginfo:
+            .custom_field, .notes, .url,
+             .type2_warning, .type3_error, .type3_warning, .debuginfo, .birthday, .share:
             return UITableView.automaticDimension
         case .email_header, .encrypted_header, .delete:
             return 0.0
         case .upgrade:
             return 200 //  280.0
-        case .share:
-            return 38.0
+        case .organization, .nickName, .title, .gender, .addNewField:
+            return UITableView.automaticDimension
         }
     }
 
@@ -602,7 +631,7 @@ extension ContactDetailViewController: UITableViewDelegate {
                 LocalString._storage_exceeded.alertToastBottom()
                 return
             }
-            let emails = viewModel.getEmails()
+            let emails = viewModel.emails
             let email = emails[row]
             let contact = viewModel.contact
             let contactVO = ContactVO(name: contact.name,
@@ -612,10 +641,10 @@ extension ContactDetailViewController: UITableViewDelegate {
         case .encrypted_header:
             break
         case .cellphone:
-            let phone = viewModel.getPhones()[row]
+            let phone = viewModel.phones[row]
             systemPhoneCall(phone: phone)
         case .home_address:
-            let addrs = viewModel.getAddresses()
+            let addrs = viewModel.addresses
             let addr = addrs[row]
             let fulladdr = addr.fullAddress()
             if !fulladdr.isEmpty {
@@ -627,7 +656,7 @@ extension ContactDetailViewController: UITableViewDelegate {
                 }
             }
         case .url:
-            let urls = viewModel.getUrls()
+            let urls = viewModel.urls
             let url = urls[row]
             if let urlURL = URL(string: url.origUrl),
                var comps = URLComponents(url: urlURL, resolvingAgainstBaseURL: false)

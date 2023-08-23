@@ -388,8 +388,14 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     }
 
     override func addContactTapped() {
-        let viewModel = ContactAddViewModelImpl(user: viewModel.user,
-                                                coreDataService: CoreDataService.shared)
+        let viewModel = ContactEditViewModel(
+            contactEntity: nil,
+            dependencies: .init(
+                user: viewModel.user,
+                contextProvider: CoreDataService.shared,
+                contactService: viewModel.user.contactService
+            )
+        )
         let newView = ContactEditViewController(viewModel: viewModel)
         let nav = UINavigationController(rootViewController: newView)
         present(nav, animated: true)

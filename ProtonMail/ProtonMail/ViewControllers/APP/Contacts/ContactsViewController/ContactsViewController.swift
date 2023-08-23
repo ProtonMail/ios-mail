@@ -191,9 +191,9 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     }
 
     private func showContactDetailView(contact: ContactEntity) {
-        let viewModel = ContactDetailsViewModelImpl(contact: contact,
-                                                    user: viewModel.user,
-                                                    coreDataService: viewModel.coreDataService)
+        let viewModel = ContactDetailsViewModel(contact: contact,
+                                                user: viewModel.user,
+                                                coreDataService: viewModel.coreDataService)
         let newView = ContactDetailViewController(viewModel: viewModel)
         self.show(newView, sender: nil)
         isOnMainView = false
@@ -206,8 +206,14 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     }
 
     override func addContactTapped() {
-        let viewModel = ContactAddViewModelImpl(user: viewModel.user,
-                                                coreDataService: viewModel.coreDataService)
+        let viewModel = ContactEditViewModel(
+            contactEntity: nil,
+            dependencies: .init(
+                user: viewModel.user,
+                contextProvider: viewModel.coreDataService,
+                contactService: viewModel.user.contactService
+            )
+        )
         let newView = ContactEditViewController(viewModel: viewModel)
         let nav = UINavigationController(rootViewController: newView)
         self.present(nav, animated: true)

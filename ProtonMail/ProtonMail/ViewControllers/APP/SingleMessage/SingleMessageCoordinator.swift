@@ -148,9 +148,14 @@ extension SingleMessageCoordinator {
     }
 
     private func presentAddContacts(with contact: ContactVO) {
-        let viewModel = ContactAddViewModelImpl(contactVO: contact,
-                                                user: user,
-                                                coreDataService: coreDataService)
+        let viewModel = ContactEditViewModel(
+            contactVO: contact,
+            dependencies: .init(
+                user: user,
+                contextProvider: coreDataService,
+                contactService: user.contactService
+            )
+        )
         let newView = ContactEditViewController(viewModel: viewModel)
         let nav = UINavigationController(rootViewController: newView)
         self.viewController?.present(nav, animated: true)

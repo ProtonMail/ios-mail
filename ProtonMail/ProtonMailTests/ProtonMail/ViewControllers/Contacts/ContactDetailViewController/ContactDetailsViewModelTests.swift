@@ -33,7 +33,7 @@ final class ContactDetailsViewModelTests: XCTestCase {
         let user = UserManager(api: apiService, role: .none)
         let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
 
-        sut = ContactDetailsViewModelImpl(contact: contact, user: user, coreDataService: coreDataService)
+        sut = ContactDetailsViewModel(contact: contact, user: user, coreDataService: coreDataService)
     }
 
     override func tearDownWithError() throws {
