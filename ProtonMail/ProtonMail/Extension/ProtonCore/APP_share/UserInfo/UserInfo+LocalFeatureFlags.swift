@@ -66,7 +66,7 @@ extension UserInfo {
         #if DEBUG_ENTERPRISE
         true
         #else
-        false
+        true
         #endif
     }
 }
