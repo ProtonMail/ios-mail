@@ -192,50 +192,6 @@ extension AppDelegate: UIApplicationDelegate {
           return .all
       }
 
-    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        return self.application(app, handleOpen: url)
-    }
-
-    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
-    func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
-        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-            return false
-        }
-
-        if ["protonmail", "mailto"].contains(urlComponents.scheme) || "mailto".caseInsensitiveCompare(urlComponents.scheme ?? "") == .orderedSame {
-            var path = url.absoluteString
-            if urlComponents.scheme == "protonmail" {
-                path = path.preg_replace("protonmail://", replaceto: "")
-            }
-
-            let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
-            deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
-            deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
-            self.coordinator.followDeepLink(deeplink)
-            return true
-        }
-
-        guard urlComponents.host == "signup" else {
-            return false
-        }
-        guard let queryItems = urlComponents.queryItems, let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first else {
-            return false
-        }
-
-        guard let code = verifyObject.value else {
-            return false
-        }
-        /// TODO::fixme change to deeplink
-        let info: [String: String] = ["verifyCode": code]
-        let notification = Notification(name: .customUrlSchema,
-                                        object: nil,
-                                        userInfo: info)
-        NotificationCenter.default.post(notification)
-
-        return true
-    }
-
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
         self.currentState = .background
@@ -269,17 +225,6 @@ extension AppDelegate: UIApplicationDelegate {
             delayedCompletion()
         }
         BackgroundTimer.shared.willEnterBackgroundOrTerminate()
-    }
-
-    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, deprecated in favor of similar method in WindowSceneDelegate" )
-    func application(_ application: UIApplication,
-                     continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        if let data = userActivity.userInfo?["deeplink"] as? Data,
-            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
-        }
-        return true
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -355,18 +300,6 @@ extension AppDelegate: UIApplicationDelegate {
             session.stateRestorationActivity = nil
             session.scene?.userActivity = nil
         }
-    }
-
-    // MARK: Shortcuts
-    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, deprecated in favor of similar method in WindowSceneDelegate" )
-    func application(_ application: UIApplication,
-                     performActionFor shortcutItem: UIApplicationShortcutItem,
-                     completionHandler: @escaping (Bool) -> Void) {
-        if let data = shortcutItem.userInfo?["deeplink"] as? Data,
-            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
-        }
-        completionHandler(true)
     }
 
     private func startAutoLockCountDownIfNeeded() {
