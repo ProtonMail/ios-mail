@@ -108,7 +108,8 @@ struct ComposerViewFactory {
         userCachedStatusProvider: UserCachedStatusProvider,
         mailToUrl: URL? = nil,
         toContact: ContactPickerModelProtocol? = nil,
-        originalScheduledTime: Date? = nil
+        originalScheduledTime: Date? = nil,
+        composerDelegate: ComposeContainerViewControllerDelegate? = nil
     ) -> UINavigationController {
         let childViewModel = ComposeViewModel(
             msg: msg,
@@ -158,7 +159,8 @@ struct ComposerViewFactory {
             contextProvider: contextProvider,
             userIntroductionProgressProvider: userIntroductionProgressProvider,
             attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
-            featureFlagCache: featureFlagCache
+            featureFlagCache: featureFlagCache,
+            composerDelegate: composerDelegate
         )
     }
 
@@ -167,7 +169,8 @@ struct ComposerViewFactory {
         contextProvider: CoreDataContextProviderProtocol,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
         attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
-        featureFlagCache: FeatureFlagCache
+        featureFlagCache: FeatureFlagCache,
+        composerDelegate: ComposeContainerViewControllerDelegate? = nil
     ) -> UINavigationController {
         let router = ComposerRouter()
         let viewModel = ComposeContainerViewModel(
@@ -182,7 +185,9 @@ struct ComposerViewFactory {
         )
         let controller = ComposeContainerViewController(
             viewModel: viewModel,
-            contextProvider: contextProvider)
+            contextProvider: contextProvider
+        )
+        controller.delegate = composerDelegate
         let navigationVC = UINavigationController(rootViewController: controller)
         router.setupNavigation(navigationVC)
         return navigationVC

@@ -120,19 +120,23 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     weak var queueManager: QueueManager?
     weak var parent: UserManager?
+    let dependencies: Dependencies
 
-    init(api: APIService,
-         userID: UserID,
-         labelDataService: LabelsDataService,
-         contactDataService: ContactDataService,
-         localNotificationService: LocalNotificationService,
-         queueManager: QueueManager?,
-         contextProvider: CoreDataContextProviderProtocol,
-         lastUpdatedStore: LastUpdatedStoreProtocol,
-         user: UserManager,
-         cacheService: CacheService,
-         undoActionManager: UndoActionManagerProtocol,
-         contactCacheStatus: ContactCacheStatusProtocol) {
+    init(
+        api: APIService,
+        userID: UserID,
+        labelDataService: LabelsDataService,
+        contactDataService: ContactDataService,
+        localNotificationService: LocalNotificationService,
+        queueManager: QueueManager?,
+        contextProvider: CoreDataContextProviderProtocol,
+        lastUpdatedStore: LastUpdatedStoreProtocol,
+        user: UserManager,
+        cacheService: CacheService,
+        undoActionManager: UndoActionManagerProtocol,
+        contactCacheStatus: ContactCacheStatusProtocol,
+        dependencies: Dependencies
+    ) {
         self.apiService = api
         self.userID = userID
         self.labelDataService = labelDataService
@@ -145,6 +149,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         self.messageDecrypter = MessageDecrypter(userDataSource: user)
         self.undoActionManager = undoActionManager
         self.contactCacheStatus = contactCacheStatus
+        self.dependencies = dependencies
 
         setupNotifications()
         self.queueManager = queueManager
@@ -1743,5 +1748,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         apiService.perform(request: request) { task, result in
             completion(result)
         }
+    }
+}
+
+extension MessageDataService {
+    struct Dependencies {
+        let moveMessageInCacheUseCase: MoveMessageInCacheUseCase
     }
 }

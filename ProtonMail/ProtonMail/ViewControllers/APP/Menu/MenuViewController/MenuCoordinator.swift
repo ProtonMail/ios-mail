@@ -167,7 +167,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
         switch labelInfo.location {
         case .customize:
             self.handleCustomLabel(labelInfo: labelInfo, deepLink: deepLink)
-        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled:
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled, .almostAllMail:
             if currentLocation?.location == labelInfo.location,
                let deepLink = deepLink,
                mailboxCoordinator?.viewModel.user.userID == viewModel.currentUser?.userID {
@@ -516,7 +516,7 @@ extension MenuCoordinator {
                 labelType: labelInfo.type
             )
 
-        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled:
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled, .almostAllMail:
             viewModel = createMailboxViewModel(
                 userManager: user,
                 labelID: labelInfo.location.labelID,

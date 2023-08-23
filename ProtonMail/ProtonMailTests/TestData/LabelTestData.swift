@@ -73,6 +73,9 @@ let testLabelsData = """
     },
     {
         "ID": "5"
+    },
+    {
+        "ID": "15"
     }]
 """
 

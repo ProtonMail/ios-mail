@@ -22,24 +22,28 @@ struct MailSettings: Parsable, Equatable {
     private(set) var hideSenderImages: Bool
     private(set) var nextMessageOnMove: NextMessageOnMove
     private(set) var showMoved: ShowMoved
+    private(set) var almostAllMail: Bool
 
     enum CodingKeys: String, CodingKey {
         case nextMessageOnMove = "NextMessageOnMove"
         case hideSenderImages = "HideSenderImages"
         case showMoved = "ShowMoved"
         case autoDeleteSpamTrashDays = "AutoDeleteSpamAndTrashDays"
+        case almostAllMail = "AlmostAllMail"
     }
 
     init(
         nextMessageOnMove: NextMessageOnMove = DefaultValue.nextMessageOnMove,
         hideSenderImages: Bool = DefaultValue.hideSenderImages,
         showMoved: ShowMoved = DefaultValue.showMoved,
-        autoDeleteSpamTrashDays: AutoDeleteSpamAndTrashDays = DefaultValue.autoDeleteSpamTrashDays
+        autoDeleteSpamTrashDays: AutoDeleteSpamAndTrashDays = DefaultValue.autoDeleteSpamTrashDays,
+        almostAllMail: Bool = DefaultValue.almostAllMail
     ) {
         self.nextMessageOnMove = nextMessageOnMove
         self.hideSenderImages = hideSenderImages
         self.showMoved = showMoved
         self.autoDeleteSpamTrashDays = autoDeleteSpamTrashDays
+        self.almostAllMail = almostAllMail
     }
 
     init(from decoder: Decoder) throws {
@@ -54,6 +58,10 @@ struct MailSettings: Parsable, Equatable {
         showMoved = ShowMoved(rawValue: showMovedValue)
         let autoDeleteSpamTrashDaysValue = try container.decodeIfPresent(Int.self, forKey: .autoDeleteSpamTrashDays)
         autoDeleteSpamTrashDays = AutoDeleteSpamAndTrashDays(rawValue: autoDeleteSpamTrashDaysValue)
+        almostAllMail = container.decodeIfPresentBoolOrIntToBool(
+            forKey: .almostAllMail,
+            defaultValue: DefaultValue.almostAllMail
+        )
     }
 
     mutating func update(key: CodingKeys, to newValue: Bool) {
@@ -66,6 +74,8 @@ struct MailSettings: Parsable, Equatable {
             assertionFailure("Not suitable for this key")
         case .autoDeleteSpamTrashDays:
             autoDeleteSpamTrashDays = newValue ? .explicitlyEnabled : .explicitlyDisabled
+        case .almostAllMail:
+            almostAllMail = newValue
         }
     }
 
@@ -74,6 +84,7 @@ struct MailSettings: Parsable, Equatable {
         static let hideSenderImages = false
         static let showMoved = ShowMoved.doNotKeep
         static let autoDeleteSpamTrashDays = AutoDeleteSpamAndTrashDays.implicitlyDisabled
+        static let almostAllMail = false
     }
 }
 

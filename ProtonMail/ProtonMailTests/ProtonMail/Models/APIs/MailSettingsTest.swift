@@ -46,6 +46,9 @@ final class MailSettingsTest: XCTestCase {
 
         sut.update(key: .autoDeleteSpamTrashDays, to: false)
         XCTAssertEqual(sut.autoDeleteSpamTrashDays, .explicitlyDisabled)
+
+        sut.update(key: .almostAllMail, to: true)
+        XCTAssertEqual(sut.almostAllMail, true)
     }
 
     func testMailSettingsDecode_valueIsMoreThan0_flagIsTrue() throws {
@@ -53,7 +56,8 @@ final class MailSettingsTest: XCTestCase {
         let json: [String: Any] = [
             "NextMessageOnMove": 1,
             "HideSenderImages": value,
-            "AutoDeleteSpamAndTrashDays": 30
+            "AutoDeleteSpamAndTrashDays": 30,
+            "AlmostAllMail": 1
         ]
         let data = try JSONSerialization.data(withJSONObject: json)
         let decoder = JSONDecoder()
@@ -61,6 +65,7 @@ final class MailSettingsTest: XCTestCase {
         XCTAssertEqual(result.nextMessageOnMove, .implicitlyDisabled)
         XCTAssertTrue(result.hideSenderImages)
         XCTAssertEqual(result.autoDeleteSpamTrashDays, .explicitlyEnabled)
+        XCTAssertEqual(result.almostAllMail, true)
     }
 
     func testMailSettingsDecode_valueIsSmallerThan1_flagIsFalse() throws {
@@ -68,7 +73,8 @@ final class MailSettingsTest: XCTestCase {
         let json: [String: Any] = [
             "NextMessageOnMove": 0,
             "HideSenderImages": value,
-            "AutoDeleteSpamAndTrashDays": 0
+            "AutoDeleteSpamAndTrashDays": 0,
+            "AlmostAllMail": 0
         ]
         let data = try JSONSerialization.data(withJSONObject: json)
         let decoder = JSONDecoder()
@@ -76,6 +82,7 @@ final class MailSettingsTest: XCTestCase {
         XCTAssertEqual(result.nextMessageOnMove, .explicitlyDisabled)
         XCTAssertFalse(result.hideSenderImages)
         XCTAssertEqual(result.autoDeleteSpamTrashDays, .explicitlyDisabled)
+        XCTAssertEqual(result.almostAllMail, false)
     }
 
     func testMailSettingsDecode_valueIsNull_flagIsImplicitlyDisabled() throws {

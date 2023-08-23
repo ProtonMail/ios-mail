@@ -36,6 +36,7 @@ import ProtonCore_UIFoundations
 protocol ComposeContentViewControllerDelegate: AnyObject {
     func displayExpirationWarning()
     func displayContactGroupSubSelectionView()
+    func willDismiss()
 }
 
 // swiftlint:disable:next line_length type_body_length
@@ -168,6 +169,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             let presentingVC = self.presentingViewController
             self.handleHintBanner(presentingVC: presentingVC)
         }
+        delegate?.willDismiss()
         self.dismiss(animated: true) {
             DFSSetting.enableDFS = self.dfsWasEnabled
         }

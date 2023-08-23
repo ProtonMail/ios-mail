@@ -58,7 +58,13 @@ extension MessageDataService {
                                        customFolderIds: customFolderIDs,
                                        to: tLabel)
         messagesWithSourceIds.forEach { (msg, sourceId) in
-            _ = self.cacheService.move(message: msg, from: sourceId, to: tLabel)
+            try? self.dependencies.moveMessageInCacheUseCase.execute(
+                params: .init(
+                    messageToBeMoved: msg,
+                    from: sourceId,
+                    targetLocation: tLabel
+                )
+            )
         }
 
         if queue {
@@ -81,11 +87,25 @@ extension MessageDataService {
                 let target = LabelLocation.draft.labelID
                 let scheduled = LabelLocation.scheduled.labelID
                 let sent = LabelLocation.sent.labelID
-                _ = self.cacheService.move(message: message, from: fLabels[index], to: target)
-                _ = self.cacheService.move(message: message, from: scheduled, to: target)
-                _ = self.cacheService.move(message: message, from: sent, to: target)
+                let labelsToMoveFrom = [target, scheduled, sent]
+
+                for fromLabel in labelsToMoveFrom {
+                    try? self.dependencies.moveMessageInCacheUseCase.execute(
+                        params: .init(
+                            messageToBeMoved: message,
+                            from: fromLabel,
+                            targetLocation: target
+                        )
+                    )
+                }
             } else {
-                _ = self.cacheService.move(message: message, from: fLabels[index], to: tLabel)
+                try? self.dependencies.moveMessageInCacheUseCase.execute(
+                    params: .init(
+                        messageToBeMoved: message,
+                        from: fLabels[index],
+                        targetLocation: tLabel
+                    )
+                )
             }
         }
 

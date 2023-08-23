@@ -49,7 +49,7 @@ protocol UserManagerSaveAction: AnyObject {
     func save()
 }
 
-class UserManager: Service {
+class UserManager: Service, ObservableObject {
     private let authCredentialAccessQueue = DispatchQueue(label: "com.protonmail.user_manager.auth_access_queue", qos: .userInitiated)
 
     var userID: UserID {
@@ -171,7 +171,18 @@ class UserManager: Service {
             user: self,
             cacheService: self.cacheService,
             undoActionManager: self.undoActionManager,
-            contactCacheStatus: sharedServices.userCachedStatus)
+            contactCacheStatus: sharedServices.userCachedStatus,
+            dependencies: .init(
+                moveMessageInCacheUseCase: MoveMessageInCache(
+                    dependencies: .init(
+                        contextProvider: coreDataService,
+                        lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+                        userID: self.userID,
+                        pushUpdater: PushUpdater()
+                    )
+                )
+            )
+        )
         service.viewModeDataSource = self
         service.userDataSource = self
         return service
@@ -320,7 +331,7 @@ class UserManager: Service {
         return userInfo.telemetry == 1
     }
 
-    var mailSettings: MailSettings
+    @Published var mailSettings: MailSettings
     private let coreKeyMaker: KeyMakerProtocol
 
     init(

@@ -31,6 +31,10 @@ import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 
+protocol ComposeContainerViewControllerDelegate: AnyObject {
+    func composerVillDismiss()
+}
+
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel> {
     #if !APP_EXTENSION
     class var lifetimeConfiguration: LifetimeConfiguration {
@@ -113,6 +117,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             self?.isUploadingAttachments = $0
         }
     )
+
+    weak var delegate: ComposeContainerViewControllerDelegate?
 
     init(
         viewModel: ComposeContainerViewModel,
@@ -907,6 +913,10 @@ extension ComposeContainerViewController: ComposeExpirationDelegate {
 // MARK: - ComposeViewControllerDelegate
 
 extension ComposeContainerViewController: ComposeContentViewControllerDelegate {
+    func willDismiss() {
+        delegate?.composerVillDismiss()
+    }
+
     func displayExpirationWarning() {
         presentExpirationUnavailabilityAlert()
     }

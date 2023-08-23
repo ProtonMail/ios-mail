@@ -2694,6 +2694,12 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
     }
 }
 
+extension MailboxViewController: ComposeContainerViewControllerDelegate {
+    func composerVillDismiss() {
+        getLatestMessages()
+    }
+}
+
 extension UIViewController {
     func presentPayments(for user: UserManager) {
         let paymentsUI = PaymentsUI(payments: user.payments,

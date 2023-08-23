@@ -80,7 +80,11 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .spam),
                              MenuLabel(location: .trash),
                              MenuLabel(location: .allmail)]
-        XCTAssert(MenuViewModel.inboxItems().map(\.location) == expectedItems.map(\.location))
+        XCTAssertEqual(
+            MenuViewModel.inboxItems(almostAllMailIsOn: false)
+                .map(\.location),
+            expectedItems.map(\.location)
+        )
     }
 
     func testDefaultMoreItemsAreTheExpectedOnes() {
@@ -242,30 +246,63 @@ class MenuViewModelTests: XCTestCase {
         XCTAssertEqual(sut.inboxItems.map { $0.location }, expected)
     }
 
-    func testUpdateInboxItem_reloadClosureIsOnlyTriggedWhenNeeded() {
-        let expectation1 = expectation(description: "Closure is called")
-        sut.reloadClosure = {
-            expectation1.fulfill()
-        }
-        sut.updateInboxItems(hasScheduledMessage: true) // Add scheduled location
-        XCTAssertTrue(sut.inboxItems.contains(where: { $0.location == .scheduled }))
-        waitForExpectations(timeout: 1, handler: nil)
+    func testUpdateInboxItem_almostAllMailIsFalse_inboxItemHasAllMailLocation() {
+        testUser.mailSettings.update(key: .almostAllMail, to: false)
+        sut.updateInboxItems(hasScheduledMessage: false)
 
-        let expectation2 = expectation(description: "Closure is not called")
-        expectation2.isInverted = true
-        sut.reloadClosure = {
-            expectation2.fulfill()
-        }
-        sut.updateInboxItems(hasScheduledMessage: true) // scheduled location not touched
-        waitForExpectations(timeout: 1, handler: nil)
-
-        let expectation3 = expectation(description: "Closure is called")
-        sut.reloadClosure = {
-            expectation3.fulfill()
-        }
-        sut.updateInboxItems(hasScheduledMessage: false) // Remove scheduled location
-        waitForExpectations(timeout: 1, handler: nil)
+        let expected = [
+            MenuLabel(location: .inbox),
+            MenuLabel(location: .draft),
+            MenuLabel(location: .sent),
+            MenuLabel(location: .starred),
+            MenuLabel(location: .archive),
+            MenuLabel(location: .spam),
+            MenuLabel(location: .trash),
+            MenuLabel(location: .allmail)
+        ].map { $0.location }
+        XCTAssertEqual(sut.inboxItems.map { $0.location }, expected)
     }
+
+    func testUpdateInboxItem_almostAllMailIsTrue_inboxItemHasAlmostAllMailLocation() {
+        testUser.mailSettings.update(key: .almostAllMail, to: true)
+        sut.updateInboxItems(hasScheduledMessage: false)
+
+        let expected = [
+            MenuLabel(location: .inbox),
+            MenuLabel(location: .draft),
+            MenuLabel(location: .sent),
+            MenuLabel(location: .starred),
+            MenuLabel(location: .archive),
+            MenuLabel(location: .spam),
+            MenuLabel(location: .trash),
+            MenuLabel(location: .almostAllMail)
+        ].map { $0.location }
+        XCTAssertEqual(sut.inboxItems.map { $0.location }, expected)
+    }
+
+    func testUpdateInboxItem_almostAllMailSettingUpdated_inboxItemWillBeUpdated() {
+        testUser.mailSettings.update(key: .almostAllMail, to: false)
+        sut.userDataInit()
+
+        let expected = [
+            MenuLabel(location: .inbox),
+            MenuLabel(location: .draft),
+            MenuLabel(location: .sent),
+            MenuLabel(location: .starred),
+            MenuLabel(location: .archive),
+            MenuLabel(location: .spam),
+            MenuLabel(location: .trash),
+            MenuLabel(location: .allmail)
+        ].map { $0.location }
+        XCTAssertEqual(sut.inboxItems.map { $0.location }, expected)
+
+        var newSettings = testUser.mailSettings
+        newSettings.update(key: .almostAllMail, to: true)
+        testUser.mailSettings = newSettings
+
+        wait(self.sut.inboxItems.contains(where: { $0.location == .almostAllMail }))
+    }
+
 
     func testGetIconColor_fromLabelWithoutCustomIconColor_getDefaultColor() {
         let label = MenuLabel(id: "",

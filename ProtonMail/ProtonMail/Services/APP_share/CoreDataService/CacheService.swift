@@ -77,52 +77,6 @@ class CacheService: CacheServiceProtocol {
     }
 
     // MARK: - Message related functions
-    func move(message: MessageEntity, from fLabel: LabelID, to tLabel: LabelID) -> Bool {
-        var hasError = false
-        coreDataService.performAndWaitOnRootSavingContext { context in
-            guard let msgToUpdate = try? context.existingObject(with: message.objectID.rawValue) as? Message else {
-                hasError = true
-                return
-            }
-
-            if let lid = msgToUpdate.remove(labelID: fLabel.rawValue), msgToUpdate.unRead {
-                self.updateCounterInsideContext(plus: false, with: LabelID(lid))
-                if let id = msgToUpdate.selfSent(labelID: lid) {
-                    self.updateCounterInsideContext(plus: false, with: LabelID(id))
-                }
-            }
-            if let lid = msgToUpdate.add(labelID: tLabel.rawValue) {
-                // if move to trash. clean labels.
-                var labelsFound = msgToUpdate.getNormalLabelIDs()
-                labelsFound.append(Message.Location.starred.rawValue)
-                // prevent the unread being substracted once more
-                if fLabel != Message.Location.allmail.labelID {
-                    labelsFound.append(Message.Location.allmail.rawValue)
-                }
-                if lid == Message.Location.trash.rawValue {
-                    self.removeLabel(on: msgToUpdate, labels: labelsFound, cleanUnread: true)
-                    msgToUpdate.unRead = false
-                    PushUpdater().remove(notificationIdentifiers: [msgToUpdate.notificationId])
-                }
-                if lid == Message.Location.spam.rawValue {
-                    self.removeLabel(on: msgToUpdate, labels: labelsFound, cleanUnread: false)
-                }
-
-                if msgToUpdate.unRead {
-                    self.updateCounterInsideContext(plus: true, with: LabelID(lid))
-                    if let id = msgToUpdate.selfSent(labelID: lid) {
-                        self.updateCounterInsideContext(plus: true, with: LabelID(id))
-                    }
-                }
-            }
-
-            let error = context.saveUpstreamIfNeeded()
-            if error != nil {
-                hasError = true
-            }
-        }
-        return !hasError
-    }
 
     func delete(message: MessageEntity, label: LabelID) -> Bool {
         var hasError = false

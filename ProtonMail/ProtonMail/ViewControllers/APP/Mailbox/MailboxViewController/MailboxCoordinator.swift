@@ -285,7 +285,8 @@ extension MailboxCoordinator {
             attachmentMetadataStrippingCache: services.userCachedStatus,
             featureFlagCache: services.userCachedStatus,
             userCachedStatusProvider: services.userCachedStatus,
-            originalScheduledTime: originalScheduledTime
+            originalScheduledTime: originalScheduledTime,
+            composerDelegate: viewController
         )
         navigationVC.present(composer, animated: true)
     }

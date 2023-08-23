@@ -28,4 +28,6 @@ protocol CoreDataContextProviderProtocol: Service {
     func performAndWaitOnRootSavingContext<T>(block: @escaping (NSManagedObjectContext) throws -> T) throws -> T
     func read<T>(block: (NSManagedObjectContext) -> T) -> T
     func read<T>(block: (NSManagedObjectContext) throws -> T) throws -> T
+
+    func write<T>(block: @escaping (NSManagedObjectContext) throws -> T) throws -> T
 }
