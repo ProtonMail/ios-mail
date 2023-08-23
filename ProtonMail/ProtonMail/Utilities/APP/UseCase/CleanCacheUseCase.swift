@@ -67,7 +67,7 @@ extension CleanCache {
         let imageProxyCache: ImageProxyCache
 
         init(
-            usersManager: UsersManager = sharedServices.get(by: UsersManager.self),
+            usersManager: UsersManager,
             imageProxyCache: ImageProxyCache = ImageProxyCache.shared
         ) {
             self.usersManager = usersManager

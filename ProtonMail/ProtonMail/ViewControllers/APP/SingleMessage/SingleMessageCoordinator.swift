@@ -163,7 +163,7 @@ extension SingleMessageCoordinator {
         default:
             return
         }
-        let contextProvider = sharedServices.get(by: CoreDataService.self)
+        let contextProvider = dependencies.contextProvider
         guard let msg: MessageEntity? = contextProvider.read(block: { context in
             if let msg = context.object(with: self.message.objectID.rawValue) as? Message {
                 return MessageEntity(msg)

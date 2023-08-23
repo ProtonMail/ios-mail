@@ -30,7 +30,9 @@ protocol ComposeContainerUIProtocol: AnyObject {
 class ComposeContainerViewModel: TableContainerViewModel {
     typealias Dependencies = HasAttachmentMetadataStrippingProtocol
     & HasFeatureFlagCache
+    & HasLastUpdatedStore
     & HasUserIntroductionProgressProvider
+    & HasUsersManager
 
     var childViewModel: ComposeViewModel
 
@@ -80,7 +82,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 
     func syncMailSetting() {
-        let usersManager = sharedServices.get(by: UsersManager.self)
+        let usersManager = dependencies.usersManager
         guard let currentUser = usersManager.firstUser else { return }
         currentUser.messageService.syncMailSetting()
     }
@@ -137,7 +139,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
 
     private func checkLocalScheduledMessage(completion: @escaping (Bool) -> Void) {
         let offlineSchedulingLimit = 70
-        let lastUpdatedStore = sharedServices.get(by: LastUpdatedStore.self)
+        let lastUpdatedStore = dependencies.lastUpdatedStore
         let labelID = LabelLocation.scheduled.labelID
         let userID = user.userID
         let entity: LabelCountEntity? = lastUpdatedStore.lastUpdate(by: labelID, userID: userID, type: .singleMessage)

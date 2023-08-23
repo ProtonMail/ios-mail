@@ -80,8 +80,8 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
     }
 
     func cleanAll(completion: @escaping () -> Void) {
-        let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
-        sharedServices.get(by: UsersManager.self)
+        let keyMaker = dependencies.keyMaker
+        dependencies.usersManager
             .clean()
             .ensure {
                 keyMaker.wipeMainKey()
@@ -92,18 +92,18 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
     }
 
     var isUserCredentialStored: Bool {
-        sharedServices.get(by: UsersManager.self).hasUsers()
+        dependencies.usersManager.hasUsers()
     }
 
     func isMailboxPasswordStored(forUser uid: String?) -> Bool {
         guard uid != nil else {
-            return sharedServices.get(by: UsersManager.self).isMailboxPasswordStored
+            return dependencies.usersManager.isMailboxPasswordStored
         }
-        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty
+        return !(dependencies.usersManager.users.last?.mailboxPassword.value ?? "").isEmpty
     }
 
     func loadUserDataAfterUnlock() {
-        let usersManager = sharedServices.get(by: UsersManager.self)
+        let usersManager = dependencies.usersManager
         usersManager.run()
         usersManager.tryRestore()
     }

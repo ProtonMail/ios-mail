@@ -52,9 +52,21 @@ extension GlobalContainer {
     var pushServiceFactory: Factory<PushNotificationService> {
         self {
             let dependencies = PushNotificationService.Dependencies(
+                actionsHandler: PushNotificationActionsHandler(
+                    dependencies: .init(
+                        queue: self.queueManager,
+                        lockCacheStatus: self.lockCacheStatus,
+                        usersManager: self.usersManager
+                    )
+                ),
                 usersManager: self.usersManager,
                 unlockProvider: self.unlockManager,
-                lockCacheStatus: self.keyMaker
+                pushEncryptionManager: PushEncryptionManager(
+                    dependencies: .init(
+                        usersManager: self.usersManager,
+                        deviceRegistration: DeviceRegistration(dependencies: .init(usersManager: self.usersManager))
+                    )
+                )
             )
             return PushNotificationService(dependencies: dependencies)
         }

@@ -120,7 +120,7 @@ private extension PushNotificationActionsHandler {
         messageId: String,
         completion: @escaping () -> Void
     ) {
-        guard let userManager = sharedServices.get(by: UsersManager.self).getUser(by: userId) else {
+        guard let userManager = dependencies.usersManager.getUser(by: userId) else {
             SystemLogger.log(message: "User not found for \(action)", category: .pushNotification, isError: true)
             completion()
             return
@@ -168,10 +168,11 @@ extension PushNotificationActionsHandler {
         let lockCacheStatus: LockCacheStatus
         let notificationCenter: NotificationCenter
         let userNotificationCenter: UNUserNotificationCenter
+        let usersManager: UsersManagerProtocol
         let isNotificationActionsFeatureEnabled: Bool
 
         init(
-            queue: QueueManagerProtocol = sharedServices.get(by: QueueManager.self),
+            queue: QueueManagerProtocol,
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
             isNetworkAvailable: @escaping (() -> Bool) = {
                 let provider = InternetConnectionStatusProvider.shared
@@ -180,6 +181,7 @@ extension PushNotificationActionsHandler {
             lockCacheStatus: LockCacheStatus,
             notificationCenter: NotificationCenter = NotificationCenter.default,
             userNotificationCenter: UNUserNotificationCenter = UNUserNotificationCenter.current(),
+            usersManager: UsersManagerProtocol,
             isNotificationActionsFeatureEnabled: Bool = true
         ) {
             self.queue = queue
@@ -188,6 +190,7 @@ extension PushNotificationActionsHandler {
             self.lockCacheStatus = lockCacheStatus
             self.notificationCenter = notificationCenter
             self.userNotificationCenter = userNotificationCenter
+            self.usersManager = usersManager
             self.isNotificationActionsFeatureEnabled = isNotificationActionsFeatureEnabled
         }
     }

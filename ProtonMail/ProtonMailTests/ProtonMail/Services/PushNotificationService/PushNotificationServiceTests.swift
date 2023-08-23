@@ -44,11 +44,17 @@ final class PushNotificationServiceTests: XCTestCase {
         mockUnlockProvider = .init()
         mockUnlockProvider.isUnlockedStub.bodyIs { _ in true }
         let dependencies: PushNotificationService.Dependencies = .init(
+            actionsHandler: .init(
+                dependencies: .init(
+                    queue: MockQueueManagerProtocol(),
+                    lockCacheStatus: MockLockCacheStatus(),
+                    usersManager: mockUsersManager
+                )
+            ),
             usersManager: mockUsersManager,
             unlockProvider: mockUnlockProvider,
             pushEncryptionManager: mockPushEncryptionManager,
             navigationResolver: PushNavigationResolver(dependencies: .init()),
-            lockCacheStatus: MockLockCacheStatus(),
             notificationCenter: mockNotificationCenter
         )
         sut = PushNotificationService(dependencies: dependencies)

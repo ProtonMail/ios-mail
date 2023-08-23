@@ -30,6 +30,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
     private var mockCacheStatusInject: CacheStatusStub!
     private var mockNotificationCenter: NotificationCenter!
     private var mockUserNotificationCenter: UNUserNotificationCenter!
+    private var mockUsersManager: MockUsersManagerProtocol!
 
     private var dummyUserManager: UserManager!
     private let dummyMessageId = "dummy_message_id"
@@ -37,8 +38,9 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        mockUsersManager = .init()
         dummyUserManager = createUserManager(userID: dummyUserId.rawValue)
-        sharedServices.get(by: UsersManager.self).add(newUser: dummyUserManager)
+        mockUsersManager.usersStub.fixture = [dummyUserManager]
 
         mockQueueManager = MockQueueManager()
         mockExecuteNotificationAction = MockExecuteNotificationAction()
@@ -51,8 +53,8 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
-        sharedServices.get(by: UsersManager.self).remove(user: dummyUserManager)
 
+        mockUsersManager = nil
         mockQueueManager = nil
         mockExecuteNotificationAction = nil
         mockIsNetworkAvailable = nil
@@ -200,6 +202,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
             lockCacheStatus: mockCacheStatusInject,
             notificationCenter: mockNotificationCenter,
             userNotificationCenter: mockUserNotificationCenter,
+            usersManager: mockUsersManager,
             isNotificationActionsFeatureEnabled: true
         )
     }

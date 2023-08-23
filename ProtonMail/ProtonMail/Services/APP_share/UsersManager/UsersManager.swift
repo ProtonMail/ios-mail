@@ -34,9 +34,23 @@ import ProtonMailAnalytics
 
 // sourcery: mock
 protocol UsersManagerProtocol: AnyObject {
-    var firstUser: UserManager? { get }
+    var users: [UserManager] { get }
 
     func hasUsers() -> Bool
+}
+
+extension UsersManagerProtocol {
+    var firstUser: UserManager? {
+        users.first
+    }
+
+    func getUser(by userID: UserID) -> UserManager? {
+        users.first { $0.userID == userID }
+    }
+
+    func getUser(by sessionID: String) -> UserManager? {
+        users.first { $0.isMatch(sessionID: sessionID) }
+    }
 }
 
 /// manager all the users and there services
@@ -94,10 +108,6 @@ class UsersManager: Service, UsersManagerProtocol {
         didSet {
             userCachedStatus.primaryUserSessionId = self.users.first?.authCredential.sessionID
         }
-    }
-
-    var firstUser: UserManager? {
-        return self.users.first
     }
 
     var count: Int {
@@ -218,26 +228,6 @@ class UsersManager: Service, UsersManagerProtocol {
         users.insert(user, at: 0)
         save()
         firstUser?.becomeActiveUser()
-    }
-
-    func getUser(by sessionID: String) -> UserManager? {
-        let found = self.users.filter { user -> Bool in
-            user.isMatch(sessionID: sessionID)
-        }
-        guard let user = found.first else {
-            return nil
-        }
-        return user
-    }
-
-    func getUser(by userId: UserID) -> UserManager? {
-        let found = self.users.filter { user -> Bool in
-            user.userID == userId
-        }
-        guard let user = found.first else {
-            return nil
-        }
-        return user
     }
 
     func isExist(userID: UserID) -> Bool {

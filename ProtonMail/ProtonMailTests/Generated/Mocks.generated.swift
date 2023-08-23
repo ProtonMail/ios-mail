@@ -1337,9 +1337,9 @@ class MockUserIntroductionProgressProvider: UserIntroductionProgressProvider {
 }
 
 class MockUsersManagerProtocol: UsersManagerProtocol {
-    @PropertyStub(\MockUsersManagerProtocol.firstUser, initialGet: nil) var firstUserStub
-    var firstUser: UserManager? {
-        firstUserStub()
+    @PropertyStub(\MockUsersManagerProtocol.users, initialGet: [UserManager]()) var usersStub
+    var users: [UserManager] {
+        usersStub()
     }
 
     @FuncStub(MockUsersManagerProtocol.hasUsers, initialReturn: Bool()) var hasUsersStub

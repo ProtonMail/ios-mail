@@ -21,8 +21,6 @@ import ProtonCore_TestingToolkit
 import XCTest
 
 final class SignInManagerTests: XCTestCase {
-
-    private var coreKeyMaker: KeyMakerProtocol!
     private var usersManager: UsersManager!
     private var apiMock: APIServiceMock!
     private var contactCacheStatusMock: MockContactCacheStatusProtocol!
@@ -38,7 +36,6 @@ final class SignInManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         apiMock = .init()
-        coreKeyMaker = sharedServices.get(by: KeyMakerProtocol.self)
         globalContainer = .init()
         usersManager = globalContainer.usersManager
         contactCacheStatusMock = .init()
@@ -59,7 +56,6 @@ final class SignInManagerTests: XCTestCase {
         contactCacheStatusMock = nil
         usersManager = nil
         apiMock = nil
-        coreKeyMaker = nil
         globalContainer = nil
     }
 

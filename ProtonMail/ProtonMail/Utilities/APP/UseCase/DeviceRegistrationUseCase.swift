@@ -35,7 +35,7 @@ struct DeviceRegistration: DeviceRegistrationUseCase {
         return result
     }
 
-    init(dependencies: Dependencies = .init()) {
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
@@ -118,7 +118,7 @@ extension DeviceRegistration {
         init(
             uiDevice: UIDevice = UIDevice.current,
             appVersion: String = Bundle.main.bundleShortVersion,
-            usersManager: UsersManager = sharedServices.get(by: UsersManager.self)
+            usersManager: UsersManager
         ) {
             self.uiDevice = uiDevice
             self.appVersion = appVersion
