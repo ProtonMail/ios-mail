@@ -276,9 +276,14 @@ class ComposeViewModel: NSObject {
     // check if has external emails and if need attach key
     private func uploadPublicKeyIfNeeded(completion: @escaping () -> Void) {
         let userinfo = self.user.userInfo
+        
+        guard userinfo.attachPublicKey == 1 ||
+                (composerMessageHelper.getMessageEntity()?.flag.contains(.publicKey) ?? false ) else {
+            completion()
+            return
+        }
 
-        guard userinfo.attachPublicKey == 1,
-              let draft = self.composerMessageHelper.draft,
+        guard let draft = self.composerMessageHelper.draft,
               let addr = self.messageService.defaultUserAddress(of: draft.sendAddressID),
               let key = addr.keys.first else {
             completion()
