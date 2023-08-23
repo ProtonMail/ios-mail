@@ -33,7 +33,6 @@ enum ContactEditSectionType: Int {
     case custom_field // string field
     case notes
     case delete
-    case upgrade
     case share
     case url // links
     case type2_warning

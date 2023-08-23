@@ -19,7 +19,6 @@ import LifetimeTracker
 import MBProgressHUD
 import PhotosUI
 import ProtonCore_Foundations
-import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -39,9 +38,6 @@ final class ContactEditViewController: UIViewController, AccessibleView {
 
     private var newIndexPath: IndexPath?
     private var activeTextComponent: UIResponder?
-
-    private var paymentUI: PaymentsUI?
-    private var showingPaymentUI = false
 
     init(viewModel: ContactEditViewModel) {
         self.viewModel = viewModel
@@ -111,8 +107,6 @@ extension ContactEditViewController: UITableViewDataSource {
             return viewModel.getNotes().count
         case .delete:
             return viewModel.isNew() ? 0 : 1
-        case .upgrade:
-            return 1
         case .birthday:
             return 1
         case .organization:
@@ -271,7 +265,7 @@ extension ContactEditViewController: UITableViewDataSource {
                 withIdentifier: ContactEditConstants.contactEditTextViewCell,
                 for: indexPath
             ) as? ContactEditTextViewCell
-            cell?.configCell(obj: viewModel.getNotes()[row], paid: true, callback: self)
+            cell?.configCell(obj: viewModel.getNotes()[row], callback: self)
             cell?.selectionStyle = .none
             outCell = cell
         case .delete:
@@ -284,14 +278,6 @@ extension ContactEditViewController: UITableViewDataSource {
                 color: ColorProvider.NotificationError
             )
             cell?.selectionStyle = .default
-            outCell = cell
-        case .upgrade:
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: ContactEditConstants.contactEditUpgradeCell,
-                for: indexPath
-            ) as? ContactEditUpgradeCell
-            cell?.configCell(delegate: self)
-            cell?.selectionStyle = .none
             outCell = cell
         case .addNewField:
             let cell = tableView.dequeueReusableCell(
@@ -443,7 +429,7 @@ extension ContactEditViewController: UITableViewDataSource {
                 viewModel.birthday = .init(type: .birthday, value: "", isNew: true)
                 tableView.reloadRows(at: [indexPath], with: .automatic)
             }
-        case .upgrade, .share:
+        case .share:
             break
         case .organization:
             break
@@ -559,33 +545,6 @@ extension ContactEditViewController: ContactEditTextViewCellDelegate {
         customView.tableView.beginUpdates()
         customView.tableView.endUpdates()
         UIView.setAnimationsEnabled(true)
-    }
-
-    func featureBlocked() {
-        dismissKeyboard()
-        upgrade()
-    }
-}
-
-// MARK: - ContactUpgradeCellDelegate
-
-extension ContactEditViewController: ContactUpgradeCellDelegate {
-    func upgrade() {
-        guard !showingPaymentUI else {
-            return
-        }
-        showingPaymentUI = true
-        paymentUI = .init(
-            payments: viewModel.dependencies.user.payments,
-            clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames,
-            customization: .empty
-        )
-        paymentUI?.showUpgradePlan(
-            presentationType: .modal,
-            backendFetch: true,
-            completionHandler: { _ in }
-        )
     }
 }
 
@@ -714,7 +673,7 @@ extension ContactEditViewController: UITableViewDelegate {
             } else {
                 return .delete
             }
-        case .notes, .delete, .upgrade, .share,
+        case .notes, .delete, .share,
              .type3_warning, .type3_error, .type2_warning, .debuginfo:
             return .none
         case .organization:
@@ -729,18 +688,6 @@ extension ContactEditViewController: UITableViewDelegate {
             return .insert
         }
         return .none
-    }
-
-    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        let section = indexPath.section
-        let sections = viewModel.getSections()
-        let sectionType = sections[section]
-        switch sectionType {
-        case .upgrade:
-            return false
-        default:
-            return true
-        }
     }
 
     // swiftlint:disable:next function_body_length
@@ -998,10 +945,6 @@ extension ContactEditViewController {
             forCellReuseIdentifier: ContactEditConstants.contactEditTextViewCell
         )
         customView.tableView.register(
-            .init(nibName: ContactEditConstants.contactEditUpgradeCell, bundle: nil),
-            forCellReuseIdentifier: ContactEditConstants.contactEditUpgradeCell
-        )
-        customView.tableView.register(
             .init(nibName: ContactEditConstants.contactEditUrlCell, bundle: nil),
             forCellReuseIdentifier: ContactEditConstants.contactEditUrlCell
         )
@@ -1125,7 +1068,6 @@ extension ContactEditViewController {
         static let contactEditCellInfoCell = "ContactEditInformationCell"
         static let contactEditFieldCell = "ContactEditFieldCell"
         static let contactEditTextViewCell = "ContactEditTextViewCell"
-        static let contactEditUpgradeCell = "ContactEditUpgradeCell"
         static let contactEditUrlCell = "ContactEditUrlCell"
         static let contactEditDateCell = "ContactEditDateCell"
         static let instructions = "Instructions"

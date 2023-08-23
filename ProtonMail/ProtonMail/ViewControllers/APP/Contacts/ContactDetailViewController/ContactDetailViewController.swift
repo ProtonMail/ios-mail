@@ -23,7 +23,6 @@ import LifetimeTracker
 import MBProgressHUD
 import PromiseKit
 import ProtonCore_Foundations
-import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -33,12 +32,10 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
     }
 
     private let viewModel: ContactDetailsViewModel
-    private var paymentsUI: PaymentsUI?
 
     fileprivate let kContactDetailsHeaderView: String = "ContactSectionHeadView"
     fileprivate let kContactDetailsHeaderID: String = "contact_section_head_view"
     fileprivate let kContactDetailsDisplayCell: String = "contacts_details_display_cell"
-    fileprivate let kContactDetailsUpgradeCell: String = "contacts_details_upgrade_cell"
     fileprivate let kContactsDetailsShareCell: String = "contacts_details_share_cell"
     fileprivate let kContactsDetailsWarningCell: String = "contacts_details_warning_cell"
     fileprivate let kContactsDetailsEmailCell: String = "contacts_details_display_email_cell"
@@ -117,7 +114,6 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
     }
 
     private func configureTableView() {
-        tableView.register(UINib(nibName: "ContactDetailsUpgradeCell", bundle: nil), forCellReuseIdentifier: kContactDetailsUpgradeCell)
         tableView.register(UINib(nibName: "ContactEditAddCell", bundle: nil), forCellReuseIdentifier: kContactsDetailsShareCell)
         tableView.register(UINib(nibName: "ContactsDetailsWarningCell", bundle: nil), forCellReuseIdentifier: kContactsDetailsWarningCell)
         tableView.register(UINib(nibName: "ContactDetailDisplayEmailCell", bundle: nil), forCellReuseIdentifier: kContactsDetailsEmailCell)
@@ -338,19 +334,6 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
     }
 }
 
-extension ContactDetailViewController: ContactUpgradeCellDelegate {
-    func upgrade() {
-        presentPlanUpgrade()
-    }
-
-    private func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames, customization: .empty)
-        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
-                                         backendFetch: true,
-                                         completionHandler: { _ in })
-    }
-}
-
 // MARK: - UITableViewDataSource
 
 extension ContactDetailViewController: UITableViewDataSource {
@@ -384,7 +367,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             return viewModel.notes.count
         case .url:
             return viewModel.urls.count
-        case .display_name, .upgrade, .share:
+        case .display_name, .share:
             return 1
         case .email_header, .encrypted_header, .delete:
             return 0
@@ -434,12 +417,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         let row = indexPath.row
         let s = viewModel.sections()[section]
 
-        if s == .upgrade {
-            let cell = tableView.dequeueReusableCell(withIdentifier: kContactDetailsUpgradeCell, for: indexPath) as! ContactDetailsUpgradeCell
-            cell.configCell(delegate: self)
-            cell.selectionStyle = .none
-            return cell
-        } else if s == .share {
+        if s == .share {
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactsDetailsShareCell, for: indexPath) as! ContactEditAddCell
             cell.configCell(value: LocalString._contacts_share_contact_action)
             cell.selectionStyle = .default
@@ -539,7 +517,7 @@ extension ContactDetailViewController: UITableViewDataSource {
             let url = urls[row]
             cell.configCell(title: url.newType.title, value: url.newUrl)
             cell.selectionStyle = .default
-        case .email_header, .encrypted_header, .delete, .upgrade, .share,
+        case .email_header, .encrypted_header, .delete, .share,
              .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails, .display_name, .addNewField:
             break
         }
@@ -609,8 +587,6 @@ extension ContactDetailViewController: UITableViewDelegate {
             return UITableView.automaticDimension
         case .email_header, .encrypted_header, .delete:
             return 0.0
-        case .upgrade:
-            return 200 //  280.0
         case .organization, .nickName, .title, .gender, .addNewField:
             return UITableView.automaticDimension
         }
