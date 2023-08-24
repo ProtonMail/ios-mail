@@ -107,7 +107,7 @@ class InternetConnectionStatusProviderTests: XCTestCase {
                 XCTFail("Link shouldn't be nil")
                 return MockURLSessionDataTaskProtocol()
             }
-            XCTAssertEqual(link, "https://pm.test/core/tests/ping")
+            XCTAssertEqual(link, "https://pm.test/core/v4/tests/ping")
             let error = NSError(domain: "pm.test", code: -999)
             handler(nil, nil, error)
             return MockURLSessionDataTaskProtocol()
@@ -139,7 +139,7 @@ class InternetConnectionStatusProviderTests: XCTestCase {
                 XCTFail("Link shouldn't be nil")
                 return MockURLSessionDataTaskProtocol()
             }
-            XCTAssertEqual(link, "https://pm.test/core/tests/ping")
+            XCTAssertEqual(link, "https://pm.test/core/v4/tests/ping")
             handler(nil, nil, nil)
             return MockURLSessionDataTaskProtocol()
         }

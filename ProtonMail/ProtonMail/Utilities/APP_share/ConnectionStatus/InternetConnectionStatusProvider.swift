@@ -124,7 +124,10 @@ extension InternetConnectionStatusProvider {
         if path.isPossiblyConnectedThroughVPN {
             // Connection status detection has problem when VPN is enabled
             // The reliable way to detect connection status is calling API
-            status = hasConnectionWhenVPNISEnabled() ? .connected : .notConnected
+            DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                self.status = self.hasConnectionWhenVPNISEnabled() ? .connected : .notConnected
+            }
+            return
         } else if path.usesInterfaceType(.wifi) {
             status = .connectedViaWiFi
         } else if path.usesInterfaceType(.wiredEthernet) {
@@ -150,7 +153,7 @@ extension InternetConnectionStatusProvider {
 
     private func hasConnectionWhenVPNISEnabled() -> Bool {
         let baseURL = doh.getCurrentlyUsedHostUrl()
-        let link = "\(baseURL)/core/tests/ping"
+        let link = "\(baseURL)/core/v4/tests/ping"
         guard let url = URL(string: link) else {
             let errorMessage = "Ping URL is wrong \(link)"
             PMAssertionFailure(errorMessage)
