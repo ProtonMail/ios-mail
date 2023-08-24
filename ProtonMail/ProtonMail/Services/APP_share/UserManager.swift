@@ -115,8 +115,8 @@ class UserManager: Service, ObservableObject {
         )
     }()
 
-    lazy var reportService: BugDataService = { [unowned self] in
-        let service = BugDataService(api: self.apiService)
+    lazy var reportService: BugReportService = { [unowned self] in
+        let service = BugReportService(api: self.apiService)
         return service
     }()
 

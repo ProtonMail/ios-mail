@@ -1450,6 +1450,10 @@ enum L11n {
             "Bug Report Place Holder",
             comment: "The place holder text in the bug report view."
         )
+        static let includeLogs = NSLocalizedString(
+            "Include logs",
+            comment: "Checkbox to attach local application logs to the bug report."
+        )
     }
 
     struct Search {

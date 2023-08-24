@@ -213,6 +213,16 @@ extension UserContainer: HasSaveToolbarActionSettings {
     }
 }
 
+protocol HasSendBugReport {
+    var sendBugReport: SendBugReport { get }
+}
+
+extension UserContainer: HasSendBugReport {
+    var sendBugReport: SendBugReport {
+        sendBugReportFactory()
+    }
+}
+
 protocol HasToolbarActionProvider {
     var toolbarActionProvider: ToolbarActionProvider { get }
 }

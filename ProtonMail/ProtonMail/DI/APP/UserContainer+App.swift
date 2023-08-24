@@ -107,6 +107,15 @@ extension UserContainer {
         }
     }
 
+    var sendBugReportFactory: Factory<SendBugReport> {
+        self {
+            SendBugReport(
+                bugReportService: self.user.reportService,
+                internetConnectionStatusProvider: self.internetConnectionStatusProvider
+            )
+        }
+    }
+
     var toolbarActionProviderFactory: Factory<ToolbarActionProvider> {
         self {
             self.user

@@ -21,87 +21,20 @@ import ProtonCore_TestingToolkit
 @testable import ProtonMail
 import XCTest
 
-final class BugDataServiceTests: XCTestCase {
-    private var sut: BugDataService!
+final class BugReportServiceTests: XCTestCase {
+    private var sut: BugReportService!
     private var apiServiceMock: APIServiceMock!
 
     override func setUp() {
         super.setUp()
         apiServiceMock = APIServiceMock()
-        sut = BugDataService(api: apiServiceMock)
+        sut = BugReportService(api: apiServiceMock)
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
         apiServiceMock = nil
-    }
-
-    func testReportBugSucceeds() throws {
-        let bug = "This is a bug message"
-        let userName = "Robot"
-        let email = "abc@pm.me"
-        let lastReceivedPush = String(Date().timeIntervalSince1970)
-        let reachability = "WiFi"
-        let completionExpectations = expectation(description: "Wait async operation")
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains(BugReportRequest.defaultPath) {
-                completion(nil, .success(["Code": 1001]))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(NSError.badParameter(nil)))
-            }
-        }
-
-        self.sut.reportBug(bug,
-                           username: userName,
-                           email: email,
-                           lastReceivedPush: lastReceivedPush,
-                           reachabilityStatus: reachability) { error in
-            XCTAssertNil(error)
-            completionExpectations.fulfill()
-        }
-
-        waitForExpectations(timeout: 1, handler: nil)
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
-        let argument = try XCTUnwrap(apiServiceMock.requestJSONStub.capturedArguments.last)
-
-        XCTAssertEqual(argument.first, BugReportRequest.defaultMethod)
-        let parameters = try XCTUnwrap(argument.a3 as? [String: Any])
-        let expectedDescription = bug.appending("\nLP Timestamp:\(lastReceivedPush)").appending("\nReachability:\(reachability)")
-        XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.description.rawValue] as! String, expectedDescription)
-        XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.userName.rawValue] as! String, userName)
-        XCTAssertEqual(parameters[BugReportRequest.ParameterKeys.email.rawValue] as! String, email)
-    }
-
-    func testReportBugFailed() {
-        let bug = "This is a bug message"
-        let userName = "Robot"
-        let email = "abc@pm.me"
-        let lastReceivedPush = String(Date().timeIntervalSince1970)
-        let reachability = "WiFi"
-        let stubbedError = NSError(domain: "error.com", code: 1, userInfo: [:])
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            if path.contains(BugReportRequest.defaultPath) {
-                completion(nil, .failure(stubbedError))
-            } else {
-                XCTFail("Unexpected path")
-                completion(nil, .failure(NSError.badParameter(nil)))
-            }
-        }
-        let completionExpectations = expectation(description: "Wait async operation")
-
-        self.sut.reportBug(bug,
-                           username: userName,
-                           email: email,
-                           lastReceivedPush: lastReceivedPush,
-                           reachabilityStatus: reachability) { error in
-            XCTAssertEqual(error, stubbedError)
-            completionExpectations.fulfill()
-        }
-
-        waitForExpectations(timeout: 1, handler: nil)
-        XCTAssertTrue(apiServiceMock.requestJSONStub.wasCalledExactlyOnce)
     }
 
     func testReportPhishing_bodyIsArmored_doesNotCallApi() {

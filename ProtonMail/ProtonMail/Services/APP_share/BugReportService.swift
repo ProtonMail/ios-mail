@@ -20,11 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
-import ProtonCore_Networking
+import ProtonCore_APIClient
 import ProtonCore_Services
 
-final class BugDataService {
+typealias BugReport = ReportBug
+
+final class BugReportService {
     private let apiService: APIService
 
     init(api: APIService) {
@@ -43,28 +44,24 @@ final class BugDataService {
         }
     }
 
-    func reportBug(_ bug: String,
-                   username: String,
-                   email: String,
-                   lastReceivedPush: String,
-                   reachabilityStatus: String,
-                   completion: ((NSError?) -> Void)?) {
-        let systemVersion = UIDevice.current.systemVersion
-        let model = "iOS - \(UIDevice.current.model)"
-        let mainBundle = Bundle.main
-        let username = username
-        let useremail = email
-        let route = BugReportRequest(os: model,
-                                     osVersion: "\(systemVersion)",
-                                     clientVersion: mainBundle.appVersion,
-                                     title: "Proton Mail App bug report",
-                                     desc: bug,
-                                     userName: username,
-                                     email: useremail,
-                                     lastReceivedPush: lastReceivedPush,
-                                     reachabilityStatus: reachabilityStatus)
-        self.apiService.perform(request: route, response: VoidResponse()) { _, res in
-            completion?(res.error?.toNSError)
+    func reportBug(bugReport: BugReport) async throws {
+        let request = ReportsBugs(bugReport)
+
+        let files: [String: URL] = bugReport.files.reduce(into: [:]) { $0[$1.lastPathComponent] = $1 }
+
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            apiService.performUpload(
+                request: request,
+                files: files,
+                callCompletionBlockUsing: .immediateExecutor,
+                uploadProgress: nil
+            ) { task, result in
+                if let error = task?.error ?? result.error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
+                }
+            }
         }
     }
 }

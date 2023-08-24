@@ -587,7 +587,7 @@ extension MenuCoordinator {
             return
         }
 
-        let view = ReportBugsViewController(user: user)
+        let view = ReportBugsViewController(dependencies: userContainer(for: user))
         self.viewModel.highlight(label: MenuLabel(location: .bugs))
         let navigation = UINavigationController(rootViewController: view)
         self.setupContentVC(destination: navigation)
