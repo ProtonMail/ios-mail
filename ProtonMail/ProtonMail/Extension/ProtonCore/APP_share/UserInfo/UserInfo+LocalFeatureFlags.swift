@@ -43,7 +43,7 @@ extension UserInfo {
     }
 
     static var isSenderImageEnabled: Bool {
-        return true
+        return false
     }
 
     static var isBlockSenderEnabled: Bool {
