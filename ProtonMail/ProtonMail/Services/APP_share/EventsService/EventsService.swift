@@ -307,21 +307,16 @@ extension EventsService {
                 }
 
                 var messagesNoCache : [MessageID] = []
-                var removedMessages: [MessageID] = []
-                var updatedMessages: [MessageEntity] = []
                 for message in messages {
                     let msg = MessageEvent(event: message)
                     switch msg.Action {
                     case .some(IncrementalUpdateType.delete):
                         if let messageID = msg.ID {
-                            removedMessages.append(MessageID(messageID))
                             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                                 let labelObjs = message.mutableSetValue(forKey: "labels")
                                 labelObjs.removeAllObjects()
                                 message.setValue(labelObjs, forKey: "labels")
                                 context.delete(message)
-                                // in case
-                                error = context.saveUpstreamIfNeeded()
                             }
                         }
                     case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update_draft), .some(IncrementalUpdateType.update_flags):
@@ -345,8 +340,6 @@ extension EventsService {
                             Helper.mergeDraft(event: msg, existing: existing)
                             self.applyLabelDeletion(msgEvent: msg, context: context, message: existing)
                             self.applyLabelAddition(msgEvent: msg, context: context, message: existing)
-                            error = context.saveUpstreamIfNeeded()
-                            updatedMessages.append(MessageEntity(existing))
                             continue
                         }
 
@@ -411,11 +404,9 @@ extension EventsService {
                         break
 
                     }
-                    // TODO:: move this to the loop and to catch the error also put it in noCache queue.
-                    error = context.saveUpstreamIfNeeded()
                 }
+                error = context.saveUpstreamIfNeeded() ?? error
 
-                let userID = userManager.userID
                 self.dependencies
                     .fetchMessageMetaData
                     .execute(params: .init(messageIDs: messagesNoCache)) { _ in }
@@ -461,8 +452,6 @@ extension EventsService {
                                     .forEach { $0.messageCount = 0 }
                                 labelObjs.removeAllObjects()
                                 context.delete(conversation)
-
-                                _ = context.saveUpstreamIfNeeded()
                             }
                         case IncrementalUpdateType.insert: // treat it as same as update
                             if Conversation.conversationForConversationID(conversationEvent.ID, inManagedObjectContext: context) != nil {
@@ -487,7 +476,6 @@ extension EventsService {
                                         }
                                     }
                                 }
-                                _ = context.saveUpstreamIfNeeded()
                             } catch {
                                 PMAssertionFailure(error)
                                 // Refetch after insert failed
@@ -525,7 +513,6 @@ extension EventsService {
                                         conversationsNeedRefetch.append(conversationEvent.ID)
                                     }
                                 }
-                                _ = context.saveUpstreamIfNeeded()
                             } catch {
                                 PMAssertionFailure(error)
                                 conversationsNeedRefetch.append(conversationEvent.ID)
@@ -533,9 +520,9 @@ extension EventsService {
                         default:
                             break
                         }
-
-                        _ = context.saveUpstreamIfNeeded()
                     }
+
+                    _ = context.saveUpstreamIfNeeded()
 
                     let conversationIDs = conversationsNeedRefetch.map {ConversationID($0)}
                     userManager.conversationService.fetchConversations(with: conversationIDs, completion: nil)
@@ -564,8 +551,6 @@ extension EventsService {
                                 context.delete(tempContact)
                             }
                         }
-                        // save it earily
-                        _ = context.saveUpstreamIfNeeded()
                     case .insert, .update:
                         do {
                             if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -592,11 +577,11 @@ extension EventsService {
                         } catch {
                             PMAssertionFailure(error)
                         }
-                        _ = context.saveUpstreamIfNeeded()
                     default:
                         break
                     }
                 }
+                _ = context.saveUpstreamIfNeeded()
             }
     }
 
@@ -814,13 +799,21 @@ extension EventsService {
             return
         }
 
-        for count in counts {
+        for (index, count) in (counts.enumerated()) {
             if let labelID = count["LabelID"] as? String {
                 guard let unread = count["Unread"] as? Int else {
                     continue
                 }
+                let isLast = index == counts.count - 1
                 let total = count["Total"] as? Int
-                self.lastUpdatedStore.updateUnreadCount(by: LabelID(labelID), userID: userManager.userID, unread: unread, total: total, type: viewMode, shouldSave: true)
+                self.lastUpdatedStore.updateUnreadCount(
+                    by: LabelID(labelID),
+                    userID: userManager.userID,
+                    unread: unread,
+                    total: total,
+                    type: viewMode,
+                    shouldSave: isLast
+                )
                 self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: viewMode)
             }
         }
