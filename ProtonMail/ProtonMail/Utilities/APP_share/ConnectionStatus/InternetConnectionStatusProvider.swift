@@ -1,6 +1,7 @@
 import Foundation
 import Network
 import ProtonCore_Doh
+import ProtonCore_Services
 
 // sourcery: mock
 protocol ConnectionStatusReceiver: AnyObject {
@@ -55,6 +56,9 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
     private(set) var status: ConnectionStatus = .initialize {
         didSet {
             if oldValue == status { return }
+            if !status.isConnected {
+                doubleCheckConnectionStatus(after: 2)
+            }
             let receivers = delegatesStore
                 .allObjects
                 .compactMap { $0 as? ConnectionStatusReceiver }
@@ -67,15 +71,25 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
             }
         }
     }
+    private var doubleCheckTimer: Timer?
 
     init(
         connectionMonitor: ConnectionMonitor = NWPathMonitor(),
         doh: DoHInterface = BackendConfiguration.shared.doh,
-        session: URLSessionProtocol = URLSession.shared
+        session: URLSessionProtocol? = nil
     ) {
         self.pathMonitor = connectionMonitor
         self.doh = doh
-        self.session = session
+        if let session = session {
+            self.session = session
+        } else {
+            let urlSession = URLSession(
+                configuration: .default,
+                delegate: URLSessionCertificateValidator(),
+                delegateQueue: nil
+            )
+            self.session = urlSession
+        }
         startObservation()
     }
 
@@ -139,6 +153,24 @@ extension InternetConnectionStatusProvider {
         }
         self.status = status
     }
+
+    private func doubleCheckConnectionStatus(after seconds: TimeInterval) {
+        DispatchQueue.main.async {
+            self.doubleCheckTimer?.invalidate()
+            self.doubleCheckTimer = nil
+            self.doubleCheckTimer = Timer.scheduledTimer(
+                withTimeInterval: seconds,
+                repeats: false,
+                block: { [weak self] _ in
+                    self?.monitorQueue.async {
+                        guard let path = self?.pathMonitor.currentPathProtocol else { return }
+                        self?.updateStatusFrom(path: path)
+                    }
+                }
+            )
+        }
+    }
+
 }
 
 extension InternetConnectionStatusProvider {
@@ -159,12 +191,11 @@ extension InternetConnectionStatusProvider {
             PMAssertionFailure(errorMessage)
             return false
         }
-        let request = URLRequest(url: url, timeoutInterval: 2)
+        let request = URLRequest(url: url, timeoutInterval: 30)
         let semaphore = DispatchSemaphore(value: 0)
         var isSuccess = true
         session.dataTask(withRequest: request) { _, _, error in
             if error != nil {
-                self.status = .notConnected
                 isSuccess = false
             }
             semaphore.signal()
@@ -178,4 +209,23 @@ extension InternetConnectionStatusProvider {
         status = newStatus
     }
     #endif
+}
+
+final class URLSessionCertificateValidator: NSObject, URLSessionDelegate {
+    func urlSession(
+        _ session: URLSession,
+        didReceive challenge: URLAuthenticationChallenge,
+        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+    ) {
+        if PMAPIService.noTrustKit {
+            completionHandler(.performDefaultHandling, challenge.proposedCredential)
+        } else if let validator = PMAPIService.trustKit?.pinningValidator {
+            if !validator.handle(challenge, completionHandler: completionHandler) {
+                completionHandler(.performDefaultHandling, challenge.proposedCredential)
+            }
+        } else {
+            assert(false, "TrustKit was not correctly initialized")
+            completionHandler(.performDefaultHandling, challenge.proposedCredential)
+        }
+    }
 }
