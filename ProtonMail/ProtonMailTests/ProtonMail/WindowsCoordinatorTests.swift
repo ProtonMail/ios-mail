@@ -158,7 +158,7 @@ final class WindowsCoordinatorTests: XCTestCase {
 
         wait(self.sut.appWindow != nil)
         XCTAssertNil(sut.lockWindow)
-        XCTAssertTrue(sut.appWindow.topmostViewController() is SkeletonViewController)
+        wait(self.sut.appWindow.topmostViewController() is SkeletonViewController)
     }
 }
 

@@ -122,6 +122,7 @@ target 'ProtonMailTests' do
   pod 'ProtonCore-TestingToolkit/UnitTests/DataModel', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Networking', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-TestingToolkit/UnitTests/Authentication", :git => proton_core_path, :tag => proton_core_version
+  pod 'fusion', :git => proton_test_path, :commit => proton_test_commit
   app_pods
 end
 
