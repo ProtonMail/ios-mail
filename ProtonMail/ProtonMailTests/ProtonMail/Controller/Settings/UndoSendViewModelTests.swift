@@ -32,7 +32,7 @@ final class UndoSendViewModelTests: XCTestCase {
         apiService = APIServiceMock()
         keyChain = .makeTestingKeychain()
         keyMaker = .init(autolocker: nil, keychain: keyChain)
-        user = UserManager(api: apiService, role: .member, coreKeyMaker: keyMaker)
+        user = UserManager(api: apiService, role: .member)
         sut = UndoSendSettingViewModel(user: user, delaySeconds: 0)
         uiMock = SettingsSingleCheckMarkUIMock()
         sut.set(uiDelegate: uiMock)

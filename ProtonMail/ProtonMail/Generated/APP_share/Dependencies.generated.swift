@@ -1,6 +1,7 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 import ProtonCore_Keymaker
+import ProtonCore_Services
 
 protocol HasAttachmentMetadataStrippingProtocol {
     var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol { get }
@@ -258,6 +259,26 @@ extension UserContainer: HasUserIntroductionProgressProvider {
     }
 }
 
+protocol HasAPIService {
+    var apiService: APIService { get }
+}
+
+extension UserContainer: HasAPIService {
+    var apiService: APIService {
+        apiServiceFactory()
+    }
+}
+
+protocol HasCacheService {
+    var cacheService: CacheService { get }
+}
+
+extension UserContainer: HasCacheService {
+    var cacheService: CacheService {
+        cacheServiceFactory()
+    }
+}
+
 protocol HasComposerViewFactory {
     var composerViewFactory: ComposerViewFactory { get }
 }
@@ -265,6 +286,66 @@ protocol HasComposerViewFactory {
 extension UserContainer: HasComposerViewFactory {
     var composerViewFactory: ComposerViewFactory {
         composerViewFactoryFactory()
+    }
+}
+
+protocol HasContactDataService {
+    var contactService: ContactDataService { get }
+}
+
+extension UserContainer: HasContactDataService {
+    var contactService: ContactDataService {
+        contactServiceFactory()
+    }
+}
+
+protocol HasContactGroupsDataService {
+    var contactGroupService: ContactGroupsDataService { get }
+}
+
+extension UserContainer: HasContactGroupsDataService {
+    var contactGroupService: ContactGroupsDataService {
+        contactGroupServiceFactory()
+    }
+}
+
+protocol HasConversationDataServiceProxy {
+    var conversationService: ConversationDataServiceProxy { get }
+}
+
+extension UserContainer: HasConversationDataServiceProxy {
+    var conversationService: ConversationDataServiceProxy {
+        conversationServiceFactory()
+    }
+}
+
+protocol HasConversationStateService {
+    var conversationStateService: ConversationStateService { get }
+}
+
+extension UserContainer: HasConversationStateService {
+    var conversationStateService: ConversationStateService {
+        conversationStateServiceFactory()
+    }
+}
+
+protocol HasEventsFetching {
+    var eventsService: EventsFetching { get }
+}
+
+extension UserContainer: HasEventsFetching {
+    var eventsService: EventsFetching {
+        eventsServiceFactory()
+    }
+}
+
+protocol HasFeatureFlagsDownloadService {
+    var featureFlagsDownloadService: FeatureFlagsDownloadService { get }
+}
+
+extension UserContainer: HasFeatureFlagsDownloadService {
+    var featureFlagsDownloadService: FeatureFlagsDownloadService {
+        featureFlagsDownloadServiceFactory()
     }
 }
 
@@ -285,6 +366,76 @@ protocol HasFetchAttachment {
 extension UserContainer: HasFetchAttachment {
     var fetchAttachment: FetchAttachment {
         fetchAttachmentFactory()
+    }
+}
+
+protocol HasIncomingDefaultService {
+    var incomingDefaultService: IncomingDefaultService { get }
+}
+
+extension UserContainer: HasIncomingDefaultService {
+    var incomingDefaultService: IncomingDefaultService {
+        incomingDefaultServiceFactory()
+    }
+}
+
+protocol HasLabelsDataService {
+    var labelService: LabelsDataService { get }
+}
+
+extension UserContainer: HasLabelsDataService {
+    var labelService: LabelsDataService {
+        labelServiceFactory()
+    }
+}
+
+protocol HasLocalNotificationService {
+    var localNotificationService: LocalNotificationService { get }
+}
+
+extension UserContainer: HasLocalNotificationService {
+    var localNotificationService: LocalNotificationService {
+        localNotificationServiceFactory()
+    }
+}
+
+protocol HasMessageDataService {
+    var messageService: MessageDataService { get }
+}
+
+extension UserContainer: HasMessageDataService {
+    var messageService: MessageDataService {
+        messageServiceFactory()
+    }
+}
+
+protocol HasQueueHandler {
+    var queueHandler: QueueHandler { get }
+}
+
+extension UserContainer: HasQueueHandler {
+    var queueHandler: QueueHandler {
+        queueHandlerFactory()
+    }
+}
+
+protocol HasUndoActionManagerProtocol {
+    var undoActionManager: UndoActionManagerProtocol { get }
+}
+
+extension UserContainer: HasUndoActionManagerProtocol {
+    var undoActionManager: UndoActionManagerProtocol {
+        undoActionManagerFactory()
+    }
+}
+
+protocol HasUserDataService {
+    var userService: UserDataService { get }
+}
+
+extension UserContainer: HasUserDataService {
+    var userService: UserDataService {
+        userServiceFactory()
     }
 }
 

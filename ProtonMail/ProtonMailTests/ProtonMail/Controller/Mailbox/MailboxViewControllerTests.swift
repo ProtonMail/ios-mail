@@ -46,6 +46,8 @@ final class MailboxViewControllerTests: XCTestCase {
     var mockFetchMessageDetail: MockFetchMessageDetail!
     var fakeCoordinator: MockMailboxCoordinatorProtocol!
 
+    private var globalContainer: GlobalContainer!
+
     var testContext: NSManagedObjectContext {
         coreDataService.mainContext
     }
@@ -56,6 +58,9 @@ final class MailboxViewControllerTests: XCTestCase {
         userID = .init(String.randomString(20))
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         sharedServices.add(CoreDataService.self, for: coreDataService)
+
+        globalContainer = .init()
+        globalContainer.contextProviderFactory.register { self.coreDataService }
 
         apiServiceMock = APIServiceMock()
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
@@ -84,7 +89,7 @@ final class MailboxViewControllerTests: XCTestCase {
                                       authCredential: fakeAuth,
                                       mailSettings: nil,
                                       parent: nil,
-                                      coreKeyMaker: MockKeyMakerProtocol())
+                                      globalContainer: globalContainer)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
@@ -145,6 +150,7 @@ final class MailboxViewControllerTests: XCTestCase {
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
         apiServiceMock = nil
+        globalContainer = nil
     }
 
     func testTitle_whenChangeCustomLabelName_titleWillBeUpdatedAccordingly() {

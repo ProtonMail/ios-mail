@@ -40,8 +40,8 @@ class UsersManagerHelperTest: XCTestCase {
     }
 
     func testNumberOfFreeAccounts_allFreeUsers() throws {
-        let user1 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none, coreKeyMaker: MockKeyMakerProtocol())
-        let user2 = UserManager(api: apiMock, role: UserInfo.OrganizationRole.none, coreKeyMaker: MockKeyMakerProtocol())
+        let user1 = UserManager(api: apiMock)
+        let user2 = UserManager(api: apiMock)
         let users = UsersManager(dependencies: globalContainer)
         users.add(newUser: user1)
         users.add(newUser: user2)

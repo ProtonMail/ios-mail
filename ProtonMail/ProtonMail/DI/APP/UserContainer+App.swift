@@ -16,17 +16,48 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
+import ProtonCore_Payments
 
 extension UserContainer {
+    var appRatingServiceFactory: Factory<AppRatingService> {
+        self {
+            AppRatingService(
+                dependencies: .init(
+                    featureFlagService: self.featureFlagsDownloadService,
+                    appRating: AppRatingManager(),
+                    internetStatus: self.internetConnectionStatusProvider,
+                    appRatingPrompt: self.userCachedStatus
+                )
+            )
+        }
+    }
+
     var blockedSenderCacheUpdaterFactory: Factory<BlockedSenderCacheUpdater> {
         self {
-            self.user.blockedSenderCacheUpdater
+            let refetchAllBlockedSenders = RefetchAllBlockedSenders(
+                dependencies: .init(incomingDefaultService: self.incomingDefaultService)
+            )
+
+            return BlockedSenderCacheUpdater(
+                dependencies: .init(
+                    fetchStatusProvider: self.userCachedStatus,
+                    internetConnectionStatusProvider: self.internetConnectionStatusProvider,
+                    refetchAllBlockedSenders: refetchAllBlockedSenders,
+                    userInfo: self.user.userInfo
+                )
+            )
         }
     }
 
     var blockedSendersPublisherFactory: Factory<BlockedSendersPublisher> {
         self {
             BlockedSendersPublisher(contextProvider: self.contextProvider, userID: self.user.userID)
+        }
+    }
+
+    var reportServiceFactory: Factory<BugReportService> {
+        self {
+            BugReportService(api: self.apiService)
         }
     }
 
@@ -92,6 +123,21 @@ extension UserContainer {
     var nextMessageAfterMoveStatusProviderFactory: Factory<NextMessageAfterMoveStatusProvider> {
         self {
             self.user
+        }
+    }
+
+    var paymentsFactory: Factory<Payments> {
+        self {
+            Payments(
+                inAppPurchaseIdentifiers: Constants.mailPlanIDs,
+                apiService: self.apiService,
+                localStorage: self.userCachedStatus,
+                canExtendSubscription: true,
+                reportBugAlertHandler: { _ in
+                    let link = DeepLink("toBugPop", sender: nil)
+                    NotificationCenter.default.post(name: .switchView, object: link)
+                }
+            )
         }
     }
 

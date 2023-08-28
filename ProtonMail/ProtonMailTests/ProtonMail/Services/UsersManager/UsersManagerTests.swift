@@ -485,6 +485,6 @@ class UsersManagerTests: XCTestCase {
                            authCredential: auth,
                            mailSettings: .init(),
                            parent: sut,
-                           coreKeyMaker: MockKeyMakerProtocol())
+                           globalContainer: .init())
     }
 }

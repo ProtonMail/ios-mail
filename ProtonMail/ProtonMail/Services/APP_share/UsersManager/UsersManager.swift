@@ -163,13 +163,21 @@ class UsersManager: Service, UsersManagerProtocol {
         authCredential: AuthCredential,
         mailSettings: MailSettings?
     ) -> UserManager {
-        UserManager(
+        let globalContainer: GlobalContainer
+#if APP_EXTENSION
+        globalContainer = GlobalContainer.shared
+#else
+        // swiftlint:disable:next force_cast
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        globalContainer = appDelegate.dependencies
+#endif
+        return UserManager(
             api: apiService,
             userInfo: userInfo,
             authCredential: authCredential,
             mailSettings: mailSettings,
             parent: self,
-            coreKeyMaker: coreKeyMaker
+            globalContainer: globalContainer
         )
     }
 

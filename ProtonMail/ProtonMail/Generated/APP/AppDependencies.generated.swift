@@ -1,5 +1,6 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
+import ProtonCore_Payments
 
 protocol HasBiometricStatusProvider {
     var biometricStatusProvider: BiometricStatusProvider { get }
@@ -129,6 +130,16 @@ extension UserContainer: HasToolbarCustomizationInfoBubbleViewStatusProvider {
     }
 }
 
+protocol HasAppRatingService {
+    var appRatingService: AppRatingService { get }
+}
+
+extension UserContainer: HasAppRatingService {
+    var appRatingService: AppRatingService {
+        appRatingServiceFactory()
+    }
+}
+
 protocol HasBlockedSenderCacheUpdater {
     var blockedSenderCacheUpdater: BlockedSenderCacheUpdater { get }
 }
@@ -146,6 +157,16 @@ protocol HasBlockedSendersPublisher {
 extension UserContainer: HasBlockedSendersPublisher {
     var blockedSendersPublisher: BlockedSendersPublisher {
         blockedSendersPublisherFactory()
+    }
+}
+
+protocol HasBugReportService {
+    var reportService: BugReportService { get }
+}
+
+extension UserContainer: HasBugReportService {
+    var reportService: BugReportService {
+        reportServiceFactory()
     }
 }
 
@@ -206,6 +227,16 @@ protocol HasNextMessageAfterMoveStatusProvider {
 extension UserContainer: HasNextMessageAfterMoveStatusProvider {
     var nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider {
         nextMessageAfterMoveStatusProviderFactory()
+    }
+}
+
+protocol HasPayments {
+    var payments: Payments { get }
+}
+
+extension UserContainer: HasPayments {
+    var payments: Payments {
+        paymentsFactory()
     }
 }
 

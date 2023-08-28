@@ -107,218 +107,84 @@ class UserManager: Service, ObservableObject {
 
     var isUserSelectedUnreadFilterInInbox = false
 
-    private let coreDataService: CoreDataContextProviderProtocol
+    // TODO: deprecate these wrappers
 
-    lazy var conversationStateService: ConversationStateService = { [unowned self] in
-        return ConversationStateService(
-            viewMode: self.userInfo.viewMode
-        )
-    }()
+    var cacheService: CacheService {
+        container.cacheService
+    }
 
-    lazy var reportService: BugReportService = { [unowned self] in
-        let service = BugReportService(api: self.apiService)
-        return service
-    }()
+    var contactService: ContactDataService {
+        container.contactService
+    }
 
-    lazy var contactService: ContactDataService = { [unowned self] in
-        let service = ContactDataService(
-            api: self.apiService,
-            labelDataService: self.labelService,
-            userInfo: self.userInfo,
-            coreDataService: coreDataService,
-            contactCacheStatus: sharedServices.userCachedStatus,
-            cacheService: self.cacheService,
-            queueManager: sharedServices.get(by: QueueManager.self)
-        )
-        return service
-    }()
+    var contactGroupService: ContactGroupsDataService {
+        container.contactGroupService
+    }
 
-    lazy var contactGroupService: ContactGroupsDataService = { [unowned self] in
-        let service = ContactGroupsDataService(api: self.apiService,
-                                               labelDataService: self.labelService,
-                                               coreDataService: coreDataService,
-                                               queueManager: sharedServices.get(by: QueueManager.self),
-                                               userID: self.userID)
-        return service
-    }()
+    var conversationService: ConversationDataServiceProxy {
+        container.conversationService
+    }
 
-    lazy var appRatingService: AppRatingService = { [unowned self] in
-        let service = AppRatingService(
-            dependencies: .init(
-                featureFlagService: featureFlagsDownloadService,
-                appRating: AppRatingManager(),
-                internetStatus: InternetConnectionStatusProvider.shared,
-                appRatingPrompt: sharedServices.userCachedStatus
-            )
-        )
-        return service
-    }()
+    var conversationStateService: ConversationStateService {
+        container.conversationStateService
+    }
+
+    var eventsService: EventsFetching {
+        container.eventsService
+    }
+
+    var featureFlagsDownloadService: FeatureFlagsDownloadService {
+        container.featureFlagsDownloadService
+    }
+
+    var incomingDefaultService: IncomingDefaultService {
+        container.incomingDefaultService
+    }
+
+    var labelService: LabelsDataService {
+        container.labelService
+    }
+
+    var localNotificationService: LocalNotificationService {
+        container.localNotificationService
+    }
+
+    var messageService: MessageDataService {
+        container.messageService
+    }
+
+    var undoActionManager: UndoActionManagerProtocol {
+        container.undoActionManager
+    }
+
+    var userService: UserDataService {
+        container.userService
+    }
+#if !APP_EXTENSION
+    var appRatingService: AppRatingService {
+        container.appRatingService
+    }
+
+    var reportService: BugReportService {
+        container.reportService
+    }
+#endif
+
+    // end of wrappers
+
+#if !APP_EXTENSION
+    // these are stateful dependencies and as such must be kept in memory for the lifetime of UserManager
+    private(set) var blockedSenderCacheUpdater: BlockedSenderCacheUpdater!
+    private(set) var payments: Payments!
+#endif
 
     weak var parentManager: UsersManager?
 
     private let appTelemetry: AppTelemetry
 
-    lazy var messageService: MessageDataService = { [unowned self] in
-        let service = MessageDataService(
-            api: self.apiService,
-            userID: self.userID,
-            labelDataService: self.labelService,
-            contactDataService: self.contactService,
-            localNotificationService: self.localNotificationService,
-            queueManager: sharedServices.get(by: QueueManager.self),
-            contextProvider: coreDataService,
-            lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
-            user: self,
-            cacheService: self.cacheService,
-            undoActionManager: self.undoActionManager,
-            contactCacheStatus: sharedServices.userCachedStatus,
-            dependencies: .init(
-                moveMessageInCacheUseCase: MoveMessageInCache(
-                    dependencies: .init(
-                        contextProvider: coreDataService,
-                        lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
-                        userID: self.userID,
-                        pushUpdater: PushUpdater()
-                    )
-                ),
-                viewModeDataSource: conversationStateService
-            )
-        )
-        return service
-    }()
-
-    lazy var conversationService: ConversationDataServiceProxy = { [unowned self] in
-        let service = ConversationDataServiceProxy(
-            api: apiService,
-            userID: userID,
-            contextProvider: coreDataService,
-            lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
-            messageDataService: messageService,
-            eventsService: eventsService,
-            undoActionManager: undoActionManager,
-            queueManager: sharedServices.get(by: QueueManager.self),
-            contactCacheStatus: sharedServices.userCachedStatus
-        )
-        return service
-    }()
-
-    lazy var labelService: LabelsDataService = { [unowned self] in
-        let service = LabelsDataService(
-            api: self.apiService,
-            userID: self.userID,
-            contextProvider: coreDataService,
-            lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
-            cacheService: self.cacheService,
-            viewModeDataSource: conversationStateService
-        )
-        return service
-    }()
-
-    lazy var userService: UserDataService = { [unowned self] in
-        let service = UserDataService(apiService: apiService, coreKeyMaker: coreKeyMaker)
-        return service
-    }()
-
-    lazy var localNotificationService: LocalNotificationService = { [unowned self] in
-        let service = LocalNotificationService(userID: self.userID)
-        return service
-    }()
-
-    lazy var cacheService: CacheService = { [unowned self] in
-        let service = CacheService(
-            userID: self.userID,
-            dependencies: .init(
-                coreDataService: coreDataService,
-                lastUpdatedStore: lastUpdatedStore
-            )
-        )
-        return service
-    }()
-
-    lazy var incomingDefaultService: IncomingDefaultService = { [unowned self] in
-        return IncomingDefaultService(
-            dependencies: .init(
-                apiService: apiService,
-                contextProvider: coreDataService,
-                userInfo: userInfo
-            )
-        )
-    }()
-
-    lazy var eventsService: EventsFetching = { [unowned self] in
-        let useCase = FetchMessageMetaData(
-            dependencies: .init(
-                userID: userID,
-                messageDataService: messageService,
-                contextProvider: coreDataService
-            )
-        )
-        let service = EventsService(
-            userManager: self,
-            dependencies: .init(
-                contactCacheStatus: sharedServices.userCachedStatus,
-                featureFlagCache: sharedServices.userCachedStatus,
-                fetchMessageMetaData: useCase,
-                incomingDefaultService: incomingDefaultService
-            )
-        )
-        return service
-    }()
-
-    lazy var undoActionManager: UndoActionManagerProtocol = { [unowned self] in
-        let manager = UndoActionManager(
-            dependencies: .init(contextProvider: self.coreDataService, apiService: self.apiService),
-            getEventFetching: { [weak self] in
-                self?.eventsService
-            },
-            getUserManager: { [weak self] in
-                self
-            }
-        )
-        return manager
-    }()
-
-	lazy var featureFlagsDownloadService: FeatureFlagsDownloadService = { [unowned self] in
-        let service = FeatureFlagsDownloadService(
-            cache: sharedServices.userCachedStatus,
-            userID: userID,
-            apiService: self.apiService,
-            appRatingStatusProvider: sharedServices.userCachedStatus
-        )
-        return service
-    }()
-
     private var lastUpdatedStore: LastUpdatedStoreProtocol {
         return sharedServices.get(by: LastUpdatedStore.self)
     }
-
-    #if !APP_EXTENSION
-    lazy var blockedSenderCacheUpdater: BlockedSenderCacheUpdater = { [unowned self] in
-        let refetchAllBlockedSenders = RefetchAllBlockedSenders(
-            dependencies: .init(incomingDefaultService: incomingDefaultService)
-        )
-
-        return BlockedSenderCacheUpdater(
-            dependencies: .init(
-                fetchStatusProvider: sharedServices.userCachedStatus,
-                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared,
-                refetchAllBlockedSenders: refetchAllBlockedSenders,
-                userInfo: userInfo
-            )
-        )
-    }()
-
-    lazy var payments = Payments(
-        inAppPurchaseIdentifiers: Constants.mailPlanIDs,
-        apiService: self.apiService,
-        localStorage: sharedServices.userCachedStatus,
-        canExtendSubscription: true,
-        reportBugAlertHandler: { _ in
-            let link = DeepLink("toBugPop", sender: nil)
-            NotificationCenter.default.post(name: .switchView, object: link)
-        }
-    )
-    #endif
 
     var hasTelemetryEnabled: Bool {
         #if DEBUG
@@ -330,7 +196,12 @@ class UserManager: Service, ObservableObject {
     }
 
     @Published var mailSettings: MailSettings
-    private let coreKeyMaker: KeyMakerProtocol
+
+    var container: UserContainer {
+        _container
+    }
+
+    private var _container: UserContainer!
 
     init(
         api: APIService,
@@ -339,53 +210,29 @@ class UserManager: Service, ObservableObject {
         mailSettings: MailSettings?,
         parent: UsersManager?,
         appTelemetry: AppTelemetry = MailAppTelemetry(),
-        coreKeyMaker: KeyMakerProtocol,
-        coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
+        globalContainer: GlobalContainer
     ) {
         self.userInfo = userInfo
-        self.coreDataService = coreDataService
         self.apiService = api
         self.authCredential = authCredential
         self.mailSettings = mailSettings ?? .init()
         self.appTelemetry = appTelemetry
-        self.coreKeyMaker = coreKeyMaker
         self.authHelper = AuthHelper(authCredential: authCredential)
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
         self.apiService.authDelegate = authHelper
+        self._container = .init(userManager: self, globalContainer: globalContainer)
+
         acquireSessionIfNeeded()
         self.parentManager = parent
-        let handler = self.makeQueueHandler()
-        let queueManager = sharedServices.get(by: QueueManager.self)
+        let handler = container.queueHandler
+        let queueManager = globalContainer.queueManager
         queueManager.registerHandler(handler)
         self.messageService.signin()
-    }
 
-    /// A mock function only for unit test
-    init(
-        api: APIService,
-        role: UserInfo.OrganizationRole,
-        userInfo: UserInfo = UserInfo.getDefault(),
-        mailSettings: MailSettings = .init(),
-        appTelemetry: AppTelemetry = MailAppTelemetry(),
-        coreKeyMaker: KeyMakerProtocol,
-        authCredential: AuthCredential = .none,
-        coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
-    ) {
-        guard ProcessInfo.isRunningUnitTests || ProcessInfo.isRunningUITests else {
-            fatalError("This initialization only for test")
-        }
-        userInfo.role = role.rawValue
-        self.userInfo = userInfo
-        self.coreDataService = coreDataService
-        self.apiService = api
-        self.appTelemetry = appTelemetry
-        self.coreKeyMaker = coreKeyMaker
-        self.authCredential = authCredential
-        self.mailSettings = mailSettings
-        self.authHelper = AuthHelper(authCredential: authCredential)
-        self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
-        self.apiService.authDelegate = authHelper
-        acquireSessionIfNeeded()
+#if !APP_EXTENSION
+        blockedSenderCacheUpdater = container.blockedSenderCacheUpdater
+        payments = container.payments
+#endif
     }
 
     private func acquireSessionIfNeeded() {
@@ -428,20 +275,6 @@ class UserManager: Service, ObservableObject {
         updateTelemetry()
         refreshFeatureFlags()
         activatePayments()
-    }
-
-    func makeQueueHandler() -> QueueHandler {
-        MainQueueHandler(
-            coreDataService: coreDataService,
-            apiService: apiService,
-            messageDataService: messageService,
-            conversationDataService: conversationService.conversationDataService,
-            labelDataService: labelService,
-            localNotificationService: localNotificationService,
-            undoActionManager: undoActionManager,
-            user: self,
-            featureFlagCache: sharedServices.userCachedStatus
-        )
     }
 
     private func updateTelemetry() {

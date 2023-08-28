@@ -235,7 +235,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
             authCredential: auth,
             mailSettings: nil,
             parent: nil,
-            coreKeyMaker: MockKeyMakerProtocol()
+            globalContainer: .init()
         )
     }
 }

@@ -97,7 +97,7 @@ extension LabelManagerViewModelTests {
 
     func makeSUTDependencies(numLabelsToReturn: Int = 2) -> LabelManagerViewModel.Dependencies {
         let mockApiService = APIServiceMock()
-        let mockUserManager = UserManager(api: mockApiService, role: .owner, userInfo: UserInfo.getDefault())
+        let mockUserManager = UserManager(api: mockApiService, role: .owner)
         mockLabelPublisher.fetchLabelsStub.bodyIs { [unowned self] _, _ in
             let labelsToReturn = LabelEntity.makeMocks(num: numLabelsToReturn)
             self.mockLabelPublisher.delegate?.receivedLabels(labels: labelsToReturn)

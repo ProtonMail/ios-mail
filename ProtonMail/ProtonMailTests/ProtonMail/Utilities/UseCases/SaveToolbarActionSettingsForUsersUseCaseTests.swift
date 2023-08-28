@@ -23,24 +23,19 @@ import ProtonCore_TestingToolkit
 class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
     var sut: SaveToolbarActionSettingsForUsersUseCase!
     var firstUserAPI: APIServiceMock!
-    var firstUserID: UserID = "1"
-    var firstUserInfo: UserInfo!
-    var firstUserMailSettings: MailSettings!
 
     override func setUp() {
         super.setUp()
         firstUserAPI = APIServiceMock()
-        firstUserInfo = makeUserInfo(userID: firstUserID)
-        firstUserMailSettings = .init(nextMessageOnMove: .explicitlyDisabled)
         sut = SaveToolbarActionSettings(
             dependencies: .init(apiService: firstUserAPI,
                                 mailSettingsHandler: UserManager(
                                     api: firstUserAPI,
-                                    userInfo: firstUserInfo,
+                                    userInfo: .dummy,
                                     authCredential: .none,
                                     mailSettings: nil,
                                     parent: nil,
-                                    coreKeyMaker: MockKeyMakerProtocol()
+                                    globalContainer: .init()
                                 ))
         )
     }
@@ -49,7 +44,6 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
         super.tearDown()
         sut = nil
         firstUserAPI = nil
-        firstUserInfo = nil
     }
 
     func testExecute() {

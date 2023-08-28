@@ -72,9 +72,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     private var currentLocation: MenuLabel?
     weak var delegate: MenuCoordinatorDelegate?
 
-    // do not access directly, to be used through userContainer(for:)
-    private var cachedUserContainer: UserContainer?
-
     init(dependencies: Dependencies, sideMenu: PMSideMenuController, menuWidth: CGFloat) {
         // Setup side menu setting
         SideMenuController.preferences.basic.menuWidth = menuWidth
@@ -703,13 +700,7 @@ extension MenuCoordinator {
     }
 
     private func userContainer(for user: UserManager) -> UserContainer {
-        if let cachedUserContainer, cachedUserContainer.user.userID == user.userID {
-            return cachedUserContainer
-        } else {
-            let newUserContainer = UserContainer(userManager: user, globalContainer: dependencies)
-            cachedUserContainer = newUserContainer
-            return newUserContainer
-        }
+        user.container
     }
 }
 

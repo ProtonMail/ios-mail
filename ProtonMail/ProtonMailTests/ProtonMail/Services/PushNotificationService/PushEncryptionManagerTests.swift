@@ -363,6 +363,6 @@ extension PushEncryptionManagerTests {
                 scopes: []
             )
         )
-        return UserManager(api: apiService, userID: userID, authCredential: auth)
+        return UserManager(api: apiService, authCredential: auth)
     }
 }

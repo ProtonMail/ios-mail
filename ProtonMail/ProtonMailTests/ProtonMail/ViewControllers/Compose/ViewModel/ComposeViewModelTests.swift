@@ -251,7 +251,7 @@ extension ComposeViewModelTests {
                               hasKeys: 1,
                               keys: [key])
         userInfo.set(addresses: [address])
-        return UserManager(api: self.apiMock, role: .owner, userInfo: userInfo)
+        return UserManager(api: apiMock, userInfo: userInfo)
     }
 
     func generateAddress(number: Int) -> [Address] {

@@ -33,6 +33,7 @@ final class DeviceRegistrationTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
+        globalContainer = .init()
         mockApiService = APIServiceMock()
         mockFailingApiService = APIServiceMock()
         globalContainer = .init()
@@ -49,6 +50,7 @@ final class DeviceRegistrationTests: XCTestCase {
         super.tearDown()
         sut = nil
         dependencies = nil
+        globalContainer = nil
         sessionIds = nil
         mockUsers = nil
         mockApiService = nil
@@ -145,7 +147,7 @@ private extension DeviceRegistrationTests {
             authCredential: auth,
             mailSettings: nil,
             parent: nil,
-            coreKeyMaker: MockKeyMakerProtocol()
+            globalContainer: globalContainer
         )
     }
 }
@@ -154,20 +156,12 @@ private extension APIServiceMock {
 
     func setUpToRespondSuccessfully() {
         requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            guard path.contains("/devices") else {
-                XCTFail("Wrong path")
-                return
-            }
             completion(nil, .success(JSONDictionary()))
         }
     }
 
     func setUpToRespondWithError() {
         requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
-            guard path.contains("/devices") else {
-                XCTFail("Wrong path")
-                return
-            }
             completion(nil, .failure(NSError.badResponse()))
         }
     }

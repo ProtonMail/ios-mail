@@ -46,6 +46,9 @@ final class PagesViewModelTests: XCTestCase {
         )
         userInfo = UserInfo.getDefault()
         userInfo.userId = userID
+
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.contextProvider }
         user = UserManager(
             api: apiServiceMock,
             userInfo: userInfo,
@@ -53,7 +56,7 @@ final class PagesViewModelTests: XCTestCase {
             mailSettings: nil,
             parent: nil,
             appTelemetry: MailAppTelemetry(),
-            coreKeyMaker: MockKeyMakerProtocol()
+            globalContainer: globalContainer
         )
         userIntroduction = MockUserIntroductionProgressProvider()
     }

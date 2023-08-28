@@ -45,6 +45,8 @@ class MailboxViewModelTests: XCTestCase {
     var mockFetchMessageDetail: MockFetchMessageDetail!
     var mockLoadedMessage: Message!
 
+    private var globalContainer: GlobalContainer!
+
     var testContext: NSManagedObjectContext {
         coreDataService.mainContext
     }
@@ -54,6 +56,9 @@ class MailboxViewModelTests: XCTestCase {
 
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         sharedServices.add(CoreDataService.self, for: coreDataService)
+
+        globalContainer = .init()
+        globalContainer.contextProviderFactory.register { self.coreDataService }
 
         apiServiceMock = APIServiceMock()
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
@@ -84,7 +89,7 @@ class MailboxViewModelTests: XCTestCase {
                                       authCredential: fakeAuth,
                                       mailSettings: nil,
                                       parent: nil,
-                                      coreKeyMaker: MockKeyMakerProtocol())
+                                      globalContainer: globalContainer)
         featureFlagCache = .init()
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
@@ -155,6 +160,7 @@ class MailboxViewModelTests: XCTestCase {
         saveToolbarActionUseCaseMock = nil
         internetConnectionProvider = nil
         apiServiceMock = nil
+        globalContainer = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
     }
