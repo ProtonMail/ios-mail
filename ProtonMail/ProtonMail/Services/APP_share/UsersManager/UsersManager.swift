@@ -152,15 +152,29 @@ class UsersManager: Service, UsersManagerProtocol {
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
 
-        let newUser = UserManager(
+        let newUser = makeUser(
             api: apiService,
             userInfo: user,
             authCredential: auth,
+            mailSettings: mailSettings
+        )
+        self.add(newUser: newUser)
+    }
+
+    private func makeUser(
+        api apiService: APIService,
+        userInfo: UserInfo,
+        authCredential: AuthCredential,
+        mailSettings: MailSettings?
+    ) -> UserManager {
+        UserManager(
+            api: apiService,
+            userInfo: userInfo,
+            authCredential: authCredential,
             mailSettings: mailSettings,
             parent: self,
             coreKeyMaker: coreKeyMaker
         )
-        self.add(newUser: newUser)
     }
 
     func add(newUser: UserManager) {
@@ -261,13 +275,11 @@ class UsersManager: Service, UsersManagerProtocol {
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
                 #endif
-                let newUser = UserManager(
+                let newUser = makeUser(
                     api: apiService,
                     userInfo: cachedUserData.userInfo,
                     authCredential: cachedUserData.authCredentials,
-                    mailSettings: cachedUserData.mailSettings,
-                    parent: self,
-                    coreKeyMaker: coreKeyMaker
+                    mailSettings: cachedUserData.mailSettings
                 )
                 newUser.delegate = self
                 self.users.append(newUser)
@@ -608,13 +620,11 @@ extension UsersManager {
         }
         userInfo.twoFactor = userDefaultCache.getShared().integer(forKey: CoderKey.twoFAStatus)
         userInfo.passwordMode = userDefaultCache.getShared().integer(forKey: CoderKey.userPasswordMode)
-        let user = UserManager(
+        let user = makeUser(
             api: apiService,
             userInfo: userInfo,
             authCredential: auth,
-            mailSettings: nil,
-            parent: self,
-            coreKeyMaker: coreKeyMaker
+            mailSettings: nil
         )
         user.delegate = self
         return user
@@ -700,13 +710,11 @@ extension UsersManager {
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
             apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
             #endif
-            let newUser = UserManager(
+            let newUser = makeUser(
                 api: apiService,
                 userInfo: user,
                 authCredential: oldAuth,
-                mailSettings: nil,
-                parent: self,
-                coreKeyMaker: coreKeyMaker
+                mailSettings: nil
             )
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
@@ -759,13 +767,11 @@ extension UsersManager {
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
                 #endif
-                let newUser = UserManager(
+                let newUser = makeUser(
                     api: apiService,
                     userInfo: user,
                     authCredential: auth,
-                    mailSettings: nil,
-                    parent: self,
-                    coreKeyMaker: coreKeyMaker
+                    mailSettings: nil
                 )
                 newUser.delegate = self
                 self.users.append(newUser)
