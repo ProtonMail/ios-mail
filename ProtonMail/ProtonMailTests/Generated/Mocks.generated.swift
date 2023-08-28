@@ -473,6 +473,11 @@ class MockLAContextProtocol: LAContextProtocol {
         canEvaluatePolicyStub(policy, error)
     }
 
+    @FuncStub(MockLAContextProtocol.evaluatePolicy) var evaluatePolicyStub
+    func evaluatePolicy(_ policy: LAPolicy, localizedReason: String, reply: @escaping (Bool, Error?) -> Void) {
+        evaluatePolicyStub(policy, localizedReason, reply)
+    }
+
 }
 
 class MockLabelManagerRouterProtocol: LabelManagerRouterProtocol {
