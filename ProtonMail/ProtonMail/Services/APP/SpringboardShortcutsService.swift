@@ -24,27 +24,25 @@ import LifetimeTracker
 import ProtonCore_UIFoundations
 import UIKit
 
-class SpringboardShortcutsService: NSObject, Service {
+class SpringboardShortcutsService: NSObject {
     enum QuickActions: String, CaseIterable {
         case search, favorites, compose
 
         var deeplink: DeepLink {
+            let deeplink = DeepLink(String(describing: MenuViewController.self))
+
             switch self {
             case .search:
-                let deeplink = DeepLink(String(describing: MenuViewController.self))
                 deeplink.append(mailboxNode(location: .inbox))
                 deeplink.append(.init(name: String(describing: SearchViewController.self)))
-                return deeplink
             case .favorites:
-                let deeplink = DeepLink(String(describing: MenuViewController.self))
                 deeplink.append(mailboxNode(location: .starred))
-                return deeplink
             case .compose:
-                let deeplink = DeepLink(String(describing: MenuViewController.self))
                 deeplink.append(mailboxNode(location: .inbox))
                 deeplink.append(DeepLink.Node(name: String(describing: ComposeContainerViewController.self)))
-                return deeplink
             }
+
+            return deeplink
         }
 
         var localization: String {
@@ -77,12 +75,19 @@ class SpringboardShortcutsService: NSObject, Service {
         }
     }
 
-    override init() {
+    typealias Dependencies = HasUsersManager
+
+    private let dependencies: Dependencies
+
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
+
         super.init()
+
         self.updateShortcuts()
+
         NotificationCenter.default.addObserver(forName: .didSignIn, object: nil, queue: nil, using: { [weak self] _ in
             self?.addShortcuts()
-
         })
         NotificationCenter.default.addObserver(
             forName: .didSignOutLastAccount,
@@ -90,12 +95,14 @@ class SpringboardShortcutsService: NSObject, Service {
             queue: nil,
             using: { [weak self] _ in
                 self?.removeShortcuts()
-            })
+            }
+        )
+
         trackLifetime()
     }
 
     private func updateShortcuts() {
-        if sharedServices.get(by: UsersManager.self).hasUsers() {
+        if dependencies.usersManager.hasUsers() {
             self.addShortcuts()
         } else {
             self.removeShortcuts()
