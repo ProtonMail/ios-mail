@@ -34,6 +34,7 @@ protocol SettingsAccountCoordinatorProtocol: AnyObject {
 class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
+    private var paymentsUI: PaymentsUI?
 
     private var user: UserManager {
         users.firstUser!
@@ -293,10 +294,10 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func presentPayments() {
-        let paymentsUI = PaymentsUI(payments: user.payments,
-                                    clientApp: .mail,
-                                    shownPlanNames: Constants.shownPlanNames,
-                                    customization: .empty)
-        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in }
+        self.paymentsUI = PaymentsUI(payments: user.payments,
+                                     clientApp: .mail,
+                                     shownPlanNames: Constants.shownPlanNames,
+                                     customization: .empty)
+        self.paymentsUI?.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in }
     }
 }

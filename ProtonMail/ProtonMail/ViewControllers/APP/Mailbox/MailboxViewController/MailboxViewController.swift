@@ -113,6 +113,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private var referralProgramPresenter: ReferralProgramPromptPresenter?
+    private var paymentsUI: PaymentsUI?
 
     private var isSwipingCell = false {
         didSet {
@@ -2701,12 +2702,12 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
     }
 }
 
-extension UIViewController {
+extension MailboxViewController {
     func presentPayments(for user: UserManager) {
-        let paymentsUI = PaymentsUI(payments: user.payments,
-                                    clientApp: .mail,
-                                    shownPlanNames: Constants.shownPlanNames,
-                                    customization: .empty)
-        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in }
+        self.paymentsUI = PaymentsUI(payments: user.payments,
+                                     clientApp: .mail,
+                                     shownPlanNames: Constants.shownPlanNames,
+                                     customization: .empty)
+        self.paymentsUI?.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in }
     }
 }
