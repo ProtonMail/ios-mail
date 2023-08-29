@@ -413,7 +413,9 @@ extension MenuCoordinator {
                                 purgeOldMessages: purgeOldMessages,
                                 fetchMessageWithReset: fetchMessagesWithReset,
                                 fetchMessage: fetchMessagesForUpdate,
-                                fetchLatestEventID: fetchLatestEvent)
+                                fetchLatestEventID: fetchLatestEvent,
+                                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared
+                               )
         )
         let fetchMessageDetail = FetchMessageDetail(
             dependencies: .init(

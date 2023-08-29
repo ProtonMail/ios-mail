@@ -37,6 +37,7 @@ extension URLSessionDataTask: URLSessionDataTaskProtocol {}
 protocol InternetConnectionStatusProviderProtocol {
     var status: ConnectionStatus { get }
 
+    func apiCallIsSucceeded()
     func register(receiver: ConnectionStatusReceiver, fireWhenRegister: Bool)
     func unRegister(receiver: ConnectionStatusReceiver)
 #if DEBUG
@@ -48,17 +49,20 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
     static let shared = InternetConnectionStatusProvider()
     // Stores the reference of NWPathMonitor
     private let pathMonitor: ConnectionMonitor
-    private let doh: DoHInterface
     private let session: URLSessionProtocol
+    private let notificationCenter: NotificationCenter
     private let monitorQueue = DispatchQueue(label: "me.proton.mail.connection.status.monitor", qos: .userInitiated)
 
     private let delegatesStore: NSHashTable<AnyObject> = NSHashTable.weakObjects()
     private(set) var status: ConnectionStatus = .initialize {
         didSet {
-            if oldValue == status { return }
             if !status.isConnected {
                 doubleCheckConnectionStatus(after: 2)
+            } else {
+                invalidateTimer()
             }
+
+            if oldValue == status { return }
             let receivers = delegatesStore
                 .allObjects
                 .compactMap { $0 as? ConnectionStatusReceiver }
@@ -75,21 +79,12 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
 
     init(
         connectionMonitor: ConnectionMonitor = NWPathMonitor(),
-        doh: DoHInterface = BackendConfiguration.shared.doh,
-        session: URLSessionProtocol? = nil
+        session: URLSessionProtocol = URLSession.shared,
+        notificationCenter: NotificationCenter = NotificationCenter.default
     ) {
         self.pathMonitor = connectionMonitor
-        self.doh = doh
-        if let session = session {
-            self.session = session
-        } else {
-            let urlSession = URLSession(
-                configuration: .default,
-                delegate: URLSessionCertificateValidator(),
-                delegateQueue: nil
-            )
-            self.session = urlSession
-        }
+        self.notificationCenter = notificationCenter
+        self.session = session
         startObservation()
     }
 
@@ -116,12 +111,25 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
     func unRegister(receiver: ConnectionStatusReceiver) {
         delegatesStore.remove(receiver)
     }
+
+    func apiCallIsSucceeded() {
+        guard status.isConnected else { return }
+        monitorQueue.async {
+            self.log(message: "API call is succeeded when status is disconnected")
+            self.status = .connected
+        }
+    }
+
+    private func log(message: String, isError: Bool = false) {
+        SystemLogger.log(message: message, category: .connectionStatus, isError: isError)
+    }
 }
 
 // MARK: - NWPathMonitor
 extension InternetConnectionStatusProvider {
     private func startPathMonitor(_ monitor: ConnectionMonitor) {
         monitor.pathUpdateClosure = { [weak self] path in
+            self?.log(message: "Path update")
             self?.updateStatusFrom(path: path)
         }
         monitor.start(queue: monitorQueue)
@@ -131,31 +139,40 @@ extension InternetConnectionStatusProvider {
         guard let pathStatus = path.pathStatus,
               pathStatus == .satisfied else {
             self.status = .notConnected
+            log(message: "Disconnection due to unsatisfied")
             return
         }
+        invalidateTimer()
 
         let status: ConnectionStatus
         if path.isPossiblyConnectedThroughVPN {
             // Connection status detection has problem when VPN is enabled
             // The reliable way to detect connection status is calling API
             DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
+                self.log(message: "Check connection when vpn is enabled")
                 self.status = self.hasConnectionWhenVPNISEnabled() ? .connected : .notConnected
             }
             return
         } else if path.usesInterfaceType(.wifi) {
+            log(message: "Connected with wifi")
             status = .connectedViaWiFi
         } else if path.usesInterfaceType(.wiredEthernet) {
+            log(message: "Connected with ethernet")
             status = .connectedViaEthernet
         } else if path.usesInterfaceType(.cellular) {
+            log(message: "Connected with cellular")
             status = .connectedViaCellular
         } else {
+            log(message: "Connected with unknown method")
             status = .connected
         }
         self.status = status
     }
 
     private func doubleCheckConnectionStatus(after seconds: TimeInterval) {
+        if doubleCheckTimer != nil { return }
         DispatchQueue.main.async {
+            self.log(message: "Schedule double check timer")
             self.doubleCheckTimer?.invalidate()
             self.doubleCheckTimer = nil
             self.doubleCheckTimer = Timer.scheduledTimer(
@@ -164,6 +181,7 @@ extension InternetConnectionStatusProvider {
                 block: { [weak self] _ in
                     self?.monitorQueue.async {
                         guard let path = self?.pathMonitor.currentPathProtocol else { return }
+                        self?.log(message: "Double check timer is fired")
                         self?.updateStatusFrom(path: path)
                     }
                 }
@@ -171,11 +189,39 @@ extension InternetConnectionStatusProvider {
         }
     }
 
+    private func invalidateTimer() {
+        DispatchQueue.main.async {
+            self.log(message: "Invalid double check timer")
+            self.doubleCheckTimer?.invalidate()
+            self.doubleCheckTimer = nil
+        }
+    }
+}
+
+// MARK: - API
+extension InternetConnectionStatusProvider {
+    private func observeAPINetworkError() {
+        notificationCenter.addObserver(
+            self,
+            selector: #selector(self.receiveAPINetworkError),
+            name: .tempNetworkError,
+            object: nil
+        )
+    }
+
+    @objc
+    private func receiveAPINetworkError() {
+        log(message: "Receive api network error")
+        monitorQueue.async {
+            self.status = .notConnected
+        }
+    }
 }
 
 extension InternetConnectionStatusProvider {
     private func startObservation() {
         startPathMonitor(pathMonitor)
+        observeAPINetworkError()
     }
 
     private func stopInternetConnectionStatusObservation() {
@@ -184,19 +230,20 @@ extension InternetConnectionStatusProvider {
     }
 
     private func hasConnectionWhenVPNISEnabled() -> Bool {
-        let baseURL = doh.getCurrentlyUsedHostUrl()
-        let link = "\(baseURL)/core/v4/tests/ping"
-        guard let url = URL(string: link) else {
-            let errorMessage = "Ping URL is wrong \(link)"
-            PMAssertionFailure(errorMessage)
+        guard let url = URL(string: "https://status.proton.me") else {
+            PMAssertionFailure("wrong url")
             return false
         }
-        let request = URLRequest(url: url, timeoutInterval: 30)
+        var request = URLRequest(url: url, timeoutInterval: 40)
+        request.httpMethod = "HEAD"
         let semaphore = DispatchSemaphore(value: 0)
         var isSuccess = true
-        session.dataTask(withRequest: request) { _, _, error in
-            if error != nil {
+        session.dataTask(withRequest: request) { [weak self] _, _, error in
+            if let error = error {
+                self?.log(message: "Ping API failed, \(error)", isError: true)
                 isSuccess = false
+            } else {
+                self?.log(message: "Ping API success")
             }
             semaphore.signal()
         }.resume()
@@ -209,23 +256,4 @@ extension InternetConnectionStatusProvider {
         status = newStatus
     }
     #endif
-}
-
-final class URLSessionCertificateValidator: NSObject, URLSessionDelegate {
-    func urlSession(
-        _ session: URLSession,
-        didReceive challenge: URLAuthenticationChallenge,
-        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
-    ) {
-        if PMAPIService.noTrustKit {
-            completionHandler(.performDefaultHandling, challenge.proposedCredential)
-        } else if let validator = PMAPIService.trustKit?.pinningValidator {
-            if !validator.handle(challenge, completionHandler: completionHandler) {
-                completionHandler(.performDefaultHandling, challenge.proposedCredential)
-            }
-        } else {
-            assert(false, "TrustKit was not correctly initialized")
-            completionHandler(.performDefaultHandling, challenge.proposedCredential)
-        }
-    }
 }

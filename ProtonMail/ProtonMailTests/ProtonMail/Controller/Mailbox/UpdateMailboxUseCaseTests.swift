@@ -27,6 +27,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
     private var fetchMessage: MockFetchMessages!
     private var fetchLatestEventID: MockFetchLatestEventId!
     private var mailboxSource: MockUpdateMailboxSource!
+    private var internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol!
     private var sut: UpdateMailbox!
 
     override func setUpWithError() throws {
@@ -38,8 +39,20 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.fetchMessage = MockFetchMessages()
         self.fetchLatestEventID = MockFetchLatestEventId()
         self.mailboxSource = MockUpdateMailboxSource()
+        self.internetConnectionStatusProvider = MockInternetConnectionStatusProviderProtocol()
         self.sut = UpdateMailbox(
-            dependencies: .init(labelID: LabelID("TestID"), eventService: self.eventService, messageDataService: self.messageDataService, conversationProvider: self.conversationProvider, purgeOldMessages: self.purgeOldMessages, fetchMessageWithReset: self.fetchMessageWithReset, fetchMessage: self.fetchMessage, fetchLatestEventID: self.fetchLatestEventID))
+            dependencies: .init(
+                labelID: LabelID("TestID"),
+                eventService: self.eventService,
+                messageDataService: self.messageDataService,
+                conversationProvider: self.conversationProvider,
+                purgeOldMessages: self.purgeOldMessages,
+                fetchMessageWithReset: self.fetchMessageWithReset,
+                fetchMessage: self.fetchMessage,
+                fetchLatestEventID: self.fetchLatestEventID,
+                internetConnectionStatusProvider: internetConnectionStatusProvider
+            )
+        )
         self.sut.setup(source: self.mailboxSource)
 
         conversationProvider.fetchConversationCountsStub.bodyIs { _, _, completion in
@@ -55,6 +68,7 @@ final class UpdateMailboxUseCaseTests: XCTestCase {
         self.fetchMessageWithReset = nil
         self.fetchMessage = nil
         self.fetchLatestEventID = nil
+        self.internetConnectionStatusProvider = nil
         self.mailboxSource = nil
         self.sut = nil
     }

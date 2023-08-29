@@ -304,10 +304,12 @@ extension UpdateMailbox {
             self.fetchMessages(time: 0, forceClean: false, isUnread: showUnreadOnly) { [weak self] error in
                 self?.handleFetchMessageResponse(error: error, errorHandler: errorHandler)
                 self?.isFetching = false
+                self?.dependencies.internetConnectionStatusProvider.apiCallIsSucceeded()
                 callback(.success)
             }
         } else {
             self.isFetching = false
+            dependencies.internetConnectionStatusProvider.apiCallIsSucceeded()
             callback(.success)
         }
     }
@@ -331,6 +333,7 @@ extension UpdateMailbox {
         let fetchMessageWithReset: FetchMessagesWithResetUseCase
         let fetchMessage: FetchMessagesUseCase
         let fetchLatestEventID: FetchLatestEventIdUseCase
+        let internetConnectionStatusProvider: InternetConnectionStatusProviderProtocol
 
         init(
             labelID: LabelID,
@@ -340,7 +343,8 @@ extension UpdateMailbox {
             purgeOldMessages: PurgeOldMessagesUseCase,
             fetchMessageWithReset: FetchMessagesWithResetUseCase,
             fetchMessage: FetchMessagesUseCase,
-            fetchLatestEventID: FetchLatestEventIdUseCase
+            fetchLatestEventID: FetchLatestEventIdUseCase,
+            internetConnectionStatusProvider: InternetConnectionStatusProviderProtocol
         ) {
             if labelID == LabelLocation.draft.labelID {
                 self.labelID = LabelLocation.hiddenDraft.labelID
@@ -356,6 +360,7 @@ extension UpdateMailbox {
             self.fetchMessageWithReset = fetchMessageWithReset
             self.fetchMessage = fetchMessage
             self.fetchLatestEventID = fetchLatestEventID
+            self.internetConnectionStatusProvider = internetConnectionStatusProvider
         }
     }
 }

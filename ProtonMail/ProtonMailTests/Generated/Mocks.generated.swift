@@ -437,6 +437,11 @@ class MockInternetConnectionStatusProviderProtocol: InternetConnectionStatusProv
         statusStub()
     }
 
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.apiCallIsSucceeded) var apiCallIsSucceededStub
+    func apiCallIsSucceeded() {
+        apiCallIsSucceededStub()
+    }
+
     @FuncStub(MockInternetConnectionStatusProviderProtocol.register) var registerStub
     func register(receiver: ConnectionStatusReceiver, fireWhenRegister: Bool) {
         registerStub(receiver, fireWhenRegister)
