@@ -304,11 +304,16 @@ extension PushNotificationService {
             action.completionHandler()
             return
         }
+        let completion = {
+            DispatchQueue.main.async {
+                action.completionHandler()
+            }
+        }
         notificationActions.handle(
             action: action.payload.actionIdentifier,
             userId: userId,
             messageId: action.payload.messageId,
-            completion: action.completionHandler
+            completion: completion
         )
     }
 }
