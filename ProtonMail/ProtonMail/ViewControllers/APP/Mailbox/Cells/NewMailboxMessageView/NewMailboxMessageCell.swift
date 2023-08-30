@@ -95,7 +95,9 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
                let expiration = mailboxItem.expirationTime?.countExpirationTime(processInfo: userCachedStatus) {
                 let tag = self?.customView.messageContentView.tagsView.tagViews.compactMap({ $0 as? TagIconView })
                     .first(where: { $0.imageView.image == IconProvider.hourglass })
-                tag?.tagLabel.attributedText = expiration.apply(style: FontManager.OverlineRegularInteractionStrong)
+                if tag?.tagLabel.text != expiration {
+                    tag?.tagLabel.text = expiration
+                }
                 self?.getExpirationOffset()
             } else {
                 self?.shouldUpdateTime = false
