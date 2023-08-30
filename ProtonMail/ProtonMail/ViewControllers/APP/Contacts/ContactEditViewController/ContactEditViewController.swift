@@ -64,11 +64,16 @@ final class ContactEditViewController: UIViewController, AccessibleView {
         setupUI()
         setupTableView()
         setupPhotoButton()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.resetCellButtonColor),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        NotificationCenter.default.addKeyboardObserver(self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -616,6 +621,14 @@ extension ContactEditViewController {
         )
         banner.show(at: .bottom, on: self)
     }
+    
+    @objc
+    func resetCellButtonColor() {
+        // workaround, the add button icon color will be reset when back from background
+        customView.tableView.visibleCells
+            .compactMap { $0 as? ContactEditAddCell }
+            .forEach { $0.setEditing(true, animated: false) }
+    }
 }
 
 // MARK: - UITableViewDelegate
@@ -736,6 +749,9 @@ extension ContactEditViewController: UITableViewDelegate {
             default:
                 break
             }
+            // To update add icon color
+            let originalIndexPath = IndexPath(row: indexPath.row + 1, section: indexPath.section)
+            customView.tableView.reloadRows(at: [originalIndexPath], with: .none)
         } else if editingStyle == .delete {
             switch sectionType {
             case .emails:
