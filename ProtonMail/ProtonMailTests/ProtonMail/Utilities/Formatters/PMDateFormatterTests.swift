@@ -97,9 +97,15 @@ class PMDateFormatterTests: XCTestCase {
         LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         sut.isDateInToday = { _ in true }
-        XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 11:00:00"), weekStart: .monday), "11:00 AM")
-        XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 12:00:00"), weekStart: .monday), "12:00 PM")
-        XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 13:00:00"), weekStart: .monday), "1:00 PM")
+        if #available(iOS 17.0, *) {
+            XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 11:00:00"), weekStart: .monday), "11:00 AM")
+            XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 12:00:00"), weekStart: .monday), "12:00 PM")
+            XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 13:00:00"), weekStart: .monday), "1:00 PM")
+        } else {
+            XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 11:00:00"), weekStart: .monday), "11:00 AM")
+            XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 12:00:00"), weekStart: .monday), "12:00 PM")
+            XCTAssertEqual(sut.string(from: Date.fixture("2021-06-24 13:00:00"), weekStart: .monday), "1:00 PM")
+        }
         sut.isDateInToday = { _ in false }
 
         sut.isDateInYesterday = { _ in true }
@@ -207,7 +213,11 @@ class PMDateFormatterTests: XCTestCase {
         sut.isDateInTomorrow = { _ in false }
 
         let sendDate = Date.fixture("2022-04-24 17:00:00")
-        XCTAssert(["April 24, 5:00 PM", "April 24 at 5:00 PM"].contains(sut.stringForScheduledMsg(from: sendDate)))
+        if #available(iOS 17.0, *) {
+            XCTAssert(["April 24, 5:00 PM", "April 24 at 5:00 PM"].contains(sut.stringForScheduledMsg(from: sendDate)))
+        } else {
+            XCTAssert(["April 24, 5:00 PM", "April 24 at 5:00 PM"].contains(sut.stringForScheduledMsg(from: sendDate)))
+        }
     }
 
     func testCheckIsDateWillHappenInTheNext10Mins() {
@@ -228,10 +238,12 @@ class PMDateFormatterTests: XCTestCase {
         LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0)!
 
         let date = Date.fixture("2022-04-25 01:05:00")
-        XCTAssertEqual(sut.titleForScheduledBanner(from: date).0,
-                       "Monday, April 25")
-        XCTAssertEqual(sut.titleForScheduledBanner(from: date).1,
-                       "1:05 AM")
+        XCTAssertEqual(sut.titleForScheduledBanner(from: date).0, "Monday, April 25")
+        if #available(iOS 17.0, *) {
+            XCTAssertEqual(sut.titleForScheduledBanner(from: date).1, "1:05 AM")
+        } else {
+            XCTAssertEqual(sut.titleForScheduledBanner(from: date).1, "1:05 AM")
+        }
     }
 
     func testStringForScheduledMsg_withTimeInThePast() {

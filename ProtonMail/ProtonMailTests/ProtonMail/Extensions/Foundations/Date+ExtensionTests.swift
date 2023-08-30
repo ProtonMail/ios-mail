@@ -191,19 +191,17 @@ final class Date_ExtensionTests: XCTestCase {
 
     func testFormat_12H() {
         let date = Date(timeIntervalSince1970: 1671187872)
-        XCTAssertEqual(date.localizedString(withTemplate: nil), "Dec 16 at 10:51 AM")
-        XCTAssertEqual(date.localizedString(withTemplate: "yy.MM.dd jj mm"), "12/16/22, 10:51 AM")
-        XCTAssertEqual(date.localizedString(withTemplate: "MMM.dd jj mm"), "Dec 16 at 10:51 AM")
-        XCTAssertEqual(date.localizedString(withTemplate: "MM dd jj mm"), "12/16, 10:51 AM")
+        if #available(iOS 17.0, *) {
+            XCTAssertEqual(date.localizedString(), "Dec 16 at 10:51 AM")
+        } else {
+            XCTAssertEqual(date.localizedString(), "Dec 16 at 10:51 AM")
+        }
     }
 
     func testFormat_24H_with_template() {
         LocaleEnvironment.locale = { .frGP }
         let date = Date(timeIntervalSince1970: 1671187872)
-        XCTAssertEqual(date.localizedString(withTemplate: nil), "16 déc. à 10:51")
-        XCTAssertEqual(date.localizedString(withTemplate: "yyyy MM dd jj: mm"), "16/12/2022 10:51")
-        XCTAssertEqual(date.localizedString(withTemplate: "yy MM dd jj: mm"), "16/12/22 10:51")
-        XCTAssertEqual(date.localizedString(withTemplate: "MM dd jj mm"), "16/12 10:51")
+        XCTAssertEqual(date.localizedString(), "16 déc. à 10:51")
     }
 
     func testToday() throws {

@@ -129,7 +129,11 @@ final class MessageInfoProviderTest: XCTestCase {
         XCTAssertEqual(sut.initials, "P")
         checkHighlight(source: sut.senderEmail, expectedString: "contact@protonmail.ch", highlight: NSRange(location: 0, length: 7))
         XCTAssertEqual(sut.time, "May 02, 2018")
-        XCTAssertEqual(sut.date, "May 2, 2018 at 4:43:19 PM")
+        if #available(iOS 17.0, *) {
+            XCTAssertEqual(sut.date, "May 2, 2018 at 4:43:19 PM")
+        } else {
+            XCTAssertEqual(sut.date, "May 2, 2018 at 4:43:19 PM")
+        }
         XCTAssertEqual(sut.originFolderTitle(isExpanded: false), "Inbox")
         XCTAssertEqual(sut.size, "2 KB")
         checkHighlight(source: sut.simpleRecipient, expectedString: "cc name, feng88@proton.me", highlight: NSRange(location: 9, length: 4))
