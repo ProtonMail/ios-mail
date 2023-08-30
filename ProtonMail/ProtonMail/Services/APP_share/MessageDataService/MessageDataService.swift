@@ -105,7 +105,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     let apiService: APIService
     let userID: UserID
-    weak var userDataSource: UserDataSource?
     let labelDataService: LabelsDataService
     let contactDataService: ContactDataService
     let localNotificationService: LocalNotificationService
@@ -116,7 +115,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     let undoActionManager: UndoActionManagerProtocol
     let contactCacheStatus: ContactCacheStatusProtocol
 
-    weak var viewModeDataSource: ViewModeDataSource?
+    private var userDataSource: UserDataSource? {
+        parent
+    }
 
     weak var queueManager: QueueManager?
     weak var parent: UserManager?
@@ -289,10 +290,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     func updateMessageCount(completion: (() -> Void)? = nil) {
         self.queueManager?.queue {
-            guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
-                completion?()
-                return
-            }
+            let viewMode = self.dependencies.viewModeDataSource.viewMode
 
             switch viewMode {
             case .singleMessage:
@@ -1586,10 +1584,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 return
             }
             self.contactCacheStatus.contactsCached = 0
-            guard self.viewModeDataSource?.getCurrentViewMode() != nil else {
-                return
-            }
-
             let completionBlock: () -> Void = {
                 self.labelDataService.fetchV4Labels { _ in
                     self.contactDataService.cleanUp()
@@ -1754,5 +1748,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 extension MessageDataService {
     struct Dependencies {
         let moveMessageInCacheUseCase: MoveMessageInCacheUseCase
+        let viewModeDataSource: ViewModeDataSource
     }
 }

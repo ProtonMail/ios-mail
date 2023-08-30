@@ -49,7 +49,7 @@ class LabelsDataService: Service {
     private let contextProvider: CoreDataContextProviderProtocol
     private let lastUpdatedStore: LastUpdatedStoreProtocol
     private let cacheService: CacheServiceProtocol
-    weak var viewModeDataSource: ViewModeDataSource?
+    private let viewModeDataSource: ViewModeDataSource
 
     static let defaultFolderIDs: [String] = [
         Message.Location.inbox.rawValue,
@@ -69,13 +69,15 @@ class LabelsDataService: Service {
          userID: UserID,
          contextProvider: CoreDataContextProviderProtocol,
          lastUpdatedStore: LastUpdatedStoreProtocol,
-         cacheService: CacheServiceProtocol)
+         cacheService: CacheServiceProtocol,
+         viewModeDataSource: ViewModeDataSource)
     {
         self.apiService = api
         self.userID = userID
         self.contextProvider = contextProvider
         self.lastUpdatedStore = lastUpdatedStore
         self.cacheService = cacheService
+        self.viewModeDataSource = viewModeDataSource
     }
 
     private func cleanLabelsAndFolders(except labelIDToPreserve: [String], context: NSManagedObjectContext) {
@@ -339,26 +341,18 @@ class LabelsDataService: Service {
     }
 
     func lastUpdate(by labelID: LabelID, userID: UserID? = nil) -> LabelCountEntity? {
-        guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
-            return nil
-        }
-
+        let viewMode = viewModeDataSource.viewMode
         let id = userID ?? self.userID
         return self.lastUpdatedStore.lastUpdate(by: labelID, userID: id, type: viewMode)
     }
 
     func unreadCount(by labelID: LabelID) -> Int {
-        guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
-            return 0
-        }
+        let viewMode = viewModeDataSource.viewMode
         return lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: viewMode)
     }
 
     func getUnreadCounts(by labelIDs: [LabelID], completion: @escaping ([String: Int]) -> Void) {
-        guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
-            return completion([:])
-        }
-
+        let viewMode = viewModeDataSource.viewMode
         lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: self.userID, type: viewMode, completion: completion)
     }
 

@@ -101,7 +101,7 @@ final class SearchViewModel: NSObject {
 
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
     var labelID: LabelID { Message.Location.allmail.labelID }
-    var viewMode: ViewMode { self.user.getCurrentViewMode() }
+    var viewMode: ViewMode { self.user.conversationStateService.viewMode }
     var selectedMessages: [MessageEntity] {
         self.messages.filter { selectedIDs.contains($0.messageID.rawValue) }
     }

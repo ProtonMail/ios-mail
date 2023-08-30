@@ -183,7 +183,7 @@ extension EventsService {
                         userManager.conversationService.cleanAll()
                         userManager.messageService.cleanMessage(cleanBadgeAndNotifications: false)
                             userManager.contactService.cleanUp()
-                            switch userManager.getCurrentViewMode() {
+                            switch userManager.conversationStateService.viewMode {
                             case .conversation:
                                 userManager.conversationService.fetchConversations(for: labelID, before: 0, unreadOnly: false, shouldReset: false) { result in
                                     switch result {
@@ -828,7 +828,7 @@ extension EventsService {
         guard let users = userManager.parentManager,
               let primaryUser = users.firstUser,
               primaryUser.userInfo.userId == userManager.userInfo.userId,
-              primaryUser.getCurrentViewMode() == viewMode else { return }
+              primaryUser.conversationStateService.viewMode == viewMode else { return }
 
         let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: userManager.userID, type: viewMode)
         UIApplication.setBadge(badge: max(0, unreadCount))
@@ -878,7 +878,7 @@ extension EventsService {
         let isPrimary = firstUser.userID == self.userManager?.userID
         guard labelID == Message.Location.inbox.rawValue,
               isPrimary,
-              type == firstUser.getCurrentViewMode() else { return }
+              type == firstUser.conversationStateService.viewMode else { return }
         UIApplication.setBadge(badge: unread)
     }
 

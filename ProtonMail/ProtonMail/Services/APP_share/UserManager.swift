@@ -180,11 +180,10 @@ class UserManager: Service, ObservableObject {
                         userID: self.userID,
                         pushUpdater: PushUpdater()
                     )
-                )
+                ),
+                viewModeDataSource: conversationStateService
             )
         )
-        service.viewModeDataSource = self
-        service.userDataSource = self
         return service
     }()
 
@@ -209,9 +208,9 @@ class UserManager: Service, ObservableObject {
             userID: self.userID,
             contextProvider: coreDataService,
             lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
-            cacheService: self.cacheService
+            cacheService: self.cacheService,
+            viewModeDataSource: conversationStateService
         )
-        service.viewModeDataSource = self
         return service
     }()
 
@@ -663,12 +662,6 @@ extension UserManager {
         return !userInfo.messageToolbarActions.isCustom &&
             !userInfo.listToolbarActions.isCustom &&
             !userInfo.conversationToolbarActions.isCustom
-    }
-}
-
-extension UserManager: ViewModeDataSource {
-    func getCurrentViewMode() -> ViewMode {
-        return conversationStateService.viewMode
     }
 }
 

@@ -24,5 +24,5 @@ import Foundation
 import ProtonCore_DataModel
 
 protocol ViewModeDataSource: AnyObject {
-    func getCurrentViewMode() -> ViewMode
+    var viewMode: ViewMode { get }
 }
