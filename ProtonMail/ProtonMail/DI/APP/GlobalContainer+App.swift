@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
+import LifetimeTracker
 import UIKit
 
 extension GlobalContainer {
@@ -76,5 +77,11 @@ extension GlobalContainer {
         self {
             self.userCachedStatus
         }
+    }
+}
+
+extension GlobalContainer: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
     }
 }

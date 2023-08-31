@@ -121,5 +121,9 @@ final class GlobalContainer: ManagedContainer {
 
     init() {
         manager.defaultScope = .cached
+
+#if !APP_EXTENSION
+        trackLifetime()
+#endif
     }
 }
