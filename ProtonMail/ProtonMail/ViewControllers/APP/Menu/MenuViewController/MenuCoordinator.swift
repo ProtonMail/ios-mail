@@ -312,10 +312,7 @@ extension MenuCoordinator {
             return nil
         }
         let labelService = user.labelService
-        guard let label = labelService.label(by: id) else {
-            return nil
-        }
-        return LabelEntity(label: label)
+        return labelService.label(by: id)
     }
 }
 

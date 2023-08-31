@@ -24,8 +24,8 @@ import ProtonCore_TestingToolkit
 class MockContactProvider: ContactProviderProtocol {
     private let coreDataContextProvider: CoreDataContextProviderProtocol
 
-    private(set) var isFetchContactsCalled = false
-    var allEmailsToReturn: [Email] = []
+    private (set) var isFetchContactsCalled = false
+    var allEmailsToReturn: [EmailEntity] = []
     var allContactsToReturn: [ContactEntity] = []
     private(set) var wasCleanUpCalled: Bool = false
     var fetchContactStub: ContactEntity = .make()
@@ -43,7 +43,7 @@ class MockContactProvider: ContactProviderProtocol {
         getEmailsByAddressStub(emailAddresses, userId)
     }
 
-    func getAllEmails() -> [Email] {
+    func getAllEmails() -> [EmailEntity] {
         return allEmailsToReturn
     }
 

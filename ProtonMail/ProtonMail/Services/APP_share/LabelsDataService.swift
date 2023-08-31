@@ -330,14 +330,24 @@ class LabelsDataService: Service {
         return Label.labelFetchController(for: labelID.rawValue, inManagedObjectContext: context)
     }
 
-    func label(by labelID: LabelID) -> Label? {
-        let context = self.contextProvider.mainContext
-        return Label.labelForLabelID(labelID.rawValue, inManagedObjectContext: context)
+    func label(by labelID: LabelID) -> LabelEntity? {
+        return contextProvider.read { context in
+            if let label = Label.labelForLabelID(labelID.rawValue, inManagedObjectContext: context) {
+                return LabelEntity(label: label)
+            } else {
+                return nil
+            }
+        }
     }
 
-    func label(name: String) -> Label? {
-        let context = self.contextProvider.mainContext
-        return Label.labelForLabelName(name, inManagedObjectContext: context)
+    func label(name: String) -> LabelEntity? {
+        return contextProvider.read { context in
+            if let label = Label.labelForLabelName(name, inManagedObjectContext: context) {
+                return LabelEntity(label: label)
+            } else {
+                return nil
+            }
+        }
     }
 
     func lastUpdate(by labelID: LabelID, userID: UserID? = nil) -> LabelCountEntity? {

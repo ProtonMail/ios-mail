@@ -164,7 +164,13 @@ extension SingleMessageCoordinator {
             return
         }
         let contextProvider = sharedServices.get(by: CoreDataService.self)
-        guard let msg = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else { return }
+        guard let msg: MessageEntity? = contextProvider.read(block: { context in
+            if let msg = context.object(with: self.message.objectID.rawValue) as? Message {
+                return MessageEntity(msg)
+            } else {
+                return nil
+            }
+        }) else { return }
 
         let composer = dependencies.composerViewFactory.makeComposer(msg: msg, action: composeAction)
         viewController?.present(composer, animated: true)

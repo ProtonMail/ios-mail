@@ -275,7 +275,7 @@ class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
         coreDataService.read { context in
             let labels = self.labelDataService.getAllLabels(of: .contactGroup, context: context)
             return labels.map { label in
-                ContactGroupVO(ID: label.labelID, name: label.name, groupSize: label.emails.count, color: label.color)
+                ContactGroupVO(ID: label.labelID, name: label.name, groupSize: label.emails.count, color: label.color, contextProvider: coreDataService)
             }
         }
     }

@@ -177,7 +177,7 @@ class ConversationViewModel {
                                                                      contextProvider: contextProvider)
         self.sharedReplacingEmailsMap = contactService.allAccountEmails()
             .reduce(into: [:]) { partialResult, email in
-                partialResult[email.email] = EmailEntity(email: email)
+                partialResult[email.email] = email
             }
         self.sharedContactGroups = user.contactGroupService.getAllContactGroupVOs()
         self.targetID = targetID

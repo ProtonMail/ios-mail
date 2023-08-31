@@ -153,7 +153,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         case .composeShow, .composeMailto:
             self.viewController?.cancelButtonTapped()
 
-            guard let message = sender as? Message else { return }
+            guard let message = sender as? MessageEntity else { return }
 
             navigateToComposer(existingMessage: message)
         case .composeScheduledMessage:
@@ -177,14 +177,9 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             viewModel.resetNotificationMessage()
         case .composeShow:
             if let nav = self.navigation {
-                let user = self.viewModel.user
-
-                let existingMessage: Message?
+                let existingMessage: MessageEntity?
                 if let messageID = path.value {
-                    existingMessage = user.messageService.fetchMessages(
-                        withIDs: [messageID],
-                        in: contextProvider.mainContext
-                    ).first
+                    existingMessage = fetchMessage(by: .init(messageID))
                 } else {
                     existingMessage = nil
                 }
@@ -204,7 +199,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             }
             let user = self.viewModel.user
             let msgService = user.messageService
-            if let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
+            if let message = fetchMessage(by: .init(messageID)) {
                 navigateToComposer(
                     existingMessage: message,
                     isEditingScheduleMsg: true,
@@ -245,7 +240,7 @@ extension MailboxCoordinator {
     }
 
     private func navigateToComposer(
-        existingMessage: Message?,
+        existingMessage: MessageEntity?,
         isEditingScheduleMsg: Bool = false,
         originalScheduledTime: Date? = nil
     ) {
@@ -295,8 +290,8 @@ extension MailboxCoordinator {
 
     private func followToComposeMailTo(path: String?) {
         if let msgID = path,
-           let existingMsg = Message.messageForMessageID(msgID, inManagedObjectContext: contextProvider.mainContext) {
-            navigateToComposer(existingMessage: existingMsg)
+           let msg = fetchMessage(by: .init(msgID)) {
+            navigateToComposer(existingMessage: msg)
             return
         }
 
@@ -344,8 +339,8 @@ extension MailboxCoordinator {
     }
 
     private func editScheduleMsg(messageID: MessageID, originalScheduledTime: Date?) {
-        let context = contextProvider.mainContext
-        guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {
+        let msg: MessageEntity? = fetchMessage(by: messageID)
+        guard let msg = msg else {
             return
         }
         navigateToComposer(
@@ -353,6 +348,16 @@ extension MailboxCoordinator {
             isEditingScheduleMsg: true,
             originalScheduledTime: originalScheduledTime
         )
+    }
+
+    private func fetchMessage(by messageID: MessageID) -> MessageEntity? {
+        return dependencies.contextProvider.read(block: { context in
+            if let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
+                return MessageEntity(msg)
+            } else {
+                return nil
+            }
+        })
     }
 }
 

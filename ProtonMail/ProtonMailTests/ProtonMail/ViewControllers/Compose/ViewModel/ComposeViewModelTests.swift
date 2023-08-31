@@ -79,7 +79,7 @@ final class ComposeViewModelTests: XCTestCase {
         }
 
         sut = ComposeViewModel(
-            msg: message,
+            msg: .init(message),
             action: .openDraft,
             dependencies: dependencies
         )
@@ -147,13 +147,13 @@ final class ComposeViewModelTests: XCTestCase {
     // MARK: isEmptyDraft tests
 
     func testIsEmptyDraft_messageInit() throws {
-        sut.initialize(message: message, action: .openDraft)
+        sut.initialize(message: .init(message), action: .openDraft)
         XCTAssertTrue(sut.isEmptyDraft())
     }
 
     func testIsEmptyDraft_subjectField() throws {
         message.title = "abc"
-        sut.initialize(message: message, action: .openDraft)
+        sut.initialize(message: .init(message), action: .openDraft)
         XCTAssertFalse(sut.isEmptyDraft())
     }
 
@@ -161,7 +161,7 @@ final class ComposeViewModelTests: XCTestCase {
         message.toList = "[]"
         message.ccList = "[]"
         message.bccList = "[]"
-        sut.initialize(message: message, action: .openDraft)
+        sut.initialize(message: .init(message), action: .openDraft)
 
         XCTAssertTrue(sut.isEmptyDraft())
     }

@@ -53,7 +53,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         viewModel.uiDelegate = self
     }
 
-    private lazy var replacingEmails: [Email] = viewModel.allEmails
+    private lazy var replacingEmails: [EmailEntity] = viewModel.allEmails
     lazy var replacingEmailsMap: [String: EmailEntity] = {
         return generateEmailsMap()
     }()
@@ -1027,10 +1027,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 defer {
                     self.updateTapped(status: false)
                 }
-                let objectID = message.objectID.rawValue
-                if let messageObject = self.viewModel.object(by: objectID),
-                   !messageObject.body.isEmpty {
-                    openCachedDraft(messageObject)
+                if !message.body.isEmpty {
+                    openCachedDraft(message)
                     return
                 }
                 let alert = LocalString._unable_to_edit_offline.alertController()
@@ -1052,12 +1050,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                     }
                     self?.updateTapped(status: false)
                 case .success(let msg):
-                    let objectID = msg.objectID.rawValue
                     Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-                        guard let message = self?.viewModel.object(by: objectID),
-                              message.body.isEmpty == false else { return }
+                        guard msg.body.isEmpty == false else { return }
                         timer.invalidate()
-                        self?.coordinator?.go(to: .composeShow, sender: message)
+                        self?.coordinator?.go(to: .composeShow, sender: msg)
                         self?.tableView.indexPathsForSelectedRows?.forEach {
                             self?.tableView.deselectRow(at: $0, animated: true)
                         }
@@ -1068,7 +1064,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         }
     }
 
-    private func openCachedDraft(_ message: Message) {
+    private func openCachedDraft(_ message: MessageEntity) {
         coordinator?.go(to: .composeShow, sender: message)
         tableView.indexPathsForSelectedRows?.forEach {
             tableView.deselectRow(at: $0, animated: true)
@@ -1250,7 +1246,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private func generateEmailsMap() -> [String: EmailEntity] {
         return replacingEmails.reduce(into: [:], { partialResult, email in
-            partialResult[email.email] = EmailEntity(email: email)
+            partialResult[email.email] = email
         })
     }
 

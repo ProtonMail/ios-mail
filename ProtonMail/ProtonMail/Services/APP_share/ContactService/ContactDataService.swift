@@ -40,7 +40,7 @@ protocol ContactProviderProtocol: AnyObject {
     /// Given a user and a list of email addresses, returns all the contacts that exist in the local storage
     func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity]
 
-    func getAllEmails() -> [Email]
+    func getAllEmails() -> [EmailEntity]
     func fetchContacts(completion: ContactFetchComplete?)
     func cleanUp()
     func fetchContact(contactID: ContactID) async throws -> ContactEntity
@@ -429,15 +429,19 @@ class ContactDataService: Service {
         }
     }
 
-    /// Only call from the main thread
-    func allEmails() -> [Email] {
-        let context = self.coreDataService.mainContext
-        return self.allEmailsInManagedObjectContext(context)
+    func allEmails() -> [EmailEntity] {
+        return coreDataService.read { context in
+            return allEmailsInManagedObjectContext(context)
+                .compactMap(EmailEntity.init)
+        }
     }
 
-    func allAccountEmails() -> [Email] {
-        let context = coreDataService.mainContext
-        return allEmailsInManagedObjectContext(context).filter { $0.userID == userID.rawValue }
+    func allAccountEmails() -> [EmailEntity] {
+        return coreDataService.read { context in
+            return allEmailsInManagedObjectContext(context)
+                .filter { $0.userID == userID.rawValue }
+                .compactMap(EmailEntity.init)
+        }
     }
 
     /// Get name from user contacts by the given mail address
@@ -472,16 +476,15 @@ class ContactDataService: Service {
     private func fetchEmails(with address: String) -> [EmailEntity] {
         let request = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
         request.predicate = NSPredicate(format: "%K == %@", Email.Attributes.email, address)
-        var result: [EmailEntity] = []
-        coreDataService.mainContext.performAndWait {
+        return coreDataService.read { context in
             do {
-                let emails = try coreDataService.mainContext.fetch(request)
-                result = emails.compactMap(EmailEntity.init)
+                let emails = try context.fetch(request)
+                return emails.compactMap(EmailEntity.init)
             } catch {
-                assertionFailure("\(error)")
+                PMAssertionFailure(error)
+                return []
             }
         }
-        return result
     }
 
     private func fetchContacts(by contactIDs: [String]) -> [ContactEntity] {
@@ -492,16 +495,15 @@ class ContactDataService: Service {
                                         Contact.Attributes.isSoftDeleted,
                                         Contact.Attributes.userID,
                                         self.userID.rawValue)
-        var result: [ContactEntity] = []
-        coreDataService.mainContext.performAndWait {
+        return coreDataService.read { context in
             do {
-                let contacts = try coreDataService.mainContext.fetch(request)
-                result = contacts.compactMap(ContactEntity.init)
+                let contacts = try context.fetch(request)
+                return contacts.compactMap(ContactEntity.init)
             } catch {
-                assertionFailure("\(error)")
+                PMAssertionFailure(error)
+                return []
             }
         }
-        return result
     }
 
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
@@ -634,9 +636,11 @@ extension ContactDataService {
     typealias ContactVOCompletionBlock = ((_ contacts: [ContactVO], _ error: Error?) -> Void)
 
     func allContactVOs() -> [ContactVO] {
-        allEmails()
-            .filter { $0.userID == userID.rawValue }
-            .map { ContactVO(name: $0.name, email: $0.email, isProtonMailContact: true) }
+        return coreDataService.read { context in
+            self.allEmailsInManagedObjectContext(context)
+                .filter { $0.userID == userID.rawValue }
+                .map { ContactVO(name: $0.name, email: $0.email, isProtonMailContact: true) }
+        }
     }
 
     func getContactVOsFromPhone(_ completion: @escaping ContactVOCompletionBlock) {
@@ -685,7 +689,7 @@ extension ContactDataService {
 }
 
 extension ContactDataService: ContactProviderProtocol {
-    func getAllEmails() -> [Email] {
+    func getAllEmails() -> [EmailEntity] {
         return allAccountEmails()
     }
 }

@@ -127,9 +127,7 @@ final class ComposerMessageHelper {
         }
     }
 
-    func copyAndCreateDraft(from message: Message, action: ComposeMessageAction) throws {
-        let messageID = MessageID(message.messageID)
-
+    func copyAndCreateDraft(from messageID: MessageID, action: ComposeMessageAction) throws {
         let (messageToAssign, mimeAttachments) = try dependencies.copyMessage.execute(
             parameters: .init(copyAttachments: action == .forward, messageID: messageID)
         )

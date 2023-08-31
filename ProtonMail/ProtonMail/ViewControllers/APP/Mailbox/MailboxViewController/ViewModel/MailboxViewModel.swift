@@ -244,7 +244,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         labelProvider.getCustomFolders()
     }()
 
-    var allEmails: [Email] {
+    var allEmails: [EmailEntity] {
         return contactProvider.getAllEmails()
     }
 

@@ -496,7 +496,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetGroupContacts() {
-        let testData = ContactGroupVO(ID: "1", name: "name1")
+        let testData = ContactGroupVO(ID: "1", name: "name1", contextProvider: coreDataService)
         contactGroupProviderMock.getAllContactGroupVOsStub.bodyIs { _ in
             [testData]
         }
@@ -521,9 +521,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetAllEmails() {
-        let testData = Email(context: testContext)
-        testData.emailID = "1"
-        testData.email = "test@pm.me"
+        let testData = EmailEntity.make(emailID: .init("1"), email: "test@pm.me")
         contactProviderMock.allEmailsToReturn = [testData]
         createSut(labelID: "1", labelType: .folder, isCustom: false, labelName: nil)
 

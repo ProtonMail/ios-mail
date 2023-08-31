@@ -53,7 +53,7 @@ final class ComposerViewFactory {
     }
 
     func makeComposer(
-        msg: Message?,
+        msg: MessageEntity?,
         action: ComposeMessageAction,
         isEditingScheduleMsg: Bool = false,
         mailToUrl: URL? = nil,

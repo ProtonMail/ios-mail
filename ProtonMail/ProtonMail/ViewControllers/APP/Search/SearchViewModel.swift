@@ -34,8 +34,7 @@ protocol SearchVMProtocol: AnyObject {
     func fetchRemoteData(query: String, fromStart: Bool)
     func loadMoreDataIfNeeded(currentRow: Int)
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback)
-    func getMessageObject(message: MessageEntity) -> Message?
-    func getMessageObject(by msgID: MessageID) -> Message?
+    func getMessageObject(by msgID: MessageID) -> MessageEntity?
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
 
     // Select / action bar / action sheet related
@@ -115,7 +114,7 @@ final class SearchViewModel: NSObject {
         user = dependencies.user
         self.sharedReplacingEmailsMap = user.contactService.allAccountEmails()
             .reduce(into: [:]) { partialResult, email in
-                partialResult[email.email] = EmailEntity(email: email)
+                partialResult[email.email] = email
             }
     }
 }
@@ -198,20 +197,13 @@ extension SearchViewModel: SearchVMProtocol {
             .execute(params: params, callback: callback)
     }
 
-    func getMessageObject(message: MessageEntity) -> Message? {
-        guard let msgObject = dependencies.contextProvider.mainContext
-            .object(with: message.objectID.rawValue) as? Message else {
-            return nil
-        }
-        return msgObject
-    }
-
-    func getMessageObject(by msgID: MessageID) -> Message? {
-        guard let msg = Message.messageForMessageID(
-            msgID.rawValue,
-            inManagedObjectContext: dependencies.contextProvider.mainContext
-        ) else {
-            return nil
+    func getMessageObject(by msgID: MessageID) -> MessageEntity? {
+        let msg: MessageEntity? = try? dependencies.contextProvider.read { context in
+            if let msg = Message.messageForMessageID(msgID.rawValue, in: context) {
+                return MessageEntity(msg)
+            } else {
+                return nil
+            }
         }
         return msg
     }

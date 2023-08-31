@@ -52,22 +52,24 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     private(set) var hasNonePM: Bool
     private(set) var nonePMEmails: [String] = []
     private(set) var allMemberValidate = true
+    private let contextProvider: CoreDataContextProviderProtocol
 
     var color: String? {
-        get {
-            if let color = groupColor {
-                return color
-            }
+        if let color = groupColor {
+            return color
+        }
 
-            let context = CoreDataService.shared.mainContext
-            if let label = Label.labelForLabelName(contactTitle,
-                                                   inManagedObjectContext: context) {
+        return contextProvider.read { context in
+            if let label = Label.labelForLabelName(
+                contactTitle,
+                inManagedObjectContext: context
+            ) {
                 groupColor = label.color
                 groupSize = label.emails.count
                 return label.color
+            } else {
+                return ColorManager.defaultColor
             }
-
-            return ColorManager.defaultColor
         }
     }
 
@@ -80,9 +82,9 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
 
     /*
      contact group subselection
-     
+
      The contact information we can get from draft are name, email address, and group name
-     
+
      So if the (name, email address) pair doesn't match any record inthe  current group,
      we will treat it as a new pair
      */
@@ -131,13 +133,12 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     func selectAllEmailFromGroup() {
         selectedMembers.removeAll()
 
-        let context = CoreDataService.shared.mainContext
-
-        if let label = Label.labelGroup(byID: self.ID, inManagedObjectContext: context) {
-            for email in label.emails.allObjects as! [Email] {
-                let member = DraftEmailData.init(name: email.name,
-                                                 email: email.email)
-                selectedMembers.insert(member)
+        _ = contextProvider.read { context in
+            if let label = Label.labelGroup(byID: self.ID, inManagedObjectContext: context) {
+                for email in label.emails.allObjects as! [Email] {
+                    let member = DraftEmailData.init(name: email.name, email: email.email)
+                    selectedMembers.insert(member)
+                }
             }
         }
     }
@@ -146,25 +147,26 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     private var groupColor: String?
 
     var contactCount: Int {
-        get {
-            if let size = groupSize {
-                return size
-            }
+        if let size = groupSize {
+            return size
+        }
 
-            let context = CoreDataService.shared.mainContext
-            if let label = Label.labelForLabelName(contactTitle,
-                                                   inManagedObjectContext: context) {
+        return contextProvider.read { context in
+            if let label = Label.labelForLabelName(
+                contactTitle,
+                inManagedObjectContext: context
+            ) {
                 groupColor = label.color
                 groupSize = label.emails.count
                 return label.emails.count
+            } else {
+                return 0
             }
-
-            return 0
         }
     }
 
     /**
-     Calculates the group size, selected member count, and group color
+      Calculates the group size, selected member count, and group color
      Information for composer collection view cell
     */
     func getGroupInformation() -> (memberSelected: Int, totalMemberCount: Int, groupColor: String) {
@@ -172,38 +174,33 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
 
         let emailMultiSet = MultiSet<DraftEmailData>()
         var color = ""
-        let context = CoreDataService.shared.mainContext
-        // (1) get all email in the contact group        
-        if self.ID.isEmpty {
-            if let label = Label.labelForLabelName(self.contactTitle,
-                                                   inManagedObjectContext: context),
-                let emails = label.emails.allObjects as? [Email] {
-                color = label.color
-
-                for email in emails {
-                    let member = DraftEmailData.init(name: email.name,
-                                                     email: email.email)
-                    emailMultiSet.insert(member)
+        // (1) get all email in the contact group
+        if let label = contextProvider.read(block: { context in
+            if self.ID.isEmpty {
+                if let label = Label.labelForLabelName(self.contactTitle, inManagedObjectContext: context) {
+                    return LabelEntity(label: label)
+                } else {
+                    return nil
                 }
             } else {
-                // TODO: handle error
-                return errorResponse
+                if let label = Label.labelForLabelID(self.ID, inManagedObjectContext: context) {
+                    return LabelEntity(label: label)
+                } else {
+                    return nil
+                }
+            }
+        }) {
+            let emails = label.emailRelations
+            color = label.color
+            for email in emails {
+                let member = DraftEmailData(
+                    name: email.name,
+                    email: email.email
+                )
+                emailMultiSet.insert(member)
             }
         } else {
-            if let label = Label.labelForLabelID(self.ID,
-                                                 inManagedObjectContext: context),
-                let emails = label.emails.allObjects as? [Email] {
-                color = label.color
-
-                for email in emails {
-                    let member = DraftEmailData.init(name: email.name,
-                                                     email: email.email)
-                    emailMultiSet.insert(member)
-                }
-            } else {
-                // TODO: handle error
-                return errorResponse
-            }
+            return errorResponse
         }
 
         // (2) get all that is NOT in the contact group, but is selected
@@ -233,7 +230,13 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         return (memberSelected, totalMemberCount, color)
     }
 
-    init(ID: String, name: String, groupSize: Int? = nil, color: String? = nil) {
+    init(
+        ID: String,
+        name: String,
+        groupSize: Int? = nil,
+        color: String? = nil,
+        contextProvider: CoreDataContextProviderProtocol
+    ) {
         self.ID = ID
         self.contactTitle = name
         self.groupColor = color
@@ -245,6 +248,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         self.hasPGPPined = false
         self.hasNonePM = false
         self.selectedMembers = MultiSet<DraftEmailData>()
+        self.contextProvider = contextProvider
     }
 
     func equals(_ other: ContactPickerModelProtocol) -> Bool {
@@ -268,7 +272,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
 
 extension ContactGroupVO {
     func copy(with zone: NSZone? = nil) -> Any {
-        let contactGroup = ContactGroupVO(ID: ID, name: contactTitle, groupSize: groupSize, color: groupColor)
+        let contactGroup = ContactGroupVO(ID: ID, name: contactTitle, groupSize: groupSize, color: groupColor, contextProvider: contextProvider)
         return contactGroup
     }
 }

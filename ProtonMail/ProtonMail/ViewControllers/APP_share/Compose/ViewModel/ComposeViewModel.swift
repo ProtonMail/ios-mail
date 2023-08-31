@@ -126,7 +126,7 @@ class ComposeViewModel: NSObject {
     }
 
     init(
-        msg: Message?,
+        msg: MessageEntity?,
         action: ComposeMessageAction,
         isEditingScheduleMsg: Bool = false,
         originalScheduledTime: Date? = nil,
@@ -150,20 +150,19 @@ class ComposeViewModel: NSObject {
         initialize(message: msg, action: action)
     }
 
-    func initialize(message msg: Message?, action: ComposeMessageAction) {
-        if msg == nil || msg?.draft == true {
+    func initialize(message msg: MessageEntity?, action: ComposeMessageAction) {
+        if msg == nil || msg?.isDraft == true {
             if let msg = msg {
-                self.composerMessageHelper.setNewMessage(objectID: msg.objectID)
+                self.composerMessageHelper.setNewMessage(objectID: msg.objectID.rawValue)
             }
             self.subject = self.composerMessageHelper.draft?.title ?? ""
-        } else if msg?.managedObjectContext != nil {
-            // TODO: -v4 change to composer context
+        } else {
             guard let msg = msg else {
                 fatalError("This should not happened.")
             }
 
             do {
-                try composerMessageHelper.copyAndCreateDraft(from: msg, action: action)
+                try composerMessageHelper.copyAndCreateDraft(from: msg.messageID, action: action)
             } catch {
                 PMAssertionFailure(error)
             }
@@ -173,7 +172,7 @@ class ComposeViewModel: NSObject {
         self.messageAction = action
 
         // get original message if from sent
-        let fromSent: Bool = msg?.sentHardCheck ?? false
+        let fromSent: Bool = msg?.isSent ?? false
         self.updateContacts(fromSent)
     }
 
@@ -864,7 +863,11 @@ extension ComposeViewModel {
 
             // finish parsing contact groups
             for group in groups {
-                let contactGroup = ContactGroupVO(ID: "", name: group.key)
+                let contactGroup = ContactGroupVO(
+                    ID: "",
+                    name: group.key,
+                    contextProvider: dependencies.coreDataContextProvider
+                )
                 contactGroup.overwriteSelectedEmails(with: group.value)
                 out.append(contactGroup)
             }

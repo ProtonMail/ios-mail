@@ -177,31 +177,31 @@ final class ContactEditEmail: ContactEditTypeInterface {
         // we decide to stick with using core data information for now
         origContactGroupIDs.removeAll()
 
-        let context = self.contextProvider.mainContext
-        let emailObject = Email.EmailForAddressWithContact(self.newEmail,
-                                                           contactID: contactID,
-                                                           inManagedObjectContext: context)
-        if let emailObject = emailObject {
-            if let contactGroups = emailObject.labels.allObjects as? [Label] {
-                for contactGroup in contactGroups {
-                    origContactGroupIDs.insert(contactGroup.labelID)
-                }
+        let contactGroupIDs = contextProvider.read { context in
+            if let email = Email.EmailForAddressWithContact(
+                self.newEmail,
+                contactID: contactID,
+                inManagedObjectContext: context
+            ), let contactGroups = email.labels.allObjects as? [Label] {
+                return contactGroups.map { $0.labelID }
+            } else {
+                return []
             }
         }
-
-        newContactGroupIDs = origContactGroupIDs
+        newContactGroupIDs = Set(contactGroupIDs)
     }
 
     func getContactGroupNames() -> [String] {
-        var result: [String] = []
-        for labelID in newContactGroupIDs {
-            let context = self.contextProvider.mainContext
-            if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
-                result.append(label.name)
+        let names = contextProvider.read { context in
+            var result: [String] = []
+            for labelID in newContactGroupIDs {
+                if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
+                    result.append(label.name)
+                }
             }
+            return result
         }
-
-        return result
+        return names
     }
 
     // contact group
@@ -216,18 +216,15 @@ final class ContactEditEmail: ContactEditTypeInterface {
      - Returns: all currently selected contact group's color
     */
     func getCurrentlySelectedContactGroupColors() -> [String] {
-        var colors = [String]()
-
-        let context = self.contextProvider.mainContext
-        for ID in newContactGroupIDs {
-            let label = Label.labelForLabelID(ID, inManagedObjectContext: context)
-
-            if let label = label {
-                colors.append(label.color)
+        return contextProvider.read { context in
+            var colors = [String]()
+            for groupID in newContactGroupIDs {
+                if let label = Label.labelForLabelID(groupID, inManagedObjectContext: context) {
+                    colors.append(label.color)
+                }
             }
+            return colors
         }
-
-        return colors
     }
 
     /**

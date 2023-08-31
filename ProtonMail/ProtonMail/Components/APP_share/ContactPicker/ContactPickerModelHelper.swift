@@ -44,7 +44,7 @@ struct ContactPickerModelHelper {
         }
 
         for group in groups {
-            let contactGroup = ContactGroupVO(ID: "", name: group.key)
+            let contactGroup = ContactGroupVO(ID: "", name: group.key, contextProvider: CoreDataService.shared)
             contactGroup.overwriteSelectedEmails(with: group.value)
             results.append(contactGroup)
         }

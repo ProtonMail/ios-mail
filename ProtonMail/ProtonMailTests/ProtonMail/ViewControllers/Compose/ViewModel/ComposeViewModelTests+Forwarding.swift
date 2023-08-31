@@ -82,7 +82,7 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
 
         try testContext.save()
 
-        let sut = makeSUT(message: message)
+        let sut = makeSUT(message: .init(message))
 
         XCTAssertEqual(sut.getAttachments().map(\.id), [attachmentID])
     }
@@ -95,7 +95,7 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
 
         let attachmentsAreProcessed = expectation(description: "attachments are processed")
 
-        let sut = makeSUT(message: message)
+        let sut = makeSUT(message: .init(message))
 
         // TODO: remove this delay, either by making SUT init synchronous or by removing async operations from it
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -107,7 +107,7 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
         XCTAssertEqual(sut.getAttachments().map(\.id), ["0", "0"])
     }
 
-    private func makeSUT(message: Message) -> ComposeViewModel {
+    private func makeSUT(message: MessageEntity) -> ComposeViewModel {
         ComposeViewModel(
             msg: message,
             action: .forward,

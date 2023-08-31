@@ -226,9 +226,14 @@ extension UndoActionManager {
         #endif
     }
 
-    private func message(id messageID: MessageID) -> Message? {
-        let context = dependencies.contextProvider.mainContext
-        return Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context)
+    private func message(id messageID: MessageID) -> MessageEntity? {
+        return dependencies.contextProvider.read { context in
+            if let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
+                return MessageEntity(msg)
+            } else {
+                return nil
+            }
+        }
     }
 }
 

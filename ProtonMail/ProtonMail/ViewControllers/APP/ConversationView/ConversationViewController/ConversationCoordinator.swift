@@ -160,12 +160,15 @@ class ConversationCoordinator: CoordinatorDismissalObserver, ConversationCoordin
     }
 
     private func presentCompose(message: MessageEntity, action: ComposeMessageAction) {
-        let contextProvider = dependencies.contextProvider
-        guard let rawMessage = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else {
-            return
-        }
+        guard let msg: MessageEntity? = dependencies.contextProvider.read(block: { context in
+            if let msg = context.object(with: message.objectID.rawValue) as? Message {
+                return MessageEntity(msg)
+            } else {
+                return nil
+            }
+        }) else { return }
         let composer = dependencies.composerViewFactory.makeComposer(
-            msg: rawMessage,
+            msg: msg,
             action: action
         )
         viewController?.present(composer, animated: true)

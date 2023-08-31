@@ -497,8 +497,7 @@ extension SearchViewController {
         })
     }
     private func showComposer(message: MessageEntity) {
-        guard let message = viewModel.getMessageObject(message: message),
-              let navigationController = self.navigationController else { return }
+        guard let navigationController = self.navigationController else { return }
         let composer = dependencies.composerViewFactory.makeComposer(msg: message, action: .openDraft)
         navigationController.present(composer, animated: true)
     }

@@ -24,7 +24,7 @@ import XCTest
 
 final class ComposerViewControllerTests: XCTestCase {
     var user: UserManager!
-    var draft: Message!
+    var draft: MessageEntity!
     var nav: UINavigationController!
     var sut: ComposeContainerViewController!
 
@@ -105,14 +105,14 @@ extension ComposerViewControllerTests {
         mimeType: Message.MimeType,
         user: UserManager,
         contextProvider: CoreDataContextProviderProtocol
-    ) throws -> Message {
+    ) throws -> MessageEntity {
         let encryptedBody = try Encryptor.encrypt(
             publicKey: user.userInfo.addressKeys.toArmoredPrivateKeys[0],
             cleartext: plaintextBody
         ).value
 
         let parsedObject = testMessageDetailData.parseObjectAny()!
-        return try contextProvider.performAndWaitOnRootSavingContext(block: { context in
+        let rawMsg = try contextProvider.performAndWaitOnRootSavingContext(block: { context in
             let messageObject = try XCTUnwrap(
                 GRTJSONSerialization.object(
                     withEntityName: "Message",
@@ -126,5 +126,6 @@ extension ComposerViewControllerTests {
             messageObject.mimeType = mimeType.rawValue
             return messageObject
         })
+        return .init(rawMsg)
     }
 }
