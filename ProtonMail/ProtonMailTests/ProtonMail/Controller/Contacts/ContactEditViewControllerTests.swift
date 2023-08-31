@@ -192,7 +192,7 @@ final class ContactEditViewControllerTests: XCTestCase {
         let vCardSignedAndEncryptedData = "BEGIN:VCARD\nVERSION:4.0\nN:lastName;firstName\nEND:VCARD"
         let vCardSignedData = "BEGIN:VCARD\nVERSION:4.0\nFN:\(displayName)\nEND:VCARD"
         let data = try XCTUnwrap(
-            try generateTestData(
+            try TestDataCreator.generateVCardTestData(
                 vCardSignAndEncrypt: vCardSignedAndEncryptedData,
                 vCardSign: vCardSignedData,
                 vCard: ""
@@ -224,7 +224,7 @@ final class ContactEditViewControllerTests: XCTestCase {
         let vCardSignedAndEncryptedData = "BEGIN:VCARD\r\nVERSION:4.0\r\nPRODID:pm-ez-vcard 0.0.1\r\nN:LastName;FirstName\r\nURL:www.proton.me\r\nBDAY;VALUE=text:1990-10-22\r\nGENDER:Gender\r\nTITLE:Title\r\nNICKNAME:NickName\r\nADR;TYPE=:;;Street;City;State;000;Country\r\nORG:Organization\r\nTEL:090000000\r\nORG:Organization2\r\nTITLE:Title2\r\nNICKNAME:NickName2\r\nEND:VCARD\r\n"
 
         let data = try XCTUnwrap(
-            try generateTestData(
+            try TestDataCreator.generateVCardTestData(
                 vCardSignAndEncrypt: vCardSignedAndEncryptedData,
                 vCardSign: vCardSignedData,
                 vCard: vCardData
@@ -355,47 +355,6 @@ final class ContactEditViewControllerTests: XCTestCase {
 }
 
 extension ContactEditViewControllerTests {
-    private func generateTestData(vCardSignAndEncrypt: String, vCardSign: String, vCard: String) throws -> String? {
-        let key = ContactParserTestData.privateKey
-        let encrypted = try vCardSignAndEncrypt.encryptNonOptional(
-            withPubKey: key.armoredPublicKey,
-            privateKey: "",
-            passphrase: ""
-        )
-        let signature = try Sign.signDetached(
-            signingKey: .init(
-                privateKey: key,
-                passphrase: ContactParserTestData.passphrase
-            ),
-            plainText: vCardSignAndEncrypt
-        )
-        let signedAndEncryptedJsonDict: [String: Any] = [
-            "Type": CardDataType.SignAndEncrypt.rawValue,
-            "Data": encrypted,
-            "Signature": signature.value
-        ]
-
-        let signedOnlySignature = try Sign.signDetached(
-            signingKey: .init(
-                privateKey: key,
-                passphrase: ContactParserTestData.passphrase
-            ),
-            plainText: vCardSign
-        )
-        let signedJsonDict: [String: Any] = [
-            "Type": CardDataType.SignedOnly.rawValue,
-            "Data": vCardSign,
-            "Signature": signedOnlySignature.value
-        ]
-
-        let jsonDict: [String: Any] = [
-            "Type": CardDataType.PlainText.rawValue,
-            "Data": vCard,
-            "Signature": ""
-        ]
-        return [jsonDict, signedAndEncryptedJsonDict, signedJsonDict].toJSONString()
-    }
-
     private func setupNewContactSUT() {
         viewModel = .init(
             contactEntity: nil,

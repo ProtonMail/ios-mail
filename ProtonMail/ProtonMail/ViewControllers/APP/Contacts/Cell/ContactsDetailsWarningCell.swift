@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import ProtonCore_UIFoundations
 import UIKit
 
 enum WarningType: Int {
@@ -28,12 +29,12 @@ enum WarningType: Int {
 }
 
 class ContactsDetailsWarningCell: UITableViewCell {
-
-    @IBOutlet weak var warningImage: UIImageView!
-    @IBOutlet weak var errorTitle: UILabel!
-    @IBOutlet weak var errorDetails: UILabel!
+    @IBOutlet var warningImage: UIImageView!
+    @IBOutlet var errorTitle: UILabel!
+    @IBOutlet var errorDetails: UILabel!
 
     func configCell(warning: WarningType) {
+        backgroundColor = ColorProvider.BackgroundNorm
         switch warning {
         case .signatureWarning:
             self.errorTitle.text = LocalString._verification_error
@@ -52,5 +53,4 @@ class ContactsDetailsWarningCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-
 }

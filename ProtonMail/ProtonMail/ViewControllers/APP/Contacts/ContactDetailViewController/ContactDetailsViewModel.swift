@@ -22,14 +22,11 @@
 
 import CoreData
 import Foundation
-import PromiseKit
 import ProtonCore_Crypto
 import ProtonCore_DataModel
-import ProtonCore_Payments
 import VCard
 
 final class ContactDetailsViewModel: NSObject {
-    private let contactService: ContactDataService
     private var contactParser: ContactParserProtocol?
 
     private(set) var emails: [ContactEditEmail] = []
@@ -68,27 +65,23 @@ final class ContactDetailsViewModel: NSObject {
         .title,
         .gender,
         .custom_field,
-        .notes,
-        .share
+        .notes
     ]
 
     var reloadView: (() -> Void)?
 
     private let contactFetchedController: NSFetchedResultsController<Contact>
-    let user: UserManager
-    let coreDataService: CoreDataContextProviderProtocol
+    let dependencies: Dependencies
     private(set) var contact: ContactEntity
 
     init(
         contact: ContactEntity,
-        user: UserManager,
-        coreDataService: CoreDataContextProviderProtocol
+        dependencies: Dependencies
     ) {
         self.contact = contact
-        self.user = user
-        self.coreDataService = coreDataService
-        self.contactService = user.contactService
-        contactFetchedController = contactService.contactFetchedController(by: contact.contactID)
+        self.dependencies = dependencies
+        contactFetchedController = dependencies.contactService
+            .contactFetchedController(by: contact.contactID)
         super.init()
         self.contactParser = ContactParser(resultDelegate: self)
         contactFetchedController.delegate = self
@@ -154,7 +147,7 @@ final class ContactDetailsViewModel: NSObject {
     func rebuild() -> Bool {
         if self.contact.needsRebuild {
             clearAddData()
-            self.setupEmails()
+            try? setupEmails()
             return true
         }
         return false
@@ -180,77 +173,70 @@ final class ContactDetailsViewModel: NSObject {
 
     private func rebuildData() {
         clearAddData()
-        self.setupEmails(forceRebuild: true)
+        try?setupEmails(forceRebuild: true)
     }
 
-    @discardableResult
-    private func setupEmails(forceRebuild: Bool = false) -> Promise<Void> {
-        return firstly { () -> Promise<Void> in
-            let userInfo = self.user.userInfo
+    private func setupEmails(forceRebuild: Bool = false) throws {
+        let userInfo = self.dependencies.user.userInfo
 
-            //  origEmails
-            let cards = self.contact.cardDatas
-            for card in cards.sorted(by: { $0.type.rawValue < $1.type.rawValue }) {
-                switch card.type {
-                case .PlainText:
-                    self.contactParser?
-                        .parsePlainTextContact(data: card.data,
-                                               contextProvider: self.coreDataService,
-                                               contactID: self.contact.contactID)
-                case .EncryptedOnly:
-                    try self.contactParser?
-                        .parseEncryptedOnlyContact(card: card,
-                                                   passphrase: user.mailboxPassword,
-                                                   userKeys: userInfo.userKeys.toArmoredPrivateKeys)
-                case .SignedOnly:
-                    self.verifyType2 = self.contactParser?.verifySignature(
-                        signature: ArmoredSignature(value: card.signature),
-                        plainText: card.data,
-                        userKeys: userInfo.userKeys.toArmoredPrivateKeys,
-                        passphrase: user.mailboxPassword
-                    ) ?? false
-                    self.contactParser?
-                        .parsePlainTextContact(data: card.data,
-                                               contextProvider: self.coreDataService,
-                                               contactID: self.contact.contactID)
-                case .SignAndEncrypt:
-                    try self.contactParser?
-                        .parseSignAndEncryptContact(
-                            card: card,
-                            passphrase: user.mailboxPassword,
-                            firstUserKey: userInfo.firstUserKey().map { ArmoredKey(value: $0.privateKey) },
-                            userKeys: userInfo.userKeys.toArmoredPrivateKeys
-                        )
+        //  origEmails
+        let cards = self.contact.cardDatas
+        for card in cards.sorted(by: { $0.type.rawValue < $1.type.rawValue }) {
+            switch card.type {
+            case .PlainText:
+                self.contactParser?
+                    .parsePlainTextContact(data: card.data,
+                                           contextProvider: self.dependencies.coreDataService,
+                                           contactID: self.contact.contactID)
+            case .EncryptedOnly:
+                try self.contactParser?
+                    .parseEncryptedOnlyContact(card: card,
+                                               passphrase: dependencies.user.mailboxPassword,
+                                               userKeys: userInfo.userKeys.toArmoredPrivateKeys)
+            case .SignedOnly:
+                self.verifyType2 = self.contactParser?.verifySignature(
+                    signature: ArmoredSignature(value: card.signature),
+                    plainText: card.data,
+                    userKeys: userInfo.userKeys.toArmoredPrivateKeys,
+                    passphrase: dependencies.user.mailboxPassword
+                ) ?? false
+                self.contactParser?
+                    .parsePlainTextContact(data: card.data,
+                                           contextProvider: self.dependencies.coreDataService,
+                                           contactID: self.contact.contactID)
+            case .SignAndEncrypt:
+                try self.contactParser?
+                    .parseSignAndEncryptContact(
+                        card: card,
+                        passphrase: dependencies.user.mailboxPassword,
+                        firstUserKey: userInfo.firstUserKey().map { ArmoredKey(value: $0.privateKey) },
+                        userKeys: userInfo.userKeys.toArmoredPrivateKeys
+                    )
+            }
+        }
+
+        if !forceRebuild {
+            self.updateRebuildFlag()
+        }
+
+        if self.emails.count == 0 {
+            for (index, item) in self.typeSection.enumerated() {
+                if item == .email_header {
+                    self.typeSection.remove(at: index)
+                    break
                 }
             }
-
-            if !forceRebuild {
-                self.updateRebuildFlag()
-            }
-
-            if self.emails.count == 0 {
-                for (index, item) in self.typeSection.enumerated() {
-                    if item == .email_header {
-                        self.typeSection.remove(at: index)
-                        break
-                    }
-                }
-            }
-
-            return Promise.value(())
         }
     }
 
-    func getDetails(loading: () -> Void) -> Promise<Void> {
+    @MainActor
+    func getDetails(loading: () -> Void) async throws {
         if contact.isDownloaded && contact.needsRebuild == false {
-            return firstly {
-                self.setupEmails()
-            }.then {
-                Promise.value
-            }
+            try setupEmails()
+        } else {
+            loading()
+            try await updateContactDetail()
         }
-        loading()
-        return self.updateContactDetail()
     }
 
     func getProfile() -> ContactEditProfile {
@@ -260,7 +246,7 @@ final class ContactDetailsViewModel: NSObject {
     func export() -> String {
         let cards = self.contact.cardDatas
         var vcard: PMNIVCard? = nil
-        let userInfo = self.user.userInfo
+        let userInfo = dependencies.user.userInfo
         for card in cards {
             if card.type == .SignAndEncrypt {
                 var pt_contact: String?
@@ -268,7 +254,7 @@ final class ContactDetailsViewModel: NSObject {
                 for key in userkeys {
                     do {
                         pt_contact = try? card.data.decryptMessageWithSingleKeyNonOptional(ArmoredKey(value: key.privateKey),
-                                                                                           passphrase: user.mailboxPassword)
+                                                                                           passphrase: dependencies.user.mailboxPassword)
                         break
                     }
                 }
@@ -343,7 +329,7 @@ extension ContactDetailsViewModel: NSFetchedResultsControllerDelegate {
 
     private func updateRebuildFlag() {
         let objectID = self.contact.objectID.rawValue
-        coreDataService.performAndWaitOnRootSavingContext { context in
+        dependencies.coreDataService.performAndWaitOnRootSavingContext { context in
             if let contactToUpdate = try? context.existingObject(with: objectID) as? Contact {
                 contactToUpdate.needsRebuild = false
                 _ = context.saveUpstreamIfNeeded()
@@ -351,19 +337,11 @@ extension ContactDetailsViewModel: NSFetchedResultsControllerDelegate {
         }
     }
 
-    private func updateContactDetail() -> Promise<Void> {
-        let contactID = self.contact.contactID.rawValue
-        return Promise { [weak self] seal in
-            guard let self = self else { return }
-            self.contactService.details(contactID: contactID).then { contactObject -> Promise<Void> in
-                self.setContact(contactObject)
-                return self.setupEmails()
-            }.done {
-                seal.fulfill_()
-            }.catch { error in
-                seal.reject(error)
-            }
-        }
+    @MainActor
+    private func updateContactDetail() async throws {
+        let contact = try await dependencies.contactService.fetchContact(contactID: contact.contactID)
+        setContact(contact)
+        try setupEmails()
     }
 
     private func getContactObject() -> Contact? {
@@ -371,7 +349,7 @@ extension ContactDetailsViewModel: NSFetchedResultsControllerDelegate {
     }
 
     func paidUser() -> Bool {
-        return user.hasPaidMailPlan
+        return dependencies.user.hasPaidMailPlan
     }
 }
 
@@ -433,5 +411,13 @@ extension ContactDetailsViewModel: ContactParserResultDelegate {
 
     func update(profilePicture: UIImage?) {
         self.profilePicture = profilePicture
+    }
+}
+
+extension ContactDetailsViewModel {
+    struct Dependencies {
+        let user: UserManager
+        let coreDataService: CoreDataContextProviderProtocol
+        let contactService: ContactProviderProtocol
     }
 }

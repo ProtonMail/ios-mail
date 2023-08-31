@@ -43,6 +43,8 @@ protocol ContactProviderProtocol: AnyObject {
     func getAllEmails() -> [Email]
     func fetchContacts(completion: ContactFetchComplete?)
     func cleanUp()
+    func fetchContact(contactID: ContactID) async throws -> ContactEntity
+    func contactFetchedController(by contactID: ContactID) -> NSFetchedResultsController<Contact>
 }
 
 // sourcery:mock
@@ -405,32 +407,25 @@ class ContactDataService: Service {
         }
     }
 
-    /**
-     get contact full details
-
-     - Parameter contactID: contact id
-     - Parameter completion: async complete response
-     **/
-    func details(contactID: String) -> Promise<ContactEntity> {
-        return Promise { seal in
-            let api = ContactDetailRequest(cid: contactID)
-            self.apiService.perform(request: api, response: ContactDetailResponse()) { _, response in
-                if let error = response.error {
-                    seal.reject(error)
-                } else if let contactDict = response.contact {
-                    self.cacheService.updateContactDetail(serverResponse: contactDict) { (contact, error) in
-                        if let err = error {
-                            seal.reject(err)
-                        } else if let c = contact {
-                            seal.fulfill(c)
-                        } else {
-                            fatalError()
-                        }
+    func fetchContact(contactID: ContactID) async throws -> ContactEntity {
+        let request = ContactDetailRequest(cid: contactID.rawValue)
+        let result = await apiService.perform(request: request, response: ContactDetailResponse())
+        if let error = result.1.error {
+            throw error
+        } else if let contactDict = result.1.contact {
+            return try await withCheckedThrowingContinuation { continuation in
+                cacheService.updateContactDetail(serverResponse: contactDict) { contact, error in
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                    } else if let contact = contact {
+                        continuation.resume(returning: contact)
+                    } else {
+                        fatalError()
                     }
-                } else {
-                    seal.reject(NSError.unableToParseResponse(response))
                 }
             }
+        } else {
+            throw NSError.unableToParseResponse(result.1)
         }
     }
 

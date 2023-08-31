@@ -27,10 +27,15 @@ final class ContactDetailsDisplayCell: UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var value: UILabel!
 
-    func configCell(title: String, value: String) {
+    func configCell(
+        title: String,
+        value: String,
+        titleStyle: [NSAttributedString.Key : Any] = .DefaultSmall
+    ) {
+        backgroundColor = ColorProvider.BackgroundNorm
         contentView.backgroundColor = ColorProvider.BackgroundNorm
 
-        self.title.attributedText = title.apply(style: .DefaultSmallWeek)
+        self.title.attributedText = title.apply(style: titleStyle)
 
         let attribute = FontManager.Default.addTruncatingTail()
         self.value.attributedText = value.apply(style: attribute)

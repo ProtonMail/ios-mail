@@ -45,8 +45,11 @@ final class ContactViewsFactory {
     func makeDetailView(contact: ContactEntity) -> ContactDetailViewController {
         let viewModel = ContactDetailsViewModel(
             contact: contact,
-            user: dependencies.user,
-            coreDataService: dependencies.contextProvider
+            dependencies: .init(
+                user: dependencies.user,
+                coreDataService: dependencies.contextProvider,
+                contactService: dependencies.user.contactService
+            )
         )
         return ContactDetailViewController(viewModel: viewModel, dependencies: dependencies)
     }

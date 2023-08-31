@@ -33,7 +33,7 @@ final class ContactDetailsViewModelTests: XCTestCase {
         let user = UserManager(api: apiService, role: .none)
         let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
 
-        sut = ContactDetailsViewModel(contact: contact, user: user, coreDataService: coreDataService)
+        sut = ContactDetailsViewModel(contact: contact, dependencies: .init(user: user, coreDataService: coreDataService, contactService: user.contactService))
     }
 
     override func tearDownWithError() throws {
@@ -54,7 +54,7 @@ final class ContactDetailsViewModelTests: XCTestCase {
             completion(nil, .success(response))
         }
 
-        try sut.getDetails {}.wait()
+        try await sut.getDetails {}
 
         XCTAssertEqual(sut.contact.contactID, "bar")
         XCTAssertEqual(sut.contact.name, "John Doe")

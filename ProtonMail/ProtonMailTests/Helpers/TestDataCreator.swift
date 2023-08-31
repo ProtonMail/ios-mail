@@ -15,9 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import CoreData
 import Groot
+import ProtonCore_Crypto
+@testable import ProtonMail
 
 enum TestDataCreator {
     static func mockConversation(
@@ -126,5 +127,52 @@ enum TestDataCreator {
             conversationCount.unread = 0
         }
         _ = context.saveUpstreamIfNeeded()
+    }
+
+    static func generateVCardTestData(
+        vCardSignAndEncrypt: String,
+        vCardSign: String,
+        vCard: String,
+        privateKey: ArmoredKey = ContactParserTestData.privateKey,
+        passphrase: Passphrase = ContactParserTestData.passphrase
+    ) throws -> String? {
+        let key = privateKey
+        let encrypted = try vCardSignAndEncrypt.encryptNonOptional(
+            withPubKey: key.armoredPublicKey,
+            privateKey: "",
+            passphrase: ""
+        )
+        let signature = try Sign.signDetached(
+            signingKey: .init(
+                privateKey: key,
+                passphrase: passphrase
+            ),
+            plainText: vCardSignAndEncrypt
+        )
+        let signedAndEncryptedJsonDict: [String: Any] = [
+            "Type": CardDataType.SignAndEncrypt.rawValue,
+            "Data": encrypted,
+            "Signature": signature.value
+        ]
+
+        let signedOnlySignature = try Sign.signDetached(
+            signingKey: .init(
+                privateKey: key,
+                passphrase: passphrase
+            ),
+            plainText: vCardSign
+        )
+        let signedJsonDict: [String: Any] = [
+            "Type": CardDataType.SignedOnly.rawValue,
+            "Data": vCardSign,
+            "Signature": signedOnlySignature.value
+        ]
+
+        let jsonDict: [String: Any] = [
+            "Type": CardDataType.PlainText.rawValue,
+            "Data": vCard,
+            "Signature": ""
+        ]
+        return [jsonDict, signedAndEncryptedJsonDict, signedJsonDict].toJSONString()
     }
 }
