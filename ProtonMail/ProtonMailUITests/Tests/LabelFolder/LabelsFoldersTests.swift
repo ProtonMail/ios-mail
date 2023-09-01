@@ -20,7 +20,6 @@ class LabelsFoldersTests: FixtureAuthenticatedTestCase {
                 .clickMessageBySubject(scenario.subject)
                 .createFolder(folderName)
                 .selectFolder(folderName)
-                .tapDone()
             InboxRobot()
                 .menuDrawer()
                 .folderOrLabel(folderName)

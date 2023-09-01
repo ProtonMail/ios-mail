@@ -10,16 +10,16 @@ import XCTest
 
 import ProtonCore_TestingToolkit
 
-class ReportTests: BaseTestCase {
+class ReportTests: FixtureAuthenticatedTestCase {
     
     func testEditAndSendBugReport() {
-        let user = users["plus"]!
         let topic = "This is an automation test bug report"
         
-        LoginRobot()
-            .loginUser(user)
-            .menuDrawer()
-            .reports()
-            .sendBugReport(topic)
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .menuDrawer()
+                .reports()
+                .sendBugReport(topic)
+        }
     }
 }

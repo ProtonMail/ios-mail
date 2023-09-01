@@ -87,6 +87,15 @@
                },
                {
                   "path": "ProtonMailUITests/Tests/TestPlans/MonkeyTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/AccountDeletionTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/SanityTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/FlakyTests.xctestplan"
                }
 
             ]

@@ -17,6 +17,7 @@ fileprivate struct id {
     static let noResultImage = "MailboxViewController.noResultImage"
     static let noResultMainLabel = "MailboxViewController.noResultMainLabel"
     static let noResultSecondaryLabel = "MailboxViewController.noResultSecondaryLabel"
+    static let primaryUserviewButtonIdentifier = "MenuViewController.primaryUserview"
     static func mailboxMessageCellIdentifier(_ subject: String) -> String { return "NewMailboxMessageCell.\(subject.replaceSpaces())" }
     static func mailboxMessageTitleIdentifier(_ subject: String) -> String { return "\(subject.replaceSpaces()).titleLabel" }
     static let trashButtonIdentifier = LocalString._menu_trash_title
@@ -85,6 +86,7 @@ class MailboxRobotInterface: CoreElements {
 
     func menuDrawer() -> MenuRobot {
         button(id.menuButtonIdentifier).firstMatch().waitForHittable(time: 30).tap()
+        button(id.primaryUserviewButtonIdentifier).waitUntilExists().checkExists()
         return MenuRobot()
     }
     
