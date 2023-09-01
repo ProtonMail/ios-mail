@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Adreces de correu electrònic";
 
-/* The button text for add profile picture */
-"Add photo" = "Afegir foto";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Editar foto";
-
 /* contact section title */
 "Encrypted contact details" = "Detalls de contacte xifrats";
 
@@ -2133,3 +2127,21 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Dominis de correu personalitzats";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Nom a mostrar";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "First name";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Cognom";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Display name field cannot be empty";
+
+/* The button text for add profile picture */
+"Add photo" = "Afegir foto";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Editar foto";

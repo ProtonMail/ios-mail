@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Adresses e-mail";
 
-/* The button text for add profile picture */
-"Add photo" = "Ajouter une photo";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Modifier la photo";
-
 /* contact section title */
 "Encrypted contact details" = "Chiffrement des informations de contact";
 
@@ -1128,7 +1122,7 @@
 "Signed out from %@ and signed in with %@" = "Déconnecté de %1$@ et connecté à %2$@";
 
 /* Alert when switched account by clicking notification of another account */
-"Switched to account '%@'" = "Basculé vers le compte «·%@·»";
+"Switched to account '%@'" = "Basculé vers le compte « %@ »";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Connexion non sécurisée";
@@ -2133,3 +2127,21 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domaines de messagerie personnalisés";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Nom d'affichage";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Prénom";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Nom";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Le champ du nom d'affichage ne peut pas être vide.";
+
+/* The button text for add profile picture */
+"Add photo" = "Ajouter une photo";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Modifier la photo";

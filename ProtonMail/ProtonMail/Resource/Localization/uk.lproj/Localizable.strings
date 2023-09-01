@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Адреси е-пошти";
 
-/* The button text for add profile picture */
-"Add photo" = "Додати фото";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Редагувати фото";
-
 /* contact section title */
 "Encrypted contact details" = "Зашифровані подробиці контакту";
 
@@ -1710,7 +1704,7 @@
 "Send immediately?" = "Надіслати негайно?";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Це повідомлення більше не заплановано до надсилання пізніше. Якщо ви досі хочете надіслати його пізніше, ви можете торкнутися «Запланувати надсилання»";
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Це повідомлення більше не заплановано до надсилання пізніше. Якщо ви досі хочете надіслати його пізніше, ви можете торкнутися \"Запланувати надсилання\"";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
 "Send immediately" = "Надіслати негайно";
@@ -1797,7 +1791,7 @@
 "less than 1 minute" = "менше ніж 1 хвилина";
 
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
-"The message is being sent and will move to the Sent folder once sending is complete." = "Повідомлення зараз надсилається. Після надсилання його буде переміщено до теки «Надіслані».";
+"The message is being sent and will move to the Sent folder once sending is complete." = "Повідомлення зараз надсилається. Після надсилання його буде переміщено до теки \"Надіслані\".";
 
 /* The footer of the slider for download via mobile data in settings */
 "If you lose your WiFi connection, download will continue over mobile data." = "Якщо ви втратите WiFi-з'єднання, завантаження продовжиться через мобільні дані.";
@@ -2133,3 +2127,21 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Власні поштові домени";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Display name";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "First name";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Last name";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Display name field cannot be empty";
+
+/* The button text for add profile picture */
+"Add photo" = "Додати фото";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Редагувати фото";

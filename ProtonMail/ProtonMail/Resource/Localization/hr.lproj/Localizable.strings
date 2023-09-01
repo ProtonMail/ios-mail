@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Adrese e-pošte";
 
-/* The button text for add profile picture */
-"Add photo" = "Dodaj sliku";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Uredi sliku";
-
 /* contact section title */
 "Encrypted contact details" = "Šifrirani podaci o kontaktu";
 
@@ -2133,3 +2127,21 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Custom email domains";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Display name";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "First name";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Last name";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Display name field cannot be empty";
+
+/* The button text for add profile picture */
+"Add photo" = "Dodaj sliku";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Uredi sliku";

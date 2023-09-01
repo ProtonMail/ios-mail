@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Indirizzi email";
 
-/* The button text for add profile picture */
-"Add photo" = "Aggiungi foto";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Modifica foto";
-
 /* contact section title */
 "Encrypted contact details" = "Dettagli di contatto cifrati";
 
@@ -894,7 +888,7 @@
 "Decryption of this content failed" = "Decriptazione di questo contenuto non riuscita";
 
 /* error details */
-"Decryption of this message's encrypted content failed." = "La decriptazione del contenuto cifrato nel messaggio non è riuscita.";
+"Decryption of this message's encrypted content failed." = "La decriptazione del contenuto crittografato nel messaggio non è riuscita.";
 
 /* error title */
 "Logs" = "Registri";
@@ -1755,7 +1749,7 @@
 "PGP-encrypted message" = "Messaggio PGP crittografato";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message. Sender verification failed" = "Messaggio firmato PGP. Verifica del mittente non riuscito.";
+"PGP-signed message. Sender verification failed" = "Messaggio firmato con PGP. Verifica del mittente non riuscita.";
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "End-to-end encrypted to verified recipient" = "Crittografato end-to-end al destinatario verificato";
@@ -2133,3 +2127,21 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domini di posta elettronica personalizzati";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Nome visualizzato";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Nome";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Cognome";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Il campo del nome visualizzato non può essere vuoto";
+
+/* The button text for add profile picture */
+"Add photo" = "Aggiungi foto";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Modifica foto";

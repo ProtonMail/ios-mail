@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Διευθύνσεις Email";
 
-/* The button text for add profile picture */
-"Add photo" = "Προσθήκη φωτογραφίας";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Επεξεργασία φωτογραφίας";
-
 /* contact section title */
 "Encrypted contact details" = "Κρυπτογραφημένα στοιχεία επαφής";
 
@@ -2133,3 +2127,21 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Προσαρμοσμένοι τομείς ηλεκτρονικού ταχυδρομείου";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Εμφανιζόμενο Όνομα";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Όνομα";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Επώνυμο";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Το εμφανιζόμενο όνομα δεν μπορεί να είναι κενό";
+
+/* The button text for add profile picture */
+"Add photo" = "Προσθήκη φωτογραφίας";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Επεξεργασία φωτογραφίας";

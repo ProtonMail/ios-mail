@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-mailadresser";
 
-/* The button text for add profile picture */
-"Add photo" = "Tilføj foto";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Redigér foto";
-
 /* contact section title */
 "Encrypted contact details" = "Krypterede kontaktoplysninger";
 
@@ -1449,7 +1443,7 @@
 "Inherit color from parent folder" = "Nedarv farve fra overordnet mappe";
 
 /* section title */
-"Select color" = "Select color";
+"Select color" = "Vælg farve";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Du er ikke forbundet. Vi kan ikke vise indholdet af din besked.";
@@ -2133,3 +2127,21 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Brugerdefinerede e-maildomæner";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Vist navn";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Fornavn";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Efternavn";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Feltet med Vist navn må ikke være tomt";
+
+/* The button text for add profile picture */
+"Add photo" = "Tilføj foto";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Redigér foto";

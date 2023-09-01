@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "E‐Mail‐Adressen";
 
-/* The button text for add profile picture */
-"Add photo" = "Foto hinzufügen";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Foto bearbeiten";
-
 /* contact section title */
 "Encrypted contact details" = "Verschlüsselte Kontaktdaten";
 
@@ -2133,3 +2127,21 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Eigene E-Mail-Domains";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Anzeigename";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Vorname";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Nachname";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Der Anzeigename darf nicht leer sein";
+
+/* The button text for add profile picture */
+"Add photo" = "Foto hinzufügen";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Foto bearbeiten";

@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-postadresser";
 
-/* The button text for add profile picture */
-"Add photo" = "Lägg till foto";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Redigera foto";
-
 /* contact section title */
 "Encrypted contact details" = "Krypterade kontaktdetaljer";
 
@@ -2133,3 +2127,21 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Anpassade e-domäner";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Visningsnamn";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Förnamn";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Efternamn";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Fält för visningsnamn kan inte vara tomt";
+
+/* The button text for add profile picture */
+"Add photo" = "Lägg till foto";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Redigera foto";

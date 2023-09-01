@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Direcciones de correo electrónico";
 
-/* The button text for add profile picture */
-"Add photo" = "Añadir foto";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Editar foto";
-
 /* contact section title */
 "Encrypted contact details" = "Datos de contacto cifrados";
 
@@ -1949,7 +1943,7 @@
 "Link copied." = "Enlace copiado.";
 
 /* The article title of the referral share view. */
-"Invite friends to Proton,\n get up to $90 in credits!" = "Invita a tus amigos a Proton\n¡Consigue hasta 90€ en créditos!";
+"Invite friends to Proton,\n get up to $90 in credits!" = "Invita a tus amigos a Proton,\n ¡y consigue hasta 90 € en crédito!";
 
 /* The article content of the referral share view. */
 "Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Invita a tus amigos a Proton: probarán gratis Mail Plus y tú ganarás créditos cuando se suscriban a un plan de pago.";
@@ -2133,3 +2127,21 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Dominios de correo personalizados";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Nombre a mostrar";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Nombre";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Apellido";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "El campo del nombre a mostrar no puede estar vacío.";
+
+/* The button text for add profile picture */
+"Add photo" = "Añadir foto";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Editar foto";
