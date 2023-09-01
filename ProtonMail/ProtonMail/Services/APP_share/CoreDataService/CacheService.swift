@@ -262,19 +262,21 @@ class CacheService: CacheServiceProtocol {
             NSNumber(true)
         )
 
-        coreDataService.performAndWaitOnRootSavingContext { context in
-            if let messages = try? context.fetch(messageFetch) {
-                messages.forEach(context.delete)
-            }
-            if let contextLabels = try? context.fetch(contextLabelFetch) {
-                contextLabels.forEach { label in
-                    if let conversation = label.conversation {
-                        context.delete(conversation)
-                    }
-                    context.delete(label)
+        DispatchQueue.global().async {
+            self.coreDataService.performAndWaitOnRootSavingContext { context in
+                if let messages = try? context.fetch(messageFetch) {
+                    messages.forEach(context.delete)
                 }
+                if let contextLabels = try? context.fetch(contextLabelFetch) {
+                    contextLabels.forEach { label in
+                        if let conversation = label.conversation {
+                            context.delete(conversation)
+                        }
+                        context.delete(label)
+                    }
+                }
+                _ = context.saveUpstreamIfNeeded()
             }
-            _ = context.saveUpstreamIfNeeded()
         }
     }
 
