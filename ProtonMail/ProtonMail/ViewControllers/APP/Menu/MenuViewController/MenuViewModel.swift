@@ -31,9 +31,14 @@ import ProtonMailAnalytics
 import UIKit
 
 final class MenuViewModel: NSObject {
-    private let usersManager: UsersManager
-    private let userStatusInQueueProvider: UserStatusInQueueProtocol
-    private let coreDataContextProvider: CoreDataContextProviderProtocol
+    typealias Dependencies = HasCoreDataContextProviderProtocol
+    & HasKeyMakerProtocol
+    & HasLockCacheStatus
+    & HasQueueManager
+    & HasUnlockManager
+    & HasUsersManager
+
+    private let dependencies: Dependencies
     private var scheduleSendLocationStatusObserver: ScheduleSendLocationStatusObserver?
 
     private var labelDataService: LabelsDataService? {
@@ -50,12 +55,12 @@ final class MenuViewModel: NSObject {
     private var conversationCountFetcher: NSFetchedResultsController<ConversationCount>?
     private weak var delegate: MenuUIProtocol?
     var currentUser: UserManager? {
-        return self.usersManager.firstUser
+        dependencies.usersManager.firstUser
     }
     /// It is used to check if menu needs to update the view when the active account is changed.
     private var currentUserID: UserID?
     var secondUser: UserManager? {
-        return self.usersManager.user(at: 1)
+        dependencies.usersManager.user(at: 1)
     }
     private(set) var menuWidth: CGFloat!
 
@@ -81,32 +86,22 @@ final class MenuViewModel: NSObject {
     }
 
     weak var coordinator: MenuCoordinatorProtocol?
-    private let coreKeyMaker: KeyMakerProtocol
-    private let unlockManager: UnlockManager
     private var mailSettingCancellable: AnyCancellable?
 
-    init(
-        usersManager: UsersManager,
-        userStatusInQueueProvider: UserStatusInQueueProtocol,
-        coreDataContextProvider: CoreDataContextProviderProtocol,
-        coreKeyMaker: KeyMakerProtocol,
-        unlockManager: UnlockManager
-    ) {
-        self.usersManager = usersManager
-        self.userStatusInQueueProvider = userStatusInQueueProvider
-        self.coreDataContextProvider = coreDataContextProvider
-        self.coreKeyMaker = coreKeyMaker
-        self.unlockManager = unlockManager
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
 
         self.sections = [.inboxes, .folders, .labels, .more]
         self.inboxItems = Self.inboxItems(
-            almostAllMailIsOn: usersManager.firstUser?.mailSettings.almostAllMail ?? false
+            almostAllMailIsOn: dependencies.usersManager.firstUser?.mailSettings.almostAllMail ?? false
         )
-        let defaultInfo = MoreItemsInfo(userIsMember: nil,
-                                        subscriptionAvailable: subscriptionAvailable,
-                                        isPinCodeEnabled: unlockManager.cacheStatus.isPinCodeEnabled,
-                                        isTouchIDEnabled: unlockManager.cacheStatus.isTouchIDEnabled,
-                                        isReferralEligible: usersManager.firstUser?.userInfo.referralProgram?.eligible ?? false)
+        let defaultInfo = MoreItemsInfo(
+            userIsMember: nil,
+            subscriptionAvailable: subscriptionAvailable,
+            isPinCodeEnabled: dependencies.lockCacheStatus.isPinCodeEnabled,
+            isTouchIDEnabled: dependencies.lockCacheStatus.isTouchIDEnabled,
+            isReferralEligible: dependencies.usersManager.firstUser?.userInfo.referralProgram?.eligible ?? false
+        )
         self.moreItems = Self.moreItems(for: defaultInfo)
         super.init()
     }
@@ -224,27 +219,27 @@ extension MenuViewModel: MenuVMProtocol {
         guard let user = self.currentUser else {
             return false
         }
-        return self.userStatusInQueueProvider.isAnyQueuedMessage(of: user.userID)
+        return dependencies.queueManager.isAnyQueuedMessage(of: user.userID)
     }
 
     func removeAllQueuedMessageOfCurrentUser() {
         guard let user = self.currentUser else {
             return
         }
-        self.userStatusInQueueProvider.deleteAllQueuedMessage(of: user.userID, completeHander: nil)
+        dependencies.queueManager.deleteAllQueuedMessage(of: user.userID, completeHander: nil)
     }
 
     func signOut(userID: UserID, completion: (() -> Void)?) {
-        guard let user = self.usersManager.getUser(by: userID) else {
+        guard let user = dependencies.usersManager.getUser(by: userID) else {
             completion?()
             return
         }
-        self.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false, completion: completion)
+        dependencies.usersManager.logout(user: user, shouldShowAccountSwitchAlert: false, completion: completion)
     }
 
     func removeDisconnectAccount(userID: UserID) {
-        guard let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID.rawValue}) else {return}
-        self.usersManager.removeDisconnectedUser(user)
+        guard let user = dependencies.usersManager.disconnectedUsers.first(where: {$0.userID == userID.rawValue}) else {return}
+        dependencies.usersManager.removeDisconnectedUser(user)
     }
 
     func highlight(label: MenuLabel) {
@@ -268,7 +263,7 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func getAccountList() -> [AccountSwitcher.AccountData] {
-        var list = self.usersManager.users.map {user -> AccountSwitcher.AccountData in
+        var list = dependencies.usersManager.users.map {user -> AccountSwitcher.AccountData in
             let id = user.userInfo.userId
             let name = user.defaultDisplayName
             let mail = user.defaultEmail
@@ -276,23 +271,23 @@ extension MenuViewModel: MenuVMProtocol {
             return AccountSwitcher.AccountData(userID: id, name: name, mail: mail, isSignin: true, unread: unread)
         }
 
-        list += self.usersManager.disconnectedUsers.map {user -> AccountSwitcher.AccountData in
+        list += dependencies.usersManager.disconnectedUsers.map {user -> AccountSwitcher.AccountData in
             return AccountSwitcher.AccountData(userID: user.userID, name: user.defaultDisplayName, mail: user.defaultEmail, isSignin: false, unread: 0)
         }
         return list
     }
 
     func getUnread(of userID: String) -> Int {
-        guard let user = usersManager.getUser(by: UserID(rawValue: userID)) else { return 0 }
+        guard let user = dependencies.usersManager.getUser(by: UserID(rawValue: userID)) else { return 0 }
         let labelID = LabelLocation.inbox.toMessageLocation.rawValue
         return user.getUnReadCount(by: labelID)
     }
 
     func activateUser(id: UserID) {
-        guard let user = self.usersManager.getUser(by: id) else {
+        guard let user = dependencies.usersManager.getUser(by: id) else {
             return
         }
-        self.usersManager.active(by: user.authCredential.sessionID)
+        dependencies.usersManager.active(by: user.authCredential.sessionID)
         self.userDataInit()
         self.menuViewInit()
         self.delegate?.navigateTo(label: MenuLabel(location: .inbox))
@@ -302,7 +297,7 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func prepareLogin(userID: UserID) {
-        if let user = self.usersManager.disconnectedUsers.first(where: {$0.userID == userID.rawValue}) {
+        if let user = dependencies.usersManager.disconnectedUsers.first(where: {$0.userID == userID.rawValue}) {
             let label = MenuLabel(id: LabelLocation.addAccount.labelID, name: user.defaultEmail, parentID: nil, path: "tmp", textColor: "", iconColor: "", type: -1, order: -1, notify: false)
             self.delegate?.navigateTo(label: label)
         } else {
@@ -374,9 +369,9 @@ extension MenuViewModel: MenuVMProtocol {
 
     func lockTheScreen() {
         // remove mainKey from memory
-        coreKeyMaker.lockTheApp()
+        dependencies.keyMaker.lockTheApp()
         // provoke mainKey obtaining
-        _ = unlockManager.isUnlocked()
+        _ = dependencies.unlockManager.isUnlocked()
         coordinator?.lockTheScreen()
     }
 }
@@ -422,7 +417,7 @@ extension MenuViewModel {
 
     private func observeLabelUnreadUpdate() {
         guard let user = self.currentUser else {return}
-        let moc = self.coreDataContextProvider.mainContext
+        let moc = dependencies.contextProvider.mainContext
         let fetchRequest = NSFetchRequest<LabelUpdate>(entityName: LabelUpdate.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
                                              LabelUpdate.Attributes.userID,
@@ -443,7 +438,7 @@ extension MenuViewModel {
 
     private func observeContextLabelUnreadUpdate() {
         guard let user = self.currentUser else {return}
-        let moc = self.coreDataContextProvider.mainContext
+        let moc = dependencies.contextProvider.mainContext
         let fetchRequest = NSFetchRequest<ConversationCount>(entityName: ConversationCount.Attributes.entityName)
         fetchRequest.predicate = NSPredicate(format: "(%K == %@)",
                                              ConversationCount.Attributes.userID,
@@ -466,7 +461,7 @@ extension MenuViewModel {
         guard let user = self.currentUser else { return }
         let observer =
             ScheduleSendLocationStatusObserver(
-                contextProvider: coreDataContextProvider,
+                contextProvider: dependencies.contextProvider,
                 userID: user.userID
             )
 
@@ -534,8 +529,8 @@ extension MenuViewModel {
     private func updateMoreItems(shouldReload: Bool = true) {
         let moreItemsInfo = MoreItemsInfo(userIsMember: currentUser?.userInfo.isMember ?? false,
                                           subscriptionAvailable: self.subscriptionAvailable,
-                                          isPinCodeEnabled: unlockManager.cacheStatus.isPinCodeEnabled,
-                                          isTouchIDEnabled: unlockManager.cacheStatus.isTouchIDEnabled,
+                                          isPinCodeEnabled: dependencies.lockCacheStatus.isPinCodeEnabled,
+                                          isTouchIDEnabled: dependencies.lockCacheStatus.isTouchIDEnabled,
                                           isReferralEligible: currentUser?.userInfo.referralProgram?.eligible ?? false)
         let newMore = Self.moreItems(for: moreItemsInfo)
         if newMore.count != self.moreItems.count {
@@ -612,14 +607,14 @@ extension MenuViewModel {
     }
 
     @objc private func primaryAccountLogout() {
-        guard self.usersManager.users.count > 0,
+        guard dependencies.usersManager.users.count > 0,
               let user = self.currentUser else {return}
         self.activateUser(id: UserID(user.userInfo.userId))
     }
 
     private func updatePrimaryUserView() {
         guard let user = self.currentUser else {
-            self.usersManager.clean().cauterize()
+            dependencies.usersManager.clean().cauterize()
             return
         }
         self.delegate?.update(email: user.defaultEmail)

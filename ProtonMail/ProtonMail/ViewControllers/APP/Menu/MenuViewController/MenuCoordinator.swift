@@ -91,13 +91,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
         self.sideMenu = sideMenu
 
         self.dependencies = dependencies
-        let viewModel = MenuViewModel(
-            usersManager: dependencies.usersManager,
-            userStatusInQueueProvider: dependencies.queueManager,
-            coreDataContextProvider: dependencies.contextProvider,
-            coreKeyMaker: dependencies.keyMaker,
-            unlockManager: dependencies.unlockManager
-        )
+        let viewModel = MenuViewModel(dependencies: dependencies)
         self.viewModel = viewModel
         viewModel.coordinator = self
     }
