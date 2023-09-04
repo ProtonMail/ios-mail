@@ -106,14 +106,6 @@ class ContactDataService: Service {
         }
     }
 
-    static func cleanUpAll() {
-            let coreDataService = sharedServices.get(by: CoreDataService.self)
-            coreDataService.performAndWaitOnRootSavingContext { context in
-                Contact.deleteAll(in: context)
-                Email.deleteAll(in: context)
-            }
-    }
-
     func fetchUUIDsForAllContact() throws -> [String] {
         return try coreDataService.read { context in
             let request = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)

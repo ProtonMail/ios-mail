@@ -270,6 +270,15 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         return try result.get()
     }
 
+    func deleteAllData() async {
+        await withCheckedContinuation { continuation in
+            serialQueue.addOperation {
+                CoreDataStore.deleteDataStore()
+                continuation.resume()
+            }
+        }
+    }
+
     private func checkForOverlyLongExecutionIfOnMainThread(startTime: Date, caller: StaticString = #function) {
         let elapsedTime = Date().timeIntervalSince(startTime)
         if Thread.isMainThread && elapsedTime > 0.2 {

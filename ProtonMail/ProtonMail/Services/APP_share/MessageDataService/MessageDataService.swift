@@ -670,19 +670,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         self.queue(.signout)
     }
 
-    static func cleanUpAll() async {
-        let coreDataService = sharedServices.get(by: CoreDataService.self)
-        let queueManager = sharedServices.get(by: QueueManager.self)
-
-        await queueManager.clearAll()
-
-        coreDataService.performAndWaitOnRootSavingContext { context in
-            Message.deleteAll(in: context)
-            Conversation.deleteAll(in: context)
-            _ = context.saveUpstreamIfNeeded()
-        }
-    }
-
     func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) {
             self.contextProvider.performAndWaitOnRootSavingContext { context in
                 self.removeMessageFromDB(context: context, removeAllDraft: removeAllDraft)

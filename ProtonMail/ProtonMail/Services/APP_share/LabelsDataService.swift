@@ -109,15 +109,6 @@ class LabelsDataService: Service {
         }
     }
 
-    static func cleanUpAll() {
-            let coreDataService = sharedServices.get(by: CoreDataService.self)
-            coreDataService.performAndWaitOnRootSavingContext { context in
-                Label.deleteAll(in: context)
-                LabelUpdate.deleteAll(in: context)
-                ContextLabel.deleteAll(in: context)
-            }
-    }
-
     @available(*, deprecated, message: "Prefer the async variant")
     func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)? = nil) {
         Task {

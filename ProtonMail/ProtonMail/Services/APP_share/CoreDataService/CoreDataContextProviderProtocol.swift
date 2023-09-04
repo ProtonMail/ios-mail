@@ -39,4 +39,6 @@ protocol CoreDataContextProviderProtocol: Service {
         sectionNameKeyPath: String?,
         onMainContext: Bool
     ) -> NSFetchedResultsController<T>
+
+    func deleteAllData() async
 }

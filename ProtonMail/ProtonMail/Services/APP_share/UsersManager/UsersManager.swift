@@ -421,13 +421,15 @@ extension UsersManager {
     }
 
     func clean() -> Promise<Void> {
-        Promise { seal in
+        LocalNotificationService.cleanUpAll()
+
+        return Promise { seal in
             Task {
-                await UserManager.cleanUpAll()
+                await self.dependencies.queueManager.clearAll()
+                await self.dependencies.contextProvider.deleteAllData()
                 seal.fulfill_()
             }
         }.ensure {
-            sharedServices.get(by: CoreDataService.self).resetMainContextIfNeeded()
 
             self.users = []
             self.save()

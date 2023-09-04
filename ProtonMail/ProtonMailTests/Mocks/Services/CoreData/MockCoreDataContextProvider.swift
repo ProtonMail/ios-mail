@@ -109,6 +109,10 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         }
     }
 
+    func deleteAllData() async {
+        await coreDataService.deleteAllData()
+}
+
     func createFetchedResultsController<T>(
         entityName: String,
         predicate: NSPredicate,

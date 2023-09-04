@@ -69,15 +69,6 @@ final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol {
                 _ = ConversationCount.remove(by: userId.rawValue, inManagedObjectContext: context)
             }
     }
-
-    static func cleanUpAll() {
-            let coreDataService = sharedServices.get(by: CoreDataService.self)
-            coreDataService.performAndWaitOnRootSavingContext { context in
-                UserEvent.deleteAll(in: context)
-                LabelUpdate.deleteAll(in: context)
-                ConversationCount.deleteAll(in: context)
-            }
-    }
 }
 
 // MARK: - Event ID

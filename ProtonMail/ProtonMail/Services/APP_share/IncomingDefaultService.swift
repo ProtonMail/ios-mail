@@ -156,13 +156,6 @@ extension IncomingDefaultService {
     func cleanUp() throws {
         try hardDelete(query: nil, includeSoftDeleted: true)
     }
-
-    static func cleanUpAll() {
-        let coreDataService = sharedServices.get(by: CoreDataService.self)
-        coreDataService.performAndWaitOnRootSavingContext { context in
-            IncomingDefault.deleteAll(in: context)
-        }
-    }
 }
 
 // MARK: internals
