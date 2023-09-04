@@ -58,7 +58,6 @@ end
 def app_share_pods
   app_share_push_pods
 
-  pod 'AwaitKit', :git => 'https://github.com/yannickl/AwaitKit.git', :commit => '4b725f40dd189f40c0962cba792f06a2073bd977'
   pod 'Groot', '3.0.1'
   pod 'MBProgressHUD' , '1.1.0'
   pod 'PromiseKit', '6.13.1'

@@ -1,6 +1,0 @@
-framework module AwaitKit {
-  umbrella header "AwaitKit-umbrella.h"
-
-  export *
-  module * { export * }
-}
