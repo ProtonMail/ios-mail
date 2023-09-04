@@ -360,15 +360,6 @@ extension MenuCoordinator {
             )
         )
 
-        let fetchMessagesForUpdate = FetchMessages(
-            dependencies: .init(
-                messageDataService: user.messageService,
-                cacheService: user.cacheService,
-                eventsService: user.eventsService,
-                labelID: labelID
-            )
-        )
-
         let fetchMessagesWithReset = FetchMessagesWithReset(
             userID: userID,
             dependencies: FetchMessagesWithReset.Dependencies(
@@ -389,7 +380,7 @@ extension MenuCoordinator {
                                 conversationProvider: user.conversationService,
                                 purgeOldMessages: purgeOldMessages,
                                 fetchMessageWithReset: fetchMessagesWithReset,
-                                fetchMessage: fetchMessagesForUpdate,
+                                fetchMessage: fetchMessages,
                                 fetchLatestEventID: fetchLatestEvent)
         )
         let userContainer = userContainer(for: user)
