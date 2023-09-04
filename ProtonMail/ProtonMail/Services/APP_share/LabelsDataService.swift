@@ -126,73 +126,58 @@ class LabelsDataService: Service {
             }
     }
 
-    /// Get label and folder through v4 api
+    @available(*, deprecated, message: "Prefer the async variant")
     func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)? = nil) {
+        Task {
+            let result: Swift.Result<Void, NSError>
+            do {
+                try await fetchV4Labels()
+                result = .success(())
+            } catch {
+                result = .failure(error as NSError)
+            }
+
+            DispatchQueue.main.async {
+                completion?(result)
+            }
+        }
+    }
+
+    /// Get label and folder through v4 api
+    func fetchV4Labels() async throws {
         let labelReq = GetV4LabelsRequest(type: .label)
         let folderReq = GetV4LabelsRequest(type: .folder)
-        var labelsResponse: [[String: Any]]?
-        var foldersResponse: [[String: Any]]?
 
-        let group = DispatchGroup()
-        group.enter()
-        self.apiService.perform(request: labelReq, response: GetLabelsResponse()) { _, response in
-            labelsResponse = response.labels
-            group.leave()
-        }
+        async let labelsResponse = await apiService.perform(request: labelReq, response: GetLabelsResponse())
+        async let foldersResponse = await apiService.perform(request: folderReq, response: GetLabelsResponse())
 
-        group.enter()
-        self.apiService.perform(request: folderReq, response: GetLabelsResponse()) { _, response in
-            foldersResponse = response.labels
-            group.leave()
-        }
-
-        group.notify(queue: .main) {
-            guard var labels = labelsResponse,
-                  var folders = foldersResponse else {
-                      let error = NSError(domain: "", code: -1,
-                                          localizedDescription: LocalString._error_no_object)
-                      completion?(.failure(error))
-                      return
-                  }
-
-            for (index, _) in labels.enumerated() {
-                labels[index]["UserID"] = self.userID.rawValue
-            }
-            for (index, _) in folders.enumerated() {
-                folders[index]["UserID"] = self.userID.rawValue
+        let userLabelAndFolders = await [labelsResponse, foldersResponse]
+            .map(\.1)
+            .compactMap(\.labels)
+            .joined()
+            .map {
+                var label = $0
+                label["UserID"] = userID.rawValue
+                return label
             }
 
-            folders.append(contentsOf: Self.defaultFolderIDs.map { ["ID": $0] })
+        let allFolders = userLabelAndFolders.appending(Self.defaultFolderIDs.map { ["ID": $0] })
 
-            let allFolders = labels + folders
+        try contextProvider.performAndWaitOnRootSavingContext { context in
+            // to prevent deleted label won't be delete due to pull down to refresh
+            let labelIDToPreserve = allFolders.compactMap { $0["ID"] as? String }
+            self.cleanLabelsAndFolders(except: labelIDToPreserve, context: context)
 
-            self.contextProvider.performOnRootSavingContext { [weak self] context in
-                guard let self = self else {
-                    return
-                }
+            _ = try GRTJSONSerialization.objects(
+                withEntityName: Label.Attributes.entityName,
+                fromJSONArray: allFolders,
+                in: context
+            )
 
-                // to prevent deleted label won't be delete due to pull down to refresh
-                let labelIDToPreserve = allFolders.compactMap { $0["ID"] as? String }
-                self.cleanLabelsAndFolders(except: labelIDToPreserve, context: context)
+            let error = context.saveUpstreamIfNeeded()
 
-
-                do {
-                    _ = try GRTJSONSerialization.objects(
-                        withEntityName: Label.Attributes.entityName,
-                        fromJSONArray: allFolders,
-                        in: context
-                    )
-
-                    let error = context.saveUpstreamIfNeeded()
-
-                    if let error = error {
-                        throw error
-                    } else {
-                        completion?(.success(()))
-                    }
-                } catch let ex as NSError {
-                    completion?(.failure(ex))
-                }
+            if let error = error {
+                throw error
             }
         }
     }
