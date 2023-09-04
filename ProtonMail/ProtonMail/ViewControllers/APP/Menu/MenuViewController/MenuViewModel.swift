@@ -148,9 +148,8 @@ extension MenuViewModel: MenuVMProtocol {
     func menuViewInit() {
         self.updatePrimaryUserView()
         self.updateMoreItems(shouldReload: false)
-        self.updateUnread { [weak self] in
-            self?.delegate?.updateMenu(section: nil)
-        }
+        self.updateUnread()
+        delegate?.updateMenu(section: nil)
     }
 
     func menuItemOrError(
@@ -320,7 +319,7 @@ extension MenuViewModel: MenuVMProtocol {
     func getIconColor(of label: MenuLabel) -> UIColor {
 
         let defaultColor = label.isSelected ? ColorProvider.SidebarIconWeak
-                .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light)) : ColorProvider.SidebarIconWeak
+            .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light)) : ColorProvider.SidebarIconWeak
 
         guard label.type == .folder else {
             if let labelColor = label.iconColor {
@@ -385,9 +384,8 @@ extension MenuViewModel: MenuVMProtocol {
 extension MenuViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         if controller == self.labelUpdateFetcher || controller == self.conversationCountFetcher {
-            self.updateUnread {
-                self.delegate?.updateMenu(section: nil)
-            }
+            updateUnread()
+            delegate?.updateMenu(section: nil)
             return
         }
 
@@ -511,9 +509,8 @@ extension MenuViewModel {
     private func handle(dbLabels: [LabelEntity]) {
         let datas: [MenuLabel] = Array(labels: dbLabels, previousRawData: self.rawData)
         self.rawData = datas
-        self.updateUnread { [weak self] in
-            self?.sortoutData(data: datas)
-        }
+        updateUnread()
+        sortoutData(data: datas)
     }
 
     private func sortoutData(data: [MenuLabel]) {
@@ -569,18 +566,20 @@ extension MenuViewModel {
     }
 
     // Query unread number of labels
-    private func getUnreadNumbers(completion: @escaping () -> Void) {
+    private func getUnreadNumbers() {
         let tmp = self.inboxItems + self.rawData
         let labels = tmp.map({ $0.location.labelID })
 
-        self.labelDataService?.getUnreadCounts(by: labels) { labelUnreadDict in
-            for item in tmp {
-                item.unread = labelUnreadDict[item.location.rawLabelID] ?? 0
-            }
-            if let unreadOfInbox = labelUnreadDict[Message.Location.inbox.rawValue] {
-                UIApplication.setBadge(badge: unreadOfInbox)
-            }
-            completion()
+        guard let labelDataService else {
+            return
+        }
+
+        let labelUnreadDict = labelDataService.getUnreadCounts(by: labels)
+        for item in tmp {
+            item.unread = labelUnreadDict[item.location.rawLabelID] ?? 0
+        }
+        if let unreadOfInbox = labelUnreadDict[Message.Location.inbox.rawValue] {
+            UIApplication.setBadge(badge: unreadOfInbox)
         }
     }
 
@@ -667,11 +666,9 @@ extension MenuViewModel {
                               deleteRows: deleteRows)
     }
 
-    private func updateUnread(completion: @escaping () -> Void) {
-        getUnreadNumbers { [weak self] in
-            self?.aggregateUnreadNumbers()
-            completion()
-        }
+    private func updateUnread() {
+        getUnreadNumbers()
+        aggregateUnreadNumbers()
     }
 }
 
@@ -731,7 +728,7 @@ extension MenuViewModel {
         return newMore
     }
 
-    #if DEBUG
+#if DEBUG
     func setFolderItem(_ items: [MenuLabel]) {
         self.folderItems = items
     }
@@ -743,5 +740,6 @@ extension MenuViewModel {
     func setParentFolderColorClosure(_ closure: @escaping () -> Bool) {
         self.userUsingParentFolderColorClosure = closure
     }
-    #endif
+#endif
 }
+

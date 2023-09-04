@@ -618,9 +618,9 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
         removeUpdateTimeExceptUnreadStub(userID)
     }
 
-    @FuncStub(MockLastUpdatedStoreProtocol.getUnreadCounts) var getUnreadCountsStub
-    func getUnreadCounts(by labelIDs: [LabelID], userID: UserID, type: ViewMode, completion: @escaping ([String: Int]) -> Void) {
-        getUnreadCountsStub(labelIDs, userID, type, completion)
+    @FuncStub(MockLastUpdatedStoreProtocol.getUnreadCounts, initialReturn: [String: Int]()) var getUnreadCountsStub
+    func getUnreadCounts(by labelIDs: [LabelID], userID: UserID, type: ViewMode) -> [String: Int] {
+        getUnreadCountsStub(labelIDs, userID, type)
     }
 
     @FuncStub(MockLastUpdatedStoreProtocol.updateLastUpdatedTime) var updateLastUpdatedTimeStub

@@ -346,9 +346,9 @@ class LabelsDataService: Service {
         return lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: viewMode)
     }
 
-    func getUnreadCounts(by labelIDs: [LabelID], completion: @escaping ([String: Int]) -> Void) {
+    func getUnreadCounts(by labelIDs: [LabelID]) -> [String: Int] {
         let viewMode = viewModeDataSource.viewMode
-        lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: self.userID, type: viewMode, completion: completion)
+        return lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: self.userID, type: viewMode)
     }
 
     func resetCounter(labelID: LabelID)
