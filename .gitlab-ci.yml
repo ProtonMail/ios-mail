@@ -197,7 +197,7 @@ test:ui:sanity:
   stage: test
   rules:
       # Allow job to run automatically on each scheduled job with sanity test type
-    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TEST_TYPE == "sanity" && $CI_COMMIT_REF_NAME =~ /^test\/TPE-353.*$/'
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TEST_TYPE == "sanity"'
       when: always
     - when: manual
   before_script:
@@ -277,7 +277,7 @@ test:ui:regression:
   stage: test
   rules:
       # Allow job to run automatically on each scheduled job with regression test type
-    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TEST_TYPE == "regression" && $CI_COMMIT_REF_NAME =~ /^test\/TPE-353.*$/'
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TEST_TYPE == "regression"'
       when: always
     - when: manual
   artifacts:
