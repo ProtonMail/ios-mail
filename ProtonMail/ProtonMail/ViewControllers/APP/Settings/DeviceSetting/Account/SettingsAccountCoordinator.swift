@@ -40,7 +40,6 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
     private let dependencies: Dependencies
-
     private var paymentsUI: PaymentsUI?
 
     private var user: UserManager {

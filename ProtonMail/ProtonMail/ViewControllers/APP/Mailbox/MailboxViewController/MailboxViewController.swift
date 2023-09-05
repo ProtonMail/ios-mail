@@ -107,8 +107,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     private let mailListActionSheetPresenter = MailListActionSheetPresenter()
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
-    private var paymentsUI: PaymentsUI?
     private var referralProgramPresenter: ReferralProgramPromptPresenter?
+    private var paymentsUI: PaymentsUI?
 
     private var isSwipingCell = false {
         didSet {
@@ -2588,12 +2588,16 @@ extension MailboxViewController {
             infoBanner.emptyButtonAction = { [weak self] in
                 self?.clickEmptyFolderAction()
             }
+            let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
+            infoBanner.toggleEmptyButton(shouldEnable: count > 0)
             return infoBanner
         case .infoBanner(.trash):
             let infoBanner = AutoDeleteTrashInfoHeaderView()
             infoBanner.emptyButtonAction = { [weak self] in
                 self?.clickEmptyFolderAction()
             }
+            let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
+            infoBanner.toggleEmptyButton(shouldEnable: count > 0)
             return infoBanner
         case .none:
             return nil
