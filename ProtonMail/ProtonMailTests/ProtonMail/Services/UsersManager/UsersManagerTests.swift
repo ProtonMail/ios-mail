@@ -26,38 +26,39 @@ import XCTest
 class UsersManagerTests: XCTestCase {
     var apiMock: APIService!
     var sut: UsersManager!
-    var doh: DohMock!
     var cachedUserDataProviderMock: MockCachedUserDataProvider!
     let suiteName = String.randomString(10)
     var customCache: SharedCacheBase!
     var customKeyChain: Keychain!
     var notificationCenter: NotificationCenter!
-    var keyMaker: Keymaker!
+    var keyMaker: KeyMakerProtocol!
+    private var globalContainer: GlobalContainer!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         self.cachedUserDataProviderMock = .init()
         self.apiMock = APIServiceMock()
-        self.doh = DohMock()
         self.customCache = .init(userDefaults: .init(suiteName: suiteName)!)
         self.customKeyChain = .init(service: String.randomString(10),
                                     accessGroup: "2SB5Z68H26.ch.protonmail.protonmail")
         self.notificationCenter = NotificationCenter()
-        self.keyMaker = .init(autolocker: nil, keychain: customKeyChain)
+        self.keyMaker = Keymaker(autolocker: nil, keychain: customKeyChain)
+
+        globalContainer = .init()
+        globalContainer.cachedUserDataProviderFactory.register { self.cachedUserDataProviderMock }
+        globalContainer.keychainFactory.register { self.customKeyChain }
+        globalContainer.keyMakerFactory.register { Keymaker(autolocker: nil, keychain: self.customKeyChain) }
+        globalContainer.notificationCenterFactory.register { self.notificationCenter }
+
         sut = UsersManager(
-            doh: doh,
-            userDataCache: cachedUserDataProviderMock,
             userDefaultCache: customCache,
-            keychain: customKeyChain,
-            notificationCenter: notificationCenter,
-            coreKeyMaker: keyMaker
+            dependencies: globalContainer
         )
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        doh = nil
         apiMock = nil
         cachedUserDataProviderMock = nil
 
@@ -70,6 +71,7 @@ class UsersManagerTests: XCTestCase {
         self.customKeyChain = nil
         notificationCenter = nil
         keyMaker = nil
+        globalContainer = nil
     }
 
     func testNumberOfFreeAccounts() {

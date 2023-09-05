@@ -1,5 +1,6 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
+import ProtonCore_Keymaker
 
 protocol HasAttachmentMetadataStrippingProtocol {
     var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol { get }
@@ -14,6 +15,22 @@ extension GlobalContainer: HasAttachmentMetadataStrippingProtocol {
 extension UserContainer: HasAttachmentMetadataStrippingProtocol {
     var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol {
         globalContainer.attachmentMetadataStripStatusProvider
+    }
+}
+
+protocol HasCachedUserDataProvider {
+    var cachedUserDataProvider: CachedUserDataProvider { get }
+}
+
+extension GlobalContainer: HasCachedUserDataProvider {
+    var cachedUserDataProvider: CachedUserDataProvider {
+        cachedUserDataProviderFactory()
+    }
+}
+
+extension UserContainer: HasCachedUserDataProvider {
+    var cachedUserDataProvider: CachedUserDataProvider {
+        globalContainer.cachedUserDataProvider
     }
 }
 
@@ -62,6 +79,22 @@ extension GlobalContainer: HasInternetConnectionStatusProviderProtocol {
 extension UserContainer: HasInternetConnectionStatusProviderProtocol {
     var internetConnectionStatusProvider: InternetConnectionStatusProviderProtocol {
         globalContainer.internetConnectionStatusProvider
+    }
+}
+
+protocol HasKeychain {
+    var keychain: Keychain { get }
+}
+
+extension GlobalContainer: HasKeychain {
+    var keychain: Keychain {
+        keychainFactory()
+    }
+}
+
+extension UserContainer: HasKeychain {
+    var keychain: Keychain {
+        globalContainer.keychain
     }
 }
 

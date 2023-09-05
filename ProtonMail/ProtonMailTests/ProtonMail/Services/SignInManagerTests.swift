@@ -28,6 +28,7 @@ final class SignInManagerTests: XCTestCase {
     private var contactCacheStatusMock: MockContactCacheStatusProtocol!
     private var queueHandlerRegisterMock: MockQueueHandlerRegister!
     private var updateSwipeActionUseCaseMock: MockUpdateSwipeActionDuringLoginUseCase!
+    private var globalContainer: GlobalContainer!
 
     private var sut: SignInManager!
 
@@ -38,7 +39,8 @@ final class SignInManagerTests: XCTestCase {
         super.setUp()
         apiMock = .init()
         coreKeyMaker = sharedServices.get(by: KeyMakerProtocol.self)
-        usersManager = .init(doh: DohMock(), userDataCache: UserDataCache(keyMaker: coreKeyMaker), coreKeyMaker: coreKeyMaker)
+        globalContainer = .init()
+        usersManager = globalContainer.usersManager
         contactCacheStatusMock = .init()
         updateSwipeActionUseCaseMock = .init()
         queueHandlerRegisterMock = .init()
@@ -58,6 +60,7 @@ final class SignInManagerTests: XCTestCase {
         usersManager = nil
         apiMock = nil
         coreKeyMaker = nil
+        globalContainer = nil
     }
 
     func testSaveLoginData_newUserIsAddedToUsersManager() {

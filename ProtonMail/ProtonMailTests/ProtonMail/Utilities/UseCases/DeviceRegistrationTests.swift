@@ -29,14 +29,14 @@ final class DeviceRegistrationTests: XCTestCase {
     private var mockApiService: APIServiceMock!
     private var mockFailingApiService: APIServiceMock!
     private var dependencies: DeviceRegistration.Dependencies!
+    private var globalContainer: GlobalContainer!
 
     override func setUp() {
         super.setUp()
         mockApiService = APIServiceMock()
         mockFailingApiService = APIServiceMock()
-        let mockKeyMaker = MockKeyMakerProtocol()
-        let userDataCache = UserDataCache(keyMaker: mockKeyMaker)
-        mockUsers = UsersManager(doh: DohMock(), userDataCache: userDataCache, coreKeyMaker: mockKeyMaker)
+        globalContainer = .init()
+        mockUsers = globalContainer.usersManager
         sessionIds = (1...4).map{ "dummyUser\($0)" }
         sessionIds.map { createUserManager(userID: $0, apiService: mockApiService) }.forEach { mockUser in
             mockUsers.add(newUser: mockUser)
@@ -52,6 +52,7 @@ final class DeviceRegistrationTests: XCTestCase {
         sessionIds = nil
         mockUsers = nil
         mockApiService = nil
+        globalContainer = nil
     }
 
     func testExecute_whenNoSessionsArePassed_itShouldReturnNoResults() async {

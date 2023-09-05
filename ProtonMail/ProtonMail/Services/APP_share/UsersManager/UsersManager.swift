@@ -81,8 +81,14 @@ class UsersManager: Service, UsersManagerProtocol {
         static let mailSettingsStore = "mailSettingsKeyProtectedWithMainKey"
     }
 
+    typealias Dependencies = AnyObject
+    & HasCachedUserDataProvider
+    & HasKeychain
+    & HasKeyMakerProtocol
+    & HasNotificationCenter
+
     /// Server's config like url port path etc..
-    var doh: DoHInterface
+    private let doh = BackendConfiguration.shared.doh
 
     private(set) var users: [UserManager] = [] {
         didSet {
@@ -100,30 +106,20 @@ class UsersManager: Service, UsersManagerProtocol {
 
     // Used to check if the account is already being deleted.
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
-    private let userDataCache: CachedUserDataProvider
     private let userDefaultCache: SharedCacheBase
     private let keychain: Keychain
-    private let notificationCenter: NotificationCenter
     private let coreKeyMaker: KeyMakerProtocol
+    private unowned let dependencies: Dependencies
 
-    init(
-        doh: DoHInterface,
-        userDataCache: CachedUserDataProvider,
-        userDefaultCache: SharedCacheBase = .init(),
-        keychain: Keychain = KeychainWrapper.keychain,
-        notificationCenter: NotificationCenter = .default,
-        coreKeyMaker: KeyMakerProtocol
-    ) {
-        self.doh = doh
+    init(userDefaultCache: SharedCacheBase = .init(), dependencies: Dependencies) {
         self.doh.status = userCachedStatus.isDohOn ? .on : .off
         /// for migrate
         self.latestVersion = Version.version
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
-        self.userDataCache = userDataCache
         self.userDefaultCache = userDefaultCache
-        self.keychain = keychain
-        self.notificationCenter = notificationCenter
-        self.coreKeyMaker = coreKeyMaker
+        keychain = dependencies.keychain
+        coreKeyMaker = dependencies.keyMaker
+        self.dependencies = dependencies
         setupValueTransforms()
         #if !APP_EXTENSION
         trackLifetime()
@@ -366,7 +362,7 @@ extension UsersManager {
 
             guard !self.users.isEmpty else {
                 _ = self.clean().ensure {
-                    self.notificationCenter.post(
+                    self.dependencies.notificationCenter.post(
                         name: .didSignOutLastAccount,
                         object: self
                     )
@@ -382,7 +378,7 @@ extension UsersManager {
             }
 
             if isPrimaryAccountLogout && user.userInfo.delinquentParsed.isAvailable {
-                self.notificationCenter.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
+                self.dependencies.notificationCenter.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
             }
             completion?()
         }.cauterize()
@@ -589,10 +585,10 @@ extension UsersManager {
      Persisted until logout of last user, protected with MainKey. */
     var disconnectedUsers: [DisconnectedUserHandle] {
         get {
-            userDataCache.fetchDisconnectedUsers()
+            dependencies.cachedUserDataProvider.fetchDisconnectedUsers()
         }
         set {
-            userDataCache.set(disconnectedUsers: newValue)
+            dependencies.cachedUserDataProvider.set(disconnectedUsers: newValue)
         }
     }
 

@@ -27,6 +27,12 @@ final class GlobalContainer: ManagedContainer {
         }
     }
 
+    var cachedUserDataProviderFactory: Factory<CachedUserDataProvider> {
+        self {
+            UserDataCache(keyMaker: self.keyMaker, keychain: self.keychain)
+        }
+    }
+
     var contextProviderFactory: Factory<CoreDataContextProviderProtocol> {
         self {
             CoreDataService.shared
@@ -42,6 +48,12 @@ final class GlobalContainer: ManagedContainer {
     var internetConnectionStatusProviderFactory: Factory<InternetConnectionStatusProviderProtocol> {
         self {
             InternetConnectionStatusProvider.shared
+        }
+    }
+
+    var keychainFactory: Factory<Keychain> {
+        self {
+            KeychainWrapper.keychain
         }
     }
 
@@ -99,11 +111,7 @@ final class GlobalContainer: ManagedContainer {
 
     var usersManagerFactory: Factory<UsersManager> {
         self {
-            UsersManager(
-                doh: BackendConfiguration.shared.doh,
-                userDataCache: UserDataCache(keyMaker: self.keyMaker),
-                coreKeyMaker: self.keyMaker
-            )
+            UsersManager(dependencies: self)
         }
     }
 
