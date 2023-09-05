@@ -54,7 +54,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         let request = MessageDetailRequest(messageID: params.message.messageID)
         dependencies
             .apiService
-            .perform(request: request) { [weak self] _, result in
+            .perform(request: request, callCompletionBlockUsing: .immediateExecutor) { [weak self] _, result in
                 guard let self = self else {
                     callback(.failure(Errors.selfIsReleased))
                     return

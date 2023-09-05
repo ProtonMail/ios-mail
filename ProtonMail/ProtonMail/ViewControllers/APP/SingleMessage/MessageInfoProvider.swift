@@ -558,7 +558,7 @@ extension MessageInfoProvider {
             return
         }
 
-        guard message.isDetailDownloaded else {
+        guard message.isDetailDownloaded || !message.body.isEmpty else {
             return
         }
 

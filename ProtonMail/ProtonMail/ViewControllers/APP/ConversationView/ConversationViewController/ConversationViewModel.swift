@@ -201,6 +201,10 @@ class ConversationViewModel {
     }
 
     func fetchConversationDetails(completion: (() -> Void)?) {
+        guard dependencies.internetConnectionStatusProvider.status.isConnected else {
+            completion?()
+            return
+        }
         if messagesDataSource.isEmpty {
             showSpinner?()
         }

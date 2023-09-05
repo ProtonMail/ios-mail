@@ -35,6 +35,11 @@ struct ConversationEntity: Equatable, Hashable {
     /// Local use flag to mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
     let isSoftDeleted: Bool
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(conversationID)
+        hasher.combine(objectID)
+    }
 }
 
 extension ConversationEntity {

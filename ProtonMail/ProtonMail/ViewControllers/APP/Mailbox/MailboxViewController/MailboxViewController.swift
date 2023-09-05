@@ -347,6 +347,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         showDropVersionsAlertIfNeeded()
         updateReferralPresenterAndShowPromptIfNeeded()
+
+        viewModel.prefetchIfNeeded()
     }
 
     override func viewDidDisappear(_ animated: Bool) {

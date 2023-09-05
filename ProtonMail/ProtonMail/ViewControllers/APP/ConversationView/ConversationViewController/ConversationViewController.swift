@@ -123,7 +123,7 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
             showToolbarCustomizeSpotlightIfNeeded()
         }
 
-        conversationIsReadyToBeDisplayedTimer = .scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
+        conversationIsReadyToBeDisplayedTimer = .scheduledTimer(withTimeInterval: 0.25, repeats: false) { [weak self] _ in
             self?.displayConversation()
         }
 
