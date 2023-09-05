@@ -1443,7 +1443,7 @@
 "Inherit color from parent folder" = "Herdar cor da pasta principal";
 
 /* section title */
-"Select color" = "Selecionar a cor";
+"Select color" = "Selecionar cor";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Não tem ligação, é impossível mostrar o conteúdo da sua mensagem.";
@@ -2064,6 +2064,9 @@
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Para nos ajudar a ajudá-lo, forneça o máximo de detalhes possível---\n\nResumo:\n\nO problema ocorreu mais de uma vez: sim/não\nPassos para reproduzir o problema:\nResultado esperado:\nResultado real:\nComentários:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Include logs";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Tente um termo de pesquisa diferente.";

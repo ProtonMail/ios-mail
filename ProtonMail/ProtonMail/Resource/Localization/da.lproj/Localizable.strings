@@ -2065,6 +2065,9 @@
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---For at hjælpe os med at hjælpe dig, oplys venligst flest mulig detaljer---\n\nOpsummer:\n\nEr problemet opstået flere gange: ja/nej\nHvilke handlinger får problemet til at opstå:\nForventet resultat:\nFaktiske resultat:\nKommentarer:";
 
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Inkludér logger";
+
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Prøv et andet søgeord.";
 

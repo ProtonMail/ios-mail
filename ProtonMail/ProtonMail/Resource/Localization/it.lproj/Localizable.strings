@@ -9,7 +9,7 @@
 "Display Name" = "Nome visualizzato";
 
 /* place holder */
-"Input Display Name…" = "Inserisci Nome Mostrato…";
+"Input Display Name…" = "Inserisci Nome Visualizzato…";
 
 /* Title in signature settings */
 "Signature" = "Firma";
@@ -1017,7 +1017,7 @@
 "We recommend setting up a password instead for the following recipients:" = "Consigliamo invece di configurare una password per i seguenti destinatari:";
 
 /* alert body before list of addresses */
-"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Consigliamo invece di configurare una password o disabilitare il PGP per i seguenti destinatari:";
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Consigliamo invece di configurare una password o disabilitare PGP per i seguenti destinatari:";
 
 /* A option title that enable/disable notification feature */
 "Notifications" = "Notifiche";
@@ -1716,10 +1716,10 @@
 "Scheduling message..." = "Pianificazione messaggio...";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption to verified recipient" = "Inviato da te con crittografia end-to-end al destinatario verificato";
+"Sent by you with end-to-end encryption to verified recipient" = "Inviato da te con la crittografia end-to-end al destinatario verificato";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption to verified recipient" = "Inviato da Proton Mail con crittografia ad accesso zero al destinatario verificato";
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Inviato da Proton Mail con la crittografia zero access al destinatario verificato";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Inviato da te con crittografia end-to-end";
@@ -1737,16 +1737,16 @@
 "End-to-end encrypted and signed message" = "Messaggio crittografato e firmato end-to-end";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message from verified sender" = "Messaggio crittografato PGP dal mittente verificato";
+"PGP-encrypted message from verified sender" = "Messaggio crittografato con PGP dal mittente verificato";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-encrypted and signed message" = "Messaggio crittografato e firmato PGP";
+"PGP-encrypted and signed message" = "Messaggio crittografato e firmato con PGP";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message from verified sender" = "Messaggio firmato PGP dal mittente verificato";
+"PGP-signed message from verified sender" = "Messaggio firmato con PGP dal mittente verificato";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message" = "Messaggio PGP crittografato";
+"PGP-encrypted message" = "Messaggio crittografato con PGP";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-signed message. Sender verification failed" = "Messaggio firmato con PGP. Verifica del mittente non riuscita.";
@@ -1758,13 +1758,13 @@
 "End-to-end encrypted" = "Crittografato end-to-end";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted to verified recipient" = "Crittografato PGP al destinatario verificato";
+"PGP-encrypted to verified recipient" = "Crittografato con PGP al destinatario verificato";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted" = "Crittografato PGP";
+"PGP-encrypted" = "Crittografato con PGP";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-signed" = "Firmato PGP";
+"PGP-signed" = "Firmato con PGP";
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Indirizzo email disabilitato";
@@ -2030,7 +2030,7 @@
 "Password updated" = "Password aggiornata";
 
 /* Alert message when local cache is deleted */
-"Clearing cache…" = "Cancellazione cache...";
+"Clearing cache…" = "Cancellazione cache…";
 
 /* Title for application logs settings option */
 "Application logs" = "Registri dell'applicazione";
@@ -2064,6 +2064,9 @@
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Per permetterci di aiutarti, per favore fornisci più dettagli possibili---\n\nSommario:\n\nIl problema è accaduto più di una volta: sì/no\nPassaggi per riprodurre il problema:\nRisultato atteso:\nRisultato ottenuto:\nCommenti:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Includi i log";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Prova un termine di ricerca diverso.";

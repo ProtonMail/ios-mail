@@ -2065,6 +2065,9 @@
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Kérjük adjon meg annyi részletet, amennyit csak lehetséges---\n\nÖsszesítés:\n\nMegtörtént ez már korábban is? Igen/Nem.\nA probléma előhozásához szükséges lépések:\nVárt eredmény:\nJelenlegi eredmény:\nMegjegyzések:";
 
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Include logs";
+
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Próbáljon más keresést.";
 

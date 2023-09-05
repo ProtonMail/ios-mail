@@ -2065,6 +2065,9 @@
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Για να μας βοηθήσετε να σας βοηθήσουμε, δώστε όσο το δυνατόν περισσότερες λεπτομέρειες---\n\nΠερίληψη:\n\nΈχει συμβεί το πρόβλημα περισσότερες από μία φορές: ναι/όχι\nΒήματα για την αναπαραγωγή του προβλήματος:\nΑναμενόμενο αποτέλεσμα:\nΠραγματικό αποτέλεσμα:\nΣχόλια:";
 
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Include logs";
+
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Δοκιμάστε διαφορετικό όρο αναζήτησης.";
 

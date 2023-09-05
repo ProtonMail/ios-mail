@@ -2065,6 +2065,9 @@
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---为了帮助我们更好地解决问题，请提供尽可能详尽的信息---\n\n简要描述问题：\n\n此问题是否反复出现：是/否\n复现问题的步骤：\n预期得到的结果：\n实际得到的结果：\n额外说明：";
 
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Include logs";
+
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "不妨试试其他关键词。";
 

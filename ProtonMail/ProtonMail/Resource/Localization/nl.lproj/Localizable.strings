@@ -2066,6 +2066,9 @@
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "----Geef zoveel mogelijk gegevens op om ons u te kunnen laten helpen----\n\nSamenvatting:\n\nHeeft het probleem zich meer dan één keer voorgedaan: ja/nee\nStappen om het probleem te reproduceren:\nVerwacht resultaat:\nDaadwerkelijk resultaat:\nOpmerkingen:";
 
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Logs toevoegen";
+
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Probeer een andere zoekterm.";
 
@@ -2130,16 +2133,16 @@
 "Custom email domains" = "Aangepaste e-maildomeinen";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Weergavenaam";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Voornaam";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Familienaam";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "Weergavenaam veld kan niet leeg zijn";
 
 /* The button text for add profile picture */
 "Add photo" = "Foto toevoegen";

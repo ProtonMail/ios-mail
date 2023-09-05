@@ -96,7 +96,7 @@
 "Lock The App" = "鎖定應用程式";
 
 /* menu title */
-"Subscription" = "訂購授權";
+"Subscription" = "訂閲計劃";
 
 /* menu title */
 "Manage accounts" = "管理帳號";
@@ -2067,6 +2067,9 @@
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---為了讓我們能協助你解決問題, 請盡可能提供所有細節---\n\n摘要:\n\n之前是否發生過相同問題: 是/否\n重現此問題之操作步驟:\n預期結果:\n實際結果:\n其他說明:";
 
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "附加紀錄檔";
+
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "嘗試使用其他搜尋關鍵字。";
 
@@ -2134,10 +2137,10 @@
 "Display name" = "顯示名稱";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "名";
+"First name" = "名字";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "姓";
+"Last name" = "姓氏";
 
 /* The error message that is shown when no display name provided in contact edit view */
 "Display name field cannot be empty" = "顯示名稱不能為空";

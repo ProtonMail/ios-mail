@@ -2065,6 +2065,9 @@
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Pentru a putea să vă ajutăm, furnizați cât mai multe detalii posibile---\n\nRezumat:\n\nS-a întâmplat mai mult de o dată această problemă: da/nu\nPași pentru a reproduce problema:\nRezultat așteptat:\nRezultat actual:\nComentarii:";
 
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Includere jurnale";
+
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Căutați alt termen de căutare.";
 
@@ -2129,16 +2132,16 @@
 "Custom email domains" = "Domenii personale e-mail";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Nume afișat";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Prenume";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Nume";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "Câmpul pentru numele afișat nu poate fi gol.";
 
 /* The button text for add profile picture */
 "Add photo" = "Adăugare fotografie";

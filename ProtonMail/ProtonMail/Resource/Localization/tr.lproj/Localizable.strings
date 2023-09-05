@@ -2006,7 +2006,7 @@
 "Schedule messages at any time" = "İletileri istediğiniz zamanda gönderin";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Sınırsız klasör ve etiket";
+"Unlimited folders and labels" = "Sınırsız sayıda klasör ve etiket";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "500 GB depolama alanına kadar";
@@ -2064,6 +2064,9 @@
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Size yardımcı olabilmemiz için lütfen olabildiğince çok ayrıntı verin---\n\nÖzet:\n\nSorun bir kereden fazla oldu mu: Evet/Hayır\nSorunu yeniden oluşturma adımları:\nBeklenen sonuç:\nGerçekleşen sonuç:\nYorumlar:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Günlükler eklensin";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Farklı bir ifade ile aramayı deneyin.";
@@ -2129,16 +2132,16 @@
 "Custom email domains" = "Özel e-posta etki alanları";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Görüntülenecek ad";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Ad";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Soyad";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "Görüntülenecek ad alanı boş olamaz";
 
 /* The button text for add profile picture */
 "Add photo" = "Fotoğraf ekle";

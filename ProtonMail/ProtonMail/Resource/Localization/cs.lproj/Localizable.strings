@@ -2066,6 +2066,9 @@
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "--Abychom vám mohli pomoci, uveďte prosím co nejvíce podrobností--\n\nShrnutí:\n\nDošlo k problému více než jednou: ano/ne\nKroky k reprodukci problému:\nOčekávaný výsledek:\nSoučasný výsledek:\nKomentáře:";
 
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Zahrnout logy";
+
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Zkuste jiný hledaný výraz.";
 
@@ -2130,13 +2133,13 @@
 "Custom email domains" = "Vlastní e-mailové domény";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Zobrazované jméno";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Jméno";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Příjmení";
 
 /* The error message that is shown when no display name provided in contact edit view */
 "Display name field cannot be empty" = "Display name field cannot be empty";

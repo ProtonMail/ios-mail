@@ -2065,6 +2065,9 @@
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Pour mieux vous aider, nous avons besoin d'autant de détails que possible---\n\nRésumé :\n\nLe problème s'est-il produit plus d'une fois : oui/non\nÉtapes pour reproduire le problème :\nRésultat attendu :\nRésultat actuel : \nCommentaires :";
 
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Inclure les journaux";
+
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Essayez un autre terme de recherche.";
 

@@ -2065,6 +2065,9 @@
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Каб мы маглі дапамагчы вам, дадайце як мага больш падрабязнасцей---\n\nПадсумаванне:\n\nЦі сутыкаліся вы з праблемай больш за адзін раз: так/не\nКрокі пры выкананні якіх узнікае праблема:\nВынік, які чакаўся:\nАтрыманы вынік:\nКаментарыі:";
 
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Уключыць журнал";
+
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Паспрабуйце іншы тэрмін для пошуку.";
 
@@ -2129,16 +2132,16 @@
 "Custom email domains" = "Карыстальніцкія дамены электроннай пошты";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Бачнае імя";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Імя";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Прозвішча";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "Поле з бачным імем не можа быць пустым";
 
 /* The button text for add profile picture */
 "Add photo" = "Дадаць фатаграфію";

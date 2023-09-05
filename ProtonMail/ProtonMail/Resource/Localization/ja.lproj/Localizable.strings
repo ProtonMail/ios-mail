@@ -2065,6 +2065,9 @@
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---お役に立てるように、できるだけ多くの詳細をお知らせください---\n\n概要:\n\n問題は複数回発生したか: はい/いいえ\n問題を再現する手順:\n期待された結果:\n実際の結果:\nコメント:";
 
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "ログを含む";
+
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "別の検索ワードを試してください。";
 

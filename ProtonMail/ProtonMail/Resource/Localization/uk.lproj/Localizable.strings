@@ -1161,10 +1161,10 @@
 "App PIN" = "PIN-код програми";
 
 /* security title in settings */
-"App PIN & Touch ID" = "PIN-код застосунку і Touch ID";
+"App PIN & Touch ID" = "PIN-код програми й Touch ID";
 
 /* security title in settings */
-"App PIN & Face ID" = "PIN-код застосунку і Face ID";
+"App PIN & Face ID" = "PIN-код програми та Face ID";
 
 /* cell title in device settings */
 "Language" = "Мова";
@@ -2048,7 +2048,7 @@
 "Couldn't open the message, try again." = "Не вдалося відкрити повідомлення, спробуйте ще раз.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Увійдіть до застосунку Proton Mail.";
+"Please sign in to the Proton Mail app." = "Виконайте вхід у програмі Proton Mail.";
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply (to last message)" = "Відповісти (на останнє повідомлення)";
@@ -2064,6 +2064,9 @@
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Допоможіть нам усунути вашу проблему, надавши якомога більше подробиць---\n\nПідсумок:\n\nЧи траплялася проблема більше одного разу: так/ні \nКроки для відтворення проблеми: \nОчікуваний результат: \nФактичний результат: \nКоментарі:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Include logs";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Спробуйте інший пошуковий термін.";
