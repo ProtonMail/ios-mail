@@ -1149,8 +1149,6 @@ class LocalizedString {
 
     lazy var _undisclosed_recipients = NSLocalizedString("Undisclosed Recipients", comment: "")
 
-    lazy var _unsubscribe_compact_banner_description = NSLocalizedString("Unsubscribe from mailing list", comment: "The title of unsubscribe banner")
-
     lazy var _auto_phising_banner_message = NSLocalizedString("Our system flagged this message as a phishing attempt. Please check that it is legitimate.", comment: "")
     lazy var _auto_phising_banner_button_title = NSLocalizedString("Mark as legitimate", comment: "")
 
@@ -1508,5 +1506,11 @@ enum L11n {
         static let contactNameTooLong = NSLocalizedString("Contact name is too long", comment: "The error message that is shown when display name is too long provided in contact edit view")
         static let addPhoto = NSLocalizedString("Add photo", comment: "The button text for add profile picture in contact edit view")
         static let editPhoto = NSLocalizedString("Edit photo", comment: "The button text for edit profile picture in contact edit view")
+    }
+
+    struct Unsubscribe {
+        static let bannerMessage = NSLocalizedString("Unsubscribe from mailing list", comment: "The title of unsubscribe banner")
+        static let confirmationTitle = NSLocalizedString("Unsubscribe?", comment: "The title of unsubscribe confirmation")
+        static let confirmationMessage = NSLocalizedString("This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.", comment: "Unsubscribe confirmation message")
     }
 }
