@@ -108,6 +108,143 @@ final class ContactEditViewModelImplTests: XCTestCase {
         XCTAssertEqual(vCard.getNotes().count, 2)
     }
 
+    func testDisplayNameValidation_whenCreation_allNameFieldsOnlyHaveSpace_shouldThrowError() {
+        sut = .init(
+            contactEntity: nil,
+            dependencies: .init(
+                user: mockUser,
+                contextProvider: fakeCoreDataService,
+                contactService: mockUser.contactService
+            )
+        )
+        sut.getProfile().newDisplayName = "    "
+        sut.setFirstName("   ")
+        sut.setLastName("      ")
+        let ex = expectation(description: "done closure is called")
+        sut.done { error in
+            XCTAssertNotNil(error)
+            XCTAssertEqual(error?.code, -372)
+            ex.fulfill()
+        }
+        wait(for: [ex], timeout: 5)
+    }
+    
+    func testDisplayNameValidation_whenCreation_displayNameHasValue_shouldKeepTheValue() {
+        sut = .init(
+            contactEntity: nil,
+            dependencies: .init(
+                user: mockUser,
+                contextProvider: fakeCoreDataService,
+                contactService: mockUser.contactService
+            )
+        )
+        let displayName = String.randomString(7)
+        sut.getProfile().newDisplayName = displayName
+        sut.setFirstName(String.randomString(3))
+        sut.setLastName(String.randomString(7))
+        
+        let ex = expectation(description: "done closure is called")
+        sut.done { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.sut.getProfile().newDisplayName, displayName)
+            ex.fulfill()
+        }
+        wait(for: [ex], timeout: 5)
+    }
+    
+    func testDisplayNameValidation_whenCreation_displayNameIsEmpty_firstNameHasValue_shouldUseFirstName() {
+        sut = .init(
+            contactEntity: nil,
+            dependencies: .init(
+                user: mockUser,
+                contextProvider: fakeCoreDataService,
+                contactService: mockUser.contactService
+            )
+        )
+        let firstName = String.randomString(7)
+        sut.getProfile().newDisplayName = ""
+        sut.setFirstName(firstName)
+        sut.setLastName("")
+        
+        let ex = expectation(description: "done closure is called")
+        sut.done { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.sut.getProfile().newDisplayName, firstName)
+            ex.fulfill()
+        }
+        wait(for: [ex], timeout: 5)
+    }
+    
+    func testDisplayNameValidation_whenCreation_displayNameIsEmpty_lastNameHasValue_shouldUseLastName() {
+        sut = .init(
+            contactEntity: nil,
+            dependencies: .init(
+                user: mockUser,
+                contextProvider: fakeCoreDataService,
+                contactService: mockUser.contactService
+            )
+        )
+        let lastName = String.randomString(7)
+        sut.getProfile().newDisplayName = ""
+        sut.setFirstName("")
+        sut.setLastName(lastName)
+        
+        let ex = expectation(description: "done closure is called")
+        sut.done { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.sut.getProfile().newDisplayName, lastName)
+            ex.fulfill()
+        }
+        wait(for: [ex], timeout: 5)
+    }
+    
+    func testDisplayNameValidation_whenCreation_displayNameHasSpaceOnly_nameFilesHasValue_shouldConcatNames() {
+        sut = .init(
+            contactEntity: nil,
+            dependencies: .init(
+                user: mockUser,
+                contextProvider: fakeCoreDataService,
+                contactService: mockUser.contactService
+            )
+        )
+        let firstName = String.randomString(4)
+        let lastName = String.randomString(7)
+        sut.getProfile().newDisplayName = "    "
+        sut.setFirstName(firstName)
+        sut.setLastName(lastName)
+        
+        let ex = expectation(description: "done closure is called")
+        sut.done { error in
+            XCTAssertNil(error)
+            XCTAssertEqual(self.sut.getProfile().newDisplayName, "\(firstName) \(lastName)")
+            ex.fulfill()
+        }
+        wait(for: [ex], timeout: 5)
+    }
+    
+    func testDisplayNameValidation_whenEdit_newDisplayNameIsEmpty_shouldThrowError() throws {
+        let firstName = String.randomString(4)
+        let lastName = String.randomString(4)
+        let displayName = String.randomString(5)
+        let vCardData = "BEGIN:VCARD\nVERSION:4.0\nN:\(lastName);\(firstName)\n\nEND:VCARD"
+        let cardData = try XCTUnwrap(try generateTestData(vcard: vCardData))
+        sut = .init(
+            contactEntity: .make(name: displayName, cardData: cardData),
+            dependencies: .init(
+                user: mockUser,
+                contextProvider: fakeCoreDataService,
+                contactService: mockUser.contactService
+            )
+        )
+        sut.getProfile().newDisplayName = "   "
+        let ex = expectation(description: "done closure is called")
+        sut.done { error in
+            XCTAssertNotNil(error)
+            ex.fulfill()
+        }
+        wait(for: [ex], timeout: 5)
+    }
+
     private func generateTestData(vcard: String) throws -> String? {
         let key = ContactParserTestData.privateKey
         let encrypted = try vcard.encryptNonOptional(

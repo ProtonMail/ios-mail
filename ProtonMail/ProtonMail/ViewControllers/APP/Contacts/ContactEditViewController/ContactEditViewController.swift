@@ -464,6 +464,21 @@ extension ContactEditViewController {
         active.resignFirstResponder()
         activeTextComponent = nil
     }
+    
+    private func resetNameFieldsIfNeeded() {
+        if customView.displayNameField.text?.trim().isEmpty == true {
+            customView.displayNameField.text = .empty
+            viewModel.getProfile().newDisplayName = .empty
+        }
+        if customView.firstNameField.text?.trim().isEmpty == true {
+            customView.firstNameField.text = .empty
+            viewModel.setFirstName(.empty)
+        }
+        if customView.lastNameField.text?.trim().isEmpty == true {
+            customView.lastNameField.text = .empty
+            viewModel.setLastName(.empty)
+        }
+    }
 
     private func showAddNewFieldAlert(at indexPath: IndexPath, sender: UIView?) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -571,6 +586,9 @@ extension ContactEditViewController {
                 self.showErrorBanner(
                     message: error.localizedFailureReason ?? error.localizedDescription
                 )
+                if error.code == ContactEditViewModel.Constants.emptyDisplayNameError {
+                    self.resetNameFieldsIfNeeded()
+                }
                 return
             }
             self.delegate?.updated()

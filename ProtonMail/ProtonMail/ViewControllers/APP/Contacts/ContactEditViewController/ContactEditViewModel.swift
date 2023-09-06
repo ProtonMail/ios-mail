@@ -26,6 +26,11 @@ import VCard
 
 // swiftlint:disable:next type_body_length
 final class ContactEditViewModel {
+    enum Constants {
+        static let maximumDisplayNameLength = 190
+        static let emptyDisplayNameError = -372
+    }
+
     private let defaultSectionsInAddNewMenu: [InformationType] = [
         .url,
         .organization,
@@ -251,7 +256,7 @@ final class ContactEditViewModel {
 
     func setLastName(_ lastName: String) {
         if structuredName == nil {
-            structuredName = .init(firstName: "", lastName: lastName, isNew: false)
+            structuredName = .init(firstName: "", lastName: lastName, isCreatingContact: isNew())
         } else {
             structuredName?.lastName = lastName
         }
@@ -259,7 +264,7 @@ final class ContactEditViewModel {
 
     func setFirstName(_ firstName: String) {
         if structuredName == nil {
-            structuredName = .init(firstName: firstName, lastName: "", isNew: false)
+            structuredName = .init(firstName: firstName, lastName: "", isCreatingContact: isNew())
         } else {
             structuredName?.firstName = firstName
         }
@@ -285,7 +290,7 @@ final class ContactEditViewModel {
             }
         }
         do {
-            try handleDisplayNameLogic()
+            try displayNameValidationAndRecoverIfPossible()
 
             let cards = try prepareCardDatas()
 
@@ -311,43 +316,48 @@ final class ContactEditViewModel {
         }
     }
 
-    private func handleDisplayNameLogic() throws {
-        let isEditContact = contactEntity != nil
-        let isDisplayNameEmpty = profile.newDisplayName.isEmpty
-        let isLastNameEmpty = (structuredName?.lastName.isEmpty ?? true)
-        let isFirstNameEmpty = (structuredName?.firstName.isEmpty ?? true)
+    private func displayNameValidationAndRecoverIfPossible() throws {
+        let newDisplayName = profile.newDisplayName.trim()
+        let lastName = (structuredName?.lastName ?? "").trim()
+        let firstName = (structuredName?.firstName ?? "").trim()
 
-        if isEditContact && isDisplayNameEmpty {
+        if !isNew() && newDisplayName.isEmpty {
+            profile.newDisplayName = ""
             throw NSError(
                 domain: "ContactEdit",
-                code: 999,
+                code: Constants.emptyDisplayNameError,
                 localizedDescription: L11n.ContactEdit.emptyDisplayNameError
             )
         }
+        guard newDisplayName.isEmpty else {
+            try checkDisplayNameLength(displayName: newDisplayName)
+            return
+        }
 
-        switch (isDisplayNameEmpty, isLastNameEmpty, isFirstNameEmpty) {
-        case (true, true, true):
+        switch (firstName.isEmpty, lastName.isEmpty) {
+        case (true, true):
             throw NSError(
                 domain: "ContactEdit",
-                code: 999,
+                code: Constants.emptyDisplayNameError,
                 localizedDescription: L11n.ContactEdit.emptyDisplayNameError
             )
-        case (true, false, true), (true, true, false), (true, false, false):
-            var displayName = ""
-            if let firstName = structuredName?.firstName {
-                displayName = firstName
-            }
-            if let lastName = structuredName?.lastName {
-                if displayName.isEmpty {
-                    displayName = lastName
-                } else if !lastName.isEmpty {
-                    displayName += " \(lastName)"
-                }
-            }
-            profile.newDisplayName = displayName
         default:
-            break
+            let displayName = "\(firstName) \(lastName)".trim()
+            try checkDisplayNameLength(displayName: displayName)
         }
+    }
+
+    private func checkDisplayNameLength(displayName: String) throws {
+        profile.newDisplayName = displayName
+        guard displayName.count > Constants.maximumDisplayNameLength else { return }
+        throw NSError(
+            domain: "ContactEdit",
+            code: 998,
+            userInfo: [
+                NSLocalizedDescriptionKey: L11n.ContactEdit.contactNameTooLong,
+                "displayName": displayName
+            ]
+        )
     }
 
     private func updateSectionsData() {

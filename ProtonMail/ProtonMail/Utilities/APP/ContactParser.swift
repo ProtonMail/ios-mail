@@ -448,7 +448,7 @@ extension ContactParser {
         let contactEditStructuredName = ContactEditStructuredName(
             firstName: structuredName.getGiven(),
             lastName: structuredName.getFamily(),
-            isNew: false
+            isCreatingContact: false
         )
         resultDelegate?.append(structuredName: contactEditStructuredName)
     }

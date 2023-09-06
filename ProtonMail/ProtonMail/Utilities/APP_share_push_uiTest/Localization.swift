@@ -1505,6 +1505,7 @@ enum L11n {
         static let firstNamePlaceholder = NSLocalizedString("First name", comment: "The placeholder for the first name text field in contact edit view.")
         static let lastNamePlaceholder = NSLocalizedString("Last name", comment: "The placeholder for the last name text field in contact edit view.")
         static let emptyDisplayNameError = NSLocalizedString("Display name field cannot be empty", comment: "The error message that is shown when no display name provided in contact edit view")
+        static let contactNameTooLong = NSLocalizedString("Contact name is too long", comment: "The error message that is shown when display name is too long provided in contact edit view")
         static let addPhoto = NSLocalizedString("Add photo", comment: "The button text for add profile picture in contact edit view")
         static let editPhoto = NSLocalizedString("Edit photo", comment: "The button text for edit profile picture in contact edit view")
     }
