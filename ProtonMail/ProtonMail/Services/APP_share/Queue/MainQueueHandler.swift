@@ -37,7 +37,6 @@ final class MainQueueHandler: QueueHandler {
     private let messageDataService: MessageDataService
     private let conversationDataService: ConversationProvider
     private let labelDataService: LabelsDataService
-    private let localNotificationService: LocalNotificationService
     private let contactService: ContactDataService
     private let contactGroupService: ContactGroupsDataService
     private let undoActionManager: UndoActionManagerProtocol
@@ -62,7 +61,6 @@ final class MainQueueHandler: QueueHandler {
         self.messageDataService = messageDataService
         self.conversationDataService = conversationDataService
         self.labelDataService = labelDataService
-        self.localNotificationService = localNotificationService
         self.contactService = user.contactService
         self.contactGroupService = user.contactGroupService
         self.undoActionManager = undoActionManager
@@ -859,21 +857,5 @@ extension MainQueueHandler {
             self.uploadDraft = uploadDraft
             self.uploadAttachment = uploadAttachment
         }
-    }
-}
-
-enum MainQueueHandlerHelper {
-    static func removeAllAttachmentsNotUploaded(of message: Message,
-                                                context: NSManagedObjectContext) throws {
-        let toBeDeleted = message.attachments
-            .compactMap({ $0 as? Attachment })
-            .filter({ !$0.isUploaded })
-
-        toBeDeleted.forEach { attachment in
-            context.delete(attachment)
-        }
-        let attachmentCount = message.numAttachments.intValue
-        message.numAttachments = NSNumber(integerLiteral: max(attachmentCount - toBeDeleted.count, 0))
-        try context.save()
     }
 }

@@ -56,7 +56,6 @@ protocol MessageDataServiceProtocol: Service {
     func getAttachmentEntity(for uri: String) throws -> AttachmentEntity?
     func removeAttachmentFromDB(objectIDs: [ObjectID])
     func updateAttachment(by uploadResponse: UploadAttachment.UploadingResponse, attachmentObjectID: ObjectID)
-    func removeAllAttachmentsNotUploaded(messageID: MessageID)
 
     func updateMessageAfterSend(
         message: MessageEntity,
@@ -956,13 +955,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    func removeAllAttachmentsNotUploaded(messageID: MessageID) {
-        guard let message = try? getMessage(for: messageID) else { return }
-        try? contextProvider.performAndWaitOnRootSavingContext { context in
-            try? MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: message, context: context)
-        }
-    }
-
     func updateMessageAfterSend(
         message: MessageEntity,
         sendResponse: JSONDictionary,
@@ -1516,8 +1508,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         // TODO: add monitoring for didBecomeActive
     }
 
-    @objc fileprivate func didSignOutNotification(_ notification: Notification) {
-        _ = cleanUp()
+    @objc fileprivate func didSignOutNotification(_: Notification) {
+        cleanUp()
     }
 
     private func queue(message: Message, action: MessageAction) {
@@ -1631,14 +1623,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             let key = self.userDataSource!.userInfo.getAddressPrivKey(address_id: addressId)
             return try clearBody.encryptNonOptional(withPrivKey: key, mailbox_pwd: mailbox_pwd.value)
         }
-    }
-
-    func getUserAddressID(for message: Message) -> String {
-        if let addressID = message.addressID,
-           let addr = defaultUserAddress(of: AddressID(addressID)) {
-            return addr.addressID
-        }
-        return ""
     }
 
     func defaultUserAddress(of addressID: AddressID) -> Address? {

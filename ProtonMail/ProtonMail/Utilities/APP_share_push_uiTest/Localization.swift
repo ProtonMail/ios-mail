@@ -297,8 +297,6 @@ class LocalizedString {
 
     // Mark General
 
-    /// "API Server not reachable…"
-    lazy var _general_api_server_not_reachable = NSLocalizedString("API Server not reachable…", comment: "when server not reachable")
     /// "Access to this account is disabled due to non-payment. Please log in through proton.me to pay your outstanding invoice(s)."
     lazy var _general_account_disabled_non_payment = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.", comment: "error message")
     /// "Alert"
@@ -1291,29 +1289,6 @@ class LocalizedString {
 
     lazy var _scheduled_send_message_timeup: String = NSLocalizedString("The message is being sent and will move to the Sent folder once sending is complete.", comment: "The alert title of user trying to open a scheduled-send message after its time is up.")
 
-    // MARK: - Encrypted search
-    lazy var _settings_footer_of_download_via_mobile_data = NSLocalizedString("If you lose your WiFi connection, download will continue over mobile data.", comment: "The footer of the slider for download via mobile data in settings")
-    lazy var _settings_title_of_download_via_mobile_data = NSLocalizedString("Download via mobile data", comment: "The title of the slider for download via mobile data in settings")
-    lazy var _settings_title_of_downloaded_messages_progress = NSLocalizedString("Download progress", comment: "The title of downloaded messages in settings")
-    lazy var _settings_title_of_message_history = NSLocalizedString("Message history", comment: "The title of message history in settings for encrypted search")
-    lazy var _settings_title_of_storage_limit = NSLocalizedString("Storage limit", comment: "The title of storage limit in settings for encrypted search")
-    lazy var _settings_title_of_storage_usage = NSLocalizedString("Storage used", comment: "The title of storage usage in settings for encrypted search")
-    lazy var _settings_message_history_status_all_downloaded = NSLocalizedString("All your messages are downloaded", comment: "The status text of message history in downloaded messages if all messages are downloaded")
-    lazy var _settings_message_history_status_low_storage = NSLocalizedString("Not all messages were downloaded. To download them, free up storage on the device.", comment: "The status text of message history in downloaded messages if the device is out of memory.")
-    lazy var _settings_message_history_status_partial_index = NSLocalizedString("Not all messages were downloaded. To download them, increase the storage limit below.", comment: "The status text of message history in downloaded messages if the storage limit is reached.")
-    lazy var _settings_message_history_status_no_messages = NSLocalizedString("You have no messages.", comment: "The status text of message history in downloaded messages if the user has no messages.")
-    lazy var _settings_message_history_status_download_in_progress = NSLocalizedString("Your messages are being downloaded...", comment: "The status text of message history in downloaded messages if indexbuilding is in progress.")
-    lazy var _settings_title_of_cached_data = NSLocalizedString("Cached data", comment: "The title of cached data in local storage settings")
-    lazy var _settings_title_of_attachments = NSLocalizedString("Attachments", comment: "The title of attachments in local storage settings")
-    lazy var _settings_title_of_downloaded_messages_local_storage = NSLocalizedString("Downloaded messages", comment: "The title of downloaded messages in local storage settings")
-    lazy var _settings_foot_of_downloaded_messages_local_storage = NSLocalizedString("Information about how much storage space this Proton Mail account is using on your device.", comment: "The foot of downloaded messages in local storage settings")
-    lazy var _settings_local_storage_cached_data_button = NSLocalizedString("Clear", comment: "The title of the button in local storage cached data")
-    lazy var _settings_local_storage_cached_data_text = NSLocalizedString("Allows you to open previously read messages while offline.", comment: "The text explaining what chached data is used for.")
-    lazy var _settings_local_storage_attachments_button = NSLocalizedString("Clear", comment: "The title of the button in local storage attachments")
-    lazy var _settings_local_storage_attachments_text = NSLocalizedString("Allows you to open previously opened attachments while offline.", comment: "The text explaining what attachments in local storage is used for.")
-    lazy var _settings_local_storage_downloaded_messages_text = NSLocalizedString("Allows you to search within your messages. %1$@", comment: "The text explaining what downloaded messages in local storage is used for.")
-    lazy var _settings_local_storage_downloaded_messages_text_link = NSLocalizedString("See details", comment: "The link in local storage downloaded messages.")
-    lazy var _settings_local_storage_downloaded_messages_text_disabled = NSLocalizedString("Disabled", comment: "The text for downloaded messages in local storage when encrypted search is disabled.")
     lazy var _toolbar_customize_header_title_of_first_section = NSLocalizedString("Toolbar actions (select up to 5)", comment: "The title of the section header in the toolbar customize view.")
     lazy var _toolbar_customize_header_title_of_second_section = NSLocalizedString("Available actions", comment: "The title of the section header in the toolbar customize view.")
 
@@ -1418,7 +1393,6 @@ enum L11n {
 
     struct Settings {
         static let passwordUpdated = NSLocalizedString("Password updated", comment: "Message to show to user after updating password.")
-        static let local_storage_clearing_cache = NSLocalizedString("Clearing cache…", comment: "Alert message when local cache is deleted")
         static let applicationLogs = NSLocalizedString("Application logs", comment: "Title for application logs settings option")
     }
 

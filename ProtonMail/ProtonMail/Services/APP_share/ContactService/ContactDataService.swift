@@ -38,7 +38,7 @@ protocol ContactProviderProtocol: AnyObject {
     /// Returns the Contacts for a given list of contact ids from the local storage
     func getContactsByIds(_ ids: [String]) -> [ContactEntity]
     /// Given a user and a list of email addresses, returns all the contacts that exist in the local storage
-    func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity]
+    func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity]
 
     func getAllEmails() -> [EmailEntity]
     func fetchContacts(completion: ContactFetchComplete?)
@@ -391,7 +391,7 @@ class ContactDataService: Service {
         }
     }
 
-    func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity] {
+    func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity] {
         let request = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
         let emailPredicate = NSPredicate(format: "%K in %@", Email.Attributes.email, emailAddresses)
         let userIDPredicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, userID.rawValue)

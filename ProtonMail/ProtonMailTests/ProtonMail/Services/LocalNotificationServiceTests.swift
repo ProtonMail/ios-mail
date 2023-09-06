@@ -78,44 +78,6 @@ class LocalNotificationServiceTests: XCTestCase {
         XCTAssertEqual(argument.a1, [detail.messageID])
     }
 
-    func testRescheduleMessage() {
-        let id = UUID().uuidString
-        let content = UNNotificationContent()
-        let detail = LocalNotificationService.MessageSendingDetails(messageID: String.randomString(20), subtitle: String.randomString(20))
-        notificationHandlerMock.callGetPendingReqs.bodyIs { _, callBack in
-            let request = UNNotificationRequest(identifier: id, content: content, trigger: nil)
-            callBack([request])
-        }
-        let expectation1 = expectation(description: "Closure is called")
-
-        sut.rescheduleMessage(oldID: id, details: detail) {
-            XCTAssertTrue(self.notificationHandlerMock.callGetPendingReqs.wasCalledExactlyOnce)
-            XCTAssertTrue(self.notificationHandlerMock.callRemovePendingNoti.wasCalledExactlyOnce)
-            XCTAssertTrue(self.notificationHandlerMock.callAdd.wasCalledExactlyOnce)
-            do {
-                let argument1 = try XCTUnwrap(self.notificationHandlerMock.callRemovePendingNoti.lastArguments)
-                XCTAssertEqual(argument1.a1, [id])
-
-                let argument2 = try XCTUnwrap(self.notificationHandlerMock.callAdd.lastArguments)
-                let content = argument2.first.content
-                XCTAssertEqual(content.title, "⚠️ " + LocalString._message_not_sent_title)
-                XCTAssertEqual(content.subtitle, detail.subtitle)
-                XCTAssertEqual(content.body, detail.error)
-                XCTAssertEqual(content.categoryIdentifier, LocalNotificationService.Categories.failedToSend.rawValue)
-                XCTAssertEqual(content.userInfo["message_id"] as? String, detail.messageID)
-                XCTAssertEqual(content.userInfo["category"] as? String, LocalNotificationService.Categories.failedToSend.rawValue)
-
-                let trigger = try XCTUnwrap(argument2.first.trigger as? UNTimeIntervalNotificationTrigger)
-                XCTAssertFalse(trigger.repeats)
-                XCTAssertEqual(trigger.timeInterval, detail.timeInterval)
-            } catch {
-
-            }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-    }
-
     func testCleanUp() {
         let content = UNMutableNotificationContent()
         content.userInfo = ["user_id": self.userID]

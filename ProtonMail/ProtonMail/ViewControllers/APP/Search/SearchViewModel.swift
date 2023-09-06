@@ -189,7 +189,6 @@ extension SearchViewModel: SearchVMProtocol {
 
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback) {
         let params: FetchMessageDetail.Params = .init(
-            userID: user.userID,
             message: message
         )
         dependencies.fetchMessageDetail

@@ -44,7 +44,7 @@ final class FetchAndVerifyContacts: FetchAndVerifyContactsUseCase {
     }
 
     override func executionBlock(params: Parameters, callback: @escaping Callback) {
-        let emails = dependencies.contactProvider.getEmailsByAddress(params.emailAddresses, for: currentUser)
+        let emails = dependencies.contactProvider.getEmailsByAddress(params.emailAddresses)
         let emailsMissingSendingPreferences = emails.filter { !$0.isContactDownloaded && $0.hasSendingPreferences }
         fetchContactDetailsAndUpdateCache(for: emailsMissingSendingPreferences) { [weak self] _ in
             let preContacts = self?.verifiedContacts(for: emails) ?? []

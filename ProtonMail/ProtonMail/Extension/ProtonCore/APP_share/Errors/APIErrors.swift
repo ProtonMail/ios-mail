@@ -32,9 +32,6 @@ extension APIErrorCode {
     static let resourceDoesNotExist = 2501
     static let invalidRequirements = 2000
 
-    // Device token
-    static let deviceTokenIsInvalid = 11210
-
     static let deviceHavingLowConnectivity = 111222333
     /// Total size or number of attachments exceeds limit
     /// Maximum size is 25mb
@@ -84,13 +81,7 @@ extension NSError {
             localizedDescription: LocalString._error_bad_response_title,
             localizedFailureReason: LocalString._error_cant_parse_response_body)
     }
-    // TODO:: move to other place
-    class func encryptionError() -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.badParameter,
-            localizedDescription: "Attachment encryption failed",
-            localizedFailureReason: "Attachment encryption failed")
-    }
+
     class func lockError() -> NSError {
         return apiServiceError(
             code: APIErrorCode.badParameter,

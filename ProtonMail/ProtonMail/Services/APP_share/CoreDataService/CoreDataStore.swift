@@ -134,18 +134,6 @@ final class CoreDataStore {
     }
 }
 
-extension CoreDataStore: CoreDataMetadata {
-    var sqliteFileSize: Measurement<UnitInformationStorage>? {
-        do {
-            let dbValues = try databaseURL.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
-            return Measurement(value: Double(dbValues.totalFileAllocatedSize!), unit: .bytes)
-        } catch let error {
-            PMAssertionFailure("CoreDataStore databaseSize error: \(error)")
-            return nil
-        }
-    }
-}
-
 private extension NSPersistentContainer {
     func loadPersistentStores() throws {
         assert(!persistentStoreDescriptions.contains(where: \.shouldAddStoreAsynchronously))

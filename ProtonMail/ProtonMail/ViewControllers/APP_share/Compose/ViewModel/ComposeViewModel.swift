@@ -881,7 +881,7 @@ extension ComposeViewModel {
 
     /// Provides the display name for the recipient according to https://jira.protontech.ch/browse/MAILIOS-3027
     private func displayNameForRecipient(_ recipient: DecodableRecipient) -> String {
-        if let email = dependencies.contactProvider.getEmailsByAddress([recipient.address], for: user.userID).first {
+        if let email = dependencies.contactProvider.getEmailsByAddress([recipient.address]).first {
             return email.contactName
         } else if let backendName = recipient.name, !backendName.replacingOccurrences(of: " ", with: "").isEmpty {
             return backendName

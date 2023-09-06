@@ -38,16 +38,3 @@ final class SearchMessageResponse: Response {
         return true
     }
 }
-
-final class UpdateDraftResponse: Response {
-    var responseDict: [String: Any] = [:]
-
-    override func ParseResponse(_ response: [String: Any]) -> Bool {
-        let result = super.ParseResponse(response)
-        if result {
-            self.responseDict = response["Message"] as? [String: Any] ?? [:]
-        }
-
-        return result
-    }
-}

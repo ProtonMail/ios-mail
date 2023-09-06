@@ -45,22 +45,4 @@ class FileManager_ExtensionTests: XCTestCase {
 
         try super.tearDownWithError()
     }
-
-    func testSizeOfFileAtPath() throws {
-        let subdirectoryOne = testDirectory.appendingPathComponent(UUID().uuidString)
-        let subdirectoryTwo = testDirectory.appendingPathComponent(UUID().uuidString)
-        let subdirectoryThree = subdirectoryTwo.appendingPathComponent(UUID().uuidString)
-
-        try sut.createDirectory(at: subdirectoryOne, withIntermediateDirectories: true)
-        try sut.createDirectory(at: subdirectoryThree, withIntermediateDirectories: true)
-
-        try testData.write(to: testDirectory.appendingPathComponent(testFileName))
-        try testData.write(to: subdirectoryOne.appendingPathComponent(testFileName))
-        try testData.write(to: subdirectoryTwo.appendingPathComponent(testFileName))
-        try testData.write(to: subdirectoryThree.appendingPathComponent(testFileName))
-
-        let testDataSize = testData.count
-        let expectedTotalSize = Measurement<UnitInformationStorage>(value: Double(testDataSize * 4), unit: .bytes)
-        XCTAssertEqual(sut.sizeOfDirectory(url: testDirectory), expectedTotalSize)
-    }
 }

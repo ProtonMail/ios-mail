@@ -97,15 +97,6 @@ class LocalNotificationService: Service {
         notificationHandler.removePendingNotificationRequests(withIdentifiers: [details.messageID])
     }
 
-    func rescheduleMessage(oldID: String, details: MessageSendingDetails, completion: (() -> Void)? = nil) {
-        notificationHandler.getPendingNotificationRequests { [weak self] requests in
-            guard requests.contains(where: { $0.identifier == oldID }) else { return }
-            self?.unscheduleMessageSendingFailedNotification(.init(messageID: oldID))
-            self?.scheduleMessageSendingFailedNotification(details)
-            completion?()
-        }
-    }
-
     func showSessionRevokeNotification(email: String) {
         let content = UNMutableNotificationContent()
         content.title = String(format: LocalString._token_revoke_noti_title, email)

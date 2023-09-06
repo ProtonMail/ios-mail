@@ -40,14 +40,12 @@ enum MessageAction: Equatable {
         case color
         case isFolder
         case addressID
-        case contactID
         case cardDatas
         case emailIDs
         case removedEmailIDs
         case isSwipeAction
         case importFromDevice
         case deliveryTime
-        case notificationAction
         case messageID
         case emailAddress
     }

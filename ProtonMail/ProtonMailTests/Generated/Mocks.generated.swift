@@ -133,11 +133,6 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
         try parseMessagesResponseStub(labelID, isUnread, response, idsOfMessagesBeingSent)
     }
 
-    @FuncStub(MockCacheServiceProtocol.updateCounterSync) var updateCounterSyncStub
-    func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID]) {
-        updateCounterSyncStub(markUnRead, labelIDs)
-    }
-
     @FuncStub(MockCacheServiceProtocol.updateExpirationOffset) var updateExpirationOffsetStub
     func updateExpirationOffset(of messageObjectID: NSManagedObjectID, expirationTime: TimeInterval, pwd: String, pwdHint: String, completion: (() -> Void)?) {
         updateExpirationOffsetStub(messageObjectID, expirationTime, pwd, pwdHint, completion)
@@ -581,11 +576,6 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
     @FuncStub(MockLastUpdatedStoreProtocol.lastEventID, initialReturn: String()) var lastEventIDStub
     func lastEventID(userID: UserID) -> String {
         lastEventIDStub(userID)
-    }
-
-    @FuncStub(MockLastUpdatedStoreProtocol.lastEventUpdateTime, initialReturn: nil) var lastEventUpdateTimeStub
-    func lastEventUpdateTime(userID: UserID) -> Date? {
-        lastEventUpdateTimeStub(userID)
     }
 
     @FuncStub(MockLastUpdatedStoreProtocol.lastUpdate, initialReturn: nil) var lastUpdateStub

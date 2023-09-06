@@ -176,3 +176,15 @@ enum TestDataCreator {
         return [jsonDict, signedAndEncryptedJsonDict, signedJsonDict].toJSONString()
     }
 }
+
+extension Array where Element == [String: Any] {
+    func toJSONString(
+        options: JSONSerialization.WritingOptions = .prettyPrinted
+    ) -> String {
+        if let data = try? JSONSerialization.data(withJSONObject: self, options: options),
+           let result = String(data: data, encoding: String.Encoding.utf8) {
+            return result
+        }
+        return "[]"
+    }
+}

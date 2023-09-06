@@ -21,7 +21,6 @@ import XCTest
 import ProtonCore_TestingToolkit
 
 final class FetchMessageDetailTests: XCTestCase {
-    private var userID: UserID!
     private var queueManager: MockQueueManager!
     private var apiService: APIServiceMock!
     private var contextProvider: MockCoreDataContextProvider!
@@ -29,7 +28,6 @@ final class FetchMessageDetailTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        userID = UserID(UUID().uuidString)
         queueManager = MockQueueManager()
         apiService = APIServiceMock()
         contextProvider = MockCoreDataContextProvider()
@@ -44,7 +42,6 @@ final class FetchMessageDetailTests: XCTestCase {
 
     override func tearDownWithError() throws {
         try super.tearDownWithError()
-        userID = nil
         queueManager = nil
         apiService = nil
         contextProvider = nil
@@ -80,7 +77,6 @@ final class FetchMessageDetailTests: XCTestCase {
         let message = try XCTUnwrap(prepareTestData(modifiedData: data))
         let expectation = expectation(description: "Closure is called")
         let params = FetchMessageDetail.Params(
-            userID: userID,
             message: MessageEntity(message),
             hasToBeQueued: true,
             ignoreDownloaded: true
@@ -108,7 +104,6 @@ final class FetchMessageDetailTests: XCTestCase {
         message.isDetailDownloaded = true
         let expectation = expectation(description: "Closure is called")
         let params = FetchMessageDetail.Params(
-            userID: userID,
             message: MessageEntity(message),
             hasToBeQueued: false,
             ignoreDownloaded: false
@@ -154,7 +149,6 @@ final class FetchMessageDetailTests: XCTestCase {
         localAttachment.first?.attachmentID = "0"
         let expectation = expectation(description: "Closure is called")
         let params = FetchMessageDetail.Params(
-            userID: userID,
             message: MessageEntity(message),
             hasToBeQueued: true,
             ignoreDownloaded: true

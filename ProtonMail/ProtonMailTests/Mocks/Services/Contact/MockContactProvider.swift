@@ -39,8 +39,8 @@ class MockContactProvider: ContactProviderProtocol {
     }
 
     @FuncStub(MockContactProvider.getEmailsByAddress, initialReturn: []) var getEmailsByAddressStub
-    func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity] {
-        getEmailsByAddressStub(emailAddresses, userId)
+    func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity] {
+        getEmailsByAddressStub(emailAddresses)
     }
 
     func getAllEmails() -> [EmailEntity] {

@@ -196,7 +196,7 @@ class SingleMessageContentViewModel {
             return
         }
         hasAlreadyFetchedMessageData = true
-        let params: FetchMessageDetail.Params = .init(userID: user.userID, message: message)
+        let params: FetchMessageDetail.Params = .init(message: message)
         dependencies.fetchMessageDetail
             .callbackOn(.main)
             .execute(params: params) { [weak self] result in

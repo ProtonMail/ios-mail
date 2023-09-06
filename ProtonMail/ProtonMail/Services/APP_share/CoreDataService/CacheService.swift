@@ -36,7 +36,6 @@ protocol CacheServiceProtocol: Service {
         response: [String: Any],
         idsOfMessagesBeingSent: [String]
     ) throws
-    func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID])
     func updateExpirationOffset(of messageObjectID: NSManagedObjectID,
                                 expirationTime: TimeInterval,
                                 pwd: String,

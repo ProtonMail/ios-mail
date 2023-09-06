@@ -168,11 +168,6 @@ final class ContactEditEmail: ContactEditTypeInterface {
         self.newOrder = order
     }
 
-    // to
-    func toContactEmail() -> ContactEmail {
-        ContactEmail(email: newEmail, type: newType.vcardType)
-    }
-
     private func getContactGroupIDsFromCoreData(contactID: String) {
         // we decide to stick with using core data information for now
         origContactGroupIDs.removeAll()
@@ -549,10 +544,6 @@ final class ContactEditInformation {
             return false
         }
         return true
-    }
-
-    func isEmpty() -> Bool {
-        return newValue.isEmpty
     }
 }
 

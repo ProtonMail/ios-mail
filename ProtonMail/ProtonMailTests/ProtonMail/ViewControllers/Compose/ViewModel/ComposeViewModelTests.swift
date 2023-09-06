@@ -169,7 +169,7 @@ final class ComposeViewModelTests: XCTestCase {
     func testDecodingRecipients_prefersMatchingLocalContactName() throws {
         let email = EmailEntity.make(contactName: "My friend I don't like")
 
-        contactProvider.getEmailsByAddressStub.bodyIs { _, _, _ in
+        contactProvider.getEmailsByAddressStub.bodyIs { _, _ in
             [email]
         }
 

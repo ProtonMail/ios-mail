@@ -46,28 +46,6 @@ struct BackendConfigurationCache: BackendConfigurationCacheProtocol {
 /// Extension to help store the environment to UserDefaults. Once Encodable in Core conforms
 /// to Codable, this extension should be removed.
 private extension Environment {
-
-    var caseValue: String {
-        switch self {
-        case .mailProd:
-            return "mailProd"
-        case .vpnProd:
-            return "vpnProd"
-        case .driveProd:
-            return "driveProd"
-        case .calendarProd:
-            return "calendarProd"
-        case .black:
-            return "black"
-        case .blackPayment:
-            return "blackPayment"
-        case .passProd:
-            return "passProd"
-        case .custom:
-            return "custom"
-        }
-    }
-
     init?(caseValue: String, customDomain: String?) {
         if caseValue == "custom", let customDomain = customDomain {
             self = .custom(customDomain)

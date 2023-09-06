@@ -170,7 +170,6 @@ GEM
     fastlane-plugin-firebase_app_distribution (0.5.0)
     fastlane-plugin-sentry (1.15.0)
       os (~> 1.1, >= 1.1.4)
-    fastlane-plugin-try_scan (1.0.2)
     fastlane-plugin-xchtmlreport (0.1.1)
     ffi (1.15.5)
     fourflusher (2.3.1)
@@ -302,8 +301,8 @@ DEPENDENCIES
   fastlane
   fastlane-plugin-firebase_app_distribution
   fastlane-plugin-sentry
-  fastlane-plugin-try_scan
   fastlane-plugin-xchtmlreport
+  ffi
   slather!
 
 BUNDLED WITH
