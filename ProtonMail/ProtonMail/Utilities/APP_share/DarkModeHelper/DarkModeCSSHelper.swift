@@ -26,6 +26,10 @@ private enum CSSKeys: String {
     case borderColor = "border-color"
 
     case target, id, `class`
+    
+    case fontFamily = "font-family"
+    case width = "width"
+    case height = "height"
 }
 
 enum DarkStyleSupportLevel {
@@ -852,18 +856,17 @@ extension CSSMagic {
             .preg_replace("\\n", replaceto: "")
             .preg_replace("font-family:([\\s\\S]*?);", replaceto: "")
         if key == "style" {
-            let colorKeys = [
-                CSSKeys.color.rawValue,
-                CSSKeys.border.rawValue,
-                CSSKeys.backgroundColor.rawValue,
-                CSSKeys.background.rawValue
+            let ignoreStyleKey = [
+                CSSKeys.fontFamily.rawValue,
+                CSSKeys.width.rawValue,
+                CSSKeys.height.rawValue
             ]
             let values = value
                 .components(separatedBy: ";")
                 .filter { !$0.isEmpty }
                 .filter { styleValue in
-                    colorKeys.reduce(false) { partialResult, colorKey in
-                        styleValue.contains(check: colorKey) || partialResult
+                    !ignoreStyleKey.reduce(false) { partialResult, ignoreKey in
+                        styleValue.contains(check: ignoreKey) || partialResult
                     }
                 }
             let assemble = values
@@ -927,11 +930,24 @@ extension SwiftSoup.Node {
         result.append(self)
         var childNodes = self.getChildNodes()
         while let node = childNodes.first {
-            result.append(childNodes.removeFirst())
+            let candidate = childNodes.removeFirst()
+            // If element has background image, its child nodes will be excluded
+            guard hasBackgroundImage(node: candidate) == false else { continue }
+            result.append(candidate)
             let subNodes = node.getChildNodes()
             if subNodes.isEmpty { continue }
             childNodes.append(contentsOf: subNodes)
         }
         return result.compactMap({ $0 as? Element })
+    }
+    
+    private func hasBackgroundImage(node: SwiftSoup.Node) -> Bool {
+        do {
+            let background = try node.attr(CSSKeys.background.rawValue)
+            if background.isEmpty { return false }
+            return background.hasPrefix("http")
+        } catch {
+            return false
+        }
     }
 }
