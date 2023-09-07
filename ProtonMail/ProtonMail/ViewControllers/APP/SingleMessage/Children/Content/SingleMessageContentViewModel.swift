@@ -241,7 +241,9 @@ class SingleMessageContentViewModel {
     }
 
     func deleteExpiredMessages() {
-        messageService.deleteExpiredMessages()
+        DispatchQueue.global().async {
+            self.user.cacheService.deleteExpiredMessages()
+        }
     }
 
     func markReadIfNeeded() {

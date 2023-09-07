@@ -295,7 +295,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         }
 
         self.updateUnreadButton(count: viewModel.unreadCount)
-        deleteExpiredMessages()
+        viewModel.deleteExpiredMessages()
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
         fetchEventInScheduledSend()
@@ -1219,10 +1219,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     private func handleShadow(isScrolled: Bool) {
         isScrolled ? topActionsView.layer.apply(shadow: .custom(y: 2, blur: 2)) : topActionsView.layer.clearShadow()
-    }
-
-    private func deleteExpiredMessages() {
-        viewModel.user.messageService.deleteExpiredMessages()
     }
 
     private func updateScheduledMessageTimeLabel() {
@@ -2387,7 +2383,7 @@ extension MailboxViewController: SkeletonTableViewDataSource {
 
 extension MailboxViewController: EventsConsumer {
     func shouldCallFetchEvents() {
-        deleteExpiredMessages()
+        viewModel.deleteExpiredMessages()
         updateScheduledMessageTimeLabel()
         guard self.hasNetworking, !self.viewModel.isFetchingMessage else { return }
         getLatestMessages()

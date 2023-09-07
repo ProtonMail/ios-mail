@@ -186,10 +186,6 @@ extension MessageDataService {
         return true
     }
 
-    func deleteExpiredMessages() {
-        cacheService.deleteExpiredMessages()
-    }
-
     /// fetch messages with set of message id
     ///
     /// - Parameter selected: MessageIDs

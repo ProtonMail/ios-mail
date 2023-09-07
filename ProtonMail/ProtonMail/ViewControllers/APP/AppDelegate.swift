@@ -357,9 +357,12 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
         usersManager.tryRestore()
 
         #if !APP_EXTENSION
-        dependencies.usersManager.users.forEach {
-            $0.messageService.injectTransientValuesIntoMessages()
+        DispatchQueue.global().async {
+            usersManager.users.forEach {
+                $0.messageService.injectTransientValuesIntoMessages()
+            }
         }
+
         if let primaryUser = usersManager.firstUser {
             primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
         }

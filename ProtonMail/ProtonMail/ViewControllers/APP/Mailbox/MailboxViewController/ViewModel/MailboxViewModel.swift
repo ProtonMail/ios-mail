@@ -801,6 +801,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
             }
         }
     }
+
+    func deleteExpiredMessages() {
+        DispatchQueue.global().async {
+            self.user.cacheService.deleteExpiredMessages()
+        }
+    }
 }
 
 // MARK: - Data fetching methods

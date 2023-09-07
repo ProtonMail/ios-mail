@@ -313,9 +313,10 @@ class CacheService: CacheServiceProtocol {
     }
 
     func deleteExpiredMessages() {
+        let processInfo = userCachedStatus
+        let date = Date.getReferenceDate(processInfo: processInfo)
+
         coreDataService.performOnRootSavingContext { context in
-            let processInfo = userCachedStatus
-            let date = Date.getReferenceDate(processInfo: processInfo)
             let fetch = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
             fetch.predicate = NSPredicate(format: "%K != NULL AND %K < %@",
                                           Message.Attributes.expirationTime,
@@ -327,7 +328,7 @@ class CacheService: CacheServiceProtocol {
                     if msg.unRead {
                         let labels = msg.getLabelIDs().map{ LabelID($0) }
                         labels.forEach { label in
-                            self.updateCounterSync(plus: false, with: label)
+                            self.updateCounterSync(plus: false, with: label, shouldSave: false)
                         }
                     }
                     self.updateConversation(by: msg, in: context)
@@ -467,12 +468,12 @@ extension CacheService {
         }
     }
 
-    func updateCounterSync(plus: Bool, with labelID: LabelID) {
+    func updateCounterSync(plus: Bool, with labelID: LabelID, shouldSave: Bool = true) {
         let offset = plus ? 1 : -1
         for viewType in ViewMode.allCases {
             let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: viewType)
             let count = max(unreadCount + offset, 0)
-            lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, unread: count, total: nil, type: viewType, shouldSave: true)
+            lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, unread: count, total: nil, type: viewType, shouldSave: shouldSave)
         }
     }
 
