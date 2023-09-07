@@ -256,8 +256,9 @@ class UserManager: Service, ObservableObject {
         let service = EventsService(
             userManager: self,
             dependencies: .init(
-                fetchMessageMetaData: useCase,
                 contactCacheStatus: sharedServices.userCachedStatus,
+                featureFlagCache: sharedServices.userCachedStatus,
+                fetchMessageMetaData: useCase,
                 incomingDefaultService: incomingDefaultService
             )
         )

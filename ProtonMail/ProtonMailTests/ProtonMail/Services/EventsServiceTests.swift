@@ -47,11 +47,12 @@ final class EventsServiceTests: XCTestCase {
             )
         )
         let dependencies = EventsService.Dependencies(
-            fetchMessageMetaData: mockFetchMessageMetaData,
             contactCacheStatus: mockContactCacheStatus,
+            coreDataProvider: mockContextProvider,
+            featureFlagCache: MockFeatureFlagCache(),
+            fetchMessageMetaData: mockFetchMessageMetaData,
             incomingDefaultService: incomingDefaultService,
-            queueManager: MockQueueManager(),
-            coreDataProvider: mockContextProvider
+            queueManager: MockQueueManager()
         )
         sut = EventsService(userManager: mockUserManager, dependencies: dependencies)
     }

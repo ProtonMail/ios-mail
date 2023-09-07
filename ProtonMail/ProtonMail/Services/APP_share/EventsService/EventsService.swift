@@ -20,11 +20,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import EllipticCurveKeyPair
 import Foundation
 import Groot
 import ProtonCore_DataModel
+import ProtonCore_Networking
 import ProtonCore_Services
-import EllipticCurveKeyPair
 import ProtonMailAnalytics
 
 enum EventsFetchingStatus {
@@ -143,124 +144,74 @@ extension EventsService {
     ///   - notificationMessageID: the notification message
     ///   - completion: async complete handler
     func fetchEvents(byLabel labelID: LabelID, notificationMessageID: MessageID?, completion: ((Swift.Result<[String: Any], Error>) -> Void)?) {
-        guard status == .running, let userManager else {
-            completion?(.failure(EventError.notRunning))
-            return
-        }
         dependencies.queueManager.queue {
-            let eventAPI = EventCheckRequest(eventID: self.lastUpdatedStore.lastEventID(userID: userManager.userID))
-            userManager.apiService.perform(request: eventAPI, response: EventCheckResponse()) { _, response in
+            guard self.status == .running, let userManager = self.userManager else {
+                completion?(.failure(EventError.notRunning))
+                return
+            }
+            
+            if self.isOverTimeThreshold(userID: userManager.userID) {
+                self.cleanCacheAndRefetchData(userManager: userManager, labelID: labelID, completion: completion)
+                return
+            }
+        
+            let eventID = self.lastUpdatedStore.lastEventID(userID: userManager.userID)
+            let eventAPI = EventCheckRequest(eventID: eventID)
+            userManager.apiService.perform(request: eventAPI, response: EventCheckResponse()) { _, eventsRes in
 
-                let eventsRes = response
-                if eventsRes.refresh.contains(.contacts) {
-                    userManager.contactService.cleanUp()
-                        userManager.contactService.fetchContacts(completion: nil)
-                }
-
-                if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (eventsRes.responseCode == 18001) {
-                    let getLatestEventID = EventLatestIDRequest()
-                    userManager.apiService.perform(request: getLatestEventID, response: EventLatestIDResponse()) { _, eventIDResponse in
-                        if let err = eventIDResponse.error {
-                            completion?(.failure(err.toNSError))
-                            return
-                        }
-
-                        let IDRes = eventIDResponse
-                        guard !IDRes.eventID.isEmpty else {
-                            completion?(.failure(eventIDResponse.error?.toNSError ?? .badResponse()))
-                            return
-                        }
-
-                        let completionWrapper: CompletionBlock = { _, responseDict, error in
-                            if let error = error {
-                                completion?(.failure(error))
-                            } else {
-                                self.dependencies.contactCacheStatus.contactsCached = 0
-                                self.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: IDRes.eventID)
-                                    completion?(.success(responseDict ?? [:]))
-                            }
-                        }
-                        userManager.conversationService.cleanAll()
-                        userManager.messageService.cleanMessage(cleanBadgeAndNotifications: false)
-                            userManager.contactService.cleanUp()
-                            switch userManager.conversationStateService.viewMode {
-                            case .conversation:
-                                userManager.conversationService.fetchConversations(for: labelID, before: 0, unreadOnly: false, shouldReset: false) { result in
-                                    switch result {
-                                    case .success:
-                                        completionWrapper(nil, nil, nil)
-                                    case .failure(let error):
-                                        completionWrapper(nil, nil, error as NSError)
-                                    }
-                                }
-                            case .singleMessage:
-                                userManager.messageService.fetchMessages(byLabel: labelID, time: 0, forceClean: false, isUnread: false, completion: completionWrapper)
-                            }
-                            userManager.contactService.fetchContacts(completion: nil)
-                            userManager.messageService.labelDataService.fetchV4Labels()
-                    }
-                } else if let messageEvents = eventsRes.messages {
-                    self.incrementalUpdateQueue.async {
-                        do {
-                            try self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID)
-                            self.processEvents(conversations: eventsRes.conversations)
-                            self.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: eventsRes.eventID)
-                            if !eventsRes.refresh.contains(.contacts) {
-                                self.processEvents(contactEmails: eventsRes.contactEmails)
-                                self.processEvents(contacts: eventsRes.contacts)
-                            }
-                                self.processEvents(labels: eventsRes.labels)
-                                self.processEvents(addresses: eventsRes.addresses)
-                                self.processEvents(user: eventsRes.user)
-                                self.processEvents(userSettings: eventsRes.userSettings)
-                                self.processEvents(mailSettings: eventsRes.mailSettings)
-                                self.processEvents(messageCounts: eventsRes.messageCounts)
-                                self.processEvents(conversationCounts: eventsRes.conversationCounts)
-                                self.processEvents(space: eventsRes.usedSpace)
-
-                                var outMessages: [Any] = []
-                                for message in messageEvents {
-                                    let msg = MessageEvent(event: message)
-                                    if msg.Action == 1 {
-                                        outMessages.append(msg)
-                                    }
-                                }
-                                completion?(.success(["Messages": outMessages, "Notices": eventsRes.notices ?? [String](), "More": eventsRes.more]))
-                        } catch {
-                            completion?(.failure(error))
-                        }
-                    }
-                } else {
-                    if eventsRes.responseCode == 1000 {
-                        self.incrementalUpdateQueue.async {
-                            self.processEvents(conversations: eventsRes.conversations)
-                            self.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: eventsRes.eventID)
-                            if !eventsRes.refresh.contains(.contacts) {
-                                self.processEvents(contactEmails: eventsRes.contactEmails)
-                                self.processEvents(contacts: eventsRes.contacts)
-                            }
-                            self.processEvents(labels: eventsRes.labels)
-                            self.processEvents(addresses: eventsRes.addresses)
-                            self.processEvents(incomingDefaults: eventsRes.incomingDefaults)
-                            self.processEvents(user: eventsRes.user)
-                            self.processEvents(userSettings: eventsRes.userSettings)
-                            self.processEvents(mailSettings: eventsRes.mailSettings)
-                            self.processEvents(messageCounts: eventsRes.messageCounts)
-                            self.processEvents(conversationCounts: eventsRes.conversationCounts)
-                            self.processEvents(space: eventsRes.usedSpace)
-
-                            if let eventError = eventsRes.error {
-                                completion?(.failure(eventError.toNSError))
-                            } else {
-                                completion?(.success(["Notices": eventsRes.notices ?? [String](), "More": eventsRes.more]))
-                            }
-                        }
-                        return
-                    }
+                guard eventsRes.responseCode == 1000 else {
                     if let eventError = eventsRes.error {
-                        completion?(.failure(eventError))
+                        completion?(.failure(eventError.toNSError))
                     } else {
                         completion?(.success(["Notices": eventsRes.notices ?? [String](), "More": eventsRes.more]))
+                    }
+                    return
+                }
+
+                if eventsRes.refresh.contains(.all) {
+                    self.cleanCacheAndRefetchData(userManager: userManager, labelID: labelID, completion: completion)
+                    return
+                }
+
+                if eventsRes.refresh.contains(.contacts) {
+                    userManager.contactService.cleanUp()
+                    // Although this flag is triggered when all of contacts are deleted
+                    // But if user create a new contact right after deletion
+                    // The new contact won't be sent, client needs to call API to get it
+                    // Call contacts API just in case
+                    userManager.contactService.fetchContacts(completion: nil)
+                }
+        
+                self.incrementalUpdateQueue.async {
+                    do {
+                        let messageEvents = eventsRes.messages ?? []
+                        try self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID)
+                        self.processEvents(conversations: eventsRes.conversations)
+                        self.processEvents(contactEmails: eventsRes.contactEmails)
+                        self.processEvents(contacts: eventsRes.contacts)
+                        self.processEvents(labels: eventsRes.labels)
+                        self.processEvents(addresses: eventsRes.addresses)
+                        self.processEvents(incomingDefaults: eventsRes.incomingDefaults)
+                        self.processEvents(user: eventsRes.user)
+                        self.processEvents(userSettings: eventsRes.userSettings)
+                        self.processEvents(mailSettings: eventsRes.mailSettings)
+                        self.processEvents(messageCounts: eventsRes.messageCounts)
+                        self.processEvents(conversationCounts: eventsRes.conversationCounts)
+                        self.processEvents(space: eventsRes.usedSpace)
+                        self.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: eventsRes.eventID)
+                        
+                        let outMessages = messageEvents
+                            .map { MessageEvent(event: $0) }
+                            .filter { $0.Action == 1 }
+                        completion?(.success(
+                            [
+                                "Messages": outMessages,
+                                "Notices": eventsRes.notices ?? [String](),
+                                "More": eventsRes.more
+                            ]
+                        ))
+                    } catch {
+                        completion?(.failure(error))
                     }
                 }
             }
@@ -290,7 +241,78 @@ extension EventsService {
 
 // MARK: - Events Processing
 extension EventsService {
-
+    
+    private func isOverTimeThreshold(userID: UserID) -> Bool {
+        guard
+            dependencies.featureFlagCache.isFeatureFlag(.refetchEventsByTime, enabledForUserWithID: userID),
+            let lastDate = lastUpdatedStore.lastEventUpdateTime(userID: userID)
+        else { return false }
+        let secondDifference = lastDate.distance(to: Date())
+        let hourDifference = secondDifference / 3600.0
+        let threshold: Int = dependencies.featureFlagCache.valueOfFeatureFlag(.refetchEventsHourThreshold, for: userID)
+        return Double(threshold) < hourDifference
+    }
+    
+    private func cleanCacheAndRefetchData(
+        userManager: UserManager,
+        labelID: LabelID,
+        completion: ((Swift.Result<[String: Any], Error>) -> Void)?
+    ) {
+        let getLatestEventID = EventLatestIDRequest()
+        userManager.apiService.perform(request: getLatestEventID, response: EventLatestIDResponse()) { _, eventIDResponse in
+            if let err = eventIDResponse.error {
+                completion?(.failure(err.toNSError))
+                return
+            }
+            
+            let IDRes = eventIDResponse
+            guard !IDRes.eventID.isEmpty else {
+                completion?(.failure(eventIDResponse.error?.toNSError ?? .badResponse()))
+                return
+            }
+            
+            let completionWrapper: JSONCompletion = { _, result in
+                switch result {
+                case .failure(let error):
+                    completion?(.failure(error))
+                case .success(let responseDict):
+                    self.dependencies.contactCacheStatus.contactsCached = 0
+                    self.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: IDRes.eventID)
+                    completion?(.success(responseDict))
+                }
+            }
+            userManager.conversationService.cleanAll()
+            userManager.messageService.cleanMessage(cleanBadgeAndNotifications: false)
+            userManager.contactService.cleanUp()
+            switch userManager.conversationStateService.viewMode {
+            case .conversation:
+                userManager.conversationService.fetchConversations(for: labelID, before: 0, unreadOnly: false, shouldReset: false) { result in
+                    switch result {
+                    case .success:
+                        completionWrapper(nil, .success([:]))
+                    case .failure(let error):
+                        completionWrapper(nil, .failure(error as NSError))
+                    }
+                }
+            case .singleMessage:
+                userManager.messageService.fetchMessages(
+                    byLabel: labelID,
+                    time: 0,
+                    forceClean: false,
+                    isUnread: false
+                ) { task, response, error in
+                    if let error = error {
+                        completionWrapper(nil, .failure(error))
+                        return
+                    }
+                    completionWrapper(nil, .success(response ?? [:]))
+                }
+            }
+            userManager.contactService.fetchContacts(completion: nil)
+            userManager.messageService.labelDataService.fetchV4Labels()
+        }
+    }
+    
     fileprivate func processEvents(messages: [[String : Any]], notificationMessageID: MessageID?) throws {
         assertProperExecution()
 
@@ -415,7 +437,6 @@ extension EventsService {
                     error = context.saveUpstreamIfNeeded()
                 }
 
-                let userID = userManager.userID
                 self.dependencies
                     .fetchMessageMetaData
                     .execute(params: .init(messageIDs: messagesNoCache)) { _ in }

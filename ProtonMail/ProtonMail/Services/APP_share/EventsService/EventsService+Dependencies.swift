@@ -19,23 +19,26 @@ import Foundation
 
 extension EventsService {
     struct Dependencies {
-        let fetchMessageMetaData: FetchMessageMetaDataUseCase
         let contactCacheStatus: ContactCacheStatusProtocol
-        let incomingDefaultService: IncomingDefaultServiceProtocol
         let coreDataProvider: CoreDataContextProviderProtocol
+        let featureFlagCache: FeatureFlagCache
+        let fetchMessageMetaData: FetchMessageMetaDataUseCase
+        let incomingDefaultService: IncomingDefaultServiceProtocol
         let queueManager: QueueManagerProtocol
 
         init(
-            fetchMessageMetaData: FetchMessageMetaDataUseCase,
             contactCacheStatus: ContactCacheStatusProtocol,
+            coreDataProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self),
+            featureFlagCache: FeatureFlagCache,
+            fetchMessageMetaData: FetchMessageMetaDataUseCase,
             incomingDefaultService: IncomingDefaultService,
-            queueManager: QueueManagerProtocol = sharedServices.get(by: QueueManager.self),
-            coreDataProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
+            queueManager: QueueManagerProtocol = sharedServices.get(by: QueueManager.self)
         ) {
-            self.fetchMessageMetaData = fetchMessageMetaData
             self.contactCacheStatus = contactCacheStatus
-            self.incomingDefaultService = incomingDefaultService
             self.coreDataProvider = coreDataProvider
+            self.featureFlagCache = featureFlagCache
+            self.fetchMessageMetaData = fetchMessageMetaData
+            self.incomingDefaultService = incomingDefaultService
             self.queueManager = queueManager
         }
     }

@@ -83,6 +83,8 @@ class FeatureFlags {
     static let modernizedCoreData = FeatureFlag<Bool>(code: .modernizedCoreData, defaultValue: false)
     static let protonUnreachableBanner = FeatureFlag<Bool>(code: .protonUnreachableBanner, defaultValue: false)
     static let referralPrompt = FeatureFlag<Bool>(code: .referralPrompt, defaultValue: false)
+    static let refetchEventsByTime = FeatureFlag<Bool>(code: .refetchEventsByTime, defaultValue: true)
+    static let refetchEventsHourThreshold = FeatureFlag<Int>(code: .refetchEventsHourThreshold, defaultValue: 24)
     static let scheduleSend = FeatureFlag<Bool>(code: .scheduleSend, defaultValue: false)
     static let senderImage = FeatureFlag<Bool>(code: .senderImage, defaultValue: false)
     static let sendRefactor = FeatureFlag<Bool>(code: .sendRefactor, defaultValue: false)
