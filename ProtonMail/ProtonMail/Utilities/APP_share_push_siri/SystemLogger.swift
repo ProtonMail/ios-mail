@@ -145,6 +145,7 @@ extension SystemLogger {
     enum Category: String {
         case appLifeCycle = "AppLifeCycle"
         case appLock = "AppLock"
+        case artificialSlowdown = "Artificial slowdown"
         case assertionFailure = "AssertionFailure"
         case connectionStatus = "ConnectionStatus"
         case sendMessage = "SendMessage"

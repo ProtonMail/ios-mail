@@ -28,7 +28,7 @@ func XCTAssertEqual<T: Equatable>(
         let received = try received()
         let expected = try expected()
         XCTAssertTrue(
-            received == expected, "Found difference for \n" + diff(expected, received).joined(separator: ", "),
+            received == expected, "Found difference for " + diff(expected, received).joined(separator: ", "),
             file: file,
             line: line
         )
