@@ -578,6 +578,11 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
         lastEventIDStub(userID)
     }
 
+    @FuncStub(MockLastUpdatedStoreProtocol.lastEventUpdateTime, initialReturn: nil) var lastEventUpdateTimeStub
+    func lastEventUpdateTime(userID: UserID) -> Date? {
+        lastEventUpdateTimeStub(userID)
+    }
+
     @FuncStub(MockLastUpdatedStoreProtocol.lastUpdate, initialReturn: nil) var lastUpdateStub
     func lastUpdate(by labelID: LabelID, userID: UserID, type: ViewMode) -> LabelCountEntity? {
         lastUpdateStub(labelID, userID, type)
