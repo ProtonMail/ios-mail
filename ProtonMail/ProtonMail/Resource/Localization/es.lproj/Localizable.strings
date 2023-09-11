@@ -389,9 +389,6 @@
 /* createing lable input place holder */
 "Label Name" = "Nombre de la etiqueta";
 
-/* when server not reachable */
-"API Server not reachable…" = "Servidor API no accesible";
-
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "El acceso a esta cuenta está deshabilitado por falta de pago. Inicia sesión a través de proton.me para pagar tu factura pendiente.";
 
@@ -1443,7 +1440,7 @@
 "Inherit color from parent folder" = "Heredar el color de la carpeta principal";
 
 /* section title */
-"Select color" = "Seleccionar el color";
+"Select color" = "Seleccionar color";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "No estás conectado. No podemos mostrar el contenido de tu mensaje.";
@@ -1507,9 +1504,6 @@
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinatarios ocultos";
-
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Cancelar la suscripción de la lista de correo";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Nuestro sistema ha marcado este mensaje como un intento de suplantación de identidad. Verifica que es legítimo.";
@@ -1602,7 +1596,7 @@
 "Appearance" = "Apariencia";
 
 /* The title of follow system option in dark mode setting */
-"Follow device setting" = "Utilizar los ajustes del dispositivo";
+"Follow device setting" = "Usar ajustes del dispositivo";
 
 /* The title of always on option in dark mode setting */
 "Always on" = "Siempre encendido";
@@ -1793,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "El mensaje está siendo enviado y se moverá a la carpeta Enviados una vez se haya completado el envío.";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Si se pierde la conexión WiFi, la descarga continuará con los datos del móvil.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Descargar mediante datos móviles";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Progreso de descarga";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Historial de mensaje";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Límite de almacenamiento";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Almacenamiento utilizado";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Todos tus mensajes están descargados.";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "No se han podido descargar todos los mensajes. Libera espacio en el dispositivo para descargarlos.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "No se han podido descargar todos los mensajes. Aumenta el límite de almacenamiento más abajo para descargarlos.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "No tienes mensajes.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Tus mensajes se están descargando...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Datos en caché";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Archivos adjuntos";
-
-/* cell title in device settings */
-"Downloaded messages" = "Mensajes descargados";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Información sobre el espacio de almacenamiento utilizado en tu dispositivo para esta cuenta de Proton Mail.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Borrar";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Permite abrir mensajes previamente leídos cuando estás sin conexión.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Permite abrir archivos adjuntos previamente abiertos cuando estás sin conexión.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Te permite buscar dentro de los mensajes. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Ver detalles";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Acciones de la barra de herramientas (seleccionar hasta 5)";
 
@@ -2029,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "La contraseña ha sido actualizada.";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Vaciando la caché…";
-
 /* Title for application logs settings option */
 "Application logs" = "Registros de la aplicación";
 
@@ -2066,7 +1997,7 @@
 "Bug Report Place Holder" = "---Para ayudarnos, incluye tantos detalles como sea posible---\n\nResumen:\n\nEl problema ha ocurrido más de una vez: sí/no\nPasos para reproducir el error:\nResultado esperado:\nResultado obtenido:\nComentarios:";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Include logs";
+"Include logs" = "Incluir registros";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Intenta un término de búsqueda diferente.";
@@ -2143,8 +2074,20 @@
 /* The error message that is shown when no display name provided in contact edit view */
 "Display name field cannot be empty" = "El campo del nombre a mostrar no puede estar vacío.";
 
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Contact name is too long";
+
 /* The button text for add profile picture */
 "Add photo" = "Añadir foto";
 
 /* The button text for edit profile picture */
 "Edit photo" = "Editar foto";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Cancelar la suscripción de la lista de correo";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Unsubscribe?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

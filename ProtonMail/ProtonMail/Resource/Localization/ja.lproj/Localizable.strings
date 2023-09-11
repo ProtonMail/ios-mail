@@ -389,9 +389,6 @@
 /* createing lable input place holder */
 "Label Name" = "ラベル名";
 
-/* when server not reachable */
-"API Server not reachable…" = "API サーバーに接続できません…";
-
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "未払いのため、このアカウントへのアクセスはできません。 未払いの請求書をお支払いいただくには、proton.me からログインしてください。";
 
@@ -1508,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "非公開の宛先";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "メーリングリストの登録を解除";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "このメッセージはフィッシングの可能性があります。ご注意ください。";
 
@@ -1793,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "メッセージを送信しています。送信が完了すると、送信済みフォルダーに移動されます";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Wi-Fi から切断された場合、モバイルデータを使ってダウンロードを続行します。";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "モバイルデータでダウンロード";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "ダウンロード状況";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "メッセージ履歴";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "ストレージの上限";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "使用中のストレージ";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "すべてのメッセージがダウンロードされました";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "一部のメッセージがダウンロードされていません。すべてダウンロードするには、デバイスの容量を空けてください。";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "一部のメッセージがダウンロードされていません。すべてダウンロードするには、ストレージの上限を増やしてください。";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "メッセージがありません。";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "メッセージをダウンロード中...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "キャッシュ済みデータ";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "添付ファイル";
-
-/* cell title in device settings */
-"Downloaded messages" = "メッセージをダウンロードしました";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Proton Mailが端末上の容量をどれくらい使用しているかの情報です。";
-
-/* The title of the button in local storage attachments */
-"Clear" = "消去";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "開いたことのあるメッセージをオフライン時に開くことを可能にします。";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "開いたことのある添付ファイルをオフライン時に開くことを可能にします。";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "メッセージ内の検索を可能にします。%1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "詳細を表示";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "ツールバーアクション (5 件まで選択可能)";
 
@@ -2029,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "パスワードが更新されました";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "キャッシュをクリアしています…";
-
 /* Title for application logs settings option */
 "Application logs" = "アプリケーションのログ";
 
@@ -2143,8 +2074,20 @@
 /* The error message that is shown when no display name provided in contact edit view */
 "Display name field cannot be empty" = "表示名フィールドを空にすることはできません";
 
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Contact name is too long";
+
 /* The button text for add profile picture */
 "Add photo" = "写真を追加";
 
 /* The button text for edit profile picture */
 "Edit photo" = "写真を編集";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "メーリングリストの登録を解除";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Unsubscribe?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

@@ -389,9 +389,6 @@
 /* createing lable input place holder */
 "Label Name" = "标签名称";
 
-/* when server not reachable */
-"API Server not reachable…" = "API 服务器无法访问...";
-
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "此账户因欠费已被停用。请登录 proton.me 续费。";
 
@@ -1508,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "非公开收件人";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "取消订阅";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "系统已将此邮件识别为欺诈邮件，请确认其内容真实性。";
 
@@ -1793,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "邮件正在发送中。发送完成后，将会移动到“已发送”文件夹中。";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Wi-Fi 断开时通过数据流量继续下载。";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "通过移动数据下载";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "下载进度";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "邮件历史记录";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "存储空间限制";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "存储空间用量";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "所有的邮件已下载";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "邮件未能全部下载，请先释放部分设备存储空间再继续下载。";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "邮件未能全部下载，请先放宽下方的存储空间限制再继续下载。";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "您没有邮件。";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "正在为您下载邮件...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "已缓存的数据";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "附件";
-
-/* cell title in device settings */
-"Downloaded messages" = "已下载的邮件";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "关于此 Proton Mail 账户在你的设备上使用多少存储空间的信息。";
-
-/* The title of the button in local storage attachments */
-"Clear" = "清除";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "允许您在脱机状态下打开以前阅读的邮件。";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "允许您在脱机状态下打开以前已打开的附件。";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "允许您在邮件中搜索。 %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "查看详细信息";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "工具栏操作按钮（最多可选择 5 个）";
 
@@ -2029,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "密码已更改";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "正在清理缓存…";
-
 /* Title for application logs settings option */
 "Application logs" = "应用程序日志";
 
@@ -2143,8 +2074,20 @@
 /* The error message that is shown when no display name provided in contact edit view */
 "Display name field cannot be empty" = "Display name field cannot be empty";
 
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Contact name is too long";
+
 /* The button text for add profile picture */
 "Add photo" = "添加照片";
 
 /* The button text for edit profile picture */
 "Edit photo" = "编辑照片";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "取消订阅";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Unsubscribe?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

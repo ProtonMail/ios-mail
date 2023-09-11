@@ -389,9 +389,6 @@
 /* createing lable input place holder */
 "Label Name" = "Название ярлыка";
 
-/* when server not reachable */
-"API Server not reachable…" = "Сервер API недоступен…";
-
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Доступ к аккаунту был отключен в связи с неоплатой. Пожалуйста, авторизуйтесь на сайте proton.me для оплаты счета.";
 
@@ -1508,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Скрытые получатели";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Отписаться от списка рассылки";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Наша система отметила это сообщение как попытку фишинга. Пожалуйста, проверьте, является ли оно подлинным.";
 
@@ -1793,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Сообщение отправляется и после завершения отправки переместится в папку \"Отправленные\".";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Если вы потеряете подключение к WiFi, скачивание продолжится через сотовую сеть.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Скачивать через сотовую сеть";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Ход скачивания";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "История сообщения";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Предел объёма хранилища";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Использовано хранилища";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Все ваши сообщения скачаны";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Не все сообщения были скачены. Чтобы скачать их, освободите место на устройстве.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Не все сообщения были скачены. Чтобы скачать их, увеличьте лимит хранилища ниже.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "У вас нет сообщений.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Ваши сообщения скачиваются...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Кэшированные данные";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Вложения";
-
-/* cell title in device settings */
-"Downloaded messages" = "Скаченные сообщения";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Информация о том, сколько места для хранения данных использует этот аккаунт Proton Mail на вашем устройстве.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Очистить";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Позволяет вам открывать прочитанные ранее сообщения без подключения.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Позволяет вам открывать открытые ранее вложения без подключения.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Позволяет вам искать по вашим сообщениям. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Посмотреть информацию";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Действия на панели инструментов (выберите до 5)";
 
@@ -2029,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Пароль обновлён";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Очистка кэша...";
-
 /* Title for application logs settings option */
 "Application logs" = "Журналы приложения";
 
@@ -2143,8 +2074,20 @@
 /* The error message that is shown when no display name provided in contact edit view */
 "Display name field cannot be empty" = "Display name field cannot be empty";
 
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Contact name is too long";
+
 /* The button text for add profile picture */
 "Add photo" = "Добавить фото";
 
 /* The button text for edit profile picture */
 "Edit photo" = "Изменить фото";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Отписаться от списка рассылки";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Unsubscribe?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

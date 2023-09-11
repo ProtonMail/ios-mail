@@ -389,9 +389,6 @@
 /* createing lable input place holder */
 "Label Name" = "Nama Label";
 
-/* when server not reachable */
-"API Server not reachable…" = "Server API tidak dapat dijangkau…";
-
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Akses ke akun ini telah ditangguhkan karena adanya tagihan yang tertunggak. Silakan masuk melalui proton.me untuk melunasi tagihan Anda.";
 
@@ -1508,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Penerima yang Dirahasiakan";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Berhenti berlangganan milis";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Sistem kami menandai pesan ini sebagai bentuk upaya phishing. Mohon periksa keabsahan pesan ini.";
 
@@ -1793,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Pesan ini sedang dikirim dan akan dipindahkan ke folder Terkirim setelah proses pengiriman selesai.";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Apabila Anda kehilangan koneksi WiFi Anda, unduhan akan berlanjut dengan menggunakan data seluler.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Unduh via data seluler";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Keberlangsungan unduhan";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Riwayat pesan";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Batas penyimpanan";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Ruang yang digunakan";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Seluruh pesan Anda akan diunduh";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Tidak seluruh pesan berhasil diunduh. Untuk mengunduh pesan yang belum terunduh, kosongkan ruang penyimpanan Anda.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Tidak seluruh pesan berhasil diunduh. Untuk mengunduh pesan yang belum terunduh, tingkatkan batas ruang penyimpanan Anda di bawah ini.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "Anda tidak memiliki pesan.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Pesan Anda sedang diunduh...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Data ter-cache";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Lampiran";
-
-/* cell title in device settings */
-"Downloaded messages" = "Pesan yang diunduh";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Informasi seputar jumlah ruang penyimpanan yang digunakan oleh akun Proton Mail ini pada perangkat Anda.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Bersihkan";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Memungkinkan Anda untuk membuka pesan yang telah dibaca pada saat Anda sedang luring.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Memungkinkan Anda untuk membuka lampiran yang telah dibuka pada saat Anda sedang luring.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Memungkinkan Anda untuk mencari isi konten pesan Anda. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Lihat rincian";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Tindakan toolbar (pilih hingga 5 jenis tindakan)";
 
@@ -2029,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Kata sandi diperbarui";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Mengosongkan cache…";
-
 /* Title for application logs settings option */
 "Application logs" = "Log aplikasi";
 
@@ -2143,8 +2074,20 @@
 /* The error message that is shown when no display name provided in contact edit view */
 "Display name field cannot be empty" = "Nama tampilan tidak boleh kosong";
 
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Contact name is too long";
+
 /* The button text for add profile picture */
 "Add photo" = "Tambah foto";
 
 /* The button text for edit profile picture */
 "Edit photo" = "Sunting foto";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Berhenti berlangganan milis";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Unsubscribe?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
