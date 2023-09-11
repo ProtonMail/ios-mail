@@ -1761,11 +1761,7 @@ extension MailboxViewController {
 
         var scheduledSendNum: Int?
         let continueAction: () -> Void = { [weak self] in
-            self?.moveToActionHandler.handleMoveToAction(
-                messages: messages,
-                to: folder,
-                isFromSwipeAction: isSwipeAction
-            )
+            self?.moveToActionHandler.handleMoveToAction(messages: messages, to: folder)
             if isSwipeAction {
                 let title: String
                 if let num = scheduledSendNum {
@@ -1852,7 +1848,6 @@ extension MailboxViewController {
             self?.moveToActionHandler.handleMoveToAction(
                 conversations: conversations,
                 to: folder,
-                isFromSwipeAction: isSwipeAction,
                 completion: nil
             )
             if isSwipeAction {

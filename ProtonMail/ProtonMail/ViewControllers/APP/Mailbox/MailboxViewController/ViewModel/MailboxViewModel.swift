@@ -916,7 +916,7 @@ extension MailboxViewModel {
             messageService.label(messages: messages, label: labelID, apply: apply)
         case .conversation:
             if apply {
-                conversationProvider.label(conversationIDs: Array(messageIDs.map{ ConversationID($0) }), as: labelID, isSwipeAction: false) { [weak self] result in
+                conversationProvider.label(conversationIDs: Array(messageIDs.map{ ConversationID($0) }), as: labelID) { [weak self] result in
                     defer {
                         completion?()
                     }
@@ -926,7 +926,7 @@ extension MailboxViewModel {
                     }
                 }
             } else {
-                conversationProvider.unlabel(conversationIDs: Array(messageIDs.map{ ConversationID($0) }), as: labelID, isSwipeAction: false) { [weak self] result in
+                conversationProvider.unlabel(conversationIDs: Array(messageIDs.map{ ConversationID($0) }), as: labelID) { [weak self] result in
                     defer {
                         completion?()
                     }
@@ -1012,7 +1012,6 @@ extension MailboxViewModel {
                 conversationIDs: conversations.map(\.conversationID),
                 from: fLabel,
                 to: tLabel,
-                isSwipeAction: false,
                 callOrigin: "MailboxViewModel - move"
             ) { [weak self] result in
                 guard let self = self else { return }

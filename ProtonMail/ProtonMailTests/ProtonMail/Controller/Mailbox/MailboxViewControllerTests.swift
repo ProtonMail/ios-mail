@@ -110,7 +110,7 @@ final class MailboxViewControllerTests: XCTestCase {
             completion?(.success(()))
         }
 
-        conversationProviderMock.labelStub.bodyIs { _, _, _, _, completion in
+        conversationProviderMock.labelStub.bodyIs { _, _, _, completion in
             completion?(.success(()))
         }
 
@@ -122,11 +122,11 @@ final class MailboxViewControllerTests: XCTestCase {
             completion?(.success(()))
         }
 
-        conversationProviderMock.moveStub.bodyIs { _, _, _, _, _, _, completion in
+        conversationProviderMock.moveStub.bodyIs { _, _, _, _, _, completion in
             completion?(.success(()))
         }
 
-        conversationProviderMock.unlabelStub.bodyIs { _, _, _, _, completion in
+        conversationProviderMock.unlabelStub.bodyIs { _, _, _, completion in
             completion?(.success(()))
         }
         fakeCoordinator = .init()

@@ -1317,7 +1317,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 
     private func didSelectFolderToMoveToForMessage(folder: MenuLabel, message: MessageEntity) {
         viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
-        moveToActionHandler.handleMoveToAction(messages: [message], to: folder, isFromSwipeAction: false)
+        moveToActionHandler.handleMoveToAction(messages: [message], to: folder)
 
         dismissActionSheet()
         if !isInPageView {
@@ -1373,7 +1373,6 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             self?.moveToActionHandler.handleMoveToAction(
                 conversations: [conversation],
                 to: folder,
-                isFromSwipeAction: false,
                 completion: nil
             )
             self?.showMessageMoved(

@@ -400,7 +400,7 @@ extension SearchViewController {
     }
 
     private func didSelectFolderToMoveTo(folder: MenuLabel, messages: [MessageEntity]) {
-        moveToActionHandler?.handleMoveToAction(messages: messages, to: folder, isFromSwipeAction: false)
+        moveToActionHandler?.handleMoveToAction(messages: messages, to: folder)
 
         dismissActionSheet()
         cancelButtonTapped()

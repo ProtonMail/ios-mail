@@ -172,7 +172,6 @@ extension ConversationDataServiceProxy {
 
     func label(conversationIDs: [ConversationID],
                as labelID: LabelID,
-               isSwipeAction: Bool,
                completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
@@ -180,7 +179,6 @@ extension ConversationDataServiceProxy {
         }
         self.queue(.label(currentLabelID: labelID.rawValue,
                           shouldFetch: nil,
-                          isSwipeAction: isSwipeAction,
                           itemIDs: conversationIDs.map(\.rawValue),
                           objectIDs: []),
                    isConversation: true)
@@ -197,7 +195,6 @@ extension ConversationDataServiceProxy {
 
     func unlabel(conversationIDs: [ConversationID],
                  as labelID: LabelID,
-                 isSwipeAction: Bool,
                  completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
@@ -205,7 +202,6 @@ extension ConversationDataServiceProxy {
         }
         self.queue(.unlabel(currentLabelID: labelID.rawValue,
                             shouldFetch: nil,
-                            isSwipeAction: isSwipeAction,
                             itemIDs: conversationIDs.map(\.rawValue),
                             objectIDs: []),
                    isConversation: true)
@@ -223,7 +219,6 @@ extension ConversationDataServiceProxy {
     func move(conversationIDs: [ConversationID],
               from previousFolderLabel: LabelID,
               to nextFolderLabel: LabelID,
-              isSwipeAction: Bool,
               callOrigin: String?,
               completion: ((Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
@@ -241,7 +236,6 @@ extension ConversationDataServiceProxy {
 
         self.queue(.folder(nextLabelID: nextFolderLabel.rawValue,
                            shouldFetch: true,
-                           isSwipeAction: isSwipeAction,
                            itemIDs: filteredConversationIDs.map(\.rawValue),
                            objectIDs: []),
                    isConversation: true)

@@ -273,18 +273,18 @@ class MockConversationProvider: ConversationProvider {
     }
 
     @FuncStub(MockConversationProvider.label) var labelStub
-    func label(conversationIDs: [ConversationID], as labelID: LabelID, isSwipeAction: Bool, completion: ((Result<Void, Error>) -> Void)?) {
-        labelStub(conversationIDs, labelID, isSwipeAction, completion)
+    func label(conversationIDs: [ConversationID], as labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
+        labelStub(conversationIDs, labelID, completion)
     }
 
     @FuncStub(MockConversationProvider.unlabel) var unlabelStub
-    func unlabel(conversationIDs: [ConversationID], as labelID: LabelID, isSwipeAction: Bool, completion: ((Result<Void, Error>) -> Void)?) {
-        unlabelStub(conversationIDs, labelID, isSwipeAction, completion)
+    func unlabel(conversationIDs: [ConversationID], as labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
+        unlabelStub(conversationIDs, labelID, completion)
     }
 
     @FuncStub(MockConversationProvider.move) var moveStub
-    func move(conversationIDs: [ConversationID], from previousFolderLabel: LabelID, to nextFolderLabel: LabelID, isSwipeAction: Bool, callOrigin: String?, completion: ((Result<Void, Error>) -> Void)?) {
-        moveStub(conversationIDs, previousFolderLabel, nextFolderLabel, isSwipeAction, callOrigin, completion)
+    func move(conversationIDs: [ConversationID], from previousFolderLabel: LabelID, to nextFolderLabel: LabelID, callOrigin: String?, completion: ((Result<Void, Error>) -> Void)?) {
+        moveStub(conversationIDs, previousFolderLabel, nextFolderLabel, callOrigin, completion)
     }
 
     @FuncStub(MockConversationProvider.fetchLocalConversations, initialReturn: [Conversation]()) var fetchLocalConversationsStub
