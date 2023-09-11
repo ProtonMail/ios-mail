@@ -117,7 +117,13 @@ extension PMActionSheet {
     private static func blockSender(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheetItem {
-        PMActionSheetItem(style: .default(IconProvider.circleSlash, L11n.BlockSender.blockActionTitleLong)) { _ in
+        let color: UIColor = ColorProvider.NotificationError
+        return PMActionSheetItem(
+            title: L11n.BlockSender.blockActionTitleLong,
+            icon: IconProvider.circleSlash,
+            textColor: color,
+            iconColor: color
+        ) { _ in
             action(.blockSender)
         }
     }
