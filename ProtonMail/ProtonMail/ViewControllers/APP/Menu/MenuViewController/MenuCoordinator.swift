@@ -372,7 +372,8 @@ extension MenuCoordinator {
                                 purgeOldMessages: purgeOldMessages,
                                 fetchMessageWithReset: fetchMessagesWithReset,
                                 fetchMessage: fetchMessages,
-                                fetchLatestEventID: fetchLatestEvent)
+                                fetchLatestEventID: fetchLatestEvent,
+                                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared)
         )
         let userContainer = userContainer(for: user)
         let mailboxVMDependencies = MailboxViewModel.Dependencies(

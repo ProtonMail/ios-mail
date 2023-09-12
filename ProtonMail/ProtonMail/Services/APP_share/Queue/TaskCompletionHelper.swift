@@ -92,6 +92,7 @@ struct TaskCompletionHelper {
         var taskResult = QueueManager.TaskResult()
 
         guard let error = error else {
+            internetConnectionStatusProvider.apiCallIsSucceeded()
             notifyQueueManager(queueTask, taskResult)
             return
         }

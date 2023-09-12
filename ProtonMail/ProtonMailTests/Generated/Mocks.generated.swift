@@ -154,6 +154,11 @@ class MockCachedUserDataProvider: CachedUserDataProvider {
 }
 
 class MockConnectionMonitor: ConnectionMonitor {
+    @PropertyStub(\MockConnectionMonitor.currentPathProtocol, initialGet: nil) var currentPathProtocolStub
+    var currentPathProtocol: NWPathProtocol? {
+        currentPathProtocolStub()
+    }
+
     @PropertyStub(\MockConnectionMonitor.pathUpdateClosure, initialGet: nil) var pathUpdateClosureStub
     var pathUpdateClosure: ((_ newPath: NWPathProtocol) -> Void)? {
         get {
@@ -443,6 +448,11 @@ class MockInternetConnectionStatusProviderProtocol: InternetConnectionStatusProv
     @PropertyStub(\MockInternetConnectionStatusProviderProtocol.status, initialGet: .initialize) var statusStub
     var status: ConnectionStatus {
         statusStub()
+    }
+
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.apiCallIsSucceeded) var apiCallIsSucceededStub
+    func apiCallIsSucceeded() {
+        apiCallIsSucceededStub()
     }
 
     @FuncStub(MockInternetConnectionStatusProviderProtocol.register) var registerStub

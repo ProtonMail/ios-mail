@@ -9,7 +9,6 @@ class InternetConnectionStatusProviderTests: XCTestCase {
     var connectionMonitor: MockConnectionMonitor!
     var mockNWPath: MockNWPathProtocol!
     var connectionStatusReceiver: MockConnectionStatusReceiver!
-    var mockDoH: DohInterfaceMock!
     var session: MockURLSessionProtocol!
 
     override func setUpWithError() throws {
@@ -18,11 +17,9 @@ class InternetConnectionStatusProviderTests: XCTestCase {
         connectionMonitor = .init()
         mockNWPath = .init()
         updateConnection(isConnected: false, interfaces: [.wiredEthernet])
-        mockDoH = .init()
         session = .init()
         sut = InternetConnectionStatusProvider(
             connectionMonitor: connectionMonitor,
-            doh: mockDoH,
             session: session
         )
     }
@@ -30,7 +27,6 @@ class InternetConnectionStatusProviderTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         connectionMonitor = nil
-        mockDoH = nil
         sut = nil
     }
 
@@ -87,9 +83,6 @@ class InternetConnectionStatusProviderTests: XCTestCase {
 
     func testHasConnection_whenConnectedViaVPN_andPingFails_itShouldReturnNotConnected() {
         sut.register(receiver: connectionStatusReceiver, fireWhenRegister: false)
-        mockDoH.getCurrentlyUsedHostUrlStub.bodyIs { _ in
-            return "https://pm.test"
-        }
 
         let expectation1 = expectation(description: "status updated")
         connectionStatusReceiver.connectionStatusHasChangedStub.bodyIs { _, newStatus in
@@ -107,7 +100,7 @@ class InternetConnectionStatusProviderTests: XCTestCase {
                 XCTFail("Link shouldn't be nil")
                 return MockURLSessionDataTaskProtocol()
             }
-            XCTAssertEqual(link, "https://pm.test/core/tests/ping")
+            XCTAssertEqual(link, "https://status.proton.me")
             let error = NSError(domain: "pm.test", code: -999)
             handler(nil, nil, error)
             return MockURLSessionDataTaskProtocol()
@@ -119,9 +112,6 @@ class InternetConnectionStatusProviderTests: XCTestCase {
 
     func testHasConnection_whenConnectedViaVPN_andPingSucceeds_itShouldReturnConnected() {
         sut.register(receiver: connectionStatusReceiver, fireWhenRegister: false)
-        mockDoH.getCurrentlyUsedHostUrlStub.bodyIs { _ in
-            return "https://pm.test"
-        }
 
         let expectation1 = expectation(description: "status updated")
         connectionStatusReceiver.connectionStatusHasChangedStub.bodyIs { _, newStatus in
@@ -139,7 +129,7 @@ class InternetConnectionStatusProviderTests: XCTestCase {
                 XCTFail("Link shouldn't be nil")
                 return MockURLSessionDataTaskProtocol()
             }
-            XCTAssertEqual(link, "https://pm.test/core/tests/ping")
+            XCTAssertEqual(link, "https://status.proton.me")
             handler(nil, nil, nil)
             return MockURLSessionDataTaskProtocol()
         }
