@@ -261,7 +261,8 @@ final class MailboxViewControllerTests: XCTestCase {
             labelName: nil
         )
         sut.loadViewIfNeeded()
-        XCTAssertFalse(sut.tableView.visibleCells.isEmpty)
+
+        wait(self.sut.tableView.visibleCells.isEmpty == false)
 
         // Select cell
         let cell = sut.tableView.visibleCells.first as? NewMailboxMessageCell
@@ -372,6 +373,8 @@ final class MailboxViewControllerTests: XCTestCase {
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
         makeSUT(labelID: .init("0"), labelType: .folder, isCustom: false, labelName: nil)
         sut.loadViewIfNeeded()
+
+        wait(self.sut.tableView.visibleCells.isEmpty == false)
 
         // Enter selection mode
         let cell = try XCTUnwrap(sut.tableView.visibleCells.first as? NewMailboxMessageCell)

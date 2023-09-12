@@ -30,6 +30,7 @@ enum MailboxRow: Hashable {
 final class MailboxDiffableDataSource: MailboxDataSource {
     private let diffableDataSource: UITableViewDiffableDataSource<Int, MailboxRow>
     private let viewModel: MailboxViewModel
+    private let queue = DispatchQueue(label: "ch.protonmail.inbox.dataSource")
 
     init(viewModel: MailboxViewModel,
          tableView: UITableView,
@@ -48,11 +49,7 @@ final class MailboxDiffableDataSource: MailboxDataSource {
             newSnapshot = reloadMailData()
         }
 
-        // animatingDifferences is ignored on iOS 15 and above, and performs animations by default
-        // so we resort to applySnapshotUsingReloadData to ignore animations
-        if !animate, #available(iOS 15, *) {
-            self.diffableDataSource.applySnapshotUsingReloadData(newSnapshot)
-        } else {
+        queue.async {
             self.diffableDataSource.apply(newSnapshot, animatingDifferences: animate)
         }
     }
