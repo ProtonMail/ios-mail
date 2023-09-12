@@ -65,6 +65,24 @@ class MockAutoDeleteSpamAndTrashDaysProvider: AutoDeleteSpamAndTrashDaysProvider
 
 }
 
+class MockBGTaskSchedulerProtocol: BGTaskSchedulerProtocol {
+    @ThrowingFuncStub(MockBGTaskSchedulerProtocol.submit) var submitStub
+    func submit(_ taskRequest: BGTaskRequest) throws {
+        try submitStub(taskRequest)
+    }
+
+    @FuncStub(MockBGTaskSchedulerProtocol.register, initialReturn: Bool()) var registerStub
+    func register(forTaskWithIdentifier identifier: String, using queue: DispatchQueue?, launchHandler: @escaping (BGTask) -> Void) -> Bool {
+        registerStub(identifier, queue, launchHandler)
+    }
+
+    @FuncStub(MockBGTaskSchedulerProtocol.cancel) var cancelStub
+    func cancel(taskRequestWithIdentifier identifier: String) {
+        cancelStub(identifier)
+    }
+
+}
+
 class MockBackendConfigurationCacheProtocol: BackendConfigurationCacheProtocol {
     @FuncStub(MockBackendConfigurationCacheProtocol.readEnvironment, initialReturn: nil) var readEnvironmentStub
     func readEnvironment() -> Environment? {

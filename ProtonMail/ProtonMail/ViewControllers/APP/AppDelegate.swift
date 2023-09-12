@@ -158,6 +158,8 @@ extension AppDelegate: UIApplicationDelegate {
                                                name: .didSignOutLastAccount,
                                                object: nil)
         coordinator.delegate = self
+        
+        dependencies.backgroundTaskHelper.registerBackgroundTask(task: .eventLoop)
 
         UIBarButtonItem.enableMenuSwizzle()
         #if DEBUG
@@ -189,6 +191,8 @@ extension AppDelegate: UIApplicationDelegate {
         self.currentState = .background
 
         startAutoLockCountDownIfNeeded()
+        
+        dependencies.backgroundTaskHelper.scheduleBackgroundRefreshIfNeeded(task: .eventLoop)
 
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask { }
@@ -238,25 +242,6 @@ extension AppDelegate: UIApplicationDelegate {
                 user.blockedSenderCacheUpdater.requestUpdate()
             }
         }
-    }
-
-    // MARK: Background methods
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        // this feature can only work if user did not lock the app
-//        let signInManager = SignInManagerProvider()
-//        let unlockManager = UnlockManagerProvider()
-//        guard signInManager.isSignedIn, unlockManager.isUnlocked else {
-//            completionHandler(.noData)
-//            return
-//        }
-//
-//        let queueManager = sharedServices.get(by: QueueManager.self)
-//        queueManager.backgroundFetch(remainingTime: {
-//            application.backgroundTimeRemaining
-//        }, notify: {
-//            completionHandler(.newData)
-//        })
-        completionHandler(.noData)
     }
 
     // MARK: Notification methods

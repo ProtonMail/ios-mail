@@ -2,6 +2,22 @@
 // DO NOT EDIT
 import ProtonCore_Payments
 
+protocol HasBackgroundTaskHelper {
+    var backgroundTaskHelper: BackgroundTaskHelper { get }
+}
+
+extension GlobalContainer: HasBackgroundTaskHelper {
+    var backgroundTaskHelper: BackgroundTaskHelper {
+        backgroundTaskHelperFactory()
+    }
+}
+
+extension UserContainer: HasBackgroundTaskHelper {
+    var backgroundTaskHelper: BackgroundTaskHelper {
+        globalContainer.backgroundTaskHelper
+    }
+}
+
 protocol HasBiometricStatusProvider {
     var biometricStatusProvider: BiometricStatusProvider { get }
 }

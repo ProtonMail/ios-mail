@@ -20,6 +20,17 @@ import LifetimeTracker
 import UIKit
 
 extension GlobalContainer {
+    var backgroundTaskHelperFactory: Factory<BackgroundTaskHelper> {
+        self {
+            BackgroundTaskHelper(
+                dependencies: .init(
+                    coreKeyMaker: self.keyMaker,
+                    usersManager: self.usersManager
+                )
+            )
+        }
+    }
+
     var biometricStatusProviderFactory: Factory<BiometricStatusProvider> {
         self {
             UIDevice.current
