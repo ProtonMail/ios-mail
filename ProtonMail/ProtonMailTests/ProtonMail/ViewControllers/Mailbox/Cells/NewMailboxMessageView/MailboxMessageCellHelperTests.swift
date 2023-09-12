@@ -63,7 +63,10 @@ final class MailboxMessageCellHelperTests: XCTestCase {
         let rawSender = try serialize(testInput: testSender)
         let message = MessageEntity.make(rawSender: rawSender)
 
-        let components = sut.senderRowComponents(for: message, basedOn: [email.email: email], groupContacts: [])
+        let components = sut.senderRowComponents(for: message,
+                                                 basedOn: [email.email: email],
+                                                 groupContacts: [],
+                                                 shouldReplaceSenderWithRecipients: Bool.random())
 
         XCTAssertEqual(components, [.string("Mr. Foo")])
     }
@@ -83,9 +86,35 @@ final class MailboxMessageCellHelperTests: XCTestCase {
             labels: [LabelEntity.make(labelID: Message.Location.sent.labelID)]
         )
 
-        let components = sut.senderRowComponents(for: message, basedOn: [email.email: email], groupContacts: [])
+        let components = sut.senderRowComponents(for: message,
+                                                 basedOn: [email.email: email],
+                                                 groupContacts: [],
+                                                 shouldReplaceSenderWithRecipients: true)
 
         XCTAssertEqual(components, [.string("Mr. Bar")])
+    }
+
+    func testDisplaysSenderForSentMessagesIfReplacementIsDisabled() throws {
+        let testSender = TestPerson(name: "Mr. Foo", address: "foo@example.com")
+        let testRecipients = [TestPerson(name: "Mr. Bar", address: "bar@example.com")]
+
+        let email = EmailEntity.make(email: testSender.address, name: testSender.name)
+
+        let rawSender = try serialize(testInput: testSender)
+        let rawToList = try serialize(testInput: testRecipients)
+
+        let message = MessageEntity.make(
+            rawSender: rawSender,
+            rawTOList: rawToList,
+            labels: [LabelEntity.make(labelID: Message.Location.sent.labelID)]
+        )
+
+        let components = sut.senderRowComponents(for: message,
+                                                 basedOn: [email.email: email],
+                                                 groupContacts: [],
+                                                 shouldReplaceSenderWithRecipients: false)
+
+        XCTAssertEqual(components, [.string("Mr. Foo")])
     }
 
     private func serialize(testInput: TestPerson) throws -> String {

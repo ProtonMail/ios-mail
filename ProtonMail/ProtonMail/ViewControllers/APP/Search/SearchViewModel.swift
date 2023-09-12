@@ -212,7 +212,8 @@ extension SearchViewModel: SearchVMProtocol {
         let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
             for: message,
             basedOn: sharedReplacingEmailsMap,
-            groupContacts: contactGroups
+            groupContacts: contactGroups,
+            shouldReplaceSenderWithRecipients: true
         )
         let weekStart = user.userInfo.weekStartValue
         let customFolderLabels = user.labelService.getAllLabels(of: .folder)
