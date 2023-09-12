@@ -269,12 +269,14 @@ class UserManager: Service, ObservableObject {
 
     func resignAsActiveUser() {
         deactivatePayments()
+        appTelemetry.assignUser(userID: nil)
     }
 
     func becomeActiveUser() {
         updateTelemetry()
         refreshFeatureFlags()
         activatePayments()
+        appTelemetry.assignUser(userID: userID)
     }
 
     private func updateTelemetry() {

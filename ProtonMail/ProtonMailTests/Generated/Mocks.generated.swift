@@ -47,6 +47,24 @@ class MockAppRatingWrapper: AppRatingWrapper {
 
 }
 
+class MockAppTelemetry: AppTelemetry {
+    @FuncStub(MockAppTelemetry.enable) var enableStub
+    func enable() {
+        enableStub()
+    }
+
+    @FuncStub(MockAppTelemetry.disable) var disableStub
+    func disable() {
+        disableStub()
+    }
+
+    @FuncStub(MockAppTelemetry.assignUser) var assignUserStub
+    func assignUser(userID: UserID?) {
+        assignUserStub(userID)
+    }
+
+}
+
 class MockAutoDeleteSpamAndTrashDaysProvider: AutoDeleteSpamAndTrashDaysProvider {
     @PropertyStub(\MockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteImplicitlyDisabled, initialGet: Bool()) var isAutoDeleteImplicitlyDisabledStub
     var isAutoDeleteImplicitlyDisabled: Bool {

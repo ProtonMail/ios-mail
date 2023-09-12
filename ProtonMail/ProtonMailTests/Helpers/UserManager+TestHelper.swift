@@ -27,6 +27,7 @@ extension UserManager {
         userInfo: UserInfo = UserInfo.getDefault(),
         role: UserInfo.OrganizationRole? = nil,
         userID: String? = nil,
+        appTelemetry: AppTelemetry = MailAppTelemetry(),
         authCredential: AuthCredential = .none,
         globalContainer: GlobalContainer? = nil
     ) {
@@ -44,6 +45,7 @@ extension UserManager {
             authCredential: authCredential,
             mailSettings: nil,
             parent: nil,
+            appTelemetry: appTelemetry,
             globalContainer: globalContainer ?? (UIApplication.shared.delegate as! AppDelegate).dependencies
         )
     }
