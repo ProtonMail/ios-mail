@@ -101,7 +101,7 @@ extension PMActionSheet {
     private static func composeTo(
         action: @escaping (MessageDetailsContactActionSheetAction) -> Void
     ) -> PMActionSheetItem {
-        PMActionSheetItem(style: .default(IconProvider.envelope, LocalString._compose_to)) { _ in
+        PMActionSheetItem(style: .default(IconProvider.penSquare, L11n.ActionSheetActionTitle.newMessage)) { _ in
             action(.composeTo)
         }
     }

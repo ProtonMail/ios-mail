@@ -1411,6 +1411,7 @@ enum L11n {
         static let reply_in_conversation = NSLocalizedString("Reply (to last message)", comment: "The action title in the action sheet of the reply action in conversation view.")
         static let forward_in_conversation = NSLocalizedString("Forward (last message)", comment: "The action title in the action sheet of the forward action in conversation view.")
         static let replyAll_in_conversation = NSLocalizedString("Reply all (to last message)", comment: "The action title in the action sheet of the reply action in conversation view.")
+        static let newMessage = NSLocalizedString("New message", comment: "The action title in the action sheet of the composing new message")
 	}
 
     struct Toolbar {
