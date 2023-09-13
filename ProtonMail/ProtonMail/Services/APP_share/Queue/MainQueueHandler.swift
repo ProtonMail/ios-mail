@@ -184,20 +184,13 @@ final class MainQueueHandler: QueueHandler {
                 // Some how the value of deliveryTime in switch case .send(...) is wrong
                 // But correct in if case let
                 if case let .send(messageObjectID, deliveryTime) = action {
-                    let useSendRefactor = UIApplication.isDebugOrEnterprise ||
-                    dependencies.featureFlagCache.isFeatureFlag(.sendRefactor, enabledForUserWithID: userID)
-
-                    if useSendRefactor {
-                        let params = SendMessageTask.Params(
-                            messageURI: messageObjectID,
-                            deliveryTime: deliveryTime,
-                            undoSendDelay: user?.userInfo.delaySendSeconds ?? 0,
-                            userID: UserID(rawValue: UID)
-                        )
-                        sendMessageTask.run(params: params, completion: completeHandler)
-                    } else {
-                        messageDataService.send(byID: messageObjectID, deliveryTime: deliveryTime, UID: UID, completion: completeHandler)
-                    }
+                    let params = SendMessageTask.Params(
+                        messageURI: messageObjectID,
+                        deliveryTime: deliveryTime,
+                        undoSendDelay: user?.userInfo.delaySendSeconds ?? 0,
+                        userID: UserID(rawValue: UID)
+                    )
+                    sendMessageTask.run(params: params, completion: completeHandler)
                 }
             case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                 self.empty(at: .trash, UID: UID, completion: completeHandler)

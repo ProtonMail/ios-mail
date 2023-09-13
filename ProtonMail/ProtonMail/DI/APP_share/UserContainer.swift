@@ -183,7 +183,6 @@ final class UserContainer: ManagedContainer {
                 lastUpdatedStore: self.lastUpdatedStore,
                 user: self.user,
                 cacheService: self.cacheService,
-                undoActionManager: self.undoActionManager,
                 contactCacheStatus: sharedServices.userCachedStatus,
                 dependencies: .init(
                     moveMessageInCacheUseCase: MoveMessageInCache(
