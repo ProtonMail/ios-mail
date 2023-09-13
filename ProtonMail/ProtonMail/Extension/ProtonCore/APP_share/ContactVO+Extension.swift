@@ -36,7 +36,7 @@ extension ContactVO {
     /**
      Checks if the current ContactVO is in the address list
     */
-    func isDuplicatedWithContacts(_ addresses: [ContactPickerModelProtocol]) -> Bool {
+    func exists(in addresses: [ContactPickerModelProtocol]) -> Bool {
         return addresses.contains(where: { ($0 as? ContactVO)?.email.lowercased() == self.email.lowercased() })
     }
 
