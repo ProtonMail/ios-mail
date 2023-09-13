@@ -21,6 +21,7 @@ import ProtonCoreTestingToolkit
 import XCTest
 
 final class LabelsDataServiceTests: XCTestCase {
+    private var user: UserManager!
     private var mockApiService: APIServiceMock!
     private var mockContextProvider: MockCoreDataContextProvider!
     private var userID = UUID().uuidString
@@ -33,7 +34,7 @@ final class LabelsDataServiceTests: XCTestCase {
 
         let globalContainer = GlobalContainer()
         globalContainer.contextProviderFactory.register { self.mockContextProvider }
-        let user = UserManager(api: mockApiService, globalContainer: globalContainer)
+        user = UserManager(api: mockApiService, globalContainer: globalContainer)
 
         sut = LabelsDataService(userID: UserID(userID), dependencies: user.container)
     }
@@ -42,6 +43,7 @@ final class LabelsDataServiceTests: XCTestCase {
         super.tearDown()
 
         sut = nil
+        user = nil
         mockApiService = nil
         mockContextProvider = nil
     }

@@ -31,6 +31,7 @@ final class SendMessageTests: XCTestCase {
     private var mockPrepareSendMetadata: MockPrepareSendMetadata!
     private var mockPrepareSendRequest: MockPrepareSendRequest!
     private var mockMessageDataService: MockMessageDataService!
+    private var mockUser: UserManager!
     private let mockCoreDataService = MockCoreDataContextProvider()
 
     private lazy var dummyMessageSendingData: MessageSendingData = {
@@ -59,6 +60,7 @@ final class SendMessageTests: XCTestCase {
         mockPrepareSendMetadata = MockPrepareSendMetadata()
         mockPrepareSendRequest = MockPrepareSendRequest()
         mockMessageDataService = MockMessageDataService()
+        mockUser = makeUserManager(apiMock: mockApiService)
         sut = makeSUT()
     }
 
@@ -69,6 +71,7 @@ final class SendMessageTests: XCTestCase {
         mockPrepareSendRequest = nil
         mockMessageDataService = nil
         sut = nil
+        mockUser = nil
     }
 
     func testExecute_whenSendingSucceeds_updateMessageIsCalled_andReturnsVoid() {
@@ -151,7 +154,7 @@ extension SendMessageTests {
             prepareSendMetadata: mockPrepareSendMetadata,
             prepareSendRequest: mockPrepareSendRequest,
             apiService: mockApiService,
-            userDataSource: makeUserManager(apiMock: mockApiService),
+            userDataSource: mockUser,
             messageDataService: mockMessageDataService
         )
         return SendMessage(dependencies: sendMessageDependencies)

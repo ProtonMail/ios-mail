@@ -19,7 +19,8 @@ import Foundation
 
 typealias CleanUserLocalMessagesUseCase = UseCase<Void, CleanUserLocalMessages.Params>
 final class CleanUserLocalMessages: CleanUserLocalMessagesUseCase {
-    typealias Dependencies = HasAPIService
+    typealias Dependencies = AnyObject
+    & HasAPIService
     & HasMessageDataService
     & HasLabelsDataService
     & HasContactDataService
@@ -27,7 +28,7 @@ final class CleanUserLocalMessages: CleanUserLocalMessagesUseCase {
 
     private let contactCacheStatus: ContactCacheStatusProtocol
     private let fetchMessages: FetchMessagesUseCase
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(
         contactCacheStatus: ContactCacheStatusProtocol,

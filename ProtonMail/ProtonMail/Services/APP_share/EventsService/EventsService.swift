@@ -66,7 +66,8 @@ protocol EventsServiceProtocol: AnyObject {
 }
 
 final class EventsService: Service, EventsFetching {
-    typealias Dependencies = HasCoreDataContextProviderProtocol
+    typealias Dependencies = AnyObject
+    & HasCoreDataContextProviderProtocol
     & HasFeatureFlagCache
     & HasFetchMessageMetaData
     & HasIncomingDefaultService
@@ -87,7 +88,7 @@ final class EventsService: Service, EventsFetching {
     private var subscribers: [EventsObservation] = []
     private var timer: Timer?
     private weak var userManager: UserManager?
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(userManager: UserManager, dependencies: Dependencies) {
         self.userManager = userManager

@@ -24,6 +24,7 @@ import XCTest
 import Groot
 
 class CacheServiceTest: XCTestCase {
+    private var globalContainer: GlobalContainer!
     var testMessage: Message!
     var lastUpdatedStore: LastUpdatedStore!
     var sut: CacheService!
@@ -46,7 +47,7 @@ class CacheServiceTest: XCTestCase {
 
         lastUpdatedStore = LastUpdatedStore(contextProvider: contextProviderMock)
 
-        let globalContainer = GlobalContainer()
+        globalContainer = GlobalContainer()
         globalContainer.contextProviderFactory.register { self.contextProviderMock }
         globalContainer.lastUpdatedStoreFactory.register { self.lastUpdatedStore }
 
@@ -56,6 +57,7 @@ class CacheServiceTest: XCTestCase {
     override func tearDown() {
         testMessage = nil
         sut = nil
+        globalContainer = nil
         testContext = nil
         lastUpdatedStore = nil
         contextProviderMock = nil

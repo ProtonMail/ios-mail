@@ -116,6 +116,7 @@ extension UserContainer {
         self {
             self.user
         }
+        .scope(.shared)
     }
 
     var paymentsFactory: Factory<Payments> {
@@ -164,6 +165,7 @@ extension UserContainer {
         self {
             self.user
         }
+        .scope(.shared)
     }
 
     var toolbarSettingViewFactoryFactory: Factory<ToolbarSettingViewFactory> {

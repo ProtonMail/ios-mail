@@ -24,9 +24,9 @@ import CoreData
 import Foundation
 
 final class LocalConversationUpdater {
-    typealias Dependencies = HasCoreDataContextProviderProtocol & HasPushUpdater
+    typealias Dependencies = AnyObject & HasCoreDataContextProviderProtocol & HasPushUpdater
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
     private let userID: String
 
     init(userID: String, dependencies: Dependencies) {

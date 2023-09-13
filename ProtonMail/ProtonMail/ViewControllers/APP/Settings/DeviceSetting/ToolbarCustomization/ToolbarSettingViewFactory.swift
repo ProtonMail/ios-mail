@@ -18,9 +18,10 @@
 import Foundation
 
 final class ToolbarSettingViewFactory {
-    typealias Dependencies = ToolbarSettingViewModel.Dependencies
+    typealias Dependencies = AnyObject
+    & ToolbarSettingViewModel.Dependencies
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies

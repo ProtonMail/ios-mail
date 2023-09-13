@@ -43,14 +43,15 @@ protocol LabelProviderProtocol: AnyObject {
 }
 
 class LabelsDataService: Service {
-    typealias Dependencies = LabelPublisher.Dependencies
+    typealias Dependencies = AnyObject
+    & LabelPublisher.Dependencies
     & HasAPIService
     & HasCacheService
     & HasConversationStateService
     & HasLastUpdatedStoreProtocol
 
     private let userID: UserID
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     static let defaultFolderIDs: [String] = [
         Message.Location.inbox.rawValue,

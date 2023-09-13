@@ -23,6 +23,7 @@ import XCTest
 
 final class EventsServiceTests: XCTestCase {
     private var sut: EventsService!
+    private var mockUserManager: UserManager!
     private var mockApiService: APIServiceMock!
     private var mockContextProvider: CoreDataContextProviderProtocol!
     private var mockQueueManager: QueueManager!
@@ -41,13 +42,14 @@ final class EventsServiceTests: XCTestCase {
         globalContainer.contextProviderFactory.register { self.mockContextProvider }
         globalContainer.queueManagerFactory.register { self.mockQueueManager }
 
-        let mockUserManager = UserManager(api: mockApiService, userID: dummyUserID, globalContainer: globalContainer)
+        mockUserManager = UserManager(api: mockApiService, userID: dummyUserID, globalContainer: globalContainer)
         sut = EventsService(userManager: mockUserManager, dependencies: mockUserManager.container)
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
+        mockUserManager = nil
         mockApiService = nil
         mockContextProvider = nil
         mockQueueManager = nil

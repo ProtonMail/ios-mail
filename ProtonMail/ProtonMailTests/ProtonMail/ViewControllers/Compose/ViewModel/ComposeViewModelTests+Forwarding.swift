@@ -36,12 +36,11 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
         try super.setUpWithError()
 
         mockCoreDataService = .init()
-        user = UserManager(api: APIServiceMock(), role: .member)
 
         let globalContainer = GlobalContainer()
         globalContainer.contextProviderFactory.register { self.mockCoreDataService }
-        let userContainer = UserContainer(userManager: user, globalContainer: globalContainer)
-        composerViewFactory = userContainer.composerViewFactory
+        user = UserManager(api: APIServiceMock(), globalContainer: globalContainer)
+        composerViewFactory = user.container.composerViewFactory
 
         let keyPair = try MailCrypto.generateRandomKeyPair()
         let key = Key(keyID: "1", privateKey: keyPair.privateKey)
