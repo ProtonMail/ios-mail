@@ -27,9 +27,7 @@ final class AutoDeleteSettingViewModel: SwitchToggleVMProtocol {
                                          confirmationButton: L11n.AutoDeleteSettings.enableAlertButton)
     }
     var confirmationOnDisable: SwitchToggleVMActionConfirmation? {
-        SwitchToggleVMActionConfirmation(title: L11n.AutoDeleteSettings.disableAlertTitle,
-                                         message: L11n.AutoDeleteSettings.disableAlertMessage,
-                                         confirmationButton: L11n.AutoDeleteSettings.disableAlertButton)
+        nil
     }
     var input: SwitchToggleVMInput { self }
     var output: SwitchToggleVMOutput { self }

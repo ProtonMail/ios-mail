@@ -1444,9 +1444,6 @@ enum L11n {
         static let enableAlertTitle = NSLocalizedString("Delete messages?", comment: "Title of the alert to confirm enabling of the auto delete option")
         static let enableAlertMessage = NSLocalizedString("This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.", comment: "Message of the alert to confirm enabling of the auto delete option")
         static let enableAlertButton = NSLocalizedString("Enable", comment: "Button to enable auto delete")
-        static let disableAlertTitle = NSLocalizedString("Disable auto-delete?", comment: "Title of the alert to confirm disabling of the auto delete option")
-        static let disableAlertMessage = NSLocalizedString("Emails scheduled for deletion will remain in the trash and spam folders.", comment: "Message of the alert to confirm disabling of the auto delete option")
-        static let disableAlertButton = NSLocalizedString("Disable", comment: "Button to disable auto delete")
     }
 
     struct AutoDeleteBanners {
