@@ -37,7 +37,9 @@ final class HtmlEditorBehaviourTests: XCTestCase {
         navigationDelegateMock = .init()
         container = .init()
         apiMock = .init()
-        urlHandler = .init(imageProxy: .init(dependencies: .init(apiService: apiMock)))
+        urlHandler = .init(
+            imageProxy: .init(dependencies: .init(apiService: apiMock, imageCache: MockImageProxyCacheProtocol()))
+        )
         let config = WKWebViewConfiguration()
         config.setURLSchemeHandler(
             urlHandler,

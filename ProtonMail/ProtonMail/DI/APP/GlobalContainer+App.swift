@@ -45,13 +45,19 @@ extension GlobalContainer {
 
     var cleanCacheFactory: Factory<CleanCache> {
         self {
-            CleanCache(dependencies: .init(usersManager: self.usersManager))
+            CleanCache(dependencies: .init(usersManager: self.usersManager, imageProxyCache: self.imageProxyCache))
         }
     }
 
     var darkModeCacheFactory: Factory<DarkModeCacheProtocol> {
         self {
             self.userCachedStatus
+        }
+    }
+
+    var imageProxyCacheFactory: Factory<ImageProxyCacheProtocol> {
+        self {
+            ImageProxyCache(coreKeyMaker: self.keyMaker)
         }
     }
 
@@ -81,6 +87,12 @@ extension GlobalContainer {
     var saveSwipeActionSettingFactory: Factory<SaveSwipeActionSettingForUsersUseCase> {
         self {
             SaveSwipeActionSetting(dependencies: self)
+        }
+    }
+
+    var senderImageCacheFactory: Factory<SenderImageCache> {
+        self {
+            SenderImageCache(coreKeyMaker: self.keyMaker)
         }
     }
 

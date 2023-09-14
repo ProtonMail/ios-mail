@@ -1443,7 +1443,8 @@ extension MailboxViewModelTests {
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: userManagerMock.apiService,
-                            internetStatusProvider: internetConnectionProvider
+                            internetStatusProvider: internetConnectionProvider,
+                            imageCache: userManagerMock.container.senderImageCache
                         )
                     ),
                     mailSettings: userManagerMock.mailSettings

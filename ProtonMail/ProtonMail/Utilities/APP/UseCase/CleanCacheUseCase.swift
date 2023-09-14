@@ -68,14 +68,6 @@ extension CleanCache {
 
     struct Dependencies {
         let usersManager: UsersManager
-        let imageProxyCache: ImageProxyCache
-
-        init(
-            usersManager: UsersManager,
-            imageProxyCache: ImageProxyCache = ImageProxyCache.shared
-        ) {
-            self.usersManager = usersManager
-            self.imageProxyCache = imageProxyCache
-        }
+        let imageProxyCache: ImageProxyCacheProtocol
     }
 }

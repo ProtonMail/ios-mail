@@ -17,16 +17,14 @@
 
 import ProtonCore_Hash
 
-class ImageProxyCache {
-    static let shared = ImageProxyCache(coreKeyMaker: sharedServices.get())
-
+class ImageProxyCache: ImageProxyCacheProtocol {
     struct CacheKey {
         let rawValue: String
     }
 
     private let encryptedCache: EncryptedCache
 
-    private init(coreKeyMaker: KeyMakerProtocol) {
+    init(coreKeyMaker: KeyMakerProtocol) {
         encryptedCache = EncryptedCache(
             maxDiskSize: Constants.ImageProxy.cacheDiskSizeLimitInBytes,
             subdirectory: "me.proton.imageproxy",

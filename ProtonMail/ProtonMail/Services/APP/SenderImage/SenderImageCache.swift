@@ -18,15 +18,13 @@
 import ProtonCore_Hash
 
 final class SenderImageCache {
-    static let shared = SenderImageCache(coreKeyMaker: sharedServices.get())
-
     struct CacheKey {
         let rawValue: String
     }
 
     private let encryptedCache: EncryptedCache
 
-    private init(coreKeyMaker: KeyMakerProtocol) {
+    init(coreKeyMaker: KeyMakerProtocol) {
         encryptedCache = .init(
             maxDiskSize: Constants.SenderImage.cacheDiskSizeLimitInBytes,
             subdirectory: "me.proton.senderImage",

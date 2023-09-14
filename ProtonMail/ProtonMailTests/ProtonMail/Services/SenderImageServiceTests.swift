@@ -21,6 +21,7 @@ import ProtonCore_UIFoundations
 import XCTest
 
 final class SenderImageServiceTests: XCTestCase {
+    private var globalContainer: GlobalContainer!
     var apiServiceMock: APIServiceMock!
     var sut: SenderImageService!
     var cacheUrl: URL!
@@ -36,8 +37,11 @@ final class SenderImageServiceTests: XCTestCase {
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
         internetStatusProviderMock = .init()
         internetStatusProviderMock.statusStub.fixture = .connected
+
+        globalContainer = .init()
         sut = .init(dependencies: .init(apiService: apiServiceMock,
-                                        internetStatusProvider: internetStatusProviderMock))
+                                        internetStatusProvider: internetStatusProviderMock,
+                                        imageCache: globalContainer.senderImageCache))
 
         // Prepare for api mock to write image data to disk
         imageTempUrl = FileManager.default.temporaryDirectory
@@ -47,9 +51,12 @@ final class SenderImageServiceTests: XCTestCase {
 
     override func tearDownWithError() throws {
         try super.tearDownWithError()
+
+        globalContainer.senderImageCache.purge()
+
         sut = nil
+        globalContainer = nil
         apiServiceMock = nil
-        SenderImageCache.shared.purge()
         try FileManager.default.removeItem(at: imageTempUrl)
     }
 

@@ -343,8 +343,8 @@ extension UsersManager {
             }
 
 #if !APP_EXTENSION
-            ImageProxyCache.shared.purge()
-            SenderImageCache.shared.purge()
+            self.dependencies.imageProxyCache.purge()
+            self.dependencies.senderImageCache.purge()
 #endif
 
             guard !self.users.isEmpty else {

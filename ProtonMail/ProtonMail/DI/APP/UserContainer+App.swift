@@ -91,7 +91,8 @@ extension UserContainer {
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: self.user.apiService,
-                            internetStatusProvider: self.internetConnectionStatusProvider
+                            internetStatusProvider: self.internetConnectionStatusProvider, 
+                            imageCache: self.senderImageCache
                         )
                     ),
                     mailSettings: self.user.mailSettings

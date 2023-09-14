@@ -82,6 +82,22 @@ extension UserContainer: HasDarkModeCacheProtocol {
     }
 }
 
+protocol HasImageProxyCacheProtocol {
+    var imageProxyCache: ImageProxyCacheProtocol { get }
+}
+
+extension GlobalContainer: HasImageProxyCacheProtocol {
+    var imageProxyCache: ImageProxyCacheProtocol {
+        imageProxyCacheFactory()
+    }
+}
+
+extension UserContainer: HasImageProxyCacheProtocol {
+    var imageProxyCache: ImageProxyCacheProtocol {
+        globalContainer.imageProxyCache
+    }
+}
+
 protocol HasPushNotificationService {
     var pushService: PushNotificationService { get }
 }
@@ -111,6 +127,22 @@ extension GlobalContainer: HasSaveSwipeActionSettingForUsersUseCase {
 extension UserContainer: HasSaveSwipeActionSettingForUsersUseCase {
     var saveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
         globalContainer.saveSwipeActionSetting
+    }
+}
+
+protocol HasSenderImageCache {
+    var senderImageCache: SenderImageCache { get }
+}
+
+extension GlobalContainer: HasSenderImageCache {
+    var senderImageCache: SenderImageCache {
+        senderImageCacheFactory()
+    }
+}
+
+extension UserContainer: HasSenderImageCache {
+    var senderImageCache: SenderImageCache {
+        globalContainer.senderImageCache
     }
 }
 
