@@ -97,22 +97,7 @@ final class UserContainer: ManagedContainer {
 
     var eventsServiceFactory: Factory<EventsFetching> {
         self {
-            let useCase = FetchMessageMetaData(
-                dependencies: .init(
-                    userID: self.user.userID,
-                    messageDataService: self.messageService,
-                    contextProvider: self.contextProvider
-                )
-            )
-            return EventsService(
-                userManager: self.user,
-                dependencies: .init(
-                    contactCacheStatus: self.userCachedStatus,
-                    featureFlagCache: self.featureFlagCache,
-                    fetchMessageMetaData: useCase,
-                    incomingDefaultService: self.incomingDefaultService
-                )
-            )
+            EventsService(userManager: self.user, dependencies: self)
         }
     }
 
@@ -136,6 +121,19 @@ final class UserContainer: ManagedContainer {
     var fetchAttachmentFactory: Factory<FetchAttachment> {
         self {
             FetchAttachment(dependencies: .init(apiService: self.user.apiService))
+        }
+    }
+
+    var fetchMessageMetaDataFactory: Factory<FetchMessageMetaData> {
+        self {
+            FetchMessageMetaData(
+                dependencies: .init(
+                    userID: self.user.userID,
+                    messageDataService: self.messageService,
+                    contextProvider: self.contextProvider,
+                    queueManager: self.queueManager
+                )
+            )
         }
     }
 

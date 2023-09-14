@@ -129,7 +129,7 @@ extension FetchMessageMetaData {
             userID: UserID,
             messageDataService: MessageDataServiceProtocol,
             contextProvider: CoreDataContextProviderProtocol,
-            queueManager: QueueManagerProtocol = sharedServices.get(by: QueueManager.self)
+            queueManager: QueueManagerProtocol
         ) {
             self.userID = userID
             self.messageDataService = messageDataService

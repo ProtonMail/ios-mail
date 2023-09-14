@@ -24,47 +24,27 @@ import XCTest
 final class EventsServiceTests: XCTestCase {
     private var sut: EventsService!
     private var mockApiService: APIServiceMock!
-    private var mockUserManager: UserManager!
-    private var mockContactCache: MockContactCacheStatusProtocol!
-    private var mockFetchMessageMetaData: FetchMessageMetaDataUseCase!
-    private var mockContactCacheStatus: ContactCacheStatusProtocol!
     private var mockContextProvider: CoreDataContextProviderProtocol!
     private let dummyUserID = "dummyUserID"
     private let timeout = 3.0
 
     override func setUp() {
+        super.setUp()
+
         mockApiService = APIServiceMock()
-        mockUserManager = makeUserManager(apiMock: mockApiService)
-        mockContactCache = MockContactCacheStatusProtocol()
-        mockFetchMessageMetaData = MockFetchMessageMetaData()
-        mockContactCacheStatus = MockContactCacheStatusProtocol()
         mockContextProvider = MockCoreDataContextProvider()
-        let incomingDefaultService = IncomingDefaultService(
-            dependencies: .init(
-                apiService: mockApiService,
-                contextProvider: mockContextProvider,
-                userInfo: mockUserManager.userInfo
-            )
-        )
-        let dependencies = EventsService.Dependencies(
-            contactCacheStatus: mockContactCacheStatus,
-            coreDataProvider: mockContextProvider,
-            featureFlagCache: MockFeatureFlagCache(),
-            fetchMessageMetaData: mockFetchMessageMetaData,
-            incomingDefaultService: incomingDefaultService,
-            queueManager: MockQueueManager()
-        )
-        sut = EventsService(userManager: mockUserManager, dependencies: dependencies)
+
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.mockContextProvider }
+
+        let mockUserManager = UserManager(api: mockApiService, userID: dummyUserID, globalContainer: globalContainer)
+        sut = EventsService(userManager: mockUserManager, dependencies: mockUserManager.container)
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
         mockApiService = nil
-        mockUserManager = nil
-        mockContactCache = nil
-        mockFetchMessageMetaData = nil
-        mockContactCacheStatus = nil
         mockContextProvider = nil
     }
 
@@ -182,14 +162,14 @@ final class EventsServiceTests: XCTestCase {
         mockContextProvider.enqueueOnRootSavingContext { context in
             let msgCount = LabelUpdate.newLabelUpdate(
                 by: "0",
-                userID: self.mockUserManager.userID.rawValue,
+                userID: self.dummyUserID,
                 inManagedObjectContext: context
             )
             msgCount.unread = 0
             msgCount.total = 0
             let conversationCount = ConversationCount.newConversationCount(
                 by: "0",
-                userID: self.mockUserManager.userID.rawValue,
+                userID: self.dummyUserID,
                 inManagedObjectContext: context
             )
             conversationCount.unread = 0
@@ -213,7 +193,7 @@ final class EventsServiceTests: XCTestCase {
         mockContextProvider.read { context in
             let msgCount = LabelUpdate.lastUpdate(
                 by: "0",
-                userID: mockUserManager.userID.rawValue,
+                userID: dummyUserID,
                 inManagedObjectContext: context
             )
             XCTAssertEqual(msgCount?.unread, 1)
@@ -221,7 +201,7 @@ final class EventsServiceTests: XCTestCase {
 
             let conversationCount = ConversationCount.lastContextUpdate(
                 by: "0",
-                userID: mockUserManager.userID.rawValue,
+                userID: dummyUserID,
                 inManagedObjectContext: context
             )
             XCTAssertEqual(conversationCount?.unread, 1)
@@ -233,15 +213,6 @@ final class EventsServiceTests: XCTestCase {
             let conversation = Conversation.conversationForConversationID(conversationID, inManagedObjectContext: context)
             XCTAssertEqual(conversation?.conversationID, conversationID)
         }
-    }
-}
-
-extension EventsServiceTests {
-
-    private func makeUserManager(apiMock: APIServiceMock) -> UserManager {
-        let user = UserManager(api: apiMock, role: .member)
-        user.userInfo.userId = dummyUserID
-        return user
     }
 }
 

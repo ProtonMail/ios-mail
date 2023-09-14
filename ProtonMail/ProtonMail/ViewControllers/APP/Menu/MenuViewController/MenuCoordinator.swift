@@ -357,6 +357,7 @@ extension MenuCoordinator {
                 fetchLatestEventId: fetchLatestEvent,
                 fetchMessages: fetchMessages,
                 localMessageDataService: user.messageService,
+                lastUpdatedStore: dependencies.lastUpdatedStore,
                 contactProvider: user.contactService,
                 labelProvider: user.labelService
             )

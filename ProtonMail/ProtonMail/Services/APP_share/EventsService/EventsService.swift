@@ -66,6 +66,14 @@ protocol EventsServiceProtocol: AnyObject {
 }
 
 final class EventsService: Service, EventsFetching {
+    typealias Dependencies = HasCoreDataContextProviderProtocol
+    & HasFeatureFlagCache
+    & HasFetchMessageMetaData
+    & HasIncomingDefaultService
+    & HasQueueManager
+    & HasUserCachedStatus
+    & HasUsersManager
+
     private static let defaultPollingInterval: TimeInterval = 30
 
     // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
@@ -115,8 +123,7 @@ final class EventsService: Service, EventsFetching {
     }
 
     func call() {
-        if case .running = status,
-           sharedServices.get(by: QueueManager.self).checkQueueStatus() == .idle {
+        if case .running = status, dependencies.queueManager.checkQueueStatus() == .idle {
             subscribers.forEach({ $0?() })
         }
     }
@@ -276,7 +283,7 @@ extension EventsService {
                 case .failure(let error):
                     completion?(.failure(error))
                 case .success(let responseDict):
-                    self.dependencies.contactCacheStatus.contactsCached = 0
+                    self.dependencies.userCachedStatus.contactsCached = 0
                     self.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: IDRes.eventID)
                     completion?(.success(responseDict))
                 }
@@ -323,7 +330,7 @@ extension EventsService {
             static let update_flags = 3
         }
         var error: NSError?
-        dependencies.coreDataProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
                 guard let userManager else {
                     return
                 }
@@ -452,7 +459,7 @@ extension EventsService {
         guard let conversationsDict = conversations else {
             return
         }
-                dependencies.coreDataProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
+                dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
                     guard let userManager else {
                         return
                     }
@@ -559,7 +566,7 @@ extension EventsService {
             return
         }
 
-            dependencies.coreDataProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
+            dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
                 guard let userManager else {
                     return
                 }
@@ -615,7 +622,7 @@ extension EventsService {
             return
         }
 
-            dependencies.coreDataProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
+            dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
                 guard let userManager else {
                     return
                 }
@@ -670,36 +677,36 @@ extension EventsService {
         }
 
         if let labels = labels {
-                    dependencies.coreDataProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
-                        guard let userManager else {
-                            return
-                        }
-
-                        for labelEvent in labels {
-                            let label = LabelEvent(event: labelEvent)
-                            switch label.Action {
-                            case .some(IncrementalUpdateType.delete):
-                                if let labelID = label.ID {
-                                    if let dLabel = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
-                                        context.delete(dLabel)
-                                    }
-                                }
-                            case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update):
-                                do {
-                                    if var new_or_update_label = label.label {
-                                        new_or_update_label["UserID"] = userManager.userID.rawValue
-                                        try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: new_or_update_label, in: context)
-                                    }
-                                } catch {
-                                    PMAssertionFailure(error)
-                                }
-                            default:
-                                break
+            dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
+                guard let userManager else {
+                    return
+                }
+                
+                for labelEvent in labels {
+                    let label = LabelEvent(event: labelEvent)
+                    switch label.Action {
+                    case .some(IncrementalUpdateType.delete):
+                        if let labelID = label.ID {
+                            if let dLabel = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
+                                context.delete(dLabel)
                             }
                         }
-                        _ = context.saveUpstreamIfNeeded()
+                    case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update):
+                        do {
+                            if var new_or_update_label = label.label {
+                                new_or_update_label["UserID"] = userManager.userID.rawValue
+                                try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: new_or_update_label, in: context)
+                            }
+                        } catch {
+                            PMAssertionFailure(error)
+                        }
+                    default:
+                        break
                     }
+                }
+                _ = context.saveUpstreamIfNeeded()
             }
+        }
     }
 
     /// Process User information
@@ -886,7 +893,7 @@ extension EventsService {
 
     // TODO: moving this to a better place
     private func updateBadgeIfNeeded(unread: Int, labelID: String, type: ViewMode) {
-        let users: UsersManager = sharedServices.get(by: UsersManager.self)
+        let users = dependencies.usersManager
         guard let firstUser = users.firstUser else {
             return
         }

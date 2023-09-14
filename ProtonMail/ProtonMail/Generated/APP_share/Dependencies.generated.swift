@@ -369,6 +369,16 @@ extension UserContainer: HasFetchAttachment {
     }
 }
 
+protocol HasFetchMessageMetaData {
+    var fetchMessageMetaData: FetchMessageMetaData { get }
+}
+
+extension UserContainer: HasFetchMessageMetaData {
+    var fetchMessageMetaData: FetchMessageMetaData {
+        fetchMessageMetaDataFactory()
+    }
+}
+
 protocol HasIncomingDefaultService {
     var incomingDefaultService: IncomingDefaultService { get }
 }
