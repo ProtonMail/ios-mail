@@ -90,6 +90,12 @@ extension GlobalContainer {
         }
     }
 
+    var storeKitManagerFactory: Factory<StoreKitManagerImpl> {
+        self {
+            StoreKitManagerImpl(dependencies: self)
+        }
+    }
+
     var swipeActionCacheFactory: Factory<SwipeActionCacheProtocol> {
         self {
             self.userCachedStatus

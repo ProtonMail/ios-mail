@@ -112,7 +112,6 @@ extension AppDelegate: UIApplicationDelegate {
 
         sharedServices.add(UsersManager.self, for: usersManager)
         sharedServices.add(PushNotificationService.self, for: dependencies.pushService)
-        sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl(dependencies: self.dependencies))
         sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
 
 #if DEBUG

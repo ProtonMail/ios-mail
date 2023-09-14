@@ -66,7 +66,7 @@ class UserManager: Service, ObservableObject {
             labelService.cleanUp()
             contactService.cleanUp()
             contactGroupService.cleanUp()
-            lastUpdatedStore.cleanUp(userId: self.userID)
+            container.lastUpdatedStore.cleanUp(userId: userID)
             try incomingDefaultService.cleanUp()
             self.deactivatePayments()
             #if !APP_EXTENSION
@@ -182,10 +182,6 @@ class UserManager: Service, ObservableObject {
 
     private let appTelemetry: AppTelemetry
 
-    private var lastUpdatedStore: LastUpdatedStoreProtocol {
-        return sharedServices.get(by: LastUpdatedStore.self)
-    }
-
     var hasTelemetryEnabled: Bool {
         #if DEBUG
         if !ProcessInfo.isRunningUnitTests {
@@ -289,7 +285,7 @@ class UserManager: Service, ObservableObject {
 
     func activatePayments() {
         #if !APP_EXTENSION
-        self.payments.storeKitManager.delegate = sharedServices.get(by: StoreKitManagerImpl.self)
+        self.payments.storeKitManager.delegate = container.storeKitManager
         self.payments.storeKitManager.subscribeToPaymentQueue()
         self.payments.storeKitManager.updateAvailableProductsList { _ in }
         #endif

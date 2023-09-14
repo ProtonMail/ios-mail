@@ -114,6 +114,22 @@ extension UserContainer: HasSignInManager {
     }
 }
 
+protocol HasStoreKitManagerImpl {
+    var storeKitManager: StoreKitManagerImpl { get }
+}
+
+extension GlobalContainer: HasStoreKitManagerImpl {
+    var storeKitManager: StoreKitManagerImpl {
+        storeKitManagerFactory()
+    }
+}
+
+extension UserContainer: HasStoreKitManagerImpl {
+    var storeKitManager: StoreKitManagerImpl {
+        globalContainer.storeKitManager
+    }
+}
+
 protocol HasSwipeActionCacheProtocol {
     var swipeActionCache: SwipeActionCacheProtocol { get }
 }

@@ -23,10 +23,10 @@
 import Foundation
 import ProtonCore_Payments
 
-class StoreKitManagerImpl: StoreKitManagerDelegate, Service {
-    typealias Dependencies = HasUsersManager & HasUnlockManager
+class StoreKitManagerImpl: StoreKitManagerDelegate {
+    typealias Dependencies = AnyObject & HasUsersManager & HasUnlockManager
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
