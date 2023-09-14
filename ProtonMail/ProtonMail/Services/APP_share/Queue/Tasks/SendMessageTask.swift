@@ -212,7 +212,7 @@ extension SendMessageTask {
         dependencies
             .localNotificationService
             .scheduleMessageSendingFailedNotification(.init(
-                messageID: message.messageID.rawValue,
+                messageID: message.messageID,
                 error: errorMessage,
                 timeInterval: 1.0,
                 subtitle: message.title
@@ -244,7 +244,7 @@ extension SendMessageTask {
     private func unscheduleNotification(messageID: MessageID) {
         dependencies
             .localNotificationService
-            .unscheduleMessageSendingFailedNotification(.init(messageID: messageID.rawValue))
+            .unscheduleMessageSendingFailedNotification(.init(messageID: messageID))
     }
 }
 

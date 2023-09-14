@@ -223,7 +223,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()
             }
-            let messageID = viewModel.composerMessageHelper.draft?.messageID.rawValue ?? .empty
+            let messageID = viewModel.composerMessageHelper.draft?.messageID ?? MessageID(.empty)
             if viewModel.deliveryTime != nil {
                 topVC.showMessageSchedulingHintBanner(messageID: messageID)
             } else {

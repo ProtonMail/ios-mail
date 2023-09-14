@@ -274,7 +274,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     func send(inQueue message: Message, deliveryTime: Date?) {
         message.managedObjectContext!.perform {
             self.localNotificationService.scheduleMessageSendingFailedNotification(
-                .init(messageID: message.messageID, subtitle: message.title)
+                .init(messageID: .init(message.messageID), subtitle: message.title)
             )
 
             self.queueMessage(
@@ -944,8 +944,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    func cancelQueuedSendingTask(messageID: String) {
-        self.queueManager?.removeAllTasks(of: messageID, removalCondition: { action in
+    func cancelQueuedSendingTask(messageID: MessageID) {
+        self.queueManager?.removeAllTasks(of: messageID.rawValue, removalCondition: { action in
             switch action {
             case .send:
                 return true

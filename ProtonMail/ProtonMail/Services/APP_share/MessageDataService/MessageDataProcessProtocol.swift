@@ -18,5 +18,5 @@
 import Foundation
 
 protocol MessageDataProcessProtocol: AnyObject {
-    func cancelQueuedSendingTask(messageID: String)
+    func cancelQueuedSendingTask(messageID: MessageID)
 }

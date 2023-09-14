@@ -28,9 +28,9 @@ protocol ComposeSaveHintProtocol: UIViewController {
     func showDraftSaveHintBanner(cache: UserCachedStatusProvider,
                                  messageService: MessageDataService,
                                  coreDataContextProvider: CoreDataContextProviderProtocol)
-    func showMessageSendingHintBanner(messageID: String,
+    func showMessageSendingHintBanner(messageID: MessageID,
                                       messageDataService: MessageDataProcessProtocol)
-    func showMessageSchedulingHintBanner(messageID: String)
+    func showMessageSchedulingHintBanner(messageID: MessageID)
 }
 
 extension ComposeSaveHintProtocol {
@@ -79,7 +79,7 @@ extension ComposeSaveHintProtocol {
         banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
     }
 
-    func showMessageSendingHintBanner(messageID: String,
+    func showMessageSendingHintBanner(messageID: MessageID,
                                       messageDataService: MessageDataProcessProtocol) {
         let internetConnection = InternetConnectionStatusProvider.shared
         guard internetConnection.status != .notConnected else {
@@ -88,7 +88,7 @@ extension ComposeSaveHintProtocol {
         }
         typealias Key = PMBanner.UserInfoKey
         let userInfo: [AnyHashable: Any] = [Key.type.rawValue: Key.sending.rawValue,
-                                            Key.messageID.rawValue: messageID]
+                                            Key.messageID.rawValue: messageID.rawValue]
         let banner = PMBanner(
             message: LocalString._messages_sending_message,
             style: PMBannerNewStyle.info,
@@ -98,10 +98,10 @@ extension ComposeSaveHintProtocol {
         banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
     }
 
-    func showMessageSchedulingHintBanner(messageID: String) {
+    func showMessageSchedulingHintBanner(messageID: MessageID) {
         typealias Key = PMBanner.UserInfoKey
         let userInfo: [AnyHashable: Any] = [Key.type.rawValue: Key.sending.rawValue,
-                                            Key.messageID.rawValue: messageID]
+                                            Key.messageID.rawValue: messageID.rawValue]
         let banner = PMBanner(
             message: LocalString._scheduling_message_title,
             style: PMBannerNewStyle.info,
@@ -113,7 +113,7 @@ extension ComposeSaveHintProtocol {
     }
 
     private func showMessageSendingOfflineHintBanner(
-        messageID: String,
+        messageID: MessageID,
         messageDataService: MessageDataProcessProtocol
     ) {
         let title = LocalString._message_queued_for_sending
