@@ -277,7 +277,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 .init(messageID: message.messageID, subtitle: message.title)
             )
 
-            self.queue(
+            self.queueMessage(
                 message: message,
                 action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString, deliveryTime: deliveryTime)
             )
@@ -784,7 +784,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 }
                 _ = context.saveUpstreamIfNeeded()
 
-                self.queue(
+                self.queueMessage(
                     message: message,
                     action: .saveDraft(messageObjectID: message.objectID.uriRepresentation().absoluteString)
                 )
@@ -1017,7 +1017,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         cleanUp()
     }
 
-    private func queue(message: Message, action: MessageAction) {
+    private func queueMessage(message: Message, action: MessageAction) {
         if message.objectID.isTemporaryID {
             do {
                 try message.managedObjectContext?.obtainPermanentIDs(for: [message])
@@ -1030,16 +1030,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             self.cachePropertiesForBackground(in: message)
             messageID = message.messageID
         }
-        switch action {
-        case .saveDraft, .send:
-            let task = QueueManager.Task(messageID: messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
-            self.queueManager?.addTask(task)
-        default:
-            if message.managedObjectContext != nil, !messageID.isEmpty {
-                let task = QueueManager.Task(messageID: messageID, action: action, userID: self.userID, dependencyIDs: [], isConversation: false)
-                self.queueManager?.addTask(task)
-            }
-        }
+
+        let task = QueueManager.Task(messageID: messageID, action: action, userID: userID, dependencyIDs: [], isConversation: false)
+        queueManager?.addTask(task)
     }
 
     func queue(_ action: MessageAction) {
