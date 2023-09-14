@@ -30,33 +30,45 @@ import ProtonCore_Networking
 import ProtonCore_Services
 
 extension PMAPIService {
+    private static let dispatchQueue = DispatchQueue(label: "ch.protonmail.PMAPIService.unauthorized")
+    private static var _unauthorized: PMAPIService?
+    private static var _authManagerForUnauthorizedAPIService: AuthManagerForUnauthorizedAPIService?
 
-    private static var authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService(coreKeyMaker: sharedServices.get())
-
-    static var unauthorized: PMAPIService = {
-        PMAPIService.setupTrustIfNeeded()
-
-        let unauthorized: PMAPIService
-        if let initialSessionUID = authManagerForUnauthorizedAPIService.initialSessionUID {
-            unauthorized = PMAPIService.createAPIService(
-                environment: BackendConfiguration.shared.environment,
-                sessionUID: initialSessionUID,
-                challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
-            )
-        } else {
-            unauthorized = PMAPIService.createAPIServiceWithoutSession(
-                environment: BackendConfiguration.shared.environment,
-                challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
-            )
+    static func unauthorized(keyMaker: KeyMakerProtocol) -> PMAPIService {
+        dispatchQueue.sync {
+            if let _unauthorized {
+                return _unauthorized
+            }
+            
+            // TODO: setupTrustIfNeeded should be called elsewhere, it's not related to this method specifically
+            PMAPIService.setupTrustIfNeeded()
+            
+            let authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService(coreKeyMaker: keyMaker)
+            
+            let unauthorized: PMAPIService
+            if let initialSessionUID = authManagerForUnauthorizedAPIService.initialSessionUID {
+                unauthorized = PMAPIService.createAPIService(
+                    environment: BackendConfiguration.shared.environment,
+                    sessionUID: initialSessionUID,
+                    challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+                )
+            } else {
+                unauthorized = PMAPIService.createAPIServiceWithoutSession(
+                    environment: BackendConfiguration.shared.environment,
+                    challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+                )
+            }
+#if !APP_EXTENSION
+            unauthorized.serviceDelegate = PMAPIService.ServiceDelegate.shared
+            unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: unauthorized)
+            unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+#endif
+            unauthorized.authDelegate = authManagerForUnauthorizedAPIService.authDelegateForUnauthorized
+            _unauthorized = unauthorized
+            _authManagerForUnauthorizedAPIService = authManagerForUnauthorizedAPIService
+            return unauthorized
         }
-        #if !APP_EXTENSION
-        unauthorized.serviceDelegate = PMAPIService.ServiceDelegate.shared
-        unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: unauthorized)
-        unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-        #endif
-        unauthorized.authDelegate = authManagerForUnauthorizedAPIService.authDelegateForUnauthorized
-        return unauthorized
-    }()
+    }
 
     static func setupTrustIfNeeded() {
 //        #if DEBUG
