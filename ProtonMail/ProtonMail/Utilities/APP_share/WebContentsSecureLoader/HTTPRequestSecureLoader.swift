@@ -33,8 +33,8 @@ import WebKit
 ///
 
 protocol HTTPRequestSecureLoaderDelegate: AnyObject {
-    func showSkeletonView(in webView: WKWebView)
-    func hideSkeletonView(in webView: WKWebView)
+    func showSkeletonView()
+    func hideSkeletonView()
 }
 
 final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
@@ -63,7 +63,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
     }
 
     func load(contents: WebContents, in webView: WKWebView) {
-        delegate?.showSkeletonView(in: webView)
+        delegate?.showSkeletonView()
 
         self.webView?.stopLoading()
         self.webView?.configuration.userContentController.removeAllUserScripts()
@@ -316,14 +316,12 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
             schemeHandler.loopbacks[url] = data
 
             self.webView?.load(request)
+            self.delegate?.hideSkeletonView()
         }
         if let height = dict["height"] as? Double {
             let refHeight = (dict["refHeight"] as? CGFloat) ?? CGFloat(height)
             let res = refHeight > 32 ? refHeight : CGFloat(height)
             self.heightChanged?(res)
-            if let webView = self.webView {
-                self.delegate?.hideSkeletonView(in: webView)
-            }
         }
         if let contentShouldBeScrollableByDefault = dict["contentShouldBeScrollableByDefault"] as? Bool {
             // The contentShouldBeScrollableByDefault means that the webview should be scrollable after rendering by default.
