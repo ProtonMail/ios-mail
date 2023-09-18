@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Du kan nu välja och sortera om åtgärderna i denna list";
 
 /* Button to block a sender */
-"Block sender" = "Blockera avsändare";
+"Block messages from this sender" = "Blockera meddelanden från denna avsändare";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blockera";
@@ -1989,6 +1989,9 @@
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Svara alla (på sista meddelandet)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nytt meddelande";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Anpassa";

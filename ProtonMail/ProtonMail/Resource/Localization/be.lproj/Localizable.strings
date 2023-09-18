@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Цяпер вы можаце выбраць і змяніць парадак паказу дзеянняў на гэтай панэлі";
 
 /* Button to block a sender */
-"Block sender" = "Заблакіраваць адпраўніка";
+"Block messages from this sender" = "Блакіраваць паведамленні ад гэтага адпраўніка";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Заблакіраваць";
@@ -1990,6 +1990,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Адказаць усім (на апошняе паведамленне)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Новае паведамленне";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Наладзіць";
 
@@ -2084,10 +2087,10 @@
 "Edit photo" = "Рэдагаваць фатаграфію";
 
 /* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Адпісацца ад спіса рассылкі";
+"Unsubscribe from mailing list" = "Скасаваць падпіску на спіс рассылкі";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Скасаваць падпіску?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Гэта прывядзе да скасавання вашай падпіскі на спіс рассылкі. Адпраўніку будзе паведамлена пра неабходнасць спыніць адпраўку лістоў на гэты адрас.";

@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Anda kini dapat menentukan dan mengatur ulang daftar tindakan pada bar ini";
 
 /* Button to block a sender */
-"Block sender" = "Blokir pengirim";
+"Block messages from this sender" = "Blokir pesan dari pengirim ini";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blokir";
@@ -1990,6 +1990,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Balas semua (ke pesan terakhir)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Pesan baru";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Atur";
 
@@ -2075,7 +2078,7 @@
 "Display name field cannot be empty" = "Nama tampilan tidak boleh kosong";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Nama kontak terlalu panjang";
 
 /* The button text for add profile picture */
 "Add photo" = "Tambah foto";
@@ -2087,7 +2090,7 @@
 "Unsubscribe from mailing list" = "Berhenti berlangganan milis";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Berhenti berlangganan?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Ini akan menghentikan langganan Anda dari milis. Pengirim akan diberi tahu untuk berhenti mengirimkan surel ke alamat ini.";

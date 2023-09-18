@@ -126,7 +126,7 @@
 "This folder is empty" = "Эта папка пуста";
 
 /* The title of empty inbox */
-"You are all caught up!" = "Ви в курсі всіх подій!";
+"You are all caught up!" = "Вы со всем разобрались!";
 
 /* The subtitle of empty inbox */
 "Time to relax" = "Время отдохнуть";
@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Теперь вы можете выбирать и изменять действия на этой панели";
 
 /* Button to block a sender */
-"Block sender" = "Заблокировать отправителя";
+"Block messages from this sender" = "Block messages from this sender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Заблокировать";
@@ -1989,6 +1989,9 @@
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Ответить всем (на последнее сообщение)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "New message";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Настроить";

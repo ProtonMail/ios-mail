@@ -924,7 +924,7 @@
 "Retry" = "Repetir";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "A E d de MMM de yyyy, %@";
+"'On' E, MMM d, yyyy 'at' %@" = "A E, d de MMM, yyyy às %@";
 
 /* No comment provided by engineer. */
 "Message expired" = "A mensagem expirou";
@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Pode agora escolher e reordenar as acções nesta barra";
 
 /* Button to block a sender */
-"Block sender" = "Bloquear o remetente";
+"Block messages from this sender" = "Bloquear mensagens deste remetente";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloquear";
@@ -1990,6 +1990,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Responder a todos (última mensagem)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nova mensagem";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personalizar";
 
@@ -1997,7 +2000,7 @@
 "Bug Report Place Holder" = "---Para nos ajudar a ajudá-lo, forneça o máximo de detalhes possível---\n\nResumo:\n\nO problema ocorreu mais de uma vez: sim/não\nPassos para reproduzir o problema:\nResultado esperado:\nResultado real:\nComentários:";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Include logs";
+"Include logs" = "Incluir registos";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Tente um termo de pesquisa diferente.";
@@ -2063,19 +2066,19 @@
 "Custom email domains" = "Domínios de e-mail personalizados";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Nome exibido";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Primeiro nome";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Último nome";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "Campo de nome exibido não pode estar vazio";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "O nome do contacto é demasiado longo.";
 
 /* The button text for add profile picture */
 "Add photo" = "Adicionar fotografia";
@@ -2087,7 +2090,7 @@
 "Unsubscribe from mailing list" = "Cancelar a inscrição nesta lista de correio";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Cancelar subscrição?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Isto irá cancelar a sua subscrição da lista de emails. O remetente será notificado para não enviar mais emails para este endereço.";

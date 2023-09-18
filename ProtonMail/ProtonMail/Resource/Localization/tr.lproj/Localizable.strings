@@ -690,7 +690,7 @@
 "File, label, and color code messages to create your perfect, custom inbox." = "Gelen kutunuzu mükemmelleştirmek için iletileri dosyalayın, etiketleyin ve renklendirin.";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Yenilenmiş Proton böyle görünüyor. \nBirçok hizmet, tek amaç. Gizliliğe odaklanmış internet fikrine hoş geldiniz.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Yenilenmiş Proton böyle görünüyor. \nBirçok hizmet, tek amaç. Gizliliğe odaklanmış İnternet fikrine hoş geldiniz.";
 
 /* skip button title in onboarding page */
 "Skip" = "Atla";
@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Şimdi bu araç çubuğundaki işlemleri seçebilir ve yeniden düzenleyebilirsiniz";
 
 /* Button to block a sender */
-"Block sender" = "Göndericiyi engelle";
+"Block messages from this sender" = "Bu göndericiden gelen iletileri engelle";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Engelle";
@@ -1990,6 +1990,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Tümünü yanıtla (son iletiyi)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Yeni ileti";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Özelleştir";
 
@@ -2075,7 +2078,7 @@
 "Display name field cannot be empty" = "Görüntülenecek ad alanı boş olamaz";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Kişi adı çok uzun";
 
 /* The button text for add profile picture */
 "Add photo" = "Fotoğraf ekle";
@@ -2087,7 +2090,7 @@
 "Unsubscribe from mailing list" = "E-posta listesinin aboneliğinden ayrıl";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Abonelikten çıkılsın mı?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Bu işlem sizi e-posta listesinden çıkarır. Göndericiye artık bu adrese e-posta göndermemesi bildirilir.";

@@ -1161,7 +1161,7 @@
 "App PIN & Touch ID" = "PIN aplicație și Touch ID";
 
 /* security title in settings */
-"App PIN & Face ID" = "PIN aplicație și Face ID";
+"App PIN & Face ID" = "PIN aplicație și ID facial";
 
 /* cell title in device settings */
 "Language" = "Limba";
@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Puteți alege și rearanja acțiunile din această bară";
 
 /* Button to block a sender */
-"Block sender" = "Blocare expeditor";
+"Block messages from this sender" = "Blocare mesaje de la acest expeditor";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blocare";
@@ -1990,6 +1990,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Răspuns tuturor (ultimului mesaj)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Mesaj nou";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personalizare";
 
@@ -2075,7 +2078,7 @@
 "Display name field cannot be empty" = "Câmpul pentru numele afișat nu poate fi gol.";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Numele de contact este prea lung.";
 
 /* The button text for add profile picture */
 "Add photo" = "Adăugare fotografie";
@@ -2087,7 +2090,7 @@
 "Unsubscribe from mailing list" = "Dezabonare de la lista de discuții";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Dezabonare?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Acest lucru vă va dezabona din lista de corespondență. Expeditorul va fi notificat să nu mai trimită mesaje la această adresă.";

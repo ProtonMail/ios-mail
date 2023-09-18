@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Nyní můžete vybrat a změnit uspořádání akcí na tomto panelu nástrojů";
 
 /* Button to block a sender */
-"Block sender" = "Blokovat odesílatele";
+"Block messages from this sender" = "Block messages from this sender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blokovat";
@@ -1991,6 +1991,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Odpovědět všem (na poslední zprávu)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "New message";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Přizpůsobit";
 
@@ -2073,7 +2076,7 @@
 "Last name" = "Příjmení";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "Pole zobrazovaného jména nesmí být prázdné";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
 "Contact name is too long" = "Contact name is too long";

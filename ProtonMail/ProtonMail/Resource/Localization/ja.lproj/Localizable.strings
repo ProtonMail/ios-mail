@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "このバーのアクションを変更できます";
 
 /* Button to block a sender */
-"Block sender" = "差出人をブロック";
+"Block messages from this sender" = "Block messages from this sender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "ブロック";
@@ -1989,6 +1989,9 @@
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "全員に返信 (最後のメッセージに)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "New message";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "カスタマイズ";

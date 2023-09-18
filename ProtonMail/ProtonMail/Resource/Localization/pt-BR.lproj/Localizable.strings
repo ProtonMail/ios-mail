@@ -480,7 +480,7 @@
 "The request timed out." = "Solicitação excedeu o tempo limite.";
 
 /* Message */
-"Proton servers are unreachable.\nVisit our status page for details." = "Os servidores Proton estão indisponíveis. Visite nossa página de status para obter detalhes.";
+"Proton servers are unreachable.\nVisit our status page for details." = "Os servidores da Proton estão indisponíveis.\nVisite nossa página de status para obter detalhes.";
 
 /* Title */
 "No connectivity detected…" = "Nenhuma conexão detectada…";
@@ -1305,10 +1305,10 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Insira um código PIN com no mínimo 4 caracteres e no máximo 21 caracteres.";
 
 /* The error message of entering a short pin */
-"PIN is too short" = "O código PIN é muito curto.";
+"PIN is too short" = "O PIN é muito curto.";
 
 /* The error message of entering a long pin */
-"PIN is too long" = "O código PIN é muito longo.";
+"PIN is too long" = "O PIN é muito longo.";
 
 /* The title of PIN code setup2 view */
 "Repeat PIN code" = "Repetir o código PIN";
@@ -1317,7 +1317,7 @@
 "The PIN codes must match!" = "Os códigos PIN devem corresponder.";
 
 /* alternative routing description */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "No caso dos sites do Proton estarem bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos manter esta configuração ativa para uma maior confiabilidade. %1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "No caso dos sites da Proton estarem bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos manter esta configuração ativa para uma maior confiabilidade. %1$@";
 
 /* The title of alternative routing settings */
 "Networking" = "Rede";
@@ -1779,7 +1779,7 @@
 "The sending key is not valid" = "A chave de envio não é válida";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
-"<1m" = "Menos de um minuto";
+"<1m" = "<1min";
 
 /* The time label for message is about to be sent less in 1 minute not in the list view. */
 "less than 1 minute" = "menos que 1 minuto";
@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Você agora pode escolher e reorganizar as ações nesse barra de ferramentas.";
 
 /* Button to block a sender */
-"Block sender" = "Bloquear remetente";
+"Block messages from this sender" = "Bloquear mensagens deste remetente";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloquear";
@@ -1877,10 +1877,10 @@
 "Link copied." = "Link copiado.";
 
 /* The article title of the referral share view. */
-"Invite friends to Proton,\n get up to $90 in credits!" = "Convide amigos para o Proton,\nganhe até $ 90 em créditos!";
+"Invite friends to Proton,\n get up to $90 in credits!" = "Convide amigos para a Proton,\nganhe até $ 90 em créditos!";
 
 /* The article content of the referral share view. */
-"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Convide seus amigos para o Proton: eles experimentam o Mail Plus gratuitamente e você ganha créditos quando eles assinam um plano pago.";
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Convide seus amigos para a Proton: eles experimentam o Mail Plus gratuitamente e você ganha créditos quando eles assinam um plano pago.";
 
 /* The title link of the textfield of the referral link in referral share view. */
 "Your invite link" = "Seu link de convite";
@@ -1892,7 +1892,7 @@
 "Track your rewards" = "Acompanhe suas recompensas";
 
 /* The title of the terms and conditions button in referral share view. */
-"Terms & conditions" = "Termos & Condições";
+"Terms & conditions" = "Termos e condições";
 
 /* The content that is shared through the action: `Share the link` */
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Estou usando o Proton Mail e pensei que você poderia gostar. É um serviço de e-mail seguro que protege sua privacidade. Inscreva-se com este link para obter 1 mês de recursos premium de graça:";
@@ -1989,6 +1989,9 @@
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Responder a todos (última mensagem)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nova mensagem";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personalizar";

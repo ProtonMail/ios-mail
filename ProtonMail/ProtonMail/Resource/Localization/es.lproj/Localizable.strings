@@ -1362,7 +1362,7 @@
 "Please set a recovery / notification email" = "Establece un correo electrónico de recuperación/notificación.";
 
 /* No comment provided by engineer. */
-"Unread" = "No leído";
+"Unread" = "No leídos";
 
 /* No comment provided by engineer. */
 "Read" = "Leídos";
@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Ahora puedes elegir y reordenar las acciones en esta barra.";
 
 /* Button to block a sender */
-"Block sender" = "Bloquear el remitente";
+"Block messages from this sender" = "Bloquear mensajes de este remitente";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloquear";
@@ -1990,6 +1990,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Responder a todos (al último mensaje)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nuevo mensaje";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personalizar";
 
@@ -2075,7 +2078,7 @@
 "Display name field cannot be empty" = "El campo del nombre a mostrar no puede estar vacío.";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "El nombre del contacto es demasiado largo.";
 
 /* The button text for add profile picture */
 "Add photo" = "Añadir foto";
@@ -2087,7 +2090,7 @@
 "Unsubscribe from mailing list" = "Cancelar la suscripción de la lista de correo";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "¿Cancelar la suscripción?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Esto cancelará tu suscripción de la lista de correo. El remitente será notificado para que no envíe correos a esta dirección.";

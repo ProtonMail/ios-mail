@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "现已支持选择并排列此栏中的操作";
 
 /* Button to block a sender */
-"Block sender" = "屏蔽发件人";
+"Block messages from this sender" = "Block messages from this sender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "屏蔽";
@@ -1989,6 +1989,9 @@
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "回复所有人（最后一封邮件）";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "新邮件";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "定制";

@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Відтепер ви можете вибирати й переставляти дії на цій панелі";
 
 /* Button to block a sender */
-"Block sender" = "Блокувати відправника";
+"Block messages from this sender" = "Блокувати повідомлення від цього відправника.";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Блокувати";
@@ -1990,6 +1990,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Відповісти всім (на останнє повідомлення)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "New message";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Налаштувати";
 
@@ -1997,7 +2000,7 @@
 "Bug Report Place Holder" = "---Допоможіть нам усунути вашу проблему, надавши якомога більше подробиць---\n\nПідсумок:\n\nЧи траплялася проблема більше одного разу: так/ні \nКроки для відтворення проблеми: \nОчікуваний результат: \nФактичний результат: \nКоментарі:";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Include logs";
+"Include logs" = "Включаючи журнали";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Спробуйте інший пошуковий термін.";
@@ -2063,16 +2066,16 @@
 "Custom email domains" = "Власні поштові домени";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Відображуване ім'я";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Ім'я";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Прізвище";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "Поле відображеного ім'я не може бути порожнім";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
 "Contact name is too long" = "Contact name is too long";
@@ -2090,4 +2093,4 @@
 "Unsubscribe?" = "Unsubscribe?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Це скасує вашу підписку на список розсилки. Відправника буде сповіщено більше не надсилати електронні листи на цю адресу.";

@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Du kan nu vælge og omarrangere handlingerne i denne værktøjslinje";
 
 /* Button to block a sender */
-"Block sender" = "Blokér afsender";
+"Block messages from this sender" = "Blokér beskeder fra denne afsender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blokér";
@@ -1989,6 +1989,9 @@
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Svar alle (på den sidste besked)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "Ny besked";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Tilpas";

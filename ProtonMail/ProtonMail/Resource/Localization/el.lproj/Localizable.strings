@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Μπορείτε τώρα να επιλέξετε και να αναδιατάξετε τις ενέργειες σε αυτή τη γραμμή εργαλείων";
 
 /* Button to block a sender */
-"Block sender" = "Αποκλεισμός αποστολέα";
+"Block messages from this sender" = "Αποκλεισμός μηνυμάτων από αυτόν τον αποστολέα";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Αποκλεισμός";
@@ -1989,6 +1989,9 @@
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Απάντηση σε όλους (στο τελευταίο μήνυμα)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "Νέο μήνυμα";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Προσαρμογή";

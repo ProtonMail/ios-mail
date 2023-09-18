@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Ahora puede elegir y reacomodar las acciones en esta barra de herramientas";
 
 /* Button to block a sender */
-"Block sender" = "Bloquear remitente";
+"Block messages from this sender" = "Bloquear mensajes de este remitente";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloquear";
@@ -1990,6 +1990,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Responder a todos (al último mensaje)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Mensaje nuevo";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personalizar";
 
@@ -2075,7 +2078,7 @@
 "Display name field cannot be empty" = "El campo del nombre a mostrar no puede estar vacío";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "El nombre del contacto es muy largo";
+"Contact name is too long" = "El nombre del contacto es demasiado largo.";
 
 /* The button text for add profile picture */
 "Add photo" = "Añadir foto";

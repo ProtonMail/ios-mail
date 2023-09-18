@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Vous pouvez désormais choisir et réorganiser les actions de cette barre d'outils.";
 
 /* Button to block a sender */
-"Block sender" = "Bloquer l'expéditeur";
+"Block messages from this sender" = "Bloquer les messages de cet expéditeur";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloquer";
@@ -1989,6 +1989,9 @@
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Répondre à tous (au dernier message)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nouveau message";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personnaliser";

@@ -1823,7 +1823,7 @@
 "You can now choose and rearrange the actions in this bar" = "您可自由選擇或重新安排工具列的動作。";
 
 /* Button to block a sender */
-"Block sender" = "攔截寄件者";
+"Block messages from this sender" = "封鎖來自此寄件者的訊息";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "攔截";
@@ -1992,6 +1992,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "回覆全部 (最新交談訊息裡相關人等)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "新訊息";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "自訂";
 
@@ -2089,7 +2092,7 @@
 "Unsubscribe from mailing list" = "取消訂閱接收郵件";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "確定要退訂？";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "此動作會使您退訂郵件清單。寄件者會收到通知，從此不再傳送郵件到此位址。";

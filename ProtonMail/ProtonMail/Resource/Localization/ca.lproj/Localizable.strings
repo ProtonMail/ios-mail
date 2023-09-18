@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Ara podeu escollir i reorganitzar les accions d'aquesta barra";
 
 /* Button to block a sender */
-"Block sender" = "Bloqueja el remitent";
+"Block messages from this sender" = "Block messages from this sender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloqueja";
@@ -1990,6 +1990,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Respon a tothom (al darrer missatge)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nou missatge";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personalitza";
 
@@ -2066,7 +2069,7 @@
 "Display name" = "Nom a mostrar";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Nom";
 
 /* The placeholder for the last name text field in contact edit view. */
 "Last name" = "Cognom";
@@ -2087,7 +2090,7 @@
 "Unsubscribe from mailing list" = "Cancel·la la subscripció de la llista de correu";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Voleu anul·lar la subscripció?";
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

@@ -1224,7 +1224,7 @@
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Mindestens eine Empfänger-E-Mail-Adresse/Domäne existiert nicht oder ist ungültig. Nachricht wurde in Entwürfe verschoben.";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Du hast mindestens eine ungültige E-Mail Adresse eingegeben. Bitte verifiziere deine Empfänger.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Du hast mindestens eine ungültige E-Mail-Adresse eingegeben. Bitte verifiziere deine Empfänger.";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found." = "Mindestens eine E-Mail-Adresse in der Gruppe konnte nicht gefunden werden.";
@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Du kannst jetzt die Aktionen in deiner Symbolleiste auswählen und neu anordnen";
 
 /* Button to block a sender */
-"Block sender" = "Absender sperren";
+"Block messages from this sender" = "Nachrichten von diesem Absender sperren";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blockieren";
@@ -1989,6 +1989,9 @@
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Allen antworten (auf die letzte Nachricht)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "Neue Nachricht";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Anpassen";

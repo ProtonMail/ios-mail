@@ -1822,7 +1822,7 @@
 "You can now choose and rearrange the actions in this bar" = "U kan nu acties kiezen en herschikken in deze balk";
 
 /* Button to block a sender */
-"Block sender" = "Blokkeer afzender";
+"Block messages from this sender" = "Block messages from this sender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blokkeer";
@@ -1991,6 +1991,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Beantwoord allen (laatste boodschap)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "New message";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personaliseer";
 
@@ -2088,7 +2091,7 @@
 "Unsubscribe from mailing list" = "Afmelden van mailinglijst";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Afmelden?";
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
