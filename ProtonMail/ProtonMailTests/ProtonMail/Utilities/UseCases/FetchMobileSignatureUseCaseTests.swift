@@ -28,7 +28,10 @@ final class FetchMobileSignatureUseCaseTests: XCTestCase {
         super.setUp()
 
         cacheMock = MockMobileSignatureCacheProtocol()
-        coreKeyMaker = sharedServices.get(by: KeyMakerProtocol.self)
+
+        let globalContainer = GlobalContainer()
+        coreKeyMaker = globalContainer.keyMaker
+
         sut = .init(dependencies: .init(
             coreKeyMaker: coreKeyMaker,
             cache: cacheMock
