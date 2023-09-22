@@ -151,14 +151,7 @@ final class UserContainer: ManagedContainer {
 
     var labelServiceFactory: Factory<LabelsDataService> {
         self {
-            LabelsDataService(
-                api: self.apiService,
-                userID: self.user.userID,
-                contextProvider: self.contextProvider,
-                lastUpdatedStore: self.lastUpdatedStore,
-                cacheService: self.cacheService,
-                viewModeDataSource: self.conversationStateService
-            )
+            LabelsDataService(userID: self.user.userID, dependencies: self)
         }
     }
 
