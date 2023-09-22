@@ -232,16 +232,6 @@ extension UserContainer: HasFetchMessageDetail {
     }
 }
 
-protocol HasImageProxy {
-    var imageProxy: ImageProxy { get }
-}
-
-extension UserContainer: HasImageProxy {
-    var imageProxy: ImageProxy {
-        imageProxyFactory()
-    }
-}
-
 protocol HasSearchUseCase {
     var messageSearch: SearchUseCase { get }
 }

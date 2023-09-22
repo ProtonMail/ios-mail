@@ -426,13 +426,15 @@ extension MailboxViewControllerTests {
         ))
         self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
 
+        let featureFlagCache = MockFeatureFlagCache()
+
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
             updateMailbox: updateMailbox,
             fetchMessageDetail: mockFetchMessageDetail,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
-                    featureFlagCache: MockFeatureFlagCache(),
+                    featureFlagCache: featureFlagCache,
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: userManagerMock.apiService,
@@ -441,7 +443,8 @@ extension MailboxViewControllerTests {
                     ),
                     mailSettings: userManagerMock.mailSettings
                 )
-            )
+            ),
+            featureFlagCache: featureFlagCache
         )
         let label = LabelInfo(name: labelName ?? "")
         viewModel = MailboxViewModel(

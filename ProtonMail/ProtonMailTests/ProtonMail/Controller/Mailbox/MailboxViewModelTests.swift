@@ -1428,7 +1428,8 @@ extension MailboxViewModelTests {
                     ),
                     mailSettings: userManagerMock.mailSettings
                 )
-            )
+            ),
+            featureFlagCache: featureFlagCache
         )
         let label = LabelInfo(name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),

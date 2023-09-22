@@ -41,6 +41,8 @@ protocol ComposeContentViewControllerDelegate: AnyObject {
 
 // swiftlint:disable:next line_length type_body_length
 class ComposeContentViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
+    typealias Dependencies = HasImageProxy
+
     let viewModel: ComposeViewModel
     var openScheduleSendActionSheet: (() -> Void)?
 
@@ -60,14 +62,15 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     var pickedGroup: ContactGroupVO?
     var pickedCallback: (([DraftEmailData]) -> Void)?
     var groupSubSelectionPresenter: ContactGroupSubSelectionActionSheetPresenter?
-    private lazy var schemeHandler: ComposerSchemeHandler = .init(imageProxy: .init(dependencies: .init(
-        apiService: viewModel.user.apiService
-    )))
+    private lazy var schemeHandler: ComposerSchemeHandler = .init(imageProxy: dependencies.imageProxy)
+
+    private let dependencies: Dependencies
 
     weak var delegate: ComposeContentViewControllerDelegate?
 
-    init(viewModel: ComposeViewModel) {
+    init(viewModel: ComposeViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
+        self.dependencies = dependencies
         DFSSetting.enableDFS = true
         super.init(nibName: nil, bundle: nil)
     }

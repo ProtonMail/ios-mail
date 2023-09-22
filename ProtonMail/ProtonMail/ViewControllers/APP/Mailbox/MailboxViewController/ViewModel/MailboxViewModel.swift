@@ -1161,7 +1161,7 @@ extension MailboxViewModel {
             fetchMessageDetail: FetchMessageDetailUseCase,
             fetchSenderImage: FetchSenderImageUseCase,
             checkProtonServerStatus: CheckProtonServerStatusUseCase = CheckProtonServerStatus(),
-            featureFlagCache: FeatureFlagCache = sharedServices.get(by: UserCachedStatus.self)
+            featureFlagCache: FeatureFlagCache
         ) {
             self.fetchMessages = fetchMessages
             self.updateMailbox = updateMailbox

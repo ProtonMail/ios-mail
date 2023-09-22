@@ -137,6 +137,12 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var imageProxyFactory: Factory<ImageProxy> {
+        self {
+            ImageProxy(dependencies: .init(apiService: self.user.apiService))
+        }
+    }
+
     var incomingDefaultServiceFactory: Factory<IncomingDefaultService> {
         self {
             IncomingDefaultService(

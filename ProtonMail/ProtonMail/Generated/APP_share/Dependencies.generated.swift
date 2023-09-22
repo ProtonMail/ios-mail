@@ -379,6 +379,16 @@ extension UserContainer: HasFetchMessageMetaData {
     }
 }
 
+protocol HasImageProxy {
+    var imageProxy: ImageProxy { get }
+}
+
+extension UserContainer: HasImageProxy {
+    var imageProxy: ImageProxy {
+        imageProxyFactory()
+    }
+}
+
 protocol HasIncomingDefaultService {
     var incomingDefaultService: IncomingDefaultService { get }
 }

@@ -381,7 +381,8 @@ extension MenuCoordinator {
             fetchMessages: fetchMessages,
             updateMailbox: updateMailbox,
             fetchMessageDetail: userContainer.fetchMessageDetail,
-            fetchSenderImage: userContainer.fetchSenderImage
+            fetchSenderImage: userContainer.fetchSenderImage,
+            featureFlagCache: dependencies.featureFlagCache
         )
         return mailboxVMDependencies
     }

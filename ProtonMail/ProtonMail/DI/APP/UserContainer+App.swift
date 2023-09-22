@@ -97,12 +97,6 @@ extension UserContainer {
         }
     }
 
-    var imageProxyFactory: Factory<ImageProxy> {
-        self {
-            ImageProxy(dependencies: .init(apiService: self.user.apiService))
-        }
-    }
-
     var messageSearchFactory: Factory<SearchUseCase> {
         self {
             MessageSearch(
