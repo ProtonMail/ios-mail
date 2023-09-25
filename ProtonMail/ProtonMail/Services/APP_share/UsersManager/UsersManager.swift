@@ -95,11 +95,8 @@ class UsersManager: Service, UsersManagerProtocol {
         static let mailSettingsStore = "mailSettingsKeyProtectedWithMainKey"
     }
 
-    typealias Dependencies = AnyObject
-    & HasCachedUserDataProvider
-    & HasKeychain
-    & HasKeyMakerProtocol
-    & HasNotificationCenter
+    // UsersManager needs GlobalContainer to instantiate UserManagers
+    typealias Dependencies = GlobalContainer
 
     /// Server's config like url port path etc..
     private let doh = BackendConfiguration.shared.doh
@@ -173,21 +170,13 @@ class UsersManager: Service, UsersManagerProtocol {
         authCredential: AuthCredential,
         mailSettings: MailSettings?
     ) -> UserManager {
-        let globalContainer: GlobalContainer
-#if APP_EXTENSION
-        globalContainer = GlobalContainer.shared
-#else
-        // swiftlint:disable:next force_cast
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        globalContainer = appDelegate.dependencies
-#endif
         return UserManager(
             api: apiService,
             userInfo: userInfo,
             authCredential: authCredential,
             mailSettings: mailSettings,
             parent: self,
-            globalContainer: globalContainer
+            globalContainer: dependencies
         )
     }
 

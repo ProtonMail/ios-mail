@@ -35,6 +35,9 @@ protocol WindowsCoordinatorDelegate: AnyObject {
 
 final class WindowsCoordinator {
     typealias Dependencies = MenuCoordinator.Dependencies
+    & LockCoordinator.Dependencies
+    & HasDarkModeCacheProtocol
+    & HasNotificationCenter
 
     private lazy var snapshot = Snapshot()
     private var launchedByNotification = false

@@ -23,7 +23,7 @@
 import UIKit
 
 final class ShareUnlockCoordinator {
-    typealias Dependencies = GlobalContainer
+    typealias Dependencies = ShareUnlockViewController.Dependencies & HasPinFailedCountCache
 
     private var viewController: ShareUnlockViewController?
     private var nextCoordinator: SharePinUnlockCoordinator?
@@ -69,9 +69,7 @@ final class ShareUnlockCoordinator {
             return
         }
 
-        let userContainer = UserContainer(userManager: user, globalContainer: dependencies)
-
-        let composer = userContainer.composerViewFactory.makeComposer(
+        let composer = user.container.composerViewFactory.makeComposer(
             subject: controller.inputSubject,
             body: controller.inputContent,
             files: controller.files,

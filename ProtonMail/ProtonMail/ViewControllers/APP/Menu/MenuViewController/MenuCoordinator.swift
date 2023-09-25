@@ -57,8 +57,12 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
         }
     }
 
-    // MenuCoordinator needs everything in order to build `UserContainer`
-    typealias Dependencies = GlobalContainer
+    typealias Dependencies = MenuViewModel.Dependencies
+    & SignInCoordinatorEnvironment.Dependencies
+    & HasFeatureFlagCache
+    & HasLastUpdatedStore
+    & HasPushNotificationService
+    & HasUserCachedStatus
 
     private(set) var viewController: MenuViewController?
     private let viewModel: MenuVMProtocol
@@ -376,12 +380,11 @@ extension MenuCoordinator {
                                 fetchLatestEventID: fetchLatestEvent,
                                 internetConnectionStatusProvider: InternetConnectionStatusProvider.shared)
         )
-        let userContainer = userContainer(for: user)
         let mailboxVMDependencies = MailboxViewModel.Dependencies(
             fetchMessages: fetchMessages,
             updateMailbox: updateMailbox,
-            fetchMessageDetail: userContainer.fetchMessageDetail,
-            fetchSenderImage: userContainer.fetchSenderImage,
+            fetchMessageDetail: user.container.fetchMessageDetail,
+            fetchSenderImage: user.container.fetchSenderImage,
             featureFlagCache: dependencies.featureFlagCache
         )
         return mailboxVMDependencies
@@ -458,7 +461,7 @@ extension MenuCoordinator {
             return
         }
 
-        let userContainer = userContainer(for: user)
+        let userContainer = user.container
 
         let view = MailboxViewController(viewModel: viewModel, dependencies: userContainer)
         view.scheduleUserFeedbackCallOnAppear = showFeedbackActionSheet
@@ -491,7 +494,7 @@ extension MenuCoordinator {
     private func navigateToSubscribe() {
         guard let user = dependencies.usersManager.firstUser,
               let sideMenuViewController = viewController?.sideMenuController else { return }
-        let paymentsUI = userContainer(for: user).paymentsUIFactory.makeView()
+        let paymentsUI = user.container.paymentsUIFactory.makeView()
         let coordinator = StorefrontCoordinator(
             paymentsUI: paymentsUI,
             sideMenu: sideMenuViewController,
@@ -510,7 +513,7 @@ extension MenuCoordinator {
 
         let settings = SettingsDeviceCoordinator(
             navigationController: navigation,
-            dependencies: userContainer(for: userManager)
+            dependencies: userManager.container
         )
         settings.start()
         self.settingsDeviceCoordinator = settings
@@ -536,7 +539,7 @@ extension MenuCoordinator {
         }
         let contacts = ContactTabBarCoordinator(sideMenu: viewController?.sideMenuController,
                                                 vc: view,
-                                                dependencies: userContainer(for: user))
+                                                dependencies: user.container)
         contacts.start()
         self.setupContentVC(destination: view)
     }
@@ -546,7 +549,7 @@ extension MenuCoordinator {
             return
         }
 
-        let view = ReportBugsViewController(dependencies: userContainer(for: user))
+        let view = ReportBugsViewController(dependencies: user.container)
         self.viewModel.highlight(label: MenuLabel(location: .bugs))
         let navigation = UINavigationController(rootViewController: view)
         self.setupContentVC(destination: navigation)
@@ -700,10 +703,6 @@ extension MenuCoordinator {
         let navigation = UINavigationController(rootViewController: view)
         navigation.modalPresentationStyle = .fullScreen
         sideMenu.present(navigation, animated: true)
-    }
-
-    private func userContainer(for user: UserManager) -> UserContainer {
-        user.container
     }
 }
 

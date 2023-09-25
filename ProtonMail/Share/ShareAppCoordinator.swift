@@ -29,7 +29,7 @@ final class ShareAppCoordinator {
     private(set) weak var navigationController: UINavigationController?
     private var nextCoordinator: ShareUnlockCoordinator?
 
-    private let dependencies = GlobalContainer.shared
+    private let dependencies = GlobalContainer()
 
     func start() {
         sharedServices.add(UserCachedStatus.self, for: dependencies.userCachedStatus)
@@ -107,8 +107,4 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
         usersManager.run()
         usersManager.tryRestore()
     }
-}
-
-extension GlobalContainer {
-    static let shared = GlobalContainer()
 }
