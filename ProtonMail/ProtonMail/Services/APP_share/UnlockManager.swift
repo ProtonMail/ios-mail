@@ -211,11 +211,14 @@ final class UnlockManager {
     ) {
         Breadcrumbs.shared.add(message: "UnlockManager.unlockIfRememberedCredentials called", to: .randomLogout)
         guard let delegate else {
+            SystemLogger.log(message: "UnlockManager delegate is nil", category: .loginUnlockFailed, isError: true)
             unlockFailed?()
             return
         }
 
         guard keyMaker.mainKeyExists(), delegate.isUserStored() else {
+            let message = "UnlockManager mainKeyExists: \(keyMaker.mainKeyExists()), userStored: \(delegate.isUserStored())"
+            SystemLogger.log(message: message, category: .loginUnlockFailed, isError: true)
             delegate.setupCoreData()
             delegate.cleanAll {
                 unlockFailed?()
