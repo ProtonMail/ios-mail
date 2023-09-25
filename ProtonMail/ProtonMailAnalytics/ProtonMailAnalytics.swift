@@ -39,6 +39,7 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
             options.debug = debug
             options.environment = environment
             options.enableAutoPerformanceTracing = false
+            options.enableAppHangTracking = false
         }
         isEnabled = true
     }
