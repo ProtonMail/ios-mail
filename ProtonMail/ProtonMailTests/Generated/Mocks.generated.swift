@@ -1169,9 +1169,9 @@ class MockUnlockManagerDelegate: UnlockManagerDelegate {
         isMailboxPasswordStoredStub(uid)
     }
 
-    @FuncStub(MockUnlockManagerDelegate.setupCoreData) var setupCoreDataStub
-    func setupCoreData() {
-        setupCoreDataStub()
+    @ThrowingFuncStub(MockUnlockManagerDelegate.setupCoreData) var setupCoreDataStub
+    func setupCoreData() throws {
+        try setupCoreDataStub()
     }
 
     @FuncStub(MockUnlockManagerDelegate.loadUserDataAfterUnlock) var loadUserDataAfterUnlockStub

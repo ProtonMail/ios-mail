@@ -322,12 +322,8 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
         }.cauterize()
     }
 
-    func setupCoreData() {
-        do {
-            try CoreDataStore.shared.initialize()
-        } catch {
-            fatalError("\(error)")
-        }
+    func setupCoreData() throws {
+        try CoreDataStore.shared.initialize()
 
         sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)

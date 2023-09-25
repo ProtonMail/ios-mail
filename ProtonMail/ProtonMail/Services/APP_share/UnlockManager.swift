@@ -45,7 +45,7 @@ protocol UnlockManagerDelegate: AnyObject {
     func cleanAll(completion: @escaping () -> Void)
     func isUserStored() -> Bool
     func isMailboxPasswordStored(forUser uid: String?) -> Bool
-    func setupCoreData()
+    func setupCoreData() throws
     func loadUserDataAfterUnlock()
 }
 
@@ -216,7 +216,13 @@ final class UnlockManager {
         }
 
         guard keyMaker.mainKeyExists(), delegate.isUserStored() else {
-            delegate.setupCoreData()
+
+            do {
+                try delegate.setupCoreData()
+            } catch {
+                fatalError("\(error)")
+            }
+
             delegate.cleanAll {
                 unlockFailed?()
             }
@@ -224,12 +230,21 @@ final class UnlockManager {
         }
 
         guard delegate.isMailboxPasswordStored(forUser: uid) else { // this will provoke mainKey obtention
-            delegate.setupCoreData()
+            do {
+                try delegate.setupCoreData()
+            } catch {
+                fatalError("\(error)")
+            }
+
             requestMailboxPassword()
             return
         }
 
-        delegate.setupCoreData()
+        do {
+            try delegate.setupCoreData()
+        } catch {
+            fatalError("\(error)")
+        }
 
         pinFailedCountCache.pinFailedCount = 0
 
