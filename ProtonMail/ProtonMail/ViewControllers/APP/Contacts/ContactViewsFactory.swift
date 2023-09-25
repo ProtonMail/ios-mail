@@ -19,9 +19,9 @@ import ProtonCore_Utilities
 
 final class ContactViewsFactory {
     typealias Dependencies = ContactEditViewController.Dependencies
-    & HasUserManager
-    & HasCoreDataContextProviderProtocol
     & ContactGroupDetailViewController.Dependencies
+    & ContactGroupSelectEmailViewModelImpl.Dependencies
+    & ContactImportViewController.Dependencies
 
     private let dependencies: Dependencies
 
@@ -117,7 +117,7 @@ final class ContactViewsFactory {
     ) -> ContactGroupSelectEmailViewController {
         let viewModel = ContactGroupSelectEmailViewModelImpl(
             selectedEmails: selectedEmails,
-            contactService: dependencies.user.contactService,
+            dependencies: dependencies,
             refreshHandler: refreshHandler
         )
         return ContactGroupSelectEmailViewController(viewModel: viewModel)
@@ -150,6 +150,6 @@ final class ContactViewsFactory {
     }
 
     func makeImportView() -> ContactImportViewController {
-        ContactImportViewController(user: dependencies.user)
+        ContactImportViewController(dependencies: dependencies)
     }
 }

@@ -28,8 +28,12 @@ import ProtonCore_DataModel
 import UIKit
 
 class ContactImportViewController: UIViewController {
-    var user: UserManager
-    private var addressBookService: AddressBookService?
+    typealias Dependencies = HasAddressBookService
+    & HasContactDataService
+    & HasCoreDataContextProviderProtocol
+    & HasUserManager
+
+    private var dependencies: Dependencies
 
     private(set) lazy var customView = ContactImportView()
 
@@ -48,19 +52,17 @@ class ContactImportViewController: UIViewController {
     var reloadAllContact: (() -> Void)?
     private var fetchedResultsController: NSFetchedResultsController<Contact>?
 
-    private lazy var contacts: [CNContact] = addressBookService?.getAllContacts() ?? []
+    private lazy var contacts: [CNContact] = dependencies.addressBookService.getAllContacts()
 
-    init(user: UserManager,
-         addressBookService: AddressBookService = sharedServices.get(by: AddressBookService.self)) {
-        self.user = user
-        self.addressBookService = addressBookService
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
         super.init(nibName: "ContactImportViewController", bundle: nil)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.appleContactParser = AppleContactParser(delegate: self,
-                                                     coreDataService: sharedServices.get(by: CoreDataService.self))
+                                                     coreDataService: dependencies.contextProvider)
         customView.progressView.progress = 0.0
         customView.titleLabel.attributedText = LocalString._contacts_import_title.apply(style: .Headline.alignment(.center))
         customView.cancelButton.addTarget(self, action: #selector(cancelTapped(_:)), for: .touchUpInside)
@@ -73,7 +75,7 @@ class ContactImportViewController: UIViewController {
     }
 
     private func getFetchedResultsController() -> NSFetchedResultsController<Contact> {
-        let fetchedResultsController = self.user.contactService.resultController()
+        let fetchedResultsController = dependencies.contactService.resultController()
 
         do {
             try fetchedResultsController.performFetch()
@@ -178,8 +180,8 @@ extension ContactImportViewController: AppleContactParserDelegate {
     }
 
     func updateUserData() -> (userKey: Key, passphrase: Passphrase, existedContactIDs: [String])? {
-        guard let userKey = self.user.userInfo.firstUserKey() else { return nil }
-        let passphrase = self.user.mailboxPassword
+        guard let userKey = dependencies.user.userInfo.firstUserKey() else { return nil }
+        let passphrase = dependencies.user.mailboxPassword
         var uuids: [String] = []
         fetchedResultsController?.managedObjectContext.performAndWait {
             uuids = ((fetchedResultsController?.fetchedObjects as? [Contact]) ?? []).map(\.uuid)
@@ -191,7 +193,7 @@ extension ContactImportViewController: AppleContactParserDelegate {
     }
 
     func scheduleUpload(data: AppleContactParsedResult) {
-        let error = self.user.contactService.queueAddContact(cardDatas: data.cardDatas,
+        let error = dependencies.contactService.queueAddContact(cardDatas: data.cardDatas,
                                                              name: data.name,
                                                              emails: data.definedMails,
                                                              importedFromDevice: true)

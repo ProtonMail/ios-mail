@@ -20,6 +20,12 @@ import LifetimeTracker
 import UIKit
 
 extension GlobalContainer {
+    var addressBookServiceFactory: Factory<AddressBookService> {
+        self {
+            AddressBookService()
+        }
+    }
+
     var backgroundTaskHelperFactory: Factory<BackgroundTaskHelper> {
         self {
             BackgroundTaskHelper(

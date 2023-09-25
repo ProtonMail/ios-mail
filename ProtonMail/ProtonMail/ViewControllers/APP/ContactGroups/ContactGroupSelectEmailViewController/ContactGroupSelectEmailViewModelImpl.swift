@@ -24,6 +24,7 @@ import Foundation
 
 /// View model for ContactGroupSelectEmailController
 class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
+    typealias Dependencies = HasUsersManager & HasContactDataService
 
     /// all of the emails that the user have in the contact
     private var allEmails: [EmailEntity]
@@ -43,22 +44,21 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
         return selectedEmails != originalSelectedEmails
     }
 
-    let contactService: ContactDataService
+    private let dependencies: Dependencies
 
     /**
      Initializes a new ContactGroupSelectEmailViewModel
      */
-    init(selectedEmails: Set<EmailEntity>, contactService: ContactDataService, refreshHandler: @escaping (Set<EmailEntity>) -> Void) {
-        self.contactService = contactService
-        self.allEmails = self.contactService.allEmails()
+    init(selectedEmails: Set<EmailEntity>, dependencies: Dependencies, refreshHandler: @escaping (Set<EmailEntity>) -> Void) {
+        self.dependencies = dependencies
+        self.allEmails = dependencies.contactService.allEmails()
         self.allEmails.sort {
             if $0.name == $1.name {
                 return $0.email < $1.email
             }
             return $0.name < $1.name
         }
-        let usersManager: UsersManager = sharedServices.get()
-        if let currentUser = usersManager.firstUser {
+        if let currentUser = dependencies.usersManager.firstUser {
             self.emailsForDisplay = self.allEmails
                 .filter({$0.userID.rawValue == currentUser.userInfo.userId})
         } else {
@@ -125,8 +125,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
     }
 
     func search(query rawQuery: String?) {
-        let usersManager: UsersManager = sharedServices.get()
-        if let currentUser = usersManager.firstUser {
+        if let currentUser = dependencies.usersManager.firstUser {
             self.emailsForDisplay = self.allEmails
                 .filter({$0.userID.rawValue == currentUser.userInfo.userId})
                 .sorted(by: {$1.name.localizedCaseInsensitiveCompare($0.name) == .orderedDescending})

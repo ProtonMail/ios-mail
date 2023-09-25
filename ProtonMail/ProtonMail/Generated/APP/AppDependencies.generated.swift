@@ -2,6 +2,22 @@
 // DO NOT EDIT
 import ProtonCore_Payments
 
+protocol HasAddressBookService {
+    var addressBookService: AddressBookService { get }
+}
+
+extension GlobalContainer: HasAddressBookService {
+    var addressBookService: AddressBookService {
+        addressBookServiceFactory()
+    }
+}
+
+extension UserContainer: HasAddressBookService {
+    var addressBookService: AddressBookService {
+        globalContainer.addressBookService
+    }
+}
+
 protocol HasBackgroundTaskHelper {
     var backgroundTaskHelper: BackgroundTaskHelper { get }
 }

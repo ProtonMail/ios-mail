@@ -17,9 +17,9 @@
 
 import Contacts
 import Foundation
-import VCard
 import ProtonCore_Crypto
 import ProtonCore_DataModel
+import VCard
 
 struct AppleContactParsedResult {
     let cardDatas: [CardData]
@@ -45,11 +45,11 @@ protocol AppleContactParserProtocol {
 final class AppleContactParser: AppleContactParserProtocol {
     private let contactImportQueue = OperationQueue()
     private var contactImportTask: BlockOperation?
-    private weak var coreDataService: CoreDataService?
+    private weak var coreDataService: CoreDataContextProviderProtocol?
     private weak var delegate: AppleContactParserDelegate?
 
     init(delegate: AppleContactParserDelegate,
-         coreDataService: CoreDataService) {
+         coreDataService: CoreDataContextProviderProtocol) {
         self.delegate = delegate
         self.coreDataService = coreDataService
     }
