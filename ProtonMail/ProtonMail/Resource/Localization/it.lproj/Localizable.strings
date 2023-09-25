@@ -90,7 +90,7 @@
 "Settings" = "Impostazioni";
 
 /* Alert title to confirm signout */
-"Sign out" = "Esci";
+"Sign out" = "Disconnetti";
 
 /* menu title */
 "Lock The App" = "Blocca l'app";
@@ -180,7 +180,7 @@
 "Set Password" = "Impostazione password";
 
 /* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Imposti una password per criptare questo messaggio per gli utenti non-Proton Mail.";
+"Set a password to encrypt this message for non-Proton Mail users." = "Imposta una password per crittografare questo messaggio per gli utenti che non utilizzano Proton Mail.";
 
 /* Placeholder */
 "Message Password" = "Messaggio Password";
@@ -363,7 +363,7 @@
 "Email addresses" = "Indirizzi email";
 
 /* contact section title */
-"Encrypted contact details" = "Dettagli di contatto cifrati";
+"Encrypted contact details" = "Dettagli di contatto crittografati";
 
 /* action */
 "Share contact" = "Condividi il contatto";
@@ -756,7 +756,7 @@
 "You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Hai disabilitato %1$@ nelle impostazioni di sistema. %2$@ è stato utilizzato per proteggere le informazioni importanti dell'account. Per accedere al tuo account, vai nelle impostazioni e riattiva %3$@, o accedi di nuovo.";
 
 /* A description string in pin & faceID setting page */
-"All protection settings will be reset and wiped upon signing out of the app." = "Tutte le impostazioni di protezione verranno resettate e cancellate al momento della disconnessione dall'app.";
+"All protection settings will be reset and wiped upon signing out of the app." = "Tutte le impostazioni di protezione verranno ripristinate e cancellate al momento della disconnessione dall'app.";
 
 /* A section title for timing section to set auto lock timing */
 "Timing" = "Tempo";
@@ -933,7 +933,7 @@
 "This message will expire in %dD %dH %dM" = "Questo messaggio scadrà in %1$dG %2$dH %3$dM";
 
 /* Action */
-"Sign Out" = "Esci";
+"Sign Out" = "Disconnetti";
 
 /* Alert title */
 "Sending in progress" = "Invio in corso";
@@ -963,7 +963,7 @@
 "Mark as read/unread" = "Segna come letta/da leggere";
 
 /* Action title of move to archive */
-"Move to archive" = "Sposta nell'archivio";
+"Move to archive" = "Sposta in archivio";
 
 /* Action title of move to spam */
 "Move to spam" = "Sposta in spam";
@@ -1101,13 +1101,13 @@
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Non è stato possibile inviare il tuo messaggio, forse a causa di una scarsa connessione internet. Il tuo messaggio è stato salvato nelle bozze e verrà inviato automaticamente la prossima volta che aprirai l'app.";
 
 /* Alert to confirm signout */
-"You will be switched to %@" = "Verrai passato a %@";
+"You will be switched to %@" = "Passerai a %@";
 
 /* Alert to confirm sign out */
-"Are you sure you want to sign out?" = "Sei sicuro di voler uscire?";
+"Are you sure you want to sign out?" = "Sei sicuro di volerti disconnettere?";
 
 /* Alert to confirm sign out when only one account signed in */
-"Are you sure you want to sign out %@?" = "Sei sicuro di voler uscire %@?";
+"Are you sure you want to sign out %@?" = "Sei sicuro di voler disconnettere %@?";
 
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Ci sono messaggi non inviati che andranno persi se ti disconnetti";
@@ -1116,7 +1116,7 @@
 "Please select at least one email" = "Selezionare almeno una email";
 
 /* Alert when auth token is revoked and switch to another */
-"Signed out from %@ and signed in with %@" = "Disconnesso da %1$@ e connesso con %2$@";
+"Signed out from %@ and signed in with %@" = "Disconnesso da %1$@ e accesso effettuato con %2$@";
 
 /* Alert when switched account by clicking notification of another account */
 "Switched to account '%@'" = "Passato all'account '%@'";
@@ -1284,7 +1284,7 @@
 "Move to trash" = "Sposta nel cestino";
 
 /* The title of the remove action in action sheet */
-"Move to inbox" = "Sposta in posta in arrivo";
+"Move to inbox" = "Sposta nella posta in arrivo";
 
 /* The title of the view message in light mode action in action sheet */
 "View message in Light mode" = "Visualizza il messaggio in modalità Chiara";
@@ -1979,7 +1979,7 @@
 "Couldn't open the message, try again." = "Impossibile aprire il messaggio, riprova.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Si prega di accedere all'app Proton Mail";
+"Please sign in to the Proton Mail app." = "Accedi sull'app di Proton Mail.";
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply (to last message)" = "Rispondi (all'ultimo messaggio)";

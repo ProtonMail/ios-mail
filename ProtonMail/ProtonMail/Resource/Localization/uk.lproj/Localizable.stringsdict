@@ -339,7 +339,7 @@
         <key>many</key>
         <string>Через %d хвилин</string>
         <key>other</key>
-        <string>Через %d хвилин</string>
+        <string>Через %d хвилини</string>
       </dict>
     </dict>
     <key>These %d messages will move to Drafts and have their schedule removed.</key>

@@ -792,7 +792,7 @@
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали весь обсяг свого сховища (%@). Перейдіть на тарифний план вищого рівня, щоб надсилати й отримувати електронні листи.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали %1$d%% місця у сховищі (%2$@). Будь ласка, поліпшіть свій тарифний план, щоб продовжити надсилати та отримувати листи.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали %1$d%% місця у сховищі (%2$@). Будь ласка, покращте свій тарифний план, щоб продовжити надсилати та отримувати листи.";
 
 /* Alert title */
 "Storage full" = "Сховище заповнене";
@@ -930,7 +930,7 @@
 "Message expired" = "Термін дії повідомлення завершився";
 
 /* expiration time count down */
-"This message will expire in %dD %dH %dM" = "Термін дії цього повідомлення завершиться через %1$dД %2$dГ %3$dХВ";
+"This message will expire in %dD %dH %dM" = "Термін дії цього повідомлення завершиться через %1$dД %2$dГ %3$dХв";
 
 /* Action */
 "Sign Out" = "Вийти";
@@ -1551,7 +1551,7 @@
 "Open account switcher" = "Відкрити перемикач облікових записів";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Надсилання буде можливе\nколи вивантажаться вкладення";
+"Sending will be available\nwhen attachments are uploaded" = "Надсилання буде можливе \nколи вивантажаться вкладення";
 
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Помилка вкладення";
@@ -1991,7 +1991,7 @@
 "Reply all (to last message)" = "Відповісти всім (на останнє повідомлення)";
 
 /* The action title in the action sheet of the composing new message */
-"New message" = "New message";
+"New message" = "Нове повідомлення";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Налаштувати";
@@ -2036,7 +2036,7 @@
 "Disable" = "Вимкнути";
 
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Поліпшіть підписку , щоб автоматично видаляти повідомлення, які перебували у смітнику або спамі понад 30 днів.";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Покращте підписку, щоб автоматично видаляти повідомлення, які перебували у смітнику або спамі понад 30 днів.";
 
 /* Text to prompt paid users to enable the auto delete feature */
 "Automatically delete messages that have been in trash for more than 30 days." = "Автоматично видаляти повідомлення, які перебувають у смітнику понад 30 днів.";
@@ -2066,7 +2066,7 @@
 "Custom email domains" = "Власні поштові домени";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Відображуване ім'я";
+"Display name" = "Ім'я";
 
 /* The placeholder for the first name text field in contact edit view. */
 "First name" = "Ім'я";
@@ -2075,10 +2075,10 @@
 "Last name" = "Прізвище";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Поле відображеного ім'я не може бути порожнім";
+"Display name field cannot be empty" = "Поле ім'я не може бути порожнім";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Ім'я контакту задовге";
 
 /* The button text for add profile picture */
 "Add photo" = "Додати фото";
@@ -2090,7 +2090,7 @@
 "Unsubscribe from mailing list" = "Відписатися від розсилки";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Відписатися?";
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Це скасує вашу підписку на список розсилки. Відправника буде сповіщено більше не надсилати електронні листи на цю адресу.";

@@ -2078,7 +2078,7 @@
 "Display name field cannot be empty" = "Το εμφανιζόμενο όνομα δεν μπορεί να είναι κενό";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Το όνομα της επαφής είναι πολύ μεγάλο";
+"Contact name is too long" = "Υπερβολικά μεγάλο όνομα επαφής";
 
 /* The button text for add profile picture */
 "Add photo" = "Προσθήκη φωτογραφίας";

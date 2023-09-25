@@ -1991,7 +1991,7 @@
 "Reply all (to last message)" = "回复所有人（最后一封邮件）";
 
 /* The action title in the action sheet of the composing new message */
-"New message" = "新邮件";
+"New message" = "撰写邮件";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "定制";

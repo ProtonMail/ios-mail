@@ -618,7 +618,7 @@
 "Enter your PIN to unlock your inbox." = "Voer uw pincode in om uw inbox te ontgrendelen.";
 
 /* Error */
-"Incorrect PIN." = "Onjuiste PIN-code.";
+"Incorrect PIN." = "Onjuiste pincode.";
 
 /* Description */
 "Upload iOS contacts to Proton Mail?" = "Contactpersonen in iOS naar Proton Mail uploaden?";
@@ -627,7 +627,7 @@
 "Delete contact" = "Contactpersoon verwijderen";
 
 /* Description */
-"PIN code can't be empty." = "PIN-code mag niet leeg zijn.";
+"PIN code can't be empty." = "Pincode mag niet leeg zijn.";
 
 /* Error */
 "Unknown Error" = "Onbekende fout";
@@ -1155,10 +1155,10 @@
 "General settings" = "Algemene instellingen";
 
 /* security title in settings */
-"App PIN" = "App PIN-code";
+"App PIN" = "App pincode";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN-code en Touch ID";
+"App PIN & Touch ID" = "App pincode en Touch ID";
 
 /* security title in settings */
 "App PIN & Face ID" = "App PIN-code en Face ID";
@@ -1296,13 +1296,13 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Schakel deze functie in om e-mailadressen automatisch aan te vullen met behulp van contacten van al uw ingelogde accounts.";
 
 /* The title of PIN code setup1 view  */
-"Set PIN code" = "PIN-code instellen";
+"Set PIN code" = "Pincode instellen";
 
 /* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Voer nieuwe PIN-code in";
+"Enter new PIN code" = "Voer nieuwe pincode in";
 
 /* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Voer een PIN-code in met min. 4 tekens en max 21 tekens.";
+"Enter a PIN code with min 4 characters and max 21 characters." = "Voer een pincode in met min. 4 tekens en max. 21 tekens.";
 
 /* The error message of entering a short pin */
 "PIN is too short" = "PIN is te kort";
@@ -1311,7 +1311,7 @@
 "PIN is too long" = "PIN is te lang";
 
 /* The title of PIN code setup2 view */
-"Repeat PIN code" = "Herhaal PIN-code";
+"Repeat PIN code" = "Herhaal pincode";
 
 /* The error message of entering an invalid password */
 "The PIN codes must match!" = "De pincodes moeten overeen komen!";
@@ -1329,7 +1329,7 @@
 "Off" = "Uit";
 
 /* The title of change PIN code option in security settings */
-"Change PIN code" = "Wijzig PIN-code";
+"Change PIN code" = "Wijzig pincode";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Opnieuw verifiëren";
@@ -1530,7 +1530,7 @@
 "Undo send" = "Verzenden ongedaan maken";
 
 /* The protection title of PIN code protection */
-"PIN code" = "PIN-code";
+"PIN code" = "Pincode";
 
 /* The protection title of Face ID protection */
 "Face ID" = "Face ID";
@@ -1822,7 +1822,7 @@
 "You can now choose and rearrange the actions in this bar" = "U kan nu acties kiezen en herschikken in deze balk";
 
 /* Button to block a sender */
-"Block messages from this sender" = "Block messages from this sender";
+"Block messages from this sender" = "Blokkeer berichten van deze afzender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blokkeer";

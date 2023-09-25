@@ -1928,7 +1928,7 @@
 "As scheduled" = "Akken yettusɣawes";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Sbadu asɣawas-ik";
 
 /* The content of the up sell content of the scheduled send. */
 "Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
@@ -1937,7 +1937,7 @@
 "Upgrade now" = "Sali aswir tura";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Sɣawes akud n tuzna n yizen melmi i tebɣiḍ";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Unlimited folders and labels" = "Ikaramen d tebzimin war talast";
@@ -1970,10 +1970,10 @@
 "Next message after move" = "Izen uḍfir seld asenkez";
 
 /* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Navigate to next message after move";
+"Navigate to next message after move" = "Uɣal ɣer yizen uḍfir seld asenkez";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Performing a move action on a message (e.g. archive) will navigate to the next message.";
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Mi ara n tesnekzeḍ izen (am. ɣer teṛcivt) ad tuɣaleḍ ɣer yizen uḍfir.j";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Yegguma ad yeldi yizen, ales ticki.";
@@ -2030,22 +2030,22 @@
 "Disable auto-delete?" = "Sens tukksa tawurmant?";
 
 /* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Emails scheduled for deletion will remain in the trash and spam folders.";
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Imaylen yettusɣawsen i tukksa af qqimen deg tqecwalt d yikaramen ispalen";
 
 /* Button to disable auto delete */
 "Disable" = "Désactiver";
 
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Sali aɣawas-ik i tukksa n yiznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Automatically delete messages that have been in trash for more than 30 days.";
+"Automatically delete messages that have been in trash for more than 30 days." = "Kkes iznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Uhu, tanemmirt";
 
 /* Text to inform users they have the auto delete feature enabled */
-"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Messages that have been in trash and spam more than 30 days will be automatically deleted.";
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Iznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan, ad ttwakksen s wudem awurman.";
 
 /* Title of button to empty spam folder */
 "Empty spam" = "Silem ispamen";

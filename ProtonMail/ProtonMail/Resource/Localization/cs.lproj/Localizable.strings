@@ -1821,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Nyní můžete vybrat a změnit uspořádání akcí na tomto panelu nástrojů";
 
 /* Button to block a sender */
-"Block messages from this sender" = "Block messages from this sender";
+"Block messages from this sender" = "Blokovat zprávy tohoto odesílatele";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blokovat";
@@ -1992,7 +1992,7 @@
 "Reply all (to last message)" = "Odpovědět všem (na poslední zprávu)";
 
 /* The action title in the action sheet of the composing new message */
-"New message" = "New message";
+"New message" = "Nová zpráva";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Přizpůsobit";
@@ -2079,7 +2079,7 @@
 "Display name field cannot be empty" = "Pole zobrazovaného jména nesmí být prázdné";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Jméno kontaktu je příliš dlouhé";
 
 /* The button text for add profile picture */
 "Add photo" = "Přidat fotku";
@@ -2091,7 +2091,7 @@
 "Unsubscribe from mailing list" = "Odhlásit se z odběru";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Odhlásit?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Tím se odhlásíte z odběru e-mailů. Odesílatel bude upozorněn, aby na tuto adresu již neposílal e-maily.";
