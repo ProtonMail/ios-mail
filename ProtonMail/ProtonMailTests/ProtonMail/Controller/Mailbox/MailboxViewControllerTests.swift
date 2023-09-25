@@ -414,7 +414,6 @@ extension MailboxViewControllerTests {
 
         let fetchMessage = MockFetchMessages()
         let updateMailbox = UpdateMailbox(dependencies: .init(
-            labelID: labelID,
             eventService: eventsServiceMock,
             messageDataService: userManagerMock.messageService,
             conversationProvider: conversationProviderMock,

@@ -350,8 +350,7 @@ extension MenuCoordinator {
             dependencies: .init(
                 messageDataService: user.messageService,
                 cacheService: user.cacheService,
-                eventsService: user.eventsService,
-                labelID: labelID
+                eventsService: user.eventsService
             )
         )
 
@@ -370,8 +369,7 @@ extension MenuCoordinator {
         let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: dependencies.contextProvider)
 
         let updateMailbox = UpdateMailbox(
-            dependencies: .init(labelID: labelID,
-                                eventService: user.eventsService,
+            dependencies: .init(eventService: user.eventsService,
                                 messageDataService: user.messageService,
                                 conversationProvider: user.conversationService,
                                 purgeOldMessages: purgeOldMessages,

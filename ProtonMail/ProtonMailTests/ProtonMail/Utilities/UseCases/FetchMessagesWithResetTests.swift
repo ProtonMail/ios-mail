@@ -41,13 +41,13 @@ final class FetchMessagesWithResetTests: XCTestCase {
 
         sut = FetchMessagesWithReset(
             userID: "dummy_user_id",
-            dependencies: makeDependencies(
-                mockFetchLatestEventId: mockFetchLatestEventId,
-                mockFetchMessages: mockFetchMessages,
-                mockLocalMessageDataService: mockLocalMessagesService,
-                mockLastUpdatedStore: mockLastUpdatedStore,
-                mockContactProvider: mockContactProvider,
-                mockLabelProvider: mockLabelProvider))
+            dependencies: .init(
+                fetchLatestEventId: mockFetchLatestEventId,
+                fetchMessages: mockFetchMessages,
+                localMessageDataService: mockLocalMessagesService,
+                lastUpdatedStore: mockLastUpdatedStore,
+                contactProvider: mockContactProvider,
+                labelProvider: mockLabelProvider))
 
         mockLabelProvider.fetchV4LabelsStub.bodyIs { _, completion in
             completion?(.success(()))
@@ -68,9 +68,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let cleanContact = true
         let expectation = expectation(description: "callback is called")
 
-        let params = FetchMessagesWithReset.Params(
-            endTime: 0,
-            fetchOnlyUnreadMessages: Bool.random(),
+        let params = makeParams(
             refetchContacts: cleanContact
         )
         sut.execute(params: params) { _ in
@@ -84,9 +82,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let cleanContact = false
         let expectation = expectation(description: "callback is called")
 
-        let params = FetchMessagesWithReset.Params(
-            endTime: 0,
-            fetchOnlyUnreadMessages: Bool.random(),
+        let params = makeParams(
             refetchContacts: cleanContact
         )
         sut.execute(params: params) { _ in
@@ -99,9 +95,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
     func testExecute_cleansButDoesntRemoveDrafts_whenAllRequestsSucceed() throws {
         let expectation = expectation(description: "callback is called")
 
-        let params = FetchMessagesWithReset.Params(
-            endTime: 0,
-            fetchOnlyUnreadMessages: Bool.random(),
+        let params = makeParams(
             refetchContacts: Bool.random()
         )
         sut.execute(params: params) { _ in
@@ -125,9 +119,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let emptyEvent = EventLatestIDResponse()
         mockFetchLatestEventId.result = .success(emptyEvent)
 
-        let params = FetchMessagesWithReset.Params(
-            endTime: 0,
-            fetchOnlyUnreadMessages: Bool.random(),
+        let params = makeParams(
             refetchContacts: Bool.random()
         )
         sut.execute(params: params) { _ in
@@ -153,9 +145,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
 
         mockFetchMessages.result = .failure(NSError.badResponse())
 
-        let params = FetchMessagesWithReset.Params(
-            endTime: 0,
-            fetchOnlyUnreadMessages: Bool.random(),
+        let params = makeParams(
             refetchContacts: true
         )
         sut.execute(params: params) { _ in
@@ -181,9 +171,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
 
         mockFetchMessages.result = .failure(NSError.badResponse())
 
-        let params = FetchMessagesWithReset.Params(
-            endTime: 0,
-            fetchOnlyUnreadMessages: Bool.random(),
+        let params = makeParams(
             refetchContacts: false
         )
         sut.execute(params: params) { _ in
@@ -219,21 +207,12 @@ extension FetchMessagesWithResetTests {
         XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalledExactlyOnce)
     }
 
-    private func makeDependencies(
-        mockFetchLatestEventId: FetchLatestEventIdUseCase,
-        mockFetchMessages: FetchMessagesUseCase,
-        mockLocalMessageDataService: LocalMessageDataServiceProtocol,
-        mockLastUpdatedStore: LastUpdatedStoreProtocol,
-        mockContactProvider: ContactProviderProtocol,
-        mockLabelProvider: LabelProviderProtocol
-    ) -> FetchMessagesWithReset.Dependencies {
-        FetchMessagesWithReset.Dependencies(
-            fetchLatestEventId: mockFetchLatestEventId,
-            fetchMessages: mockFetchMessages,
-            localMessageDataService: mockLocalMessageDataService,
-            lastUpdatedStore: mockLastUpdatedStore,
-            contactProvider: mockContactProvider,
-            labelProvider: mockLabelProvider
+    private func makeParams(refetchContacts: Bool) -> FetchMessagesWithReset.Params {
+        FetchMessagesWithReset.Params(
+            labelID: "dummy_label_id",
+            endTime: 0,
+            fetchOnlyUnreadMessages: Bool.random(),
+            refetchContacts: refetchContacts
         )
     }
 }
