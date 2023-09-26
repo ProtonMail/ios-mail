@@ -46,7 +46,7 @@ final class MessageSenderPGPChecker {
     }
 
     func check(complete: @escaping Complete) {
-        guard message.isDetailDownloaded, let sender = try? message.parseSender() else {
+        guard let sender = try? message.parseSender() else {
             complete(nil)
             return
         }

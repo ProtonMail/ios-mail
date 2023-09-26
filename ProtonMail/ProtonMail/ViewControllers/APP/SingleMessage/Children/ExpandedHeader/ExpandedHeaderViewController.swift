@@ -36,6 +36,10 @@ class ExpandedHeaderViewController: UIViewController {
     init(viewModel: ExpandedHeaderViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        customView.onSenderContainerTapped = { [weak self] in
+            guard let sender = self?.viewModel.infoProvider.checkedSenderContact else { return }
+            self?.contactTapped?(.sender(sender.sender))
+        }
     }
 
     override func loadView() {

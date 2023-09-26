@@ -362,6 +362,9 @@ class SingleMessageContentViewController: UIViewController {
 
         viewModel.embedNonExpandedHeader = { [weak self] viewModel in
             let header = NonExpandedHeaderViewController(viewModel: viewModel)
+            header.contactTapped = {
+                self?.presentActionSheet(context: $0)
+            }
             header.observeShowDetails {
                 self?.expandButton()
             }

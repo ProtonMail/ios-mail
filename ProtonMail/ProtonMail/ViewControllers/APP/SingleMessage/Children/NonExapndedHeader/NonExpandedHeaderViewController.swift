@@ -31,9 +31,15 @@ class NonExpandedHeaderViewController: UIViewController {
     private let tagsPresenter = TagsPresenter()
     private var showDetailsAction: (() -> Void)?
 
+    var contactTapped: ((MessageHeaderContactContext) -> Void)?
+
     init(viewModel: NonExpandedHeaderViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        customView.onSenderContainerTapped = { [weak self] in
+            guard let sender = self?.viewModel.infoProvider.checkedSenderContact else { return }
+            self?.contactTapped?(.sender(sender.sender))
+        }
     }
 
     override func loadView() {
