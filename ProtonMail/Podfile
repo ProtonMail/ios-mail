@@ -72,7 +72,6 @@ def app_share_pods
   pod 'ProtonCore-Networking', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Services', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-VCard', :git => proton_core_path, :tag => proton_core_version
-  pod 'ReachabilitySwift'
   pod 'ProtonCore-UIFoundations', :git => proton_core_path, :tag => proton_core_version
   pod 'SwiftSoup', '~> 2.3'
   pod 'TrustKit', :git=> 'https://github.com/ProtonMail/TrustKit.git', :branch => 'release/1.0.3'

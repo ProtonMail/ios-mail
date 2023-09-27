@@ -323,7 +323,6 @@ DEPENDENCIES:
   - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
   - "ProtonCore-VCard (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
-  - ReachabilitySwift
   - SDWebImage (= 5.13.3)
   - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `8.9.3.fork`)"
   - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.autolayout`)"
@@ -663,6 +662,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: 7809078cae7e70580d42f1bff97b83dacfb28681
+PODFILE CHECKSUM: b0edb15917866c3d951c8d090227aaef694adcc1
 
 COCOAPODS: 1.13.0
