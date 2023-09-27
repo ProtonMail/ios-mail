@@ -30,7 +30,7 @@ protocol ComposeContainerUIProtocol: AnyObject {
 class ComposeContainerViewModel: TableContainerViewModel {
     typealias Dependencies = HasAttachmentMetadataStrippingProtocol
     & HasFeatureFlagCache
-    & HasLastUpdatedStore
+    & HasLastUpdatedStoreProtocol
     & HasUserIntroductionProgressProvider
     & HasUsersManager
 

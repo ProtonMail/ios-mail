@@ -255,7 +255,7 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        PushUpdater().update(with: userInfo)
+        dependencies.pushUpdater.update(with: userInfo)
         completionHandler(.newData)
     }
 

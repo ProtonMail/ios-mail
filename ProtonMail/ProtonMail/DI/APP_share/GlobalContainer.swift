@@ -66,7 +66,7 @@ final class GlobalContainer: ManagedContainer {
         }
     }
 
-    var lastUpdatedStoreFactory: Factory<LastUpdatedStore> {
+    var lastUpdatedStoreFactory: Factory<LastUpdatedStoreProtocol> {
         self {
             LastUpdatedStore(contextProvider: self.contextProvider)
         }
@@ -87,6 +87,12 @@ final class GlobalContainer: ManagedContainer {
     var pinFailedCountCacheFactory: Factory<PinFailedCountCache> {
         self {
             self.userCachedStatus
+        }
+    }
+
+    var pushUpdaterFactory: Factory<PushUpdater> {
+        self {
+            PushUpdater(userStatus: self.userCachedStatus)
         }
     }
 

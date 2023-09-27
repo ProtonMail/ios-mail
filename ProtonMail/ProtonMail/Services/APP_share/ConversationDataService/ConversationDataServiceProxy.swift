@@ -41,7 +41,8 @@ final class ConversationDataServiceProxy: ConversationProvider {
          eventsService: EventsFetching,
          undoActionManager: UndoActionManagerProtocol,
          queueManager: QueueManager?,
-         contactCacheStatus: ContactCacheStatusProtocol) {
+         contactCacheStatus: ContactCacheStatusProtocol,
+         localConversationUpdater: LocalConversationUpdater) {
         self.apiService = api
         self.userID = userID
         self.contextProvider = contextProvider
@@ -54,8 +55,7 @@ final class ConversationDataServiceProxy: ConversationProvider {
                                                                eventsService: eventsService,
                                                                undoActionManager: undoActionManager,
                                                                contactCacheStatus: contactCacheStatus)
-
-        localConversationUpdater = LocalConversationUpdater(contextProvider: contextProvider, userID: userID.rawValue)
+        self.localConversationUpdater = localConversationUpdater
     }
 }
 

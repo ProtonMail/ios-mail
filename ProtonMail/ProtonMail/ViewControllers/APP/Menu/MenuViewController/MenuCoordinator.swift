@@ -60,7 +60,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     typealias Dependencies = MenuViewModel.Dependencies
     & SignInCoordinatorEnvironment.Dependencies
     & HasFeatureFlagCache
-    & HasLastUpdatedStore
+    & HasLastUpdatedStoreProtocol
     & HasPushNotificationService
     & HasUserCachedStatus
 

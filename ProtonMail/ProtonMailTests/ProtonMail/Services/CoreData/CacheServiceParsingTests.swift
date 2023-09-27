@@ -34,11 +34,11 @@ class CacheServiceParsingTests: XCTestCase {
 
         lastUpdatedStore = MockLastUpdatedStoreProtocol()
 
-        let dependencies = CacheService.Dependencies(
-            coreDataService: coreDataService,
-            lastUpdatedStore: lastUpdatedStore
-        )
-        sut = CacheService(userID: "userID", dependencies: dependencies)
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { coreDataService }
+        globalContainer.lastUpdatedStoreFactory.register { self.lastUpdatedStore }
+        
+        sut = CacheService(userID: "userID", dependencies: globalContainer)
     }
 
     override func tearDownWithError() throws {

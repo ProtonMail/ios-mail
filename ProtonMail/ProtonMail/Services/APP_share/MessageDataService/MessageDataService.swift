@@ -441,7 +441,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 }
 
                                 newMessage.unRead = false
-                                PushUpdater().remove(notificationIdentifiers: [newMessage.notificationId])
+                                self.dependencies.pushUpdater.remove(notificationIdentifiers: [newMessage.notificationId])
                                 error = context.saveUpstreamIfNeeded()
                                 DispatchQueue.main.async {
                                     completion(error)
@@ -489,7 +489,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                     messageOut.isDetailDownloaded = true
                                     if messageOut.unRead == true {
                                         messageOut.unRead = false
-                                        PushUpdater().remove(notificationIdentifiers: [messageOut.notificationId])
+                                        self.dependencies.pushUpdater.remove(notificationIdentifiers: [messageOut.notificationId])
                                         self.cacheService.updateCounterSync(markUnRead: false, on: messageOut)
                                     }
 
@@ -1230,6 +1230,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 extension MessageDataService {
     struct Dependencies {
         let moveMessageInCacheUseCase: MoveMessageInCacheUseCase
+        let pushUpdater: PushUpdater
         let viewModeDataSource: ViewModeDataSource
     }
 }

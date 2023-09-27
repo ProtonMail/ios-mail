@@ -115,18 +115,18 @@ extension UserContainer: HasKeyMakerProtocol {
     }
 }
 
-protocol HasLastUpdatedStore {
-    var lastUpdatedStore: LastUpdatedStore { get }
+protocol HasLastUpdatedStoreProtocol {
+    var lastUpdatedStore: LastUpdatedStoreProtocol { get }
 }
 
-extension GlobalContainer: HasLastUpdatedStore {
-    var lastUpdatedStore: LastUpdatedStore {
+extension GlobalContainer: HasLastUpdatedStoreProtocol {
+    var lastUpdatedStore: LastUpdatedStoreProtocol {
         lastUpdatedStoreFactory()
     }
 }
 
-extension UserContainer: HasLastUpdatedStore {
-    var lastUpdatedStore: LastUpdatedStore {
+extension UserContainer: HasLastUpdatedStoreProtocol {
+    var lastUpdatedStore: LastUpdatedStoreProtocol {
         globalContainer.lastUpdatedStore
     }
 }
@@ -176,6 +176,22 @@ extension GlobalContainer: HasPinFailedCountCache {
 extension UserContainer: HasPinFailedCountCache {
     var pinFailedCountCache: PinFailedCountCache {
         globalContainer.pinFailedCountCache
+    }
+}
+
+protocol HasPushUpdater {
+    var pushUpdater: PushUpdater { get }
+}
+
+extension GlobalContainer: HasPushUpdater {
+    var pushUpdater: PushUpdater {
+        pushUpdaterFactory()
+    }
+}
+
+extension UserContainer: HasPushUpdater {
+    var pushUpdater: PushUpdater {
+        globalContainer.pushUpdater
     }
 }
 

@@ -47,7 +47,7 @@ class LabelsDataService: Service {
     & HasAPIService
     & HasCacheService
     & HasConversationStateService
-    & HasLastUpdatedStore
+    & HasLastUpdatedStoreProtocol
 
     private let userID: UserID
     private let dependencies: Dependencies

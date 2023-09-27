@@ -31,13 +31,7 @@ final class UserContainer: ManagedContainer {
 
     var cacheServiceFactory: Factory<CacheService> {
         self {
-            CacheService(
-                userID: self.user.userID,
-                dependencies: .init(
-                    coreDataService: self.contextProvider,
-                    lastUpdatedStore: self.lastUpdatedStore
-                )
-            )
+            CacheService(userID: self.user.userID, dependencies: self)
         }
     }
 
@@ -84,7 +78,8 @@ final class UserContainer: ManagedContainer {
                 eventsService: self.eventsService,
                 undoActionManager: self.undoActionManager,
                 queueManager: self.queueManager,
-                contactCacheStatus: self.userCachedStatus
+                contactCacheStatus: self.userCachedStatus,
+                localConversationUpdater: .init(userID: self.user.userID.rawValue, dependencies: self)
             )
         }
     }
@@ -180,16 +175,17 @@ final class UserContainer: ManagedContainer {
                 lastUpdatedStore: self.lastUpdatedStore,
                 user: self.user,
                 cacheService: self.cacheService,
-                contactCacheStatus: sharedServices.userCachedStatus,
+                contactCacheStatus: self.userCachedStatus,
                 dependencies: .init(
                     moveMessageInCacheUseCase: MoveMessageInCache(
                         dependencies: .init(
                             contextProvider: self.contextProvider,
                             lastUpdatedStore: self.lastUpdatedStore,
                             userID: self.user.userID,
-                            pushUpdater: PushUpdater()
+                            pushUpdater: self.pushUpdater
                         )
                     ),
+                    pushUpdater: self.pushUpdater,
                     viewModeDataSource: self.conversationStateService
                 )
             )
