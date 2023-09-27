@@ -70,6 +70,7 @@ final class EventsService: Service, EventsFetching {
     & HasFeatureFlagCache
     & HasFetchMessageMetaData
     & HasIncomingDefaultService
+    & HasNotificationCenter
     & HasQueueManager
     & HasUserCachedStatus
     & HasUsersManager
@@ -734,7 +735,7 @@ extension EventsService {
     private func processEvents(addresses: [[String: Any]]?){
         assertProperExecution()
 
-        guard let events = addresses else { return }
+        guard let events = addresses, events.isEmpty == false else { return }
         for eventDict in events {
             let event = AddressEvent(event: eventDict)
             switch event.action {
@@ -762,6 +763,7 @@ extension EventsService {
             default:
                 break
             }
+            dependencies.notificationCenter.post(name: .addressesStatusAreChanged, object: nil)
         }
     }
 

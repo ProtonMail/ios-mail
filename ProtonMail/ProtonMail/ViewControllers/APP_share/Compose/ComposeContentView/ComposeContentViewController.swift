@@ -832,53 +832,6 @@ extension ComposeContentViewController: ComposeViewDelegate {
         button.showsMenuAsPrimaryAction = true
     }
 
-    func composeViewPickFrom(_ composeView: ComposeHeaderViewController) {
-        var needsShow = false
-        let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to,
-                                                message: nil,
-                                                preferredStyle: .actionSheet)
-        let cancel = UIAlertAction(title: LocalString._general_cancel_button,
-                                   style: .cancel,
-                                   handler: nil)
-        cancel.accessibilityLabel = "ComposeContainerViewController.cancelButton"
-        alertController.addAction(cancel)
-        var multiDomains = self.viewModel.getAddresses()
-        multiDomains.sort(by: { $0.order < $1.order })
-        let defaultAddr = self.viewModel.fromAddress() ?? self.viewModel.getDefaultSendAddress()
-        for addr in multiDomains {
-            guard addr.status == .enabled && addr.receive == .active else {
-                continue
-            }
-            needsShow = true
-            let selectEmail = UIAlertAction(title: addr.email, style: .default) { action in
-                guard action.title != defaultAddr?.email else { return }
-                if addr.send == .inactive {
-                    let alertController = String(format: LocalString._composer_change_paid_plan_sender_error, addr.email).alertController()
-                    alertController.addOKAction()
-                    self.present(alertController, animated: true, completion: nil)
-                } else {
-                    if let signature = self.viewModel.getCurrentSignature(addr.addressID) {
-                        self.htmlEditor.update(signature: signature)
-                    }
-                    if let viewToAddTo = self.parent?.navigationController?.view {
-                        MBProgressHUD.showAdded(to: viewToAddTo, animated: true)
-                        self.updateSenderMail(addr: addr, complete: nil)
-                    }
-                }
-            }
-            selectEmail.accessibilityLabel = selectEmail.title
-            if defaultAddr == addr {
-                selectEmail.setValue(true, forKey: "checked")
-            }
-            alertController.addAction(selectEmail)
-        }
-        if needsShow {
-            alertController.popoverPresentationController?.sourceView = self.headerView.fromView
-            alertController.popoverPresentationController?.sourceRect = self.headerView.fromView.frame
-            present(alertController, animated: true, completion: nil)
-        }
-    }
-
     private func updateSenderMail(addr: Address, complete: (() -> Void)?) {
         self.queue.sync { [weak self] in
             self?.viewModel.updateAddressID(addr.addressID, emailAddress: addr.email)

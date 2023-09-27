@@ -79,13 +79,6 @@ struct TaskCompletionHelper {
         NotificationCenter.default.post(Notification(name: .tempNetworkError, object: reason, userInfo: nil))
     }
 
-    func parseStatusCodeIfErrorReceivedFromNetworkResponse(errorUserInfo: [String: Any]) -> Int? {
-        if let response = errorUserInfo[Constant.networkResponseErrorKey] as? HTTPURLResponse {
-            return response.statusCode
-        }
-        return nil
-    }
-
     func handleResult(queueTask: QueueManager.Task,
                       error: NSError?,
                       notifyQueueManager: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
@@ -103,7 +96,7 @@ struct TaskCompletionHelper {
         let errorUserInfo = error.userInfo
 
         // Check if error returns from the network response. Otherwise, check if it is internet issue
-        if let statusCodeFromResponse = parseStatusCodeIfErrorReceivedFromNetworkResponse(errorUserInfo: errorUserInfo) {
+        if let statusCodeFromResponse = error.httpCode {
             statusCode = statusCodeFromResponse
         } else {
             isInternetIssue = calculateIsInternetIssue(
