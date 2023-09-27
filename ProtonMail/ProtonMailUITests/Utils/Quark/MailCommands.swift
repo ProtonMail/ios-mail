@@ -40,11 +40,12 @@ extension Quark {
 
     func createUserWithiOSFixturesLoad(name: String) throws ->  MailQuarkResponse? {
 
-        let definitionPath = "api://apps/Mail/resources/qa/ios/\(name)"
+        let definitionPath = "nexus://Mail/ios/ios.\(name)"
         let outputFormat = "json"
 
         let args = [
             "definition-paths[]=\(definitionPath)",
+            "--source[]=nexus:nexus:https://nexus.protontech.ch?repository=TestData",
             "--output-format=\(outputFormat)"
         ]
 
