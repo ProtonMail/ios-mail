@@ -22,7 +22,7 @@
 
 import ProtonCoreKeymaker
 
-class AppCacheService: Service {
+class AppCacheService {
     typealias Dependencies = HasKeychain & HasUserDefaults
 
     enum Constants {

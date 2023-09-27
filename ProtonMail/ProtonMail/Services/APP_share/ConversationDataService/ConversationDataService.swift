@@ -65,7 +65,7 @@ protocol ConversationProvider: AnyObject {
                                                    labelID: LabelID) -> [ConversationID]
 }
 
-final class ConversationDataService: Service, ConversationProvider {
+final class ConversationDataService: ConversationProvider {
     let apiService: APIService
     let userID: UserID
     let contextProvider: CoreDataContextProviderProtocol

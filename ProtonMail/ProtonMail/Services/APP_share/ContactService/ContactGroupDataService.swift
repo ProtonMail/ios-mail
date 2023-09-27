@@ -31,7 +31,7 @@ protocol ContactGroupsProviderProtocol: AnyObject {
     func getAllContactGroupVOs() -> [ContactGroupVO]
 }
 
-class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
+class ContactGroupsDataService: ContactGroupsProviderProtocol {
     func cleanUp() {
             coreDataService.performAndWaitOnRootSavingContext { context in
                 let groups = self.labelDataService.getAllLabels(of: .contactGroup, context: context)

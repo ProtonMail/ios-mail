@@ -30,7 +30,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonMailAnalytics
 
-protocol MessageDataServiceProtocol: Service {
+protocol MessageDataServiceProtocol: AnyObject {
     var pushNotificationMessageID: String? { get set }
     var messageDecrypter: MessageDecrypter { get }
 
@@ -87,7 +87,7 @@ protocol MessageDataServiceProtocol: Service {
 }
 
 // sourcery: mock
-protocol LocalMessageDataServiceProtocol: Service {
+protocol LocalMessageDataServiceProtocol {
     func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool)
 }
 

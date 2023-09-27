@@ -32,17 +32,9 @@ final class ShareAppCoordinator {
     private let dependencies = GlobalContainer()
 
     func start() {
-        sharedServices.add(UserCachedStatus.self, for: dependencies.userCachedStatus)
-        sharedServices.add(QueueManager.self, for: dependencies.queueManager)
-
-        let keyMaker = dependencies.keyMaker
-        sharedServices.add(Keymaker.self, for: keyMaker)
-        sharedServices.add(KeyMakerProtocol.self, for: keyMaker)
-
         let unlockManager = dependencies.unlockManager
         unlockManager.delegate = self
 
-        sharedServices.add(UsersManager.self, for: dependencies.usersManager)
         self.loadUnlockCheckView()
     }
 

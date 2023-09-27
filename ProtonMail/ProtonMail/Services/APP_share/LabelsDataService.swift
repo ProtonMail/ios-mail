@@ -52,7 +52,7 @@ extension LabelsDataService {
     }
 }
 
-class LabelsDataService: Service {
+class LabelsDataService {
     typealias Dependencies = AnyObject
     & LabelPublisher.Dependencies
     & HasAPIService

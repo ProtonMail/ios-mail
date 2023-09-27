@@ -55,7 +55,7 @@ protocol ContactDataServiceProtocol: AnyObject {
     #endif
 }
 
-class ContactDataService: Service {
+class ContactDataService {
 
     private let addressBookService: AddressBookService
     private let labelDataService: LabelsDataService

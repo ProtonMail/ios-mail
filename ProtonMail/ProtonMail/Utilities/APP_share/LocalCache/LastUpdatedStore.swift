@@ -25,7 +25,7 @@ import ProtonCoreDataModel
 import UIKit
 
 // sourcery: mock
-protocol LastUpdatedStoreProtocol: Service {
+protocol LastUpdatedStoreProtocol {
     func cleanUp(userId: UserID)
 
     func updateEventID(by userID: UserID, eventID: String)

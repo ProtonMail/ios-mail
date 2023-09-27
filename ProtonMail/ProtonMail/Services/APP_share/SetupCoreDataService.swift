@@ -24,6 +24,7 @@ protocol SetupCoreDataService {
 
 /// This class exists to abstract the setup method which causes inconsistencies in tests
 /// because of the sharedServices
+/// TODO: sharedServices are now gone, revisit if this class is still needed
 final class SetupCoreData: SetupCoreDataService {
     typealias Dependencies = AnyObject & HasLastUpdatedStoreProtocol
 
@@ -36,12 +37,6 @@ final class SetupCoreData: SetupCoreDataService {
     func setup() throws {
         do {
             try CoreDataStore.shared.initialize()
-
-            sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
-            sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-            let lastUpdatedStore = dependencies.lastUpdatedStore
-            sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
-            sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
         } catch {
             PMAssertionFailure(error)
             throw error

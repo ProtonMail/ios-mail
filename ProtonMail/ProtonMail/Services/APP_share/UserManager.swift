@@ -51,7 +51,7 @@ protocol UserManagerSaveAction: AnyObject {
     func save()
 }
 
-class UserManager: Service, ObservableObject {
+class UserManager: ObservableObject {
     private let authCredentialAccessQueue = DispatchQueue(label: "com.protonmail.user_manager.auth_access_queue", qos: .userInitiated)
 
     var userID: UserID {

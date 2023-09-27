@@ -33,7 +33,7 @@ protocol NotificationHandler {
 
 extension UNUserNotificationCenter: NotificationHandler {}
 
-class LocalNotificationService: Service {
+class LocalNotificationService {
     enum Categories: String {
         case failedToSend = "LocalNotificationService.Categories.failedToSend"
         case sessionRevoked = "LocalNotificationService.Categories.sessionRevoked"
