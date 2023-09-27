@@ -1470,6 +1470,11 @@ enum L11n {
         static let upgradeButtonTitle = NSLocalizedString("Upgrade now", comment: "Title of button to upgrade to a paid plan")
     }
 
+    struct Compose {
+        static let senderChanged = NSLocalizedString("Sender changed", comment: "Alert title, shows when current sender address in the composer is invalid anymore.")
+        static let senderChangedMessage = NSLocalizedString("The original sender of this message is no longer valid. Your message will be sent from your default address %@.", comment: "Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address.")
+    }
+
     struct ContactEdit {
         static let displayNamePlaceholder = NSLocalizedString("Display name", comment: "The placeholder for the display name text field in contact edit view.")
         static let firstNamePlaceholder = NSLocalizedString("First name", comment: "The placeholder for the first name text field in contact edit view.")
