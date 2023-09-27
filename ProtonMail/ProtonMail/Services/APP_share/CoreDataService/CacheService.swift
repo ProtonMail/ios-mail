@@ -48,7 +48,7 @@ class CacheService: CacheServiceProtocol {
     let lastUpdatedStore: LastUpdatedStoreProtocol
     let coreDataService: CoreDataContextProviderProtocol
 
-    init(userID: UserID, dependencies: Dependencies = Dependencies()) {
+    init(userID: UserID, dependencies: Dependencies) {
         self.userID = userID
         self.lastUpdatedStore = dependencies.lastUpdatedStore
         self.coreDataService = dependencies.coreDataService
@@ -663,8 +663,8 @@ extension CacheService {
         let lastUpdatedStore: LastUpdatedStoreProtocol
 
         init(
-            coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self),
-            lastUpdatedStore: LastUpdatedStoreProtocol = sharedServices.get(by: LastUpdatedStore.self)
+            coreDataService: CoreDataContextProviderProtocol,
+            lastUpdatedStore: LastUpdatedStoreProtocol
         ) {
             self.coreDataService = coreDataService
             self.lastUpdatedStore = lastUpdatedStore

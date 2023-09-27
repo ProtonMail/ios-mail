@@ -28,11 +28,11 @@ extension EventsService {
 
         init(
             contactCacheStatus: ContactCacheStatusProtocol,
-            coreDataProvider: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self),
+            coreDataProvider: CoreDataContextProviderProtocol,
             featureFlagCache: FeatureFlagCache,
             fetchMessageMetaData: FetchMessageMetaDataUseCase,
             incomingDefaultService: IncomingDefaultService,
-            queueManager: QueueManagerProtocol = sharedServices.get(by: QueueManager.self)
+            queueManager: QueueManagerProtocol
         ) {
             self.contactCacheStatus = contactCacheStatus
             self.coreDataProvider = coreDataProvider

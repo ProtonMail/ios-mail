@@ -108,9 +108,11 @@ final class UserContainer: ManagedContainer {
                 userManager: self.user,
                 dependencies: .init(
                     contactCacheStatus: self.userCachedStatus,
+                    coreDataProvider: self.contextProvider,
                     featureFlagCache: self.featureFlagCache,
                     fetchMessageMetaData: useCase,
-                    incomingDefaultService: self.incomingDefaultService
+                    incomingDefaultService: self.incomingDefaultService,
+                    queueManager: self.queueManager
                 )
             )
         }

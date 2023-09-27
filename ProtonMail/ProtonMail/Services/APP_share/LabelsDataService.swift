@@ -251,7 +251,7 @@ class LabelsDataService: Service {
 
     func makePublisher() -> LabelPublisherProtocol {
         let params = LabelPublisher.Parameters(userID: userID)
-        return LabelPublisher(parameters: params)
+        return LabelPublisher(parameters: params, dependencies: .init(coreDataService: contextProvider))
     }
 
     func fetchedResultsController(_ type: LabelFetchType) -> NSFetchedResultsController<Label> {
