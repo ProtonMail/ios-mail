@@ -84,19 +84,6 @@ extension UserContainer {
         }
     }
 
-    var fetchMessageDetailFactory: Factory<FetchMessageDetail> {
-        self {
-            FetchMessageDetail(
-                dependencies: .init(
-                    queueManager: self.queueManager,
-                    apiService: self.user.apiService,
-                    contextProvider: self.contextProvider,
-                    cacheService: self.user.cacheService
-                )
-            )
-        }
-    }
-
     var messageSearchFactory: Factory<SearchUseCase> {
         self {
             MessageSearch(

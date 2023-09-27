@@ -46,6 +46,7 @@ final class MainQueueHandler: QueueHandler {
     private let dependencies: Dependencies
 
     init(coreDataService: CoreDataContextProviderProtocol,
+         fetchMessageDetail: FetchMessageDetail,
          apiService: APIService,
          messageDataService: MessageDataService,
          conversationDataService: ConversationProvider,
@@ -66,14 +67,6 @@ final class MainQueueHandler: QueueHandler {
         self.undoActionManager = undoActionManager
         self.user = user
 
-        let fetchMessageDetail = FetchMessageDetail(
-            dependencies: .init(
-                queueManager: ServiceFactory.default.get(by: QueueManager.self),
-                apiService: apiService,
-                contextProvider: coreDataService,
-                cacheService: user.cacheService
-            )
-        )
         let sendUseCase = SendMessageBuilder.make(
             userData: user,
             apiService: apiService,
