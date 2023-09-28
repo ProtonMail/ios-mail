@@ -52,6 +52,11 @@ class SettingsRobot: CoreElements {
         cell(id.darkModeCellIdentifier).tap()
         return DarkModeRobot()
     }
+    
+    func selectSwipeActions() -> SwipeActionRobot {
+            staticText(id.swipeActionStaticTextIdentifier).tap()
+            return SwipeActionRobot()
+    }
 
     /**
      * Contains all the validations that can be performed by [SettingsRobot].
