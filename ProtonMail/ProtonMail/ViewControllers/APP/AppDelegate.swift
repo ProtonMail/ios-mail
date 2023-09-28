@@ -90,6 +90,10 @@ extension AppDelegate: UIApplicationDelegate {
         let appVersion = Bundle.main.appVersion
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable) | \(appVersion)"
         SystemLogger.log(message: message, category: .appLifeCycle)
+
+        let appCache = AppCacheService()
+        appCache.restoreCacheWhenAppStart()
+
         sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
 
         let coreKeyMaker = dependencies.keyMaker
@@ -97,6 +101,9 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(KeyMakerProtocol.self, for: coreKeyMaker)
 
         if ProcessInfo.isRunningUnitTests {
+            // swiftlint:disable:next force_try
+            try! CoreDataStore.shared.initialize()
+
             coreKeyMaker.wipeMainKey()
             coreKeyMaker.activate(NoneProtection()) { _ in }
         }
