@@ -28,6 +28,11 @@ import ProtonCore_Networking
 import ProtonMailAnalytics
 import SwiftSoup
 
+// sourcery: mock
+protocol ComposeUIProtocol: AnyObject {
+    func show(error: String)
+}
+
 class ComposeViewModel: NSObject {
     /// Only to notify ComposeContainerViewModel that contacts changed
     @objc private(set) dynamic var contactsChange: Int = 0
@@ -54,8 +59,8 @@ class ComposeViewModel: NSObject {
     private(set) var messageAction: ComposeMessageAction = .newDraft
     private(set) var subject: String = .empty
     var body: String = .empty
-    var showError: ((String) -> Void)?
     var deliveryTime: Date?
+    weak var uiDelegate: ComposeUIProtocol?
 
     var toSelectedContacts: [ContactPickerModelProtocol] = [] {
         didSet { self.contactsChange += 1 }
@@ -907,7 +912,7 @@ extension ComposeViewModel {
                     contactVO.encryptionIconStatus = iconStatus
                     complete?(iconStatus?.iconWithColor, errorCode ?? 0)
                     if errorCode != nil, let errorString = iconStatus?.text {
-                        self?.showError?(errorString)
+                        self?.uiDelegate?.show(error: errorString)
                     }
                 }
             }

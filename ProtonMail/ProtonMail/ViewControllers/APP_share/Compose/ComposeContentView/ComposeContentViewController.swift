@@ -102,10 +102,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         self.webView.isOpaque = false
         self.htmlEditor.setup(webView: self.webView)
 
-        self.viewModel.showError = { [weak self] errorMsg in
-            guard let self = self else { return }
-            errorMsg.alertToast(view: self.view)
-        }
+        self.viewModel.uiDelegate = self
 
         self.extendedLayoutIncludesOpaqueBars = true
 
@@ -959,5 +956,11 @@ extension ComposeContentViewController {
                 seal.fulfill_()
             }.cauterize()
         }
+    }
+}
+
+extension ComposeContentViewController: ComposeUIProtocol {
+    func show(error: String) {
+        error.alertToast(view: view)
     }
 }

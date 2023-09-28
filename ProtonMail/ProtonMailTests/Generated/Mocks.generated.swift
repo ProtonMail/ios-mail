@@ -189,6 +189,14 @@ class MockCachedUserDataProvider: CachedUserDataProvider {
 
 }
 
+class MockComposeUIProtocol: ComposeUIProtocol {
+    @FuncStub(MockComposeUIProtocol.show) var showStub
+    func show(error: String) {
+        showStub(error)
+    }
+
+}
+
 class MockConnectionMonitor: ConnectionMonitor {
     @PropertyStub(\MockConnectionMonitor.currentPathProtocol, initialGet: nil) var currentPathProtocolStub
     var currentPathProtocol: NWPathProtocol? {
