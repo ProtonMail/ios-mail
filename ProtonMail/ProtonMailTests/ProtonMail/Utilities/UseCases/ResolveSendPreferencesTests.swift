@@ -450,7 +450,7 @@ private extension ResolveSendPreferencesTests {
     func makeContact(
         recipientEmail: String,
         key: Key? = nil,
-        sign: Bool = false,
+        sign: PreContact.SignStatus = .doNotSign,
         encrypt: Bool = false
     ) -> PreContact {
         var pubKeys = [Data]()

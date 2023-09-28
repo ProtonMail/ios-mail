@@ -186,7 +186,7 @@ class FetchVerificationKeysTests: XCTestCase {
             PreContact(
                 email: contactEmail,
                 pubKeys: publicKeys,
-                sign: false,
+                sign: .doNotSign,
                 encrypt: false,
                 scheme: nil,
                 mimeType: nil

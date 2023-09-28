@@ -17,6 +17,8 @@
 
 import ProtonCore_DataModel
 import XCTest
+import ProtonCore_Crypto
+import GoLibs
 
 @testable import ProtonMail
 
@@ -46,6 +48,51 @@ class CardDataParserTests: XCTestCase {
 
         let parsed = try XCTUnwrap(sut.verifyAndParseContact(with: email, from: [cardData]))
         XCTAssertEqual(parsed.email, email)
+        XCTAssertEqual(parsed.sign, .signingFlagNotFound)
+    }
+
+    func testVerifyAndParseContact_withPMSignIsTrue_signFlagIsParsed() throws {
+        let signature = try Sign.signDetached(
+            signingKey: .init(
+                privateKey: ContactParserTestData.privateKey,
+                passphrase: ContactParserTestData.passphrase
+            ),
+            plainText: ContactParserTestData.signedOnlyDataWithPMSignTrue
+        )
+        let cardData = CardData(
+            type: .SignedOnly,
+            data: ContactParserTestData.signedOnlyDataWithPMSignTrue,
+            signature: signature
+        )
+
+        let parsed = try XCTUnwrap(
+            sut.verifyAndParseContact(with: email, from: [cardData])
+        )
+
+        XCTAssertEqual(parsed.email, email)
+        XCTAssertEqual(parsed.sign, .sign)
+    }
+
+    func testVerifyAndParseContact_withPMSignIsFalse_signFlagIsParsed() throws {
+        let signature = try Sign.signDetached(
+            signingKey: .init(
+                privateKey: ContactParserTestData.privateKey,
+                passphrase: ContactParserTestData.passphrase
+            ),
+            plainText: ContactParserTestData.signedOnlyDataWithPMSignFalse
+        )
+        let cardData = CardData(
+            type: .SignedOnly,
+            data: ContactParserTestData.signedOnlyDataWithPMSignFalse,
+            signature: signature
+        )
+
+        let parsed = try XCTUnwrap(
+            sut.verifyAndParseContact(with: email, from: [cardData])
+        )
+
+        XCTAssertEqual(parsed.email, email)
+        XCTAssertEqual(parsed.sign, .doNotSign)
     }
 
     func testRejectsCorrectContactIfSignatureIsInvalid() {
