@@ -255,6 +255,7 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
         customView.tableView.register(cellType: ConversationExpandedMessageCell.self)
         customView.tableView.register(cellType: UITableViewCell.self)
         customView.tableView.register(cellType: ConversationViewTrashedHintCell.self)
+        customView.tableView.register(cellType: ConversationSkeletonCell.self)
 
         let headerView = ConversationViewHeaderView()
         let subject = viewModel.conversation.subject
@@ -343,18 +344,9 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
             self?.navigationController?.popViewController(animated: true)
         }
 
-        viewModel.showSpinner = { [weak self] in
+        viewModel.reloadTableView = { [weak self] in
             guard let self = self else { return }
-            DispatchQueue.main.async {
-                MBProgressHUD.showAdded(to: self.view, animated: true)
-            }
-        }
-
-        viewModel.hideSpinner = { [weak self] in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                MBProgressHUD.hide(for: self.view, animated: true)
-            }
+            self.customView.tableView.reloadData()
         }
     }
 
@@ -393,10 +385,17 @@ extension ConversationViewController: UIScrollViewDelegate {
 
 extension ConversationViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        2
+        if viewModel.isShowingSkeletonView {
+            return 1
+        } else {
+            return 2
+        }
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard !viewModel.isShowingSkeletonView else {
+            return 1
+        }
         switch section {
         case 0:
             return viewModel.headerSectionDataSource.count
@@ -408,6 +407,9 @@ extension ConversationViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard !viewModel.isShowingSkeletonView else {
+            return customView.tableView.dequeue(cellType: ConversationSkeletonCell.self)
+        }
         let itemType = indexPath.section == 0 ?
             viewModel.headerSectionDataSource[indexPath.row] :
             viewModel.messagesDataSource[indexPath.row]
@@ -513,6 +515,9 @@ private extension ConversationViewController {
     }
 
     private func height(for indexPath: IndexPath, estimated: Bool) -> CGFloat {
+        guard !viewModel.isShowingSkeletonView else {
+            return UITableView.automaticDimension
+        }
         switch indexPath.section {
         case 0:
             switch viewModel.headerCellVisibility(at: indexPath.row) {

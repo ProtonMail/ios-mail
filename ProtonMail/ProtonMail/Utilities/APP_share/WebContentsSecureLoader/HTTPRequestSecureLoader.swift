@@ -63,7 +63,9 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
     }
 
     func load(contents: WebContents, in webView: WKWebView) {
-        delegate?.showSkeletonView(in: webView)
+        if contents.body.isEmpty {
+            delegate?.showSkeletonView(in: webView)
+        }
 
         self.webView?.stopLoading()
         self.webView?.configuration.userContentController.removeAllUserScripts()
