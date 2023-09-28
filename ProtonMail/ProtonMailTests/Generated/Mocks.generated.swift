@@ -961,6 +961,14 @@ class MockPaymentsUIProtocol: PaymentsUIProtocol {
 
 }
 
+class MockPinCodeSetupRouterProtocol: PinCodeSetupRouterProtocol {
+    @FuncStub(MockPinCodeSetupRouterProtocol.go) var goStub
+    func go(to step: PinCodeSetupRouter.PinCodeSetUpStep, existingVM: PinCodeSetupViewModel) {
+        goStub(step, existingVM)
+    }
+
+}
+
 class MockPinFailedCountCache: PinFailedCountCache {
     @PropertyStub(\MockPinFailedCountCache.pinFailedCount, initialGet: Int()) var pinFailedCountStub
     var pinFailedCount: Int {

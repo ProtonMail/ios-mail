@@ -117,6 +117,7 @@ extension AppDelegate: UIApplicationDelegate {
 #if DEBUG
         if ProcessInfo.isRunningUnitTests {
             sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
+            sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
         } else {
             let lifetimeTrackerIntegration = LifetimeTrackerDashboardIntegration(
                 visibility: .visibleWithIssuesDetected,

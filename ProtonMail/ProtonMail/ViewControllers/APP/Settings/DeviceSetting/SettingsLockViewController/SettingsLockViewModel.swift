@@ -182,7 +182,11 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
     }
 
     func didTapPinProtection() {
-        router.go(to: .pinCodeSetup)
+        if dependencies.coreKeyMaker.isPinCodeEnabled {
+            router.go(to: .changePinCode)
+        } else {
+            router.go(to: .pinCodeSetup)
+        }
     }
 
     func didTapBiometricProtection() {
@@ -192,7 +196,7 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
     }
 
     func didTapChangePinCode() {
-        router.go(to: .pinCodeSetup)
+        router.go(to: .changePinCode)
     }
 
     func didChangeAppKeyValue(isNewStatusEnabled: Bool) {

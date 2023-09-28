@@ -50,6 +50,13 @@ class MockKeyMakerProtocol: KeyMakerProtocol {
         mainKeyStub(protection)
     }
 
+    var verifyError: Error?
+    func verify(protector: ProtectionStrategy) async throws {
+        if let error = verifyError {
+            throw error
+        }
+    }
+
     @FuncStub(MockKeyMakerProtocol.obtainMainKey) var obtainMainKeyStub
     func obtainMainKey(with protector: ProtectionStrategy, handler: @escaping (MainKey?) -> Void) {
         obtainMainKeyStub(protector, handler)

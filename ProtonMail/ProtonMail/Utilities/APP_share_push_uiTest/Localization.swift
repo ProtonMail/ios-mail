@@ -1032,18 +1032,6 @@ class LocalizedString {
     lazy var _settings_footer_of_combined_contact = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.", comment: "The footer of combined contact in settings")
     lazy var _settings_title_of_combined_contact = NSLocalizedString("Combined contacts", comment: "The title of combined contact in settings")
 
-    lazy var _pin_code_setup1_title = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
-    lazy var _pin_code_setup1_textfield_title = NSLocalizedString("Enter new PIN code", comment: "The title of textfield of PIN code setup1")
-    lazy var _pin_code_setup1_textfield_assistiveText = NSLocalizedString("Enter a PIN code with min 4 characters and max 21 characters.", comment: "The assistive text of textfield of PIN code setup1")
-    lazy var _pin_code_setup1_textfield_pin_too_short = NSLocalizedString("PIN is too short", comment: "The error message of entering a short pin")
-    lazy var _pin_code_setup1_textfield_pin_too_long = NSLocalizedString("PIN is too long", comment: "The error message of entering a long pin")
-
-    lazy var _pin_code_setup1_button_title = NSLocalizedString("Continue", comment: "The title of button of PIN code setup1")
-
-    lazy var _pin_code_setup2_title = NSLocalizedString("Repeat PIN code", comment: "The title of PIN code setup2 view ")
-    lazy var _pin_code_setup2_textfield_title = NSLocalizedString("Repeat PIN code", comment: "The title of textfield of PIN code setup2")
-    lazy var _pin_code_setup2_textfield_invalid_password = NSLocalizedString("The PIN codes must match!", comment: "The error message of entering an invalid password")
-
     lazy var _settings_alternative_routing_footer = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@", comment: "The footer of alternative routing setting")
     lazy var _settings_alternative_routing_title = NSLocalizedString("Networking", comment: "The title of alternative routing settings")
     lazy var _settings_alternative_routing_learn = NSLocalizedString("Learn more", comment: "The title of learn more link")
@@ -1051,7 +1039,6 @@ class LocalizedString {
     lazy var _settings_On_title = NSLocalizedString("On", comment: "The title of On setting options")
     lazy var _settings_Off_title = NSLocalizedString("Off", comment: "The title of Off setting options")
 
-    lazy var _settings_change_pin_code_title = NSLocalizedString("Change PIN code", comment: "The title of change PIN code option in security settings")
     lazy var _settings_detail_re_auth_alert_title = NSLocalizedString("Re-authenticate", comment: "The title of re auth alert")
     lazy var _settings_detail_re_auth_alert_content = NSLocalizedString("Enter your password to make changes", comment: "The content of the re auth alert")
     // MARK: - Banners
@@ -1483,6 +1470,18 @@ enum L11n {
         static let contactNameTooLong = NSLocalizedString("Contact name is too long", comment: "The error message that is shown when display name is too long provided in contact edit view")
         static let addPhoto = NSLocalizedString("Add photo", comment: "The button text for add profile picture in contact edit view")
         static let editPhoto = NSLocalizedString("Edit photo", comment: "The button text for edit profile picture in contact edit view")
+    }
+
+    struct PinCodeSetup {
+        static let setPinCode = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
+        static let repeatPinCode = NSLocalizedString("Repeat PIN code", comment: "The title of PIN code setup2 view ")
+        static let enterNewPinCode = NSLocalizedString("Enter new PIN code", comment: "The title of textfield of PIN code setup1")
+        static let enterNewPinCodeAssistiveText = NSLocalizedString("Enter a PIN code with min 4 characters and max 21 characters.", comment: "The assistive text of textfield of PIN code setup1")
+        static let pinTooShortError = NSLocalizedString("PIN is too short", comment: "The error message of entering a short pin")
+        static let pinTooLongError = NSLocalizedString("PIN is too long", comment: "The error message of entering a long pin")
+        static let pinMustMatch = NSLocalizedString("The PIN codes must match!", comment: "The error message of entering an invalid password")
+        static let enterOldPinCode = NSLocalizedString("Please enter old pin code ", comment: "The textField title when user trying to update its pin code setting")
+        static let changePinCode = NSLocalizedString("Change PIN code", comment: "The title of change PIN code option in security settings")
     }
 
     struct Unsubscribe {

@@ -17,6 +17,7 @@
 
 import ProtonCore_Login
 import ProtonCore_TestingToolkit
+import ProtonCore_Keymaker
 @testable import ProtonMail
 import XCTest
 
@@ -26,7 +27,11 @@ final class SignInManagerTests: XCTestCase {
     private var contactCacheStatusMock: MockContactCacheStatusProtocol!
     private var queueHandlerRegisterMock: MockQueueHandlerRegister!
     private var updateSwipeActionUseCaseMock: MockUpdateSwipeActionDuringLoginUseCase!
+    private var coreKeyMaker: Keymaker!
+    private var keyChain: KeychainWrapper!
+    private var notification: NotificationCenter!
     private var globalContainer: GlobalContainer!
+    private var contextProvider: MockCoreDataContextProvider!
 
     private var sut: SignInManager!
 
@@ -36,7 +41,24 @@ final class SignInManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         apiMock = .init()
+        notification = NotificationCenter()
+        keyChain = KeychainWrapper(
+            service: "ch.protonmail.test",
+            accessGroup: "2SB5Z68H26.ch.protonmail.protonmail"
+        )
+        coreKeyMaker = Keymaker(
+            autolocker: Autolocker(lockTimeProvider: userCachedStatus),
+            keychain: keyChain
+        )
+        contextProvider = MockCoreDataContextProvider()
+        sharedServices.add(CoreDataContextProviderProtocol.self, for: contextProvider)
+        sharedServices.add(CoreDataService.self, for: contextProvider.coreDataService)
+
         globalContainer = .init()
+        globalContainer.keychainFactory.register { self.keyChain }
+        globalContainer.keyMakerFactory.register { self.coreKeyMaker }
+        globalContainer.notificationCenterFactory.register { self.notification }
+        globalContainer.contextProviderFactory.register { self.contextProvider }
         usersManager = globalContainer.usersManager
         contactCacheStatusMock = .init()
         updateSwipeActionUseCaseMock = .init()
@@ -56,7 +78,11 @@ final class SignInManagerTests: XCTestCase {
         contactCacheStatusMock = nil
         usersManager = nil
         apiMock = nil
+        coreKeyMaker = nil
+        keyChain = nil
         globalContainer = nil
+        notification = nil
+        contextProvider = nil
     }
 
     func testSaveLoginData_newUserIsAddedToUsersManager() {
