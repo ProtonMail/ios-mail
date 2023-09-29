@@ -24,7 +24,6 @@ import CoreData
 import LifetimeTracker
 import MBProgressHUD
 import PromiseKit
-import ProtonCore_PaymentsUI
 import ProtonCore_UIFoundations
 import StoreKit
 import UIKit
@@ -38,13 +37,18 @@ protocol ContactGroupsUIProtocol: UIViewController {
  the update will be performed immediately and automatically by core data
  */
 final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSaveHintProtocol, LifetimeTrackable {
+    typealias Dependencies = HasComposerViewFactory
+    & HasContactViewsFactory
+    & HasCoreDataContextProviderProtocol
+    & ContactsAndGroupsSharedCode.Dependencies
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
     private let viewModel: ContactGroupsViewModel
+    private let dependencies: Dependencies
     private var queryString = ""
-    private var paymentsUI: PaymentsUI?
 
     // long press related vars
     private var isEditingState: Bool = false
@@ -71,9 +75,10 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     @IBOutlet private var searchViewConstraint: NSLayoutConstraint!
     @IBOutlet private var tableView: UITableView!
 
-    init(viewModel: ContactGroupsViewModel) {
+    init(viewModel: ContactGroupsViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
-        super.init(nibName: "ContactGroupsViewController", bundle: nil)
+        self.dependencies = dependencies
+        super.init(dependencies: dependencies, nibName: "ContactGroupsViewController")
         trackLifetime()
     }
 
@@ -108,7 +113,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         } else {
             prepareRefreshController()
             prepareLongPressGesture()
-            prepareNavigationItemRightDefault(viewModel.user)
+            prepareNavigationItemRightDefault()
             updateNavigationBar()
         }
 
@@ -129,17 +134,6 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         viewModel.timerStop()
         viewModel.save()
         NotificationCenter.default.removeKeyboardObserver(self)
-    }
-
-    override func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(
-            payments: viewModel.user.payments,
-            clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames,
-            customization: .empty
-        )
-        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
-                                         backendFetch: true) { _ in }
     }
 
     private func prepareRefreshController() {
@@ -362,13 +356,13 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
 
     override func addContactGroupTapped() {
         if viewModel.user.hasPaidMailPlan {
-            let viewModel = ContactGroupEditViewModelImpl(state: .create,
-                                                          user: viewModel.user,
-                                                          groupID: nil,
-                                                          name: nil,
-                                                          color: nil,
-                                                          emailIDs: Set<EmailEntity>())
-            let newView = ContactGroupEditViewController(viewModel: viewModel)
+            let newView = dependencies.contactViewsFactory.makeGroupEditView(
+                state: .create,
+                groupID: nil,
+                name: nil,
+                color: nil,
+                emailIDs: []
+            )
             let nav = UINavigationController(rootViewController: newView)
             present(nav, animated: true, completion: nil)
         } else {
@@ -379,7 +373,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     override func showContactImportView() {
         isOnMainView = true
 
-        let newView = ContactImportViewController(user: viewModel.user)
+        let newView = dependencies.contactViewsFactory.makeImportView()
         setPresentationStyleForSelfController(presentingController: newView, style: .overFullScreen)
         newView.reloadAllContact = { [weak self] in
             self?.tableView.reloadData()
@@ -388,9 +382,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     }
 
     override func addContactTapped() {
-        let viewModel = ContactAddViewModelImpl(user: viewModel.user,
-                                                coreDataService: CoreDataService.shared)
-        let newView = ContactEditViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeEditView(contact: nil)
         let nav = UINavigationController(rootViewController: newView)
         present(nav, animated: true)
 
@@ -475,23 +467,12 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
             return
         }
 
-        let user = self.viewModel.user
-        let contactGroupVO = ContactGroupVO.init(ID: ID, name: name)
+        let contactGroupVO = ContactGroupVO.init(ID: ID, name: name, contextProvider: dependencies.contextProvider)
         contactGroupVO.selectAllEmailFromGroup()
-        let composer = ComposerViewFactory.makeComposer(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: nil,
             action: .newDraft,
-            user: user,
-            contextProvider: sharedServices.get(by: CoreDataService.self),
             isEditingScheduleMsg: false,
-            userIntroductionProgressProvider: sharedServices.userCachedStatus,
-            internetStatusProvider: internetConnectionStatusProvider,
-            coreKeyMaker: sharedServices.get(),
-            darkModeCache: sharedServices.userCachedStatus,
-            mobileSignatureCache: sharedServices.userCachedStatus,
-            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
-            featureFlagCache: sharedServices.userCachedStatus,
-            userCachedStatusProvider: sharedServices.userCachedStatus,
             toContact: contactGroupVO
         )
 
@@ -590,10 +571,7 @@ extension ContactGroupsViewController: UITableViewDelegate {
     }
 
     private func presentContactGroupDetailView(label: LabelEntity) {
-        let viewModel = ContactGroupDetailViewModel(user: viewModel.user,
-                                                    contactGroup: label,
-                                                    labelsDataService: viewModel.user.labelService)
-        let newView = ContactGroupDetailViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeGroupDetailView(label: label)
         show(newView, sender: nil)
         isOnMainView = false
     }

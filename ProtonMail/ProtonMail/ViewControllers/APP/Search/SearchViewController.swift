@@ -39,6 +39,8 @@ protocol SearchViewUIProtocol: UIViewController {
 }
 
 class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, CoordinatorDismissalObserver, ScheduledAlertPresenter, LifetimeTrackable {
+    typealias Dependencies = ConversationCoordinator.Dependencies
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
@@ -60,12 +62,12 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private let cellPresenter = NewMailboxMessageCellPresenter()
     var pendingActionAfterDismissal: (() -> Void)?
-    private let serviceFactory: ServiceFactory
+    private let dependencies: Dependencies
 
-    init(viewModel: SearchVMProtocol, serviceFactory: ServiceFactory) {
+    init(viewModel: SearchVMProtocol, dependencies: Dependencies) {
         self.viewModel = viewModel
-        self.serviceFactory = serviceFactory
         self.customView = .init()
+        self.dependencies = dependencies
 
         super.init(nibName: nil, bundle: nil)
         self.viewModel.uiDelegate = self
@@ -398,7 +400,7 @@ extension SearchViewController {
     }
 
     private func didSelectFolderToMoveTo(folder: MenuLabel, messages: [MessageEntity]) {
-        moveToActionHandler?.handleMoveToAction(messages: messages, to: folder, isFromSwipeAction: false)
+        moveToActionHandler?.handleMoveToAction(messages: messages, to: folder)
 
         dismissActionSheet()
         cancelButtonTapped()
@@ -495,29 +497,20 @@ extension SearchViewController {
         })
     }
     private func showComposer(message: MessageEntity) {
-        guard let viewModel = self.viewModel.getComposeViewModel(message: message),
-              let navigationController = self.navigationController else { return }
-        let composer = ComposerViewFactory.makeComposer(
-            childViewModel: viewModel,
-            contextProvider: sharedServices.get(by: CoreDataService.self),
-            userIntroductionProgressProvider: serviceFactory.userCachedStatus,
-            attachmentMetadataStrippingCache: serviceFactory.userCachedStatus,
-            featureFlagCache: serviceFactory.userCachedStatus
-        )
+        guard let navigationController = self.navigationController else { return }
+        let composer = dependencies.composerViewFactory.makeComposer(msg: message, action: .openDraft)
         navigationController.present(composer, animated: true)
     }
 
     private func showComposer(msgID: MessageID) {
-        guard let viewModel = self.viewModel.getComposeViewModel(by: msgID, isEditingScheduleMsg: true),
+        guard let message = viewModel.getMessageObject(by: msgID),
               let navigationController = self.navigationController else {
             return
         }
-        let composer = ComposerViewFactory.makeComposer(
-            childViewModel: viewModel,
-            contextProvider: sharedServices.get(by: CoreDataService.self),
-            userIntroductionProgressProvider: serviceFactory.userCachedStatus,
-            attachmentMetadataStrippingCache: serviceFactory.userCachedStatus,
-            featureFlagCache: serviceFactory.userCachedStatus
+        let composer = dependencies.composerViewFactory.makeComposer(
+            msg: message,
+            action: .openDraft,
+            isEditingScheduleMsg: true
         )
         navigationController.present(composer, animated: true)
     }
@@ -534,12 +527,10 @@ extension SearchViewController {
         self.updateTapped(status: false)
         guard let navigationController = navigationController else { return }
         let coordinator = SingleMessageCoordinator(
-            serviceFactory: serviceFactory,
             navigationController: navigationController,
             labelId: "",
             message: message,
-            user: self.viewModel.user,
-            infoBubbleViewStatusProvider: userCachedStatus,
+            dependencies: dependencies,
             highlightedKeywords: query.components(separatedBy: .whitespacesAndNewlines)
         )
         coordinator.goToDraft = { [weak self] msgID, _ in
@@ -571,13 +562,9 @@ extension SearchViewController {
                     labelId: self.viewModel.labelID,
                     navigationController: navigation,
                     conversation: conversation,
-                    user: self.viewModel.user,
-                    internetStatusProvider: .shared,
-                    infoBubbleViewStatusProvider: userCachedStatus,
                     highlightedKeywords: self.query.components(separatedBy: .whitespacesAndNewlines),
-                    contextProvider: sharedServices.get(by: CoreDataService.self),
-                    targetID: messageID,
-                    serviceFactory: self.serviceFactory
+                    dependencies: self.dependencies,
+                    targetID: messageID
                 )
                 coordinator.goToDraft = { [weak self] msgID, _ in
                     guard let self = self else { return }

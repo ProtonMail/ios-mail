@@ -20,7 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import AwaitKit
 import CoreData
 import Foundation
 import Groot
@@ -44,12 +43,14 @@ protocol LabelProviderProtocol: AnyObject {
 }
 
 class LabelsDataService: Service {
-    let apiService: APIService
+    typealias Dependencies = LabelPublisher.Dependencies
+    & HasAPIService
+    & HasCacheService
+    & HasConversationStateService
+    & HasLastUpdatedStoreProtocol
+
     private let userID: UserID
-    private let contextProvider: CoreDataContextProviderProtocol
-    private let lastUpdatedStore: LastUpdatedStoreProtocol
-    private let cacheService: CacheServiceProtocol
-    weak var viewModeDataSource: ViewModeDataSource?
+    private let dependencies: Dependencies
 
     static let defaultFolderIDs: [String] = [
         Message.Location.inbox.rawValue,
@@ -65,17 +66,9 @@ class LabelsDataService: Service {
         Message.Location.scheduled.rawValue
     ]
 
-    init(api: APIService,
-         userID: UserID,
-         contextProvider: CoreDataContextProviderProtocol,
-         lastUpdatedStore: LastUpdatedStoreProtocol,
-         cacheService: CacheServiceProtocol)
-    {
-        self.apiService = api
+    init(userID: UserID, dependencies: Dependencies) {
+        self.dependencies = dependencies
         self.userID = userID
-        self.contextProvider = contextProvider
-        self.lastUpdatedStore = lastUpdatedStore
-        self.cacheService = cacheService
     }
 
     private func cleanLabelsAndFolders(except labelIDToPreserve: [String], context: NSManagedObjectContext) {
@@ -100,7 +93,7 @@ class LabelsDataService: Service {
     }
 
     func cleanUp() {
-        contextProvider.performAndWaitOnRootSavingContext { context in
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             Label.delete(
                 in: context,
                 basedOn: NSPredicate(format: "%K == %@", Label.Attributes.userID, self.userID.rawValue)
@@ -124,73 +117,58 @@ class LabelsDataService: Service {
             }
     }
 
-    /// Get label and folder through v4 api
+    @available(*, deprecated, message: "Prefer the async variant")
     func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)? = nil) {
+        Task {
+            let result: Swift.Result<Void, NSError>
+            do {
+                try await fetchV4Labels()
+                result = .success(())
+            } catch {
+                result = .failure(error as NSError)
+            }
+
+            DispatchQueue.main.async {
+                completion?(result)
+            }
+        }
+    }
+
+    /// Get label and folder through v4 api
+    func fetchV4Labels() async throws {
         let labelReq = GetV4LabelsRequest(type: .label)
         let folderReq = GetV4LabelsRequest(type: .folder)
-        var labelsResponse: [[String: Any]]?
-        var foldersResponse: [[String: Any]]?
 
-        let group = DispatchGroup()
-        group.enter()
-        self.apiService.perform(request: labelReq, response: GetLabelsResponse()) { _, response in
-            labelsResponse = response.labels
-            group.leave()
-        }
+        async let labelsResponse = await dependencies.apiService.perform(request: labelReq, response: GetLabelsResponse())
+        async let foldersResponse = await dependencies.apiService.perform(request: folderReq, response: GetLabelsResponse())
 
-        group.enter()
-        self.apiService.perform(request: folderReq, response: GetLabelsResponse()) { _, response in
-            foldersResponse = response.labels
-            group.leave()
-        }
-
-        group.notify(queue: .main) {
-            guard var labels = labelsResponse,
-                  var folders = foldersResponse else {
-                      let error = NSError(domain: "", code: -1,
-                                          localizedDescription: LocalString._error_no_object)
-                      completion?(.failure(error))
-                      return
-                  }
-
-            for (index, _) in labels.enumerated() {
-                labels[index]["UserID"] = self.userID.rawValue
-            }
-            for (index, _) in folders.enumerated() {
-                folders[index]["UserID"] = self.userID.rawValue
+        let userLabelAndFolders = await [labelsResponse, foldersResponse]
+            .map(\.1)
+            .compactMap(\.labels)
+            .joined()
+            .map {
+                var label = $0
+                label["UserID"] = userID.rawValue
+                return label
             }
 
-            folders.append(contentsOf: Self.defaultFolderIDs.map { ["ID": $0] })
+        let allFolders = userLabelAndFolders.appending(Self.defaultFolderIDs.map { ["ID": $0] })
 
-            let allFolders = labels + folders
+        try dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+            // to prevent deleted label won't be delete due to pull down to refresh
+            let labelIDToPreserve = allFolders.compactMap { $0["ID"] as? String }
+            self.cleanLabelsAndFolders(except: labelIDToPreserve, context: context)
 
-            self.contextProvider.performOnRootSavingContext { [weak self] context in
-                guard let self = self else {
-                    return
-                }
+            _ = try GRTJSONSerialization.objects(
+                withEntityName: Label.Attributes.entityName,
+                fromJSONArray: allFolders,
+                in: context
+            )
 
-                // to prevent deleted label won't be delete due to pull down to refresh
-                let labelIDToPreserve = allFolders.compactMap { $0["ID"] as? String }
-                self.cleanLabelsAndFolders(except: labelIDToPreserve, context: context)
+            let error = context.saveUpstreamIfNeeded()
 
-
-                do {
-                    _ = try GRTJSONSerialization.objects(
-                        withEntityName: Label.Attributes.entityName,
-                        fromJSONArray: allFolders,
-                        in: context
-                    )
-
-                    let error = context.saveUpstreamIfNeeded()
-
-                    if let error = error {
-                        throw error
-                    } else {
-                        completion?(.success(()))
-                    }
-                } catch let ex as NSError {
-                    completion?(.failure(ex))
-                }
+            if let error = error {
+                throw error
             }
         }
     }
@@ -198,7 +176,7 @@ class LabelsDataService: Service {
     func fetchV4ContactGroup() -> Promise<Void> {
         return Promise { seal in
             let groupRes = GetV4LabelsRequest(type: .contactGroup)
-            self.apiService.perform(request: groupRes, response: GetLabelsResponse()) { _, res in
+            self.dependencies.apiService.perform(request: groupRes, response: GetLabelsResponse()) { _, res in
                 if let error = res.error {
                     seal.reject(error)
                     return
@@ -213,7 +191,7 @@ class LabelsDataService: Service {
                     labels[index]["UserID"] = self.userID.rawValue
                 }
                 // save
-                self.contextProvider.performOnRootSavingContext { context in
+                self.dependencies.contextProvider.performOnRootSavingContext { context in
                     do {
                         _ = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: labels, in: context)
                         let error = context.saveUpstreamIfNeeded()
@@ -257,7 +235,7 @@ class LabelsDataService: Service {
     }
 
     func getAllLabels(of type: LabelFetchType) -> [LabelEntity] {
-        contextProvider.read { context in
+        dependencies.contextProvider.read { context in
             let labels = getAllLabels(of: type, context: context)
             return labels.map(LabelEntity.init(label:))
         }
@@ -265,11 +243,11 @@ class LabelsDataService: Service {
 
     func makePublisher() -> LabelPublisherProtocol {
         let params = LabelPublisher.Parameters(userID: userID)
-        return LabelPublisher(parameters: params)
+        return LabelPublisher(parameters: params, dependencies: dependencies)
     }
 
     func fetchedResultsController(_ type: LabelFetchType) -> NSFetchedResultsController<Label> {
-        let moc = self.contextProvider.mainContext
+        let moc = dependencies.contextProvider.mainContext
         let fetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
         fetchRequest.predicate = self.fetchRequestPrecidate(type)
 
@@ -313,7 +291,7 @@ class LabelsDataService: Service {
 
     func addNewLabel(_ response: [String: Any]?) {
         if var label = response {
-            contextProvider.performAndWaitOnRootSavingContext { context in
+            dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
                 do {
                     label["UserID"] = self.userID.rawValue
                     try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: label, in: context)
@@ -324,47 +302,49 @@ class LabelsDataService: Service {
     }
 
     func labelFetchedController(by labelID: LabelID) -> NSFetchedResultsController<Label> {
-        let context = self.contextProvider.mainContext
+        let context = dependencies.contextProvider.mainContext
         return Label.labelFetchController(for: labelID.rawValue, inManagedObjectContext: context)
     }
 
-    func label(by labelID: LabelID) -> Label? {
-        let context = self.contextProvider.mainContext
-        return Label.labelForLabelID(labelID.rawValue, inManagedObjectContext: context)
+    func label(by labelID: LabelID) -> LabelEntity? {
+        dependencies.contextProvider.read { context in
+            if let label = Label.labelForLabelID(labelID.rawValue, inManagedObjectContext: context) {
+                return LabelEntity(label: label)
+            } else {
+                return nil
+            }
+        }
     }
 
-    func label(name: String) -> Label? {
-        let context = self.contextProvider.mainContext
-        return Label.labelForLabelName(name, inManagedObjectContext: context)
+    func label(name: String) -> LabelEntity? {
+        dependencies.contextProvider.read { context in
+            if let label = Label.labelForLabelName(name, inManagedObjectContext: context) {
+                return LabelEntity(label: label)
+            } else {
+                return nil
+            }
+        }
     }
 
     func lastUpdate(by labelID: LabelID, userID: UserID? = nil) -> LabelCountEntity? {
-        guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
-            return nil
-        }
-
+        let viewMode = dependencies.conversationStateService.viewMode
         let id = userID ?? self.userID
-        return self.lastUpdatedStore.lastUpdate(by: labelID, userID: id, type: viewMode)
+        return dependencies.lastUpdatedStore.lastUpdate(by: labelID, userID: id, type: viewMode)
     }
 
     func unreadCount(by labelID: LabelID) -> Int {
-        guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
-            return 0
-        }
-        return lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: viewMode)
+        let viewMode = dependencies.conversationStateService.viewMode
+        return dependencies.lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: viewMode)
     }
 
-    func getUnreadCounts(by labelIDs: [LabelID], completion: @escaping ([String: Int]) -> Void) {
-        guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
-            return completion([:])
-        }
-
-        lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: self.userID, type: viewMode, completion: completion)
+    func getUnreadCounts(by labelIDs: [LabelID]) -> [String: Int] {
+        let viewMode = dependencies.conversationStateService.viewMode
+        return dependencies.lastUpdatedStore.getUnreadCounts(by: labelIDs, userID: self.userID, type: viewMode)
     }
 
     func resetCounter(labelID: LabelID)
     {
-        lastUpdatedStore.resetCounter(labelID: labelID, userID: userID)
+        dependencies.lastUpdatedStore.resetCounter(labelID: labelID, userID: userID)
     }
 
     func createNewLabel(name: String,
@@ -381,14 +361,14 @@ class LabelsDataService: Service {
                                        parentID: parentID?.rawValue,
                                        notify: notify,
                                        expanded: true)
-        self.apiService.perform(request: route, response: CreateLabelRequestResponse()) { _, response in
+        dependencies.apiService.perform(request: route, response: CreateLabelRequestResponse()) { _, response in
             if let err = response.error {
                 completion?(nil, err.toNSError)
             } else {
                 let ID = response.label?["ID"] as? String
                 let objectID = objectID ?? ""
                 if let labelResponse = response.label {
-                    self.cacheService.addNewLabel(serverResponse: labelResponse, objectID: objectID, completion: nil)
+                    self.dependencies.cacheService.addNewLabel(serverResponse: labelResponse, objectID: objectID, completion: nil)
                 }
                 completion?(ID, nil)
             }
@@ -406,7 +386,7 @@ class LabelsDataService: Service {
                                      color: color,
                                      parentID: parentID?.rawValue,
                                      notify: notify)
-        self.apiService.perform(request: api, response: UpdateLabelRequestResponse()) { _, response in
+        dependencies.apiService.perform(request: api, response: UpdateLabelRequestResponse()) { _, response in
             if let err = response.error {
                 completion?(err.toNSError)
             } else {
@@ -416,7 +396,7 @@ class LabelsDataService: Service {
                     completion?(error)
                     return
                 }
-                self.cacheService.updateLabel(serverReponse: labelDic) {
+                self.dependencies.cacheService.updateLabel(serverReponse: labelDic) {
                     completion?(nil)
                 }
             }
@@ -433,10 +413,10 @@ class LabelsDataService: Service {
                      completion: (() -> Void)?)
     {
         let api = DeleteLabelRequest(lable_id: label.labelID.rawValue)
-        self.apiService.perform(request: api, response: VoidResponse()) { _, _ in
+        dependencies.apiService.perform(request: api, response: VoidResponse()) { _, _ in
         }
         let ids = subLabels.map{$0.objectID.rawValue} + [label.objectID.rawValue]
-        self.cacheService.deleteLabels(objectIDs: ids) {
+        dependencies.cacheService.deleteLabels(objectIDs: ids) {
             completion?()
         }
     }

@@ -225,10 +225,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         sender.accessibilityLabel = isShowingCcBccView ? LocalString._composer_voiceover_close_cc_bcc : LocalString._composer_voiceover_show_cc_bcc
     }
 
-    @IBAction func fromPickerAction(_ sender: AnyObject) {
-        self.delegate?.composeViewPickFrom(self)
-    }
-
     func updateFromValue (_ email: String, pickerEnabled: Bool) {
         fromAddress.set(text: email,
                         preferredFont: .subheadline,

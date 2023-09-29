@@ -23,6 +23,7 @@
 import Foundation
 
 final class AttachmentListViewModel {
+    typealias Dependencies = HasUserManager & HasCoreDataContextProviderProtocol & HasFetchAttachment
 
     enum AttachmentSection: Int {
         case normal = 1, inline
@@ -37,22 +38,18 @@ final class AttachmentListViewModel {
         }
     }
 
-    private let contextProvider: CoreDataContextProviderProtocol
     let attachmentSections: [AttachmentSection] = [.normal, .inline]
     private(set) var inlineAttachments: [AttachmentInfo] = []
     private(set) var normalAttachments: [AttachmentInfo] = []
     private var downloadingTask: [AttachmentID: URLSessionDownloadTask] = [:]
-    let user: UserManager
 
     /// (attachmentID, tempClearFileURL)
     var attachmentDownloaded: ((AttachmentID, URL) -> Void)?
     private let dependencies: Dependencies
 
-    init(attachments: [AttachmentInfo], user: UserManager, inlineCIDS: [String]?, dependencies: Dependencies) {
-        self.user = user
+    init(attachments: [AttachmentInfo], inlineCIDS: [String]?, dependencies: Dependencies) {
         self.inlineAttachments = attachments.inlineAttachments(inlineCIDS: inlineCIDS)
         self.normalAttachments = attachments.normalAttachments(inlineCIDS: inlineCIDS)
-        self.contextProvider = sharedServices.get(by: CoreDataService.self)
         self.dependencies = dependencies
     }
 
@@ -73,7 +70,7 @@ final class AttachmentListViewModel {
 
         showPreviewer()
 
-        let userKeys = user.toUserKeys()
+        let userKeys = dependencies.user.toUserKeys()
         dependencies.fetchAttachment.execute(params: .init(
             attachmentID: attachment.id,
             attachmentKeyPacket: nil,
@@ -129,19 +126,13 @@ final class AttachmentListViewModel {
             return nil
         }
 
-        contextProvider.performAndWaitOnRootSavingContext { context in
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             if let attachment = context.object(with: objectID) as? Attachment {
                 result = AttachmentEntity(attachment)
             }
         }
 
         return result
-    }
-}
-
-extension AttachmentListViewModel {
-    struct Dependencies {
-        let fetchAttachment: FetchAttachmentUseCase
     }
 }
 

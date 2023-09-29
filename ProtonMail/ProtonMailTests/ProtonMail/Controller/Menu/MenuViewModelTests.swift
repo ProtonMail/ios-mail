@@ -22,12 +22,7 @@ import ProtonCore_UIFoundations
 
 class MenuViewModelTests: XCTestCase {
     var sut: MenuViewModel!
-    var usersManagerMock: UsersManager!
-    var userStatusInQueueProviderMock: UserStatusInQueueProviderMock!
-    var coreDataContextProviderMock: MockCoreDataContextProvider!
-    var dohMock: DohMock!
     var testUser: UserManager!
-    var apiMock: APIServiceMock!
     var enableColorStub = false
     var usingParentFolderColorStub = false
     var coordinatorMock: MockMenuCoordinatorProtocol!
@@ -36,19 +31,11 @@ class MenuViewModelTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         coordinatorMock = .init()
-        userStatusInQueueProviderMock = UserStatusInQueueProviderMock()
-        coreDataContextProviderMock = MockCoreDataContextProvider()
-        dohMock = DohMock()
-        usersManagerMock = UsersManager(doh: dohMock, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
-        apiMock = APIServiceMock()
+        let apiMock = APIServiceMock()
         testUser = UserManager(api: apiMock, role: .none)
-        usersManagerMock.add(newUser: testUser)
-        sut = MenuViewModel(
-            usersManager: usersManagerMock,
-            userStatusInQueueProvider: userStatusInQueueProviderMock,
-            coreDataContextProvider: coreDataContextProviderMock,
-            coreKeyMaker: MockKeyMakerProtocol(),
-            unlockManager: .init(cacheStatus: CacheStatusStub(), keyMaker: MockKeyMakerProtocol(), pinFailedCountCache: MockPinFailedCountCache()))
+        let globalContainer = GlobalContainer()
+        globalContainer.usersManager.add(newUser: testUser)
+        sut = MenuViewModel(dependencies: globalContainer)
         sut.setUserEnableColorClosure {
             return self.enableColorStub
         }
@@ -63,12 +50,7 @@ class MenuViewModelTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
-        usersManagerMock = nil
-        userStatusInQueueProviderMock = nil
-        coreDataContextProviderMock = nil
         testUser = nil
-        dohMock = nil
-        apiMock = nil
     }
 
     func testInboxItemsAreTheExpectedOnes() {

@@ -22,26 +22,33 @@
 
 import Foundation
 import ProtonCore_Payments
-import ProtonCore_Services
 
-class StoreKitManagerImpl: StoreKitManagerDelegate, Service {
+class StoreKitManagerImpl: StoreKitManagerDelegate {
+    typealias Dependencies = AnyObject & HasUsersManager & HasUnlockManager
+
+    private unowned let dependencies: Dependencies
+
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
+    }
+
     var tokenStorage: PaymentTokenStorage? {
         return nil
     }
 
     var isUnlocked: Bool {
-        return UnlockManager.shared.isUnlocked()
+        dependencies.unlockManager.isUnlocked()
     }
 
     var isSignedIn: Bool {
-        return sharedServices.get(by: UsersManager.self).hasUsers()
+        dependencies.usersManager.hasUsers()
     }
 
     var activeUsername: String? {
-        return sharedServices.get(by: UsersManager.self).firstUser?.defaultEmail
+        dependencies.usersManager.firstUser?.defaultEmail
     }
 
     var userId: String? {
-        return sharedServices.get(by: UsersManager.self).firstUser?.userInfo.userId
+        dependencies.usersManager.firstUser?.userInfo.userId
     }
 }

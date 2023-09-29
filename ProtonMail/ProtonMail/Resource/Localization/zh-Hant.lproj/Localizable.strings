@@ -96,7 +96,7 @@
 "Lock The App" = "鎖定應用程式";
 
 /* menu title */
-"Subscription" = "訂購授權";
+"Subscription" = "訂閲計劃";
 
 /* menu title */
 "Manage accounts" = "管理帳號";
@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "電郵位址";
 
-/* The button text for add profile picture */
-"Add photo" = "加入照片";
-
-/* The button text for edit profile picture */
-"Edit photo" = "編輯相片";
-
 /* contact section title */
 "Encrypted contact details" = "經加密的聯絡人詳細資訊";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "標籤名稱";
-
-/* when server not reachable */
-"API Server not reachable…" = "無法連線至 API 伺服器…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "此帳號因仍有逾期待繳款項而被停用，請登入 proton.me 進行繳款。";
@@ -1514,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "非公開收件者";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "取消訂閱接收郵件";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "我們的系統已將此郵件認定為釣魚郵件。請檢查這是否正常郵件。";
 
@@ -1801,66 +1789,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "郵件正在寄送，傳送完成後將移至寄件資料夾。";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "若您失去了 WiFi 連線，下載將會透過行動數據來繼續。";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "透過行動數據下載";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "下載進度";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "郵件歷史紀錄";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "儲存空間上限";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "儲存空間已使用";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "所有您的郵件已下載";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "並非所有郵件都已下載。要下載它們，請釋放裝置上的儲存空間。";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "並非所有郵件都已下載。要下載它們，請增加下方的儲存限制。";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "您沒有郵件。";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "您的訊息正在下載...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "已快取的資料";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "附件";
-
-/* cell title in device settings */
-"Downloaded messages" = "已下載郵件";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "資訊是關於這個 Proton Mail 帳號使用了多少的儲存空間在您的裝置上。";
-
-/* The title of the button in local storage attachments */
-"Clear" = "清除";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "允許您在離線時開啟以前讀過的郵件。";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "允許您在離線時開啟以前打開的附件。";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "允許您在郵件中搜尋。%1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "顯示詳細資料";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "工具列動作 (最多可選 5 項)";
 
@@ -1895,7 +1823,7 @@
 "You can now choose and rearrange the actions in this bar" = "您可自由選擇或重新安排工具列的動作。";
 
 /* Button to block a sender */
-"Block sender" = "攔截寄件者";
+"Block messages from this sender" = "封鎖來自此寄件者的訊息";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "攔截";
@@ -2037,9 +1965,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "密碼已更新";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "清除快取記憶體";
-
 /* Title for application logs settings option */
 "Application logs" = "應用程式紀錄";
 
@@ -2067,11 +1992,17 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "回覆全部 (最新交談訊息裡相關人等)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "新訊息";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "自訂";
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---為了讓我們能協助你解決問題, 請盡可能提供所有細節---\n\n摘要:\n\n之前是否發生過相同問題: 是/否\n重現此問題之操作步驟:\n預期結果:\n實際結果:\n其他說明:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "附加紀錄檔";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "嘗試使用其他搜尋關鍵字。";
@@ -2135,3 +2066,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "自訂電子郵件網域";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "顯示名稱";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "名字";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "姓氏";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "顯示名稱不能為空";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "聯絡人名稱超出範圍";
+
+/* The button text for add profile picture */
+"Add photo" = "加入照片";
+
+/* The button text for edit profile picture */
+"Edit photo" = "編輯相片";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "取消訂閱接收郵件";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "確定要退訂？";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "此動作會使您退訂郵件清單。寄件者會收到通知，從此不再傳送郵件到此位址。";

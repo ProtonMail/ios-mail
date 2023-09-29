@@ -16,6 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_TestingToolkit
+import ProtonCore_UIFoundations
+
 @testable import ProtonMail
 import XCTest
 
@@ -26,22 +28,17 @@ class UndoActionManagerTests: XCTestCase {
     var eventService: EventsServiceMock!
     var contextProviderMock: CoreDataContextProviderProtocol!
     var userManagerMock: UserManager!
-    var serviceFactory: ServiceFactory!
 
     override func setUp() {
         super.setUp()
-        serviceFactory = .init()
         handlerMock = UndoActionHandlerBaseMock()
         apiServiceMock = APIServiceMock()
         eventService = EventsServiceMock()
-        contextProviderMock = MockCoreDataContextProvider()
+        contextProviderMock = CoreDataService.shared
         userManagerMock = UserManager(api: apiServiceMock, role: .member)
-        serviceFactory.add(CoreDataContextProviderProtocol.self, for: contextProviderMock)
-        let factory = serviceFactory.makeUndoActionManagerDependenciesFactory()
 
         sut = UndoActionManager(
-            factory: factory,
-            dependencies: factory.makeDependencies(apiService: apiServiceMock),
+            dependencies: .init(contextProvider: contextProviderMock, apiService: apiServiceMock),
             getEventFetching: { [weak self] in
                 self?.eventService
             },
@@ -49,9 +46,12 @@ class UndoActionManagerTests: XCTestCase {
                 self?.userManagerMock
             }
         )
+
+        CoreDataStore.deleteDataStore()
     }
 
     override func tearDown() {
+        CoreDataStore.deleteDataStore()
         super.tearDown()
         sut = nil
         handlerMock = nil
@@ -187,5 +187,54 @@ class UndoActionManagerTests: XCTestCase {
             expectation2.fulfill()
         }
         waitForExpectations(timeout: 4, handler: nil)
+    }
+
+    func testTappingUndoSendBanner_showsComposer() throws {
+        let messageID = MessageID.generateLocalID()
+
+        try contextProviderMock.performAndWaitOnRootSavingContext { context in
+            let message = Message(context: context)
+            message.messageID = messageID.rawValue
+            try context.save()
+        }
+
+        let undoSendRequest = UndoSendRequest(messageID: messageID)
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
+            assert(path == undoSendRequest.path)
+            completion(nil, .success([:]))
+        }
+
+        eventService.callFetchEvents.bodyIs { _, _, _, completion in
+            completion?(.success([:]))
+        }
+
+        handlerMock.delaySendSeconds = 3
+        sut.register(handler: handlerMock)
+
+        let composerPresentingVC = try XCTUnwrap(handlerMock.composerPresentingVC)
+        let window = UIWindow(root: composerPresentingVC, scene: nil)
+        window.makeKeyAndVisible()
+
+        sut.showUndoSendBanner(for: messageID)
+
+        waitForDispatchQueueMain()
+
+        let banner = try XCTUnwrap(handlerMock.view.subviews.first as? PMBanner)
+        banner.buttonHandler?(banner)
+
+        waitForDispatchQueueMain()
+
+        let presentedVC = try XCTUnwrap(composerPresentingVC.presentedViewController)
+        let navigationVC = try XCTUnwrap(presentedVC as? UINavigationController)
+        let rootViewController = try XCTUnwrap(navigationVC.viewControllers.first)
+        XCTAssert(rootViewController is ComposeContainerViewController)
+    }
+
+    private func waitForDispatchQueueMain() {
+        let expectation = expectation(description: "wait for DispatchQueue.main")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            expectation.fulfill()
+        }
+        waitForExpectations(timeout: 2, handler: nil)
     }
 }

@@ -36,6 +36,10 @@ class ExpandedHeaderViewController: UIViewController {
     init(viewModel: ExpandedHeaderViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        customView.onSenderContainerTapped = { [weak self] in
+            guard let sender = self?.viewModel.infoProvider.checkedSenderContact else { return }
+            self?.contactTapped?(.sender(sender.sender))
+        }
     }
 
     override func loadView() {
@@ -155,7 +159,7 @@ class ExpandedHeaderViewController: UIViewController {
             let title = viewModel.infoProvider.originFolderTitle(isExpanded: true) {
             presentOriginRow(image: image, title: title)
         }
-
+        customView.isUserInteractionEnabled = true
         presentSizeRow(size: viewModel.infoProvider.size)
 
         if let (title, trackersFound) = viewModel.trackerProtectionRowInfo {
@@ -284,6 +288,7 @@ class ExpandedHeaderViewController: UIViewController {
 
         let titleLabel = UILabel()
         titleLabel.set(text: title, preferredFont: .footnote, textColor: ColorProvider.TextWeak)
+        titleLabel.isUserInteractionEnabled = true
         row.contentStackView.addArrangedSubview(titleLabel)
 
         row.contentStackView.addArrangedSubview(UIView())
@@ -295,12 +300,14 @@ class ExpandedHeaderViewController: UIViewController {
         [
             chevronImageView.heightAnchor.constraint(equalToConstant: 16).setPriority(as: .defaultHigh)
         ].activate()
+        chevronImageView.isUserInteractionEnabled = true
         row.contentStackView.addArrangedSubview(chevronImageView)
 
         let button = UIButton()
         button.addTarget(self, action: #selector(trackerInfoTapped), for: .touchUpInside)
         row.addSubview(button)
         button.fillSuperview()
+        button.isUserInteractionEnabled = true
 
         customView.contentStackView.addArrangedSubview(row)
     }

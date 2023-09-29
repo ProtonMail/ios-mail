@@ -36,8 +36,7 @@ final class SendMessageTask {
             let initialSendingData = try getMessageSendingData(for: params.messageURI)
 
             updateMessageDetails(
-                messageSendingData: initialSendingData,
-                userID: params.userID
+                messageSendingData: initialSendingData
             ) { [unowned self] updatedSendingData in
                 sendMessage(messageSendingData: updatedSendingData, params: params) { [unowned self] sendResult in
                     switch sendResult {
@@ -83,11 +82,9 @@ final class SendMessageTask {
 
     private func updateMessageDetails(
         messageSendingData: MessageSendingData,
-        userID: UserID,
         completion: @escaping (MessageSendingData) -> Void
     ) {
         dependencies.fetchMessageDetail.execute(params: .init(
-            userID: userID,
             message: messageSendingData.message,
             hasToBeQueued: false
         )) { result in
@@ -215,7 +212,7 @@ extension SendMessageTask {
         dependencies
             .localNotificationService
             .scheduleMessageSendingFailedNotification(.init(
-                messageID: message.messageID.rawValue,
+                messageID: message.messageID,
                 error: errorMessage,
                 timeInterval: 1.0,
                 subtitle: message.title
@@ -247,7 +244,7 @@ extension SendMessageTask {
     private func unscheduleNotification(messageID: MessageID) {
         dependencies
             .localNotificationService
-            .unscheduleMessageSendingFailedNotification(.init(messageID: messageID.rawValue))
+            .unscheduleMessageSendingFailedNotification(.init(messageID: messageID))
     }
 }
 

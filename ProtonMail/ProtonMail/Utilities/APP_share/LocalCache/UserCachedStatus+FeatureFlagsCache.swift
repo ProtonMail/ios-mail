@@ -27,6 +27,10 @@ extension FeatureFlagCache {
     func isFeatureFlag(_ featureFlag: FeatureFlag<Bool>, enabledForUserWithID userID: UserID) -> Bool {
         featureFlags(for: userID)[featureFlag]
     }
+
+    func valueOfFeatureFlag<T>(_ featureFlag: FeatureFlag<T>, for userID: UserID) -> T {
+        featureFlags(for: userID)[featureFlag]
+    }
 }
 
 extension UserCachedStatus: FeatureFlagCache {

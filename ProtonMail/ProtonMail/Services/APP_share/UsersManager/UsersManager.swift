@@ -34,9 +34,23 @@ import ProtonMailAnalytics
 
 // sourcery: mock
 protocol UsersManagerProtocol: AnyObject {
-    var firstUser: UserManager? { get }
+    var users: [UserManager] { get }
 
     func hasUsers() -> Bool
+}
+
+extension UsersManagerProtocol {
+    var firstUser: UserManager? {
+        users.first
+    }
+
+    func getUser(by userID: UserID) -> UserManager? {
+        users.first { $0.userID == userID }
+    }
+
+    func getUser(by sessionID: String) -> UserManager? {
+        users.first { $0.isMatch(sessionID: sessionID) }
+    }
 }
 
 /// manager all the users and there services
@@ -81,17 +95,16 @@ class UsersManager: Service, UsersManagerProtocol {
         static let mailSettingsStore = "mailSettingsKeyProtectedWithMainKey"
     }
 
+    // UsersManager needs GlobalContainer to instantiate UserManagers
+    typealias Dependencies = GlobalContainer
+
     /// Server's config like url port path etc..
-    var doh: DoHInterface
+    private let doh = BackendConfiguration.shared.doh
 
     private(set) var users: [UserManager] = [] {
         didSet {
             userCachedStatus.primaryUserSessionId = self.users.first?.authCredential.sessionID
         }
-    }
-
-    var firstUser: UserManager? {
-        return self.users.first
     }
 
     var count: Int {
@@ -100,30 +113,20 @@ class UsersManager: Service, UsersManagerProtocol {
 
     // Used to check if the account is already being deleted.
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
-    private let userDataCache: CachedUserDataProvider
     private let userDefaultCache: SharedCacheBase
     private let keychain: Keychain
-    private let notificationCenter: NotificationCenter
     private let coreKeyMaker: KeyMakerProtocol
+    private unowned let dependencies: Dependencies
 
-    init(
-        doh: DoHInterface,
-        userDataCache: CachedUserDataProvider,
-        userDefaultCache: SharedCacheBase = .init(),
-        keychain: Keychain = KeychainWrapper.keychain,
-        notificationCenter: NotificationCenter = .default,
-        coreKeyMaker: KeyMakerProtocol
-    ) {
-        self.doh = doh
+    init(userDefaultCache: SharedCacheBase = .init(), dependencies: Dependencies) {
         self.doh.status = userCachedStatus.isDohOn ? .on : .off
         /// for migrate
         self.latestVersion = Version.version
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
-        self.userDataCache = userDataCache
         self.userDefaultCache = userDefaultCache
-        self.keychain = keychain
-        self.notificationCenter = notificationCenter
-        self.coreKeyMaker = coreKeyMaker
+        keychain = dependencies.keychain
+        coreKeyMaker = dependencies.keyMaker
+        self.dependencies = dependencies
         setupValueTransforms()
         #if !APP_EXTENSION
         trackLifetime()
@@ -152,15 +155,29 @@ class UsersManager: Service, UsersManagerProtocol {
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
         #endif
 
-        let newUser = UserManager(
+        let newUser = makeUser(
             api: apiService,
             userInfo: user,
             authCredential: auth,
-            mailSettings: mailSettings,
-            parent: self,
-            coreKeyMaker: coreKeyMaker
+            mailSettings: mailSettings
         )
         self.add(newUser: newUser)
+    }
+
+    private func makeUser(
+        api apiService: APIService,
+        userInfo: UserInfo,
+        authCredential: AuthCredential,
+        mailSettings: MailSettings?
+    ) -> UserManager {
+        return UserManager(
+            api: apiService,
+            userInfo: userInfo,
+            authCredential: authCredential,
+            mailSettings: mailSettings,
+            parent: self,
+            globalContainer: dependencies
+        )
     }
 
     func add(newUser: UserManager) {
@@ -202,26 +219,6 @@ class UsersManager: Service, UsersManagerProtocol {
         firstUser?.becomeActiveUser()
     }
 
-    func getUser(by sessionID: String) -> UserManager? {
-        let found = self.users.filter { user -> Bool in
-            user.isMatch(sessionID: sessionID)
-        }
-        guard let user = found.first else {
-            return nil
-        }
-        return user
-    }
-
-    func getUser(by userId: UserID) -> UserManager? {
-        let found = self.users.filter { user -> Bool in
-            user.userID == userId
-        }
-        guard let user = found.first else {
-            return nil
-        }
-        return user
-    }
-
     func isExist(userID: UserID) -> Bool {
         return getUser(by: userID) != nil
     }
@@ -261,13 +258,11 @@ class UsersManager: Service, UsersManagerProtocol {
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
                 #endif
-                let newUser = UserManager(
+                let newUser = makeUser(
                     api: apiService,
                     userInfo: cachedUserData.userInfo,
                     authCredential: cachedUserData.authCredentials,
-                    mailSettings: cachedUserData.mailSettings,
-                    parent: self,
-                    coreKeyMaker: coreKeyMaker
+                    mailSettings: cachedUserData.mailSettings
                 )
                 newUser.delegate = self
                 self.users.append(newUser)
@@ -354,7 +349,7 @@ extension UsersManager {
 
             guard !self.users.isEmpty else {
                 _ = self.clean().ensure {
-                    self.notificationCenter.post(
+                    self.dependencies.notificationCenter.post(
                         name: .didSignOutLastAccount,
                         object: self
                     )
@@ -370,7 +365,7 @@ extension UsersManager {
             }
 
             if isPrimaryAccountLogout && user.userInfo.delinquentParsed.isAvailable {
-                self.notificationCenter.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
+                self.dependencies.notificationCenter.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
             }
             completion?()
         }.cauterize()
@@ -577,10 +572,10 @@ extension UsersManager {
      Persisted until logout of last user, protected with MainKey. */
     var disconnectedUsers: [DisconnectedUserHandle] {
         get {
-            userDataCache.fetchDisconnectedUsers()
+            dependencies.cachedUserDataProvider.fetchDisconnectedUsers()
         }
         set {
-            userDataCache.set(disconnectedUsers: newValue)
+            dependencies.cachedUserDataProvider.set(disconnectedUsers: newValue)
         }
     }
 
@@ -608,13 +603,11 @@ extension UsersManager {
         }
         userInfo.twoFactor = userDefaultCache.getShared().integer(forKey: CoderKey.twoFAStatus)
         userInfo.passwordMode = userDefaultCache.getShared().integer(forKey: CoderKey.userPasswordMode)
-        let user = UserManager(
+        let user = makeUser(
             api: apiService,
             userInfo: userInfo,
             authCredential: auth,
-            mailSettings: nil,
-            parent: self,
-            coreKeyMaker: coreKeyMaker
+            mailSettings: nil
         )
         user.delegate = self
         return user
@@ -700,13 +693,11 @@ extension UsersManager {
             apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
             apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
             #endif
-            let newUser = UserManager(
+            let newUser = makeUser(
                 api: apiService,
                 userInfo: user,
                 authCredential: oldAuth,
-                mailSettings: nil,
-                parent: self,
-                coreKeyMaker: coreKeyMaker
+                mailSettings: nil
             )
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
@@ -759,13 +750,11 @@ extension UsersManager {
                 apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
                 apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
                 #endif
-                let newUser = UserManager(
+                let newUser = makeUser(
                     api: apiService,
                     userInfo: user,
                     authCredential: auth,
-                    mailSettings: nil,
-                    parent: self,
-                    coreKeyMaker: coreKeyMaker
+                    mailSettings: nil
                 )
                 newUser.delegate = self
                 self.users.append(newUser)

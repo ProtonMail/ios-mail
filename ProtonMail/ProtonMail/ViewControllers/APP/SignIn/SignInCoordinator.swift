@@ -189,9 +189,19 @@ final class SignInCoordinator {
 
     private func processMailboxPasswordInCleartext(_ password: Passphrase) {
         if environment.currentAuth() == nil {
+            SystemLogger.log(
+                message: "Current auth is nil, will try restore",
+                category: .loginUnlockFailed,
+                isError: true
+            )
             environment.tryRestoringPersistedUser()
         }
         guard let auth = environment.currentAuth() else {
+            SystemLogger.log(
+                message: "Current auth still nil",
+                category: .loginUnlockFailed,
+                isError: true
+            )
             onFinish(.errored(.unlockFailed))
             return
         }
@@ -304,8 +314,10 @@ final class SignInCoordinator {
                 assertionFailure("should never happen: the password should be provided by login module")
                 let error: FlowError
                 if failOnMailboxPassword {
+                    SystemLogger.log(message: "Fail on mailbox password", category: .loginUnlockFailed, isError: true)
                     error = .unlockFailed
                 } else {
+                    SystemLogger.log(message: "Require mailbox password", category: .loginUnlockFailed, isError: true)
                     error = .mailboxPasswordRetrievalRequired
                 }
                 self?.handleRequestError(error, wrapIn: { _ in error })

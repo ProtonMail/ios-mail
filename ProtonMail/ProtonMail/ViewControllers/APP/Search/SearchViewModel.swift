@@ -34,8 +34,7 @@ protocol SearchVMProtocol: AnyObject {
     func fetchRemoteData(query: String, fromStart: Bool)
     func loadMoreDataIfNeeded(currentRow: Int)
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback)
-    func getComposeViewModel(message: MessageEntity) -> ComposeViewModel?
-    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ComposeViewModel?
+    func getMessageObject(by msgID: MessageID) -> MessageEntity?
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel
 
     // Select / action bar / action sheet related
@@ -61,11 +60,16 @@ protocol SearchVMProtocol: AnyObject {
 }
 
 final class SearchViewModel: NSObject {
+    typealias Dependencies = HasSearchUseCase
+    & HasFetchMessageDetail
+    & HasFetchSenderImage
+    & HasUserManager
+    & HasCoreDataContextProviderProtocol
+
     typealias LocalObjectsIndexRow = [String: Any]
 
     private let dependencies: Dependencies
     let user: UserManager
-    let coreDataContextProvider: CoreDataContextProviderProtocol
 
     weak var uiDelegate: SearchViewUIProtocol?
     private(set) var messageIDs = Set<MessageID>()
@@ -96,7 +100,7 @@ final class SearchViewModel: NSObject {
 
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
     var labelID: LabelID { Message.Location.allmail.labelID }
-    var viewMode: ViewMode { self.user.getCurrentViewMode() }
+    var viewMode: ViewMode { self.user.conversationStateService.viewMode }
     var selectedMessages: [MessageEntity] {
         self.messages.filter { selectedIDs.contains($0.messageID.rawValue) }
     }
@@ -104,21 +108,13 @@ final class SearchViewModel: NSObject {
     private var currentFetchedSearchResultPage: UInt = 0
     /// use this flag to stop the search query being triggered by `loadMoreDataIfNeeded`.
     private(set) var searchIsDone = false
-    private let composerFactory: ComposerDependenciesFactory
 
-    init(
-        serviceFactory: ServiceFactory,
-        user: UserManager,
-        coreDataContextProvider: CoreDataContextProviderProtocol,
-        dependencies: Dependencies
-    ) {
-        self.composerFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
-        self.user = user
-        self.coreDataContextProvider = coreDataContextProvider
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
+        user = dependencies.user
         self.sharedReplacingEmailsMap = user.contactService.allAccountEmails()
             .reduce(into: [:]) { partialResult, email in
-                partialResult[email.email] = EmailEntity(email: email)
+                partialResult[email.email] = email
             }
     }
 }
@@ -193,7 +189,6 @@ extension SearchViewModel: SearchVMProtocol {
 
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback) {
         let params: FetchMessageDetail.Params = .init(
-            userID: user.userID,
             message: message
         )
         dependencies.fetchMessageDetail
@@ -201,33 +196,15 @@ extension SearchViewModel: SearchVMProtocol {
             .execute(params: params, callback: callback)
     }
 
-    func getComposeViewModel(message: MessageEntity) -> ComposeViewModel? {
-        guard let msgObject = coreDataContextProvider.mainContext
-            .object(with: message.objectID.rawValue) as? Message else {
-            return nil
+    func getMessageObject(by msgID: MessageID) -> MessageEntity? {
+        let msg: MessageEntity? = try? dependencies.contextProvider.read { context in
+            if let msg = Message.messageForMessageID(msgID.rawValue, in: context) {
+                return MessageEntity(msg)
+            } else {
+                return nil
+            }
         }
-        return ComposeViewModel(
-            msg: msgObject,
-            action: .openDraft,
-            msgService: user.messageService,
-            user: user,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
-        )
-    }
-
-    func getComposeViewModel(by msgID: MessageID, isEditingScheduleMsg: Bool) -> ComposeViewModel? {
-        guard let msg = Message.messageForMessageID(msgID.rawValue,
-                                                    inManagedObjectContext: coreDataContextProvider.mainContext) else {
-            return nil
-        }
-        return ComposeViewModel(
-            msg: msg,
-            action: .openDraft,
-            msgService: user.messageService,
-            user: user,
-            isEditingScheduleMsg: isEditingScheduleMsg,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
-        )
+        return msg
     }
 
     func getMessageCellViewModel(message: MessageEntity) -> NewMailboxMessageViewModel {
@@ -235,7 +212,8 @@ extension SearchViewModel: SearchVMProtocol {
         let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
             for: message,
             basedOn: sharedReplacingEmailsMap,
-            groupContacts: contactGroups
+            groupContacts: contactGroups,
+            shouldReplaceSenderWithRecipients: true
         )
         let weekStart = user.userInfo.weekStartValue
         let customFolderLabels = user.labelService.getAllLabels(of: .folder)
@@ -417,11 +395,11 @@ extension SearchViewModel: SearchVMProtocol {
 
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: MoveToActionSheetProtocol {
-    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, isFromSwipeAction: Bool, completion: (() -> Void)?) {
+    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, completion: (() -> Void)?) {
         // search view doesn't support conversation mode
     }
 
-    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool) {
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel) {
         messageService.move(messages: messages, to: folder.location.labelID, queue: true)
     }
 }
@@ -525,7 +503,7 @@ extension SearchViewModel {
     // swiftlint:disable function_body_length
     private func indexLocalObjects(_ completion: @escaping () -> Void) {
         var count = 0
-        coreDataContextProvider.performAndWaitOnRootSavingContext { context in
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             overallCountRequest.resultType = .countResultType
             overallCountRequest.predicate = NSPredicate(format: "%K == %@",
@@ -562,7 +540,7 @@ extension SearchViewModel {
             completion()
         })
 
-        coreDataContextProvider.performOnRootSavingContext { context in
+        dependencies.contextProvider.performOnRootSavingContext { context in
             self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
             guard let indexRaw = try? context.execute(async),
                   let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
@@ -601,7 +579,7 @@ extension SearchViewModel {
             return nil
         }
 
-        let context = coreDataContextProvider.mainContext
+        let context = dependencies.contextProvider.mainContext
         context.performAndWait {
             self.messages = messageIds.compactMap { oldId -> Message? in
                 let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
@@ -619,7 +597,7 @@ extension SearchViewModel {
             self.fetchController = nil
         }
 
-        let context = coreDataContextProvider.mainContext
+        let context = dependencies.contextProvider.mainContext
         let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         let ids = messageIDs.map { $0.rawValue }
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, ids)
@@ -650,15 +628,5 @@ extension SearchViewModel: NSFetchedResultsControllerDelegate {
             self.messages = dbObjects.map(MessageEntity.init)
         }
         self.uiDelegate?.refreshActionBarItems()
-    }
-}
-
-extension SearchViewModel {
-    struct Dependencies {
-        let coreKeyMaker: KeyMakerProtocol
-        let fetchMessageDetail: FetchMessageDetailUseCase
-        let fetchSenderImage: FetchSenderImageUseCase
-        let messageSearch: SearchUseCase
-        let userIntroductionProgressProvider: UserIntroductionProgressProvider
     }
 }

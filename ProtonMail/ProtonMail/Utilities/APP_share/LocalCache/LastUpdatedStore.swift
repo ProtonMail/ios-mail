@@ -25,7 +25,7 @@ import ProtonCore_DataModel
 import UIKit
 
 // sourcery: mock
-protocol LastUpdatedStoreProtocol {
+protocol LastUpdatedStoreProtocol: Service {
     func cleanUp(userId: UserID)
 
     func updateEventID(by userID: UserID, eventID: String)
@@ -43,10 +43,7 @@ protocol LastUpdatedStoreProtocol {
     func removeUpdateTime(by userID: UserID)
     func resetCounter(labelID: LabelID, userID: UserID)
     func removeUpdateTimeExceptUnread(by userID: UserID)
-    func getUnreadCounts(by labelIDs: [LabelID],
-                         userID: UserID,
-                         type: ViewMode,
-                         completion: @escaping ([String: Int]) -> Void)
+    func getUnreadCounts(by labelIDs: [LabelID], userID: UserID, type: ViewMode) -> [String: Int]
     func updateLastUpdatedTime(labelID: LabelID,
                                isUnread: Bool,
                                startTime: Date,
@@ -56,7 +53,7 @@ protocol LastUpdatedStoreProtocol {
                                type: ViewMode)
 }
 
-final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol, Service {
+final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol {
 
     let contextProvider: CoreDataContextProviderProtocol
 
@@ -145,19 +142,10 @@ extension LastUpdatedStore {
         }
     }
 
-    func getUnreadCounts(
-        by labelIDs: [LabelID],
-        userID: UserID,
-        type: ViewMode,
-        completion: @escaping ([String: Int]) -> Void
-    ) {
-        contextProvider.performOnRootSavingContext { context in
-            var results: [String: Int] = [:]
-            let labelCounts = self.lastUpdates(by: labelIDs, userID: userID, type: type, in: context)
-            labelCounts.forEach { results[$0.labelID] = Int($0.unread) }
-
-            DispatchQueue.main.async {
-                completion(results)
+    func getUnreadCounts(by labelIDs: [LabelID], userID: UserID, type: ViewMode) -> [String: Int] {
+        contextProvider.read { context in
+            lastUpdates(by: labelIDs, userID: userID, type: type, in: context).reduce(into: [:]) { acc, labelCount in
+                acc[labelCount.labelID] = Int(labelCount.unread)
             }
         }
     }

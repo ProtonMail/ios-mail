@@ -66,8 +66,6 @@ extension ConversationCount {
         update.total = 0
         update.unread = 0
 
-        _ = context.saveUpstreamIfNeeded()
-
         return update
     }
 

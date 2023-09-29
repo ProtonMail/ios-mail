@@ -42,12 +42,14 @@ import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(factory: sharedServices)
+    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(dependencies: dependencies)
     private var currentState: UIApplication.State = .active
     private var purgeOldMessages: PurgeOldMessagesUseCase?
 
     // TODO: make private
     let dependencies = GlobalContainer()
+
+    private var springboardShortcutsService: SpringboardShortcutsService!
 
     override init() {
         injectDefaultCryptoImplementation()
@@ -103,29 +105,19 @@ extension AppDelegate: UIApplicationDelegate {
         let queueManager = dependencies.queueManager
         sharedServices.add(QueueManager.self, for: queueManager)
 
-        let unlockManager = UnlockManager(
-            cacheStatus: coreKeyMaker,
-            keyMaker: coreKeyMaker,
-            pinFailedCountCache: userCachedStatus
-        )
+        let unlockManager = dependencies.unlockManager
         unlockManager.delegate = self
-        sharedServices.add(UnlockManager.self, for: unlockManager)
+
+        springboardShortcutsService = .init(dependencies: dependencies)
 
         sharedServices.add(UsersManager.self, for: usersManager)
-        let dependencies = PushNotificationService.Dependencies(lockCacheStatus: coreKeyMaker)
-        sharedServices.add(PushNotificationService.self, for: PushNotificationService(dependencies: dependencies))
-        let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: self.dependencies)
-        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager,
-                                                                  contactCacheStatus: userCachedStatus,
-                                                                  queueHandlerRegister: queueManager,
-                                                                  updateSwipeActionUseCase: updateSwipeActionUseCase))
-        sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
-        sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
+        sharedServices.add(PushNotificationService.self, for: dependencies.pushService)
         sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
 
 #if DEBUG
         if ProcessInfo.isRunningUnitTests {
             sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
+            sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
         } else {
             let lifetimeTrackerIntegration = LifetimeTrackerDashboardIntegration(
                 visibility: .visibleWithIssuesDetected,
@@ -166,6 +158,8 @@ extension AppDelegate: UIApplicationDelegate {
                                                name: .didSignOutLastAccount,
                                                object: nil)
         coordinator.delegate = self
+        
+        dependencies.backgroundTaskHelper.registerBackgroundTask(task: .eventLoop)
 
         UIBarButtonItem.enableMenuSwizzle()
         #if DEBUG
@@ -192,55 +186,13 @@ extension AppDelegate: UIApplicationDelegate {
           return .all
       }
 
-    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        return self.application(app, handleOpen: url)
-    }
-
-    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
-    func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
-        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
-            return false
-        }
-
-        if ["protonmail", "mailto"].contains(urlComponents.scheme) || "mailto".caseInsensitiveCompare(urlComponents.scheme ?? "") == .orderedSame {
-            var path = url.absoluteString
-            if urlComponents.scheme == "protonmail" {
-                path = path.preg_replace("protonmail://", replaceto: "")
-            }
-
-            let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
-            deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
-            deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
-            self.coordinator.followDeepLink(deeplink)
-            return true
-        }
-
-        guard urlComponents.host == "signup" else {
-            return false
-        }
-        guard let queryItems = urlComponents.queryItems, let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first else {
-            return false
-        }
-
-        guard let code = verifyObject.value else {
-            return false
-        }
-        /// TODO::fixme change to deeplink
-        let info: [String: String] = ["verifyCode": code]
-        let notification = Notification(name: .customUrlSchema,
-                                        object: nil,
-                                        userInfo: info)
-        NotificationCenter.default.post(notification)
-
-        return true
-    }
-
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
         self.currentState = .background
 
         startAutoLockCountDownIfNeeded()
+        
+        dependencies.backgroundTaskHelper.scheduleBackgroundRefreshIfNeeded(task: .eventLoop)
 
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask { }
@@ -271,17 +223,6 @@ extension AppDelegate: UIApplicationDelegate {
         BackgroundTimer.shared.willEnterBackgroundOrTerminate()
     }
 
-    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, deprecated in favor of similar method in WindowSceneDelegate" )
-    func application(_ application: UIApplication,
-                     continue userActivity: NSUserActivity,
-                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
-        if let data = userActivity.userInfo?["deeplink"] as? Data,
-            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
-        }
-        return true
-    }
-
     func applicationWillTerminate(_ application: UIApplication) {
         BackgroundTimer().willEnterBackgroundOrTerminate()
     }
@@ -291,8 +232,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        let pushService: PushNotificationService = sharedServices.get()
-        pushService.registerIfAuthorized()
+        dependencies.pushService.registerIfAuthorized()
         self.currentState = .active
         if let user = dependencies.usersManager.firstUser {
             dependencies.queueManager.enterForeground()
@@ -304,38 +244,18 @@ extension AppDelegate: UIApplicationDelegate {
         }
     }
 
-    // MARK: Background methods
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        // this feature can only work if user did not lock the app
-//        let signInManager = SignInManagerProvider()
-//        let unlockManager = UnlockManagerProvider()
-//        guard signInManager.isSignedIn, unlockManager.isUnlocked else {
-//            completionHandler(.noData)
-//            return
-//        }
-//
-//        let queueManager = sharedServices.get(by: QueueManager.self)
-//        queueManager.backgroundFetch(remainingTime: {
-//            application.backgroundTimeRemaining
-//        }, notify: {
-//            completionHandler(.newData)
-//        })
-        completionHandler(.noData)
-    }
-
     // MARK: Notification methods
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         if ProcessInfo.isRunningUnitTests {
             return
         }
-        let pushService: PushNotificationService = sharedServices.get()
-        pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
+        dependencies.pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }
 
     func application(_ application: UIApplication,
                      didReceiveRemoteNotification userInfo: [AnyHashable: Any],
                      fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        PushUpdater().update(with: userInfo)
+        dependencies.pushUpdater.update(with: userInfo)
         completionHandler(.newData)
     }
 
@@ -355,18 +275,6 @@ extension AppDelegate: UIApplicationDelegate {
             session.stateRestorationActivity = nil
             session.scene?.userActivity = nil
         }
-    }
-
-    // MARK: Shortcuts
-    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, deprecated in favor of similar method in WindowSceneDelegate" )
-    func application(_ application: UIApplication,
-                     performActionFor shortcutItem: UIApplicationShortcutItem,
-                     completionHandler: @escaping (Bool) -> Void) {
-        if let data = shortcutItem.userInfo?["deeplink"] as? Data,
-            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data) {
-            self.coordinator.followDeepDeepLinkIfNeeded(deeplink)
-        }
-        completionHandler(true)
     }
 
     private func startAutoLockCountDownIfNeeded() {
@@ -423,7 +331,7 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
 
         sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        let lastUpdatedStore = LastUpdatedStore(contextProvider: CoreDataService.shared)
+        let lastUpdatedStore = dependencies.lastUpdatedStore
         sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
         sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
     }
@@ -434,9 +342,12 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
         usersManager.tryRestore()
 
         #if !APP_EXTENSION
-        dependencies.usersManager.users.forEach {
-            $0.messageService.injectTransientValuesIntoMessages()
+        DispatchQueue.global().async {
+            usersManager.users.forEach {
+                $0.messageService.injectTransientValuesIntoMessages()
+            }
         }
+
         if let primaryUser = usersManager.firstUser {
             primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
         }
@@ -522,7 +433,9 @@ extension AppDelegate {
     }
 
     private func configureCoreObservability() {
-        ObservabilityEnv.current.setupWorld(requestPerformer: PMAPIService.unauthorized)
+        ObservabilityEnv.current.setupWorld(
+            requestPerformer: PMAPIService.unauthorized(keyMaker: dependencies.keyMaker)
+        )
     }
 
     private func configureLanguage() {
@@ -530,7 +443,7 @@ extension AppDelegate {
     }
 
     private func configurePushService(launchOptions: [UIApplication.LaunchOptionsKey: Any]?) {
-        let pushService: PushNotificationService = sharedServices.get()
+        let pushService = dependencies.pushService
         UNUserNotificationCenter.current().delegate = pushService
         pushService.registerForRemoteNotifications()
         pushService.setNotificationFrom(launchOptions: launchOptions)

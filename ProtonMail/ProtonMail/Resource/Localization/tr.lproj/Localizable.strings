@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-posta adresleri";
 
-/* The button text for add profile picture */
-"Add photo" = "Fotoğraf ekle";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Fotoğrafı düzenle";
-
 /* contact section title */
 "Encrypted contact details" = "Şifrelenmiş kişi bilgileri";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Etiket adı";
-
-/* when server not reachable */
-"API Server not reachable…" = "API sunucusuna erişilemiyor…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen proton.me üzerinden oturum açın.";
@@ -699,7 +690,7 @@
 "File, label, and color code messages to create your perfect, custom inbox." = "Gelen kutunuzu mükemmelleştirmek için iletileri dosyalayın, etiketleyin ve renklendirin.";
 
 /* Welcome to rebranding content */
-"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Yenilenmiş Proton böyle görünüyor. \nBirçok hizmet, tek amaç. Gizliliğe odaklanmış internet fikrine hoş geldiniz.";
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Yenilenmiş Proton böyle görünüyor. \nBirçok hizmet, tek amaç. Gizliliğe odaklanmış İnternet fikrine hoş geldiniz.";
 
 /* skip button title in onboarding page */
 "Skip" = "Atla";
@@ -1514,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Gizli alıcılar";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "E-posta listesinin aboneliğinden ayrıl";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Sistemimiz bu iletiyi bir kimlik avı girişimi olarak işaretledi. Lütfen göründüğü gibi olup olmadığını kontrol edin.";
 
@@ -1799,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "İleti gönderiliyor. Gönderim tamamlandığında ileti Gönderilmiş kutusuna taşınacak.";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "WiFi bağlantınız kesilirse indirme işlemi mobil veri üzerinden yapılır.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Mobil veri ile indir";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "İndirme ilerlemesi";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "İleti geçmişi";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Depolama alanı sınırı";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Kullanılan depolama alanı";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Tüm iletileriniz indirildi";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Tüm iletiler indirilemedi. İletileri indirmek için aygıt üzerinde boş depolama alanı açın.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Tüm iletiler indirilemedi. İletileri indirmek için aşağıdaki depolama alanı sınırını artırın.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "Herhangi bir iletiniz yok.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "İletileriniz indiriliyor...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Ön belleğe alınmış veriler";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Ek dosyalar";
-
-/* cell title in device settings */
-"Downloaded messages" = "İndirilmiş iletiler";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Proton Mail hesabınızın bu aygıt üzerinde ne kadar depolama alanı kullandığı hakkında bilgiler.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Temizle";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Çevrim dışı iken daha önce açılmış iletilerin açılabilmesini sağlar.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Çevrim dışı iken daha önce açılmış ek dosyaların açılabilmesini sağlar.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "İletilerinizde arama yapabilmenizi sağlar. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Ayrıntıları görüntüle";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Araç çubuğu işlemleri (en fazla 5 tane seçin)";
 
@@ -1893,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Şimdi bu araç çubuğundaki işlemleri seçebilir ve yeniden düzenleyebilirsiniz";
 
 /* Button to block a sender */
-"Block sender" = "Göndericiyi engelle";
+"Block messages from this sender" = "Bu göndericiden gelen iletileri engelle";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Engelle";
@@ -2012,7 +1940,7 @@
 "Schedule messages at any time" = "İletileri istediğiniz zamanda gönderin";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Unlimited folders and labels" = "Sınırsız klasör ve etiket";
+"Unlimited folders and labels" = "Sınırsız sayıda klasör ve etiket";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Up to 500 GB of storage" = "500 GB depolama alanına kadar";
@@ -2034,9 +1962,6 @@
 
 /* Message to show to user after updating password. */
 "Password updated" = "Parola güncellendi";
-
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Ön bellek temizleniyor…";
 
 /* Title for application logs settings option */
 "Application logs" = "Uygulama günlüğü kayıtları";
@@ -2065,11 +1990,17 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Tümünü yanıtla (son iletiyi)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Yeni ileti";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Özelleştir";
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Size yardımcı olabilmemiz için lütfen olabildiğince çok ayrıntı verin---\n\nÖzet:\n\nSorun bir kereden fazla oldu mu: Evet/Hayır\nSorunu yeniden oluşturma adımları:\nBeklenen sonuç:\nGerçekleşen sonuç:\nYorumlar:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Günlükler eklensin";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Farklı bir ifade ile aramayı deneyin.";
@@ -2133,3 +2064,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Özel e-posta etki alanları";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Görüntülenecek ad";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Ad";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Soyad";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Görüntülenecek ad alanı boş olamaz";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Kişi adı çok uzun";
+
+/* The button text for add profile picture */
+"Add photo" = "Fotoğraf ekle";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Fotoğrafı düzenle";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "E-posta listesinin aboneliğinden ayrıl";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Abonelikten çıkılsın mı?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Bu işlem sizi e-posta listesinden çıkarır. Göndericiye artık bu adrese e-posta göndermemesi bildirilir.";

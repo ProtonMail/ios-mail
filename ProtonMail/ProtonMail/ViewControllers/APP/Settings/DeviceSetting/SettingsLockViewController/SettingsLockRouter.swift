@@ -24,6 +24,7 @@ import UIKit
 
 enum SettingsLockRouterDestination: String {
     case pinCodeSetup = "pincode_setup"
+    case changePinCode = "change_pinCode"
 }
 
 // sourcery: mock
@@ -53,13 +54,22 @@ final class SettingsLockRouter: SettingsLockRouterProtocol {
     }
 
     func go(to dest: SettingsLockRouterDestination) {
+        let step: PinCodeSetupRouter.PinCodeSetUpStep
         switch dest {
         case .pinCodeSetup:
-            let nav = UINavigationController()
-            nav.modalPresentationStyle = .fullScreen
-            let coordinator = PinCodeSetupCoordinator(nav: nav, coreKeyMaker: coreKeyMaker)
-            coordinator.start()
-            self.navigationController?.present(nav, animated: true, completion: nil)
+            step = .enterNewPinCode
+        case .changePinCode:
+            step = .confirmBeforeChanging
         }
+
+        let nav = UINavigationController()
+        nav.modalPresentationStyle = .fullScreen
+        // swiftlint:disable:next force_cast
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let globalContainer = appDelegate.dependencies
+
+        let router = PinCodeSetupRouter(navigationController: nav, dependencies: globalContainer)
+        router.start(step: step)
+        navigationController?.present(nav, animated: true, completion: nil)
     }
 }

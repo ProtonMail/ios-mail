@@ -1,4 +1,6 @@
 class ConversationMessageViewModel {
+    typealias Dependencies = SingleMessageContentViewModelFactory.Dependencies
+    & HasInternetConnectionStatusProviderProtocol
 
     var isDraft: Bool {
         message.isDraft
@@ -20,39 +22,37 @@ class ConversationMessageViewModel {
     }
 
     private var weekStart: WeekStart {
-        user.userInfo.weekStartValue
+        dependencies.user.userInfo.weekStartValue
     }
 
     private(set) var state: ConversationMessageState
     private let labelId: LabelID
-    private let user: UserManager
-    private let messageContentViewModelFactory = SingleMessageContentViewModelFactory()
+    private let messageContentViewModelFactory: SingleMessageContentViewModelFactory
     private let replacingEmailsMap: [String: EmailEntity]
     private let contactGroups: [ContactGroupVO]
-    private let internetStatusProvider: InternetConnectionStatusProviderProtocol
+    private let dependencies: Dependencies
     let highlightedKeywords: [String]
     private let goToDraft: (MessageID, Date?) -> Void
 
     init(labelId: LabelID,
          message: MessageEntity,
-         user: UserManager,
          replacingEmailsMap: [String: EmailEntity],
          contactGroups: [ContactGroupVO],
-         internetStatusProvider: InternetConnectionStatusProviderProtocol,
+         dependencies: Dependencies,
          highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, Date?) -> Void
     ) {
         self.labelId = labelId
         self.message = message
-        self.user = user
         self.replacingEmailsMap = replacingEmailsMap
         self.contactGroups = contactGroups
-        self.internetStatusProvider = internetStatusProvider
+        self.dependencies = dependencies
         self.goToDraft = goToDraft
         self.highlightedKeywords = highlightedKeywords
+        messageContentViewModelFactory = SingleMessageContentViewModelFactory(dependencies: dependencies)
         let collapsedViewModel = ConversationCollapsedMessageViewModel(
             message: message,
-            weekStart: user.userInfo.weekStartValue,
+            weekStart: dependencies.user.userInfo.weekStartValue,
             replacingEmailsMap: replacingEmailsMap,
             contactGroups: contactGroups
         )
@@ -90,8 +90,6 @@ class ConversationMessageViewModel {
         )
         return messageContentViewModelFactory.createViewModel(
             context: context,
-            user: user,
-            internetStatusProvider: internetStatusProvider,
             highlightedKeywords: highlightedKeywords,
             goToDraft: goToDraft
         )

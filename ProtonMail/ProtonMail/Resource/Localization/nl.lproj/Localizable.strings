@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-mailadressen";
 
-/* The button text for add profile picture */
-"Add photo" = "Foto toevoegen";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Foto bewerken";
-
 /* contact section title */
 "Encrypted contact details" = "Versleutelde contactpersoonsgegevens";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Labelnaam";
-
-/* when server not reachable */
-"API Server not reachable…" = "API-server niet bereikbaar…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Toegang tot dit account is geblokkeerd als gevolg van onbetaalde facturen. Meldt u aan via proton.me om uw onbetaalde factuur te betalen.";
@@ -627,7 +618,7 @@
 "Enter your PIN to unlock your inbox." = "Voer uw pincode in om uw inbox te ontgrendelen.";
 
 /* Error */
-"Incorrect PIN." = "Onjuiste PIN-code.";
+"Incorrect PIN." = "Onjuiste pincode.";
 
 /* Description */
 "Upload iOS contacts to Proton Mail?" = "Contactpersonen in iOS naar Proton Mail uploaden?";
@@ -636,7 +627,7 @@
 "Delete contact" = "Contactpersoon verwijderen";
 
 /* Description */
-"PIN code can't be empty." = "PIN-code mag niet leeg zijn.";
+"PIN code can't be empty." = "Pincode mag niet leeg zijn.";
 
 /* Error */
 "Unknown Error" = "Onbekende fout";
@@ -1164,10 +1155,10 @@
 "General settings" = "Algemene instellingen";
 
 /* security title in settings */
-"App PIN" = "App PIN-code";
+"App PIN" = "App pincode";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN-code en Touch ID";
+"App PIN & Touch ID" = "App pincode en Touch ID";
 
 /* security title in settings */
 "App PIN & Face ID" = "App PIN-code en Face ID";
@@ -1305,13 +1296,13 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Schakel deze functie in om e-mailadressen automatisch aan te vullen met behulp van contacten van al uw ingelogde accounts.";
 
 /* The title of PIN code setup1 view  */
-"Set PIN code" = "PIN-code instellen";
+"Set PIN code" = "Pincode instellen";
 
 /* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Voer nieuwe PIN-code in";
+"Enter new PIN code" = "Voer nieuwe pincode in";
 
 /* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Voer een PIN-code in met min. 4 tekens en max 21 tekens.";
+"Enter a PIN code with min 4 characters and max 21 characters." = "Voer een pincode in met min. 4 tekens en max. 21 tekens.";
 
 /* The error message of entering a short pin */
 "PIN is too short" = "PIN is te kort";
@@ -1320,7 +1311,7 @@
 "PIN is too long" = "PIN is te lang";
 
 /* The title of PIN code setup2 view */
-"Repeat PIN code" = "Herhaal PIN-code";
+"Repeat PIN code" = "Herhaal pincode";
 
 /* The error message of entering an invalid password */
 "The PIN codes must match!" = "De pincodes moeten overeen komen!";
@@ -1338,7 +1329,7 @@
 "Off" = "Uit";
 
 /* The title of change PIN code option in security settings */
-"Change PIN code" = "Wijzig PIN-code";
+"Change PIN code" = "Wijzig pincode";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Opnieuw verifiëren";
@@ -1514,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Niet-openbaar gemaakte ontvangers";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Afmelden van mailinglijst";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Ons systeem heeft dit bericht gemarkeerd als phishing poging. Controleer of het legitiem is.";
 
@@ -1542,7 +1530,7 @@
 "Undo send" = "Verzenden ongedaan maken";
 
 /* The protection title of PIN code protection */
-"PIN code" = "PIN-code";
+"PIN code" = "Pincode";
 
 /* The protection title of Face ID protection */
 "Face ID" = "Face ID";
@@ -1800,66 +1788,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Het bericht wordt nu verzonden en zal verplaatst worden naar de Verzonden map wanneer het volledig verzonden is.";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Als u uw wifiverbinding verliest, zal de download verdergaan op mobiele data.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Downloaden via mobiele data";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Download voortgang";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Berichtengeschiedenis";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Opslaglimiet";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Gebruikte opslag";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Al uw berichten zijn gedownload";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Niet alle berichten zijn gedownload. Maak ruimte vrij op dit apparaat om ze te downloaden.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Niet alle berichten zijn gedownload. Verhoog het opslaglimiet hieronder om ze te downloaden.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "U heeft geen berichten.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Uw berichten worden gedownload...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Gecachete gegevens";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Bijlagen";
-
-/* cell title in device settings */
-"Downloaded messages" = "Gedownloade berichten";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Informatie over hoeveel opslagruimte dit Proton Mail-account gebruikt op uw apparaat.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Wissen";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Laat u toe om eerder gelezen berichten te openen terwijl u offline bent.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Laat u toe om eerder geopende bijlagen te openen terwijl u offline bent.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Laat u toe om uw berichten te doorzoeken. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Details bekijken";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Werkbalk acties (selecteer tot 5)";
 
@@ -1894,7 +1822,7 @@
 "You can now choose and rearrange the actions in this bar" = "U kan nu acties kiezen en herschikken in deze balk";
 
 /* Button to block a sender */
-"Block sender" = "Blokkeer afzender";
+"Block messages from this sender" = "Blokkeer berichten van deze afzender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blokkeer";
@@ -2036,9 +1964,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Wachtwoord bijgewerkt";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Cache legen…";
-
 /* Title for application logs settings option */
 "Application logs" = "Toepassingslogboek";
 
@@ -2066,11 +1991,17 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Beantwoord allen (laatste boodschap)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "New message";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personaliseer";
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "----Geef zoveel mogelijk gegevens op om ons u te kunnen laten helpen----\n\nSamenvatting:\n\nHeeft het probleem zich meer dan één keer voorgedaan: ja/nee\nStappen om het probleem te reproduceren:\nVerwacht resultaat:\nDaadwerkelijk resultaat:\nOpmerkingen:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Logs toevoegen";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Probeer een andere zoekterm.";
@@ -2134,3 +2065,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Aangepaste e-maildomeinen";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Weergavenaam";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Voornaam";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Familienaam";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Weergavenaam veld kan niet leeg zijn";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Contact name is too long";
+
+/* The button text for add profile picture */
+"Add photo" = "Foto toevoegen";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Foto bewerken";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Afmelden van mailinglijst";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Afmelden?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

@@ -149,6 +149,7 @@ class SingleMessageContentViewModel {
 
         messageInfoProvider.set(delegate: self)
         messageBodyViewModel.update(content: messageInfoProvider.contents)
+        updateAttachments()
     }
 
     func messageHasChanged(message: MessageEntity) {
@@ -195,7 +196,7 @@ class SingleMessageContentViewModel {
             return
         }
         hasAlreadyFetchedMessageData = true
-        let params: FetchMessageDetail.Params = .init(userID: user.userID, message: message)
+        let params: FetchMessageDetail.Params = .init(message: message)
         dependencies.fetchMessageDetail
             .callbackOn(.main)
             .execute(params: params) { [weak self] result in
@@ -240,7 +241,9 @@ class SingleMessageContentViewModel {
     }
 
     func deleteExpiredMessages() {
-        messageService.deleteExpiredMessages()
+        DispatchQueue.global().async {
+            self.user.cacheService.deleteExpiredMessages()
+        }
     }
 
     func markReadIfNeeded() {
@@ -370,7 +373,9 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
     func updateAttachments() {
         DispatchQueue.main.async {
             self.attachmentViewModel.attachmentHasChanged(
-                attachments: self.messageInfoProvider.nonInlineAttachments.map(AttachmentNormal.init),
+                attachmentCount: self.messageInfoProvider.message.numAttachments,
+                nonInlineAttachments: self.messageInfoProvider.nonInlineAttachments.map(AttachmentNormal.init),
+                inlineAttachments: self.messageInfoProvider.inlineAttachments,
                 mimeAttachments: self.messageInfoProvider.mimeAttachments
             )
             self.uiDelegate?.updateAttachmentBannerIfNeeded()

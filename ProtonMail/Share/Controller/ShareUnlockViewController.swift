@@ -28,6 +28,9 @@ import ProtonCore_UIFoundations
 import UIKit
 
 class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
+    typealias Dependencies = HasUsersManager & HasUnlockManager
+
+    private let dependencies: Dependencies
     private weak var coordinator: ShareUnlockCoordinator?
 
     func set(coordinator: ShareUnlockCoordinator) {
@@ -53,6 +56,16 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     private var localized_errors: [String] = []
     private var isUnlock = false
 
+
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
+        super.init(nibName: "ShareUnlockViewController", bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -96,7 +109,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
                     self.showErrorAndQuit(errorMsg: self.localized_errors.first ?? LocalString._cant_load_share_content)
                     return
                 }
-                guard sharedServices.get(by: UsersManager.self).hasUsers() else {
+                guard dependencies.usersManager.hasUsers() else {
                     self.showErrorAndQuit(errorMsg: L11n.Error.sign_in_message)
                     return
                 }
@@ -146,7 +159,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     }
 
     private func loginCheck() {
-        let unlockManager = sharedServices.get(by: UnlockManager.self)
+        let unlockManager = dependencies.unlockManager
         switch unlockManager.getUnlockFlow() {
         case .requirePin:
             self.coordinator?.go(dest: .pin)
@@ -195,7 +208,7 @@ class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {
     }
 
     func authenticateUser() {
-        let unlockManager = sharedServices.get(by: UnlockManager.self)
+        let unlockManager = dependencies.unlockManager
         unlockManager.biometricAuthentication(afterBioAuthPassed: {
             unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { },
                                                         unlocked:  {

@@ -23,7 +23,6 @@
 import Alamofire
 import CoreData
 import LifetimeTracker
-import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_PaymentsUI
@@ -34,14 +33,15 @@ import SkeletonView
 import SwipyCell
 import UIKit
 
-class MailboxViewController: ProtonMailViewController, ViewModelProtocol, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
+class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
+    typealias Dependencies = HasPaymentsUIFactory
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
-    typealias viewModelType = MailboxViewModel
-
-    private(set) var viewModel: MailboxViewModel!
+    let viewModel: MailboxViewModel
+    private let dependencies: Dependencies
 
     private weak var coordinator: MailboxCoordinatorProtocol?
 
@@ -49,12 +49,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         self.coordinator = coordinator
     }
 
-    func set(viewModel: MailboxViewModel) {
-        self.viewModel = viewModel
-        viewModel.uiDelegate = self
-    }
-
-    private lazy var replacingEmails: [Email] = viewModel.allEmails
+    private lazy var replacingEmails: [EmailEntity] = viewModel.allEmails
     lazy var replacingEmailsMap: [String: EmailEntity] = {
         return generateEmailsMap()
     }()
@@ -113,6 +108,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     private lazy var moveToActionSheetPresenter = MoveToActionSheetPresenter()
     private lazy var labelAsActionSheetPresenter = LabelAsActionSheetPresenter()
     private var referralProgramPresenter: ReferralProgramPromptPresenter?
+    private var paymentsUI: PaymentsUI?
 
     private var isSwipingCell = false {
         didSet {
@@ -144,8 +140,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    init(viewModel: MailboxViewModel, dependencies: Dependencies) {
+        self.viewModel = viewModel
+        self.dependencies = dependencies
+        super.init(nibName: nil, bundle: nil)
+        viewModel.uiDelegate = self
         trackLifetime()
     }
 
@@ -154,7 +153,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     }
 
     deinit {
-        self.viewModel?.resetFetchedController()
+        viewModel.resetFetchedController()
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -197,7 +196,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        assert(self.viewModel != nil)
         assert(self.coordinator != nil)
         emptyBackButtonTitleForNextView()
 
@@ -297,7 +295,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         }
 
         self.updateUnreadButton(count: viewModel.unreadCount)
-        deleteExpiredMessages()
+        viewModel.deleteExpiredMessages()
         viewModel.user.undoActionManager.register(handler: self)
         reloadIfSwipeActionsDidChange()
         fetchEventInScheduledSend()
@@ -349,6 +347,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
         showDropVersionsAlertIfNeeded()
         updateReferralPresenterAndShowPromptIfNeeded()
+
+        viewModel.prefetchIfNeeded()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -1028,10 +1028,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                 defer {
                     self.updateTapped(status: false)
                 }
-                let objectID = message.objectID.rawValue
-                if let messageObject = self.viewModel.object(by: objectID),
-                   !messageObject.body.isEmpty {
-                    openCachedDraft(messageObject)
+                if !message.body.isEmpty {
+                    openCachedDraft(message)
                     return
                 }
                 let alert = LocalString._unable_to_edit_offline.alertController()
@@ -1053,12 +1051,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
                     }
                     self?.updateTapped(status: false)
                 case .success(let msg):
-                    let objectID = msg.objectID.rawValue
                     Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
-                        guard let message = self?.viewModel.object(by: objectID),
-                              message.body.isEmpty == false else { return }
+                        guard msg.body.isEmpty == false else { return }
                         timer.invalidate()
-                        self?.coordinator?.go(to: .composeShow, sender: message)
+                        self?.coordinator?.go(to: .composeShow, sender: msg)
                         self?.tableView.indexPathsForSelectedRows?.forEach {
                             self?.tableView.deselectRow(at: $0, animated: true)
                         }
@@ -1069,7 +1065,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         }
     }
 
-    private func openCachedDraft(_ message: Message) {
+    private func openCachedDraft(_ message: MessageEntity) {
         coordinator?.go(to: .composeShow, sender: message)
         tableView.indexPathsForSelectedRows?.forEach {
             tableView.deselectRow(at: $0, animated: true)
@@ -1225,10 +1221,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
         isScrolled ? topActionsView.layer.apply(shadow: .custom(y: 2, blur: 2)) : topActionsView.layer.clearShadow()
     }
 
-    private func deleteExpiredMessages() {
-        viewModel.user.messageService.deleteExpiredMessages()
-    }
-
     private func updateScheduledMessageTimeLabel() {
         guard viewModel.labelID.rawValue == Message.Location.scheduled.rawValue else {
             return
@@ -1251,7 +1243,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Compos
 
     private func generateEmailsMap() -> [String: EmailEntity] {
         return replacingEmails.reduce(into: [:], { partialResult, email in
-            partialResult[email.email] = EmailEntity(email: email)
+            partialResult[email.email] = email
         })
     }
 
@@ -1769,11 +1761,7 @@ extension MailboxViewController {
 
         var scheduledSendNum: Int?
         let continueAction: () -> Void = { [weak self] in
-            self?.moveToActionHandler.handleMoveToAction(
-                messages: messages,
-                to: folder,
-                isFromSwipeAction: isSwipeAction
-            )
+            self?.moveToActionHandler.handleMoveToAction(messages: messages, to: folder)
             if isSwipeAction {
                 let title: String
                 if let num = scheduledSendNum {
@@ -1860,7 +1848,6 @@ extension MailboxViewController {
             self?.moveToActionHandler.handleMoveToAction(
                 conversations: conversations,
                 to: folder,
-                isFromSwipeAction: isSwipeAction,
                 completion: nil
             )
             if isSwipeAction {
@@ -2391,7 +2378,7 @@ extension MailboxViewController: SkeletonTableViewDataSource {
 
 extension MailboxViewController: EventsConsumer {
     func shouldCallFetchEvents() {
-        deleteExpiredMessages()
+        viewModel.deleteExpiredMessages()
         updateScheduledMessageTimeLabel()
         guard self.hasNetworking, !self.viewModel.isFetchingMessage else { return }
         getLatestMessages()
@@ -2560,7 +2547,7 @@ extension MailboxViewController {
                 guard let self else { return }
                 let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
                     guard let self else { return }
-                    self.presentPayments(for: self.viewModel.user)
+                    self.presentPayments()
                 }
                 upsellSheet.present(on: self.navigationController!.view)
             }
@@ -2592,16 +2579,25 @@ extension MailboxViewController {
             infoBanner.emptyButtonAction = { [weak self] in
                 self?.clickEmptyFolderAction()
             }
+            let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
+            infoBanner.toggleEmptyButton(shouldEnable: count > 0)
             return infoBanner
         case .infoBanner(.trash):
             let infoBanner = AutoDeleteTrashInfoHeaderView()
             infoBanner.emptyButtonAction = { [weak self] in
                 self?.clickEmptyFolderAction()
             }
+            let count = self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
+            infoBanner.toggleEmptyButton(shouldEnable: count > 0)
             return infoBanner
         case .none:
             return nil
         }
+    }
+
+    private func presentPayments() {
+        paymentsUI = dependencies.paymentsUIFactory.makeView()
+        paymentsUI?.presentUpgradePlan()
     }
 }
 
@@ -2674,15 +2670,5 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
 extension MailboxViewController: ComposeContainerViewControllerDelegate {
     func composerVillDismiss() {
         getLatestMessages()
-    }
-}
-
-extension UIViewController {
-    func presentPayments(for user: UserManager) {
-        let paymentsUI = PaymentsUI(payments: user.payments,
-                                    clientApp: .mail,
-                                    shownPlanNames: Constants.shownPlanNames,
-                                    customization: .empty)
-        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in }
     }
 }

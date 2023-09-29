@@ -300,35 +300,22 @@ final class LastUpdatedStoreTests: XCTestCase {
 
     func testGetUnreadCounts_noDataInCache_singleMessage_returnEmpty() {
         let labelID2: LabelID = "label2"
-        let expectation1 = expectation(description: "Closure is called")
-
-        sut.getUnreadCounts(by: [labelID, labelID2], userID: userID, type: .singleMessage) { result in
-            XCTAssertTrue(result.isEmpty)
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1)
+        let result = sut.getUnreadCounts(by: [labelID, labelID2], userID: userID, type: .singleMessage)
+        XCTAssertEqual(result, [:])
     }
 
-    func testGetUnreadCounts_singleMessage_getCorrectData() {
+    func testGetUnreadCounts_singleMessage_getCorrectData() throws {
         let labelID2: LabelID = "label2"
         prepareLabelUpdateTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 100, unread: 30, userID: userID)
         prepareLabelUpdateTestData(labelID: labelID2, start: Date(), end: Date(), update: Date(), total: 10, unread: 5, userID: userID)
-        let expectation1 = expectation(description: "Closure is called")
 
-        sut.getUnreadCounts(by: [labelID, labelID2], userID: userID, type: .singleMessage) { result in
-            XCTAssertEqual(result.count, 2)
-            do {
-                let labelUnread = try XCTUnwrap(result[self.labelID.rawValue])
-                XCTAssertEqual(labelUnread, 30)
+        let result = sut.getUnreadCounts(by: [labelID, labelID2], userID: userID, type: .singleMessage)
+        XCTAssertEqual(result.count, 2)
+        let labelUnread = try XCTUnwrap(result[self.labelID.rawValue])
+        XCTAssertEqual(labelUnread, 30)
 
-                let label2Unread = try XCTUnwrap(result[labelID2.rawValue])
-                XCTAssertEqual(label2Unread, 5)
-            } catch {
-                XCTFail("Should not throw error")
-            }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1)
+        let label2Unread = try XCTUnwrap(result[labelID2.rawValue])
+        XCTAssertEqual(label2Unread, 5)
     }
 
     // MARK: reset functions
@@ -707,34 +694,22 @@ extension LastUpdatedStoreTests {
 
     func testGetUnreadCounts_noDataInCache_conversation_returnEmpty() {
         let labelID2: LabelID = "label2"
-        let expectation1 = expectation(description: "Closure is called")
-        sut.getUnreadCounts(by: [labelID, labelID2], userID: userID, type: .conversation) { result in
-            XCTAssertTrue(result.isEmpty)
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1)
+        let result = sut.getUnreadCounts(by: [labelID, labelID2], userID: userID, type: .conversation)
+        XCTAssertEqual(result, [:])
     }
 
-    func testGetUnreadCounts_conversation_getCorrectData() {
+    func testGetUnreadCounts_conversation_getCorrectData() throws {
         let labelID2: LabelID = "label2"
         prepareConversationCountTestData(labelID: labelID, start: Date(), end: Date(), update: Date(), total: 100, unread: 30, userID: userID)
         prepareConversationCountTestData(labelID: labelID2, start: Date(), end: Date(), update: Date(), total: 10, unread: 5, userID: userID)
-        let expectation1 = expectation(description: "Closure is called")
 
-        sut.getUnreadCounts(by: [labelID, labelID2], userID: userID, type: .conversation) { result in
-            XCTAssertEqual(result.count, 2)
-            do {
-                let labelUnread = try XCTUnwrap(result[self.labelID.rawValue])
-                XCTAssertEqual(labelUnread, 30)
+        let result = sut.getUnreadCounts(by: [labelID, labelID2], userID: userID, type: .conversation)
+        XCTAssertEqual(result.count, 2)
+        let labelUnread = try XCTUnwrap(result[self.labelID.rawValue])
+        XCTAssertEqual(labelUnread, 30)
 
-                let label2Unread = try XCTUnwrap(result[labelID2.rawValue])
-                XCTAssertEqual(label2Unread, 5)
-            } catch {
-                XCTFail("Should not throw error")
-            }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1)
+        let label2Unread = try XCTUnwrap(result[labelID2.rawValue])
+        XCTAssertEqual(label2Unread, 5)
     }
 }
 
@@ -815,3 +790,4 @@ private extension LastUpdatedStoreTests {
         data.userID = userID.rawValue
     }
 }
+

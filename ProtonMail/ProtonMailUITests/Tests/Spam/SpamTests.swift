@@ -19,7 +19,6 @@ class SpamTests: FixtureAuthenticatedTestCase {
                 .longClickMessageBySubject(scenario.subject)
                 .moveTo()
                 .selectFolder(LocalString._menu_spam_title)
-                .tapDone()
             InboxRobot()
                 .menuDrawer()
                 .spam()
@@ -44,7 +43,6 @@ class SpamTests: FixtureAuthenticatedTestCase {
                 .longClickMessageBySubject(scenario.subject)
                 .moveTo()
                 .selectFolder(LocalString._menu_spam_title)
-                .tapDone()
             InboxRobot()
                 .menuDrawer()
                 .spam()
@@ -53,4 +51,3 @@ class SpamTests: FixtureAuthenticatedTestCase {
         }
     }
 }
-

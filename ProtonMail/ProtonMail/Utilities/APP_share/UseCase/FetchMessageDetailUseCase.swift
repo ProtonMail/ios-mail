@@ -54,7 +54,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
         let request = MessageDetailRequest(messageID: params.message.messageID)
         dependencies
             .apiService
-            .perform(request: request) { [weak self] _, result in
+            .perform(request: request, callCompletionBlockUsing: .immediateExecutor) { [weak self] _, result in
                 guard let self = self else {
                     callback(.failure(Errors.selfIsReleased))
                     return
@@ -77,8 +77,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
                     let handledMessage = try self.handle(
                         messageDict: messageDict,
                         messageObjectID: params.message.objectID,
-                        ignoreDownloaded: params.ignoreDownloaded,
-                        userID: params.userID
+                        ignoreDownloaded: params.ignoreDownloaded
                     )
                     callback(.success(handledMessage))
                 } catch {
@@ -90,8 +89,7 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
     private func handle(
         messageDict: [String: Any],
         messageObjectID: ObjectID,
-        ignoreDownloaded: Bool,
-        userID: UserID
+        ignoreDownloaded: Bool
     ) throws -> MessageEntity {
         try dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
                 guard let message = context.object(with: messageObjectID.rawValue) as? Message else {
@@ -162,7 +160,6 @@ final class FetchMessageDetail: FetchMessageDetailUseCase {
 
 extension FetchMessageDetail {
     struct Params {
-        let userID: UserID
         let message: MessageEntity
         /// If true, the execution will be scheduled in the task queue
         let hasToBeQueued: Bool
@@ -170,11 +167,9 @@ extension FetchMessageDetail {
         /// If false, compare update time between local cache and BE to use the newer data
         let ignoreDownloaded: Bool
 
-        init(userID: UserID,
-             message: MessageEntity,
+        init(message: MessageEntity,
              hasToBeQueued: Bool = true,
              ignoreDownloaded: Bool = false) {
-            self.userID = userID
             self.message = message
             self.hasToBeQueued = hasToBeQueued
             self.ignoreDownloaded = ignoreDownloaded

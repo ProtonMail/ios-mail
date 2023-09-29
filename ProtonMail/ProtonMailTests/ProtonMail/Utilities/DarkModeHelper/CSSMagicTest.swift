@@ -703,7 +703,7 @@ extension CSSMagicTest {
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
         anchor = CSSMagic.getCSSAnchor(of: nodes[0])
-        XCTAssertEqual(anchor, "div[style*=\"color:#252525\"]")
+        XCTAssertEqual(anchor, "div[style*=\"color:#252525\"][style*=\"padding:2px 0 0 0\"][style*=\"font-size:12px\"]")
 
         html = """
         <html><body><div itemprop="description" style="color:#252525 !important;padding:2px 0 0 0;font-size:12px;line-height:18px">....some contents</div></body></html>
@@ -713,7 +713,7 @@ extension CSSMagicTest {
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
         anchor = CSSMagic.getCSSAnchor(of: nodes[0])
-        XCTAssertEqual(anchor, "div[style*=\"color:#252525\"]")
+        XCTAssertEqual(anchor, "div[style*=\"color:#252525\"][style*=\"padding:2px 0 0 0\"][style*=\"font-size:12px\"]")
     }
 
     func testAssembleCSSDict() {

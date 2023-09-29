@@ -31,6 +31,8 @@ protocol ContactGroupEditDelegate: AnyObject {
 }
 
 final class ContactGroupEditViewController: UIViewController, AccessibleView {
+    typealias Dependencies = HasContactViewsFactory
+
     enum ID {
         static var contactGroupEditCell = "ContactGroupEditCell"
         static var contactGroupManageCell = "ContactGroupManageCell"
@@ -49,17 +51,20 @@ final class ContactGroupEditViewController: UIViewController, AccessibleView {
     @IBOutlet var changeColorButton: UIButton!
     @IBOutlet var tableView: UITableView!
 
+    private let dependencies: Dependencies
+
     weak var delegate: ContactGroupEditDelegate?
     var viewModel: ContactGroupEditViewModel!
     var activeText: UIResponder?
 
-    init(viewModel: ContactGroupEditViewModel) {
+    init(viewModel: ContactGroupEditViewModel, dependencies: Dependencies) {
+        self.dependencies = dependencies
         self.viewModel = viewModel
         super.init(nibName: "ContactGroupEditViewController", bundle: nil)
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -145,10 +150,9 @@ final class ContactGroupEditViewController: UIViewController, AccessibleView {
         let refreshHandler = { [weak self] (newColor: String) -> Void in
             self?.viewModel.setColor(newColor: newColor)
         }
-
-        let viewModel = ContactGroupSelectColorViewModelImpl(currentColor: viewModel.getColor(),
-                                                             refreshHandler: refreshHandler)
-        let newView = ContactGroupSelectColorViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeGroupSelectColorView(
+            currentColor: viewModel.getColor(), refreshHandler: refreshHandler
+        )
         show(newView, sender: nil)
     }
 
@@ -204,12 +208,9 @@ final class ContactGroupEditViewController: UIViewController, AccessibleView {
         let refreshHandler = { [weak self] (emailIDs: Set<EmailEntity>) -> Void in
             self?.viewModel.setEmails(emails: emailIDs)
         }
-
-        let viewModel = ContactGroupSelectEmailViewModelImpl(selectedEmails: viewModel.getEmails(),
-                                                             contactService: viewModel.user.contactService,
-                                                             refreshHandler: refreshHandler)
-
-        let newView = ContactGroupSelectEmailViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeGroupSelectEmailView(
+            selectedEmails: viewModel.getEmails(), refreshHandler: refreshHandler
+        )
         show(newView, sender: nil)
     }
 }

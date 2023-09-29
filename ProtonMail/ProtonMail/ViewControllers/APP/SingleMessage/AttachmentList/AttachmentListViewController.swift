@@ -22,7 +22,6 @@
 
 import PassKit
 import ProtonCore_UIFoundations
-import Reachability
 import QuickLook
 import UIKit
 

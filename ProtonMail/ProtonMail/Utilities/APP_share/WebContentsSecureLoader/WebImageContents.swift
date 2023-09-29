@@ -19,8 +19,4 @@ import Foundation
 
 struct WebImageContents: Equatable {
     let embeddedImages: [AttachmentEntity]
-
-    init(embeddedImages: [AttachmentEntity]) {
-        self.embeddedImages = embeddedImages
-    }
 }

@@ -85,6 +85,22 @@ enum FeatureFlagTestData {
                 "Global": true,
                 "Code": "iOSMailboxPrefetchSize",
                 "DefaultValue": 0
+            ],
+            [
+                "Writable": false,
+                "Type": "boolean",
+                "Value": true,
+                "Global": true,
+                "Code": "iOSRefetchEventsByTime",
+                "DefaultValue": true
+            ],
+            [
+                "Writable": false,
+                "Type": "integer",
+                "Value": 24,
+                "Global": true,
+                "Code": "iOSRefetchEventsHourThreshold",
+                "DefaultValue": 24
             ]
         ] as [[String: Any]]
     ]

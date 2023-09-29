@@ -355,7 +355,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
         let localContact = PreContact(
             email: email,
             pubKeys: [OpenPGPDefines.publicKey.unArmor!],
-            sign: true,
+            sign: .sign,
             encrypt: true,
             scheme: nil,
             mimeType: nil
@@ -585,7 +585,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
         let localContact = PreContact(
             email: email,
             pubKeys: [OpenPGPDefines.publicKey.unArmor!],
-            sign: true,
+            sign: .sign,
             encrypt: true,
             scheme: nil,
             mimeType: nil
@@ -637,7 +637,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
         let localContact = PreContact(
             email: email,
             pubKeys: [OpenPGPDefines.publicKey.unArmor!],
-            sign: true,
+            sign: .sign,
             encrypt: true,
             scheme: nil,
             mimeType: nil
@@ -689,7 +689,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
         let localContact = PreContact(
             email: email,
             pubKeys: [OpenPGPDefines.publicKey.unArmor!],
-            sign: true,
+            sign: .sign,
             encrypt: false,
             scheme: nil,
             mimeType: nil

@@ -1,6 +1,6 @@
 /* link opeining confirmation */
 
-"You are about to launch the web browser and navigate to" = "Du er ved at starte webbrowseren og navigere til";
+"You are about to launch the web browser and navigate to" = "Du er ved at starte webbrowseren og fortsætte til";
 
 /* link opeining confirmation */
 "Request link confirmation" = "Anmod om linkbekræftelse";
@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-mailadresser";
 
-/* The button text for add profile picture */
-"Add photo" = "Tilføj foto";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Redigér foto";
-
 /* contact section title */
 "Encrypted contact details" = "Krypterede kontaktoplysninger";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Etiketnavn";
-
-/* when server not reachable */
-"API Server not reachable…" = "API-server ikke tilgængelig…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Adgang til denne konto er deaktiveret grundet manglende betaling. Log ind via proton.me for at betale din udestående faktura.";
@@ -1449,7 +1440,7 @@
 "Inherit color from parent folder" = "Nedarv farve fra overordnet mappe";
 
 /* section title */
-"Select color" = "Select color";
+"Select color" = "Vælg farve";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Du er ikke forbundet. Vi kan ikke vise indholdet af din besked.";
@@ -1513,9 +1504,6 @@
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Oplyste modtagere";
-
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Afmeld dig fra mailinglisten";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Vores system markerede denne besked som et phishing-forsøg. Kontroller, at den er legitim.";
@@ -1799,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Beskeden er ved at blive sendt og flyttes til mappen Sendt, når afsendelsen er afsluttet.";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Hvis du mister din WiFi-forbindelse, fortsætter download via mobildata.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Download via mobildata";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Fremskridt for download";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Beskedhistorik";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Lagergrænse";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Anvendt lagerplads";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Alle dine beskeder er downloadet";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Ikke alle beskeder blev downloadet. Hvis du vil hente dem, skal du frigøre lagerplads på enheden.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Ikke alle beskeder blev downloadet. Hvis du vil hente dem, skal du øge lagergrænsen nedenfor.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "Du har ingen beskeder.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Din beskeder bliver downloadet...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Cachelagrede data";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Vedhæftninger";
-
-/* cell title in device settings */
-"Downloaded messages" = "Downloadede beskeder";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Oplysninger om, hvor meget lagerplads denne Proton Mail-konto bruger på din enhed.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Ryd";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Giver dig mulighed for at åbne tidligere læste beskeder, mens du er offline.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Giver dig mulighed for at åbne tidligere åbnede vedhæftede filer, mens du er offline.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Giver dig mulighed for at søge i dine beskeder. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Se detaljer";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Værktøjslinjehandlinger (vælg op til 5)";
 
@@ -1893,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Du kan nu vælge og omarrangere handlingerne i denne værktøjslinje";
 
 /* Button to block a sender */
-"Block sender" = "Blokér afsender";
+"Block messages from this sender" = "Blokér beskeder fra denne afsender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blokér";
@@ -2035,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Adgangskode opdateret";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Rydder cache...";
-
 /* Title for application logs settings option */
 "Application logs" = "Applikationslogs";
 
@@ -2045,10 +1970,10 @@
 "Next message after move" = "Næste besked efter flytning";
 
 /* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Navigér til næste besked efter flytning";
+"Navigate to next message after move" = "Fortsæt til næste besked efter flytning";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Hvis du udfører en flyttehandling på en besked (f.eks. arkiverer), navigeres der til den næste besked.";
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Hvis du udfører en flyttehandling på en besked (f.eks. arkiverer), fortsættes der til den næste besked.";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Kunne ikke åbne beskeden, forsøg igen.";
@@ -2065,11 +1990,17 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Svar alle (på den sidste besked)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Ny besked";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Tilpas";
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---For at hjælpe os med at hjælpe dig, oplys venligst flest mulig detaljer---\n\nOpsummer:\n\nEr problemet opstået flere gange: ja/nej\nHvilke handlinger får problemet til at opstå:\nForventet resultat:\nFaktiske resultat:\nKommentarer:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Inkludér logger";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Prøv et andet søgeord.";
@@ -2133,3 +2064,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Brugerdefinerede e-maildomæner";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Vist navn";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Fornavn";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Efternavn";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Feltet med Vist navn må ikke være tomt";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Kontaktnavn er for langt";
+
+/* The button text for add profile picture */
+"Add photo" = "Tilføj foto";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Redigér foto";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Afmeld dig fra mailinglisten";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Afmeld?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Dette vil afmelde dig fra mailinglisten. Afsenderen vil få besked om ikke længere at sende e-mails til denne adresse.";

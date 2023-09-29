@@ -35,7 +35,6 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         .init(maxCount: 1)
     }
 
-    let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     let initialID: IDType
     let labelID: LabelID
     let user: UserManager
@@ -59,12 +58,10 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         user: UserManager,
         targetMessageID: MessageID?,
         userIntroduction: UserIntroductionProgressProvider,
-        infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         notificationCenter: NotificationCenter = NotificationCenter.default,
         goToDraft: @escaping ((MessageID, Date?) -> Void)
     ) {
         self.goToDraft = goToDraft
-        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
         self.initialID = initialID
         self.isUnread = isUnread
         self.labelID = labelID
@@ -159,7 +156,6 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
         labelID: LabelID,
         user: UserManager,
         userIntroduction: UserIntroductionProgressProvider,
-        infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         goToDraft: @escaping ((MessageID, Date?) -> Void)
     ) {
         super.init(
@@ -170,7 +166,6 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
             user: user,
             targetMessageID: nil,
             userIntroduction: userIntroduction,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: goToDraft
         )
         self.fetchedResultsController?.delegate = self
@@ -228,7 +223,6 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
         user: UserManager,
         targetMessageID: MessageID?,
         userIntroduction: UserIntroductionProgressProvider,
-        infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         goToDraft: @escaping ((MessageID, Date?) -> Void)
     ) {
         super.init(
@@ -239,7 +233,6 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
             user: user,
             targetMessageID: targetMessageID,
             userIntroduction: userIntroduction,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: goToDraft
         )
         self.fetchedResultsController?.delegate = self

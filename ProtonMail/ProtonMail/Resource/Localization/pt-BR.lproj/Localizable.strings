@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Endereços de e-mail";
 
-/* The button text for add profile picture */
-"Add photo" = "Adicionar foto";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Editar foto";
-
 /* contact section title */
 "Encrypted contact details" = "Detalhes de contato criptografados";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Nome do marcador";
-
-/* when server not reachable */
-"API Server not reachable…" = "Servidor da API não está disponível…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "O acesso a esta conta foi desativado devido à falta de pagamento. Acesse o proton.me para pagar sua fatura pendente.";
@@ -489,7 +480,7 @@
 "The request timed out." = "Solicitação excedeu o tempo limite.";
 
 /* Message */
-"Proton servers are unreachable.\nVisit our status page for details." = "Os servidores Proton estão indisponíveis. Visite nossa página de status para obter detalhes.";
+"Proton servers are unreachable.\nVisit our status page for details." = "Os servidores da Proton estão indisponíveis.\nVisite nossa página de status para obter detalhes.";
 
 /* Title */
 "No connectivity detected…" = "Nenhuma conexão detectada…";
@@ -1314,10 +1305,10 @@
 "Enter a PIN code with min 4 characters and max 21 characters." = "Insira um código PIN com no mínimo 4 caracteres e no máximo 21 caracteres.";
 
 /* The error message of entering a short pin */
-"PIN is too short" = "O código PIN é muito curto.";
+"PIN is too short" = "O PIN é muito curto.";
 
 /* The error message of entering a long pin */
-"PIN is too long" = "O código PIN é muito longo.";
+"PIN is too long" = "O PIN é muito longo.";
 
 /* The title of PIN code setup2 view */
 "Repeat PIN code" = "Repetir o código PIN";
@@ -1326,7 +1317,7 @@
 "The PIN codes must match!" = "Os códigos PIN devem corresponder.";
 
 /* alternative routing description */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "No caso dos sites do Proton estarem bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos manter esta configuração ativa para uma maior confiabilidade. %1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "No caso dos sites da Proton estarem bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos manter esta configuração ativa para uma maior confiabilidade. %1$@";
 
 /* The title of alternative routing settings */
 "Networking" = "Rede";
@@ -1513,9 +1504,6 @@
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinatários ocultos";
-
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Cancelar a inscrição na lista de distribuição de e-mails";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Nosso sistema sinalizou esta mensagem como uma tentativa de phishing. Verifique se é legítimo.";
@@ -1791,73 +1779,13 @@
 "The sending key is not valid" = "A chave de envio não é válida";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
-"<1m" = "Menos de um minuto";
+"<1m" = "<1min";
 
 /* The time label for message is about to be sent less in 1 minute not in the list view. */
 "less than 1 minute" = "menos que 1 minuto";
 
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "A mensagem está sendo enviada e será movida para a pasta Enviados assim que o envio for concluído.";
-
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Se você perder sua conexão Wi-Fi, continuará baixando por dados móveis.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Download através de dados móveis";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Progresso de download";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Histórico de mensagem";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Limite de armazenamento";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Armazenamento usado";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Todas as suas mensagens foram baixadas.";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Nem todas as mensagens foram baixadas. Para baixá-los, libere armazenamento no dispositivo.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Nem todas as mensagens foram baixadas. Para baixá-los, aumente o limite de armazenamento abaixo.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "Você não tem mensagens.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Suas mensagens está sendo baixada...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Dados em cache";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Anexos";
-
-/* cell title in device settings */
-"Downloaded messages" = "Mensagens baixadas";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Informações sobre quanto espaço de armazenamento esta conta do Proton Mail está usando em seu dispositivo.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Limpar";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Permite abrir mensagens lidas anteriormente em off-line.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Permite abrir anexos abertos anteriormente enquanto estiver offline.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Permite buscar dentro das suas mensagens. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Ver detalhes";
 
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Acções da barra de ferramentas (até 5)";
@@ -1893,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Você agora pode escolher e reorganizar as ações nesse barra de ferramentas.";
 
 /* Button to block a sender */
-"Block sender" = "Bloquear remetente";
+"Block messages from this sender" = "Bloquear mensagens deste remetente";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloquear";
@@ -1949,10 +1877,10 @@
 "Link copied." = "Link copiado.";
 
 /* The article title of the referral share view. */
-"Invite friends to Proton,\n get up to $90 in credits!" = "Convide amigos para o Proton,\nganhe até $ 90 em créditos!";
+"Invite friends to Proton,\n get up to $90 in credits!" = "Convide amigos para a Proton,\nganhe até $ 90 em créditos!";
 
 /* The article content of the referral share view. */
-"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Convide seus amigos para o Proton: eles experimentam o Mail Plus gratuitamente e você ganha créditos quando eles assinam um plano pago.";
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Convide seus amigos para a Proton: eles experimentam o Mail Plus gratuitamente e você ganha créditos quando eles assinam um plano pago.";
 
 /* The title link of the textfield of the referral link in referral share view. */
 "Your invite link" = "Seu link de convite";
@@ -1964,7 +1892,7 @@
 "Track your rewards" = "Acompanhe suas recompensas";
 
 /* The title of the terms and conditions button in referral share view. */
-"Terms & conditions" = "Termos & Condições";
+"Terms & conditions" = "Termos e condições";
 
 /* The content that is shared through the action: `Share the link` */
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Estou usando o Proton Mail e pensei que você poderia gostar. É um serviço de e-mail seguro que protege sua privacidade. Inscreva-se com este link para obter 1 mês de recursos premium de graça:";
@@ -2035,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Senha atualizada";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Limpando o cache…";
-
 /* Title for application logs settings option */
 "Application logs" = "Registros do aplicativo";
 
@@ -2065,11 +1990,17 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Responder a todos (última mensagem)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nova mensagem";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personalizar";
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Para nos ajudar a lhe ajudar, forneça o máximo de detalhes possível---\n\nResumo:\n\nO problema aconteceu mais de uma vez: sim/não\nPassos para reproduzir o problema:\nResultado esperado:\nResultado observado:\nComentários:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Incluir registros";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Tente um termo de pesquisa diferente.";
@@ -2133,3 +2064,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domínios personalizados de e-mail";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Nome de exibição";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Primeiro nome";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Sobrenome";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "O campo de nome de exibição não pode estar vazio";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Nome do contato é muito longo";
+
+/* The button text for add profile picture */
+"Add photo" = "Adicionar foto";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Editar foto";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Cancelar a inscrição na lista de distribuição de e-mails";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Cancelar inscrição?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Isso cancelará sua inscrição na lista de e-mails. O remetente será notificado para não enviar mais e-mails para este endereço.";

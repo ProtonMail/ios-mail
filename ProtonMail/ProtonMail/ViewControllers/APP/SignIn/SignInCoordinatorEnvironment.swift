@@ -30,10 +30,10 @@ import ProtonCore_Services
 import UIKit
 
 struct SignInCoordinatorEnvironment {
+    typealias Dependencies = HasKeyMakerProtocol & HasSignInManager & HasUnlockManager & HasUsersManager
     typealias LoginCreationClosure =
         (String, AccountType, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
 
-    let services: ServiceFactory
     let apiService: APIService
     let mailboxPassword: (Passphrase, AuthCredential) -> Passphrase
     let currentAuth: () -> AuthCredential?
@@ -68,19 +68,16 @@ struct SignInCoordinatorEnvironment {
 
 extension SignInCoordinatorEnvironment {
     // swiftlint:disable function_body_length
-    static func live(
-        services: ServiceFactory
-    ) -> SignInCoordinatorEnvironment {
-        let apiService = PMAPIService.unauthorized
-        return .init(services: services,
-                     apiService: apiService,
-                     mailboxPassword: services.get(by: SignInManager.self)
+    static func live(dependencies: Dependencies) -> SignInCoordinatorEnvironment {
+        let apiService = PMAPIService.unauthorized(keyMaker: dependencies.keyMaker)
+        return .init(apiService: apiService,
+                     mailboxPassword: dependencies.signInManager
                          .mailboxPassword(from:auth:),
-                     currentAuth: { services.get(by: UsersManager.self).firstUser?.authCredential },
-                     tryRestoringPersistedUser: services.get(by: UsersManager.self).tryRestore,
-                     finalizeSignIn: services.get(by: SignInManager.self)
+                     currentAuth: { dependencies.usersManager.firstUser?.authCredential },
+                     tryRestoringPersistedUser: dependencies.usersManager.tryRestore,
+                     finalizeSignIn: dependencies.signInManager
                          .finalizeSignIn(loginData:onError:showSkeleton:tryUnlock:),
-                     unlockIfRememberedCredentials: services.get(by: UnlockManager.self)
+                     unlockIfRememberedCredentials: dependencies.unlockManager
                          .unlockIfRememberedCredentials(forUser:requestMailboxPassword:unlockFailed:unlocked:),
                      loginCreationClosure: { appName, minimumAccountType, passwordRestrictions, isCloseButtonAvailable in
                          let signup: SignupAvailability = .available(parameters: .init(
@@ -116,7 +113,7 @@ extension SignInCoordinatorEnvironment {
             // clean up the credentials and session to have it pristine before the next login
             apiService.authDelegate?.onUnauthenticatedSessionInvalidated(sessionUID: apiService.sessionUID)
             apiService.setSessionUID(uid: "")
-            return services.get(by: SignInManager.self).saveLoginData(loginData: $0)
+            return dependencies.signInManager.saveLoginData(loginData: $0)
         })
     }
 }

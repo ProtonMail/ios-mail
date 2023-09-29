@@ -124,7 +124,7 @@ extension ScheduledSendHelper {
 
         return PMActionSheetItem(components: [
             PMActionSheetTextComponent(text: .left(title), edge: [nil, nil, nil, 16]),
-            PMActionSheetTextComponent(text: .left(date.localizedString(withTemplate: nil)),
+            PMActionSheetTextComponent(text: .left(date.localizedString()),
                                        edge: [nil, nil, nil, 16],
                                        compressionResistancePriority: .required)
         ]) { [weak self] _ in
@@ -139,7 +139,7 @@ extension ScheduledSendHelper {
         }
         return PMActionSheetItem(components: [
             PMActionSheetTextComponent(text: .left(next.formattedWith("EEEE").capitalized), edge: [nil, nil, nil, 16]),
-            PMActionSheetTextComponent(text: .left(next.localizedString(withTemplate: nil)),
+            PMActionSheetTextComponent(text: .left(next.localizedString()),
                                        edge: [nil, nil, nil, 16],
                                        compressionResistancePriority: .required)
         ]) { [weak self] _ in
@@ -181,7 +181,7 @@ extension ScheduledSendHelper {
         }
         return PMActionSheetItem(components: [
             PMActionSheetTextComponent(text: .left(L11n.ScheduledSend.asSchedule), edge: [nil, nil, nil, 16]),
-            PMActionSheetTextComponent(text: .left(originalTime.localizedString(withTemplate: nil)),
+            PMActionSheetTextComponent(text: .left(originalTime.localizedString()),
                                        edge: [nil, nil, nil, 16],
                                        compressionResistancePriority: .required)
         ]) { [weak self] _ in

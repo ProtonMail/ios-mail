@@ -31,9 +31,17 @@ import WebKit
 /// HtmlEditorBehavior only adds some functionality to HorizontallyScrollableWebViewContainer's webView, is not a UIView or webView's delegate any more. ComposeViewController is tightly coupled with ComposeHeaderViewController and needs separate refactor, while ContainableComposeViewController and HorizontallyScrollableWebViewContainer contain absolute minimum of logic they need: logic allowing to embed composer into tableView cell and logic allowing 2D scroll in fullsize webView.
 ///
 class ContainableComposeViewController: ComposeContentViewController, BannerRequester {
+    typealias Dependencies = ComposeContentViewController.Dependencies & HasKeyMakerProtocol
+
+    private let dependencies: Dependencies
     private var latestErrorBanner: BannerView?
     private var heightObservation: NSKeyValueObservation!
     private var queueObservation: NSKeyValueObservation!
+
+    init(viewModel: ComposeViewModel, dependencies: Dependencies) {
+        self.dependencies = dependencies
+        super.init(viewModel: viewModel, dependencies: dependencies)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -283,9 +291,7 @@ class ContainableComposeViewController: ComposeContentViewController, BannerRequ
                 }
             }
             self.stepAlert = nil
-            // TODO: Refactor the view to pass the dependency from init
-            let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
-            keyMaker.lockTheApp()
+            self.dependencies.keyMaker.lockTheApp()
             UIView.animate(withDuration: 0.25, animations: animationBlock) { _ in
                 self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
             }

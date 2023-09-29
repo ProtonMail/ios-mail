@@ -20,7 +20,7 @@ import CoreData
 
 class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
     private let container = MockCoreDataStore.testPersistentContainer
-    private let coreDataService: CoreDataService
+    let coreDataService: CoreDataService
 
     var viewContext: NSManagedObjectContext {
         container.viewContext

@@ -24,17 +24,19 @@ import CoreData
 import Foundation
 
 final class LocalConversationUpdater {
-    private let contextProvider: CoreDataContextProviderProtocol
+    typealias Dependencies = HasCoreDataContextProviderProtocol & HasPushUpdater
+
+    private let dependencies: Dependencies
     private let userID: String
 
-    init(contextProvider: CoreDataContextProviderProtocol, userID: String) {
-        self.contextProvider = contextProvider
+    init(userID: String, dependencies: Dependencies) {
+        self.dependencies = dependencies
         self.userID = userID
     }
 
     func delete(conversationIDs: [ConversationID],
                 completion: ((Result<Void, Error>) -> Void)?) {
-        contextProvider.performAndWaitOnRootSavingContext { context in
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             for conversationID in conversationIDs {
                 guard let conversationInContext = Conversation
                         .conversationForConversationID(conversationID.rawValue,
@@ -62,15 +64,18 @@ final class LocalConversationUpdater {
               asUnread: Bool,
               labelID: LabelID,
               completion: ((Result<Void, Error>) -> Void)?) {
-        let labelID = labelID
-        contextProvider.performAndWaitOnRootSavingContext { context in
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             for conversationID in conversationIDs {
                 guard let conversationInContext = Conversation
                         .conversationForConversationID(conversationID.rawValue,
                                                        inManagedObjectContext: context) else {
                     continue
                 }
-                conversationInContext.applyMarksAsChanges(unRead: asUnread, labelID: labelID.rawValue)
+                conversationInContext.applyMarksAsChanges(
+                    unRead: asUnread,
+                    labelID: labelID.rawValue,
+                    pushUpdater: self.dependencies.pushUpdater
+                )
             }
 
             self.save(context: context, completion: completion)
@@ -85,7 +90,7 @@ final class LocalConversationUpdater {
         isFolder: Bool,
         completion: ((Result<Void, Error>) -> Void)?
     ) {
-        contextProvider.performAndWaitOnRootSavingContext { context in
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             for conversationID in conversationIDs {
                 guard let conversation = Conversation
                     .conversationForConversationID(conversationID.rawValue, inManagedObjectContext: context) else {
@@ -141,7 +146,7 @@ final class LocalConversationUpdater {
                     // When we trash the conversation, make all unread messages as read.
                     if added == Message.Location.trash.labelID {
                         messages?.forEach { $0.unRead = false }
-                        PushUpdater().remove(notificationIdentifiers: messages?.compactMap { $0.notificationId })
+                        self.dependencies.pushUpdater.remove(notificationIdentifiers: messages?.compactMap { $0.notificationId })
                         conversation.labels
                             .compactMap { $0 as? ContextLabel }
                             .filter { $0.unreadCount != NSNumber(value: 0) }

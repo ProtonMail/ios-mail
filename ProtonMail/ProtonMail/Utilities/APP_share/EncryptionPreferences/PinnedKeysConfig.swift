@@ -19,11 +19,9 @@ import ProtonCore_CryptoGoInterface
 
 struct PinnedKeysConfig {
     let encrypt: Bool
-    // swiftlint:disable discouraged_optional_boolean
-    let sign: Bool?
+    let sign: PreContact.SignStatus
     let scheme: String?
     let mimeType: String?
-    // swiftlint:enable discouraged_optional_boolean
     let pinnedKeys: [CryptoKey]
     let isContact: Bool
 }

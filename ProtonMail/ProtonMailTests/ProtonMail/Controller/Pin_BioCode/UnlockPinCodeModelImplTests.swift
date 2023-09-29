@@ -25,7 +25,11 @@ final class UnlockPinCodeModelImplTests: XCTestCase {
     override func setUp() {
         super.setUp()
         cache = .init()
-        sut = .init(pinFailedCountCache: cache)
+
+        let globalContainer = GlobalContainer()
+        globalContainer.pinFailedCountCacheFactory.register { self.cache }
+
+        sut = .init(dependencies: globalContainer)
     }
 
     override func tearDown() {

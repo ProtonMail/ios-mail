@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import AwaitKit
 import CoreData
 import Foundation
 import ProtonCore_Crypto
@@ -127,9 +126,7 @@ final class ComposerMessageHelper {
         }
     }
 
-    func copyAndCreateDraft(from message: Message, action: ComposeMessageAction) throws {
-        let messageID = MessageID(message.messageID)
-
+    func copyAndCreateDraft(from messageID: MessageID, action: ComposeMessageAction) throws {
         let (messageToAssign, mimeAttachments) = try dependencies.copyMessage.execute(
             parameters: .init(copyAttachments: action == .forward, messageID: messageID)
         )

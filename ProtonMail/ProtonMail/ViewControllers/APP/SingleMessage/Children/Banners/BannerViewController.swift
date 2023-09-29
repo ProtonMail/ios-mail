@@ -248,12 +248,28 @@ final class BannerViewController: UIViewController {
     }
 
     private func showUnsubscribeBanner() {
-        let banner = CompactBannerView(appearance: .normal,
-                                       title: LocalString._unsubscribe_compact_banner_description,
-                                       icon: IconProvider.envelopeCross) { [weak self] in
-            self?.viewModel.unsubscribe()
+        let banner = CompactBannerView(
+            appearance: .normal,
+            title: L11n.Unsubscribe.bannerMessage,
+            icon: IconProvider.envelopeCross
+        ) { [weak self] in
+            self?.showUnsubscribeConfirmation()
         }
         addBannerView(type: .unsubscribe, shouldAddContainer: true, bannerView: banner)
+    }
+
+    private func showUnsubscribeConfirmation() {
+        let alert = UIAlertController(
+            title: L11n.Unsubscribe.confirmationTitle,
+            message: L11n.Unsubscribe.confirmationMessage,
+            preferredStyle: .alert
+        )
+        let proceed = UIAlertAction(title: LocalString._general_confirm_action, style: .default) { [weak self] _ in
+            self?.viewModel.unsubscribe()
+        }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel)
+        [proceed, cancel].forEach(alert.addAction)
+        present(alert, animated: true, completion: nil)
     }
 
     private func showReceiptBanner() {

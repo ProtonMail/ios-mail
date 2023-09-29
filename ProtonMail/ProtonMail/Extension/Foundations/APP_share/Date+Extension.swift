@@ -37,26 +37,17 @@ extension Date {
     }
 
     func localizedString(
-        withTemplate formatTemplate: String?,
         locale: Locale = LocaleEnvironment.locale(),
         timeZone: TimeZone = LocaleEnvironment.timeZone
     ) -> String {
         let formatter = DateFormatter()
         formatter.locale = locale
         formatter.timeZone = timeZone
-        if let formatTemplate = formatTemplate {
-            formatter.setLocalizedDateFormatFromTemplate(formatTemplate)
-        } else {
-            var template = DateFormatter
-                .dateFormat(fromTemplate: "MMM dd jj mm", options: 0, locale: locale) ?? "MMM dd jj mm"
-            // Some template will return `MM`, e.g. de_DE (24 H)
-            template = template.preg_replace(
-                #"M{1,4}([\.,\\,\-,،]){0,1}"#,
-                replaceto: "MMM$1",
-                options: [.dotMatchesLineSeparators]
-            )
-            formatter.dateFormat = template
-        }
+        var template = DateFormatter
+            .dateFormat(fromTemplate: "MMM dd jj mm", options: 0, locale: locale) ?? "MMM dd jj mm"
+        // Some template will return `MM`, e.g. de_DE (24 H)
+            .preg_replace(#"M{1,4}([\.,\\,\-,،]){0,1}"#, replaceto: "MMM$1", options: [.dotMatchesLineSeparators])
+        formatter.dateFormat = template
         return formatter.string(from: self)
     }
 

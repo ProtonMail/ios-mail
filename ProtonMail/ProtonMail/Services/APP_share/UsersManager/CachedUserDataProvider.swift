@@ -30,11 +30,11 @@ class UserDataCache: CachedUserDataProvider {
     }
 
     private let keyMaker: KeyMakerProtocol
-    private let keychain: KeychainWrapper
+    private let keychain: Keychain
 
     init(
         keyMaker: KeyMakerProtocol,
-        keychain: KeychainWrapper = KeychainWrapper.keychain
+        keychain: Keychain
     ) {
         self.keyMaker = keyMaker
         self.keychain = keychain

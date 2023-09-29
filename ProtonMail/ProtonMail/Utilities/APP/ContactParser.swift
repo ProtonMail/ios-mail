@@ -44,7 +44,7 @@ protocol ContactParserResultDelegate: AnyObject {
 protocol ContactParserProtocol {
     func parsePlainTextContact(
         data: String,
-        coreDataService: CoreDataContextProviderProtocol,
+        contextProvider: CoreDataContextProviderProtocol,
         contactID: ContactID
     )
     func parseEncryptedOnlyContact(
@@ -80,7 +80,7 @@ final class ContactParser: ContactParserProtocol {
 
     func parsePlainTextContact(
         data: String,
-        coreDataService: CoreDataContextProviderProtocol,
+        contextProvider: CoreDataContextProviderProtocol,
         contactID: ContactID
     ) {
         guard let vCard = PMNIEzvcard.parseFirst(data) else { return }
@@ -105,7 +105,7 @@ final class ContactParser: ContactParserProtocol {
                 scheme: nil,
                 mimeType: nil,
                 delegate: nil,
-                coreDataService: coreDataService
+                contextProvider: contextProvider
             )
             contactEmails.append(object)
             order += 1
@@ -258,6 +258,7 @@ extension ContactParser {
             self.parse(types: vCard.getPropertyTypes(), vCard: vCard)
             self.parse(customs: vCard.getCustoms())
             self.parse(notes: vCard.getNotes())
+            self.parse(structuredName: vCard.getStructuredName())
         }
     }
 
@@ -271,11 +272,11 @@ extension ContactParser {
                 case .address:
                     self.parse(addresses: vCard.getAddresses())
                 case .organization:
-                    self.parse(organization: vCard.getOrganization())
+                    vCard.getOrganizations().forEach { self.parse(organization: $0) }
                 case .title:
-                    self.parse(title: vCard.getTitle())
+                    vCard.getTitles().forEach { self.parse(title: $0) }
                 case .nickname:
-                    self.parse(nickName: vCard.getNickname())
+                    vCard.getNicknames().forEach { self.parse(nickName: $0) }
                 case .birthday:
                     self.parse(birthdays: vCard.getBirthdays())
                 case .anniversary:
@@ -319,7 +320,8 @@ extension ContactParser {
             let typeRaw = types.isEmpty ? "" : (types.first ?? "")
             let type = ContactFieldType.get(raw: typeRaw)
 
-            let pobox = address.getPoBoxes().asCommaSeparatedList(trailingSpace: false)
+            let pobox = address.getPoBoxes()
+                .asCommaSeparatedList(trailingSpace: false)
             let street = address.getStreetAddress()
             let extended = address.getExtendedAddress()
             let locality = address.getLocality()
@@ -446,7 +448,7 @@ extension ContactParser {
         let contactEditStructuredName = ContactEditStructuredName(
             firstName: structuredName.getGiven(),
             lastName: structuredName.getFamily(),
-            isNew: false
+            isCreatingContact: false
         )
         resultDelegate?.append(structuredName: contactEditStructuredName)
     }

@@ -197,7 +197,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         messageDataServiceMock.mockDecrypter = .init(userDataSource: fakeUser)
         let shouldCopyAttachment = Bool.random()
         let action: ComposeMessageAction = shouldCopyAttachment ? .forward : .reply
-        try sut.copyAndCreateDraft(from: testMessage, action: action)
+        try sut.copyAndCreateDraft(from: .init(testMessage.messageID), action: action)
 
         XCTAssertEqual(copyMessage.executeStub.callCounter, 1)
         let arguments = try XCTUnwrap(copyMessage.executeStub.lastArguments)

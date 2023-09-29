@@ -21,10 +21,4 @@ struct ConcreteFileData: FileData {
     let name: String
     let ext: String
     let contents: AttachmentConvertible
-
-    init(name: String, ext: String, contents: AttachmentConvertible) {
-        self.name = name
-        self.ext = ext
-        self.contents = contents
-    }
 }

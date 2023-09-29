@@ -16,7 +16,7 @@ import class ProtonCore_DataModel.UserInfo
 
 {% for type in types.protocols where type|annotated:"mock" %}
 class Mock{{ type.name }}: {{ type.name }} {
-    {% for variable in type.instanceVariables %}
+    {% for variable in type.instanceVariables|!definedInExtension %}
     @PropertyStub(\Mock{{ type.name }}.{{ variable.name }}, initialGet: {% if variable.typeName.isOptional %}nil{% elif variable.type.kind == "enum" %}.{{ variable.type.cases[0].name }}{% else %}{{ variable.typeName }}(){% endif %}) var {{ variable.name }}Stub
     var {{ variable.name }}: {{ variable.typeName }} {
     {% if variable.isMutable %}

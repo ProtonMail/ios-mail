@@ -23,6 +23,7 @@ protocol KeyMakerProtocol: AnyObject, LockCacheStatus, Service {
         with protector: ProtectionStrategy,
         handler: @escaping (MainKey?) -> Void
     )
+    func verify(protector: ProtectionStrategy) async throws
     @discardableResult
     func deactivate(_ protector: ProtectionStrategy) -> Bool
     func lockTheApp()

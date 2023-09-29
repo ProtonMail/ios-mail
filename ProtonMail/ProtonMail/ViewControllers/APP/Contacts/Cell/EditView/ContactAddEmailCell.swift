@@ -25,7 +25,7 @@ import ProtonCore_UIFoundations
 
 class ContactAddEmailCell: UITableViewCell, AccessibleCell {
     fileprivate var email: ContactEditEmail!
-    fileprivate var delegate: ContactEditCellDelegate?
+    weak var delegate: ContactEditCellDelegate?
     @IBOutlet var typeLabel: UILabel!
     @IBOutlet var valueField: UITextField!
     @IBOutlet var typeButton: UIButton!

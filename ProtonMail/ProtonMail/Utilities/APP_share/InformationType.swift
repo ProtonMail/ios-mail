@@ -18,12 +18,13 @@
 import Foundation
 
 enum InformationType: Int {
-    case organization = 0
-    case nickname = 1
-    case title = 2
-    case birthday = 3
-    case anniversary = 4
-    case gender = 5
+    case organization
+    case nickname
+    case title
+    case anniversary
+    case gender
+    case url
+    case birthday
 
     var desc: String {
         switch self {
@@ -39,6 +40,8 @@ enum InformationType: Int {
             return LocalString._contacts_add_anniversary
         case .gender:
             return LocalString._contacts_add_gender
+        case .url:
+            return LocalString._add_new_url
         }
     }
 
@@ -56,6 +59,8 @@ enum InformationType: Int {
             return LocalString._contacts_info_anniversary
         case .gender:
             return LocalString._contacts_info_gender
+        case .url:
+            return LocalString._contacts_vcard_url_placeholder
         }
     }
 }

@@ -29,35 +29,20 @@ final class ShareAppCoordinator {
     private(set) weak var navigationController: UINavigationController?
     private var nextCoordinator: ShareUnlockCoordinator?
 
-    func start() {
-        sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
-        let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
-        let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
-        let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
-        sharedServices.add(QueueManager.self, for: queueManager)
+    private let dependencies = GlobalContainer()
 
-        let keyMaker = Keymaker(
-            autolocker: Autolocker(lockTimeProvider: sharedServices.userCachedStatus),
-            keychain: KeychainWrapper.keychain
-        )
+    func start() {
+        sharedServices.add(UserCachedStatus.self, for: dependencies.userCachedStatus)
+        sharedServices.add(QueueManager.self, for: dependencies.queueManager)
+
+        let keyMaker = dependencies.keyMaker
         sharedServices.add(Keymaker.self, for: keyMaker)
         sharedServices.add(KeyMakerProtocol.self, for: keyMaker)
 
-        let usersManager = UsersManager(
-            doh: BackendConfiguration.shared.doh,
-            userDataCache: UserDataCache(keyMaker: keyMaker),
-            coreKeyMaker: keyMaker
-        )
-
-        let unlockManager = UnlockManager(
-            cacheStatus: keyMaker,
-            keyMaker: keyMaker,
-            pinFailedCountCache: sharedServices.userCachedStatus
-        )
+        let unlockManager = dependencies.unlockManager
         unlockManager.delegate = self
-        sharedServices.add(UnlockManager.self, for: unlockManager)
 
-        sharedServices.add(UsersManager.self, for: usersManager)
+        sharedServices.add(UsersManager.self, for: dependencies.usersManager)
         self.loadUnlockCheckView()
     }
 
@@ -67,7 +52,10 @@ final class ShareAppCoordinator {
 
     private func loadUnlockCheckView() {
         // create next coordinator
-        self.nextCoordinator = ShareUnlockCoordinator(navigation: navigationController, services: sharedServices)
+        nextCoordinator = ShareUnlockCoordinator(
+            navigation: navigationController,
+            dependencies: dependencies
+        )
         self.nextCoordinator?.start()
     }
 }
@@ -82,7 +70,7 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
 
         sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        let lastUpdatedStore = LastUpdatedStore(contextProvider: CoreDataService.shared)
+        let lastUpdatedStore = dependencies.lastUpdatedStore
         sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
         sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
     }
@@ -92,8 +80,8 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
     }
 
     func cleanAll(completion: @escaping () -> Void) {
-        let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
-        sharedServices.get(by: UsersManager.self)
+        let keyMaker = dependencies.keyMaker
+        dependencies.usersManager
             .clean()
             .ensure {
                 keyMaker.wipeMainKey()
@@ -104,18 +92,18 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
     }
 
     var isUserCredentialStored: Bool {
-        sharedServices.get(by: UsersManager.self).hasUsers()
+        dependencies.usersManager.hasUsers()
     }
 
     func isMailboxPasswordStored(forUser uid: String?) -> Bool {
         guard uid != nil else {
-            return sharedServices.get(by: UsersManager.self).isMailboxPasswordStored
+            return dependencies.usersManager.isMailboxPasswordStored
         }
-        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty
+        return !(dependencies.usersManager.users.last?.mailboxPassword.value ?? "").isEmpty
     }
 
     func loadUserDataAfterUnlock() {
-        let usersManager = sharedServices.get(by: UsersManager.self)
+        let usersManager = dependencies.usersManager
         usersManager.run()
         usersManager.tryRestore()
     }

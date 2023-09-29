@@ -37,7 +37,7 @@ class MessageHelpersTest: XCTestCase {
 
            let fakeEmailData = testEmailData_aaa.parseObjectAny()!
            let fakeEmailEntity = prepareEmail(with: fakeEmailData)
-           let vo = ContactGroupVO(ID: "id", name: "groupA", groupSize: 6, color: "#000000")
+           let vo = ContactGroupVO(ID: "id", name: "groupA", groupSize: 6, color: "#000000", contextProvider: coreDataService)
            let name = fakeMsgEntity.allEmailAddresses([fakeEmailEntity.email: fakeEmailEntity], allGroupContacts: [vo])
            XCTAssertEqual("groupA (5/6), test5", name)
        }

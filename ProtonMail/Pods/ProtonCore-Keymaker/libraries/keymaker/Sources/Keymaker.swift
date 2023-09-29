@@ -33,6 +33,12 @@ public enum Constants {
     public static let requestMainKey: NSNotification.Name = .init("Keymaker" + ".requestMainKey")
 }
 
+public extension Keymaker {
+    enum Errors: Error {
+        case cypherBitsIsNil
+    }
+}
+
 public typealias MainKey = [UInt8]
 
 public class Keymaker: NSObject {
@@ -262,6 +268,26 @@ public class Keymaker: NSObject {
             
             isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
         }
+    }
+
+    /// Verify the given protection
+    /// - Parameter protector: Protection wants to be validated
+    public func verify(protector: ProtectionStrategy) async throws {
+        return try await withCheckedThrowingContinuation({ continuation in
+            self.controlThread.addOperation {
+                guard let cypherBits = protector.getCypherBits() else {
+                    continuation.resume(throwing: Errors.cypherBitsIsNil)
+                    return
+                }
+
+                do {
+                    _ = try protector.unlock(cypherBits: cypherBits)
+                    continuation.resume(returning: Void())
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        })
     }
     
     // completion says whether protector was activated or not

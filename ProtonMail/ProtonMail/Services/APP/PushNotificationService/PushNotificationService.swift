@@ -25,8 +25,6 @@ import ProtonCore_Services
 import UserNotifications
 
 final class PushNotificationService: NSObject, Service, PushNotificationServiceProtocol {
-    private let notificationActions: PushNotificationActionsHandler
-
     /// Pending actions because the app has been just launched and can't make a request yet
     private var deviceTokenRegistrationPendingUnlock: String?
     private var notificationActionPendingUnlock: PendingNotificationAction?
@@ -36,14 +34,11 @@ final class PushNotificationService: NSObject, Service, PushNotificationServiceP
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
-        self.notificationActions = PushNotificationActionsHandler(
-            dependencies: .init(lockCacheStatus: dependencies.lockCacheStatus)
-        )
         self.dependencies = dependencies
 
         super.init()
 
-        notificationActions.registerActions()
+        dependencies.actionsHandler.registerActions()
 
         let notificationsToObserve: [Notification.Name] = [
             .didSignIn,
@@ -89,7 +84,7 @@ final class PushNotificationService: NSObject, Service, PushNotificationServiceP
     }
 
     func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
-        guard dependencies.signInProvider.isSignedIn, dependencies.unlockProvider.isUnlocked else {
+        guard dependencies.usersManager.hasUsers(), dependencies.unlockProvider.isUnlocked() else {
             deviceTokenRegistrationPendingUnlock = deviceToken
             return
         }
@@ -181,7 +176,7 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
         if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
             // App opened tapping on a push notification
             handleRemoteNotification(response: response, completionHandler: completionHandler)
-        } else if notificationActions.isKnown(action: response.actionIdentifier) {
+        } else if dependencies.actionsHandler.isKnown(action: response.actionIdentifier) {
             // User tapped on a push notification action
             handleNotificationAction(response: response, completionHandler: completionHandler)
         } else {
@@ -203,7 +198,7 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
 extension PushNotificationService {
     private func handleRemoteNotification(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        if UnlockManager.shared.isUnlocked() { // unlocked
+        if dependencies.unlockProvider.isUnlocked() { // unlocked
             do {
                 try didReceiveRemoteNotification(userInfo, completionHandler: completionHandler)
             } catch {
@@ -244,7 +239,7 @@ extension PushNotificationService {
     }
 
     private func shouldHandleNotification(payload: PushNotificationPayload) -> Bool {
-        guard sharedServices.get(by: UsersManager.self).hasUsers() && UnlockManager.shared.isUnlocked() else {
+        guard dependencies.usersManager.hasUsers() && dependencies.unlockProvider.isUnlocked() else {
             return false
         }
         return payload.isLocalNotification || (!payload.isLocalNotification && isUserManagerReady(payload: payload))
@@ -255,7 +250,7 @@ extension PushNotificationService {
     /// launched by a remote notification being tapped by the user.
     private func isUserManagerReady(payload: PushNotificationPayload) -> Bool {
         guard let uid = payload.uid else { return false }
-        return sharedServices.get(by: UsersManager.self).getUser(by: uid) != nil
+        return dependencies.usersManager.getUser(by: uid) != nil
     }
 }
 
@@ -263,7 +258,7 @@ extension PushNotificationService {
 
 extension PushNotificationService {
     private func handleNotificationAction(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
-        let usersManager = sharedServices.get(by: UsersManager.self)
+        let usersManager = dependencies.usersManager
         let userInfo = response.notification.request.content.userInfo
         guard
             let sessionId = userInfo["UID"] as? String,
@@ -297,18 +292,23 @@ extension PushNotificationService {
     }
 
     private func handleNotificationActionTask(notificationAction action: PendingNotificationAction) {
-        let usersManager = sharedServices.get(by: UsersManager.self)
+        let usersManager = dependencies.usersManager
         guard let userId = usersManager.getUser(by: action.payload.sessionId)?.userID else {
             let message = "Action \(action.payload.actionIdentifier): User not found for specific session"
             SystemLogger.log(message: message, category: .pushNotification, isError: true)
             action.completionHandler()
             return
         }
-        notificationActions.handle(
+        let completion = {
+            DispatchQueue.main.async {
+                action.completionHandler()
+            }
+        }
+        dependencies.actionsHandler.handle(
             action: action.payload.actionIdentifier,
             userId: userId,
             messageId: action.payload.messageId,
-            completion: action.completionHandler
+            completion: completion
         )
     }
 }
@@ -337,26 +337,26 @@ private extension PushNotificationService {
 
 extension PushNotificationService {
     struct Dependencies {
-        let signInProvider: SignInProvider
+        let actionsHandler: PushNotificationActionsHandler
+        let usersManager: UsersManagerProtocol
         let unlockProvider: UnlockProvider
         let pushEncryptionManager: PushEncryptionManagerProtocol
         let navigationResolver: PushNavigationResolver
-        let lockCacheStatus: LockCacheStatus
         let notificationCenter: NotificationCenter
 
         init(
-            signInProvider: SignInProvider = SignInManagerProvider(),
-            unlockProvider: UnlockProvider = UnlockManagerProvider(),
-            pushEncryptionManager: PushEncryptionManagerProtocol = PushEncryptionManager.shared,
+            actionsHandler: PushNotificationActionsHandler,
+            usersManager: UsersManagerProtocol,
+            unlockProvider: UnlockProvider,
+            pushEncryptionManager: PushEncryptionManagerProtocol,
             navigationResolver: PushNavigationResolver = PushNavigationResolver(dependencies: .init()),
-            lockCacheStatus: LockCacheStatus,
             notificationCenter: NotificationCenter = NotificationCenter.default
         ) {
-            self.signInProvider = signInProvider
+            self.actionsHandler = actionsHandler
+            self.usersManager = usersManager
             self.unlockProvider = unlockProvider
             self.pushEncryptionManager = pushEncryptionManager
             self.navigationResolver = navigationResolver
-            self.lockCacheStatus = lockCacheStatus
             self.notificationCenter = notificationCenter
         }
     }

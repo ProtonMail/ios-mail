@@ -40,7 +40,7 @@ extension ConversationDataService {
         }
         let request = ConversationDetailsRequest(conversationID: conversationID.rawValue,
                                                  messageID: messageID?.rawValue)
-        self.apiService.perform(request: request) { _, result in
+        self.apiService.perform(request: request, callCompletionBlockUsing: .immediateExecutor) { _, result in
             switch result {
             case .failure(let err):
                 completion(.failure(err))

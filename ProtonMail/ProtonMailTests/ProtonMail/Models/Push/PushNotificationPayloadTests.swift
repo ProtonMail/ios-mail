@@ -44,12 +44,12 @@ class PushNotificationPayloadTests: XCTestCase {
     }
 
     func testInit_withLocalNotification_failedToSend() {
-        let messageId = "dummy_message_id"
+        let messageId = MessageID("dummy_message_id")
         let payload = LocalNotificationService.Categories.failedToSend.payload(with: messageId)
 
         let model = try! PushNotificationPayload(userInfo: payload)
         XCTAssert(model.category == "LocalNotificationService.Categories.failedToSend")
-        XCTAssert(model.messageId == messageId)
+        XCTAssert(model.messageId == messageId.rawValue)
         XCTAssert(model.localNotification == true)
     }
 
@@ -70,7 +70,7 @@ class PushNotificationPayloadTests: XCTestCase {
     }
 
     func testIsLocalNotification_withLocalNotification_failedToSend() {
-        let messageId = "dummy_message_id"
+        let messageId = MessageID("dummy_message_id")
         let payload = LocalNotificationService.Categories.failedToSend.payload(with: messageId)
 
         let model = try! PushNotificationPayload(userInfo: payload)

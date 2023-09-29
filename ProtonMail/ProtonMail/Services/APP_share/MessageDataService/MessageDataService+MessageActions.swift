@@ -49,7 +49,7 @@ extension MessageDataService {
     }
 
     @discardableResult
-    func move(messages: [MessageEntity], to tLabel: LabelID, isSwipeAction: Bool = false, queue: Bool = true) -> Bool {
+    func move(messages: [MessageEntity], to tLabel: LabelID, queue: Bool = true) -> Bool {
         let customFolderIDs = contextProvider.read { context in
             labelDataService.getAllLabels(of: .folder, context: context).map { LabelID($0.labelID) }
         }
@@ -69,13 +69,13 @@ extension MessageDataService {
 
         if queue {
             let msgIds = messagesWithSourceIds.map { $0.0.messageID }
-            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: true, isSwipeAction: isSwipeAction, itemIDs: msgIds.map(\.rawValue), objectIDs: []))
+            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: true, itemIDs: msgIds.map(\.rawValue), objectIDs: []))
         }
         return true
     }
 
     @discardableResult
-    func move(messages: [MessageEntity], from fLabels: [LabelID], to tLabel: LabelID, isSwipeAction: Bool = false, queue: Bool = true) -> Bool {
+    func move(messages: [MessageEntity], from fLabels: [LabelID], to tLabel: LabelID, queue: Bool = true) -> Bool {
         guard !messages.isEmpty,
               messages.count == fLabels.count else {
             return false
@@ -111,7 +111,7 @@ extension MessageDataService {
 
         if queue {
             let ids = messages.map{ $0.messageID.rawValue }
-            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: true, isSwipeAction: isSwipeAction, itemIDs: ids, objectIDs: []))
+            self.queue(.folder(nextLabelID: tLabel.rawValue, shouldFetch: true, itemIDs: ids, objectIDs: []))
         }
         return true
     }
@@ -166,7 +166,7 @@ extension MessageDataService {
     }
 
     @discardableResult
-    func label(messages: [MessageEntity], label: LabelID, apply: Bool, isSwipeAction: Bool = false, shouldFetchEvent: Bool = true) -> Bool {
+    func label(messages: [MessageEntity], label: LabelID, apply: Bool, shouldFetchEvent: Bool = true) -> Bool {
         guard !messages.isEmpty else {
             return false
         }
@@ -176,18 +176,12 @@ extension MessageDataService {
         let messagesIds = messages.map(\.messageID.rawValue)
         self.queue(apply ? .label(currentLabelID: label.rawValue,
                                   shouldFetch: shouldFetchEvent,
-                                  isSwipeAction: false,
                                   itemIDs: messagesIds, objectIDs: []) :
                         .unlabel(currentLabelID: label.rawValue,
                                  shouldFetch: shouldFetchEvent,
-                                 isSwipeAction: isSwipeAction,
                                  itemIDs: messagesIds,
                                  objectIDs: []))
         return true
-    }
-
-    func deleteExpiredMessages() {
-        cacheService.deleteExpiredMessages()
     }
 
     /// fetch messages with set of message id

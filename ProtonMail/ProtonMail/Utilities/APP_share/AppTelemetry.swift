@@ -17,9 +17,11 @@
 
 import Foundation
 
+// sourcery: mock
 protocol AppTelemetry {
     func enable()
     func disable()
+    func assignUser(userID: UserID?)
 }
 
 struct MailAppTelemetry: AppTelemetry {
@@ -31,5 +33,9 @@ struct MailAppTelemetry: AppTelemetry {
     func disable() {
         Analytics.shared.disableAnalytics()
         SystemLogger.disableLogging()
+    }
+
+    func assignUser(userID: UserID?) {
+        Analytics.shared.assignUser(userID: userID)
     }
 }

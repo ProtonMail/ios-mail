@@ -29,12 +29,4 @@ extension Int {
         let byteCountFormatter = ByteCountFormatter()
         return byteCountFormatter.string(fromByteCount: Int64(self))
     }
-
-    var toPercentFormatString: String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .percent
-        formatter.maximumFractionDigits = 0 // the value can't have decimals because it is an Int
-        formatter.multiplier = 1 // the value is already in percentage format because it is an Int
-        return formatter.string(from: NSNumber(value: self)) ?? ""
-    }
 }

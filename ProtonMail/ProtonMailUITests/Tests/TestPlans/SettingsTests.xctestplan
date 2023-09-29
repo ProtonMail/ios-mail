@@ -30,6 +30,7 @@
         "AccountDeletionSuccessfulTests\/testSecondUserInboxIsShownAfterSuccessfulDeletionOfFirstUser()",
         "SettingsTests\/testDarkModeDisabled()",
         "SettingsTests\/testDarkModeEnable()",
+        "SettingsTests\/testDefaultSwipeActions()",
         "SettingsTests\/testEditAutoLockTime()",
         "SettingsTests\/testEnableAndDisablePinForMultipleAccounts()"
       ],

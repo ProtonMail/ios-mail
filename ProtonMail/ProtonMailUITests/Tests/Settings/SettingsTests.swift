@@ -112,4 +112,15 @@ class SettingsTests : FixtureAuthenticatedTestCase {
             .expectedTitleIsShown()
             .emptyListPlaceholderIsShown()
     }
+    
+    func testDefaultSwipeActions() {
+        MenuRobot()
+            .settings()
+            .selectSwipeActions()
+            .leftToRight()
+            .verify.leftToRightIsMoveToTrash()
+            .backButton()
+            .rightToLeft()
+            .verify.rightToLeftIsMoveToArchive()
+    }
 }

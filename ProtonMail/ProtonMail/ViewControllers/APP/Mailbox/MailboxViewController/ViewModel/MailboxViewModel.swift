@@ -23,6 +23,7 @@
 import Foundation
 import CoreData
 import ProtonCore_DataModel
+import ProtonCore_Utilities
 import ProtonCore_Services
 import ProtonCore_UIFoundations
 import ProtonMailAnalytics
@@ -117,6 +118,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     var shouldAutoShowInAppFeedbackPrompt: Bool {
         !ProcessInfo.hasLaunchArgument(.disableInAppFeedbackPromptAutoShow)
     }
+
+    private var prefetchedItemsCount: Atomic<Int> = .init(0)
+    private var isPrefetching: Atomic<Bool> = .init(false)
 
     init(labelID: LabelID,
          label: LabelInfo?,
@@ -244,7 +248,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         labelProvider.getCustomFolders()
     }()
 
-    var allEmails: [Email] {
+    var allEmails: [EmailEntity] {
         return contactProvider.getAllEmails()
     }
 
@@ -797,6 +801,12 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
             }
         }
     }
+
+    func deleteExpiredMessages() {
+        DispatchQueue.global().async {
+            self.user.cacheService.deleteExpiredMessages()
+        }
+    }
 }
 
 // MARK: - Data fetching methods
@@ -855,7 +865,6 @@ extension MailboxViewModel {
 
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback) {
         let params: FetchMessageDetail.Params = .init(
-            userID: user.userID,
             message: message,
             hasToBeQueued: false,
             ignoreDownloaded: message.isDraft
@@ -907,7 +916,7 @@ extension MailboxViewModel {
             messageService.label(messages: messages, label: labelID, apply: apply)
         case .conversation:
             if apply {
-                conversationProvider.label(conversationIDs: Array(messageIDs.map{ ConversationID($0) }), as: labelID, isSwipeAction: false) { [weak self] result in
+                conversationProvider.label(conversationIDs: Array(messageIDs.map{ ConversationID($0) }), as: labelID) { [weak self] result in
                     defer {
                         completion?()
                     }
@@ -917,7 +926,7 @@ extension MailboxViewModel {
                     }
                 }
             } else {
-                conversationProvider.unlabel(conversationIDs: Array(messageIDs.map{ ConversationID($0) }), as: labelID, isSwipeAction: false) { [weak self] result in
+                conversationProvider.unlabel(conversationIDs: Array(messageIDs.map{ ConversationID($0) }), as: labelID) { [weak self] result in
                     defer {
                         completion?()
                     }
@@ -1003,7 +1012,6 @@ extension MailboxViewModel {
                 conversationIDs: conversations.map(\.conversationID),
                 from: fLabel,
                 to: tLabel,
-                isSwipeAction: false,
                 callOrigin: "MailboxViewModel - move"
             ) { [weak self] result in
                 guard let self = self else { return }
@@ -1153,7 +1161,7 @@ extension MailboxViewModel {
             fetchMessageDetail: FetchMessageDetailUseCase,
             fetchSenderImage: FetchSenderImageUseCase,
             checkProtonServerStatus: CheckProtonServerStatusUseCase = CheckProtonServerStatus(),
-            featureFlagCache: FeatureFlagCache = sharedServices.get(by: UserCachedStatus.self)
+            featureFlagCache: FeatureFlagCache
         ) {
             self.fetchMessages = fetchMessages
             self.updateMailbox = updateMailbox
@@ -1260,6 +1268,42 @@ extension MailboxViewModel {
             let readMessages = allMessages.filter { $0.unRead == false }
             let orderedMessages = unreadMessages.appending(readMessages)
             return orderedMessages.map { MailboxItem.message($0) }
+        }
+    }
+
+    func prefetchIfNeeded() {
+        guard isPrefetching.value == false else {
+            return
+        }
+
+        let prefetchSize = userCachedStatus.featureFlags(for: user.userID)[.mailboxPrefetchSize]
+        let itemsToPrefetch = itemsToPrefetch().prefix(prefetchSize)
+
+        guard itemsToPrefetch.count > 0, prefetchedItemsCount.value < prefetchSize else {
+            return
+        }
+
+        isPrefetching.mutate { $0 = true }
+
+        for item in itemsToPrefetch {
+            switch item {
+            case .message(let messageEntity):
+                if messageEntity.body.isEmpty || !messageEntity.isDetailDownloaded {
+                    self.fetchMessageDetail(message: messageEntity) { [weak self] _ in
+                        self?.prefetchedItemsCount.mutate { $0 += 1 }
+                        if itemsToPrefetch.last == item {
+                            self?.isPrefetching.mutate { $0 = false }
+                        }
+                    }
+                }
+            case .conversation(let conversationEntity):
+                self.fetchConversationDetail(conversationID: conversationEntity.conversationID) { [weak self] in
+                    self?.prefetchedItemsCount.mutate { $0 += 1 }
+                    if itemsToPrefetch.last == item {
+                        self?.isPrefetching.mutate { $0 = false }
+                    }
+                }
+            }
         }
     }
 }

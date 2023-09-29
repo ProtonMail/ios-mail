@@ -117,7 +117,7 @@
 "Sent Failed" = "Tuzna ur teddi ara";
 
 /* Description */
-"Email failed to send. Message saved as draft." = "Email failed to send. Message saved as draft.";
+"Email failed to send. Message saved as draft." = "Tecceḍ tuzna n yimayl. Izen yettwasekles d arewway.";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Ulac acu ara twaliḍ dagi";
@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Tansiwin imayl";
 
-/* The button text for add profile picture */
-"Add photo" = "Rnu Tawlaft";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Ẓreg tawlaft";
-
 /* contact section title */
 "Encrypted contact details" = "Talqayt n unermis awgelhan";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Isem n tabzimt";
-
-/* when server not reachable */
-"API Server not reachable…" = "API n uqeddac ur yettwawaḍ ara…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Anekcum ar umiḍan-agi yensa ɣef sebba n lexlas mazal. Ma ulac aɣilif qqen ar proton.me akken ad xelseḍ tafaturt mazal.";
@@ -471,7 +462,7 @@
 "Message saved to Drafts" = "Izen ittwsekles ɣer yirewwayen";
 
 /* Alert message */
-"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one.";
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Aṭas n yimaylen i yettraǧun ad ttwaznen.\nTtxil raǧu almi yettwazen yimayl-nniḍen akken ad tesɣiwseḍ wa.";
 
 /* Warning message */
 "The sending time needs to be at least 5 minutes in the future." = "Akud n tuzna yesra ma drus 5 n tesdatin sya d asawen.";
@@ -489,7 +480,7 @@
 "The request timed out." = "Asuter yemmut.";
 
 /* Message */
-"Proton servers are unreachable.\nVisit our status page for details." = "Proton servers are unreachable.\nVisit our status page for details.";
+"Proton servers are unreachable.\nVisit our status page for details." = "Iqeddacen n Proton ulac abrid ɣur-sen.\nRzu ɣer usebter-nneɣ n waddaden i telqayt.";
 
 /* Title */
 "No connectivity detected…" = "Ulac tuqqna yettwafen…";
@@ -762,7 +753,7 @@
 "Unlock required" = "Tukksa n usekkeṛ tettusra";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in.";
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "Tessenseḍ %1$@ deg yiɣewwaren n unagraw-inek·inem. %2$@ yettuseqdec i ummesten n telɣut n umiḍan yesɛan azal. I unekcum ɣer umiḍan-ik·im, rzu ɣer yiɣewwaren syen ales armad n %3$@ neɣ ales tuqqna.";
 
 /* A description string in pin & faceID setting page */
 "All protection settings will be reset and wiped upon signing out of the app." = "Meṛṛa iɣewwaren n ummesten ad alsen awennez syen ad ttwasefḍen mi ara teffɣeḍ seg tuqqna seg usnas.";
@@ -801,7 +792,7 @@
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Tesqedceḍ akk tallunt-ik•im n uklas (%@). Ma ulac aɣilif, salin aɣawas-ik•im i wakken ad tkemmleḍ ad tazneḍ neɣ ad d-tremseḍ imaylen.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Tesqedceḍ %1$d%% seg tallunt-ik•im n uklas (%2$@). Ma ulac aɣilif, salin aɣawas-ik•im i wakken ad tkemmleḍ ad tazneḍ neɣ ad d-tremseḍ imaylen.";
 
 /* Alert title */
 "Storage full" = "Aḥraz ummud";
@@ -1038,7 +1029,7 @@
 "Is this bug report about an in-app purchase?" = "Abug-agi yeɛna tiɣin seg usnas?";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Tarbaɛt-nneɣ n tallelt n yimsaɣen ad teɛreḍ ad termed aɣawas-ik•im n useqdec s ufus ma tqebleḍ ad d-tessedduḍ isefka itikniken i d-yettunefken i usnas sɣur AppStore deg wakud n tmesɣiwt. Isefka-a ur gebbren ara ifatusen ɣef umiḍan-ik•im iTunes, asulay ID n Apple, tikarḍiwin n usmad i icudden ɣur-s, neɣ isallen-nniḍen ɣef useqdac. Isefka itikniken ad aɣ-ɛawnen kan ad nsenqed dakken tanigawt teḍra-d deg yiqeddacen n AppStore.";
 
 /* Error message */
 "Yes, attach details of payment" = "Ih, seddu talqayt ɣef lexlaṣ";
@@ -1146,7 +1137,7 @@
 "Account" = "Amiḍan";
 
 /* Alert when the account is already logged in */
-"The user is already signed in" = "The user is already signed in";
+"The user is already signed in" = "Aseqdac yeqqen yakan";
 
 /* Title of alert when the free account limit is reached */
 "Limit reached" = "Tewwḍeḍ tilist";
@@ -1167,10 +1158,10 @@
 "App PIN" = "PIN n usnas";
 
 /* security title in settings */
-"App PIN & Touch ID" = "App PIN & Touch ID";
+"App PIN & Touch ID" = "PIN n usnas & Touch ID";
 
 /* security title in settings */
-"App PIN & Face ID" = "App PIN & Face ID";
+"App PIN & Face ID" = "PIN n usnas & Face ID";
 
 /* cell title in device settings */
 "Language" = "Tutlayt";
@@ -1263,7 +1254,7 @@
 "Selected" = "Yettwafren";
 
 /* The title of last update status of more than 1 hour */
-"Updated >1 hour ago" = "Updated >1 hour ago";
+"Updated >1 hour ago" = "Yettwaleqqem>1 usrag aya";
 
 /* The title of last update status of updated just now */
 "Updated just now" = "Yettwaleqqem tura kan";
@@ -1449,7 +1440,7 @@
 "Inherit color from parent folder" = "Ini yettwaɣellet seg ukaram agejdan";
 
 /* section title */
-"Select color" = "Select color";
+"Select color" = "Fren ini";
 
 /* No comment provided by engineer. */
 "You are not connected. We cannot display the content of your message." = "Ur teqqineḍ ara. Ur nezmir ara ad nbeqqeḍ agbur n yizen-inek.";
@@ -1513,9 +1504,6 @@
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Iɣerwaḍen ur ttwaskanen ara";
-
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Ffeɣ seg ujerred n tebdart n tnezwit";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Anagraw-nneɣ yecreḍ izen-agi am uneɛruḍ n ukellex. Ttxil-k m senqed belli izen-agi iṣeḥḥa.";
@@ -1650,7 +1638,7 @@
 "…[Show full message]" = "…[Sken izen uffir]";
 
 /* The title of notification that will show when the token of one account is revoked */
-"Signed out of %@" = "Signed out of %@";
+"Signed out of %@" = "Ffeɣ seg %@";
 
 /* The body of notification that will show when the token of one account is revoked */
 "Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
@@ -1683,7 +1671,7 @@
 "Warning: suspected fake website" = "Ɣur-k•m: yettban d yir asmel web";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Aseɣwen-a yettawi ɣer usmel web i yettaɛraḍen ahat ad yaker talɣut-ik, am wawalen uffiren d telqayt n tkarḍa n usmad.\n%@\n\nI tɣellist-ik, ur ttkemmil ara.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Zgel alɣu, tkemmkeḍ";
@@ -1704,7 +1692,7 @@
 "Tomorrow, %@" = "Azekka, %@";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
-"Schedule will be removed" = "Schedule will be removed";
+"Schedule will be removed" = "Asɣiwes ad yettwakkes";
 
 /* The alert title of the user trying to send a message that was schedule-send. */
 "Send immediately?" = "Azen imir?";
@@ -1791,73 +1779,13 @@
 "The sending key is not valid" = "Tasarut n tuzna ur d tameɣtut";
 
 /* The time label for message is about to be sent less in 1 minute in the list view. */
-"<1m" = "<1m";
+"<1m" = "<1tsd";
 
 /* The time label for message is about to be sent less in 1 minute not in the list view. */
 "less than 1 minute" = "ddaw n 1 n tesdat";
 
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "The message is being sent and will move to the Sent folder once sending is complete.";
-
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "If you lose your WiFi connection, download will continue over mobile data.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Download via mobile data";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Asader iteddu";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Azray n yiznan";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Talast n ukalas";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Akalas yettwaseqdec";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "All your messages are downloaded";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Not all messages were downloaded. To download them, free up storage on the device.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Not all messages were downloaded. To download them, increase the storage limit below.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "Ur tesɛid ara iznan.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Iznan-ik·im mazal ad d-ttalin...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Isefka yettwaffren";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Ticeqqufin";
-
-/* cell title in device settings */
-"Downloaded messages" = "Iznan i d-yettwasadren";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Sfeḍ";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Allows you to open previously read messages while offline.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Allows you to open previously opened attachments while offline.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Allows you to search within your messages. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Ẓer talqayt";
 
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Tigawin n ufeggag n yifecka (fren almi d 5)";
@@ -1893,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "You can now choose and rearrange the actions in this bar";
 
 /* Button to block a sender */
-"Block sender" = "Sewḥel amazan";
+"Block messages from this sender" = "Block messages from this sender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Sewḥel";
@@ -1908,27 +1836,27 @@
 "Update queued, awaiting connectivity..." = "Update queued, awaiting connectivity...";
 
 /* Placeholder for empty sender list */
-"No blocked senders" = "No blocked senders";
+"No blocked senders" = "Ulac imazanen yettusweḥlen";
 
 "New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings.";
 
 /* Banner in the message view */
-"Sender has been blocked" = "Sender has been blocked";
+"Sender has been blocked" = "Amazan yettusewḥel";
 
 /* Toast confirming the block */
-"Sender %@ blocked" = "Sender %@ blocked";
+"Sender %@ blocked" = "Amazan %@ yettusewḥel";
 
 /* Toast confirming the unblock */
-"Sender %@ unblocked" = "Sender %@ unblocked";
+"Sender %@ unblocked" = "Amazan %@ yekkes-as usewḥel";
 
 /* Button to unblock a sender */
-"Unblock sender" = "Unblock sender";
+"Unblock sender" = "Kkes asewḥel i umazan";
 
 /* Button to unblock a sender, keep it short to fit in the UI */
 "Unblock" = "Serreḥ";
 
 /* Name of the feature */
-"Email tracking protection" = "Email tracking protection";
+"Email tracking protection" = "Ammesten mgal aḍfar n yimayl";
 
 /* Short hint in the header view */
 "No email trackers found" = "Ulac ineḍfaren n yimayl yettwafen";
@@ -1937,7 +1865,7 @@
 "Email trackers can violate your privacy." = "Email trackers can violate your privacy.";
 
 /* The banner shown in case of proxy failure */
-"Some images could not be loaded with tracking protection." = "Some images could not be loaded with tracking protection.";
+"Some images could not be loaded with tracking protection." = "Kra n tugniwin ulamek ara d-alint s ummesten n uḍfar.";
 
 /* Button inside the banner */
 "Load" = "Sali";
@@ -1964,7 +1892,7 @@
 "Track your rewards" = "Ḍfer arazen-ik·im";
 
 /* The title of the terms and conditions button in referral share view. */
-"Terms & conditions" = "Terms & conditions";
+"Terms & conditions" = "Tiwtilin n useqdec";
 
 /* The content that is shared through the action: `Share the link` */
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:";
@@ -1982,7 +1910,7 @@
 "Advanced settings" = "Iɣewwaṛen leqqayen";
 
 /* Settings lock AppKey feature */
-"AppKey protection" = "AppKey protection";
+"AppKey protection" = "Ammesten s AppKey";
 
 /* Settings lock AppKey description */
 "AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@";
@@ -2000,7 +1928,7 @@
 "As scheduled" = "Akken yettusɣawes";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Sbadu asɣawas-ik";
 
 /* The content of the up sell content of the scheduled send. */
 "Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
@@ -2009,7 +1937,7 @@
 "Upgrade now" = "Sali aswir tura";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Sɣawes akud n tuzna n yizen melmi i tebɣiḍ";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Unlimited folders and labels" = "Ikaramen d tebzimin war talast";
@@ -2021,7 +1949,7 @@
 "Up to 15 email addresses" = "Alamma d 15 n tansiwin n yimayl";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Up to 3 custom email domains" = "Up to 3 custom email domains";
+"Up to 3 custom email domains" = "Ugar n 3 tiɣula n yimaylen udmawanen";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Hide My Email aliases" = "Hide My Email aliases";
@@ -2035,41 +1963,44 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Awal uffir yettwaleqqem";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Clearing cache…";
-
 /* Title for application logs settings option */
-"Application logs" = "Application logs";
+"Application logs" = "Iɣmisen n usnas";
 
 /* The title of the setting of the next msg after move */
-"Next message after move" = "Next message after move";
+"Next message after move" = "Izen uḍfir seld asenkez";
 
 /* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Navigate to next message after move";
+"Navigate to next message after move" = "Uɣal ɣer yizen uḍfir seld asenkez";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Performing a move action on a message (e.g. archive) will navigate to the next message.";
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Mi ara n tesnekzeḍ izen (am. ɣer teṛcivt) ad tuɣaleḍ ɣer yizen uḍfir.j";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Yegguma ad yeldi yizen, ales ticki.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Please sign in to the Proton Mail app.";
+"Please sign in to the Proton Mail app." = "Ttxil-k qqen ɣer usnas Proton Mail.";
 
 /* The action title in the action sheet of the reply action in conversation view. */
-"Reply (to last message)" = "Reply (to last message)";
+"Reply (to last message)" = "Tiririt (i yizen aneggaru)";
 
 /* The action title in the action sheet of the forward action in conversation view. */
 "Forward (last message)" = "Welleh (izen aneggaru)";
 
 /* The action title in the action sheet of the reply action in conversation view. */
-"Reply all (to last message)" = "Reply all (to last message)";
+"Reply all (to last message)" = "Tiririt i meṛṛa (i yizen aneggaru)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "Izen amaynut";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Sagen";
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Rnu iɣmisen";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Ɛreḍ anadi s wawal-nniḍen.";
@@ -2078,10 +2009,10 @@
 "No results found" = "Ulac igmaḍ yettwafen";
 
 /* The title of the setting of the auto-delete option */
-"Auto-delete" = "Auto-delete";
+"Auto-delete" = "Tukksa tawurmant";
 
 /* The title of the row inside the setting page of auto delete option */
-"Auto-delete unwanted messages" = "Auto-delete unwanted messages";
+"Auto-delete unwanted messages" = "Tukksa tawurmant n yiznan ur tebɣiḍ ara";
 
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Messages in trash or spam longer than 30 days will be automatically deleted.";
@@ -2096,40 +2027,70 @@
 "Enable" = "Rmed";
 
 /* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Disable auto-delete?";
+"Disable auto-delete?" = "Sens tukksa tawurmant?";
 
 /* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Emails scheduled for deletion will remain in the trash and spam folders.";
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Imaylen yettusɣawsen i tukksa af qqimen deg tqecwalt d yikaramen ispalen";
 
 /* Button to disable auto delete */
 "Disable" = "Désactiver";
 
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Sali aɣawas-ik i tukksa n yiznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Automatically delete messages that have been in trash for more than 30 days.";
+"Automatically delete messages that have been in trash for more than 30 days." = "Kkes iznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Uhu, tanemmirt";
 
 /* Text to inform users they have the auto delete feature enabled */
-"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Messages that have been in trash and spam more than 30 days will be automatically deleted.";
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Iznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan, ad ttwakksen s wudem awurman.";
 
 /* Title of button to empty spam folder */
-"Empty spam" = "Empty spam";
+"Empty spam" = "Silem ispamen";
 
 /* Title of button to empty trash folder */
 "Empty trash" = "Silem iḍumman";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Clear out the junk";
+"Clear out the junk" = "Sfeḍ iznan ur nemɛin";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
 "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
 
 /* Text to advertise what upgrading will provide */
-"Up to 3 TB of storage" = "Up to 3 TB of storage";
+"Up to 3 TB of storage" = "Alamma d 3 ṬAṬ n uḥraz";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Custom email domains";
+"Custom email domains" = "Tiɣula n yimayl tudmawanin";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Isem n uskan";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Isem";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Isem n tmagit";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Urti n yisem n uskan ur ilaq ara ad yili d ilem";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Isem unermis ɣezzif aṭas";
+
+/* The button text for add profile picture */
+"Add photo" = "Rnu Tawlaft";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Ẓreg tawlaft";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Ffeɣ seg ujerred n tebdart n tnezwit";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Ffeɣ seg ujerred?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

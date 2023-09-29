@@ -60,6 +60,10 @@ class Analytics {
         isEnabled = true
     }
 
+    func assignUser(userID: UserID?) {
+        analytics.assignUser(userID: userID?.rawValue)
+    }
+
     func sendEvent(_ event: MailAnalyticsEvent, trace: String? = nil) {
         guard isEnabled else { return }
         analytics.track(event: event, trace: trace)

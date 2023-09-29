@@ -29,7 +29,7 @@ class SettingsAccountViewControllerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         apiServiceMock = .init()
-        viewModel = .init(user: .init(api: apiServiceMock, role: .none, coreKeyMaker: MockKeyMakerProtocol()))
+        viewModel = .init(user: .init(api: apiServiceMock))
         coordinatorMock = .init()
         sut = .init(viewModel: viewModel, coordinator: coordinatorMock)
     }

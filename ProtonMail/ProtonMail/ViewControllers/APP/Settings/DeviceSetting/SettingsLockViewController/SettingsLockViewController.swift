@@ -187,10 +187,11 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
     private func cellForChangePinCodeSection() -> UITableViewCell {
         let cell = tableView.dequeue(cellType: UITableViewCell.self)
         cell.textLabel?.set(
-            text: LocalString._settings_change_pin_code_title,
+            text: L11n.PinCodeSetup.changePinCode,
             preferredFont: .body,
             textColor: ColorProvider.InteractionNorm
         )
+        cell.accessibilityIdentifier = "SettingsLockView.changePingCodeCell"
         return cell
     }
 

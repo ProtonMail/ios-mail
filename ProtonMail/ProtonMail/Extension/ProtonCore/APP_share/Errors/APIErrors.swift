@@ -30,10 +30,9 @@ extension APIErrorCode {
     /// The error means "Message has already been sent"
     static let alreadyExist = 2500
     static let resourceDoesNotExist = 2501
+    /// The model exists but its current state doesn't allow to execute the action
+    static let incompatible = 2511
     static let invalidRequirements = 2000
-
-    // Device token
-    static let deviceTokenIsInvalid = 11210
 
     static let deviceHavingLowConnectivity = 111222333
     /// Total size or number of attachments exceeds limit
@@ -84,13 +83,7 @@ extension NSError {
             localizedDescription: LocalString._error_bad_response_title,
             localizedFailureReason: LocalString._error_cant_parse_response_body)
     }
-    // TODO:: move to other place
-    class func encryptionError() -> NSError {
-        return apiServiceError(
-            code: APIErrorCode.badParameter,
-            localizedDescription: "Attachment encryption failed",
-            localizedFailureReason: "Attachment encryption failed")
-    }
+
     class func lockError() -> NSError {
         return apiServiceError(
             code: APIErrorCode.badParameter,

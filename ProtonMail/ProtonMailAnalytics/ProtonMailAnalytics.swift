@@ -20,6 +20,7 @@ import Sentry
 
 public protocol ProtonMailAnalyticsProtocol: AnyObject {
     func setup(environment: String, debug: Bool)
+    func assignUser(userID: String?)
     func track(event: MailAnalyticsEvent, trace: String?)
     func track(error: MailAnalyticsErrorEvent, trace: String?, fingerprint: Bool)
 }
@@ -38,8 +39,18 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
             options.debug = debug
             options.environment = environment
             options.enableAutoPerformanceTracing = false
+            options.enableAppHangTracking = false
         }
         isEnabled = true
+    }
+
+    public func assignUser(userID: String?) {
+        if let userID {
+            let user = User(userId: userID)
+            SentrySDK.setUser(user)
+        } else {
+            SentrySDK.setUser(nil)
+        }
     }
 
     public func track(event: MailAnalyticsEvent, trace: String?) {

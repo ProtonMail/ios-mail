@@ -27,22 +27,16 @@ extension MailboxViewModel: MoveToActionSheetProtocol {
         return labelID
     }
 
-    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool) {
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel) {
         let folderID = folder.location.labelID
-        messageService.move(messages: messages, to: folderID, isSwipeAction: isFromSwipeAction, queue: true)
+        messageService.move(messages: messages, to: folderID, queue: true)
     }
 
-    func handleMoveToAction(
-        conversations: [ConversationEntity],
-        to folder: MenuLabel,
-        isFromSwipeAction: Bool,
-        completion: (() -> Void)?
-    ) {
+    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, completion: (() -> Void)?) {
         conversationProvider.move(
             conversationIDs: conversations.map(\.conversationID),
             from: labelId,
             to: folder.location.labelID,
-            isSwipeAction: isFromSwipeAction,
             callOrigin: "MailboxViewModel - handleMoveToAction"
         ) { [weak self] result in
             defer {

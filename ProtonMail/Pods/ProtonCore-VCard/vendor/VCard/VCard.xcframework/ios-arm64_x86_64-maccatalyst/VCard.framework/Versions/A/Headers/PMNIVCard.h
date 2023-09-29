@@ -72,6 +72,8 @@
 
 - (nullable PMNIOrganization *)getOrganization;
 
+- (nonnull NSArray<PMNIOrganization *> *)getOrganizations;
+
 - (void)addOrganization:(nullable PMNIOrganization *)org;
 
 - (void)setOrganizations:(nonnull NSArray<PMNIOrganization *> *)orgs;
@@ -90,11 +92,19 @@
 
 - (nullable PMNINickname *)getNickname;
 
+- (nonnull NSArray<PMNINickname *> *)getNicknames;
+
 - (void)setNickname:(nullable PMNINickname *)nickname;
+
+- (void)addNickname:(nullable PMNINickname *)nickname;
 
 - (void)clearNickname;
 
 - (nullable PMNITitle *)getTitle;
+
+- (nonnull NSArray<PMNITitle *> *)getTitles;
+
+- (void)addTitle:(nullable PMNITitle *)title;
 
 - (void)setTitle:(nullable PMNITitle *)title;
 

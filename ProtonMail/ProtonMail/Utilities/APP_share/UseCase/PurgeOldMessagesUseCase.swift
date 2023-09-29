@@ -24,12 +24,7 @@ final class PurgeOldMessages: PurgeOldMessagesUseCase {
     private let dependencies: Dependencies
 
     convenience init(user: UserManager, coreDataService: CoreDataContextProviderProtocol) {
-        let fetchMessageMetaData = FetchMessageMetaData(
-            dependencies: .init(
-                userID: user.userID,
-                messageDataService: user.messageService,
-                contextProvider: coreDataService
-            ))
+        let fetchMessageMetaData = user.container.fetchMessageMetaData
         self.init(
             dependencies: .init(
                 coreDataService: coreDataService,

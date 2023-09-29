@@ -46,14 +46,14 @@ class AccountDeletionSuccessfulTests: FixtureAuthenticatedTestCase {
 
     func testSecondUserInboxIsShownAfterSuccessfulDeletionOfFirstUser() {
         runTestWithScenario(.qaMail001) {
-            let freeUser = users["plus"]!
+            let proUser = createUser()
 
             InboxRobot()
                 .menuDrawer()
                 .accountsList()
                 .manageAccounts()
                 .addAccount()
-                .connectOnePassAccount(freeUser)
+                .connectOnePassAccount(proUser)
                 .menuDrawer()
                 .accountsList()
                 .switchToAccount(user)
@@ -74,7 +74,7 @@ class AccountDeletionSuccessfulTests: FixtureAuthenticatedTestCase {
                 .tapAuthenticateButton(to: InboxRobot.self)
                 .verify.inboxShown()
                 .menuDrawer()
-                .verify.currentAccount(freeUser)
+                .verify.currentAccount(proUser)
         }
     }
 }

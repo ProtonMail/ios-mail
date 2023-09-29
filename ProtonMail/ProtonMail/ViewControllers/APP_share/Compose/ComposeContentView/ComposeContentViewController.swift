@@ -41,6 +41,8 @@ protocol ComposeContentViewControllerDelegate: AnyObject {
 
 // swiftlint:disable:next line_length type_body_length
 class ComposeContentViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
+    typealias Dependencies = HasImageProxy
+
     let viewModel: ComposeViewModel
     var openScheduleSendActionSheet: (() -> Void)?
 
@@ -60,14 +62,15 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     var pickedGroup: ContactGroupVO?
     var pickedCallback: (([DraftEmailData]) -> Void)?
     var groupSubSelectionPresenter: ContactGroupSubSelectionActionSheetPresenter?
-    private lazy var schemeHandler: ComposerSchemeHandler = .init(imageProxy: .init(dependencies: .init(
-        apiService: viewModel.user.apiService
-    )))
+    private lazy var schemeHandler: ComposerSchemeHandler = .init(imageProxy: dependencies.imageProxy)
+
+    private let dependencies: Dependencies
 
     weak var delegate: ComposeContentViewControllerDelegate?
 
-    init(viewModel: ComposeViewModel) {
+    init(viewModel: ComposeViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
+        self.dependencies = dependencies
         DFSSetting.enableDFS = true
         super.init(nibName: nil, bundle: nil)
     }
@@ -99,10 +102,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         self.webView.isOpaque = false
         self.htmlEditor.setup(webView: self.webView)
 
-        self.viewModel.showError = { [weak self] errorMsg in
-            guard let self = self else { return }
-            errorMsg.alertToast(view: self.view)
-        }
+        self.viewModel.uiDelegate = self
 
         self.extendedLayoutIncludesOpaqueBars = true
 
@@ -223,7 +223,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             if let listVC = topVC as? MailboxViewController {
                 listVC.tableView.reloadData()
             }
-            let messageID = viewModel.composerMessageHelper.draft?.messageID.rawValue ?? .empty
+            let messageID = viewModel.composerMessageHelper.draft?.messageID ?? MessageID(.empty)
             if viewModel.deliveryTime != nil {
                 topVC.showMessageSchedulingHintBanner(messageID: messageID)
             } else {
@@ -829,53 +829,6 @@ extension ComposeContentViewController: ComposeViewDelegate {
         button.showsMenuAsPrimaryAction = true
     }
 
-    func composeViewPickFrom(_ composeView: ComposeHeaderViewController) {
-        var needsShow = false
-        let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to,
-                                                message: nil,
-                                                preferredStyle: .actionSheet)
-        let cancel = UIAlertAction(title: LocalString._general_cancel_button,
-                                   style: .cancel,
-                                   handler: nil)
-        cancel.accessibilityLabel = "ComposeContainerViewController.cancelButton"
-        alertController.addAction(cancel)
-        var multiDomains = self.viewModel.getAddresses()
-        multiDomains.sort(by: { $0.order < $1.order })
-        let defaultAddr = self.viewModel.fromAddress() ?? self.viewModel.getDefaultSendAddress()
-        for addr in multiDomains {
-            guard addr.status == .enabled && addr.receive == .active else {
-                continue
-            }
-            needsShow = true
-            let selectEmail = UIAlertAction(title: addr.email, style: .default) { action in
-                guard action.title != defaultAddr?.email else { return }
-                if addr.send == .inactive {
-                    let alertController = String(format: LocalString._composer_change_paid_plan_sender_error, addr.email).alertController()
-                    alertController.addOKAction()
-                    self.present(alertController, animated: true, completion: nil)
-                } else {
-                    if let signature = self.viewModel.getCurrentSignature(addr.addressID) {
-                        self.htmlEditor.update(signature: signature)
-                    }
-                    if let viewToAddTo = self.parent?.navigationController?.view {
-                        MBProgressHUD.showAdded(to: viewToAddTo, animated: true)
-                        self.updateSenderMail(addr: addr, complete: nil)
-                    }
-                }
-            }
-            selectEmail.accessibilityLabel = selectEmail.title
-            if defaultAddr == addr {
-                selectEmail.setValue(true, forKey: "checked")
-            }
-            alertController.addAction(selectEmail)
-        }
-        if needsShow {
-            alertController.popoverPresentationController?.sourceView = self.headerView.fromView
-            alertController.popoverPresentationController?.sourceRect = self.headerView.fromView.frame
-            present(alertController, animated: true, completion: nil)
-        }
-    }
-
     private func updateSenderMail(addr: Address, complete: (() -> Void)?) {
         self.queue.sync { [weak self] in
             self?.viewModel.updateAddressID(addr.addressID, emailAddress: addr.email)
@@ -1003,5 +956,11 @@ extension ComposeContentViewController {
                 seal.fulfill_()
             }.cauterize()
         }
+    }
+}
+
+extension ComposeContentViewController: ComposeUIProtocol {
+    func show(error: String) {
+        error.alertToast(view: view)
     }
 }

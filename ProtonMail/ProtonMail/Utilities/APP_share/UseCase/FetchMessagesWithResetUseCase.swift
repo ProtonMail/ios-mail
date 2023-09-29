@@ -107,7 +107,7 @@ extension FetchMessagesWithReset {
             fetchLatestEventId: FetchLatestEventIdUseCase,
             fetchMessages: FetchMessagesUseCase,
             localMessageDataService: LocalMessageDataServiceProtocol,
-            lastUpdatedStore: LastUpdatedStoreProtocol = sharedServices.get(by: LastUpdatedStore.self),
+            lastUpdatedStore: LastUpdatedStoreProtocol,
             contactProvider: ContactProviderProtocol,
             labelProvider: LabelProviderProtocol
         ) {

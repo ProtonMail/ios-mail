@@ -23,7 +23,7 @@
 import Foundation
 import Contacts
 
-class AddressBookService: Service {
+class AddressBookService {
 
     typealias AuthorizationCompletionBlock = (_ granted: Bool, _ error: Error?) -> Void
 

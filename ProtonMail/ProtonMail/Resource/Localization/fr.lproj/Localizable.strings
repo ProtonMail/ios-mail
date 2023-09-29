@@ -243,7 +243,7 @@
 "Subject" = "Objet";
 
 /* hint message */
-"Draft saved" = "Brouillon enregistré";
+"Draft saved" = "Le brouillon a été enregistré.";
 
 /* Placeholder */
 "Define Hint (Optional)" = "Définir un indice (facultatif)";
@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Adresses e-mail";
 
-/* The button text for add profile picture */
-"Add photo" = "Ajouter une photo";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Modifier la photo";
-
 /* contact section title */
 "Encrypted contact details" = "Chiffrement des informations de contact";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Nom du Label";
-
-/* when server not reachable */
-"API Server not reachable…" = "API serveur injoignable…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "L'accès à ce compte est désactivé en raison d’un défaut de paiement. Nous vous invitons à vous connecter via proton.me pour régler votre facture impayée.";
@@ -468,7 +459,7 @@
 "Schedule send" = "Programmer l'envoi";
 
 /* Alert title */
-"Message saved to Drafts" = "Message déplacé dans le dossier Brouillons";
+"Message saved to Drafts" = "Le message a été enregistré dans le dossier Brouillons.";
 
 /* Alert message */
 "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Trop de messages sont en attente d'être envoyés.\nAttendez qu'un autre message ait été envoyé pour programmer celui-ci.";
@@ -537,10 +528,10 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ce message peut être une tentative de phishing/hameçonnage. Vérifiez l'expéditeur et le contenu pour vous assurer qu'ils sont légitimes.";
 
 /* Description */
-"Sending Message" = "Envoi du message en cours";
+"Sending Message" = "L'envoi du message est en cours.";
 
 /* Sending message when device doesn't have netowrk connection description */
-"Offline, message queued for sending" = "Hors ligne, message mis en file d'attente pour envoi";
+"Offline, message queued for sending" = "Vous êtes hors ligne, le message est en file d'attente pour l'envoi.";
 
 /* Description */
 "Message sending failed. Please try again." = "Le message n'a pas pu être envoyé, nous vous invitons à réessayer.";
@@ -1128,7 +1119,7 @@
 "Signed out from %@ and signed in with %@" = "Déconnecté de %1$@ et connecté à %2$@";
 
 /* Alert when switched account by clicking notification of another account */
-"Switched to account '%@'" = "Basculé vers le compte «·%@·»";
+"Switched to account '%@'" = "Basculé vers le compte « %@ »";
 
 /* Cert pinning failed alert title */
 "Insecure connection" = "Connexion non sécurisée";
@@ -1251,7 +1242,7 @@
 "Draft is still uploading…" = "Brouillon toujours en cours de chargement…";
 
 /* content of the sending mesage that will display this text on the date label */
-"Sending message…" = "Envoi du message en cours…";
+"Sending message…" = "L'envoi du message est en cours.";
 
 /* message shown in the notification when the recipient validation is failed while sending */
 "Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Le message n'a pas pu être envoyé. Au moins une adresse e-mail ou un domaine du destinataire n'existe pas ou est mal formaté.";
@@ -1513,9 +1504,6 @@
 
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinataires non divulgués";
-
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Se désabonner de la liste de diffusion";
 
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Notre système a signalé ce message comme tentative de phishing/hameçonnage. Nous vous invitons à vérifier qu'il est légitime.";
@@ -1799,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Ce message est en cours d'envoi et sera déplacé dans le dossier Envoyés lorsque l'envoi sera terminé.";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Si vous perdez votre connexion wifi, le téléchargement se poursuivra sur les données mobiles.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Téléchargement via les données mobiles";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Téléchargement en cours";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Historique des messages";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Limite de stockage";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Stockage utilisé";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Tous vos messages sont téléchargés.";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Certains messages n'ont pas été téléchargés. Pour les télécharger, libérez de l'espace de stockage sur l'appareil.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Certains messages n'ont pas été téléchargés. Pour les télécharger, augmentez la limite de stockage ci-dessous.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "Vous n'avez aucun message.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Vos messages sont en cours de téléchargement.";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Données en cache";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Pièces jointes";
-
-/* cell title in device settings */
-"Downloaded messages" = "Messages téléchargés";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Informations sur l'espace de stockage que ce compte Proton Mail utilise sur votre appareil.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Effacer";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Permet d'ouvrir des messages lus précédemment tout en étant hors ligne.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Permet d'ouvrir des pièces jointes précédemment ouvertes tout en étant hors ligne.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Permet de faire des recherches dans vos messages. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Voir les détails";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Actions de la barre d'outils (sélectionnez-en jusqu'à 5)";
 
@@ -1893,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Vous pouvez désormais choisir et réorganiser les actions de cette barre d'outils.";
 
 /* Button to block a sender */
-"Block sender" = "Bloquer l'expéditeur";
+"Block messages from this sender" = "Bloquer les messages de cet expéditeur";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloquer";
@@ -2035,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Le mot de passe a été mis à jour.";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Suppression du cache en cours";
-
 /* Title for application logs settings option */
 "Application logs" = "Journaux de l'application";
 
@@ -2065,11 +1990,17 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Répondre à tous (au dernier message)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nouveau message";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personnaliser";
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Pour mieux vous aider, nous avons besoin d'autant de détails que possible---\n\nRésumé :\n\nLe problème s'est-il produit plus d'une fois : oui/non\nÉtapes pour reproduire le problème :\nRésultat attendu :\nRésultat actuel : \nCommentaires :";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Inclure les journaux";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Essayez un autre terme de recherche.";
@@ -2133,3 +2064,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domaines de messagerie personnalisés";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Nom d'affichage";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Prénom";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Nom";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Le champ du nom d'affichage ne peut pas être vide.";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Le nom du contact est trop long.";
+
+/* The button text for add profile picture */
+"Add photo" = "Ajouter une photo";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Modifier la photo";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Se désabonner de la liste de diffusion";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Se désabonner ?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Cette action vous permettra de vous désabonner de la liste de diffusion. L'expéditeur sera informé qu'il ne doit plus envoyer de messages à cette adresse e-mail.";

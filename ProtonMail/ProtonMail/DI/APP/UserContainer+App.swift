@@ -16,11 +16,36 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
+import ProtonCore_Payments
 
 extension UserContainer {
+    var appRatingServiceFactory: Factory<AppRatingService> {
+        self {
+            AppRatingService(
+                dependencies: .init(
+                    featureFlagService: self.featureFlagsDownloadService,
+                    appRating: AppRatingManager(),
+                    internetStatus: self.internetConnectionStatusProvider,
+                    appRatingPrompt: self.userCachedStatus
+                )
+            )
+        }
+    }
+
     var blockedSenderCacheUpdaterFactory: Factory<BlockedSenderCacheUpdater> {
         self {
-            self.user.blockedSenderCacheUpdater
+            let refetchAllBlockedSenders = RefetchAllBlockedSenders(
+                dependencies: .init(incomingDefaultService: self.incomingDefaultService)
+            )
+
+            return BlockedSenderCacheUpdater(
+                dependencies: .init(
+                    fetchStatusProvider: self.userCachedStatus,
+                    internetConnectionStatusProvider: self.internetConnectionStatusProvider,
+                    refetchAllBlockedSenders: refetchAllBlockedSenders,
+                    userInfo: self.user.userInfo
+                )
+            )
         }
     }
 
@@ -30,9 +55,122 @@ extension UserContainer {
         }
     }
 
+    var reportServiceFactory: Factory<BugReportService> {
+        self {
+            BugReportService(api: self.apiService)
+        }
+    }
+
+    var contactViewsFactoryFactory: Factory<ContactViewsFactory> {
+        self {
+            ContactViewsFactory(dependencies: self)
+        }
+    }
+
+    var fetchSenderImageFactory: Factory<FetchSenderImage> {
+        self {
+            FetchSenderImage(
+                dependencies: .init(
+                    featureFlagCache: self.featureFlagCache,
+                    senderImageService: .init(
+                        dependencies: .init(
+                            apiService: self.user.apiService,
+                            internetStatusProvider: self.internetConnectionStatusProvider
+                        )
+                    ),
+                    mailSettings: self.user.mailSettings
+                )
+            )
+        }
+    }
+
+    var fetchMessageDetailFactory: Factory<FetchMessageDetail> {
+        self {
+            FetchMessageDetail(
+                dependencies: .init(
+                    queueManager: self.queueManager,
+                    apiService: self.user.apiService,
+                    contextProvider: self.contextProvider,
+                    cacheService: self.user.cacheService
+                )
+            )
+        }
+    }
+
+    var messageSearchFactory: Factory<SearchUseCase> {
+        self {
+            MessageSearch(
+                dependencies: .init(
+                    userID: self.user.userID,
+                    backendSearch: BackendSearch(
+                        dependencies: .init(
+                            apiService: self.user.apiService,
+                            contextProvider: self.contextProvider,
+                            userID: self.user.userID
+                        )
+                    )
+                )
+            )
+        }
+    }
+
+    var nextMessageAfterMoveStatusProviderFactory: Factory<NextMessageAfterMoveStatusProvider> {
+        self {
+            self.user
+        }
+    }
+
+    var paymentsFactory: Factory<Payments> {
+        self {
+            Payments(
+                inAppPurchaseIdentifiers: Constants.mailPlanIDs,
+                apiService: self.apiService,
+                localStorage: self.userCachedStatus,
+                canExtendSubscription: true,
+                reportBugAlertHandler: { _ in
+                    let link = DeepLink("toBugPop", sender: nil)
+                    NotificationCenter.default.post(name: .switchView, object: link)
+                }
+            )
+        }
+    }
+
+    var paymentsUIFactoryFactory: Factory<PaymentsUIFactory> {
+        self {
+            PaymentsUIFactory(dependencies: self)
+        }
+    }
+
     var settingsViewsFactoryFactory: Factory<SettingsViewsFactory> {
         self {
             SettingsViewsFactory(dependencies: self)
+        }
+    }
+
+    var saveToolbarActionSettingsFactory: Factory<SaveToolbarActionSettings> {
+        self {
+            SaveToolbarActionSettings(dependencies: .init(user: self.user))
+        }
+    }
+
+    var sendBugReportFactory: Factory<SendBugReport> {
+        self {
+            SendBugReport(
+                bugReportService: self.user.reportService,
+                internetConnectionStatusProvider: self.internetConnectionStatusProvider
+            )
+        }
+    }
+
+    var toolbarActionProviderFactory: Factory<ToolbarActionProvider> {
+        self {
+            self.user
+        }
+    }
+
+    var toolbarSettingViewFactoryFactory: Factory<ToolbarSettingViewFactory> {
+        self {
+            ToolbarSettingViewFactory(dependencies: self)
         }
     }
 

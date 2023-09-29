@@ -25,6 +25,8 @@ enum FeatureFlagKey: String, CaseIterable {
     case scheduleSend = "ScheduledSendFreemium"
     case senderImage = "ShowSenderImages"
     case referralPrompt = "ReferralActionSheetShouldBePresentedIOS"
+    case refetchEventsByTime = "iOSRefetchEventsByTime"
+    case refetchEventsHourThreshold = "iOSRefetchEventsHourThreshold"
     case mailboxPrefetchSize = "iOSMailboxPrefetchSize"
 }
 

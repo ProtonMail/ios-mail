@@ -50,16 +50,22 @@ extension String {
 }
 
 final class PreContact {
+    enum SignStatus {
+        case sign
+        case doNotSign
+        case signingFlagNotFound
+    }
+
     let email: String
     let pgpKeys: [Data]
-    let sign: Bool
+    let sign: SignStatus
     let encrypt: Bool
     let scheme: String?
     let mimeType: String?
 
     init(email: String,
          pubKeys: [Data],
-         sign: Bool,
+         sign: SignStatus,
          encrypt: Bool,
          scheme: String?,
          mimeType: String?

@@ -28,6 +28,11 @@ import ProtonCore_Networking
 import ProtonMailAnalytics
 import SwiftSoup
 
+// sourcery: mock
+protocol ComposeUIProtocol: AnyObject {
+    func show(error: String)
+}
+
 class ComposeViewModel: NSObject {
     /// Only to notify ComposeContainerViewModel that contacts changed
     @objc private(set) dynamic var contactsChange: Int = 0
@@ -54,8 +59,8 @@ class ComposeViewModel: NSObject {
     private(set) var messageAction: ComposeMessageAction = .newDraft
     private(set) var subject: String = .empty
     var body: String = .empty
-    var showError: ((String) -> Void)?
     var deliveryTime: Date?
+    weak var uiDelegate: ComposeUIProtocol?
 
     var toSelectedContacts: [ContactPickerModelProtocol] = [] {
         didSet { self.contactsChange += 1 }
@@ -82,13 +87,11 @@ class ComposeViewModel: NSObject {
         body: String,
         files: [FileData],
         action: ComposeMessageAction,
-        msgService: MessageDataService,
-        user: UserManager,
         originalScheduledTime: Date? = nil,
         dependencies: Dependencies
     ) {
-        self.user = user
-        self.messageService = msgService
+        self.user = dependencies.user
+        messageService = dependencies.user.messageService
         self.isEditingScheduleMsg = false
 
         // We have dependencies as an optional input parameter to avoid making
@@ -128,16 +131,14 @@ class ComposeViewModel: NSObject {
     }
 
     init(
-        msg: Message?,
+        msg: MessageEntity?,
         action: ComposeMessageAction,
-        msgService: MessageDataService,
-        user: UserManager,
         isEditingScheduleMsg: Bool = false,
         originalScheduledTime: Date? = nil,
         dependencies: Dependencies
     ) {
-        self.user = user
-        self.messageService = msgService
+        self.user = dependencies.user
+        messageService = dependencies.user.messageService
         self.isEditingScheduleMsg = isEditingScheduleMsg
         self.originalScheduledTime = originalScheduledTime
 
@@ -154,20 +155,19 @@ class ComposeViewModel: NSObject {
         initialize(message: msg, action: action)
     }
 
-    func initialize(message msg: Message?, action: ComposeMessageAction) {
-        if msg == nil || msg?.draft == true {
+    func initialize(message msg: MessageEntity?, action: ComposeMessageAction) {
+        if msg == nil || msg?.isDraft == true {
             if let msg = msg {
-                self.composerMessageHelper.setNewMessage(objectID: msg.objectID)
+                self.composerMessageHelper.setNewMessage(objectID: msg.objectID.rawValue)
             }
             self.subject = self.composerMessageHelper.draft?.title ?? ""
-        } else if msg?.managedObjectContext != nil {
-            // TODO: -v4 change to composer context
+        } else {
             guard let msg = msg else {
                 fatalError("This should not happened.")
             }
 
             do {
-                try composerMessageHelper.copyAndCreateDraft(from: msg, action: action)
+                try composerMessageHelper.copyAndCreateDraft(from: msg.messageID, action: action)
             } catch {
                 PMAssertionFailure(error)
             }
@@ -177,7 +177,7 @@ class ComposeViewModel: NSObject {
         self.messageAction = action
 
         // get original message if from sent
-        let fromSent: Bool = msg?.sentHardCheck ?? false
+        let fromSent: Bool = msg?.isSent ?? false
         self.updateContacts(fromSent)
     }
 
@@ -664,141 +664,82 @@ extension ComposeViewModel {
 // MARK: - Contact related methods
 
 extension ComposeViewModel {
+    private func updateContact(from jsonList: String, to selectedContacts: inout [ContactPickerModelProtocol]) {
+        // Json to contact/group objects
+        let parsedContacts = toContacts(jsonList)
+        
+        for contact in parsedContacts {
+            switch contact.modelType {
+            case .contact:
+                guard let contact = contact as? ContactVO else {
+                    PMAssertionFailure("Model type and value doesn't match when init composer recipient, \(contact.modelType)")
+                    continue
+                }
+                if !contact.exists(in: selectedContacts) {
+                    selectedContacts.append(contact)
+                }
+            case .contactGroup:
+                guard let group = contact as? ContactGroupVO else {
+                    PMAssertionFailure("Model type and value doesn't match when init composer recipient, \(contact.modelType)")
+                    continue
+                }
+                selectedContacts.append(group)
+            }
+        }
+    }
     /**
      Load the contacts and groups back for the message
 
      contact group only shows up in draft, so the reply, reply all, etc., no contact group will show up
      */
     private func updateContacts(_ origFromSent: Bool) {
-        if let draft = composerMessageHelper.draft {
-            switch messageAction {
-            case .newDraft, .forward, .newDraftFromShare:
-                break
-            case .openDraft:
-                let toContacts = self.toContacts(draft.recipientList) // Json to contact/group objects
+        guard let draft = composerMessageHelper.draft else { return }
+        switch messageAction {
+        case .newDraft, .forward, .newDraftFromShare:
+            break
+        case .openDraft:
+            updateContact(from: draft.recipientList, to: &toSelectedContacts)
+            updateContact(from: draft.ccList, to: &ccSelectedContacts)
+            updateContact(from: draft.bccList, to: &bccSelectedContacts)
+        case .reply:
+            if origFromSent {
+                let toContacts = self.toContacts(draft.recipientList)
                 for cont in toContacts {
-                    switch cont.modelType {
-                    case .contact:
-                        if let cont = cont as? ContactVO {
-                            if !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
-                                self.toSelectedContacts.append(cont)
-                            }
-                        } else {
-                            // TODO: error handling
-                        }
-                    case .contactGroup:
-                        if let group = cont as? ContactGroupVO {
-                            self.toSelectedContacts.append(group)
-                        } else {
-                            // TODO: error handling
-                        }
-                    }
+                    self.toSelectedContacts.append(cont)
                 }
-
-                let ccContacts = self.toContacts(draft.ccList)
-                for cont in ccContacts {
-                    switch cont.modelType {
-                    case .contact:
-                        if let cont = cont as? ContactVO {
-                            if !cont.isDuplicatedWithContacts(self.ccSelectedContacts) {
-                                self.ccSelectedContacts.append(cont)
-                            }
-                        } else {
-                            // TODO: error handling
-                        }
-                    case .contactGroup:
-                        if let group = cont as? ContactGroupVO {
-                            self.ccSelectedContacts.append(group)
-                        } else {
-                            // TODO: error handling
-                        }
-                    }
-                }
-
-                let bccContacts = self.toContacts(draft.bccList)
-                for cont in bccContacts {
-                    switch cont.modelType {
-                    case .contact:
-                        if let cont = cont as? ContactVO {
-                            if !cont.isDuplicatedWithContacts(self.bccSelectedContacts) {
-                                self.bccSelectedContacts.append(cont)
-                            }
-                        } else {
-                            // TODO: error handling
-                        }
-                    case .contactGroup:
-                        if let group = cont as? ContactGroupVO {
-                            self.bccSelectedContacts.append(group)
-                        } else {
-                            // TODO: error handling
-                        }
-                    }
-                }
-            case .reply:
-                if origFromSent {
-                    let toContacts = self.toContacts(draft.recipientList)
-                    for cont in toContacts {
-                        self.toSelectedContacts.append(cont)
-                    }
+            } else {
+                var senders: [ContactPickerModelProtocol] = []
+                let replytos = self.toContacts(draft.replyTos)
+                if !replytos.isEmpty {
+                    senders += replytos
                 } else {
-                    var senders: [ContactPickerModelProtocol] = []
-                    let replytos = self.toContacts(draft.replyTos)
-                    if !replytos.isEmpty {
-                        senders += replytos
-                    } else {
-                        if let newSender = self.toContact(draft.sender) {
-                            senders.append(newSender)
-                        } else {
-                            // ignore
-                        }
+                    if let newSender = self.toContact(draft.sender) {
+                        senders.append(newSender)
                     }
-                    self.toSelectedContacts.append(contentsOf: senders)
                 }
-            case .replyAll:
-                if origFromSent {
-                    self.toContacts(draft.recipientList).forEach { self.toSelectedContacts.append($0) }
-                    self.toContacts(draft.ccList).forEach { self.ccSelectedContacts.append($0) }
-                    self.toContacts(draft.bccList).forEach { self.bccSelectedContacts.append($0) }
-                } else {
-                    let userAddress = self.user.addresses
-                    var senders = [ContactPickerModelProtocol]()
-                    let replytos = self.toContacts(draft.replyTos)
-                    if !replytos.isEmpty {
-                        senders += replytos
-                    } else {
-                        if let newSender = self.toContact(draft.sender) {
-                            senders.append(newSender)
-                        } else {
-                            // ignore
-                        }
-                    }
-
-                    for sender in senders {
-                        if let sender = sender as? ContactVO,
-                           !sender.isDuplicated(userAddress) {
-                            self.toSelectedContacts.append(sender)
-                        }
-                    }
-
-                    let toContacts = self.toContacts(draft.recipientList)
-                    for cont in toContacts {
-                        if let cont = cont as? ContactVO,
-                           !cont.isDuplicated(userAddress), !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
-                            self.toSelectedContacts.append(cont)
-                        }
-                    }
-                    if self.toSelectedContacts.isEmpty {
-                        self.toSelectedContacts.append(contentsOf: senders)
-                    }
-
-                    self.toContacts(draft.ccList).compactMap { $0 as? ContactVO }
-                        .filter { !$0.isDuplicated(userAddress) && !$0.isDuplicatedWithContacts(self.toSelectedContacts) }
-                        .forEach { self.ccSelectedContacts.append($0) }
-                    self.toContacts(draft.bccList).compactMap { $0 as? ContactVO }
-                        .filter { !$0.isDuplicated(userAddress) && !$0.isDuplicatedWithContacts(self.toSelectedContacts) }
-                        .forEach { self.bccSelectedContacts.append($0) }
-                }
+                self.toSelectedContacts.append(contentsOf: senders)
             }
+        case .replyAll:
+            if origFromSent {
+                self.toContacts(draft.recipientList).forEach { self.toSelectedContacts.append($0) }
+                self.toContacts(draft.ccList).forEach { self.ccSelectedContacts.append($0) }
+                self.toContacts(draft.bccList).forEach { self.bccSelectedContacts.append($0) }
+                return
+            }
+
+            if toContacts(draft.replyTos).isEmpty {
+                updateContact(from: draft.sender, to: &toSelectedContacts)
+            } else {
+                updateContact(from: draft.replyTos, to: &toSelectedContacts)
+            }
+
+            let userAddress = user.addresses
+            // Reply all doesn't have bcc
+            let recipients = toContacts(draft.recipientList) + toContacts(draft.ccList)
+            recipients
+                .compactMap { $0 as? ContactVO }
+                .filter { !$0.isDuplicated(userAddress) && !$0.exists(in: toSelectedContacts) }
+                .forEach { ccSelectedContacts.append($0) }
         }
     }
 
@@ -868,7 +809,11 @@ extension ComposeViewModel {
 
             // finish parsing contact groups
             for group in groups {
-                let contactGroup = ContactGroupVO(ID: "", name: group.key)
+                let contactGroup = ContactGroupVO(
+                    ID: "",
+                    name: group.key,
+                    contextProvider: dependencies.coreDataContextProvider
+                )
                 contactGroup.overwriteSelectedEmails(with: group.value)
                 out.append(contactGroup)
             }
@@ -882,7 +827,7 @@ extension ComposeViewModel {
 
     /// Provides the display name for the recipient according to https://jira.protontech.ch/browse/MAILIOS-3027
     private func displayNameForRecipient(_ recipient: DecodableRecipient) -> String {
-        if let email = dependencies.contactProvider.getEmailsByAddress([recipient.address], for: user.userID).first {
+        if let email = dependencies.contactProvider.getEmailsByAddress([recipient.address]).first {
             return email.contactName
         } else if let backendName = recipient.name, !backendName.replacingOccurrences(of: " ", with: "").isEmpty {
             return backendName
@@ -967,7 +912,7 @@ extension ComposeViewModel {
                     contactVO.encryptionIconStatus = iconStatus
                     complete?(iconStatus?.iconWithColor, errorCode ?? 0)
                     if errorCode != nil, let errorString = iconStatus?.text {
-                        self?.showError?(errorString)
+                        self?.uiDelegate?.show(error: errorString)
                     }
                 }
             }
@@ -1111,8 +1056,8 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     struct Dependencies {
+        let user: UserManager
         let coreDataContextProvider: CoreDataContextProviderProtocol
-        let coreKeyMaker: KeyMakerProtocol
         let fetchAndVerifyContacts: FetchAndVerifyContactsUseCase
         let internetStatusProvider: InternetConnectionStatusProviderProtocol
         let fetchAttachment: FetchAttachmentUseCase

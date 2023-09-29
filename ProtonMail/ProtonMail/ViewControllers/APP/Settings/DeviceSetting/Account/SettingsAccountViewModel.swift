@@ -142,6 +142,7 @@ protocol SettingsAccountViewModel: AnyObject {
     var allSendingAddresses: [Address] { get }
 
     var isAutoDeleteSpamAndTrashEnabled: Bool { get }
+    var isPaidUser: Bool { get }
     func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?)
 
     var reloadTable: (() -> Void)? { get set }
@@ -248,6 +249,10 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
 
     var isAutoDeleteSpamAndTrashEnabled: Bool {
         userManager.isAutoDeleteEnabled
+    }
+
+    var isPaidUser: Bool {
+        userManager.isPaid
     }
 
     func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?) {

@@ -78,8 +78,8 @@ class AutoDeleteInfoHeaderView: UIView {
             infoLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 12),
             infoLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -12),
             emptyButton.leadingAnchor.constraint(equalTo: infoLabel.leadingAnchor, constant: -16),
-            emptyButton.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: -8),
-            emptyButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 4)
+            emptyButton.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 0),
+            emptyButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -4)
         ].activate()
     }
 
@@ -103,13 +103,17 @@ class AutoDeleteInfoHeaderView: UIView {
     func emptyButtonTapped() {
         self.emptyButtonAction?()
     }
+
+    func toggleEmptyButton(shouldEnable: Bool) {
+        emptyButton.isEnabled = shouldEnable
+    }
 }
 
 extension AutoDeleteInfoHeaderView {
     class SubviewsFactory {
         static var trashIconImageView: UIView {
             let imageView = UIImageView()
-            imageView.image = Asset.trashIconClock.image
+            imageView.image = IconProvider.trashClock
             imageView.tintColor = ColorProvider.IconNorm
             return imageView
         }
@@ -118,7 +122,7 @@ extension AutoDeleteInfoHeaderView {
             let label = UILabel()
             label.numberOfLines = 0
             let style = FontManager.Caption.foregroundColor(ColorProvider.TextNorm)
-            label.set(text: L11n.AutoDeleteBanners.enabledInfoText.apply(style: style), preferredFont: .footnote)
+            label.set(text: L11n.AutoDeleteBanners.enabledInfoText.apply(style: style), preferredFont: .body)
             return label
         }
     }

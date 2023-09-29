@@ -29,12 +29,14 @@ final class PagesViewController<
    UIPageViewControllerDelegate,
    UIPageViewControllerDataSource,
    LifetimeTrackable {
+    typealias Dependencies = SingleMessageCoordinator.Dependencies & ConversationCoordinator.Dependencies
+
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
     private let viewModel: PagesViewModel<IDType, EntityType, FetchResultType>
-    private var services: ServiceFactory
+    private let dependencies: Dependencies
     private var titleViewObserver: NSKeyValueObservation?
     private var spotlight: PagesSpotlightView?
     // Message objectID or ContextLabel objectID
@@ -46,9 +48,9 @@ final class PagesViewController<
     /// Shouldn't cause any display issue
     private var pageCache: [String: PageCacheType] = [:]
 
-    init(viewModel: PagesViewModel<IDType, EntityType, FetchResultType>, services: ServiceFactory) {
+    init(viewModel: PagesViewModel<IDType, EntityType, FetchResultType>, dependencies: Dependencies) {
         self.viewModel = viewModel
-        self.services = services
+        self.dependencies = dependencies
         super.init(
             transitionStyle: .scroll,
             navigationOrientation: .horizontal,
@@ -166,12 +168,10 @@ extension PagesViewController {
         }
         guard let navigationController = self.navigationController else { return nil }
         let coordinator = SingleMessageCoordinator(
-            serviceFactory: services,
             navigationController: navigationController,
             labelId: viewModel.labelID,
             message: message,
-            user: viewModel.user,
-            infoBubbleViewStatusProvider: viewModel.infoBubbleViewStatusProvider
+            dependencies: dependencies
         )
         coordinator.goToDraft = viewModel.goToDraft
         let controller = coordinator.makeSingleMessageVC()
@@ -222,12 +222,8 @@ extension PagesViewController {
             labelId: viewModel.labelID,
             navigationController: navigationController,
             conversation: conversation,
-            user: viewModel.user,
-            internetStatusProvider: .shared,
-            infoBubbleViewStatusProvider: viewModel.infoBubbleViewStatusProvider,
-            contextProvider: services.get(by: CoreDataService.self),
-            targetID: targetMessageID,
-            serviceFactory: services
+            dependencies: dependencies,
+            targetID: targetMessageID
         )
         coordinator.goToDraft = viewModel.goToDraft
         let controller = coordinator.makeConversationVC()

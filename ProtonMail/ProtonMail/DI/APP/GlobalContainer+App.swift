@@ -16,9 +16,27 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
+import LifetimeTracker
 import UIKit
 
 extension GlobalContainer {
+    var addressBookServiceFactory: Factory<AddressBookService> {
+        self {
+            AddressBookService()
+        }
+    }
+
+    var backgroundTaskHelperFactory: Factory<BackgroundTaskHelper> {
+        self {
+            BackgroundTaskHelper(
+                dependencies: .init(
+                    coreKeyMaker: self.keyMaker,
+                    usersManager: self.usersManager
+                )
+            )
+        }
+    }
+
     var biometricStatusProviderFactory: Factory<BiometricStatusProvider> {
         self {
             UIDevice.current
@@ -31,9 +49,56 @@ extension GlobalContainer {
         }
     }
 
+    var darkModeCacheFactory: Factory<DarkModeCacheProtocol> {
+        self {
+            self.userCachedStatus
+        }
+    }
+
+    var pushServiceFactory: Factory<PushNotificationService> {
+        self {
+            let dependencies = PushNotificationService.Dependencies(
+                actionsHandler: PushNotificationActionsHandler(
+                    dependencies: .init(
+                        queue: self.queueManager,
+                        lockCacheStatus: self.lockCacheStatus,
+                        usersManager: self.usersManager
+                    )
+                ),
+                usersManager: self.usersManager,
+                unlockProvider: self.unlockManager,
+                pushEncryptionManager: PushEncryptionManager(
+                    dependencies: .init(
+                        usersManager: self.usersManager,
+                        deviceRegistration: DeviceRegistration(dependencies: .init(usersManager: self.usersManager))
+                    )
+                )
+            )
+            return PushNotificationService(dependencies: dependencies)
+        }
+    }
+
     var saveSwipeActionSettingFactory: Factory<SaveSwipeActionSettingForUsersUseCase> {
         self {
             SaveSwipeActionSetting(dependencies: self)
+        }
+    }
+
+    var signInManagerFactory: Factory<SignInManager> {
+        self {
+            let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: self)
+            return SignInManager(
+                usersManager: self.usersManager,
+                contactCacheStatus: self.userCachedStatus,
+                queueHandlerRegister: self.queueManager,
+                updateSwipeActionUseCase: updateSwipeActionUseCase
+            )
+        }
+    }
+
+    var storeKitManagerFactory: Factory<StoreKitManagerImpl> {
+        self {
+            StoreKitManagerImpl(dependencies: self)
         }
     }
 
@@ -41,5 +106,17 @@ extension GlobalContainer {
         self {
             self.userCachedStatus
         }
+    }
+
+    var toolbarCustomizationInfoBubbleViewStatusProviderFactory: Factory<ToolbarCustomizationInfoBubbleViewStatusProvider> {
+        self {
+            self.userCachedStatus
+        }
+    }
+}
+
+extension GlobalContainer: LifetimeTrackable {
+    static var lifetimeConfiguration: LifetimeConfiguration {
+        .init(maxCount: 1)
     }
 }

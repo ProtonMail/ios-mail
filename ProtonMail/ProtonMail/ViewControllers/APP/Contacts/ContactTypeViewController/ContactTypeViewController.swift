@@ -33,8 +33,6 @@ class ContactTypeViewController: UIViewController {
     private var tableView: UITableView?
     private var tableViewBottomOffset: NSLayoutConstraint?
 
-    var activeText: UITextField?
-
     init(viewModel: ContactTypeViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -148,10 +146,6 @@ extension ContactTypeViewController: NSNotificationCenterKeyboardObserverProtoco
 extension ContactTypeViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         return true
-    }
-
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        activeText = textField
     }
 }
 

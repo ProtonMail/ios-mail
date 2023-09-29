@@ -29,8 +29,8 @@ class ExpandedHeaderView: HeaderView {
     let senderEmailControl = TextControl()
     let hideDetailButton = SubviewsFactory.hideDetailButton
 
-    init() {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         addSubviews()
         setUpLayout()
     }

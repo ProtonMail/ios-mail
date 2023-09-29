@@ -25,7 +25,7 @@ class SettingsGeneralImageCell: SettingsGeneralCell {
         leftImageView.image = nil
     }
 
-    func configure(left: String, right: String, leftImage: UIImage) {
+    func configure(left: String, right: String, leftImage: UIImage?) {
         super.configureCell(left: left, right: right, imageType: .arrow, stackViewDistribution: .equalSpacing)
         leftImageView.image = leftImage
     }

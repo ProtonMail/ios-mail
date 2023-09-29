@@ -36,7 +36,7 @@ class TaskCompletionHelperTests: XCTestCase {
     }
 
     func testCalculateIsInternetIssue_normalError() {
-        let error = NSError.encryptionError()
+        let error = SenderError.senderStringIsNil as NSError
         XCTAssertFalse(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .connectedViaCellular))
         XCTAssertFalse(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .connectedViaWiFi))
         XCTAssertFalse(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .connectedViaEthernet))
@@ -137,14 +137,6 @@ class TaskCompletionHelperTests: XCTestCase {
         }
         sut.handleReachabilityChangedNotification(isTimeoutError: true, isInternetIssue: true)
         waitForExpectations(timeout: 0.5, handler: nil)
-    }
-
-    func testParseStatusCodeIfErrorReceivedFromNetworkResponse() {
-        let testResponse = HTTPURLResponse(statusCode: 400)
-        let testUserInfo = [TaskCompletionHelper.Constant.networkResponseErrorKey: testResponse]
-        XCTAssertEqual(sut.parseStatusCodeIfErrorReceivedFromNetworkResponse(errorUserInfo: testUserInfo), 400)
-
-        XCTAssertNil(sut.parseStatusCodeIfErrorReceivedFromNetworkResponse(errorUserInfo: [:]))
     }
 
     func testCalculateTaskResult_withInternetIssue() {

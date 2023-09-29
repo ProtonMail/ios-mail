@@ -631,7 +631,7 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
         let destinationId = folder.location.labelID
 
         let continueAction: () -> Void = { [weak self] in
-            self?.moveToActionHandler.handleMoveToAction(messages: [message], to: folder, isFromSwipeAction: false)
+            self?.moveToActionHandler.handleMoveToAction(messages: [message], to: folder)
         }
 
         if folder.location == .trash {

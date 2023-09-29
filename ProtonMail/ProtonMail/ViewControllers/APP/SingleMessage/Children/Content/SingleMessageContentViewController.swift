@@ -130,6 +130,7 @@ class SingleMessageContentViewController: UIViewController {
         setUpFooterButtons()
 
         viewModel.viewDidLoad()
+        updateAttachmentBannerIfNeeded()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -361,6 +362,9 @@ class SingleMessageContentViewController: UIViewController {
 
         viewModel.embedNonExpandedHeader = { [weak self] viewModel in
             let header = NonExpandedHeaderViewController(viewModel: viewModel)
+            header.contactTapped = {
+                self?.presentActionSheet(context: $0)
+            }
             header.observeShowDetails {
                 self?.expandButton()
             }

@@ -42,7 +42,11 @@ extension Keymaker: LockCacheStatus {
     }
 
     var isAppKeyEnabled: Bool {
-        isProtectorActive(RandomPinProtection.self) == false
+        if isProtectorActive(RandomPinProtection.self) || isProtectorActive(NoneProtection.self) {
+            return false
+        } else {
+            return true
+        }
     }
 
     var isAppLockedAndAppKeyDisabled: Bool {

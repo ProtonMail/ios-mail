@@ -123,6 +123,10 @@ extension Notification.Name {
     static var messageSendFailAddressValidationIncorrect: Notification.Name {
         return .init("messageSendFailAddressValidationIncorrect")
     }
+
+    static var addressesStatusAreChanged: Notification.Name {
+        return .init("addressesStatusAreChanged")
+    }
 }
 
 extension Notification {

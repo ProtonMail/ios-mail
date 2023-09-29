@@ -58,8 +58,8 @@ final class ComposeViewModelTests: XCTestCase {
             attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
         )
         dependencies = ComposeViewModel.Dependencies(
+            user: fakeUserManager,
             coreDataContextProvider: mockCoreDataService,
-            coreKeyMaker: MockKeyMakerProtocol(),
             fetchAndVerifyContacts: .init(),
             internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
             fetchAttachment: .init(),
@@ -79,10 +79,8 @@ final class ComposeViewModelTests: XCTestCase {
         }
 
         sut = ComposeViewModel(
-            msg: message,
+            msg: .init(message),
             action: .openDraft,
-            msgService: fakeUserManager.messageService,
-            user: fakeUserManager,
             dependencies: dependencies
         )
     }
@@ -149,13 +147,13 @@ final class ComposeViewModelTests: XCTestCase {
     // MARK: isEmptyDraft tests
 
     func testIsEmptyDraft_messageInit() throws {
-        sut.initialize(message: message, action: .openDraft)
+        sut.initialize(message: .init(message), action: .openDraft)
         XCTAssertTrue(sut.isEmptyDraft())
     }
 
     func testIsEmptyDraft_subjectField() throws {
         message.title = "abc"
-        sut.initialize(message: message, action: .openDraft)
+        sut.initialize(message: .init(message), action: .openDraft)
         XCTAssertFalse(sut.isEmptyDraft())
     }
 
@@ -163,7 +161,7 @@ final class ComposeViewModelTests: XCTestCase {
         message.toList = "[]"
         message.ccList = "[]"
         message.bccList = "[]"
-        sut.initialize(message: message, action: .openDraft)
+        sut.initialize(message: .init(message), action: .openDraft)
 
         XCTAssertTrue(sut.isEmptyDraft())
     }
@@ -171,7 +169,7 @@ final class ComposeViewModelTests: XCTestCase {
     func testDecodingRecipients_prefersMatchingLocalContactName() throws {
         let email = EmailEntity.make(contactName: "My friend I don't like")
 
-        contactProvider.getEmailsByAddressStub.bodyIs { _, _, _ in
+        contactProvider.getEmailsByAddressStub.bodyIs { _, _ in
             [email]
         }
 
@@ -214,8 +212,6 @@ final class ComposeViewModelTests: XCTestCase {
             body: "",
             files: [fileData],
             action: .newDraftFromShare,
-            msgService: fakeUserManager.messageService,
-            user: fakeUserManager,
             dependencies: dependencies
         )
         sut.composerMessageHelper.updateAttachmentView = {
@@ -233,6 +229,62 @@ final class ComposeViewModelTests: XCTestCase {
         }
         let urlToLoad = try XCTUnwrap(imageUrl)
         XCTAssertFalse(urlToLoad.hasGPSData())
+    }
+
+    func testInit_whenReplyAll_shouldRespectReplyToField() throws {
+        self.message = testContext.performAndWait {
+            let message = Message(context: testContext)
+            message.replyTos = "[{\"Address\":\"tester@pm.test\",\"Name\":\"abc\",\"BimiSelector\":null,\"IsProton\":0,\"DisplaySenderImage\":0,\"IsSimpleLogin\":0}]"
+            message.toList = #"""
+[
+    {
+        "Address": "tester@pm.test",
+        "Name": "tester"
+    },
+    {
+        "Address": "tester002@pm.test",
+        "Name": "tester002"
+    },
+    {
+        "Address": "tester003@pm.test",
+        "Name": "tester003"
+    }
+]
+"""#
+            message.ccList = #"""
+[
+    {
+        "Address": "ccTester@pm.test",
+        "Name": "ccTester"
+    },
+    {
+        "Address": "ccTester002@pm.test",
+        "Name": "ccTester002"
+    }
+]
+"""#
+            return message
+        }
+
+        sut = ComposeViewModel(
+            msg: .init(message),
+            action: .replyAll,
+            dependencies: dependencies
+        )
+        sut.collectDraft("", body: "", expir: 0, pwd: "", pwdHit: "")
+        let draft = try XCTUnwrap(sut.composerMessageHelper.draft)
+        
+        let toList = sut.toContacts(draft.recipientList)
+        XCTAssertEqual(toList.count, 1)
+        XCTAssertEqual(toList.first?.displayEmail, "tester@pm.test")
+        
+        let ccList = sut.toContacts(draft.ccList)
+        XCTAssertEqual(ccList.count, 4)
+        let mails = ccList.compactMap(\.displayEmail)
+        XCTAssertEqual(mails, ["tester002@pm.test", "tester003@pm.test", "ccTester@pm.test", "ccTester002@pm.test"])
+        
+        let bccList = sut.toContacts(draft.bccList)
+        XCTAssertEqual(bccList.count, 0)
     }
 }
 
@@ -255,7 +307,7 @@ extension ComposeViewModelTests {
                               hasKeys: 1,
                               keys: [key])
         userInfo.set(addresses: [address])
-        return UserManager(api: self.apiMock, role: .owner, userInfo: userInfo)
+        return UserManager(api: apiMock, userInfo: userInfo)
     }
 
     func generateAddress(number: Int) -> [Address] {

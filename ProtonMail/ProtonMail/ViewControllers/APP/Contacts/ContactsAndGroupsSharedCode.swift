@@ -25,11 +25,12 @@ import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
 
 class ContactsAndGroupsSharedCode: ProtonMailViewController {
+    typealias Dependencies = HasPaymentsUIFactory
 
     var navigationItemRightNotEditing: [UIBarButtonItem]?
     var navigationItemLeftNotEditing: [UIBarButtonItem]?
+    private let dependencies: Dependencies
     private var addBarButtonItem: UIBarButtonItem!
-    private var user: UserManager?
     private var paymentsUI: PaymentsUI?
     private let store: CNContactStore = CNContactStore()
 
@@ -43,8 +44,16 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
         }
     }
 
-    func prepareNavigationItemRightDefault(_ user: UserManager) {
-        self.user = user
+    init(dependencies: Dependencies, nibName: String) {
+        self.dependencies = dependencies
+        super.init(nibName: nibName, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func prepareNavigationItemRightDefault() {
         self.addBarButtonItem = IconProvider.plus.toUIBarButtonItem(
             target: self,
             action: #selector(addButtonTapped),
@@ -141,15 +150,8 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController {
     }
 
     func presentPlanUpgrade() {
-        guard let user = user else { return }
-        self.paymentsUI = PaymentsUI(
-            payments: user.payments,
-            clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames,
-            customization: .empty
-        )
-        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
-                                         backendFetch: true) { _ in }
+        paymentsUI = dependencies.paymentsUIFactory.makeView()
+        paymentsUI?.presentUpgradePlan()
     }
 
     private func requestContactPermission() {

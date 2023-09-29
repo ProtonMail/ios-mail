@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Адреси е-пошти";
 
-/* The button text for add profile picture */
-"Add photo" = "Додати фото";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Редагувати фото";
-
 /* contact section title */
 "Encrypted contact details" = "Зашифровані подробиці контакту";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Назва мітки";
-
-/* when server not reachable */
-"API Server not reachable…" = "API сервер недоступний…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Доступ до цього облікового запису вимкнено через несплату. Увійдіть в систему, використовуючи proton.me, щоб оплатити рахунок.";
@@ -801,7 +792,7 @@
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали весь обсяг свого сховища (%@). Перейдіть на тарифний план вищого рівня, щоб надсилати й отримувати електронні листи.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали %1$d%% місця у сховищі (%2$@). Будь ласка, поліпшіть свій тарифний план, щоб продовжити надсилати та отримувати листи.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали %1$d%% місця у сховищі (%2$@). Будь ласка, покращте свій тарифний план, щоб продовжити надсилати та отримувати листи.";
 
 /* Alert title */
 "Storage full" = "Сховище заповнене";
@@ -939,7 +930,7 @@
 "Message expired" = "Термін дії повідомлення завершився";
 
 /* expiration time count down */
-"This message will expire in %dD %dH %dM" = "Термін дії цього повідомлення завершиться через %1$dД %2$dГ %3$dХВ";
+"This message will expire in %dD %dH %dM" = "Термін дії цього повідомлення завершиться через %1$dД %2$dГ %3$dХв";
 
 /* Action */
 "Sign Out" = "Вийти";
@@ -1167,10 +1158,10 @@
 "App PIN" = "PIN-код програми";
 
 /* security title in settings */
-"App PIN & Touch ID" = "PIN-код застосунку і Touch ID";
+"App PIN & Touch ID" = "PIN-код програми й Touch ID";
 
 /* security title in settings */
-"App PIN & Face ID" = "PIN-код застосунку і Face ID";
+"App PIN & Face ID" = "PIN-код програми та Face ID";
 
 /* cell title in device settings */
 "Language" = "Мова";
@@ -1514,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Приховані отримувачі";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Відписатися від розсилки";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Наша система позначила це повідомлення як спроба шахрайства. Будь ласка, переконайтеся, що воно надійне.";
 
@@ -1563,7 +1551,7 @@
 "Open account switcher" = "Відкрити перемикач облікових записів";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Надсилання буде можливе\nколи вивантажаться вкладення";
+"Sending will be available\nwhen attachments are uploaded" = "Надсилання буде можливе \nколи вивантажаться вкладення";
 
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Помилка вкладення";
@@ -1710,7 +1698,7 @@
 "Send immediately?" = "Надіслати негайно?";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Це повідомлення більше не заплановано до надсилання пізніше. Якщо ви досі хочете надіслати його пізніше, ви можете торкнутися «Запланувати надсилання»";
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Це повідомлення більше не заплановано до надсилання пізніше. Якщо ви досі хочете надіслати його пізніше, ви можете торкнутися \"Запланувати надсилання\"";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
 "Send immediately" = "Надіслати негайно";
@@ -1797,67 +1785,7 @@
 "less than 1 minute" = "менше ніж 1 хвилина";
 
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
-"The message is being sent and will move to the Sent folder once sending is complete." = "Повідомлення зараз надсилається. Після надсилання його буде переміщено до теки «Надіслані».";
-
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Якщо ви втратите WiFi-з'єднання, завантаження продовжиться через мобільні дані.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Завантажувати через мобільні дані";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Хід завантаження";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Історія повідомлень";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Обмеження сховища";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Використане сховище";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Усі повідомлення завантажено";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Не всі повідомлення завантажились. Щоб завантажити їх, звільніть обсяг сховища на цьому пристрої.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Не всі повідомлення завантажились. Щоб завантажити їх, збільште обмеження обсягу сховища нижче.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "У вас немає повідомлень.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Ваші повідомлення завантажуються...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Кешовані дані";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Вкладення";
-
-/* cell title in device settings */
-"Downloaded messages" = "Завантажені повідомлення";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Інформація про використаний обсяг сховища цим обліковим записом Proton Mail на вашому пристрої.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Очистити";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Дає змогу відкривати раніше прочитані повідомлення в автономному режимі.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Дає змогу відкривати раніше відкриті вкладення в автономному режимі.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Дає змогу виконувати пошук у вмісті повідомлень. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Дивитися подробиці";
+"The message is being sent and will move to the Sent folder once sending is complete." = "Повідомлення зараз надсилається. Після надсилання його буде переміщено до теки \"Надіслані\".";
 
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Дії панелі інструментів (виберіть до 5)";
@@ -1893,7 +1821,7 @@
 "You can now choose and rearrange the actions in this bar" = "Відтепер ви можете вибирати й переставляти дії на цій панелі";
 
 /* Button to block a sender */
-"Block sender" = "Блокувати відправника";
+"Block messages from this sender" = "Блокувати повідомлення від цього відправника.";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Блокувати";
@@ -2035,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Пароль оновлено";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Очищення кешу…";
-
 /* Title for application logs settings option */
 "Application logs" = "Журнал програми";
 
@@ -2054,7 +1979,7 @@
 "Couldn't open the message, try again." = "Не вдалося відкрити повідомлення, спробуйте ще раз.";
 
 /* Error message when user open the share extension without account logged in. */
-"Please sign in to the Proton Mail app." = "Увійдіть до застосунку Proton Mail.";
+"Please sign in to the Proton Mail app." = "Виконайте вхід у програмі Proton Mail.";
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply (to last message)" = "Відповісти (на останнє повідомлення)";
@@ -2065,11 +1990,17 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Відповісти всім (на останнє повідомлення)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Нове повідомлення";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Налаштувати";
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Допоможіть нам усунути вашу проблему, надавши якомога більше подробиць---\n\nПідсумок:\n\nЧи траплялася проблема більше одного разу: так/ні \nКроки для відтворення проблеми: \nОчікуваний результат: \nФактичний результат: \nКоментарі:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Включаючи журнали";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Спробуйте інший пошуковий термін.";
@@ -2105,7 +2036,7 @@
 "Disable" = "Вимкнути";
 
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Поліпшіть підписку , щоб автоматично видаляти повідомлення, які перебували у смітнику або спамі понад 30 днів.";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Покращте підписку, щоб автоматично видаляти повідомлення, які перебували у смітнику або спамі понад 30 днів.";
 
 /* Text to prompt paid users to enable the auto delete feature */
 "Automatically delete messages that have been in trash for more than 30 days." = "Автоматично видаляти повідомлення, які перебувають у смітнику понад 30 днів.";
@@ -2133,3 +2064,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Власні поштові домени";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Ім'я";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Ім'я";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Прізвище";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Поле ім'я не може бути порожнім";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Ім'я контакту задовге";
+
+/* The button text for add profile picture */
+"Add photo" = "Додати фото";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Редагувати фото";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Відписатися від розсилки";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Відписатися?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Це скасує вашу підписку на список розсилки. Відправника буде сповіщено більше не надсилати електронні листи на цю адресу.";

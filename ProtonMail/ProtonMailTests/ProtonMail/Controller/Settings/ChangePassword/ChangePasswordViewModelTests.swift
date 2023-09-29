@@ -27,7 +27,6 @@ final class ChangePasswordViewModelTests: XCTestCase {
     private var sut: ChangePasswordViewModel!
     private var user: UserManager!
     private var apiService: APIServiceMock!
-    private var keyMaker: Keymaker!
     private var keyChain: KeychainWrapper!
     private let modulesResponse: [String: Any] = [
         "Code": 1000,
@@ -44,7 +43,7 @@ final class ChangePasswordViewModelTests: XCTestCase {
           "SRPSession": "272f888f68c49da7ccb42cc4f5a21b92"
     ]
 
-    class func mockUser(apiService: APIServiceMock, keyMaker: KeyMakerProtocol) -> UserManager {
+    class func mockUser(apiService: APIServiceMock) -> UserManager {
         let userInfo = UserInfo.getDefault()
         let key = Key(keyID: "123", privateKey: KeyTestData.privateKey1, signature: "aa")
         userInfo.userKeys = [key]
@@ -66,22 +65,19 @@ final class ChangePasswordViewModelTests: XCTestCase {
             authCredential: auth,
             mailSettings: nil,
             parent: nil,
-            appTelemetry: MailAppTelemetry(),
-            coreKeyMaker: keyMaker
+            globalContainer: .init()
         )
     }
 
     override func setUpWithError() throws {
         apiService = APIServiceMock()
-        keyMaker = sharedServices.get(by: Keymaker.self)
-        user = ChangePasswordViewModelTests.mockUser(apiService: apiService, keyMaker: keyMaker)
+        user = ChangePasswordViewModelTests.mockUser(apiService: apiService)
     }
 
     override func tearDownWithError() throws {
         sut = nil
         user = nil
         apiService = nil
-        keyMaker = nil
     }
 }
 

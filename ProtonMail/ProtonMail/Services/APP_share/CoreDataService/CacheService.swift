@@ -36,7 +36,6 @@ protocol CacheServiceProtocol: Service {
         response: [String: Any],
         idsOfMessagesBeingSent: [String]
     ) throws
-    func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID])
     func updateExpirationOffset(of messageObjectID: NSManagedObjectID,
                                 expirationTime: TimeInterval,
                                 pwd: String,
@@ -45,14 +44,25 @@ protocol CacheServiceProtocol: Service {
 }
 
 class CacheService: CacheServiceProtocol {
-    let userID: UserID
-    let lastUpdatedStore: LastUpdatedStoreProtocol
-    let coreDataService: CoreDataContextProviderProtocol
+    typealias Dependencies = HasCoreDataContextProviderProtocol
+    & HasLastUpdatedStoreProtocol
+    & HasPushUpdater
 
-    init(userID: UserID, dependencies: Dependencies = Dependencies()) {
+    let userID: UserID
+
+    private let dependencies: Dependencies
+    
+    private var lastUpdatedStore: LastUpdatedStoreProtocol {
+        dependencies.lastUpdatedStore
+    }
+
+    private var coreDataService: CoreDataContextProviderProtocol{
+        dependencies.contextProvider
+    }
+
+    init(userID: UserID, dependencies: Dependencies) {
         self.userID = userID
-        self.lastUpdatedStore = dependencies.lastUpdatedStore
-        self.coreDataService = dependencies.coreDataService
+        self.dependencies = dependencies
     }
 
     // MARK: - Generic functions
@@ -153,7 +163,7 @@ class CacheService: CacheServiceProtocol {
         msgToUpdate.unRead = unRead
 
         if unRead == false {
-            PushUpdater().remove(notificationIdentifiers: [msgToUpdate.notificationId])
+            dependencies.pushUpdater.remove(notificationIdentifiers: [msgToUpdate.notificationId])
         }
         if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
             conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID.rawValue)
@@ -262,19 +272,21 @@ class CacheService: CacheServiceProtocol {
             NSNumber(true)
         )
 
-        coreDataService.performAndWaitOnRootSavingContext { context in
-            if let messages = try? context.fetch(messageFetch) {
-                messages.forEach(context.delete)
-            }
-            if let contextLabels = try? context.fetch(contextLabelFetch) {
-                contextLabels.forEach { label in
-                    if let conversation = label.conversation {
-                        context.delete(conversation)
-                    }
-                    context.delete(label)
+        DispatchQueue.global().async {
+            self.coreDataService.performAndWaitOnRootSavingContext { context in
+                if let messages = try? context.fetch(messageFetch) {
+                    messages.forEach(context.delete)
                 }
+                if let contextLabels = try? context.fetch(contextLabelFetch) {
+                    contextLabels.forEach { label in
+                        if let conversation = label.conversation {
+                            context.delete(conversation)
+                        }
+                        context.delete(label)
+                    }
+                }
+                _ = context.saveUpstreamIfNeeded()
             }
-            _ = context.saveUpstreamIfNeeded()
         }
     }
 
@@ -312,9 +324,10 @@ class CacheService: CacheServiceProtocol {
     }
 
     func deleteExpiredMessages() {
+        let processInfo = userCachedStatus
+        let date = Date.getReferenceDate(processInfo: processInfo)
+
         coreDataService.performOnRootSavingContext { context in
-            let processInfo = userCachedStatus
-            let date = Date.getReferenceDate(processInfo: processInfo)
             let fetch = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
             fetch.predicate = NSPredicate(format: "%K != NULL AND %K < %@",
                                           Message.Attributes.expirationTime,
@@ -326,7 +339,7 @@ class CacheService: CacheServiceProtocol {
                     if msg.unRead {
                         let labels = msg.getLabelIDs().map{ LabelID($0) }
                         labels.forEach { label in
-                            self.updateCounterSync(plus: false, with: label)
+                            self.updateCounterSync(plus: false, with: label, shouldSave: false)
                         }
                     }
                     self.updateConversation(by: msg, in: context)
@@ -466,12 +479,12 @@ extension CacheService {
         }
     }
 
-    func updateCounterSync(plus: Bool, with labelID: LabelID) {
+    func updateCounterSync(plus: Bool, with labelID: LabelID, shouldSave: Bool = true) {
         let offset = plus ? 1 : -1
         for viewType in ViewMode.allCases {
             let unreadCount: Int = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, type: viewType)
             let count = max(unreadCount + offset, 0)
-            lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, unread: count, total: nil, type: viewType, shouldSave: true)
+            lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, unread: count, total: nil, type: viewType, shouldSave: shouldSave)
         }
     }
 
@@ -651,21 +664,6 @@ extension CacheService {
             } catch {
                 completion?(nil, error as NSError)
             }
-        }
-    }
-}
-
-extension CacheService {
-    struct Dependencies {
-        let coreDataService: CoreDataContextProviderProtocol
-        let lastUpdatedStore: LastUpdatedStoreProtocol
-
-        init(
-            coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self),
-            lastUpdatedStore: LastUpdatedStoreProtocol = sharedServices.get(by: LastUpdatedStore.self)
-        ) {
-            self.coreDataService = coreDataService
-            self.lastUpdatedStore = lastUpdatedStore
         }
     }
 }

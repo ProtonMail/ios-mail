@@ -39,10 +39,6 @@ let sharedServices: ServiceFactory = {
         // swiftlint:disable:next force_try
         try! CoreDataStore.shared.initialize()
     }
-    #if !APP_EXTENSION
-    // from old ServiceFactory.default
-    helper.add(AddressBookService.self, for: AddressBookService())
-    #endif
 
     return helper
 }()

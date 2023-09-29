@@ -11,6 +11,13 @@ enum MessageDisplayRule {
 
 // swiftlint:disable type_body_length
 class ConversationViewModel {
+    typealias Dependencies = ConversationMessageViewModel.Dependencies
+    & HasFetchSenderImage
+    & HasFetchMessageDetail
+    & HasNextMessageAfterMoveStatusProvider
+    & HasNotificationCenter
+    & HasUserIntroductionProgressProvider
+
     var headerSectionDataSource: [ConversationViewItemType] = []
     var messagesDataSource: [ConversationViewItemType] = [] {
         didSet {
@@ -31,8 +38,8 @@ class ConversationViewModel {
 
     var showNewMessageArrivedFloaty: ((MessageID) -> Void)?
 
-    var showSpinner: (() -> Void)?
-    var hideSpinner: (() -> Void)?
+    var reloadTableView: (() -> Void)?
+    private(set) var isShowingSkeletonView = true
 
     var messagesTitle: String {
         .localizedStringWithFormat(LocalString._general_message, conversation.messageCount)
@@ -69,7 +76,6 @@ class ConversationViewModel {
     private let conversationService: ConversationProvider
     private let eventsService: EventsFetching
     private let contactService: ContactDataService
-    private let contextProvider: CoreDataContextProviderProtocol
     private let sharedReplacingEmailsMap: [String: EmailEntity]
     private let sharedContactGroups: [ContactGroupVO]
     let coordinator: ConversationCoordinatorProtocol
@@ -124,7 +130,6 @@ class ConversationViewModel {
             .allSatisfy { $0.message.contains(location: .archive) }
     }
 
-    let connectionStatusProvider: InternetConnectionStatusProviderProtocol
     private let observerID = UUID()
     var isInitialDataFetchCalled = false
     private let conversationStateProvider: ConversationStateProviderProtocol
@@ -137,24 +142,19 @@ class ConversationViewModel {
         labelProvider.getCustomFolders()
     }()
     let labelProvider: LabelProviderProtocol
-    private let userIntroductionProgressProvider: UserIntroductionProgressProvider
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
     private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
     let highlightedKeywords: [String]
-    let dependencies: Dependencies
+    private let dependencies: Dependencies
     private var isApplicationActive: (() -> Bool)?
     private var reloadWhenAppIsActive: (() -> Void)?
 
     init(labelId: LabelID,
          conversation: ConversationEntity,
          coordinator: ConversationCoordinatorProtocol,
-         user: UserManager,
-         contextProvider: CoreDataContextProviderProtocol,
-         internetStatusProvider: InternetConnectionStatusProviderProtocol,
          conversationStateProvider: ConversationStateProviderProtocol,
          labelProvider: LabelProviderProtocol,
-         userIntroductionProgressProvider: UserIntroductionProgressProvider,
          targetID: MessageID?,
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
@@ -164,32 +164,30 @@ class ConversationViewModel {
          dependencies: Dependencies) {
         self.labelId = labelId
         self.conversation = conversation
+        user = dependencies.user
         self.messageService = user.messageService
         self.conversationService = user.conversationService
         self.contactService = user.contactService
         self.eventsService = user.eventsService
-        self.contextProvider = contextProvider
+        let contextProvider = dependencies.contextProvider
         self.highlightedKeywords = highlightedKeywords
-        self.user = user
         self.conversationMessagesProvider = ConversationMessagesProvider(conversation: conversation,
                                                                          contextProvider: contextProvider)
         self.conversationUpdateProvider = ConversationUpdateProvider(conversationID: conversation.conversationID,
                                                                      contextProvider: contextProvider)
         self.sharedReplacingEmailsMap = contactService.allAccountEmails()
             .reduce(into: [:]) { partialResult, email in
-                partialResult[email.email] = EmailEntity(email: email)
+                partialResult[email.email] = email
             }
         self.sharedContactGroups = user.contactGroupService.getAllContactGroupVOs()
         self.targetID = targetID
         self.conversationStateProvider = conversationStateProvider
         self.goToDraft = goToDraft
         self.labelProvider = labelProvider
-        self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.dependencies = dependencies
         headerSectionDataSource = []
 
         recordNumOfMessages = conversation.messageCount
-        self.connectionStatusProvider = internetStatusProvider
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
         self.toolbarCustomizeSpotlightStatusProvider = toolbarCustomizeSpotlightStatusProvider
@@ -203,8 +201,9 @@ class ConversationViewModel {
     }
 
     func fetchConversationDetails(completion: (() -> Void)?) {
-        if messagesDataSource.isEmpty {
-            showSpinner?()
+        guard dependencies.internetConnectionStatusProvider.status.isConnected else {
+            completion?()
+            return
         }
         conversationService.fetchConversation(
             with: conversation.conversationID,
@@ -220,7 +219,6 @@ class ConversationViewModel {
                     .compactMap{ $0.message?.objectID.rawValue }
                 self.messageService.markLocally(messageObjectIDs: ids, labelID: self.labelId, unRead: false)
             }
-            self?.hideSpinner?()
 
             if let completion = completion {
                 DispatchQueue.main.async(execute: completion)
@@ -252,6 +250,10 @@ class ConversationViewModel {
         }
 
         conversationMessagesProvider.observe { [weak self] update in
+            if case .willUpdate = update {
+                self?.isShowingSkeletonView = false
+                self?.reloadTableView?()
+            }
             self?.perform(update: update, on: tableView)
             if case .didUpdate = update {
                 self?.checkTrashedHintBanner()
@@ -259,15 +261,23 @@ class ConversationViewModel {
                 self?.markMessagesReadIfNeeded()
             }
         } storedMessages: { [weak self] messages in
-            var messageDataModels = messages.compactMap { self?.messageType(with: $0) }
-
-            if messages.count == self?.conversation.messageCount {
-                _ = self?.expandSpecificMessage(dataModels: &messageDataModels)
-            }
-            self?.messagesDataSource = messageDataModels
+            self?.updateMessageDataSource(messages: messages)
             self?.markMessagesReadIfNeeded()
             self?.checkTrashedHintBanner()
+            self?.reloadTableView?()
         }
+    }
+
+    private func updateMessageDataSource(messages: [MessageEntity]) {
+        var messageDataModels = messages.compactMap { messageType(with: $0) }
+
+        if messages.count == conversation.messageCount {
+            _ = expandSpecificMessage(dataModels: &messageDataModels)
+        }
+        if !messageDataModels.allSatisfy({ $0.message?.body.isEmpty == true }) {
+            isShowingSkeletonView = false
+        }
+        messagesDataSource = messageDataModels
     }
 
     func stopObserveConversationAndMessages() {
@@ -279,10 +289,9 @@ class ConversationViewModel {
         let viewModel = ConversationMessageViewModel(
             labelId: labelId,
             message: message,
-            user: user,
             replacingEmailsMap: sharedReplacingEmailsMap,
             contactGroups: sharedContactGroups,
-            internetStatusProvider: connectionStatusProvider,
+            dependencies: dependencies,
             highlightedKeywords: highlightedKeywords,
             goToDraft: goToDraft
         )
@@ -324,7 +333,7 @@ class ConversationViewModel {
     ) {
         self.isApplicationActive = isApplicationActive
         self.reloadWhenAppIsActive = reloadWhenAppIsActive
-        connectionStatusProvider.register(receiver: self, fireWhenRegister: true)
+        dependencies.internetConnectionStatusProvider.register(receiver: self, fireWhenRegister: true)
     }
 
     func areAllMessagesIn(location: LabelLocation) -> Bool {
@@ -335,7 +344,6 @@ class ConversationViewModel {
     func fetchMessageDetail(message: MessageEntity,
                             callback: @escaping FetchMessageDetailUseCase.Callback) {
         let params: FetchMessageDetail.Params = .init(
-            userID: user.userID,
             message: message
         )
         dependencies.fetchMessageDetail
@@ -348,7 +356,7 @@ class ConversationViewModel {
             return false
         }
 
-        if userIntroductionProgressProvider.shouldShowSpotlight(for: .toolbarCustomization, toUserWith: user.userID) {
+        if dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .toolbarCustomization, toUserWith: user.userID) {
             return true
         }
 
@@ -366,7 +374,7 @@ class ConversationViewModel {
     }
 
     func setToolbarCustomizeSpotlightViewIsShown() {
-        userIntroductionProgressProvider.markSpotlight(
+        dependencies.userIntroductionProgressProvider.markSpotlight(
             for: .toolbarCustomization,
             asSeen: true,
             byUserWith: user.userID
@@ -576,7 +584,7 @@ class ConversationViewModel {
             return messageType(with: newMessage)
         }
         if self.messagesDataSource.isEmpty {
-            contextProvider.performOnRootSavingContext { [weak self] context in
+            dependencies.contextProvider.performOnRootSavingContext { [weak self] context in
                 guard let self = self,
                       let object = try? context.existingObject(with: self.conversation.objectID.rawValue) else {
                           self?.dismissView?()
@@ -606,6 +614,7 @@ class ConversationViewModel {
     // MARK: - Actions
 
     private func perform(update: ConversationUpdateType, on tableView: UITableView) {
+        guard !isShowingSkeletonView else { return }
         switch update {
         case .willUpdate:
             tableViewIsUpdating = true
@@ -672,8 +681,7 @@ class ConversationViewModel {
     func starTapped(completion: @escaping (Result<Bool, Error>) -> Void) {
         if conversation.starred {
             conversationService.unlabel(conversationIDs: [conversation.conversationID],
-                                        as: Message.Location.starred.labelID,
-                                        isSwipeAction: false) { [weak self] result in
+                                        as: Message.Location.starred.labelID) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success:
@@ -685,8 +693,7 @@ class ConversationViewModel {
             }
         } else {
             conversationService.label(conversationIDs: [conversation.conversationID],
-                                      as: Message.Location.starred.labelID,
-                                      isSwipeAction: false) { [weak self] result in
+                                      as: Message.Location.starred.labelID) { [weak self] result in
                 guard let self = self else { return }
                 switch result {
                 case .success:
@@ -731,7 +738,6 @@ class ConversationViewModel {
             conversationService.move(conversationIDs: [conversation.conversationID],
                                      from: labelId,
                                      to: Message.Location.trash.labelID,
-                                     isSwipeAction: false,
                                      callOrigin: "ConversationViewModel - toolbar") { [weak self] result in
                 guard let self = self else { return }
                 if (try? result.get()) != nil {
@@ -753,7 +759,6 @@ class ConversationViewModel {
             self.conversationService.move(conversationIDs: [self.conversation.conversationID],
                                           from: self.labelId,
                                           to: destination.labelID,
-                                          isSwipeAction: false,
                                           callOrigin: "ConversationViewModel - handleActionSheet",
                                           completion: fetchEvents)
         }
@@ -1000,7 +1005,6 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                     .findConversationIDsToApplyLabels(conversations: conversations, labelID: label.location.labelID)
                 conversationService.label(conversationIDs: conversationIDsToApply,
                                           as: label.location.labelID,
-                                          isSwipeAction: false,
                                           completion: fetchEvents)
             } else {
                 let conversationIDsToRemove = conversationService
@@ -1009,7 +1013,6 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 				group.enter()
                 conversationService.unlabel(conversationIDs: conversationIDsToRemove,
                                             as: label.location.labelID,
-                                            isSwipeAction: false,
                                             completion: fetchEvents)
             }
         }
@@ -1023,7 +1026,6 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
                 conversationService.move(conversationIDs: ids,
                                          from: fLabel,
                                          to: Message.Location.archive.labelID,
-                                         isSwipeAction: false,
                                          callOrigin: "ConversationViewModel - labelAs",
                                          completion: fetchEvents)
             }
@@ -1171,14 +1173,13 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 // MARK: - Move TO Action Sheet Implementation
 extension ConversationViewModel: MoveToActionSheetProtocol {
 
-    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool) {
-        user.messageService.move(messages: messages, to: folder.location.labelID, isSwipeAction: isFromSwipeAction)
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel) {
+        user.messageService.move(messages: messages, to: folder.location.labelID)
     }
 
     func handleMoveToAction(
         conversations: [ConversationEntity],
         to folder: MenuLabel,
-        isFromSwipeAction: Bool,
         completion: (() -> Void)? = nil
     ) {
         let ids = conversations.map(\.conversationID)
@@ -1186,7 +1187,6 @@ extension ConversationViewModel: MoveToActionSheetProtocol {
             conversationIDs: ids,
             from: "",
             to: folder.location.labelID,
-            isSwipeAction: isFromSwipeAction,
             callOrigin: "ConversationViewModel - moveTo"
         ) { [weak self] result in
             guard let self = self else { return }
@@ -1270,13 +1270,6 @@ extension ConversationViewModel: ConversationStateServiceDelegate {
 }
 
 extension ConversationViewModel {
-    struct Dependencies {
-        let fetchMessageDetail: FetchMessageDetailUseCase
-        let nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
-        let notificationCenter: NotificationCenter
-        let fetchSenderImage: FetchSenderImageUseCase
-    }
-
     enum CellVisibility {
         /// The cell is fully visible.
         case full

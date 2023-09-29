@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import CoreData
 import PromiseKit
 import ProtonCore_TestingToolkit
 
@@ -24,9 +25,10 @@ class MockContactProvider: ContactProviderProtocol {
     private let coreDataContextProvider: CoreDataContextProviderProtocol
 
     private (set) var isFetchContactsCalled = false
-    var allEmailsToReturn: [Email] = []
+    var allEmailsToReturn: [EmailEntity] = []
     var allContactsToReturn: [ContactEntity] = []
     private(set) var wasCleanUpCalled: Bool = false
+    var fetchContactStub: ContactEntity = .make()
 
     init(coreDataContextProvider: CoreDataContextProviderProtocol) {
         self.coreDataContextProvider = coreDataContextProvider
@@ -37,11 +39,11 @@ class MockContactProvider: ContactProviderProtocol {
     }
 
     @FuncStub(MockContactProvider.getEmailsByAddress, initialReturn: []) var getEmailsByAddressStub
-    func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity] {
-        getEmailsByAddressStub(emailAddresses, userId)
+    func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity] {
+        getEmailsByAddressStub(emailAddresses)
     }
 
-    func getAllEmails() -> [Email] {
+    func getAllEmails() -> [EmailEntity] {
         return allEmailsToReturn
     }
 
@@ -52,5 +54,23 @@ class MockContactProvider: ContactProviderProtocol {
 
     func cleanUp() {
         wasCleanUpCalled = true
+    }
+
+    func fetchContact(contactID: ProtonMail.ContactID) async throws -> ProtonMail.ContactEntity {
+        return fetchContactStub
+    }
+
+    func contactFetchedController(by contactID: ProtonMail.ContactID) -> NSFetchedResultsController<ProtonMail.Contact> {
+        let moc = self.coreDataContextProvider.mainContext
+        let fetchRequest = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.contactID, contactID.rawValue)
+        let strComp = NSSortDescriptor(key: Contact.Attributes.name,
+                                       ascending: true,
+                                       selector: #selector(NSString.caseInsensitiveCompare(_:)))
+        fetchRequest.sortDescriptors = [strComp]
+        return NSFetchedResultsController(fetchRequest: fetchRequest,
+                                          managedObjectContext: moc,
+                                          sectionNameKeyPath: nil,
+                                          cacheName: nil)
     }
 }

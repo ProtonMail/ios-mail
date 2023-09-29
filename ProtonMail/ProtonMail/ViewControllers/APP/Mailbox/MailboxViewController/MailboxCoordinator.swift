@@ -40,9 +40,12 @@ protocol MailboxCoordinatorProtocol: AnyObject {
 
 class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserver {
     typealias Dependencies = HasInternetConnectionStatusProviderProtocol
+    & SearchViewController.Dependencies
+    & SearchViewModel.Dependencies
+    & SingleMessageCoordinator.Dependencies
+    & HasToolbarSettingViewFactory
 
     let viewModel: MailboxViewModel
-    var services: ServiceFactory
     private let contextProvider: CoreDataContextProviderProtocol
 
     weak var viewController: MailboxViewController?
@@ -52,20 +55,15 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private(set) var singleMessageCoordinator: SingleMessageCoordinator?
     private(set) var conversationCoordinator: ConversationCoordinator?
     private let getApplicationState: () -> UIApplication.State
-    let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     private var timeOfLastNavigationToMessageDetails: Date?
 
     private let troubleShootingHelper = TroubleShootingHelper(doh: BackendConfiguration.shared.doh)
-    private let composerFactory: ComposerDependenciesFactory
     private let dependencies: Dependencies
 
     init(sideMenu: SideMenuController?,
          nav: UINavigationController?,
          viewController: MailboxViewController,
          viewModel: MailboxViewModel,
-         services: ServiceFactory,
-         contextProvider: CoreDataContextProviderProtocol,
-         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
          dependencies: Dependencies,
          getApplicationState: @escaping () -> UIApplication.State = {
         return UIApplication.shared.applicationState
@@ -75,11 +73,8 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         self.navigation = nav
         self.viewController = viewController
         self.viewModel = viewModel
-        self.services = services
-        self.contextProvider = contextProvider
+        self.contextProvider = dependencies.contextProvider
         self.getApplicationState = getApplicationState
-        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
-        self.composerFactory = services.makeComposeViewModelDependenciesFactory()
         self.dependencies = dependencies
     }
 
@@ -129,7 +124,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
 
     /// if called from a segue prepare don't call push again
     func start() {
-        viewController?.set(viewModel: viewModel)
         self.viewController?.set(coordinator: self)
 
         if let navigation = self.navigation, self.sideMenu != nil {
@@ -158,7 +152,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
         case .composeShow, .composeMailto:
             self.viewController?.cancelButtonTapped()
 
-            guard let message = sender as? Message else { return }
+            guard let message = sender as? MessageEntity else { return }
 
             navigateToComposer(existingMessage: message)
         case .composeScheduledMessage:
@@ -182,26 +176,18 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             viewModel.resetNotificationMessage()
         case .composeShow:
             if let nav = self.navigation {
-                let user = self.viewModel.user
-
-                let existingMessage: Message?
+                let existingMessage: MessageEntity?
                 if let messageID = path.value {
-                    existingMessage = user.messageService.fetchMessages(
-                        withIDs: [messageID],
-                        in: contextProvider.mainContext
-                    ).first
+                    existingMessage = fetchMessage(by: .init(messageID))
                 } else {
                     existingMessage = nil
                 }
 
-                let viewModel = ComposeViewModel(
+                let composer = dependencies.composerViewFactory.makeComposer(
                     msg: existingMessage,
-                    action: existingMessage == nil ? .newDraft : .openDraft,
-                    msgService: user.messageService,
-                    user: user,
-                    dependencies: composerFactory.makeViewModelDependencies(user: user)
+                    action: existingMessage == nil ? .newDraft : .openDraft
                 )
-                showComposer(viewModel: viewModel, navigationVC: nav)
+                nav.present(composer, animated: true)
             }
         case .composeMailto where path.value != nil:
             followToComposeMailTo(path: path.value)
@@ -212,7 +198,7 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
             }
             let user = self.viewModel.user
             let msgService = user.messageService
-            if let message = msgService.fetchMessages(withIDs: [messageID], in: contextProvider.mainContext).first {
+            if let message = fetchMessage(by: .init(messageID)) {
                 navigateToComposer(
                     existingMessage: message,
                     isEditingScheduleMsg: true,
@@ -226,17 +212,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
 }
 
 extension MailboxCoordinator {
-    private func showComposer(viewModel: ComposeViewModel, navigationVC: UINavigationController) {
-        let composer = ComposerViewFactory.makeComposer(
-            childViewModel: viewModel,
-            contextProvider: contextProvider,
-            userIntroductionProgressProvider: services.userCachedStatus,
-            attachmentMetadataStrippingCache: services.userCachedStatus,
-            featureFlagCache: services.userCachedStatus
-        )
-        navigationVC.present(composer, animated: true)
-    }
-
     private func presentCreateFolder(type: PMLabelType) {
         let user = self.viewModel.user
         let folderLabels = user.labelService.getMenuFolderLabels()
@@ -264,27 +239,17 @@ extension MailboxCoordinator {
     }
 
     private func navigateToComposer(
-        existingMessage: Message?,
+        existingMessage: MessageEntity?,
         isEditingScheduleMsg: Bool = false,
         originalScheduledTime: Date? = nil
     ) {
         guard let navigationVC = navigation else {
             return
         }
-        let composer = ComposerViewFactory.makeComposer(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: existingMessage,
             action: existingMessage == nil ? .newDraft : .openDraft,
-            user: viewModel.user,
-            contextProvider: contextProvider,
             isEditingScheduleMsg: isEditingScheduleMsg,
-            userIntroductionProgressProvider: services.userCachedStatus,
-            internetStatusProvider: dependencies.internetConnectionStatusProvider,
-            coreKeyMaker: services.get(),
-            darkModeCache: services.userCachedStatus,
-            mobileSignatureCache: services.userCachedStatus,
-            attachmentMetadataStrippingCache: services.userCachedStatus,
-            featureFlagCache: services.userCachedStatus,
-            userCachedStatusProvider: services.userCachedStatus,
             originalScheduledTime: originalScheduledTime,
             composerDelegate: viewController
         )
@@ -292,49 +257,8 @@ extension MailboxCoordinator {
     }
 
     private func presentSearch() {
-        let coreDataService = services.get(by: CoreDataService.self)
-        // TODO: get shared ES service.
-        let viewModel = SearchViewModel(
-            serviceFactory: services,
-            user: viewModel.user,
-            coreDataContextProvider: coreDataService,
-            dependencies: .init(
-                coreKeyMaker: services.get(),
-                fetchMessageDetail: FetchMessageDetail(
-                    dependencies: .init(
-                        queueManager: services.get(by: QueueManager.self),
-                        apiService: viewModel.user.apiService,
-                        contextProvider: coreDataService,
-                        cacheService: viewModel.user.cacheService
-                    )
-                ),
-                fetchSenderImage: FetchSenderImage(
-                    dependencies: .init(
-                        featureFlagCache: services.userCachedStatus,
-                        senderImageService: .init(
-                            dependencies: .init(
-                                apiService: viewModel.user.apiService,
-                                internetStatusProvider: dependencies.internetConnectionStatusProvider
-                            )
-                        ),
-                        mailSettings: viewModel.user.mailSettings
-                    )
-                ), messageSearch: MessageSearch(
-                    dependencies: .init(
-                        userID: viewModel.user.userID,
-                        backendSearch: BackendSearch(
-                            dependencies: .init(
-                                apiService: viewModel.user.apiService,
-                                contextProvider: coreDataService,
-                                userID: viewModel.user.userID
-                            )
-                        )
-                    )
-                ),
-                userIntroductionProgressProvider: services.userCachedStatus
-            )
-        )
-        let viewController = SearchViewController(viewModel: viewModel, serviceFactory: services)
+        let viewModel = SearchViewModel(dependencies: dependencies)
+        let viewController = SearchViewController(viewModel: viewModel, dependencies: dependencies)
         viewModel.uiDelegate = viewController
         let navigationController = UINavigationController(rootViewController: viewController)
         navigationController.modalTransitionStyle = .coverVertical
@@ -365,29 +289,18 @@ extension MailboxCoordinator {
 
     private func followToComposeMailTo(path: String?) {
         if let msgID = path,
-           let existingMsg = Message.messageForMessageID(msgID, inManagedObjectContext: contextProvider.mainContext) {
-            navigateToComposer(existingMessage: existingMsg)
+           let msg = fetchMessage(by: .init(msgID)) {
+            navigateToComposer(existingMessage: msg)
             return
         }
 
         if let nav = self.navigation,
            let value = path,
            let mailToURL = URL(string: value) {
-            let user = self.viewModel.user
-            let composer = ComposerViewFactory.makeComposer(
+            let composer = dependencies.composerViewFactory.makeComposer(
                 msg: nil,
                 action: .newDraft,
-                user: user,
-                contextProvider: contextProvider,
                 isEditingScheduleMsg: false,
-                userIntroductionProgressProvider: services.userCachedStatus,
-                internetStatusProvider: dependencies.internetConnectionStatusProvider,
-                coreKeyMaker: services.get(),
-                darkModeCache: services.userCachedStatus,
-                mobileSignatureCache: services.userCachedStatus,
-                attachmentMetadataStrippingCache: services.userCachedStatus,
-                featureFlagCache: services.userCachedStatus,
-                userCachedStatusProvider: services.userCachedStatus,
                 mailToUrl: mailToURL
             )
             nav.present(composer, animated: true)
@@ -404,14 +317,9 @@ extension MailboxCoordinator {
         allActions: [MessageViewActionSheetAction],
         currentActions: [MessageViewActionSheetAction]
     ) {
-        let view = ToolbarCustomizeViewController<MessageViewActionSheetAction>(
-            viewModel: .init(
-                currentActions: currentActions,
-                allActions: allActions,
-                actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
-                defaultActions: MessageViewActionSheetAction.defaultActions,
-                infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
-            )
+        let view = dependencies.toolbarSettingViewFactory.makeCustomizeView(
+            currentActions: currentActions,
+            allActions: allActions
         )
         view.customizationIsDone = { [weak self] result in
             self?.viewController?.showProgressHud()
@@ -430,8 +338,8 @@ extension MailboxCoordinator {
     }
 
     private func editScheduleMsg(messageID: MessageID, originalScheduledTime: Date?) {
-        let context = contextProvider.mainContext
-        guard let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) else {
+        let msg: MessageEntity? = fetchMessage(by: messageID)
+        guard let msg = msg else {
             return
         }
         navigateToComposer(
@@ -439,6 +347,16 @@ extension MailboxCoordinator {
             isEditingScheduleMsg: true,
             originalScheduledTime: originalScheduledTime
         )
+    }
+
+    private func fetchMessage(by messageID: MessageID) -> MessageEntity? {
+        return dependencies.contextProvider.read(block: { context in
+            if let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
+                return MessageEntity(msg)
+            } else {
+                return nil
+            }
+        })
     }
 }
 
@@ -584,12 +502,10 @@ extension MailboxCoordinator {
     private func present(message: MessageEntity) {
         guard let navigationController = viewController?.navigationController else { return }
         let coordinator = SingleMessageCoordinator(
-            serviceFactory: services,
             navigationController: navigationController,
             labelId: viewModel.labelID,
             message: message,
-            user: viewModel.user,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
+            dependencies: dependencies
         )
         coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
             self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduleTime)
@@ -604,12 +520,8 @@ extension MailboxCoordinator {
             labelId: viewModel.labelID,
             navigationController: navigationController,
             conversation: conversation,
-            user: viewModel.user,
-            internetStatusProvider: .shared,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
-            contextProvider: contextProvider,
-            targetID: targetID,
-            serviceFactory: services
+            dependencies: dependencies,
+            targetID: targetID
         )
         conversationCoordinator = coordinator
         coordinator.goToDraft = { [weak self] msgID, originalScheduledTime in
@@ -625,7 +537,6 @@ extension MailboxCoordinator {
             labelID: viewModel.labelID,
             user: viewModel.user,
             userIntroduction: userCachedStatus,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
@@ -641,7 +552,6 @@ extension MailboxCoordinator {
             user: viewModel.user,
             targetMessageID: targetID,
             userIntroduction: userCachedStatus,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider,
             goToDraft: { [weak self] msgID, originalScheduledTime in
                 self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
             }
@@ -655,7 +565,7 @@ extension MailboxCoordinator {
         // if a placeholder VC is there, it has been presented with a push animation; avoid doing a 2nd one
         let animated = !(viewControllers.last is MessagePlaceholderVC)
         viewControllers.removeAll { !($0 is MailboxViewController) }
-        let page = PagesViewController(viewModel: pageVM, services: services)
+        let page = PagesViewController(viewModel: pageVM, dependencies: dependencies)
         viewControllers.append(page)
         navigationController.setViewControllers(viewControllers, animated: animated)
     }

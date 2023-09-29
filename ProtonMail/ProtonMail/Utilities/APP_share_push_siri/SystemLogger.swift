@@ -156,6 +156,7 @@ extension SystemLogger {
         case encryptedSearch = "EncryptedSearch"
         case blockSender = "BlockSender"
         case backgroundTask = "BackgroundTask"
+        case loginUnlockFailed = "loginUnlockFailed"
     }
 
     struct Caller {

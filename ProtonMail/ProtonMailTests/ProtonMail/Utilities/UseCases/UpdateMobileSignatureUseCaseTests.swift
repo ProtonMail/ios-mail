@@ -22,12 +22,25 @@ import XCTest
 final class UpdateMobileSignatureUseCaseTests: XCTestCase {
     private var sut: UpdateMobileSignature!
     private var cacheMock: MockMobileSignatureCacheProtocol!
-    private var coreKeyMaker: KeyMakerProtocol!
+    private var coreKeyMaker: Keymaker!
+    private var keyChain: KeychainWrapper!
 
     override func setUp() {
         super.setUp()
         cacheMock = MockMobileSignatureCacheProtocol()
-        coreKeyMaker = sharedServices.get(by: KeyMakerProtocol.self)
+
+        let globalContainer = GlobalContainer()
+        keyChain = KeychainWrapper(
+            service: "ch.protonmail.test.\(String.randomString(5))",
+            accessGroup: "2SB5Z68H26.ch.protonmail.protonmail"
+        )
+        coreKeyMaker = Keymaker(
+            autolocker: Autolocker(lockTimeProvider: userCachedStatus),
+            keychain: keyChain
+        )
+        globalContainer.keyMakerFactory.register { self.coreKeyMaker }
+        globalContainer.keychainFactory.register { self.keyChain }
+
         sut = .init(dependencies: .init(
             coreKeyMaker: coreKeyMaker,
             cache: cacheMock
@@ -39,6 +52,7 @@ final class UpdateMobileSignatureUseCaseTests: XCTestCase {
         sut = nil
         cacheMock = nil
         coreKeyMaker = nil
+        keyChain = nil
     }
 
     func testExecute_signatureIsSavedToCache() throws {

@@ -41,8 +41,8 @@ class NonExpandedHeaderView: HeaderView {
     private let senderAddressStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
     private let recipientStack = UIStackView.stackView(axis: .horizontal, distribution: .fill, alignment: .center)
 
-    init() {
-        super.init(frame: .zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         backgroundColor = ColorProvider.BackgroundNorm
         translatesAutoresizingMaskIntoConstraints = false
         addSubviews()

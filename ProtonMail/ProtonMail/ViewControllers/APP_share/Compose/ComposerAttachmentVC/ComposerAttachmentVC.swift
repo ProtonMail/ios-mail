@@ -327,18 +327,20 @@ extension ComposerAttachmentVC: UITableViewDataSource, UITableViewDelegate, Comp
         let message = LocalString._remove_attachment_warning
         let alert = UIAlertController(title: data.name, message: message, preferredStyle: .alert)
         let remove = UIAlertAction(title: LocalString._general_remove_button, style: .destructive) { [weak self] _ in
-            let context = self?.contextProvider.mainContext
-            context?.perform {
-                guard let strongSelf = self,
-                      let managedObjectID = self?.contextProvider.managedObjectIDForURIRepresentation(objectID),
-                      let managedObject = try? context?.existingObject(with: managedObjectID),
-                      let attachment = managedObject as? Attachment else {
-                    self?.delete(objectID: objectID)
-                    return
+            self?.delete(objectID: objectID)
+            guard let strongSelf = self,
+                  let managedObjectID = self?.contextProvider.managedObjectIDForURIRepresentation(objectID) else {
+                return
+            }
+            if let attachment = self?.contextProvider.read(block: { context in
+                if let attachment = try? context.existingObject(with: managedObjectID) as? Attachment {
+                    return AttachmentEntity(attachment)
+                } else {
+                    return nil
                 }
-                self?.delete(objectID: objectID)
+            }) {
                 DispatchQueue.main.async {
-                    self?.delegate?.composerAttachmentViewController(strongSelf, didDelete: .init(attachment))
+                    self?.delegate?.composerAttachmentViewController(strongSelf, didDelete: attachment)
                 }
             }
         }

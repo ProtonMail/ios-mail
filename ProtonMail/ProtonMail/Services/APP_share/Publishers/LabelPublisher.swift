@@ -29,6 +29,8 @@ protocol LabelListenerProtocol: AnyObject {
 }
 
 final class LabelPublisher: NSObject, LabelPublisherProtocol {
+    typealias Dependencies = HasCoreDataContextProviderProtocol
+
     private var fetchResultsController: NSFetchedResultsController<Label>?
 
     let dependencies: Dependencies
@@ -36,10 +38,7 @@ final class LabelPublisher: NSObject, LabelPublisherProtocol {
 
     weak var delegate: LabelListenerProtocol?
 
-    init(
-        parameters: Parameters,
-        dependencies: Dependencies = LabelPublisher.Dependencies()
-    ) {
+    init(parameters: Parameters, dependencies: Dependencies) {
         self.params = parameters
         self.dependencies = dependencies
     }
@@ -67,7 +66,7 @@ final class LabelPublisher: NSObject, LabelPublisherProtocol {
 
         fetchResultsController = NSFetchedResultsController(
             fetchRequest: fetchRequest,
-            managedObjectContext: dependencies.coreDataService.mainContext,
+            managedObjectContext: dependencies.contextProvider.mainContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -162,13 +161,5 @@ extension LabelPublisher {
 
     struct Parameters {
         let userID: UserID
-    }
-
-    struct Dependencies {
-        let coreDataService: CoreDataService
-
-        init(coreDataService: CoreDataService = sharedServices.get(by: CoreDataService.self)) {
-            self.coreDataService = coreDataService
-        }
     }
 }

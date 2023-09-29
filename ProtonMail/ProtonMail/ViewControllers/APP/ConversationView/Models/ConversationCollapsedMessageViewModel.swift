@@ -46,7 +46,8 @@ class ConversationCollapsedMessageViewModel {
         let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
             for: message,
             basedOn: replacingEmailsMap,
-            groupContacts: contactGroups
+            groupContacts: contactGroups,
+            shouldReplaceSenderWithRecipients: false
         )
 
         return ConversationMessageModel(

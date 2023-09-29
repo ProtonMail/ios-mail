@@ -38,11 +38,22 @@ protocol ContactProviderProtocol: AnyObject {
     /// Returns the Contacts for a given list of contact ids from the local storage
     func getContactsByIds(_ ids: [String]) -> [ContactEntity]
     /// Given a user and a list of email addresses, returns all the contacts that exist in the local storage
-    func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity]
+    func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity]
 
-    func getAllEmails() -> [Email]
+    func getAllEmails() -> [EmailEntity]
     func fetchContacts(completion: ContactFetchComplete?)
     func cleanUp()
+    func fetchContact(contactID: ContactID) async throws -> ContactEntity
+    func contactFetchedController(by contactID: ContactID) -> NSFetchedResultsController<Contact>
+}
+
+// sourcery:mock
+protocol ContactDataServiceProtocol: AnyObject {
+    #if !APP_EXTENSION
+    func queueUpdate(objectID: NSManagedObjectID, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?)
+    func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], importedFromDevice: Bool) -> NSError?
+    func queueDelete(objectID: NSManagedObjectID, completion: ContactDeleteComplete?)
+    #endif
 }
 
 class ContactDataService: Service {
@@ -83,12 +94,12 @@ class ContactDataService: Service {
                     in: context,
                     basedOn: NSPredicate(format: "%K == %@", Contact.Attributes.userID, userID)
                 )
-                
+
                 Email.delete(
                     in: context,
                     basedOn: NSPredicate(format: "%K == %@", Email.Attributes.userID, userID)
                 )
-                
+
                 LabelUpdate.delete(
                     in: context,
                     basedOn: NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, userID)
@@ -241,7 +252,7 @@ class ContactDataService: Service {
                         let contact = Contact.contactForContactID(contactID.rawValue, inManagedObjectContext: context)
                         contact?.isSoftDeleted = false
                         _ = context.saveUpstreamIfNeeded()
-                        
+
                         DispatchQueue.main.async {
                             completion(error.toNSError)
                         }
@@ -380,7 +391,7 @@ class ContactDataService: Service {
         }
     }
 
-    func getEmailsByAddress(_ emailAddresses: [String], for userId: UserID) -> [EmailEntity] {
+    func getEmailsByAddress(_ emailAddresses: [String]) -> [EmailEntity] {
         let request = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
         let emailPredicate = NSPredicate(format: "%K in %@", Email.Attributes.email, emailAddresses)
         let userIDPredicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, userID.rawValue)
@@ -396,44 +407,41 @@ class ContactDataService: Service {
         }
     }
 
-    /**
-     get contact full details
-
-     - Parameter contactID: contact id
-     - Parameter completion: async complete response
-     **/
-    func details(contactID: String) -> Promise<ContactEntity> {
-        return Promise { seal in
-            let api = ContactDetailRequest(cid: contactID)
-            self.apiService.perform(request: api, response: ContactDetailResponse()) { _, response in
-                if let error = response.error {
-                    seal.reject(error)
-                } else if let contactDict = response.contact {
-                    self.cacheService.updateContactDetail(serverResponse: contactDict) { (contact, error) in
-                        if let err = error {
-                            seal.reject(err)
-                        } else if let c = contact {
-                            seal.fulfill(c)
-                        } else {
-                            fatalError()
-                        }
+    func fetchContact(contactID: ContactID) async throws -> ContactEntity {
+        let request = ContactDetailRequest(cid: contactID.rawValue)
+        let result = await apiService.perform(request: request, response: ContactDetailResponse())
+        if let error = result.1.error {
+            throw error
+        } else if let contactDict = result.1.contact {
+            return try await withCheckedThrowingContinuation { continuation in
+                cacheService.updateContactDetail(serverResponse: contactDict) { contact, error in
+                    if let error = error {
+                        continuation.resume(throwing: error)
+                    } else if let contact = contact {
+                        continuation.resume(returning: contact)
+                    } else {
+                        fatalError()
                     }
-                } else {
-                    seal.reject(NSError.unableToParseResponse(response))
                 }
             }
+        } else {
+            throw NSError.unableToParseResponse(result.1)
         }
     }
 
-    /// Only call from the main thread
-    func allEmails() -> [Email] {
-        let context = self.coreDataService.mainContext
-        return self.allEmailsInManagedObjectContext(context)
+    func allEmails() -> [EmailEntity] {
+        return coreDataService.read { context in
+            return allEmailsInManagedObjectContext(context)
+                .compactMap(EmailEntity.init)
+        }
     }
 
-    func allAccountEmails() -> [Email] {
-        let context = coreDataService.mainContext
-        return allEmailsInManagedObjectContext(context).filter { $0.userID == userID.rawValue }
+    func allAccountEmails() -> [EmailEntity] {
+        return coreDataService.read { context in
+            return allEmailsInManagedObjectContext(context)
+                .filter { $0.userID == userID.rawValue }
+                .compactMap(EmailEntity.init)
+        }
     }
 
     /// Get name from user contacts by the given mail address
@@ -468,16 +476,15 @@ class ContactDataService: Service {
     private func fetchEmails(with address: String) -> [EmailEntity] {
         let request = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
         request.predicate = NSPredicate(format: "%K == %@", Email.Attributes.email, address)
-        var result: [EmailEntity] = []
-        coreDataService.mainContext.performAndWait {
+        return coreDataService.read { context in
             do {
-                let emails = try coreDataService.mainContext.fetch(request)
-                result = emails.compactMap(EmailEntity.init)
+                let emails = try context.fetch(request)
+                return emails.compactMap(EmailEntity.init)
             } catch {
-                assertionFailure("\(error)")
+                PMAssertionFailure(error)
+                return []
             }
         }
-        return result
     }
 
     private func fetchContacts(by contactIDs: [String]) -> [ContactEntity] {
@@ -488,16 +495,15 @@ class ContactDataService: Service {
                                         Contact.Attributes.isSoftDeleted,
                                         Contact.Attributes.userID,
                                         self.userID.rawValue)
-        var result: [ContactEntity] = []
-        coreDataService.mainContext.performAndWait {
+        return coreDataService.read { context in
             do {
-                let contacts = try coreDataService.mainContext.fetch(request)
-                result = contacts.compactMap(ContactEntity.init)
+                let contacts = try context.fetch(request)
+                return contacts.compactMap(ContactEntity.init)
             } catch {
-                assertionFailure("\(error)")
+                PMAssertionFailure(error)
+                return []
             }
         }
-        return result
     }
 
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
@@ -511,7 +517,7 @@ class ContactDataService: Service {
 }
 
 // MRAK: Queue related
-extension ContactDataService {
+extension ContactDataService: ContactDataServiceProtocol {
     #if !APP_EXTENSION
     func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], importedFromDevice: Bool) -> NSError? {
         let userID = self.userID
@@ -630,9 +636,11 @@ extension ContactDataService {
     typealias ContactVOCompletionBlock = ((_ contacts: [ContactVO], _ error: Error?) -> Void)
 
     func allContactVOs() -> [ContactVO] {
-        allEmails()
-            .filter { $0.userID == userID.rawValue }
-            .map { ContactVO(name: $0.name, email: $0.email, isProtonMailContact: true) }
+        return coreDataService.read { context in
+            self.allEmailsInManagedObjectContext(context)
+                .filter { $0.userID == userID.rawValue }
+                .map { ContactVO(name: $0.name, email: $0.email, isProtonMailContact: true) }
+        }
     }
 
     func getContactVOsFromPhone(_ completion: @escaping ContactVOCompletionBlock) {
@@ -681,7 +689,7 @@ extension ContactDataService {
 }
 
 extension ContactDataService: ContactProviderProtocol {
-    func getAllEmails() -> [Email] {
+    func getAllEmails() -> [EmailEntity] {
         return allAccountEmails()
     }
 }

@@ -32,4 +32,25 @@ final class ContactEditAddCell: UITableViewCell, AccessibleCell {
         self.valueLabel.attributedText = value.apply(style: FontManager.Default.foregroundColor(color))
         generateCellAccessibilityIdentifiers(value)
     }
+    
+    override func prepareForReuse() {
+        if isEditing { setEditImageColor(ColorProvider.NotificationSuccess) }
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if isEditing { setEditImageColor(ColorProvider.NotificationSuccess) }
+    }
+}
+
+extension ContactEditAddCell {
+    static let controlClassName = "UITableViewCellEditControl"
+
+    func setEditImageColor(_ color: UIColor) {
+        for view in subviews where view.classForCoder.description() == Self.controlClassName {
+            if let imageView = view.subviews.compactMap({ $0 as? UIImageView }).first {
+                imageView.image = imageView.image?.withTintColor(color)
+            }
+        }
+    }
 }

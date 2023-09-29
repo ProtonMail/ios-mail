@@ -21,15 +21,39 @@ import ProtonCore_Keymaker
 final class GlobalContainer: ManagedContainer {
     let manager = ContainerManager()
 
+    var attachmentMetadataStripStatusProviderFactory: Factory<AttachmentMetadataStrippingProtocol> {
+        self {
+            self.userCachedStatus
+        }
+    }
+
+    var cachedUserDataProviderFactory: Factory<CachedUserDataProvider> {
+        self {
+            UserDataCache(keyMaker: self.keyMaker, keychain: self.keychain)
+        }
+    }
+
     var contextProviderFactory: Factory<CoreDataContextProviderProtocol> {
         self {
             CoreDataService.shared
         }
     }
 
+    var featureFlagCacheFactory: Factory<FeatureFlagCache> {
+        self {
+            self.userCachedStatus
+        }
+    }
+
     var internetConnectionStatusProviderFactory: Factory<InternetConnectionStatusProviderProtocol> {
         self {
             InternetConnectionStatusProvider.shared
+        }
+    }
+
+    var keychainFactory: Factory<Keychain> {
+        self {
+            KeychainWrapper.keychain
         }
     }
 
@@ -42,9 +66,33 @@ final class GlobalContainer: ManagedContainer {
         }
     }
 
+    var lastUpdatedStoreFactory: Factory<LastUpdatedStoreProtocol> {
+        self {
+            LastUpdatedStore(contextProvider: self.contextProvider)
+        }
+    }
+
     var lockCacheStatusFactory: Factory<LockCacheStatus> {
         self {
             self.keyMaker
+        }
+    }
+
+    var notificationCenterFactory: Factory<NotificationCenter> {
+        self {
+            .default
+        }
+    }
+
+    var pinFailedCountCacheFactory: Factory<PinFailedCountCache> {
+        self {
+            self.userCachedStatus
+        }
+    }
+
+    var pushUpdaterFactory: Factory<PushUpdater> {
+        self {
+            PushUpdater(userStatus: self.userCachedStatus)
         }
     }
 
@@ -56,13 +104,20 @@ final class GlobalContainer: ManagedContainer {
         }
     }
 
+    var unlockManagerFactory: Factory<UnlockManager> {
+        self {
+            UnlockManager(
+                cacheStatus: self.lockCacheStatus,
+                keyMaker: self.keyMaker,
+                pinFailedCountCache: self.userCachedStatus,
+                notificationCenter: self.notificationCenter
+            )
+        }
+    }
+
     var usersManagerFactory: Factory<UsersManager> {
         self {
-            UsersManager(
-                doh: BackendConfiguration.shared.doh,
-                userDataCache: UserDataCache(keyMaker: self.keyMaker),
-                coreKeyMaker: self.keyMaker
-            )
+            UsersManager(dependencies: self)
         }
     }
 
@@ -72,7 +127,17 @@ final class GlobalContainer: ManagedContainer {
         }
     }
 
+    var userIntroductionProgressProviderFactory: Factory<UserIntroductionProgressProvider> {
+        self {
+            self.userCachedStatus
+        }
+    }
+
     init() {
-        manager.defaultScope = .shared
+        manager.defaultScope = .cached
+
+#if !APP_EXTENSION
+        trackLifetime()
+#endif
     }
 }

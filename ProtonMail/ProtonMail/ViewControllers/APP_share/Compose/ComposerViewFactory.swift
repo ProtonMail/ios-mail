@@ -17,22 +17,25 @@
 
 import UIKit
 
-struct ComposerViewFactory {
-    // swiftlint:disable:next function_parameter_count
-    static func makeComposer(
+final class ComposerViewFactory {
+    typealias Dependencies = ComposeContainerViewModel.Dependencies
+    & ComposeContainerViewController.Dependencies
+    & HasUserManager
+    & HasInternetConnectionStatusProviderProtocol
+    & HasKeyMakerProtocol
+    & HasUserCachedStatus
+    & HasFetchAttachment
+
+    private let dependencies: Dependencies
+
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
+    }
+
+    func makeComposer(
         subject: String,
         body: String,
         files: [FileData],
-        user: UserManager,
-        contextProvider: CoreDataContextProviderProtocol,
-        userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        internetStatusProvider: InternetConnectionStatusProvider,
-        coreKeyMaker: KeyMakerProtocol,
-        darkModeCache: DarkModeCacheProtocol,
-        mobileSignatureCache: MobileSignatureCacheProtocol,
-        attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
-        featureFlagCache: FeatureFlagCache,
-        userCachedStatusProvider: UserCachedStatusProvider,
         navigationViewController: UINavigationController
     ) -> ComposeContainerViewController {
         let childViewModel = ComposeViewModel(
@@ -40,72 +43,19 @@ struct ComposerViewFactory {
             body: body,
             files: files,
             action: .newDraftFromShare,
-            msgService: user.messageService,
-            user: user,
-            dependencies: .init(
-                coreDataContextProvider: contextProvider,
-                coreKeyMaker: coreKeyMaker,
-                fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
-                internetStatusProvider: internetStatusProvider,
-                fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
-                contactProvider: user.contactService,
-                helperDependencies: .init(
-                    messageDataService: user.messageService,
-                    cacheService: user.cacheService,
-                    contextProvider: contextProvider,
-                    copyMessage: CopyMessage(
-                        dependencies: .init(
-                            contextProvider: contextProvider,
-                            messageDecrypter: user.messageService.messageDecrypter
-                        ),
-                        userDataSource: user
-                    ),
-                    attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
-                ), fetchMobileSignatureUseCase: FetchMobileSignature(
-                    dependencies: .init(
-                        coreKeyMaker: coreKeyMaker,
-                        cache: mobileSignatureCache
-                    )
-                ),
-                darkModeCache: darkModeCache,
-                attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
-                userCachedStatusProvider: userCachedStatusProvider
-            )
+            dependencies: composeViewModelDependencies
         )
+
         let router = ComposerRouter()
+        let controller = makeContainerViewController(childViewModel: childViewModel, router: router)
         router.setupNavigation(navigationViewController)
-        let viewModel = ComposeContainerViewModel(
-            dependencies: .init(
-                featureFlagCache: featureFlagCache,
-                attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
-            ),
-            router: router,
-            editorViewModel: childViewModel,
-            userIntroductionProgressProvider: userIntroductionProgressProvider,
-            contextProvider: contextProvider
-        )
-        let controller = ComposeContainerViewController(
-            viewModel: viewModel,
-            contextProvider: contextProvider
-        )
         return controller
     }
 
-    // swiftlint:disable:next function_parameter_count
-    static func makeComposer(
-        msg: Message?,
+    func makeComposer(
+        msg: MessageEntity?,
         action: ComposeMessageAction,
-        user: UserManager,
-        contextProvider: CoreDataContextProviderProtocol,
-        isEditingScheduleMsg: Bool,
-        userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        internetStatusProvider: InternetConnectionStatusProviderProtocol,
-        coreKeyMaker: KeyMakerProtocol,
-        darkModeCache: DarkModeCacheProtocol,
-        mobileSignatureCache: MobileSignatureCacheProtocol,
-        attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
-        featureFlagCache: FeatureFlagCache,
-        userCachedStatusProvider: UserCachedStatusProvider,
+        isEditingScheduleMsg: Bool = false,
         mailToUrl: URL? = nil,
         toContact: ContactPickerModelProtocol? = nil,
         originalScheduledTime: Date? = nil,
@@ -114,82 +64,72 @@ struct ComposerViewFactory {
         let childViewModel = ComposeViewModel(
             msg: msg,
             action: action,
-            msgService: user.messageService,
-            user: user,
             isEditingScheduleMsg: isEditingScheduleMsg,
             originalScheduledTime: originalScheduledTime,
-            dependencies: .init(
-                coreDataContextProvider: contextProvider,
-                coreKeyMaker: coreKeyMaker,
-                fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
-                internetStatusProvider: internetStatusProvider,
-                fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
-                contactProvider: user.contactService,
-                helperDependencies: .init(
-                    messageDataService: user.messageService,
-                    cacheService: user.cacheService,
-                    contextProvider: contextProvider,
-                    copyMessage: CopyMessage(
-                        dependencies: .init(
-                            contextProvider: contextProvider,
-                            messageDecrypter: user.messageService.messageDecrypter
-                        ),
-                        userDataSource: user
-                    ),
-                    attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
-                ), fetchMobileSignatureUseCase: FetchMobileSignature(
-                    dependencies: .init(
-                        coreKeyMaker: coreKeyMaker,
-                        cache: mobileSignatureCache
-                    )
-                ),
-                darkModeCache: darkModeCache,
-                attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
-                userCachedStatusProvider: userCachedStatusProvider
-            )
+            dependencies: composeViewModelDependencies
         )
+
         if let url = mailToUrl {
             childViewModel.parse(mailToURL: url)
         }
+
         if let toContact = toContact {
             childViewModel.addToContacts(toContact)
         }
-        return Self.makeComposer(
-            childViewModel: childViewModel,
-            contextProvider: contextProvider,
-            userIntroductionProgressProvider: userIntroductionProgressProvider,
-            attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
-            featureFlagCache: featureFlagCache,
-            composerDelegate: composerDelegate
-        )
-    }
 
-    static func makeComposer(
-        childViewModel: ComposeViewModel,
-        contextProvider: CoreDataContextProviderProtocol,
-        userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol,
-        featureFlagCache: FeatureFlagCache,
-        composerDelegate: ComposeContainerViewControllerDelegate? = nil
-    ) -> UINavigationController {
         let router = ComposerRouter()
-        let viewModel = ComposeContainerViewModel(
-            dependencies: .init(
-                featureFlagCache: featureFlagCache,
-                attachmentMetadataStripStatusProvider: attachmentMetadataStrippingCache
-            ),
-            router: router,
-            editorViewModel: childViewModel,
-            userIntroductionProgressProvider: userIntroductionProgressProvider,
-            contextProvider: contextProvider
-        )
-        let controller = ComposeContainerViewController(
-            viewModel: viewModel,
-            contextProvider: contextProvider
-        )
+        let controller = makeContainerViewController(childViewModel: childViewModel, router: router)
         controller.delegate = composerDelegate
         let navigationVC = UINavigationController(rootViewController: controller)
         router.setupNavigation(navigationVC)
         return navigationVC
+    }
+
+    private func makeContainerViewController(
+        childViewModel: ComposeViewModel,
+        router: ComposerRouter
+    ) -> ComposeContainerViewController {
+        let viewModel = ComposeContainerViewModel(
+            router: router,
+            dependencies: dependencies,
+            editorViewModel: childViewModel
+        )
+
+        return ComposeContainerViewController(viewModel: viewModel, dependencies: dependencies)
+    }
+
+    var composeViewModelDependencies: ComposeViewModel.Dependencies {
+        return .init(
+            user: dependencies.user,
+            coreDataContextProvider: dependencies.contextProvider,
+            fetchAndVerifyContacts: FetchAndVerifyContacts(
+                user: dependencies.user
+            ),
+            internetStatusProvider: dependencies.internetConnectionStatusProvider,
+            fetchAttachment: dependencies.fetchAttachment,
+            contactProvider: dependencies.user.contactService,
+            helperDependencies: .init(
+                messageDataService: dependencies.user.messageService,
+                cacheService: dependencies.user.cacheService,
+                contextProvider: dependencies.contextProvider,
+                copyMessage: CopyMessage(
+                    dependencies: .init(
+                        contextProvider: dependencies.contextProvider,
+                        messageDecrypter: dependencies.user.messageService.messageDecrypter
+                    ),
+                    userDataSource: dependencies.user
+                ),
+                attachmentMetadataStripStatusProvider: dependencies.attachmentMetadataStripStatusProvider
+            ),
+            fetchMobileSignatureUseCase: FetchMobileSignature(
+                dependencies: .init(
+                    coreKeyMaker: dependencies.keyMaker,
+                    cache: dependencies.userCachedStatus
+                )
+            ),
+            darkModeCache: dependencies.userCachedStatus,
+            attachmentMetadataStrippingCache: dependencies.attachmentMetadataStripStatusProvider,
+            userCachedStatusProvider: dependencies.userCachedStatus
+        )
     }
 }

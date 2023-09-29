@@ -29,12 +29,12 @@ final class ContactVOTests: XCTestCase {
         XCTAssertFalse(contact2.isDuplicated([address, address1]))
     }
 
-    func testIsDuplicatedWithContacts() {
+    func testExists() {
         let contact1 = ContactVO(name: "name1", email: "mail1@test.com")
         let contact2 = ContactVO(name: "name2", email: "mail2@test.com")
 
-        XCTAssertTrue(contact1.isDuplicatedWithContacts([contact1, contact2]))
-        XCTAssertFalse(contact2.isDuplicatedWithContacts([contact1]))
+        XCTAssertTrue(contact1.exists(in:[contact1, contact2]))
+        XCTAssertFalse(contact2.exists(in:[contact1]))
     }
 
     func testGetNameInContacts() {
