@@ -21,22 +21,47 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import Foundation
+import UIKit
 
 #if !APP_EXTENSION
 import LifetimeTracker
 #endif
 
 class CoreDataService: Service, CoreDataContextProviderProtocol {
-    static let shared = CoreDataService(container: CoreDataStore.shared.defaultContainer)
+    static let shared = CoreDataService(container: CoreDataStore.shared.container)
+
+    static var useNewApproach: Bool {
+        let isFeatureFlagOn: Bool = {
+            let usersManager = sharedServices.get(by: UsersManager.self)
+
+            guard let activeUser = usersManager.firstUser else {
+                return false
+            }
+
+            return userCachedStatus.featureFlags(for: activeUser.userID)[.modernizedCoreData]
+        }()
+
+        return UIApplication.isDebugOrEnterprise || isFeatureFlagOn
+    }
 
     private let container: NSPersistentContainer
     private let rootSavingContext: NSManagedObjectContext
-    let mainContext: NSManagedObjectContext
+    private let _mainContext: NSManagedObjectContext
+    private let backgroundContext: NSManagedObjectContext
+    private static let queueNamePrefix = "ch.protonmail.CoreDataService"
     static var shouldIgnoreContactUpdateInMainContext = false
+
+    var mainContext: NSManagedObjectContext {
+        if Self.useNewApproach {
+            return container.viewContext
+        } else {
+            return _mainContext
+        }
+    }
 
     private let serialQueue: OperationQueue = {
         let persistentContainerQueue = OperationQueue()
+        persistentContainerQueue.name = "\(CoreDataService.queueNamePrefix).writeQueue"
         persistentContainerQueue.maxConcurrentOperationCount = 1
         return persistentContainerQueue
     }()
@@ -44,7 +69,12 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
     init(container: NSPersistentContainer) {
         self.container = container
         self.rootSavingContext = CoreDataService.createRootSavingContext(container.persistentStoreCoordinator)
-        self.mainContext = CoreDataService.createMainContext(self.rootSavingContext)
+        self._mainContext = CoreDataService.createMainContext(self.rootSavingContext)
+        backgroundContext = container.newBackgroundContext()
+        backgroundContext.name = "\(Self.queueNamePrefix).backgroundContext"
+        backgroundContext.automaticallyMergesChangesFromParent = true
+        backgroundContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+
         #if !APP_EXTENSION
         trackLifetime()
         #endif
@@ -146,16 +176,19 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
 
     /// Executes the block synchronously and immediately - without a serial queue.
     func read<T>(block: (NSManagedObjectContext) -> T) -> T {
+        let context: NSManagedObjectContext
+
         let hasBeenCalledFromTheWriteMethod = OperationQueue.current == serialQueue
-        if hasBeenCalledFromTheWriteMethod && !ProcessInfo.isRunningUnitTests {
-            assertionFailure("Do not call `read` from `write`, reuse the context!")
+        if hasBeenCalledFromTheWriteMethod {
+            context = backgroundContext
+        } else {
+            let newContext = container.newBackgroundContext()
+            newContext.automaticallyMergesChangesFromParent = true
+            newContext.name = "\(Self.queueNamePrefix).readContext"
+            context = newContext
         }
 
         var output: T!
-
-        let context = container.newBackgroundContext()
-        context.automaticallyMergesChangesFromParent = true
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
 
         context.performAndWait {
             output = block(context)
@@ -193,83 +226,88 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
 
      Ignore the `@escaping` annotation, the method is synchronous.
      */
-    func write(block: @escaping (NSManagedObjectContext) throws -> Void) throws {
+    func write<T>(block: @escaping (NSManagedObjectContext) throws -> T) throws -> T {
         let hasBeenCalledFromAnotherWriteMethod = OperationQueue.current == serialQueue
+        let context = backgroundContext
+        var result: Result<T, Error>!
 
         if hasBeenCalledFromAnotherWriteMethod {
-            if !ProcessInfo.isRunningUnitTests {
-                assertionFailure("Do not nest writes!")
-            }
-
-            try executeBlockAndSaveContext(block: block)
-        } else {
-            /*
-             `Result<Void, Error>` is preferred over `Error?` because if for some reason the property is not written in
-             time in case of failure, it will be detected.
-             */
-            var result: Result<Void, Error>!
-
-            serialQueue.addOperation { [weak self] in
-                guard let self = self else { return }
-
+            context.performAndWait {
                 do {
-                    try self.executeBlockAndSaveContext(block: block)
-                    result = .success(Void())
+                    let output = try block(context)
+                    result = .success(output)
                 } catch {
                     result = .failure(error)
                 }
             }
+        } else {
+            serialQueue.addOperation {
+                context.performAndWait {
+                    do {
+                        let output = try block(context)
+
+                        if context.hasChanges {
+                            try context.save()
+                        }
+
+                        result = .success(output)
+                    } catch {
+                        result = .failure(error)
+                    }
+                }
+            }
 
             serialQueue.waitUntilAllOperationsAreFinished()
-
-            try result.get()
-        }
-    }
-
-    private func executeBlockAndSaveContext(block: (NSManagedObjectContext) throws -> Void) throws {
-        let context = container.newBackgroundContext()
-        context.automaticallyMergesChangesFromParent = true
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-
-        let contextSavingObserver = NotificationCenter.default.addObserver(
-            forName: .NSManagedObjectContextDidSave,
-            object: context,
-            queue: nil
-        ) { [weak self] notification in
-            self?.mainContext.perform {
-                self?.mainContext.mergeChanges(fromContextDidSave: notification)
-            }
         }
 
-        defer {
-            NotificationCenter.default.removeObserver(contextSavingObserver)
-        }
-
-        // See above for reasoning. After we drop iOS 14, we'll be able to use the newer `performAndWait() throws`.
-        var result: Result<Void, Error>!
-
-        context.performAndWait {
-            do {
-                try block(context)
-
-                if context.hasChanges {
-                    try context.save()
-                }
-
-                result = .success(Void())
-            } catch {
-                result = .failure(error)
-            }
-        }
-
-        try result.get()
+        return try result.get()
     }
 
     func enqueueOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
-        serialQueue.addOperation { [weak self] in
-            guard let self = self else { return }
+        if Self.useNewApproach {
+            do {
+                try write(block: block)
+            } catch {
+                PMAssertionFailure(error)
+            }
+        } else {
+            serialQueue.addOperation { [weak self] in
+                guard let self = self else { return }
+                
+                let context = self.rootSavingContext
+                
+                context.performAndWait {
+                    block(context)
+                }
+            }
+        }
+    }
 
-            let context = self.rootSavingContext
+    func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        if Self.useNewApproach {
+            do {
+                try write(block: block)
+            } catch {
+                PMAssertionFailure(error)
+            }
+        } else {
+            let context = rootSavingContext
+
+            context.perform {
+                block(context)
+            }
+        }
+    }
+
+    func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        if Self.useNewApproach {
+            do {
+                try write(block: block)
+            } catch {
+                PMAssertionFailure(error)
+            }
+        } else {
+            let context = rootSavingContext
 
             context.performAndWait {
                 block(context)
@@ -277,28 +315,10 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         }
     }
 
-    func performOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
-        let context = rootSavingContext
-
-        context.perform {
-            block(context)
-        }
-    }
-
-    func performAndWaitOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {
-        let context = rootSavingContext
-
-        context.performAndWait {
-            block(context)
-        }
-    }
-
-    func performAndWaitOnRootSavingContext<T>(block: (_ context: NSManagedObjectContext) throws -> T) throws -> T {
-        let context = rootSavingContext
-
+    func performAndWaitOnRootSavingContext<T>(block: @escaping (NSManagedObjectContext) throws -> T) throws -> T {
         var result: Result<T, Error>!
 
-        context.performAndWait {
+        performAndWaitOnRootSavingContext { context in
             do {
                 result = .success(try block(context))
             } catch {

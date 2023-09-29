@@ -143,7 +143,7 @@ final class ComposerMessageHelper {
         if action == ComposeMessageAction.forward {
             /// add mime attachments if forward
             if let mimeAtts = mimeAttachments {
-                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+                let stripMetadata = dependencies.attachmentMetadataStripStatusProvider.metadataStripping == .stripMetadata
                 for mimeAtt in mimeAtts {
                     addMimeAttachments(
                         attachment: mimeAtt,
@@ -517,5 +517,6 @@ extension ComposerMessageHelper {
         let cacheService: CacheServiceProtocol
         let contextProvider: CoreDataContextProviderProtocol
         let copyMessage: CopyMessageUseCase
+        let attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol
     }
 }

@@ -49,6 +49,8 @@ public struct ProtonColorPaletteiOS {
     public let InteractionNorm = ProtonColor(name: "MobileInteractionNorm")
     public let InteractionNormPressed = ProtonColor(name: "MobileInteractionNormPressed")
     public let InteractionNormDisabled = ProtonColor(name: "MobileInteractionNormDisabled")
+    public let InteractionNormMajor1PassTheme = ProtonColor(name: "MobileInteractionNormMajor1PassTheme")
+    public let InteractionNormMajor2PassTheme = ProtonColor(name: "MobileInteractionNormMajor2PassTheme")
     
     // MARK: Shade
     public var Shade100: ProtonColor {
@@ -143,7 +145,12 @@ public struct ProtonColorPaletteiOS {
     
     // MARK: Background
     public var BackgroundNorm: ProtonColor {
-        ProtonColor(name: "MobileBackgroundNorm", vpnFallbackRgb: backgroundNormVpn)
+        switch Brand.currentBrand {
+        case .proton, .vpn:
+            return ProtonColor(name: "MobileBackgroundNorm", vpnFallbackRgb: backgroundNormVpn)
+        case .pass:
+            return ProtonColor(name: "MobileBackgroundNormPassTheme", vpnFallbackRgb: backgroundNormVpn)
+        }
     }
     public var BackgroundDeep: ProtonColor {
         ProtonColor(name: "MobileBackgroundDeep", vpnFallbackRgb: backgroundDeepVpn)

@@ -22,6 +22,7 @@
 import UIKit
 import enum ProtonCore_DataModel.ClientApp
 import ProtonCore_Payments
+import ProtonCore_UIFoundations
 
 public enum PaymentsUIPresentationType {
     case modal          // modal presentation
@@ -44,12 +45,31 @@ enum PaymentsUIMode {
     case update         // presents plans to upgrade
 }
 
+public typealias CustomPlansDescription = [String: (purchasable: PurchasablePlanDescription?, current: CurrentPlanDescription?)]
+
+public struct PaymentsUICustomizationOptions {
+    let inAppTheme: () -> InAppTheme
+    let customPlansDescription: CustomPlansDescription
+    
+    public static let empty: PaymentsUICustomizationOptions = .init()
+    
+    public init(inAppTheme: @escaping () -> InAppTheme = { .default },
+                customPlansDescription: CustomPlansDescription = [:]) {
+        self.inAppTheme = inAppTheme
+        self.customPlansDescription = customPlansDescription
+    }
+}
+
 public final class PaymentsUI {
 
     private let coordinator: PaymentsUICoordinator
     private let paymentsUIAlertManager: PaymentsUIAlertManager
     
-    public init(payments: Payments, clientApp: ClientApp, shownPlanNames: ListOfShownPlanNames, alertManager: AlertManagerProtocol? = nil) {
+    public init(payments: Payments,
+                clientApp: ClientApp,
+                shownPlanNames: ListOfShownPlanNames,
+                customization: PaymentsUICustomizationOptions,
+                alertManager: AlertManagerProtocol? = nil) {
         if let alertManager = alertManager {
             self.paymentsUIAlertManager = AlwaysDelegatingPaymentsUIAlertManager(delegatedAlertManager: alertManager)
         } else {
@@ -62,6 +82,7 @@ public final class PaymentsUI {
                                                  purchaseManager: payments.purchaseManager,
                                                  clientApp: clientApp,
                                                  shownPlanNames: shownPlanNames,
+                                                 customization: customization,
                                                  alertManager: paymentsUIAlertManager,
                                                  onDohTroubleshooting: { [weak payments] in
             payments?.executeDohTroubleshootMethodFromApiDelegate()

@@ -21,7 +21,7 @@ extension Array where Element == RecipientSendPreferences {
 
     var atLeastOneRequiresMimeFormat: Bool {
         let allPgpSchemes = Set(map(\.sendPreferences.pgpScheme))
-        return !allPgpSchemes.intersection([PGPScheme.pgpMIME, PGPScheme.cleartextMIME]).isEmpty
+        return !allPgpSchemes.isDisjoint(with: [PGPScheme.pgpMIME, PGPScheme.cleartextMIME])
     }
 
     var atLeastOneRequiresPlainTextFormat: Bool {

@@ -22,6 +22,9 @@
 import XCTest
 import ProtonCore_Doh
 import ProtonCore_Utilities
+#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
+import ProtonCore_TestingToolkit_UnitTests_Core
+#endif
 
 public struct DohInterfaceMock: DoHInterface, ServerConfig {
 
@@ -96,6 +99,9 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     
     @FuncStub(DohInterfaceMock.getAccountHost, initialReturn: .crash) public var getAccountHostStub
     public func getAccountHost() -> String { getAccountHostStub() }
+    
+    @FuncStub(DohInterfaceMock.getAccountHostForAPI, initialReturn: .crash) public var getAccountHostForAPIStub
+    public func getAccountHostForAPI() -> String { getAccountHostForAPIStub() }
     
     @FuncStub(DohInterfaceMock.getAccountHeaders, initialReturn: .crash) public var getAccountHeadersStub
     public func getAccountHeaders() -> [String: String] { getAccountHeadersStub() }

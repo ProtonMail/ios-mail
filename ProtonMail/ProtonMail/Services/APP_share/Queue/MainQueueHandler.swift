@@ -53,7 +53,8 @@ final class MainQueueHandler: QueueHandler {
          labelDataService: LabelsDataService,
          localNotificationService: LocalNotificationService,
          undoActionManager: UndoActionManagerProtocol,
-         user: UserManager
+         user: UserManager,
+         featureFlagCache: FeatureFlagCache
     ) {
         self.userID = user.userID
         self.coreDataService = coreDataService
@@ -100,7 +101,27 @@ final class MainQueueHandler: QueueHandler {
         self.sendMessageTask = SendMessageTask(dependencies: sendDepenedencies)
         sendMessageResultHandler.startObservingResult()
 
-        self.dependencies = Dependencies(incomingDefaultService: user.incomingDefaultService)
+        let uploadDraftUseCase = UploadDraft(
+            dependencies: .init(
+                apiService: apiService,
+                coreDataService: coreDataService,
+                messageDataService: messageDataService
+            )
+        )
+
+        let uploadAttachment = UploadAttachment(
+            dependencies: .init(
+                messageDataService: user.messageService,
+                user: user
+            )
+        )
+
+        self.dependencies = Dependencies(
+            featureFlagCache: featureFlagCache,
+            incomingDefaultService: user.incomingDefaultService,
+            uploadDraft: uploadDraftUseCase,
+            uploadAttachment: uploadAttachment
+        )
     }
 
     func handleTask(_ task: QueueManager.Task, completion: @escaping (QueueManager.Task, QueueManager.TaskResult) -> Void) {
@@ -151,7 +172,7 @@ final class MainQueueHandler: QueueHandler {
         } else {
             switch action {
             case .saveDraft(let messageObjectID):
-                self.draft(save: messageObjectID, UID: UID, completion: completeHandler)
+                self.draft(save: messageObjectID, completion: completeHandler)
             case .uploadAtt(let attachmentObjectID), .uploadPubkey(let attachmentObjectID):
                 self.uploadAttachment(with: attachmentObjectID, UID: UID, completion: completeHandler)
             case .deleteAtt(let attachmentObjectID, let attachmentID):
@@ -169,7 +190,7 @@ final class MainQueueHandler: QueueHandler {
                 // But correct in if case let
                 if case let .send(messageObjectID, deliveryTime) = action {
                     let useSendRefactor = UIApplication.isDebugOrEnterprise ||
-                    dependencies.sendRefactorStatusProvider.isSendRefactorEnabled(userID: userID)
+                    dependencies.featureFlagCache.isFeatureFlag(.sendRefactor, enabledForUserWithID: userID)
 
                     if useSendRefactor {
                         let params = SendMessageTask.Params(
@@ -200,21 +221,18 @@ final class MainQueueHandler: QueueHandler {
                                   messageIDs: itemIDs,
                                   UID: UID,
                                   shouldFetchEvent: shouldFetch ?? false,
-                                  isSwipeAction: isSwipeAction,
                                   completion: completeHandler)
             case .unlabel(let currentLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
                 self.unLabelMessage(LabelID(currentLabelID),
                                     messageIDs: itemIDs,
                                     UID: UID,
                                     shouldFetchEvent: shouldFetch ?? false,
-                                    isSwipeAction: isSwipeAction,
                                     completion: completeHandler)
             case .folder(let nextLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
                 self.labelMessage(LabelID(nextLabelID),
                                   messageIDs: itemIDs,
                                   UID: UID,
                                   shouldFetchEvent: shouldFetch ?? false,
-                                  isSwipeAction: isSwipeAction,
                                   completion: completeHandler)
             case .updateLabel(let labelID, let name, let color):
                 self.updateLabel(labelID: labelID, name: name, color: color, completion: completeHandler)
@@ -312,293 +330,24 @@ extension MainQueueHandler {
 // MARK: queue actions for single message
 extension MainQueueHandler {
     /// - parameter messageObjectID: message objectID string
-    fileprivate func draft(save messageObjectID: String, UID: String, completion: @escaping Completion) {
-        var isAttachmentKeyChanged = false
-        self.coreDataService.enqueueOnRootSavingContext { context in
-            guard let objectID = self.coreDataService.managedObjectIDForURIRepresentation(messageObjectID) else {
-                // error: while trying to get objectID
-                completion(NSError.badParameter(messageObjectID))
-                return
-            }
-
-            guard self.user?.userInfo.userId == UID else {
-                completion(NSError.userLoggedOut())
-                return
-            }
-
+    fileprivate func draft(save messageObjectID: String, completion: @escaping Completion) {
+        Task {
             do {
-                guard let message = try context.existingObject(with: objectID) as? Message else {
-                    // error: object is not a Message
-                    completion(NSError.badParameter(messageObjectID))
-                    return
-                }
-
-                let completionWrapper: JSONCompletion = { task, result in
-                    var mess: [String: Any]
-
-                    switch result {
-                    case .success(let response):
-                        mess = response
-                    case .failure(let err):
-                        DispatchQueue.main.async {
-                            NSError.alertSavingDraftError(details: err.localizedDescription)
-                        }
-
-                        if err.isStorageExceeded {
-                            context.delete(message)
-                            _ = context.saveUpstreamIfNeeded()
-                        }
-
-                        completion(err)
-                        return
-                    }
-                    guard let messageID = mess["ID"] as? String else {
-                        // The error is messageID missing from the response
-                        // But this is meanless to users
-                        // I think parse error is more understandable
-                        let parseError = NSError.unableToParseResponse("messageID")
-                        NSError.alertSavingDraftError(details: parseError.localizedDescription)
-                        completion(nil)
-                        return
-                    }
-
-                    assert(!messageID.isEmpty)
-
-                    guard let message = try? context.existingObject(with: objectID) as? Message else {
-                        // If the message is nil
-                        // That means this message is deleted
-                        // Don't handle response
-                        completion(nil)
-                        return
-                    }
-
-                    if message.messageID != messageID {
-                        // Cancel scheduled local notification and re-schedule
-                        self.localNotificationService
-                            .rescheduleMessage(oldID: message.messageID, details: .init(messageID: messageID, subtitle: message.title))
-                    }
-                    message.messageID = messageID
-                    message.isDetailDownloaded = true
-
-                    if let conversationID = mess["ConversationID"] as? String {
-                        message.conversationID = conversationID
-                    }
-                    mess.addAttachmentOrderField()
-
-                    var hasTemp = false
-                    let attachments = message.mutableSetValue(forKey: "attachments")
-                    for att in attachments {
-                        if let att = att as? Attachment {
-                            if att.isTemp {
-                                hasTemp = true
-                                context.delete(att)
-                            }
-                            // Prevent flag being overide if current call do not change the key
-                            if isAttachmentKeyChanged {
-                                att.keyChanged = false
-                            }
-                        }
-                    }
-
-                    if let subject = mess["Subject"] as? String {
-                        message.title = subject
-                    }
-                    if let timeValue = mess["Time"] {
-                        if let timeString = timeValue as? NSString {
-                            let time = timeString.doubleValue as TimeInterval
-                            if time != 0 {
-                                message.time = time.asDate()
-                            }
-                        } else if let dateNumber = timeValue as? NSNumber {
-                            let time = dateNumber.doubleValue as TimeInterval
-                            if time != 0 {
-                                message.time = time.asDate()
-                            }
-                        }
-                    }
-
-                    _ = context.saveUpstreamIfNeeded()
-
-                    if hasTemp {
-                        do {
-                            try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
-                            _ = context.saveUpstreamIfNeeded()
-                        } catch let exc as NSError {
-                            completion(exc)
-                            return
-                        }
-                    }
-                    completion(nil)
-                }
-
-                if let atts = message.attachments.allObjects as? [Attachment] {
-                    for att in atts {
-                        if att.keyChanged {
-                            isAttachmentKeyChanged = true
-                        }
-                    }
-                }
-
-                let addressID: AddressID = .init(message.addressID ?? .empty)
-                let address = self.messageDataService.userAddress(of: addressID) ?? message.cachedAddress ?? self.messageDataService.defaultUserAddress(of: addressID)
-                let request: Request
-                if message.isDetailDownloaded && UUID(uuidString: message.messageID) == nil {
-                    request = UpdateDraftRequest(message: message, fromAddr: address, authCredential: message.cachedAuthCredential)
-                } else {
-                    request = CreateDraftRequest(message: message, fromAddr: address)
-                }
-
-                self.apiService.perform(request: request, response: UpdateDraftResponse()) { task, response in
-                    context.perform {
-                        if let err = response.error {
-                            completionWrapper(task, .failure(err as NSError))
-                        } else {
-                            completionWrapper(task, .success(response.responseDict))
-                        }
-                    }
-                }
-            } catch let ex as NSError {
-                // error: context thrown trying to get Message
-                completion(ex)
-                return
-            }
-        }
-    }
-
-    private func handleAttachmentResponse(result: Swift.Result<JSONDictionary, NSError>,
-                                          attachmentObjectID: NSManagedObjectID,
-                                          keyPacket: Data,
-                                          completion: @escaping Completion) {
-        switch result {
-        case .success(let response):
-        if let attDict = response["Attachment"] as? [String: Any], let id = attDict["ID"] as? String {
-            self.coreDataService.enqueueOnRootSavingContext { context in
-                guard let attachment = try? context.existingObject(with: attachmentObjectID) as? Attachment else {
-                    assertionFailure("An attachment should exist!")
-                    completion(nil)
-                    return
-                }
-                attachment.attachmentID = id
-                attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-                attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
-
-                // proper headers from BE - important for inline attachments
-                if let headerInfoDict = attDict["Headers"] as? Dictionary<String, String> {
-                    attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
-                }
-                attachment.cleanLocalURLs()
-
-                _ = context.saveUpstreamIfNeeded()
-                NotificationCenter
-                    .default
-                    .post(name: .attachmentUploaded,
-                          object: nil,
-                          userInfo: ["objectID": attachment.objectID.uriRepresentation().absoluteString,
-                                     "attachmentID": attachment.attachmentID])
+                try await self.dependencies.uploadDraft.execute(messageObjectID: messageObjectID)
                 completion(nil)
+            } catch {
+                completion(error)
             }
-        } else {
-            completion(nil)
-        }
-        case .failure(let err):
-            let reason = err.localizedDescription
-            NotificationCenter
-                .default
-                .post(name: .attachmentUploadFailed,
-                      object: nil,
-                      userInfo: ["objectID": attachmentObjectID.uriRepresentation().absoluteString,
-                                 "reason": reason,
-                                 "code": err.code])
-            completion(err)
         }
     }
 
     private func uploadAttachment(with attachmentURI: String, UID: String, completion: @escaping Completion) {
-        coreDataService.performOnRootSavingContext { context in
-            guard let managedObjectID = self.coreDataService.managedObjectIDForURIRepresentation(attachmentURI),
-                  let managedObject = try? context.existingObject(with: managedObjectID),
-                  let attachment = managedObject as? Attachment else {
-                completion(NSError.badParameter(attachmentURI))
-                return
-            }
-
-            guard self.user?.userInfo.userId == UID else {
-                completion(NSError.userLoggedOut())
-                return
-            }
-
-            guard let attachments = attachment.message.attachments.allObjects as? [Attachment] else {
-                return
-            }
-
-            if let _ = attachments
-                .first(where: { $0.contentID() == attachment.contentID() &&
-                        $0.attachmentID != "0" }) {
-                // This upload is duplicated
-                if !attachments.contains(where: { $0.objectID == attachment.objectID }) {
-                    // Delete the attachment if the attachment object is not linked to the message
-                    context.delete(attachment)
-                    _ = context.saveUpstreamIfNeeded()
-                }
+        Task {
+            do {
+                try await dependencies.uploadAttachment.execute(attachmentURI: attachmentURI)
                 completion(nil)
-                return
-            }
-
-            let params: [String: String] = [
-                "Filename": attachment.fileName,
-                "MIMEType": attachment.mimeType,
-                "MessageID": attachment.message.messageID,
-                "ContentID": attachment.contentID() ?? attachment.fileName,
-                "Disposition": attachment.disposition()
-            ]
-
-            let addressID = attachment.message.cachedAddress?.addressID ?? self.messageDataService.getUserAddressID(for: attachment.message)
-            guard
-                let key = attachment.message.cachedAddress?.keys.first ?? self.user?.userInfo.getAddressKey(address_id: addressID),
-                let passphrase = attachment.message.cachedPassphrase ?? self.user?.mailboxPassword,
-                let userKeys = (attachment.message.cachedUser ?? self.user?.userInfo)?.userPrivateKeys else {
-                completion(NSError.encryptionError())
-                return
-            }
-
-            autoreleasepool(){
-                do {
-                    guard let (keyPacket, dataPacketURL) = try attachment.encrypt(byKey: key) else {
-                        MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: attachment.message, context: context)
-                        completion(NSError.encryptionError())
-                        return
-                    }
-
-                    Crypto.freeGolangMem()
-                    let signed = attachment.sign(byKey: key,
-                                                 userKeys: userKeys,
-                                                 passphrase: passphrase)
-                    let completionWrapper: JSONCompletion = { _, result in
-                        self.handleAttachmentResponse(result: result,
-                                                      attachmentObjectID: managedObjectID,
-                                                      keyPacket: keyPacket,
-                                                      completion: completion)
-                    }
-
-                    ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
-                    self.user?.apiService.uploadFromFile(byPath: AttachmentAPI.path,
-                                                         parameters: params,
-                                                         keyPackets: keyPacket,
-                                                         dataPacketSourceFileURL: dataPacketURL,
-                                                         signature: signed,
-                                                         headers: .empty,
-                                                         authenticated: true,
-                                                         customAuthCredential: attachment.message.cachedAuthCredential,
-                                                         nonDefaultTimeout: nil,
-                                                         retryPolicy: .background,
-                                                         uploadProgress: nil,
-                                                         jsonCompletion: completionWrapper)
-
-                } catch {
-                    MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: attachment.message, context: context)
-                    let err = error as NSError
-                    completion(err)
-                }
+            } catch {
+                completion(error)
             }
         }
     }
@@ -767,7 +516,6 @@ extension MainQueueHandler {
                                   messageIDs: [String],
                                   UID: String,
                                   shouldFetchEvent: Bool,
-                                  isSwipeAction: Bool,
                                   completion: @escaping Completion) {
         guard user?.userInfo.userId == UID else {
             completion(NSError.userLoggedOut())
@@ -797,7 +545,6 @@ extension MainQueueHandler {
                                     messageIDs: [String],
                                     UID: String,
                                     shouldFetchEvent: Bool,
-                                    isSwipeAction: Bool,
                                     completion: @escaping Completion) {
         guard user?.userInfo.userId == UID else {
             completion(NSError.userLoggedOut())
@@ -915,7 +662,6 @@ extension MainQueueHandler {
         let service = self.contactService
         service.add(
             cards: [cardDatas],
-            authCredential: nil,
             objectID: objectID,
             importFromDevice: importFromDevice,
             completion: completion
@@ -1095,24 +841,30 @@ extension MainQueueHandler {
 extension MainQueueHandler {
     struct Dependencies {
         let actionRequest: ExecuteNotificationActionUseCase
+        let featureFlagCache: FeatureFlagCache
         let incomingDefaultService: IncomingDefaultServiceProtocol
-        let sendRefactorStatusProvider: SendRefactorStatusProvider
+        let uploadDraft: UploadDraftUseCase
+        let uploadAttachment: UploadAttachmentUseCase
 
         init(
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
+            featureFlagCache: FeatureFlagCache,
             incomingDefaultService: IncomingDefaultServiceProtocol,
-            sendRefactorStatusProvider: SendRefactorStatusProvider = userCachedStatus
+            uploadDraft: UploadDraftUseCase,
+            uploadAttachment: UploadAttachmentUseCase
         ) {
             self.actionRequest = actionRequest
+            self.featureFlagCache = featureFlagCache
             self.incomingDefaultService = incomingDefaultService
-            self.sendRefactorStatusProvider = sendRefactorStatusProvider
+            self.uploadDraft = uploadDraft
+            self.uploadAttachment = uploadAttachment
         }
     }
 }
 
 enum MainQueueHandlerHelper {
     static func removeAllAttachmentsNotUploaded(of message: Message,
-                                                context: NSManagedObjectContext) {
+                                                context: NSManagedObjectContext) throws {
         let toBeDeleted = message.attachments
             .compactMap({ $0 as? Attachment })
             .filter({ !$0.isUploaded })
@@ -1122,6 +874,6 @@ enum MainQueueHandlerHelper {
         }
         let attachmentCount = message.numAttachments.intValue
         message.numAttachments = NSNumber(integerLiteral: max(attachmentCount - toBeDeleted.count, 0))
-        _ = context.saveUpstreamIfNeeded()
+        try context.save()
     }
 }

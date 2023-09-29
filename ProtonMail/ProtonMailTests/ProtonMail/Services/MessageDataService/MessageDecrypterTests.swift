@@ -15,13 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Groot
 import ProtonCore_Crypto
 import ProtonCore_DataModel
-import ProtonCore_Networking
 import ProtonCore_TestingToolkit
-@testable import ProtonMail
 import XCTest
+
+@testable import ProtonMail
 
 final class MessageDecrypterTests: XCTestCase {
     private var mockUserData: UserManager!
@@ -31,58 +30,12 @@ final class MessageDecrypterTests: XCTestCase {
         self.mockUserData = UserManager(api: APIServiceMock(), role: .member)
         self.decrypter = MessageDecrypter(userDataSource: mockUserData)
 
-        let keyPair = try MailCrypto.generateRandomKeyPair()
-        let key = Key(keyID: "1", privateKey: keyPair.privateKey)
-        key.signature = "signature is needed to make this a V2 key"
-        let address = Address(
-            addressID: "",
-            domainID: nil,
-            email: "",
-            send: .active,
-            receive: .active,
-            status: .enabled,
-            type: .externalAddress,
-            order: 1,
-            displayName: "",
-            signature: "a",
-            hasKeys: 1,
-            keys: [key]
-        )
-        self.mockUserData.userInfo.userAddresses = [address]
-        self.mockUserData.userInfo.userKeys = [key]
-        self.mockUserData.authCredential.mailboxpassword = keyPair.passphrase
+        try CryptoKeyHelper.populateAddressesAndKeys(on: mockUserData)
     }
 
     override func tearDownWithError() throws {
         self.mockUserData = nil
         self.decrypter = nil
-    }
-
-    func testGetAddressKeys_emptyAddressID() {
-        let key1 = Key(keyID: "key1", privateKey: KeyTestData.privateKey1)
-        let key2 = Key(keyID: "key2", privateKey: KeyTestData.privateKey2)
-        let address = Address(addressID: "aaa", domainID: nil, email: "test@abc.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 2, keys: [key1, key2])
-
-        self.mockUserData.userInfo.userAddresses = [address]
-        let keys = self.decrypter.getAddressKeys(for: "")
-        XCTAssertEqual(keys.count, 2)
-        XCTAssertEqual(keys[0].keyID, "key1")
-        XCTAssertEqual(keys[1].keyID, "key2")
-    }
-
-    func testGetAddressKeys_hasAddressID() {
-        let key1 = Key(keyID: "key1", privateKey: KeyTestData.privateKey1)
-        let key2 = Key(keyID: "key2", privateKey: KeyTestData.privateKey2)
-        let address = Address(addressID: "address", domainID: nil, email: "test@abc.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 1, keys: [key1])
-        let address2 = Address(addressID: "address2", domainID: nil, email: "test2@abc.com", send: .active, receive: .active, status: .enabled, type: .protonAlias, order: 1, displayName: "", signature: "", hasKeys: 1, keys: [key2])
-
-        self.mockUserData.userInfo.userAddresses = [address, address2]
-        var keys = self.decrypter.getAddressKeys(for: "address")
-        XCTAssertEqual(keys.count, 1)
-        XCTAssertEqual(keys[0].keyID, "key1")
-        keys = self.decrypter.getAddressKeys(for: "address2")
-        XCTAssertEqual(keys.count, 1)
-        XCTAssertEqual(keys[0].keyID, "key2")
     }
 
     func verify(mimeAttachments: [MimeAttachment]) throws {
@@ -146,11 +99,64 @@ final class MessageDecrypterTests: XCTestCase {
         XCTAssertNil(attachments)
     }
 
+    func testDecrypter_emptyString_doesntCrash() throws {
+        let body = ""
+        let message = try prepareEncryptedMessage(body: body, mimeType: .textPlain)
+
+        let (processedBody, _) = try decrypter.decrypt(message: message)
+
+        XCTAssertEqual(processedBody, body)
+    }
+
+    func testCachingImprovesPerformanceWhenPerformingMultipleDecryptions() throws {
+        let clock = ContinuousClock()
+        let rounds = 50
+
+        let scenarios: [(OpenPGPTestsDefine, Message.MimeType, Double)] = [
+            (.message_plaintext, .textHTML, 7),
+            (.mime_testMessage_without_mime_sig, .multipartMixed, 1.5),
+        ]
+
+        for (file, mimeType, expectedSpeedup) in scenarios {
+            let body = try XCTUnwrap(file.rawValue)
+            let message = try prepareEncryptedMessage(body: body, mimeType: mimeType)
+
+            // Warmup, this is to ensure the results are not affected by Go runtime initialization, internal Go caching
+            // beside our own, etc
+            _ = try decrypter.decrypt(message: message)
+
+            decrypter.setCaching(enabled: false)
+
+            let timeWithoutCaching = try clock.measure {
+                for _ in 0..<rounds {
+                    _ = try self.decrypter.decrypt(message: message)
+                }
+            }
+
+            print("Decrypted \(rounds) \(mimeType.rawValue) messages without caching in \(timeWithoutCaching)")
+
+            decrypter.setCaching(enabled: true)
+
+            let timeWithCaching = try clock.measure {
+                for _ in 0..<rounds {
+                    _ = try decrypter.decrypt(message: message)
+                }
+            }
+
+            print("Decrypted \(rounds) \(mimeType.rawValue) messages with caching in \(timeWithCaching)")
+
+            let speedup = timeWithoutCaching / timeWithCaching
+            print("Speedup: \(speedup)")
+            XCTAssertGreaterThanOrEqual(speedup, expectedSpeedup)
+        }
+    }
+
     private func prepareEncryptedMessage(body: String, mimeType: Message.MimeType) throws -> MessageEntity {
-        let encryptedBody = try Encryptor.encrypt(
-            publicKey: mockUserData.userInfo.addressKeys.toArmoredPrivateKeys[0],
-            cleartext: body
-        ).value
+        let encryptedBody = try body.encrypt(
+            withKey: mockUserData.userInfo.addressKeys[0],
+            userKeys: mockUserData.userInfo.userPrivateKeys,
+            mailbox_pwd: mockUserData.mailboxPassword
+        )
 
         return MessageEntity.make(mimeType: mimeType.rawValue, body: encryptedBody)
     }

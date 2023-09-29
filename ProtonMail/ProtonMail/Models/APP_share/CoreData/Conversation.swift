@@ -23,6 +23,7 @@
 import CoreData
 import Foundation
 
+// sourcery: CoreDataHelpers
 final class Conversation: NSManagedObject {
     enum Attributes: String, CaseIterable {
         static let entityName = "Conversation"
@@ -61,10 +62,6 @@ final class Conversation: NSManagedObject {
     @NSManaged var labels: NSSet
 
     @NSManaged var userID: String
-
-    class func deleteAll(inContext context: NSManagedObjectContext) {
-        context.deleteAll(Attributes.entityName)
-    }
 }
 
 extension Conversation {
@@ -105,23 +102,6 @@ extension Conversation {
         return context.managedObjectWithEntityName(Attributes.entityName,
                                                    forKey: Attributes.conversationID.rawValue,
                                                    matchingValue: conversationID) as? Conversation
-    }
-
-    /// Fetch the Label from local cache based on the labelIDs from contextLabel
-    /// - Returns: array of labels
-    func getLabels() -> [Label] {
-        guard let context = self.managedObjectContext else {
-            return []
-        }
-        let labelIDs = self.labels.compactMap { ($0 as? ContextLabel)?.labelID }
-
-        let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
-        request.predicate = NSPredicate(format: "(labelID IN %@) AND (%K == 1) AND (%K == %@)", labelIDs, Label.Attributes.type, Label.Attributes.userID, self.userID)
-        do {
-            return try context.fetch(request)
-        } catch {
-            return []
-        }
     }
 
     func getContextLabel(location: LabelLocation) -> ContextLabel? {

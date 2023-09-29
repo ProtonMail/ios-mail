@@ -15,8 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import GoLibs
+import ProtonCore_CryptoGoInterface
 
 struct PinnedKeysConfig {
     let encrypt: Bool
@@ -24,6 +23,7 @@ struct PinnedKeysConfig {
     let sign: Bool?
     let scheme: String?
     let mimeType: String?
+    // swiftlint:enable discouraged_optional_boolean
     let pinnedKeys: [CryptoKey]
     let isContact: Bool
 }

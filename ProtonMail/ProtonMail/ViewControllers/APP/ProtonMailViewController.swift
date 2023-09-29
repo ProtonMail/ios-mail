@@ -31,10 +31,8 @@ class ProtonMailViewController: UIViewController, AccessibleView {
 
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         super.dismiss(animated: flag, completion: completion)
-        if #available(iOS 13.0, *) {
             if let viewController = self.presentationController {
                 self.presentationController?.delegate?.presentationControllerWillDismiss?(viewController)
             }
-        }
     }
 }

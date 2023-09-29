@@ -20,20 +20,14 @@ import XCTest
 
 final class Date_ExtensionTests: XCTestCase {
 
-    var reachabilityStub: ReachabilityStub!
-
-    override func setUp() {
-        super.setUp()
-
-        self.reachabilityStub = ReachabilityStub()
+    override func setUpWithError() throws {
+        try super.setUpWithError()
         LocaleEnvironment.locale = { .enUS }
         LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
     }
 
     override func tearDown() {
         super.tearDown()
-
-        self.reachabilityStub = nil
         LocaleEnvironment.restore()
     }
 
@@ -83,29 +77,13 @@ final class Date_ExtensionTests: XCTestCase {
         XCTAssertEqual(ans, "2022-03-02 12:22")
     }
 
-    func testGetReferenceTimeFromExtension() {
-        let serverTime = TimeInterval(1635745851)
-        let localSystemUpTime = TimeInterval(2000)
-        let systemUpTime = TimeInterval(2200)
-        let processInfo = SystemUpTimeMock(localServerTime: serverTime, localSystemUpTime: localSystemUpTime, systemUpTime: systemUpTime)
-
-        let ref = Date.getReferenceDate(reachability: nil, processInfo: processInfo, deviceDate: Date())
-        let calServerTime = Date(timeIntervalSince1970: 1635745851 + 200)
-        // 1. Extension
-        // 2. Device doesn't reboot
-        // Should return reference time by local server time and systemUpTime
-        XCTAssertEqual(calServerTime, ref)
-    }
-
     func testGetReferenceTimeWhenDeviceOffline() {
-        self.reachabilityStub.currentReachabilityStatusStub = .NotReachable
-
         let serverTime = TimeInterval(1635745851)
         let localSystemUpTime = TimeInterval(2000)
         let systemUpTime = TimeInterval(2200)
         let processInfo = SystemUpTimeMock(localServerTime: serverTime, localSystemUpTime: localSystemUpTime, systemUpTime: systemUpTime)
 
-        let ref = Date.getReferenceDate(reachability: self.reachabilityStub, processInfo: processInfo, deviceDate: Date())
+        let ref = Date.getReferenceDate(connectionStatus: .notConnected, processInfo: processInfo, deviceDate: Date())
         let calServerTime = Date(timeIntervalSince1970: 1635745851 + 200)
         // 1. NotReachable
         // 2. Device doesn't reboot
@@ -114,15 +92,13 @@ final class Date_ExtensionTests: XCTestCase {
     }
 
     func testGetReferenceTimeWhenDeviceOfflineAndReboot_serverTimer_newer() {
-        self.reachabilityStub.currentReachabilityStatusStub = .NotReachable
-
         let deviceTime = Date(timeIntervalSince1970: 1625745851)
         let serverTime = TimeInterval(1635745851)
         let localSystemUpTime = TimeInterval(2000)
         let systemUpTime = TimeInterval(10)
         let processInfo = SystemUpTimeMock(localServerTime: serverTime, localSystemUpTime: localSystemUpTime, systemUpTime: systemUpTime)
 
-        let ref = Date.getReferenceDate(reachability: self.reachabilityStub, processInfo: processInfo, deviceDate: deviceTime)
+        let ref = Date.getReferenceDate(connectionStatus: .notConnected, processInfo: processInfo, deviceDate: deviceTime)
         // 1. NotReachable
         // 2. Device reboot
         // Should compare local server time and the device time and return the newer one
@@ -130,15 +106,13 @@ final class Date_ExtensionTests: XCTestCase {
     }
 
     func testGetReferenceTimeWhenDeviceOfflineAndReboot_deviceTime_newer() {
-        self.reachabilityStub.currentReachabilityStatusStub = .NotReachable
-
         let deviceTime = Date(timeIntervalSince1970: 1665745851)
         let serverTime = TimeInterval(1635745851)
         let localSystemUpTime = TimeInterval(2000)
         let systemUpTime = TimeInterval(10)
         let processInfo = SystemUpTimeMock(localServerTime: serverTime, localSystemUpTime: localSystemUpTime, systemUpTime: systemUpTime)
 
-        let ref = Date.getReferenceDate(reachability: self.reachabilityStub, processInfo: processInfo, deviceDate: deviceTime)
+        let ref = Date.getReferenceDate(connectionStatus: .notConnected, processInfo: processInfo, deviceDate: deviceTime)
         // 1. NotReachable
         // 2. Device reboot
         // Should compare local server time and the device time and return the newer one
@@ -146,32 +120,28 @@ final class Date_ExtensionTests: XCTestCase {
     }
 
     func testGetReferenceTimeWhenDeviceHasWifi() {
-        self.reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
         let serverTime = TimeInterval(1635745851)
         let localSystemUpTime = TimeInterval(2000)
         let systemUpTime = TimeInterval(2200)
         let processInfo = SystemUpTimeMock(localServerTime: serverTime, localSystemUpTime: localSystemUpTime, systemUpTime: systemUpTime)
-        let ref = Date.getReferenceDate(reachability: self.reachabilityStub, processInfo: processInfo, deviceDate: Date())
+        let ref = Date.getReferenceDate(connectionStatus: .connectedViaWiFi, processInfo: processInfo, deviceDate: Date())
         // If the device is online
         // It should always return server time
         XCTAssertEqual(Date(timeIntervalSince1970: serverTime), ref)
     }
 
     func testGetReferenceTimeWhenDeviceHasWWAN() {
-        self.reachabilityStub.currentReachabilityStatusStub = .ReachableViaWWAN
         let serverTime = TimeInterval(1635745851)
         let localSystemUpTime = TimeInterval(2000)
         let systemUpTime = TimeInterval(2200)
         let processInfo = SystemUpTimeMock(localServerTime: serverTime, localSystemUpTime: localSystemUpTime, systemUpTime: systemUpTime)
-        let ref = Date.getReferenceDate(reachability: self.reachabilityStub, processInfo: processInfo, deviceDate: Date())
+        let ref = Date.getReferenceDate(connectionStatus: .connectedViaCellular, processInfo: processInfo, deviceDate: Date())
         // If the device is online
         // It should always return server time
         XCTAssertEqual(Date(timeIntervalSince1970: serverTime), ref)
     }
 
     func testCountExpirationTimeMinuteLevel() {
-        self.reachabilityStub.currentReachabilityStatusStub = .ReachableViaWWAN
-
         let interval: Int64 = 1635745851
         let serverTime = TimeInterval(interval)
         let localSystemUpTime = TimeInterval(2000)
@@ -180,12 +150,10 @@ final class Date_ExtensionTests: XCTestCase {
 
         let time = Date(timeIntervalSince1970: Double(interval) + 120.0)
         let result = time.countExpirationTime(processInfo: processInfo)
-        XCTAssertEqual(result, "3 mins")
+        XCTAssertEqual(result, "2 minutes")
     }
 
     func testCountExpirationTimeHourLevel() {
-        self.reachabilityStub.currentReachabilityStatusStub = .ReachableViaWWAN
-
         let interval: Int64 = 1635745851
         let serverTime = TimeInterval(interval)
         let localSystemUpTime = TimeInterval(2000)
@@ -198,8 +166,6 @@ final class Date_ExtensionTests: XCTestCase {
     }
 
     func testCountExpirationTimeDayLevel() {
-        self.reachabilityStub.currentReachabilityStatusStub = .ReachableViaWWAN
-
         let interval: Int64 = 1635745851
         let serverTime = TimeInterval(interval)
         let localSystemUpTime = TimeInterval(2000)

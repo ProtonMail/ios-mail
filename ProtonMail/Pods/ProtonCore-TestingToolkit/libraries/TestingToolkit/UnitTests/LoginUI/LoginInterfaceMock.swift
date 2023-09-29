@@ -23,6 +23,7 @@ import UIKit
 import ProtonCore_Login
 import ProtonCore_LoginUI
 import ProtonCore_Networking
+import ProtonCore_UIFoundations
 
 public class LoginInterfaceMock: LoginAndSignupInterface {
     
@@ -58,8 +59,10 @@ public class LoginInterfaceMock: LoginAndSignupInterface {
     }
     
     @FuncStub(LoginInterfaceMock.presentMailboxPasswordFlow) public var presentMailboxPasswordFlowStub
-    public func presentMailboxPasswordFlow(over viewController: UIViewController, completion: @escaping (String) -> Void) {
-        presentMailboxPasswordFlowStub(viewController, completion)
+    public func presentMailboxPasswordFlow(over viewController: UIViewController,
+                                           inAppTheme: InAppTheme,
+                                           completion: @escaping (String) -> Void) {
+        presentMailboxPasswordFlowStub(viewController, inAppTheme, completion)
     }
     
     @FuncStub(LoginInterfaceMock.logout) public var logoutStub

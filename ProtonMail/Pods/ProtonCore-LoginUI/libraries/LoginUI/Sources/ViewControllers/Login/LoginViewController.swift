@@ -20,13 +20,16 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
+import WebKit
 import ProtonCore_CoreTranslation
 import ProtonCore_Login
 import ProtonCore_Foundations
 import ProtonCore_UIFoundations
+import ProtonCore_FeatureSwitch
+import ProtonCore_Observability
 
 protocol LoginStepsDelegate: AnyObject {
-    func twoFactorCodeNeeded()
+    func requestTwoFactorCode(username: String, password: String)
     func mailboxPasswordNeeded()
     func createAddressNeeded(data: CreateAddressData, defaultUsername: String?)
     func userAccountSetupNeeded()
@@ -50,11 +53,10 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
     @IBOutlet private weak var passwordTextField: PMTextField!
     @IBOutlet private weak var signInButton: ProtonButton!
     @IBOutlet private weak var signUpButton: ProtonButton!
-    @IBOutlet private weak var helpButton: ProtonButton!
     @IBOutlet private weak var subtitleLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var brandImage: UIImageView!
-    @IBOutlet weak var separatorView: UIView!
+    @IBOutlet weak var signInWithSSOButton: ProtonButton!
 
     // MARK: - Properties
 
@@ -70,25 +72,32 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
 
     var focusNoMore: Bool = false
     private let navigationBarAdjuster = NavigationBarAdjustingScrollViewDelegate()
+    private var webView: SSOViewController?
+    private var isSSOEnabled: Bool {
+        FeatureFactory.shared.isEnabled(.ssoSignIn) && viewModel.clientApp == .vpn
+    }
     
     override var preferredStatusBarStyle: UIStatusBarStyle { darkModeAwarePreferredStatusBarStyle() }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupUI()
         setupBinding()
         setupDelegates()
         setupNotifications()
         setupGestures()
+        setUpHelpButton(action: #selector(needHelpPressed))
         requestDomain()
         if let error = initialError {
             if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else { showError(error: error) }
         }
-
+        
         focusOnce(view: loginTextField, delay: .milliseconds(750))
-
-        setUpCloseButton(showCloseButton: showCloseButton, action: #selector(LoginViewController.closePressed(_:)))
+        
+        showCloseButton = showCloseButton || isSSOEnabled
+        
+        setUpCloseButton(showCloseButton: showCloseButton, action: #selector(closePressed))
 
         generateAccessibilityIdentifiers()
     }
@@ -100,28 +109,38 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
     }
 
     // MARK: - Setup
-
+    
+    private func showWebView() -> SSOViewController {
+        let ssoVC = SSOViewController()
+        ssoVC.webViewDelegate = self
+        let webViewNav = DarkModeAwareNavigationViewController(rootViewController: ssoVC)
+        webViewNav.overrideUserInterfaceStyle = self.overrideUserInterfaceStyle
+        webViewNav.navigationBar.backgroundColor = ColorProvider.BackgroundNorm
+        self.navigationController?.present(webViewNav, animated: true)
+        return ssoVC
+    }
+    
     private func setupUI() {
-        
         brandImage.image = IconProvider.masterBrandGlyph
         brandImage.isHidden = false
-        titleLabel.text = CoreString._ls_screen_title
+        titleLabel.text = viewModel.titleLabel
         titleLabel.textColor = ColorProvider.TextNorm
-        subtitleLabel.text = CoreString._ls_screen_subtitle
+        subtitleLabel.text = viewModel.subtitleLabel
         subtitleLabel.textColor = ColorProvider.TextWeak
         titleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
         subtitleLabel.font = .adjustedFont(forTextStyle: .subheadline)
-        signUpButton.isHidden = !isSignupAvailable
-        signUpButton.setTitle(CoreString._ls_create_account_button, for: .normal)
-        helpButton.setTitle(CoreString._ls_help_button, for: .normal)
-        signInButton.setTitle(CoreString._ls_sign_in_button, for: .normal)
-        loginTextField.title = CoreString._ls_username_title
-        passwordTextField.title = CoreString._ls_password_title
+        loginTextField.title = viewModel.loginTextFieldTitle
+        passwordTextField.title = viewModel.passwordTextFieldTitle
 
         view.backgroundColor = ColorProvider.BackgroundNorm
-        separatorView.backgroundColor = ColorProvider.InteractionWeak
+        
+        signInButton.setTitle(viewModel.signInButtonTitle, for: .normal)
+        signInButton.addTarget(self, action: #selector(signInPressed), for: .touchUpInside)
+        
         signUpButton.setMode(mode: .text)
-        helpButton.setMode(mode: .text)
+        signUpButton.addTarget(self, action: #selector(signUpPressed), for: .touchUpInside)
+        signUpButton.isHidden = !isSignupAvailable || isSSOEnabled
+        signUpButton.setTitle(viewModel.signUpButtonTitle, for: .normal)
 
         loginTextField.autocorrectionType = .no
         loginTextField.autocapitalizationType = .none
@@ -134,6 +153,11 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
         passwordTextField.textContentType = .password
 
         loginTextField.value = initialUsername ?? ""
+        
+        signInWithSSOButton.isHidden = !isSSOEnabled
+        signInWithSSOButton.setTitle(viewModel.signInWithSSOButtonTitle, for: .normal)
+        signInWithSSOButton.setMode(mode: .text)
+        signInWithSSOButton.addTarget(self, action: #selector(signInWithSSO), for: .touchUpInside)
     }
 
     private func requestDomain() {
@@ -143,6 +167,14 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
     private func setupGestures() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard (_:)))
         self.view.addGestureRecognizer(tapGesture)
+    }
+    
+    func setUpHelpButton(action: Selector) {
+        let helpButton = UIBarButtonItem(title: CoreString._hv_help_button, style: .plain, target: self, action: action)
+        helpButton.tintColor = ColorProvider.InteractionNorm
+        navigationItem.setHidesBackButton(true, animated: false)
+        navigationItem.setRightBarButton(helpButton, animated: true)
+        navigationItem.assignNavItemIndentifiers()
     }
 
     private func setupDelegates() {
@@ -170,11 +202,30 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
             case let .done(data):
                 self?.delegate?.loginViewControllerDidFinish(endLoading: { [weak self] in self?.viewModel.isLoading.value = false }, data: data)
             case .twoFactorCodeNeeded:
-                self?.delegate?.twoFactorCodeNeeded()
+                guard
+                    let username = self?.loginTextField.value,
+                    let password = self?.passwordTextField.value
+                else { return }
+                // Clean username and password before leaving this page
+                // To eliminate KeyChain auto remember prompt
+                self?.clearAccount()
+                self?.delegate?.requestTwoFactorCode(username: username, password: password)
             case .mailboxPasswordNeeded:
                 self?.delegate?.mailboxPasswordNeeded()
             case let .createAddressNeeded(data, defaultUsername):
                 self?.delegate?.createAddressNeeded(data: data, defaultUsername: defaultUsername)
+            case .ssoChallenge(let ssoChallengeResponse):
+                self?.webView = self?.showWebView()
+                Task {
+                    let ssoRequestResult = await self?.viewModel.getSSORequest(challenge: ssoChallengeResponse)
+                    if let error = ssoRequestResult?.error {
+                        self?.webView?.dismiss(animated: true)
+                        self?.showBanner(message: error)
+                        return
+                    } else if let request = ssoRequestResult?.request {
+                        self?.webView?.loadRequest(request: request)
+                    }
+                }
             }
         }
         viewModel.isLoading.bind { [weak self] isLoading in
@@ -191,15 +242,39 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
     }
 
     // MARK: - Actions
-
-    @IBAction private func signInPressed(_ sender: Any) {
+    
+    @objc private func signInWithSSO() {
+        viewModel.isSsoUIEnabled = true
+        passwordTextField.isHidden = viewModel.isSsoUIEnabled
+        loginTextField.title = viewModel.loginTextFieldTitle
+        titleLabel.text = viewModel.titleLabel
+        signInWithSSOButton.setTitle(viewModel.signInWithSSOButtonTitle, for: .normal)
+        signInWithSSOButton.removeTarget(self, action: #selector(signInWithSSO), for: .touchUpInside)
+        signInWithSSOButton.addTarget(self, action: #selector(signInWithEmail), for: .touchUpInside)
+    }
+    
+    @objc private func signInWithEmail() {
+        viewModel.isSsoUIEnabled = false
+        passwordTextField.isHidden = viewModel.isSsoUIEnabled
+        loginTextField.title = viewModel.loginTextFieldTitle
+        titleLabel.text = viewModel.titleLabel
+        signInWithSSOButton.setTitle(viewModel.signInWithSSOButtonTitle, for: .normal)
+        signInWithSSOButton.removeTarget(self, action: #selector(signInWithEmail), for: .touchUpInside)
+        signInWithSSOButton.addTarget(self, action: #selector(signInWithSSO), for: .touchUpInside)
+    }
+    
+    @objc private func signInPressed(_ sender: Any) {
         cancelFocus()
         dismissKeyboard()
-
+        
         let usernameValid = setAddressTextFieldError()
         let passwordValid = validatePassword()
-
-        guard usernameValid, passwordValid else {
+        
+        guard usernameValid else {
+            return
+        }
+        
+        guard (passwordTextField.isHidden == false && passwordValid) || isSSOEnabled else {
             return
         }
 
@@ -207,12 +282,13 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
         viewModel.login(username: loginTextField.value, password: passwordTextField.value)
     }
 
-    @IBAction func signUpPressed(_ sender: ProtonButton) {
+    @objc private func signUpPressed(_ sender: ProtonButton) {
         cancelFocus()
+        clearAccount()
         delegate?.userDidRequestSignup()
     }
 
-    @IBAction private func needHelpPressed(_ sender: Any) {
+    @objc private func needHelpPressed() {
         cancelFocus()
         delegate?.userDidRequestHelp()
     }
@@ -234,6 +310,11 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
         if passwordTextField.isFirstResponder {
             _ = passwordTextField.resignFirstResponder()
         }
+    }
+
+    private func clearAccount() {
+        passwordTextField.value = ""
+        loginTextField.value = ""
     }
 
     @objc
@@ -313,6 +394,42 @@ extension LoginViewController: PMTextFieldDelegate {
         case passwordTextField:
             validatePassword()
         default:
+            break
+        }
+    }
+}
+
+// MARK: - WKNavigationDelegate
+extension LoginViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if let responseToken = viewModel.getSSOTokenFromURL(url: navigationAction.request.url) {
+            decisionHandler(.cancel)
+            self.webView?.dismiss(animated: true)
+            viewModel.processResponseToken(idpEmail: loginTextField.value, responseToken: responseToken)
+        } else {
+            decisionHandler(.allow)
+        }
+    }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse,
+                 decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+
+        if let response = navigationResponse.response as? HTTPURLResponse {
+            handleNetworkResponse(response: response)
+        }
+
+        decisionHandler(.allow)
+    }
+    
+    private func handleNetworkResponse(response: HTTPURLResponse) {
+        let isProtonPage = viewModel.isProtonPage(url: response.url)
+        switch ObservabilityEvent.ssoWebPageLoadCountTotal(responseStatusCode: response.statusCode,
+                                                           isProtonPage: isProtonPage) {
+        case .left(let event)?:
+            ObservabilityEnv.report(event)
+        case .right(let event)?:
+            ObservabilityEnv.report(event)
+        case nil:
             break
         }
     }

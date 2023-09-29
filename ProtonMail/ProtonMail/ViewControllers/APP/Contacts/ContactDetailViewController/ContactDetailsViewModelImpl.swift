@@ -22,9 +22,8 @@
 
 import Foundation
 import PromiseKit
-import GoLibs
 import CoreData
-import OpenPGP
+import VCard
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Payments
@@ -66,7 +65,7 @@ class ContactDetailsViewModelImpl: ContactDetailsViewModel {
 
     private let contactFetchedController: NSFetchedResultsController<Contact>
 
-    init(contact: ContactEntity, user: UserManager, coreDataService: CoreDataService) {
+    init(contact: ContactEntity, user: UserManager, coreDataService: CoreDataContextProviderProtocol) {
         self.contactService = user.contactService
         contactFetchedController = contactService.contactFetchedController(by: contact.contactID)
 
@@ -386,6 +385,10 @@ extension ContactDetailsViewModelImpl: NSFetchedResultsControllerDelegate {
 }
 
 extension ContactDetailsViewModelImpl: ContactParserResultDelegate {
+    func append(structuredName: ContactEditStructuredName) {
+        // TODO: show structuredName
+    }
+
     func append(emails: [ContactEditEmail]) {
         self.origEmails.append(contentsOf: emails)
     }

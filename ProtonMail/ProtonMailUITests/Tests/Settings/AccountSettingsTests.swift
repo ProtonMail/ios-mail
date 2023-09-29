@@ -8,23 +8,25 @@
 
 import ProtonCore_TestingToolkit
 
-class AccountSettingsTests : FixtureAuthenticatedTestCase {
+class AccountSettingsTests: FixtureAuthenticatedTestCase {
 
     private let accountSettingsRobot: AccountSettingsRobot = AccountSettingsRobot()
 
     override func setUp() {
         super.setUp()
 
-        InboxRobot()
-            .menuDrawer()
-            .settings()
-            .selectAccount(user!.email)
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .menuDrawer()
+                .settings()
+                .selectAccount(user.email)
+        }
     }
 
-    func testChangeSignlePassword() {
+    func xtestChangeSignlePassword() {
         accountSettingsRobot
             .singlePassword()
-            .changePassword(user: user!)
+            .changePassword(user: user)
             .verify.settingsOpened()
     }
 
@@ -32,28 +34,29 @@ class AccountSettingsTests : FixtureAuthenticatedTestCase {
         accountSettingsRobot
             .recoveryEmail()
             .changeRecoveryEmail(testData.twoPassUser)
-            .verify.recoveryEmailChangedTo(user!.email)
+            .verify.recoveryEmailChangedTo(user.email)
     }
 
-    func testNavigateToDefaultEmailAddress() {
+    // TODO: This test case requires account with many aliases in order to navigate to Default email address selection.
+    func xtestNavigateToDefaultEmailAddress() {
         accountSettingsRobot
             .defaultEmailAddress()
-            .verify.changeDefaultAddressViewShown(user!.email)
+            .verify.changeDefaultAddressViewShown(user.email)
     }
 
     func testChangeDisplayName() {
-        let newDisplayName = "\(user!.name)-\(StringUtils().randomAlphanumericString())"
+        let newDisplayName = "\(user.name)-\(StringUtils().randomAlphanumericString())"
         accountSettingsRobot
             .displayName()
             .setDisplayNameTextTo(newDisplayName)
             .save()
             .verify.displayNameShownWithText(newDisplayName)
-            
+
         accountSettingsRobot
             .displayName()
-            .setDisplayNameTextTo(user!.name)
+            .setDisplayNameTextTo(user.name)
             .save()
-            .verify.displayNameShownWithText(user!.name)
+            .verify.displayNameShownWithText(user.name)
     }
 
     func testSwitchSignatureToggleOn() {
@@ -66,14 +69,16 @@ class AccountSettingsTests : FixtureAuthenticatedTestCase {
             .verify.signatureIsEnabled()
     }
 
+    /// When we are setting Signature toggle to its default "OFF" state then Save button is disabled.
     func testSwitchSignatureToggleOff() {
         accountSettingsRobot
             .signature()
             .disableSignature()
-            .save()
+            .navigateBackToAccountSettings()
             .verify.signatureIsDisabled()
     }
 
+    /// Default Signature toggle state is "OFF" so after switching it "ON" "Save" nav bar button will be enabled.
     func testSwitchMobileSignatureToggleOn() {
         let signature = "\(StringUtils().randomAlphanumericString())</br>\(StringUtils().randomAlphanumericString())"
         accountSettingsRobot

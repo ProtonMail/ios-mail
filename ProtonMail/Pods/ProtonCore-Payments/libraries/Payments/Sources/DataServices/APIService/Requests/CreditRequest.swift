@@ -50,7 +50,7 @@ public enum PaymentAction {
     }
 }
 
-public class CreditRequest<T: Response>: BaseApiRequest<T> {
+public class CreditRequest: BaseApiRequest<CreditResponse> {
     private let paymentAction: PaymentAction
     private let amount: Int
 
@@ -65,13 +65,22 @@ public class CreditRequest<T: Response>: BaseApiRequest<T> {
     override public var path: String { super.path + "/v4/credit" }
 
     override public var parameters: [String: Any]? {
-        [
-            "Amount": amount,
-            "Currency": "USD",
-            "Payment": ["Type": paymentAction.getType,
-                        "Details": [paymentAction.getKey: paymentAction.getValue]
+        switch paymentAction {
+        case .token(let token):
+            return [
+                "Amount": amount,
+                "Currency": "USD",
+                "PaymentToken": token
             ]
-        ]
+        case .apple:
+            return [
+                "Amount": amount,
+                "Currency": "USD",
+                "Payment": ["Type": paymentAction.getType,
+                            "Details": [paymentAction.getKey: paymentAction.getValue]
+                ]
+            ]
+        }
     }
 }
 

@@ -31,8 +31,10 @@ extension ConversationViewController {
             actionSheet?.dismiss(animated: true)
         case .delete:
             showDeleteAlert(deleteHandler: { [weak self] _ in
+                let inPageView = self?.isInPageView ?? false
+                self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: inPageView)
                 self?.viewModel.handleActionSheetAction(action, message: message) { [weak self] shouldDismissView in
-                    guard shouldDismissView else { return }
+                    guard !inPageView && shouldDismissView else { return }
                     self?.navigationController?.popViewController(animated: true)
                 }
             })
@@ -42,11 +44,13 @@ extension ConversationViewController {
             }
         case .toolbarCustomization:
             showToolbarActionCustomizationView()
-        case .viewInDarkMode, .viewInLightMode:
-            viewModel.handleActionSheetAction(action, message: message, completion: { [weak self] shouldDismissView in
-                guard shouldDismissView else { return }
+        case .archive, .inbox, .spam, .spamMoveToInbox, .trash:
+            let inPageView = isInPageView
+            viewModel.sendSwipeNotificationIfNeeded(isInPageView: inPageView)
+            viewModel.handleActionSheetAction(action, message: message) { [weak self] shouldDismissView in
+                guard !inPageView && shouldDismissView else { return }
                 self?.navigationController?.popViewController(animated: true)
-            })
+            }
         default:
             viewModel.handleActionSheetAction(action, message: message) { [weak self] shouldDismissView in
                 guard shouldDismissView else { return }

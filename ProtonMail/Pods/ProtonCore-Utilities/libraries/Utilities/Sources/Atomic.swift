@@ -22,6 +22,8 @@
 
 // Inspired by https://www.objc.io/blog/2018/12/18/atomic-variables/ article
 
+import Foundation
+
 public final class Atomic<A> {
     
     private let serialAccessQueue = DispatchQueue(label: "ch.proton.atomic_queue")

@@ -3,14 +3,10 @@
 #import "SentrySpan.h"
 #import <Foundation/Foundation.h>
 
+@class SentryEnvelopeItem;
 #if SENTRY_HAS_UIKIT
 @class SentryFramesTracker;
 #endif // SENTRY_HAS_UIKIT
-@class SentryHub;
-@class SentryProfilesSamplerDecision;
-@class SentryScreenFrames;
-@class SentryEnvelope;
-@class SentrySpanId;
 @class SentryTransaction;
 
 #if SENTRY_TARGET_PROFILING_SUPPORTED
@@ -23,57 +19,56 @@ typedef NS_ENUM(NSUInteger, SentryProfilerTruncationReason) {
 
 NS_ASSUME_NONNULL_BEGIN
 
-FOUNDATION_EXPORT const int kSentryProfilerFrequencyHz;
-FOUNDATION_EXPORT NSString *const kTestStringConst;
+SENTRY_EXTERN const int kSentryProfilerFrequencyHz;
+
+SENTRY_EXTERN NSString *const kSentryProfilerSerializationKeySlowFrameRenders;
+SENTRY_EXTERN NSString *const kSentryProfilerSerializationKeyFrozenFrameRenders;
+SENTRY_EXTERN NSString *const kSentryProfilerSerializationKeyFrameRates;
 
 SENTRY_EXTERN_C_BEGIN
-
-/*
- * Parses a symbol that is returned from `backtrace_symbols()`, which encodes information
- * like the frame index, image name, function name, and offset in a single string. e.g.
- * For the input:
- * 2   UIKitCore                           0x00000001850d97ac -[UIFieldEditor
- * _fullContentInsetsFromFonts] + 160 This function would return: -[UIFieldEditor
- * _fullContentInsetsFromFonts]
- *
- * If the format does not match the expected format, this returns the input string.
- */
-NSString *parseBacktraceSymbolsFunctionName(const char *symbol);
 
 NSString *profilerTruncationReasonName(SentryProfilerTruncationReason reason);
 
 SENTRY_EXTERN_C_END
 
+/**
+ * A wrapper around the low-level components used to gather sampled backtrace profiles.
+ * @warning A main assumption is that profile start/stop must be contained within range of time of
+ * the first concurrent transaction's start time and last one's end time.
+ */
 @interface SentryProfiler : NSObject
 
-/**
- * Start the profiler, if it isn't already running, for the span with the provided ID. If it's
- * already running, it will track the new span as well.
- */
-+ (void)startForSpanID:(SentrySpanId *)spanID hub:(SentryHub *)hub;
+@property (strong, nonatomic) SentryId *profileId;
 
 /**
- * Report that a span ended to the profiler so it can update bookkeeping and if it was the last
- * concurrent span being profiled, stops the profiler.
+ * Start a profiler, if one isn't already running.
  */
-+ (void)stopProfilingSpan:(id<SentrySpan>)span;
++ (void)startWithTracer:(SentryTracer *)tracer;
 
 /**
- * Certain transactions may be dropped by the SDK at the time they are ended, when we've already
- * been tracking them for profiling. This allows them to be removed from bookkeeping and finish
- * profile if necessary.
+ * Stop the profiler if it is running.
  */
-+ (void)dropTransaction:(SentryTransaction *)transaction;
-;
+- (void)stopForReason:(SentryProfilerTruncationReason)reason;
 
 /**
- * After the SDK creates a transaction for a span, link it to this profile. If it was the last
- * concurrent span being profiled, capture an envelope with the profile data and clean up the
- * profiler.
- */
-+ (void)linkTransaction:(SentryTransaction *)transaction;
+ * Whether the profiler instance is currently running. If not, then it probably timed out or aborted
+ * due to app backgrounding and is being kept alive while its associated transactions finish so they
+ * can query for its profile data. */
+- (BOOL)isRunning;
 
-+ (BOOL)isRunning;
+/**
+ * Whether there is any profiler that is currently running. A convenience method to query for this
+ * information from other SDK components that don't have access to specific @c SentryProfiler
+ * instances.
+ */
++ (BOOL)isCurrentlyProfiling;
+
+/**
+ * Given a transaction, return an envelope item containing any corresponding profile data to be
+ * attached to the transaction envelope.
+ * */
++ (nullable SentryEnvelopeItem *)createProfilingEnvelopeItemForTransaction:
+    (SentryTransaction *)transaction;
 
 @end
 

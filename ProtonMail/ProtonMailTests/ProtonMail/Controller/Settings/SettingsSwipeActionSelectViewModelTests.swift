@@ -25,8 +25,8 @@ import XCTest
 
 class MockSaveSwipeActionSettingForUsersUseCase: SaveSwipeActionSettingForUsersUseCase {
     @FuncStub(MockSaveSwipeActionSettingForUsersUseCase.execute) var callExecute
-    func execute(preference: SwipeActionPreference, completion: ((Result<Void, UpdateSwipeActionError>) -> Void)?) {
-        callExecute(preference, completion)
+    override func execute(params: SaveSwipeActionSetting.Parameters, callback: @escaping UseCase<Void, SaveSwipeActionSetting.Parameters>.Callback) {
+        callExecute(params, callback)
     }
 }
 
@@ -36,16 +36,28 @@ class SettingsSwipeActionSelectViewModelTests: XCTestCase {
     var selectedAction: SwipeActionItems = .left
     var saveSwipeActionSettingForUsersUseCaseMock: MockSaveSwipeActionSettingForUsersUseCase!
 
+    private var globalContainer: GlobalContainer!
+
     override func setUp() {
+        super.setUp()
+
         swipeActionCacheStub = SwipeActionCacheStub()
         saveSwipeActionSettingForUsersUseCaseMock = MockSaveSwipeActionSettingForUsersUseCase()
-        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: selectedAction, dependencies: .init(saveSwipeActionSetting: saveSwipeActionSettingForUsersUseCaseMock))
+
+        globalContainer = .init()
+        globalContainer.swipeActionCacheFactory.register { self.swipeActionCacheStub }
+        globalContainer.saveSwipeActionSettingFactory.register { self.saveSwipeActionSettingForUsersUseCaseMock }
+
+        sut = SettingsSwipeActionSelectViewModelImpl(dependencies: globalContainer, selectedAction: selectedAction)
     }
 
     override func tearDown() {
         sut = nil
         swipeActionCacheStub = nil
         saveSwipeActionSettingForUsersUseCaseMock = nil
+        globalContainer = nil
+
+        super.tearDown()
     }
 
     func testGetCurrentAction() {
@@ -57,7 +69,7 @@ class SettingsSwipeActionSelectViewModelTests: XCTestCase {
     func testUpdateLeftToRightSwipeAction() throws {
         let expectation1 = expectation(description: "Closure is called")
         saveSwipeActionSettingForUsersUseCaseMock.callExecute.bodyIs { _, _, completion  in
-            completion?(.success)
+            completion(.success)
         }
         sut.updateSwipeAction(.trash, completion: {
             expectation1.fulfill()
@@ -66,11 +78,11 @@ class SettingsSwipeActionSelectViewModelTests: XCTestCase {
 
         XCTAssertTrue(saveSwipeActionSettingForUsersUseCaseMock.callExecute.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(saveSwipeActionSettingForUsersUseCaseMock.callExecute.lastArguments?.a1)
-        XCTAssertEqual(argument, .left(.trash))
+        XCTAssertEqual(argument, .init(preference: .left(.trash)))
     }
 
     func testRightToLeftGetCurrentAction() {
-        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: .right, dependencies: .init(saveSwipeActionSetting: saveSwipeActionSettingForUsersUseCaseMock))
+        sut = SettingsSwipeActionSelectViewModelImpl(dependencies: globalContainer, selectedAction: .right)
 
         swipeActionCacheStub.leftToRightSwipeActionType = .moveTo
 
@@ -78,9 +90,9 @@ class SettingsSwipeActionSelectViewModelTests: XCTestCase {
     }
 
     func testUpdateRightToLeftSwipeAction() throws {
-        sut = SettingsSwipeActionSelectViewModelImpl(cache: swipeActionCacheStub, selectedAction: .right, dependencies: .init(saveSwipeActionSetting: saveSwipeActionSettingForUsersUseCaseMock))
+        sut = SettingsSwipeActionSelectViewModelImpl(dependencies: globalContainer, selectedAction: .right)
         saveSwipeActionSettingForUsersUseCaseMock.callExecute.bodyIs { _, _, completion  in
-            completion?(.success)
+            completion(.success)
         }
         let expectation1 = expectation(description: "Closure is called")
 
@@ -91,7 +103,7 @@ class SettingsSwipeActionSelectViewModelTests: XCTestCase {
 
         XCTAssertTrue(saveSwipeActionSettingForUsersUseCaseMock.callExecute.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(saveSwipeActionSettingForUsersUseCaseMock.callExecute.lastArguments?.a1)
-        XCTAssertEqual(argument, .right(.starAndUnstar))
+        XCTAssertEqual(argument, .init(preference: .right(.starAndUnstar)))
     }
 
     func testCheckIsActionAbleToBeSynced() {

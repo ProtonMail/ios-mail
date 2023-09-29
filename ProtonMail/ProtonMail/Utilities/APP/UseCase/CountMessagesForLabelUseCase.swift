@@ -18,7 +18,7 @@
 import Foundation
 import ProtonCore_Services
 
-typealias CountMessagesForLabelUseCase = NewUseCase<Int, CountMessagesForLabel.Params>
+typealias CountMessagesForLabelUseCase = UseCase<Int, CountMessagesForLabel.Params>
 
 final class CountMessagesForLabel: CountMessagesForLabelUseCase {
     private let dependencies: Dependencies

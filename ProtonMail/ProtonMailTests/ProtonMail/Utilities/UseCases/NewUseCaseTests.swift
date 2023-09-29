@@ -20,7 +20,7 @@ import XCTest
 @testable import ProtonMail
 
 class NewUseCaseTests: XCTestCase {
-    var sut: NewUseCase<Bool, Void>!
+    var sut: UseCase<Bool, Void>!
 
     override func setUp() {
         super.setUp()
@@ -37,16 +37,6 @@ class NewUseCaseTests: XCTestCase {
         sut.execute(params: Void()) { result in
             let isExecutionOnMain = try! result.get()
             XCTAssertFalse(isExecutionOnMain)
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: 2.0)
-    }
-
-    func testExecute_whenExecutionThreadIsSetToMain_executionIsOnMainThread() {
-        let expectation = expectation(description: "")
-        sut.executeOn(.main).execute(params: Void()) { result in
-            let isExecutionOnMain = try! result.get()
-            XCTAssertTrue(isExecutionOnMain)
             expectation.fulfill()
         }
         waitForExpectations(timeout: 2.0)
@@ -71,7 +61,7 @@ class NewUseCaseTests: XCTestCase {
     }
 }
 
-private class RunsInMainThreadUseCase: NewUseCase<Bool, Void> {
+private class RunsInMainThreadUseCase: UseCase<Bool, Void> {
 
     override func executionBlock(params: Void, callback: @escaping Callback) {
         let result = Thread.current.isMainThread

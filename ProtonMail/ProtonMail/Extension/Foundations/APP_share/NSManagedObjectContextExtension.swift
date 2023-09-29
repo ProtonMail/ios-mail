@@ -24,18 +24,6 @@ import Foundation
 import CoreData
 
 extension NSManagedObjectContext {
-
-    func deleteAll(_ entityName: String) {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-
-        do {
-            try executeAndMergeChanges(using: deleteRequest)
-        } catch {
-            assertionFailure("Failed to delete all data of entity \(entityName) - \(error.localizedDescription)")
-        }
-    }
-
     func managedObjectWithEntityName<T: NSManagedObject>(_ entityName: String, matching values: [String: CVarArg]) -> T? {
         let objects: [T]? = managedObjectsWithEntityName(entityName, matching: values)
         return objects?.first
@@ -102,7 +90,7 @@ extension NSManagedObjectContext {
                     }
                 }
                 if let parentContext = parent {
-                    assertionFailure(
+                    PMAssertionFailure(
                         "This should never be needed, rootSavingContext has no parent and mainContext is never saved."
                     )
                     parentContext.performAndWait { () -> Void in

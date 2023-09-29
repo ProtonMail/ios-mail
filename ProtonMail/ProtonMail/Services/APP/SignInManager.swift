@@ -22,6 +22,7 @@
 
 import Foundation
 import LifetimeTracker
+import ProtonCore_Authentication_KeyGeneration
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Login
@@ -33,16 +34,20 @@ class SignInManager: Service {
     let queueHandlerRegister: QueueHandlerRegister
     private var contactCacheStatus: ContactCacheStatusProtocol
     private let updateSwipeAction: UpdateSwipeActionDuringLoginUseCase
+    private let dependencies: Dependencies
 
-    init(usersManager: UsersManager,
-         contactCacheStatus: ContactCacheStatusProtocol,
-         queueHandlerRegister: QueueHandlerRegister,
-         updateSwipeActionUseCase: UpdateSwipeActionDuringLoginUseCase)
-    {
+    init(
+        usersManager: UsersManager,
+        contactCacheStatus: ContactCacheStatusProtocol,
+        queueHandlerRegister: QueueHandlerRegister,
+        updateSwipeActionUseCase: UpdateSwipeActionDuringLoginUseCase,
+        dependencies: Dependencies = .init()
+    ) {
         self.usersManager = usersManager
         self.contactCacheStatus = contactCacheStatus
         self.queueHandlerRegister = queueHandlerRegister
         self.updateSwipeAction = updateSwipeActionUseCase
+        self.dependencies = dependencies
         trackLifetime()
     }
 
@@ -50,7 +55,12 @@ class SignInManager: Service {
         var mailboxPassword = cleartextPassword
         if let keysalt = auth.passwordKeySalt, !keysalt.isEmpty {
             let keysalt_byte: Data = keysalt.decodeBase64()
-            mailboxPassword = PasswordUtils.getMailboxPassword(cleartextPassword, salt: keysalt_byte)
+            mailboxPassword = .init(
+                value: PasswordHash.hashPassword(
+                    cleartextPassword.value,
+                    salt: keysalt_byte
+                )
+            )
         }
         return mailboxPassword
     }
@@ -82,6 +92,8 @@ class SignInManager: Service {
 
         self.usersManager.loggedIn()
         self.contactCacheStatus.contactsCached = 0
+
+        dependencies.notificationCenter.post(name: .didSignIn, object: nil)
 
         return .success
     }
@@ -124,13 +136,16 @@ class SignInManager: Service {
             user.mailSettings = result.1
             self.usersManager.update(userInfo: result.0, for: auth.sessionID)
 
-            self.updateSwipeAction.execute(
-                activeUserInfo: activeUser.userInfo,
-                newUserInfo: user.userInfo,
-                newUserApiService: user.apiService
-            ) {
-                tryUnlock()
-            }
+            self.updateSwipeAction
+                .callbackOn(.main)
+                .execute(
+                params: .init(
+                    activeUserInfo: activeUser.userInfo,
+                    newUserInfo: user.userInfo,
+                    newUserApiService: user.apiService
+                )) { _ in
+                    tryUnlock()
+                }
         }.catch(on: .main) { [weak self] error in
             self?.queueHandlerRegister.unregisterHandler(for: user.userID)
             _ = self?.usersManager.logout(user: user, completion: {
@@ -149,6 +164,16 @@ extension SignInManager {
     }
 }
 
+extension SignInManager {
+    struct Dependencies {
+        let notificationCenter: NotificationCenter
+
+        init(notificationCenter: NotificationCenter = .default) {
+            self.notificationCenter = notificationCenter
+        }
+    }
+}
+
 extension SignInManager: LifetimeTrackable {
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -164,8 +189,6 @@ private extension SpotlightableFeatureKey {
             return UserInfo.isToolbarCustomizationEnable
         case .messageSwipeNavigation:
             return UserInfo.isConversationSwipeEnabled
-        case .encryptedSearchAvailable:
-            return false
         }
     }
 }

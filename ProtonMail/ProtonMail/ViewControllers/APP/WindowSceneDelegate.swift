@@ -22,10 +22,9 @@
 
 import UIKit
 
-@available(iOS 13.0, *)
 class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
-    lazy var coordinator: WindowsCoordinator = {
-        return (UIApplication.shared.delegate as? AppDelegate)!.coordinator
+    lazy private(set) var coordinator: WindowsCoordinator = {
+        (UIApplication.shared.delegate as! AppDelegate).coordinator
     }()
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -68,7 +67,8 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        self.coordinator.scene = scene
+        // Do not configure the external display, we will get default mirroring screen
+        guard session.role != .windowExternalDisplay else { return }
 
         let notificationInfo = connectionOptions.notificationResponse?.notification.request.content.userInfo
         if let userInfo = notificationInfo {
@@ -94,6 +94,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             return
         }
 
+        self.coordinator.scene = scene
         self.coordinator.start(launchedByNotification: notificationInfo != nil)
 
         // For default mail function
@@ -167,7 +168,6 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 }
 
-@available(iOS 13.0, *)
 enum Scenes: String {
     case fullApp
     case messageView

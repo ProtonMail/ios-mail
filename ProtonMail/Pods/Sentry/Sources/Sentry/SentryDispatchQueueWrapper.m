@@ -3,13 +3,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@implementation SentryDispatchQueueWrapper {
-    // Don't use a normal property because on RN a user got a warning "Property with 'retain (or
-    // strong)' attribute must be of object type". A dispatch queue is since iOS 6.0 an NSObject so
-    // it should work with strong, but nevertheless, we use an instance variable to fix this
-    // warning.
-    dispatch_queue_t queue;
-}
+@implementation SentryDispatchQueueWrapper
 
 - (instancetype)init
 {
@@ -24,14 +18,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithName:(const char *)name attributes:(dispatch_queue_attr_t)attributes;
 {
     if (self = [super init]) {
-        queue = dispatch_queue_create(name, attributes);
+        _queue = dispatch_queue_create(name, attributes);
     }
     return self;
 }
 
 - (void)dispatchAsyncWithBlock:(void (^)(void))block
 {
-    dispatch_async(queue, ^{
+    dispatch_async(_queue, ^{
         @autoreleasepool {
             block();
         }
@@ -60,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 {
     dispatch_time_t delta = (int64_t)(interval * NSEC_PER_SEC);
     dispatch_time_t when = dispatch_time(DISPATCH_TIME_NOW, delta);
-    dispatch_after(when, queue, ^{
+    dispatch_after(when, _queue, ^{
         @autoreleasepool {
             block();
         }
@@ -75,6 +69,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)dispatchOnce:(dispatch_once_t *)predicate block:(void (^)(void))block
 {
     dispatch_once(predicate, block);
+}
+
+- (nullable dispatch_block_t)createDispatchBlock:(void (^)(void))block
+{
+    return dispatch_block_create(0, block);
 }
 
 @end

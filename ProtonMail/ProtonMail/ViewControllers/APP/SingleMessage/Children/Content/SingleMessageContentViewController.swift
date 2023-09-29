@@ -8,13 +8,18 @@ class SingleMessageContentViewController: UIViewController {
 
     private var headerViewController: HeaderViewController? {
         didSet {
-            guard let headerViewController = headerViewController else {
+            guard
+                let newController = headerViewController
+            else {
+                return
+            }
+            if let oldController = oldValue, oldController === newController {
                 return
             }
 
             headerAnimationOn ?
-                changeHeader(oldController: oldValue, newController: headerViewController) :
-                manageHeaderViewControllers(oldController: oldValue, newController: headerViewController)
+                changeHeader(oldController: oldValue, newController: newController) :
+                manageHeaderViewControllers(oldController: oldValue, newController: newController)
         }
     }
 
@@ -65,14 +70,33 @@ class SingleMessageContentViewController: UIViewController {
         view = customView
     }
 
+    private func showErrorOrProtonUnreachableBanner(error: NSError) {
+        if error.httpCode == 503 {
+            viewModel.isProtonUnreachable { [weak self] isProtonUnreachable in
+                guard let self else { return }
+                if isProtonUnreachable {
+                    PMBanner.showProtonUnreachable(on: self)
+                } else {
+                    self.showError(error: error)
+                }
+            }
+        } else {
+            showError(error: error)
+        }
+    }
+
+    private func showError(error: NSError) {
+        showBanner()
+        bannerViewController?.showErrorBanner(error: error)
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         viewModel.set(uiDelegate: self)
         viewModel.updateErrorBanner = { [weak self] error in
             if let error = error {
-                self?.showBanner()
-                self?.bannerViewController?.showErrorBanner(error: error)
+                self?.showErrorOrProtonUnreachableBanner(error: error)
             } else {
                 self?.bannerViewController?.hideBanner(type: .error)
             }
@@ -86,8 +110,8 @@ class SingleMessageContentViewController: UIViewController {
 
         viewModel.startMonitorConnectionStatus { [weak self] in
             return self?.applicationStateProvider.applicationState == .active
-        } reloadWhenAppIsActive: { [weak self] value in
-            self?.shouldReloadWhenAppIsActive = value
+        } reloadWhenAppIsActive: { [weak self] in
+            self?.shouldReloadWhenAppIsActive = true
         }
 
         viewModel.showProgressHub = { [weak self] in
@@ -109,10 +133,9 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        if #available(iOS 12.0, *) {
             let isDarkModeStyle = traitCollection.userInterfaceStyle == .dark
             viewModel.sendMetricAPIIfNeeded(isDarkModeStyle: isDarkModeStyle)
-        }
+        super.traitCollectionDidChange(previousTraitCollection)
     }
 
     @objc private func showHide(_ sender: UIButton) {
@@ -268,7 +291,6 @@ class SingleMessageContentViewController: UIViewController {
     }
 
     private func addObservations() {
-        if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(restoreOffset),
                                                    name: UIWindowScene.willEnterForegroundNotification,
@@ -282,21 +304,6 @@ class SingleMessageContentViewController: UIViewController {
                              selector: #selector(willBecomeActive),
                              name: UIScene.willEnterForegroundNotification,
                              object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(restoreOffset),
-                                                   name: UIApplication.willEnterForegroundNotification,
-                                                   object: nil)
-            NotificationCenter.default.addObserver(self,
-                                                   selector: #selector(saveOffset),
-                                                   name: UIApplication.didEnterBackgroundNotification,
-                                                   object: nil)
-            NotificationCenter.default
-                .addObserver(self,
-                             selector: #selector(willBecomeActive),
-                             name: UIApplication.willEnterForegroundNotification,
-                             object: nil)
-        }
         NotificationCenter.default
             .addObserver(self,
                          selector: #selector(preferredContentSizeChanged(_:)),
@@ -485,7 +492,7 @@ extension SingleMessageContentViewController: NewMessageBodyViewControllerDelega
     }
 
     func openUrl(_ url: URL) {
-        let browserSpecificUrl = viewModel.linkOpener.deeplink(to: url) ?? url
+        let browserSpecificUrl = viewModel.linkOpener.deeplink(to: url)
         switch viewModel.linkOpener {
         case .inAppSafari:
             let supports = ["https", "http"]

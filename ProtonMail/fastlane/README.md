@@ -31,6 +31,14 @@ Upload the debug app to Appetize
 
 Build the app and upload to testflight
 
+### ios build_for_testing
+
+```sh
+[bundle exec] fastlane ios build_for_testing
+```
+
+Build debug apps for testing
+
 ### ios enterprise
 
 ```sh
@@ -78,22 +86,6 @@ Run unit test and get test coverage
 ```
 
 Run ui test and get test coverage
-
-### ios feature_tests
-
-```sh
-[bundle exec] fastlane ios feature_tests
-```
-
-Run feature ui test and get test coverage
-
-### ios monkey_tests
-
-```sh
-[bundle exec] fastlane ios monkey_tests
-```
-
-Run Monkey tests
 
 ----
 

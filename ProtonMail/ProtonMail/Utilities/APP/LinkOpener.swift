@@ -63,66 +63,43 @@ enum LinkOpener: String, CaseIterable {
         guard let scheme = URL(string: "\(self.scheme)://") else {
             return false
         }
-        return UIApplication.shared.canOpenURL(scheme)
+        return ProcessInfo.isRunningUnitTests || UIApplication.shared.canOpenURL(scheme)
     }
 
-    func deeplink(to url: URL) -> URL? {
-
+    func deeplink(to url: URL) -> URL {
         if let components = URLComponents(url: url, resolvingAgainstBaseURL: true),
            components.scheme == "tel" {
-            return  nil
+            return url
+        }
+
+        guard isInstalled else {
+            return url
         }
 
         var specificURL: URL?
         switch self {
-        case .chrome:
+        case .chrome, .edge, .onion, .operaMini, .operaTouch:
             if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
-                components.scheme = components.scheme == "https" ? "googlechromes" : "googlechrome"
+                components.scheme = components.scheme == "https" ? "\(scheme)s" : scheme
                 specificURL = components.url
             }
-        case .operaMini:
-            if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
-                components.scheme = components.scheme == "https" ? "opera-https" : "opera-http"
-                specificURL = components.url
-            }
-        case .operaTouch:
-            if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
-                components.scheme = components.scheme == "https" ? "touch-https" : "touch-http"
-                specificURL = components.url
-            }
-        case .edge:
-            if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
-                components.scheme = components.scheme == "https" ? "microsoft-edge-https" : "microsoft-edge-http"
-                specificURL = components.url
-            }
-        case .onion:
-            if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
-                components.scheme = components.scheme == "https" ? "onionhttps" : "onionhttp"
-                specificURL = components.url
-            }
-        case .firefox:
+        case .brave, .firefox, .firefoxFocus:
             if let escapedUrl = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) {
-                specificURL = URL(string: "firefox://open-url?url=\(escapedUrl)")
-            }
-        case .firefoxFocus:
-            if let escapedUrl = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) {
-                specificURL = URL(string: "firefox-focus://open-url?url=\(escapedUrl)")
-            }
-        case .brave:
-            if let escapedUrl = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) {
-                specificURL = URL(string: "brave://open-url?url=\(escapedUrl)")
+                specificURL = URL(string: "\(scheme)://open-url?url=\(escapedUrl)")
             }
         case .yandex:
             if let escapedUrl = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
-                specificURL = URL(string: "yandexbrowser-open-url://\(escapedUrl)")
+                specificURL = URL(string: "\(scheme)://\(escapedUrl)")
             }
         case .duckDuckGo:
-            specificURL = URL(string: "ddgQuickLink://\(url)")
-
+            if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+                components.scheme = scheme
+                specificURL = components.url
+            }
         case .safari, .inAppSafari:
-            specificURL = url
+            break
         }
 
-        return isInstalled ? specificURL : url
+        return specificURL ?? url
     }
 }

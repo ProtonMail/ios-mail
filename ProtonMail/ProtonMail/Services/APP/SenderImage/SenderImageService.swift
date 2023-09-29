@@ -66,7 +66,7 @@ final class SenderImageService {
             if let cachedImage = try self.dependencies.imageCache.senderImage(forURL: key) {
                 self.propagateResultToAllCallbacks(key: key, result: .success(cachedImage))
             } else {
-                if self.dependencies.internetStatusProvider.currentStatus != .notConnected {
+                if self.dependencies.internetStatusProvider.status.isConnected {
                     self.fetchImageFromBE(request: request) { result in
                         self.propagateResultToAllCallbacks(key: key, result: result)
                     }

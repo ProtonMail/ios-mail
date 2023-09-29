@@ -333,18 +333,12 @@ class RecoveryViewController: UIViewController, AccessibleView, Focusable {
     }
 
     private func configSegment() {
-        if #available(iOS 13.0, *) {
             methodSegmenedControl.setImage(image: IconProvider.envelope,
                                            withText: CoreString._su_recovery_seg_email,
                                            forSegmentAt: 0)
             methodSegmenedControl.setImage(image: IconProvider.mobile,
                                            withText: CoreString._su_recovery_seg_phone,
                                            forSegmentAt: 1)
-        } else {
-            // don't show icons for the version below iOS 13
-            methodSegmenedControl.setTitle(CoreString._su_recovery_seg_email, forSegmentAt: 0)
-            methodSegmenedControl.setTitle(CoreString._su_recovery_seg_phone, forSegmentAt: 1)
-        }
     }
 }
 

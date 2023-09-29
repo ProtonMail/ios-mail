@@ -23,7 +23,7 @@
 import ProtonCore_UIFoundations
 import UIKit
 
-class MoveToActionSheetPresenter {
+final class MoveToActionSheetPresenter {
 
     func present(
         on viewController: UIViewController,
@@ -32,8 +32,7 @@ class MoveToActionSheetPresenter {
         hasNewFolderButton: Bool = true,
         addNewFolder: @escaping () -> Void,
         selected: @escaping (MenuLabel, Bool) -> Void,
-        cancel: @escaping (_ havingUnsaveChanges: Bool) -> Void,
-        done: @escaping (_ havingUnsaveChanges: Bool) -> Void
+        cancel: @escaping () -> Void
     ) {
         var folderSelectionActionSheet: PMActionSheet?
 
@@ -77,14 +76,9 @@ class MoveToActionSheetPresenter {
         let headerView = PMActionSheetHeaderView(
             title: LocalString._move_to_title,
             leftItem: .right(IconProvider.cross),
-            rightItem: .left(LocalString._move_to_done_button_title),
-            leftItemHandler: { [weak self] in
-                guard let self = self else { return }
-                cancel(self.hasSelected(folderSelectionActionSheet: folderSelectionActionSheet))
-            }, rightItemHandler: { [weak self] in
-                guard let self = self else { return }
-                done(self.hasSelected(folderSelectionActionSheet: folderSelectionActionSheet))
-            }
+            rightItem: nil,
+            leftItemHandler: { cancel() },
+            rightItemHandler: nil
         )
 
         let add = PMActionSheetItem(
@@ -119,9 +113,4 @@ class MoveToActionSheetPresenter {
             }
         }
     }
-
-    private func hasSelected(folderSelectionActionSheet: PMActionSheet?) -> Bool {
-        folderSelectionActionSheet?.itemGroups.last?.items.first(where: { $0.markType != .none }) != nil
-    }
-
 }

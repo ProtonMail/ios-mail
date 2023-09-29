@@ -78,6 +78,7 @@ extension NSError {
         )
     }
 
+    @MainActor
     class func alertSavingDraftError(details: String) {
         NotificationCenter.default.post(
             name: NSError.errorOccuredNotification,

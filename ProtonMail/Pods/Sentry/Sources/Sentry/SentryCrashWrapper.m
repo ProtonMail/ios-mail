@@ -1,8 +1,8 @@
 #import "SentryCrashWrapper.h"
 #import "SentryCrash.h"
+#import "SentryCrashBinaryImageCache.h"
 #import "SentryCrashMonitor_AppState.h"
 #import "SentryCrashMonitor_System.h"
-#import "SentryHook.h"
 #import <Foundation/Foundation.h>
 #import <SentryCrashCachedData.h>
 #import <SentryCrashDebug.h>
@@ -51,23 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
     return sentrycrashstate_currentState()->applicationIsInForeground;
 }
 
-- (void)installAsyncHooks
-{
-    sentrycrash_install_async_hooks();
-}
-
-- (void)close
-{
-    SentryCrash *handler = [SentryCrash sharedInstance];
-    @synchronized(handler) {
-        [handler setMonitoring:SentryCrashMonitorTypeNone];
-        handler.onCrash = NULL;
-    }
-
-    sentrycrash_deactivate_async_hooks();
-    sentrycrashccd_close();
-}
-
 - (NSDictionary *)systemInfo
 {
     static NSDictionary *sharedInfo = nil;
@@ -96,6 +79,16 @@ NS_ASSUME_NONNULL_BEGIN
     }
 
     return 0;
+}
+
+- (void)startBinaryImageCache
+{
+    sentrycrashbic_startCache();
+}
+
+- (void)stopBinaryImageCache
+{
+    sentrycrashbic_stopCache();
 }
 
 @end

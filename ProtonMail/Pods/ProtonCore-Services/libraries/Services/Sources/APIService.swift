@@ -87,6 +87,7 @@ public protocol API {
                  customAuthCredential: AuthCredential?,
                  nonDefaultTimeout: TimeInterval?,
                  retryPolicy: ProtonRetryPolicy.RetryMode,
+                 onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                  jsonCompletion: @escaping JSONCompletion)
     
     func request<T>(method: HTTPMethod,
@@ -98,6 +99,7 @@ public protocol API {
                     customAuthCredential: AuthCredential?,
                     nonDefaultTimeout: TimeInterval?,
                     retryPolicy: ProtonRetryPolicy.RetryMode,
+                    onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                     decodableCompletion: @escaping DecodableCompletion<T>) where T: APIDecodableResponse
     
     func download(byUrl url: String,
@@ -185,6 +187,55 @@ public protocol API {
                            decodableCompletion: @escaping DecodableCompletion<T>) where T: APIDecodableResponse
 }
 
+// Variants without `onDataTaskCreated: @escaping (URLSessionDataTask) -> Void` parameter
+public extension API {
+    func request(method: HTTPMethod,
+                 path: String,
+                 parameters: Any?,
+                 headers: [String: Any]?,
+                 authenticated: Bool,
+                 autoRetry: Bool,
+                 customAuthCredential: AuthCredential?,
+                 nonDefaultTimeout: TimeInterval?,
+                 retryPolicy: ProtonRetryPolicy.RetryMode,
+                 jsonCompletion: @escaping JSONCompletion) {
+        self.request(method: method,
+                     path: path,
+                     parameters: parameters,
+                     headers: headers,
+                     authenticated: authenticated,
+                     autoRetry: autoRetry,
+                     customAuthCredential: customAuthCredential,
+                     nonDefaultTimeout: nonDefaultTimeout,
+                     retryPolicy: retryPolicy,
+                     onDataTaskCreated: { _ in },
+                     jsonCompletion: jsonCompletion)
+    }
+    
+    func request<T>(method: HTTPMethod,
+                    path: String,
+                    parameters: Any?,
+                    headers: [String: Any]?,
+                    authenticated: Bool,
+                    autoRetry: Bool,
+                    customAuthCredential: AuthCredential?,
+                    nonDefaultTimeout: TimeInterval?,
+                    retryPolicy: ProtonRetryPolicy.RetryMode,
+                    decodableCompletion: @escaping DecodableCompletion<T>) where T: APIDecodableResponse {
+        self.request(method: method,
+                     path: path,
+                     parameters: parameters,
+                     headers: headers,
+                     authenticated: authenticated,
+                     autoRetry: autoRetry,
+                     customAuthCredential: customAuthCredential,
+                     nonDefaultTimeout: nonDefaultTimeout,
+                     retryPolicy: retryPolicy,
+                     onDataTaskCreated: { _ in },
+                     decodableCompletion: decodableCompletion)
+    }
+}
+
 public extension API {
     
     @available(*, deprecated, message: "Please use the variant returning either DecodableResponseCompletion or JSONResponseCompletion")
@@ -261,55 +312,6 @@ public protocol APIServiceDelegate: AnyObject {
     func onDohTroubleshot()
 }
 
-public enum HumanVerifyFinishReason {
-    public typealias HumanVerifyHeader = [String: Any]
-    
-    case verification(header: HumanVerifyHeader, verificationCodeBlock: SendVerificationCodeBlock?)
-    case close
-    case closeWithError(code: Int, description: String)
-}
-
-public protocol HumanVerifyDelegate: AnyObject {
-
-    var responseDelegateForLoginAndSignup: HumanVerifyResponseDelegate? { get set }
-    var paymentDelegateForLoginAndSignup: HumanVerifyPaymentDelegate? { get set }
-
-    func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, completion: (@escaping (HumanVerifyFinishReason) -> Void))
-    // This function calculate a device challenge using different challenge types and returns the solved hash in Base64 format.
-    func onDeviceVerify(parameters: DeviceVerifyParameters) -> String?
-
-    func getSupportURL() -> URL
-}
-
-extension HumanVerifyDelegate {
-    
-    @available(*, deprecated, message: "The error parameter is no longer used, please use the version without it")
-    func onHumanVerify(parameters: HumanVerifyParameters, currentURL: URL?, error _: NSError, completion: (@escaping (HumanVerifyFinishReason) -> Void)) {
-        onHumanVerify(parameters: parameters, currentURL: currentURL, completion: completion)
-    }
-}
-
-public enum HumanVerifyEndResult {
-    case success
-    case cancel
-}
-
-public protocol HumanVerifyResponseDelegate: AnyObject {
-    func onHumanVerifyStart()
-    func onHumanVerifyEnd(result: HumanVerifyEndResult)
-    func humanVerifyToken(token: String?, tokenType: String?)
-}
-
-public enum PaymentTokenStatusResult {
-    case success
-    case fail
-}
-
-public protocol HumanVerifyPaymentDelegate: AnyObject {
-    var paymentToken: String? { get }
-    func paymentTokenStatusChanged(status: PaymentTokenStatusResult)
-}
-
 public typealias AuthRefreshResultCompletion = (Result<Credential, AuthErrors>) -> Void
 
 public protocol AuthSessionInvalidatedDelegate: AnyObject {
@@ -377,13 +379,31 @@ public enum SessionAcquiringResult {
     case sessionUnavailableAndNotFetched
 }
 
+public enum AuthCredentialFetchingResult: Equatable {
+    case found(credentials: AuthCredential)
+    case notFound
+    case wrongConfigurationNoDelegate
+
+    public var toNSError: NSError? {
+        switch self {
+        case .found: return nil
+        case .notFound: return AuthCredentialFetchingResult.emptyTokenError
+        case .wrongConfigurationNoDelegate: return AuthCredentialFetchingResult.noAuthDelegateError
+        }
+    }
+    
+    static var noAuthDelegateError: NSError { .protonMailError(0, localizedDescription: "AuthDelegate is required") }
+
+    static var emptyTokenError: NSError { .protonMailError(0, localizedDescription: "Empty token") }
+}
+
 public protocol APIService: API, RequestPerforming {
 
     // session and credentials management
     var sessionUID: String { get }
     func setSessionUID(uid: String)
     func acquireSessionIfNeeded(completion: @escaping (Result<SessionAcquiringResult, APIError>) -> Void)
-
+    func fetchAuthCredentials(completion: @escaping (AuthCredentialFetchingResult) -> Void)
     // delegates
     var authDelegate: AuthDelegate? { get set }
     var serviceDelegate: APIServiceDelegate? { get set }
@@ -404,6 +424,7 @@ public extension APIService {
     
     func perform(request route: Request,
                  callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor,
+                 onDataTaskCreated: @escaping (URLSessionDataTask) -> Void = { _ in },
                  jsonDictionaryCompletion: @escaping (_ task: URLSessionDataTask?, _ result: Result<JSONDictionary, ResponseError>) -> Void) {
         // TODO: add executor to request so it can be passed to DoH
         request(method: route.method,
@@ -414,7 +435,8 @@ public extension APIService {
                 autoRetry: route.autoRetry,
                 customAuthCredential: route.authCredential,
                 nonDefaultTimeout: route.nonDefaultTimeout,
-                retryPolicy: route.retryPolicy) { (task, result: Result<JSONDictionary, APIError>) in
+                retryPolicy: route.retryPolicy,
+                onDataTaskCreated: onDataTaskCreated) { (task, result: Result<JSONDictionary, APIError>) in
             executor.execute {
                 let httpCode = task.flatMap(\.response).flatMap { $0 as? HTTPURLResponse }.map(\.statusCode)
                 switch result {
@@ -443,12 +465,15 @@ public extension APIService {
     /// Asynchronous variant of `perform(request:callCompletionBlockUsing:jsonDictionaryCompletion)`.
     ///  - Return a tuple of type `(URLSessionDataTask?, JSONDictionary)` if success.
     ///  - Throw an error of type `ResponseError` if failure.
-    @available(iOS 13.0, macOS 10.15, *)
+    @available(macOS 10.15, *)
     func perform(request route: Request,
+                 onDataTaskCreated: @escaping (URLSessionDataTask) -> Void = { _ in },
                  callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor)
     async throws -> (URLSessionDataTask?, JSONDictionary) {
         try await withCheckedThrowingContinuation { continuation in
-            perform(request: route, callCompletionBlockUsing: executor) { task, result in
+            perform(request: route,
+                    callCompletionBlockUsing: executor,
+                    onDataTaskCreated: onDataTaskCreated) { task, result in
                 switch result {
                 case .success(let jsonDictionary):
                     continuation.resume(returning: (task, jsonDictionary))
@@ -462,6 +487,7 @@ public extension APIService {
     func perform<R>(request route: Request,
                     response: R,
                     callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor,
+                    onDataTaskCreated: @escaping (URLSessionDataTask) -> Void = { _ in },
                     responseCompletion: @escaping (_ task: URLSessionDataTask?, _ response: R) -> Void) where R: ResponseType {
         request(method: route.method,
                 path: route.path,
@@ -471,7 +497,8 @@ public extension APIService {
                 autoRetry: route.autoRetry,
                 customAuthCredential: route.authCredential,
                 nonDefaultTimeout: route.nonDefaultTimeout,
-                retryPolicy: route.retryPolicy) { (task, result: Result<JSONDictionary, APIError>) in
+                retryPolicy: route.retryPolicy,
+                onDataTaskCreated: onDataTaskCreated) { (task, result: Result<JSONDictionary, APIError>) in
             executor.execute {
                 let httpCode = task.flatMap(\.response).flatMap { $0 as? HTTPURLResponse }.map(\.statusCode)
                 switch result {
@@ -508,15 +535,17 @@ public extension APIService {
 
     /// Asynchronous variant of `perform(request:response:callCompletionBlockUsing:responseCompletion)`.
     /// - Return a tuple of type `(URLSessionDataTask?, some ResponseType)`
-    @available(iOS 13.0, macOS 10.15, *)
+    @available(macOS 10.15, *)
     func perform<R>(request route: Request,
                     response: R,
-                    callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor)
+                    callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor,
+                    onDataTaskCreated: @escaping (URLSessionDataTask) -> Void = { _ in })
     async -> (URLSessionDataTask?, R) where R: ResponseType {
         await withCheckedContinuation { continuation in
             perform(request: route,
                     response: response,
-                    callCompletionBlockUsing: executor) { task, result in
+                    callCompletionBlockUsing: executor,
+                    onDataTaskCreated: onDataTaskCreated) { task, result in
                 continuation.resume(returning: (task, result))
             }
         }
@@ -524,6 +553,7 @@ public extension APIService {
 
     func perform<T>(request route: Request,
                     callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor,
+                    onDataTaskCreated: @escaping (URLSessionDataTask) -> Void = { _ in },
                     decodableCompletion: @escaping (_ task: URLSessionDataTask?, _ result: Result<T, ResponseError>) -> Void)
     where T: APIDecodableResponse {
         request(method: route.method,
@@ -534,7 +564,8 @@ public extension APIService {
                 autoRetry: route.autoRetry,
                 customAuthCredential: route.authCredential,
                 nonDefaultTimeout: route.nonDefaultTimeout,
-                retryPolicy: route.retryPolicy) { (task: URLSessionDataTask?, result: Result<T, APIError>) in
+                retryPolicy: route.retryPolicy,
+                onDataTaskCreated: onDataTaskCreated) { (task: URLSessionDataTask?, result: Result<T, APIError>) in
             executor.execute {
                 let httpCode = task.flatMap(\.response).flatMap { $0 as? HTTPURLResponse }.map(\.statusCode)
                 switch result {
@@ -557,13 +588,15 @@ public extension APIService {
     /// Asynchronous variant of `perform(request:callCompletionBlockUsing:decodableCompletion)`.
     /// - Return a tuple of type `(URLSessionDataTask?, APIDecodableResponse)` if success.
     /// - Throw an error of type `ResponseError` if failure.
-    @available(iOS 13.0, macOS 10.15, *)
+    @available(macOS 10.15, *)
     func perform<R>(request route: Request,
-                    callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor)
+                    callCompletionBlockUsing executor: CompletionBlockExecutor = .asyncMainExecutor,
+                    onDataTaskCreated: @escaping (URLSessionDataTask) -> Void = { _ in })
     async throws -> (URLSessionDataTask?, R) where R: APIDecodableResponse {
         try await withCheckedThrowingContinuation { continuation in
             perform(request: route,
                     callCompletionBlockUsing: executor,
+                    onDataTaskCreated: onDataTaskCreated,
                     decodableCompletion: { (task: URLSessionDataTask?, result: Result<R, ResponseError>) in
                 switch result {
                 case .success(let object):
@@ -956,7 +989,11 @@ public extension APIService {
 }
 
 extension APIService {
-    public func performRequest(request: Request, parameters: Any?, headers: [String: Any]?, jsonCompletion: JSONCompletion?) {
+    public func performRequest(request: Request,
+                               parameters: Any?,
+                               headers: [String: Any]?,
+                               onDataTaskCreated: @escaping (URLSessionDataTask) -> Void = { _ in },
+                               jsonCompletion: JSONCompletion?) {
         self.request(
             method: request.method,
             path: request.path,
@@ -967,6 +1004,7 @@ extension APIService {
             customAuthCredential: request.authCredential,
             nonDefaultTimeout: request.nonDefaultTimeout,
             retryPolicy: request.retryPolicy,
+            onDataTaskCreated: onDataTaskCreated,
             jsonCompletion: { task, result in
                 jsonCompletion?(task, result)
             }

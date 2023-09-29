@@ -15,10 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import GoLibs
 import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Log
 
 class MessageDecrypter {
     typealias DecryptionOutput = (body: String, attachments: [MimeAttachment]?)
@@ -28,10 +25,10 @@ class MessageDecrypter {
         signatureVerificationResult: SignatureVerificationResult
     )
 
-    private weak var userDataSource: UserDataSource?
+    private let keyFactory: MessageDecrypterKeyFactory
 
     init(userDataSource: UserDataSource) {
-        self.userDataSource = userDataSource
+        keyFactory = MessageDecrypterKeyFactory(userDataSource: userDataSource)
     }
 
     func decrypt(messageObject: Message) throws -> DecryptionOutput {
@@ -48,69 +45,45 @@ class MessageDecrypter {
         message: MessageEntity,
         verificationKeys: [ArmoredKey]
     ) throws -> DecryptionAndVerificationOutput {
-        let addressKeys = self.getAddressKeys(for: message.addressID.rawValue)
-        if addressKeys.isEmpty {
-            return ((message.body, nil), .failure)
-        }
-
-        guard let dataSource = self.userDataSource else {
-            throw MailCrypto.CryptoError.decryptionFailed
-        }
-
-        let decryptionKeys = MailCrypto.decryptionKeys(
-            basedOn: addressKeys,
-            mailboxPassword: dataSource.mailboxPassword,
-            userKeys: dataSource.userInfo.userPrivateKeys
-        )
+        let (decryptionKeyRing, keyRingWasCached) = try keyFactory.decryptionKeyRing(addressID: message.addressID)
 
         if message.isMultipartMixed {
             do {
                 let messageData = try MailCrypto().decryptMIME(
                     encrypted: message.body,
                     publicKeys: verificationKeys,
-                    decryptionKeys: decryptionKeys
+                    decryptionKeyRing: decryptionKeyRing
                 )
                 let (body, attachments) = postProcessMIME(messageData: messageData)
                 return ((body, attachments), messageData.signatureVerificationResult)
             } catch {
-                // NOTE, decryption function will be called multiple times
-                // Reports on the Sentry could be triple than real situation
-                PMAssertionFailure(error)
+                SystemLogger.log(error: error, category: .encryption)
                 // do not throw here, make a Hail Mary fallback to the non-MIME decryption method
             }
         }
 
-        let armoredMessage = ArmoredMessage(value: message.body)
-
-        let decryptedBody: String
-        let signatureVerificationResult: SignatureVerificationResult
-
-        if verificationKeys.isEmpty {
-            decryptedBody = try Decryptor.decrypt(decryptionKeys: decryptionKeys, encrypted: armoredMessage)
-            signatureVerificationResult = .signatureVerificationSkipped
-        } else {
-            let decrypted: VerifiedString = try Decryptor.decryptAndVerify(
-                decryptionKeys: decryptionKeys,
-                value: armoredMessage,
-                verificationKeys: verificationKeys,
-                verifyTime: CryptoGetUnixTime()
+        do {
+            let (decryptedBody, signatureVerificationResult) = try MailCrypto().decryptNonMIME(
+                encrypted: message.body,
+                publicKeys: verificationKeys,
+                decryptionKeyRing: decryptionKeyRing
             )
-            decryptedBody = decrypted.content
-            signatureVerificationResult = SignatureVerificationResult(message: decrypted)
-        }
+            let processedBody = postProcessNonMIME(decryptedBody: decryptedBody, isPlainText: message.isPlainText)
+            return ((processedBody, nil), signatureVerificationResult)
+        } catch {
+            SystemLogger.log(error: error, category: .encryption)
 
-        let processedBody = postProcessNonMIME(decryptedBody: decryptedBody, isPlainText: message.isPlainText)
-        return ((processedBody, nil), signatureVerificationResult)
-    }
-}
-
-// MARK: decryption message
-extension MessageDecrypter {
-    func getAddressKeys(for addressID: String) -> [Key] {
-        guard let keys = userDataSource?.userInfo.getAllAddressKey(address_id: addressID) else {
-            return self.userDataSource?.userInfo.addressKeys ?? []
+            if keyRingWasCached {
+                SystemLogger.log(
+                    message: "Decryption failed while using a cached key ring, discarding...",
+                    category: .encryption
+                )
+                keyFactory.removeKeyRingFromCache(addressID: message.addressID)
+                return try decryptAndVerify(message: message, verificationKeys: verificationKeys)
+            } else {
+                throw error
+            }
         }
-        return keys
     }
 
     private func postProcessMIME(messageData: MIMEMessageData) -> (String, [MimeAttachment]) {
@@ -170,5 +143,9 @@ extension MessageDecrypter {
             infos.append(mimeAttachment)
         }
         return (infos, body)
+    }
+
+    func setCaching(enabled: Bool) {
+        keyFactory.setCaching(enabled: enabled)
     }
 }

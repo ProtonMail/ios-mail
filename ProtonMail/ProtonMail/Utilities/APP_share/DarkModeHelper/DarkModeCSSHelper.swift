@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCore_UIFoundations
 import SwiftSoup
 
 private enum CSSKeys: String {
@@ -237,7 +238,7 @@ struct CSSMagic {
     }
 
     static func darkStyleSupportLevel(document: Document?,
-                                      darkModeCache: DarkModeCacheProtocol = userCachedStatus) -> DarkStyleSupportLevel {
+                                      darkModeCache: DarkModeCacheProtocol) -> DarkStyleSupportLevel {
         if darkModeCache.darkModeStatus == .forceOff {
             return .notSupport
         }
@@ -309,7 +310,8 @@ extension CSSMagic {
                 guard let innerHTML = try? element.html() else {
                     return nil
                 }
-                let style = innerHTML.preg_replace(#"\/\*[^{}]+\*\/"#, replaceto: "")
+                // Remove comment, e.g. /* Font family */
+                let style = innerHTML.preg_replace(#"\/\*([\s\S]*?)\*\/"#, replaceto: "")
                 return style
             })
         } catch {
@@ -335,18 +337,28 @@ extension CSSMagic {
     /// - Returns: dark mode style css or `nil` if it doesn't have good contrast
     static func getDarkModeCSSDictFrom(styleCSS: [String]) -> [String: [String]]? {
         var result: [String: [String]] = [:]
-        let flattenCSS = styleCSS.flatMap({ $0.split(separator: "}") })
-        for css in flattenCSS {
-            let data = css.split(separator: "{")
-                .map({ String($0) })
-            guard data.count == 2,
-                  let selectorKey = data.first,
-                  let selectorValue = data.last else { continue }
-            let attributes = CSSMagic.splitInline(attributes: selectorValue)
-            let newAttributes = CSSMagic.switchToDarkModeStyle(attributes: attributes)
-            if newAttributes.isEmpty { continue }
-            let previousResult = result[selectorKey] ?? []
-            result[selectorKey] = previousResult + newAttributes
+        for css in styleCSS {
+            do {
+                let regex = try RegularExpressionCache.regex(for: "(.*?)\\{(.*?)\\}", options: [.allowCommentsAndWhitespace, .dotMatchesLineSeparators])
+                let length = (css as NSString).length
+                let matches = regex.matches(in: css, range: NSRange(location: 0, length: length))
+                for match in matches where match.numberOfRanges == 3 {
+                    let keyRange = match.range(at: 1)
+                    let attributeRange = match.range(at: 2)
+                    // e.g. html, .textBlock
+                    let selectorKey = (css as NSString).substring(with: keyRange).trim()
+                    // e.g. background: black; width: 100px;
+                    let selectorValue = (css as NSString).substring(with: attributeRange).trim()
+
+                    let attributes = CSSMagic.splitInline(attributes: selectorValue)
+                    let newAttributes = CSSMagic.switchToDarkModeStyle(attributes: attributes)
+                    if newAttributes.isEmpty { continue }
+                    let previousResult = result[selectorKey] ?? []
+                    result[selectorKey] = previousResult + newAttributes
+                }
+            } catch {
+                PMAssertionFailure(error)
+            }
         }
         return result
     }
@@ -502,12 +514,12 @@ extension CSSMagic {
     /// - Parameter color: CSS color representation, could be rgba, hex...etc
     /// - Returns: HSLA representation, e.g. hsla(100, 50%, 62%, 0.5). Depends on the given value, return value is not always has alpha
     static func getDarkModeColor(from color: String, isForeground: Bool) -> String? {
-        guard var (colorAttribute, index, others) = parseAttribute(attribute: color) else { return nil }
-        others.removeAll(where: { $0 == "!important"})
+        guard let (colorAttribute, index, others) = parseAttribute(attribute: color) else { return nil }
+        var mutableOthers = others.removing("!important")
         guard let hsla = getHSLA(attribute: colorAttribute) else { return nil }
         let darkModeHSLA = CSSMagic.hslaForDarkMode(hsla: hsla, isForeground: isForeground)
-        others.insert(darkModeHSLA, at: index)
-        return others.joined(separator: " ")
+        mutableOthers.insert(darkModeHSLA, at: index)
+        return mutableOthers.joined(separator: " ")
     }
 }
 
@@ -692,6 +704,11 @@ extension CSSMagic {
     }
 
     static func hslaForDarkMode(hsla: HSLA, isForeground: Bool) -> String {
+        if hsla.color.toHex() == "#FFFFFF" && !isForeground {
+            let trait = UITraitCollection(userInterfaceStyle: .dark)
+            let color = ColorProvider.BackgroundNorm.resolvedColor(with: trait)
+            return color.toHex()
+        }
         var l = hsla.l
         let isAchromatic = hsla.s <= 5
         switch (isForeground, isAchromatic) {
@@ -787,7 +804,8 @@ extension CSSMagic {
     }
 
     static func getCSSAnchor(of node: Element) -> String {
-        if !node.id().isEmpty {
+        if !node.id().isEmpty && node.id() != "body" {
+            // DomPurify will remove id attribute if the content is `body`
             return "#\(node.id())"
         }
         var anchor = node.tagNameNormal()
@@ -837,7 +855,8 @@ extension CSSMagic {
             let colorKeys = [
                 CSSKeys.color.rawValue,
                 CSSKeys.border.rawValue,
-                CSSKeys.backgroundColor.rawValue
+                CSSKeys.backgroundColor.rawValue,
+                CSSKeys.background.rawValue
             ]
             let values = value
                 .components(separatedBy: ";")
@@ -870,14 +889,17 @@ extension CSSMagic {
     }
 
     static func isColor(attribute: String) -> Bool {
-        let count = [4, 5, 7, 9]
+        let countWithHash = [4, 5, 7, 9]
+        let countWithoutHash = [3, 4, 6, 8]
         if attribute.hasPrefix("rgb") || attribute.hasPrefix("rgba") {
             return attribute.preg_match("rgba?(.*,.*,.*)")
         } else if attribute.hasPrefix("hsl") || attribute.hasPrefix("hsla") {
             return attribute.preg_match("hsla?(.*,.*,.*)")
         } else if definedColors.keys.contains(attribute) {
             return true
-        } else if attribute.hasPrefix("#") && count.firstIndex(of: attribute.count) != nil {
+        } else if attribute.hasPrefix("#") && countWithHash.firstIndex(of: attribute.count) != nil {
+            return true
+        } else if !attribute.hasPrefix("#") && countWithoutHash.firstIndex(of: attribute.count) != nil {
             return true
         }
         return false

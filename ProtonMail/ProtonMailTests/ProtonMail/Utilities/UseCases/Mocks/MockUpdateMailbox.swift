@@ -41,6 +41,10 @@ final class MockUpdateMailbox: UpdateMailboxUseCase {
         completion()
     }
 
+    override func executionBlock(params: UpdateMailbox.Parameters, callback: @escaping UseCase<Void, UpdateMailbox.Parameters>.Callback) {
+        callback(.success(()))
+    }
+
     func setup(source: UpdateMailboxSourceProtocol) {
         self.source = source
     }

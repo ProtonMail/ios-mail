@@ -58,11 +58,20 @@ extension PMAPIService {
                         customAuthCredential: AuthCredential?,
                         nonDefaultTimeout: TimeInterval?,
                         retryPolicy: ProtonRetryPolicy.RetryMode,
+                        onDataTaskCreated: @escaping (URLSessionDataTask) -> Void = { _ in },
                         jsonCompletion: @escaping JSONCompletion) {
         startRequest(
-            method: method, path: path, parameters: parameters, headers: headers, authenticated: authenticated, authRetry: autoRetry,
-            authRetryRemains: 10, customAuthCredential: customAuthCredential.map(AuthCredential.init(copying:)), nonDefaultTimeout: nonDefaultTimeout,
+            method: method,
+            path: path,
+            parameters: parameters,
+            headers: headers,
+            authenticated: authenticated,
+            authRetry: autoRetry,
+            authRetryRemains: 10,
+            customAuthCredential: customAuthCredential.map(AuthCredential.init(copying:)),
+            nonDefaultTimeout: nonDefaultTimeout,
             retryPolicy: retryPolicy,
+            onDataTaskCreated: onDataTaskCreated,
             completion: Either<JSONCompletion, DecodableCompletion<DummyAPIDecodableResponseOnlyForSatisfyingGenericsResolving>>.left(
                 transformJSONCompletion(jsonCompletion)
             )
@@ -78,10 +87,21 @@ extension PMAPIService {
                            customAuthCredential: AuthCredential?,
                            nonDefaultTimeout: TimeInterval?,
                            retryPolicy: ProtonRetryPolicy.RetryMode,
+                           onDataTaskCreated: @escaping (URLSessionDataTask) -> Void = { _ in },
                            decodableCompletion: @escaping DecodableCompletion<T>) where T: APIDecodableResponse {
         startRequest(
-            method: method, path: path, parameters: parameters, headers: headers, authenticated: authenticated, authRetry: autoRetry,
-            authRetryRemains: 10, customAuthCredential: customAuthCredential.map(AuthCredential.init(copying:)), nonDefaultTimeout: nonDefaultTimeout, retryPolicy: retryPolicy, completion: .right(decodableCompletion)
+            method: method,
+            path: path,
+            parameters: parameters,
+            headers: headers,
+            authenticated: authenticated,
+            authRetry: autoRetry,
+            authRetryRemains: 10,
+            customAuthCredential: customAuthCredential.map(AuthCredential.init(copying:)),
+            nonDefaultTimeout: nonDefaultTimeout,
+            retryPolicy: retryPolicy,
+            onDataTaskCreated: onDataTaskCreated,
+            completion: .right(decodableCompletion)
         )
     }
     
@@ -98,6 +118,7 @@ extension PMAPIService {
                          customAuthCredential: AuthCredential? = nil,
                          nonDefaultTimeout: TimeInterval?,
                          retryPolicy: ProtonRetryPolicy.RetryMode,
+                         onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                          completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
 
         if !FeatureFactory.shared.isEnabled(.unauthSession), !authenticated {
@@ -112,6 +133,7 @@ extension PMAPIService {
                                                    fetchingCredentialsResult: .notFound,
                                                    nonDefaultTimeout: nonDefaultTimeout,
                                                    retryPolicy: retryPolicy,
+                                                   onDataTaskCreated: onDataTaskCreated,
                                                    completion: completion)
         } else if let customAuthCredential = customAuthCredential {
             performRequestHavingFetchedCredentials(method: method,
@@ -124,6 +146,7 @@ extension PMAPIService {
                                                    fetchingCredentialsResult: .found(credentials: AuthCredential(copying: customAuthCredential)),
                                                    nonDefaultTimeout: nonDefaultTimeout,
                                                    retryPolicy: retryPolicy,
+                                                   onDataTaskCreated: onDataTaskCreated,
                                                    completion: completion)
         } else {
             fetchAuthCredentials { result in
@@ -137,6 +160,7 @@ extension PMAPIService {
                                                             fetchingCredentialsResult: result,
                                                             nonDefaultTimeout: nonDefaultTimeout,
                                                             retryPolicy: retryPolicy,
+                                                            onDataTaskCreated: onDataTaskCreated,
                                                             completion: completion)
             }
         }
@@ -152,6 +176,7 @@ extension PMAPIService {
                                                    fetchingCredentialsResult: AuthCredentialFetchingResult,
                                                    nonDefaultTimeout: TimeInterval?,
                                                    retryPolicy: ProtonRetryPolicy.RetryMode,
+                                                   onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                                                    completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
 
         if !FeatureFactory.shared.isEnabled(.unauthSession), authenticated, let error = fetchingCredentialsResult.toNSError {
@@ -186,7 +211,9 @@ extension PMAPIService {
             switch completion {
             case .left:
                 sessionRequestCall = { continuation in
-                    self.session.request(with: request) { (task, result: Result<JSONDictionary, SessionResponseError>) in
+                    self.session.request(
+                        with: request, onDataTaskCreated: onDataTaskCreated
+                    ) { (task, result: Result<JSONDictionary, SessionResponseError>) in
                         self.debug(task, result.value, result.error?.underlyingError)
                         continuation(task, .left(result))
                     }
@@ -194,7 +221,9 @@ extension PMAPIService {
             case .right:
                 let decoder = jsonDecoder
                 sessionRequestCall = { continuation in
-                    self.session.request(with: request, jsonDecoder: decoder) { (task, result: Result<T, SessionResponseError>) in
+                    self.session.request(
+                        with: request, jsonDecoder: decoder, onDataTaskCreated: onDataTaskCreated
+                    ) { (task, result: Result<T, SessionResponseError>) in
                         self.debug(task, result.value, result.error?.underlyingError)
                         continuation(task, .right(result))
                     }
@@ -228,12 +257,16 @@ extension PMAPIService {
                                                                     fetchingCredentialsResult: fetchingCredentialsResult,
                                                                     nonDefaultTimeout: nonDefaultTimeout,
                                                                     retryPolicy: retryPolicy,
+                                                                    onDataTaskCreated: onDataTaskCreated,
                                                                     completion: completion)
                     } else {
                         // finish the request if it should not be retried
                         if self.dohInterface.errorIndicatesDoHSolvableProblem(error: error) {
-                            let apiBlockedError = NSError.protonMailError(APIErrorCode.potentiallyBlocked,
-                                                                          localizedDescription: CoreString._net_api_might_be_blocked_message)
+                            let apiBlockedError = NSError.protonMailError(
+                                APIErrorCode.potentiallyBlocked,
+                                localizedDescription: CoreString._net_api_might_be_blocked_message,
+                                underlyingError: error
+                            )
                             response = response.mapLeft { _ in .failure(apiBlockedError) }.mapRight { _ in .failure(apiBlockedError) }
                         }
                         self.handleNetworkRequestBeingFinished(task,
@@ -248,6 +281,7 @@ extension PMAPIService {
                                                                authCredential: authCredential,
                                                                nonDefaultTimeout: nonDefaultTimeout,
                                                                retryPolicy: retryPolicy,
+                                                               onDataTaskCreated: onDataTaskCreated,
                                                                completion: completion)
                     }
                 }
@@ -269,21 +303,24 @@ extension PMAPIService {
                                                       authCredential: AuthCredential?,
                                                       nonDefaultTimeout: TimeInterval?,
                                                       retryPolicy: ProtonRetryPolicy.RetryMode,
+                                                      onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                                                       completion: APIResponseCompletion<T>) where T: APIDecodableResponse {
         switch response {
         case .left(.success(let jsonDict)):
-            handleJSONResponse(task, jsonDict, authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, retryPolicy, completion, headers)
+            handleJSONResponse(task, jsonDict, authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, retryPolicy, onDataTaskCreated, completion, headers)
         case .right(.success(let object)):
             completion.call(task: task, response: .right(object))
         case .left(.failure(let error)), .right(.failure(let error)):
-            handleAPIError(task, error, authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, retryPolicy, completion, headers)
+            handleAPIError(task, error, authenticated, authRetry, authCredential, method, path, parameters, authRetryRemains, nonDefaultTimeout, retryPolicy, onDataTaskCreated, completion, headers)
         }
     }
 
     private func handleAPIError<T>(
         _ task: URLSessionDataTask?, _ error: API.APIError, _ authenticated: Bool, _ authRetry: Bool,
         _ authCredential: AuthCredential?, _ method: HTTPMethod, _ path: String, _ parameters: Any?, _ authRetryRemains: Int,
-        _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode, _ completion: APIResponseCompletion<T>, _ headers: [String: Any]?
+        _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
+        _ onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
+        _ completion: APIResponseCompletion<T>, _ headers: [String: Any]?
     ) where T: APIDecodableResponse {
         self.debugError(error)
         // PMLog.D(api: error)
@@ -298,13 +335,13 @@ extension PMAPIService {
         if !FeatureFactory.shared.isEnabled(.unauthSession),
            authenticated, httpCode == 401, authRetry, let authCredential = authCredential {
             
-            handleRefreshingCredentialsWithoutSupportForUnauthenticatedSessions(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
+            handleRefreshingCredentialsWithoutSupportForUnauthenticatedSessions(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, onDataTaskCreated, completion, error, task)
 
         // 401 handling for unauth sessions, when no credentials were sent
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
                     httpCode == 401, authCredential == nil {
 
-            handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains)
+            handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, onDataTaskCreated, completion, task, authRetry, authRetryRemains)
 
         // 401 handling for unauth sessions, when credentials were sent
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
@@ -328,6 +365,7 @@ extension PMAPIService {
                                                                 fetchingCredentialsResult: .found(credentials: credentials),
                                                                 nonDefaultTimeout: nonDefaultTimeout,
                                                                 retryPolicy: .userInitiated,
+                                                                onDataTaskCreated: onDataTaskCreated,
                                                                 completion: completion)
                 case .logout(let underlyingError):
                     let error = underlyingError.underlyingError
@@ -346,8 +384,29 @@ extension PMAPIService {
             
         } else if let responseError = error as? ResponseError, let responseCode = responseError.responseCode {
             
-            protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, self.deviceVerificationHandler, forceUpgradeHandler)
-            
+            protonMailResponseCodeHandler.handleProtonResponseCode(
+                responseHandlerData: PMResponseHandlerData(
+                    method: method,
+                    path: path,
+                    parameters: parameters,
+                    headers: headers,
+                    authenticated: authenticated,
+                    authRetry: authRetry,
+                    authRetryRemains: authRetryRemains,
+                    customAuthCredential: authCredential,
+                    nonDefaultTimeout: nonDefaultTimeout,
+                    retryPolicy: retryPolicy,
+                    task: task,
+                    onDataTaskCreated: onDataTaskCreated
+                ),
+                response: .right(responseError),
+                responseCode: responseCode,
+                completion: completion,
+                humanVerificationHandler: humanVerificationHandler,
+                deviceVerificationHandler: deviceVerificationHandler,
+                missingScopesHandler: missingScopesHandler,
+                forceUpgradeHandler: forceUpgradeHandler
+            )
         } else {
             completion.call(task: task, error: error)
         }
@@ -357,6 +416,7 @@ extension PMAPIService {
         _ task: URLSessionDataTask?, _ response: JSONDictionary, _ authenticated: Bool, _ authRetry: Bool,
         _ authCredential: AuthCredential?, _ method: HTTPMethod, _ path: String, _ parameters: Any?, _ authRetryRemains: Int,
         _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
+        _ onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
         _ completion: APIResponseCompletion<T>, _ headers: [String: Any]?
     ) where T: APIDecodableResponse {
         
@@ -387,13 +447,13 @@ extension PMAPIService {
         if !FeatureFactory.shared.isEnabled(.unauthSession),
            authenticated, httpCode == 401, authRetry, let authCredential = authCredential {
 
-            handleRefreshingCredentialsWithoutSupportForUnauthenticatedSessions(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, completion, error, task)
+            handleRefreshingCredentialsWithoutSupportForUnauthenticatedSessions(authCredential, method, path, parameters, authenticated, authRetry, authRetryRemains, nonDefaultTimeout, onDataTaskCreated, completion, error, task)
 
         // 401 handling for unauth sessions, when no credentials were sent
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
                     httpCode == 401, authCredential == nil {
 
-            handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, completion, task, authRetry, authRetryRemains)
+            handleSessionAcquiring(method, path, parameters, headers, authenticated, nonDefaultTimeout, retryPolicy, onDataTaskCreated, completion, task, authRetry, authRetryRemains)
 
         // 401 handling for unauth sessions, when credentials were sent
         } else if FeatureFactory.shared.isEnabled(.unauthSession),
@@ -417,6 +477,7 @@ extension PMAPIService {
                                                                 fetchingCredentialsResult: .found(credentials: credentials),
                                                                 nonDefaultTimeout: nonDefaultTimeout,
                                                                 retryPolicy: .userInitiated,
+                                                                onDataTaskCreated: onDataTaskCreated,
                                                                 completion: completion)
                 case .logout(let underlyingError):
                     let error = underlyingError.underlyingError
@@ -434,14 +495,38 @@ extension PMAPIService {
             }
             
         } else {
-            protonMailResponseCodeHandler.handleProtonResponseCode(task, .left(response), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, authCredential, nonDefaultTimeout, retryPolicy, completion, humanVerificationHandler, self.deviceVerificationHandler, forceUpgradeHandler)
+            self.protonMailResponseCodeHandler.handleProtonResponseCode(
+                responseHandlerData: PMResponseHandlerData(
+                    method: method,
+                    path: path,
+                    parameters: parameters,
+                    headers: headers,
+                    authenticated: authenticated,
+                    authRetry: authRetry,
+                    authRetryRemains: authRetryRemains,
+                    customAuthCredential: authCredential,
+                    nonDefaultTimeout: nonDefaultTimeout,
+                    retryPolicy: retryPolicy,
+                    task: task,
+                    onDataTaskCreated: onDataTaskCreated
+                ),
+                response: .left(response),
+                responseCode: responseCode,
+                completion: completion,
+                humanVerificationHandler: self.humanVerificationHandler,
+                deviceVerificationHandler: self.deviceVerificationHandler,
+                missingScopesHandler: self.missingScopesHandler,
+                forceUpgradeHandler: self.forceUpgradeHandler
+            )
         }
-        self.debugError(error)
+        debugError(error)
     }
     
     private func handleRefreshingCredentialsWithoutSupportForUnauthenticatedSessions<T>(
         _ authCredential: AuthCredential, _ method: HTTPMethod, _ path: String, _ parameters: Any?, _ authenticated: Bool,
-        _ authRetry: Bool, _ authRetryRemains: Int, _ nonDefaultTimeout: TimeInterval?, _ completion: APIResponseCompletion<T>,
+        _ authRetry: Bool, _ authRetryRemains: Int, _ nonDefaultTimeout: TimeInterval?,
+        _ onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
+        _ completion: APIResponseCompletion<T>,
         _ error: NSError?, _ task: URLSessionDataTask?
     ) where T: APIDecodableResponse {
         
@@ -464,6 +549,7 @@ extension PMAPIService {
                                                             fetchingCredentialsResult: .found(credentials: credentials),
                                                             nonDefaultTimeout: nonDefaultTimeout,
                                                             retryPolicy: .userInitiated,
+                                                            onDataTaskCreated: onDataTaskCreated,
                                                             completion: completion)
             case .logout(let underlyingError):
                 let error = underlyingError.underlyingError
@@ -483,6 +569,7 @@ extension PMAPIService {
 
     private func handleSessionAcquiring<T>(_ method: HTTPMethod, _ path: String, _ parameters: Any?, _ headers: [String: Any]?,
                                            _ authenticated: Bool, _ nonDefaultTimeout: TimeInterval?, _ retryPolicy: ProtonRetryPolicy.RetryMode,
+                                           _ onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                                            _ completion: PMAPIService.APIResponseCompletion<T>, _ task: URLSessionDataTask?,
                                            _ authRetry: Bool, _ authRetryRemains: Int) where T: APIDecodableResponse {
 
@@ -494,14 +581,37 @@ extension PMAPIService {
                     self.performRequestHavingFetchedCredentials(
                         method: method, path: path, parameters: parameters, headers: headers, authenticated: authenticated,
                         authRetry: false, authRetryRemains: 0, fetchingCredentialsResult: .found(credentials: newCredentials),
-                        nonDefaultTimeout: nonDefaultTimeout, retryPolicy: retryPolicy, completion: completion
+                        nonDefaultTimeout: nonDefaultTimeout, retryPolicy: retryPolicy,
+                        onDataTaskCreated: onDataTaskCreated, completion: completion
                     )
                 case .triedAcquiringNew(.acquiringError(let responseError)):
                     guard let responseCode = responseError.responseCode else {
                         completion.call(task: task, error: responseError.underlyingError ?? responseError as NSError)
                         return
                     }
-                    self.protonMailResponseCodeHandler.handleProtonResponseCode(task, .right(responseError), responseCode, method, path, parameters, headers, authenticated, authRetry, authRetryRemains, nil, nonDefaultTimeout, retryPolicy, completion, self.humanVerificationHandler, self.deviceVerificationHandler, self.forceUpgradeHandler)
+                    self.protonMailResponseCodeHandler.handleProtonResponseCode(
+                        responseHandlerData: PMResponseHandlerData(
+                            method: method,
+                            path: path,
+                            parameters: parameters,
+                            headers: headers,
+                            authenticated: authenticated,
+                            authRetry: authRetry,
+                            authRetryRemains: authRetryRemains,
+                            customAuthCredential: nil,
+                            nonDefaultTimeout: nonDefaultTimeout,
+                            retryPolicy: retryPolicy,
+                            task: task,
+                            onDataTaskCreated: onDataTaskCreated
+                        ),
+                        response: .right(responseError),
+                        responseCode: responseCode,
+                        completion: completion,
+                        humanVerificationHandler: self.humanVerificationHandler,
+                        deviceVerificationHandler: self.deviceVerificationHandler,
+                        missingScopesHandler: self.missingScopesHandler,
+                        forceUpgradeHandler: self.forceUpgradeHandler
+                    )
                 case .triedAcquiringNew(.wrongConfigurationNoDelegate(let error)):
                     self.debugError(error)
                     completion.call(task: nil, error: error)
@@ -630,7 +740,7 @@ extension PMAPIService {
                     
                     [ERROR]
                     code: \(error.bestShotAtReasonableErrorCode)
-                    message: \(error.messageForTheUser)
+                    message: \(error.localizedDescription)
                     """)
         #endif
     }

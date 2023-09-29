@@ -19,19 +19,23 @@ import Foundation
 import class ProtonCore_DataModel.Address
 import class ProtonCore_DataModel.UserInfo
 import class ProtonCore_Networking.AuthCredential
+import ProtonCore_Crypto
 
 /// Encapsulates the data needed to send a message that is obtained from the CoreData `Message` object
 struct MessageSendingData {
     let message: MessageEntity
 
-    /// userInfo information stored with the message obejct
+    /// userInfo information stored with the message object
     let cachedUserInfo: UserInfo?
 
-    /// authCredential information stored with the message obejct
+    /// authCredential information stored with the message object
     let cachedAuthCredential: AuthCredential?
 
-    /// sender email address stored with the message obejct
+    /// sender email address stored with the message object
     let cachedSenderAddress: Address?
+
+    /// passphrase stored with the message object
+    let cachedPassphrase: Passphrase?
 
     /// default address which status allows for sending a message
     let defaultSenderAddress: Address?

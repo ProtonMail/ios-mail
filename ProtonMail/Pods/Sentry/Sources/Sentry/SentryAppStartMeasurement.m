@@ -1,6 +1,9 @@
 #import "SentryAppStartMeasurement.h"
-#import "NSDate+SentryExtras.h"
-#import <Foundation/Foundation.h>
+
+#if SENTRY_HAS_UIKIT
+
+#    import "NSDate+SentryExtras.h"
+#    import <Foundation/Foundation.h>
 
 @implementation SentryAppStartMeasurement
 
@@ -41,3 +44,5 @@
 }
 
 @end
+
+#endif // SENTRY_HAS_UIKIT

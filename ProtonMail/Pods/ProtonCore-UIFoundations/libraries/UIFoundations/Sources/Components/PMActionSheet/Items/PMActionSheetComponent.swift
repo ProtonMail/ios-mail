@@ -19,8 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
 import enum ProtonCore_Utilities.Either
+import UIKit
 
 public protocol PMActionSheetComponent {
     associatedtype Element: UIView
@@ -214,3 +217,5 @@ public struct PMActionSheetToggleComponent: PMActionSheetComponent {
         self.isOn = isOn
     }
 }
+
+#endif

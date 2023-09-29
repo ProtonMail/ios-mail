@@ -1,18 +1,20 @@
-#import "SentryAppStartMeasurement.h"
-#import "SentryAppStateManager.h"
-#import "SentryLog.h"
-#import "SentrySysctl.h"
-#import <Foundation/Foundation.h>
-#import <PrivateSentrySDKOnly.h>
 #import <SentryAppStartTracker.h>
-#import <SentryAppState.h>
-#import <SentryCurrentDateProvider.h>
-#import <SentryDispatchQueueWrapper.h>
-#import <SentryInternalNotificationNames.h>
-#import <SentryLog.h>
-#import <SentrySDK+Private.h>
 
 #if SENTRY_HAS_UIKIT
+
+#    import "SentryAppStartMeasurement.h"
+#    import "SentryAppStateManager.h"
+#    import "SentryLog.h"
+#    import "SentrySysctl.h"
+#    import <Foundation/Foundation.h>
+#    import <PrivateSentrySDKOnly.h>
+#    import <SentryAppState.h>
+#    import <SentryCurrentDateProvider.h>
+#    import <SentryDependencyContainer.h>
+#    import <SentryDispatchQueueWrapper.h>
+#    import <SentryInternalNotificationNames.h>
+#    import <SentryLog.h>
+#    import <SentrySDK+Private.h>
 #    import <UIKit/UIKit.h>
 
 static NSDate *runtimeInit = nil;
@@ -27,14 +29,13 @@ static const NSTimeInterval SENTRY_APP_START_MAX_DURATION = 180.0;
 @interface
 SentryAppStartTracker ()
 
-@property (nonatomic, strong) id<SentryCurrentDateProvider> currentDate;
 @property (nonatomic, strong) SentryAppState *previousAppState;
 @property (nonatomic, strong) SentryDispatchQueueWrapper *dispatchQueue;
 @property (nonatomic, strong) SentryAppStateManager *appStateManager;
 @property (nonatomic, strong) SentrySysctl *sysctl;
 @property (nonatomic, assign) BOOL wasInBackground;
 @property (nonatomic, strong) NSDate *didFinishLaunchingTimestamp;
-@property (nonatomic, assign) BOOL enablePreWarmedAppStartTracking;
+@property (nonatomic, assign) BOOL enablePreWarmedAppStartTracing;
 
 @end
 
@@ -52,21 +53,21 @@ SentryAppStartTracker ()
         [[NSProcessInfo processInfo].environment[@"ActivePrewarm"] isEqualToString:@"1"];
 }
 
-- (instancetype)initWithCurrentDateProvider:(id<SentryCurrentDateProvider>)currentDateProvider
-                       dispatchQueueWrapper:(SentryDispatchQueueWrapper *)dispatchQueueWrapper
-                            appStateManager:(SentryAppStateManager *)appStateManager
-                                     sysctl:(SentrySysctl *)sysctl
-            enablePreWarmedAppStartTracking:(BOOL)enablePreWarmedAppStartTracking
+- (instancetype)initWithDispatchQueueWrapper:(SentryDispatchQueueWrapper *)dispatchQueueWrapper
+                             appStateManager:(SentryAppStateManager *)appStateManager
+                                      sysctl:(SentrySysctl *)sysctl
+              enablePreWarmedAppStartTracing:(BOOL)enablePreWarmedAppStartTracing
 {
     if (self = [super init]) {
-        self.currentDate = currentDateProvider;
         self.dispatchQueue = dispatchQueueWrapper;
         self.appStateManager = appStateManager;
         self.sysctl = sysctl;
         self.previousAppState = [self.appStateManager loadPreviousAppState];
         self.wasInBackground = NO;
-        self.didFinishLaunchingTimestamp = [currentDateProvider date];
-        self.enablePreWarmedAppStartTracking = enablePreWarmedAppStartTracking;
+        self.didFinishLaunchingTimestamp =
+            [SentryDependencyContainer.sharedInstance.dateProvider date];
+        self.enablePreWarmedAppStartTracing = enablePreWarmedAppStartTracing;
+        self.isRunning = NO;
     }
     return self;
 }
@@ -81,9 +82,9 @@ SentryAppStartTracker ()
     } else {
         return NO;
     }
-#    else
+#    else // !TARGET_OS_IOS
     return NO;
-#    endif
+#    endif // TARGET_OS_IOS
 }
 
 - (void)start
@@ -92,7 +93,7 @@ SentryAppStartTracker ()
     // or we just don't receive it. In this case the didFinishLaunchingTimestamp would be nil. As
     // the SDK should be initialized in application:didFinishLaunchingWithOptions: or in the init of
     // @main of a SwiftUI  we set the timestamp here.
-    self.didFinishLaunchingTimestamp = [self.currentDate date];
+    self.didFinishLaunchingTimestamp = [SentryDependencyContainer.sharedInstance.dateProvider date];
 
     [NSNotificationCenter.defaultCenter addObserver:self
                                            selector:@selector(didFinishLaunching)
@@ -115,7 +116,9 @@ SentryAppStartTracker ()
 
 #    if SENTRY_HAS_UIKIT
     [self.appStateManager start];
-#    endif
+#    endif // SENTRY_HAS_UIKIT
+
+    self.isRunning = YES;
 }
 
 - (void)buildAppStartMeasurement
@@ -127,11 +130,11 @@ SentryAppStartTracker ()
         if ([self isActivePrewarmAvailable] && isActivePrewarm) {
             SENTRY_LOG_INFO(@"The app was prewarmed.");
 
-            if (self.enablePreWarmedAppStartTracking) {
+            if (self.enablePreWarmedAppStartTracing) {
                 isPreWarmed = YES;
             } else {
                 SENTRY_LOG_INFO(
-                    @"EnablePreWarmedAppStartTracking disabled. Not measuring app start.");
+                    @"EnablePreWarmedAppStartTracing disabled. Not measuring app start.");
                 return;
             }
         }
@@ -168,12 +171,12 @@ SentryAppStartTracker ()
         NSTimeInterval appStartDuration = 0.0;
         NSDate *appStartTimestamp;
         if (isPreWarmed) {
-            appStartDuration = [[self.currentDate date]
+            appStartDuration = [[SentryDependencyContainer.sharedInstance.dateProvider date]
                 timeIntervalSinceDate:self.sysctl.moduleInitializationTimestamp];
             appStartTimestamp = self.sysctl.moduleInitializationTimestamp;
         } else {
-            appStartDuration =
-                [[self.currentDate date] timeIntervalSinceDate:self.sysctl.processStartTimestamp];
+            appStartDuration = [[SentryDependencyContainer.sharedInstance.dateProvider date]
+                timeIntervalSinceDate:self.sysctl.processStartTimestamp];
             appStartTimestamp = self.sysctl.processStartTimestamp;
         }
 
@@ -208,8 +211,8 @@ SentryAppStartTracker ()
         SentrySDK.appStartMeasurement = appStartMeasurement;
     };
 
-    // With only running this once we know that the process is a new one when the following
-    // code is executed.
+// With only running this once we know that the process is a new one when the following
+// code is executed.
 // We need to make sure the block runs on each test instead of only once
 #    if TEST
     block();
@@ -262,7 +265,7 @@ SentryAppStartTracker ()
 
 - (void)didFinishLaunching
 {
-    self.didFinishLaunchingTimestamp = [self.currentDate date];
+    self.didFinishLaunchingTimestamp = [SentryDependencyContainer.sharedInstance.dateProvider date];
 }
 
 - (void)didEnterBackground
@@ -285,6 +288,10 @@ SentryAppStartTracker ()
     [NSNotificationCenter.defaultCenter removeObserver:self
                                                   name:UIApplicationDidEnterBackgroundNotification
                                                 object:nil];
+
+#    if TEST
+    self.isRunning = NO;
+#    endif
 }
 
 - (void)dealloc
@@ -305,4 +312,4 @@ SentryAppStartTracker ()
 
 @end
 
-#endif
+#endif // SENTRY_HAS_UIKIT

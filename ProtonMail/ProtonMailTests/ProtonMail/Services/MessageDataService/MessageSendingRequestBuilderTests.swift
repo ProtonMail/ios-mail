@@ -16,9 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import GoLibs
-import PromiseKit
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_TestingToolkit
 @testable import ProtonMail
@@ -42,7 +41,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         mockFetchAttachment = MockFetchAttachment()
         mockApi = .init()
         sut = MessageSendingRequestBuilder(dependencies: .init(fetchAttachment: mockFetchAttachment, apiService: mockApi))
-        testPublicKey = try XCTUnwrap(CryptoKey(fromArmored: OpenPGPDefines.publicKey))
+        testPublicKey = try XCTUnwrap(CryptoGo.CryptoKey(fromArmored: OpenPGPDefines.publicKey))
     }
 
     override func setUp() {
@@ -199,7 +198,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     func testBuildFirstPartOfBody() {
         let boundaryMsg = "---BoundaryMsg---"
         let messageBody = "test"
-        let expected = "Content-Type: multipart/related; boundary=\"---BoundaryMsg---\"\r\n\r\n-----BoundaryMsg---\r\nContent-Type: text/html; charset=utf-8\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Language: en-US\r\n\r\ntest\r\n\r\n\r\n\r\n"
+        let expected = "Content-Type: multipart/mixed; boundary=---BoundaryMsg---\r\n\r\n-----BoundaryMsg---\r\nContent-Type: text/html; charset=utf-8\r\nContent-Transfer-Encoding: quoted-printable\r\nContent-Language: en-US\r\n\r\ntest\r\n\r\n\r\n\r\n"
         XCTAssertEqual(sut.buildFirstPartOfBody(boundaryMsg: boundaryMsg, messageBody: messageBody), expected)
     }
 
@@ -226,7 +225,7 @@ class MessageSendingRequestBuilderTests: XCTestCase {
 
         let (keyPacket, dataPacket) = try sut.preparePackages(encrypted: encrypted)
 
-        let splitMsg = CryptoNewPGPSplitMessageFromArmored(encrypted, nil)
+        let splitMsg = CryptoGo.CryptoNewPGPSplitMessageFromArmored(encrypted, nil)
         XCTAssertEqual(keyPacket, splitMsg?.keyPacket)
         XCTAssertEqual(dataPacket, splitMsg?.dataPacket)
     }

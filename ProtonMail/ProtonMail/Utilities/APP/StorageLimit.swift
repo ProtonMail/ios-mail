@@ -89,7 +89,7 @@ extension StorageLimit {
             userCachedStatus.setIsCheckSpaceDisabledStatus(uid: userID, value: true)
         }))
         userCachedStatus.showStorageOverAlert()
-        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+        UIApplication.shared.topMostWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
     }
 
     private func showUpgradeAlert() {
@@ -104,6 +104,6 @@ extension StorageLimit {
         }
         let laterAction = UIAlertAction(title: LocalString._general_later_action, style: .default, handler: nil)
         [laterAction, okAction].forEach(alert.addAction)
-        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+        UIApplication.shared.topMostWindow?.rootViewController?.present(alert, animated: true, completion: nil)
     }
 }

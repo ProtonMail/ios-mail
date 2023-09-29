@@ -39,7 +39,7 @@ class ComposeViewModel: NSObject {
     let composerMessageHelper: ComposerMessageHelper
     let messageService: MessageDataService
     let isEditingScheduleMsg: Bool
-    let originalScheduledTime: OriginalScheduleDate?
+    let originalScheduledTime: Date?
     let dependencies: Dependencies
     var urlSchemesToBeHandle: Set<String> {
         let schemes: [HTTPRequestSecureLoader.ProtonScheme] = [.http, .https, .noProtocol]
@@ -73,6 +73,10 @@ class ComposeViewModel: NSObject {
         return composerMessageHelper.attachmentSize
     }
 
+    var shouldStripMetaData: Bool {
+        return dependencies.attachmentMetadataStrippingCache.metadataStripping == .stripMetadata
+    }
+
     init(
         subject: String,
         body: String,
@@ -80,7 +84,7 @@ class ComposeViewModel: NSObject {
         action: ComposeMessageAction,
         msgService: MessageDataService,
         user: UserManager,
-        originalScheduledTime: OriginalScheduleDate? = nil,
+        originalScheduledTime: Date? = nil,
         dependencies: Dependencies
     ) {
         self.user = user
@@ -107,7 +111,6 @@ class ComposeViewModel: NSObject {
                           pwdHit: "")
         self.updateDraft()
 
-        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         var currentAttachmentSize = 0
         for file in files {
             let size = file.contents.dataSize
@@ -117,7 +120,7 @@ class ComposeViewModel: NSObject {
             }
             currentAttachmentSize += size
             composerMessageHelper.addAttachment(file,
-                                                shouldStripMetaData: stripMetadata) { _ in
+                                                shouldStripMetaData: shouldStripMetaData) { _ in
                 self.updateDraft()
                 self.composerMessageHelper.updateAttachmentView?()
             }
@@ -130,7 +133,7 @@ class ComposeViewModel: NSObject {
         msgService: MessageDataService,
         user: UserManager,
         isEditingScheduleMsg: Bool = false,
-        originalScheduledTime: OriginalScheduleDate? = nil,
+        originalScheduledTime: Date? = nil,
         dependencies: Dependencies
     ) {
         self.user = user
@@ -273,9 +276,14 @@ class ComposeViewModel: NSObject {
     // check if has external emails and if need attach key
     private func uploadPublicKeyIfNeeded(completion: @escaping () -> Void) {
         let userinfo = self.user.userInfo
+        
+        guard userinfo.attachPublicKey == 1 ||
+                (composerMessageHelper.getMessageEntity()?.flag.contains(.publicKey) ?? false ) else {
+            completion()
+            return
+        }
 
-        guard userinfo.attachPublicKey == 1,
-              let draft = self.composerMessageHelper.draft,
+        guard let draft = self.composerMessageHelper.draft,
               let addr = self.messageService.defaultUserAddress(of: draft.sendAddressID),
               let key = addr.keys.first else {
             completion()
@@ -283,13 +291,12 @@ class ComposeViewModel: NSObject {
         }
 
         let data = Data(key.publicKey.utf8)
-        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
 
         self.composerMessageHelper.addPublicKeyIfNeeded(
             email: addr.email,
             fingerprint: key.shortFingerprint,
             data: data,
-            shouldStripMetaDate: stripMetadata
+            shouldStripMetaDate: shouldStripMetaData
         ) { _ in
             completion()
         }
@@ -409,7 +416,10 @@ class ComposeViewModel: NSObject {
     private func supplementCSS(from html: String) -> String? {
         var supplementCSS: String?
         let document = CSSMagic.parse(htmlString: html)
-        if CSSMagic.darkStyleSupportLevel(document: document) == .protonSupport {
+        if CSSMagic.darkStyleSupportLevel(
+            document: document,
+            darkModeCache: dependencies.darkModeCache
+        ) == .protonSupport {
             supplementCSS = CSSMagic.generateCSSForDarkMode(document: document)
         }
         return supplementCSS
@@ -575,14 +585,7 @@ extension ComposeViewModel {
         var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
         signature = signature.ln2br()
 
-        var userMobileSignature = String.empty
-        if user.showMobileSignature {
-            userMobileSignature = dependencies.fetchMobileSignatureUseCase.execute(
-                params: .init(userID: user.userID, isPaidUser: user.isPaid)
-            )
-        }
-
-        let mobileSignature = "<div id=\"protonmail_mobile_signature_block\"><div>\(userMobileSignature)</div></div>".ln2br()
+        let mobileSignature = self.mobileSignature()
 
         let defaultSignature = self.user.defaultSignatureStatus ?
         "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
@@ -590,6 +593,21 @@ extension ComposeViewModel {
         "<div><br></div><div><br></div>" : "<div class=\"signature_br\"><br></div><div class=\"signature_br\"><br></div>"
         let signatureHtml = "\(defaultSignature) \(mobileBr) \(mobileSignature)"
         return signatureHtml
+    }
+
+    func mobileSignature() -> String {
+        guard user.showMobileSignature else { return .empty }
+        var userMobileSignature = dependencies.fetchMobileSignatureUseCase.execute(
+            params: .init(userID: user.userID, isPaidUser: user.isPaid)
+        )
+        userMobileSignature = userMobileSignature.preg_replace(
+            "Proton Mail",
+            replaceto: "<a href=\"\(Link.promoteInMobilSignature)\">Proton Mail</a>"
+        )
+
+        let mobileSignature = "<div id=\"protonmail_mobile_signature_block\"><div>\(userMobileSignature)</div></div>"
+            .ln2br()
+        return mobileSignature
     }
 
     func shouldShowExpirationWarning(havingPGPPinned: Bool,
@@ -1096,11 +1114,14 @@ extension ComposeViewModel {
         let coreDataContextProvider: CoreDataContextProviderProtocol
         let coreKeyMaker: KeyMakerProtocol
         let fetchAndVerifyContacts: FetchAndVerifyContactsUseCase
-        let internetStatusProvider: InternetConnectionStatusProvider
+        let internetStatusProvider: InternetConnectionStatusProviderProtocol
         let fetchAttachment: FetchAttachmentUseCase
         let contactProvider: ContactProviderProtocol
         let helperDependencies: ComposerMessageHelper.Dependencies
         let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
+        let darkModeCache: DarkModeCacheProtocol
+        let attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol
+        let userCachedStatusProvider: UserCachedStatusProvider
     }
 
     struct EncodableRecipient: Encodable {

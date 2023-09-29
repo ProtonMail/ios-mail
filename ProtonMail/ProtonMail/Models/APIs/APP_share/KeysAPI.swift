@@ -20,9 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
 import PromiseKit
-import GoLibs
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 import ProtonCore_Networking
@@ -86,13 +84,11 @@ final class KeysResponse: Response {
         case external = 2
     }
     var recipientType: RecipientType = .internal
-    var mimeType: String?
     var keys: [KeyResponse] = [KeyResponse]()
 
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
         let rawRecipientType = response["RecipientType"] as? Int ?? 0
         self.recipientType = RecipientType(rawValue: rawRecipientType) ?? .external
-        self.mimeType = response["MIMEType"] as? String
 
         if let keyRes = response["Keys"] as? [[String: Any]] {
             for keyDict in keyRes {

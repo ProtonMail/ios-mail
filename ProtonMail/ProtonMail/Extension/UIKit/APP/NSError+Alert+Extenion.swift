@@ -87,6 +87,7 @@ extension NSError {
         hud.hide(animated: true, afterDelay: delay)
     }
 
+    @MainActor
     class func alertSavingDraftError(details: String) {
         details.alertToast()
     }

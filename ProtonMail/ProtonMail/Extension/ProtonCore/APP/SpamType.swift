@@ -57,11 +57,10 @@ extension SpamType {
     }
 
     private var linkAttributes: [NSAttributedString.Key: Any] {
-        var style = FontManager.CaptionInverted + [
-            .link: Link.dmarcFailedInfo,
-            .underlineStyle: NSUnderlineStyle.single.rawValue,
-            .underlineColor: ColorProvider.TextInverted as UIColor
-        ]
+        var style = FontManager.CaptionInverted
+        style[.link] = Link.dmarcFailedInfo
+        style[.underlineStyle] = NSUnderlineStyle.single.rawValue
+        style[.underlineColor] = ColorProvider.TextInverted as UIColor
         style[.font] = UIFont.preferredFont(for: .footnote, weight: .regular)
         return style
     }

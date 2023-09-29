@@ -36,12 +36,27 @@ final class TextLayer: BaseCompositionLayer {
 
   // MARK: Internal
 
+  override func setupAnimations(context: LayerAnimationContext) throws {
+    try super.setupAnimations(context: context)
+    let textAnimationContext = context.addingKeypathComponent(textLayerModel.name)
+
+    let sourceText = try textLayerModel.text.exactlyOneKeyframe(
+      context: textAnimationContext,
+      description: "text layer text")
+
+    renderLayer.text = context.textProvider.textFor(
+      keypathName: textAnimationContext.currentKeypath.fullPath,
+      sourceText: sourceText.text)
+
+    renderLayer.sizeToFit()
+  }
+
   func configureRenderLayer(with context: LayerContext) throws {
     // We can't use `CATextLayer`, because it doesn't support enough features we use.
     // Instead, we use the same `CoreTextRenderLayer` (with a custom `draw` implementation)
     // used by the Main Thread rendering engine. This means the Core Animation engine can't
     // _animate_ text properties, but it can display static text without any issues.
-    let text = try textLayerModel.text.exactlyOneKeyframe(context: context, description: "text layer text").value
+    let text = try textLayerModel.text.exactlyOneKeyframe(context: context, description: "text layer text")
 
     // The Core Animation engine doesn't currently support `TextAnimator`s.
     //  - We could add support for animating the transform-related properties without much trouble.
@@ -54,7 +69,6 @@ final class TextLayer: BaseCompositionLayer {
         """)
     }
 
-    renderLayer.text = text.text
     renderLayer.font = context.fontProvider.fontFor(family: text.fontFamily, size: CGFloat(text.fontSize))
 
     renderLayer.alignment = text.justification.textAlignment

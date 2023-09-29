@@ -15,12 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Log
 
-typealias FetchVerificationKeysUseCase = NewUseCase<FetchVerificationKeys.Output, FetchVerificationKeys.Params>
+typealias FetchVerificationKeysUseCase = UseCase<FetchVerificationKeys.Output, FetchVerificationKeys.Params>
 
 final class FetchVerificationKeys: FetchVerificationKeysUseCase {
     typealias Output = (pinnedKeys: [ArmoredKey], keysResponse: KeysResponse?)
@@ -113,7 +113,7 @@ final class FetchVerificationKeys: FetchVerificationKeysUseCase {
         let validKeys: [ArmoredKey] = pinnedKeys
             .filter { pinnedKey in
                 var error: NSError?
-                guard let pinnedCryptoKey = CryptoNewKey(pinnedKey, &error) else {
+                guard let pinnedCryptoKey = CryptoGo.CryptoNewKey(pinnedKey, &error) else {
                     if let error = error {
                         PMLog.error(error)
                     }

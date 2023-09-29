@@ -27,7 +27,7 @@ SentrySwizzleInfo ()
 
 #if TEST
     @synchronized(self) {
-        self.originalCalled = true;
+        self.originalCalled = YES;
     }
 #endif
 
@@ -112,7 +112,7 @@ swizzle(Class classToSwizzle, SEL selector, SentrySwizzleImpFactoryBlock factory
 }
 
 static NSMutableDictionary<NSValue *, NSMutableSet<Class> *> *
-swizzledClassesDictionary()
+swizzledClassesDictionary(void)
 {
     static NSMutableDictionary *swizzledClasses;
     static dispatch_once_t onceToken;

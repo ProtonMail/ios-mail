@@ -45,11 +45,11 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
     let isUnread: Bool
     /// For conversation mode, which message in this conversation should display
     private var targetMessageID: MessageID?
-    let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)?
+    let goToDraft: ((MessageID, Date?) -> Void)?
     private let userIntroduction: UserIntroductionProgressProvider
     weak var uiDelegate: PagesViewUIProtocol?
     /// ID is moved to other locations by action `Move to`, `Archive` ... etc
-    fileprivate var idHasBeenMoved: ObjectID?
+    var idHasBeenMoved: ObjectID?
 
     init(
         viewMode: ViewMode,
@@ -61,7 +61,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
         notificationCenter: NotificationCenter = NotificationCenter.default,
-        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
+        goToDraft: @escaping ((MessageID, Date?) -> Void)
     ) {
         self.goToDraft = goToDraft
         self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
@@ -160,7 +160,7 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
         user: UserManager,
         userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
+        goToDraft: @escaping ((MessageID, Date?) -> Void)
     ) {
         super.init(
             viewMode: .singleMessage,
@@ -229,7 +229,7 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
         targetMessageID: MessageID?,
         userIntroduction: UserIntroductionProgressProvider,
         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        goToDraft: @escaping ((MessageID, OriginalScheduleDate?) -> Void)
+        goToDraft: @escaping ((MessageID, Date?) -> Void)
     ) {
         super.init(
             viewMode: .conversation,

@@ -23,20 +23,14 @@ import XCTest
 
 class ContactPGPTypeHelperTests: XCTestCase {
     var sut: ContactPGPTypeHelper!
-    var reachabilityStub: ReachabilityStub!
-    var internetConnectionStatusProviderStub: InternetConnectionStatusProvider!
+    var internetConnectionStatusProviderStub: MockInternetConnectionStatusProviderProtocol!
     var apiServiceMock: APIServiceMock!
     var localContactsStub: [PreContact] = []
 
-    override func setUp() {
-        super.setUp()
-        reachabilityStub = ReachabilityStub()
-        reachabilityStub.currentReachabilityStatusStub = .ReachableViaWWAN
-        internetConnectionStatusProviderStub = InternetConnectionStatusProvider(
-            notificationCenter: NotificationCenter(),
-            reachability: reachabilityStub,
-            connectionMonitor: nil
-        )
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        internetConnectionStatusProviderStub = .init()
+        internetConnectionStatusProviderStub.statusStub.fixture = .connectedViaCellular
         apiServiceMock = APIServiceMock()
     }
 
@@ -44,14 +38,13 @@ class ContactPGPTypeHelperTests: XCTestCase {
         super.tearDown()
         sut = nil
         internetConnectionStatusProviderStub = nil
-        reachabilityStub = nil
         apiServiceMock = nil
         localContactsStub = []
     }
 
     func testCalculateEncryptionIcon_withNoInternet_nonPMValidEmail_returnNil() {
         let mail = "test@mail.com"
-        reachabilityStub.currentReachabilityStatusStub = .NotReachable
+        internetConnectionStatusProviderStub.statusStub.fixture = .notConnected
         sut = ContactPGPTypeHelper(
             internetConnectionStatusProvider: internetConnectionStatusProviderStub,
             apiService: apiServiceMock,
@@ -74,7 +67,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
 
     func testCalculateEncryptionIcon_withNoInternet_PMValidEmail_returnLockIcon() {
         let mails = ["test@pm.me", "test@protonmail.com", "test@protonmail.ch", "test@proton.me"]
-        reachabilityStub.currentReachabilityStatusStub = .NotReachable
+        internetConnectionStatusProviderStub.statusStub.fixture = .notConnected
         sut = ContactPGPTypeHelper(
             internetConnectionStatusProvider: internetConnectionStatusProviderStub,
             apiService: apiServiceMock,
@@ -104,7 +97,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
 
     func testCalculateEncryptionIcon_withNoInternet_invalidEmail_returnErrorIcon() {
         let mail = "test@mailcom"
-        reachabilityStub.currentReachabilityStatusStub = .NotReachable
+        internetConnectionStatusProviderStub.statusStub.fixture = .notConnected
         sut = ContactPGPTypeHelper(
             internetConnectionStatusProvider: internetConnectionStatusProviderStub,
             apiService: apiServiceMock,
@@ -133,7 +126,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
     }
 
     func testCalculateEncryption_invalidEmail_returnErrorIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": PGPTypeErrorCode.emailAddressFailedValidation.rawValue
@@ -172,7 +165,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
     }
 
     func testCalculateEncryption_EmailNotExist_returnErrorIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": PGPTypeErrorCode.recipientNotFound.rawValue
@@ -212,7 +205,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
     }
 
     func testCalculateEncryption_validEmail_withErrorFromAPI_returnErrorIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 999
@@ -250,7 +243,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
     }
 
     func testCalculateEncryption_invalidEmail_withErrorFromAPI_returnErrorIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 999
@@ -290,7 +283,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
     }
 
     func testCalculateEncryptionIcon_PMMail_noKeyPinned_returnBlueIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [
@@ -339,7 +332,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
 
     func testCalculateEncryptionIcon_PMMail_keyIsPinned_returnBlueIcon() {
         let email = "test@pm.me"
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [
@@ -395,7 +388,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
     }
 
     func testCalculateEncryptionIcon_externalEmail_withPasswordSet_returnBlueIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 1000,
@@ -437,7 +430,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
     }
 
     func testCalculateEncryptionIcon_externalEmail_returnNoIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 1000,
@@ -472,7 +465,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
     }
 
     func testCalculateEncryptionIcon_externalEmail_withAPIKey_returnGreenIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [
@@ -521,7 +514,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
     }
 
     func testCalculateEncryptionIcon_externalEmail_withVerificationOnlyAPIKey_returnErrorIcon() {
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [
@@ -569,7 +562,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
 
     func testCalculateEncryptionIcon_externalEmail_withAPIKeyAndPinnedKey_returnGreenIcon() {
         let email = "test@mail.me"
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [
@@ -627,7 +620,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
 
     func testCalculateEncryptionIcon_externalEmail_withPinnedKey_returnGreenIcon() {
         let email = "test@mail.me"
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 1000,
@@ -679,7 +672,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
 
     func testCalculateEncryptionIcon_externalEmail_withKeyInContactToSign_returnGreenIcon() {
         let email = "test@mail.me"
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let response: [String: Any] = [
                     "Code": 1000,
@@ -731,7 +724,7 @@ class ContactPGPTypeHelperTests: XCTestCase {
 
     func testCalculateEncryptionIcon_selfEmail__returnBlueIcon() {
         let email = "test@pm.me"
-        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 let keyResponse: [[String: Any]] = [
                     [

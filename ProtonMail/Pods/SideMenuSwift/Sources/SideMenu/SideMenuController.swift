@@ -729,15 +729,22 @@ open class SideMenuController: UIViewController {
         }
     }
 
-    private func keepSideMenuOpenOnRotation() {
+    private func keepMenuOpenState() {
+        // This function will call multi times when app go to background
+        // Will cause some unwanted sideMenu reveal state change
+        guard UIApplication.shared.applicationState == .active else { return }
         if menuViewController != nil {
             if self.isMenuRevealed {
                 self.hideMenu(animated: false, completion: nil)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                        self.revealMenu(animated: false, completion: nil)
-                    })
+                    self.revealMenu(animated: false, completion: nil)
                 })
+            } else {
+                self.revealMenu(animated: false) { _ in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                        self.hideMenu(animated: false, completion: nil)
+                    })
+                }
             }
         }
     }
@@ -760,7 +767,7 @@ open class SideMenuController: UIViewController {
 
     open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if preferences.basic.shouldKeepMenuOpen {
-            self.keepSideMenuOpenOnRotation()
+            self.keepMenuOpenState()
         } else {
             hideMenu(animated: false, completion: { _ in
                 // Temporally hide the menu container view for smooth animation

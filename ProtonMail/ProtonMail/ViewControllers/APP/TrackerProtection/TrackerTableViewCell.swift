@@ -16,9 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_UIFoundations
+import ProtonCore_Foundations
 import UIKit
 
-class TrackerTableViewCell: UITableViewCell {
+class TrackerTableViewCell: UITableViewCell, AccessibleCell {
     private let contentTextView = SubviewFactory.contentTextView
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -37,6 +38,7 @@ class TrackerTableViewCell: UITableViewCell {
     func configure(with url: UnsafeRemoteURL) {
         contentTextView.attributedText = url.value.apply(style: FontManager.DefaultWeak)
         contentTextView.font = .adjustedFont(forTextStyle: .body)
+        generateCellAccessibilityIdentifiers(url.value)
     }
 
     private func addSubviews() {

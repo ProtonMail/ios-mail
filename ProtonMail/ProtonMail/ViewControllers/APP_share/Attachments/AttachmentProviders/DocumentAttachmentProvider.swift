@@ -24,6 +24,7 @@ import CoreServices
 import Foundation
 import PromiseKit
 import ProtonCore_UIFoundations
+import UniformTypeIdentifiers
 
 protocol FileCoordinationProvider {
     func coordinate(readingItemAt url: URL, options: NSFileCoordinator.ReadingOptions, error: NSErrorPointer, byAccessor: (URL) -> Void)
@@ -41,23 +42,24 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
     }
 
     var actionSheetItem: PMActionSheetItem {
-        PMActionSheetPlainItem(title: LocalString._import_from,
-                               icon: IconProvider.fileArrowIn,
-                               iconColor: ColorProvider.IconNorm) { (_) -> Void in
-            let types = [
-                kUTTypeMovie as String,
-                kUTTypeVideo as String,
-                kUTTypeImage as String,
-                kUTTypeText as String,
-                kUTTypePDF as String,
-                kUTTypeGNUZipArchive as String,
-                kUTTypeBzip2Archive as String,
-                kUTTypeZipArchive as String,
-                kUTTypeData as String,
-                kUTTypeVCard as String
+        PMActionSheetItem(
+            title: LocalString._import_from,
+            icon: IconProvider.fileArrowIn,
+            iconColor: ColorProvider.IconNorm
+        ) { _ in
+            let types: [UTType] = [
+                .movie,
+                .video,
+                .image,
+                .text,
+                .pdf,
+                .gzip,
+                .bz2,
+                .zip,
+                .data,
+                .vCard
             ]
-
-            let picker = PMDocumentPickerViewController(documentTypes: types, in: .import)
+            let picker = PMDocumentPickerViewController(forOpeningContentTypes: types)
             picker.delegate = self
             picker.allowsMultipleSelection = true
             self.controller?.present(picker, animated: true, completion: nil)
@@ -129,19 +131,18 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
 
 /// Documents
 extension DocumentAttachmentProvider: UIDocumentPickerDelegate {
-    @available(iOS 11.0, *)
     internal func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         urls.forEach { self.documentPicker(controller, didPickDocumentAt: $0) }
     }
-    
+
     internal func documentPicker(_ documentController: UIDocumentPickerViewController, didPickDocumentAt url: URL) {
         // TODO: at least on iOS 11.3.1, DocumentPicker does not call this method until whole file will be downloaded from the cloud. This should be a bug, but in future we can check size of document before downloading it
         // FileManager.default.attributesOfItem(atPath: url.path)[NSFileSize]
-        
+
         DispatchQueue.global().async {
             self.process(fileAt: url) { }
         }
     }
-    
+
     func documentPickerWasCancelled(_ controller: UIDocumentPickerViewController) { }
 }

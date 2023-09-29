@@ -61,6 +61,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     case spam
     case trash
     case allmail
+    case almostAllMail
     case customize(String, String?)
     case scheduled
 
@@ -84,16 +85,17 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     init(id: String, name: String?) {
         switch id {
         case "Send feedback": self = .sendFeedback
-        case "0": self = .inbox
-        case "1": self = .hiddenDraft
-        case "8": self = .draft
-        case "2": self = .hiddenSent
-        case "7": self = .sent
-        case "10": self = .starred
-        case "6": self = .archive
-        case "4": self = .spam
-        case "3": self = .trash
-        case "5": self = .allmail
+        case Message.Location.inbox.rawValue: self = .inbox
+        case Message.HiddenLocation.draft.rawValue: self = .hiddenDraft
+        case Message.Location.draft.rawValue: self = .draft
+        case Message.HiddenLocation.sent.rawValue: self = .hiddenSent
+        case Message.Location.sent.rawValue: self = .sent
+        case Message.Location.starred.rawValue: self = .starred
+        case Message.Location.archive.rawValue: self = .archive
+        case Message.Location.spam.rawValue: self = .spam
+        case Message.Location.trash.rawValue: self = .trash
+        case Message.Location.allmail.rawValue: self = .allmail
+        case Message.Location.almostAllMail.rawValue: self = .almostAllMail
         case "Report a problem": self = .bugs
         case "Contacts": self = .contacts
         case "Settings": self = .settings
@@ -104,7 +106,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case "Add Folder": self = .addFolder
         case "Account Manager": self = .accountManger
         case "Add Account": self = .addAccount
-        case "12": self = .scheduled
+        case Message.Location.scheduled.rawValue: self = .scheduled
         case "Refer a friend": self = .referAFriend
         default:
             if let name = name {
@@ -118,16 +120,17 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
     var rawLabelID: String {
         switch self {
         case .sendFeedback: return "Send feedback"
-        case .inbox: return "0"
-        case .hiddenDraft: return "1"
-        case .draft: return "8"
-        case .hiddenSent: return "2"
-        case .sent: return "7"
-        case .starred: return "10"
-        case .archive: return "6"
-        case .spam: return "4"
-        case .trash: return "3"
-        case .allmail: return "5"
+        case .inbox: return Message.Location.inbox.rawValue
+        case .hiddenDraft: return Message.HiddenLocation.draft.rawValue
+        case .draft: return Message.Location.draft.rawValue
+        case .hiddenSent: return Message.HiddenLocation.sent.rawValue
+        case .sent: return Message.Location.sent.rawValue
+        case .starred: return Message.Location.starred.rawValue
+        case .archive: return Message.Location.archive.rawValue
+        case .spam: return Message.Location.spam.rawValue
+        case .trash: return Message.Location.trash.rawValue
+        case .allmail: return Message.Location.allmail.rawValue
+        case .almostAllMail: return Message.Location.almostAllMail.rawValue
         case .customize(let id, _): return id
 
         case .bugs: return "Report a problem"
@@ -142,7 +145,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .addFolder: return "Add Folder"
         case .accountManger: return "Account Manager"
         case .addAccount: return "Add Account"
-        case .scheduled: return "12"
+        case .scheduled: return Message.Location.scheduled.rawValue
         }
     }
 
@@ -162,7 +165,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
         case .archive: return LocalString._menu_archive_title
         case .spam: return LocalString._menu_spam_title
         case .trash: return LocalString._menu_trash_title
-        case .allmail: return LocalString._menu_allmail_title
+        case .allmail, .almostAllMail: return LocalString._menu_allmail_title
         case .customize(_, let name): return name ?? ""
 
         case .bugs: return LocalString._menu_bugs_title
@@ -200,7 +203,7 @@ enum LabelLocation: Equatable, Hashable, CaseIterable {
             return IconProvider.fire
         case .trash:
             return IconProvider.trash
-        case .allmail:
+        case .allmail, .almostAllMail:
             return IconProvider.envelopes
         case .subscription:
             return IconProvider.pencil

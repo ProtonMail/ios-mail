@@ -35,15 +35,20 @@ final class MailboxPasswordCoordinator {
     private var navigationController: LoginNavigationViewController?
     private let container: Container
     private let externalLinks: ExternalLinks
+    private let inAppTheme: InAppTheme
 
-    init(container: Container, delegate: MailboxPasswordCoordinatorDelegate?) {
+    init(container: Container,
+         delegate: MailboxPasswordCoordinatorDelegate?,
+         inAppTheme: InAppTheme) {
         self.container = container
         self.externalLinks = container.makeExternalLinks()
         self.delegate = delegate
+        self.inAppTheme = inAppTheme
     }
 
     func start(viewController: UIViewController) {
-        let mailboxPasswordViewController = UIStoryboard.instantiate(MailboxPasswordViewController.self)
+        let inAppTheme = inAppTheme
+        let mailboxPasswordViewController = UIStoryboard.instantiateInLogin(MailboxPasswordViewController.self, inAppTheme: { inAppTheme })
         mailboxPasswordViewController.setupAsStandaloneComponent(delegate: self)
 
         let navigationController = LoginNavigationViewController(rootViewController: mailboxPasswordViewController)
@@ -68,11 +73,5 @@ extension MailboxPasswordCoordinator: MailboxPasswordViewControllerInStandaloneF
 
     func userDidRequestPasswordReset() {
         UIApplication.openURLIfPossible(externalLinks.passwordReset)
-    }
-}
-
-private extension UIStoryboard {
-    static func instantiate<T: UIViewController>(_ controllerType: T.Type) -> T {
-        self.instantiate(storyboardName: "PMLogin", controllerType: controllerType)
     }
 }

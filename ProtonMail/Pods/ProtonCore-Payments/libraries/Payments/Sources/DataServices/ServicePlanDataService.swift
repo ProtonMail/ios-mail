@@ -38,7 +38,7 @@ public protocol ServicePlanDataServiceProtocol: Service, AnyObject {
 
     var currentSubscriptionChangeDelegate: CurrentSubscriptionChangeDelegate? { get set }
 
-    func detailsOfServicePlan(named name: String) -> Plan?
+    func detailsOfPlanCorrespondingToIAP(_ plan: InAppPurchasePlan) -> Plan?
 
     /// This is a blocking network call that should never be called from the main thread — there's an assertion ensuring that
     func updateServicePlans() throws
@@ -184,11 +184,21 @@ final class ServicePlanDataService: ServicePlanDataServiceProtocol {
         self.listOfIAPIdentifiers = inAppPurchaseIdentifiers
     }
 
-    public func detailsOfServicePlan(named name: String) -> Plan? {
-        if InAppPurchasePlan.isThisAFreePlan(protonName: name) {
+    public func detailsOfPlanCorrespondingToIAP(_ plan: InAppPurchasePlan) -> Plan? {
+        if InAppPurchasePlan.isThisAFreePlan(protonName: plan.protonName) {
             return defaultPlanDetails
         } else {
-            return availablePlansDetails.first(where: { $0.name == name })
+            return availablePlansDetails.first(where: {
+                if let iapIdentifier = plan.storeKitProductId,
+                   let period = plan.period,
+                   let availablePlanIAPIdentifier = $0.vendors?.apple.plans[period] {
+                     return availablePlanIAPIdentifier == iapIdentifier 
+                } else if let iapOffer = plan.offer {
+                    return $0.name == plan.protonName && iapOffer == $0.offer
+                } else {
+                    return $0.name == plan.protonName && ($0.offer == nil || $0.offer == InAppPurchasePlan.defaultOffer)
+                }
+            })
         }
     }
 }
@@ -214,8 +224,10 @@ extension ServicePlanDataService {
         let servicePlanApi = self.paymentsApi.plansRequest(api: self.service)
         let servicePlanRes = try servicePlanApi.awaitResponse(responseObject: PlansResponse())
         self.availablePlansDetails = servicePlanRes.availableServicePlans?
-            .filter { InAppPurchasePlan.nameAndCycleArePresentInIAPIdentifierList(name: $0.name, cycle: $0.cycle, identifiers: self.listOfIAPIdentifiers()) }
-            .sorted { $0.pricing(for: String(12)) ?? 0 > $1.pricing(for: String(12)) ?? 0 }
+            .filter {
+                InAppPurchasePlan.protonPlanIsPresentInIAPIdentifierList(protonPlan: $0, identifiers: self.listOfIAPIdentifiers())
+            }
+            .sorted(by: Plan.sortPurchasablePlans)
             ?? []
 
         let defaultServicePlanApi = self.paymentsApi.defaultPlanRequest(api: self.service)
@@ -262,7 +274,7 @@ extension ServicePlanDataService {
     
     private func hasEnoughCreditToExtendSubscription(plan: InAppPurchasePlan) -> Bool {
         let credit = credits?.credit ?? 0
-        guard let details = detailsOfServicePlan(named: plan.protonName), let amount = details.pricing(for: plan.period)
+        guard let details = detailsOfPlanCorrespondingToIAP(plan), let amount = details.pricing(for: plan.period)
         else { return false }
         let cost = Double(amount) / 100
         return credit >= cost

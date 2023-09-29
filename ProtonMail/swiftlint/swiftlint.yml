@@ -2,49 +2,49 @@ disabled_rules:
   - file_length
 
 opt_in_rules:
-  - file_name
-  - empty_count
-  - sorted_imports
-  - force_unwrapping
-  - operator_usage_whitespace
-  - number_separator
-  - switch_case_on_newline
-  - overridden_super_call
-  - object_literal
-  - nimble_operator
-  - first_where
-  - closure_spacing
-  - closure_end_indentation
   - attributes
+  - closure_end_indentation
+  - closure_spacing
+  - contains_over_first_not_nil
+  - discouraged_optional_boolean
+  - empty_count
+  - empty_string
   - explicit_init
   - fatal_error_message
-  - redundant_nil_coalescing
+  - file_name
+  - first_where
+  - for_where
+  - force_unwrapping
+  - joined_default_parameter
+  - legacy_constructor
+  - let_var_whitespace
+  - literal_expression_end_indentation
+  - modifier_order
+  - multiline_arguments
+  - multiline_parameters
+  - nimble_operator
+  - number_separator
+  - object_literal
+  - operator_usage_whitespace
+  - overridden_super_call
+  - override_in_extension
+  - pattern_matching_keywords
   - private_outlet
   - prohibited_super_call
-  - vertical_parameter_alignment_on_call
-  - unneeded_parentheses_in_closure_argument
-  - single_test_class
   - quick_discouraged_call
-  - pattern_matching_keywords
-  - multiline_parameters
-  - joined_default_parameter
-  - strict_fileprivate
-  - let_var_whitespace
-  - contains_over_first_not_nil
-  - switch_case_alignment
-  - multiline_arguments
-  - unneeded_break_in_switch
-  - literal_expression_end_indentation
+  - redundant_nil_coalescing
+  - single_test_class
   - sorted_first_last
-  - override_in_extension
-  - modifier_order
-  - yoda_condition
-  - for_where
-  - unused_closure_parameter
-  - discouraged_optional_boolean
-  - empty_string
-  - legacy_constructor
+  - sorted_imports
+  - strict_fileprivate
+  - switch_case_alignment
+  - switch_case_on_newline
+  - unneeded_break_in_switch
+  - unneeded_parentheses_in_closure_argument
   - untyped_error_in_catch
+  - unused_closure_parameter
+  - vertical_parameter_alignment_on_call
+  - yoda_condition
 
 excluded:
   - ${PWD}/ProtonMail/Extension/Mail/APP/ELanguage+Extension.swift
@@ -152,7 +152,6 @@ excluded:
   - ${PWD}/ProtonMail/Utilities/APP_share/MimeParser/Header.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/MimeParser/QuotedPrintable.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/FontManager.swift
-  - ${PWD}/ProtonMail/Utilities/APP_share/ConnectionStatus/InternetConnectionStatusProvider.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/WebContentsSecureLoader/WebContentsSecureLoader.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/TrustKitWrapper.swift
   - ${PWD}/ProtonMail/Utilities/APP_share/WebContentsSecureLoader/HTTPRequestSecureLoader.swift
@@ -421,6 +420,7 @@ excluded:
   - ${PWD}/Pods
   - ${PWD}/ProtonMailTests
   - ${PWD}/ProtonMailUITests
+  - ${PWD}/ProtonMail/Resource/APP_share/Generated/Images.generated.swift
 
 line_length:
   ignores_comments: true

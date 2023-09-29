@@ -1,3 +1,6 @@
+/* Plan details number of email aliases message */
+"%@ email aliases" = "%@ alias de correo";
+
 /* Plan details storage */
 "%@ storage" = "%@ de almacenamiento";
 
@@ -12,6 +15,9 @@
 
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Un método de recuperación le ayudará a acceder a su cuenta en caso de que olvide su contraseña o no pueda entrar en su cuenta.";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Cuenta eliminada.\nCerrando sesión...";
 
 /* *
  *  Login errors */
@@ -40,6 +46,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nos informó que ha mejorado el plan de servicio, pero faltan algunos datos técnicos. Envíenos una notifcación de error y nuestro equipo se pondrá en contacto con usted.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nos informó que ha actualizado el plan de servicio, pero detectamos que cerró la sesión desde entonces.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "¿En verdad desea cerrar la sesión %@?";
@@ -106,9 +115,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Continuar";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Cree una cuenta de Proton con su correo electrónico actual";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Cree una dirección segura de Proton Mail en su lugar";
 
@@ -118,7 +124,7 @@
 /* Create user failed error */
 "Create user failed" = "Error al crear el usuario";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Cree su contraseña";
 
 /* *
@@ -196,6 +202,9 @@
 /* Enter email code label */
 "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Ingrese el código de verificación enviado a %@. Si no encuentra el correo en su buzón, revise su carpeta de spam.";
 
+/* Title of a page asking to enter your password. */
+"Enter your password" = "Ingrese su contraseña";
+
 /* Login screen subtitle */
 "Enter your Proton Account details." = "Ingrese los datos de su cuenta de Proton.";
 
@@ -208,6 +217,9 @@
 
 /* Plan details price time period without unit — we delegate the units formatting to the operating system. Example: for 1 year 3 months */
 "for %@" = "por %@";
+
+/* Description of the Pass plan */
+"For next-level password management and identity protection." = "Para una gestión de contraseñas e identidad del más alto nivel.";
 
 /* Email verification view description */
 "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Por su seguridad, debemos verificar que la dirección que ha ingresado le pertenece. Hemos enviado un código de verificación a %@. Ingrese el código a continuación:";
@@ -262,6 +274,9 @@
 /* Incorrect mailbox password error */
 "Incorrect mailbox password" = "Contraseña del buzón incorrecta";
 
+/* Plan details `Integrated 2FA authenticator` message */
+"Integrated 2FA authenticator" = "Autenticador 2FA integrado";
+
 /* network troubleshot cell title */
 "Internet Service Provider (ISP) problem" = "Problema del proveedor de servicios de Internet (ISP)";
 
@@ -307,74 +322,74 @@
  * Networking */
 "Network connection error" = "Error de conexión de red";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ de %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ de %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Acceso global a servicios de streaming";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "Acceso global a servicios de streaming";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Bloqueador de anuncios integrado (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Bloqueador de anuncios integrado (NetShield)";
 
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Compruebe su conexión a internet";
+/* Plan connection error description */
+"Check your internet connection" = "Compruebe su conexión a internet";
 
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Problemas de conexión";
+/* Plan connection error title */
+"Connection issues" = "Problemas de conexión";
 
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Extender suscripción";
+/* Extend subscription button */
+"Extend subscription" = "Extender suscripción";
 
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "VPN gratis en un dispositivo";
+/* Plan details VPN on a single device */
+"Free VPN on a single device" = "VPN gratis en un dispositivo";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Obtener %@";
+/* Get plan button */
+"Get %@" = "Obtener %@";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Obtener Proton gratis";
+/* Get free plan button */
+"Get Proton for free" = "Obtener Proton gratis";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Velocidad VPN máxima";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "Velocidad VPN máxima";
 
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Un plan para todos los servicios de Proton";
+/* */
+"One plan for all Proton services" = "Un plan para todos los servicios de Proton";
 
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Solo las suscripciones anuales no renovables están disponibles en esta aplicación";
+/* Plan footer description */
+"Only non-renewing annual subscriptions are available via this app" = "Solo las suscripciones anuales no renovables están disponibles en esta aplicación";
 
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Plan actualizado correctamente";
+/* Plan successfully upgraded banner message */
+"Plan successfully upgraded" = "Plan actualizado correctamente";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Servidores Secure Core";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Servidores Secure Core";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Política estricta de no registros";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Política estricta de no registros";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "La cuenta inicial gratuita diseñada para potenciar a todos con la privacidad por defecto.";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "La cuenta inicial gratuita diseñada para potenciar a todos con la privacidad por defecto.";
 
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "La solución de calendario y correo que prioriza la privacidad para sus necesidades de comunicación diarias.";
+/* Plan details plus description */
+"The privacy-first email and calendar solution for your everyday communication needs." = "La solución de calendario y correo que prioriza la privacidad para sus necesidades de comunicación diarias.";
 
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "El plan centrado en almacenamiento con 200 GB de almacenamiento en la nube para mantener privados sus archivos.";
+/* Plan details drive plus description */
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "El plan centrado en almacenamiento con 200 GB de almacenamiento en la nube para mantener privados sus archivos.";
 
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "El paquete de privacidad definitivo con acceso a todos los servicios premium de Proton.";
+/* Plan details bundle description */
+"The ultimate privacy pack with access to all premium Proton services." = "El paquete de privacidad definitivo con acceso a todos los servicios premium de Proton.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor sobre VPN";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor sobre VPN";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Carpetas, etiquetas y filtros ilimitados";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "Carpetas, etiquetas y filtros ilimitados";
 
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Hasta %@ de almacenamiento";
+/* Plan details up to storage */
+"Up to %@ storage" = "Hasta %@ de almacenamiento";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Su privacidad y seguridad son nuestra prioridad.";
+/* Plan details vpn plus description */
+"Your privacy and security are our priority." = "Su privacidad y seguridad son nuestra prioridad.";
 
 /* Next button */
 "Next" = "Siguiente";
@@ -444,6 +459,12 @@
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Ingrese su contraseña de cuenta de Proton.";
 
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Inicie sesión en la cuenta de Proton Mail que quiere actualizar para poder completar la compra.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Inicie sesión en la cuenta de Proton Mail que quiere actualizar para completar la activación del plan de servicio.";
+
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Asegúrese de que su conexión a internet está funcionando.";
 
@@ -455,6 +476,9 @@
 
 /* Plan details priority customer support */
 "Priority customer support" = "Soporte prioritario";
+
+/* Plan details `Priority support` message */
+"Priority support" = "Soporte prioritario";
 
 /* Welcome screen */
 "Privacy by default" = "Privacidad por defecto";
@@ -600,6 +624,9 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Los servidores de Proton están inaccesibles. Puede deberse a un error de configuración de red, los servidores de Proton no funcionan o están siendo bloqueados.";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Falló la verificación del certificado TLS al intentar conectarse a la API de Proton. Su conexión actual a internet puede ser monitoreada. Para mantener sus datos seguros, la app está siendo bloqueada de acceder a la API de Proton.\nPara iniciar sesión o acceder a su cuenta, cambie a otra red e intente conectar otra vez.";
+
 /* Complete view description */
 "This should take no more than a minute." = "Esto no debería de tomar más de un minuto.";
 
@@ -630,12 +657,24 @@
 /* 2FA screen field title */
 "Two-factor code" = "Código de dos factores";
 
+/* Plan details `Unlimited devices` message */
+"Unlimited devices" = "Dispositivos ilimitados";
+
+/* Plan details `Unlimited email aliases` message */
+"Unlimited email aliases" = "Alias de correo electrónico ilimitados";
+
+/* Plan details `Unlimited logins and notes` message */
+"Unlimited logins and notes" = "Ilimitados inicios de sesión y notas";
+
 /* Mailbox unlock screen action button title */
 "Unlock" = "Desbloquear";
 
 /* *
  * Login unlock mailbox */
 "Unlock your mailbox" = "Desbloquee su buzón";
+
+/* Plan details `Up to %@ forwarding mailboxes` message */
+"Up to %@ forwarding mailboxes" = "Hasta %@ buzones de reenvío";
 
 /* update button */
 "Update" = "Actualizar";
@@ -682,7 +721,7 @@
 "We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Hemos sido notificados de una compra de App Store pero no podemos hacer coincidir la compra con una cuenta suya.";
 
 /* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Hemos activado su suscripción exitosamente. Reinicie la aplicación para empezar a usar su plan de servicio nuevo.";
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Hemos activado su suscripción. Reinicie la aplicación para empezar a usar su plan de servicio nuevo.";
 
 /* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
 "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "No pudimos actualizar su cuenta al plan que seleccionó, por lo que añadimos su pago como créditos a su cuenta. Para obtener más información y completar la actualización, comuníquese con soporte.";
@@ -700,7 +739,7 @@
 "Would you like to receive a new verification code or use an alternative verification method?" = "¿Desea recibir otro código de verificación o usar un método de verificación alternativo?";
 
 /* In App Purchase error */
-"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Estado del token de pago incorrecto. Por favor, reinicie la aplicación. Si el error persiste, póngase en contacto con soporte al cliente.";
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Estado del token de pago incorrecto. Reinicie la aplicación. Si el error persiste, póngase en contacto con soporte al cliente.";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Sí, activarlo para ";
@@ -709,7 +748,7 @@
 "You cannot manage subscriptions inside the mobile application." = "No puede gestionar las suscripciones dentro de la app.";
 
 /* Error applying credit after registration alert */
-"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Se ha registrado con éxito pero su pago no ha sido procesado. Para reenviar su información de pago, haga clic en reintentar. Sólo se le cobrará una vez. Si el problema persiste, póngase en contacto con soporte al cliente.";
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Se ha registrado pero su pago no ha sido procesado. Para reenviar su información de pago, haga clic en reintentar. Sólo se le cobrará una vez. Si el problema persiste, póngase en contacto con soporte al cliente.";
 
 /* Info about existing external Proton Mail address */
 "You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Necesita una dirección de correo de Proton para usar Proton Mail y Proton Calendar.\nAún podrá usar %@ para iniciar sesión y recuperar su cuenta.";
@@ -730,7 +769,7 @@
 "Your email will only be used for this one-time verification." = "Su correo electrónico sólo se usará para esta verificación única.";
 
 /* Signup summary paid plan description */
-"Your payment was confirmed and your %@ account successfully created." = "Su pago fue confirmado y su cuenta %@ fue creada con éxito.";
+"Your payment was confirmed and your %@ account successfully created." = "Su pago fue confirmado y su cuenta %@ fue creada.";
 
 /* SMS method */
 "Your phone number will only be used for this one-time verification." = "Su número telefónico sólo se usará para esta verificación única.";
@@ -739,8 +778,11 @@
 "Your plan will automatically renew on %@" = "Su plan se renovará automáticamente en %@";
 
 /* Signup summary no plan description */
-"Your Proton account was successfully created." = "Su cuenta Proton fue creada con éxito.";
+"Your Proton account was successfully created." = "Su cuenta Proton fue creada.";
 
 /* Signup summary free plan description */
-"Your Proton Free account was successfully created." = "Su cuenta Proton Free fue creada con éxito.";
+"Your Proton Free account was successfully created." = "Su cuenta Proton Free fue creada.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Su sesión ha expirado. Inicie sesión de nuevo.";
 

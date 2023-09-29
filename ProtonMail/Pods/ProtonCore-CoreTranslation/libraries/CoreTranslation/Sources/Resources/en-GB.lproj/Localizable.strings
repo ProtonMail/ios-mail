@@ -64,13 +64,10 @@
 /* In App Purchase error */
 "Contact support@protonvpn.com to complete your purchase." = "Contact support@protonvpn.com to complete your purchase.";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Create a Proton account with your current email";
-
 /* Create account button */
 "Create an account" = "Create an account";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Create your password";
 
 /* *

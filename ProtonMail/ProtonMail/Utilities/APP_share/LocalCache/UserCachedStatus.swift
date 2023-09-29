@@ -28,7 +28,26 @@ import ProtonCore_Payments
 
 let userCachedStatus = UserCachedStatus()
 
-final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol {
+// sourcery: mock
+protocol UserCachedStatusProvider: AnyObject {
+    var keymakerRandomkey: String? { get set }
+    var primaryUserSessionId: String? { get set }
+    var isDohOn: Bool { get set }
+    var isCombineContactOn: Bool { get set }
+    var lastDraftMessageID: String? { get set }
+    var isPMMEWarningDisabled: Bool { get set }
+    var serverNotices: [String] { get set }
+    var serverNoticesNextTime: String { get set }
+
+    func getDefaultSignaureSwitchStatus(uid: String) -> Bool?
+    func setDefaultSignatureSwitchStatus(uid: String, value: Bool)
+    func removeDefaultSignatureSwitchStatus(uid: String)
+    func getIsCheckSpaceDisabledStatus(by uid: String) -> Bool?
+    func setIsCheckSpaceDisabledStatus(uid: String, value: Bool)
+    func removeIsCheckSpaceDisabledStatus(uid: String)
+}
+
+final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol, UserCachedStatusProvider {
     struct Key {
         // inuse
 //        static let lastCacheVersion = "last_cache_version" //user cache
@@ -92,7 +111,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         // Random pin protection
         static let randomPinForProtection = "randomPinForProtection"
-        static let realAttachments = "realAttachments"
 
         static let paymentMethods = "paymentMethods"
 
@@ -100,13 +118,9 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let isContactsCached = "isContactsCached"
 
         static let isAppRatingEnabled = "isAppRatingEnabled"
-        static let isSendRefactorEnabled = "isSendRefactorEnabled"
         static let appRatingPromptedInVersion = "appRatingPromptedInVersion"
-        static let isScheduleSendEnabled = "isScheduleSendEnabled"
         static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"
         static let toolbarCustomizeSpotlightShownUserIds = "toolbarCustomizeSpotlightShownUserIds"
-        static let isSenderImageEnabled = "isSenderImageEnabled"
-        static let isReferralPromptEnabled = "isReferralPromptEnabled"
     }
 
     var keymakerRandomkey: String? {
@@ -636,3 +650,5 @@ extension UserCachedStatus: MobileSignatureCacheProtocol {
         }
     }
 }
+
+extension UserCachedStatus: Service {}

@@ -24,6 +24,7 @@ import Foundation
 import CoreData
 import ProtonCore_DataModel
 import ProtonCore_Services
+import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 
 struct LabelInfo {
@@ -36,6 +37,8 @@ struct LabelInfo {
 
 protocol MailboxViewModelUIProtocol: AnyObject {
     func updateTitle()
+    func updateUnreadButton(count: Int)
+    func updateTheUpdateTimeLabel()
 }
 
 class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
@@ -43,6 +46,8 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     let labelType: PMLabelType
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
+    /// This field stores the latest update time of the user event.
+    private var latestEventUpdateTime: Date?
     var messageLocation: Message.Location? {
         return Message.Location(rawValue: labelID.rawValue)
     }
@@ -53,12 +58,15 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     private let pushService: PushNotificationServiceProtocol
     /// fetch controller
     private(set) var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
-    private(set) var unreadFetchedResult: NSFetchedResultsController<NSFetchRequestResult>?
     private var labelPublisher: MailboxLabelPublisher?
+    private var eventUpdatePublisher: EventUpdatePublisher?
+    private var unreadCounterPublisher: UnreadCounterPublisher?
+    var unreadCount: Int {
+        unreadCounterPublisher?.unreadCount ?? 0
+    }
 
     private(set) var selectedIDs: Set<String> = Set()
 
-    var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
 
     private let lastUpdatedStore: LastUpdatedStoreProtocol
@@ -76,7 +84,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     var isHavingUser: Bool {
         return totalUserCountClosure() > 0
     }
-    var isFetchingMessage: Bool { self.dependencies.updateMailbox.isFetching }
+    var isFetchingMessage: Bool {
+        (dependencies.updateMailbox as? UpdateMailbox)?.isFetching ?? false
+    }
     private(set) var isFirstFetch: Bool = true
 
     weak var uiDelegate: MailboxViewModelUIProtocol?
@@ -96,6 +106,18 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     let toolbarActionProvider: ToolbarActionProvider
     let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
 
+    var listEditing: Bool = false {
+        didSet {
+            if !listEditing {
+                selectedIDs.removeAll()
+            }
+        }
+    }
+
+    var shouldAutoShowInAppFeedbackPrompt: Bool {
+        !ProcessInfo.hasLaunchArgument(.disableInAppFeedbackPromptAutoShow)
+    }
+
     init(labelID: LabelID,
          label: LabelInfo?,
          labelType: PMLabelType,
@@ -110,7 +132,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
          conversationProvider: ConversationProvider,
          eventsService: EventsFetching,
          dependencies: Dependencies,
-         welcomeCarrouselCache: WelcomeCarrouselCacheProtocol = userCachedStatus,
+         welcomeCarrouselCache: WelcomeCarrouselCacheProtocol,
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          totalUserCountClosure: @escaping () -> Int
@@ -136,7 +158,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
         super.init()
         self.conversationStateProvider.add(delegate: self)
-        self.dependencies.updateMailbox.setup(source: self)
+        (self.dependencies.updateMailbox as? UpdateMailbox)?.setup(source: self)
     }
 
     /// localized navigation title. override it or return label name
@@ -234,6 +256,66 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         contactProvider.fetchContacts(completion: nil)
     }
 
+    func tagUIModels(for conversation: ConversationEntity) -> [TagUIModel] {
+        let labelIDs = conversation.contextLabelRelations.map(\.labelID.rawValue)
+        let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
+
+        /// This regex means "contains more than just digits" and is used to differentiate:
+        /// - system labelIDs which contains only digits
+        /// - custom labelIDs which are UUIDs
+        let isCustomLabelRegex = "(?!^\\d+$)^.+$"
+
+        let predicates: [NSPredicate] = [
+            NSPredicate(format: "%K IN %@", Label.Attributes.labelID, labelIDs),
+            NSPredicate(format: "%K == %u", Label.Attributes.type, LabelEntity.LabelType.messageLabel.rawValue),
+            NSPredicate(format: "%K == %@", Label.Attributes.userID, user.userID.rawValue),
+            NSPredicate(format: "%K MATCHES %@", Label.Attributes.labelID, isCustomLabelRegex)
+        ]
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+
+        request.sortDescriptors = [
+            NSSortDescriptor(key: "order", ascending: true)
+        ]
+
+        var output: [TagUIModel] = []
+
+        if let expirationTime = conversation.expirationTime {
+            if conversation.isExpiring() {
+                let title = expirationTime.countExpirationTime(processInfo: userCachedStatus)
+                let expirationDateTag = TagUIModel(
+                    title: title,
+                    titleColor: ColorProvider.InteractionStrong,
+                    titleWeight: .regular,
+                    icon: IconProvider.hourglass,
+                    tagColor: ColorProvider.InteractionWeak
+                )
+                output.append(expirationDateTag)
+            }
+        }
+
+        do {
+            let orderedCustomLabels = try coreDataContextProvider.read { context in
+                try context.fetch(request).map(LabelEntity.init(label:))
+            }
+
+            let tags = orderedCustomLabels.map { label in
+                TagUIModel(
+                    title: label.name,
+                    titleColor: .white,
+                    titleWeight: .semibold,
+                    icon: nil,
+                    tagColor: UIColor(hexString: label.color, alpha: 1.0)
+                )
+            }
+
+            output.append(contentsOf: tags)
+        } catch {
+            PMAssertionFailure(error)
+        }
+
+        return output
+    }
+
     /// create a fetch controller with labelID
     ///
     /// - Returns: fetched result controller
@@ -249,46 +331,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
             } catch { }
         }
         return fetchedResultsController
-    }
-
-    private func makeUnreadFetchController() -> NSFetchedResultsController<NSFetchRequestResult> {
-        let fetchController: NSFetchedResultsController<NSFetchRequestResult>
-
-        switch locationViewMode {
-        case .singleMessage:
-            let moc = coreDataContextProvider.mainContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)",
-                                                 LabelUpdate.Attributes.labelID,
-                                                 self.labelID.rawValue,
-                                                 LabelUpdate.Attributes.userID,
-                                                 self.user.userInfo.userId)
-            let strComp = NSSortDescriptor(key: LabelUpdate.Attributes.labelID,
-                                           ascending: true,
-                                           selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-            fetchRequest.sortDescriptors = [strComp]
-            fetchController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        case .conversation:
-            let moc = coreDataContextProvider.mainContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ConversationCount.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(%K == %@) AND (%K == %@)",
-                                                 ConversationCount.Attributes.userID,
-                                                 self.user.userInfo.userId,
-                                                 ConversationCount.Attributes.labelID,
-                                                 self.labelID.rawValue)
-            let strComp = NSSortDescriptor(key: ConversationCount.Attributes.labelID,
-                                           ascending: true,
-                                           selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-            fetchRequest.sortDescriptors = [strComp]
-            fetchController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        }
-
-        do {
-            try fetchController.performFetch()
-        } catch {
-        }
-
-        return fetchController
     }
 
     private func makeLabelPublisherIfNeeded() {
@@ -308,6 +350,30 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         )
     }
 
+    private func makeUnreadCounterPublisher() {
+        unreadCounterPublisher = .init(
+            contextProvider: coreDataContextProvider,
+            userID: user.userID
+        )
+        unreadCounterPublisher?.startObserve(
+            labelID: labelID,
+            viewMode: locationViewMode,
+            onContentChanged: { [weak self] unreadCount in
+                self?.uiDelegate?.updateUnreadButton(count: unreadCount)
+            }
+        )
+    }
+
+	private func makeEventPublisher() {
+        eventUpdatePublisher = .init(contextProvider: coreDataContextProvider)
+        eventUpdatePublisher?.startObserve(
+            userID: user.userID,
+            onContentChanged: { [weak self] events in
+                self?.latestEventUpdateTime = events.first?.updateTime
+                self?.uiDelegate?.updateTheUpdateTimeLabel()
+            })
+	}
+
     /// Setup fetch controller to fetch message of specific labelID
     ///
     /// - Parameter delegate: delegate from viewcontroller
@@ -316,10 +382,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         self.fetchedResultsController = self.makeFetchController(isUnread: isUnread)
         self.fetchedResultsController?.delegate = delegate
 
-        self.unreadFetchedResult = self.makeUnreadFetchController()
-        self.unreadFetchedResult?.delegate = delegate
-
         makeLabelPublisherIfNeeded()
+        makeEventPublisher()
+        makeUnreadCounterPublisher()
     }
 
     /// reset delegate if fetch controller is valid
@@ -412,13 +477,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         return contextLabel.conversation
     }
 
-    func isObjectUpdated(objectID: ObjectID) -> Bool {
-        guard let obj = try? self.fetchedResultsController?.managedObjectContext.existingObject(with: objectID.rawValue) else {
-            return false
-        }
-        return obj.isUpdated
-    }
-
     // MARK: - operations
 
     /// clean up the rate/review items
@@ -464,7 +522,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     func getLastUpdateTimeText() -> String {
         var result = LocalString._mailblox_last_update_time_more_than_1_hour
 
-        if let updateTime = lastUpdatedStore.lastEventUpdateTime(userID: self.user.userID) {
+        if let updateTime = latestEventUpdateTime {
             let time = updateTime.timeIntervalSinceReferenceDate
             let differenceFromNow = Int(Date().timeIntervalSinceReferenceDate - time)
 
@@ -724,6 +782,21 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
                     }
             }
     }
+
+    func isProtonUnreachable(completion: @escaping (Bool) -> Void) {
+        guard
+            dependencies.featureFlagCache.isFeatureFlag(.protonUnreachableBanner, enabledForUserWithID: user.userID)
+        else {
+            completion(false)
+            return
+        }
+        Task { [weak self] in
+            let status = await self?.dependencies.checkProtonServerStatus.execute()
+            await MainActor.run {
+                completion(status == .serverDown)
+            }
+        }
+    }
 }
 
 // MARK: - Data fetching methods
@@ -732,14 +805,18 @@ extension MailboxViewModel {
     func fetchMessages(time: Int, forceClean: Bool, isUnread: Bool, completion: @escaping (Error?) -> Void) {
         switch self.locationViewMode {
         case .singleMessage:
-            dependencies.fetchMessages.execute(
-                endTime: time,
-                isUnread: isUnread,
-                callback: { result in
-                    completion(result.error)
-                },
-                onMessagesRequestSuccess: nil)
-
+            dependencies.fetchMessages
+                .callbackOn(.main)
+                .execute(
+                    params: .init(
+                        endTime: time,
+                        isUnread: isUnread,
+                        onMessagesRequestSuccess: nil
+                    ),
+                    callback: { result in
+                        completion(result.error)
+                    }
+                )
         case .conversation:
             conversationProvider.fetchConversations(for: self.labelID, before: time, unreadOnly: isUnread, shouldReset: forceClean) { result in
                 switch result {
@@ -763,20 +840,24 @@ extension MailboxViewModel {
         let fetchMessagesAtTheEnd = isCurrentLocationEmpty || isFirstFetch
         isFirstFetch = false
 
-        dependencies.updateMailbox.exec(
-            showUnreadOnly: showUnreadOnly,
-            isCleanFetch: isCleanFetch,
-            time: time,
-            fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
-            errorHandler: errorHandler,
-            completion: completion
-        )
+        dependencies.updateMailbox.execute(
+            params: .init(
+                showUnreadOnly: showUnreadOnly,
+                isCleanFetch: isCleanFetch,
+                time: time,
+                fetchMessagesAtTheEnd: fetchMessagesAtTheEnd,
+                errorHandler: errorHandler
+            )
+        ) { _ in
+            completion()
+        }
     }
 
     func fetchMessageDetail(message: MessageEntity, callback: @escaping FetchMessageDetailUseCase.Callback) {
         let params: FetchMessageDetail.Params = .init(
             userID: user.userID,
             message: message,
+            hasToBeQueued: false,
             ignoreDownloaded: message.isDraft
         )
         dependencies.fetchMessageDetail
@@ -1063,6 +1144,123 @@ extension MailboxViewModel {
         let updateMailbox: UpdateMailboxUseCase
         let fetchMessageDetail: FetchMessageDetailUseCase
         let fetchSenderImage: FetchSenderImageUseCase
+        let checkProtonServerStatus: CheckProtonServerStatusUseCase
+        let featureFlagCache: FeatureFlagCache
+
+        init(
+            fetchMessages: FetchMessagesUseCase,
+            updateMailbox: UpdateMailboxUseCase,
+            fetchMessageDetail: FetchMessageDetailUseCase,
+            fetchSenderImage: FetchSenderImageUseCase,
+            checkProtonServerStatus: CheckProtonServerStatusUseCase = CheckProtonServerStatus(),
+            featureFlagCache: FeatureFlagCache = sharedServices.get(by: UserCachedStatus.self)
+        ) {
+            self.fetchMessages = fetchMessages
+            self.updateMailbox = updateMailbox
+            self.fetchMessageDetail = fetchMessageDetail
+            self.fetchSenderImage = fetchSenderImage
+            self.checkProtonServerStatus = checkProtonServerStatus
+            self.featureFlagCache = featureFlagCache
+        }
+    }
+}
+
+// MARK: - Auto-Delete Spam & Trash Banners
+
+extension MailboxViewModel {
+    enum InfoBannerType {
+        case spam
+        case trash
+    }
+
+    enum BannerToDisplay {
+        case upsellBanner
+        case promptBanner
+        case infoBanner(InfoBannerType)
+    }
+
+    var headerBanner: BannerToDisplay? {
+        guard UserInfo.isAutoDeleteEnabled else {
+            return nil
+        }
+
+        let infoBannerType: InfoBannerType
+        if self.labelID == LabelLocation.spam.labelID {
+            infoBannerType = .spam
+        } else if self.labelID == LabelLocation.trash.labelID {
+            infoBannerType = .trash
+        } else {
+            return nil
+        }
+
+        if !user.isPaid {
+            return .upsellBanner
+        } else if user.isAutoDeleteImplicitlyDisabled {
+            return .promptBanner
+        } else if user.isAutoDeleteEnabled {
+            return .infoBanner(infoBannerType)
+        } else {
+            return nil
+        }
+    }
+
+    func updateAutoDeleteSetting(to newStatus: Bool, for user: UserManager, completion: @escaping ((Error?) -> Void)) {
+        let request = UpdateAutoDeleteSpamAndTrashDaysRequest(shouldEnable: newStatus)
+        user.apiService.perform(
+            request: request,
+            response: VoidResponse()
+        ) { _, response in
+            DispatchQueue.main.async {
+                if let error = response.error {
+                    completion(error)
+                } else {
+                    completion(nil)
+                }
+            }
+        }
+    }
+
+    func alertToConfirmEnabling(completion: @escaping ((Error?) -> Void)) -> UIAlertController {
+        let alert = L11n.AutoDeleteSettings.enableAlertMessage.alertController()
+        alert.title = L11n.AutoDeleteSettings.enableAlertTitle
+        let cancelTitle = LocalString._general_cancel_button
+        let confirm = UIAlertAction(title: L11n.AutoDeleteSettings.enableAlertButton, style: .default) { _ in }
+        let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { [weak self] _ in
+            guard let self else { return }
+            self.updateAutoDeleteSetting(to: true, for: self.user, completion: { error in
+                completion(error)
+            })
+        }
+        [confirm, cancel].forEach(alert.addAction)
+        return alert
+    }
+}
+
+// MARK: - Prefetch
+
+extension MailboxViewModel {
+    func itemsToPrefetch() -> [MailboxItem] {
+        switch self.locationViewMode {
+        case .conversation:
+            let allConversations = fetchedResultsController?
+                .fetchedObjects?
+                .compactMap { $0 as? ContextLabel }
+                .compactMap(\.conversation)
+                .map(ConversationEntity.init) ?? []
+            let unreadConversations = allConversations.filter { $0.isUnread(labelID: labelID) == true }
+            let readConversations = allConversations.filter { $0.isUnread(labelID: labelID) == false }
+            let orderedConversations = unreadConversations.appending(readConversations)
+            return orderedConversations.map { MailboxItem.conversation($0) }
+        case .singleMessage:
+            let allMessages = fetchedResultsController?
+                .fetchedObjects?
+                .compactMap { $0 as? Message }
+                .map(MessageEntity.init) ?? []
+            let unreadMessages = allMessages.filter { $0.unRead == true }
+            let readMessages = allMessages.filter { $0.unRead == false }
+            let orderedMessages = unreadMessages.appending(readMessages)
+            return orderedMessages.map { MailboxItem.message($0) }
+        }
     }
 }
 

@@ -31,6 +31,10 @@ import ProtonCore_Foundations
 import ProtonCore_UIFoundations
 import UIKit
 
+protocol ComposeContainerViewControllerDelegate: AnyObject {
+    func composerVillDismiss()
+}
+
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel> {
     #if !APP_EXTENSION
     class var lifetimeConfiguration: LifetimeConfiguration {
@@ -114,6 +118,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         }
     )
 
+    weak var delegate: ComposeContainerViewControllerDelegate?
+
     init(
         viewModel: ComposeContainerViewModel,
         contextProvider: CoreDataContextProviderProtocol
@@ -141,9 +147,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if #available(iOS 13.0, *) {
             self.isModalInPresentation = true
-        }
         self.tableView.backgroundColor = .clear
         self.tableView.separatorStyle = .none
         self.tableView.dropDelegate = self
@@ -193,9 +197,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         super.viewDidAppear(animated)
         self.startAutoSync()
         #if !APP_EXTENSION
-        if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = LocalString._general_draft_action
-        }
         #endif
 
         generateAccessibilityIdentifiers()
@@ -496,7 +498,6 @@ extension ComposeContainerViewController {
 // MARK: - UITableViewDropDelegate
 
 extension ComposeContainerViewController: UITableViewDropDelegate {
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
                    canHandle session: UIDropSession) -> Bool {
         // return true only if all the files are supported
@@ -504,14 +505,12 @@ extension ComposeContainerViewController: UITableViewDropDelegate {
         return self.viewModel.filesAreSupported(from: itemProviders)
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
                    dropSessionDidUpdate session: UIDropSession,
                    withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal {
         return UITableViewDropProposal(operation: .copy, intent: .insertIntoDestinationIndexPath)
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, dropSessionDidEnter session: UIDropSession) {
         if self.dropLandingZone == nil {
             var dropFrame = self.tableView.frame
@@ -527,14 +526,12 @@ extension ComposeContainerViewController: UITableViewDropDelegate {
         }
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, dropSessionDidExit session: UIDropSession) {
         UIView.animate(withDuration: 0.3, animations: {
             self.dropLandingZone?.alpha = 0.0
         })
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, dropSessionDidEnd session: UIDropSession) {
         UIView.animate(withDuration: 0.3, animations: {
             self.dropLandingZone?.alpha = 0.0
@@ -544,7 +541,6 @@ extension ComposeContainerViewController: UITableViewDropDelegate {
         }
     }
 
-    @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
                    performDropWith coordinator: UITableViewDropCoordinator) {
         DispatchQueue.main.async {
@@ -616,14 +612,6 @@ extension ComposeContainerViewController: ComposeToolbarDelegate {
 // MARK: - AttachmentController protocol
 
 extension ComposeContainerViewController: AttachmentController {
-    func error(title: String, description: String) {
-        let alert = description.alertController(title)
-        alert.addOKAction()
-        DispatchQueue.main.async {
-            self.present(alert, animated: true, completion: nil)
-        }
-    }
-
     func fileSuccessfullyImported(as fileData: FileData) -> Promise<Void> {
         return Promise { [weak self] seal in
             guard let self = self else {
@@ -651,8 +639,6 @@ extension ComposeContainerViewController: AttachmentController {
                     return
                 }
 
-                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-
                 var newAttachment: AttachmentEntity?
                 let attachmentGroup = DispatchGroup()
                 attachmentGroup.enter()
@@ -660,7 +646,7 @@ extension ComposeContainerViewController: AttachmentController {
                     fileData.contents.toAttachment(
                         context, fileName: fileData.name,
                         type: fileData.ext,
-                        stripMetadata: stripMetadata,
+                        stripMetadata: self.viewModel.shouldStripAttachmentMetadata,
                         isInline: false
                     ).done { attachment in
                         newAttachment = attachment
@@ -677,11 +663,14 @@ extension ComposeContainerViewController: AttachmentController {
 
                 let group = DispatchGroup()
                 group.enter()
-                self.addAttachment(att) {
-                    self.updateCurrentAttachmentSize(completion: {
-                        group.leave()
-                    })
-                }
+                self.editor.collectDraftData().ensure { [weak self] in
+                    self?.viewModel.childViewModel.updateDraft()
+                    self?.addAttachment(att) {
+                        self?.updateCurrentAttachmentSize(completion: {
+                            group.leave()
+                        })
+                    }
+                }.cauterize()
                 group.wait()
                 seal.fulfill_()
             }
@@ -783,7 +772,8 @@ extension ComposeContainerViewController: ScheduledSendHelperDelegate {
         paymentsUI = PaymentsUI(
             payments: viewModel.user.payments,
             clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames
+            shownPlanNames: Constants.shownPlanNames,
+            customization: .empty
         )
         paymentsUI?.showUpgradePlan(
             presentationType: .modal,
@@ -923,6 +913,10 @@ extension ComposeContainerViewController: ComposeExpirationDelegate {
 // MARK: - ComposeViewControllerDelegate
 
 extension ComposeContainerViewController: ComposeContentViewControllerDelegate {
+    func willDismiss() {
+        delegate?.composerVillDismiss()
+    }
+
     func displayExpirationWarning() {
         presentExpirationUnavailabilityAlert()
     }

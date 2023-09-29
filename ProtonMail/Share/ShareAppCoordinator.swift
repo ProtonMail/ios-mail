@@ -23,23 +23,21 @@
 import ProtonCore_Keymaker
 import UIKit
 
-let sharedInternetReachability: Reachability = Reachability.forInternetConnection()
-
 /// Main entry point to the app
 final class ShareAppCoordinator {
     // navigation controller instance -- entry
-    internal weak var navigationController: UINavigationController?
+    private(set) weak var navigationController: UINavigationController?
     private var nextCoordinator: ShareUnlockCoordinator?
 
     func start() {
-
+        sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
         let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
         let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
         let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         sharedServices.add(QueueManager.self, for: queueManager)
 
         let keyMaker = Keymaker(
-            autolocker: Autolocker(lockTimeProvider: userCachedStatus),
+            autolocker: Autolocker(lockTimeProvider: sharedServices.userCachedStatus),
             keychain: KeychainWrapper.keychain
         )
         sharedServices.add(Keymaker.self, for: keyMaker)
@@ -50,18 +48,16 @@ final class ShareAppCoordinator {
             userDataCache: UserDataCache(keyMaker: keyMaker),
             coreKeyMaker: keyMaker
         )
-        sharedServices.add(
-            UnlockManager.self,
-            for: UnlockManager(
-                cacheStatus: keyMaker,
-                delegate: self,
-                keyMaker: keyMaker,
-                pinFailedCountCache: userCachedStatus
-            )
-        )
-        sharedServices.add(UsersManager.self, for: usersManager)
-        sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
 
+        let unlockManager = UnlockManager(
+            cacheStatus: keyMaker,
+            keyMaker: keyMaker,
+            pinFailedCountCache: sharedServices.userCachedStatus
+        )
+        unlockManager.delegate = self
+        sharedServices.add(UnlockManager.self, for: unlockManager)
+
+        sharedServices.add(UsersManager.self, for: usersManager)
         self.loadUnlockCheckView()
     }
 
@@ -78,6 +74,12 @@ final class ShareAppCoordinator {
 
 extension ShareAppCoordinator: UnlockManagerDelegate {
     func setupCoreData() {
+        do {
+            try CoreDataStore.shared.initialize()
+        } catch {
+            fatalError("\(error)")
+        }
+
         sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
         let lastUpdatedStore = LastUpdatedStore(contextProvider: CoreDataService.shared)

@@ -52,7 +52,12 @@ public final class SubscriptionRequest: BaseApiRequest<SubscriptionResponse> {
         guard amount != .zero, let paymentAction = paymentAction else {
             return params
         }
-        params["Payment"] = ["Type": paymentAction.getType, "Details": [paymentAction.getKey: paymentAction.getValue]]
+        switch paymentAction {
+        case .token(let token):
+            params["PaymentToken"] = token
+        case .apple:
+            params["Payment"] = ["Type": paymentAction.getType, "Details": [paymentAction.getKey: paymentAction.getValue]]
+        }
         return params
     }
 }

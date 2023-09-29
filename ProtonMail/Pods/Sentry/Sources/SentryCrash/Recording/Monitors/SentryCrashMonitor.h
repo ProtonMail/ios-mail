@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrashMonitor.h
 //
@@ -55,12 +56,18 @@ void sentrycrashcm_setActiveMonitors(SentryCrashMonitorType monitorTypes);
  */
 SentryCrashMonitorType sentrycrashcm_getActiveMonitors(void);
 
+typedef void (*SentryCrashMonitorEventCallback)(struct SentryCrash_MonitorContext *);
+
 /** Set the callback to call when an event is captured.
  *
  * @param onEvent Called whenever an event is captured.
  */
-void sentrycrashcm_setEventCallback(
-    void (*onEvent)(struct SentryCrash_MonitorContext *monitorContext));
+void sentrycrashcm_setEventCallback(SentryCrashMonitorEventCallback onEvent);
+
+/** Get the current SentryCrashMonitorEventCallback. Only needed for testing.
+ *
+ */
+SentryCrashMonitorEventCallback sentrycrashcm_getEventCallback(void);
 
 // ============================================================================
 #pragma mark - Internal API -

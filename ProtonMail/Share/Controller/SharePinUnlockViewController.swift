@@ -43,9 +43,7 @@ class SharePinUnlockViewController: UIViewController {
         self.view.backgroundColor = ColorProvider.BackgroundNorm
         self.setUpView(true)
 
-        if #available(iOSApplicationExtension 13.0, *) {
             self.isModalInPresentation = true
-        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

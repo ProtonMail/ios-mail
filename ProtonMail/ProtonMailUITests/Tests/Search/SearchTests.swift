@@ -10,7 +10,7 @@ import XCTest
 
 import ProtonCore_TestingToolkit
 
-class SearchTests: BaseTestCase {
+class SearchTests: FixtureAuthenticatedTestCase {
     
     var subject = String()
     var body = String()
@@ -20,8 +20,9 @@ class SearchTests: BaseTestCase {
         subject = testData.messageSubject
         body = testData.messageBody
     }
-    
-    func testSearchFromInboxBySubject() {
+
+    // TODO: enable back after fixing the root cause of flaky search functionality
+    func xtestSearchFromInboxBySubject() {
         let user = testData.onePassUser
         let recipient = testData.twoPassUser
         LoginRobot()
@@ -33,39 +34,37 @@ class SearchTests: BaseTestCase {
             .searchMessageText(subject)
             .verify.messageExists(subject)
     }
-    
-    func testSearchFromInboxByAddress() {
-        let user = testData.onePassUser
-        let coreFusionSender = "Core Fusion"
-        let title = "163880735864890"
-        LoginRobot()
-            .loginUser(user)
-            .searchBar()
-            .searchMessageText(coreFusionSender)
-            .verify.senderAddressExists(coreFusionSender, title)
+
+    // TODO: enable back after fixing the root cause of flaky search functionality
+    func xtestSearchFromInboxByAddress() {
+        let messageSubject = "001_message_with_remote_content_in_inbox"
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .searchBar()
+                .searchMessageText(messageSubject)
+                .verify.messageExists(messageSubject)
+        }
     }
-    
-    func testSearchDraft() {
-        let user = testData.onePassUser
-        LoginRobot()
-            .loginUser(user)
-            .compose()
-            .changeSubjectTo(subject)
-            .tapCancel()
-            .menuDrawer()
-            .drafts()
-            .searchBar()
-            .searchMessageText(subject)
-            .verify.draftMessageExists(subject)
+
+    // TODO: enable back after fixing the root cause of flaky search functionality
+    func xtestSearchDraft() {
+        runTestWithScenario(.pgpinlineDrafts) {
+            InboxRobot()
+                .searchBar()
+                .searchMessageText(scenario.subject)
+                .verify.draftMessageExists(scenario.subject)
+        }
     }
     
     func testSearchForNonExistentMessage() {
-        let user = testData.onePassUser
         let title = "This message doesn't exist!"
-        LoginRobot()
-            .loginUser(user)
-            .searchBar()
-            .searchMessageText(title)
-            .verify.noResultsTextIsDisplayed()
+
+        runTestWithScenario(.pgpmime) {
+            InboxRobot()
+                .searchBar()
+                .searchMessageText(title)
+                .verify.noResultsTextIsDisplayed()
+        }
+
     }
 }

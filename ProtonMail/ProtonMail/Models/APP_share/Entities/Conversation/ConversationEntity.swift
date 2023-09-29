@@ -35,6 +35,11 @@ struct ConversationEntity: Equatable, Hashable {
     /// Local use flag to mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
     let isSoftDeleted: Bool
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(conversationID)
+        hasher.combine(objectID)
+    }
 }
 
 extension ConversationEntity {
@@ -114,6 +119,14 @@ extension ConversationEntity {
         }
         return matchedLabel.messageCount
     }
+
+    func isExpiring() -> Bool {
+        contextLabelRelations.contains(where: { contextLabelEntity in
+            contextLabelEntity.expirationTime == expirationTime &&
+            ( contextLabelEntity.labelID.rawValue == LabelLocation.trash.rawLabelID ||
+              contextLabelEntity.labelID.rawValue == LabelLocation.spam.rawLabelID)
+        }) == false
+    }
 }
 
 // MARK: - Senders
@@ -125,7 +138,7 @@ extension ConversationEntity {
 
 extension ConversationEntity {
     #if !APP_EXTENSION
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     func getFolderIcons(customFolderLabels: [LabelEntity]) -> [ImageAsset.Image] {
         let labelIds = getLabelIDs()
         let standardFolders: [LabelID] = [

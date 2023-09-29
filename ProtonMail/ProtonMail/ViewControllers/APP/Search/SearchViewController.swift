@@ -43,35 +43,8 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         .init(maxCount: 1)
     }
 
-    @IBOutlet private var navigationBarView: UIView!
-    @IBOutlet private var tableView: UITableView!
-    @IBOutlet private var activityIndicator: UIActivityIndicatorView!
-    @IBOutlet private var noResultLabel: UILabel!
-    @IBOutlet private var toolBar: PMToolBarView!
-    private let searchBar = SearchBarView()
+    private let customView: SearchView
     private var actionSheet: PMActionSheet?
-
-    // TODO: need better UI solution for this progress bar
-    private lazy var progressBar: UIProgressView = {
-        let bar = UIProgressView()
-        bar.trackTintColor = .black
-        bar.progressTintColor = .white
-        bar.progressViewStyle = .bar
-
-        let label = UILabel(
-            font: UIFont.italicSystemFont(ofSize: UIFont.smallSystemFontSize),
-            text: "Indexing local messages",
-            textColor: .gray
-        )
-
-        label.translatesAutoresizingMaskIntoConstraints = false
-        bar.addSubview(label)
-        bar.topAnchor.constraint(equalTo: label.topAnchor).isActive = true
-        bar.leadingAnchor.constraint(equalTo: label.leadingAnchor).isActive = true
-        bar.trailingAnchor.constraint(equalTo: label.trailingAnchor).isActive = true
-
-        return bar
-    }()
 
     // MARK: - Private Constants
     private let kLongPressDuration: CFTimeInterval = 0.60 // seconds
@@ -92,10 +65,15 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     init(viewModel: SearchVMProtocol, serviceFactory: ServiceFactory) {
         self.viewModel = viewModel
         self.serviceFactory = serviceFactory
+        self.customView = .init()
 
         super.init(nibName: nil, bundle: nil)
         self.viewModel.uiDelegate = self
         trackLifetime()
+    }
+
+    override func loadView() {
+        view = customView
     }
 
     required init?(coder: NSCoder) {
@@ -108,84 +86,51 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
         self.edgesForExtendedLayout = UIRectEdge()
         self.extendedLayoutIncludesOpaqueBars = false
         self.navigationController?.navigationBar.isTranslucent = false
-        self.view.backgroundColor = ColorProvider.BackgroundNorm
 
-        navigationBarView.backgroundColor = ColorProvider.BackgroundNorm
         self.emptyBackButtonTitleForNextView()
-
-        noResultLabel.text = LocalString._no_results_found
 
         self.setupSearchBar()
         self.setupTableview()
-        self.setupProgressBar()
-        self.setupActivityIndicator()
         self.viewModel.viewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        self.tableView.reloadData()
+        customView.tableView.reloadData()
         self.viewModel.user.undoActionManager.register(handler: self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        searchBar.textField.resignFirstResponder()
+        customView.searchBar.textField.resignFirstResponder()
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.tableView.zeroMargin()
+        customView.tableView.zeroMargin()
     }
 }
 
 // MARK: UI related
 extension SearchViewController {
     private func setupSearchBar() {
-        searchBar.cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
-        searchBar.clearButton.addTarget(self, action: #selector(clearAction), for: .touchUpInside)
-        searchBar.textField.delegate = self
-        searchBar.textField.becomeFirstResponder()
-        navigationBarView.addSubview(searchBar)
-        [
-            searchBar.topAnchor.constraint(equalTo: navigationBarView.topAnchor),
-            searchBar.leadingAnchor.constraint(equalTo: navigationBarView.leadingAnchor, constant: 16),
-            searchBar.trailingAnchor.constraint(equalTo: navigationBarView.trailingAnchor, constant: -16),
-            searchBar.bottomAnchor.constraint(equalTo: navigationBarView.bottomAnchor)
-        ].activate()
+        customView.searchBar.cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
+        customView.searchBar.clearButton.addTarget(self, action: #selector(clearAction), for: .touchUpInside)
+        customView.searchBar.textField.delegate = self
+        customView.searchBar.textField.becomeFirstResponder()
     }
 
     private func setupTableview() {
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
-        self.tableView.noSeparatorsBelowFooter()
-        self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
-        self.tableView.contentInsetAdjustmentBehavior = .automatic
-        self.tableView.estimatedRowHeight = 100
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.backgroundColor = .clear
-        self.tableView.separatorColor = ColorProvider.SeparatorNorm
+        customView.tableView.delegate = self
+        customView.tableView.dataSource = self
+        customView.tableView.noSeparatorsBelowFooter()
+        customView.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
         let longPressGestureRecognizer = UILongPressGestureRecognizer(target: self,
                                                                       action: #selector(handleLongPress(_:)))
         longPressGestureRecognizer.minimumPressDuration = kLongPressDuration
-        self.tableView.addGestureRecognizer(longPressGestureRecognizer)
-    }
-
-    private func setupProgressBar() {
-        self.progressBar.translatesAutoresizingMaskIntoConstraints = false
-        self.view.addSubview(self.progressBar)
-        self.progressBar.topAnchor.constraint(equalTo: self.tableView.topAnchor).isActive = true
-        self.progressBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        self.progressBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        self.progressBar.heightAnchor.constraint(equalToConstant: UIFont.smallSystemFontSize).isActive = true
-    }
-
-    private func setupActivityIndicator() {
-        activityIndicator.color = ColorProvider.BrandNorm
-        activityIndicator.isHidden = true
-        activityIndicator.hidesWhenStopped = true
+        customView.tableView.addGestureRecognizer(longPressGestureRecognizer)
     }
 }
 
@@ -208,12 +153,13 @@ extension SearchViewController {
 
     @objc
     private func clearAction() {
-        searchBar.textField.text = nil
-        searchBar.textField.sendActions(for: .editingChanged)
+        customView.searchBar.textField.text = nil
+        customView.searchBar.textField.sendActions(for: .editingChanged)
+        customView.searchBar.clearButton.isHidden = true
     }
 
     @IBAction func tapAction(_ sender: AnyObject) {
-        searchBar.textField.resignFirstResponder()
+        customView.searchBar.textField.resignFirstResponder()
     }
 }
 
@@ -271,7 +217,7 @@ extension SearchViewController {
             let barItem = PMToolBarView.ActionItem(type: action, handler: actionHandler)
             actionItems.append(barItem)
         }
-        self.toolBar.setUpActions(actionItems)
+        customView.toolBar.setUpActions(actionItems)
     }
 
     private func showActionBar() {
@@ -288,12 +234,12 @@ extension SearchViewController {
 
          > isHidden seems to be cumulative in UIStackViews, so we have to ensure to not set it the same value twice.
          */
-        guard self.toolBar.isHidden != hidden else {
+        guard customView.toolBar.isHidden != hidden else {
             return
         }
 
         UIView.animate(withDuration: 0.25) {
-            self.toolBar.isHidden = hidden
+            self.customView.toolBar.isHidden = hidden
         }
     }
 
@@ -376,9 +322,7 @@ extension SearchViewController {
         let title = messagesCount > 1 ?
             String(format: LocalString._messages_delete_confirmation_alert_title, messagesCount) :
             LocalString._single_message_delete_confirmation_alert_title
-        let message = messagesCount > 1 ?
-            String(format: LocalString._messages_delete_confirmation_alert_message, messagesCount) :
-            LocalString._single_message_delete_confirmation_alert_message
+        let message = String(format: LocalString._messages_delete_confirmation_alert_message, messagesCount)
         let alert = UIAlertController(
             title: title,
             message: message,
@@ -426,45 +370,38 @@ extension SearchViewController {
 
     private func showMoveToActionSheet(messages: [MessageEntity], isEnableColor: Bool, isInherit: Bool) {
         guard let handler = moveToActionHandler else { return }
-        let moveToViewModel =
-            MoveToActionSheetViewModelMessages(menuLabels: handler.getFolderMenuItems(),
-                                               messages: messages,
-                                               isEnableColor: isEnableColor,
-                                               isInherit: isInherit)
-        moveToActionSheetPresenter
-            .present(on: self.navigationController ?? self,
-                     viewModel: moveToViewModel,
-                     addNewFolder: { [weak self] in
-                        self?.pendingActionAfterDismissal = { [weak self] in
-                            self?.showMoveToActionSheet(messages: messages,
-                                                        isEnableColor: isEnableColor,
-                                                        isInherit: isInherit)
-                        }
-                        self?.presentCreateFolder(type: .folder)
-                     },
-                     selected: { menuLabel, isOn in
-                        handler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
-                     },
-                     cancel: { [weak self] isHavingUnsavedChanges in
-                        if isHavingUnsavedChanges {
-                            self?.showDiscardAlert(handleDiscard: {
-                                handler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
-                                self?.dismissActionSheet()
-                            })
-                        } else {
-                            self?.dismissActionSheet()
-                        }
-                     },
-                     done: { [weak self] isHavingUnsavedChanges in
-                        defer {
-                            self?.dismissActionSheet()
-                            self?.cancelButtonTapped()
-                        }
-                        guard isHavingUnsavedChanges else {
-                            return
-                        }
-                        handler.handleMoveToAction(messages: messages, isFromSwipeAction: false)
-                     })
+        let moveToViewModel = MoveToActionSheetViewModelMessages(
+            menuLabels: handler.getFolderMenuItems(),
+            isEnableColor: isEnableColor,
+            isInherit: isInherit
+        )
+
+        moveToActionSheetPresenter.present(
+            on: self.navigationController ?? self,
+            viewModel: moveToViewModel,
+            addNewFolder: { [weak self] in
+                self?.pendingActionAfterDismissal = { [weak self] in
+                    self?.showMoveToActionSheet(messages: messages,
+                                                isEnableColor: isEnableColor,
+                                                isInherit: isInherit)
+                }
+                self?.presentCreateFolder(type: .folder)
+            },
+            selected: { [weak self] menuLabel, isSelected in
+                guard isSelected else { return }
+                self?.didSelectFolderToMoveTo(folder: menuLabel, messages: messages)
+            },
+            cancel: { [weak self] in
+                self?.dismissActionSheet()
+            }
+        )
+    }
+
+    private func didSelectFolderToMoveTo(folder: MenuLabel, messages: [MessageEntity]) {
+        moveToActionHandler?.handleMoveToAction(messages: messages, to: folder, isFromSwipeAction: false)
+
+        dismissActionSheet()
+        cancelButtonTapped()
     }
 
     private var labelAsActionHandler: LabelAsActionSheetProtocol? {
@@ -549,8 +486,8 @@ extension SearchViewController {
                 let alert = error.localizedDescription.alertController()
                 alert.addOKAction()
                 self?.present(alert, animated: true, completion: nil)
-                self?.tableView.indexPathsForSelectedRows?.forEach {
-                    self?.tableView.deselectRow(at: $0, animated: true)
+                self?.customView.tableView.indexPathsForSelectedRows?.forEach {
+                    self?.customView.tableView.deselectRow(at: $0, animated: true)
                 }
             case .success(let message):
                 self?.showComposer(message: message)
@@ -563,8 +500,9 @@ extension SearchViewController {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: sharedServices.get(by: CoreDataService.self),
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus
+            userIntroductionProgressProvider: serviceFactory.userCachedStatus,
+            attachmentMetadataStrippingCache: serviceFactory.userCachedStatus,
+            featureFlagCache: serviceFactory.userCachedStatus
         )
         navigationController.present(composer, animated: true)
     }
@@ -577,8 +515,9 @@ extension SearchViewController {
         let composer = ComposerViewFactory.makeComposer(
             childViewModel: viewModel,
             contextProvider: sharedServices.get(by: CoreDataService.self),
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus
+            userIntroductionProgressProvider: serviceFactory.userCachedStatus,
+            attachmentMetadataStrippingCache: serviceFactory.userCachedStatus,
+            featureFlagCache: serviceFactory.userCachedStatus
         )
         navigationController.present(composer, animated: true)
     }
@@ -606,7 +545,7 @@ extension SearchViewController {
         coordinator.goToDraft = { [weak self] msgID, _ in
             guard let self = self else { return }
             // trigger the data to be updated.
-            _ = self.textFieldShouldReturn(self.searchBar.textField)
+            _ = self.textFieldShouldReturn(self.customView.searchBar.textField)
             self.showComposer(msgID: msgID)
         }
         coordinator.start()
@@ -633,9 +572,9 @@ extension SearchViewController {
                     navigationController: navigation,
                     conversation: conversation,
                     user: self.viewModel.user,
-                    internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+                    internetStatusProvider: .shared,
                     infoBubbleViewStatusProvider: userCachedStatus,
-                    highlightedKeywords: [self.query],
+                    highlightedKeywords: self.query.components(separatedBy: .whitespacesAndNewlines),
                     contextProvider: sharedServices.get(by: CoreDataService.self),
                     targetID: messageID,
                     serviceFactory: self.serviceFactory
@@ -643,7 +582,7 @@ extension SearchViewController {
                 coordinator.goToDraft = { [weak self] msgID, _ in
                     guard let self = self else { return }
                     // trigger the data to be updated.
-                    _ = self.textFieldShouldReturn(self.searchBar.textField)
+                    _ = self.textFieldShouldReturn(self.customView.searchBar.textField)
                     self.showComposer(msgID: msgID)
                 }
                 coordinator.start()
@@ -654,8 +593,8 @@ extension SearchViewController {
     }
 
     private func showCheckOptions(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
-        let point: CGPoint = longPressGestureRecognizer.location(in: self.tableView)
-        let indexPath: IndexPath? = self.tableView.indexPathForRow(at: point)
+        let point: CGPoint = longPressGestureRecognizer.location(in: customView.tableView)
+        let indexPath: IndexPath? = customView.tableView.indexPathForRow(at: point)
         guard let touchedRowIndexPath = indexPath,
               longPressGestureRecognizer.state == .began && listEditing == false else { return }
         enterListEditingMode(indexPath: touchedRowIndexPath)
@@ -664,19 +603,19 @@ extension SearchViewController {
     private func hideCheckOptions() {
         guard listEditing else { return }
         self.listEditing = false
-        self.tableView.reloadData()
+        customView.tableView.reloadData()
     }
 
     private func enterListEditingMode(indexPath: IndexPath) {
         self.listEditing = true
 
-        guard let visibleRowsIndexPaths = self.tableView.indexPathsForVisibleRows else { return }
+        guard let visibleRowsIndexPaths = customView.tableView.indexPathsForVisibleRows else { return }
         visibleRowsIndexPaths.forEach { visibleRowIndexPath in
-            let visibleCell = self.tableView.cellForRow(at: visibleRowIndexPath)
+            let visibleCell = customView.tableView.cellForRow(at: visibleRowIndexPath)
             guard let messageCell = visibleCell as? NewMailboxMessageCell else { return }
             cellPresenter.presentSelectionStyle(style: .selection(isSelected: false), in: messageCell.customView)
             guard indexPath == visibleRowIndexPath else { return }
-            tableView(tableView, didSelectRowAt: indexPath)
+            tableView(customView.tableView, didSelectRowAt: indexPath)
         }
     }
 
@@ -693,14 +632,14 @@ extension SearchViewController {
         }
 
         // update checkbox state
-        if let mailboxCell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell {
+        if let mailboxCell = customView.tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell {
             cellPresenter.presentSelectionStyle(
                 style: .selection(isSelected: !itemAlreadySelected),
                 in: mailboxCell.customView
             )
         }
 
-        tableView.deselectRow(at: indexPath, animated: true)
+        customView.tableView.deselectRow(at: indexPath, animated: true)
     }
 
     private func cancelEditingMode() {
@@ -727,38 +666,42 @@ extension SearchViewController {
 
 extension SearchViewController: SearchViewUIProtocol {
     func update(progress: Float) {
-        self.progressBar.setProgress(progress, animated: true)
+        customView.progressView.setProgress(progress, animated: true)
     }
 
     func setupProgressBar(isHidden: Bool) {
-        self.progressBar.isHidden = isHidden
+        customView.progressView.isHidden = isHidden
     }
 
     func checkNoResultView() {
-        if self.activityIndicator.isAnimating {
-            self.noResultLabel.isHidden = true
+        if customView.activityIndicator.isAnimating {
+            customView.hideNoResult()
             return
         }
-        self.noResultLabel.isHidden = !self.viewModel.messages.isEmpty
+        if viewModel.messages.isEmpty {
+            customView.showNoResult()
+        } else {
+            customView.hideNoResult()
+        }
     }
 
     func activityIndicator(isAnimating: Bool) {
-        isAnimating ? activityIndicator.startAnimating(): activityIndicator.stopAnimating()
+        isAnimating ? customView.activityIndicator.startAnimating(): customView.activityIndicator.stopAnimating()
         if isAnimating {
-            self.noResultLabel.isHidden = true
+            customView.hideNoResult()
         }
     }
 
     func reloadTable() {
         self.checkNoResultView()
-        self.tableView.reloadData()
+        customView.tableView.reloadData()
     }
 }
 
 // MARK: - UITableView
 extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.viewModel.messages.isEmpty ? 0 : 1
+        1
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -815,12 +758,12 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
 
 extension SearchViewController: NewMailboxMessageCellDelegate {
     func didSelectButtonStatusChange(cell: NewMailboxMessageCell) {
-        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        guard let indexPath = customView.tableView.indexPath(for: cell) else { return }
 
         if !listEditing {
             self.enterListEditingMode(indexPath: indexPath)
         } else {
-            tableView(self.tableView, didSelectRowAt: indexPath)
+            tableView(customView.tableView, didSelectRowAt: indexPath)
         }
     }
 }
@@ -829,15 +772,20 @@ extension SearchViewController: NewMailboxMessageCellDelegate {
 
 extension SearchViewController: UITextFieldDelegate {
 
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        customView.searchBar.clearButton.isHidden = (textField.text?.isEmpty ?? true)
+    }
+
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
                    replacementString string: String) -> Bool {
         query = ((textField.text ?? "") as NSString).replacingCharacters(in: range, with: string)
-        searchBar.clearButton.isHidden = query.isEmpty == true
+        customView.searchBar.clearButton.isHidden = query.isEmpty == true
         return true
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        customView.searchBar.clearButton.isHidden = true
         textField.resignFirstResponder()
         self.query = self.query.trim()
         textField.text = self.query

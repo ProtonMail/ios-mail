@@ -58,6 +58,9 @@
                "sdk": "StoreKit.framework"
             },
             {
+               "package": "Factory"
+            },
+            {
                "package": "LifetimeTracker"
             }
          ],

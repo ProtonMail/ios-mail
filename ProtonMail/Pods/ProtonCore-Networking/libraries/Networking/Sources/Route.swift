@@ -143,6 +143,19 @@ public protocol RequestPerforming {
     func performRequest(request: Request,
                         parameters: Any?,
                         headers: [String: Any]?,
-                        jsonCompletion: JSONCompletion?
-    )
+                        onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
+                        jsonCompletion: JSONCompletion?)
+}
+
+public extension RequestPerforming {
+    func performRequest(request: Request,
+                        parameters: Any?,
+                        headers: [String: Any]?,
+                        jsonCompletion: JSONCompletion?) {
+        self.performRequest(request: request,
+                            parameters: parameters,
+                            headers: headers,
+                            onDataTaskCreated: { _ in },
+                            jsonCompletion: jsonCompletion)
+    }
 }

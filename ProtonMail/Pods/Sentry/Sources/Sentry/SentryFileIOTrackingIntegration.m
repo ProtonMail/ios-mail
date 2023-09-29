@@ -11,7 +11,7 @@
         return NO;
     }
 
-    [SentryNSDataSwizzling start];
+    [SentryNSDataSwizzling.shared startWithOptions:options];
 
     return YES;
 }
@@ -19,12 +19,12 @@
 - (SentryIntegrationOption)integrationOptions
 {
     return kIntegrationOptionEnableSwizzling | kIntegrationOptionIsTracingEnabled
-        | kIntegrationOptionEnableAutoPerformanceTracking | kIntegrationOptionEnableFileIOTracking;
+        | kIntegrationOptionEnableAutoPerformanceTracing | kIntegrationOptionEnableFileIOTracing;
 }
 
 - (void)uninstall
 {
-    [SentryNSDataSwizzling stop];
+    [SentryNSDataSwizzling.shared stop];
 }
 
 @end

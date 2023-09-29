@@ -23,7 +23,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
 
     var mockFetchLatestEventId: MockFetchLatestEventId!
     var mockFetchMessages: MockFetchMessages!
-    var mockLocalMessagesService: MockLocalMessageDataService!
+    var mockLocalMessagesService: MockLocalMessageDataServiceProtocol!
     var mockLastUpdatedStore: MockLastUpdatedStoreProtocol!
     var mockContactProvider: MockContactProvider!
     var mockLabelProvider: MockLabelProviderProtocol!
@@ -34,7 +34,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         super.setUp()
         mockFetchLatestEventId = MockFetchLatestEventId()
         mockFetchMessages = MockFetchMessages()
-        mockLocalMessagesService = MockLocalMessageDataService()
+        mockLocalMessagesService = .init()
         mockLastUpdatedStore = MockLastUpdatedStoreProtocol()
         mockContactProvider = MockContactProvider(coreDataContextProvider: MockCoreDataContextProvider())
         mockLabelProvider = MockLabelProviderProtocol()
@@ -64,72 +64,59 @@ final class FetchMessagesWithResetTests: XCTestCase {
         mockLabelProvider = nil
     }
 
-    func testExecute_cleaningContacts_whenAllRequestsSucceed() {
+    func testExecute_cleaningContacts_whenAllRequestsSucceed() throws {
         let cleanContact = true
         let expectation = expectation(description: "callback is called")
 
         let params = FetchMessagesWithReset.Params(
             endTime: 0,
             fetchOnlyUnreadMessages: Bool.random(),
-            refetchContacts: cleanContact,
-            removeAllDrafts: Bool.random()
+            refetchContacts: cleanContact
         )
         sut.execute(params: params) { _ in
             expectation.fulfill()
         }
         waitForExpectations(timeout: timeout)
-        checkMocksForCleaningContacts(cleanContactIs: cleanContact)
+        try checkMocksForCleaningContacts(cleanContactIs: cleanContact)
     }
 
-    func testExecute_withoutCleaningContacts_whenAllRequestsSucceed() {
+    func testExecute_withoutCleaningContacts_whenAllRequestsSucceed() throws {
         let cleanContact = false
         let expectation = expectation(description: "callback is called")
 
         let params = FetchMessagesWithReset.Params(
             endTime: 0,
             fetchOnlyUnreadMessages: Bool.random(),
-            refetchContacts: cleanContact,
-            removeAllDrafts: Bool.random()
+            refetchContacts: cleanContact
         )
         sut.execute(params: params) { _ in
             expectation.fulfill()
         }
         waitForExpectations(timeout: timeout)
-        checkMocksForCleaningContacts(cleanContactIs: cleanContact)
+        try checkMocksForCleaningContacts(cleanContactIs: cleanContact)
     }
 
-    func testExecute_removingDrafts_whenAllRequestsSucceed() {
-        let removeAllDraft = true
+    func testExecute_cleansButDoesntRemoveDrafts_whenAllRequestsSucceed() throws {
         let expectation = expectation(description: "callback is called")
 
         let params = FetchMessagesWithReset.Params(
             endTime: 0,
             fetchOnlyUnreadMessages: Bool.random(),
-            refetchContacts: Bool.random(),
-            removeAllDrafts: removeAllDraft
+            refetchContacts: Bool.random()
         )
         sut.execute(params: params) { _ in
             expectation.fulfill()
         }
         waitForExpectations(timeout: timeout)
-        checkMocksForRemoveAllDraft(whenRemoveAllDraftIs: removeAllDraft)
-    }
 
-    func testExecute_withoutRemovingDrafts_whenAllRequestsSucceed() {
-        let removeAllDraft = false
-        let expectation = expectation(description: "callback is called")
+        XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
+        XCTAssertTrue(mockFetchMessages.executeWasCalled)
 
-        let params = FetchMessagesWithReset.Params(
-            endTime: 0,
-            fetchOnlyUnreadMessages: Bool.random(),
-            refetchContacts: Bool.random(),
-            removeAllDrafts: removeAllDraft
-        )
-        sut.execute(params: params) { _ in
-            expectation.fulfill()
-        }
-        waitForExpectations(timeout: timeout)
-        checkMocksForRemoveAllDraft(whenRemoveAllDraftIs: removeAllDraft)
+        let cleanMessageCall = try XCTUnwrap(mockLocalMessagesService.cleanMessageStub.lastArguments)
+        XCTAssert(cleanMessageCall.a1 == false)
+        XCTAssertFalse(cleanMessageCall.a2)
+
+        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalledExactlyOnce)
     }
 
     func testExecute_whenThereIsNoNewEvent() {
@@ -141,8 +128,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let params = FetchMessagesWithReset.Params(
             endTime: 0,
             fetchOnlyUnreadMessages: Bool.random(),
-            refetchContacts: Bool.random(),
-            removeAllDrafts: Bool.random()
+            refetchContacts: Bool.random()
         )
         sut.execute(params: params) { _ in
             expectation.fulfill()
@@ -152,7 +138,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertFalse(mockFetchMessages.executeWasCalled)
 
-        XCTAssertFalse(mockLocalMessagesService.wasCleanMessageCalled)
+        XCTAssertFalse(mockLocalMessagesService.cleanMessageStub.wasCalled)
 
         XCTAssertFalse(mockContactProvider.wasCleanUpCalled)
         XCTAssertFalse(mockContactProvider.isFetchContactsCalled)
@@ -170,8 +156,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let params = FetchMessagesWithReset.Params(
             endTime: 0,
             fetchOnlyUnreadMessages: Bool.random(),
-            refetchContacts: true,
-            removeAllDrafts: Bool.random()
+            refetchContacts: true
         )
         sut.execute(params: params) { _ in
             expectation.fulfill()
@@ -181,7 +166,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertTrue(mockFetchMessages.executeWasCalled)
 
-        XCTAssertFalse(mockLocalMessagesService.wasCleanMessageCalled)
+        XCTAssertFalse(mockLocalMessagesService.cleanMessageStub.wasCalled)
 
         XCTAssertTrue(mockContactProvider.wasCleanUpCalled)
         XCTAssertTrue(mockContactProvider.isFetchContactsCalled)
@@ -199,8 +184,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         let params = FetchMessagesWithReset.Params(
             endTime: 0,
             fetchOnlyUnreadMessages: Bool.random(),
-            refetchContacts: false,
-            removeAllDrafts: Bool.random()
+            refetchContacts: false
         )
         sut.execute(params: params) { _ in
             expectation.fulfill()
@@ -210,7 +194,7 @@ final class FetchMessagesWithResetTests: XCTestCase {
         XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertTrue(mockFetchMessages.executeWasCalled)
 
-        XCTAssertFalse(mockLocalMessagesService.wasCleanMessageCalled)
+        XCTAssertFalse(mockLocalMessagesService.cleanMessageStub.wasCalled)
 
         XCTAssertFalse(mockContactProvider.wasCleanUpCalled)
         XCTAssertFalse(mockContactProvider.isFetchContactsCalled)
@@ -222,26 +206,15 @@ final class FetchMessagesWithResetTests: XCTestCase {
 }
 
 extension FetchMessagesWithResetTests {
-    private func checkMocksForCleaningContacts(cleanContactIs value: Bool) {
+    private func checkMocksForCleaningContacts(cleanContactIs value: Bool) throws {
         XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
         XCTAssertTrue(mockFetchMessages.executeWasCalled)
 
-        XCTAssertTrue(mockLocalMessagesService.wasCleanMessageCalled)
-        XCTAssertFalse(mockLocalMessagesService.cleanBadgeAndNotificationsValue)
+        let cleanMessageCall = try XCTUnwrap(mockLocalMessagesService.cleanMessageStub.lastArguments)
+        XCTAssertFalse(cleanMessageCall.a2)
 
         XCTAssert(mockContactProvider.wasCleanUpCalled == value)
         XCTAssert(mockContactProvider.isFetchContactsCalled == value)
-
-        XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalledExactlyOnce)
-    }
-
-    private func checkMocksForRemoveAllDraft(whenRemoveAllDraftIs value: Bool) {
-        XCTAssertTrue(mockFetchLatestEventId.callExecutionBlock.wasCalledExactlyOnce)
-        XCTAssertTrue(mockFetchMessages.executeWasCalled)
-
-        XCTAssertTrue(mockLocalMessagesService.wasCleanMessageCalled)
-        XCTAssert(mockLocalMessagesService.removeAllDraftValue == value)
-        XCTAssertFalse(mockLocalMessagesService.cleanBadgeAndNotificationsValue)
 
         XCTAssertTrue(mockLastUpdatedStore.removeUpdateTimeExceptUnreadStub.wasCalledExactlyOnce)
     }

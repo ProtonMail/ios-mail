@@ -75,19 +75,14 @@ final class ForceUpgradeControllerForUIKit: ForceUpgradeController {
         }
     }
 
-    @available(iOS 13.0, *)
     private var windowScene: UIWindowScene? {
         return UIApplication.getInstance()?.connectedScenes.first { $0.activationState == .foregroundActive && $0 is UIWindowScene } as? UIWindowScene
     }
 
     private lazy var alertWindow: UIWindow? = {
         let alertWindow: UIWindow?
-        if #available(iOS 13.0, *) {
-            if let windowScene = windowScene {
-                alertWindow = UIWindow(windowScene: windowScene)
-            } else {
-                alertWindow = UIWindow(frame: UIScreen.main.bounds)
-            }
+        if let windowScene = windowScene {
+            alertWindow = UIWindow(windowScene: windowScene)
         } else {
             alertWindow = UIWindow(frame: UIScreen.main.bounds)
         }

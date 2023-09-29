@@ -23,6 +23,7 @@
 import CoreData
 import Foundation
 
+// sourcery: CoreDataHelpers
 class ContextLabel: NSManagedObject {
     @NSManaged var messageCount: NSNumber
     @NSManaged var unreadCount: NSNumber
@@ -35,6 +36,7 @@ class ContextLabel: NSManagedObject {
     @NSManaged var userID: String
     @NSManaged var order: NSNumber
     @NSManaged var isSoftDeleted: Bool
+    @NSManaged var expirationTime: Date?
 
     enum Attributes {
         static let entityName = String(describing: ContextLabel.self)
@@ -42,9 +44,5 @@ class ContextLabel: NSManagedObject {
         static let labelID = "labelID"
         static let unreadCount = "unreadCount"
         static let isSoftDeleted = "isSoftDeleted"
-    }
-
-    class func deleteAll(inContext context: NSManagedObjectContext) {
-        context.deleteAll(Attributes.entityName)
     }
 }

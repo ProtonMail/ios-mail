@@ -30,7 +30,17 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         firstUserAPI = APIServiceMock()
         secondUserAPI = APIServiceMock()
         swipeActionCacheStub = SwipeActionCacheStub()
-        sut = SaveSwipeActionSetting(dependencies: .init(swipeActionCache: swipeActionCacheStub, usersApiServices: [firstUserAPI, secondUserAPI]))
+
+        let globalContainer = GlobalContainer()
+
+        for apiService: APIServiceMock in [firstUserAPI, secondUserAPI] {
+            let user = UserManager(api: apiService, role: .none)
+            globalContainer.usersManager.add(newUser: user)
+        }
+
+        globalContainer.swipeActionCacheFactory.register { self.swipeActionCacheStub }
+
+        sut = SaveSwipeActionSetting(dependencies: globalContainer)
     }
 
     override func tearDown() {
@@ -45,7 +55,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         let expectation1 = expectation(description: "Closure is called")
         swipeActionCacheStub.rightToLeftSwipeActionType = .archive
         swipeActionCacheStub.leftToRightSwipeActionType = .archive
-        firstUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        firstUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swipeleft") {
                 completion(nil, .success(["Code": 1000]))
             } else {
@@ -53,7 +63,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
                 completion(nil, .failure(.badResponse()))
             }
         }
-        secondUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        secondUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swipeleft") {
                 completion(nil, .success(["Code": 1000]))
             } else {
@@ -62,7 +72,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
             }
         }
 
-        sut.execute(preference: .left(.trash)) { result in
+        sut.execute(params: .init(preference: .left(.trash))) { result in
             switch result {
             case .success:
                 break
@@ -84,7 +94,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         swipeActionCacheStub.rightToLeftSwipeActionType = .archive
         swipeActionCacheStub.leftToRightSwipeActionType = .archive
 
-        sut.execute(preference: .left(.moveTo)) { result in
+        sut.execute(params: .init(preference: .left(.moveTo))) { result in
             switch result {
             case .success:
                 break
@@ -105,7 +115,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         let expectation1 = expectation(description: "Closure is called")
         swipeActionCacheStub.rightToLeftSwipeActionType = .archive
         swipeActionCacheStub.leftToRightSwipeActionType = .archive
-        firstUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        firstUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swiperight") {
                 completion(nil, .success(["Code": 1000]))
             } else {
@@ -113,7 +123,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
                 completion(nil, .failure(.badResponse()))
             }
         }
-        secondUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        secondUserAPI.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/settings/mail/swiperight") {
                 completion(nil, .success(["Code": 1000]))
             } else {
@@ -122,7 +132,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
             }
         }
 
-        sut.execute(preference: .right(.trash)) { result in
+        sut.execute(params: .init(preference: .right(.trash))) { result in
             switch result {
             case .success:
                 break
@@ -144,7 +154,7 @@ class SaveSwipeActionSettingForUsersUseCaseTests: XCTestCase {
         swipeActionCacheStub.rightToLeftSwipeActionType = .archive
         swipeActionCacheStub.leftToRightSwipeActionType = .archive
 
-        sut.execute(preference: .right(.moveTo)) { result in
+        sut.execute(params: .init(preference: .right(.moveTo))) { result in
             switch result {
             case .success:
                 break

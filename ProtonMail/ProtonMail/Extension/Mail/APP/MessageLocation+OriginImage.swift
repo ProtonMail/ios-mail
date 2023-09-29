@@ -21,12 +21,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import UIKit
+import ProtonCore_DataModel
 import ProtonCore_UIFoundations
+import UIKit
 
 extension Message.Location {
 
-    func originImage(viewMode: ViewMode = .singleMessage) -> UIImage? {
+    func originImage(viewMode: ViewMode = .singleMessage, isAutoDeletingMessage: Bool = false) -> UIImage? {
         switch self {
         case .archive:
             return IconProvider.archiveBox
@@ -37,10 +38,14 @@ extension Message.Location {
         case .spam:
             return IconProvider.fire
         case .trash:
-            return IconProvider.trash
+            if UserInfo.isAutoDeleteEnabled && isAutoDeletingMessage {
+                return IconProvider.trashClock
+            } else {
+                return IconProvider.trash
+            }
         case .inbox:
             return IconProvider.inbox
-        case .allmail, .blocked, .starred:
+        case .allmail, .blocked, .starred, .almostAllMail:
             return nil
         case .scheduled:
             return IconProvider.clock

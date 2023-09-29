@@ -22,7 +22,7 @@ import ProtonCore_TestingToolkit
 final class MockBackendSearchUseCase: BackendSearchUseCase {
 
     @FuncStub(MockBackendSearchUseCase.executionBlock) var executionBlockStub
-    override func executionBlock(params: BackendSearch.Params, callback: @escaping NewUseCase<[MessageEntity], BackendSearch.Params>.Callback) {
+    override func executionBlock(params: BackendSearch.Params, callback: @escaping UseCase<[MessageEntity], BackendSearch.Params>.Callback) {
         executionBlockStub(params, callback)
     }
 }

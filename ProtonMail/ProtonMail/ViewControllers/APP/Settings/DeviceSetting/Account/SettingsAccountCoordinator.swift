@@ -23,6 +23,7 @@
 import ProtonCore_AccountDeletion
 import ProtonCore_Log
 import ProtonCore_Networking
+import ProtonCore_PaymentsUI
 import UIKit
 
 // sourcery: mock
@@ -31,8 +32,11 @@ protocol SettingsAccountCoordinatorProtocol: AnyObject {
 }
 
 class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
+    typealias Dependencies = HasKeyMakerProtocol & HasUsersManager & BlockedSendersViewModel.Dependencies
+
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
+    private let dependencies: Dependencies
 
     private var user: UserManager {
         users.firstUser!
@@ -53,16 +57,16 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         case folders = "folders_management"
         case conversation = "conversation_mode"
         case undoSend
-        case searchContent
-        case localStorage
         case deleteAccount
         case nextMsgAfterMove
         case blockList
+        case autoDeleteSpamTrash
     }
 
-    init(navigationController: UINavigationController?, services: ServiceFactory) {
+    init(navigationController: UINavigationController?, dependencies: Dependencies) {
         self.navigationController = navigationController
-        users = services.get()
+        self.dependencies = dependencies
+        users = dependencies.usersManager
         viewModel = SettingsAccountViewModelImpl(user: users.firstUser!)
     }
 
@@ -99,14 +103,16 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
             openConversationSettings()
         case .undoSend:
             openUndoSendSettings()
-        case .searchContent:
-            openSearchContent()
-        case .localStorage:
-            openLocalStorage()
         case .deleteAccount:
             openAccountDeletion()
         case .nextMsgAfterMove:
             openNextMessageAfterMove()
+        case .autoDeleteSpamTrash:
+            if user.isPaid {
+                openAutoDeleteSettings()
+            } else {
+                presentAutoDeleteUpsellView()
+            }
         }
     }
 
@@ -121,28 +127,7 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
     }
 
     private func openBlockList() {
-        let blockedSendersPublisher = BlockedSendersPublisher(
-            contextProvider: sharedServices.get(by: CoreDataService.self),
-            userID: user.userID
-        )
-
-        let incomingDefaultService = user.incomingDefaultService
-
-        let unblockSender = UnblockSender(
-            dependencies: .init(
-                incomingDefaultService: incomingDefaultService,
-                queueManager: sharedServices.get(by: QueueManager.self),
-                userInfo: user.userInfo
-            )
-        )
-
-        let viewModel = BlockedSendersViewModel(
-            dependencies: .init(
-                blockedSendersPublisher: blockedSendersPublisher,
-                cacheUpdater: user.blockedSenderCacheUpdater,
-                unblockSender: unblockSender
-            )
-        )
+        let viewModel = BlockedSendersViewModel(dependencies: dependencies)
         let viewController = BlockedSendersViewController(viewModel: viewModel)
         navigationController?.show(viewController, sender: nil)
     }
@@ -191,23 +176,10 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         self.navigationController?.pushViewController(settingVC, animated: true)
     }
 
-    func openSearchContent() {
-        guard let navController = navigationController else { return }
-        let router = SettingsEncryptedSearchRouter(navigationController: navController)
-        let viewModel = SettingsEncryptedSearchViewModel(
-            router: router,
-            dependencies: .init(userID: user.userID)
-        )
-        let viewController = SettingsEncryptedSearchViewController(viewModel: viewModel)
-        navController.pushViewController(viewController, animated: true)
-    }
-
-    func openLocalStorage() {
-        guard let navController = navigationController else { return }
-        let router = SettingsLocalStorageRouter(navigationController: navController)
-        let viewModel = SettingsLocalStorageViewModel(router: router, dependencies: .init(userID: user.userID))
-        let viewController = SettingsLocalStorageViewController(viewModel: viewModel)
-        navController.pushViewController(viewController, animated: true)
+    private func openAutoDeleteSettings() {
+        let viewModel = AutoDeleteSettingViewModel(user, apiService: user.apiService)
+        let viewController = SwitchToggleViewController(viewModel: viewModel)
+        navigationController?.show(viewController, sender: nil)
     }
     
     private func openAccountDeletion() {
@@ -217,17 +189,22 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
 
         viewController.isAccountDeletionPending = true
         let accountDeletion = AccountDeletionService(api: user.apiService)
-        accountDeletion.initiateAccountDeletionProcess(over: viewController) { [weak viewController] in
-            viewController?.isAccountDeletionPending = false
-        } completion: { [weak self] result in
-            switch result {
-            case .success:
-                self?.processSuccessfulAccountDeletion()
-            case .failure(let error):
-                viewController.isAccountDeletionPending = false
-                self?.presentAccountDeletionError(error)
+        accountDeletion.initiateAccountDeletionProcess(
+            over: viewController,
+            performBeforeClosingAccountDeletionScreen: { [weak viewController] completion in
+                viewController?.isAccountDeletionPending = false
+                completion()
+            },
+            completion: { [weak self] result in
+                switch result {
+                case .success:
+                    self?.processSuccessfulAccountDeletion()
+                case .failure(let error):
+                    viewController.isAccountDeletionPending = false
+                    self?.presentAccountDeletionError(error)
+                }
             }
-        }
+        )
     }
     
     private func processSuccessfulAccountDeletion() {
@@ -262,5 +239,22 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         let viewModel = NextMessageAfterMoveViewModel(user, apiService: user.apiService)
         let viewController = SwitchToggleViewController(viewModel: viewModel)
         navigationController?.show(viewController, sender: nil)
+    }
+
+    private func presentAutoDeleteUpsellView() {
+        guard let navController = navigationController else { return }
+        let upsellSheet = AutoDeleteUpsellSheetView { [weak self] _ in
+            guard let self else { return }
+            self.presentPayments()
+        }
+        upsellSheet.present(on: navController.view)
+    }
+
+    private func presentPayments() {
+        let paymentsUI = PaymentsUI(payments: user.payments,
+                                    clientApp: .mail,
+                                    shownPlanNames: Constants.shownPlanNames,
+                                    customization: .empty)
+        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { _ in }
     }
 }

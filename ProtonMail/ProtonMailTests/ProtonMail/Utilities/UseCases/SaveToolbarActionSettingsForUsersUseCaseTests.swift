@@ -82,7 +82,7 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
     func testExecute_withServerError() {
         let e = expectation(description: "Closure is called")
         let messageActions: [MessageViewActionSheetAction] = [.reply, .markUnread, .star]
-        firstUserAPI.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+        firstUserAPI.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             let error = NSError.apiServiceError(code: 404, localizedDescription: "", localizedFailureReason: "")
             completion(nil, .failure(error))
         }
@@ -131,7 +131,7 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
             listViewActions: MessageViewActionSheetAction.defaultActions
         )
 
-        firstUserAPI.requestJSONStub.bodyIs { _, _, path, parameter, _, _, _, _, _, _, completion in
+        firstUserAPI.requestJSONStub.bodyIs { _, _, path, parameter, _, _, _, _, _, _, _, completion in
             if let parameter = parameter as? [String: Any] {
                 if let req = parameter["ConversationToolbar"] as? [String] {
                     XCTAssertTrue(req.isEmpty)
@@ -198,7 +198,7 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
         messageActions: [MessageViewActionSheetAction]?,
         listViewActions: [MessageViewActionSheetAction]?
     ) {
-        api.requestJSONStub.bodyIs { _, _, path, parameter, _, _, _, _, _, _, completion in
+        api.requestJSONStub.bodyIs { _, _, path, parameter, _, _, _, _, _, _, _, completion in
             if let parameter = parameter as? [String: Any] {
                 if let actions = messageActions,
                    let req = parameter["MessageToolbar"] as? [String] {

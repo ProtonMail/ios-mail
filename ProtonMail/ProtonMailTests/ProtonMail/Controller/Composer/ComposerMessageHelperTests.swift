@@ -43,7 +43,8 @@ final class ComposerMessageHelperTests: XCTestCase {
             dependencies: .init(messageDataService: messageDataServiceMock,
                                 cacheService: cacheServiceMock,
                                 contextProvider: contextProviderMock,
-                                copyMessage: copyMessage),
+                                copyMessage: copyMessage,
+                                attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingMock()),
             user: fakeUser)
 
         copyMessage.executeStub.bodyIs { [unowned self] _, _ in

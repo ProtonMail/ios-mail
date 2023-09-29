@@ -48,7 +48,7 @@ SentryTransaction ()
 
     NSMutableDictionary<NSString *, id> *traceTags =
         [[self.trace.tags sentry_sanitize] mutableCopy];
-    [traceTags addEntriesFromDictionary:[self.trace.context.tags sentry_sanitize]];
+    [traceTags addEntriesFromDictionary:[self.trace.tags sentry_sanitize]];
 
     // Adding tags from Trace to serializedData dictionary
     if (serializedData[@"tags"] != nil &&
@@ -85,7 +85,7 @@ SentryTransaction ()
     }
 
     if (self.trace) {
-        [serializedData setValue:self.trace.transactionContext.name forKey:@"transaction"];
+        serializedData[@"transaction"] = self.trace.transactionContext.name;
 
         serializedData[@"transaction_info"] =
             @{ @"source" : [self stringForNameSource:self.trace.transactionContext.nameSource] };

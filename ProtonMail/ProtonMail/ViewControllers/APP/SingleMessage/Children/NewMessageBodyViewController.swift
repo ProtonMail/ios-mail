@@ -23,6 +23,7 @@
 import ProtonCore_DataModel
 import ProtonCore_Services
 import ProtonCore_UIFoundations
+import SkeletonView
 import TrustKit
 import UIKit
 import WebKit
@@ -39,7 +40,7 @@ class NewMessageBodyViewController: UIViewController {
     private weak var scrollViewContainer: ScrollableContainer!
     private lazy var customView = NewMessageBodyView()
 
-    private lazy var loader: WebContentsSecureLoader = {
+    private lazy var loader: HTTPRequestSecureLoader = {
         HTTPRequestSecureLoader(schemeHandler: .init(
             userKeys: viewModel.userKeys,
             imageProxy: viewModel.imageProxy
@@ -89,6 +90,7 @@ class NewMessageBodyViewController: UIViewController {
         self.viewMode = viewMode
         super.init(nibName: nil, bundle: nil)
         viewModel.delegate = self
+        loader.delegate = self
     }
 
     deinit {
@@ -118,7 +120,7 @@ class NewMessageBodyViewController: UIViewController {
 
         if let contents = self.viewModel.contents, !contents.body.isEmpty {
             self.loader.load(contents: contents, in: webView)
-        } else if viewModel.internetStatusProvider.currentStatus == .notConnected &&
+        } else if viewModel.internetStatusProvider.status == .notConnected &&
                     viewModel.contents == nil {
             prepareReloadView()
         } else {
@@ -152,18 +154,16 @@ class NewMessageBodyViewController: UIViewController {
         self.heightConstraint = heightConstraint
     }
 
-    func prepareWebView(with loader: WebContentsSecureLoader? = nil) {
+    private func prepareWebView(with loader: HTTPRequestSecureLoader? = nil) {
         view.removeConstraints(view.constraints.filter({ $0.firstAnchor == view.heightAnchor }))
 
         self.heightConstraint?.isActive = false
-        let heightConstraint = view.heightAnchor.constraint(equalToConstant: 50)
+        let heightConstraint = view.heightAnchor.constraint(equalToConstant: 500)
         heightConstraint.priority = .init(999.0)
         [heightConstraint].activate()
         self.heightConstraint = heightConstraint
 
-        let preferences = viewModel.webViewPreferences
         let config = viewModel.webViewConfig
-        config.preferences = preferences
         loader?.inject(into: config)
 
         if let existingWebView = self.webView {
@@ -191,6 +191,7 @@ class NewMessageBodyViewController: UIViewController {
             webView.scrollView.showsHorizontalScrollIndicator = true
 
             self.customView.embed(webView)
+            showSkeletonView(in: webView)
         }
 
         if viewMode == .singleMessage {
@@ -199,16 +200,17 @@ class NewMessageBodyViewController: UIViewController {
     }
 
     private func updateViewHeight(to newHeight: CGFloat) {
-        heightConstraint?.constant = newHeight
+        // Limit the maximum height of the view height to the original height * 3.
+        // This can prevent the height constraint becoming too large to be invalid and break the UI layout.
+        let height = min(originalHeight * 3, newHeight)
+        heightConstraint?.constant = height
         viewModel.recalculateCellHeight?(true)
     }
 
     private func prepareGestureRecognizer() {
         let gesture = UIPanGestureRecognizer(target: self, action: #selector(pan))
         self.verticalRecognizer = gesture
-        if #available(iOS 13.4, *) {
             self.verticalRecognizer?.allowedScrollTypesMask = .all
-        }
         self.verticalRecognizer?.delegate = self
         self.verticalRecognizer?.maximumNumberOfTouches = 1
         self.webView?.scrollView.addGestureRecognizer(gesture)
@@ -294,7 +296,6 @@ class NewMessageBodyViewController: UIViewController {
         self.contentSizeObservation =
             self.webView?.scrollView.observe(\.contentSize,
                                              options: [.initial, .new, .old]) { [weak self] scrollView, change in
-                guard let webView = self?.webView else { return }
                 // As of iOS 13 beta 2, contentSize increases by 1pt after every updateHeight causing infinite loop.
                 // This 10pt treshold will prevent looping
                 guard let new = change.newValue?.height,
@@ -302,7 +303,7 @@ class NewMessageBodyViewController: UIViewController {
                       new - old > 10.0 else { return }
 
                 // Update the original height here for the web page that has image to be downloaded.
-                self?.originalHeight = webView.scrollView.contentSize.height
+                self?.originalHeight = scrollView.contentSize.height
             }
 
         guard self.loadingObservation == nil else {
@@ -470,12 +471,7 @@ extension NewMessageBodyViewController {
         }
         """
 
-        let javaScriptEnabledBefore = webView.configuration.preferences.javaScriptEnabled
-        webView.configuration.preferences.javaScriptEnabled = true
-
         webView.evaluateJavaScript(script) { [weak self] output, error in
-            webView.configuration.preferences.javaScriptEnabled = javaScriptEnabledBefore
-
             if let error = error {
                 assertionFailure("\(error)")
                 return
@@ -621,6 +617,33 @@ extension NewMessageBodyViewController: UIGestureRecognizerDelegate {
         // this will prevent our gesture recognizer from blocking webView's built-in gesture resognizers
         return self.webView?.scrollView.gestureRecognizers?
             .filter { !($0 is UITapGestureRecognizer) }.contains(otherGestureRecognizer) ?? false
+    }
+}
+
+// MARK: - HTTPRequestSecureLoaderDelegate
+extension NewMessageBodyViewController: HTTPRequestSecureLoaderDelegate {
+    func showSkeletonView(in webView: WKWebView) {
+        let label = UILabel(frame: .zero)
+        label.numberOfLines = 0
+        label.isSkeletonable = true
+        label.linesCornerRadius = 5
+        label.lastLineFillPercent = 30
+        label.skeletonTextNumberOfLines = 5
+        webView.addSubview(label)
+        [
+            label.topAnchor.constraint(equalTo: webView.topAnchor, constant: 4),
+            label.bottomAnchor.constraint(equalTo: webView.bottomAnchor, constant: 0),
+            label.leadingAnchor.constraint(equalTo: webView.leadingAnchor, constant: 16),
+            label.trailingAnchor.constraint(equalTo: webView.trailingAnchor, constant: -16)
+        ].activate()
+        label.showAnimatedGradientSkeleton()
+    }
+
+    func hideSkeletonView(in webView: WKWebView) {
+        webView.subviews.compactMap { $0 as? UILabel }.forEach { view in
+            view.stopSkeletonAnimation()
+            view.removeFromSuperview()
+        }
     }
 }
 

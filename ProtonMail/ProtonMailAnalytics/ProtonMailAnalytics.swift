@@ -19,7 +19,7 @@ import Foundation
 import Sentry
 
 public protocol ProtonMailAnalyticsProtocol: AnyObject {
-    func setup(environment: String?, debug: Bool)
+    func setup(environment: String, debug: Bool)
     func track(event: MailAnalyticsEvent, trace: String?)
     func track(error: MailAnalyticsErrorEvent, trace: String?, fingerprint: Bool)
 }
@@ -32,12 +32,12 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
         self.endPoint = endPoint
     }
 
-    public func setup(environment: String? = nil, debug: Bool = false) {
+    public func setup(environment: String, debug: Bool = false) {
         SentrySDK.start { options in
             options.dsn = self.endPoint
             options.debug = debug
             options.environment = environment
-            options.enableAutoPerformanceTracking = false
+            options.enableAutoPerformanceTracing = false
         }
         isEnabled = true
     }
@@ -45,7 +45,13 @@ public final class ProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     public func track(event: MailAnalyticsEvent, trace: String?) {
         guard isEnabled else { return }
         let eventToSend = Sentry.Event(level: .info)
-        eventToSend.message = SentryMessage(formatted: "\(event.name) - \(event.description)")
+        let formattedMessage: String
+        if let description = event.description {
+            formattedMessage = "\(event.name) - \(description)"
+        } else {
+            formattedMessage = "\(event.name)"
+        }
+        eventToSend.message = SentryMessage(formatted: formattedMessage)
         // From the Sentry dashboard it is not possible to query using the `extra` field.
         eventToSend.extra = combinedExtra(extraInfo: nil, trace: trace)
         SentrySDK.capture(event: eventToSend)
@@ -90,6 +96,9 @@ public enum MailAnalyticsEvent {
 
     /// The user session has been terminated and the user has to authenticate again
     case userKickedOut(reason: UserKickedOutReason)
+
+    /// A message saying Proton is unreachable has been shown
+    case protonUnreachableBannerShown
 }
 
 extension MailAnalyticsEvent: Equatable {
@@ -106,14 +115,18 @@ private extension MailAnalyticsEvent {
         switch self {
         case .userKickedOut:
             message = "User kicked out"
+        case .protonUnreachableBannerShown:
+            message = "Proton unreachable banner shown"
         }
         return message
     }
 
-    var description: String {
+    var description: String? {
         switch self {
         case .userKickedOut(let reason):
             return "reason: \(reason.description)"
+        case .protonUnreachableBannerShown:
+            return nil
         }
     }
 }
@@ -145,7 +158,7 @@ public enum UserKickedOutReason {
 public enum MailAnalyticsErrorEvent: Error {
 
     /// An error occurred during Core Data initial set up
-    case coreDataInitialisation(error: String)
+    case coreDataInitialisation(error: String, dataProtectionStatus: String)
 
     /// used to track when the app sends a conversation reqeust without a conversation ID.
     case abortedConversationRequest
@@ -195,8 +208,11 @@ public enum MailAnalyticsErrorEvent: Error {
     var extraInfo: [String: Any]? {
         let info: [String: Any]?
         switch self {
-        case .coreDataInitialisation(let error):
-            info = ["Custom Error": error]
+        case let .coreDataInitialisation(error, dataProtectionStatus):
+            info = [
+                "Custom Error": error,
+                "DataProtectionStatus": dataProtectionStatus
+            ]
         case .abortedConversationRequest, .conversationViewEndUpdatesCrash,
                 .sendMessageFail, .sendMessageResponseError, .sendMessageInvalidSignature:
             info = nil

@@ -368,7 +368,12 @@ extension ContactEditViewController: ContactUpgradeCellDelegate {
     }
 
     private func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
+        self.paymentsUI = PaymentsUI(
+            payments: viewModel.user.payments,
+            clientApp: .mail,
+            shownPlanNames: Constants.shownPlanNames,
+            customization: .empty
+        )
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
                                          backendFetch: true) { _ in }
     }
@@ -402,7 +407,7 @@ extension ContactEditViewController: UITableViewDataSource {
         case .custom_field:
             return 1 + viewModel.getFields().count
         case .notes:
-            return 1
+            return viewModel.getNotes().count
         case .delete:
             return 1
         case .upgrade:
@@ -513,7 +518,7 @@ extension ContactEditViewController: UITableViewDataSource {
             }
         case .notes:
             let cell = tableView.dequeueReusableCell(withIdentifier: kContactEditTextViewCell, for: indexPath) as! ContactEditTextViewCell
-            cell.configCell(obj: viewModel.getNotes(), paid: true, callback: self)
+            cell.configCell(obj: viewModel.getNotes()[row], paid: true, callback: self)
             cell.selectionStyle = .none
             outCell = cell
         case .delete:

@@ -102,22 +102,6 @@
 			<string>%u messages</string>
 		</dict>
 	</dict>
-	<key>%d min</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
-		<key>MINUTE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d min</string>
-			<key>other</key>
-			<string>%d mins</string>
-		</dict>
-	</dict>
 	<key>%u conversation</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
@@ -164,38 +148,6 @@
 			<string>%d attempt remaining until secure data wipe!</string>
 			<key>other</key>
 			<string>%d attempts remaining until secure data wipe!</string>
-		</dict>
-	</dict>
-	<key>%d hour</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@HOUR@</string>
-		<key>HOUR</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d hour</string>
-			<key>other</key>
-			<string>%d hours</string>
-		</dict>
-	</dict>
-	<key>%d day</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@DAY@</string>
-		<key>DAY</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d day</string>
-			<key>other</key>
-			<string>%d days</string>
 		</dict>
 	</dict>
 	<key>%1$d message moved to %2$@</key>
@@ -422,6 +374,22 @@
 			<string>%d minute</string>
 			<key>other</key>
 			<string>%d minutes</string>
+		</dict>
+	</dict>
+	<key>Are you sure you want to delete these %d messages permanently?</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@message@</string>
+		<key>message</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>Are you sure you want to delete this message permanently?</string>
+			<key>other</key>
+			<string>Are you sure you want to delete these %d messages permanently?</string>
 		</dict>
 	</dict>
 </dict>

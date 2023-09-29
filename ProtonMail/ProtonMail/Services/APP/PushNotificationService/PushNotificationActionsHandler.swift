@@ -29,7 +29,7 @@ final class PushNotificationActionsHandler {
             .appKeyEnabled,
             .appKeyDisabled,
             .didSignIn,
-            .didSignOut
+            .didSignOutLastAccount
         ]
         notificationsToObserve.forEach {
             dependencies.notificationCenter.addObserver(
@@ -174,8 +174,8 @@ extension PushNotificationActionsHandler {
             queue: QueueManagerProtocol = sharedServices.get(by: QueueManager.self),
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
             isNetworkAvailable: @escaping (() -> Bool) = {
-                let status = InternetConnectionStatusProvider()
-                return status.currentStatus.isConnected
+                let provider = InternetConnectionStatusProvider.shared
+                return provider.status.isConnected
             },
             lockCacheStatus: LockCacheStatus,
             notificationCenter: NotificationCenter = NotificationCenter.default,

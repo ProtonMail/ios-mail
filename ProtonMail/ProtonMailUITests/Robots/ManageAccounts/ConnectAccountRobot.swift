@@ -29,6 +29,12 @@ class ConnectAccountRobot: CoreElements {
             .password(user.password)
             .signIn()
     }
+    
+    func connectOnePassAccountAndWaitForScreenToDisappear(_ user: User) -> InboxRobot {
+        return username(user.name)
+            .password(user.password)
+            .signInAndWaitForSignInButtonToDisappear()
+    }
 
     func connectOnePassAccountWithTwoFa(_ user: User) -> InboxRobot {
         return username(user.name)
@@ -74,6 +80,11 @@ class ConnectAccountRobot: CoreElements {
 
     private func signIn() -> InboxRobot {
         button(id.loginButtonIdentifier).firstMatch().tap()
+        return InboxRobot()
+    }
+    
+    private func signInAndWaitForSignInButtonToDisappear() -> InboxRobot {
+        button(id.loginButtonIdentifier).firstMatch().tap().waitUntilGone()
         return InboxRobot()
     }
     

@@ -30,19 +30,13 @@ final class PrivacySettingViewModelTests: XCTestCase {
     var metadataStrippingProvider: AttachmentMetadataStrippingMock!
 
     var expected: [PrivacySettingViewModel.SettingPrivacyItem] {
-        var items: [PrivacySettingViewModel.SettingPrivacyItem] = [
+        [
             .autoLoadRemoteContent,
             .autoLoadEmbeddedImage,
             .blockEmailTracking,
             .linkOpeningMode,
             .metadataStripping
         ]
-
-        if !UserInfo.isImageProxyAvailable {
-            items.removeAll { $0 == .blockEmailTracking }
-        }
-
-        return items
     }
 
     let errorTemplate = APIServiceMock.APIError(domain: "test.com", code: -999)
@@ -303,7 +297,7 @@ extension PrivacySettingViewModelTests {
     }
 
     private func requestStub(path: String, params: [String : Int], error: APIServiceMock.APIError?) {
-        apiMock.requestJSONStub.bodyIs { _, _, reqPath, reqParam, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, reqPath, reqParam, _, _, _, _, _, _, _, completion in
             guard reqPath == path else {
                 XCTFail("URL path is wrong")
                 return

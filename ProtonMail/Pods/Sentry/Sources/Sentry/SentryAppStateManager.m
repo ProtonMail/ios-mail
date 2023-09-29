@@ -7,6 +7,7 @@
 #import <SentryCurrentDateProvider.h>
 #import <SentryDispatchQueueWrapper.h>
 #import <SentryFileManager.h>
+#import <SentryNSNotificationCenterWrapper.h>
 #import <SentryOptions.h>
 
 #if SENTRY_HAS_UIKIT
@@ -21,9 +22,9 @@ SentryAppStateManager ()
 @property (nonatomic, strong) SentryOptions *options;
 @property (nonatomic, strong) SentryCrashWrapper *crashWrapper;
 @property (nonatomic, strong) SentryFileManager *fileManager;
-@property (nonatomic, strong) id<SentryCurrentDateProvider> currentDate;
 @property (nonatomic, strong) SentrySysctl *sysctl;
 @property (nonatomic, strong) SentryDispatchQueueWrapper *dispatchQueue;
+@property (nonatomic, strong) SentryNSNotificationCenterWrapper *notificationCenterWrapper;
 @property (nonatomic) NSInteger startCount;
 
 @end
@@ -33,17 +34,17 @@ SentryAppStateManager ()
 - (instancetype)initWithOptions:(SentryOptions *)options
                    crashWrapper:(SentryCrashWrapper *)crashWrapper
                     fileManager:(SentryFileManager *)fileManager
-            currentDateProvider:(id<SentryCurrentDateProvider>)currentDateProvider
                          sysctl:(SentrySysctl *)sysctl
            dispatchQueueWrapper:(SentryDispatchQueueWrapper *)dispatchQueueWrapper
+      notificationCenterWrapper:(SentryNSNotificationCenterWrapper *)notificationCenterWrapper
 {
     if (self = [super init]) {
         self.options = options;
         self.crashWrapper = crashWrapper;
         self.fileManager = fileManager;
-        self.currentDate = currentDateProvider;
         self.sysctl = sysctl;
         self.dispatchQueue = dispatchQueueWrapper;
+        self.notificationCenterWrapper = notificationCenterWrapper;
         self.startCount = 0;
     }
     return self;
@@ -54,29 +55,24 @@ SentryAppStateManager ()
 - (void)start
 {
     if (self.startCount == 0) {
-        [NSNotificationCenter.defaultCenter
+        [self.notificationCenterWrapper
             addObserver:self
                selector:@selector(didBecomeActive)
-                   name:SentryNSNotificationCenterWrapper.didBecomeActiveNotificationName
-                 object:nil];
+                   name:SentryNSNotificationCenterWrapper.didBecomeActiveNotificationName];
 
-        [NSNotificationCenter.defaultCenter
-            addObserver:self
-               selector:@selector(didBecomeActive)
-                   name:SentryHybridSdkDidBecomeActiveNotificationName
-                 object:nil];
+        [self.notificationCenterWrapper addObserver:self
+                                           selector:@selector(didBecomeActive)
+                                               name:SentryHybridSdkDidBecomeActiveNotificationName];
 
-        [NSNotificationCenter.defaultCenter
+        [self.notificationCenterWrapper
             addObserver:self
                selector:@selector(willResignActive)
-                   name:SentryNSNotificationCenterWrapper.willResignActiveNotificationName
-                 object:nil];
+                   name:SentryNSNotificationCenterWrapper.willResignActiveNotificationName];
 
-        [NSNotificationCenter.defaultCenter
+        [self.notificationCenterWrapper
             addObserver:self
                selector:@selector(willTerminate)
-                   name:SentryNSNotificationCenterWrapper.willTerminateNotificationName
-                 object:nil];
+                   name:SentryNSNotificationCenterWrapper.willTerminateNotificationName];
 
         [self storeCurrentAppState];
     }
@@ -86,34 +82,43 @@ SentryAppStateManager ()
 
 - (void)stop
 {
+    [self stopWithForce:NO];
+}
+
+// forceStop is YES when the SDK gets closed
+- (void)stopWithForce:(BOOL)forceStop
+{
     if (self.startCount <= 0) {
         return;
     }
 
-    self.startCount -= 1;
+    if (forceStop) {
+        [self
+            updateAppStateInBackground:^(SentryAppState *appState) { appState.isSDKRunning = NO; }];
+
+        self.startCount = 0;
+    } else {
+        self.startCount -= 1;
+    }
 
     if (self.startCount == 0) {
         // Remove the observers with the most specific detail possible, see
         // https://developer.apple.com/documentation/foundation/nsnotificationcenter/1413994-removeobserver
-        [NSNotificationCenter.defaultCenter
+        [self.notificationCenterWrapper
             removeObserver:self
-                      name:SentryNSNotificationCenterWrapper.didBecomeActiveNotificationName
-                    object:nil];
+                      name:SentryNSNotificationCenterWrapper.didBecomeActiveNotificationName];
 
-        [NSNotificationCenter.defaultCenter
+        [self.notificationCenterWrapper
             removeObserver:self
-                      name:SentryHybridSdkDidBecomeActiveNotificationName
-                    object:nil];
+                      name:SentryHybridSdkDidBecomeActiveNotificationName];
 
-        [NSNotificationCenter.defaultCenter
+        [self.notificationCenterWrapper
             removeObserver:self
-                      name:SentryNSNotificationCenterWrapper.willResignActiveNotificationName
-                    object:nil];
+                      name:SentryNSNotificationCenterWrapper.willResignActiveNotificationName];
 
-        [NSNotificationCenter.defaultCenter
+        [self.notificationCenterWrapper
             removeObserver:self
-                      name:SentryNSNotificationCenterWrapper.willTerminateNotificationName
-                    object:nil];
+                      name:SentryNSNotificationCenterWrapper.willTerminateNotificationName];
     }
 }
 
@@ -121,15 +126,14 @@ SentryAppStateManager ()
 {
     // In dealloc it's safe to unsubscribe for all, see
     // https://developer.apple.com/documentation/foundation/nsnotificationcenter/1413994-removeobserver
-    [NSNotificationCenter.defaultCenter removeObserver:self];
+    [self.notificationCenterWrapper removeObserver:self];
 }
 
 /**
  * It is called when an app is receiving events / it is in the foreground and when we receive a
- * SentryHybridSdkDidBecomeActiveNotification.
- *
- * This also works when using SwiftUI or Scenes, as UIKit posts a didBecomeActiveNotification
- * regardless of whether your app uses scenes, see
+ * @c SentryHybridSdkDidBecomeActiveNotification.
+ * @discussion This also works when using SwiftUI or Scenes, as UIKit posts a
+ * @c didBecomeActiveNotification regardless of whether your app uses scenes, see
  * https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1622956-applicationdidbecomeactive.
  */
 - (void)didBecomeActive
@@ -165,7 +169,7 @@ SentryAppStateManager ()
 {
     @synchronized(self) {
         SentryAppState *appState = [self.fileManager readAppState];
-        if (nil != appState) {
+        if (appState != nil) {
             block(appState);
             [self.fileManager storeAppState:appState];
         }

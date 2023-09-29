@@ -31,11 +31,7 @@ protocol BioAuthenticating: AnyObject {
 extension BioAuthenticating where Self: UIViewController {
     func subscribeToWillEnterForegroundMessage() {
         let name: Notification.Name = {
-            if #available(iOS 13.0, *) {
                 return UIWindowScene.willEnterForegroundNotification
-            } else {
-                return UIApplication.willEnterForegroundNotification
-            }
         }()
 
         self.notificationToken = NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { [weak self] notification in
@@ -48,7 +44,7 @@ extension BioAuthenticating where Self: UIViewController {
         #if APP_EXTENSION
         self.authenticateUser()
         #else
-        if #available(iOS 13.0, *), UIDevice.current.biometricType == .touchID,
+        if UIDevice.current.biometricType == .touchID,
             (UIApplication.shared.applicationState != .active || self.view?.window?.windowScene?.activationState != .foregroundActive) {
             // mystery that makes TouchID prompt a little bit more stable on iOS 13.0 - 13.1.2
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {

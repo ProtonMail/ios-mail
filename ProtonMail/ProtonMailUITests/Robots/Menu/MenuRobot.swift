@@ -15,7 +15,7 @@ fileprivate struct id {
     static let logoutCell = "MenuItemTableViewCell.Sign_out"
     static let logoutConfirmButton = NSLocalizedString("Sign Out", comment: "comment")
     static let inboxStaticText = "MenuItemTableViewCell.\(LocalString._menu_inbox_title)"
-    static let reportBugStaticText = "MenuItemTableViewCell.Report_a_bug"
+    static let reportBugStaticText = "MenuItemTableViewCell.Report_a_problem"
     static let spamStaticText = "MenuItemTableViewCell.\(LocalString._menu_spam_title)"
     static let trashStaticText = "MenuItemTableViewCell.\(LocalString._menu_trash_title)"
     static let sentStaticText = "MenuItemTableViewCell.\(LocalString._menu_sent_title)"
@@ -64,7 +64,7 @@ class MenuRobot: CoreElements {
     
     @discardableResult
     func contacts() -> ContactsRobot {
-        cell(id.contactsStaticText).swipeUpUntilVisible().tap()
+        cell(id.contactsStaticText).swipeUpUntilVisible().waitForHittable().tap()
         return ContactsRobot()
     }
     
@@ -91,7 +91,7 @@ class MenuRobot: CoreElements {
         return InboxRobot()
     }
     
-    func spams() -> SpamRobot {
+    func spam() -> SpamRobot {
         cell(id.spamStaticText).swipeDownUntilVisible().tap()
         return SpamRobot()
     }

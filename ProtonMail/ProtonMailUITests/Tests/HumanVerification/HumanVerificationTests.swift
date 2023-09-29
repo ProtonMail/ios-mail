@@ -18,9 +18,10 @@ class HumanVerificationTests: BaseTestCase {
     override func setUp() {
         humanVerificationStubs = true
         super.setUp()
+        let user = users["plus"]!
 
         menuRobot = loginRobot
-            .loginUser(testData.onePassUser)
+            .loginUser(user)
             .menuDrawer()
     }
 

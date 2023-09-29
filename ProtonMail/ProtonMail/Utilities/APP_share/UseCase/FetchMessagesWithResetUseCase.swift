@@ -18,7 +18,7 @@
 import Foundation
 import PromiseKit
 
-typealias FetchMessagesWithResetUseCase = NewUseCase<Void, FetchMessagesWithReset.Params>
+typealias FetchMessagesWithResetUseCase = UseCase<Void, FetchMessagesWithReset.Params>
 
 final class FetchMessagesWithReset: FetchMessagesWithResetUseCase {
     private let userID: UserID
@@ -45,42 +45,42 @@ extension FetchMessagesWithReset {
             }
             self.dependencies.labelProvider.fetchV4Labels { _ in
                 _ = self.cleanContactIfNeeded(cleanContact: params.refetchContacts).done { _ in
-                    self.dependencies.fetchMessages.execute(
-                        endTime: params.endTime,
-                        isUnread: params.fetchOnlyUnreadMessages,
-                        callback: { result in
+                    self.dependencies.fetchMessages
+                        .execute(
+                            params: .init(
+                                endTime: params.endTime,
+                                isUnread: params.fetchOnlyUnreadMessages,
+                                onMessagesRequestSuccess: {
+                                    self.removePersistedMessages()
+                                }
+                            )
+                        ) { result in
                             if let error = result.error {
                                 callback(.failure(error))
                             } else {
-                                callback(.success(Void()))
+                                callback(.success(()))
                             }
-                        },
-                        onMessagesRequestSuccess: {
-                            self.removePersistedMessages(removeAllDraft: params.removeAllDrafts)
-                        })
+                        }
                 }
             }
         }
     }
 
-    private func removePersistedMessages(removeAllDraft: Bool) {
+    private func removePersistedMessages() {
         dependencies.localMessageDataService.cleanMessage(
-            removeAllDraft: removeAllDraft,
+            removeAllDraft: false,
             cleanBadgeAndNotifications: false
-        ).then { _ -> Promise<Void> in
+        )
             self.dependencies.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID)
-            return Promise<Void>()
-        }.cauterize()
     }
 
     private func cleanContactIfNeeded(cleanContact: Bool) -> Promise<Void> {
         guard cleanContact else { return Promise() }
         return Promise { seal in
-            _ = self.dependencies.contactProvider.cleanUp().done { _ in
+            self.dependencies.contactProvider.cleanUp()
                 self.dependencies.contactProvider.fetchContacts { _ in
                     seal.fulfill_()
                 }
-            }
         }
     }
 }
@@ -93,7 +93,6 @@ extension FetchMessagesWithReset {
         let endTime: Int
         let fetchOnlyUnreadMessages: Bool
         let refetchContacts: Bool
-        let removeAllDrafts: Bool
     }
 
     struct Dependencies {

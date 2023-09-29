@@ -1,3 +1,4 @@
+#import "SentryAttachment+Private.h"
 #import "SentryEnvelope.h"
 #import <Foundation/Foundation.h>
 

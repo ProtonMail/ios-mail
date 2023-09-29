@@ -21,7 +21,7 @@ import ProtonCore_Crypto
 enum PushEncryptedMessageTestData {
 
     static func openUrlNotification(
-        with encryptionKitProvider: EncryptionKitProviderMock,
+        with dummyKeyPair: DummyKeyPair,
         sender: String = "",
         body: String = "",
         url: String = ""
@@ -44,6 +44,6 @@ enum PushEncryptedMessageTestData {
         }
         """
 
-        return try? Encryptor.encrypt(publicKey: encryptionKitProvider.publicKey, cleartext: message).value
+        return try? Encryptor.encrypt(publicKey: dummyKeyPair.publicKey, cleartext: message).value
     }
 }

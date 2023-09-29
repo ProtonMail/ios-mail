@@ -33,6 +33,7 @@ final class ReferralShareView: UIView {
     let shareButton = SubviewFactory.shareButton
     let trackRewardButton = SubviewFactory.trackRewardButton
     let termsAndConditionButton = SubviewFactory.bottomButton
+    let termsUnderline = SubviewFactory.underlineOfBottomButton()
 
     init() {
         super.init(frame: .zero)
@@ -62,6 +63,7 @@ final class ReferralShareView: UIView {
 
         scrollContainer.addSubview(trackRewardButton)
         scrollContainer.addSubview(termsAndConditionButton)
+        scrollContainer.addSubview(termsUnderline)
     }
 
     private func setupLayout() {
@@ -70,7 +72,7 @@ final class ReferralShareView: UIView {
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-            scrollContainer.widthAnchor.constraint(equalTo: widthAnchor),
+            scrollContainer.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             scrollContainer.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor, multiplier: 1)
         ].activate()
         scrollContainer.fillSuperview()
@@ -93,35 +95,25 @@ final class ReferralShareView: UIView {
 
         [
             termsAndConditionButton.bottomAnchor.constraint(equalTo: scrollContainer.bottomAnchor),
-            termsAndConditionButton.trailingAnchor.constraint(equalTo: scrollContainer.trailingAnchor),
-            termsAndConditionButton.leadingAnchor.constraint(equalTo: scrollContainer.leadingAnchor),
+            termsAndConditionButton.trailingAnchor.constraint(lessThanOrEqualTo: scrollContainer.trailingAnchor),
+            termsAndConditionButton.leadingAnchor.constraint(greaterThanOrEqualTo: scrollContainer.leadingAnchor),
+            termsAndConditionButton.centerXAnchor.constraint(equalTo: scrollContainer.centerXAnchor),
             termsAndConditionButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
         ].activate()
+
+        [
+            termsUnderline.leadingAnchor.constraint(equalTo: termsAndConditionButton.leadingAnchor),
+            termsUnderline.trailingAnchor.constraint(equalTo: termsAndConditionButton.trailingAnchor),
+            termsUnderline.topAnchor.constraint(equalTo: termsAndConditionButton.bottomAnchor, constant: -5),
+            termsUnderline.heightAnchor.constraint(equalToConstant: 1)
+        ].activate()
+
         [
             trackRewardButton.trailingAnchor.constraint(equalTo: contentStackView.trailingAnchor),
             trackRewardButton.leadingAnchor.constraint(equalTo: contentStackView.leadingAnchor),
             trackRewardButton.heightAnchor.constraint(greaterThanOrEqualToConstant: 48),
             trackRewardButton.bottomAnchor.constraint(equalTo: termsAndConditionButton.topAnchor, constant: -24)
         ].activate()
-    }
-
-    func setupFont() {
-        titleLabel.font = UIFont.adjustedFont(forTextStyle: .title2, weight: .bold)
-        contentLabel.font = UIFont.adjustedFont(forTextStyle: .subheadline)
-        inviteLinkLabel.font = UIFont.adjustedFont(forTextStyle: .footnote, weight: .semibold)
-        shareButton.layoutIfNeeded()
-        trackRewardButton.titleLabel?.font = UIFont.adjustedFont(forTextStyle: .body)
-
-        var attributes = FontManager.DefaultSmall + [
-            .underlineStyle: NSUnderlineStyle.single.rawValue,
-            .underlineColor: ColorProvider.TextNorm as UIColor,
-            .font: UIFont.adjustedFont(forTextStyle: .subheadline)
-        ]
-        attributes = attributes.alignment(.center)
-        termsAndConditionButton.setAttributedTitle(
-            L11n.ReferralProgram.termsAndConditionTitle
-                .apply(style: attributes),
-            for: .normal)
     }
 }
 
@@ -195,6 +187,8 @@ private enum SubviewFactory {
         textField.roundCorner(8)
         textField.rightViewMode = .always
         textField.textColor = ColorProvider.TextWeak
+        textField.font = .adjustedFont(forTextStyle: .body)
+        textField.adjustsFontForContentSizeCategory = true
 
         let buttonContainer = UIView(frame: .init(x: 0, y: 0, width: 48, height: 48))
         let imageButton = SubviewFactory.linkShareButton
@@ -210,6 +204,8 @@ private enum SubviewFactory {
         let button = ProtonButton()
         button.setMode(mode: .solid)
         button.setTitle(L11n.ReferralProgram.shareTitle, for: .normal)
+        button.titleLabel?.font = .adjustedFont(forTextStyle: .body)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button
     }
 
@@ -230,19 +226,21 @@ private enum SubviewFactory {
     }
 
     static var bottomButton: UIButton {
-        let label = UIButton()
-        var attributes = FontManager.DefaultSmall + [
-            .underlineStyle: NSUnderlineStyle.single.rawValue,
-            .underlineColor: ColorProvider.TextNorm as UIColor,
-            .font: UIFont.adjustedFont(forTextStyle: .subheadline)
-        ]
-        attributes = attributes.alignment(.center)
-        label.setAttributedTitle(
-            L11n.ReferralProgram.termsAndConditionTitle
-                .apply(style: attributes),
-            for: .normal)
-        label.titleLabel?.adjustsFontForContentSizeCategory = true
-        return label
+        let button = UIButton()
+
+        button.setTitle(L11n.ReferralProgram.termsAndConditionTitle, for: .normal)
+        button.setTitleColor(ColorProvider.TextNorm, for: .normal)
+        button.titleLabel?.textAlignment = .center
+        button.titleLabel?.font = .adjustedFont(forTextStyle: .subheadline)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.titleLabel?.minimumScaleFactor = 0.5
+        return button
+    }
+
+    static func underlineOfBottomButton() -> UIView {
+        let view = UIView()
+        view.backgroundColor = ColorProvider.TextNorm
+        return view
     }
 }
 

@@ -142,7 +142,21 @@
 			<string>%d 個用戶</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d VPN connections per user</key>
+	<key>%d vaults</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>other</key>
+			<string>%d受保護的資料庫</string>
+		</dict>
+	</dict>
+	<key>%d VPN connections per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -156,7 +170,7 @@
 			<string>%d 個 VPN 連線 / 一位使用者</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d addresses per user</key>
+	<key>%d addresses per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -170,7 +184,7 @@
 			<string>%d 組電郵位址 / 使用者</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d folders and labels</key>
+	<key>%d folders and labels</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -184,7 +198,7 @@
 			<string>%d 個資料夾和標籤</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d email addresses</key>
+	<key>%d of %d email addresses</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE2@ 的 %#@VARIABLE1@</string>
@@ -207,7 +221,7 @@
 			<string>%d 電子郵件地址</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d personal calendars</key>
+	<key>%d of %d calendars</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE2@ 的 %#@VARIABLE1@</string>
@@ -230,7 +244,7 @@
 			<string>%d 個人行事曆</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d of %d users</key>
+	<key>%d of %d users</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE2@ 的 %#@VARIABLE1@</string>
@@ -253,21 +267,7 @@
 			<string>%d 個用戶</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d personal calendars</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@VARIABLE@</string>
-		<key>VARIABLE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>other</key>
-			<string>%d 個人行事曆</string>
-		</dict>
-	</dict>
-	<key>New_Plans %d personal calendars per user</key>
+	<key>%d calendars per user</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -281,7 +281,7 @@
 			<string>每位使用者 %d 個人行事曆</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d servers in %d countries (US, NL, JP)</key>
+	<key>%d servers in %d countries (US, NL, JP)</key>
 	<dict>
 		<key>COUNTRIES</key>
 		<dict>
@@ -304,7 +304,7 @@
 			<string>%d servers</string>
 		</dict>
 	</dict>
-	<key>New_Plans %d+ servers in %d countries</key>
+	<key>%d+ servers in %d countries</key>
 	<dict>
 		<key>COUNTRIES</key>
 		<dict>
@@ -327,7 +327,7 @@
 			<string>%d＋ 台伺服器</string>
 		</dict>
 	</dict>
-	<key>New_Plans High-speed VPN on %d devices</key>
+	<key>High-speed VPN on %d devices</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -341,7 +341,7 @@
 			<string>極速 VPN 裝載多達 %d 臺裝置</string>
 		</dict>
 	</dict>
-	<key>New_Plans Medium VPN speed %d VPN connections</key>
+	<key>Medium VPN speed %d VPN connections</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>
@@ -355,7 +355,7 @@
 			<string>中級 VPN 速率含 %d VPN 連線</string>
 		</dict>
 	</dict>
-	<key>New_Plans Support for %d custom email domains</key>
+	<key>Support for %d custom email domains</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@VARIABLE@</string>

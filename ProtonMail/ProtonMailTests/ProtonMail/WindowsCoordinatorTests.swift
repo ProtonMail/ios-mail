@@ -33,8 +33,7 @@ final class WindowsCoordinatorTests: XCTestCase {
     private var userDefaultMock: UserDefaults!
     private var cacheStatusStub: CacheStatusStub!
 
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
         keyChain = KeychainWrapper(
             service: "ch.protonmail.test",
             accessGroup: "2SB5Z68H26.ch.protonmail.protonmail"
@@ -47,8 +46,10 @@ final class WindowsCoordinatorTests: XCTestCase {
         notificationCenter = NotificationCenter()
         unlockManagerDelegateMock = .init()
         cacheStatusStub = .init()
-        setupServiceFactory()
-        sut = .init(factory: serviceFactory)
+        await setupServiceFactory()
+        await MainActor.run(body: {
+            sut = .init(factory: serviceFactory)
+        })
     }
 
     override func tearDown() {
@@ -71,7 +72,7 @@ final class WindowsCoordinatorTests: XCTestCase {
 
     func testStart_isRunningUnitTest_noUserStored_didNotReceiveSignOutNotification() {
         let e = expectation(
-            forNotification: .didSignOut,
+            forNotification: .didSignOutLastAccount,
             object: nil,
             notificationCenter: notificationCenter
         )
@@ -88,7 +89,7 @@ final class WindowsCoordinatorTests: XCTestCase {
 
     func testStart_withNoUserStored_receiveDidSignOutNotification() {
         expectation(
-            forNotification: .didSignOut,
+            forNotification: .didSignOutLastAccount,
             object: nil,
             notificationCenter: notificationCenter
         )
@@ -166,21 +167,20 @@ private extension WindowsCoordinatorTests {
         sut = .init(factory: serviceFactory, showPlaceHolderViewOnly: showPlaceHolderViewOnly)
     }
 
-    func setupServiceFactory() {
+    func setupServiceFactory() async {
         let unlockManager = UnlockManager(
             cacheStatus: cacheStatusStub,
-            delegate: unlockManagerDelegateMock,
             keyMaker: keyMaker, pinFailedCountCache: MockPinFailedCountCache(),
             notificationCenter: notificationCenter
         )
+        unlockManager.delegate = unlockManagerDelegateMock
         usersManager = UsersManager(
             doh: DohInterfaceMock(),
             userDataCache: UserDataCache(keyMaker: keyMaker, keychain: keyChain),
-            coreKeyMaker: MockKeyMakerProtocol()
+            coreKeyMaker: keyMaker
         )
         let pushService = PushNotificationService(
-            notificationCenter: notificationCenter,
-            dependencies: .init(lockCacheStatus: keyMaker, registerDevice: MockRegisterDeviceUseCase())
+            dependencies: .init(lockCacheStatus: keyMaker, notificationCenter: notificationCenter)
         )
         let queueManager = QueueManager(messageQueue: MockPMPersistentQueueProtocol(), miscQueue: MockPMPersistentQueueProtocol())
         userDefaultMock = .init(suiteName: randomSuiteName)!
@@ -199,19 +199,12 @@ private extension WindowsCoordinatorTests {
         serviceFactory.add(UnlockManager.self, for: unlockManager)
         serviceFactory.add(NotificationCenter.self, for: notificationCenter)
         serviceFactory.add(KeyMakerProtocol.self, for: keyMaker)
+        return await withCheckedContinuation { continuation in
+            keyMaker.activate(RandomPinProtection(pin: String.randomString(32), keychain: keyChain)) { success in
+                continuation.resume()
+            }
+        }
     }
 }
 
 extension MockCoreDataContextProvider: Service {}
-
-extension XCTestCase {
-    func wait(
-        _ condition: @escaping @autoclosure () -> (Bool),
-        timeout: TimeInterval = 3
-    )
-    {
-        wait(for: [XCTNSPredicateExpectation(
-            predicate: NSPredicate(block: { _, _ in condition() }), object: nil
-        )], timeout: timeout)
-    }
-}

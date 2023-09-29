@@ -24,6 +24,7 @@ import Foundation
 public enum Brand {
     case proton
     case vpn
+    case pass
     
     public static var currentBrand: Brand = .proton
 }
@@ -37,13 +38,7 @@ open class DarkModeAwareNavigationViewController: UINavigationController {
 }
 
 public func darkModeAwareValue<T>(value: () -> T, protonFallback: () -> T, vpnFallback: () -> T) -> T {
-    if #available(iOS 13, *) {
-        return value()
-    } else if ColorProvider.brand == .vpn {
-        return vpnFallback()
-    } else {
-        return protonFallback()
-    }
+    value()
 }
 
 public func darkModeAwarePreferredStatusBarStyle() -> UIStatusBarStyle {

@@ -16,7 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_DataModel
+import ProtonCore_Networking
 import ProtonCore_Services
+import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
 extension UserManager {
@@ -28,7 +30,12 @@ extension UserManager {
         self.init(api: api, role: role, userInfo: userInfo, coreKeyMaker: MockKeyMakerProtocol())
     }
 
-    convenience init(api: APIService, userID: String, coreKeyMaker: KeyMakerProtocol = MockKeyMakerProtocol()) {
+    convenience init(
+        api: APIService,
+        userID: String,
+        authCredential: AuthCredential = .none,
+        coreKeyMaker: KeyMakerProtocol = MockKeyMakerProtocol()
+    ) {
         self.init(
             api: api,
             role: .none,
@@ -46,7 +53,38 @@ extension UserManager {
                 currency: nil,
                 subscribed: nil
             ),
-            coreKeyMaker: coreKeyMaker
+            coreKeyMaker: coreKeyMaker,
+            authCredential: authCredential
         )
+    }
+
+    static func prepareUser(
+        apiMock: APIServiceMock,
+        userID: UserID = .init(String.randomString(10))
+    ) throws -> UserManager {
+        let keyPair = try MailCrypto.generateRandomKeyPair()
+        let key = Key(keyID: "1", privateKey: keyPair.privateKey)
+        key.signature = "signature is needed to make this a V2 key"
+        let address = Address(
+            addressID: "",
+            domainID: nil,
+            email: "",
+            send: .active,
+            receive: .active,
+            status: .enabled,
+            type: .externalAddress,
+            order: 1,
+            displayName: "",
+            signature: "a",
+            hasKeys: 1,
+            keys: [key]
+        )
+
+        let user = UserManager(api: apiMock, role: .member)
+        user.userInfo.userAddresses = [address]
+        user.userInfo.userKeys = [key]
+        user.userInfo.userId = userID.rawValue
+        user.authCredential.mailboxpassword = keyPair.passphrase
+        return user
     }
 }

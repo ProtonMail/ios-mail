@@ -28,9 +28,6 @@
 /* Banner message */
 "%d message moved to Drafts" = "%d message moved to Drafts";
 
-/* minute */
-"%d min" = "%d min";
-
 /* auto lock time format */
 "%d Minutes" = "%d Minutes";
 
@@ -236,18 +233,6 @@
    The title of the archive action in action sheet */
 "Archive" = "Archive";
 "Archive (verb)" = "Archive";
-
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Are you sure you want to delete permanently this message?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Are you sure you want to delete these %d messages permanently?";
-
-/* Warning message when users try to empty conversations in the folder */
-"Are you sure you want to permanently delete %d conversation?" = "Are you sure you want to permanently delete %d conversation?";
-
-/* Warning message when users try to empty messages in the folder */
-"Are you sure you want to permanently delete %d message?" = "Are you sure you want to permanently delete %d message?";
 
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Are you sure you want to sign out %@?";
@@ -1649,7 +1634,7 @@
 "See progress." = "See progress.";
 
 /* section title */
-"Select colour" = "Select colour";
+"Select color" = "Select color";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Selected";
@@ -2146,9 +2131,6 @@
 
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "We recommend setting up a password instead, or disabling PGP for the following recipients:";
-
-/* week */
-"week" = "week";
 
 /* Example feedback */
 "Wonderful" = "Wonderful";

@@ -19,7 +19,7 @@ import Foundation
 @testable import ProtonMail
 import ProtonCore_TestingToolkit
 
-final class MockFetchAttachment: NewUseCase<AttachmentFile, FetchAttachment.Params> {
+final class MockFetchAttachment: UseCase<AttachmentFile, FetchAttachment.Params> {
 
     var result: Result<AttachmentFile, Error>!
 

@@ -29,27 +29,8 @@ final class PushNotificationDecryptor {
 
     enum Key {
         static let encryptionKit     = "pushNotificationEncryptionKit"
-        static let outdatedSettings = "pushNotificationOutdatedSubscriptions"
-        static let deviceToken      = "latestDeviceToken"
     }
 
+    @available(*, deprecated, message: "Old aproach to store encryption kits. Check `PushEncryptionKitSaver` instead.")
     static var saver = KeychainSaver<Set<PushSubscriptionSettings>>(key: Key.encryptionKit, cachingInMemory: false)
-    static var outdater = KeychainSaver<Set<PushSubscriptionSettings>>(key: Key.outdatedSettings, cachingInMemory: false)
-    static var deviceTokenSaver = KeychainSaver<String>(key: Key.deviceToken, cachingInMemory: false)
-
-    func encryptionKit(forSession uid: String) -> EncryptionKit? {
-        guard let allSettings = Self.saver.get(),
-            let settings = allSettings.first(where: { $0.UID == uid}) else {
-            let errorMessage = "encryption kit not found, uid: \(uid.redacted)"
-            SystemLogger.log(message: errorMessage, category: .encryption, isError: true)
-            return nil
-        }
-
-        return settings.encryptionKit
-    }
-
-    func wipeEncryptionKit() {
-        SystemLogger.log(message: #function, category: .pushNotification)
-        Self.saver.set(newValue: nil)
-    }
 }

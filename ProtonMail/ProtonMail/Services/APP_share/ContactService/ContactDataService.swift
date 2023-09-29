@@ -42,7 +42,7 @@ protocol ContactProviderProtocol: AnyObject {
 
     func getAllEmails() -> [Email]
     func fetchContacts(completion: ContactFetchComplete?)
-    func cleanUp() -> Promise<Void>
+    func cleanUp()
 }
 
 class ContactDataService: Service {
@@ -74,12 +74,11 @@ class ContactDataService: Service {
     /**
      clean contact local cache
      **/
-    func cleanUp() -> Promise<Void> {
-        return Promise { seal in
+    func cleanUp() {
             self.contactCacheStatus.contactsCached = 0
             let userID = userID.rawValue
 
-            self.coreDataService.performOnRootSavingContext { context in
+            self.coreDataService.performAndWaitOnRootSavingContext { context in
                 Contact.delete(
                     in: context,
                     basedOn: NSPredicate(format: "%K == %@", Contact.Attributes.userID, userID)
@@ -94,21 +93,15 @@ class ContactDataService: Service {
                     in: context,
                     basedOn: NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, userID)
                 )
-                
-                seal.fulfill_()
-            }
         }
     }
 
-    static func cleanUpAll() -> Promise<Void> {
-        return Promise { seal in
+    static func cleanUpAll() {
             let coreDataService = sharedServices.get(by: CoreDataService.self)
-            coreDataService.enqueueOnRootSavingContext { context in
-                Contact.deleteAll(inContext: context)
-                Email.deleteAll(inContext: context)
-                seal.fulfill_()
+            coreDataService.performAndWaitOnRootSavingContext { context in
+                Contact.deleteAll(in: context)
+                Email.deleteAll(in: context)
             }
-        }
     }
 
     /**
@@ -152,11 +145,10 @@ class ContactDataService: Service {
      - Parameter completion: async add contact complete response
      **/
     func add(cards: [[CardData]],
-             authCredential: AuthCredential?,
-             objectID: String? = nil,
+             objectID: String,
              importFromDevice: Bool,
              completion: @escaping (Error?) -> Void) {
-        let route = ContactAddRequest(cards: cards, authCredential: authCredential, importedFromDevice: importFromDevice)
+        let route = ContactAddRequest(cards: cards, importedFromDevice: importFromDevice)
         self.apiService.perform(request: route, response: ContactAddResponse()) { [weak self] _, response in
             guard let self = self else { return }
             var contactsData: [[String: Any]] = []

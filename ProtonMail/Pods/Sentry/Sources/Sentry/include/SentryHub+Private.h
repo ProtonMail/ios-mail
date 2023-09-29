@@ -1,7 +1,8 @@
 #import "SentryHub.h"
+#import "SentryTracer.h"
 
 @class SentryEnvelopeItem, SentryId, SentryScope, SentryTransaction, SentryDispatchQueueWrapper,
-    SentryTracer;
+    SentryEnvelope, SentryNSTimerFactory, SentrySession;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -10,6 +11,7 @@ SentryHub (Private)
 
 @property (nonatomic, strong) NSArray<id<SentryIntegrationProtocol>> *installedIntegrations;
 @property (nonatomic, strong) NSSet<NSString *> *installedIntegrationNames;
+@property (nullable, nonatomic, strong) SentrySession *session;
 
 - (void)addInstalledIntegration:(id<SentryIntegrationProtocol>)integration name:(NSString *)name;
 - (void)removeAllIntegrations;
@@ -24,25 +26,10 @@ SentryHub (Private)
 
 - (void)closeCachedSessionWithTimestamp:(NSDate *_Nullable)timestamp;
 
-- (id<SentrySpan>)startTransactionWithName:(NSString *)name
-                                nameSource:(SentryTransactionNameSource)source
-                                 operation:(NSString *)operation;
-
-- (id<SentrySpan>)startTransactionWithName:(NSString *)name
-                                nameSource:(SentryTransactionNameSource)source
-                                 operation:(NSString *)operation
-                               bindToScope:(BOOL)bindToScope;
-
-- (id<SentrySpan>)startTransactionWithContext:(SentryTransactionContext *)transactionContext
-                                  bindToScope:(BOOL)bindToScope
-                              waitForChildren:(BOOL)waitForChildren
-                        customSamplingContext:(NSDictionary<NSString *, id> *)customSamplingContext;
-
 - (SentryTracer *)startTransactionWithContext:(SentryTransactionContext *)transactionContext
                                   bindToScope:(BOOL)bindToScope
                         customSamplingContext:(NSDictionary<NSString *, id> *)customSamplingContext
-                                  idleTimeout:(NSTimeInterval)idleTimeout
-                         dispatchQueueWrapper:(SentryDispatchQueueWrapper *)dispatchQueueWrapper;
+                                configuration:(SentryTracerConfiguration *)configuration;
 
 - (SentryId *)captureEvent:(SentryEvent *)event
                   withScope:(SentryScope *)scope
@@ -54,6 +41,8 @@ SentryHub (Private)
 - (SentryId *)captureTransaction:(SentryTransaction *)transaction
                        withScope:(SentryScope *)scope
          additionalEnvelopeItems:(NSArray<SentryEnvelopeItem *> *)additionalEnvelopeItems;
+
+- (void)captureEnvelope:(SentryEnvelope *)envelope;
 
 @end
 

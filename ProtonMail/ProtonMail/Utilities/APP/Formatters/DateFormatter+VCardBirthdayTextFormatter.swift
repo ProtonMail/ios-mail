@@ -1,3 +1,5 @@
+import Foundation
+
 extension DateFormatter {
 
     static var vCardBirthdayTextFormatter: DateFormatter {

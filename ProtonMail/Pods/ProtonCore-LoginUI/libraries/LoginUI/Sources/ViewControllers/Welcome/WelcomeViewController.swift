@@ -34,8 +34,8 @@ public protocol WelcomeViewControllerDelegate: AnyObject {
 
 public final class WelcomeViewController: UIViewController, AccessibleView {
 
+    var layout: WelcomeViewLayout?
     private let variant: WelcomeScreenVariant
-    private let layout: WelcomeViewLayout?
     private let username: String?
     private let signupAvailable: Bool
     private weak var delegate: WelcomeViewControllerDelegate?

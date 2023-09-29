@@ -25,7 +25,6 @@ import class PromiseKit.Promise
 // sourcery: mock
 protocol IncomingDefaultServiceProtocol {
     func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void)
-    func listLocal(query: IncomingDefaultService.Query) throws -> [IncomingDefaultEntity]
     func save(dto: IncomingDefaultDTO) throws
     func performLocalUpdate(emailAddress: String, newLocation: IncomingDefaultsAPI.Location) throws
     func performRemoteUpdate(
@@ -49,12 +48,6 @@ final class IncomingDefaultService {
 extension IncomingDefaultService: IncomingDefaultServiceProtocol {
     func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void) {
         fetchAndStoreRecursively(location: location, currentPage: 0, fetchedCount: 0, completion: completion)
-    }
-
-    func listLocal(query: Query) throws -> [IncomingDefaultEntity] {
-        try dependencies.contextProvider.read { context in
-            try self.find(query: query, in: context, includeSoftDeleted: false).map(IncomingDefaultEntity.init)
-        }
     }
 
     func save(dto: IncomingDefaultDTO) throws {
@@ -162,21 +155,14 @@ extension IncomingDefaultService: IncomingDefaultServiceProtocol {
 // MARK: cleanup
 
 extension IncomingDefaultService {
-    func cleanUp() -> Promise<Void> {
-        Promise { seal in
-            do {
-                try hardDelete(query: nil, includeSoftDeleted: true)
-                seal.fulfill_()
-            } catch {
-                seal.reject(error)
-            }
-        }
+    func cleanUp() throws {
+        try hardDelete(query: nil, includeSoftDeleted: true)
     }
 
     static func cleanUpAll() {
         let coreDataService = sharedServices.get(by: CoreDataService.self)
         coreDataService.performAndWaitOnRootSavingContext { context in
-            context.deleteAll(IncomingDefault.Attribute.entityName)
+            IncomingDefault.deleteAll(in: context)
         }
     }
 }
@@ -184,7 +170,7 @@ extension IncomingDefaultService {
 // MARK: internals
 
 extension IncomingDefaultService {
-    private func writeToDatabase(block: (NSManagedObjectContext) throws -> Void) throws {
+    private func writeToDatabase(block: @escaping (NSManagedObjectContext) throws -> Void) throws {
         try dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
             try block(context)
 

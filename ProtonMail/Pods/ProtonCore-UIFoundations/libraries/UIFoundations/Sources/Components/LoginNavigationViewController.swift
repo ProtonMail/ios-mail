@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 import ProtonCore_Foundations
 
@@ -60,35 +62,22 @@ public final class LoginNavigationViewController: DarkModeAwareNavigationViewCon
 
     public func setUpShadowLessNavigationBar() {
         baseNavigationBarConfiguration()
-        if #available(iOS 13.0, *) {
-            navigationBar.standardAppearance.shadowImage = .colored(with: .clear)
-        } else {
-            navigationBar.shadowImage = .colored(with: .clear)
-        }
+        navigationBar.standardAppearance.shadowImage = .colored(with: .clear)
     }
 
     public func setUpNavigationBarWithShadow() {
         baseNavigationBarConfiguration()
-        if #available(iOS 13.0, *) {
-            navigationBar.standardAppearance.shadowImage = .colored(with: ColorProvider.Shade20)
-        } else {
-            navigationBar.shadowImage = .colored(with: ColorProvider.Shade20)
-        }
+        navigationBar.standardAppearance.shadowImage = .colored(with: ColorProvider.Shade20)
     }
 
     private func baseNavigationBarConfiguration() {
         let color = topViewController?.view.backgroundColor ?? .clear
         navigationBar.isTranslucent = false
-        if #available(iOS 13.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithTransparentBackground()
-            appearance.backgroundColor = color
-            navigationBar.standardAppearance = appearance
-            navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
-        } else {
-            navigationBar.setBackgroundImage(.colored(with: color), for: .default)
-            navigationBar.backgroundColor = .clear
-        }
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = color
+        navigationBar.standardAppearance = appearance
+        navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
     }
 }
 
@@ -158,3 +147,5 @@ private class FadePushAnimator: NSObject, UIViewControllerAnimatedTransitioning 
         })
     }
 }
+
+#endif

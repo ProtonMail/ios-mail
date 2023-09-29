@@ -20,11 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
 import CoreData
 import PromiseKit
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 
 // TODO::fixme import header
@@ -60,9 +59,9 @@ extension Attachment {
         }
         #if APP_EXTENSION
         // Share extension doesn't have recovery situation
-        // Also its path is different from main app 
+        // Also its path is different from main app
         return localURL
-        #endif
+        #else
         guard let localURL = self.localURL else { return nil }
 
         let nameUUID = localURL.deletingPathExtension().lastPathComponent
@@ -77,6 +76,7 @@ extension Attachment {
         } catch {
             return nil
         }
+        #endif
     }
 
     var isUploaded: Bool {
@@ -84,56 +84,6 @@ extension Attachment {
     }
 
     // Mark : functions
-    func encrypt(byKey key: Key) throws -> (Data, URL)? {
-        let path = filePathByLocalURL()
-        if let clearData = self.fileData, path == nil {
-            try writeToLocalURL(data: clearData)
-            self.fileData = nil
-        }
-        guard let localURL = path else {
-            return nil
-        }
-
-        var error: NSError?
-        let key = CryptoNewKeyFromArmored(key.publicKey, &error)
-        if let err = error {
-            throw err
-        }
-
-        let keyRing = CryptoNewKeyRing(key, &error)
-        if let err = error {
-            throw err
-        }
-
-        guard let aKeyRing = keyRing else {
-            return nil
-        }
-
-        let cipherURL = localURL.appendingPathExtension("cipher")
-        let keyPacket = try AttachmentStreamingEncryptor.encryptStream(localURL, cipherURL, aKeyRing, 2_000_000)
-
-        return (keyPacket, cipherURL)
-    }
-
-    func sign(byKey key: Key, userKeys: [ArmoredKey], passphrase: Passphrase) -> Data? {
-        do {
-            let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: passphrase)
-            let signingKey = SigningKey(privateKey: ArmoredKey(value: key.privateKey), passphrase: addressKeyPassphrase)
-            let dataToSign: Data
-            if let fileData = fileData {
-                dataToSign = fileData
-            } else if let localURL = filePathByLocalURL() {
-                dataToSign = try Data(contentsOf: localURL)
-            } else {
-                return nil
-            }
-            let armoredSignature = try Sign.signDetached(signingKey: signingKey, plainData: dataToSign)
-            return armoredSignature.value.unArmor
-        } catch {
-            return nil
-        }
-    }
-
     func getSession(userKeys: [ArmoredKey], keys: [Key], mailboxPassword: Passphrase) throws -> SessionKey? {
         guard let keyPacket = self.keyPacket else {
             return nil

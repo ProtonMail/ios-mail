@@ -22,7 +22,7 @@
 
 import ProtonCore_Crypto
 import UIKit
-import OpenPGP
+import VCard
 
 class ContactAddViewModelImpl: ContactEditViewModel {
     var sections: [ContactEditSectionType] = [.emails,
@@ -40,11 +40,11 @@ class ContactAddViewModelImpl: ContactEditViewModel {
     var addresses : [ContactEditAddress] = []
     var informations: [ContactEditInformation] = []
     var fields: [ContactEditField] = []
-    var notes: ContactEditNote = ContactEditNote(note: "", isNew: true)
+    var notes: [ContactEditNote] = []
     var profile: ContactEditProfile = ContactEditProfile(n_displayname: "")
     var profilePicture: UIImage?
 
-    override init(user: UserManager, coreDataService: CoreDataService) {
+    override init(user: UserManager, coreDataService: CoreDataContextProviderProtocol) {
         super.init(user: user, coreDataService: coreDataService)
         self.contactEntity = nil
     }
@@ -91,7 +91,7 @@ class ContactAddViewModelImpl: ContactEditViewModel {
         return fields
     }
 
-    override func getNotes() -> ContactEditNote {
+    override func getNotes() -> [ContactEditNote] {
         return notes
     }
 
@@ -349,10 +349,14 @@ class ContactAddViewModelImpl: ContactEditViewModel {
             }
         }
 
-        if notes.newNote != "" {
-            let n = PMNINote.createInstance("", note: notes.newNote)
-            vcard3.setNote(n)
-            isCard3Set = true
+        if !notes.isEmpty {
+            for note in notes {
+                if note.newNote != "" {
+                    let n = PMNINote.createInstance("", note: note.newNote)
+                    vcard3.add(n)
+                    isCard3Set = true
+                }
+            }
         }
 
         for field in fields {

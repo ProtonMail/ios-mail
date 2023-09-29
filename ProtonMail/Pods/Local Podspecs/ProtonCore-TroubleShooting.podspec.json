@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-TroubleShooting",
   "module_name": "ProtonCore_TroubleShooting",
-  "version": "5.2.0",
+  "version": "9.3.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -13,15 +13,14 @@
     "zhj4478": "feng@pm.me",
     "magohamote": "cedric.rolland@proton.ch",
     "siejkowski": "krzysztof.siejkowski@proton.ch",
-    "gbiegaj": "grzegorz.biegaj@proton.ch",
     "vjalencas": "victor.jalencas@proton.ch"
   },
   "source": {
-    "git": null,
-    "tag": "5.2.0"
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "9.3.0"
   },
   "platforms": {
-    "ios": "11.0"
+    "ios": "14.0"
   },
   "swift_versions": [
     "5.6"
@@ -34,19 +33,19 @@
   },
   "dependencies": {
     "ProtonCore-Foundations": [
-      "5.2.0"
+      "9.3.0"
     ],
     "ProtonCore-UIFoundations": [
-      "5.2.0"
+      "9.3.0"
     ],
     "ProtonCore-Utilities": [
-      "5.2.0"
+      "9.3.0"
     ],
     "ProtonCore-Doh": [
-      "5.2.0"
+      "9.3.0"
     ],
     "ProtonCore-CoreTranslation": [
-      "5.2.0"
+      "9.3.0"
     ]
   },
   "source_files": "libraries/TroubleShooting/Sources/**/*.{h,m,swift}",
@@ -65,7 +64,7 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Doh": [
-          "5.2.0"
+          "9.3.0"
         ]
       },
       "source_files": "libraries/TroubleShooting/Tests/**/*"

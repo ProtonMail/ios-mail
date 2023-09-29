@@ -25,8 +25,9 @@ import MBProgressHUD
 import ProtonCore_Networking
 import ProtonCore_UIFoundations
 import ProtonCore_PaymentsUI
+import ProtonCore_Foundations
 
-class SettingDetailViewController: UIViewController {
+class SettingDetailViewController: UIViewController, AccessibleView {
 
     @IBOutlet weak var switchView: UIView!
     @IBOutlet weak var switchLabel: UILabel!
@@ -83,6 +84,8 @@ class SettingDetailViewController: UIViewController {
         self.navigationItem.hidesBackButton = true
 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(back(sender:)))
+
+        self.navigationItem.assignNavItemIndentifiers()
 
         if viewModel.isDisplaySwitch() {
             switchLabel.set(text: viewModel.getSwitchText(),
@@ -199,7 +202,12 @@ class SettingDetailViewController: UIViewController {
     }
 
     private func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(payments: self.viewModel.userManager.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
+        self.paymentsUI = PaymentsUI(
+            payments: viewModel.userManager.payments,
+            clientApp: .mail,
+            shownPlanNames: Constants.shownPlanNames,
+            customization: .empty
+        )
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
                                          backendFetch: true) { _ in }
     }

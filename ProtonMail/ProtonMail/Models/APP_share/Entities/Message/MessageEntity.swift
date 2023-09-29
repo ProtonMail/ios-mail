@@ -57,7 +57,7 @@ struct MessageEntity: Equatable, Hashable {
     let rawHeader: String?
     let rawParsedHeaders: String?
 
-    let rawFlag: Int
+    let rawFlag: Int64
     var flag: MessageFlag { MessageFlag(rawValue: rawFlag) }
 
     let time: Date?
@@ -127,6 +127,11 @@ struct MessageEntity: Equatable, Hashable {
     let passwordHint: String
 
     let objectID: ObjectID
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(messageID)
+        hasher.combine(objectID)
+    }
 }
 
 extension MessageEntity {
@@ -134,7 +139,7 @@ extension MessageEntity {
         rawParsedHeaders?.parseObjectAny() ?? [:]
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     init(_ message: Message) {
         self.messageID = MessageID(message.messageID)
         self.addressID = AddressID(message.addressID ?? "")
@@ -155,7 +160,7 @@ extension MessageEntity {
         self.rawHeader = message.header
         self.rawParsedHeaders = message.parsedHeaders
 
-        self.rawFlag = message.flags.intValue
+        self.rawFlag = message.flags.int64Value
 
         self.time = message.time
         self.expirationTime = message.expirationTime

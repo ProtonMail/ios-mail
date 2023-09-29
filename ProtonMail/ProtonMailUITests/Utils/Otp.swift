@@ -12,11 +12,10 @@ import CryptoKit
 class Otp {
     
     func generate(_ secret32: String) -> String {
-        if #available(iOS 13.0, *) {
             let period = TimeInterval(30)
             let digits = 6
             let secret = Base32Decode(data: secret32)
-            var counter = UInt64(Date().timeIntervalSince1970 / period).bigEndian
+            var counter = UInt(Date().timeIntervalSince1970 / period).bigEndian
             let counterData = withUnsafeBytes(of: &counter) { Array($0) }
             let hash = HMAC<Insecure.SHA1>.authenticationCode(for: counterData, using: SymmetricKey(data: secret))
             var truncatedHash = hash.withUnsafeBytes { ptr -> UInt32 in
@@ -28,9 +27,6 @@ class Otp {
             truncatedHash = truncatedHash & 0x7FFF_FFFF
             truncatedHash = truncatedHash % UInt32(pow(10, Float(digits)))
             return String(format: "%0*u", digits, truncatedHash)
-        } else {
-            return ""
-        }
     }
 
     private func Base32Decode(data: String) -> Data {

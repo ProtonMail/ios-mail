@@ -21,6 +21,8 @@
 
 // swiftlint:disable identifier_name
 
+#if os(iOS)
+
 import Foundation
 
 public struct CountryCode: Decodable {
@@ -28,3 +30,5 @@ public struct CountryCode: Decodable {
     public let country_en: String
     public let phone_code: Int
 }
+
+#endif

@@ -22,14 +22,14 @@
 
 import UIKit
 
-class SharePinUnlockCoordinator {
+final class SharePinUnlockCoordinator {
     typealias VC = SharePinUnlockViewController
 
     weak var destinationNavigationController: UINavigationController?
-    weak var navigationController: UINavigationController?
+    private weak var navigationController: UINavigationController?
 
-    var viewController: SharePinUnlockViewController?
-    let viewModel: PinCodeViewModel
+    private var viewController: SharePinUnlockViewController?
+    private let viewModel: PinCodeViewModel
     lazy var configuration: ((VC) -> Void)? = { [unowned self] vc in
         vc.viewModel = self.viewModel
     }

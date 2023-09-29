@@ -269,12 +269,18 @@ html_editor.absorbImage = function (event, items, target) {
 
 // Remove color information of pasted data
 html_editor.handlePastedData = function (event) {
+    // Safari doesn't support regular expression lookahead
+    // To remove style has prefix `font-` except `font-style` and `font-weight`
+    // Use this workaround 
     const item = event.clipboardData
         .getData('text/html')
         .replace(/<meta (.*?)>/g, '')
-        .replace(/((\w|-)*?color\s*:.*?)("|;)/g, '')
-        .replace(new RegExp('font-.*?(?!&quot);', 'g'), '');
-
+        .replace(/((\w|-)*?color\s*:.*?)("|;)/g, '$3')
+        .replace(/font-style/g, 'elyts-tnof')
+        .replace(/font-weight/g, 'thgiew-tnof')
+        .replace(new RegExp('font.*?:.*?(;|")', 'g'), '$1')
+        .replace(/elyts-tnof/g, 'font-style')
+        .replace(/thgiew-tnof/g, 'font-weight')
     if (item == undefined || item.length === 0) { return }
     event.preventDefault();
 

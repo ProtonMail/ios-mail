@@ -46,7 +46,7 @@ class MainQueueHandlerHelperTests: XCTestCase {
         try testContext.save()
 
         let sut = MainQueueHandlerHelper.removeAllAttachmentsNotUploaded
-        sut(testMsg, testContext)
+        try sut(testMsg, testContext)
 
         XCTAssertEqual(testMsg.numAttachments.intValue, 0)
         XCTAssertEqual(testMsg.attachments.count, 0)
@@ -59,7 +59,7 @@ class MainQueueHandlerHelperTests: XCTestCase {
         try testContext.save()
 
         let sut = MainQueueHandlerHelper.removeAllAttachmentsNotUploaded
-        sut(testMsg, testContext)
+        try sut(testMsg, testContext)
 
         XCTAssertEqual(testMsg.numAttachments.intValue, 0)
         XCTAssertEqual(testMsg.attachments.count, 0)
@@ -75,7 +75,7 @@ class MainQueueHandlerHelperTests: XCTestCase {
         try testContext.save()
 
         let sut = MainQueueHandlerHelper.removeAllAttachmentsNotUploaded
-        sut(testMsg, testContext)
+        try sut(testMsg, testContext)
 
         XCTAssertEqual(testMsg.numAttachments.intValue, 1)
         XCTAssertEqual(testMsg.attachments.count, 1)

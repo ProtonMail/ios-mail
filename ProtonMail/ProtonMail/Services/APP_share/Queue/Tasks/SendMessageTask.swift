@@ -101,6 +101,7 @@ final class SendMessageTask {
                     cachedUserInfo: messageSendingData.cachedUserInfo,
                     cachedAuthCredential: messageSendingData.cachedAuthCredential,
                     cachedSenderAddress: messageSendingData.cachedSenderAddress,
+                    cachedPassphrase: messageSendingData.cachedPassphrase,
                     defaultSenderAddress: messageSendingData.defaultSenderAddress
                 )
                 completion(newMessageSendingData)
@@ -262,7 +263,6 @@ extension SendMessageTask {
         let localNotificationService: LocalNotificationService
         let eventsFetching: EventsFetching
         let undoActionManager: UndoActionManagerProtocol
-        let queueManager: QueueManager
         let notificationCenter: NotificationCenter
 
         init(
@@ -273,7 +273,6 @@ extension SendMessageTask {
             localNotificationService: LocalNotificationService,
             eventsFetching: EventsFetching,
             undoActionManager: UndoActionManagerProtocol,
-            queueManager: QueueManager = sharedServices.get(by: QueueManager.self),
             notificationCenter: NotificationCenter = NotificationCenter.default
         ) {
             self.isUserAuthenticated = isUserAuthenticated
@@ -283,7 +282,6 @@ extension SendMessageTask {
             self.localNotificationService = localNotificationService
             self.eventsFetching = eventsFetching
             self.undoActionManager = undoActionManager
-            self.queueManager = queueManager
             self.notificationCenter = notificationCenter
         }
     }

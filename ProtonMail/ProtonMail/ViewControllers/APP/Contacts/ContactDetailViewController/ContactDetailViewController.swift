@@ -239,11 +239,7 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
         if let phoneCallURL = URL(string: phoneUrl) {
             let application = UIApplication.shared
             if application.canOpenURL(phoneCallURL) {
-                if #available(iOS 10.0, *) {
                     application.open(phoneCallURL, options: [:], completionHandler: nil)
-                } else {
-                    application.openURL(phoneCallURL)
-                }
             }
         }
     }
@@ -298,9 +294,13 @@ final class ContactDetailViewController: UIViewController, ComposeSaveHintProtoc
             contextProvider: viewModel.coreDataService,
             isEditingScheduleMsg: false,
             userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus,
-            internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+            internetStatusProvider: InternetConnectionStatusProvider.shared,
             coreKeyMaker: sharedServices.get(),
+            darkModeCache: sharedServices.userCachedStatus,
+            mobileSignatureCache: sharedServices.userCachedStatus,
+            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
+            featureFlagCache: sharedServices.userCachedStatus,
+            userCachedStatusProvider: sharedServices.userCachedStatus,
             toContact: contact
         )
         guard let nav = navigationController else {
@@ -327,9 +327,7 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
 
     func updated() {
         // nono full screen persent vc in ios 13. viewWillAppear will not be called. hack here
-        if #available(iOS 13.0, *) {
             self.viewModel.rebuild()
-        }
         configHeader()
         tableView.reloadData()
     }
@@ -341,7 +339,7 @@ extension ContactDetailViewController: ContactUpgradeCellDelegate {
     }
 
     private func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
+        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames, customization: .empty)
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
                                          backendFetch: true,
                                          completionHandler: { _ in })
@@ -625,11 +623,7 @@ extension ContactDetailViewController: UITableViewDelegate {
                 if let strUrl = fullUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                    let url = URL(string: strUrl)
                 {
-                    if #available(iOS 10.0, *) {
                         UIApplication.shared.open(url, options: [:], completionHandler: nil)
-                    } else {
-                        UIApplication.shared.openURL(url)
-                    }
                 }
             }
         case .url:
@@ -644,11 +638,7 @@ extension ContactDetailViewController: UITableViewDelegate {
                 if let validUrl = comps.url {
                     let application = UIApplication.shared
                     if application.canOpenURL(validUrl) {
-                        if #available(iOS 10.0, *) {
                             application.open(validUrl, options: [:], completionHandler: nil)
-                        } else {
-                            application.openURL(validUrl)
-                        }
                         break
                     }
                 }

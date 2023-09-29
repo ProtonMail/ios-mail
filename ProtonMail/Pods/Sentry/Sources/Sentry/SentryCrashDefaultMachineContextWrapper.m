@@ -5,8 +5,8 @@
 #import "SentryCrashStackCursor.h"
 #import "SentryCrashStackCursor_SelfThread.h"
 #import "SentryCrashThread.h"
+#import "SentryFormatter.h"
 #import "SentryFrame.h"
-#import "SentryHexAddressFormatter.h"
 #import "SentryStacktrace.h"
 #import "SentryStacktraceBuilder.h"
 #import "SentryThread.h"
@@ -27,7 +27,7 @@ SentryCrashThread mainThreadID;
 
 - (void)fillContextForCurrentThread:(struct SentryCrashMachineContext *)context
 {
-    sentrycrashmc_getContextForThread(sentrycrashthread_self(), context, true);
+    sentrycrashmc_getContextForThread(sentrycrashthread_self(), context, YES);
 }
 
 - (int)getThreadCount:(struct SentryCrashMachineContext *)context

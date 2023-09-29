@@ -50,6 +50,13 @@ protocol MessageDataServiceProtocol: Service {
     func idsOfMessagesBeingSent() -> [String]
 
     func getMessageSendingData(for uri: String) -> MessageSendingData?
+    func deleteMessage(objectID: String)
+    func getMessage(for messageID: MessageID) throws -> Message
+    func getMessageEntity(for messageID: MessageID) throws -> MessageEntity
+    func getAttachmentEntity(for uri: String) throws -> AttachmentEntity?
+    func removeAttachmentFromDB(objectIDs: [ObjectID])
+    func updateAttachment(by uploadResponse: UploadAttachment.UploadingResponse, attachmentObjectID: ObjectID)
+    func removeAllAttachmentsNotUploaded(messageID: MessageID)
 
     func updateMessageAfterSend(
         message: MessageEntity,
@@ -78,10 +85,13 @@ protocol MessageDataServiceProtocol: Service {
     func updateAttKeyPacket(message: MessageEntity, addressID: String)
     func delete(att: AttachmentEntity, messageID: MessageID) -> Promise<Void>
     func upload(att: Attachment)
+    func userAddress(of addressID: AddressID) -> Address?
+    func defaultUserAddress(of addressID: AddressID) -> Address?
 }
 
+// sourcery: mock
 protocol LocalMessageDataServiceProtocol: Service {
-    func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) -> Promise<Void>
+    func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool)
     func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message]
 }
 
@@ -110,19 +120,23 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     weak var queueManager: QueueManager?
     weak var parent: UserManager?
+    let dependencies: Dependencies
 
-    init(api: APIService,
-         userID: UserID,
-         labelDataService: LabelsDataService,
-         contactDataService: ContactDataService,
-         localNotificationService: LocalNotificationService,
-         queueManager: QueueManager?,
-         contextProvider: CoreDataContextProviderProtocol,
-         lastUpdatedStore: LastUpdatedStoreProtocol,
-         user: UserManager,
-         cacheService: CacheService,
-         undoActionManager: UndoActionManagerProtocol,
-         contactCacheStatus: ContactCacheStatusProtocol) {
+    init(
+        api: APIService,
+        userID: UserID,
+        labelDataService: LabelsDataService,
+        contactDataService: ContactDataService,
+        localNotificationService: LocalNotificationService,
+        queueManager: QueueManager?,
+        contextProvider: CoreDataContextProviderProtocol,
+        lastUpdatedStore: LastUpdatedStoreProtocol,
+        user: UserManager,
+        cacheService: CacheService,
+        undoActionManager: UndoActionManagerProtocol,
+        contactCacheStatus: ContactCacheStatusProtocol,
+        dependencies: Dependencies
+    ) {
         self.apiService = api
         self.userID = userID
         self.labelDataService = labelDataService
@@ -135,6 +149,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         self.messageDecrypter = MessageDecrypter(userDataSource: user)
         self.undoActionManager = undoActionManager
         self.contactCacheStatus = contactCacheStatus
+        self.dependencies = dependencies
 
         setupNotifications()
         self.queueManager = queueManager
@@ -419,9 +434,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 newMessage.numAttachments = NSNumber(value: localAttachmentCount)
                                 newMessage.isDetailDownloaded = true
                                 newMessage.messageStatus = 1
-                                if let labelID = newMessage.firstValidFolder() {
-                                    self.mark(messageObjectIDs: [objectId], labelID: LabelID(labelID), unRead: false)
-                                }
                                 if newMessage.unRead {
                                     self.cacheService.updateCounterSync(markUnRead: false, on: newMessage)
                                     if let labelID = newMessage.firstValidFolder() {
@@ -495,7 +507,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                         self.mark(
                                             messageObjectIDs: [messageOut.objectID],
                                             labelID: LabelID(labelID),
-                                            unRead: false
+                                            unRead: false,
+                                            context: context
                                         )
                                     }
 
@@ -659,12 +672,10 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
      3. hacked action detacted
      4. use wraped manully.
      */
-    func cleanUp() -> Promise<Void> {
-        return self.cleanMessage(cleanBadgeAndNotifications: true).done { _ in
-            self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .singleMessage)
-            self.lastUpdatedStore.removeUpdateTime(by: self.userID, type: .conversation)
+    func cleanUp() {
+        cleanMessage(cleanBadgeAndNotifications: true)
+            self.lastUpdatedStore.removeUpdateTime(by: self.userID)
             self.signout()
-        }
     }
 
     func signin() {
@@ -675,24 +686,21 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         self.queue(.signout)
     }
 
-    static func cleanUpAll() -> Promise<Void> {
-        return Promise { seal in
-            let queueManager = sharedServices.get(by: QueueManager.self)
-            queueManager.clearAll {
-                let coreDataService = sharedServices.get(by: CoreDataService.self)
-                coreDataService.enqueueOnRootSavingContext { context in
-                    Message.deleteAll(inContext: context)
-                    Conversation.deleteAll(inContext: context)
-                    _ = context.saveUpstreamIfNeeded()
-                    seal.fulfill_()
-                }
-            }
+    static func cleanUpAll() async {
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
+        let queueManager = sharedServices.get(by: QueueManager.self)
+
+        await queueManager.clearAll()
+
+        coreDataService.performAndWaitOnRootSavingContext { context in
+            Message.deleteAll(in: context)
+            Conversation.deleteAll(in: context)
+            _ = context.saveUpstreamIfNeeded()
         }
     }
 
-    func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) -> Promise<Void> {
-        return Promise { seal in
-            self.contextProvider.performOnRootSavingContext { context in
+    func cleanMessage(removeAllDraft: Bool = true, cleanBadgeAndNotifications: Bool) {
+            self.contextProvider.performAndWaitOnRootSavingContext { context in
                 self.removeMessageFromDB(context: context, removeAllDraft: removeAllDraft)
 
                 let contextLabelFetch = NSFetchRequest<ContextLabel>(entityName: ContextLabel.Attributes.entityName)
@@ -720,8 +728,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 if cleanBadgeAndNotifications {
                     UIApplication.setBadge(badge: 0)
                 }
-                seal.fulfill_()
-            }
         }
     }
 
@@ -854,10 +860,109 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 cachedUserInfo: message.cachedUser,
                 cachedAuthCredential: message.cachedAuthCredential,
                 cachedSenderAddress: message.cachedAddress,
+                cachedPassphrase: message.cachedPassphrase,
                 defaultSenderAddress: self?.defaultUserAddress(of: msg.addressID)
             )
         }
         return messageSendingData
+    }
+
+    func deleteMessage(objectID: String) {
+        contextProvider.performAndWaitOnRootSavingContext { [weak self] context in
+            guard let objectID = self?.contextProvider.managedObjectIDForURIRepresentation(objectID),
+                  let message = context.find(with: objectID) as? Message else {
+                return
+            }
+            context.delete(message)
+            _ = context.saveUpstreamIfNeeded()
+        }
+    }
+
+    func getMessage(for messageID: MessageID) throws -> Message {
+        try contextProvider.performAndWaitOnRootSavingContext { _ in
+            let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID.rawValue)
+            fetchRequest.sortDescriptors = [
+                NSSortDescriptor(key: Message.Attributes.time, ascending: false),
+                NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
+            ]
+            let messages = try fetchRequest.execute()
+            guard let first = messages.first else {
+                throw NSError(domain: "proton.ch", code: APIErrorCode.resourceDoesNotExist)
+            }
+            return first
+        }
+    }
+
+    func getMessageEntity(for messageID: MessageID) throws -> MessageEntity {
+        let message = try getMessage(for: messageID)
+        return try contextProvider.performAndWaitOnRootSavingContext { _ in
+            return MessageEntity(message)
+        }
+    }
+
+    func getAttachmentEntity(for uri: String) throws -> AttachmentEntity? {
+        try contextProvider.performAndWaitOnRootSavingContext { [weak self] context in
+            guard let objectID = self?.contextProvider.managedObjectIDForURIRepresentation(uri),
+                  let attachment = context.find(with: objectID) as? Attachment else {
+                return nil
+            }
+            return AttachmentEntity(attachment)
+        }
+    }
+
+    func removeAttachmentFromDB(objectIDs: [ObjectID]) {
+        contextProvider.performOnRootSavingContext { context in
+            for objectID in objectIDs {
+                guard let attachment = context.find(with: objectID.rawValue) as? Attachment else { continue }
+                context.delete(attachment)
+            }
+            _ = context.saveUpstreamIfNeeded()
+        }
+    }
+
+    func updateAttachment(by uploadResponse: UploadAttachment.UploadingResponse, attachmentObjectID: ObjectID) {
+        guard
+            let attachmentDict = uploadResponse.response["Attachment"] as? [String: Any],
+            let id = attachmentDict["ID"] as? String
+        else {
+            return
+        }
+        contextProvider.performAndWaitOnRootSavingContext { context in
+            guard let attachment = context.find(with: attachmentObjectID.rawValue) as? Attachment else {
+                // User could log out
+                return
+            }
+            attachment.attachmentID = id
+            attachment.keyPacket = uploadResponse.keyPacket
+                .base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+            attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
+
+            // proper headers from BE - important for inline attachments
+            if let headerInfoDict = attachmentDict["Headers"] as? Dictionary<String, String> {
+                attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
+            }
+            attachment.cleanLocalURLs()
+
+            _ = context.saveUpstreamIfNeeded()
+            NotificationCenter
+                .default
+                .post(
+                    name: .attachmentUploaded,
+                    object: nil,
+                    userInfo: [
+                        "objectID": attachment.objectID.uriRepresentation().absoluteString,
+                        "attachmentID": attachment.attachmentID
+                    ]
+                )
+        }
+    }
+
+    func removeAllAttachmentsNotUploaded(messageID: MessageID) {
+        guard let message = try? getMessage(for: messageID) else { return }
+        try? contextProvider.performAndWaitOnRootSavingContext { context in
+            try? MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: message, context: context)
+        }
     }
 
     func updateMessageAfterSend(
@@ -1408,7 +1513,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     private func setupNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(MessageDataService.didSignOutNotification(_:)),
-                                               name: NSNotification.Name.didSignOut,
+                                               name: .didSignOutLastAccount,
                                                object: nil)
         // TODO: add monitoring for didBecomeActive
     }
@@ -1487,7 +1592,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
             let completionBlock: () -> Void = {
                 self.labelDataService.fetchV4Labels { _ in
-                    self.contactDataService.cleanUp().ensure {
+                    self.contactDataService.cleanUp()
                         self.contactDataService.fetchContacts { error in
                             if error == nil {
                                 self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID)
@@ -1496,7 +1601,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                                 completion(error)
                             }
                         }
-                    }.cauterize()
                 }
             }
 
@@ -1509,9 +1613,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                     completionBlock()
                 },
                 onDownload: {
-                    self.cleanMessage(cleanBadgeAndNotifications: true).then { _ -> Promise<Void> in
+                    self.cleanMessage(cleanBadgeAndNotifications: true)
                         self.contactDataService.cleanUp()
-                    }.cauterize()
                 }
             )
         }
@@ -1645,5 +1748,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         apiService.perform(request: request) { task, result in
             completion(result)
         }
+    }
+}
+
+extension MessageDataService {
+    struct Dependencies {
+        let moveMessageInCacheUseCase: MoveMessageInCacheUseCase
     }
 }

@@ -33,22 +33,17 @@ extension Notification.Name {
         return .init(rawValue: "ScheduledMessageSucceed")
     }
 
-    /// notify when status bar is clicked
-    static var touchStatusBar: Notification.Name {
-        return .init(rawValue: "Application.TouchStatusBar")
-    }
-
     /// when received a custom url schema. ex. verify code
     static var customUrlSchema: Notification.Name {
         return .init(rawValue: "Application.CustomUrlSchema")
     }
 
-    /// notify did signout
-    static var didSignOut: Notification.Name {
-        return .init(rawValue: "UserDataServiceDidSignOutNotification")
+    /// indicates the last remaining account has signed out
+    static var didSignOutLastAccount: Notification.Name {
+        return .init(rawValue: "UserDataServiceDidSignOutLastAccountNotification")
     }
 
-    /// notify did signin
+    /// indicates an account has successfully signed in
     static var didSignIn: Notification.Name {
         return .init(rawValue: "UserDataServiceDidSignInNotification")
     }
@@ -91,6 +86,10 @@ extension Notification.Name {
 
     static var shouldUpdateUserInterfaceStyle: Notification.Name {
         return .init("shouldUpdateUserInterfaceStyle")
+    }
+
+    static var tempNetworkError: Notification.Name {
+        return .init("tempNetworkError")
     }
 
     static var pagesSwipeExpectation: Notification.Name {

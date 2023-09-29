@@ -1,7 +1,9 @@
-#import "SentryEnvelope.h"
 #import "SentryAttachment.h"
 #import "SentryBreadcrumb.h"
 #import "SentryClientReport.h"
+#import "SentryEnvelope+Private.h"
+#import "SentryEnvelopeAttachmentHeader.h"
+#import "SentryEnvelopeItemHeader.h"
 #import "SentryEnvelopeItemType.h"
 #import "SentryEvent.h"
 #import "SentryLog.h"
@@ -48,31 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@implementation SentryEnvelopeItemHeader
-
-- (instancetype)initWithType:(NSString *)type length:(NSUInteger)length
-{
-    if (self = [super init]) {
-        _type = type;
-        _length = length;
-    }
-    return self;
-}
-
-- (instancetype)initWithType:(NSString *)type
-                      length:(NSUInteger)length
-                   filenname:(NSString *)filename
-                 contentType:(NSString *)contentType
-{
-    if (self = [self initWithType:type length:length]) {
-        _filename = filename;
-        _contentType = contentType;
-    }
-    return self;
-}
-
-@end
-
 @implementation SentryEnvelopeItem
 
 - (instancetype)initWithHeader:(SentryEnvelopeItemHeader *)header data:(NSData *)data
@@ -86,10 +63,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithEvent:(SentryEvent *)event
 {
-    NSError *error;
-    NSData *json = [SentrySerialization dataWithJSONObject:[event serialize] error:&error];
+    NSData *json = [SentrySerialization dataWithJSONObject:[event serialize]];
 
-    if (nil != error) {
+    if (nil == json) {
         // We don't know what caused the serialization to fail.
         SentryEvent *errorEvent = [[SentryEvent alloc] initWithLevel:kSentryLevelWarning];
 
@@ -106,7 +82,7 @@ NS_ASSUME_NONNULL_BEGIN
 
         // We accept the risk that this simple serialization fails. Therefore we ignore the
         // error on purpose.
-        json = [SentrySerialization dataWithJSONObject:[errorEvent serialize] error:nil];
+        json = [SentrySerialization dataWithJSONObject:[errorEvent serialize]];
     }
 
     // event.type can be nil and the server infers error if there's a stack trace, otherwise
@@ -122,10 +98,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (instancetype)initWithSession:(SentrySession *)session
 {
-    NSData *json = [NSJSONSerialization dataWithJSONObject:[session serialize]
-                                                   options:0
-                                                     // TODO: handle error
-                                                     error:nil];
+    NSData *json = [NSJSONSerialization dataWithJSONObject:[session serialize] options:0 error:nil];
     return [self
         initWithHeader:[[SentryEnvelopeItemHeader alloc] initWithType:SentryEnvelopeItemTypeSession
                                                                length:json.length]
@@ -210,16 +183,17 @@ NS_ASSUME_NONNULL_BEGIN
         data = [[NSFileManager defaultManager] contentsAtPath:attachment.path];
     }
 
-    if (nil == data) {
+    if (data == nil) {
         SENTRY_LOG_ERROR(@"Couldn't init Attachment.");
         return nil;
     }
 
     SentryEnvelopeItemHeader *itemHeader =
-        [[SentryEnvelopeItemHeader alloc] initWithType:SentryEnvelopeItemTypeAttachment
-                                                length:data.length
-                                             filenname:attachment.filename
-                                           contentType:attachment.contentType];
+        [[SentryEnvelopeAttachmentHeader alloc] initWithType:SentryEnvelopeItemTypeAttachment
+                                                      length:data.length
+                                                    filename:attachment.filename
+                                                 contentType:attachment.contentType
+                                              attachmentType:attachment.attachmentType];
 
     return [self initWithHeader:itemHeader data:data];
 }

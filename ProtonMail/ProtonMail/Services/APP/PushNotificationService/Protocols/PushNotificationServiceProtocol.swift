@@ -33,6 +33,7 @@ struct AuthCredentialSessionIDProvider: SessionIdProvider {
     }
 }
 
+// sourcery: mock
 protocol SignInProvider {
     var isSignedIn: Bool { get }
 }
@@ -43,6 +44,7 @@ struct SignInManagerProvider: SignInProvider {
     }
 }
 
+// sourcery: mock
 protocol UnlockProvider {
     var isUnlocked: Bool { get }
 }
@@ -52,9 +54,3 @@ struct UnlockManagerProvider: UnlockProvider {
         return sharedServices.get(by: UnlockManager.self).isUnlocked()
     }
 }
-
-protocol DeviceRegistrator {
-    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping JSONCompletion)
-}
-
-extension PMAPIService: DeviceRegistrator {}

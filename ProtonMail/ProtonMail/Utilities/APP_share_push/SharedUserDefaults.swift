@@ -17,78 +17,61 @@
 
 import Foundation
 
-protocol TimestampPushPersistable {
-    func string(forKey defaultName: String) -> String?
+// sourcery: mock
+protocol FailedPushDecryptionMarker {
+    func markPushNotificationDecryptionFailure()
 }
 
-protocol RegistrationRequiredPersistable {
-    func set(_ value: Any?, forKey defaultName: String)
-    func add(_ value: String, forKey defaultName: String)
-    func remove(_ value: String, forKey defaultName: String)
-    func array(forKey defaultName: String) -> [Any]?
+// sourcery: mock
+protocol FailedPushDecryptionProvider {
+    var hadPushNotificationDecryptionFailed: Bool { get }
+
+    func clearPushNotificationDecryptionFailure()
 }
-
-extension RegistrationRequiredPersistable {
-    func remove(_ value: String, forKey defaultName: String) {
-        guard var currentArray = array(forKey: defaultName) as? [String] else {
-            return
-        }
-        currentArray.removeAll(where: { $0 == value })
-        self.set(currentArray, forKey: defaultName)
-    }
-
-    func add(_ value: String, forKey defaultName: String) {
-        if var currentArray = array(forKey: defaultName) as? [String] {
-            currentArray.append(value)
-            self.set(currentArray, forKey: defaultName)
-        } else {
-            self.set([value], forKey: defaultName)
-        }
-    }
-}
-
-extension UserDefaults: TimestampPushPersistable {}
-extension UserDefaults: RegistrationRequiredPersistable {}
 
 struct SharedUserDefaults {
+    static let shared = SharedUserDefaults()
+    private let dependencies: Dependencies
 
-    #if Enterprise
-    private static let appGroupUserDefaults = UserDefaults(suiteName: "group.com.protonmail.protonmail")
-    #else
-    private static let appGroupUserDefaults = UserDefaults(suiteName: "group.ch.protonmail.protonmail")
-    #endif
+    init(dependencies: Dependencies = .init()) {
+        self.dependencies = dependencies
+    }
 
     private enum Key: String {
-        case lastReceivedPushTimestamp
-        case shouldRegisterAgain
+        case failedPushNotificationDecryption
+    }
+}
+
+extension SharedUserDefaults: FailedPushDecryptionMarker {
+    func markPushNotificationDecryptionFailure() {
+        SystemLogger.log(message: "marked push notification decryption failure", category: .encryption)
+        dependencies.userDefaults.set(true, forKey: Key.failedPushNotificationDecryption.rawValue)
+    }
+}
+
+extension SharedUserDefaults: FailedPushDecryptionProvider {
+    var hadPushNotificationDecryptionFailed: Bool {
+        dependencies.userDefaults.bool(forKey: Key.failedPushNotificationDecryption.rawValue)
     }
 
-    private let timestampPushPersistable: TimestampPushPersistable?
-    private let registrationRequiredPersistable: RegistrationRequiredPersistable?
-
-    init(timestampPushPersistable: TimestampPushPersistable? = appGroupUserDefaults,
-         registrationRequiredPersistable: RegistrationRequiredPersistable? = appGroupUserDefaults) {
-        self.timestampPushPersistable = timestampPushPersistable
-        self.registrationRequiredPersistable = registrationRequiredPersistable
+    func clearPushNotificationDecryptionFailure() {
+        dependencies.userDefaults.removeObject(forKey: Key.failedPushNotificationDecryption.rawValue)
     }
+}
 
-    var lastReceivedPushTimestamp: String {
-        timestampPushPersistable?.string(forKey: Key.lastReceivedPushTimestamp.rawValue) ?? "Undefined"
-    }
+extension SharedUserDefaults {
+#if Enterprise
+    private static let appGroupUserDefaults = UserDefaults(suiteName: "group.com.protonmail.protonmail")
+#else
+    private static let appGroupUserDefaults = UserDefaults(suiteName: "group.ch.protonmail.protonmail")
+#endif
 
-    func setNeedsToRegisterAgain(for UID: String) {
-        registrationRequiredPersistable?.add(UID, forKey: Key.shouldRegisterAgain.rawValue)
-    }
+    struct Dependencies {
+        let userDefaults: UserDefaults
 
-    func shouldRegisterAgain(for UID: String) -> Bool {
-        guard let UIDs = registrationRequiredPersistable?
-                .array(forKey: Key.shouldRegisterAgain.rawValue) as? [String] else {
-            return false
+        // swiftlint:disable:next force_unwrapping
+        init(userDefaults: UserDefaults = SharedUserDefaults.appGroupUserDefaults!) {
+            self.userDefaults = userDefaults
         }
-        return UIDs.contains(UID)
-    }
-
-    func didRegister(for UID: String) {
-        registrationRequiredPersistable?.remove(UID, forKey: Key.shouldRegisterAgain.rawValue)
     }
 }

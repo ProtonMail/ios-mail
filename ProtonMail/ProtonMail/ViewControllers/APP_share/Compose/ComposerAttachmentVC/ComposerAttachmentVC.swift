@@ -21,6 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
+import ProtonCore_Services
 import ProtonCore_UIFoundations
 import UIKit
 
@@ -250,26 +251,16 @@ extension ComposerAttachmentVC {
     }
 
     @objc
-    func attachmentUploadFailed(noti: Notification) {
+    private func attachmentUploadFailed(noti: Notification) {
         guard let code = noti.userInfo?["code"] as? Int else { return }
         let uploadingData = self.datas.filter { !$0.isUploaded }
-        DispatchQueue.main.async {
-            let names = uploadingData.map { $0.name }.joined(separator: "\n")
-            let message = "\(LocalString._attachment_upload_failed_body)\n \(names)"
-            let title = code == 422 ? LocalString._storage_exceeded : LocalString._attachment_upload_failed_title
-            let alert = UIAlertController(title: title,
-                                          message: message,
-                                          preferredStyle: .alert)
-            alert.addOKAction()
-            self.present(alert, animated: true, completion: nil)
-        }
+        displayErrorAlert(errorCode: code, uploadingData: uploadingData)
 
         // The message queue is a sequence operation
         // One of the tasks failed, the rest one will be deleted too
         // So if one attachment upload failed, the rest of the attachments won't be uploaded
         let objectIDs = uploadingData.map { $0.objectID }
-        let context = contextProvider.mainContext
-        contextProvider.mainContext.perform { [weak self] in
+        contextProvider.performOnRootSavingContext { [weak self] context in
             for objectID in objectIDs {
                 guard let self = self,
                       let managedObjectID = self.contextProvider.managedObjectIDForURIRepresentation(objectID),
@@ -279,10 +270,24 @@ extension ComposerAttachmentVC {
                     continue
                 }
                 self.delete(objectID: objectID)
+                let entity = AttachmentEntity(attachment)
                 DispatchQueue.main.async {
-                    self.delegate?.composerAttachmentViewController(self, didDelete: .init(attachment))
+                    self.delegate?.composerAttachmentViewController(self, didDelete: entity)
                 }
             }
+        }
+    }
+
+    private func displayErrorAlert(errorCode: Int, uploadingData: [AttachInfo]) {
+        DispatchQueue.main.async {
+            let names = uploadingData.map { $0.name }.joined(separator: "\n")
+            let message = "\(LocalString._attachment_upload_failed_body) (\(errorCode)\n \(names) \n"
+            let title = errorCode == APIErrorCode.tooManyAttachments ? LocalString._storage_exceeded : LocalString._attachment_upload_failed_title
+            let alert = UIAlertController(title: title,
+                                          message: message,
+                                          preferredStyle: .alert)
+            alert.addOKAction()
+            self.present(alert, animated: true, completion: nil)
         }
     }
 }

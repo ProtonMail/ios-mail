@@ -16,9 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import ProtonCore_UIFoundations
+import ProtonCore_Foundations
 import SDWebImage
 
-final class InAppFeedbackActionSheetView: UIView {
+final class InAppFeedbackActionSheetView: UIView, AccessibleView {
     private let ratings: [Rating]
     private let container = UIView()
     private let header = UIView()
@@ -81,6 +82,7 @@ final class InAppFeedbackActionSheetView: UIView {
                          selector: #selector(preferredContentSizeChanged(_:)),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
+        generateAccessibilityIdentifiers()
     }
 
     private func configureLayout() {
@@ -172,7 +174,8 @@ final class InAppFeedbackActionSheetView: UIView {
 
         static var closeButton: UIButton {
             let button = UIButton()
-            button.setImage(IconProvider.cross.sd_tintedImage(with: ColorProvider.IconNorm), for: .normal)
+            button.setImage(IconProvider.cross, for: .normal)
+            button.tintColor = ColorProvider.IconNorm
             return button
         }
     }

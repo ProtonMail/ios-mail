@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g class="ic-calendar-month">
+    <path fill-rule="evenodd" d="M16.5 4.5h-9V2.25a.75.75 0 0 0-1.5 0V4.5A4.5 4.5 0 0 0 1.5 9v9A4.5 4.5 0 0 0 6 22.5h12a4.5 4.5 0 0 0 4.5-4.5V9A4.5 4.5 0 0 0 18 4.5V2.25a.75.75 0 0 0-1.5 0V4.5ZM6 6h1.5v3H3a3 3 0 0 1 3-3Zm1.5 4.5H3v6h4.5v-6Zm1.5 6v-6h6v6H9ZM7.5 18H3a3 3 0 0 0 3 3h1.5v-3ZM9 21h6v-3H9v3ZM9 9V6h6v3H9Zm7.5 0V6H18a3 3 0 0 1 3 3h-4.5Zm0 1.5v6H21v-6h-4.5ZM21 18a3 3 0 0 1-3 3h-1.5v-3H21Z" class="Icon"/>
+  </g>
+</svg>

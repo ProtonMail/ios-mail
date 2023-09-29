@@ -20,16 +20,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
-import GoLibs
-import OpenPGP
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 
 func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
              _ salt: String, _ signedModulus: String, _ serverEphemeral: String) throws -> SrpAuth? {
     var error: NSError?
     let passwordSlic = password.data(using: .utf8)
-    let outAuth = SrpNewAuth(hashVersion, userName, passwordSlic, salt, signedModulus, serverEphemeral, &error)
+    let outAuth = CryptoGo.SrpNewAuth(hashVersion, userName, passwordSlic, salt, signedModulus, serverEphemeral, &error)
 
     if let err = error {
         throw err
@@ -37,10 +35,11 @@ func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
     return outAuth
 }
 
+// TODO: delete, it's in Core
 func SrpAuthForVerifier(_ password: Passphrase, _ signedModulus: String, _ rawSalt: Data) throws -> SrpAuth? {
     var error: NSError?
     let passwordSlic = Data(password.value.utf8)
-    let outAuth = SrpNewAuthForVerifier(passwordSlic, signedModulus, rawSalt, &error)
+    let outAuth = CryptoGo.SrpNewAuthForVerifier(passwordSlic, signedModulus, rawSalt, &error)
     if let err = error {
         throw err
     }

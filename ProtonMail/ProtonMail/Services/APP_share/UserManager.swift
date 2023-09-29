@@ -49,7 +49,7 @@ protocol UserManagerSaveAction: AnyObject {
     func save()
 }
 
-class UserManager: Service {
+class UserManager: Service, ObservableObject {
     private let authCredentialAccessQueue = DispatchQueue(label: "com.protonmail.user_manager.auth_access_queue", qos: .userInitiated)
 
     var userID: UserID {
@@ -62,58 +62,35 @@ class UserManager: Service {
             self.eventsService.stop()
             self.localNotificationService.cleanUp()
 
-            var wait = Promise<Void>()
-            let promises = [
-                self.messageService.cleanUp(),
-                self.labelService.cleanUp(),
-                self.contactService.cleanUp(),
-                self.contactGroupService.cleanUp(),
-                lastUpdatedStore.cleanUp(userId: self.userID),
-                self.incomingDefaultService.cleanUp()
-            ]
+            messageService.cleanUp()
+            labelService.cleanUp()
+            contactService.cleanUp()
+            contactGroupService.cleanUp()
+            lastUpdatedStore.cleanUp(userId: self.userID)
+            try incomingDefaultService.cleanUp()
             self.deactivatePayments()
             #if !APP_EXTENSION
             self.payments.planService.currentSubscription = nil
-            self.encryptedSearchCache.logout(of: userID)
             #endif
-            for p in promises {
-                wait = wait.then({ (_) -> Promise<Void> in
-                    return p
-                })
-            }
-            wait.done {
                 userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
-                self.authCredentialAccessQueue.sync { [weak self] in
+                self.authCredentialAccessQueue.async { [weak self] in
                     self?.isLoggedOut = true
+                    seal.fulfill_()
                 }
-                seal.fulfill_()
-            }.catch { (_) in
-                seal.fulfill_()
-            }
         }
     }
 
-    static func cleanUpAll() -> Promise<Void> {
+    static func cleanUpAll() async {
         IncomingDefaultService.cleanUpAll()
         LocalNotificationService.cleanUpAll()
-
-        var wait = Promise<Void>()
-        let promises = [
-            MessageDataService.cleanUpAll(),
-            LabelsDataService.cleanUpAll(),
-            ContactDataService.cleanUpAll(),
-            ContactGroupsDataService.cleanUpAll(),
-            LastUpdatedStore.cleanUpAll()
-        ]
-        for p in promises {
-            wait = wait.then({ (_) -> Promise<Void> in
-                return p
-            })
-        }
-        return wait
+        await MessageDataService.cleanUpAll()
+        LabelsDataService.cleanUpAll()
+        ContactDataService.cleanUpAll()
+        ContactGroupsDataService.cleanUpAll()
+        LastUpdatedStore.cleanUpAll()
     }
 
     var delegate: UserManagerSave?
@@ -144,13 +121,15 @@ class UserManager: Service {
     }()
 
     lazy var contactService: ContactDataService = { [unowned self] in
-        let service = ContactDataService(api: self.apiService,
-                                         labelDataService: self.labelService,
-                                         userInfo: self.userInfo,
-                                         coreDataService: coreDataService,
-                                         contactCacheStatus: userCachedStatus,
-                                         cacheService: self.cacheService,
-                                         queueManager: sharedServices.get(by: QueueManager.self))
+        let service = ContactDataService(
+            api: self.apiService,
+            labelDataService: self.labelService,
+            userInfo: self.userInfo,
+            coreDataService: coreDataService,
+            contactCacheStatus: sharedServices.userCachedStatus,
+            cacheService: self.cacheService,
+            queueManager: sharedServices.get(by: QueueManager.self)
+        )
         return service
     }()
 
@@ -167,7 +146,9 @@ class UserManager: Service {
         let service = AppRatingService(
             dependencies: .init(
                 featureFlagService: featureFlagsDownloadService,
-                appRating: AppRatingManager()
+                appRating: AppRatingManager(),
+                internetStatus: InternetConnectionStatusProvider.shared,
+                appRatingPrompt: sharedServices.userCachedStatus
             )
         )
         return service
@@ -190,22 +171,35 @@ class UserManager: Service {
             user: self,
             cacheService: self.cacheService,
             undoActionManager: self.undoActionManager,
-            contactCacheStatus: userCachedStatus)
+            contactCacheStatus: sharedServices.userCachedStatus,
+            dependencies: .init(
+                moveMessageInCacheUseCase: MoveMessageInCache(
+                    dependencies: .init(
+                        contextProvider: coreDataService,
+                        lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+                        userID: self.userID,
+                        pushUpdater: PushUpdater()
+                    )
+                )
+            )
+        )
         service.viewModeDataSource = self
         service.userDataSource = self
         return service
     }()
 
     lazy var conversationService: ConversationDataServiceProxy = { [unowned self] in
-        let service = ConversationDataServiceProxy(api: apiService,
-                                                   userID: userID,
-                                                   contextProvider: coreDataService,
-                                                   lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
-                                                   messageDataService: messageService,
-                                                   eventsService: eventsService,
-                                                   undoActionManager: undoActionManager,
-                                                   queueManager: sharedServices.get(by: QueueManager.self),
-                                                   contactCacheStatus: userCachedStatus)
+        let service = ConversationDataServiceProxy(
+            api: apiService,
+            userID: userID,
+            contextProvider: coreDataService,
+            lastUpdatedStore: sharedServices.get(by: LastUpdatedStore.self),
+            messageDataService: messageService,
+            eventsService: eventsService,
+            undoActionManager: undoActionManager,
+            queueManager: sharedServices.get(by: QueueManager.self),
+            contactCacheStatus: sharedServices.userCachedStatus
+        )
         return service
     }()
 
@@ -254,12 +248,19 @@ class UserManager: Service {
 
     lazy var eventsService: EventsFetching = { [unowned self] in
         let useCase = FetchMessageMetaData(
-            params: .init(userID: userInfo.userId),
-            dependencies: .init(messageDataService: messageService, contextProvider: coreDataService)
+            dependencies: .init(
+                userID: userID,
+                messageDataService: messageService,
+                contextProvider: coreDataService
+            )
         )
         let service = EventsService(
             userManager: self,
-            dependencies: .init(fetchMessageMetaData: useCase, contactCacheStatus: userCachedStatus, incomingDefaultService: incomingDefaultService)
+            dependencies: .init(
+                fetchMessageMetaData: useCase,
+                contactCacheStatus: sharedServices.userCachedStatus,
+                incomingDefaultService: incomingDefaultService
+            )
         )
         return service
     }()
@@ -281,28 +282,17 @@ class UserManager: Service {
 
 	lazy var featureFlagsDownloadService: FeatureFlagsDownloadService = { [unowned self] in
         let service = FeatureFlagsDownloadService(
+            cache: sharedServices.userCachedStatus,
             userID: userID,
             apiService: self.apiService,
-            sessionID: self.authCredential.sessionID,
-            appRatingStatusProvider: userCachedStatus,
-            sendRefactorStatusProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus,
-            userIntroductionProgressProvider: userCachedStatus,
-            senderImageEnableStatusProvider: userCachedStatus,
-            referralPromptProvider: userCachedStatus
+            appRatingStatusProvider: sharedServices.userCachedStatus
         )
-        service.register(newSubscriber: inAppFeedbackStateService)
         return service
     }()
 
     private var lastUpdatedStore: LastUpdatedStoreProtocol {
         return sharedServices.get(by: LastUpdatedStore.self)
     }
-
-    lazy var inAppFeedbackStateService: InAppFeedbackStateServiceProtocol = {
-        let service = InAppFeedbackStateService()
-        return service
-    }()
 
     #if !APP_EXTENSION
     lazy var blockedSenderCacheUpdater: BlockedSenderCacheUpdater = { [unowned self] in
@@ -312,26 +302,24 @@ class UserManager: Service {
 
         return BlockedSenderCacheUpdater(
             dependencies: .init(
-                fetchStatusProvider: userCachedStatus,
-                internetConnectionStatusProvider: InternetConnectionStatusProvider(),
+                fetchStatusProvider: sharedServices.userCachedStatus,
+                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared,
                 refetchAllBlockedSenders: refetchAllBlockedSenders,
                 userInfo: userInfo
             )
         )
     }()
 
-    lazy var payments = Payments(inAppPurchaseIdentifiers: Constants.mailPlanIDs,
-                                 apiService: self.apiService,
-                                 localStorage: userCachedStatus,
-                                 canExtendSubscription: true,
-                                 reportBugAlertHandler: { _ in
-                                     let link = DeepLink("toBugPop", sender: nil)
-                                     NotificationCenter.default.post(name: .switchView, object: link)
-                                 })
-
-    private var encryptedSearchCache: EncryptedSearchUserCache {
-        return sharedServices.get(by: EncryptedSearchUserDefaultCache.self)
-    }
+    lazy var payments = Payments(
+        inAppPurchaseIdentifiers: Constants.mailPlanIDs,
+        apiService: self.apiService,
+        localStorage: sharedServices.userCachedStatus,
+        canExtendSubscription: true,
+        reportBugAlertHandler: { _ in
+            let link = DeepLink("toBugPop", sender: nil)
+            NotificationCenter.default.post(name: .switchView, object: link)
+        }
+    )
     #endif
 
     var hasTelemetryEnabled: Bool {
@@ -343,7 +331,7 @@ class UserManager: Service {
         return userInfo.telemetry == 1
     }
 
-    var mailSettings: MailSettings
+    @Published var mailSettings: MailSettings
     private let coreKeyMaker: KeyMakerProtocol
 
     init(
@@ -382,6 +370,7 @@ class UserManager: Service {
         mailSettings: MailSettings = .init(),
         appTelemetry: AppTelemetry = MailAppTelemetry(),
         coreKeyMaker: KeyMakerProtocol,
+        authCredential: AuthCredential = .none,
         coreDataService: CoreDataContextProviderProtocol = sharedServices.get(by: CoreDataService.self)
     ) {
         guard ProcessInfo.isRunningUnitTests || ProcessInfo.isRunningUITests else {
@@ -393,7 +382,7 @@ class UserManager: Service {
         self.apiService = api
         self.appTelemetry = appTelemetry
         self.coreKeyMaker = coreKeyMaker
-        self.authCredential = AuthCredential.none
+        self.authCredential = authCredential
         self.mailSettings = mailSettings
         self.authHelper = AuthHelper(authCredential: authCredential)
         self.authHelper.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: authCredentialAccessQueue))
@@ -414,24 +403,23 @@ class UserManager: Service {
         return authCredential.sessionID == uid
     }
 
-    func fetchUserInfo() {
+    @MainActor
+    func fetchUserInfo() async {
         featureFlagsDownloadService.getFeatureFlags(completion: nil)
-        _ = self.userService.fetchUserInfo(auth: self.authCredential).done { [weak self] tuple in
-            guard let info = tuple.0 else { return }
-            self?.userInfo = info
-            self?.mailSettings = tuple.1
-            self?.save()
-            #if !APP_EXTENSION
-            guard let self = self,
-                  let firstUser = self.parentManager?.firstUser,
-                  firstUser.userID == self.userID else { return }
-            self.activatePayments()
-            userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
-            // When app launch, the app will show a skeleton view
-            // After getting setting data, show inbox
-            NotificationCenter.default.post(name: .didFetchSettingsForPrimaryUser, object: nil)
-            #endif
-        }
+        let tuple = await self.userService.fetchUserInfo(auth: self.authCredential)
+        guard let info = tuple.0 else { return }
+        self.userInfo = info
+        self.mailSettings = tuple.1
+        self.save()
+        #if !APP_EXTENSION
+        guard let firstUser = self.parentManager?.firstUser,
+              firstUser.userID == self.userID else { return }
+        self.activatePayments()
+        userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
+        // When app launch, the app will show a skeleton view
+        // After getting setting data, show inbox
+        NotificationCenter.default.post(name: .didFetchSettingsForPrimaryUser, object: nil)
+        #endif
     }
 
     func resignAsActiveUser() {
@@ -453,7 +441,8 @@ class UserManager: Service {
             labelDataService: labelService,
             localNotificationService: localNotificationService,
             undoActionManager: undoActionManager,
-            user: self
+            user: self,
+            featureFlagCache: sharedServices.userCachedStatus
         )
     }
 
@@ -630,13 +619,8 @@ extension UserManager {
 
     var showMobileSignature: Bool {
         get {
-            #if Enterprise
-            let isEnterprise = true
-            #else
-            let isEnterprise = false
-            #endif
             let role = userInfo.role
-            if role > 0 || isEnterprise {
+            if role > 0 {
                 if let status = userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) {
                     return status
                 } else {

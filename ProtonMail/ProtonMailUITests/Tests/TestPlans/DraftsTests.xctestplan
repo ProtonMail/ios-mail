@@ -28,9 +28,16 @@
         "DraftsTests\/testAddRecipientsToDraft()",
         "DraftsTests\/testChangeDraftSender()",
         "DraftsTests\/testChangeDraftSubjectAndSendMessage()",
+        "DraftsTests\/testEditDraftMinimiseAppAndSend()",
+        "DraftsTests\/testEditDraftMultipleTimes()",
+        "DraftsTests\/testEditDraftMultipleTimesAndSend()",
+        "DraftsTests\/testEditDraftWithEnabledPublicKeyMultipleTimesAndSend()",
+        "DraftsTests\/testEditEveryFieldInDraftWithEnabledPublicKeyAndSend()",
+        "DraftsTests\/testMinimiseAppWhileComposingDraft()",
         "DraftsTests\/testOpenDraftFromSearch()",
         "DraftsTests\/testSaveDraft()",
         "DraftsTests\/testSaveDraftWithAttachment()",
+        "DraftsTests\/testSaveDraftWithoutSubject()",
         "DraftsTests\/testSendDraftWithAttachment()"
       ],
       "target" : {

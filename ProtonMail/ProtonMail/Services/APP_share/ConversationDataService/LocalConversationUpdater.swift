@@ -77,21 +77,25 @@ final class LocalConversationUpdater {
         }
     }
 
-    // swiftlint:disable function_body_length
-    func editLabels(conversationIDs: [ConversationID],
-                    labelToRemove: LabelID?,
-                    labelToAdd: LabelID?,
-                    isFolder: Bool,
-                    completion: ((Result<Void, Error>) -> Void)?) {
+    // swiftlint:disable:next function_body_length
+    func editLabels(
+        conversationIDs: [ConversationID],
+        labelToRemove: LabelID?,
+        labelToAdd: LabelID?,
+        isFolder: Bool,
+        completion: ((Result<Void, Error>) -> Void)?
+    ) {
         contextProvider.performAndWaitOnRootSavingContext { context in
             for conversationID in conversationIDs {
                 guard let conversation = Conversation
-                        .conversationForConversationID(conversationID.rawValue, inManagedObjectContext: context) else {
+                    .conversationForConversationID(conversationID.rawValue, inManagedObjectContext: context) else {
                     continue
                 }
                 let messages = Message
-                    .messagesForConversationID(conversationID.rawValue,
-                                               inManagedObjectContext: context)
+                    .messagesForConversationID(
+                        conversationID.rawValue,
+                        inManagedObjectContext: context
+                    )
                 let untouchedLocations: [LabelID] = [
                     Message.Location.draft.labelID,
                     Message.Location.sent.labelID,
@@ -111,18 +115,24 @@ final class LocalConversationUpdater {
                 if let removed = labelToRemove, !removed.rawValue.isEmpty,
                    !untouchedLocations.contains(removed) {
                     let hasUnread = messages?.contains(where: { $0.unRead }) == true ||
-                    conversation.isUnread(labelID: removed.rawValue)
+                        conversation.isUnread(labelID: removed.rawValue)
                     conversation.applyLabelChanges(labelID: removed.rawValue, apply: false)
                     messages?.forEach { $0.remove(labelID: removed.rawValue) }
-                    if hasUnread && !labelsThatAlreadyUpdateTheUnreadCount.contains(removed) {
+                    if hasUnread, !labelsThatAlreadyUpdateTheUnreadCount.contains(removed) {
                         self.updateConversationCount(for: removed, offset: -1, in: context)
                     }
+                    self.addAlmostAllMailLabelIfNeeded(
+                        newlyRemovedLabelID: removed,
+                        conversation: conversation,
+                        messagesInConversation: messages ?? [],
+                        context: context
+                    )
                 }
 
                 if let added = labelToAdd, !added.rawValue.isEmpty {
                     let scheduleID = LabelLocation.scheduled.rawLabelID
-                    if conversation.contains(of: scheduleID) &&
-                        added == LabelLocation.trash.labelID {
+                    if conversation.contains(of: scheduleID),
+                       added == LabelLocation.trash.labelID {
                         self.updateLabelForTrashedScheduleConversation(conversation, messages: messages)
                     } else {
                         conversation.applyLabelChanges(labelID: added.rawValue, apply: true)
@@ -131,22 +141,22 @@ final class LocalConversationUpdater {
                     // When we trash the conversation, make all unread messages as read.
                     if added == Message.Location.trash.labelID {
                         messages?.forEach { $0.unRead = false }
-                        PushUpdater().remove(notificationIdentifiers: messages?.compactMap({ $0.notificationId }))
+                        PushUpdater().remove(notificationIdentifiers: messages?.compactMap { $0.notificationId })
                         conversation.labels
-                            .compactMap({ $0 as? ContextLabel })
-                            .filter({ $0.unreadCount != NSNumber(value: 0) })
-                            .forEach({ contextLabel in
+                            .compactMap { $0 as? ContextLabel }
+                            .filter { $0.unreadCount != NSNumber(value: 0) }
+                            .forEach { contextLabel in
                                 contextLabel.unreadCount = NSNumber(value: 0)
                                 self.updateConversationCount(
                                     for: LabelID(contextLabel.labelID),
                                     offset: -1,
                                     in: context
                                 )
-                            })
+                            }
                     } else {
                         let hasUnread = messages?.contains(where: { $0.unRead }) == true ||
-                            /* Be carefull to handle the case that the message is not fetched.
-                             Read status from all mail. */
+                            /* Be careful to handle the case that the message is not fetched.
+                                Read status from all mail. */
                             conversation.isUnread(labelID: Message.Location.allmail.rawValue)
                         if hasUnread {
                             self.updateConversationCount(for: added, offset: 1, in: context)
@@ -155,6 +165,35 @@ final class LocalConversationUpdater {
                 }
             }
             self.save(context: context, completion: completion)
+        }
+    }
+
+    private func addAlmostAllMailLabelIfNeeded(
+        newlyRemovedLabelID: LabelID,
+        conversation: Conversation,
+        messagesInConversation: [Message],
+        context: NSManagedObjectContext
+    ) {
+        guard
+            newlyRemovedLabelID == Message.Location.trash.labelID ||
+            newlyRemovedLabelID == Message.Location.spam.labelID else {
+            return
+        }
+        conversation.applyLabelChanges(
+            labelID: Message.Location.almostAllMail.rawValue,
+            apply: true
+        )
+        messagesInConversation.forEach { msg in
+            msg.add(labelID: Message.Location.almostAllMail.rawValue)
+        }
+        let hasUnread = messagesInConversation.contains(where: { $0.unRead }) ||
+            conversation.isUnread(labelID: Message.Location.allmail.rawValue)
+        if hasUnread {
+            updateConversationCount(
+                for: Message.Location.almostAllMail.labelID,
+                offset: 1,
+                in: context
+            )
         }
     }
 
@@ -183,7 +222,14 @@ final class LocalConversationUpdater {
     private func removeSpecificFolder(of conversation: Conversation,
                                       messagesOfConversation: [Message],
                                       context: NSManagedObjectContext) -> [LabelID] {
-        let untouchedLocations: [Message.Location] = [.draft, .sent, .starred, .archive, .allmail, .scheduled]
+        let untouchedLocations: [Message.Location] = [
+            .draft,
+            .sent,
+            .starred,
+            .archive,
+            .allmail,
+            .scheduled
+        ]
         // If folder, first remove all labels that are not draft, sent, starred, archive, allmail, scheduled
         var labelsThatAlreadyUpdateTheUnreadCount: [LabelID] = []
         let allLabels = conversation.labels as? Set<ContextLabel> ?? []

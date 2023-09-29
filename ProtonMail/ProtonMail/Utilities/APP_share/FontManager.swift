@@ -402,7 +402,9 @@ extension Dictionary where Key == NSAttributedString.Key, Value == Any {
     }
 
     func link(url: String) -> Self {
-        self + [.link: url]
+        var attributes = self
+        attributes[.link] = url
+        return attributes
     }
 
     func foregroundColor(_ color: UIColor) -> Self {

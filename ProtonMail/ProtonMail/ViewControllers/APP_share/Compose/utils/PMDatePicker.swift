@@ -72,7 +72,7 @@ final class PMDatePicker: UIView {
             self.layoutIfNeeded()
         }
         if #available(iOS 15, *) {
-        } else if #available(iOS 14, *) {
+        } else {
             NotificationCenter.default.addKeyboardObserver(self)
         }
     }
@@ -120,7 +120,7 @@ extension PMDatePicker {
         let container = self.setUpContainer()
         let toolBar = self.setUpToolBar(in: container)
         setUpPickerScrollView(toolBar: toolBar)
-        self.setUpDatePicker(in: pickerScrollView, toolBar: toolBar)
+        setUpDatePicker(in: pickerScrollView)
     }
 
     private func setUpBackgroundView() {
@@ -188,7 +188,7 @@ extension PMDatePicker {
         ].activate()
     }
 
-    private func setUpDatePicker(in container: UIScrollView, toolBar: UIToolbar) {
+    private func setUpDatePicker(in container: UIScrollView) {
         self.delegate?.datePickerWillAppear()
         self.datePicker.datePickerMode = .dateAndTime
         self.datePicker.minuteInterval = Constants.ScheduleSend.minNumberOfMinutes

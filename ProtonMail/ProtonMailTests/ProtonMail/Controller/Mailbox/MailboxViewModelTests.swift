@@ -28,20 +28,22 @@ class MailboxViewModelTests: XCTestCase {
     var sut: MailboxViewModel!
     var apiServiceMock: APIServiceMock!
     var coreDataService: CoreDataService!
+    var featureFlagCache: MockFeatureFlagCache!
     var userManagerMock: UserManager!
     var conversationStateProviderMock: MockConversationStateProviderProtocol!
     var contactGroupProviderMock: MockContactGroupsProviderProtocol!
     var labelProviderMock: MockLabelProviderProtocol!
     var contactProviderMock: MockContactProvider!
     var conversationProviderMock: MockConversationProvider!
+    var internetConnectionProvider: MockInternetConnectionStatusProviderProtocol!
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
     var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
     var imageTempUrl: URL!
     var mockFetchMessageDetail: MockFetchMessageDetail!
+    var mockLoadedMessage: Message!
 
     var testContext: NSManagedObjectContext {
         coreDataService.mainContext
@@ -56,6 +58,8 @@ class MailboxViewModelTests: XCTestCase {
         apiServiceMock = APIServiceMock()
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
+        internetConnectionProvider = MockInternetConnectionStatusProviderProtocol()
+        internetConnectionProvider.statusStub.fixture = .connectedViaWiFi
         let fakeAuth = AuthCredential(sessionID: "",
                                       accessToken: "",
                                       refreshToken: "",
@@ -81,6 +85,7 @@ class MailboxViewModelTests: XCTestCase {
                                       mailSettings: nil,
                                       parent: nil,
                                       coreKeyMaker: MockKeyMakerProtocol())
+        featureFlagCache = .init()
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
@@ -92,8 +97,7 @@ class MailboxViewModelTests: XCTestCase {
         welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        mockSenderImageStatusProvider = .init()
-        try loadTestMessage() // one message
+        mockLoadedMessage = try loadTestMessage() // one message
         createSut(labelID: Message.Location.inbox.rawValue,
                   labelType: .folder,
                   isCustom: false,
@@ -144,11 +148,12 @@ class MailboxViewModelTests: XCTestCase {
         contactProviderMock = nil
         coreDataService = nil
         eventsServiceMock = nil
+        featureFlagCache = nil
         userManagerMock = nil
         mockFetchLatestEventId = nil
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
-        mockSenderImageStatusProvider = nil
+        internetConnectionProvider = nil
         apiServiceMock = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
@@ -528,7 +533,7 @@ class MailboxViewModelTests: XCTestCase {
     func testTrashFromActionSheet_trashedSelectedConversations() {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
 
-        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3)
+        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3, unread: false)
         sut.setupFetchController(nil)
 
         for id in conversationIDs {
@@ -720,7 +725,7 @@ class MailboxViewModelTests: XCTestCase {
     func testDeleteConversationPermanently() throws {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
 
-        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3)
+        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, count: 3, unread: false)
         sut.setupFetchController(nil)
 
         for id in conversationIDs {
@@ -745,17 +750,15 @@ class MailboxViewModelTests: XCTestCase {
                                       type: 0,
                                       order: 0,
                                       notify: false)
-        // select the folder to move
-        sut.updateSelectedMoveToDestination(menuLabel: labelToMoveTo, isOn: true)
         let expectation1 = expectation(description: "Closure called")
         let conversationToMove = ConversationEntity.make(conversationID: "1")
 
-        sut.handleMoveToAction(conversations: [conversationToMove], isFromSwipeAction: false) {
+        sut.handleMoveToAction(conversations: [conversationToMove], to: labelToMoveTo, isFromSwipeAction: false) {
             XCTAssertTrue(self.conversationProviderMock.moveStub.wasCalledExactlyOnce)
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.moveStub.lastArguments)
                 XCTAssertTrue(argument.first.contains("1"))
-                XCTAssertEqual(argument.a2, "")
+                XCTAssertEqual(argument.a2, self.sut.labelID)
                 XCTAssertEqual(argument.a3, labelToMoveTo.location.labelID)
                 XCTAssertFalse(argument.a4)
 
@@ -764,20 +767,6 @@ class MailboxViewModelTests: XCTestCase {
             } catch {
                 XCTFail("Should not reach here")
             }
-            expectation1.fulfill()
-        }
-        waitForExpectations(timeout: 1, handler: nil)
-        XCTAssertNil(self.sut.selectedMoveToFolder)
-    }
-
-    func testHandleConversationMoveToAction_withNoDestination() {
-        let expectation1 = expectation(description: "Closure called")
-        let conversationToMove = ConversationEntity.make(conversationID: "1")
-
-        XCTAssertNil(self.sut.selectedMoveToFolder)
-        sut.handleMoveToAction(conversations: [conversationToMove], isFromSwipeAction: false) {
-            XCTAssertFalse(self.conversationProviderMock.moveStub.wasCalledExactlyOnce)
-            XCTAssertFalse(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
@@ -841,7 +830,7 @@ class MailboxViewModelTests: XCTestCase {
                                       type: 0,
                                       order: 0,
                                       notify: false)
-        let currentOption = [selectedLabel: PMActionSheetPlainItem.MarkType.none]
+        let currentOption = [selectedLabel: PMActionSheetItem.MarkType.none]
         let label = LabelLocation(id: "label1", name: nil)
 
         let conversationObject = Conversation(context: testContext)
@@ -999,6 +988,61 @@ class MailboxViewModelTests: XCTestCase {
         XCTAssert(signalsSent == 2)
     }
 
+    func testTagUIModels_for_conversation() throws {
+        try coreDataService.write { context in
+            let conversation = Conversation(context: context)
+            conversation.userID = self.sut.user.userID.rawValue
+            conversation.expirationTime = Date()
+
+            let systemLabel = Label(context: context)
+            systemLabel.labelID = Message.Location.inbox.rawValue
+            systemLabel.name = "Inbox"
+
+            let userLabels: [Label] = (1...3).map { index in
+                let userLabel = Label(context: context)
+                userLabel.labelID = UUID().uuidString
+                userLabel.name = "Label \(index)"
+                // set descending `order` to test sorting
+                userLabel.order = 10 - index as NSNumber
+                return userLabel
+            }
+
+            let allLabels: [Label] = [systemLabel] + userLabels
+
+            for label in allLabels {
+                label.type = 1
+                label.userID = conversation.userID
+            }
+
+            let contextLabels: [ContextLabel] = allLabels.map { label in
+                let contextLabel = ContextLabel(context: context)
+                contextLabel.labelID = label.labelID
+                return contextLabel
+            }
+            conversation.labels = NSSet(array: contextLabels)
+        }
+
+        let conversationEntity = try coreDataService.read { context in
+            let conversation = try XCTUnwrap(
+                context.managedObjectWithEntityName(Conversation.Attributes.entityName, matching: [:]) as? Conversation
+            )
+            return ConversationEntity(conversation)
+        }
+
+        let tags = sut.tagUIModels(for: conversationEntity)
+
+        // no tag based on the system label
+        XCTAssertFalse(tags.contains { $0.title == Message.Location.inbox.rawValue })
+
+        // expiration tag is present
+        XCTAssertEqual(tags[0].icon, IconProvider.hourglass)
+
+        // sorted according to `order` set above
+        XCTAssertEqual(tags[1].title, "Label 3")
+        XCTAssertEqual(tags[2].title, "Label 2")
+        XCTAssertEqual(tags[3].title, "Label 1")
+    }
+
     func testUpdateToolbarActions_updateActionWithoutMoreAction() {
         saveToolbarActionUseCaseMock.callExecute.bodyIs { _, _, completion  in
             completion(.success(Void()))
@@ -1054,9 +1098,6 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_featureFlagIsOff_getNil() {
         userManagerMock.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return false
-        }
         let e = expectation(description: "Closure is called")
 
         sut.fetchSenderImageIfNeeded(item: .message(MessageEntity.make()),
@@ -1073,8 +1114,8 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_hideSenderImageInMailSettingTrue_getNil() {
         userManagerMock.mailSettings = .init(hideSenderImages: true)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
 
@@ -1092,8 +1133,8 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_msgHasNoSenderThatIsEligible_getNil() {
         userManagerMock.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
         let e2 = expectation(description: "Closure is called")
@@ -1119,8 +1160,8 @@ class MailboxViewModelTests: XCTestCase {
 
     func testFetchSenderImageIfNeeded_msgHasEligibleSender_getImageData() {
         userManagerMock.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
         let msg = MessageEntity.createSenderImageEligibleMessage()
@@ -1237,18 +1278,122 @@ class MailboxViewModelTests: XCTestCase {
             XCTAssertTrue(msg2?.unRead ?? false)
         }
     }
+
+    func testListEditing_setItToFalse_theSelectedIDsWillBeRemoved() {
+        sut.select(id: String.randomString(20))
+        XCTAssertFalse(sut.selectedIDs.isEmpty)
+
+        sut.listEditing = false
+
+        XCTAssertTrue(sut.selectedIDs.isEmpty)
+    }
+
+    func testListEditing_setItToTrue_theSelectedIDsWillNotBeRemoved() {
+        sut.select(id: String.randomString(20))
+        XCTAssertFalse(sut.selectedIDs.isEmpty)
+
+        sut.listEditing = true
+
+        XCTAssertFalse(sut.selectedIDs.isEmpty)
+    }
+
+    func testItemsToPrefetchShouldFetchConversationsInConversationMode() {
+        /// Given conversation mode and a random number of conversations, no matter their read status,
+        /// and a random number of messages, no matter their read status
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
+
+        let conversations = setupConversations(labelID: Message.Location.inbox.rawValue, count: Int.random(in: 0..<100), unread: Bool.random())
+        _ = setupMessages(labelID: Message.Location.inbox.rawValue, count: Int.random(in: 0..<100), unread: Bool.random())
+        sut.setupFetchController(nil)
+
+        /// When determinining items to prefetch
+        let itemsToPrefetch = sut.itemsToPrefetch()
+
+        /// Then those should be conversations in equal number
+
+        XCTAssertEqual(itemsToPrefetch.count, conversations.count)
+        XCTAssertTrue(itemsToPrefetch.areAllConversations)
+    }
+
+    func testItemsToPrefetchShouldFetchMessagesInSingleMessageMode() {
+        /// Given single message mode and a random number of conversations, no matter their read status,
+        /// and a random number of messages, no matter their read status
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+
+        _ = setupConversations(labelID: Message.Location.inbox.rawValue,
+                               count: Int.random(in: 0..<100),
+                               unread: Bool.random())
+        let messages = setupMessages(labelID: Message.Location.inbox.rawValue,
+                                     count: Int.random(in: 0..<100),
+                                     unread: Bool.random())
+        sut.setupFetchController(nil)
+
+        /// When determinining items to prefetch
+        let itemsToPrefetch = sut.itemsToPrefetch()
+
+        /// Then those should be messages in equal number + 1 for the default one that is inserted during setup
+        XCTAssertEqual(itemsToPrefetch.count, messages.count + 1)
+        XCTAssertTrue(itemsToPrefetch.areAllMessages)
+    }
+
+    func testItemsToPrefetchShouldReturnUnreadConversationsFirstAndInTheSameOrder() {
+        /// Given conversation mode and a random number of read conversations, and a random number of unread conversations
+        conversationStateProviderMock.viewModeStub.fixture = .conversation
+        let readConversations = setupConversations(labelID: Message.Location.inbox.rawValue,
+                                                   count: Int.random(in: 0..<100),
+                                                   unread: false)
+        let unreadConversations = setupConversations(labelID: Message.Location.inbox.rawValue,
+                                                     count: Int.random(in: 0..<100),
+                                                     unread: true)
+        sut.setupFetchController(nil)
+
+        /// When determining items to prefetch
+        let itemsToPrefetch = sut.itemsToPrefetch()
+
+        /// Unread conversations should be first and in the same order (time + order)
+        let conversationEntities = itemsToPrefetch.allConversations
+        XCTAssertEqual(conversationEntities.prefix(unreadConversations.count).map(\.conversationID.rawValue),
+                       unreadConversations)
+        XCTAssertEqual(conversationEntities.dropFirst(unreadConversations.count).map(\.conversationID.rawValue),
+                       readConversations)
+    }
+
+    func testItemsToPrefetchShouldReturnUnreadMessagesFirstAndInTheSameOrder() {
+        /// Given single message mode and a random number of read messages, and a random number of unread messages
+        conversationStateProviderMock.viewModeStub.fixture = .singleMessage
+        let unreadMessages = setupMessages(labelID: Message.Location.inbox.rawValue,
+                                           count: Int.random(in: 0..<100),
+                                           unread: true)
+        let readMessages = setupMessages(labelID: Message.Location.inbox.rawValue,
+                                         count: Int.random(in: 0..<100),
+                                         unread: false)
+        let defaultMockMessage = self.mockLoadedMessage // Message loaded by default is setup, unread one
+        sut.setupFetchController(nil)
+
+        /// When determining items to prefetch
+        let itemsToPrefetch = sut.itemsToPrefetch()
+
+        /// Unread messages should be first and in the same order (time + order)
+        let messageEntities = itemsToPrefetch.allMessages
+        XCTAssertEqual(messageEntities.prefix(unreadMessages.count).map(\.messageID.rawValue),
+                       unreadMessages)
+        XCTAssertEqual(messageEntities.dropFirst(unreadMessages.count).dropLast(1).map(\.messageID.rawValue),
+                       readMessages)
+        XCTAssertEqual(messageEntities.last?.messageID.rawValue, defaultMockMessage?.messageID)
+    }
 }
 
 extension MailboxViewModelTests {
-    func loadTestMessage() throws {
+    func loadTestMessage() throws -> Message {
         let parsedObject = testMessageMetaData.parseObjectAny()!
         let testMessage = try GRTJSONSerialization
             .object(withEntityName: "Message",
                     fromJSONDictionary: parsedObject,
-                    in: testContext) as? Message
-        testMessage?.userID = "1"
-        testMessage?.messageStatus = 1
+                    in: testContext) as! Message
+        testMessage.userID = "1"
+        testMessage.messageStatus = 1
         try testContext.save()
+        return testMessage
     }
 
     func createSut(labelID: String,
@@ -1258,14 +1403,16 @@ extension MailboxViewModelTests {
                    totalUserCount: Int = 1) {
         let fetchMessage = MockFetchMessages()
         let updateMailbox = UpdateMailbox(dependencies: .init(
+            labelID: .init(labelID),
             eventService: eventsServiceMock,
             messageDataService: userManagerMock.messageService,
             conversationProvider: conversationProviderMock,
             purgeOldMessages: MockPurgeOldMessages(),
             fetchMessageWithReset: MockFetchMessagesWithReset(),
             fetchMessage: fetchMessage,
-            fetchLatestEventID: mockFetchLatestEventId
-        ), parameters: .init(labelID: LabelID(labelID)))
+            fetchLatestEventID: mockFetchLatestEventId,
+            internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol()
+        ))
         self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
 
         let dependencies = MailboxViewModel.Dependencies(
@@ -1274,13 +1421,13 @@ extension MailboxViewModelTests {
             fetchMessageDetail: mockFetchMessageDetail,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: featureFlagCache,
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: userManagerMock.apiService,
-                            internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
+                            internetStatusProvider: internetConnectionProvider
                         )
                     ),
-                    senderImageStatusProvider: mockSenderImageStatusProvider,
                     mailSettings: userManagerMock.mailSettings
                 )
             )
@@ -1308,17 +1455,33 @@ extension MailboxViewModelTests {
         })
     }
 
-    func setupConversations(labelID: String, count: Int) -> [String] {
-        return (0..<count).map { unreadState in
+    func setupConversations(labelID: String, count: Int, unread: Bool) -> [String] {
+        return (0..<count).map { currentIndex in
             let conversation = Conversation(context: testContext)
             conversation.conversationID = UUID().uuidString
 
             let contextLabel = ContextLabel(context: testContext)
             contextLabel.labelID = labelID
             contextLabel.conversation = conversation
-            contextLabel.userID = "1"
-
+            contextLabel.userID = self.userManagerMock.userID.rawValue
+            contextLabel.unreadCount = unread ? 1 : 0
+            /// Time is monotously decreasing to simulate inserting from newest to oldest, to facilitate order testing
+            contextLabel.time = Date(timeIntervalSince1970: Date().timeIntervalSince1970 - Double(currentIndex))
             return conversation.conversationID
+        }
+    }
+
+    func setupMessages(labelID: String, count: Int, unread: Bool) -> [String] {
+        return (0..<count).map { currentIndex in
+            let message = Message(context: testContext)
+            message.messageID = UUID().uuidString
+            message.userID = self.userManagerMock.userID.rawValue
+            message.messageStatus = 1
+            message.unRead = unread
+            message.add(labelID: labelID)
+            /// Time is monotously decreasing to simulate inserting from newest to oldest, to facilitate order testing
+            message.time = Date(timeIntervalSince1970: Date().timeIntervalSince1970 - Double(currentIndex))
+            return message.messageID
         }
     }
 }

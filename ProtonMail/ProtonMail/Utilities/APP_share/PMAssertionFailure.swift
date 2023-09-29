@@ -52,3 +52,14 @@ func PMAssertionFailure(
 ) {
     PMAssertionFailure("\(error)", caller: caller, file: file, line: line)
 }
+
+/// This will only call `PMAssertionFailure` if the backend is production.
+func PMAssertionFailureIfBackendIsProduction(
+    _ message: String,
+    caller: StaticString = #function,
+    file: StaticString = #file,
+    line: UInt = #line
+) {
+    guard BackendConfiguration.shared.isProduction else { return }
+    PMAssertionFailure(message, caller: caller, file: file, line: line)
+}

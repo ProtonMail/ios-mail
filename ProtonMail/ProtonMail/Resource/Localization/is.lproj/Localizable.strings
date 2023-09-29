@@ -200,12 +200,6 @@
 /* Push notification action archive */
 "Archive (verb)" = "Safn";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Ertu viss um að þú viljir eyða endanlega þessu skilaboði?";
-
-/* Message of message permanent deletion alert, plural */
-"Are you sure you want to delete these %d messages permanently?" = "Ertu viss um að þú viljir eyða þessum %d skilaboðum endanlega?";
-
 /* Alert to confirm sign out when only one account signed in */
 "Are you sure you want to sign out %@?" = "Ertu viss um að þú viljir skrá þig út %@?";
 
@@ -290,9 +284,6 @@
 
 /* Settings row */
 "Block email tracking" = "Lokaðu fyrir rakningu tölvupósts";
-
-/* Settings item to open blocked sender list */
-"Block list" = "Listi yfir bannað";
 
 /* Button to block a sender */
 "Block sender" = "Útiloka sendanda";
@@ -1673,7 +1664,7 @@
 "See progress." = "Sjá framvindu.";
 
 /* section title */
-"Select colour" = "Veldu lit";
+"Select color" = "Veldu lit";
 
 /* The title of navigation bar title of mailbox view while selecting the message */
 "Selected" = "Valið";
@@ -2198,9 +2189,6 @@
 /* alert body before list of addresses */
 "We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Við mælum með því að setja upp lykilorð í staðinn eða slökkva á PGP fyrir eftirfarandi viðtakendur:";
 
-/* week */
-"week" = "vika";
-
 /* Example feedback */
 "Wonderful" = "Frábært";
 
@@ -2314,8 +2302,5 @@
 
 /* contact placeholder */
 "ZIP" = "Póstnúmer";
-
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in.";
 
 "Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";

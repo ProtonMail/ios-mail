@@ -24,6 +24,7 @@ import ProtonCore_Login
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Payments
+import ProtonCore_PaymentsUI
 
 @available(*, deprecated, message: "SignupMode is deprecated")
 public enum SignupMode: Equatable {
@@ -92,11 +93,16 @@ public struct PaymentsParameters {
     
     let listOfIAPIdentifiers: ListOfIAPIdentifiers
     let listOfShownPlanNames: ListOfShownPlanNames
+    let customPlansDescription: CustomPlansDescription
     var reportBugAlertHandler: BugAlertHandler
     
-    public init(listOfIAPIdentifiers: ListOfIAPIdentifiers, listOfShownPlanNames: ListOfShownPlanNames, reportBugAlertHandler: BugAlertHandler) {
+    public init(listOfIAPIdentifiers: ListOfIAPIdentifiers,
+                listOfShownPlanNames: ListOfShownPlanNames,
+                customPlansDescription: CustomPlansDescription = [:],
+                reportBugAlertHandler: BugAlertHandler) {
         self.listOfIAPIdentifiers = listOfIAPIdentifiers
         self.listOfShownPlanNames = listOfShownPlanNames
+        self.customPlansDescription = customPlansDescription
         self.reportBugAlertHandler = reportBugAlertHandler
     }
 }

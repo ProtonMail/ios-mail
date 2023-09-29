@@ -24,8 +24,17 @@
 import MBProgressHUD
 import UIKit
 
-class SettingsSwipeActionSelectController: UITableViewController, ViewModelProtocol {
-    private var viewModel: SettingsSwipeActionSelectViewModel?
+final class SettingsSwipeActionSelectController: UITableViewController {
+    private let viewModel: SettingsSwipeActionSelectViewModel
+
+    init(viewModel: SettingsSwipeActionSelectViewModel) {
+        self.viewModel = viewModel
+        super.init(style: .plain)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,13 +42,7 @@ class SettingsSwipeActionSelectController: UITableViewController, ViewModelProto
         tableView.rowHeight = 64.0
         tableView.separatorStyle = .none
 
-        precondition(viewModel != nil)
-
-        title = viewModel?.selectedAction.description
-    }
-
-    func set(viewModel: SettingsSwipeActionSelectViewModel) {
-        self.viewModel = viewModel
+        title = viewModel.selectedAction.description
     }
 
     // MARK: - Table view data source
@@ -49,32 +52,31 @@ class SettingsSwipeActionSelectController: UITableViewController, ViewModelProto
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.settingSwipeActions.count ?? 0
+        viewModel.settingSwipeActions.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SelectableTableViewCell.CellID, for: indexPath)
         cell.addSeparator(padding: 0)
 
-        if let cellToConfig = cell as? SelectableTableViewCell,
-           let action = viewModel?.settingSwipeActions[indexPath.row] {
+        if let cellToConfig = cell as? SelectableTableViewCell {
+            let action = viewModel.settingSwipeActions[indexPath.row]
             cellToConfig.configure(icon: action.icon,
                                    title: action.description,
-                                   isSelected: action == viewModel?.currentAction())
+                                   isSelected: action == viewModel.currentAction())
         }
         return cell
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let selectedAction = viewModel?.settingSwipeActions[indexPath.row] {
-            if viewModel?.isActionSyncable(selectedAction) == true {
+            let selectedAction = viewModel.settingSwipeActions[indexPath.row]
+            if viewModel.isActionSyncable(selectedAction) {
                 MBProgressHUD.showAdded(to: self.view, animated: true)
             }
-            viewModel?.updateSwipeAction(selectedAction, completion: { [weak self] in
+            viewModel.updateSwipeAction(selectedAction, completion: { [weak self] in
                 guard let self = self else { return }
                 MBProgressHUD.hide(for: self.view, animated: true)
                 tableView.reloadData()
             })
-        }
     }
 }

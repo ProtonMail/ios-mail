@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <g class="ic-brand-windows">
+    <g class="Icon">
+      <path d="M11.454 1.5H1.5v9.954h9.954V1.5Z"/>
+      <path d="M22.5 1.5h-9.954v9.954H22.5V1.5Z"/>
+      <path d="M11.454 12.546H1.5V22.5h9.954v-9.954Z"/>
+      <path d="M22.5 12.546h-9.954V22.5H22.5v-9.954Z"/>
+    </g>
+  </g>
+</svg>

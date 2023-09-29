@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrashReportFixer.c
 //
@@ -143,6 +144,13 @@ onIntegerElement(const char *const name, const int64_t value, void *const userDa
 }
 
 static int
+onUIntegerElement(const char *const name, const uint64_t value, void *const userData)
+{
+    FixupContext *context = (FixupContext *)userData;
+    return sentrycrashjson_addUIntegerElement(context->encodeContext, name, value);
+}
+
+static int
 onNullElement(const char *const name, void *const userData)
 {
     FixupContext *context = (FixupContext *)userData;
@@ -230,6 +238,7 @@ sentrycrashcrf_fixupCrashReport(const char *crashReport)
         .onEndData = onEndData,
         .onFloatingPointElement = onFloatingPointElement,
         .onIntegerElement = onIntegerElement,
+        .onUIntegerElement = onUIntegerElement,
         .onNullElement = onNullElement,
         .onStringElement = onStringElement,
     };

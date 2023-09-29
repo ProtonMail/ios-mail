@@ -19,8 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import GoLibs
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoInterface
 import OpenPGP
 import Foundation
 import ProtonCore_Authentication
@@ -128,7 +128,7 @@ final class AddressKeyActivation {
                 
                 let updatedSigner = SigningKey.init(privateKey: updatedPrivateKey,
                                                     passphrase: newPassphrase)
-                let signed = try Sign.signDetached(signingKey: updatedSigner, plainText: jsonKeylist)
+                let signed = try Sign.signDetached(signingKey: updatedSigner, plainText: jsonKeylist, signatureContext: AddressKeySetup.signedKeyListSignatureContext)
                 let signedKeyList: [String: Any] = [
                     "Data": jsonKeylist,
                     "Signature": signed.value

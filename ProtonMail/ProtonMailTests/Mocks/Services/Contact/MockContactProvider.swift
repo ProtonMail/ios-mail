@@ -50,8 +50,7 @@ class MockContactProvider: ContactProviderProtocol {
         completion?(nil)
     }
 
-    func cleanUp() -> Promise<Void> {
+    func cleanUp() {
         wasCleanUpCalled = true
-        return Promise<Void>()
     }
 }

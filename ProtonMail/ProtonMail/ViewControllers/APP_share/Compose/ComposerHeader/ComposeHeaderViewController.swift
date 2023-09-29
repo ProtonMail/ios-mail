@@ -131,7 +131,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     /// Use this flag to control the email validation action
     var shouldValidateTheEmail = true
 
-    private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
+    private let internetConnectionStatusProvider = InternetConnectionStatusProvider.shared
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -147,10 +147,8 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
                       textColor: ColorProvider.TextWeak)
         self.fromPickerButton.tintColor = ColorProvider.IconWeak
         fromPickerButton.setImage(IconProvider.threeDotsHorizontal, for: .normal)
-        if #available(iOS 14.0, *) {
             self.delegate?.setupComposeFromMenu(for: self.fromPickerButton)
             self.fromPickerButton.addTarget(self, action: #selector(self.clickFromField(_:)), for: .menuActionTriggered)
-        }
 
         self.showCcBccButton.tintColor = ColorProvider.IconWeak
         self.showCcBccButton.setImage(IconProvider.chevronDown, for: .normal)
@@ -187,8 +185,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        observeInternetConnectionStatus()
+        internetConnectionStatusProvider.register(receiver: self, fireWhenRegister: true)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -201,12 +198,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
             self.view.addConstraint(self.subjectTopToToContactPicker)
         }
         self.notifyViewSize( false )
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        internetConnectionStatusProvider.stopInternetConnectionStatusObservation()
     }
 
     override func viewDidLayoutSubviews() {
@@ -373,24 +364,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
             self.ccContactPickerHeight.constant = newHeight
         } else if contactPicker == self.bccContactPicker {
             self.bccContactPickerHeight.constant = newHeight
-        }
-    }
-
-    private func observeInternetConnectionStatus() {
-        internetConnectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
-            guard status.isConnected else {
-                self?.isConnected = false
-                return
-            }
-            if let previousStatus = self?.isConnected,
-               previousStatus == status.isConnected {
-                // In card modal
-                // even slightly drag down can trigger viewWillDisappear and view willAppear
-                // Validate mail addresses until the status really changed
-                return
-            }
-            self?.isConnected = status.isConnected
-            self?.checkEmails()
         }
     }
 
@@ -596,11 +569,11 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     private func showContactMenu(contact: ContactVO, contactPicker: ContactPicker) {
         guard let parent = self.parent?.navigationController,
               let address = contact.displayEmail else { return }
-        let copy = PMActionSheetPlainItem(title: LocalString._general_copy, icon: nil) { _ in
+        let copy = PMActionSheetItem(title: LocalString._general_copy, icon: nil) { _ in
             UIPasteboard.general.string = address
             contactPicker.deselectCells()
         }
-        let cut = PMActionSheetPlainItem(title: LocalString._general_cut, icon: nil) { _ in
+        let cut = PMActionSheetItem(title: LocalString._general_cut, icon: nil) { _ in
             UIPasteboard.general.string = address
             contactPicker.removeContact(address: address)
             contactPicker.deselectCells()
@@ -728,5 +701,24 @@ extension ComposeHeaderViewController {
             self.bccContactPicker!,
             self.subject!
         ]
+    }
+}
+
+// MARK: - ConnectionStatusReceiver
+extension ComposeHeaderViewController: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        guard newStatus.isConnected else {
+            self.isConnected = false
+            return
+        }
+        if let previousStatus = self.isConnected,
+           previousStatus == newStatus.isConnected {
+            // In card modal
+            // even slightly drag down can trigger viewWillDisappear and view willAppear
+            // Validate mail addresses until the status really changed
+            return
+        }
+        self.isConnected = newStatus.isConnected
+        self.checkEmails()
     }
 }

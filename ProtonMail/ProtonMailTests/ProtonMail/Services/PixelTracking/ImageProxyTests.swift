@@ -133,7 +133,6 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         let dependencies = ImageProxy.Dependencies(apiService: apiServiceMock)
         sut = ImageProxy(dependencies: dependencies)
 
-        apiServiceMock.dohStub.fixture = DohMock()
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
 
         apiServiceMock.downloadStub.bodyIs { _, urlString, destinationDirectoryURL, _, _, _, _, _, _, completion in
@@ -161,7 +160,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
             }
         }
 
-        apiServiceMock.requestJSONStub.bodyIs { _, _, urlString, _, _, _, _, _, _, _, completion in
+        apiServiceMock.requestJSONStub.bodyIs { _, _, urlString, _, _, _, _, _, _, _, _, completion in
             let url = URL(string: urlString)!
 
             var headers: [String: String] = [:]

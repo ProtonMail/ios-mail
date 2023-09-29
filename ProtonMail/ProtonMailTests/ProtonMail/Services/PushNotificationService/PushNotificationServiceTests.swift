@@ -20,225 +20,97 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-
 import XCTest
 import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
-class PushNotificationServiceTests: XCTestCase {
-    typealias SubscriptionWithSettings = PushNotificationService.SubscriptionWithSettings
-
+final class PushNotificationServiceTests: XCTestCase {
     private var sut: PushNotificationService!
-    private var sessionIdProvider: SessionIDMock!
-    private var subscriptionSaver: InMemorySaver<Set<SubscriptionWithSettings>>!
-    private var mockRegisterDevice: MockRegisterDeviceUseCase!
 
+    private var mockPushEncryptionManager: MockPushEncryptionManagerProtocol!
+    private var mockSignInProvider: MockSignInProvider!
+    private var mockUnlockProvider: MockUnlockProvider!
+    private var mockNotificationCenter: NotificationCenter!
     private let dummyToken = "dummy_token"
-    private var firstSessionId: String { sessionIdProvider.sessionIDs.first! }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        sessionIdProvider = SessionIDMock()
-        subscriptionSaver = .init()
-        mockRegisterDevice = .init()
-        sut = PushNotificationService(
-            subscriptionSaver: subscriptionSaver,
-            encryptionKitSaver: InMemorySaver(),
-            outdatedSaver: InMemorySaver(),
-            sessionIDProvider: sessionIdProvider,
-            deviceRegistrator: MockDeviceRegistrator(),
-            signInProvider: SignInMock(),
-            unlockProvider: UnlockMock(),
-            notificationCenter: .default,
-            dependencies: .init(lockCacheStatus: MockLockCacheStatus(), registerDevice: mockRegisterDevice)
+        mockPushEncryptionManager = .init()
+        mockNotificationCenter = .init()
+        mockSignInProvider = .init()
+        mockSignInProvider.isSignedInStub.fixture = true
+        mockUnlockProvider = .init()
+        mockUnlockProvider.isUnlockedStub.fixture = true
+        let dependencies: PushNotificationService.Dependencies = .init(
+            signInProvider: mockSignInProvider,
+            unlockProvider: mockUnlockProvider,
+            pushEncryptionManager: mockPushEncryptionManager,
+            navigationResolver: PushNavigationResolver(dependencies: .init()),
+            lockCacheStatus: MockLockCacheStatus(),
+            notificationCenter: mockNotificationCenter
         )
-        NotificationCenter.default.removeObserver(sut!)
+        sut = PushNotificationService(dependencies: dependencies)
     }
 
     override func tearDown() {
         super.tearDown()
+        mockPushEncryptionManager = nil
+        mockNotificationCenter = nil
+        mockSignInProvider = nil
+        mockUnlockProvider = nil
         sut = nil
-        sessionIdProvider = nil
-        subscriptionSaver = nil
-        mockRegisterDevice = nil
     }
 
-    func testDidRegisterForRemoteNotifications_whenRegisterDeviceSucceeds_itStoresTheTokenAsReported() {
+    func testDidRegisterForRemoteNotifications_itShouldCallPushEncryptionManager() {
         let expect = expectation(description: "wait for registration")
-        mockRegisterDevice.callExecutionBlock.bodyIs { _, _, callback in
-            callback(.success(()))
+        mockPushEncryptionManager.registerDeviceForNotificationsStub.bodyIs { _, _ in
             expect.fulfill()
         }
-        subscriptionSaver.set(newValue: nil)
 
         sut.didRegisterForRemoteNotifications(withDeviceToken: dummyToken)
 
         waitForExpectations(timeout: 1.0)
-
-        let subsWithSetting = subscriptionSaver.get()!.first!
-        XCTAssertEqual(subsWithSetting.state, .reported)
-        XCTAssertEqual(subsWithSetting.settings.token, dummyToken)
-        XCTAssertEqual(subsWithSetting.settings.UID, firstSessionId)
-
-        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.deviceToken, dummyToken)
-        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.uid, firstSessionId)
+        XCTAssertEqual(mockPushEncryptionManager.registerDeviceForNotificationsStub.callCounter, 1)
+        XCTAssertEqual(mockPushEncryptionManager.registerDeviceForNotificationsStub.lastArguments?.a1, dummyToken)
     }
 
-    func testDidRegisterForRemoteNotifications_whenRegisterDeviceFails_itStoresTheTokenAsNotReported() {
+    func testDidRegisterForRemoteNotifications_whenMultipleCalls_itShouldOnlyCallPushEncryptionManagerOnce() {
         let expect = expectation(description: "wait for registration")
-
-        mockRegisterDevice.callExecutionBlock.bodyIs { _, _, callback in
-            callback(.failure(NSError(domain: "dummy_domain", code: 0, userInfo: nil)))
+        mockPushEncryptionManager.registerDeviceForNotificationsStub.bodyIs { _, _ in
             expect.fulfill()
         }
-        subscriptionSaver.set(newValue: nil)
 
-        sut.didRegisterForRemoteNotifications(withDeviceToken: dummyToken)
+        for _ in 1...3 {
+            sut.didRegisterForRemoteNotifications(withDeviceToken: dummyToken)
+        }
 
         waitForExpectations(timeout: 1.0)
-        let subsWithSetting = subscriptionSaver.get()!.first!
-        XCTAssertEqual(subsWithSetting.state, .notReported)
-        XCTAssertEqual(subsWithSetting.settings.token, dummyToken)
-        XCTAssertEqual(subsWithSetting.settings.UID, firstSessionId)
-
-        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.deviceToken, dummyToken)
-        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.uid, firstSessionId)
+        XCTAssertEqual(mockPushEncryptionManager.registerDeviceForNotificationsStub.callCounter, 1)
     }
 
-    func testDidRegisterForRemoteNotifications_whenRegisterDeviceSucceeds_itOverwritesTheTokenForTheSameSession() {
-        let expect = expectation(description: "wait for registration")
+    func testOnNotificationDidUnlock_whenNoPengingToken_itShouldNotCallPushEncryptionManagerToRegisterDeviceToken() {
+        mockNotificationCenter.post(name: .didUnlock, object: nil)
+        XCTAssertEqual(mockPushEncryptionManager.registerDeviceForNotificationsStub.callCounter, 0)
+    }
 
-        mockRegisterDevice.callExecutionBlock.bodyIs { _, _, callback in
-            callback(.success(()))
-            expect.fulfill()
-        }
-        let subs = [SubscriptionWithSettings(settings: .init(token: "oldToken", UID: firstSessionId), state: .reported)]
-        subscriptionSaver.set(newValue: Set(subs))
-
+    func testOnNotificationDidUnlock_whenPengingToken_itShouldCallPushEncryptionManagerToRegisterDeviceToken() {
+        mockSignInProvider.isSignedInStub.fixture = false
         sut.didRegisterForRemoteNotifications(withDeviceToken: dummyToken)
-        // didRegisterForRemoteNotifications is asynchronous and we need to wait to ensure the logic has finished
-        sleep(1)
+        mockNotificationCenter.post(name: .didUnlock, object: nil)
 
-        waitForExpectations(timeout: 1.0)
-        XCTAssertEqual(subscriptionSaver.get()?.count, 1)
-        let subsWithSetting = subscriptionSaver.get()!.first!
-        XCTAssertEqual(subsWithSetting.state, .reported)
-        XCTAssertEqual(subsWithSetting.settings.token, dummyToken)
-        XCTAssertEqual(subsWithSetting.settings.UID, firstSessionId)
-
-        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.deviceToken, dummyToken)
-        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.uid, firstSessionId)
+        XCTAssertEqual(mockPushEncryptionManager.registerDeviceForNotificationsStub.callCounter, 1)
     }
 
-    /// This test expects to register the reported token again because it follows the current
-    /// implementation even though indicates lack of confidence in the report status.
-    func testDidRegisterForRemoteNotifications_whenTokenAlreadyReported_itShouldRegisterTheSameToken() {
-        let expect = expectation(description: "wait for registration")
-
-        mockRegisterDevice.callExecutionBlock.bodyIs { _, _, callback in
-            callback(.success(()))
-            expect.fulfill()
-        }
-        let subs = [SubscriptionWithSettings(settings: .init(token: dummyToken, UID: firstSessionId), state: .reported)]
-        subscriptionSaver.set(newValue: Set(subs))
-
-        sut.didRegisterForRemoteNotifications(withDeviceToken: dummyToken)
-
-        waitForExpectations(timeout: 1.0)
-        XCTAssertEqual(subscriptionSaver.get()?.count, 1)
-        let subsWithSetting = subscriptionSaver.get()!.first!
-        XCTAssertEqual(subsWithSetting.state, .reported)
-        XCTAssertEqual(subsWithSetting.settings.token, dummyToken)
-        XCTAssertEqual(subsWithSetting.settings.UID, firstSessionId)
-
-        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.deviceToken, dummyToken)
-        XCTAssertEqual(mockRegisterDevice.callExecutionBlock.lastArguments!.a1.uid, firstSessionId)
+    func testOnNotificationDidSignIn_itShouldCallPushEncryptionManagerToRegisterDeviceToken() {
+        mockNotificationCenter.post(name: .didSignIn, object: nil)
+        XCTAssertEqual(mockPushEncryptionManager.registerDeviceAfterNewAccountSignInStub.callCounter, 1)
     }
 
-    /// This test tries to ensure that the implementation of `didRegisterForRemoteNotifications`
-    /// is not deleting encryption kits momentarily when new a new token is registered
-    func testDidRegisterForRemoteNotifications_whenDeviceTokenRenewed_itAlwaysReturnsAnEncryptionKit() {
-        sessionIdProvider.sessionIDs = (1...4).map { "session\($0)" }
-        mockRegisterDevice.callExecutionBlock.bodyIs { _, _, callback in
-                callback(.success(()))
-        }
-
-        // first call to setup the test conditions
-        sut.didRegisterForRemoteNotifications(withDeviceToken: "token change 1")
-        sleep(1) // necessary to test the second call independently from the first didRegisterForRemoteNotifications
-        // we make sure we have the values set
-        sessionIdProvider.sessionIDs.forEach { uid in
-            if sut.currentSubscriptions.encryptionKit(forUID: uid) == nil {
-                XCTFail("encryptionKit is NIL for uid \(uid)")
-            }
-        }
-
-        // actual test
-        sut.didRegisterForRemoteNotifications(withDeviceToken: "token change 2")
-        sessionIdProvider.sessionIDs.forEach { uid in
-            if sut.currentSubscriptions.encryptionKit(forUID: uid) == nil {
-                XCTFail("encryptionKit is NIL for uid \(uid)")
-            }
-        }
-    }
-
-    func testUpdateSettingsIfNeeded_notInCurrentSubscription_UpdateClosureCalled() {
-        let settingToReport = PushSubscriptionSettings(token: "token1", UID: "UID1")
-        let result = [settingToReport: PushNotificationService.SubscriptionState.reported]
-        let expection1 = expectation(description: "closure is called")
-
-        let sut = PushNotificationService.updateSettingsIfNeeded
-        sut(result, []) { result in
-            XCTAssertEqual(result.0, settingToReport)
-            XCTAssertEqual(result.1, .reported)
-            XCTAssertEqual(result.0.encryptionKit, settingToReport.encryptionKit)
-            expection1.fulfill()
-        }
-        waitForExpectations(timeout: 0.5, handler: nil)
-    }
-
-    func testUpdateSettingsIfNeeded_inCurrentSubscriptionAndReported_updateClosureNotCalled() {
-        let settingToReport = PushSubscriptionSettings(token: "token1", UID: "UID1")
-        let result = [settingToReport: PushNotificationService.SubscriptionState.reported]
-
-        let subscription = SubscriptionWithSettings(settings: settingToReport, state: .reported)
-        let currentSubscriptions: Set<SubscriptionWithSettings> = [subscription]
-
-        let expection1 = expectation(description: "closure is called")
-        expection1.isInverted = true
-        let sut = PushNotificationService.updateSettingsIfNeeded
-
-        sut(result, currentSubscriptions) { _ in
-            expection1.fulfill()
-        }
-        waitForExpectations(timeout: 0.5, handler: nil)
-    }
-
-    func testUpdateSettingsIfNeeded_inCurrentSubscriptionAndReportedWithDifferentEncryptionkit_updateClosureIsCalled() throws {
-        var settingToReport = PushSubscriptionSettings(token: "token1", UID: "UID1")
-        try settingToReport.generateEncryptionKit()
-
-        var settingInSubscription = PushSubscriptionSettings(token: "token1", UID: "UID1")
-        try settingInSubscription.generateEncryptionKit()
-
-        let result = [settingToReport: PushNotificationService.SubscriptionState.reported]
-
-        let subscription = SubscriptionWithSettings(settings: settingInSubscription, state: .reported)
-        let currentSubscriptions: Set<SubscriptionWithSettings> = [subscription]
-
-        let expection1 = expectation(description: "closure is called")
-        let sut = PushNotificationService.updateSettingsIfNeeded
-
-        sut(result, currentSubscriptions) { result in
-
-            XCTAssertEqual(result.0, settingToReport)
-            XCTAssertEqual(result.1, .reported)
-            XCTAssertEqual(result.0.encryptionKit, settingToReport.encryptionKit)
-            expection1.fulfill()
-        }
-        waitForExpectations(timeout: 0.5, handler: nil)
+    func testOnNotificationDidSignOutLastAccount_itShouldCallPushEncryptionManagerToDeleteData() {
+        mockNotificationCenter.post(name: .didSignOutLastAccount, object: nil)
+        XCTAssertEqual(mockPushEncryptionManager.deleteAllCachedDataStub.callCounter, 1)
     }
 }
 
@@ -277,32 +149,5 @@ extension PushNotificationServiceTests {
             }
             return try PropertyListDecoder().decode(type, from: data)
         }
-    }
-    
-    private class SessionIDMock: SessionIdProvider {
-        var sessionIDs = ["001100010010011110100001101101110011"]
-    }
-    
-    private class MockDeviceRegistrator: DeviceRegistrator {
-        private(set) var deviceTokensUnregisteredCalled = [PushSubscriptionSettings]()
-        var deviceUnregisterSuccess: Bool = true
-        var completionError: NSError?
-
-        func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping Completion) {
-            deviceTokensUnregisteredCalled.append(settings)
-            if deviceUnregisterSuccess {
-                completion(nil, .success([:]))
-            } else {
-                completion(nil, .failure(completionError!))
-            }
-        }
-    }
-    
-    private struct SignInMock: SignInProvider {
-        let isSignedIn: Bool = true
-    }
-    
-    private struct UnlockMock: UnlockProvider {
-        let isUnlocked: Bool = true
     }
 }

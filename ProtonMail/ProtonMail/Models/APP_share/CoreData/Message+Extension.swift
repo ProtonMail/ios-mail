@@ -21,7 +21,6 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import GoLibs
 import ProtonCore_Crypto
 import ProtonCore_DataModel
 
@@ -122,7 +121,7 @@ extension Message {
         return outLabel
     }
 
-    // swiftlint:disable cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity
     func setAsDraft() {
         if let context = self.managedObjectContext {
             let labelObjects = self.mutableSetValue(forKey: Attributes.labels)
@@ -269,14 +268,9 @@ extension Message {
     // MARK: - methods
 
     convenience init(context: NSManagedObjectContext) {
-        // swiftlint:disable force_unwrapping
+        // swiftlint:disable:next force_unwrapping
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!,
                   insertInto: context)
-    }
-
-    /// Removes all messages from the store.
-    class func deleteAll(inContext context: NSManagedObjectContext) {
-        context.deleteAll(Attributes.entityName)
     }
 
     class func messageForMessageID(_ messageID: String,

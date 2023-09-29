@@ -37,12 +37,7 @@ SentryCrashInstallationReporter ()
                                                dispatchQueue:self.dispatchQueue];
 }
 
-- (void)sendAllReports
-{
-    [self sendAllReportsWithCompletion:NULL];
-}
-
-- (void)sendAllReportsWithCompletion:(SentryCrashReportFilterCompletion)onCompletion
+- (void)sendAllReportsWithCompletion:(nullable SentryCrashReportFilterCompletion)onCompletion
 {
     [super
         sendAllReportsWithCompletion:^(NSArray *filteredReports, BOOL completed, NSError *error) {

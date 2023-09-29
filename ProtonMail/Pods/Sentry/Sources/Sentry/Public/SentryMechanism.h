@@ -31,9 +31,15 @@ SENTRY_NO_INIT
 
 /**
  * Flag indicating whether the exception has been handled by the user
- * (e.g. via ``try..catch``)
+ * (e.g. via @c try..catch )
  */
 @property (nonatomic, copy) NSNumber *_Nullable handled;
+
+/**
+ * An optional flag indicating a synthetic exception. For more info visit
+ * https://develop.sentry.dev/sdk/event-payloads/exception/#exception-mechanism.
+ */
+@property (nonatomic, copy, nullable) NSNumber *synthetic;
 
 /**
  * Fully qualified URL to an online help resource, possible

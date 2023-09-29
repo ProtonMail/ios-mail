@@ -25,7 +25,7 @@ import ProtonCore_UIFoundations
 
 protocol ComposeSaveHintProtocol: UIViewController {
     func removeDraftSaveHintBanner()
-    func showDraftSaveHintBanner(cache: UserCachedStatus,
+    func showDraftSaveHintBanner(cache: UserCachedStatusProvider,
                                  messageService: MessageDataService,
                                  coreDataContextProvider: CoreDataContextProviderProtocol)
     func showMessageSendingHintBanner(messageID: String,
@@ -38,7 +38,7 @@ extension ComposeSaveHintProtocol {
         PMBanner.dismissAll(on: self)
     }
 
-    func showDraftSaveHintBanner(cache: UserCachedStatus,
+    func showDraftSaveHintBanner(cache: UserCachedStatusProvider,
                                  messageService: MessageDataService,
                                  coreDataContextProvider: CoreDataContextProviderProtocol) {
         // If the users doesn't contain user that means the user is logged out
@@ -81,8 +81,8 @@ extension ComposeSaveHintProtocol {
 
     func showMessageSendingHintBanner(messageID: String,
                                       messageDataService: MessageDataProcessProtocol) {
-        let internetConnection = InternetConnectionStatusProvider()
-        guard internetConnection.currentStatus != .notConnected else {
+        let internetConnection = InternetConnectionStatusProvider.shared
+        guard internetConnection.status != .notConnected else {
             self.showMessageSendingOfflineHintBanner(messageID: messageID, messageDataService: messageDataService)
             return
         }

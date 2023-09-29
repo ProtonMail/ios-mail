@@ -64,9 +64,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
 
     private var refreshControl: UIRefreshControl?
     private var searchController: UISearchController?
-
-    private let internetConnectionStatusProvider = InternetConnectionStatusProvider()
-    private let observerID = UUID()
+    private let internetConnectionStatusProvider = InternetConnectionStatusProvider.shared
 
     @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private var searchView: UIView!
@@ -134,7 +132,12 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     }
 
     override func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(payments: self.viewModel.user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
+        self.paymentsUI = PaymentsUI(
+            payments: viewModel.user.payments,
+            clientApp: .mail,
+            shownPlanNames: Constants.shownPlanNames,
+            customization: .empty
+        )
         self.paymentsUI?.showUpgradePlan(presentationType: .modal,
                                          backendFetch: true) { _ in }
     }
@@ -320,15 +323,8 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         searchController = UISearchController(searchResultsController: nil)
         searchController?.searchBar.placeholder = LocalString._general_search_placeholder
 
-        if #available(iOS 13.0, *) {
-            // Terminating app due to uncaught exception 'NSGenericException', reason: 'Access to UISearchBar's set_cancelButtonText: ivar is prohibited. This is an application bug'
-        } else {
-            searchController?.searchBar.setValue(LocalString._general_done_button,
-                                                forKey: "_cancelButtonText")
-        }
-
         searchController?.searchResultsUpdater = self
-        searchController?.dimsBackgroundDuringPresentation = false
+        searchController?.obscuresBackgroundDuringPresentation = false
         searchController?.searchBar.delegate = self
         searchController?.hidesNavigationBarDuringPresentation = true
         searchController?.searchBar.sizeToFit()
@@ -347,24 +343,19 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     }
 
     @objc func fireFetch() {
-        internetConnectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] status in
-            guard status.isConnected else {
-                DispatchQueue.main.async {
-                    self?.refreshControl?.endRefreshing()
-                }
-                return
+        guard internetConnectionStatusProvider.status.isConnected else {
+            DispatchQueue.main.async {
+                self.refreshControl?.endRefreshing()
             }
-
+            return
+        }
+        self.viewModel.fetchLatestContactGroup { [weak self] error in
             guard let self = self else { return }
 
-            self.viewModel.fetchLatestContactGroup { [weak self] error in
-                guard let self = self else { return }
-
-                if let error = error {
-                    error.alert(at: self.view)
-                } else {
-                    self.refreshControl?.endRefreshing()
-                }
+            if let error = error {
+                error.alert(at: self.view)
+            } else {
+                self.refreshControl?.endRefreshing()
             }
         }
     }
@@ -389,9 +380,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         isOnMainView = true
 
         let newView = ContactImportViewController(user: viewModel.user)
-        setPresentationStyleForSelfController(self,
-                                              presentingController: newView,
-                                              style: .overFullScreen)
+        setPresentationStyleForSelfController(presentingController: newView, style: .overFullScreen)
         newView.reloadAllContact = { [weak self] in
             self?.tableView.reloadData()
         }
@@ -405,10 +394,9 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
         let nav = UINavigationController(rootViewController: newView)
         present(nav, animated: true)
 
-        if #available(iOS 13, *) { // detect view dismiss above iOS 13
+            // detect view dismiss above iOS 13
             nav.children[0].presentationController?.delegate = self
             nav.presentationController?.delegate = self
-        }
     }
 
     func selectRow(at indexPath: IndexPath, groupID: String) {
@@ -496,10 +484,14 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
             user: user,
             contextProvider: sharedServices.get(by: CoreDataService.self),
             isEditingScheduleMsg: false,
-            userIntroductionProgressProvider: userCachedStatus,
-            scheduleSendEnableStatusProvider: userCachedStatus,
-            internetStatusProvider: sharedServices.get(by: InternetConnectionStatusProvider.self),
+            userIntroductionProgressProvider: sharedServices.userCachedStatus,
+            internetStatusProvider: internetConnectionStatusProvider,
             coreKeyMaker: sharedServices.get(),
+            darkModeCache: sharedServices.userCachedStatus,
+            mobileSignatureCache: sharedServices.userCachedStatus,
+            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
+            featureFlagCache: sharedServices.userCachedStatus,
+            userCachedStatusProvider: sharedServices.userCachedStatus,
             toContact: contactGroupVO
         )
 
@@ -508,14 +500,13 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate {
 }
 
 extension ContactGroupsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView,
-                   editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]?
-    {
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
         resetStateFromMultiSelect()
 
-        let deleteHandler = {
-            (_: UITableViewRowAction, indexPath: IndexPath) in
-
+        let deleteHandler: UIContextualAction.Handler = { _, _, completion in
                 let deleteActionHandler = {
                     (_: UIAlertAction) -> Void in
 
@@ -547,12 +538,15 @@ extension ContactGroupsViewController: UITableViewDelegate {
                 alertController.popoverPresentationController?.sourceRect = CGRect(x: self.tableView.bounds.midX, y: self.tableView.bounds.maxY - 100, width: 0, height: 0)
 
                 self.present(alertController, animated: true, completion: nil)
+            completion(false)
         }
 
-        let deleteAction = UITableViewRowAction(style: .destructive,
-                                                title: LocalString._general_delete_action,
-                                                handler: deleteHandler)
-        return [deleteAction]
+        let deleteAction = UIContextualAction(
+            style: .destructive,
+            title: LocalString._general_delete_action,
+            handler: deleteHandler
+        )
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -635,8 +629,6 @@ extension ContactGroupsViewController: NSNotificationCenterKeyboardObserverProto
     }
 }
 
-// detect view dismiss above iOS 13
-@available(iOS 13, *)
 extension ContactGroupsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         isOnMainView = true

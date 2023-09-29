@@ -19,6 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
 import CoreTelephony
 
 struct NetworkInformation {
@@ -29,17 +30,11 @@ struct NetworkInformation {
 
         let networkInfo = CTTelephonyNetworkInfo()
 
-        if #available(iOS 12.0, *) {
-            let carriers = networkInfo.serviceSubscriberCellularProviders?.values
-            let infos = carriers?.map {
-                Cellular(networkCode: $0.mobileNetworkCode, countryCode: $0.mobileCountryCode)
-            }
-            return infos ?? []
-        } else {
-            let carrier = networkInfo.subscriberCellularProvider
-            let info = PMChallenge.Cellular(networkCode: carrier?.mobileNetworkCode,
-                                              countryCode: carrier?.mobileCountryCode)
-            return [info]
+        let carriers = networkInfo.serviceSubscriberCellularProviders?.values
+        let infos = carriers?.map {
+            Cellular(networkCode: $0.mobileNetworkCode, countryCode: $0.mobileCountryCode)
         }
+        return infos ?? []
     }
 }
+#endif

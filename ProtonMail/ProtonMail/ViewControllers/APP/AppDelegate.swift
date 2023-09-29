@@ -20,15 +20,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import BackgroundTasks
 import Intents
-import SideMenuSwift
 import LifetimeTracker
 import ProtonCore_Crypto
+import ProtonCore_CryptoGoImplementation
 import ProtonCore_DataModel
 import ProtonCore_Doh
+import ProtonCore_FeatureSwitch
 import ProtonCore_Keymaker
 import ProtonCore_Log
-import ProtonCore_FeatureSwitch
 import ProtonCore_Networking
 import ProtonCore_Observability
 import ProtonCore_Payments
@@ -41,18 +42,22 @@ import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
-        return self.coordinator.currentWindow
-    }
     lazy var coordinator: WindowsCoordinator = WindowsCoordinator(factory: sharedServices)
     private var currentState: UIApplication.State = .active
     private var purgeOldMessages: PurgeOldMessagesUseCase?
+
+    // TODO: make private
+    let dependencies = GlobalContainer()
+
+    override init() {
+        injectDefaultCryptoImplementation()
+        super.init()
+    }
 }
 
 // MARK: - consider move this to coordinator
 extension AppDelegate {
     func onLogout() {
-        if #available(iOS 13.0, *) {
             let sessions = Array(UIApplication.shared.openSessions)
             let oneToStay = sessions.first(where: { $0.scene?.delegate as? WindowSceneDelegate != nil })
             (oneToStay?.scene?.delegate as? WindowSceneDelegate)?.coordinator.go(dest: .signInWindow(.form))
@@ -60,23 +65,16 @@ extension AppDelegate {
             for session in sessions where session != oneToStay {
                 UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { _ in }
             }
-        } else {
-            self.coordinator.go(dest: .signInWindow(.form))
-        }
     }
 }
 
 extension AppDelegate: TrustKitUIDelegate {
     func onTrustKitValidationError(_ alert: UIAlertController) {
         let currentWindow: UIWindow? = {
-            if #available(iOS 13.0, *) {
                 let session = UIApplication.shared.openSessions.first { $0.scene?.activationState == UIScene.ActivationState.foregroundActive }
                 let scene = session?.scene as? UIWindowScene
                 let window = scene?.windows.first
                 return window
-            } else {
-                return self.window
-            }
         }()
 
         guard let top = currentWindow?.topmostViewController(), !(top is UIAlertController) else { return }
@@ -84,18 +82,15 @@ extension AppDelegate: TrustKitUIDelegate {
     }
 }
 
-//move to a manager class later
-let sharedInternetReachability: Reachability = Reachability.forInternetConnection()
-//let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
-
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable)"
+        let appVersion = Bundle.main.appVersion
+        let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable) | \(appVersion)"
         SystemLogger.log(message: message, category: .appLifeCycle)
+        sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
 
-        let coreKeyMaker = Keymaker(autolocker: Autolocker(lockTimeProvider: userCachedStatus),
-                                keychain: KeychainWrapper.keychain)
+        let coreKeyMaker = dependencies.keyMaker
         sharedServices.add(Keymaker.self, for: coreKeyMaker)
         sharedServices.add(KeyMakerProtocol.self, for: coreKeyMaker)
 
@@ -104,37 +99,28 @@ extension AppDelegate: UIApplicationDelegate {
             coreKeyMaker.activate(NoneProtection()) { _ in }
         }
 
-        let usersManager = UsersManager(
-            doh: BackendConfiguration.shared.doh,
-            userDataCache: UserDataCache(keyMaker: coreKeyMaker),
-            coreKeyMaker: coreKeyMaker
-        )
-        let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
-        let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
-        let queueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
+        let usersManager = dependencies.usersManager
+        let queueManager = dependencies.queueManager
         sharedServices.add(QueueManager.self, for: queueManager)
-        let dependencies = PushNotificationService.Dependencies(
-            lockCacheStatus: coreKeyMaker,
-            registerDevice: RegisterDevice(dependencies: .init(usersManager: usersManager))
-        )
-        sharedServices.add(PushNotificationService.self, for: PushNotificationService(dependencies: dependencies))
-        sharedServices.add(UnlockManager.self, for: UnlockManager(
+
+        let unlockManager = UnlockManager(
             cacheStatus: coreKeyMaker,
-            delegate: self,
             keyMaker: coreKeyMaker,
             pinFailedCountCache: userCachedStatus
-        ))
+        )
+        unlockManager.delegate = self
+        sharedServices.add(UnlockManager.self, for: unlockManager)
+
         sharedServices.add(UsersManager.self, for: usersManager)
-        let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: userCachedStatus))
+        let dependencies = PushNotificationService.Dependencies(lockCacheStatus: coreKeyMaker)
+        sharedServices.add(PushNotificationService.self, for: PushNotificationService(dependencies: dependencies))
+        let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: self.dependencies)
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager,
                                                                   contactCacheStatus: userCachedStatus,
                                                                   queueHandlerRegister: queueManager,
                                                                   updateSwipeActionUseCase: updateSwipeActionUseCase))
         sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         sharedServices.add(StoreKitManagerImpl.self, for: StoreKitManagerImpl())
-        sharedServices.add(InternetConnectionStatusProvider.self, for: InternetConnectionStatusProvider())
-        sharedServices.add(EncryptedSearchUserDefaultCache.self, for: EncryptedSearchUserDefaultCache())
-        sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
         sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
 
 #if DEBUG
@@ -165,12 +151,9 @@ extension AppDelegate: UIApplicationDelegate {
         configureCoreFeatureFlags(launchArguments: ProcessInfo.launchArguments)
         configureCoreObservability()
         configureAnalytics()
-        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         configureAppearance()
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true
-        //start network notifier
-        sharedInternetReachability.startNotifier()
         self.configureLanguage()
         /// configurePushService needs to be called in didFinishLaunchingWithOptions to make push
         /// notification actions work. This is because the app could be inactive when an action is triggered
@@ -180,14 +163,9 @@ extension AppDelegate: UIApplicationDelegate {
         self.registerKeyMakerNotification()
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(didSignOutNotification(_:)),
-                                               name: NSNotification.Name.didSignOut,
+                                               name: .didSignOutLastAccount,
                                                object: nil)
         coordinator.delegate = self
-        if #available(iOS 13.0, *) {
-            // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
-        } else {
-            self.coordinator.start()
-        }
 
         UIBarButtonItem.enableMenuSwizzle()
         #if DEBUG
@@ -204,7 +182,6 @@ extension AppDelegate: UIApplicationDelegate {
           _ application: UIApplication,
           supportedInterfaceOrientationsFor window: UIWindow?
       ) -> UIInterfaceOrientationMask {
-          guard UserInfo.isRotateScreenEnabled else { return .portrait }
           let viewController = window?.rootViewController
           if UIDevice.current.userInterfaceIdiom == .pad || viewController == nil {
               return UIInterfaceOrientationMask.all
@@ -265,9 +242,6 @@ extension AppDelegate: UIApplicationDelegate {
 
         startAutoLockCountDownIfNeeded()
 
-        let users: UsersManager = sharedServices.get()
-        let queueManager: QueueManager = sharedServices.get()
-
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask { }
         let delayedCompletion: () -> Void = {
@@ -275,17 +249,18 @@ extension AppDelegate: UIApplicationDelegate {
             taskID = .invalid
         }
 
-        if let user = users.firstUser {
-            let coreDataService: CoreDataService = sharedServices.get()
-            self.purgeOldMessages = PurgeOldMessages(user: user,
-                                                     coreDataService: coreDataService)
-            self.purgeOldMessages?.execute(completion: { [weak self] _ in
-                self?.purgeOldMessages = nil
-            })
+        if let user = dependencies.usersManager.firstUser {
+            self.purgeOldMessages = PurgeOldMessages(user: user, coreDataService: dependencies.contextProvider)
+            self.purgeOldMessages?.execute(
+                params: (),
+                callback: { [weak self] _ in
+                    self?.purgeOldMessages = nil
+                }
+            )
             user.cacheService.cleanOldAttachment()
             user.messageService.updateMessageCount()
 
-            queueManager.backgroundFetch(remainingTime: {
+            dependencies.queueManager.backgroundFetch(remainingTime: {
                 application.backgroundTimeRemaining
             }, notify: {
                 delayedCompletion()
@@ -319,10 +294,8 @@ extension AppDelegate: UIApplicationDelegate {
         let pushService: PushNotificationService = sharedServices.get()
         pushService.registerIfAuthorized()
         self.currentState = .active
-        let users: UsersManager = sharedServices.get()
-        let queueManager = sharedServices.get(by: QueueManager.self)
-        if let user = users.firstUser {
-            queueManager.enterForeground()
+        if let user = dependencies.usersManager.firstUser {
+            dependencies.queueManager.enterForeground()
             user.refreshFeatureFlags()
 
             if UserInfo.isBlockSenderEnabled {
@@ -366,24 +339,8 @@ extension AppDelegate: UIApplicationDelegate {
         completionHandler(.newData)
     }
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let touch = touches.first {
-            let point = touch.location(in: UIApplication.shared.keyWindow)
-            let statusBarFrame = UIApplication.shared.statusBarFrame
-            if statusBarFrame.contains(point) {
-                self.touchStatusBar()
-            }
-        }
-    }
-
-    func touchStatusBar() {
-        let notification = Notification(name: .touchStatusBar, object: nil, userInfo: nil)
-        NotificationCenter.default.post(notification)
-    }
-
     // MARK: - Multiwindow iOS 13
 
-    @available(iOS 13.0, *)
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         let scene = Scenes.fullApp // TODO: add more scenes
         let config = UISceneConfiguration(name: scene.rawValue, sessionRole: connectingSceneSession.role)
@@ -391,7 +348,6 @@ extension AppDelegate: UIApplicationDelegate {
         return config
     }
 
-    @available(iOS 13.0, *)
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         sceneSessions.forEach { session in
             // TODO: check that this discards state restoration for scenes explicitely closed by user
@@ -414,7 +370,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 
     private func startAutoLockCountDownIfNeeded() {
-        let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
+        let coreKeyMaker = dependencies.keyMaker
         // When the app is launched without a lock set, the lock counter will immediately remove the mainKey, which triggers the app to display the lock screen.
         // However, this behavior is not necessary if there is no lock set.
         // We should only start the countdown when a lock has been set.
@@ -433,7 +389,7 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     }
 
     func isUserStored() -> Bool {
-        let users = sharedServices.get(by: UsersManager.self)
+        let users = dependencies.usersManager
         if users.hasUserName() || users.hasUsers() {
             return true
         }
@@ -441,24 +397,30 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     }
 
     func isMailboxPasswordStored(forUser uid: String?) -> Bool {
-        let users = sharedServices.get(by: UsersManager.self)
+        let users = dependencies.usersManager
         guard let _ = uid else {
             return users.isPasswordStored || users.hasUserName() // || users.isMailboxPasswordStored
         }
-        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword.value ?? "").isEmpty
+        return !(dependencies.usersManager.users.last?.mailboxPassword.value ?? "").isEmpty
     }
 
     func cleanAll(completion: @escaping () -> Void) {
         Breadcrumbs.shared.add(message: "AppDelegate.cleanAll called", to: .randomLogout)
-        sharedServices.get(by: UsersManager.self).clean().ensure {
-            let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
+        dependencies.usersManager.clean().ensure {
+            let coreKeyMaker = self.dependencies.keyMaker
             coreKeyMaker.wipeMainKey()
-            coreKeyMaker.mainKeyExists()
+            _ = coreKeyMaker.mainKeyExists()
             completion()
         }.cauterize()
     }
 
     func setupCoreData() {
+        do {
+            try CoreDataStore.shared.initialize()
+        } catch {
+            fatalError("\(error)")
+        }
+
         sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
         let lastUpdatedStore = LastUpdatedStore(contextProvider: CoreDataService.shared)
@@ -467,12 +429,12 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     }
 
     func loadUserDataAfterUnlock() {
-        let usersManager = sharedServices.get(by: UsersManager.self)
+        let usersManager = dependencies.usersManager
         usersManager.run()
         usersManager.tryRestore()
 
         #if !APP_EXTENSION
-        sharedServices.get(by: UsersManager.self).users.forEach {
+        dependencies.usersManager.users.forEach {
             $0.messageService.injectTransientValuesIntoMessages()
         }
         if let primaryUser = usersManager.firstUser {
@@ -600,8 +562,7 @@ extension AppDelegate {
                 #endif
 
                 if self.currentState != .active {
-                    let coreKeyMaker: KeyMakerProtocol = sharedServices.get()
-                    coreKeyMaker.updateAutolockCountdownStart()
+                    self.dependencies.keyMaker.updateAutolockCountdownStart()
                 }
             }
     }

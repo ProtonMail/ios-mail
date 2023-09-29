@@ -11,6 +11,12 @@ SENTRY_NO_INIT
 
 + (void)logWithMessage:(NSString *)message andLevel:(SentryLevel)level;
 
+/**
+ * @return @c YES if the current logging configuration will log statements at the current level,
+ * @c NO if not.
+ */
++ (BOOL)willLogAtLevel:(SentryLevel)level;
+
 @end
 
 NS_ASSUME_NONNULL_END
@@ -27,8 +33,8 @@ NS_ASSUME_NONNULL_END
 #define SENTRY_LOG_FATAL(...) SENTRY_LOG(kSentryLevelFatal, __VA_ARGS__)
 
 /**
- * If `errno` is set to a non-zero value after `statement` finishes executing,
- * the error value is logged, and the original return value of `statement` is
+ * If @c errno is set to a non-zero value after @c statement finishes executing,
+ * the error value is logged, and the original return value of @c statement is
  * returned.
  */
 #define SENTRY_LOG_ERRNO(statement)                                                                \

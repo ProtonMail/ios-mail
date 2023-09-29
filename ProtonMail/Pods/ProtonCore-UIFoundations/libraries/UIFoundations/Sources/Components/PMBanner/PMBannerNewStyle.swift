@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 
 public enum PMBannerNewStyle: PMBannerStyleProtocol {
@@ -147,3 +149,5 @@ public enum PMBannerNewStyle: PMBannerStyleProtocol {
         return UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
 }
+
+#endif

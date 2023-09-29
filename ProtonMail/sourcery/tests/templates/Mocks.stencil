@@ -1,5 +1,7 @@
+import BackgroundTasks
 import CoreData
 import LocalAuthentication
+import Network
 import ProtonCore_Crypto
 import ProtonCore_Environment
 import ProtonCore_Keymaker

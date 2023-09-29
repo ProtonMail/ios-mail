@@ -49,11 +49,7 @@ final class MenuViewController: UIViewController, AccessibleView {
     }
 
     override var prefersStatusBarHidden: Bool {
-        if #available(iOS 13.0, *) {
             return true
-        } else {
-            return false
-        }
     }
 
     override func viewDidLoad() {
@@ -111,7 +107,7 @@ final class MenuViewController: UIViewController, AccessibleView {
     }
 
     static func calcProperMenuWidth(
-        keyWindow: UIWindow? = UIApplication.shared.keyWindow,
+        keyWindow: UIWindow? = UIApplication.shared.topMostWindow,
         referenceWidth: CGFloat? = nil,
         expectedMenuWidth: CGFloat = 327
     ) -> CGFloat {
@@ -148,7 +144,7 @@ extension MenuViewController {
         self.primaryUserview.setCornerRadius(radius: 12)
         self.primaryUserview.accessibilityTraits = [.button]
         self.primaryUserview.accessibilityHint = LocalString._menu_open_account_switcher
-        if #available(iOS 13.0, *), (!UIDevice.hasNotch || UIDevice.current.userInterfaceIdiom == .pad) {
+        if (!UIDevice.hasNotch || UIDevice.current.userInterfaceIdiom == .pad) {
             self.accountSwitcherTopConstraint.constant = 10
         } else {
             self.accountSwitcherTopConstraint.constant = 0

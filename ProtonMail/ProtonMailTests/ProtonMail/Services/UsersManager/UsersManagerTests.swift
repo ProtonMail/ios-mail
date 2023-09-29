@@ -294,7 +294,7 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user1)
         XCTAssertEqual(sut.users.count, 1)
         let expectation1 = expectation(description: "Closure is called")
-        expectation(forNotification: .didSignOut, object: nil, notificationCenter: notificationCenter)
+        expectation(forNotification: .didSignOutLastAccount, object: nil, notificationCenter: notificationCenter)
 
         sut.logout(user: user1) {
             XCTAssertTrue(self.sut.users.isEmpty)

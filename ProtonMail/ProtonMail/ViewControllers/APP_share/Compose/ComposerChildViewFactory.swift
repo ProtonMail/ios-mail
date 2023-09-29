@@ -32,7 +32,7 @@ struct ComposerChildViewFactory {
         delegate: ComposerAttachmentVCDelegate,
         isUploading: @escaping (Bool) -> Void
     ) -> ComposerAttachmentVC {
-        let attachments = viewModel.getAttachments() ?? []
+        let attachments = viewModel.getAttachments()
         let attachmentView = ComposerAttachmentVC(
             attachments: attachments,
             contextProvider: contextProvider,

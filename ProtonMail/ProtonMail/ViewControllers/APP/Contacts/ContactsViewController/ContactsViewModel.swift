@@ -25,9 +25,9 @@ import CoreData
 
 class ContactsViewModel: ViewModelTimer {
     var user: UserManager
-    let coreDataService: CoreDataService
+    let coreDataService: CoreDataContextProviderProtocol
 
-    init(user: UserManager, coreDataService: CoreDataService) {
+    init(user: UserManager, coreDataService: CoreDataContextProviderProtocol) {
         self.user = user
         self.coreDataService = coreDataService
         super.init()

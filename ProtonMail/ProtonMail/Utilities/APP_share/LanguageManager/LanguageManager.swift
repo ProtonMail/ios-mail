@@ -71,10 +71,8 @@ final class LanguageManager {
     }
 
     func translateBundleToPreferredLanguageOfTheMainApp() {
-        translateBundleOnTheFly(to: currentLanguageCode())
-    }
+        let languageCode = currentLanguageCode()
 
-    func translateBundleOnTheFly(to languageCode: String) {
         guard languageCode != preferredLanguageCodeSelectedInSettings else {
             return
         }

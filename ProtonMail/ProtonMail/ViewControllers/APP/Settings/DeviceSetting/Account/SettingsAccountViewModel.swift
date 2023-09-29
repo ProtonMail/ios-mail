@@ -95,12 +95,11 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
     case privacy
     case conversation
     case undoSend
-    case searchContent
-    case localStorage
     case labels
     case folders
     case storage
     case nextMsgAfterMove
+    case autoDeleteSpamTrash
 
     var description: String {
         switch self {
@@ -112,10 +111,6 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
             return LocalString._conversation_settings_title
         case .undoSend:
             return LocalString._account_settings_undo_send_row_title
-        case .searchContent:
-            return L11n.EncryptedSearch.settings_title_of_encrypted_search
-        case .localStorage:
-            return LocalString._settings_title_of_local_storage
         case .labels:
             return LocalString._labels
         case .folders:
@@ -124,6 +119,8 @@ enum SettingsMailboxItem: Int, CustomStringConvertible, Equatable {
             return LocalString._local_storage_limit
         case .nextMsgAfterMove:
             return L11n.NextMsgAfterMove.settingTitle
+        case .autoDeleteSpamTrash:
+            return L11n.AutoDeleteSettings.settingTitle
         }
     }
 }
@@ -144,6 +141,7 @@ protocol SettingsAccountViewModel: AnyObject {
     var defaultMobileSignatureStatus: String { get }
     var allSendingAddresses: [Address] { get }
 
+    var isAutoDeleteSpamAndTrashEnabled: Bool { get }
     func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?)
 
     var reloadTable: (() -> Void)? { get set }
@@ -180,14 +178,14 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
             mailboxItems.append(.nextMsgAfterMove)
         }
 
-        if UserInfo.isEncryptedSearchEnabled {
-            mailboxItems.insert(contentsOf: [.searchContent, .localStorage], at: 2)
-        }
-
         if UserInfo.isBlockSenderEnabled {
             mailboxItems.append(.blockList)
         }
 
+        if UserInfo.isAutoDeleteEnabled {
+            mailboxItems.append(.autoDeleteSpamTrash)
+        }
+ 
         self.mailboxItems = mailboxItems
     }
 
@@ -246,6 +244,10 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
         return userManager.addresses.filter { address in
             address.status.rawValue == 1 && address.receive.rawValue == 1 && address != defaultAddress
         }
+    }
+
+    var isAutoDeleteSpamAndTrashEnabled: Bool {
+        userManager.isAutoDeleteEnabled
     }
 
     func updateDefaultAddress(with address: Address, completion: ((NSError?) -> Void)?) {

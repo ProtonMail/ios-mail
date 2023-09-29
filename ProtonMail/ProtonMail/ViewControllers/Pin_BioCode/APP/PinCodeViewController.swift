@@ -35,9 +35,9 @@ final class PinCodeViewController: UIViewController, AccessibleView, LifetimeTra
         .init(maxCount: 1)
     }
 
-    let viewModel: PinCodeViewModel
+    private let viewModel: PinCodeViewModel
     var notificationToken: NSObjectProtocol?
-    weak var delegate: PinCodeViewControllerDelegate?
+    private weak var delegate: PinCodeViewControllerDelegate?
 
     private lazy var pinCodeView: PinCodeView = .init()
     private let contentView = UIView()
@@ -113,7 +113,7 @@ final class PinCodeViewController: UIViewController, AccessibleView, LifetimeTra
 
     }
 
-    func setUpView(_ reset: Bool) {
+    private func setUpView(_ reset: Bool) {
         self.pinCodeView.updateViewText(cancelText: self.viewModel.cancel(),
                                         resetPin: reset)
         self.pinCodeView.updateBackButton(self.viewModel.backButtonIcon())

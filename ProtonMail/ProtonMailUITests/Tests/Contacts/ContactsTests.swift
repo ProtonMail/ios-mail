@@ -10,23 +10,19 @@ import ProtonCore_TestingToolkit
 
 class ContactsTests : FixtureAuthenticatedTestCase {
 
-    private var contactsRobot = ContactsRobot()
-
-    override func setUp() {
-        super.setUp()
-        contactsRobot = InboxRobot()
-            .menuDrawer()
-            .contacts()
-    }
-
     func testCreateAndDeleteContact() {
-        contactsRobot
-            .addContact()
-            .setNameEmailAndSave(user!.name, user!.email)
-            .contactsView()
-            .deleteContact(user!.name)
-            .verify.contactDoesNotExists(user!.name)
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .menuDrawer()
+                .contacts()
+                .addContact()
+                .setNameEmailAndSave(user.name, user.email)
+                .contactsView()
+                .deleteContact(user.name)
+                .verify.contactDoesNotExists(user.name)
+        }
     }
+
 
     // enable and refactor to use quark commands back after the smoke set is finished
     func xtestEditContact() {
@@ -34,7 +30,9 @@ class ContactsTests : FixtureAuthenticatedTestCase {
         let email = testData.newEmailAddress
         let editedName = testData.alphaNumericStringStartingFromX
         let editedEmail = testData.newEmailAddress
-        contactsRobot
+        InboxRobot()
+            .menuDrawer()
+            .contacts()
             .addContact()
             .setNameEmailAndSave(name, email)
             .contactsView()
@@ -50,24 +48,30 @@ class ContactsTests : FixtureAuthenticatedTestCase {
     func testCreateAndDeleteGroup() {
         let email = testData.newEmailAddress
         let groupName = testData.alphaNumericString
-        contactsRobot
-            .addContact()
-            .setNameEmailAndSave(name, email)
-            .addGroup()
-            .typeGroupName(groupName)
-            .tapManageAddresses()
-            .addContactToGroup(email)
-            .saveContactSelection()
-            .groupsView()
-            .deleteGroup(groupName)
-            .verify.groupDoesNotExists(groupName)
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .menuDrawer()
+                .contacts()
+                .addContact()
+                .setNameEmailAndSave(name, email)
+                .addGroup()
+                .typeGroupName(groupName)
+                .tapManageAddresses()
+                .addContactToGroup(email)
+                .saveContactSelection()
+                .groupsView()
+                .deleteGroup(groupName)
+                .verify.groupDoesNotExists(groupName)
+        }
     }
 
     func xtestEditGroup() {
         let email = testData.newEmailAddress
         let groupName = testData.alphaNumericString
         let newGroupName = testData.alphaNumericString
-        contactsRobot
+        InboxRobot()
+            .menuDrawer()
+            .contacts()
             .addContact()
             .setNameEmailAndSave(name, email)
             .addGroup()
@@ -88,7 +92,9 @@ class ContactsTests : FixtureAuthenticatedTestCase {
     func xtestContactDetailSendMessage() {
         let subject = testData.messageSubject
         let contactName = testData.internalEmailTrustedKeys.email
-        contactsRobot
+        InboxRobot()
+            .menuDrawer()
+            .contacts()
             .contactsView()
             .clickContact(contactName)
             .emailContact()
@@ -102,7 +108,9 @@ class ContactsTests : FixtureAuthenticatedTestCase {
     func xtestContactGroupSendMessage() {
         let subject = testData.messageSubject
         let groupName = "TestAutomation"
-        contactsRobot
+        InboxRobot()
+            .menuDrawer()
+            .contacts()
             .groupsView()
             .sendGroupEmail(groupName)
             .sendMessageToGroup(subject)

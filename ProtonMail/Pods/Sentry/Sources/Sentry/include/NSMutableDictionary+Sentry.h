@@ -12,6 +12,8 @@ NSMutableDictionary (Sentry)
  */
 - (void)mergeEntriesFromDictionary:(NSDictionary *)otherDictionary;
 
+- (void)setBoolValue:(nullable NSNumber *)value forKey:(NSString *)key;
+
 @end
 
 NS_ASSUME_NONNULL_END

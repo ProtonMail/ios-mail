@@ -64,12 +64,8 @@ class NewMailboxMessageCellPresenter {
                 view.checkBoxView.tickImageView.image = nil
             }
             view.checkBoxView.backgroundColor = backgroundColor
-            if #available(iOS 13, *) {
                 view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
                     .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light))
-            } else {
-                view.checkBoxView.tickImageView.tintColor = ColorProvider.IconInverted
-            }
         case .scheduled:
             view.scheduledIconView.isHidden = false
             view.scheduledContainer.isHidden = false
@@ -80,9 +76,6 @@ class NewMailboxMessageCellPresenter {
     }
 
     func presentSenderImage(_ image: UIImage, in view: NewMailboxMessageCellContentView) {
-        guard view.checkBoxView.isHidden else {
-            return
-        }
         view.senderImageView.image = image
         view.senderImageView.isHidden = false
         view.initialsLabel.isHidden = true
@@ -98,7 +91,7 @@ class NewMailboxMessageCellPresenter {
         }
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     private func presentContent(
         viewModel: NewMailboxMessageViewModel,
         in view: NewMailboxMessageContentView,
@@ -190,7 +183,7 @@ class NewMailboxMessageCellPresenter {
 
 extension NewMailboxMessageViewModel {
     var displayOriginIcon: Bool {
-        location == .allmail || location == .starred || isLabelLocation
+        location == .allmail || location == .starred || isLabelLocation || location == .almostAllMail
     }
 
 }

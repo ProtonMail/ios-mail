@@ -71,7 +71,9 @@ class SetPinCodeModelImpl: PinCodeViewModel {
     override func done(completion: @escaping (Bool) -> Void) {
         self.isPinMatched { matched in
             if matched {
-                _ = self.coreKeyMaker.deactivate(BioProtection())
+                LockPreventor.shared.performWhileSuppressingLock {
+                    _ = self.coreKeyMaker.deactivate(BioProtection())
+                }
                 self.coreKeyMaker.activate(PinProtection(pin: self.enterPin)) { [unowned self] activated in
                     if activated {
                         NotificationCenter.default.post(name: .appLockProtectionEnabled, object: nil, userInfo: nil)

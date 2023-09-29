@@ -23,7 +23,9 @@ protocol SingleMessageContentUIProtocol: AnyObject {
 
 class SingleMessageContentViewModel {
 
-    let messageInfoProvider: MessageInfoProvider
+    var messageInfoProvider: MessageInfoProvider {
+        dependencies.messageInfoProvider
+    }
 
     private(set) var message: MessageEntity {
         didSet { propagateMessageData() }
@@ -41,9 +43,11 @@ class SingleMessageContentViewModel {
     var embedNonExpandedHeader: ((NonExpandedHeaderViewModel) -> Void)?
     var messageHadChanged: (() -> Void)?
     var updateErrorBanner: ((NSError?) -> Void)?
-    let goToDraft: ((MessageID, OriginalScheduleDate?) -> Void)
+    let goToDraft: ((MessageID, Date?) -> Void)
     var showProgressHub: (() -> Void)?
     var hideProgressHub: (() -> Void)?
+    private var isApplicationActive: (() -> Bool)?
+    private var reloadWhenAppIsActive: (() -> Void)?
 
     var isEmbedInConversationView: Bool {
         context.viewMode == .conversation
@@ -52,7 +56,7 @@ class SingleMessageContentViewModel {
     let context: SingleMessageContentViewContext
     let user: UserManager
 
-    private let internetStatusProvider: InternetConnectionStatusProvider
+    private let internetStatusProvider: InternetConnectionStatusProviderProtocol
     private let messageService: MessageDataService
     private let observerID = UUID()
 
@@ -101,54 +105,25 @@ class SingleMessageContentViewModel {
     private var cancellables = Set<AnyCancellable>()
 
     init(context: SingleMessageContentViewContext,
-         imageProxy: ImageProxy,
          childViewModels: SingleMessageChildViewModels,
          user: UserManager,
-         internetStatusProvider: InternetConnectionStatusProvider,
-         systemUpTime: SystemUpTimeProtocol,
-         shouldOpenHistory: Bool = false,
+         internetStatusProvider: InternetConnectionStatusProviderProtocol,
          dependencies: Dependencies,
          highlightedKeywords: [String],
-         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void) {
+         goToDraft: @escaping (MessageID, Date?) -> Void) {
         self.context = context
         self.user = user
         self.message = context.message
-        let messageInfoProviderDependencies = MessageInfoProvider.Dependencies(
-            imageProxy: imageProxy,
-            fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(
-                    senderImageService: .init(
-                        dependencies: .init(
-                            apiService: user.apiService,
-                            internetStatusProvider: internetStatusProvider
-                        )
-                    ),
-                    senderImageStatusProvider: dependencies.senderImageStatusProvider,
-                    mailSettings: user.mailSettings
-                )
-            )
-        )
-
-        self.messageInfoProvider = .init(
-            message: context.message,
-            user: user,
-            systemUpTime: systemUpTime,
-            labelID: context.labelId,
-            dependencies: messageInfoProviderDependencies,
-            highlightedKeywords: highlightedKeywords,
-            shouldOpenHistory: shouldOpenHistory
-        )
-        imageProxy.set(delegate: messageInfoProvider)
-        messageInfoProvider.initialize()
         self.messageBodyViewModel = childViewModels.messageBody
         self.bannerViewModel = childViewModels.bannerViewModel
-        bannerViewModel.providerHasChanged(provider: messageInfoProvider)
         self.attachmentViewModel = childViewModels.attachments
-        self.internetStatusProvider = internetStatusProvider
         self.messageService = user.messageService
+        self.internetStatusProvider = internetStatusProvider
         self.dependencies = dependencies
         self.goToDraft = goToDraft
+
+        messageInfoProvider.initialize()
+        bannerViewModel.providerHasChanged(provider: messageInfoProvider)
 
         createNonExpandedHeaderViewModel()
 
@@ -166,7 +141,7 @@ class SingleMessageContentViewModel {
                                                          completion: { [weak self] _ in
                         DispatchQueue.main.async {
                             self?.hideProgressHub?()
-                            self?.goToDraft(msgID, .init(originalScheduledTime))
+                            self?.goToDraft(msgID, originalScheduledTime)
                         }
                     })
                 }
@@ -215,7 +190,7 @@ class SingleMessageContentViewModel {
             }
             return
         }
-        guard internetStatusProvider.currentStatus != .notConnected else {
+        guard internetStatusProvider.status != .notConnected else {
             messageBodyViewModel.errorHappens()
             return
         }
@@ -265,7 +240,7 @@ class SingleMessageContentViewModel {
     }
 
     func deleteExpiredMessages() {
-        messageService.deleteExpiredMessage(completion: nil)
+        messageService.deleteExpiredMessages()
     }
 
     func markReadIfNeeded() {
@@ -308,24 +283,10 @@ class SingleMessageContentViewModel {
     }
 
     func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
-                                      reloadWhenAppIsActive: @escaping (Bool) -> Void) {
-        internetStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] networkStatus in
-            guard self?.message.body.isEmpty == true else {
-                return
-            }
-            guard self?.hasAlreadyFetchedMessageData == true else {
-                return
-            }
-            let isApplicationActive = isApplicationActive()
-            switch isApplicationActive {
-            case true where networkStatus == .notConnected:
-                break
-            case true:
-                self?.downloadDetails()
-            default:
-                reloadWhenAppIsActive(true)
-            }
-        }
+                                      reloadWhenAppIsActive: @escaping () -> Void) {
+        self.isApplicationActive = isApplicationActive
+        self.reloadWhenAppIsActive = reloadWhenAppIsActive
+        internetStatusProvider.register(receiver: self, fireWhenRegister: true)
     }
 
     func set(uiDelegate: SingleMessageContentUIProtocol) {
@@ -337,6 +298,21 @@ class SingleMessageContentViewModel {
               messageInfoProvider.contents?.supplementCSS != nil,
               messageInfoProvider.contents?.renderStyle == .dark else { return }
         sendDarkModeMetric(isApply: true)
+    }
+
+    func isProtonUnreachable(completion: @escaping (Bool) -> Void) {
+        guard
+            dependencies.featureFlagCache.isFeatureFlag(.protonUnreachableBanner, enabledForUserWithID: user.userID)
+        else {
+            completion(false)
+            return
+        }
+        Task { [weak self] in
+            let status = await self?.dependencies.checkProtonServerStatus.execute()
+            await MainActor.run {
+                completion(status == .serverDown)
+            }
+        }
     }
 }
 
@@ -408,12 +384,36 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
     }
 }
 
+extension SingleMessageContentViewModel: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        guard message.body.isEmpty == true else {
+            return
+        }
+        guard hasAlreadyFetchedMessageData == true,
+              let isApplicationActiveClosure = isApplicationActive,
+              let reloadWhenAppIsActiveClosure = reloadWhenAppIsActive else {
+            return
+        }
+        let isApplicationActive = isApplicationActiveClosure()
+        switch isApplicationActive {
+        case true where newStatus == .notConnected:
+            break
+        case true:
+            downloadDetails()
+        default:
+            reloadWhenAppIsActiveClosure()
+        }
+    }
+}
+
 extension SingleMessageContentViewModel {
     struct Dependencies {
         let blockSender: BlockSender
         let fetchMessageDetail: FetchMessageDetailUseCase
         let isSenderBlockedPublisher: IsSenderBlockedPublisher
-        let senderImageStatusProvider: SenderImageStatusProvider
+        let messageInfoProvider: MessageInfoProvider
         let unblockSender: UnblockSender
+        let checkProtonServerStatus: CheckProtonServerStatusUseCase
+        let featureFlagCache: FeatureFlagCache
     }
 }

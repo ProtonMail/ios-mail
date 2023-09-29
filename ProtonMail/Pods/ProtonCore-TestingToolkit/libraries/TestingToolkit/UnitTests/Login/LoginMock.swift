@@ -21,17 +21,29 @@
 
 import Foundation
 
+import ProtonCore_Authentication
 import ProtonCore_APIClient
 import ProtonCore_Log
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
-import GoLibs
 import ProtonCore_Login
 
 public class LoginMock: Login {
-    
     public init() {}
+    
+    @FuncStub(Login.processResponseToken) public var processResponseTokenStub
+    public func processResponseToken(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+        processResponseTokenStub(idpEmail, responseToken, completion)
+    }
+
+    public func getSSORequest(challenge ssoChallengeResponse: SSOChallengeResponse) async -> (request: URLRequest?, error: String?) {
+        fatalError("not implemented because it's async")
+    }
+    
+    @FuncStub(Login.isProtonPage, initialReturn: false) public var isProtonPageStub
+    public func isProtonPage(url: URL?) -> Bool { isProtonPageStub(url) }
     
     @PropertyStub(\LoginMock.currentlyChosenSignUpDomain, initialGet: .empty) public var currentlyChosenSignUpDomainStub
     public var currentlyChosenSignUpDomain: String {
@@ -72,9 +84,9 @@ public class LoginMock: Login {
         logoutStub(credential, completion)
     }
 
-    @FuncStub(Login.login(username:password:challenge:completion:)) public var loginStub
-    public func login(username: String, password: String, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
-        loginStub(username, password, challenge, completion)
+    @FuncStub(Login.login(username:password:intent:challenge:completion:)) public var loginStub
+    public func login(username: String, password: String, intent: Intent?, challenge: [String: Any]?, completion: @escaping (Result<LoginStatus, LoginError>) -> Void) {
+        loginStub(username, password, intent, challenge, completion)
     }
 
     @FuncStub(Login.provide2FACode) public var provide2FACodeStub
@@ -121,9 +133,9 @@ public class LoginMock: Login {
         refreshUserInfoStub(completion)
     }
     
-    @FuncStub(Login.checkUsernameFromEmail) public var checkUsernameFromEmailStub
-    public func checkUsernameFromEmail(email: String, result: @escaping (Result<(String?), AvailabilityError>) -> Void) {
-        checkUsernameFromEmailStub(email, result)
+    @FuncStub(Login.availableUsernameForExternalAccountEmail) public var availableUsernameForExternalAccountEmailStub
+    public func availableUsernameForExternalAccountEmail(email: String, completion: @escaping (String?) -> Void) {
+        availableUsernameForExternalAccountEmailStub(email, completion)
     }
     
     public var startGeneratingAddress: (() -> Void)?
@@ -140,7 +152,7 @@ public class AnonymousServiceManager: APIServiceDelegate {
     public var additionalHeaders: [String: String]?
     public var userAgent: String?
     public func onUpdate(serverTime: Int64) {
-        CryptoUpdateTime(serverTime)
+        CryptoGo.CryptoUpdateTime(serverTime)
     }
     public func isReachable() -> Bool { return true }
     public func onDohTroubleshot() {

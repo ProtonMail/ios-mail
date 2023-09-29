@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import GoLibs
 import ProtonCore_Crypto
 import XCTest
 
@@ -152,5 +151,16 @@ class MailCryptoTests: XCTestCase {
             armoredMessage = try Encryptor.encrypt(publicKey: pgpPublicKey, cleartext: plaintext)
         }
         return armoredMessage.value
+    }
+}
+
+private extension MailCrypto {
+    func decryptMIME(
+        encrypted message: String,
+        publicKeys: [ArmoredKey],
+        decryptionKeys: [DecryptionKey]
+    ) throws -> MIMEMessageData {
+        let decryptionKeyRing = try KeyRingBuilder().buildPrivateKeyRingUnlock(privateKeys: decryptionKeys)
+        return try decryptMIME(encrypted: message, publicKeys: publicKeys, decryptionKeyRing: decryptionKeyRing)
     }
 }

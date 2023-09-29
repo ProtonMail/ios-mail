@@ -19,7 +19,7 @@ import Foundation
 import ProtonCore_Networking
 import ProtonCore_Services
 
-typealias ExecuteNotificationActionUseCase = NewUseCase<Void, ExecuteNotificationAction.Parameters>
+typealias ExecuteNotificationActionUseCase = UseCase<Void, ExecuteNotificationAction.Parameters>
 
 final class ExecuteNotificationAction: ExecuteNotificationActionUseCase {
 

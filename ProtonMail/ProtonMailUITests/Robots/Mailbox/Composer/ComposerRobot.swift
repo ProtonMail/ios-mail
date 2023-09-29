@@ -33,6 +33,8 @@ fileprivate struct id {
     static let recipientNotFoundStaticTextIdentifier = LocalString._recipient_not_found
     
     static let setExpirationButtonLabel = LocalString._general_set
+    static let messageBodyLabel = "HTML Editor"
+    static let returnKeyboardButtonLabel = "return"
     
     /// Default Photo library images identifiers
     static func imageCellIdentifier(_ number: Int) -> String {
@@ -46,7 +48,7 @@ fileprivate struct id {
 
 /**
  Represents Composer view.
-*/
+ */
 class ComposerRobot: CoreElements {
     
     var verify = Verify()
@@ -62,6 +64,12 @@ class ComposerRobot: CoreElements {
     }
     
     func sendMessage(_ to: String, _ subjectText: String) -> InboxRobot {
+        return typeAndSelectRecipients(to)
+            .subject(subjectText)
+            .send()
+    }
+    
+    func sendMessageWithSavedContact(_ to: String, _ subjectText: String) -> InboxRobot {
         return typeAndSelectRecipients(to)
             .subject(subjectText)
             .send()
@@ -87,13 +95,13 @@ class ComposerRobot: CoreElements {
     }
     
     func draftToSubjectBodyAttachment(_ to: String, _ subjectText: String, _ body: String) -> ComposerRobot {
-        return addAttachment()
+        return recipients(to)
+            .addAttachment()
             .add()
             .pickImages(1)
-            .recipients(to)
             .subject(subjectText)
             .body(body)
-            
+        
     }
     
     func sendMessageToContact(_ subjectText: String) -> ContactDetailsRobot {
@@ -130,7 +138,7 @@ class ComposerRobot: CoreElements {
     }
     
     func sendMessageExpiryTimeInDays(_ to: String, _ subjectText: String, _ body: String, expirePeriod: expirationPeriod) -> InboxRobot {
-        typeAndSelectRecipients(to)
+        recipients(to)
             .subject(subjectText)
             .messageExpiration()
             .setExpiration(expirePeriod)
@@ -139,7 +147,7 @@ class ComposerRobot: CoreElements {
     }
     
     func sendMessageEOAndExpiryTime(_ to: String, _ subjectText: String, _ password: String, _ hint: String, expirePeriod: expirationPeriod) -> InboxRobot {
-        typeAndSelectRecipients(to)
+        recipients(to)
             .subject(subjectText)
             .setMessagePassword()
             .definePasswordWithHint(password, hint)
@@ -163,7 +171,7 @@ class ComposerRobot: CoreElements {
         addAttachment()
             .add()
             .pickImages(attachmentsAmount)
-            .typeAndSelectRecipients(to)
+            .recipients(to)
             .subject(subjectText)
             .setMessagePassword()
             .definePasswordWithHint(password, hint)
@@ -184,7 +192,7 @@ class ComposerRobot: CoreElements {
         send()
         return MessageRobot()
     }
-
+    
     func recipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).tap().typeText(email)
         button("Return").firstMatch().tap()
@@ -193,10 +201,13 @@ class ComposerRobot: CoreElements {
     
     func typeAndSelectRecipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).firstMatch().tap().typeText(email)
-        cell(id.getContactCellIdentifier(email)).firstMatch().waitForHittable().tap()
+        if cell(id.getContactCellIdentifier(email.replaceSpaces())).firstMatch().exists() {
+            cell(id.getContactCellIdentifier(email.replaceSpaces())).firstMatch().waitForHittable().tap()
+        } else {
+            otherElement(id.messageBodyLabel).tap()
+        }
         return self
     }
-
     
     func editRecipients(_ email: String) -> ComposerRobot {
         textField(id.toTextFieldIdentifier).tap().typeText(email)
@@ -209,7 +220,7 @@ class ComposerRobot: CoreElements {
         button(email).waitForHittable().tap()
         return ComposerRobot()
     }
-
+    
     func changeSubjectTo(_ subjectText: String) -> ComposerRobot {
         textField(id.subjectTextFieldIdentifier)
             .firstMatch()
@@ -269,13 +280,15 @@ class ComposerRobot: CoreElements {
         textField(id.subjectTextFieldIdentifier)
             .firstMatch()
             .forceKeyboardFocus()
+            .tap()
             .typeText(subjectText)
+        button(id.returnKeyboardButtonLabel).tap()
         return self
     }
     
     @discardableResult
     private func body(_ text: String) -> ComposerRobot {
-        ///TODO: add body update when WebView field will be accessible.
+        otherElement(id.messageBodyLabel).tap().typeText(text)
         return self
     }
     
@@ -309,7 +322,7 @@ class ComposerRobot: CoreElements {
     }
     
     private func composeMessage(_ to: String, _ subject: String, _ body: String) -> ComposerRobot {
-        return typeAndSelectRecipients(to)
+        return recipients(to)
             .subject(subject)
             .body(body)
     }
@@ -320,7 +333,7 @@ class ComposerRobot: CoreElements {
     }
     
     private func addAttachment() -> MessageAttachmentsRobot  {
-        button(id.attachmentButtonIdentifier).tap()
+        button(id.attachmentButtonIdentifier).waitForHittable().tap()
         return MessageAttachmentsRobot()
     }
     
@@ -351,9 +364,9 @@ class ComposerRobot: CoreElements {
     
     /**
      Contains all the validations that can be performed by ComposerRobot.
-    */
+     */
     class Verify: CoreElements {
-
+        
         func fromEmailIs(_ email: String) {
             staticText(id.fromStaticTextIdentifier).checkHasLabel(email)
         }

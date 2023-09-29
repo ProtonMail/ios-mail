@@ -19,10 +19,6 @@ import ProtonCore_UIFoundations
 import UIKit
 
 class ProgressBarButtonTableViewCell: UITableViewCell {
-    static var CellID: String {
-        return "\(self)"
-    }
-
     typealias ButtonActionBlock = () -> Void
 
     var callback: ButtonActionBlock?
@@ -43,7 +39,7 @@ class ProgressBarButtonTableViewCell: UITableViewCell {
         self.createSubViews()
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     private func createSubViews() {
         let parentView: UIView = self.contentView
 

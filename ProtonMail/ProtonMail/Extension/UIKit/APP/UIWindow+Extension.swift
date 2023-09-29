@@ -66,8 +66,8 @@ extension UIWindow {
         return topController
     }
 
-    convenience init(root: UIViewController, scene: AnyObject?) {
-        if #available(iOS 13.0, *), let scene = scene as? UIWindowScene {
+    convenience init(root: UIViewController, scene: UIScene?) {
+        if let scene = scene as? UIWindowScene {
             self.init(windowScene: scene)
         } else {
             self.init(frame: UIScreen.main.bounds)

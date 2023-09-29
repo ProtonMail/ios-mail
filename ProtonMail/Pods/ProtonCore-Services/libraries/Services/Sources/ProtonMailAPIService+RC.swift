@@ -59,6 +59,7 @@ extension PMAPIService {
                                                fetchingCredentialsResult: .found(credentials: AuthCredential(oldCredential)),
                                                nonDefaultTimeout: route.nonDefaultTimeout,
                                                retryPolicy: route.retryPolicy,
+                                               onDataTaskCreated: { _ in },
                                                completion: .right({ (task, result: Result<RefreshResponse, APIError>) in
             self.fetchAuthCredentialCompletionBlockBackgroundQueue.async {
                 let httpCode = task.flatMap(\.response).flatMap { $0 as? HTTPURLResponse }.map(\.statusCode)

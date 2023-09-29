@@ -25,7 +25,9 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
     override func setUp() {
         super.setUp()
         stubSwipeActionCache = SwipeActionCacheStub()
-        sut = UpdateSwipeActionDuringLogin(dependencies: .init(swipeActionCache: stubSwipeActionCache))
+        let globalContainer = GlobalContainer()
+        globalContainer.swipeActionCacheFactory.register { self.stubSwipeActionCache }
+        sut = UpdateSwipeActionDuringLogin(dependencies: globalContainer)
     }
 
     override func tearDown() {
@@ -44,11 +46,14 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         stubSwipeActionCache.rightToLeftSwipeActionType = nil
         let expectation1 = expectation(description: "Closure is called")
 
-        sut.execute(activeUserInfo: user.userInfo,
-                    newUserInfo: user.userInfo,
-                    newUserApiService: mockApi) {
-            expectation1.fulfill()
-        }
+        sut.execute(
+            params: .init(
+                activeUserInfo: user.userInfo,
+                newUserInfo: user.userInfo,
+                newUserApiService: mockApi
+            )) { _ in
+                expectation1.fulfill()
+            }
         waitForExpectations(timeout: 1, handler: nil)
 
         XCTAssertTrue(mockApi.requestJSONStub.wasNotCalled)
@@ -77,9 +82,13 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
 
         let expectation1 = expectation(description: "Closure is called")
 
-        sut.execute(activeUserInfo: activeUser.userInfo,
-                    newUserInfo: newUser.userInfo,
-                    newUserApiService: mockApi) {
+        sut.execute(
+            params: .init(
+                activeUserInfo: activeUser.userInfo,
+                newUserInfo: newUser.userInfo,
+                newUserApiService: mockApi
+            )
+        ) { _ in
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
@@ -110,9 +119,13 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
 
         let expectation1 = expectation(description: "Closure is called")
 
-        sut.execute(activeUserInfo: activeUser.userInfo,
-                    newUserInfo: newUser.userInfo,
-                    newUserApiService: mockApi) {
+        sut.execute(
+            params: .init(
+                activeUserInfo: activeUser.userInfo,
+                newUserInfo: newUser.userInfo,
+                newUserApiService: mockApi
+            )
+        ) { _ in
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)

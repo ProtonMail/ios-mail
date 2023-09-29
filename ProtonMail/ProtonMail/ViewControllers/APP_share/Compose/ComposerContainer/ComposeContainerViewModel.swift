@@ -30,6 +30,8 @@ protocol ComposeContainerUIProtocol: AnyObject {
 class ComposeContainerViewModel: TableContainerViewModel {
     var childViewModel: ComposeViewModel
 
+    private let dependencies: Dependencies
+
     // for FileImporter
     lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
     lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
@@ -39,7 +41,6 @@ class ComposeContainerViewModel: TableContainerViewModel {
     let coreDataContextProvider: CoreDataContextProviderProtocol
 
     private var userIntroductionProgressProvider: UserIntroductionProgressProvider
-    private let scheduleSendStatusProvider: ScheduleSendEnableStatusProvider
 
     var isScheduleSendIntroViewShown: Bool {
         !userIntroductionProgressProvider.shouldShowSpotlight(for: .scheduledSend, toUserWith: user.userID)
@@ -48,21 +49,26 @@ class ComposeContainerViewModel: TableContainerViewModel {
     private let router: ComposerRouter
     var isSendButtonTapped: Bool = false
     var currentAttachmentSize = 0
+
     var isScheduleSendEnable: Bool {
-        scheduleSendStatusProvider.isScheduleSendEnabled(userID: user.userID) == .enabled
+        dependencies.featureFlagCache.featureFlags(for: user.userID)[.scheduleSend]
+    }
+
+    var shouldStripAttachmentMetadata: Bool {
+        dependencies.attachmentMetadataStripStatusProvider.metadataStripping == .stripMetadata
     }
 
     init(
+        dependencies: Dependencies,
         router: ComposerRouter,
         editorViewModel: ComposeViewModel,
         userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        scheduleSendStatusProvider: ScheduleSendEnableStatusProvider,
         contextProvider: CoreDataContextProviderProtocol
     ) {
+        self.dependencies = dependencies
         self.router = router
         self.childViewModel = editorViewModel
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
-        self.scheduleSendStatusProvider = scheduleSendStatusProvider
         self.coreDataContextProvider = contextProvider
         super.init()
         self.contactChanged = observeRecipients()
@@ -113,8 +119,8 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 
     func allowScheduledSend(completion: @escaping (Bool) -> Void) {
-        let connectionStatusProvider = InternetConnectionStatusProvider()
-        let status = connectionStatusProvider.currentStatus
+        let connectionStatusProvider = InternetConnectionStatusProvider.shared
+        let status = connectionStatusProvider.status
         guard status.isConnected else {
             checkLocalScheduledMessage(completion: completion)
             return
@@ -145,10 +151,6 @@ class ComposeContainerViewModel: TableContainerViewModel {
 }
 
 extension ComposeContainerViewModel: FileImporter, AttachmentController {
-    func error(title: String, description: String) {
-        self.showErrorBanner(description)
-    }
-
     func present(_ controller: UIViewController, animated: Bool, completion: (() -> Void)?) {
         fatalError()
     }
@@ -162,9 +164,8 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
             self.showErrorBanner(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
             return Promise()
         }
-        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         return Promise { seal in
-            self.childViewModel.composerMessageHelper.addAttachment(fileData, shouldStripMetaData: stripMetadata) { _ in
+            self.childViewModel.composerMessageHelper.addAttachment(fileData, shouldStripMetaData: shouldStripAttachmentMetadata) { _ in
                 self.childViewModel.updateDraft()
                 seal.fulfill_()
             }
@@ -198,5 +199,12 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
     func sendAction(deliveryTime: Date?) {
         childViewModel.deliveryTime = deliveryTime
         // TODO: handle sending message here.
+    }
+}
+
+extension ComposeContainerViewModel {
+    struct Dependencies {
+        let featureFlagCache: FeatureFlagCache
+        let attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol
     }
 }

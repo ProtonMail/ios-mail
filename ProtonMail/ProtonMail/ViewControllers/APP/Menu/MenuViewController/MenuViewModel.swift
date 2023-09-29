@@ -20,8 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import Combine
 import CoreData
+import Foundation
 import PromiseKit
 import ProtonCore_AccountSwitcher
 import ProtonCore_DataModel
@@ -51,6 +52,8 @@ final class MenuViewModel: NSObject {
     var currentUser: UserManager? {
         return self.usersManager.firstUser
     }
+    /// It is used to check if menu needs to update the view when the active account is changed.
+    private var currentUserID: UserID?
     var secondUser: UserManager? {
         return self.usersManager.user(at: 1)
     }
@@ -64,6 +67,10 @@ final class MenuViewModel: NSObject {
     private(set) var moreItems: [MenuLabel]
     /// When BE has issue, BE will disable subscription functionality
     private var subscriptionAvailable = true
+    private var selectedItem: MenuLabel? {
+        let items = inboxItems + folderItems + labelItems + moreItems
+        return items.first(where: { $0.isSelected })
+    }
 
     var reloadClosure: (() -> Void)?
     lazy private(set) var userEnableColorSettingClosure: () -> Bool = { [weak self] in
@@ -73,9 +80,10 @@ final class MenuViewModel: NSObject {
         self?.currentUser?.userInfo.inheritParentFolderColor == 1
     }
 
-    weak var coordinator: MenuCoordinator?
+    weak var coordinator: MenuCoordinatorProtocol?
     private let coreKeyMaker: KeyMakerProtocol
     private let unlockManager: UnlockManager
+    private var mailSettingCancellable: AnyCancellable?
 
     init(
         usersManager: UsersManager,
@@ -91,7 +99,9 @@ final class MenuViewModel: NSObject {
         self.unlockManager = unlockManager
 
         self.sections = [.inboxes, .folders, .labels, .more]
-        self.inboxItems = Self.inboxItems()
+        self.inboxItems = Self.inboxItems(
+            almostAllMailIsOn: usersManager.firstUser?.mailSettings.almostAllMail ?? false
+        )
         let defaultInfo = MoreItemsInfo(userIsMember: nil,
                                         subscriptionAvailable: subscriptionAvailable,
                                         isPinCodeEnabled: unlockManager.cacheStatus.isPinCodeEnabled,
@@ -126,6 +136,7 @@ extension MenuViewModel: MenuVMProtocol {
         self.observeLabelUnreadUpdate()
         self.observeContextLabelUnreadUpdate()
         self.observeScheduleSendLocationStatus()
+        self.observeAlmostAllMailSettingChange()
         self.highlight(label: MenuLabel(location: .inbox))
     }
 
@@ -288,6 +299,7 @@ extension MenuViewModel: MenuVMProtocol {
         self.delegate?.navigateTo(label: MenuLabel(location: .inbox))
         let msg = String(format: LocalString._signed_in_as, user.defaultEmail)
         self.delegate?.showToast(message: msg)
+        currentUserID = currentUser?.userID
     }
 
     func prepareLogin(userID: UserID) {
@@ -307,13 +319,8 @@ extension MenuViewModel: MenuVMProtocol {
 
     func getIconColor(of label: MenuLabel) -> UIColor {
 
-        let defaultColor: UIColor
-        if #available(iOS 13.0, *) {
-            defaultColor = label.isSelected ? ColorProvider.SidebarIconWeak
+        let defaultColor = label.isSelected ? ColorProvider.SidebarIconWeak
                 .resolvedColor(with: UITraitCollection(userInterfaceStyle: .light)) : ColorProvider.SidebarIconWeak
-        } else {
-            defaultColor = label.isSelected ? ColorProvider.SidebarIconWeak : ColorProvider.SidebarIconWeak
-        }
 
         guard label.type == .folder else {
             if let labelColor = label.iconColor {
@@ -359,6 +366,10 @@ extension MenuViewModel: MenuVMProtocol {
     }
 
     func go(to labelInfo: MenuLabel) {
+        guard selectedItem?.location != labelInfo.location || currentUserID != currentUser?.userID else {
+            coordinator?.closeMenu()
+            return
+        }
         coordinator?.go(to: labelInfo, deepLink: nil)
     }
 
@@ -468,7 +479,24 @@ extension MenuViewModel {
         self.scheduleSendLocationStatusObserver = observer
     }
 
+    private func observeAlmostAllMailSettingChange() {
+        mailSettingCancellable = currentUser?.$mailSettings
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] mailSettings in
+                guard let weakSelf = self else { return }
+                let hasScheduledMessage = weakSelf.inboxItems.contains(where: { $0.location == .scheduled })
+                let shouldUpdate = weakSelf.inboxItems.contains(where: { $0.location == .almostAllMail }) != mailSettings.almostAllMail
+                if shouldUpdate {
+                    weakSelf.updateInboxItems(hasScheduledMessage: hasScheduledMessage)
+                }
+            })
+    }
+
     func updateInboxItems(hasScheduledMessage: Bool) {
+        self.inboxItems = Self.inboxItems(
+            almostAllMailIsOn: currentUser?.mailSettings.almostAllMail ?? false
+        )
+
         if hasScheduledMessage && !inboxItems.contains(where: { $0.location == .scheduled }) {
             if let insertIndex = inboxItems.firstIndex(where: { $0.location == .sent }) {
                 inboxItems.insert(MenuLabel(location: .scheduled), at: insertIndex)
@@ -657,15 +685,22 @@ extension MenuViewModel {
         var isReferralEligible: Bool
     }
 
-    static func inboxItems() -> [MenuLabel] {
-        [MenuLabel(location: .inbox),
-         MenuLabel(location: .draft),
-         MenuLabel(location: .sent),
-         MenuLabel(location: .starred),
-         MenuLabel(location: .archive),
-         MenuLabel(location: .spam),
-         MenuLabel(location: .trash),
-         MenuLabel(location: .allmail)]
+    static func inboxItems(almostAllMailIsOn: Bool) -> [MenuLabel] {
+        var items = [
+            MenuLabel(location: .inbox),
+            MenuLabel(location: .draft),
+            MenuLabel(location: .sent),
+            MenuLabel(location: .starred),
+            MenuLabel(location: .archive),
+            MenuLabel(location: .spam),
+            MenuLabel(location: .trash)
+        ]
+        if almostAllMailIsOn {
+            items.append(.init(location: .almostAllMail))
+        } else {
+            items.append(.init(location: .allmail))
+        }
+        return items
     }
 
     static func moreItems(for info: MoreItemsInfo) -> [MenuLabel] {

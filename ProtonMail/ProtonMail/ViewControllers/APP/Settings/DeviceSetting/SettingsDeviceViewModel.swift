@@ -79,7 +79,6 @@ enum DeviceSectionItem: Int, CustomStringConvertible {
 enum GeneralSectionItem: Int, CustomStringConvertible {
     case notification = 0
     case language = 1
-    case localizationPreview = 2
 
     var description: String {
         switch self {
@@ -87,36 +86,37 @@ enum GeneralSectionItem: Int, CustomStringConvertible {
             return LocalString._push_notification
         case .language:
             return LocalString._app_language
-        case .localizationPreview:
-            return "Localization Preview"
         }
     }
 }
 
 final class SettingsDeviceViewModel {
+    typealias Dependencies = HasUserManager
+    & HasCleanCache
+    & HasBiometricStatusProvider
+    & HasLockCacheStatus
+    & HasUserCachedStatus
+
     let sections: [SettingDeviceSection] = [.account, .app, .general, .clearCache]
     private(set) var appSettings: [DeviceSectionItem] = [.appPIN, .combineContacts, .browser, .alternativeRouting, .swipeAction]
     private(set) var generalSettings: [GeneralSectionItem] = [.notification, .language]
 
-    private(set) var userManager: UserManager
-    private let biometricStatus: BiometricStatusProvider
-    private let lockCacheStatus: LockCacheStatus
     private let dependencies: Dependencies
 
     var lockOn: Bool {
-        return lockCacheStatus.isPinCodeEnabled || lockCacheStatus.isTouchIDEnabled
+        dependencies.lockCacheStatus.isPinCodeEnabled || dependencies.lockCacheStatus.isTouchIDEnabled
     }
 
     var combineContactOn: Bool {
-        return userCachedStatus.isCombineContactOn
+        dependencies.userCachedStatus.isCombineContactOn
     }
 
     var email: String {
-        return self.userManager.defaultEmail
+        dependencies.user.defaultEmail
     }
 
     var name: String {
-        let name = self.userManager.defaultDisplayName
+        let name = dependencies.user.defaultDisplayName
         return name.isEmpty ? self.email : name
     }
 
@@ -125,7 +125,7 @@ final class SettingsDeviceViewModel {
     }
 
     var appPINTitle: String {
-        switch biometricStatus.biometricType {
+        switch dependencies.biometricStatusProvider.biometricType {
         case .faceID:
             return LocalString._app_pin_with_faceid
         case .touchID:
@@ -135,24 +135,10 @@ final class SettingsDeviceViewModel {
         }
     }
 
-    init(
-        user: UserManager,
-        biometricStatus: BiometricStatusProvider,
-        lockCacheStatus: LockCacheStatus,
-        dependencies: Dependencies
-    ) {
-        self.userManager = user
-        self.biometricStatus = biometricStatus
-        self.lockCacheStatus = lockCacheStatus
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
 
-        if #available(iOS 13, *) {
             appSettings.insert(.darkMode, at: 0)
-        }
-
-        #if DEBUG_ENTERPRISE
-        generalSettings.append(.localizationPreview)
-        #endif
 
         if UserInfo.isToolbarCustomizationEnable {
             appSettings.append(.toolbar)
@@ -185,17 +171,6 @@ final class SettingsDeviceViewModel {
             case .failure(let error):
                 completion?(.failure(error as NSError))
             }
-        }
-    }
-}
-
-extension SettingsDeviceViewModel {
-
-    struct Dependencies {
-        let cleanCache: CleanCacheUseCase
-
-        init(cleanCache: CleanCacheUseCase) {
-            self.cleanCache = cleanCache
         }
     }
 }

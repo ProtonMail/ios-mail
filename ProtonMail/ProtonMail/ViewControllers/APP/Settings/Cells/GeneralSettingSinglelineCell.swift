@@ -28,10 +28,8 @@ class GeneralSettingSinglelineCell: UITableViewCell, AccessibleCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        if #available(iOS 10, *) {
             LeftText.font = UIFont.preferredFont(for: .footnote, weight: .regular)
             LeftText.adjustsFontForContentSizeCategory = true
-        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

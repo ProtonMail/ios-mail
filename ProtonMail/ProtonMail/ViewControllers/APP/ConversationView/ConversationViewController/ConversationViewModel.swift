@@ -31,6 +31,9 @@ class ConversationViewModel {
 
     var showNewMessageArrivedFloaty: ((MessageID) -> Void)?
 
+    var showSpinner: (() -> Void)?
+    var hideSpinner: (() -> Void)?
+
     var messagesTitle: String {
         .localizedStringWithFormat(LocalString._general_message, conversation.messageCount)
     }
@@ -42,7 +45,10 @@ class ConversationViewModel {
     var detailedNavigationViewType: NavigationViewType {
         let subjectStyle = FontManager.DefaultSmallStrong.lineBreakMode(.byTruncatingTail)
         let subject = conversation.subject.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
-        subject.addAttributes(subjectStyle, range: NSRange(location: 0, length: conversation.subject.count))
+        subject.addAttributes(
+            subjectStyle,
+            range: NSRange(location: 0, length: (conversation.subject as NSString).length)
+        )
 
         return .detailed(
             subject: subject,
@@ -68,10 +74,10 @@ class ConversationViewModel {
     private let sharedContactGroups: [ContactGroupVO]
     let coordinator: ConversationCoordinatorProtocol
     private(set) weak var tableView: UITableView?
-    var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
     var isTrashFolder: Bool { self.labelId == LabelLocation.trash.labelID }
     weak var conversationViewController: ConversationViewController?
+    private(set) var tableViewIsUpdating = false
 
     /// Used to decide if there is any new messages coming
     private var recordNumOfMessages = 0
@@ -118,13 +124,13 @@ class ConversationViewModel {
             .allSatisfy { $0.message.contains(location: .archive) }
     }
 
-    let connectionStatusProvider: InternetConnectionStatusProvider
+    let connectionStatusProvider: InternetConnectionStatusProviderProtocol
     private let observerID = UUID()
     var isInitialDataFetchCalled = false
     private let conversationStateProvider: ConversationStateProviderProtocol
     /// This is used to restore the message status when the view mode is changed.
     var messageIDsOfMarkedAsRead: [MessageID] = []
-    private let goToDraft: (MessageID, OriginalScheduleDate?) -> Void
+    private let goToDraft: (MessageID, Date?) -> Void
 
     // Fetched by each cell in the view, use lazy to avoid fetching too much times
     lazy private(set) var customFolders: [LabelEntity] = {
@@ -137,13 +143,15 @@ class ConversationViewModel {
     private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
     let highlightedKeywords: [String]
     let dependencies: Dependencies
+    private var isApplicationActive: (() -> Bool)?
+    private var reloadWhenAppIsActive: (() -> Void)?
 
     init(labelId: LabelID,
          conversation: ConversationEntity,
          coordinator: ConversationCoordinatorProtocol,
          user: UserManager,
          contextProvider: CoreDataContextProviderProtocol,
-         internetStatusProvider: InternetConnectionStatusProvider,
+         internetStatusProvider: InternetConnectionStatusProviderProtocol,
          conversationStateProvider: ConversationStateProviderProtocol,
          labelProvider: LabelProviderProtocol,
          userIntroductionProgressProvider: UserIntroductionProgressProvider,
@@ -152,7 +160,7 @@ class ConversationViewModel {
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
          highlightedKeywords: [String],
-         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void,
+         goToDraft: @escaping (MessageID, Date?) -> Void,
          dependencies: Dependencies) {
         self.labelId = labelId
         self.conversation = conversation
@@ -195,6 +203,9 @@ class ConversationViewModel {
     }
 
     func fetchConversationDetails(completion: (() -> Void)?) {
+        if messagesDataSource.isEmpty {
+            showSpinner?()
+        }
         conversationService.fetchConversation(
             with: conversation.conversationID,
             includeBodyOf: nil,
@@ -209,6 +220,8 @@ class ConversationViewModel {
                     .compactMap{ $0.message?.objectID.rawValue }
                 self.messageService.markLocally(messageObjectIDs: ids, labelID: self.labelId, unRead: false)
             }
+            self?.hideSpinner?()
+
             if let completion = completion {
                 DispatchQueue.main.async(execute: completion)
             }
@@ -271,7 +284,6 @@ class ConversationViewModel {
             contactGroups: sharedContactGroups,
             internetStatusProvider: connectionStatusProvider,
             highlightedKeywords: highlightedKeywords,
-            senderImageStatusProvider: dependencies.senderImageStatusProvider,
             goToDraft: goToDraft
         )
         return .message(viewModel: viewModel)
@@ -306,22 +318,13 @@ class ConversationViewModel {
         }
     }
 
-    func startMonitorConnectionStatus(isApplicationActive: @escaping () -> Bool,
-                                      reloadWhenAppIsActive: @escaping (Bool) -> Void) {
-        connectionStatusProvider.registerConnectionStatus(observerID: observerID) { [weak self] networkStatus in
-            guard self?.isInitialDataFetchCalled == true else {
-                return
-            }
-            let isApplicationActive = isApplicationActive()
-            switch isApplicationActive {
-            case true where networkStatus == .notConnected:
-                break
-            case true:
-                self?.fetchConversationDetails(completion: nil)
-            default:
-                reloadWhenAppIsActive(true)
-            }
-        }
+    func startMonitorConnectionStatus(
+        isApplicationActive: @escaping () -> Bool,
+        reloadWhenAppIsActive: @escaping () -> Void
+    ) {
+        self.isApplicationActive = isApplicationActive
+        self.reloadWhenAppIsActive = reloadWhenAppIsActive
+        connectionStatusProvider.register(receiver: self, fireWhenRegister: true)
     }
 
     func areAllMessagesIn(location: LabelLocation) -> Bool {
@@ -605,20 +608,18 @@ class ConversationViewModel {
     private func perform(update: ConversationUpdateType, on tableView: UITableView) {
         switch update {
         case .willUpdate:
+            tableViewIsUpdating = true
             tableView.beginUpdates()
         case let .didUpdate(messages):
             updateDataSource(with: messages)
             do {
                 try ObjC.catchException {
                     tableView.endUpdates()
+                    self.tableViewIsUpdating = false
                 }
-                Breadcrumbs.shared.clearCrumbs(for: .conversationViewEndUpdatesCrash)
             } catch {
                 // unfortunately the error doesn't contain anything useful
-                assertionFailure("\(error)")
-
-                let trace = Breadcrumbs.shared.trace(for: .conversationViewEndUpdatesCrash)
-                Analytics.shared.sendError(.conversationViewEndUpdatesCrash, trace: trace)
+                PMAssertionFailure(error)
 
                 // this call will sync the data again at the expense of no animation
                 tableView.reloadData()
@@ -627,6 +628,7 @@ class ConversationViewModel {
                 /// because we're in the middle of an update after the `beginUpdates` call above.
                 /// Now it's safe, so we don't need to catch again.
                 tableView.endUpdates()
+                tableViewIsUpdating = false
             }
 
             observeNewMessages()
@@ -927,14 +929,11 @@ extension ConversationViewModel: ToolbarCustomizationActionHandler {
         coordinator.handle(navigationAction: action)
     }
 
-    func navigateToNextConversation(isInPageView: Bool, popCurrentView: (() -> Void)? = nil) {
-        guard isInPageView else {
-            popCurrentView?()
-            return
-        }
-        guard dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove else {
-            return
-        }
+    func sendSwipeNotificationIfNeeded(isInPageView: Bool) {
+        guard
+            isInPageView,
+            dependencies.nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove
+        else { return }
         DispatchQueue.main.async { [weak self] in
             let userInfo: [String: Any] = ["expectation": PagesSwipeAction.forward, "reload": true]
             self?.dependencies.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
@@ -980,7 +979,7 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
     func handleLabelAsAction(conversations: [ConversationEntity],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
+                             currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType],
                              completion: (() -> Void)?) {
         let group = DispatchGroup()
         let fetchEvents = { [weak self] (result: Result<Void, Error>) in
@@ -1171,23 +1170,25 @@ extension ConversationViewModel: LabelAsActionSheetProtocol {
 
 // MARK: - Move TO Action Sheet Implementation
 extension ConversationViewModel: MoveToActionSheetProtocol {
-    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
-        guard let destination = selectedMoveToFolder else { return }
-        user.messageService.move(messages: messages,
-                                 to: destination.location.labelID,
-                                 isSwipeAction: isFromSwipeAction)
+
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool) {
+        user.messageService.move(messages: messages, to: folder.location.labelID, isSwipeAction: isFromSwipeAction)
     }
 
-    func handleMoveToAction(conversations: [ConversationEntity],
-                            isFromSwipeAction: Bool,
-                            completion: (() -> Void)? = nil) {
-        guard let destination = selectedMoveToFolder else { return }
+    func handleMoveToAction(
+        conversations: [ConversationEntity],
+        to folder: MenuLabel,
+        isFromSwipeAction: Bool,
+        completion: (() -> Void)? = nil
+    ) {
         let ids = conversations.map(\.conversationID)
-        conversationService.move(conversationIDs: ids,
-                                 from: "",
-                                 to: destination.location.labelID,
-                                 isSwipeAction: isFromSwipeAction,
-                                 callOrigin: "ConversationViewModel - moveTo") { [weak self] result in
+        conversationService.move(
+            conversationIDs: ids,
+            from: "",
+            to: folder.location.labelID,
+            isSwipeAction: isFromSwipeAction,
+            callOrigin: "ConversationViewModel - moveTo"
+        ) { [weak self] result in
             guard let self = self else { return }
             if (try? result.get()) != nil {
                 self.eventsService.fetchEvents(labelID: self.labelId)
@@ -1273,7 +1274,6 @@ extension ConversationViewModel {
         let fetchMessageDetail: FetchMessageDetailUseCase
         let nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
         let notificationCenter: NotificationCenter
-        let senderImageStatusProvider: SenderImageStatusProvider
         let fetchSenderImage: FetchSenderImageUseCase
     }
 
@@ -1284,5 +1284,27 @@ extension ConversationViewModel {
         case partial
         /// The cell is not visible.
         case hidden
+    }
+}
+
+// MARK: - ConnectionStatusReceiver
+extension ConversationViewModel: ConnectionStatusReceiver {
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        guard isInitialDataFetchCalled == true else {
+            return
+        }
+        guard let isApplicationActiveClosure = isApplicationActive,
+              let reloadWhenAppIsActiveClosure = reloadWhenAppIsActive else {
+            return
+        }
+        let isApplicationActive = isApplicationActiveClosure()
+        switch isApplicationActive {
+        case true where newStatus == .notConnected:
+            break
+        case true:
+            fetchConversationDetails(completion: nil)
+        default:
+            reloadWhenAppIsActiveClosure()
+        }
     }
 }

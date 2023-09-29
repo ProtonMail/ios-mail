@@ -44,13 +44,13 @@ class MoveToFolderRobotInterface: CoreElements {
     
     @discardableResult
     func selectFolder(_ folderName: String) -> MoveToFolderRobotInterface {
-        cell(id.folderCellIdentifier(folderName)).tap()
+        cell(folderName).tap()
         return self
     }
     
     @discardableResult
     func selectLabel(_ labelName: String) -> MoveToFolderRobotInterface {
-        cell(id.folderCellIdentifier(labelName)).tap()
+        selectFolder(labelName)
         return self
     }
     
@@ -101,7 +101,7 @@ class MoveToFolderRobotInterface: CoreElements {
         button(id.doneButtonLabel).waitForHittable().tap()
         return MessageRobot()
     }
-    
+
     func moveToExistingFolder(name: String) -> MoveToFolderRobotInterface {
         //TODO:: add implementation
         return self

@@ -22,7 +22,7 @@
                   "**/APP_share_push_siri",
                   "**/APP_share_push_uiTest",
                   "**/APP_share_siri",
-                  "Generated",
+                  "Generated/APP_share",
                   "Resource/Localization"
                ]
             }
@@ -33,6 +33,9 @@
             },
             {
                "target": "ProtonMailAnalytics"
+            },
+            {
+               "package": "Factory"
             }
          ],
          "preBuildScripts": [

@@ -68,11 +68,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
         self.tableView.register(SettingsAccountCell.self)
         self.tableView.register(SwitchTableViewCell.self)
 
-        if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self, selector: #selector(updateNotificationStatus), name: UIScene.willEnterForegroundNotification, object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self, selector: #selector(updateNotificationStatus), name: UIApplication.willEnterForegroundNotification, object: nil)
-        }
 
         self.view.backgroundColor = ColorProvider.BackgroundSecondary
 
@@ -187,10 +183,7 @@ extension SettingsDeviceViewController {
                 settingsGeneralCell.configure(left: item.description)
                 switch item {
                 case .darkMode:
-                    var status = false
-                    if #available(iOS 13, *) {
-                        status = traitCollection.userInterfaceStyle == .dark
-                    }
+                    let status = traitCollection.userInterfaceStyle == .dark
                     let title = status ? LocalString._settings_On_title : LocalString._settings_Off_title
                     settingsGeneralCell.configure(right: title)
                 case .appPIN:
@@ -252,8 +245,6 @@ extension SettingsDeviceViewController {
                     } else {
                         PMAssertionFailure("Locale \(locale.identifier) has no localized string for \(languageCode)")
                     }
-                case .localizationPreview:
-                    cellToConfig.configure(right: "Test only", imageType: .system)
                 }
             }
             return cell
@@ -362,8 +353,6 @@ extension SettingsDeviceViewController {
                 }
             case .language:
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-            case .localizationPreview:
-                coordinator?.go(to: .localizationPreview)
             }
         case .clearCache:
             cleanCache()

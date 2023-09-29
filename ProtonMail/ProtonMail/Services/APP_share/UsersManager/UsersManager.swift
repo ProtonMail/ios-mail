@@ -20,8 +20,6 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
-import GoLibs
 #if !APP_EXTENSION
 import LifetimeTracker
 #endif
@@ -34,8 +32,15 @@ import ProtonCore_Networking
 import ProtonCore_Services
 import ProtonMailAnalytics
 
+// sourcery: mock
+protocol UsersManagerProtocol: AnyObject {
+    var firstUser: UserManager? { get }
+
+    func hasUsers() -> Bool
+}
+
 /// manager all the users and there services
-class UsersManager: Service {
+class UsersManager: Service, UsersManagerProtocol {
     enum Version: Int {
         static let version: Int = 1 // this is app cache version
 
@@ -101,12 +106,6 @@ class UsersManager: Service {
     private let notificationCenter: NotificationCenter
     private let coreKeyMaker: KeyMakerProtocol
 
-    #if !APP_EXTENSION
-    private var encryptedSearchCache: EncryptedSearchUserCache {
-        return sharedServices.get(by: EncryptedSearchUserDefaultCache.self)
-    }
-    #endif
-
     init(
         doh: DoHInterface,
         userDataCache: CachedUserDataProvider,
@@ -142,16 +141,15 @@ class UsersManager: Service {
         self.cleanRandomKeyIfNeeded()
         let session = auth.sessionID
         let apiService = PMAPIService.createAPIService(
-            doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+            doh: doh,
+            sessionUID: session,
+            challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge()
+                                                       )
         )
         apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
         #if !APP_EXTENSION
         apiService.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: apiService)
         apiService.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-
-        // We've been seeing crashes caused by CoreDataService not being ready by the time a UserManager is instantiated.
-        // Setting up the Core Data stack before the main key is available might mess up migration, however it's a lesser evil compared to a crash.
-        (UIApplication.shared.delegate as? AppDelegate)?.setupCoreData()
         #endif
 
         let newUser = UserManager(
@@ -276,7 +274,7 @@ class UsersManager: Service {
             }
         }
 
-        self.users.forEach { $0.fetchUserInfo() }
+        self.users.forEach { user in Task { await user.fetchUserInfo() } }
         self.users.first?.cacheService.cleanSoftDeletedMessagesAndConversation()
         self.loggedIn()
     }
@@ -357,7 +355,7 @@ extension UsersManager {
             guard !self.users.isEmpty else {
                 _ = self.clean().ensure {
                     self.notificationCenter.post(
-                        name: Notification.Name.didSignOut,
+                        name: .didSignOutLastAccount,
                         object: self
                     )
                     completion?()
@@ -413,7 +411,12 @@ extension UsersManager {
     }
 
     func clean() -> Promise<Void> {
-        return UserManager.cleanUpAll().ensure {
+        Promise { seal in
+            Task {
+                await UserManager.cleanUpAll()
+                seal.fulfill_()
+            }
+        }.ensure {
             sharedServices.get(by: CoreDataService.self).resetMainContextIfNeeded()
 
             self.users = []
@@ -431,10 +434,6 @@ extension UsersManager {
             userCachedStatus.signOut()
             userCachedStatus.cleanGlobal()
 
-            #if !APP_EXTENSION
-            self.encryptedSearchCache.cleanGlobal()
-            #endif
-
             if !ProcessInfo.isRunningUnitTests {
                 self.coreKeyMaker.wipeMainKey()
             }
@@ -450,7 +449,7 @@ extension UsersManager {
             #endif
 
             if !ProcessInfo.isRunningUnitTests {
-                NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
+                NotificationCenter.default.post(name: .didSignOutLastAccount, object: self)
             }
         }
     }
@@ -674,7 +673,7 @@ extension UsersManager {
 
 // MARK: - Legacy crypto functions
 extension UsersManager {
-    // swiftlint:disable cyclomatic_complexity function_body_length
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func migrate_0_1() -> Bool {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin) else {
             return false
@@ -692,7 +691,9 @@ extension UsersManager {
         if let oldAuth = oldAuthFetchLegacy(), let user = oldUserInfoLegacy() {
             let session = oldAuth.sessionID
             let apiService = PMAPIService.createAPIService(
-                doh: self.doh, sessionUID: session, challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+                doh: doh,
+                sessionUID: session,
+                challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
             )
             apiService.serviceDelegate = PMAPIService.ServiceDelegate.shared
             #if !APP_EXTENSION
@@ -775,8 +776,7 @@ extension UsersManager {
 
             let disconnectedUsers = self.disconnectedUsersLegacy()
             if let data = try? JSONEncoder().encode(disconnectedUsers),
-               let locked = try? Locked(clearValue: data, with: mainKey)
-            {
+               let locked = try? Locked(clearValue: data, with: mainKey) {
                 keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)
             }
             return true

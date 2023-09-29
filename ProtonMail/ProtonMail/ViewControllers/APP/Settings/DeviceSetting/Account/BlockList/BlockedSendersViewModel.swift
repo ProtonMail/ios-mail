@@ -19,6 +19,8 @@ import Combine
 import LifetimeTracker
 
 final class BlockedSendersViewModel {
+    typealias Dependencies = HasBlockedSendersPublisher & HasUnblockSender & HasBlockedSenderCacheUpdater
+
     private let dependencies: Dependencies
     private var cancellables = Set<AnyCancellable>()
 
@@ -83,12 +85,12 @@ extension BlockedSendersViewModel: BlockedSendersViewModelInput {
     }
 
     func viewWillAppear() {
-        dependencies.cacheUpdater.delegate = self
-        respondToCacheUpdater(state: dependencies.cacheUpdater.state)
+        dependencies.blockedSenderCacheUpdater.delegate = self
+        respondToCacheUpdater(state: dependencies.blockedSenderCacheUpdater.state)
     }
 
     func userDidPullToRefresh() {
-        dependencies.cacheUpdater.requestUpdate(force: true)
+        dependencies.blockedSenderCacheUpdater.requestUpdate(force: true)
     }
 }
 
@@ -131,12 +133,6 @@ extension BlockedSendersViewModel: LifetimeTrackable {
 extension BlockedSendersViewModel {
     struct BlockedSenderCellModel: Equatable {
         let title: String
-    }
-
-    struct Dependencies {
-        let blockedSendersPublisher: BlockedSendersPublisher
-        let cacheUpdater: BlockedSenderCacheUpdater
-        let unblockSender: UnblockSender
     }
 
     enum State: Equatable {

@@ -18,57 +18,41 @@
 @testable import ProtonMail
 import XCTest
 
-final class UserDefaultsPersistenceMock: TimestampPushPersistable, RegistrationRequiredPersistable {
-    var dict: [String: Any] = [:]
-
-    func set(_ value: Any?, forKey defaultName: String) {
-        dict[defaultName] = value
-    }
-
-    func string(forKey defaultName: String) -> String? {
-        dict[defaultName] as? String
-    }
-
-    func array(forKey defaultName: String) -> [Any]? {
-        dict[defaultName] as? [Any]
-    }
-}
-
-class SharedUserDefaultsTests: XCTestCase {
-    var persistenceMock: UserDefaultsPersistenceMock!
-    var sut: SharedUserDefaults!
+final class SharedUserDefaultsTests: XCTestCase {
+    private var sut: SharedUserDefaults!
+    private var mockUserDefaults: UserDefaults!
 
     override func setUp() {
         super.setUp()
-        persistenceMock = UserDefaultsPersistenceMock()
-        sut = SharedUserDefaults(timestampPushPersistable: persistenceMock, registrationRequiredPersistable: persistenceMock)
+        mockUserDefaults = UserDefaults(suiteName: #fileID)
+        mockUserDefaults.removePersistentDomain(forName: #fileID)
+        sut = SharedUserDefaults(dependencies: .init(userDefaults: mockUserDefaults))
     }
 
     override func tearDown() {
         super.tearDown()
-        persistenceMock = nil
+        mockUserDefaults.removePersistentDomain(forName: #fileID)
         sut = nil
     }
 
-    func testEmptyShouldReturnUndefined() {
-        XCTAssertEqual(sut.lastReceivedPushTimestamp, "Undefined")
+    func testMarkPushNotificationDecryptionFailure_itShouldSaveTheFlag() {
+        sut.markPushNotificationDecryptionFailure()
+        XCTAssertTrue(mockUserDefaults.bool(forKey: "failedPushNotificationDecryption"))
     }
 
-    func testSettingShouldDefaultToFalseForAnyUID() {
-        XCTAssertFalse(sut.shouldRegisterAgain(for: "dummy"))
+    func testHadPushNotificationDecryptionFailed_whenNotMarkedAsFailed_itShouldReturnFalse() {
+        XCTAssertFalse(sut.hadPushNotificationDecryptionFailed)
     }
 
-    func testSettingShouldSaveUIDToRegisterAgain() {
-        let expectedUID = String.randomString(8)
-        sut.setNeedsToRegisterAgain(for: expectedUID)
-        XCTAssertTrue(sut.shouldRegisterAgain(for: expectedUID))
+    func testHadPushNotificationDecryptionFailed_whenMarkedAsFailed_itShouldReturnTrue() {
+        mockUserDefaults.setValue(true, forKey: "failedPushNotificationDecryption")
+        XCTAssertTrue(sut.hadPushNotificationDecryptionFailed)
     }
 
-    func testSettingShouldRemoveUID() {
-        let expectedUID = String.randomString(8)
-        sut.setNeedsToRegisterAgain(for: expectedUID)
-        XCTAssertTrue(sut.shouldRegisterAgain(for: expectedUID))
-        sut.didRegister(for: expectedUID)
-        XCTAssertFalse(sut.shouldRegisterAgain(for: expectedUID))
+    func testClearPushNotificationDecryptionFailure_itShouldRemoveFlag() {
+        mockUserDefaults.setValue(true, forKey: "failedPushNotificationDecryption")
+        sut.clearPushNotificationDecryptionFailure()
+
+        XCTAssertFalse(mockUserDefaults.bool(forKey: "failedPushNotificationDecryption"))
     }
 }

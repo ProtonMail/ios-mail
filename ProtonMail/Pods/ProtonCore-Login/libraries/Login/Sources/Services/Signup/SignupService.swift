@@ -40,7 +40,7 @@ public protocol Signup {
     
     func createNewUsernameAccount(userName: String, password: String, email: String?, phoneNumber: String?, completion: @escaping (Result<(), SignupError>) -> Void)
     func createNewInternalAccount(userName: String, password: String, email: String?, phoneNumber: String?, domain: String, completion: @escaping (Result<(), SignupError>) -> Void)
-    func createNewExternalAccount(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void)
+    func createNewExternalAccount(email: String, password: String, verifyToken: String?, tokenType: String?, completion: @escaping (Result<(), SignupError>) -> Void)
     func validateEmailServerSide(email: String, completion: @escaping (Result<Void, SignupError>) -> Void)
     func validatePhoneNumberServerSide(number: String, completion: @escaping (Result<Void, SignupError>) -> Void)
 }
@@ -130,7 +130,7 @@ public class SignupService: Signup {
         }
     }
 
-    public func createNewExternalAccount(email: String, password: String, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+    public func createNewExternalAccount(email: String, password: String, verifyToken: String?, tokenType: String?, completion: @escaping (Result<(), SignupError>) -> Void) {
         getRandomSRPModulus { result in
             switch result {
             case .success(let modulus):
@@ -235,7 +235,7 @@ public class SignupService: Signup {
         }
     }
 
-    private func createExternalUser(email: String, password: String, modulus: AuthService.ModulusEndpointResponse, verifyToken: String, tokenType: String, completion: @escaping (Result<(), SignupError>) -> Void) {
+    private func createExternalUser(email: String, password: String, modulus: AuthService.ModulusEndpointResponse, verifyToken: String?, tokenType: String?, completion: @escaping (Result<(), SignupError>) -> Void) {
 
         do {
             let authParameters = try generateAuthParameters(password: password, modulus: modulus.modulus)

@@ -23,9 +23,8 @@ class MailboxCoordinatorTests: XCTestCase {
 
     var sut: MailboxCoordinator!
     var viewModelMock: MockMailBoxViewModel!
-    var reachabilityStub: ReachabilityStub!
+    var connectionStatusProviderMock: MockInternetConnectionStatusProviderProtocol!
     var applicationStateStub: UIApplication.State = .active
-    var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
 
     private var conversationStateProviderMock: MockConversationStateProviderProtocol!
     private var dummyAPIService: APIServiceMock!
@@ -33,7 +32,6 @@ class MailboxCoordinatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-
         let dummyServices = ServiceFactory()
         dummyAPIService = APIServiceMock()
         let dummyUser = UserManager(api: dummyAPIService, role: .none)
@@ -52,7 +50,7 @@ class MailboxCoordinatorTests: XCTestCase {
         let infoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         let toolbarActionProviderMock = MockToolbarActionProvider()
         let saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        mockSenderImageStatusProvider = .init()
+        connectionStatusProviderMock = MockInternetConnectionStatusProviderProtocol()
 
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
@@ -60,11 +58,11 @@ class MailboxCoordinatorTests: XCTestCase {
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: MockFeatureFlagCache(),
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: dummyAPIService,
                             internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
-                    senderImageStatusProvider: mockSenderImageStatusProvider,
                     mailSettings: dummyUser.mailSettings)
             )
         )
@@ -82,14 +80,17 @@ class MailboxCoordinatorTests: XCTestCase {
                                              conversationProvider: conversationProviderMock,
                                              eventsService: eventServiceMock,
                                              dependencies: dependencies,
+                                             welcomeCarrouselCache: WelcomeCarrouselCacheMock(),
                                              toolbarActionProvider: toolbarActionProviderMock,
                                              saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                              totalUserCountClosure: {
                                                  0
                                              })
 
-        reachabilityStub = ReachabilityStub()
-        let connectionStatusProviderMock = InternetConnectionStatusProvider(notificationCenter: .default, reachability: reachabilityStub)
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { contextProviderMock }
+        globalContainer.internetConnectionStatusProviderFactory.register { self.connectionStatusProviderMock }
+        let userContainer = UserContainer(userManager: dummyUser, globalContainer: globalContainer)
 
         sut = MailboxCoordinator(sideMenu: nil,
                                  nav: uiNavigationControllerMock,
@@ -98,7 +99,7 @@ class MailboxCoordinatorTests: XCTestCase {
                                  services: dummyServices,
                                  contextProvider: contextProviderMock,
                                  infoBubbleViewStatusProvider: infoBubbleViewStatusProviderMock,
-                                 internetStatusProvider: connectionStatusProviderMock,
+                                 dependencies: userContainer,
                                  getApplicationState: {
             return self.applicationStateStub
         })
@@ -116,13 +117,15 @@ class MailboxCoordinatorTests: XCTestCase {
         conversationStateProviderMock = nil
         dummyAPIService = nil
         uiNavigationControllerMock = nil
-        reachabilityStub = nil
+        connectionStatusProviderMock = nil
+        conversationStateProviderMock = nil
+        dummyAPIService = nil
+        uiNavigationControllerMock = nil
         viewModelMock = nil
-        mockSenderImageStatusProvider = nil
     }
 
     func testFetchConversationFromBEIfNeeded_withNoConnection() {
-        reachabilityStub.currentReachabilityStatusStub = .NotReachable
+        connectionStatusProviderMock.statusStub.fixture = .notConnected
         let expectation1 = expectation(description: "closure is called")
 
         sut.fetchConversationFromBEIfNeeded(conversationID: "") {
@@ -134,7 +137,7 @@ class MailboxCoordinatorTests: XCTestCase {
 
     func testFetchConversationFromBEIfNeeded_withConnectionAndAppIsActive() throws {
         applicationStateStub = .active
-        reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
+        connectionStatusProviderMock.statusStub.fixture = .connectedViaWiFi
         let conversationID: ConversationID = "testID"
         let expectation1 = expectation(description: "closure is called")
 
@@ -149,7 +152,7 @@ class MailboxCoordinatorTests: XCTestCase {
 
     func testFetchConversationFromBEIfNeeded_withConnectionAndAppIsInactive() throws {
         applicationStateStub = .inactive
-        reachabilityStub.currentReachabilityStatusStub = .ReachableViaWiFi
+        connectionStatusProviderMock.statusStub.fixture = .connectedViaWiFi
         let conversationID: ConversationID = "testID"
         let expectation1 = expectation(description: "closure is called")
 
@@ -171,7 +174,7 @@ class MailboxCoordinatorTests: XCTestCase {
 
         let messageJSON = try JSONSerialization.jsonObject(with: messageData)
 
-        dummyAPIService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, completion in
+        dummyAPIService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
             completion(nil, .success(["Message": messageJSON]))
         }
 

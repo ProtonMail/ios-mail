@@ -47,17 +47,17 @@ class SettingsAccountViewControllerTests: XCTestCase {
         sut.loadViewIfNeeded()
 
         XCTAssertEqual(sut.tableView.numberOfSections, 4)
-        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 2), 7)
+        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 2), 8)
         let cell = try XCTUnwrap(
-            sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 5, section: 2)) as? SettingsGeneralCell
+            sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 7, section: 2)) as? SettingsGeneralCell
         )
-        XCTAssertEqual(cell.leftTextValue(), L11n.NextMsgAfterMove.settingTitle)
+        XCTAssertEqual(cell.leftTextValue(), L11n.AutoDeleteSettings.settingTitle)
 
-        sut.tableView(sut.tableView, didSelectRowAt: .init(row: 5, section: 2))
+        sut.tableView(sut.tableView, didSelectRowAt: .init(row: 7, section: 2))
 
         XCTAssertTrue(coordinatorMock.goStub.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(coordinatorMock.goStub.lastArguments?.value)
-        XCTAssertEqual(argument, .nextMsgAfterMove)
+        XCTAssertEqual(argument, .autoDeleteSpamTrash)
     }
 
     func testAccountSettings_sectionCount() {
@@ -70,7 +70,7 @@ class SettingsAccountViewControllerTests: XCTestCase {
         // addresses section
         XCTAssertEqual(sut.tableView.numberOfRows(inSection: 1), 4)
         // mailbox section
-        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 2), 7)
+        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 2), 8)
         // account deletion
         XCTAssertEqual(sut.tableView.numberOfRows(inSection: 3), 1)
     }

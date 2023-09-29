@@ -5,19 +5,19 @@
 #import "SentryEvent.h"
 #import "SentryHub.h"
 #import "SentryInAppLogic.h"
-#import "SentryOutOfMemoryLogic.h"
 #import "SentrySDK+Private.h"
 #import "SentryScope+Private.h"
 #import "SentrySessionCrashedHandler.h"
+#import "SentryWatchdogTerminationLogic.h"
 #import <SentryAppStateManager.h>
 #import <SentryClient+Private.h>
 #import <SentryCrashScopeObserver.h>
-#import <SentryDefaultCurrentDateProvider.h>
 #import <SentryDependencyContainer.h>
 #import <SentrySDK+Private.h>
 #import <SentrySysctl.h>
 
 #if SENTRY_HAS_UIKIT
+#    import "SentryUIApplication.h"
 #    import <UIKit/UIKit.h>
 #endif
 
@@ -68,24 +68,25 @@ SentryCrashIntegration ()
 
     self.options = options;
 
+#if SENTRY_HAS_UIKIT
     SentryAppStateManager *appStateManager =
         [SentryDependencyContainer sharedInstance].appStateManager;
-    SentryOutOfMemoryLogic *logic =
-        [[SentryOutOfMemoryLogic alloc] initWithOptions:options
-                                           crashAdapter:self.crashAdapter
-                                        appStateManager:appStateManager];
+    SentryWatchdogTerminationLogic *logic =
+        [[SentryWatchdogTerminationLogic alloc] initWithOptions:options
+                                                   crashAdapter:self.crashAdapter
+                                                appStateManager:appStateManager];
     self.crashedSessionHandler =
         [[SentrySessionCrashedHandler alloc] initWithCrashWrapper:self.crashAdapter
-                                                 outOfMemoryLogic:logic];
+                                         watchdogTerminationLogic:logic];
+#else
+    self.crashedSessionHandler =
+        [[SentrySessionCrashedHandler alloc] initWithCrashWrapper:self.crashAdapter];
+#endif // SENTRY_HAS_UIKIT
 
     self.scopeObserver =
         [[SentryCrashScopeObserver alloc] initWithMaxBreadcrumbs:options.maxBreadcrumbs];
 
     [self startCrashHandler];
-
-    if (options.stitchAsyncCode) {
-        [self.crashAdapter installAsyncHooks];
-    }
 
     [self configureScope];
 
@@ -151,13 +152,13 @@ SentryCrashIntegration ()
  */
 + (void)sendAllSentryCrashReports
 {
-    [installation sendAllReports];
+    [installation sendAllReportsWithCompletion:NULL];
 }
 
 - (void)uninstall
 {
     if (nil != installation) {
-        [self.crashAdapter close];
+        [installation uninstall];
         installationToken = 0;
     }
 
@@ -212,7 +213,7 @@ SentryCrashIntegration ()
 
     // For MacCatalyst the UIDevice returns the current version of MacCatalyst and not the
     // macOSVersion. Therefore we have to use NSProcessInfo.
-#if SENTRY_HAS_UIDEVICE && !TARGET_OS_MACCATALYST
+#if SENTRY_HAS_UIKIT && !TARGET_OS_MACCATALYST
     [osData setValue:[UIDevice currentDevice].systemVersion forKey:@"version"];
 #else
     NSOperatingSystemVersion version = [NSProcessInfo processInfo].operatingSystemVersion;
@@ -270,11 +271,17 @@ SentryCrashIntegration ()
     NSString *locale = [[NSLocale autoupdatingCurrentLocale] objectForKey:NSLocaleIdentifier];
     [deviceData setValue:locale forKey:LOCALE_KEY];
 
-#if SENTRY_HAS_UIDEVICE && !defined(TESTCI)
-    // Acessessing UIScreen.mainScreen fails when using SentryTestObserver.
-    // It's a bug with the iOS 15 and 16 simulator, it runs fine with iOS 14.
-    [deviceData setValue:@(UIScreen.mainScreen.bounds.size.height) forKey:@"screen_height_pixels"];
-    [deviceData setValue:@(UIScreen.mainScreen.bounds.size.width) forKey:@"screen_width_pixels"];
+#if SENTRY_HAS_UIKIT
+
+    NSArray<UIWindow *> *appWindows = SentryDependencyContainer.sharedInstance.application.windows;
+    if ([appWindows count] > 0) {
+        UIScreen *appScreen = appWindows.firstObject.screen;
+        if (appScreen != nil) {
+            [deviceData setValue:@(appScreen.bounds.size.height) forKey:@"screen_height_pixels"];
+            [deviceData setValue:@(appScreen.bounds.size.width) forKey:@"screen_width_pixels"];
+        }
+    }
+
 #endif
 
     [scope setContextValue:deviceData forKey:DEVICE_KEY];

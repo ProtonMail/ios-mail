@@ -38,12 +38,12 @@ final class UnlockManagerTests: XCTestCase {
         pinFailedCountCacheMock = .init()
         sut = .init(
             cacheStatus: cacheMock,
-            delegate: delegateMock,
             keyMaker: keyMakerMock,
             pinFailedCountCache: pinFailedCountCacheMock,
             localAuthenticationContext: LAContextMock,
             notificationCenter: notificationCenter
         )
+        sut.delegate = delegateMock
     }
 
     override func tearDown() {
@@ -290,14 +290,13 @@ final class UnlockManagerTests: XCTestCase {
         XCTAssertTrue(delegateMock.loadUserDataAfterUnlockStub.wasCalledExactlyOnce)
     }
 
-    func testUnlockIfRemberedCredentials_MainKeyExist_UserIsStored_mailboxPWDStored_TouchIDEnable_unlockIsCalled() {
+    func testUnlockIfRemberedCredentials_MainKeyExist_UserIsStored_mailboxPWDStored_TouchIDEnabled_unlockIsCalled() {
         let e = expectation(description: "Closure is called")
         let notiExpectation = expectation(
             forNotification: .didUnlock,
             object: nil,
             notificationCenter: notificationCenter
         )
-        notiExpectation.isInverted = true
         keyMakerMock.mainKeyExistsStub.bodyIs { _ in
             return true
         }
@@ -322,14 +321,13 @@ final class UnlockManagerTests: XCTestCase {
         XCTAssertTrue(delegateMock.loadUserDataAfterUnlockStub.wasCalledExactlyOnce)
     }
 
-    func testUnlockIfRemberedCredentials_MainKeyExist_UserIsStored_mailboxPWDStored_PinEnable_unlockIsCalled() {
+    func testUnlockIfRemberedCredentials_MainKeyExist_UserIsStored_mailboxPWDStored_PinEnabled_unlockIsCalled() {
         let e = expectation(description: "Closure is called")
         let notiExpectation = expectation(
             forNotification: .didUnlock,
             object: nil,
             notificationCenter: notificationCenter
         )
-        notiExpectation.isInverted = true
         keyMakerMock.mainKeyExistsStub.bodyIs { _ in
             return true
         }
@@ -487,7 +485,7 @@ final class UnlockManagerTests: XCTestCase {
             completion()
         }
         expectation(
-            forNotification: .didSignOut,
+            forNotification: .didSignOutLastAccount,
             object: nil,
             notificationCenter: notificationCenter
         )

@@ -39,6 +39,7 @@ final class SendMessageTests: XCTestCase {
             cachedUserInfo: nil,
             cachedAuthCredential: nil,
             cachedSenderAddress: nil,
+            cachedPassphrase: nil,
             defaultSenderAddress: nil
         )
     }()
@@ -71,7 +72,7 @@ final class SendMessageTests: XCTestCase {
     }
 
     func testExecute_whenSendingSucceeds_updateMessageIsCalled_andReturnsVoid() {
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/messages/") {
                 completion(nil, .success(["Code": 1000]))
             } else {
@@ -124,7 +125,7 @@ final class SendMessageTests: XCTestCase {
     }
 
     func testExecute_whenSendRequestFails_itReturnsTheAPIError() {
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             completion(nil, .failure(self.nsError))
         }
 

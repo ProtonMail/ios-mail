@@ -42,7 +42,6 @@ class SingleMessageViewModel {
 
     var refreshView: (() -> Void)?
 
-    var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
 
     private lazy var dateFormatter: DateFormatter = {
@@ -65,19 +64,14 @@ class SingleMessageViewModel {
     init(labelId: LabelID,
          message: MessageEntity,
          user: UserManager,
-         imageProxy: ImageProxy,
-         childViewModels: SingleMessageChildViewModels,
-         internetStatusProvider: InternetConnectionStatusProvider,
          userIntroductionProgressProvider: UserIntroductionProgressProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          toolbarActionProvider: ToolbarActionProvider,
          toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
-         systemUpTime: SystemUpTimeProtocol,
          coordinator: SingleMessageCoordinator,
          nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider,
-         dependencies: SingleMessageContentViewModel.Dependencies,
+         contentViewModel: SingleMessageContentViewModel,
          highlightedKeywords: [String],
-         goToDraft: @escaping (MessageID, OriginalScheduleDate?) -> Void,
          notificationCenter: NotificationCenter = .default
     ) {
         self.labelId = labelId
@@ -86,22 +80,7 @@ class SingleMessageViewModel {
         self.user = user
         self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
         self.highlightedKeywords = highlightedKeywords
-        let contentContext = SingleMessageContentViewContext(
-            labelId: labelId,
-            message: message,
-            viewMode: .singleMessage
-        )
-        self.contentViewModel = SingleMessageContentViewModel(
-            context: contentContext,
-            imageProxy: imageProxy,
-            childViewModels: childViewModels,
-            user: user,
-            internetStatusProvider: internetStatusProvider,
-            systemUpTime: systemUpTime,
-            dependencies: dependencies,
-            highlightedKeywords: highlightedKeywords,
-            goToDraft: goToDraft
-        )
+        self.contentViewModel = contentViewModel
         self.coordinator = coordinator
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.toolbarActionProvider = toolbarActionProvider
@@ -114,7 +93,7 @@ class SingleMessageViewModel {
     var messageTitle: NSAttributedString {
         let style = FontManager.MessageHeader.alignment(.center)
         let attributed = message.title.keywordHighlighting.asAttributedString(keywords: highlightedKeywords)
-        let range = NSRange(location: 0, length: message.title.count)
+        let range = NSRange(location: 0, length: (message.title as NSString).length)
         attributed.addAttributes(style, range: range)
         return attributed
     }
@@ -158,8 +137,7 @@ class SingleMessageViewModel {
         }
     }
 
-    func handleActionSheetAction(_ action: MessageViewActionSheetAction,
-                                 completion: @escaping () -> Void) {
+    func handleActionSheetAction(_ action: MessageViewActionSheetAction, completion: @escaping () -> Void) {
         switch action {
         case .markUnread:
             messageService.mark(messageObjectIDs: [message.objectID.rawValue], labelID: labelId, unRead: true)
@@ -179,8 +157,7 @@ class SingleMessageViewModel {
                                 to: Message.Location.spam.labelID,
                                 queue: true)
         case .delete:
-            messageService.delete(messages: [message],
-                                  label: labelId)
+            messageService.delete(messages: [message], label: labelId)
         case .reportPhishing:
             reportPhishing(completion)
             return
@@ -303,7 +280,7 @@ class SingleMessageViewModel {
             return
         }
         DispatchQueue.main.async { [weak self] in
-            let userInfo = ["expectation": PagesSwipeAction.forward, "reload": true]
+            let userInfo: [String: Any] = ["expectation": PagesSwipeAction.forward, "reload": true]
             self?.notificationCenter.post(name: .pagesSwipeExpectation, object: nil, userInfo: userInfo)
         }
     }
@@ -398,9 +375,12 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
 // MARK: - Move to functions
 extension SingleMessageViewModel: MoveToActionSheetProtocol {
 
-    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
-        guard let destination = selectedMoveToFolder else { return }
-        messageService.move(messages: messages, to: destination.location.labelID, queue: true)
+    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, isFromSwipeAction: Bool, completion: (() -> Void)?) {
+
+    }
+
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool) {
+        messageService.move(messages: messages, to: folder.location.labelID, queue: true)
     }
 
     func handleMoveToAction(conversations: [ConversationEntity], isFromSwipeAction: Bool, completion: (() -> Void)?) {
@@ -445,7 +425,7 @@ extension SingleMessageViewModel: LabelAsActionSheetProtocol {
 
     func handleLabelAsAction(conversations: [ConversationEntity],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
+                             currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType],
                              completion: (() -> Void)?) {
         fatalError("Not implemented")
     }

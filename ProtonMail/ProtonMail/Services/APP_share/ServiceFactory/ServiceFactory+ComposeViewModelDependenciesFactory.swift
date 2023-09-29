@@ -16,13 +16,15 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import UIKit
 
-protocol ComposeViewModelDependenciesFactory {
+protocol ComposerDependenciesFactory {
     func makeViewModelDependencies(user: UserManager) -> ComposeViewModel.Dependencies
+    func makeComposer(viewModel: ComposeViewModel) -> UINavigationController
 }
 
 extension ServiceFactory {
-    private struct ComposeViewModelFactory: ComposeViewModelDependenciesFactory {
+    private struct ComposerFactory: ComposerDependenciesFactory {
         private let factory: ServiceFactory
 
         init(factory: ServiceFactory) {
@@ -36,7 +38,7 @@ extension ServiceFactory {
                 fetchAndVerifyContacts: FetchAndVerifyContacts(
                     user: user
                 ),
-                internetStatusProvider: factory.get(),
+                internetStatusProvider: InternetConnectionStatusProvider.shared,
                 fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)),
                 contactProvider: user.contactService,
                 helperDependencies: .init(
@@ -49,19 +51,33 @@ extension ServiceFactory {
                             messageDecrypter: user.messageService.messageDecrypter
                         ),
                         userDataSource: user
-                    )
+                    ),
+                    attachmentMetadataStripStatusProvider: factory.userCachedStatus
                 ),
                 fetchMobileSignatureUseCase: FetchMobileSignature(
                     dependencies: .init(
                         coreKeyMaker: factory.get(),
-                        cache: userCachedStatus
+                        cache: factory.userCachedStatus
                     )
-                )
+                ),
+                darkModeCache: factory.userCachedStatus,
+                attachmentMetadataStrippingCache: factory.userCachedStatus,
+                userCachedStatusProvider: factory.userCachedStatus
+            )
+        }
+
+        func makeComposer(viewModel: ComposeViewModel) -> UINavigationController {
+            return ComposerViewFactory.makeComposer(
+                childViewModel: viewModel,
+                contextProvider: factory.get(),
+                userIntroductionProgressProvider: factory.userCachedStatus,
+                attachmentMetadataStrippingCache: factory.userCachedStatus,
+                featureFlagCache: factory.userCachedStatus
             )
         }
     }
 
-    func makeComposeViewModelDependenciesFactory() -> ComposeViewModelDependenciesFactory {
-        ComposeViewModelFactory(factory: self)
+    func makeComposeViewModelDependenciesFactory() -> ComposerDependenciesFactory {
+        ComposerFactory(factory: self)
     }
 }

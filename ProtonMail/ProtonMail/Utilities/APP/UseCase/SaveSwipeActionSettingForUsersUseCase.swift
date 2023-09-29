@@ -22,9 +22,7 @@ import ProtonCore_Services
 /// This use case saves the swipe action selection from the user locally in the UserCachedStatus. Then, if
 /// the action has to be synced with backend, it sends one or multiple requests to update the swipe action
 /// preference for multiple Proton accounts in the backend.
-protocol SaveSwipeActionSettingForUsersUseCase: UseCase {
-    func execute(preference: SwipeActionPreference, completion: ((Swift.Result<Void, UpdateSwipeActionError>) -> Void)?)
-}
+typealias SaveSwipeActionSettingForUsersUseCase = UseCase<Void, SaveSwipeActionSetting.Parameters>
 
 enum SwipeActionPreference: Equatable {
     case left(SwipeActionSettingType)
@@ -47,18 +45,17 @@ enum UpdateSwipeActionError: Error, Equatable {
 }
 
 final class SaveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
+    typealias Dependencies = HasSwipeActionCacheProtocol & HasUsersManager
+
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
-    func execute(
-        preference: SwipeActionPreference,
-        completion: ((Swift.Result<Void, UpdateSwipeActionError>) -> Void)?
-    ) {
-        saveSwipePreferenceLocally(preference: preference)
-        saveSwipeActionInBackendIfNeeded(preference: preference, completion: completion)
+    override func executionBlock(params: Parameters, callback: @escaping UseCase<Void, Parameters>.Callback) {
+        saveSwipePreferenceLocally(preference: params.preference)
+        saveSwipeActionInBackendIfNeeded(preference: params.preference, callback: callback)
     }
 
     private func saveSwipePreferenceLocally(preference: SwipeActionPreference) {
@@ -72,10 +69,10 @@ final class SaveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
 
     private func saveSwipeActionInBackendIfNeeded(
         preference: SwipeActionPreference,
-        completion: ((Swift.Result<Void, UpdateSwipeActionError>) -> Void)?
+        callback: @escaping UseCase<Void, Parameters>.Callback
     ) {
         guard preference.isSyncable else {
-            completion?(.success)
+            callback(.success)
             return
         }
 
@@ -88,13 +85,13 @@ final class SaveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
         }
 
         guard let request = request else {
-            completion?(.failure(.invalidAction))
+            callback(.failure(UpdateSwipeActionError.invalidAction))
             return
         }
 
         let group = DispatchGroup()
         var lastError: NSError?
-        dependencies.usersApiServices.forEach({ apiService in
+        dependencies.usersManager.users.map(\.apiService).forEach({ apiService in
             group.enter()
             apiService.perform(
                 request: request,
@@ -109,26 +106,16 @@ final class SaveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
 
         group.notify(queue: .main) {
             if let lastError = lastError {
-                completion?(.failure(.backendSaveError(error: lastError)))
+                callback(.failure(UpdateSwipeActionError.backendSaveError(error: lastError)))
             } else {
-                completion?(.success)
+                callback(.success)
             }
         }
     }
 }
 
 extension SaveSwipeActionSetting {
-
-    struct Dependencies {
-        let swipeActionCache: SwipeActionCacheProtocol
-        let usersApiServices: [APIService]
-
-        init(
-            swipeActionCache: SwipeActionCacheProtocol = userCachedStatus,
-            usersApiServices: [APIService]
-        ) {
-            self.swipeActionCache = swipeActionCache
-            self.usersApiServices = usersApiServices
-        }
+    struct Parameters: Equatable {
+        let preference: SwipeActionPreference
     }
 }

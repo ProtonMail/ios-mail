@@ -1,45 +1,276 @@
-/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "'Dana' EE, d. MMM, yyyy 'u' %@";
+/* link opeining confirmation */
 
-/* The text combining size of index and storage limit */
-"%@ of %@" = "%1$@ od %2$@";
+"You are about to launch the web browser and navigate to" = "Upravo će te pokrenuti web preglednik i ići na";
 
-/* Drag and drop zone for attachments */
-"+ Drop here to add as attachment" = "+ Ispustite ovdje da biste dodali kao privitak";
+/* link opeining confirmation */
+"Request link confirmation" = "Zatražite potvrdu poveznice";
+
+/* Title in settings */
+"Display Name" = "Zaslonsko ime";
+
+/* place holder */
+"Input Display Name…" = "Unesite zaslonsko ime…";
+
+/* Title in signature settings */
+"Signature" = "Potpis";
+
+/* Title */
+"Enable signature" = "Omogući potpis";
+
+/* No comment provided by engineer. */
+"Enter your signature here" = "Unesite vaš potpis ovdje";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Potpis na mobilnim uređajima";
+
+/* Title */
+"Recovery email" = "Adresa e-pošte za oporavak";
+
+/* Title */
+"Enable email notices" = "Omogući obavijesti putem e-pošte";
+
+/* place holder */
+"Input Notification Email…" = "Input Notification Email…";
+
+/* Placeholder */
+"Current password" = "Trenutna lozinka";
+
+/* Placeholder */
+"New password" = "Nova lozinka";
+
+/* Placeholder */
+"Confirm new password" = "Potvrdi novu lozinku";
+
+/* Settings row */
+"Remove image metadata" = "Ukloni meta podatke slika";
+
+/* Settings row */
+"Block email tracking" = "Block email tracking";
+
+/* Settings row */
+"Default browser" = "Zadani preglednik";
+
+/* menu title */
+"Menu" = "Izbornik";
+
+/* menu title */
+"Report a problem" = "Prijavi problem";
+
+/* menu title */
+"Inbox" = "Pristigla pošta";
+
+/* menu title */
+"Starred" = "Sa zvjezdicom";
+
+/* menu title */
+"Archive" = "Arhiva";
+
+/* menu title */
+"Drafts" = "Skice";
+
+/* mail location title */
+"All Mail" = "Sva pošta";
+
+/* menu title */
+"Sent" = "Poslano";
+
+/* mail location desc */
+"Trash" = "Otpad";
+
+/* menu title */
+"Spam" = "Neželjena pošta";
+
+/* Action and title */
+"Contacts" = "Kontakti";
+
+/* menu title (contact groups) */
+"Groups" = "Grupe";
+
+/* menu title */
+"Settings" = "Postavke";
+
+/* Alert title to confirm signout */
+"Sign out" = "Odjava";
+
+/* menu title */
+"Lock The App" = "Zaključaj aplikaciju";
+
+/* menu title */
+"Subscription" = "Pretplata";
+
+/* menu title */
+"Manage accounts" = "Upravljanje računima";
+
+/* menu title */
+"Add attachment" = "Dodavanje privitka";
+
+/* menu title */
+"Refer a friend" = "Uputi prijatelja";
+
+/* mail location title */
+"Scheduled" = "Zakazano";
+
+/* Description after message have been sent */
+"Message sent" = "Poruka je poslana";
+
+/* Description */
+"Sent Failed" = "Poruka nije poslana";
+
+/* Description */
+"Email failed to send. Message saved as draft." = "Email failed to send. Message saved as draft.";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "Ovdje se nema što vidjeti";
+
+/* The subtitle will be shown when folder doesnt have emails */
+"This folder is empty" = "Ova mapa je prazna";
+
+/* The title of empty inbox */
+"You are all caught up!" = "Upoznati ste s svime!";
+
+/* The subtitle of empty inbox */
+"Time to relax" = "Vrijeme za odmor";
+
+/* Action */
+"Undo" = "Poništi";
+
+/* Title */
+"Message has been deleted." = "Poruka je izbrisana.";
+
+/* Title */
+"Message has been moved." = "Poruka je premještena.";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "Nepovratno će te izbrisati poruku. Jeste li sigurni?";
+
+/* Title */
+"You have a new email!" = "Imate novu poruku!";
+
+/* Message */
+"You have %d new emails!" = "Imate %d novih poruka e-pošte!";
+
+/* abbreviation of reply: */
+"Re:" = "Re:";
+
+/* abbreviation of forward: */
+"Fw:" = "Fw:";
+
+/* Title */
+"wrote:" = "je napisao/la:";
+
+/* At {time}, e.g.: At 19:00 */
+"At %@" = "U %@";
+
+/* On {date}, e.g.: On Aug 14 */
+"On %@" = "Na %@";
+
+/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
+"On %@ at %@" = "On %1$@ at %2$@";
+
+/* message Date: text */
+"Date:" = "Datum:";
+
+/* subject: text when forward */
+"Subject:" = "Predmet:";
+
+/* forwarded message title */
+"Forwarded message" = "Proslijeđena poruka";
+
+/* Title */
+"Set Password" = "Postavite lozinku";
+
+/* Description */
+"Set a password to encrypt this message for non-Proton Mail users." = "Postavite lozinku za šifriranje ove poruke za one koji nisu korisnici Proton Maila.";
+
+/* Placeholder */
+"Message Password" = "Lozinka poruke";
 
 /* Placeholder */
 "8 to 21 characters long" = "8 do 21 znakova dugo";
 
-/* error message */
-"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Pristup ovom računu onemogućen je zbog neplaćanja. Prijavite se putem proton.me kako biste platili neplaćenu fakturu.";
+/* Error message */
+"The password must be between 8 and 21 characters long" = "Lozinka mora biti od 8 do 21 znakova duga";
 
-/* Account manager title */
-"Account" = "Korisnički račun";
+/* textview title */
+"Repeat password" = "Ponovite lozinku";
 
-/* section title in settings */
-"Account settings" = "Postavke računa";
+/* Placeholder */
+"Passwords must match" = "Lozinke se moraju poklapati";
 
-/* new contacts add Anniversary */
-"Add anniversary" = "Dodaj godišnjicu";
+/* Error message */
+"The 2 passwords are not matching" = "Dvije lozinke se ne podudaraju";
 
-/* menu title
-   The voiceiver title of the add attachment button in the tool bar of composer */
-"Add attachment" = "Dodavanje privitka";
+/* action title */
+"Remove password" = "Ukloni lozinku";
+
+/* title */
+"Password Hint" = "Podsjetnik za lozinku";
+
+/* button title */
+"Apply Password" = "Primjeni lozinku";
+
+/* Action */
+"Compose" = "Nova poruka";
+
+/* Composer expiration page title */
+"Message expiration" = "Istek poruke";
+
+/* contacts default label type */
+"Custom" = "Prilagođeno";
+
+/* Description */
+"Send message without subject?" = "Poslati poruku bez predmeta?";
+
+/* Description */
+"You need at least one recipient to send" = "Potreban je barem jedan primatelj za slanje";
+
+/* Title */
+"Change sender address to…" = "Promijeni adresu pošiljatelja u…";
+
+/* Error */
+"Upgrade to a paid plan to send from your %@ address" = "Nadogradite na plaćeni plan kako biste mogli slati s vaše %@ adrese";
+
+/* pm.me upgrade warning in composer */
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Slanje poruka s %1$@ adrese je plaćena značajka. Poruka će biti poslana s zadane adrese %2$@";
+
+/* Title */
+"From" = "Od";
+
+/* Title */
+"Bcc" = "Bcc";
+
+/* Placeholder */
+"Subject" = "Predmet";
+
+/* hint message */
+"Draft saved" = "Skica je spremljena";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Odredite hint-pomoć (neobavezno)";
+
+/* Menu action to remove text formatting */
+"Clear Style" = "Očisti oblikovanja";
+
+/* new contacts add Organization  */
+"Add organization" = "Dodaj organizaciju";
+
+/* new contacts add Nickname */
+"Add nickname" = "Dodaj nadimak";
+
+/* new contacts add Title */
+"Add title" = "Dodaj naslov";
 
 /* new contacts add Birthday */
 "Add birthday" = "Dodaj rođendan";
 
-/* The title for the view where user can manage emails in the contact group */
-"Add contacts" = "Dodaj kontakte";
-
-/* Action */
-"Add Folder" = "Dodaj mapu";
+/* new contacts add Anniversary */
+"Add anniversary" = "Dodaj godišnjicu";
 
 /* new contacts add Gender */
 "Add gender" = "Dodaj spol";
 
-/* add label action */
-"Add Label" = "Dodaj oznaku";
+/* Contacts add new contact */
+"New contact" = "Novi kontakt";
 
 /* add new address action */
 "Add new address" = "Dodaj novu adresu";
@@ -50,153 +281,230 @@
 /* new email action */
 "Add new email" = "Dodaj novu adresu e-pošte";
 
-/* new field action */
-"Add new field" = "Dodaj novo polje";
-
 /* new phone action */
 "Add new phone number" = "Dodaj novi broj telefona";
 
-/* action */
-"Add new URL" = "Dodaj novi URL";
+/* new field action */
+"Add new field" = "Dodaj novo polje";
 
-/* new contacts add Nickname */
-"Add nickname" = "Dodaj nadimak";
+/* default vcard types */
+"Personal" = "Privatno";
 
-/* new contacts add Organization */
-"Add organization" = "Dodaj organizaciju";
+/* default vcard types */
+"Work" = "Posao";
 
-/* The button text for add profile picture */
-"Add photo" = "Dodaj sliku";
+/* default vcard types */
+"Email" = "E-pošta";
 
-/* mark message star */
-"Add Star" = "Dodaj zvjezdicu";
+/* default vcard types */
+"Other" = "Ostalo";
 
-/* new contacts add Title */
-"Add title" = "Dodaj naslov";
+/* default vcard types */
+"Phone" = "Telefon";
 
-/* Title */
-"Add to contacts" = "Dodaj u kontakte";
+/* default vcard types */
+"Mobile" = "Mobitel";
+
+/* default vcard types */
+"Fax" = "Faks";
 
 /* default vcard types */
 "Address" = "Adresa";
 
-/* cell title in device settings */
-"Addresses" = "Adrese";
+/* default vcard types */
+"URL" = "URL";
 
-/* Title */
-"Alert" = "Upozorenje";
+/* default vcard types */
+"Internet" = "Internet";
 
 /* Title */
 "All contacts are imported" = "Svi kontakti su uvezeni";
 
-/* mail location title
-   menu title */
-"All Mail" = "Sva pošta";
+/* contact placeholder */
+"Street" = "Ulica";
 
-/* network troubleshot cell title */
-"Allow alternative routing" = "Omogući alternativno usmjeravanje";
+/* contact placeholder */
+"City" = "Grad";
 
-/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
-"Also archive?" = "Također i arhivu?";
+/* contact placeholder */
+"State" = "Država";
 
-/* cell title in app settings */
-"Alternative routing" = "Alternativno usmjeravanje";
+/* contact placeholder */
+"ZIP" = "Poštanski broj";
+
+/* contact placeholder */
+"Country" = "Država";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Organizacija";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Nadimak";
+
+/* contacts talbe cell Title title */
+"Title" = "Naslov";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "Rođendan";
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Godišnjica";
 
-/* network troubleshot cell title */
-"Antivirus interference" = "Smetnje s antivirusom";
+/* contacts talbe cell gender title */
+"Gender" = "Spol";
 
-/* Alert message when user tries to discard unsaved changes */
-"Any unsaved changes will be lost." = "Sve vaše nespremljene promjene će biti izgubljene.";
+/* Send an email to the current contact (button title text) */
+"Email contact" = "Pošalji poruku e-pošte kontaktu";
+
+/* Call the contact (button title text) */
+"Call contact" = "Nazovi kontakta";
+
+/* contact detail view, email addresses section title */
+"Email addresses" = "Adrese e-pošte";
+
+/* The button text for add profile picture */
+"Add photo" = "Dodaj sliku";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Uredi sliku";
+
+/* contact section title */
+"Encrypted contact details" = "Šifrirani podaci o kontaktu";
+
+/* action */
+"Share contact" = "Podijeli kontakt";
+
+/* title */
+"Notes" = "Bilješke";
+
+/* Action */
+"Upload device contacts" = "Učitaj kontakte uređaja";
+
+/* top right action text */
+"Create" = "Stvori";
+
+/* add label action */
+"Add Label" = "Dodaj oznaku";
+
+/* Action */
+"Add Folder" = "Dodaj mapu";
+
+/* place holder */
+"Folder Name" = "Naziv mape";
+
+/* createing lable input place holder */
+"Label Name" = "Naziv oznake";
 
 /* when server not reachable */
 "API Server not reachable…" = "API poslužitelj nije dostupan…";
 
-/* section title in settings */
-"App settings" = "Postavke aplikacije";
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Pristup ovom računu onemogućen je zbog neplaćanja. Prijavite se putem proton.me kako biste platili neplaćenu fakturu.";
 
-/* The title of section inside the dark mode setting page */
-"Appearance" = "Izgled";
+/* Title */
+"Alert" = "Upozorenje";
+
+/* Done action */
+"Done" = "Gotovo";
+
+/* Button to cancel encrypted search */
+"Cancel" = "Poništi";
+
+/* Got it action */
+"Got it" = "Shvaćam";
+
+/* Open action */
+"Open" = "Otvori";
+
+/* remove action */
+"Remove" = "Ukloni";
 
 /* Apply action */
 "Apply" = "Primijeni";
 
-/* Title */
-"Apply Labels" = "Primjeni oznake";
+/* reply action */
+"Reply" = "Odgovor";
 
-/* button title */
-"Apply Password" = "Primjeni lozinku";
+/* reply all action */
+"Reply all" = "Odgovori svima";
 
-/* menu title
-   Push notification action to archive
-   The title of the archive action in action sheet */
-"Archive" = "Arhiva";
+/* forward action */
+"Forward" = "Proslijedi";
 
-/* Push notification action archive */
-"Archive (verb)" = "Arhiva";
+/* message From: field text */
+"From:" = "Od:";
 
-/* Message of message permanent deletion alert, singular */
-"Are you sure you want to delete permanently this message?" = "Jeste li sigurni da želite trajno izbrisati ovu poruku?";
+/* message To: feild */
+"To" = "Za";
 
-/* Alert to confirm sign out when only one account signed in */
-"Are you sure you want to sign out %@?" = "Da li ste sigurni da se želite odjaviti %@?";
+/* message Cc: feild */
+"Cc" = "Cc";
 
-/* Alert to confirm sign out
-   Alert when sign out non-primary account from account manager */
-"Are you sure you want to sign out?" = "Da li ste sigurni da se želite odjaviti?";
+/* message Bcc: feild */
+"Bcc:" = "Bcc:";
 
-/* At {time}, e.g.: At 19:00 */
-"At %@" = "U %@";
+/* general delete action */
+"Delete" = "Izbriši";
 
-/* incorrect email format error while sending */
-"At least one email address in the group could not be found" = "Najmanje jednu adresu e-pošte u grupi nije bilo moguće pronaći";
+/* general close action */
+"Close" = "Zatvori";
 
-/* incorrect email format error while sending */
-"At least one email address in the group could not be found." = "Najmanje jednu adresu e-pošte u grupi nije bilo moguće pronaći.";
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Vaša sesija je istekla jer ste neko vrijeme bili neaktivni ili zato što je opozvana. Prijavite se ponovo.";
 
-/* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "Barem jedna adresa e-pošte primatelja nije ispravno oblikovana, provjerite ih još jednom.";
-
-/* incorrect email format error while sending */
-"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Barem jedna adresa e-pošte/domena primatelja ne postoji ili je loše oblikovana. Poruka je premještena u skice.";
-
-/* No comment provided by engineer. */
-"attachment" = "privitak";
-
-/* Alert title when attachment upload failed */
-"Attachment failure" = "Neuspjeh privitka";
-
-/* Drag and drop zone for attachments */
-"Attachment imported" = "Privitak je uvezen";
+/* Springboard (3D Touch) shortcuts action */
+"Search" = "Pretraga";
 
 /* Alert title */
-"Attachment limit" = "Ograničenje privitka";
+"Notice" = "Napomena";
 
-/* No comment provided by engineer. */
-"attachments" = "privitci";
+/* Action */
+"Don't remind me again" = "Ne podsjećaj me više";
 
-/* The title of attachments in local storage settings */
-"Attachments" = "Privitci";
+/* Action */
+"Send" = "Pošalji";
+
+/* Action */
+"Schedule send" = "Zakaži slanje";
+
+/* Alert title */
+"Message saved to Drafts" = "Poruka je spremljena u Skice";
+
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one.";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "The sending time needs to be at least 5 minutes in the future.";
+
+/* Action */
+"Send anyway" = "Svejedno pošalji";
 
 /* Title */
-"Authentication" = "Autentikacija";
+"Confirmation" = "Potvrda";
+
+/* Action */
+"Draft" = "Skica";
 
 /* Title */
-"Auto Lock Time" = "Vrijeme automatskog zaključavanja";
+"The request timed out." = "Zahtjev je istekao.";
 
-/* settings general section title */
-"Auto-load embedded images" = "Automatsko prikazivanje ugrađenih slika";
+/* Message */
+"Proton servers are unreachable.\nVisit our status page for details." = "Proton servers are unreachable.\nVisit our status page for details.";
 
-/* settings general section title */
-"Auto-load remote content" = "Automatski prikaži udaljeni sadržaj";
+/* Title */
+"No connectivity detected…" = "Nije otkrivena veza…";
 
-/* The title of the section header in the toolbar customize view. */
-"Available actions" = "Dostupne radnje";
+/* Title */
+"Proton Mail is currently offline…" = "Proton Mail je trenutno van mreže…";
 
-/* top left back button */
-"Back" = "Natrag";
+/* Title */
+"Save" = "Spremi";
+
+/* Action */
+"Edit" = "Uredi";
+
+/* Error message */
+"Invalid username!" = "Nevažeće korisničko ime!";
 
 /* Error title */
 "Bad parameter" = "Loš parametar";
@@ -207,32 +515,317 @@
 /* Error Description */
 "Bad response" = "Loš odgovor";
 
-/* contacts talbe cell Birthday title */
-"Birthday" = "Rođendan";
-
-/* Call the contact (button title text) */
-"Call contact" = "Nazovi kontakta";
-
-/* Error */
-"Can't copy the file" = "Neuspješno kopiranje datoteke";
-
-/* update password error */
-"Can't create a SRP Client" = "Neuspješno stvaranje SRP klijenta";
-
-/* update password error */
-"Can't create a SRP verifier!" = "Neuspješno stvaranje SRP verifikatora!";
-
-/* When quick look attachment but can't decrypt it! */
-"Can't decrypt this attachment!" = "Neuspješno dešifriranje ovog privitka!";
-
-/* The error message will be shown when the deletionn of the contact group through API failed */
-"Can't delete contact group through API" = "Neuspješno brisanje grupa kontakata putem API-ja";
-
 /* Description */
 "Can't find the value from the response body" = "Neuspješno pronalaženje vrijednosti u tijelu odgovora";
 
-/* when quick look attachment but can't find the data */
-"Can't find this attachment!" = "Neuspješno pronalaženje ovog privitka!";
+/* no object error, local only , this could be not translated! */
+"no object" = "no object";
+
+/* Description */
+"Unable to parse response" = "Nije moguće parsirati odgovor";
+
+/* Description */
+"Unable to parse the response object:\n%@" = "Nije moguće parsirati objekt odgovora:\n%@";
+
+/* spam score warning */
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte izgleda kao da je od Proton Mail adrese, ali je došla izvan našeg sustava i nije ispunila naše zahtjeve autentikacije. Može biti lažna ili nepropisno proslijeđena!";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Ova poruka e-pošte nije prošla autentikaciju vlastite domene. Može biti lažna ili nepropisno proslijeđena.";
+
+/* spam score warning */
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ova poruka može biti pokušaj krađe identiteta. Provjerite pošiljatelja i sadržaj kako biste bili sigurni da su legitimni.";
+
+/* Description */
+"Sending Message" = "Sending Message";
+
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "Offline, message queued for sending";
+
+/* Description */
+"Message sending failed. Please try again." = "Neuspješno slanje poruke. Pokušajte ponovno.";
+
+/* import contact title */
+"Importing Contacts" = "Uvoz kontakata";
+
+/* Title */
+"Reading device contacts data…" = "Čitanje podataka o kontaktima uređaja…";
+
+/* Description */
+"Do you want to cancel the process?" = "Želite li prekinuti proces?";
+
+/* Hint when users create / edit contact offline  */
+"Contact saved, will be synced when connection is available" = "Kontakt je spremljen, biti će sinkroniziran kada veza bude dostupna";
+
+/* Hint when users delete contact offline  */
+"Contact deleted, will be synced when connection is available" = "Contact deleted, will be synced when connection is available";
+
+/* Action */
+"Confirm" = "Potvrdi";
+
+/* Title */
+"Canceling" = "Otkazivanje";
+
+/* title, default display name */
+"Unknown" = "Nepoznato";
+
+/* Action */
+"Import Error" = "Pogreška uvoza";
+
+/* Action */
+"OK" = "U redu";
+
+/* Action */
+"Later" = "Later";
+
+/* Action */
+"Disabled" = "Onemogućeno";
+
+/* contact placeholder */
+"Email address" = "Adresa e-pošte";
+
+/* top left back button */
+"Back" = "Natrag";
+
+/* A *short* description saying that there is no contact group associated with this contact email */
+"None" = "Ništa";
+
+/* lock app option */
+"Every time enter app" = "Pri svakom ulasku u aplikaciju";
+
+/* Title */
+"Default" = "Zadano";
+
+/* Title */
+"Set" = "Postavi";
+
+/* Title */
+"Resetting message cache…" = "Poništavanje predmemorije poruka…";
+
+/* Title */
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "This preference will fallback to Safari if the browser of choice is uninstalled.";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL kojem pokušavate pristupiti nije standardan i možda se neće pravilno učitati. Želite li ga otvoriti pomoću zadanog preglednika vašeg uređaja?";
+
+/* Title */
+"Auto Lock Time" = "Vrijeme automatskog zaključavanja";
+
+/* Title */
+"Change default address to…" = "Promijeni zadanu adresu u…";
+
+/* pm.me upgrade warning in composer */
+"You can't set %@ address as default because it is a paid feature." = "Ne možete postaviti %@ adresu kao zadanu jer je to plaćena značajka.";
+
+/* Action */
+"Continue" = "Nastavi";
+
+/* error message */
+"Please input a valid email address." = "Molimo unesite valjanu adresu e-pošte.";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Unesite vaš PIN za otključavanje pristigle pošte.";
+
+/* Error */
+"Incorrect PIN." = "Pogrešan PIN.";
+
+/* Description */
+"Upload iOS contacts to Proton Mail?" = "Učitaj iOS kontakte na Proton Mail?";
+
+/* Title-Contacts */
+"Delete contact" = "Izbriši kontakt";
+
+/* Description */
+"PIN code can't be empty." = "PIN kôd ne može biti prazan.";
+
+/* Error */
+"Unknown Error" = "Nepoznata pogreška";
+
+/* Action */
+"Load remote content" = "Učitaj udaljeni sadržaj";
+
+/* settings general section title */
+"Change password" = "Promjena lozinke";
+
+/* Title */
+"Current sign-in password" = "Trenutna lozinka za prijavu";
+
+/* Title */
+"New sign-in password" = "Nova lozinka za prijavu";
+
+/* Title */
+"Confirm new sign-in password" = "Potvrdi novu lozinku za prijavu";
+
+/* Title */
+"New mailbox password" = "Nova lozinka sandučića e-pošte";
+
+/* Title */
+"Confirm new mailbox password" = "Potvrdi novu lozinku sandučića e-pošte";
+
+/* error when sending the message */
+"Unable to send the email" = "Neuspješno slanje poruke e-pošte";
+
+/* Title */
+"Star/unstar" = "Postavi/ukloni zvjezdicu";
+
+/* Title */
+"Proton Mail" = "Proton Mail";
+
+/* Title */
+"Remind Me Later" = "Podsjeti me kasnije";
+
+/* Title */
+"Don't Show Again" = "Ne prikazuj ponovno";
+
+/* Onboarding title */
+"Easily up-to-date" = "Lako ažurirano";
+
+/* Onboarding title */
+"Privacy for all" = "Privatnost za sve";
+
+/* Onboarding title */
+"Neat and tidy" = "Uredno i čisto";
+
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "Ažurirani Proton, jedinstvena zaštita";
+
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "Breeze through threaded messages in conversation mode.";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them.";
+
+/* Onboarding content */
+"File, label, and color code messages to create your perfect, custom inbox." = "Poruke s datotekama, oznakama i bojama za stvaranje savršenog, prilagođenog pretinca.";
+
+/* Welcome to rebranding content */
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default.";
+
+/* skip button title in onboarding page */
+"Skip" = "Preskoči";
+
+/* title of the next button */
+"Next" = "Sljedeće";
+
+/* title of the next button */
+"Get Started" = "Započni";
+
+/* Description */
+"Unable to edit this message offline" = "Nije moguće urediti ovu poruku izvan mreže";
+
+/* like Date: 2017-10-10 */
+"Date: %@" = "Datum: %@";
+
+/* Title */
+"Details" = "Pojedinosti";
+
+/* Title */
+"Hide details" = "Sakrij detalje";
+
+/* contact placeholder */
+"Phone number" = "Broj telefona";
+
+/* Contacts Edit contact */
+"Edit Contact" = "Uredi kontakt";
+
+/* Action */
+"Discard changes" = "Odbaci promjene";
+
+/* Action */
+"Discard" = "Odbaci";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "Discarded";
+
+/* action */
+"Add new URL" = "Dodaj novi URL";
+
+/* settings general section title */
+"Change account password" = "Promijeni lozinku računa";
+
+/* settings general section title */
+"Change mailbox password" = "Promijeni lozinku sandučića e-pošte";
+
+/* settings general section title */
+"Auto-load remote content" = "Automatski prikaži udaljeni sadržaj";
+
+/* settings general section title */
+"Auto-load embedded images" = "Automatsko prikazivanje ugrađenih slika";
+
+/* settings swipe actions section title */
+"Left to Right" = "S lijeva na desno";
+
+/* settings swipe actions section title */
+"Right to Left" = "S desna na lijevo";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "Potrebno je otključati";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in.";
+
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "All protection settings will be reset and wiped upon signing out of the app.";
+
+/* A section title for timing section to set auto lock timing */
+"Timing" = "Timing";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "Idi na postavke";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "Go to sign in";
+
+/* Confirmation message */
+"You have unsaved changes. Do you want to save it?" = "Imate nespremljene promjene. Želite li ih spremiti?";
+
+/* title */
+"Save Changes" = "Spremi promjene";
+
+/* Title */
+"Recovery Code" = "Kôd za oporavak";
+
+/* Placeholder */
+"Two Factor Code" = "Kôd dvofaktorske autentikacije";
+
+/* Title */
+"Authentication" = "Autentikacija";
+
+/* Action in 2fa popup view */
+"Enter" = "U redu";
+
+/* Title */
+"Storage Warning" = "Upozorenje o prostoru";
+
+/* Content of space warning */
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails.";
+
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "You have used %1$d%% of your storage space (%2$@). Please upgrade your plan to continue to send and receive emails.";
+
+/* Alert title */
+"Storage full" = "Storage full";
+
+/* Storage warning */
+"Storage quota exceeded" = "Premašena je kvota pohrane";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "Molimo nadogradite svoj plan";
+
+/* Content of storage full alert */
+"Please upgrade your plan to continue to send and receive emails." = "Please upgrade your plan to continue to send and receive emails.";
+
+/* Title */
+"Warning" = "Upozorenje";
+
+/* Action */
+"Hide" = "Sakrij";
+
+/* Action */
+"Show" = "Prikaži";
+
+/* update password error title */
+"Change Password" = "Promijeni lozinku";
 
 /* update password error = typo:Modulus */
 "Can't get a Modulus ID!" = "Neuspješno dohvaćanje ID-a modula!";
@@ -241,176 +834,58 @@
 "Can't get a Modulus!" = "Neuspješno dohvaćanje modula!";
 
 /* update password error */
-"Can't get user auth info" = "Neuspješno dohvaćanje informacije o autentikaciji korisnika";
+"Invalid hashed password!" = "Nevažeća hashirana lozinka!";
 
-/* Error */
-"Can't load the file" = "Neuspješno učitavanje datoteke";
+/* update password error */
+"The new password needs to be at least 8 characters long" = "Nova lozinka mora imati najmanje 8 znakova";
 
-/* Error */
-"Can't open the file" = "Neuspješno otvaranje datoteke";
+/* update password error */
+"Can't create a SRP verifier!" = "Neuspješno stvaranje SRP verifikatora!";
 
-/* The error message will be shown when the update of the contact group through API failed */
-"Can't update contact group through the API" = "Neuspješno ažuriranje grupe kontakata putem API-ja";
+/* update password error */
+"Can't create a SRP Client" = "Neuspješno stvaranje SRP klijenta";
 
-/* Button to cancel encrypted search
-   Cancel action
-   general cancel action
-   Title for the alert button to cancel delete all downloaded messages.
-   Title for the alert button to cancel disable content search. */
-"Cancel" = "Poništi";
+/* update password error */
+"The password is wrong." = "Pogrešna lozinka.";
 
-/* Action */
-"Cancel Check" = "Poništi provjeru";
+/* update password error */
+"The new password does not match." = "Nova lozinka se ne podudara.";
 
-/* settings general section title */
-"Change account password" = "Promijeni lozinku računa";
+/* update password error */
+"The new password can't be empty." = "Nova lozinka ne može biti prazna.";
 
-/* Title */
-"Change default address to…" = "Promijeni zadanu adresu u…";
+/* update password error */
+"The private key update failed." = "Neuspješno ažuriranje privatnog ključa.";
 
-/* settings general section title */
-"Change mailbox password" = "Promijeni lozinku sandučića e-pošte";
+/* update password error */
+"Password update failed" = "Neuspješna promjena lozinke";
 
-/* settings general section title
-   title */
-"Change password" = "Promjena lozinke";
-
-/* update password error title */
-"Change Password" = "Promijeni lozinku";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Promijenite PIN kôd";
+/* update notification email error title */
+"Update Notification Email" = "Ažuriraj adresu e-pošte za obavijesti";
 
 /* Title */
-"Change sender address to…" = "Promijeni adresu pošiljatelja u…";
+"Apply Labels" = "Primjeni oznake";
 
-/* Action */
-"Check Again" = "Provjeri ponovno";
+/* Title of the view showing the message header */
+"Message headers" = "Zaglavlja poruke";
 
-/* Proton is down description. */
-"Check Proton Status for our system status." = "Provjerite Proton Status za uvid u status našeg sustava.";
+/* Title of the view showing the message HTML source */
+"HTML" = "HTML";
 
-/* contact placeholder */
-"City" = "Grad";
-
-/* The title of the button in local storage attachments
-   The title of the button in local storage cached data
-   The title of the button to clear the search index */
-"Clear" = "Očisti";
-
-/* cell title in device setting */
-"Clear local cache" = "Očisti lokalnu predmemoriju";
-
-/* Menu action to remove text formatting */
-"Clear Style" = "Očisti oblikovanja";
-
-/* general close action */
-"Close" = "Zatvori";
-
-/* the message will show when closing a draft from the share extension */
-"Closing" = "Zatvaranje";
-
-/* The title of voice over action of collapsing the folder */
-"Collapse folder" = "Sažmi mapu";
-
-/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
-"Collapse message" = "Sažmi poruku";
-
-/* cell title in device settings
-   The title of combined contact in settings */
-"Combined contacts" = "Spojeni kontakti";
-
-/* Action
-   Springboard (3D Touch) shortcuts action */
-"Compose" = "Nova poruka";
-
-/* An action title shows in ellipsis menu */
-"Compose message" = "Sastavite poruku";
-
-/* Title */
-"Compose to" = "Nova poruka za";
-
-/* Action
-   The title of button of PIN code setup2 */
-"Confirm" = "Potvrdi";
-
-/* Title */
-"Confirm new mailbox password" = "Potvrdi novu lozinku sandučića e-pošte";
-
-/* Placeholder */
-"Confirm new password" = "Potvrdi novu lozinku";
-
-/* Title */
-"Confirm new sign-in password" = "Potvrdi novu lozinku za prijavu";
+/* Title of the view showing the message body */
+"Message body" = "Tijelo poruke";
 
 /* alert title */
 "Confirm phishing report" = "Potvrdi izvještaj o krađi identiteta";
 
-/* Title */
-"Confirmation" = "Potvrda";
+/* alert message */
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Prijavljivanje poruke kao pokušaja krađe identiteta će nam poslati poruku kako bismo je mogli analizirati i poboljšati filtre. To znači da ćemo moći vidjeti sadržaj poruke u cijelosti.";
 
-/* Hint when users create / edit contact offline */
-"Contact saved, will be synced when connection is available" = "Kontakt je spremljen, biti će sinkroniziran kada veza bude dostupna";
+/* error title */
+"Verification error" = "Pogreška pri provjeri valjanosti";
 
-/* No other solution description. */
-"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontaktirajte nas izravno putem obrasca za podršku, e-poštom (support@protonmail.zendesk.com) ili na Twitteru.";
-
-/* Action and title
-   menu title */
-"Contacts" = "Kontakti";
-
-/* Action
-   The title of button of PIN code setup1 */
-"Continue" = "Nastavi";
-
-/* No comment provided by engineer. */
-"Conversation grouping" = "Grupiranje razgovora";
-
-/* No comment provided by engineer. */
-"Conversation mode" = "Način razgovora";
-
-/* Title */
-"Copy" = "Kopiraj";
-
-/* Title */
-"Copy address" = "Kopiraj adresu";
-
-/* Title */
-"Copy name" = "Kopiraj naziv";
-
-/* contact placeholder */
-"Country" = "Država";
-
-/* top right action text */
-"Create" = "Stvori";
-
-/* Alert title */
-"Creating folder not allowed" = "Stvaranje mape nije dopušteno";
-
-/* Alert title */
-"Creating label not allowed" = "Stvaranje oznake nije dopušteno";
-
-/* Placeholder */
-"Current password" = "Trenutna lozinka";
-
-/* No comment provided by engineer. */
-"Current Recovery Email" = "Trenutna adresa e-pošte za oporavak";
-
-/* Title */
-"Current sign-in password" = "Trenutna lozinka za prijavu";
-
-/* contacts default label type
-   Custom option for time config picker */
-"Custom" = "Prilagođeno";
-
-/* cell title in app setting */
-"Dark mode" = "Tamna tema";
-
-/* message Date: text */
-"Date:" = "Datum:";
-
-/* like Date: 2017-10-10 */
-"Date: %@" = "Datum: %@";
+/* error details */
+"Verification of this content’s signature failed" = "Neuspješna provjera potpisa sadržaja";
 
 /* error title */
 "Decryption error" = "Pogreška pri dešifriranju";
@@ -418,277 +893,200 @@
 /* error details */
 "Decryption of this content failed" = "Neuspješno dešifriranje ovog sadržaja";
 
-/* Title */
-"Default" = "Zadano";
+/* error details */
+"Decryption of this message's encrypted content failed." = "Decryption of this message's encrypted content failed.";
 
-/* Settings row */
-"Default browser" = "Zadani preglednik";
-
-/* Placeholder */
-"Define Hint (Optional)" = "Odredite hint-pomoć (neobavezno)";
-
-/* general delete action
-   The title of the delete action in action sheet
-   Title for the alert button to delete all downloaded messages. */
-"Delete" = "Izbriši";
-
-/* Title of message permanent deletion alert, plural */
-"Delete %d Messages" = "Izbriši %d poruka";
-
-/* Title-Contacts */
-"Delete contact" = "Izbriši kontakt";
-
-/* The description of the button for deleting the contact group */
-"Delete contact group" = "Izbriši grupu kontakta";
-
-/* The title of delete folder button */
-"Delete folder" = "Izbriši mapu";
-
-/* The title of delete label button */
-"Delete label" = "Izbriši oznaku";
-
-/* Title of message permanent deletion alert, singular */
-"Delete message" = "Izbriši poruku";
+/* error title */
+"Logs" = "Zapisnici";
 
 /* Title */
-"Details" = "Pojedinosti";
-
-/* Firewall interference description. */
-"Disable any proxies or firewalls, or contact your network administrator." = "Onemogućite sve proxye ili vatrozide ili se obratite mrežnom administratoru.";
-
-/* Cert pinning failed alert message */
-"Disable Validation" = "Onemogući provjeru valjanosti";
-
-/* Action
-   The text for downloaded messages in local storage when encrypted search is disabled. */
-"Disabled" = "Onemogućeno";
-
-/* Action */
-"Discard" = "Odbaci";
-
-/* Action */
-"Discard changes" = "Odbaci promjene";
-
-/* No comment provided by engineer. */
-"Do you really want to remove this file from attachments?" = "Želiš li izbrisati ovu datoteku iz privitaka?";
-
-/* Description */
-"Do you want to cancel the process?" = "Želite li prekinuti proces?";
-
-/* Warning message */
-"Do you want to discard the changes?" = "Želite li odbaciti promjene?";
-
-/* No comment provided by engineer. */
-"Do you want to discard your changes?" = "Želite li odbaciti vaše promjene?";
-
-/* Action */
-"Don't remind me again" = "Ne podsjećaj me više";
+"normal attachments" = "normalni privitci";
 
 /* Title */
-"Don't Show Again" = "Ne prikazuj ponovno";
-
-/* Done action */
-"Done" = "Gotovo";
-
-/* Action */
-"Draft" = "Skica";
-
-/* title of toast message that user taps the message which is uploading */
-"Draft is still uploading…" = "Skica se još učitava…";
-
-/* hint message */
-"Draft saved" = "Skica je spremljena";
-
-/* menu title */
-"Drafts" = "Skice";
-
-/* Onboarding title */
-"Easily up-to-date" = "Lako ažurirano";
-
-/* Action
-   The button title of the scheduled message banner. */
-"Edit" = "Uredi";
-
-/* The title for the view where user can select the color for the group */
-"Edit avatar" = "Uredi avatar";
-
-/* Contacts Edit contact */
-"Edit Contact" = "Uredi kontakt";
-
-/* The title of edit folder page */
-"Edit folder" = "Uredi mapu";
-
-/* The title for the contact group editing view */
-"Edit group" = "Uredi grupu";
-
-/* The title of edit label page */
-"Edit label" = "Uredi oznaku";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Uredi sliku";
-
-/* default vcard types */
-"Email" = "E-pošta";
-
-/* contact placeholder */
-"Email address" = "Adresa e-pošte";
-
-/* The error message while calculating the encryption preferences */
-"Email address disabled" = "Adresa e-pošte je onemogućena";
-
-/* contact detail view, email addresses section title */
-"Email addresses" = "Adrese e-pošte";
-
-/* Send an email to the current contact (button title text) */
-"Email contact" = "Pošalji poruku e-pošte kontaktu";
-
-/* An action title shows in ellipsis menu */
-"Empty Spam" = "Izbriši svu neželjenu poštu";
-
-/* An action title shows in ellipsis menu */
-"Empty Trash" = "Isprazni otpad";
-
-/* Button to enable encrypted search
-   The title of the button to move to settings and enable encrypted search. */
-"Enable" = "Omogući";
-
-/* Title */
-"Enable email notices" = "Omogući obavijesti putem e-pošte";
-
-/* Title */
-"Enable signature" = "Omogući potpis";
-
-/* The footer shown when there is not result in the inbox */
-"Encrypted by Proton" = "Šifrirao Proton";
-
-/* contact section title */
-"Encrypted contact details" = "Šifrirani podaci o kontaktu";
-
-/* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted" = "End-to-End šifriranje";
-
-/* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted and signed message" = "End-to-end šifrirana i potpisana poruka";
-
-/* encryption lock description */
-"End-to-end encrypted message" = "End-to-end šifrirane poruke";
-
-/* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted message from verified sender" = "End-to-end šifrirana poruka od potvrđenog primatelja";
-
-/* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted to verified recipient" = "End-to-end šifiranje za potvrđenog primatelja";
-
-/* Action in 2fa popup view */
-"Enter" = "U redu";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Unesite PIN kôd s najmanje 4 znaka i najviše 21 znak.";
-
-/* The content of the re auth alert */
-"Enter your password to make changes" = "Unesite vašu lozinku, kako biste izvršili promjene";
-
-/* Title */
-"Enter your PIN to unlock your inbox." = "Unesite vaš PIN za otključavanje pristigle pošte.";
-
-/* No comment provided by engineer. */
-"Enter your signature here" = "Unesite vaš potpis ovdje";
-
-/* Title of alert in share extension. */
-"Error" = "Pogreška";
-
-/* incorrect email format error in composer */
-"Error sending" = "Pogreška pri slanju";
-
-/* The default text while estimating the time remaining */
-"Estimating time remaining ..." = "Procjena preostalog vremena...";
-
-/* lock app option */
-"Every time enter app" = "Pri svakom ulasku u aplikaciju";
-
-/* alert title */
-"Expiration not supported" = "Vremenski istek nije podržan";
-
-/* Error message */
-"Failed to determine type of file" = "Neuspješno utvrđivanje vrste datoteke";
-
-/* default vcard types */
-"Fax" = "Faks";
-
-/* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "Poruke s datotekama, oznakama i bojama za stvaranje savršenog, prilagođenog pretinca.";
-
-/* place holder */
-"Folder Name" = "Naziv mape";
-
-/* VoiceOver: email belongs to folders */
-"Folders" = "Mape";
-
-/* forward action */
-"Forward" = "Proslijedi";
-
-/* forwarded message title */
-"Forwarded message" = "Proslijeđena poruka";
-
-/* Title */
-"From" = "Od";
+"inline attachments" = "ugrađeni privitak";
 
 /* Title */
 "From your photo library" = "Iz vaše galerije slika";
 
-/* message From: field text */
-"From:" = "Od:";
+/* Title */
+"Take new photo" = "Uslikaj novu fotografiju";
 
-/* contacts talbe cell gender title */
-"Gender" = "Spol";
+/* Title */
+"Import from…" = "Uvoz iz…";
 
-/* section title in settings */
-"General settings" = "Opće postavke";
+/* Alert title */
+"Attachment limit" = "Ograničenje privitka";
 
-/* title of the next button */
-"Get Started" = "Započni";
+/* Description */
+"The size limit for attachments is 25 MB." = "Ograničenje veličine privitaka je 25 MB.";
 
-/* The title of the button to cancel the action of opening the link in spam mail. */
-"Go back (recommended)" = "Vrati se (preporučeno)";
+/* Error */
+"Can't load the file" = "Neuspješno učitavanje datoteke";
 
-/* title of alert acton of incorrect email format error */
-"Go to drafts" = "Idi u skice";
+/* Error */
+"Can't open the file" = "Neuspješno otvaranje datoteke";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Go to settings" = "Idi na postavke";
+/* Action */
+"Learn more" = "Saznajte više";
 
-/* Got it action */
-"Got it" = "Shvaćam";
+/* Action */
+"Retry" = "Pokušaj ponovno";
 
-/* network troubleshot cell title */
-"Government block" = "Državna cenzura";
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+"'On' E, MMM d, yyyy 'at' %@" = "'Dana' EE, d. MMM, yyyy 'u' %@";
+
+/* No comment provided by engineer. */
+"Message expired" = "Poruka je istekla";
+
+/* expiration time count down */
+"This message will expire in %dD %dH %dM" = "Ova poruka istječe za %1$dD %2$dH %3$dM";
+
+/* Action */
+"Sign Out" = "Odjava";
+
+/* Alert title */
+"Sending in progress" = "Slanje u tijeku";
+
+/* the message will show when closing a draft from the share extension */
+"Closing" = "Zatvaranje";
+
+/* Alert message */
+"Please keep Proton Mail open until the operation is done." = "Please keep Proton Mail open until the operation is done.";
+
+/* Title */
+"Bug Report Received" = "Bug Report Received";
+
+/* No comment provided by engineer. */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Hvala što ste poslali izvješće o pogrešci. Dodali smo vaše izvješće u naš sustav za praćenja pogrešaka.";
+
+/* Title of the alert when the device is offline */
+"Offline" = "Izvan mreže";
+
+/* Title */
+"Label as…" = "Označi kao…";
+
+/* Title */
+"Move to…" = "Premjesti u…";
+
+/* Action */
+"Mark as read/unread" = "Označi kao pročitano/nepročitano";
+
+/* Action title of move to archive */
+"Move to archive" = "Premjesti u arhiv";
+
+/* Action title of move to spam */
+"Move to spam" = "Premjesti u neželjenu poštu";
+
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Failed to load content!\nPlease try again." = "Failed to load content!\nPlease try again.";
+
+/* Title of alert in share extension. */
+"Error" = "Pogreška";
+
+/* Error message */
+"Failed to determine type of file" = "Neuspješno utvrđivanje vrste datoteke";
+
+/* Error message */
+"Unsupported file type" = "Nepodržana vrsta datoteke";
+
+/* Error */
+"Can't copy the file" = "Neuspješno kopiranje datoteke";
+
+/* Title */
+"Copy address" = "Kopiraj adresu";
+
+/* Title */
+"Copy name" = "Kopiraj naziv";
+
+/* Title */
+"Copy" = "Kopiraj";
+
+/* Title */
+"Cut" = "Cut";
+
+/* Title */
+"Compose to" = "Nova poruka za";
+
+/* Title */
+"Add to contacts" = "Dodaj u kontakte";
+
+/* encryption lock description */
+"Sender Verification Failed" = "Neuspjela potvrda pošiljatelja";
+
+/* encryption lock description */
+"End-to-end encrypted message" = "End-to-end šifrirane poruke";
+
+/* alert title */
+"Expiration not supported" = "Vremenski istek nije podržan";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead for the following recipients:" = "Umjesto toga preporučujemo postavljanje lozinke za sljedeće primatelje:";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Umjesto toga preporučujemo postavljanje lozinke ili onemogućavanje PGP-a za sljedeće primatelje:";
+
+/* A option title that enable/disable notification feature */
+"Notifications" = "Obavijesti";
+
+/* VoiceOver: email belongs to folders */
+"Folders" = "Mape";
+
+/* VoiceOver: email has lables */
+"Labels" = "Oznake";
+
+/* Error message */
+"Is this bug report about an in-app purchase?" = "Je li ovo izvješće o pogrešci vezano za kupnju u aplikaciji?";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Naš tim za korisničku podršku pokušat će ručno aktivirati vaš servisni plan ako pristanete priložiti tehničke podatke koje je AppStore dostavio u trenutku kupnje. Ovi podaci ne uključuju nikakve pojedinosti o vašem iTunes računu, Apple ID-u, povezanim kreditnim karticama ili bilo kojim drugim korisničkim informacijama. Tehnički podaci nam samo pomažu provjeriti i ovjeriti da li je transakcija dovršena na poslužiteljima AppStorea.";
+
+/* Error message */
+"Yes, attach details of payment" = "Da, priloži pojedinosti o plaćanju";
+
+/* Error message */
+"No, not related to in-app purchase" = "Ne, ne odnosi se na kupnju u aplikaciji";
 
 /* The instruction label for the group name textfield */
 "Group name" = "Naziv grupe";
 
-/* menu title (contact groups) */
-"Groups" = "Grupe";
+/* The title for the contact group creation view */
+"New group" = "Nova grupa";
 
-/* Action */
-"Hide" = "Sakrij";
+/* The title for the contact group editing view */
+"Edit group" = "Uredi grupu";
 
-/* Title */
-"Hide details" = "Sakrij detalje";
+/* The title for the view where user can manage emails in the contact group */
+"Manage addresses" = "Upravljanje adresama";
 
-/* Description */
-"Human Check Failed" = "Ljudska provjera nije uspjela";
+/* The title for the view where user can manage emails in the contact group */
+"Add contacts" = "Dodaj kontakte";
 
-/* human check warning title */
-"Human Check Warning" = "Upozorenje o ljudskoj provjeri";
+/* The title for the view where user can select the color for the group */
+"Edit avatar" = "Uredi avatar";
 
-/* The title of the button to open the link in spam mail. */
-"Ignore warning and continue" = "Zanemarite upozorenje i nastavite";
+/* The description of the button for deleting the contact group */
+"Delete contact group" = "Izbriši grupu kontakta";
 
-/* Action */
-"Import Error" = "Pogreška uvoza";
+/* The message will show up when the user attempts to create a contact group without any email selected */
+"Please select at least one email for the contact group" = "Odaberite barem jednu adresu e-pošte za grupu kontakata";
 
-/* Title */
-"Import from…" = "Uvoz iz…";
+/* The message will show up when the user attempts to create a contact group without any name specified */
+"Please provide a group name" = "Molimo unesite naziv grupe";
+
+/* The error message will be shown when the update of the contact group through API failed */
+"Can't update contact group through the API" = "Neuspješno ažuriranje grupe kontakata putem API-ja";
+
+/* The error message will be shown when the deletionn of the contact group through API failed */
+"Can't delete contact group through API" = "Neuspješno brisanje grupa kontakata putem API-ja";
+
+/* Internal type casting error */
+"Type casting error" = "Type casting error";
+
+/* The preconditions are not met */
+"Internal Error" = "Unutarnja pogreška";
+
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Ispustite ovdje da biste dodali kao privitak";
 
 /* Downloading attachments from cloud */
 "Importing" = "Uvoz";
@@ -696,412 +1094,344 @@
 /* Drag and drop zone for attachments */
 "Importing attachment, that can take a while" = "Uvoz primitka, može potrajati";
 
-/* import contact title */
-"Importing Contacts" = "Uvoz kontakata";
-
-/* alternative routing description
-   The footer of alternative routing setting */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "U slučaju da su Protonove stranice blokirane, ova postavka omogućuje aplikaciji da isproba alternativno mrežno usmjeravanje do Protona, što može biti korisno u zaobilaženju vatrozida ili problema s mrežom. Preporučujemo da ovu postavku zadržite omogućenom radi veće pouzdanosti. %1$@";
-
-/* menu title */
-"Inbox" = "Pristigla pošta";
-
-/* Error */
-"Incorrect PIN." = "Pogrešan PIN.";
-
-/* Option title */
-"Inherit color from parent folder" = "Naslijedi boju iz roditeljske mape";
-
-/* A label message */
-"Inherited from parent folder" = "Nasljedno iz roditeljske mape";
-
-/* Title */
-"inline attachments" = "ugrađeni privitak";
-
-/* place holder */
-"Input Display Name…" = "Unesite zaslonsko ime…";
-
-/* Cert pinning failed alert title */
-"Insecure connection" = "Nesigurna veza";
-
-/* The preconditions are not met */
-"Internal Error" = "Unutarnja pogreška";
-
-/* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Problem s pružateljem internetskih usluga (ISP)";
-
-/* The error message is shown in composer */
-"Invalid email address" = "Nevažeća adresa e-pošte";
-
-/* update password error */
-"Invalid hashed password!" = "Nevažeća hashirana lozinka!";
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Privitak je uvezen";
 
 /* Invalid URL error when click a url in contact */
 "Invalid URL" = "Nevažeći URL";
 
-/* Error message */
-"Invalid username!" = "Nevažeće korisničko ime!";
-
-/* Error message */
-"Is this bug report about an in-app purchase?" = "Je li ovo izvješće o pogrešci vezano za kupnju u aplikaciji?";
-
-/* No comment provided by engineer. */
-"Label as" = "Označi kao";
-
-/* Title */
-"Label as…" = "Označi kao…";
-
-/* createing lable input place holder */
-"Label Name" = "Naziv oznake";
-
-/* VoiceOver: email has lables */
-"Labels" = "Oznake";
-
-/* cell title in device settings */
-"Language" = "Jezik";
-
-/* Action
-   alternative routing link name in description
-   The title of learn more link */
-"Learn more" = "Saznajte više";
-
-/* The title of learn more link */
-"Learn more." = "Saznajte više.";
-
-/* settings swipe actions section title */
-"Left to Right" = "S lijeva na desno";
-
-/* Title of alert when the free account limit is reached */
-"Limit reached" = "Ograničenje je dosegnuto";
-
-/* The title of loading embedded image banner. */
-"Load embedded images" = "Učitaj ugrađene slike";
-
-/* Action
-   The title of loading remote content banner. */
-"Load remote content" = "Učitaj udaljeni sadržaj";
-
-/* No comment provided by engineer. */
-"Loading…" = "Učitavanje…";
-
-/* The title of local storage in settings */
-"Local storage" = "Lokalna pohrana";
-
-/* cell title in device settings */
-"Local storage limit" = "Ograničenje lokalnog prostora za pohranu";
-
-/* menu title */
-"Lock The App" = "Zaključaj aplikaciju";
-
-/* error title */
-"Logs" = "Zapisnici";
-
-/* cell title in device settings */
-"Mailbox" = "Poštanski sandučić";
-
-/* No comment provided by engineer. */
-"Manage" = "Upravljanje";
-
-/* menu title */
-"Manage accounts" = "Upravljanje računima";
-
-/* The title for the view where user can manage emails in the contact group */
-"Manage addresses" = "Upravljanje adresama";
-
-/* No comment provided by engineer. */
-"Mark as legitimate" = "Označi kao legitimno";
-
-/* Push notification action mark as read
-   The title of the read action in action sheet */
-"Mark as read" = "Označi kao pročitano";
-
-/* Action */
-"Mark as read/unread" = "Označi kao pročitano/nepročitano";
-
-/* The title of the unread action in action sheet */
-"Mark as unread" = "Označi kao nepročitano";
-
-/* menu title */
-"Menu" = "Izbornik";
-
-/* The title of the first item in the segment control of the Customize toolbar setting view. */
-"Message" = "Poruka";
-
-/* Title of the view showing the message body */
-"Message body" = "Tijelo poruke";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Poruku nije moguće poslati. Najmanje jedna od adresa ili domena primatelja ne postoji ili je loše oblikovana.";
-
-/* Composer expiration page title */
-"Message expiration" = "Istek poruke";
-
-/* No comment provided by engineer. */
-"Message expired" = "Poruka je istekla";
-
-/* Title */
-"Message has been deleted." = "Poruka je izbrisana.";
-
-/* Title */
-"Message has been moved." = "Poruka je premještena.";
-
-/* Title of the view showing the message header */
-"Message headers" = "Zaglavlja poruke";
-
-/* The title of banner that is shown after using swipe action to trash a message */
-"Message moved to trash" = "Poruka premještena u otpad";
-
-/* Placeholder */
-"Message Password" = "Lozinka poruke";
-
-/* Alert title */
-"Message saved to Drafts" = "Poruka je spremljena u Skice";
-
-/* Description */
-"Message sending failed. Please try again." = "Neuspješno slanje poruke. Pokušajte ponovno.";
-
-/* Description after message have been sent */
-"Message sent" = "Poruka je poslana";
-
-/* default vcard types */
-"Mobile" = "Mobitel";
-
-/* Mobile Signature title in settings */
-"Mobile Signature" = "Potpis na mobilnim uređajima";
-
 /* More actions button */
 "More" = "Više";
 
-/* No comment provided by engineer. */
-"Move message" = "Premjesti poruku";
+/* Local notification title */
+"Problem sending message" = "Problem pri slanju poruke";
 
-/* No comment provided by engineer. */
-"Move to" = "Premjesti u";
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nismo mogli poslati vašu poruku, zbog moguće loše mrežne veze. Vaša je poruka spremljena u Skice i biti će automatski poslana sljedeći put kada otvorite aplikaciju.";
 
-/* Action title of move to archive */
-"Move to archive" = "Premjesti u arhiv";
+/* Alert to confirm signout */
+"You will be switched to %@" = "Biti će te prebačeni na %@";
 
-/* The title of the remove action in action sheet */
-"Move to inbox" = "Premjesti u pristiglu poštu";
+/* Alert to confirm sign out */
+"Are you sure you want to sign out?" = "Da li ste sigurni da se želite odjaviti?";
 
-/* Action title of move to spam
-   The title of the spam action in action sheet */
-"Move to spam" = "Premjesti u neželjenu poštu";
+/* Alert to confirm sign out when only one account signed in */
+"Are you sure you want to sign out %@?" = "Da li ste sigurni da se želite odjaviti %@?";
 
-/* Push notification action move to trash
-   The title of the remove action in action sheet */
-"Move to trash" = "Premjesti u otpad";
-
-/* Title */
-"Move to…" = "Premjesti u…";
-
-/* Onboarding title */
-"Neat and tidy" = "Uredno i čisto";
-
-/* The title of alternative routing settings */
-"Networking" = "Mreža";
-
-/* Contacts add new contact */
-"New contact" = "Novi kontakt";
-
-/* The title of create folder page */
-"New folder" = "Nova mapa";
-
-/* No comment provided by engineer. */
-"New Folder" = "Nova mapa";
-
-/* The title for the contact group creation view */
-"New group" = "Nova grupa";
-
-/* The title of create label page */
-"New label" = "Nova oznaka";
-
-/* No comment provided by engineer. */
-"New Label" = "Nova oznaka";
-
-/* Title */
-"New mailbox password" = "Nova lozinka sandučića e-pošte";
-
-/* The title of the button that shows in the conversation view when there is new message coming. */
-"New Message" = "Nova poruka";
-
-/* Placeholder */
-"New password" = "Nova lozinka";
-
-/* Title */
-"New sign-in password" = "Nova lozinka za prijavu";
-
-/* title of the next button */
-"Next" = "Sljedeće";
-
-/* contacts talbe cell Nickname title */
-"Nickname" = "Nadimak";
-
-/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
-"No attachment found" = "Nije pronađen nijedan privitak";
-
-/* Title */
-"No connectivity detected…" = "Nije otkrivena veza…";
-
-/* network troubleshot cell title */
-"No internet connection" = "Nema internetske veze";
-
-/* The error message while calculating the encryption preferences */
-"No keys retrieved for internal user" = "Nije pronađen nijedan ključ za unutarnjeg korisnika";
-
-/* Placeholder if message sender is empty */
-"No Recipient" = "Nema primatelja";
-
-/* zero messages matching search query */
-"No results found" = "Nema rezultata";
-
-/* The error message while calculating the encryption preferences */
-"No valid keys retrieved for internal user" = "Nije pronađen nijedan valjani ključ za unutarnjeg korisnika";
-
-/* The error message while calculating the encryption preferences */
-"No WKD key retrieved for user is valid for sending" = "Nijedan WKD ključ dohvaćen za korisnika nije valjan za slanje";
-
-/* Error message */
-"No, not related to in-app purchase" = "Ne, ne odnosi se na kupnju u aplikaciji";
-
-/* A *short* description saying that there is no contact group associated with this contact email
-   Action title of none
-   The protection title of None protection
-   Title */
-"None" = "Ništa";
-
-/* Title */
-"normal attachments" = "normalni privitci";
-
-/* No comment provided by engineer. */
-"Not a spam (move to inbox)" = "Nije neželjena pošta (premjesti u Pristiglu poštu)";
-
-/* No comment provided by engineer. */
-"Not set" = "Nije postavljeno";
-
-/* title */
-"Notes" = "Bilješke";
-
-/* The title will be shown when foler doesnt have emails */
-"Nothing to see here" = "Ovdje se nema što vidjeti";
-
-/* Alert title */
-"Notice" = "Napomena";
-
-/* A option title that enable/disable notification feature
-   cell title in device settings */
-"Notifications" = "Obavijesti";
-
-/* The title of Off setting options */
-"Off" = "Isklj";
-
-/* Title of the alert when the device is offline */
-"Offline" = "Izvan mreže";
-
-/* Action */
-"OK" = "U redu";
-
-/* The title of On setting options */
-"On" = "Uklj";
-
-/* On {date}, e.g.: On Aug 14 */
-"On %@" = "Na %@";
-
-/* Alert when the free account limit is reached */
-"Only one free account can be added" = "Možete dodati samo jedan besplatni račun";
-
-/* Open action */
-"Open" = "Otvori";
-
-/* VoiceOver title of account switcher button in the menu */
-"Open account switcher" = "Otvori prebacivač računa";
-
-/* contacts talbe cell Organization title */
-"Organization" = "Organizacija";
-
-/* default vcard types */
-"Other" = "Ostalo";
-
-/* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Naš tim za korisničku podršku pokušat će ručno aktivirati vaš servisni plan ako pristanete priložiti tehničke podatke koje je AppStore dostavio u trenutku kupnje. Ovi podaci ne uključuju nikakve pojedinosti o vašem iTunes računu, Apple ID-u, povezanim kreditnim karticama ili bilo kojim drugim korisničkim informacijama. Tehnički podaci nam samo pomažu provjeriti i ovjeriti da li je transakcija dovršena na poslužiteljima AppStorea.";
-
-/* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Naš je sustav ovu e-poruku označio kao pokušaj krađe identiteta. Molimo provjerite je li legitimna poruka.";
-
-/* Setting option title of folder setting page */
-"Parent folder" = "Roditeljska mapa";
-
-/* title */
-"Password Hint" = "Podsjetnik za lozinku";
-
-/* update password error */
-"Password update failed" = "Neuspješna promjena lozinke";
-
-/* Placeholder */
-"Passwords must match" = "Lozinke se moraju poklapati";
-
-/* Text for pause button */
-"Pause" = "Pauziraj";
-
-/* default vcard types */
-"Personal" = "Privatno";
-
-/* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted" = "PGP šifrirano";
-
-/* The message after tapping the encryption icon of message received. */
-"PGP-encrypted and signed message" = "PGP šifrirana i potpisana poruka";
-
-/* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message" = "PGP-šifrirana poruka";
-
-/* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message from verified sender" = "PGP šifrirana poruka od potvrđenog pošiljatelja";
-
-/* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted to verified recipient" = "PGP šifirano za potvrđenog primatelja";
-
-/* The message after tapping the encryption icon of recipient in composer. */
-"PGP-signed" = "PGP potpisano";
-
-/* The message after tapping the encryption icon of message received. */
-"PGP-signed message from verified sender" = "PGP potpisana poruka od potvrđenog pošiljatelja";
-
-/* The message after tapping the encryption icon of message received. */
-"PGP-signed message. Sender verification failed" = "Poruka s PGP potpisom. Provjera pošiljatelja nije uspjela";
-
-/* default vcard types */
-"Phone" = "Telefon";
-
-/* contact placeholder */
-"Phone number" = "Broj telefona";
-
-/* The protection title of PIN code protection */
-"PIN code" = "PIN kôd";
-
-/* Description */
-"PIN code can't be empty." = "PIN kôd ne može biti prazan.";
-
-/* Alert message is shown when the device doesn't have network connection */
-"Please connect and retry" = "Povežite se i pokušajte ponovno";
-
-/* error message */
-"Please input a valid email address." = "Molimo unesite valjanu adresu e-pošte.";
-
-/* no internet connection description */
-"Please make sure that your internet connection is working." = "Provjerite da li vaša internetska veza radi.";
-
-/* The message will show up when the user attempts to create a contact group without any name specified */
-"Please provide a group name" = "Molimo unesite naziv grupe";
+/* Alert to confirm signout with pending message in the queue */
+"There are unsent messages that will be lost if you sign out" = "Poruke koje nisu poslane biti će izgubljene ako se odjavite";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
 "Please select at least one email" = "Odaberite najmanje jednu poruku e-pošte";
 
-/* The message will show up when the user attempts to create a contact group without any email selected */
-"Please select at least one email for the contact group" = "Odaberite barem jednu adresu e-pošte za grupu kontakata";
+/* Alert when auth token is revoked and switch to another */
+"Signed out from %@ and signed in with %@" = "Odjavili ste se s %1$@ i prijavili s %2$@";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "Prebačeno na '%@' račun";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "Nesigurna veza";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately.";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Provjera TLS certifikata nije uspjela. Vaša veza može biti nadzirana te je aplikacija je privremeno blokirana zbog vaše sigurnosti.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "Onemogući provjeru valjanosti";
+
+/* Account manager title */
+"Account" = "Korisnički račun";
+
+/* Alert when the account is already logged in */
+"The user is already signed in" = "The user is already signed in";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "Ograničenje je dosegnuto";
+
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "Možete dodati samo jedan besplatni račun";
+
+/* section title in settings */
+"Account settings" = "Postavke računa";
+
+/* section title in settings */
+"App settings" = "Postavke aplikacije";
+
+/* section title in settings */
+"General settings" = "Opće postavke";
+
+/* security title in settings */
+"App PIN" = "App PIN";
+
+/* security title in settings */
+"App PIN & Touch ID" = "App PIN & Touch ID";
+
+/* security title in settings */
+"App PIN & Face ID" = "App PIN & Face ID";
+
+/* cell title in device settings */
+"Language" = "Jezik";
+
+/* cell title in device settings */
+"Combined contacts" = "Spojeni kontakti";
+
+/* cell title in app settings */
+"Swipe actions" = "Akcija potezanjem prsta";
+
+/* cell title in app settings */
+"Alternative routing" = "Alternativno usmjeravanje";
+
+/* cell title in device settings */
+"Storage" = "Prostor za pohranu";
+
+/* cell title in device settings */
+"Addresses" = "Adrese";
+
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "Utišaj";
+
+/* cell title in device settings */
+"Mailbox" = "Poštanski sandučić";
+
+/* cell title in device settings */
+"Privacy" = "Privatnost";
+
+/* cell title in device settings */
+"Local storage limit" = "Ograničenje lokalnog prostora za pohranu";
+
+/* cell title in device setting */
+"Clear local cache" = "Očisti lokalnu predmemoriju";
+
+/* cell title in app setting */
+"Dark mode" = "Tamna tema";
+
+/* network troubleshot cell title */
+"Allow alternative routing" = "Omogući alternativno usmjeravanje";
+
+/* network troubleshot cell title */
+"No internet connection" = "Nema internetske veze";
+
+/* The error message is shown in composer */
+"Recipient not found" = "Primatelj nije pronađen";
+
+/* The error message is shown in composer */
+"Invalid email address" = "Nevažeća adresa e-pošte";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "Barem jedna adresa e-pošte primatelja nije ispravno oblikovana, provjerite ih još jednom.";
+
+/* incorrect email format error in composer */
+"Error sending" = "Pogreška pri slanju";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "Najmanje jednu adresu e-pošte u grupi nije bilo moguće pronaći";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Barem jedna adresa e-pošte/domena primatelja ne postoji ili je loše oblikovana. Poruka je premještena u skice.";
+
+/* incorrect email format error while sending */
+"You have entered at least one invalid email address. Please verify your recipients." = "Upisali ste barem jednu nevažeću adresu e-pošte. Potvrdite vaše primatelje.";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found." = "Najmanje jednu adresu e-pošte u grupi nije bilo moguće pronaći.";
+
+/* incorrect email format error while sending */
+"You have entered at least one unknown recipient. Please verify your recipients." = "Upisali ste barem jednog nepoznatog primatelja. Potvrdite vaše primatelje.";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "Slanje nije uspjelo";
+
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "Idi u skice";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading…" = "Skica se još učitava…";
+
+/* content of the sending mesage that will display this text on the date label */
+"Sending message…" = "Slanje poruke…";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Poruku nije moguće poslati. Najmanje jedna od adresa ili domena primatelja ne postoji ili je loše oblikovana.";
+
+/* The unread title of unread action button in mailbox view */
+"unread" = "nepročitano";
+
+/* The title of navigation bar title of mailbox view while selecting the message */
+"Selected" = "Odabrano";
+
+/* The title of last update status of more than 1 hour */
+"Updated >1 hour ago" = "Updated >1 hour ago";
+
+/* The title of last update status of updated just now */
+"Updated just now" = "Upravo ažurirano";
+
+/* The text shown on the mailbox when the device is in offline mode */
+"You are offline" = "Niste na mreži";
+
+/* The footer shown when there is not result in the inbox */
+"Encrypted by Proton" = "Šifrirao Proton";
+
+/* The text shown on the mailbox when the primary user changed */
+"Signed in as %@" = "Prijavljeno kao %@";
+
+/* The title of the star action in action sheet */
+"Star" = "Zvjezdica";
+
+/* The title of the star action in action sheet */
+"Unstar" = "Ukloni zvjezdicu";
+
+/* The title of the unread action in action sheet */
+"Mark as unread" = "Označi kao nepročitano";
+
+/* Push notification action mark as read */
+"Mark as read" = "Označi kao pročitano";
+
+/* Push notification action move to trash */
+"Move to trash" = "Premjesti u otpad";
+
+/* The title of the remove action in action sheet */
+"Move to inbox" = "Premjesti u pristiglu poštu";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "View message in Light mode";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "View message in Dark mode";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Postavite PIN kôd";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Enter new PIN code";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Unesite PIN kôd s najmanje 4 znaka i najviše 21 znak.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN is too short";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN is too long";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Ponovite PIN kôd";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN kôdovi se moraju podudarati!";
+
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "U slučaju da su Protonove stranice blokirane, ova postavka omogućuje aplikaciji da isproba alternativno mrežno usmjeravanje do Protona, što može biti korisno u zaobilaženju vatrozida ili problema s mrežom. Preporučujemo da ovu postavku zadržite omogućenom radi veće pouzdanosti. %1$@";
+
+/* The title of alternative routing settings */
+"Networking" = "Mreža";
+
+/* The title of On setting options */
+"On" = "Uklj";
+
+/* The title of Off setting options */
+"Off" = "Isklj";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Promijenite PIN kôd";
+
+/* The title of re auth alert */
+"Re-authenticate" = "Ponovno autenticiraj";
+
+/* The content of the re auth alert */
+"Enter your password to make changes" = "Unesite vašu lozinku, kako biste izvršili promjene";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "Send read receipt";
+
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "Receipt sent";
+
+/* Message of a banner which is displayed on the messages list when offline */
+"We have trouble connecting to the servers. Please reconnect." = "Poteškoće s povezivanjem na poslužitelje. Ponovo se povežite.";
+
+/* Title of message permanent deletion alert, singular */
+"Delete message" = "Izbriši poruku";
+
+/* Title of message permanent deletion alert, plural */
+"Delete %d Messages" = "Izbriši %d poruka";
+
+/* No comment provided by engineer. */
+"Current Recovery Email" = "Trenutna adresa e-pošte za oporavak";
+
+/* No comment provided by engineer. */
+"Recovery enabled" = "Oporavak je omogućen";
 
 /* No comment provided by engineer. */
 "Please set a recovery / notification email" = "Molimo postavite adresu e-pošte za oporavak/obavijesti";
+
+/* No comment provided by engineer. */
+"Unread" = "Nepročitano";
+
+/* No comment provided by engineer. */
+"Read" = "Pročitano";
+
+/* No comment provided by engineer. */
+"Set up swipe gestures to access most used actions." = "Postavite radnje povlačenja prstom za pristup najčešće korištenim radnjama.";
+
+/* No comment provided by engineer. */
+"Tap here to set" = "Dodirnite ovdje za postavljanje";
+
+/* No comment provided by engineer. */
+"Not set" = "Nije postavljeno";
+
+/* The section title of folder manager table */
+"Your folders" = "Vaše mape";
+
+/* The title of create folder page */
+"New folder" = "Nova mapa";
+
+/* The title of edit folder page */
+"Edit folder" = "Uredi mapu";
+
+/* The title of delete folder button */
+"Delete folder" = "Izbriši mapu";
+
+/* The section title of label manager table */
+"Your labels" = "Vaše oznake";
+
+/* The title of create label page */
+"New label" = "Nova oznaka";
+
+/* The title of edit label page */
+"Edit label" = "Uredi oznaku";
+
+/* The title of delete label button */
+"Delete label" = "Izbriši oznaku";
+
+/* The button to enable label list reorder */
+"Reorder" = "Promjeni redoslijed";
+
+/* Setting option title of folder setting page */
+"Parent folder" = "Roditeljska mapa";
+
+/* Alert message when user tries to delete folder */
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Ova se radnja ne može poništiti. E-poruke pohranjene u ovoj mapi neće se izbrisati i mogu se naći u mapi Sva pošta.";
+
+/* Alert message when user tries to delete label */
+"This action cannot be undone." = "Ova radnja se ne može poništiti.";
+
+/* Alert message when user tries to discard unsaved changes */
+"Any unsaved changes will be lost." = "Sve vaše nespremljene promjene će biti izgubljene.";
+
+/* A label message */
+"Inherited from parent folder" = "Nasljedno iz roditeljske mape";
+
+/* Alert title */
+"Creating folder not allowed" = "Stvaranje mape nije dopušteno";
+
+/* Alert title */
+"Creating label not allowed" = "Stvaranje oznake nije dopušteno";
 
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 folders" = "Molimo nadogradite na plaćeni plan kako bi ste koristili više od 3 mape";
@@ -1109,184 +1439,290 @@
 /* Alert message */
 "Please upgrade to a paid plan to use more than 3 labels" = "Molimo nadogradite na plaćeni plan kako bi ste koristili više od 3 oznake";
 
-/* Content of storage full alert */
-"Please upgrade your plan" = "Molimo nadogradite svoj plan";
+/* Alert message is shown when the device doesn't have network connection */
+"Please connect and retry" = "Povežite se i pokušajte ponovno";
 
-/* Description */
-"Please use Proton Mail App sign-in first." = "Prvo se prijavite u Proton Mail.";
+/* Option title */
+"Use folder colors" = "Koristi boje mapa";
+
+/* Option title */
+"Inherit color from parent folder" = "Naslijedi boju iz roditeljske mape";
+
+/* section title */
+"Select color" = "Select color";
+
+/* No comment provided by engineer. */
+"You are not connected. We cannot display the content of your message." = "Niste povezani. Ne možemo prikazati sadržaj vaše poruke.";
+
+/* No comment provided by engineer. */
+"Do you really want to remove this file from attachments?" = "Želiš li izbrisati ovu datoteku iz privitaka?";
+
+/* The title of loading embedded image banner. */
+"Load embedded images" = "Učitaj ugrađene slike";
+
+/* No comment provided by engineer. */
+"This conversation contains trashed messages" = "Ovaj razgovor sadrži poruke koje su u otpadu";
+
+/* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "Ovaj razgovor sadrži poruke koje nisu u otpadu.";
+
+/* No comment provided by engineer. */
+"Message actions" = "Message actions";
+
+/* No comment provided by engineer. */
+"Manage" = "Upravljanje";
+
+/* No comment provided by engineer. */
+"Move message" = "Premjesti poruku";
 
 /* No comment provided by engineer. */
 "Print" = "Ispis";
 
-/* cell title in device settings */
-"Privacy" = "Privatnost";
-
-/* Onboarding title */
-"Privacy for all" = "Privatnost za sve";
-
-/* Local notification title */
-"Problem sending message" = "Problem pri slanju poruke";
-
-/* network troubleshot cell title */
-"Proton is down" = "Proton je van mreže";
-
-/* Title */
-"Proton Mail is currently offline…" = "Proton Mail je trenutno van mreže…";
-
-/* Name of the link of Proton Status */
-"Proton Status" = "Proton Status";
-
-/* network troubleshot cell title */
-"Proxy/Firewall interference" = "Poteškoće s proxy/vatrozidom";
-
-/* The title of re auth alert */
-"Re-authenticate" = "Ponovno autenticiraj";
+/* No comment provided by engineer. */
+"Save as PDF" = "Spremi kao PDF";
 
 /* No comment provided by engineer. */
-"Read" = "Pročitano";
-
-/* Title */
-"Reading device contacts data…" = "Čitanje podataka o kontaktima uređaja…";
-
-/* The error message is shown in composer */
-"Recipient not found" = "Primatelj nije pronađen";
-
-/* Title */
-"Recovery Code" = "Kôd za oporavak";
-
-/* Title */
-"Recovery email" = "Adresa e-pošte za oporavak";
+"View headers" = "Pregled zaglavlja";
 
 /* No comment provided by engineer. */
-"Recovery enabled" = "Oporavak je omogućen";
-
-/* menu title
-   The title of the refer button in referral prompt view. */
-"Refer a friend" = "Uputi prijatelja";
-
-/* Title */
-"Remind Me Later" = "Podsjeti me kasnije";
-
-/* remove action */
-"Remove" = "Ukloni";
-
-/* Settings row */
-"Remove image metadata" = "Ukloni meta podatke slika";
-
-/* action title */
-"Remove password" = "Ukloni lozinku";
-
-/* The button to enable label list reorder */
-"Reorder" = "Promjeni redoslijed";
-
-/* textview title */
-"Repeat password" = "Ponovite lozinku";
-
-/* The title of PIN code setup2 view
-   The title of textfield of PIN code setup2 */
-"Repeat PIN code" = "Ponovite PIN kôd";
-
-/* reply action */
-"Reply" = "Odgovor";
-
-/* reply all action */
-"Reply all" = "Odgovori svima";
-
-/* menu title */
-"Report a problem" = "Prijavi problem";
+"View HTML" = "Pregledaj HTML";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Prijavi krađu identiteta";
 
-/* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Prijavljivanje poruke kao pokušaja krađe identiteta će nam poslati poruku kako bismo je mogli analizirati i poboljšati filtre. To znači da ćemo moći vidjeti sadržaj poruke u cijelosti.";
-
-/* link opeining confirmation */
-"Request link confirmation" = "Zatražite potvrdu poveznice";
-
-/* The title of the reset button in toolbar customization view. */
-"Reset to default" = "Vrati na zadane postavke";
-
-/* The title of the alert after tapping reset in toolbar customization view. */
-"Reset to default?" = "Vrati na zadane postavke?";
-
-/* Title */
-"Resetting message cache…" = "Poništavanje predmemorije poruka…";
-
-/* Text for resume button */
-"Resume" = "Nastavi";
-
-/* Action */
-"Retry" = "Pokušaj ponovno";
-
-/* settings swipe actions section title */
-"Right to Left" = "S desna na lijevo";
-
-/* Title */
-"Save" = "Spremi";
+/* No comment provided by engineer. */
+"Not a spam (move to inbox)" = "Nije neželjena pošta (premjesti u Pristiglu poštu)";
 
 /* No comment provided by engineer. */
-"Save as PDF" = "Spremi kao PDF";
+"Move to" = "Premjesti u";
 
-/* title */
-"Save Changes" = "Spremi promjene";
+/* No comment provided by engineer. */
+"Do you want to discard your changes?" = "Želite li odbaciti vaše promjene?";
 
-/* Action
-   The action title of the alert of the user trying to send a message that was schedule-send. */
-"Schedule send" = "Zakaži slanje";
+/* No comment provided by engineer. */
+"Your changes will be discarded" = "Vaše promjene će biti odbačene";
 
-/* The title of the banner that will be shown when you schedule a message. */
-"Scheduling message..." = "Zakazivanje poruke...";
+/* No comment provided by engineer. */
+"Label as" = "Označi kao";
 
-/* Springboard (3D Touch) shortcuts action
-   Title */
-"Search" = "Pretraga";
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "Također i arhivu?";
 
-/* cell title in device settings
-   The title of encrypted search in settings */
-"Search message content" = "Pretraži sadržaj poruka";
+/* No comment provided by engineer. */
+"New Label" = "Nova oznaka";
 
-/* section title */
-"Select colour" = "Odaberite boju";
+/* No comment provided by engineer. */
+"Undisclosed Recipients" = "Nedefinirani primatelji";
 
-/* The title of navigation bar title of mailbox view while selecting the message */
-"Selected" = "Odabrano";
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Otkazati pretplatu s mailing liste";
 
-/* Action */
-"Send" = "Pošalji";
+/* No comment provided by engineer. */
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Naš je sustav ovu e-poruku označio kao pokušaj krađe identiteta. Molimo provjerite je li legitimna poruka.";
 
-/* Action */
-"Send anyway" = "Svejedno pošalji";
+/* No comment provided by engineer. */
+"Mark as legitimate" = "Označi kao legitimno";
 
-/* Title of button to send feedback */
-"Send feedback" = "Pošalji povratne informacije";
+/* The title of auto reply banner */
+"This message was automatically generated" = "This message was automatically generated";
 
-/* Description */
-"Send message without subject?" = "Poslati poruku bez predmeta?";
+/* Warning message */
+"Do you want to discard the changes?" = "Želite li odbaciti promjene?";
 
-/* encryption lock description */
-"Sender Verification Failed" = "Neuspjela potvrda pošiljatelja";
+/* No comment provided by engineer. */
+"Group emails from the same conversation together." = "Group emails from the same conversation together.";
 
-/* title of incorrect email format error while sending */
-"Sending failed" = "Slanje nije uspjelo";
+/* No comment provided by engineer. */
+"Conversation grouping" = "Grupiranje razgovora";
 
-/* Alert title */
-"Sending in progress" = "Slanje u tijeku";
+/* No comment provided by engineer. */
+"Conversation mode" = "Način razgovora";
 
-/* content of the sending mesage that will display this text on the date label */
-"Sending message…" = "Slanje poruke…";
+/* No comment provided by engineer. */
+"Undo send" = "Poništi slanje";
 
-/* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Slanje poruka s %1$@ adrese je plaćena značajka. Poruka će biti poslana s zadane adrese %2$@";
+/* The protection title of PIN code protection */
+"PIN code" = "PIN kôd";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "Nova poruka";
+
+/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
+"Switch selection mode" = "Prebaci na način odabira";
+
+/* No comment provided by engineer. */
+"Yesterday" = "Jučer";
+
+/* VoiceOver title of account switcher button in the menu */
+"Open account switcher" = "Otvori prebacivač računa";
 
 /* text displayed in composer when attachments are uploading */
 "Sending will be available\nwhen attachments are uploaded" = "Slanje će biti dostupno\nkada se privici učitaju";
 
-/* menu title */
-"Sent" = "Poslano";
+/* Alert title when attachment upload failed */
+"Attachment failure" = "Neuspjeh privitka";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "Nije moguće priložiti sljedeće datoteke:";
+
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "Expand folder";
+
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "Sažmi mapu";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "Switch unread filter";
+
+/* Title of user feedback view */
+"Your feedback" = "Your feedback";
+
+/* Prompt of user feedback view */
+"How would you describe your experience with the new Proton Mail?" = "How would you describe your experience with the new Proton Mail?";
+
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "Tell us about your experience. (Optional)";
+
+/* Title of button to send feedback */
+"Send feedback" = "Pošalji povratne informacije";
+
+/* Example feedback */
+"Awful" = "Awful";
+
+/* Example feedback */
+"Wonderful" = "Wonderful";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "Thank you for your feedback!";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "Sažmi poruku";
+
+/* The title of section inside the dark mode setting page */
+"Appearance" = "Izgled";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "Follow device setting";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "Always on";
+
+/* The title of always off option in dark mode setting */
+"Always off" = "Always off";
+
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "Poruka premještena u otpad";
+
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 message moved to archive";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 Message moved to spam";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "Action reverted";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "Sastavite poruku";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "Isprazni otpad";
+
+/* Alert title */
+"Empty trash folder" = "Empty trash folder";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "Izbriši svu neželjenu poštu";
+
+/* Alert title */
+"Empty spam folder" = "Empty spam folder";
+
+/* Warning message */
+"Cannot empty folder right now." = "Cannot empty folder right now.";
+
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[Show full message]";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "Signed out of %@";
+
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "Sign in again to keep receiving updates";
+
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "Nije pronađen nijedan privitak";
+
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "Do you want to send your message anyway?";
+
+/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
+"Add CC and BCC" = "Add CC and BCC";
+
+/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
+"Close CC and BCC" = "Close CC and BCC";
+
+/* The title of the button in the composer that can select different sender address. */
+"Choose different sender address" = "Choose different sender address";
+
+/* The voiceiver title of the add password button in the tool bar of composer. */
+"Set mail password" = "Set mail password";
+
+/* The voiceiver title of the add expiration button in the tool bar of composer */
+"Set mail expiration" = "Set mail expiration";
+
+/* The voiceover title of the dismiss keyboard action */
+"Dismiss keyboard" = "Dismiss keyboard";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "Upozorenje: sumnja na lažnu web-stranicu";
+
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue.";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "Zanemarite upozorenje i nastavite";
+
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "Vrati se (preporučeno)";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Ova značajka odgađa slanje vaše e-pošte, dajući vam mogućnost poništavanja slanja tijekom odabranog vremenskog okvira.";
+
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "This message will be sent on %1$@ at %2$@";
+
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "Today, %@";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "Tomorrow, %@";
+
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "Schedule will be removed";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "Send immediately?";
+
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"";
+
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "Send immediately";
+
+/* The content of the introducation view of the schedule send */
+"You can now schedule your messages to be sent later" = "You can now schedule your messages to be sent later";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "Zakazivanje poruke...";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption" = "Poslano putem Proton Maila s enkripcijom nultog pristupa";
+"Sent by you with end-to-end encryption to verified recipient" = "Poslano koristeći end-to-end šifriranje za pouzdanog primatelja";
 
 /* The message after tapping the encryption icon. */
 "Sent by Proton Mail with zero-access encryption to verified recipient" = "Poslano putem Proton Maila s šifriranjem nultog pristupa za pouzdanog primatelja";
@@ -1295,429 +1731,405 @@
 "Sent by you with end-to-end encryption" = "Poslano koristeći end-to-end šifriranje";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption to verified recipient" = "Poslano koristeći end-to-end šifriranje za pouzdanog primatelja";
-
-/* Description */
-"Sent Failed" = "Poruka nije poslana";
-
-/* Title */
-"Set" = "Postavi";
-
-/* Description */
-"Set a password to encrypt this message for non-Proton Mail users." = "Postavite lozinku za šifriranje ove poruke za one koji nisu korisnici Proton Maila.";
-
-/* Title */
-"Set Password" = "Postavite lozinku";
-
-/* The title of PIN code setup1 view */
-"Set PIN code" = "Postavite PIN kôd";
-
-/* No comment provided by engineer. */
-"Set up swipe gestures to access most used actions." = "Postavite radnje povlačenja prstom za pristup najčešće korištenim radnjama.";
-
-/* menu title */
-"Settings" = "Postavke";
-
-/* The title of the share button in referral share view. */
-"Share" = "Podijeli";
-
-/* action */
-"Share contact" = "Podijeli kontakt";
-
-/* Action */
-"Show" = "Prikaži";
-
-/* Alert title to confirm signout
-   menu title */
-"Sign out" = "Odjava";
-
-/* Title in signature settings */
-"Signature" = "Potpis";
-
-/* The text shown on the mailbox when the primary user changed */
-"Signed in as %@" = "Prijavljeno kao %@";
-
-/* Alert when auth token is revoked and switch to another */
-"Signed out from %@ and signed in with %@" = "Odjavili ste se s %1$@ i prijavili s %2$@";
-
-/* skip button title in onboarding page */
-"Skip" = "Preskoči";
-
-/* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "Utišaj";
-
-/* menu title */
-"Spam" = "Neželjena pošta";
-
-/* The title of the star action in action sheet
-   VoiceOver title of star button in the message view */
-"Star" = "Zvjezdica";
-
-/* Title */
-"Star/unstar" = "Postavi/ukloni zvjezdicu";
-
-/* menu title
-   Springboard (3D Touch) shortcuts action
-   VoiceOver: email is starred */
-"Starred" = "Sa zvjezdicom";
-
-/* contact placeholder */
-"State" = "Država";
-
-/* network troubleshot cell title */
-"Still can't find a solution" = "Još uvijek ne mogu pronaći rješenje";
-
-/* cell title in device settings */
-"Storage" = "Prostor za pohranu";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Ograničenje prostora za pohranu";
-
-/* Storage warning */
-"Storage quota exceeded" = "Premašena je kvota pohrane";
-
-/* Title */
-"Storage Warning" = "Upozorenje o prostoru";
+"Sent by Proton Mail with zero-access encryption" = "Poslano putem Proton Maila s enkripcijom nultog pristupa";
 
 /* The message after tapping the encryption icon. */
 "Stored with zero-access encryption" = "Spremljeno s šifriranjem nultog pristupa";
 
-/* contact placeholder */
-"Street" = "Ulica";
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "End-to-end šifrirana poruka od potvrđenog primatelja";
 
-/* Placeholder */
-"Subject" = "Predmet";
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted and signed message" = "End-to-end šifrirana i potpisana poruka";
 
-/* subject: text when forward */
-"Subject:" = "Predmet:";
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP šifrirana poruka od potvrđenog pošiljatelja";
 
-/* The subject of the email draft created in the network troubleshoot view. */
-"Subject..." = "Predmet...";
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted and signed message" = "PGP šifrirana i potpisana poruka";
 
-/* menu title
-   The title of a subscription plans screen */
-"Subscription" = "Pretplata";
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP potpisana poruka od potvrđenog pošiljatelja";
 
-/* cell title in app settings */
-"Swipe actions" = "Akcija potezanjem prsta";
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP-šifrirana poruka";
 
-/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
-"Switch selection mode" = "Prebaci na način odabira";
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "Poruka s PGP potpisom. Provjera pošiljatelja nije uspjela";
 
-/* Alert when switched account by clicking notification of another account */
-"Switched to account '%@'" = "Prebačeno na '%@' račun";
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "End-to-end šifiranje za potvrđenog primatelja";
 
-/* Error */
-"System can't copy the file" = "Sustav ne može kopirati datoteku";
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "End-to-End šifriranje";
 
-/* Title */
-"Take new photo" = "Uslikaj novu fotografiju";
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "PGP šifirano za potvrđenog primatelja";
 
-/* No comment provided by engineer. */
-"Tap here to set" = "Dodirnite ovdje za postavljanje";
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP šifrirano";
 
-/* Antivirus interference description. */
-"Temporarily disable or remove your antivirus software." = "Privremeno onemogućite ili uklonite svoj antivirusni program.";
-
-/* The title of the terms and conditions button in referral share view. */
-"Terms & conditions" = "Uvjeti i odredbe";
-
-/* No comment provided by engineer. */
-"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Hvala što ste poslali izvješće o pogrešci. Dodali smo vaše izvješće u naš sustav za praćenja pogrešaka.";
-
-/* Error message */
-"The 2 passwords are not matching" = "Dvije lozinke se ne podudaraju";
-
-/* Description */
-"The draft cache is broken. Please try again." = "Predmemorija skica je neupotrebljiva. Pokušajte ponovno.";
-
-/* Alert message when attachment upload failed */
-"The following files couldn't be attached:" = "Nije moguće priložiti sljedeće datoteke:";
-
-/* update password error */
-"The new password can't be empty." = "Nova lozinka ne može biti prazna.";
-
-/* update password error */
-"The new password does not match." = "Nova lozinka se ne podudara.";
-
-/* update password error */
-"The new password needs to be at least 8 characters long" = "Nova lozinka mora imati najmanje 8 znakova";
-
-/* update password error */
-"The password is wrong." = "Pogrešna lozinka.";
-
-/* Error message */
-"The password must be between 8 and 21 characters long" = "Lozinka mora biti od 8 do 21 znakova duga";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN kôdovi se moraju podudarati!";
-
-/* update password error */
-"The private key update failed." = "Neuspješno ažuriranje privatnog ključa.";
-
-/* Title */
-"The request timed out." = "Zahtjev je istekao.";
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP potpisano";
 
 /* The error message while calculating the encryption preferences */
-"The sending key is not valid" = "Ključ slanja nije važeći";
+"Email address disabled" = "Adresa e-pošte je onemogućena";
 
-/* Description */
-"The size limit for attachments is 25 MB." = "Ograničenje veličine privitaka je 25 MB.";
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "Nije pronađen nijedan ključ za unutarnjeg korisnika";
 
-/* Unsupported url alert message */
-"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL kojem pokušavate pristupiti nije standardan i možda se neće pravilno učitati. Želite li ga otvoriti pomoću zadanog preglednika vašeg uređaja?";
-
-/* Alert to confirm signout with pending message in the queue */
-"There are unsent messages that will be lost if you sign out" = "Poruke koje nisu poslane biti će izgubljene ako se odjavite";
-
-/* Alert message when user tries to delete label */
-"This action cannot be undone." = "Ova radnja se ne može poništiti.";
-
-/* Alert message when user tries to delete folder */
-"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "Ova se radnja ne može poništiti. E-poruke pohranjene u ovoj mapi neće se izbrisati i mogu se naći u mapi Sva pošta.";
-
-/* No comment provided by engineer. */
-"This conversation contains non-trashed messages." = "Ovaj razgovor sadrži poruke koje nisu u otpadu.";
-
-/* No comment provided by engineer. */
-"This conversation contains trashed messages" = "Ovaj razgovor sadrži poruke koje su u otpadu";
-
-/* spam score warning */
-"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ova poruka e-pošte izgleda kao da je od Proton Mail adrese, ali je došla izvan našeg sustava i nije ispunila naše zahtjeve autentikacije. Može biti lažna ili nepropisno proslijeđena!";
-
-/* Description for undo send */
-"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "Ova značajka odgađa slanje vaše e-pošte, dajući vam mogućnost poništavanja slanja tijekom odabranog vremenskog okvira.";
-
-/* The subtitle will be shown when folder doesnt have emails */
-"This folder is empty" = "Ova mapa je prazna";
-
-/* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Ova poveznica vodi do web-mjesta koje možda pokušava ukrasti vaše podatke, kao što su lozinke i podaci o kreditnoj kartici.\n%@\n\nZbog vaše sigurnosti nemojte nastaviti.";
-
-/* spam score warning */
-"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ova poruka može biti pokušaj krađe identiteta. Provjerite pošiljatelja i sadržaj kako biste bili sigurni da su legitimni.";
-
-/* expiration time count down */
-"This message will expire in %dD %dH %dM" = "Ova poruka istječe za %1$dD %2$dH %3$dM";
-
-/* The subtitle of empty inbox */
-"Time to relax" = "Vrijeme za odmor";
-
-/* contacts talbe cell Title title */
-"Title" = "Naslov";
-
-/* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Provjera TLS certifikata nije uspjela. Vaša veza može biti nadzirana te je aplikacija je privremeno blokirana zbog vaše sigurnosti.";
-
-/* message To: feild
-   Title */
-"To" = "Za";
-
-/* One of schedule time options */
-"Tomorrow" = "Sutra";
-
-/* mail location desc
-   menu title */
-"Trash" = "Otpad";
-
-/* network troubleshot view title */
-"TroubleShooting" = "Rješavanje problema";
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "Nije pronađen nijedan valjani ključ za unutarnjeg korisnika";
 
 /* The error message while calculating the encryption preferences */
 "Trusted keys are not valid for sending" = "Pouzdani ključevi nisu valjani za slanje";
 
-/* ISP problem description */
-"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Pokušajte se povezati na Proton s druge mreže (ili upotrijebite %1$@ ili %2$@).";
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "Nijedan WKD ključ dohvaćen za korisnika nije valjan za slanje";
 
-/* Placeholder */
-"Two Factor Code" = "Kôd dvofaktorske autentikacije";
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "Ključ slanja nije važeći";
 
-/* Description */
-"Unable to edit this message offline" = "Nije moguće urediti ovu poruku izvan mreže";
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1m";
 
-/* Description */
-"Unable to parse response" = "Nije moguće parsirati odgovor";
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "less than 1 minute";
 
-/* Description */
-"Unable to parse the response object:\n%@" = "Nije moguće parsirati objekt odgovora:\n%@";
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "The message is being sent and will move to the Sent folder once sending is complete.";
 
-/* error when sending the message */
-"Unable to send the email" = "Neuspješno slanje poruke e-pošte";
+/* The footer of the slider for download via mobile data in settings */
+"If you lose your WiFi connection, download will continue over mobile data." = "If you lose your WiFi connection, download will continue over mobile data.";
 
-/* No comment provided by engineer. */
-"Undisclosed Recipients" = "Nedefinirani primatelji";
+/* The title of the slider for download via mobile data in settings */
+"Download via mobile data" = "Download via mobile data";
 
-/* Action */
-"Undo" = "Poništi";
+/* The title of downloaded messages in settings */
+"Download progress" = "Download progress";
 
-/* No comment provided by engineer. */
-"Undo send" = "Poništi slanje";
+/* The title of message history in settings for encrypted search */
+"Message history" = "Message history";
 
-/* title, default display name */
-"Unknown" = "Nepoznato";
+/* The title of storage limit in settings for encrypted search */
+"Storage limit" = "Ograničenje prostora za pohranu";
 
-/* Error */
-"Unknown Error" = "Nepoznata pogreška";
+/* The title of storage usage in settings for encrypted search */
+"Storage used" = "Storage used";
 
-/* The text for current selection of the storage limit of encrypted search when there is no limit. */
-"Unlimited" = "Neograničeno";
+/* The status text of message history in downloaded messages if all messages are downloaded */
+"All your messages are downloaded" = "All your messages are downloaded";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"Unlock required" = "Potrebno je otključati";
+/* The status text of message history in downloaded messages if the device is out of memory. */
+"Not all messages were downloaded. To download them, free up storage on the device." = "Not all messages were downloaded. To download them, free up storage on the device.";
 
-/* The unread title of unread action button in mailbox view */
-"unread" = "nepročitano";
+/* The status text of message history in downloaded messages if the storage limit is reached. */
+"Not all messages were downloaded. To download them, increase the storage limit below." = "Not all messages were downloaded. To download them, increase the storage limit below.";
 
-/* No comment provided by engineer. */
-"Unread" = "Nepročitano";
+/* The status text of message history in downloaded messages if the user has no messages. */
+"You have no messages." = "You have no messages.";
 
-/* The title of the star action in action sheet */
-"Unstar" = "Ukloni zvjezdicu";
+/* The status text of message history in downloaded messages if indexbuilding is in progress. */
+"Your messages are being downloaded..." = "Your messages are being downloaded...";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Otkazati pretplatu s mailing liste";
+/* The title of cached data in local storage settings */
+"Cached data" = "Cached data";
 
-/* Error message */
-"Unsupported file type" = "Nepodržana vrsta datoteke";
+/* The title of attachments in local storage settings */
+"Attachments" = "Privitci";
 
-/* update notification email error title */
-"Update Notification Email" = "Ažuriraj adresu e-pošte za obavijesti";
+/* cell title in device settings */
+"Downloaded messages" = "Downloaded messages";
 
-/* The title of last update status of more than 1 hour */
-"Updated >1 hour ago" = "Ažurirano prije više od 1 sata";
+/* The foot of downloaded messages in local storage settings */
+"Information about how much storage space this Proton Mail account is using on your device." = "Information about how much storage space this Proton Mail account is using on your device.";
 
-/* The title of last update status of updated just now */
-"Updated just now" = "Upravo ažurirano";
+/* The title of the button in local storage attachments */
+"Clear" = "Očisti";
 
-/* Welcome to rebranding title */
-"Updated Proton, unified protection" = "Ažurirani Proton, jedinstvena zaštita";
+/* The text explaining what chached data is used for. */
+"Allows you to open previously read messages while offline." = "Allows you to open previously read messages while offline.";
 
-/* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Nadogradite na plaćeni plan kako biste mogli slati s vaše %@ adrese";
+/* The text explaining what attachments in local storage is used for. */
+"Allows you to open previously opened attachments while offline." = "Allows you to open previously opened attachments while offline.";
 
-/* Action */
-"Upload device contacts" = "Učitaj kontakte uređaja";
+/* The text explaining what downloaded messages in local storage is used for. */
+"Allows you to search within your messages. %1$@" = "Allows you to search within your messages. %1$@";
 
-/* Description */
-"Upload iOS contacts to Proton Mail?" = "Učitaj iOS kontakte na Proton Mail?";
+/* The link in local storage downloaded messages. */
+"See details" = "See details";
 
-/* default vcard types */
-"URL" = "URL";
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "Toolbar actions (select up to 5)";
 
-/* Option title */
-"Use folder colors" = "Koristi boje mapa";
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "Dostupne radnje";
 
-/* error title */
-"Verification error" = "Pogreška pri provjeri valjanosti";
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "You can choose and rearrange the actions in your toolbar";
 
-/* error details */
-"Verification of this content’s signature failed" = "Neuspješna provjera potpisa sadržaja";
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "Vrati na zadane postavke?";
 
-/* View action for view scheduled message. */
-"View" = "Pregled";
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "The actions in the toolbar will be reset to default";
 
-/* No comment provided by engineer. */
-"View headers" = "Pregled zaglavlja";
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "Vrati na zadane postavke";
 
-/* No comment provided by engineer. */
-"View HTML" = "Pregledaj HTML";
+/* The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "Customize toolbar";
 
-/* Title */
-"Warning" = "Upozorenje";
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "Poruka";
 
-/* human check warning description */
-"Warning: Before you pass the human check you can't send email!" = "Upozorenje: Prije nego li prođete ljudsku provjeru, ne možete slati e-poštu!";
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "This toolbar is visible when reading a message.";
 
-/* The title of the link confirmation alert of spam email. */
-"Warning: suspected fake website" = "Upozorenje: sumnja na lažnu web-stranicu";
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "This toolbar appears when selecting multiple messages in your inbox.";
 
-/* Local notification text */
-"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nismo mogli poslati vašu poruku, zbog moguće loše mrežne veze. Vaša je poruka spremljena u Skice i biti će automatski poslana sljedeći put kada otvorite aplikaciju.";
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "You can now choose and rearrange the actions in this bar";
 
-/* Message of a banner which is displayed on the messages list when offline */
-"We have trouble connecting to the servers. Please reconnect." = "Poteškoće s povezivanjem na poslužitelje. Ponovo se povežite.";
+/* Button to block a sender */
+"Block sender" = "Block sender";
 
-/* alert body before list of addresses */
-"We recommend setting up a password instead for the following recipients:" = "Umjesto toga preporučujemo postavljanje lozinke za sljedeće primatelje:";
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "Block";
 
-/* alert body before list of addresses */
-"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Umjesto toga preporučujemo postavljanje lozinke ili onemogućavanje PGP-a za sljedeće primatelje:";
+/* Settings item to open blocked sender list */
+"Block list" = "Block list";
 
-/* week */
-"week" = "tjedan";
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "Blocked Senders";
 
-/* default vcard types */
-"Work" = "Posao";
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "Update queued, awaiting connectivity...";
 
-/* Title */
-"wrote:" = "je napisao/la:";
+/* Placeholder for empty sender list */
+"No blocked senders" = "No blocked senders";
 
-/* Error message */
-"Yes, attach details of payment" = "Da, priloži pojedinosti o plaćanju";
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings.";
 
-/* No comment provided by engineer. */
-"Yesterday" = "Jučer";
+/* Banner in the message view */
+"Sender has been blocked" = "Sender has been blocked";
 
-/* link opeining confirmation */
-"You are about to launch the web browser and navigate to" = "Upravo će te pokrenuti web preglednik i ići na";
+/* Toast confirming the block */
+"Sender %@ blocked" = "Sender %@ blocked";
 
-/* The title of empty inbox */
-"You are all caught up!" = "Upoznati ste s svime!";
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "Sender %@ unblocked";
 
-/* No comment provided by engineer. */
-"You are not connected. We cannot display the content of your message." = "Niste povezani. Ne možemo prikazati sadržaj vaše poruke.";
+/* Button to unblock a sender */
+"Unblock sender" = "Unblock sender";
 
-/* The text shown on the mailbox when the device is in offline mode */
-"You are offline" = "Niste na mreži";
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "Unblock";
 
-/* pm.me upgrade warning in composer */
-"You can't set %@ address as default because it is a paid feature." = "Ne možete postaviti %@ adresu kao zadanu jer je to plaćena značajka.";
+/* Name of the feature */
+"Email tracking protection" = "Email tracking protection";
 
-/* Message */
-"You have %d new emails!" = "Imate %d novih poruka e-pošte!";
+/* Short hint in the header view */
+"No email trackers found" = "No email trackers found";
 
-/* Title */
-"You have a new email!" = "Imate novu poruku!";
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "Email trackers can violate your privacy.";
 
-/* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Upisali ste barem jednu nevažeću adresu e-pošte. Potvrdite vaše primatelje.";
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "Some images could not be loaded with tracking protection.";
 
-/* incorrect email format error while sending */
-"You have entered at least one unknown recipient. Please verify your recipients." = "Upisali ste barem jednog nepoznatog primatelja. Potvrdite vaše primatelje.";
+/* Button inside the banner */
+"Load" = "Učitaj";
 
-/* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "Imate nespremljene promjene. Želite li ih spremiti?";
+/* Official badge next to sender's name */
+"Official" = "Official";
 
-/* Description */
-"You need at least one recipient to send" = "Potreban je barem jedan primatelj za slanje";
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "Link copied.";
 
-/* Alert to confirm signout */
-"You will be switched to %@" = "Biti će te prebačeni na %@";
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "Invite friends to Proton,\n get up to $90 in credits!";
 
-/* Confirmation message before deleting a message */
-"You're going to delete the message irreversibly. Are you sure?" = "Nepovratno će te izbrisati poruku. Jeste li sigurni?";
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan.";
 
-/* No comment provided by engineer. */
-"Your changes will be discarded" = "Vaše promjene će biti odbačene";
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "Your invite link";
 
-/* Goverment blocking description */
-"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Vaša država možda blokira pristup Protonu. Pokušajte koristiti %1$@ (ili bilo koji drugi VPN) ili %2$@ za pristup Protonu.";
+/* The title of the share button in referral share view. */
+"Share" = "Podijeli";
 
-/* The section title of folder manager table */
-"Your folders" = "Vaše mape";
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "Track your rewards";
 
-/* The section title of label manager table */
-"Your labels" = "Vaše oznake";
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "Terms & conditions";
 
-/* Description */
-"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "Vaša sesija je istekla jer ste neko vrijeme bili neaktivni ili zato što je opozvana. Prijavite se ponovo.";
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:";
 
-/* contact placeholder */
-"ZIP" = "Poštanski broj";
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free.";
 
-/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
-"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in.";
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "Maybe later";
 
+/* Settings lock protection section */
+"Protection" = "Protection";
+
+/* Settings lock advanced settings section */
+"Advanced settings" = "Advanced settings";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey protection";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@";
+
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "Disclaimer";
+
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "Notification actions and other background processes will become unavailable";
+
+/* One of schedule time options */
+"Tomorrow" = "Sutra";
+
+/* One of the schedule time options */
+"As scheduled" = "As scheduled";
+
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "Set your own schedule";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "Nadogradi sada";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "Schedule messages at any time";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "Unlimited folders and labels";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "Up to 500 GB of storage";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "Up to 15 email addresses";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "Up to 3 custom email domains";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "Hide My Email aliases";
+
+/* One of schedule time options */
+"In the morning" = "In the morning";
+
+/* Push notification action archive */
+"Archive (verb)" = "Arhiva";
+
+/* Message to show to user after updating password. */
+"Password updated" = "Lozinka je ažurirana";
+
+/* Alert message when local cache is deleted */
+"Clearing cache…" = "Clearing cache…";
+
+/* Title for application logs settings option */
+"Application logs" = "Application logs";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "Next message after move";
+
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "Navigate to next message after move";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Performing a move action on a message (e.g. archive) will navigate to the next message.";
+
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "Couldn't open the message, try again.";
+
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "Please sign in to the Proton Mail app.";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "Reply (to last message)";
+
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "Forward (last message)";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "Reply all (to last message)";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "Prilagodi";
+
+/* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---To help us help you, please provide as many details as possible---\n\nSummary:\n\nHas the issue happened more than once: yes/no\nSteps to reproduce the issue:\nExpected result:\nActual result:\nComments:";
 
-"Customize (verb)" = "Customize (verb)";
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "Pokušajte s drugim pojmom za pretraživanje.";
+
+/* zero messages matching search query */
+"No results found" = "Nema rezultata";
+
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "Auto-delete";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "Auto-delete unwanted messages";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "Messages in trash or spam longer than 30 days will be automatically deleted.";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "Izbriši poruke?";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.";
+
+/* Button to enable encrypted search */
+"Enable" = "Omogući";
+
+/* Title of the alert to confirm disabling of the auto delete option */
+"Disable auto-delete?" = "Disable auto-delete?";
+
+/* Message of the alert to confirm disabling of the auto delete option */
+"Emails scheduled for deletion will remain in the trash and spam folders." = "Emails scheduled for deletion will remain in the trash and spam folders.";
+
+/* Button to disable auto delete */
+"Disable" = "Onemogući";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "Automatically delete messages that have been in trash for more than 30 days.";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "No, thanks";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Messages that have been in trash and spam more than 30 days will be automatically deleted.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "Empty spam";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "Isprazni otpad";
+
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "Clear out the junk";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "Up to 3 TB of storage";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "Custom email domains";

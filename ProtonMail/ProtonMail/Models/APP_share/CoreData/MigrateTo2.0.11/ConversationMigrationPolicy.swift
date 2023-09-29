@@ -25,9 +25,14 @@ class ConversationMigrationPolicy: NSEntityMigrationPolicy {
         in mapping: NSEntityMapping,
         manager: NSMigrationManager
     ) throws {
+        guard sInstance.entity.name == Conversation.Attributes.entityName else {
+            return
+        }
+
         let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
-        guard sInstance.entity.name == Conversation.Attributes.entityName,
-              keyMaker.mainKeyExists() else {
+
+        guard keyMaker.mainKeyExists() else {
+            PMAssertionFailure("Conversation migration performed before the main key is available")
             return
         }
 

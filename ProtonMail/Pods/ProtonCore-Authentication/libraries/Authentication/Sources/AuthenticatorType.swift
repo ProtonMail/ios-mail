@@ -21,13 +21,16 @@
 
 import Foundation
 import ProtonCore_APIClient
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Networking
-import GoLibs
+import ProtonCore_Services
 
 public protocol AuthenticatorInterface {
-
-    func authenticate(username: String, password: String, challenge: ChallengeProperties?, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion)
+    func authenticate(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping Authenticator.Completion)
+    
+    // swiftlint:disable:next function_parameter_count
+    func authenticate(username: String, password: String, challenge: ChallengeProperties?, intent: Intent?, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion)
 
     func confirm2FA(_ twoFactorCode: String, context: TwoFactorContext, completion: @escaping Authenticator.Completion)
 
@@ -72,7 +75,7 @@ public extension AuthenticatorInterface {
     
     @available(*, deprecated, message: "Please use the function with challenge")
     func authenticate(username: String, password: String, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion) {
-        authenticate(username: username, password: password, challenge: nil, srpAuth: srpAuth, completion: completion)
+        authenticate(username: username, password: password, challenge: nil, intent: nil, srpAuth: srpAuth, completion: completion)
     }
     
     @available(*, deprecated, renamed: "checkAvailableUsernameWithoutSpecifyingDomain")

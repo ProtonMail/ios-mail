@@ -53,8 +53,8 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
 
     typealias ContactEditSaveComplete = ((_ error: NSError?) -> Void)
     private(set) var user: UserManager
-    let coreDataService: CoreDataService
-    init(user: UserManager, coreDataService: CoreDataService) {
+    let coreDataService: CoreDataContextProviderProtocol
+    init(user: UserManager, coreDataService: CoreDataContextProviderProtocol) {
         self.user = user
         self.coreDataService = coreDataService
     }
@@ -128,7 +128,7 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
         fatalError("This method must be overridden")
     }
 
-    func getNotes() -> ContactEditNote {
+    func getNotes() -> [ContactEditNote] {
         fatalError("This method must be overridden")
     }
 
@@ -227,9 +227,11 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
             }
         }
 
-        let note = getNotes()
-        if note.needsUpdate() {
-            return true
+        let notes = getNotes()
+        for note in notes {
+            if note.needsUpdate() {
+                return true
+            }
         }
 
         for field in getFields() {

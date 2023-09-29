@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrashMonitor_System.h
 //
@@ -32,7 +33,7 @@ extern "C" {
 #endif
 
 #include "SentryCrashMonitor.h"
-#import "SentryInternalDefines.h"
+#import "SentryInternalCDefines.h"
 
 /** Access the Monitor API.
  */

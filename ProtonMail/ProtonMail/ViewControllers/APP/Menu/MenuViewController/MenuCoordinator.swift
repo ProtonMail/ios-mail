@@ -31,7 +31,15 @@ protocol MenuCoordinatorDelegate: AnyObject {
     func lockTheScreen()
 }
 
-final class MenuCoordinator: CoordinatorDismissalObserver {
+// sourcery: mock
+protocol MenuCoordinatorProtocol: AnyObject {
+    func go(to labelInfo: MenuLabel, deepLink: DeepLink?)
+    func closeMenu()
+    func lockTheScreen()
+    func update(menuWidth: CGFloat)
+}
+
+final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtocol {
     enum Setup: String {
         case switchUser = "USER"
         case switchUserFromNotification = "UserFromNotification"
@@ -50,6 +58,9 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         }
     }
 
+    // MenuCoordinator needs everything in order to build `UserContainer`
+    typealias Dependencies = GlobalContainer
+
     private(set) var viewController: MenuViewController?
     private let viewModel: MenuVMProtocol
 
@@ -59,6 +70,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
     private let coreDataService: CoreDataContextProviderProtocol
     private let lastUpdatedStore: LastUpdatedStoreProtocol
     private let usersManager: UsersManager
+    private let dependencies: Dependencies
     var pendingActionAfterDismissal: (() -> Void)?
     private var mailboxCoordinator: MailboxCoordinator?
     let sideMenu: PMSideMenuController
@@ -66,12 +78,16 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
     private var currentLocation: MenuLabel?
     weak var delegate: MenuCoordinatorDelegate?
 
+    // do not access directly, to be used through userContainer(for:)
+    private var cachedUserContainer: UserContainer?
+
     init(services: ServiceFactory,
          pushService: PushNotificationService,
          coreDataService: CoreDataContextProviderProtocol,
          lastUpdatedStore: LastUpdatedStoreProtocol,
          usersManager: UsersManager,
          queueManager: QueueManager,
+         dependencies: Dependencies,
          sideMenu: PMSideMenuController,
          menuWidth: CGFloat) {
         // Setup side menu setting
@@ -88,6 +104,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         self.menuWidth = menuWidth
         self.sideMenu = sideMenu
 
+        self.dependencies = dependencies
         self.services = services
         self.coreDataService = coreDataService
         self.pushService = pushService
@@ -150,7 +167,7 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         switch labelInfo.location {
         case .customize:
             self.handleCustomLabel(labelInfo: labelInfo, deepLink: deepLink)
-        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled:
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled, .almostAllMail:
             if currentLocation?.location == labelInfo.location,
                let deepLink = deepLink,
                mailboxCoordinator?.viewModel.user.userID == viewModel.currentUser?.userID {
@@ -204,6 +221,10 @@ final class MenuCoordinator: CoordinatorDismissalObserver {
         delegate?.lockTheScreen()
     }
 
+    func closeMenu() {
+        sideMenu.hideMenu()
+    }
+
     private func checkIsCurrentViewInInboxView() -> Bool {
         return ((sideMenu.contentViewController as? UINavigationController)?
                     .topViewController as? MailboxViewController)?.viewModel.labelID == Message.Location.inbox.labelID
@@ -228,10 +249,10 @@ extension MenuCoordinator {
 
         switch dest {
         case .switchUser:
-            self.usersManager.active(by: sessionID)
+            viewModel.activateUser(id: user.userID)
         case .switchUserFromNotification:
             let isAnotherUser = self.usersManager.firstUser?.userInfo.userId ?? "" != user.userInfo.userId
-            self.usersManager.active(by: sessionID)
+            viewModel.activateUser(id: user.userID)
             // viewController?.setupLabelsIfViewIsLoaded()
             // rebase todo, check MR 496
             if isAnotherUser {
@@ -344,7 +365,7 @@ extension MenuCoordinator {
         }
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     private func mailBoxVMDependencies(user: UserManager, labelID: LabelID) -> MailboxViewModel.Dependencies {
         let userID = user.userID
 
@@ -354,20 +375,20 @@ extension MenuCoordinator {
         )
 
         let fetchMessages = FetchMessages(
-            params: .init(labelID: labelID),
             dependencies: .init(
                 messageDataService: user.messageService,
                 cacheService: user.cacheService,
-                eventsService: user.eventsService
+                eventsService: user.eventsService,
+                labelID: labelID
             )
         )
 
         let fetchMessagesForUpdate = FetchMessages(
-            params: .init(labelID: labelID),
             dependencies: .init(
                 messageDataService: user.messageService,
                 cacheService: user.cacheService,
-                eventsService: user.eventsService
+                eventsService: user.eventsService,
+                labelID: labelID
             )
         )
 
@@ -385,14 +406,17 @@ extension MenuCoordinator {
         let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: self.coreDataService)
 
         let updateMailbox = UpdateMailbox(
-            dependencies: .init(eventService: user.eventsService,
+            dependencies: .init(labelID: labelID,
+                                eventService: user.eventsService,
                                 messageDataService: user.messageService,
                                 conversationProvider: user.conversationService,
                                 purgeOldMessages: purgeOldMessages,
                                 fetchMessageWithReset: fetchMessagesWithReset,
                                 fetchMessage: fetchMessagesForUpdate,
-                                fetchLatestEventID: fetchLatestEvent),
-            parameters: .init(labelID: labelID))
+                                fetchLatestEventID: fetchLatestEvent,
+                                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared
+                               )
+        )
         let fetchMessageDetail = FetchMessageDetail(
             dependencies: .init(
                 queueManager: services.get(by: QueueManager.self),
@@ -407,13 +431,13 @@ extension MenuCoordinator {
             fetchMessageDetail: fetchMessageDetail,
             fetchSenderImage: FetchSenderImage(
                 dependencies: .init(
+                    featureFlagCache: services.userCachedStatus,
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: user.apiService,
-                            internetStatusProvider: InternetConnectionStatusProvider()
+                            internetStatusProvider: InternetConnectionStatusProvider.shared
                         )
                     ),
-                    senderImageStatusProvider: userCachedStatus,
                     mailSettings: user.mailSettings
                 )
             )
@@ -443,6 +467,7 @@ extension MenuCoordinator {
             conversationProvider: userManager.conversationService,
             eventsService: userManager.eventsService,
             dependencies: mailboxVMDependencies,
+            welcomeCarrouselCache: services.userCachedStatus,
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)
@@ -493,7 +518,7 @@ extension MenuCoordinator {
                 labelType: labelInfo.type
             )
 
-        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled:
+        case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled, .almostAllMail:
             viewModel = createMailboxViewModel(
                 userManager: user,
                 labelID: labelInfo.location.labelID,
@@ -511,7 +536,8 @@ extension MenuCoordinator {
             viewModel: viewModel,
             services: self.services,
             contextProvider: coreDataService,
-            infoBubbleViewStatusProvider: userCachedStatus
+            infoBubbleViewStatusProvider: userCachedStatus,
+            dependencies: userContainer(for: user)
         )
         mailbox.start()
         if let deeplink = deepLink {
@@ -524,7 +550,12 @@ extension MenuCoordinator {
     private func navigateToSubscribe() {
         guard let user = self.usersManager.firstUser,
               let sideMenuViewController = viewController?.sideMenuController else { return }
-        let paymentsUI = PaymentsUI(payments: user.payments, clientApp: .mail, shownPlanNames: Constants.shownPlanNames)
+        let paymentsUI = PaymentsUI(
+            payments: user.payments,
+            clientApp: .mail,
+            shownPlanNames: Constants.shownPlanNames,
+            customization: .empty
+        )
         let coordinator = StorefrontCoordinator(
             paymentsUI: paymentsUI,
             sideMenu: sideMenuViewController,
@@ -544,9 +575,7 @@ extension MenuCoordinator {
 
         let settings = SettingsDeviceCoordinator(
             navigationController: navigation,
-            user: userManager,
-            usersManager: usersManager,
-            services: services
+            dependencies: userContainer(for: userManager)
         )
         settings.start()
         self.settingsDeviceCoordinator = settings
@@ -572,8 +601,7 @@ extension MenuCoordinator {
         }
         let contacts = ContactTabBarCoordinator(sideMenu: viewController?.sideMenuController,
                                                 vc: view,
-                                                services: services,
-                                                user: user)
+                                                dependencies: userContainer(for: user))
         contacts.start()
         self.setupContentVC(destination: view)
     }
@@ -609,7 +637,7 @@ extension MenuCoordinator {
 
     private func navigateToAddAccount(mail: String) {
         let signInEnvironment = SignInCoordinatorEnvironment.live(
-            services: sharedServices, forceUpgradeDelegate: ForceUpgradeManager.shared.forceUpgradeHelper
+            services: sharedServices
         )
 
         let coordinator: SignInCoordinator = .loginFlowForSecondAndAnotherAccount(
@@ -735,6 +763,16 @@ extension MenuCoordinator {
         let navigation = UINavigationController(rootViewController: view)
         navigation.modalPresentationStyle = .fullScreen
         sideMenu.present(navigation, animated: true)
+    }
+
+    private func userContainer(for user: UserManager) -> UserContainer {
+        if let cachedUserContainer, cachedUserContainer.user.userID == user.userID {
+            return cachedUserContainer
+        } else {
+            let newUserContainer = UserContainer(userManager: user, globalContainer: dependencies)
+            cachedUserContainer = newUserContainer
+            return newUserContainer
+        }
     }
 }
 

@@ -30,11 +30,10 @@ import ProtonMailAnalytics
 import SafariServices
 
 protocol WindowsCoordinatorDelegate: AnyObject {
-    func setupCoreData()
     func currentApplicationState() -> UIApplication.State
 }
 
-class WindowsCoordinator {
+final class WindowsCoordinator {
     private lazy var snapshot = Snapshot()
     private var launchedByNotification = false
 
@@ -56,7 +55,7 @@ class WindowsCoordinator {
     private(set) var lockWindow: UIWindow?
     private var menuCoordinator: MenuCoordinator?
 
-    var currentWindow: UIWindow? {
+    private var currentWindow: UIWindow? {
         didSet {
             switch dependencies.darkModeCache.darkModeStatus {
             case .followSystem:
@@ -77,14 +76,9 @@ class WindowsCoordinator {
         case lockWindow, appWindow, signInWindow(SignInDestination)
     }
 
-    var scene: AnyObject? {
+    var scene: UIScene? {
         didSet {
-            // UIWindowScene class is available on iOS 13 and newer, older platforms should not use this property
-            if #available(iOS 13.0, *) {
                 assert(scene is UIWindowScene, "Scene should be of type UIWindowScene")
-            } else {
-                assert(false, "Scenes are unavailable on iOS 12 and older")
-            }
         }
     }
     weak var delegate: WindowsCoordinatorDelegate?
@@ -137,16 +131,17 @@ class WindowsCoordinator {
         DispatchQueue.main.async { // cuz
             switch dest {
             case .signInWindow(let signInDestination):
-                // do not restart coordinator in case it's already displayed with right configuration
+                // do not recreate coordinator in case it's already displayed with right configuration
                 if let signInVC = self.currentWindow?.rootViewController as? SignInCoordinator.VC,
                    signInVC.coordinator.startingPoint == signInDestination {
+                    signInVC.coordinator.start()
                     return
                 }
                 self.lockWindow = nil
                 self.appWindow = nil
                 // TODO: refactor SignInCoordinatorEnvironment init
                 let signInEnvironment = SignInCoordinatorEnvironment.live(
-                    services: sharedServices, forceUpgradeDelegate: ForceUpgradeManager.shared.forceUpgradeHelper
+                    services: sharedServices
                 )
                 let coordinator: SignInCoordinator = .loginFlowForFirstAccount(
                     startingPoint: signInDestination, environment: signInEnvironment
@@ -230,7 +225,7 @@ class WindowsCoordinator {
                     self.appWindow = UIWindow(root: root, scene: self.scene)
                     self.launchedByNotification = false
                 }
-                if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
+                if self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
                 }
                 if self.navigate(from: self.currentWindow, to: self.appWindow, animated: true), let deeplink = self.deepLink {
@@ -361,26 +356,12 @@ class WindowsCoordinator {
                 self.lock()
             }
 
-        if #available(iOS 13.0, *) {
             dependencies.notificationCenter.addObserver(
                 self,
                 selector: #selector(updateUserInterfaceStyle),
                 name: .shouldUpdateUserInterfaceStyle,
                 object: nil
             )
-            // this is done by UISceneDelegate
-        } else {
-            dependencies.notificationCenter.addObserver(
-                self, selector: #selector(willEnterForeground),
-                name: UIApplication.willEnterForegroundNotification,
-                object: nil
-            )
-            dependencies.notificationCenter.addObserver(
-                self, selector: #selector(didEnterBackground),
-                name: UIApplication.didEnterBackgroundNotification,
-                object: nil
-            )
-        }
     }
 }
 
@@ -429,10 +410,8 @@ extension WindowsCoordinator {
 
     private func handleWebUrl(url: URL) {
         let linkOpener: LinkOpener = userCachedStatus.browser
-        guard let url = linkOpener.deeplink(to: url) else {
-            openUrl(url)
-            return
-        }
+        let url = linkOpener.deeplink(to: url)
+
         if linkOpener == .inAppSafari {
             presentInAppSafari(url: url)
         } else {
@@ -479,12 +458,10 @@ extension WindowsCoordinator {
 
 // MARK: Actions
 extension WindowsCoordinator {
-    @objc
     func willEnterForeground() {
         self.snapshot.remove()
     }
 
-    @objc
     func didEnterBackground() {
         if let vc = self.currentWindow?.topmostViewController(),
            !(vc is ComposeContainerViewController) {
@@ -500,15 +477,19 @@ extension WindowsCoordinator {
         Breadcrumbs.shared.add(message: "WindowsCoordinator.lock called", to: .randomLogout)
         guard dependencies.usersManager.hasUsers() else {
             Breadcrumbs.shared.add(message: "WindowsCoordinator.lock no users found", to: .randomLogout)
-            delegate?.setupCoreData()
             navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
             return
         }
-        // The mainkey could be removed while changing the protection of the app.
-        // When the mainkey is removed in the background, that means the app should be locked.
-        if delegate?.currentApplicationState() != .active && !showPlaceHolderViewOnly {
-            go(dest: .lockWindow)
+        // The mainkey could be removed while changing the protection of the app. We should check
+        // if the lock notification should be ignored by checking the `LockPreventor`
+        let isLockSupressed = LockPreventor.shared.isLockSuppressed
+        let showOnlyPlaceHolder = showPlaceHolderViewOnly
+        guard !isLockSupressed && !showOnlyPlaceHolder else {
+            let msg = "lock ignored: isLockSupressed=\(isLockSupressed) showOnlyPlaceHolder=\(showOnlyPlaceHolder)"
+            SystemLogger.log(message: msg, category: .appLock)
+            return
         }
+        go(dest: .lockWindow)
     }
 
     @objc
@@ -553,7 +534,7 @@ extension WindowsCoordinator {
                     }
                 }
                 if shouldShowBadTokenAlert {
-                    NSError.alertBadToken()
+                    NSError.alertBadToken(in: appWindow)
                 }
 
                 let handler = LocalNotificationService(userID: user.userID)
@@ -564,7 +545,6 @@ extension WindowsCoordinator {
 
     @objc
     private func updateUserInterfaceStyle() {
-        guard #available(iOS 13, *) else { return }
         switch dependencies.darkModeCache.darkModeStatus {
         case .followSystem:
             currentWindow?.overrideUserInterfaceStyle = .unspecified

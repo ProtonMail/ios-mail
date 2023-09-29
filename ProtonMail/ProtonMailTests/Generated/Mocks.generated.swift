@@ -1,7 +1,9 @@
-// Generated using Sourcery 1.9.1 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
+import BackgroundTasks
 import CoreData
 import LocalAuthentication
+import Network
 import ProtonCore_Crypto
 import ProtonCore_Environment
 import ProtonCore_Keymaker
@@ -45,15 +47,28 @@ class MockAppRatingWrapper: AppRatingWrapper {
 
 }
 
+class MockAutoDeleteSpamAndTrashDaysProvider: AutoDeleteSpamAndTrashDaysProvider {
+    @PropertyStub(\MockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteImplicitlyDisabled, initialGet: Bool()) var isAutoDeleteImplicitlyDisabledStub
+    var isAutoDeleteImplicitlyDisabled: Bool {
+        isAutoDeleteImplicitlyDisabledStub()
+    }
+
+    @PropertyStub(\MockAutoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled, initialGet: Bool()) var isAutoDeleteEnabledStub
+    var isAutoDeleteEnabled: Bool {
+        get {
+            isAutoDeleteEnabledStub()
+        }
+        set {
+            isAutoDeleteEnabledStub(newValue)
+        }
+    }
+
+}
+
 class MockBackendConfigurationCacheProtocol: BackendConfigurationCacheProtocol {
     @FuncStub(MockBackendConfigurationCacheProtocol.readEnvironment, initialReturn: nil) var readEnvironmentStub
     func readEnvironment() -> Environment? {
         readEnvironmentStub()
-    }
-
-    @FuncStub(MockBackendConfigurationCacheProtocol.write) var writeStub
-    func write(environment: Environment) {
-        writeStub(environment)
     }
 
 }
@@ -139,6 +154,42 @@ class MockCachedUserDataProvider: CachedUserDataProvider {
     @FuncStub(MockCachedUserDataProvider.fetchDisconnectedUsers, initialReturn: [UsersManager.DisconnectedUserHandle]()) var fetchDisconnectedUsersStub
     func fetchDisconnectedUsers() -> [UsersManager.DisconnectedUserHandle] {
         fetchDisconnectedUsersStub()
+    }
+
+}
+
+class MockConnectionMonitor: ConnectionMonitor {
+    @PropertyStub(\MockConnectionMonitor.currentPathProtocol, initialGet: nil) var currentPathProtocolStub
+    var currentPathProtocol: NWPathProtocol? {
+        currentPathProtocolStub()
+    }
+
+    @PropertyStub(\MockConnectionMonitor.pathUpdateClosure, initialGet: nil) var pathUpdateClosureStub
+    var pathUpdateClosure: ((_ newPath: NWPathProtocol) -> Void)? {
+        get {
+            pathUpdateClosureStub()
+        }
+        set {
+            pathUpdateClosureStub(newValue)
+        }
+    }
+
+    @FuncStub(MockConnectionMonitor.start) var startStub
+    func start(queue: DispatchQueue) {
+        startStub(queue)
+    }
+
+    @FuncStub(MockConnectionMonitor.cancel) var cancelStub
+    func cancel() {
+        cancelStub()
+    }
+
+}
+
+class MockConnectionStatusReceiver: ConnectionStatusReceiver {
+    @FuncStub(MockConnectionStatusReceiver.connectionStatusHasChanged) var connectionStatusHasChangedStub
+    func connectionStatusHasChanged(newStatus: ConnectionStatus) {
+        connectionStatusHasChangedStub(newStatus)
     }
 
 }
@@ -271,325 +322,57 @@ class MockCopyMessageUseCase: CopyMessageUseCase {
 
 }
 
-class MockDownloadedMessagesRouterProtocol: DownloadedMessagesRouterProtocol {
-    @FuncStub(MockDownloadedMessagesRouterProtocol.closeView) var closeViewStub
-    func closeView() {
-        closeViewStub()
-    }
-
-}
-
-class MockDownloadedMessagesUIProtocol: DownloadedMessagesUIProtocol {
-    @FuncStub(MockDownloadedMessagesUIProtocol.reloadData) var reloadDataStub
-    func reloadData() {
-        reloadDataStub()
-    }
-
-}
-
-class MockEncryptedSearchDeviceCache: EncryptedSearchDeviceCache {
-    @PropertyStub(\MockEncryptedSearchDeviceCache.storageLimit, initialGet: Measurement<UnitInformationStorage>()) var storageLimitStub
-    var storageLimit: Measurement<UnitInformationStorage> {
+class MockDarkModeCacheProtocol: DarkModeCacheProtocol {
+    @PropertyStub(\MockDarkModeCacheProtocol.darkModeStatus, initialGet: .followSystem) var darkModeStatusStub
+    var darkModeStatus: DarkModeStatus {
         get {
-            storageLimitStub()
+            darkModeStatusStub()
         }
         set {
-            storageLimitStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockEncryptedSearchDeviceCache.pauseIndexingDueToNetworkIssues, initialGet: Bool()) var pauseIndexingDueToNetworkIssuesStub
-    var pauseIndexingDueToNetworkIssues: Bool {
-        get {
-            pauseIndexingDueToNetworkIssuesStub()
-        }
-        set {
-            pauseIndexingDueToNetworkIssuesStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockEncryptedSearchDeviceCache.pauseIndexingDueToWifiNotDetected, initialGet: Bool()) var pauseIndexingDueToWifiNotDetectedStub
-    var pauseIndexingDueToWifiNotDetected: Bool {
-        get {
-            pauseIndexingDueToWifiNotDetectedStub()
-        }
-        set {
-            pauseIndexingDueToWifiNotDetectedStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockEncryptedSearchDeviceCache.pauseIndexingDueToOverHeating, initialGet: Bool()) var pauseIndexingDueToOverHeatingStub
-    var pauseIndexingDueToOverHeating: Bool {
-        get {
-            pauseIndexingDueToOverHeatingStub()
-        }
-        set {
-            pauseIndexingDueToOverHeatingStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockEncryptedSearchDeviceCache.pauseIndexingDueToLowBattery, initialGet: Bool()) var pauseIndexingDueToLowBatteryStub
-    var pauseIndexingDueToLowBattery: Bool {
-        get {
-            pauseIndexingDueToLowBatteryStub()
-        }
-        set {
-            pauseIndexingDueToLowBatteryStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockEncryptedSearchDeviceCache.interruptStatus, initialGet: nil) var interruptStatusStub
-    var interruptStatus: String? {
-        get {
-            interruptStatusStub()
-        }
-        set {
-            interruptStatusStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockEncryptedSearchDeviceCache.interruptAdvice, initialGet: nil) var interruptAdviceStub
-    var interruptAdvice: String? {
-        get {
-            interruptAdviceStub()
-        }
-        set {
-            interruptAdviceStub(newValue)
+            darkModeStatusStub(newValue)
         }
     }
 
 }
 
-class MockEncryptedSearchServiceProtocol: EncryptedSearchServiceProtocol {
-    @FuncStub(MockEncryptedSearchServiceProtocol.setBuildSearchIndexDelegate) var setBuildSearchIndexDelegateStub
-    func setBuildSearchIndexDelegate(for userID: UserID, delegate: BuildSearchIndexDelegate?) {
-        setBuildSearchIndexDelegateStub(userID, delegate)
-    }
-
-    @FuncStub(MockEncryptedSearchServiceProtocol.indexBuildingState, initialReturn: EncryptedSearchIndexState()) var indexBuildingStateStub
-    func indexBuildingState(for userID: UserID) -> EncryptedSearchIndexState {
-        indexBuildingStateStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchServiceProtocol.indexBuildingEstimatedProgress, initialReturn: nil) var indexBuildingEstimatedProgressStub
-    func indexBuildingEstimatedProgress(for userID: UserID) -> BuildSearchIndexEstimatedProgress? {
-        indexBuildingEstimatedProgressStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchServiceProtocol.isIndexBuildingComplete, initialReturn: Bool()) var isIndexBuildingCompleteStub
-    func isIndexBuildingComplete(for userID: UserID) -> Bool {
-        isIndexBuildingCompleteStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchServiceProtocol.startBuildingIndex) var startBuildingIndexStub
-    func startBuildingIndex(for userID: UserID) {
-        startBuildingIndexStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchServiceProtocol.pauseBuildingIndex) var pauseBuildingIndexStub
-    func pauseBuildingIndex(for userID: UserID) {
-        pauseBuildingIndexStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchServiceProtocol.resumeBuildingIndex) var resumeBuildingIndexStub
-    func resumeBuildingIndex(for userID: UserID) {
-        resumeBuildingIndexStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchServiceProtocol.stopBuildingIndex) var stopBuildingIndexStub
-    func stopBuildingIndex(for userID: UserID) {
-        stopBuildingIndexStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchServiceProtocol.didChangeDownloadViaMobileData) var didChangeDownloadViaMobileDataStub
-    func didChangeDownloadViaMobileData(for userID: UserID) {
-        didChangeDownloadViaMobileDataStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchServiceProtocol.indexSize, initialReturn: nil) var indexSizeStub
-    func indexSize(for userID: UserID) -> Measurement<UnitInformationStorage>? {
-        indexSizeStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchServiceProtocol.oldesMessageTime, initialReturn: nil) var oldesMessageTimeStub
-    func oldesMessageTime(for userID: UserID) -> Int? {
-        oldesMessageTimeStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchServiceProtocol.search) var searchStub
-    func search(userID: UserID, query: String, page: UInt, completion: @escaping (Result<EncryptedSearchService.SearchResult, Error>) -> Void) {
-        searchStub(userID, query, page, completion)
+class MockDeviceRegistrationUseCase: DeviceRegistrationUseCase {
+    @FuncStub(MockDeviceRegistrationUseCase.execute, initialReturn: [DeviceRegistrationResult]()) var executeStub
+    func execute(sessionIDs: [String], deviceToken: String, publicKey: String) -> [DeviceRegistrationResult] {
+        executeStub(sessionIDs, deviceToken, publicKey)
     }
 
 }
 
-class MockEncryptedSearchStateProvider: EncryptedSearchStateProvider {
-    @FuncStub(MockEncryptedSearchStateProvider.indexBuildingState, initialReturn: EncryptedSearchIndexState()) var indexBuildingStateStub
-    func indexBuildingState(for userID: UserID) -> EncryptedSearchIndexState {
-        indexBuildingStateStub(userID)
+class MockFailedPushDecryptionMarker: FailedPushDecryptionMarker {
+    @FuncStub(MockFailedPushDecryptionMarker.markPushNotificationDecryptionFailure) var markPushNotificationDecryptionFailureStub
+    func markPushNotificationDecryptionFailure() {
+        markPushNotificationDecryptionFailureStub()
     }
 
 }
 
-class MockEncryptedSearchUserCache: EncryptedSearchUserCache {
-    @FuncStub(MockEncryptedSearchUserCache.isEncryptedSearchOn, initialReturn: Bool()) var isEncryptedSearchOnStub
-    func isEncryptedSearchOn(of userID: UserID) -> Bool {
-        isEncryptedSearchOnStub(userID)
+class MockFailedPushDecryptionProvider: FailedPushDecryptionProvider {
+    @PropertyStub(\MockFailedPushDecryptionProvider.hadPushNotificationDecryptionFailed, initialGet: Bool()) var hadPushNotificationDecryptionFailedStub
+    var hadPushNotificationDecryptionFailed: Bool {
+        hadPushNotificationDecryptionFailedStub()
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.setIsEncryptedSearchOn) var setIsEncryptedSearchOnStub
-    func setIsEncryptedSearchOn(of userID: UserID, value: Bool) {
-        setIsEncryptedSearchOnStub(userID, value)
+    @FuncStub(MockFailedPushDecryptionProvider.clearPushNotificationDecryptionFailure) var clearPushNotificationDecryptionFailureStub
+    func clearPushNotificationDecryptionFailure() {
+        clearPushNotificationDecryptionFailureStub()
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.canDownloadViaMobileData, initialReturn: Bool()) var canDownloadViaMobileDataStub
-    func canDownloadViaMobileData(of userID: UserID) -> Bool {
-        canDownloadViaMobileDataStub(userID)
+}
+
+class MockFeatureFlagCache: FeatureFlagCache {
+    @FuncStub(MockFeatureFlagCache.storeFeatureFlags) var storeFeatureFlagsStub
+    func storeFeatureFlags(_ flags: SupportedFeatureFlags, for userID: UserID) {
+        storeFeatureFlagsStub(flags, userID)
     }
 
-    @FuncStub(MockEncryptedSearchUserCache.setCanDownloadViaMobileData) var setCanDownloadViaMobileDataStub
-    func setCanDownloadViaMobileData(of userID: UserID, value: Bool) {
-        setCanDownloadViaMobileDataStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.isAppFreshInstalled, initialReturn: Bool()) var isAppFreshInstalledStub
-    func isAppFreshInstalled(of userID: UserID) -> Bool {
-        isAppFreshInstalledStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setIsAppFreshInstalled) var setIsAppFreshInstalledStub
-    func setIsAppFreshInstalled(of userID: UserID, value: Bool) {
-        setIsAppFreshInstalledStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.totalMessages, initialReturn: Int()) var totalMessagesStub
-    func totalMessages(of userID: UserID) -> Int {
-        totalMessagesStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setTotalMessages) var setTotalMessagesStub
-    func setTotalMessages(of userID: UserID, value: Int) {
-        setTotalMessagesStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.oldestIndexedMessageTime, initialReturn: Int()) var oldestIndexedMessageTimeStub
-    func oldestIndexedMessageTime(of userID: UserID) -> Int {
-        oldestIndexedMessageTimeStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setOldestIndexedMessageTime) var setOldestIndexedMessageTimeStub
-    func setOldestIndexedMessageTime(of userID: UserID, value: Int) {
-        setOldestIndexedMessageTimeStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.lastIndexedMessageID, initialReturn: nil) var lastIndexedMessageIDStub
-    func lastIndexedMessageID(of userID: UserID) -> MessageID? {
-        lastIndexedMessageIDStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setLastIndexedMessageID) var setLastIndexedMessageIDStub
-    func setLastIndexedMessageID(of userID: UserID, value: MessageID) {
-        setLastIndexedMessageIDStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.processedMessagesCount, initialReturn: Int()) var processedMessagesCountStub
-    func processedMessagesCount(of userID: UserID) -> Int {
-        processedMessagesCountStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setProcessedMessagesCount) var setProcessedMessagesCountStub
-    func setProcessedMessagesCount(of userID: UserID, value: Int) {
-        setProcessedMessagesCountStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.previousProcessedMessagesCount, initialReturn: Int()) var previousProcessedMessagesCountStub
-    func previousProcessedMessagesCount(of userID: UserID) -> Int {
-        previousProcessedMessagesCountStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setPreviousProcessedMessagesCount) var setPreviousProcessedMessagesCountStub
-    func setPreviousProcessedMessagesCount(of userID: UserID, value: Int) {
-        setPreviousProcessedMessagesCountStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.indexingPausedByUser, initialReturn: Bool()) var indexingPausedByUserStub
-    func indexingPausedByUser(of userID: UserID) -> Bool {
-        indexingPausedByUserStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setIndexingPausedByUser) var setIndexingPausedByUserStub
-    func setIndexingPausedByUser(of userID: UserID, value: Bool) {
-        setIndexingPausedByUserStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.numberOfPauses, initialReturn: Int()) var numberOfPausesStub
-    func numberOfPauses(of userID: UserID) -> Int {
-        numberOfPausesStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setNumberOfPauses) var setNumberOfPausesStub
-    func setNumberOfPauses(of userID: UserID, value: Int) {
-        setNumberOfPausesStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.numberOfInterruptions, initialReturn: Int()) var numberOfInterruptionsStub
-    func numberOfInterruptions(of userID: UserID) -> Int {
-        numberOfInterruptionsStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setNumberOfInterruptions) var setNumberOfInterruptionsStub
-    func setNumberOfInterruptions(of userID: UserID, value: Int) {
-        setNumberOfInterruptionsStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.initialIndexingTimeEstimated, initialReturn: Bool()) var initialIndexingTimeEstimatedStub
-    func initialIndexingTimeEstimated(of userID: UserID) -> Bool {
-        initialIndexingTimeEstimatedStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setInitialIndexingTimeEstimated) var setInitialIndexingTimeEstimatedStub
-    func setInitialIndexingTimeEstimated(of userID: UserID, value: Bool) {
-        setInitialIndexingTimeEstimatedStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.initialIndexingEstimationTime, initialReturn: Int()) var initialIndexingEstimationTimeStub
-    func initialIndexingEstimationTime(of userID: UserID) -> Int {
-        initialIndexingEstimationTimeStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setInitialIndexingEstimationTime) var setInitialIndexingEstimationTimeStub
-    func setInitialIndexingEstimationTime(of userID: UserID, value: Int) {
-        setInitialIndexingEstimationTimeStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.indexStartTime, initialReturn: Double()) var indexStartTimeStub
-    func indexStartTime(of userID: UserID) -> Double {
-        indexStartTimeStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setIndexStartTime) var setIndexStartTimeStub
-    func setIndexStartTime(of userID: UserID, value: Double) {
-        setIndexStartTimeStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.isExternalRefreshed, initialReturn: Bool()) var isExternalRefreshedStub
-    func isExternalRefreshed(of userID: UserID) -> Bool {
-        isExternalRefreshedStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.setIsExternalRefreshed) var setIsExternalRefreshedStub
-    func setIsExternalRefreshed(of userID: UserID, value: Bool) {
-        setIsExternalRefreshedStub(userID, value)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.logout) var logoutStub
-    func logout(of userID: UserID) {
-        logoutStub(userID)
-    }
-
-    @FuncStub(MockEncryptedSearchUserCache.cleanGlobal) var cleanGlobalStub
-    func cleanGlobal() {
-        cleanGlobalStub()
+    @FuncStub(MockFeatureFlagCache.featureFlags, initialReturn: SupportedFeatureFlags()) var featureFlagsStub
+    func featureFlags(for userID: UserID) -> SupportedFeatureFlags {
+        featureFlagsStub(userID)
     }
 
 }
@@ -598,14 +381,6 @@ class MockFeatureFlagsDownloadServiceProtocol: FeatureFlagsDownloadServiceProtoc
     @FuncStub(MockFeatureFlagsDownloadServiceProtocol.updateFeatureFlag) var updateFeatureFlagStub
     func updateFeatureFlag(_ key: FeatureFlagKey, value: Any, completion: @escaping (Error?) -> Void) {
         updateFeatureFlagStub(key, value, completion)
-    }
-
-}
-
-class MockFeatureFlagsSubscribeProtocol: FeatureFlagsSubscribeProtocol {
-    @FuncStub(MockFeatureFlagsSubscribeProtocol.handleNewFeatureFlags) var handleNewFeatureFlagsStub
-    func handleNewFeatureFlags(_ featureFlags: [String: Any]) {
-        handleNewFeatureFlagsStub(featureFlags)
     }
 
 }
@@ -622,11 +397,6 @@ class MockIncomingDefaultServiceProtocol: IncomingDefaultServiceProtocol {
     @FuncStub(MockIncomingDefaultServiceProtocol.fetchAll) var fetchAllStub
     func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void) {
         fetchAllStub(location, completion)
-    }
-
-    @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.listLocal, initialReturn: [IncomingDefaultEntity]()) var listLocalStub
-    func listLocal(query: IncomingDefaultService.Query) throws -> [IncomingDefaultEntity] {
-        try listLocalStub(query)
     }
 
     @ThrowingFuncStub(MockIncomingDefaultServiceProtocol.save) var saveStub
@@ -662,19 +432,29 @@ class MockIncomingDefaultServiceProtocol: IncomingDefaultServiceProtocol {
 }
 
 class MockInternetConnectionStatusProviderProtocol: InternetConnectionStatusProviderProtocol {
-    @PropertyStub(\MockInternetConnectionStatusProviderProtocol.currentStatus, initialGet: .connected) var currentStatusStub
-    var currentStatus: ConnectionStatus {
-        currentStatusStub()
+    @PropertyStub(\MockInternetConnectionStatusProviderProtocol.status, initialGet: .initialize) var statusStub
+    var status: ConnectionStatus {
+        statusStub()
     }
 
-    @FuncStub(MockInternetConnectionStatusProviderProtocol.registerConnectionStatus) var registerConnectionStatusStub
-    func registerConnectionStatus(observerID: UUID, fireAfterRegister: Bool, callback: @escaping (ConnectionStatus) -> Void) {
-        registerConnectionStatusStub(observerID, fireAfterRegister, callback)
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.apiCallIsSucceeded) var apiCallIsSucceededStub
+    func apiCallIsSucceeded() {
+        apiCallIsSucceededStub()
     }
 
-    @FuncStub(MockInternetConnectionStatusProviderProtocol.unregisterObserver) var unregisterObserverStub
-    func unregisterObserver(observerID: UUID) {
-        unregisterObserverStub(observerID)
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.register) var registerStub
+    func register(receiver: ConnectionStatusReceiver, fireWhenRegister: Bool) {
+        registerStub(receiver, fireWhenRegister)
+    }
+
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.unRegister) var unRegisterStub
+    func unRegister(receiver: ConnectionStatusReceiver) {
+        unRegisterStub(receiver)
+    }
+
+    @FuncStub(MockInternetConnectionStatusProviderProtocol.updateNewStatusToAll) var updateNewStatusToAllStub
+    func updateNewStatusToAll(_ newStatus: ConnectionStatus) {
+        updateNewStatusToAllStub(newStatus)
     }
 
 }
@@ -775,8 +555,8 @@ class MockLabelPublisherProtocol: LabelPublisherProtocol {
 }
 
 class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
-    @FuncStub(MockLastUpdatedStoreProtocol.cleanUp, initialReturn: Promise<Void>()) var cleanUpStub
-    func cleanUp(userId: UserID) -> Promise<Void> {
+    @FuncStub(MockLastUpdatedStoreProtocol.cleanUp) var cleanUpStub
+    func cleanUp(userId: UserID) {
         cleanUpStub(userId)
     }
 
@@ -811,13 +591,13 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
     }
 
     @FuncStub(MockLastUpdatedStoreProtocol.removeUpdateTime) var removeUpdateTimeStub
-    func removeUpdateTime(by userID: UserID, type: ViewMode) {
-        removeUpdateTimeStub(userID, type)
+    func removeUpdateTime(by userID: UserID) {
+        removeUpdateTimeStub(userID)
     }
 
     @FuncStub(MockLastUpdatedStoreProtocol.resetCounter) var resetCounterStub
-    func resetCounter(labelID: LabelID, userID: UserID, type: ViewMode?) {
-        resetCounterStub(labelID, userID, type)
+    func resetCounter(labelID: LabelID, userID: UserID) {
+        resetCounterStub(labelID, userID)
     }
 
     @FuncStub(MockLastUpdatedStoreProtocol.removeUpdateTimeExceptUnread) var removeUpdateTimeExceptUnreadStub
@@ -833,6 +613,19 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
     @FuncStub(MockLastUpdatedStoreProtocol.updateLastUpdatedTime) var updateLastUpdatedTimeStub
     func updateLastUpdatedTime(labelID: LabelID, isUnread: Bool, startTime: Date, endTime: Date?, msgCount: Int, userID: UserID, type: ViewMode) {
         updateLastUpdatedTimeStub(labelID, isUnread, startTime, endTime, msgCount, userID, type)
+    }
+
+}
+
+class MockLocalMessageDataServiceProtocol: LocalMessageDataServiceProtocol {
+    @FuncStub(MockLocalMessageDataServiceProtocol.cleanMessage) var cleanMessageStub
+    func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) {
+        cleanMessageStub(removeAllDraft, cleanBadgeAndNotifications)
+    }
+
+    @FuncStub(MockLocalMessageDataServiceProtocol.fetchMessages, initialReturn: [Message]()) var fetchMessagesStub
+    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message] {
+        fetchMessagesStub(selected, context)
     }
 
 }
@@ -937,6 +730,29 @@ class MockMarkLegitimateActionHandler: MarkLegitimateActionHandler {
 
 }
 
+class MockMenuCoordinatorProtocol: MenuCoordinatorProtocol {
+    @FuncStub(MockMenuCoordinatorProtocol.go) var goStub
+    func go(to labelInfo: MenuLabel, deepLink: DeepLink?) {
+        goStub(labelInfo, deepLink)
+    }
+
+    @FuncStub(MockMenuCoordinatorProtocol.closeMenu) var closeMenuStub
+    func closeMenu() {
+        closeMenuStub()
+    }
+
+    @FuncStub(MockMenuCoordinatorProtocol.lockTheScreen) var lockTheScreenStub
+    func lockTheScreen() {
+        lockTheScreenStub()
+    }
+
+    @FuncStub(MockMenuCoordinatorProtocol.update) var updateStub
+    func update(menuWidth: CGFloat) {
+        updateStub(menuWidth)
+    }
+
+}
+
 class MockMobileSignatureCacheProtocol: MobileSignatureCacheProtocol {
     @FuncStub(MockMobileSignatureCacheProtocol.getMobileSignatureSwitchStatus, initialReturn: nil) var getMobileSignatureSwitchStatusStub
     func getMobileSignatureSwitchStatus(by uid: String) -> Bool? {
@@ -966,6 +782,24 @@ class MockMobileSignatureCacheProtocol: MobileSignatureCacheProtocol {
     @FuncStub(MockMobileSignatureCacheProtocol.removeEncryptedMobileSignature) var removeEncryptedMobileSignatureStub
     func removeEncryptedMobileSignature(userID: String) {
         removeEncryptedMobileSignatureStub(userID)
+    }
+
+}
+
+class MockNWPathProtocol: NWPathProtocol {
+    @PropertyStub(\MockNWPathProtocol.pathStatus, initialGet: nil) var pathStatusStub
+    var pathStatus: NWPath.Status? {
+        pathStatusStub()
+    }
+
+    @PropertyStub(\MockNWPathProtocol.isPossiblyConnectedThroughVPN, initialGet: Bool()) var isPossiblyConnectedThroughVPNStub
+    var isPossiblyConnectedThroughVPN: Bool {
+        isPossiblyConnectedThroughVPNStub()
+    }
+
+    @FuncStub(MockNWPathProtocol.usesInterfaceType, initialReturn: Bool()) var usesInterfaceTypeStub
+    func usesInterfaceType(_ type: NWInterface.InterfaceType) -> Bool {
+        usesInterfaceTypeStub(type)
     }
 
 }
@@ -1078,6 +912,32 @@ class MockPinFailedCountCache: PinFailedCountCache {
 
 }
 
+class MockPushDecryptionKeysProvider: PushDecryptionKeysProvider {
+    @PropertyStub(\MockPushDecryptionKeysProvider.pushNotificationsDecryptionKeys, initialGet: [DecryptionKey]()) var pushNotificationsDecryptionKeysStub
+    var pushNotificationsDecryptionKeys: [DecryptionKey] {
+        pushNotificationsDecryptionKeysStub()
+    }
+
+}
+
+class MockPushEncryptionManagerProtocol: PushEncryptionManagerProtocol {
+    @FuncStub(MockPushEncryptionManagerProtocol.registerDeviceForNotifications) var registerDeviceForNotificationsStub
+    func registerDeviceForNotifications(deviceToken: String) {
+        registerDeviceForNotificationsStub(deviceToken)
+    }
+
+    @FuncStub(MockPushEncryptionManagerProtocol.registerDeviceAfterNewAccountSignIn) var registerDeviceAfterNewAccountSignInStub
+    func registerDeviceAfterNewAccountSignIn() {
+        registerDeviceAfterNewAccountSignInStub()
+    }
+
+    @FuncStub(MockPushEncryptionManagerProtocol.deleteAllCachedData) var deleteAllCachedDataStub
+    func deleteAllCachedData() {
+        deleteAllCachedDataStub()
+    }
+
+}
+
 class MockQueueHandlerRegister: QueueHandlerRegister {
     @FuncStub(MockQueueHandlerRegister.registerHandler) var registerHandlerStub
     func registerHandler(_ handler: QueueHandler) {
@@ -1113,19 +973,6 @@ class MockReceiptActionHandler: ReceiptActionHandler {
     @FuncStub(MockReceiptActionHandler.sendReceipt) var sendReceiptStub
     func sendReceipt(messageID: MessageID) {
         sendReceiptStub(messageID)
-    }
-
-}
-
-class MockReferralPromptProvider: ReferralPromptProvider {
-    @FuncStub(MockReferralPromptProvider.isReferralPromptEnabled, initialReturn: Bool()) var isReferralPromptEnabledStub
-    func isReferralPromptEnabled(userID: UserID) -> Bool {
-        isReferralPromptEnabledStub(userID)
-    }
-
-    @FuncStub(MockReferralPromptProvider.setIsReferralPromptEnabled) var setIsReferralPromptEnabledStub
-    func setIsReferralPromptEnabled(enabled: Bool, userID: UserID) {
-        setIsReferralPromptEnabledStub(enabled, userID)
     }
 
 }
@@ -1171,62 +1018,10 @@ class MockScheduledSendHelperDelegate: ScheduledSendHelperDelegate {
 
 }
 
-class MockSendRefactorStatusProvider: SendRefactorStatusProvider {
-    @FuncStub(MockSendRefactorStatusProvider.isSendRefactorEnabled, initialReturn: Bool()) var isSendRefactorEnabledStub
-    func isSendRefactorEnabled(userID: UserID) -> Bool {
-        isSendRefactorEnabledStub(userID)
-    }
-
-    @FuncStub(MockSendRefactorStatusProvider.setIsSendRefactorEnabled) var setIsSendRefactorEnabledStub
-    func setIsSendRefactorEnabled(userID: UserID, value: Bool) {
-        setIsSendRefactorEnabledStub(userID, value)
-    }
-
-}
-
-class MockSenderImageStatusProvider: SenderImageStatusProvider {
-    @FuncStub(MockSenderImageStatusProvider.isSenderImageEnabled, initialReturn: Bool()) var isSenderImageEnabledStub
-    func isSenderImageEnabled(userID: UserID) -> Bool {
-        isSenderImageEnabledStub(userID)
-    }
-
-    @FuncStub(MockSenderImageStatusProvider.setIsSenderImageEnable) var setIsSenderImageEnableStub
-    func setIsSenderImageEnable(enable: Bool, userID: UserID) {
-        setIsSenderImageEnableStub(enable, userID)
-    }
-
-}
-
 class MockSettingsAccountCoordinatorProtocol: SettingsAccountCoordinatorProtocol {
     @FuncStub(MockSettingsAccountCoordinatorProtocol.go) var goStub
     func go(to dest: SettingsAccountCoordinator.Destination) {
         goStub(dest)
-    }
-
-}
-
-class MockSettingsEncryptedSearchRouterProtocol: SettingsEncryptedSearchRouterProtocol {
-    @FuncStub(MockSettingsEncryptedSearchRouterProtocol.navigateToDownloadedMessages) var navigateToDownloadedMessagesStub
-    func navigateToDownloadedMessages(userID: UserID, state: EncryptedSearchIndexState) {
-        navigateToDownloadedMessagesStub(userID, state)
-    }
-
-}
-
-class MockSettingsEncryptedSearchUIProtocol: SettingsEncryptedSearchUIProtocol {
-    @FuncStub(MockSettingsEncryptedSearchUIProtocol.reloadData) var reloadDataStub
-    func reloadData() {
-        reloadDataStub()
-    }
-
-    @FuncStub(MockSettingsEncryptedSearchUIProtocol.updateDownloadState) var updateDownloadStateStub
-    func updateDownloadState(state: EncryptedSearchIndexState) {
-        updateDownloadStateStub(state)
-    }
-
-    @FuncStub(MockSettingsEncryptedSearchUIProtocol.updateDownloadProgress) var updateDownloadProgressStub
-    func updateDownloadProgress(progress: EncryptedSearchDownloadProgress) {
-        updateDownloadProgressStub(progress)
     }
 
 }
@@ -1275,6 +1070,14 @@ class MockSideMenuProtocol: SideMenuProtocol {
 
 }
 
+class MockSignInProvider: SignInProvider {
+    @PropertyStub(\MockSignInProvider.isSignedIn, initialGet: Bool()) var isSignedInStub
+    var isSignedIn: Bool {
+        isSignedInStub()
+    }
+
+}
+
 class MockSwipeActionInfo: SwipeActionInfo {
     @PropertyStub(\MockSwipeActionInfo.swipeLeft, initialGet: Int()) var swipeLeftStub
     var swipeLeft: Int {
@@ -1297,6 +1100,27 @@ class MockToolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomization
         set {
             shouldHideToolbarCustomizeInfoBubbleViewStub(newValue)
         }
+    }
+
+}
+
+class MockURLSessionDataTaskProtocol: URLSessionDataTaskProtocol {
+    @FuncStub(MockURLSessionDataTaskProtocol.resume) var resumeStub
+    func resume() {
+        resumeStub()
+    }
+
+}
+
+class MockURLSessionProtocol: URLSessionProtocol {
+    @FuncStub(MockURLSessionProtocol.dataTask, initialReturn: .crash) var dataTaskStub
+    func dataTask(withRequest: URLRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTaskProtocol {
+        dataTaskStub(withRequest, completionHandler)
+    }
+
+    @ThrowingFuncStub(MockURLSessionProtocol.data, initialReturn: .crash) var dataStub
+    func data(for request: URLRequest) throws -> (Data, URLResponse) {
+        try dataStub(request)
     }
 
 }
@@ -1329,6 +1153,14 @@ class MockUnlockManagerDelegate: UnlockManagerDelegate {
 
 }
 
+class MockUnlockProvider: UnlockProvider {
+    @PropertyStub(\MockUnlockProvider.isUnlocked, initialGet: Bool()) var isUnlockedStub
+    var isUnlocked: Bool {
+        isUnlockedStub()
+    }
+
+}
+
 class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
     @FuncStub(MockUnsubscribeActionHandler.oneClickUnsubscribe) var oneClickUnsubscribeStub
     func oneClickUnsubscribe(messageId: MessageID) {
@@ -1342,10 +1174,115 @@ class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
 
 }
 
-class MockUpdateSwipeActionDuringLoginUseCase: UpdateSwipeActionDuringLoginUseCase {
-    @FuncStub(MockUpdateSwipeActionDuringLoginUseCase.execute) var executeStub
-    func execute(activeUserInfo: UserInfo, newUserInfo: UserInfo, newUserApiService: APIService, completion: (() -> Void)?) {
-        executeStub(activeUserInfo, newUserInfo, newUserApiService, completion)
+class MockUserCachedStatusProvider: UserCachedStatusProvider {
+    @PropertyStub(\MockUserCachedStatusProvider.keymakerRandomkey, initialGet: nil) var keymakerRandomkeyStub
+    var keymakerRandomkey: String? {
+        get {
+            keymakerRandomkeyStub()
+        }
+        set {
+            keymakerRandomkeyStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.primaryUserSessionId, initialGet: nil) var primaryUserSessionIdStub
+    var primaryUserSessionId: String? {
+        get {
+            primaryUserSessionIdStub()
+        }
+        set {
+            primaryUserSessionIdStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.isDohOn, initialGet: Bool()) var isDohOnStub
+    var isDohOn: Bool {
+        get {
+            isDohOnStub()
+        }
+        set {
+            isDohOnStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.isCombineContactOn, initialGet: Bool()) var isCombineContactOnStub
+    var isCombineContactOn: Bool {
+        get {
+            isCombineContactOnStub()
+        }
+        set {
+            isCombineContactOnStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.lastDraftMessageID, initialGet: nil) var lastDraftMessageIDStub
+    var lastDraftMessageID: String? {
+        get {
+            lastDraftMessageIDStub()
+        }
+        set {
+            lastDraftMessageIDStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.isPMMEWarningDisabled, initialGet: Bool()) var isPMMEWarningDisabledStub
+    var isPMMEWarningDisabled: Bool {
+        get {
+            isPMMEWarningDisabledStub()
+        }
+        set {
+            isPMMEWarningDisabledStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.serverNotices, initialGet: [String]()) var serverNoticesStub
+    var serverNotices: [String] {
+        get {
+            serverNoticesStub()
+        }
+        set {
+            serverNoticesStub(newValue)
+        }
+    }
+
+    @PropertyStub(\MockUserCachedStatusProvider.serverNoticesNextTime, initialGet: String()) var serverNoticesNextTimeStub
+    var serverNoticesNextTime: String {
+        get {
+            serverNoticesNextTimeStub()
+        }
+        set {
+            serverNoticesNextTimeStub(newValue)
+        }
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.getDefaultSignaureSwitchStatus, initialReturn: nil) var getDefaultSignaureSwitchStatusStub
+    func getDefaultSignaureSwitchStatus(uid: String) -> Bool? {
+        getDefaultSignaureSwitchStatusStub(uid)
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.setDefaultSignatureSwitchStatus) var setDefaultSignatureSwitchStatusStub
+    func setDefaultSignatureSwitchStatus(uid: String, value: Bool) {
+        setDefaultSignatureSwitchStatusStub(uid, value)
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.removeDefaultSignatureSwitchStatus) var removeDefaultSignatureSwitchStatusStub
+    func removeDefaultSignatureSwitchStatus(uid: String) {
+        removeDefaultSignatureSwitchStatusStub(uid)
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.getIsCheckSpaceDisabledStatus, initialReturn: nil) var getIsCheckSpaceDisabledStatusStub
+    func getIsCheckSpaceDisabledStatus(by uid: String) -> Bool? {
+        getIsCheckSpaceDisabledStatusStub(uid)
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.setIsCheckSpaceDisabledStatus) var setIsCheckSpaceDisabledStatusStub
+    func setIsCheckSpaceDisabledStatus(uid: String, value: Bool) {
+        setIsCheckSpaceDisabledStatusStub(uid, value)
+    }
+
+    @FuncStub(MockUserCachedStatusProvider.removeIsCheckSpaceDisabledStatus) var removeIsCheckSpaceDisabledStatusStub
+    func removeIsCheckSpaceDisabledStatus(uid: String) {
+        removeIsCheckSpaceDisabledStatusStub(uid)
     }
 
 }
@@ -1367,6 +1304,19 @@ class MockUserIntroductionProgressProvider: UserIntroductionProgressProvider {
     @FuncStub(MockUserIntroductionProgressProvider.markSpotlight) var markSpotlightStub
     func markSpotlight(for feature: SpotlightableFeatureKey, asSeen seen: Bool, byUserWith userID: UserID) {
         markSpotlightStub(feature, seen, userID)
+    }
+
+}
+
+class MockUsersManagerProtocol: UsersManagerProtocol {
+    @PropertyStub(\MockUsersManagerProtocol.firstUser, initialGet: nil) var firstUserStub
+    var firstUser: UserManager? {
+        firstUserStub()
+    }
+
+    @FuncStub(MockUsersManagerProtocol.hasUsers, initialReturn: Bool()) var hasUsersStub
+    func hasUsers() -> Bool {
+        hasUsersStub()
     }
 
 }

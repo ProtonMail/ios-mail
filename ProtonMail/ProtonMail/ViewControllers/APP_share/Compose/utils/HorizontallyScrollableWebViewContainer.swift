@@ -61,25 +61,16 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         }
     }
 
-    func webViewPreferences() -> WKPreferences {
-        let preferences = WKPreferences()
-        preferences.javaScriptEnabled = false
-        preferences.javaScriptCanOpenWindowsAutomatically = false
-        return preferences
-    }
-
     func prepareWebView(
-        with loader: WebContentsSecureLoader? = nil,
+        with loader: HTTPRequestSecureLoader? = nil,
         urlHandler: WKURLSchemeHandler? = nil,
         urlSchemesToBeHandled: Set<String> = []
     ) {
-        let preferences = self.webViewPreferences()
         let config = WKWebViewConfiguration()
         urlSchemesToBeHandled.forEach { scheme in
             config.setURLSchemeHandler(urlHandler, forURLScheme: scheme)
         }
         loader?.inject(into: config)
-        config.preferences = preferences
         config.dataDetectorTypes = [.phoneNumber, .link]
 
         // oh, WKWebView is available in IB since iOS 11 only
@@ -102,9 +93,7 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         self.webView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
 
         self.verticalRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan))
-        if #available(iOS 13.4, *) {
             self.verticalRecognizer.allowedScrollTypesMask = .all
-        }
         self.verticalRecognizer.delegate = self
         self.verticalRecognizer.maximumNumberOfTouches = 1
         self.webView.scrollView.addGestureRecognizer(verticalRecognizer)

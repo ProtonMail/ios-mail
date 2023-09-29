@@ -31,7 +31,6 @@ protocol UndoActionManagerProtocol {
 }
 
 enum UndoAction: Equatable {
-    case send
     case spam
     case trash
     case archive
@@ -144,12 +143,13 @@ final class UndoActionManager: UndoActionManagerProtocol {
             var atLeastOneRequestFailed = false
             requests.forEach { [unowned self] request in
                 group.enter()
-                self.dependencies.apiService.exec(route: request) { (result: Result<UndoActionResponse, ResponseError>) in
-                    if result.error != nil {
-                        atLeastOneRequestFailed = true
+                self.dependencies.apiService
+                    .exec(route: request) { (result: Result<UndoActionResponse, ResponseError>) in
+                        if result.error != nil {
+                            atLeastOneRequestFailed = true
+                        }
+                        group.leave()
                     }
-                    group.leave()
-                }
             }
             group.wait()
 

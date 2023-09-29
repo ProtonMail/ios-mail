@@ -140,7 +140,11 @@ public struct ProtonIconSet {
 
     public let calendarCheckmark = ProtonIcon(name: "ic-calendar-checkmark")
 
+    public let calendarDay = ProtonIcon(name: "ic-calendar-day")
+
     public let calendarGrid = ProtonIcon(name: "ic-calendar-grid")
+
+    public let calendarMonth = ProtonIcon(name: "ic-calendar-month")
 
     public let calendarRow = ProtonIcon(name: "ic-calendar-row")
 
@@ -374,8 +378,6 @@ public struct ProtonIconSet {
 
     public let map = ProtonIcon(name: "ic-map")
 
-    public let minusCircle1 = ProtonIcon(name: "ic-minus-circle-1")
-
     public let minusCircle = ProtonIcon(name: "ic-minus-circle")
 
     public let minus = ProtonIcon(name: "ic-minus")
@@ -503,6 +505,8 @@ public struct ProtonIconSet {
     public let trashCross = ProtonIcon(name: "ic-trash-cross")
 
     public let trash = ProtonIcon(name: "ic-trash")
+    
+    public let trashClock = ProtonIcon(name: "ic-trash-clock")
 
     public let tv = ProtonIcon(name: "ic-tv")
 
@@ -604,6 +608,9 @@ public struct ProtonIconSet {
     
     public let vpnWordmarkNoBackground = ProtonIcon(name: "VPNWordmarkNoBackground",
                                                     vpnFallbackName: "VPNWordmarkNoBackgroundAlwaysDark")
+
+    public let passWordmarkNoBackground = ProtonIcon(name: "PassWordmarkNoBackground",
+                                                     vpnFallbackName: "PassWordmarkNoBackgroundAlwaysDark")
     
     // LoginUI-specific
 
@@ -614,6 +621,8 @@ public struct ProtonIconSet {
     public let mailTopImage = ProtonIcon(name: "MailTopImage")
 
     public let vpnTopImage = ProtonIcon(name: "VPNTopImage")
+
+    public let passTopImage = ProtonIcon(name: "PassTopImage")
     
     public let calendarWordmarkNoIcon = ProtonIcon(name: "CalendarWordmarkNoIcon")
     

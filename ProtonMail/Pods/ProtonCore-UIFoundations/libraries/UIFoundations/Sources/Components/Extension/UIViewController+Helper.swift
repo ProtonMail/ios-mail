@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 
 extension UIViewController {
@@ -58,13 +60,24 @@ public extension UIViewController {
     func updateTitleAttributes() {
         let foregroundColor: UIColor = ColorProvider.TextNorm
         let textAttributes = [NSAttributedString.Key.foregroundColor: foregroundColor]
-        if #available(iOS 13.0, *) {
-            let appearance = navigationController?.navigationBar.standardAppearance
-            appearance?.titleTextAttributes = textAttributes
-            navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        } else {
-            navigationController?.navigationBar.titleTextAttributes = textAttributes
-        }
+        let appearance = navigationController?.navigationBar.standardAppearance
+        appearance?.titleTextAttributes = textAttributes
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+
     }
 
+    static var topVC: UIViewController? {
+        var topViewController: UIViewController?
+        let keyWindow = UIApplication.getInstance()?.windows.filter { $0.isKeyWindow }.first
+        if var top = keyWindow?.rootViewController {
+            while let presentedViewController = top.presentedViewController {
+                top = presentedViewController
+            }
+            topViewController = top
+        }
+        
+        return topViewController
+    }
 }
+
+#endif

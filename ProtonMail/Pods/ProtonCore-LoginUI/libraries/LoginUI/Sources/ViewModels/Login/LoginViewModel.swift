@@ -21,7 +21,13 @@
 
 import Foundation
 import ProtonCore_Challenge
+import ProtonCore_CoreTranslation
 import ProtonCore_Login
+import ProtonCore_DataModel
+import ProtonCore_Authentication
+import ProtonCore_Services
+import ProtonCore_Networking
+import ProtonCore_Observability
 
 final class LoginViewModel {
     enum LoginResult {
@@ -29,6 +35,7 @@ final class LoginViewModel {
         case twoFactorCodeNeeded
         case mailboxPasswordNeeded
         case createAddressNeeded(CreateAddressData, String?)
+        case ssoChallenge(SSOChallengeResponse)
     }
 
     // MARK: - Properties
@@ -37,12 +44,31 @@ final class LoginViewModel {
     let error = Publisher<LoginError>()
     let isLoading = Observable<Bool>(false)
 
+    var isSsoUIEnabled = false
+    let subtitleLabel = CoreString._ls_screen_subtitle
+    var loginTextFieldTitle: String {
+        isSsoUIEnabled ? CoreString._su_email_field_title : CoreString._ls_username_title
+    }
+    var titleLabel: String {
+        isSsoUIEnabled ? CoreString._ls_sign_in_with_sso_title : CoreString._ls_screen_title
+    }
+    var signInWithSSOButtonTitle: String {
+        isSsoUIEnabled ? CoreString._ls_sign_in_button_with_password : CoreString._ls_sign_in_with_sso_button
+    }
+    let passwordTextFieldTitle = CoreString._ls_password_title
+    let signInButtonTitle = CoreString._ls_sign_in_button
+    let signUpButtonTitle = CoreString._ls_create_account_button
+    
     private let login: Login
+    private let api: APIService
     let challenge: PMChallenge
+    let clientApp: ClientApp
 
-    init(login: Login, challenge: PMChallenge) {
+    init(api: APIService, login: Login, challenge: PMChallenge, clientApp: ClientApp) {
+        self.api = api
         self.login = login
         self.challenge = challenge
+        self.clientApp = clientApp
     }
 
     // MARK: - Actions
@@ -55,8 +81,9 @@ final class LoginViewModel {
         let challengeData = self.challenge.export()
             .allFingerprintDict()
             .first(where: { $0["frame"] as? [String: String] == userFrame })
-
-        login.login(username: username, password: password, challenge: challengeData) { [weak self] result in
+        let intent: Intent = isSsoUIEnabled ? .sso : .auto
+        
+        login.login(username: username, password: password, intent: intent, challenge: challengeData) { [weak self] result in
             switch result {
             case let .failure(error):
                 self?.error.publish(error)
@@ -71,14 +98,12 @@ final class LoginViewModel {
                 case .askSecondPassword:
                     self?.finished.publish(.mailboxPasswordNeeded)
                     self?.isLoading.value = false
+                case .ssoChallenge(let ssoChallengeResponse):
+                    self?.finished.publish(.ssoChallenge(ssoChallengeResponse))
+                    self?.isLoading.value = false
                 case let .chooseInternalUsernameAndCreateInternalAddress(data):
-                    self?.login.checkUsernameFromEmail(email: data.email) { [weak self] result in
-                        switch result {
-                        case .failure(let error):
-                            self?.error.publish(.generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode, originalError: error))
-                        case .success(let defaultUsername):
-                            self?.finished.publish(.createAddressNeeded(data, defaultUsername))
-                        }
+                    self?.login.availableUsernameForExternalAccountEmail(email: data.email) { [weak self] username in
+                        self?.finished.publish(.createAddressNeeded(data, username))
                         self?.isLoading.value = false
                     }
                 }
@@ -98,5 +123,48 @@ final class LoginViewModel {
 
     func updateAvailableDomain(result: (([String]?) -> Void)? = nil) {
         login.updateAllAvailableDomains(type: .login) { res in result?(res) }
+    }
+    
+    // MARK: - SSO
+    
+    func getSSOTokenFromURL(url: URL?) -> SSOResponseToken? {
+        if let url = url,
+           url.path == "/sso/login" {
+            var components = URLComponents()
+            components.query = url.fragment
+            if let items = components.queryItems,
+               let token = (items.first { $0.name == "token" }?.value),
+               let uid = (items.first { $0.name == "uid" }?.value) {
+                return .init(token: token, uid: uid)
+            }
+        }
+        
+        return nil
+    }
+    
+    func getSSORequest(challenge ssoChallengeResponse: SSOChallengeResponse) async -> (request: URLRequest?, error: String?) {
+        await login.getSSORequest(challenge: ssoChallengeResponse)
+    }
+    
+    func processResponseToken(idpEmail: String, responseToken: SSOResponseToken) {
+        isLoading.value = true
+        login.processResponseToken(idpEmail: idpEmail, responseToken: responseToken) { [weak self] result in
+            switch result {
+            case .success(.finished(let data)):
+                ObservabilityEnv.report(.ssoIdentityProviderLoginResult(status: .successful))
+                self?.finished.publish(.done(data))
+            case let .failure(error):
+                ObservabilityEnv.report(.ssoIdentityProviderLoginResult(status: .failed))
+                self?.error.publish(error)
+                self?.isLoading.value = false
+            default:
+                self?.error.publish(.invalidState)
+                self?.isLoading.value = false
+            }
+        }
+    }
+    
+    func isProtonPage(url: URL?) -> Bool {
+        login.isProtonPage(url: url)
     }
 }

@@ -27,13 +27,14 @@ import XCTest
 final class MessageInfoProviderTest: XCTestCase {
     private var apiMock: APIServiceMock!
     private var delegateObject: ProviderDelegate!
+    private var featureFlagCache: MockFeatureFlagCache!
     private var message: MessageEntity!
     private var messageDecrypter: MessageDecrypterMock!
     private var sut: MessageInfoProvider!
     private var user: UserManager!
     private var mockFetchAttachment: MockFetchAttachment!
-    private var mockSenderImageStatusProvider: MockSenderImageStatusProvider!
     private var imageTempUrl: URL!
+    private var internetConnectionProvider: MockInternetConnectionStatusProviderProtocol!
 
     private let systemUpTime = SystemUpTimeMock(
         localServerTime: TimeInterval(1635745851),
@@ -52,8 +53,12 @@ final class MessageInfoProviderTest: XCTestCase {
         apiMock = APIServiceMock()
         apiMock.sessionUIDStub.fixture = String.randomString(10)
         apiMock.dohInterfaceStub.fixture = DohMock()
+        internetConnectionProvider = MockInternetConnectionStatusProviderProtocol()
+        internetConnectionProvider.statusStub.fixture = .connectedViaWiFi
 
-        user = try Self.prepareUser(apiMock: apiMock)
+        featureFlagCache = .init()
+
+        user = try UserManager.prepareUser(apiMock: apiMock)
         // testing are more thorough with this setting disabled, even though it is enabled by default
         user.userInfo.hideRemoteImages = 1
 
@@ -65,7 +70,6 @@ final class MessageInfoProviderTest: XCTestCase {
 
         messageDecrypter = MessageDecrypterMock(userDataSource: user)
         mockFetchAttachment = MockFetchAttachment()
-        mockSenderImageStatusProvider = .init()
 
         sut = MessageInfoProvider(
             message: message,
@@ -78,17 +82,19 @@ final class MessageInfoProviderTest: XCTestCase {
                 fetchAttachment: mockFetchAttachment,
                 fetchSenderImage: FetchSenderImage(
                     dependencies: .init(
+                        featureFlagCache: featureFlagCache,
                         senderImageService: .init(
                             dependencies: .init(
                                 apiService: user.apiService,
-                                internetStatusProvider: MockInternetConnectionStatusProviderProtocol())
+                                internetStatusProvider: internetConnectionProvider)
                         ),
-                        senderImageStatusProvider: mockSenderImageStatusProvider,
                         mailSettings: user.mailSettings
                     )
-                )
-            ), 
-            highlightedKeywords: ["contact", "feng"]
+                ),
+                darkModeCache: MockDarkModeCacheProtocol()
+            ),
+            highlightedKeywords: ["contact", "feng"],
+            dateFormatter: .init()
         )
         delegateObject = ProviderDelegate()
         sut.set(delegate: delegateObject)
@@ -103,10 +109,11 @@ final class MessageInfoProviderTest: XCTestCase {
         sut = nil
         apiMock = nil
         delegateObject = nil
+        featureFlagCache = nil
         message = nil
         messageDecrypter = nil
         user = nil
-        mockSenderImageStatusProvider = nil
+        internetConnectionProvider = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
         try super.tearDownWithError()
@@ -155,11 +162,13 @@ final class MessageInfoProviderTest: XCTestCase {
     }
 
     func testPGPChecker_keysAPIFailedAndNoAddressKeys_failsVerification() async throws {
-        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        apiMock.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains("/keys") {
                 completion(nil, .success(["Code": 33101, "Error": "Server failed validation"]))
+            } else if path == AddressesAPI.path {
+                completion(nil, .success([:]))
             } else {
-                XCTFail("Unexpected path")
+                XCTFail("Unexpected path: \(path)")
                 completion(nil, .failure(NSError.badResponse()))
             }
         }
@@ -257,15 +266,23 @@ final class MessageInfoProviderTest: XCTestCase {
             user: user,
             systemUpTime: systemUpTime,
             labelID: labelID,
-            dependencies: .init(imageProxy: .init(dependencies: .init(apiService: apiMock)),
-                                fetchAttachment: mockFetchAttachment,
-                                fetchSenderImage: FetchSenderImage(dependencies: .init(
-                                    senderImageService: .init(dependencies: .init(apiService: apiMock,
-                                                                                  internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
-                                    senderImageStatusProvider: MockSenderImageStatusProvider(),
-                                    mailSettings: user.mailSettings)
-                                )
-                               ),
+            dependencies: .init(
+                imageProxy: .init(dependencies: .init(apiService: apiMock)),
+                fetchAttachment: mockFetchAttachment,
+                fetchSenderImage: FetchSenderImage(
+                    dependencies: .init(
+                        featureFlagCache: MockFeatureFlagCache(),
+                        senderImageService: .init(
+                            dependencies: .init(
+                                apiService: apiMock,
+                                internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
+                            )
+                        ),
+                        mailSettings: user.mailSettings
+                    )
+                ),
+                darkModeCache: MockDarkModeCacheProtocol()
+            ),
             highlightedKeywords: []
         )
 
@@ -290,9 +307,6 @@ final class MessageInfoProviderTest: XCTestCase {
 
     func testFetchSenderImageIfNeeded_featureFlagIsOff_getNil() {
         user.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return false
-        }
         let e = expectation(description: "Closure is called")
 
         sut.fetchSenderImageIfNeeded(isDarkMode: Bool.random(),
@@ -308,8 +322,8 @@ final class MessageInfoProviderTest: XCTestCase {
 
     func testFetchSenderImageIfNeeded_hideSenderImageInMailSettingTrue_getNil() {
         user.mailSettings = .init(hideSenderImages: true)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
 
@@ -326,8 +340,8 @@ final class MessageInfoProviderTest: XCTestCase {
 
     func testFetchSenderImageIfNeeded_msgHasNoSenderThatIsEligible_getNil() {
         user.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
 
@@ -344,8 +358,8 @@ final class MessageInfoProviderTest: XCTestCase {
 
     func testFetchSenderImageIfNeeded_msgHasEligibleSender_getImageData() {
         user.mailSettings = .init(hideSenderImages: false)
-        mockSenderImageStatusProvider.isSenderImageEnabledStub.bodyIs { _, _ in
-            return true
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.senderImage.rawValue: true])
         }
         let e = expectation(description: "Closure is called")
         let msg = MessageEntity.createSenderImageEligibleMessage()
@@ -369,36 +383,17 @@ final class MessageInfoProviderTest: XCTestCase {
 
         XCTAssertTrue(apiMock.downloadStub.wasCalledExactlyOnce)
     }
+
+    func testSetMessage_updateAttachmentDelegateIsTriggered() {
+        let msg = MessageEntity.createSenderImageEligibleMessage()
+        sut.update(message: msg)
+
+        wait(self.delegateObject.attachmentsUpdate.wasCalledExactlyOnce == true)
+    }
 }
 
 extension MessageInfoProviderTest {
-    private static func prepareUser(apiMock: APIServiceMock) throws -> UserManager {
-        let keyPair = try MailCrypto.generateRandomKeyPair()
-        let key = Key(keyID: "1", privateKey: keyPair.privateKey)
-        key.signature = "signature is needed to make this a V2 key"
-        let address = Address(
-            addressID: "",
-            domainID: nil,
-            email: "",
-            send: .active,
-            receive: .active,
-            status: .enabled,
-            type: .externalAddress,
-            order: 1,
-            displayName: "",
-            signature: "a",
-            hasKeys: 1,
-            keys: [key]
-        )
-
-        let user = UserManager(api: apiMock, role: .member)
-        user.userInfo.userAddresses = [address]
-        user.userInfo.userKeys = [key]
-        user.authCredential.mailboxpassword = keyPair.passphrase
-        return user
-    }
-
-    private static func prepareEncryptedMessage(
+    static func prepareEncryptedMessage(
         plaintextBody: String,
         mimeType: Message.MimeType,
         user: UserManager

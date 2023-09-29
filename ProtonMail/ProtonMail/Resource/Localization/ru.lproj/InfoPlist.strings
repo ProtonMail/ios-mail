@@ -1,3 +1,10 @@
+/* Bundle display name */
+
+"CFBundleDisplayName" = "Proton Mail";
+
+/* Bundle name */
+"CFBundleName" = "Proton Mail";
+
 /* Privacy - Media Library Usage Description */
 "NSAppleMusicUsageDescription" = "Требуется для прикрепления медиа файлов к электронному письму.";
 
@@ -15,4 +22,3 @@
 
 /* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "Требуется для прикрепления фотографий к электронному письму.";
-

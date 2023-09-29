@@ -22,7 +22,7 @@
 
 import CoreData
 import Foundation
-import OpenPGP
+import VCard
 
 enum ContactEditSectionType: Int {
     case display_name = 0
@@ -104,7 +104,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     var mimeType: PMNIPMMimeType?
 
     private let delegate: ContactEditViewModelContactGroupDelegate?
-    private let coreDataService: CoreDataService
+    private let coreDataService: CoreDataContextProviderProtocol
 
     init(order: Int,
          type: ContactFieldType,
@@ -117,7 +117,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
          scheme: PMNIPMScheme?,
          mimeType: PMNIPMMimeType?,
          delegate: ContactEditViewModelContactGroupDelegate?,
-         coreDataService: CoreDataService) {
+         coreDataService: CoreDataContextProviderProtocol) {
         self.delegate = delegate
         self.coreDataService = coreDataService
 
@@ -625,6 +625,34 @@ final class ContactEditNote {
             return false
         }
         if self.origNote == self.newNote {
+            return false
+        }
+        return true
+    }
+}
+
+final class ContactEditStructuredName {
+    private(set) var firstName = ""
+    private(set) var originalFirstName = ""
+    private(set) var lastName = ""
+    private(set) var originalLastName = ""
+    private(set) var isNew = false
+
+    init(firstName: String, lastName: String, isNew: Bool) {
+        self.firstName = firstName
+        self.lastName = lastName
+        self.isNew = isNew
+        if !isNew {
+            self.firstName = firstName
+            self.lastName = lastName
+        }
+    }
+
+    func needsUpdate() -> Bool {
+        if isNew && firstName.isEmpty && lastName.isEmpty {
+            return false
+        }
+        if firstName == originalFirstName && lastName == originalLastName {
             return false
         }
         return true

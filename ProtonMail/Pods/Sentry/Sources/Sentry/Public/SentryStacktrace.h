@@ -7,7 +7,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class SentryFrame;
 
-NS_SWIFT_NAME(Stacktrace)
 @interface SentryStacktrace : NSObject <SentrySerializable>
 SENTRY_NO_INIT
 

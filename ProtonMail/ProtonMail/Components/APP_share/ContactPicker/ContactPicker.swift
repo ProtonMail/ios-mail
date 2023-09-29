@@ -497,11 +497,18 @@ extension ContactPicker: ContactCollectionViewDelegate {
         })
     }
 
-    internal func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
-        if !__CGSizeEqualToSize(self.contactCollectionViewContentSize, newSize) {
-            self.contactCollectionViewContentSize = newSize
-            self.delegate?.contactPicker(contactPicker: self, didUpdateContentHeightTo: self.currentContentHeight)
+    func collectionView(at: UICollectionView?, willChangeContentSizeTo newSize: CGSize) {
+        guard newSize != contactCollectionViewContentSize else {
+            return
         }
+
+        guard newSize.width >= 0, newSize.height >= 0 else {
+            PMAssertionFailure("ContactPicker - invalid size: \(newSize)")
+            return
+        }
+
+        contactCollectionViewContentSize = newSize
+        delegate?.contactPicker(contactPicker: self, didUpdateContentHeightTo: currentContentHeight)
     }
 
     internal func collectionView(at: ContactCollectionView, entryTextDidChange text: String) {

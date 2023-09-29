@@ -90,16 +90,6 @@ final class PagesViewController<
         }
     }
 
-    private func getNextViewController() -> UIViewController? {
-        guard let current = viewControllers?.first else { return nil }
-        switch viewModel.viewMode {
-        case .singleMessage:
-            return singleMessageVC(baseOn: current, offset: 1).0
-        case .conversation:
-            return conversationVC(baseOn: current, offset: 1).0
-        }
-    }
-
     // MARK: UIPageViewControllerDelegate
     func pageViewController(
         _ pageViewController: UIPageViewController,
@@ -233,7 +223,7 @@ extension PagesViewController {
             navigationController: navigationController,
             conversation: conversation,
             user: viewModel.user,
-            internetStatusProvider: services.get(by: InternetConnectionStatusProvider.self),
+            internetStatusProvider: .shared,
             infoBubbleViewStatusProvider: viewModel.infoBubbleViewStatusProvider,
             contextProvider: services.get(by: CoreDataService.self),
             targetID: targetMessageID,

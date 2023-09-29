@@ -21,6 +21,7 @@
 
 // swiftlint:disable force_try
 
+#if os(iOS)
 import UIKit
 
 protocol TextFieldInterceptorDelegate: AnyObject {
@@ -118,7 +119,6 @@ extension TextFieldDelegateInterceptor: UITextFieldDelegate {
         return self.originalDelegate?.textField?(textField, shouldChangeCharactersIn: range, replacementString: string) ?? true
     }
 
-    @available(iOS 13.0, *)
     func textFieldDidChangeSelection(_ textField: UITextField) {
 
         self.originalDelegate?.textFieldDidChangeSelection?(textField)
@@ -134,3 +134,4 @@ extension TextFieldDelegateInterceptor: UITextFieldDelegate {
         return self.originalDelegate?.textFieldShouldReturn?(textField) ?? true
     }
 }
+#endif

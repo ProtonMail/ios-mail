@@ -13,6 +13,9 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Een herstelmethode zal u helpen om toegang te krijgen tot uw account in het geval u uw wachtwoord vergeet of van uw account wordt afgesloten.";
 
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Account verwijderd.\nU wordt uitgelogd...";
+
 /* *
  *  Login errors */
 "Account setup required" = "Account setup vereist";
@@ -40,6 +43,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple heeft ons geïnformeerd dat u het serviceplan geüpgraded heeft maar er missen technische gegevens. Dien een bugrapport in en ons ondersteuningsteam neemt contact op met u.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple heeft ons geïnformeerd dat u het serviceplan geüpgraded heeft, maar wij hebben geconstateerd dat u sindsdien uitgelogd bent.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Weet u zeker dat u %@ wilt uitloggen?";
@@ -106,9 +112,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Doorgaan";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Maak een Proton-account aan met uw huidige e-mail";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Maak in plaats daarvan een veilig Proton Mail e-mailadres";
 
@@ -118,7 +121,7 @@
 /* Create user failed error */
 "Create user failed" = "Gebruiker aanmaken mislukt";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Maak uw wachtwoord";
 
 /* *
@@ -307,74 +310,74 @@
  * Networking */
 "Network connection error" = "Netwerk verbindingsfout";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ van %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ van %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Wereldwijde toegang tot streamingdiensten";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "Wereldwijde toegang tot streamingdiensten";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Ingebouwde adblocker (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Ingebouwde adblocker (NetShield)";
 
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Controleer uw internetverbinding";
+/* Plan connection error description */
+"Check your internet connection" = "Controleer uw internetverbinding";
 
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Verbindingsproblemen";
+/* Plan connection error title */
+"Connection issues" = "Verbindingsproblemen";
 
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Abonnement verlengen";
+/* Extend subscription button */
+"Extend subscription" = "Abonnement verlengen";
 
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Gratis VPN op één apparaat";
+/* Plan details VPN on a single device */
+"Free VPN on a single device" = "Gratis VPN op één apparaat";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Kies %@";
+/* Get plan button */
+"Get %@" = "Kies %@";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Gebruik Proton gratis";
+/* Get free plan button */
+"Get Proton for free" = "Gebruik Proton gratis";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Hoogste VPN-snelheid";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "Hoogste VPN-snelheid";
 
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Eén abonnement voor alle Proton-services";
+/* */
+"One plan for all Proton services" = "Eén abonnement voor alle Proton-services";
 
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Via deze app zijn alleen jaarabonnementen zonder automatische verlenging beschikbaar";
+/* Plan footer description */
+"Only non-renewing annual subscriptions are available via this app" = "Via deze app zijn alleen jaarabonnementen zonder automatische verlenging beschikbaar";
 
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Upgraden van abonnement voltooid";
+/* Plan successfully upgraded banner message */
+"Plan successfully upgraded" = "Upgraden van abonnement voltooid";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core-servers";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Secure Core-servers";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Strikt geen-logboekbeleid";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Strikt geen-logboekbeleid";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "De gratis startersaccount die is ontwikkeld om iedereen standaard te voorzien van privacy.";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "De gratis startersaccount die is ontwikkeld om iedereen standaard te voorzien van privacy.";
 
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "De e-mail- en agenda-oplossing met privacy als prioriteit voor uw dagelijkse communicatiebehoeften.";
+/* Plan details plus description */
+"The privacy-first email and calendar solution for your everyday communication needs." = "De e-mail- en agenda-oplossing met privacy als prioriteit voor uw dagelijkse communicatiebehoeften.";
 
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Het opslag-georiënteerd abonnement met 200 GB cloudopslag om uw bestanden privé te houden.";
+/* Plan details drive plus description */
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Het opslag-georiënteerd abonnement met 200 GB cloudopslag om uw bestanden privé te houden.";
 
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Het ultieme privacypakket met toegang tot alle premium Proton-services.";
+/* Plan details bundle description */
+"The ultimate privacy pack with access to all premium Proton services." = "Het ultieme privacypakket met toegang tot alle premium Proton-services.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor via VPN";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor via VPN";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Onbeperkt aantal mappen, labels en filters";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "Onbeperkt aantal mappen, labels en filters";
 
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Tot %@ opslag";
+/* Plan details up to storage */
+"Up to %@ storage" = "Tot %@ opslag";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Uw privacy en beveiliging zijn onze prioriteit.";
+/* Plan details vpn plus description */
+"Your privacy and security are our priority." = "Uw privacy en beveiliging zijn onze prioriteit.";
 
 /* Next button */
 "Next" = "Volgende";
@@ -443,6 +446,12 @@
 
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Gelieve uw Proton Account wachtwoord in te geven.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Log in op het Proton Mail-account dat u het serviceplan aan het upgraden bent, zodat we de aankoop van het serviceplan kunnen voltooien.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Log in op het Proton Mail-account dat u het serviceplan aan het upgraden bent, zodat we de activering van het serviceplan kunnen voltooien.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Zorg ervoor dat uw internetverbinding werkt.";
@@ -600,6 +609,9 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "De Proton servers zijn onbereikbaar. Mogelijks door een verkeerde netwerkconfiguratie of Proton servers die buiten gebruik zijn of worden geblokkeerd";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "De validatie van het TLS-certificaat is mislukt bij het maken van een verbinding met de Proton-API. Uw huidige internetverbinding kan worden gecontroleerd. Om uw gegevens veilig te houden, voorkomen wij dat de applicatie toegang krijgt tot de Proton-API.\nOm in te loggen of toegang te krijgen tot uw account, schakelt u over naar een nieuw netwerk en probeert u opnieuw verbinding te maken.";
+
 /* Complete view description */
 "This should take no more than a minute." = "Dit zou niet meer dan een minuut moeten duren.";
 
@@ -743,4 +755,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Uw Proton Free account is succesvol aangemaakt.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Uw sessie is verlopen. Log opnieuw in.";
 

@@ -13,6 +13,9 @@
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Спосіб відновлення допоможе вам отримати доступ до свого облікового запису у випадку втрати пароля чи виходу з облікового запису.";
 
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Обліковий запис видалено.\nВихід із системи...";
+
 /* *
  *  Login errors */
 "Account setup required" = "Налаштування облікового запису обов'язкове";
@@ -40,6 +43,9 @@
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Компанія Apple повідомила нас про те, що ви оновили план послуг, але не вистачає деяких технічних даних. Будь ласка, заповніть дані звіту про помилку і наша служба підтримки зв'яжеться з вами.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Компанія Apple повідомила нас, що ви оновили план послуг, але ми виявили, що відтоді ви вийшли з облікового запису.";
 
 /* Alert message of sign out the email address */
 "Are you sure you want to sign out %@?" = "Ви дійсно хочете вийти з %@?";
@@ -106,9 +112,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Продовжити";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Створити обліковий запис Proton із поточною е-поштою";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Створити натомість захищену електронну адресу Proton";
 
@@ -118,7 +121,7 @@
 /* Create user failed error */
 "Create user failed" = "Не вдалося створити користувача";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Створіть пароль";
 
 /* *
@@ -307,74 +310,74 @@
  * Networking */
 "Network connection error" = "Помилка зв'язку з мережею";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ з %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ з %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Доступ до сервісів трансляції по всьому світу";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "Доступ до сервісів трансляції по всьому світу";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Вбудований блокувальник реклами (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Вбудований блокувальник реклами (NetShield)";
 
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Перевірте своє з'єднання з інтернетом";
+/* Plan connection error description */
+"Check your internet connection" = "Перевірте своє з'єднання з інтернетом";
 
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Проблеми зі з'єднанням";
+/* Plan connection error title */
+"Connection issues" = "Проблеми зі з'єднанням";
 
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Продовжити передплату";
+/* Extend subscription button */
+"Extend subscription" = "Продовжити передплату";
 
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Безплатна VPN для одного пристрою";
+/* Plan details VPN on a single device */
+"Free VPN on a single device" = "Безплатна VPN для одного пристрою";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Отримати %@";
+/* Get plan button */
+"Get %@" = "Отримати %@";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Отримати Proton безплатно";
+/* Get free plan button */
+"Get Proton for free" = "Отримати Proton безплатно";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Найвища швидкість VPN";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "Найвища швидкість VPN";
 
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Один тарифний план для всіх служб Proton";
+/* */
+"One plan for all Proton services" = "Один тарифний план для всіх служб Proton";
 
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "У цьому застосунку доступні лише річні передплати без поновлення";
+/* Plan footer description */
+"Only non-renewing annual subscriptions are available via this app" = "У цьому застосунку доступні лише річні передплати без поновлення";
 
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Тарифний план успішно покращено";
+/* Plan successfully upgraded banner message */
+"Plan successfully upgraded" = "Тарифний план успішно покращено";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Сервери Secure Core";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Сервери Secure Core";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Суворе дотримання політики без журналювання";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Суворе дотримання політики без журналювання";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Безплатний початковий обліковий запис, створений для усталеного забезпечення приватності для всіх.";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "Безплатний початковий обліковий запис, створений для усталеного забезпечення приватності для всіх.";
 
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Зосереджене на приватності рішення електронної пошти та календаря, що задовольняє ваші щоденні потреби для спілкування.";
+/* Plan details plus description */
+"The privacy-first email and calendar solution for your everyday communication needs." = "Зосереджене на приватності рішення електронної пошти та календаря, що задовольняє ваші щоденні потреби для спілкування.";
 
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Тарифний план, орієнтований на зберігання даних, з 200 ГБ хмарного сховища для збереження приватності ваших файлів.";
+/* Plan details drive plus description */
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Тарифний план, орієнтований на зберігання даних, з 200 ГБ хмарного сховища для збереження приватності ваших файлів.";
 
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Винятковий комплект приватності з доступом до усіх преміумслужб Proton.";
+/* Plan details bundle description */
+"The ultimate privacy pack with access to all premium Proton services." = "Винятковий комплект приватності з доступом до усіх преміумслужб Proton.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor через VPN";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor через VPN";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Необмежена кількість тек, міток і фільтрів";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "Необмежена кількість тек, міток і фільтрів";
 
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "До %@ сховища";
+/* Plan details up to storage */
+"Up to %@ storage" = "До %@ сховища";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Ваша приватність і безпека — наш пріоритет.";
+/* Plan details vpn plus description */
+"Your privacy and security are our priority." = "Ваша приватність і безпека — наш пріоритет.";
 
 /* Next button */
 "Next" = "Далі";
@@ -443,6 +446,12 @@
 
 /* Invalid password hint */
 "Please enter your Proton Account password." = "Введіть свій пароль облікового запису Proton.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Увійдіть за допомогою облікового запису електронної пошти Proton, для якого ви оновлюєте тарифний план, щоб ми могли завершити купівлю.";
+
+/* Error message */
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Увійдіть за допомогою облікового запису електронної пошти Proton, для якого ви оновлюєте тарифний план, щоб ми могли завершити активацію тарифного плану.";
 
 /* no internet connection description */
 "Please make sure that your internet connection is working." = "Переконайтеся, що ваше з'єднання з інтернетом працює.";
@@ -600,6 +609,9 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Сервери Proton недоступні. Причиною може бути неправильна конфігурація мережі, сервери Proton не працюють або сервери Proton заблоковані";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "Не вдалося перевірити сертифікат TLS під час спроби з'єднання з Proton API. Ваше інтернет-з'єднання може відстежуватися. Для захисту ваших даних ми не дозволяємо програмі отримувати доступ до Proton API.\nЩоб увійти чи отримати доступ до свого облікового запису, змініть мережу і спробуйте з'єднатися знову.";
+
 /* Complete view description */
 "This should take no more than a minute." = "Це повинно тривати не довше хвилини.";
 
@@ -743,4 +755,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ваш обліковий запис Proton Free успішно створено.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Термін дії вашого сеансу завершився. Увійдіть знову.";
 

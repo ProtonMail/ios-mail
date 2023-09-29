@@ -15,13 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import GoLibs
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 
-// swiftlint:disable type_body_length
+// swiftlint:disable:next type_body_length
 enum EncryptionPreferencesHelper {
-    // swiftlint:disable function_body_length
     static func getEncryptionPreferences(email: String,
                                          keysResponse: KeysResponse,
                                          userDefaultSign: Bool,
@@ -47,7 +45,7 @@ enum EncryptionPreferencesHelper {
         } else {
             let apiKeys: [(KeyResponse, CryptoKey)] = keysResponse.keys.compactMap { keyResponse in
                 var error: NSError?
-                if let key = CryptoNewKey(keyResponse.publicKey?.unArmor, &error) {
+                if let key = CryptoGo.CryptoNewKey(keyResponse.publicKey?.unArmor, &error) {
                     return error != nil ? nil : (keyResponse, key)
                 }
                 return nil
@@ -60,7 +58,7 @@ enum EncryptionPreferencesHelper {
             let rawContactKeys: [Data] = contact?.pgpKeys ?? []
             let keys: [CryptoKey] = rawContactKeys.compactMap { rawKey in
                 var error: NSError?
-                let key = CryptoNewKey(rawKey, &error)
+                let key = CryptoGo.CryptoNewKey(rawKey, &error)
                 return error != nil ? nil : key
             }
             pinnedKeysConfig = PinnedKeysConfig(encrypt: contact?.encrypt ?? false,
@@ -310,7 +308,8 @@ enum EncryptionPreferencesHelper {
      * Return false if it's marked valid for encryption. Return undefined otherwise
      */
     static func getKeyVerificationOnlyStatus(key: CryptoKey, apiKeysConfig: APIKeysConfig) -> Bool {
-        if let index = apiKeysConfig.publicKeys.firstIndex(of: key),
+        // TODO: can `CryptoKey` be made `Equatable` again?
+        if let index = apiKeysConfig.publicKeys.firstIndex(where: { $0.getFingerprint() == key.getFingerprint() }),
            let keyResponse = apiKeysConfig.keys[safe: index] {
             return !keyResponse.flags.contains(.encryptionEnabled)
         }
@@ -348,7 +347,7 @@ enum EncryptionPreferencesHelper {
 
     static func convertToCryptoKey(from rawKey: String?) -> CryptoKey? {
         var error: NSError?
-        guard let key = CryptoNewKey(rawKey?.unArmor, &error),
+        guard let key = CryptoGo.CryptoNewKey(rawKey?.unArmor, &error),
               error == nil else {
             return nil
         }

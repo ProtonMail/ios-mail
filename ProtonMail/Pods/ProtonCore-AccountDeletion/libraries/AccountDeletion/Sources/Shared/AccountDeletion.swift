@@ -40,6 +40,7 @@ import ProtonCore_Doh
 #if canImport(ProtonCore_Services)
 import ProtonCore_Services
 #endif
+import ProtonCore_UIFoundations
 
 public typealias AccountDeletionSuccess = Void
 
@@ -77,10 +78,26 @@ public protocol AccountDeletion {
     
     func initiateAccountDeletionProcess(
         over viewController: ViewController,
+        inAppTheme: @escaping () -> InAppTheme,
         performAfterShowingAccountDeletionScreen: @escaping () -> Void,
         performBeforeClosingAccountDeletionScreen: @escaping (@escaping () -> Void) -> Void,
         completion: @escaping (Result<AccountDeletionSuccess, AccountDeletionError>) -> Void
     )
+}
+
+public extension AccountDeletion {
+    func initiateAccountDeletionProcess(
+        over viewController: ViewController,
+        performAfterShowingAccountDeletionScreen: @escaping () -> Void,
+        performBeforeClosingAccountDeletionScreen: @escaping (@escaping () -> Void) -> Void,
+        completion: @escaping (Result<AccountDeletionSuccess, AccountDeletionError>) -> Void
+    ) {
+        initiateAccountDeletionProcess(over: viewController,
+                                       inAppTheme: { .default },
+                                       performAfterShowingAccountDeletionScreen: performAfterShowingAccountDeletionScreen,
+                                       performBeforeClosingAccountDeletionScreen: performBeforeClosingAccountDeletionScreen,
+                                       completion: completion)
+    }
 }
 
 #if canImport(ProtonCore_Services)
@@ -133,6 +150,7 @@ public final class AccountDeletionService {
 
     func initiateAccountDeletionProcess(
         presenter viewController: AccountDeletionViewControllerPresenter,
+        inAppTheme: @escaping () -> InAppTheme = { .default },
         performAfterShowingAccountDeletionScreen: @escaping () -> Void = { },
         performBeforeClosingAccountDeletionScreen: @escaping (@escaping () -> Void) -> Void = { $0() },
         completion: @escaping (Result<AccountDeletionSuccess, AccountDeletionError>) -> Void
@@ -146,6 +164,7 @@ public final class AccountDeletionService {
                 }
             } else {
                 self.forkSession(viewController: viewController,
+                                 inAppTheme: inAppTheme,
                                  performAfterShowingAccountDeletionScreen: performAfterShowingAccountDeletionScreen,
                                  performBeforeClosingAccountDeletionScreen: performBeforeClosingAccountDeletionScreen,
                                  completion: completion)
@@ -154,6 +173,7 @@ public final class AccountDeletionService {
     }
     
     private func forkSession(viewController: AccountDeletionViewControllerPresenter,
+                             inAppTheme: @escaping () -> InAppTheme,
                              performAfterShowingAccountDeletionScreen: @escaping () -> Void,
                              performBeforeClosingAccountDeletionScreen: @escaping (@escaping () -> Void) -> Void,
                              completion: @escaping (Result<AccountDeletionSuccess, AccountDeletionError>) -> Void) {
@@ -167,6 +187,7 @@ public final class AccountDeletionService {
                 handleSuccessfullyForkedSession(
                     selector: response.selector,
                     over: viewController,
+                    inAppTheme: inAppTheme,
                     performAfterShowingAccountDeletionScreen: performAfterShowingAccountDeletionScreen,
                     performBeforeClosingAccountDeletionScreen: performBeforeClosingAccountDeletionScreen,
                     completion: completion
@@ -175,9 +196,11 @@ public final class AccountDeletionService {
         }
     }
     
+    // swiftlint:disable:next function_parameter_count
     private func handleSuccessfullyForkedSession(
         selector: String,
         over: AccountDeletionViewControllerPresenter,
+        inAppTheme: @escaping () -> InAppTheme,
         performAfterShowingAccountDeletionScreen: @escaping () -> Void,
         performBeforeClosingAccountDeletionScreen: @escaping (@escaping () -> Void) -> Void,
         completion: @escaping (Result<AccountDeletionSuccess, AccountDeletionError>) -> Void
@@ -190,6 +213,6 @@ public final class AccountDeletionService {
                                                  completion: completion)
         let viewController = AccountDeletionWebView(viewModel: viewModel)
         viewController.stronglyKeptDelegate = self
-        present(vc: viewController, over: over, completion: performAfterShowingAccountDeletionScreen)
+        present(vc: viewController, over: over, inAppTheme: inAppTheme, completion: performAfterShowingAccountDeletionScreen)
     }
 }

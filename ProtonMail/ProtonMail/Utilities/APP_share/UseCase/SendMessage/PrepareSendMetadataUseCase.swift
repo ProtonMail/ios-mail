@@ -15,15 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonMailAnalytics
-import Foundation
-import GoLibs
 import class ProtonCore_DataModel.Address
 import class ProtonCore_DataModel.Key
 import class ProtonCore_DataModel.UserInfo
 import ProtonCore_Crypto
+import ProtonMailAnalytics
 
-typealias PrepareSendMetadataUseCase = NewUseCase<SendMessageMetadata, PrepareSendMetadata.Params>
+typealias PrepareSendMetadataUseCase = UseCase<SendMessageMetadata, PrepareSendMetadata.Params>
 
 final class PrepareSendMetadata: PrepareSendMetadataUseCase {
     private let dependencies: Dependencies

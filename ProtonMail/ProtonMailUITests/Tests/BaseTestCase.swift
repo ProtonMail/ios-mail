@@ -20,7 +20,8 @@ var environmentFileName = "environment"
 var credentialsFileName = "credentials"
 let credentialsBlackFileName = "credentials_black"
 let testData = TestData()
-var users: [String: TestUser] = [:]
+var users: [String: User] = [:]
+var wasJailDisabled = false
 
 var dynamicDomain: String {
     ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] ?? ""
@@ -29,7 +30,7 @@ var dynamicDomain: String {
 /**
  Parent class for all the test classes.
  */
-class BaseTestCase: CoreTestCase, QuarkTestable {
+class BaseTestCase: CoreTestCase {
     
     var launchArguments = ["-clear_all_preference", "YES"]
     var humanVerificationStubs = false
@@ -40,6 +41,9 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
 
     var env: Environment = .black
     lazy var quarkCommands = QuarkCommands(doh: env.doh)
+    var quarkCommandTwo = Quark()
+    private static var didTryToDisableAutoFillPassword = false
+
 
     func terminateApp() {
         app.terminate()
@@ -47,6 +51,11 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
 
     /// Runs only once per test run.
     override class func setUp() {
+        super.setUp()
+        if !didTryToDisableAutoFillPassword {
+            disableAutoFillPasswords()
+            didTryToDisableAutoFillPassword = true
+        }
         getTestUsersFromYamlFiles()
     }
 
@@ -68,18 +77,25 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
         app.launchEnvironment[apiDomainKey] = dynamicDomain
 
         if humanVerificationStubs {
-            app.launchEnvironment["HumanVerificationStubs"] = "1"
+            app.launchArguments.append(contentsOf: ["HumanVerificationStubs", "1"])
         } else if forceUpgradeStubs {
-            app.launchEnvironment["ForceUpgradeStubs"] = "1"
+            app.launchArguments.append(contentsOf: ["ForceUpgradeStubs", "1"])
         } else if extAccountNotSupportedStub {
-            app.launchEnvironment["ExtAccountNotSupportedStub"] = "1"
+            app.launchArguments.append(contentsOf: ["ExtAccountNotSupportedStub", "1"])
         }
+
+        // Disable feedback pop up
+        app.launchArguments.append("-disableInAppFeedbackPromptAutoShow")
+
         app.launch()
 
         env = Environment.custom(dynamicDomain)
         quarkCommands = QuarkCommands(doh: env.doh)
+        quarkCommandTwo = Quark()
+            .baseUrl("https://\(dynamicDomain)/api/internal/quark")
 
         handleInterruption()
+        disableJail()
     }
 
     override func tearDown() {
@@ -138,114 +154,148 @@ class BaseTestCase: CoreTestCase, QuarkTestable {
     }
     
     private static func getTestUsersFromYamlFiles() {
-        // Get "protonmail-ios/ProtonMail/" path to later locate "protonmail-ios/ProtonMail/TestData".
-        let uiTestsFolderPath = URL(fileURLWithPath: #file).deletingLastPathComponent().deletingLastPathComponent().path
-        let folderUrl = URL(fileURLWithPath: "\(uiTestsFolderPath)/TestData")
         var userYamlFiles: [URL]
 
-        userYamlFiles = getYamlFiles(in: folderUrl)
+        guard let testDataURL = Bundle(for: BaseTestCase.self).url(forResource: "TestData", withExtension: nil) else {
+            // Handle the case when TestData folder is not found
+            return
+        }
+        userYamlFiles = getYamlFiles(in: testDataURL)
         
-        XCTAssertTrue(userYamlFiles.count > 0, "Attempted to parse user.yml files from TestData repository but was not able to find any.")
+        assert(!userYamlFiles.isEmpty, "Attempted to parse user.yml files from TestData repository but was not able to find any.")
 
         for file in userYamlFiles {
             do {
                 if let data = try String(contentsOf: file).data(using: .utf8) {
-                    let user = try YAMLDecoder().decode(TestUser.self, from: data)
-                    users[user.user.name] = user
+                    let user = try YAMLDecoder().decode(User.self, from: data)
+                    users[user.name] = user
                 }
             } catch {
                 print("Error deserializing YAML: \(error.localizedDescription)")
             }
         }
     }
+
+    private func disableJail() {
+        if !wasJailDisabled {
+            do {
+                try quarkCommandTwo.jailUnban()
+            }
+            catch {
+                XCTFail(error.localizedDescription)
+            }
+            wasJailDisabled = true
+        }
+    }
+    
+    private static func disableAutoFillPasswords() {
+        let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
+        let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+
+        settingsApp.launch()
+        settingsApp.tables.staticTexts["PASSWORDS"].tap()
+
+        let passcodeInput = springboard.secureTextFields["Passcode field"]
+        passcodeInput.tap()
+        passcodeInput.typeText("1\r")
+
+        let button = settingsApp.tables.cells["PasswordOptionsCell"].buttons["chevron"]
+        _ = button.waitForExistence(timeout: 1)
+        button.tap()
+
+        let autoFillPasswordSwitch = settingsApp.switches["AutoFill Passwords"]
+        if autoFillPasswordSwitch.isSwitchOn {
+            autoFillPasswordSwitch.tap()
+        }
+
+        settingsApp.terminate()
+    }
 }
 
-@available(iOS 16.0, *)
 class FixtureAuthenticatedTestCase: BaseTestCase {
 
-    var scenario: MailScenario { .qaMail001 }
+    var scenario: MailScenario = .qaMail001
     var plan: UserPlan { .mailpro2022 }
     var isSubscriptionIncluded: Bool { true }
-    var user: User?
+    var user: User = User()
 
     override func setUp() {
         super.setUp()
+    }
+    
+    func runTestWithScenario(_ actualScenario: MailScenario, testBlock: () -> Void) {
+        scenario = actualScenario
+        createUserAndLogin()
+        testBlock()
+    }
+
+    func createUser(scenarioName: String, plan: UserPlan, isEnableEarlyAccess: Bool) -> User {
+        var user: User = User()
+
         do {
-            user = try createUserWithFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
+            if scenario.name.starts(with: "qa-mail-web")  {
+                let response = try quarkCommandTwo.createUserWithFixturesLoad(name: scenarioName)
+
+                if let name = response?.name, let password = response?.password, let decryptedUserId = response?.decryptedUserId {
+                    user.name = name
+                    user.password = password
+                    user.id = Int(decryptedUserId)
+                } else {
+                    XCTFail("Wrong response \(String(describing: response))")
+                }
+
+                try quarkCommandTwo.enableSubscription(id: user.id!, plan: plan.rawValue)
+                try quarkCommandTwo.enableEarlyAccess(username: user.name)
+
+            } else {
+                quarkCommandTwo = Quark()
+                    .baseUrl("https://\(dynamicDomain)/internal-api/quark")
+
+                let fixtureUsers = try quarkCommandTwo.createUserWithiOSFixturesLoad(name: scenarioName)
+
+                if let users = fixtureUsers?.users {
+                    for fixtureUser in users {
+
+                        // TODO: update for user list
+                        user.name = fixtureUser.name
+                        user.password = fixtureUser.password
+                        user.id = fixtureUser.id.raw
+
+                        try quarkCommandTwo.enableSubscription(id: Int(fixtureUser.id.raw), plan: plan.rawValue)
+                        try quarkCommandTwo.enableEarlyAccess(username: fixtureUser.name)
+                    }
+                }
+            }
         }
         catch {
             XCTFail(error.localizedDescription)
         }
 
-        login(user: user!)
+        return user
+    }
+
+    private func createUserAndLogin() {
+        user = createUser(scenarioName: scenario.name, plan: plan, isEnableEarlyAccess: true)
+        login(user: user)
     }
 
     override func tearDown() {
+        defer { super.tearDown() }
+        guard let id = user.id else { return }
         do {
-            try deleteUser(domain: dynamicDomain, user)
+            try quarkCommandTwo.deleteUser(id: id)
         }
         catch {
             XCTFail(error.localizedDescription)
         }
-        super.tearDown()
-    }
-
-    open override func record(_ issue: XCTIssue) {
-        var myIssue = issue
-        var issueDescription: String = "\n"
-        issueDescription.append("User:")
-        issueDescription.append("\n")
-        issueDescription.append(user.debugDescription)
-        issueDescription.append("\n\n")
-        issueDescription.append("Failure:")
-        issueDescription.append("\n\(myIssue.compactDescription)")
-
-        myIssue.compactDescription = issueDescription
-        super.record(myIssue)
     }
 }
 
-@available(iOS 16.0, *)
-class NewFixtureAuthenticatedTestCase: BaseTestCase {
+private extension XCUIElement {
 
-    var scenario: MailScenario { .trashOneMessage }
-    var plan: UserPlan { .mailpro2022 }
-    var isSubscriptionIncluded: Bool { true }
-    var user: User?
-
-    override func setUp() {
-        super.setUp()
-        do {
-            user = try createUserWithiOSFixturesLoad(domain: dynamicDomain, plan: plan, scenario: scenario, isEnableEarlyAccess: false)
-        }
-        catch {
-            XCTFail(error.localizedDescription)
-        }
-
-        login(user: user!)
+    var isSwitchOn: Bool {
+        let switchValue = value as? String
+        return switchValue == "1"
     }
 
-    override func tearDown() {
-        do {
-            try deleteUser(domain: dynamicDomain, user)
-        }
-        catch {
-            XCTFail(error.localizedDescription)
-        }
-        super.tearDown()
-    }
-
-    open override func record(_ issue: XCTIssue) {
-        var myIssue = issue
-        var issueDescription: String = "\n"
-        issueDescription.append("User:")
-        issueDescription.append("\n")
-        issueDescription.append(user.debugDescription)
-        issueDescription.append("\n\n")
-        issueDescription.append("Failure:")
-        issueDescription.append("\n\(myIssue.compactDescription)")
-
-        myIssue.compactDescription = issueDescription
-        super.record(myIssue)
-    }
 }

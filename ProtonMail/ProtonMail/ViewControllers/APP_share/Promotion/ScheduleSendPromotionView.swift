@@ -100,7 +100,7 @@ final class ScheduleSendPromotionView: UIView {
         scrollContentView.addSubview(planStackView)
     }
 
-    // swiftlint:disable function_body_length
+    // swiftlint:disable:next function_body_length
     private func setupLayout() {
         let topConstraint = containerView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor)
         containerTopConstraint = topConstraint
@@ -256,7 +256,7 @@ private enum SubviewsFactory {
     }()
 
     static var upperView: UIImageView = {
-        let view = UIImageView(image: Asset.schedulePromotion.image)
+        let view = UIImageView(image: Asset.upsellPromotion.image)
         return view
     }()
 

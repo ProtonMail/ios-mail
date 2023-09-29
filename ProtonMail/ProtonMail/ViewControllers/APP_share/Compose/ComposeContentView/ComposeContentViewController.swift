@@ -31,13 +31,15 @@ import CoreData
 import ProtonCore_DataModel
 import ProtonCore_Foundations
 import WebKit
+import ProtonCore_UIFoundations
 
 protocol ComposeContentViewControllerDelegate: AnyObject {
     func displayExpirationWarning()
     func displayContactGroupSubSelectionView()
+    func willDismiss()
 }
 
-// swiftlint:disable line_length type_body_length
+// swiftlint:disable:next line_length type_body_length
 class ComposeContentViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
     let viewModel: ComposeViewModel
     var openScheduleSendActionSheet: (() -> Void)?
@@ -51,6 +53,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     var encryptionConfirmPassword: String = ""
     var encryptionPasswordHint: String = ""
     private var dismissBySending = false
+    private var dfsWasEnabled = DFSSetting.enableDFS
 
     private let queue = DispatchQueue(label: "UpdateAddressIdQueue")
 
@@ -65,6 +68,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     init(viewModel: ComposeViewModel) {
         self.viewModel = viewModel
+        DFSSetting.enableDFS = true
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -165,7 +169,10 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             let presentingVC = self.presentingViewController
             self.handleHintBanner(presentingVC: presentingVC)
         }
-        self.dismiss(animated: true, completion: nil)
+        delegate?.willDismiss()
+        self.dismiss(animated: true) {
+            DFSSetting.enableDFS = self.dfsWasEnabled
+        }
     }
 
     private func findPreviousVC(presentingVC: UIViewController?) -> UIViewController? {
@@ -173,7 +180,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         guard let messageID = viewModel.composerMessageHelper.draft?.messageID else {
             return nil
         }
-        userCachedStatus.lastDraftMessageID = messageID.rawValue
+        viewModel.dependencies.userCachedStatusProvider.lastDraftMessageID = messageID.rawValue
 
         var contentVC: UIViewController?
         var navigationController: UINavigationController?
@@ -224,7 +231,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             }
         } else {
             if self.viewModel.isEmptyDraft() { return }
-            topVC.showDraftSaveHintBanner(cache: userCachedStatus,
+            topVC.showDraftSaveHintBanner(cache: viewModel.dependencies.userCachedStatusProvider,
                                           messageService: messageService,
                                           coreDataContextProvider: coreDataContextProvider)
         }
@@ -268,18 +275,20 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
                 }
                 isFromValid = false
                 if origAddr.email.lowercased().range(of: "@pm.me") != nil {
-                    guard userCachedStatus.isPMMEWarningDisabled == false else {
+                    guard viewModel.dependencies.userCachedStatusProvider.isPMMEWarningDisabled == false else {
                         return
                     }
                     let msg = String(format: LocalString._composer_sending_messages_from_a_paid_feature, origAddr.email, addr.email)
                     let alertController = msg.alertController(LocalString._general_notice_alert_title)
                     alertController.addOKAction()
                     alertController.addAction(
-                        UIAlertAction(title: LocalString._general_dont_remind_action,
-                                      style: .destructive,
-                                      handler: { _ in
-                                          userCachedStatus.isPMMEWarningDisabled = true
-                                      })
+                        UIAlertAction(
+                            title: LocalString._general_dont_remind_action,
+                            style: .destructive,
+                            handler: { [weak self] _ in
+                                self?.viewModel.dependencies.userCachedStatusProvider.isPMMEWarningDisabled = true
+                            }
+                        )
                     )
                     self.present(alertController, animated: true, completion: nil)
                 }
@@ -305,7 +314,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
         stopAutoSave()
     }
 
@@ -542,11 +551,10 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
     func addInlineAttachment(_ sid: String, data: Data, completion: (() -> Void)?) {
         // Data.toAttachment will automatically increment number of attachments in the message
-        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         viewModel.composerMessageHelper.addAttachment(
             data: data,
             fileName: sid,
-            shouldStripMetaData: stripMetadata,
+            shouldStripMetaData: viewModel.shouldStripMetaData,
             type: "image/png",
             isInline: true
         ) { _ in
@@ -783,7 +791,6 @@ extension ComposeContentViewController: ComposeViewDelegate {
         self.viewModel.checkMails(in: contactGroup, progress: progress, complete: complete)
     }
 
-    @available(iOS 14.0, *)
     func setupComposeFromMenu(for button: UIButton) {
         var multiDomains = self.viewModel.getAddresses()
         multiDomains.sort(by: { $0.order < $1.order })
@@ -938,22 +945,12 @@ extension ComposeContentViewController: ComposeViewDelegate {
                 self.viewModel.toSelectedContacts.remove(at: contactIndex)
             }
         } else if picker == headerView.ccContactPicker {
-            var contactIndex = -1
-            let selectedContacts = self.viewModel.ccSelectedContacts
-            for (index, selectedContact) in selectedContacts.enumerated() where contact.displayEmail == selectedContact.displayEmail {
-                contactIndex = index
-            }
-            if contactIndex >= 0 {
-                self.viewModel.ccSelectedContacts.remove(at: contactIndex)
+            viewModel.ccSelectedContacts.removeAll { selectedContact in
+                contact.displayEmail == selectedContact.displayEmail
             }
         } else if picker == headerView.bccContactPicker {
-            var contactIndex = -1
-            let selectedContacts = self.viewModel.bccSelectedContacts
-            for (index, selectedContact) in selectedContacts.enumerated() where contact.displayEmail == selectedContact.displayEmail {
-                contactIndex = index
-            }
-            if contactIndex >= 0 {
-                self.viewModel.bccSelectedContacts.remove(at: contactIndex)
+            viewModel.bccSelectedContacts.removeAll { selectedContact in
+                contact.displayEmail == selectedContact.displayEmail
             }
         }
     }

@@ -1,3 +1,4 @@
+// Adapted from: https://github.com/kstenerud/KSCrash
 //
 //  SentryCrashMonitor_AppState.c
 //
@@ -138,6 +139,13 @@ onIntegerElement(const char *const name, const int64_t value, void *const userDa
 }
 
 static int
+onUIntegerElement(
+    __unused const char *const name, __unused const uint64_t value, __unused void *const userData)
+{
+    return SentryCrashJSON_OK;
+}
+
+static int
 onNullElement(__unused const char *const name, __unused void *const userData)
 {
     return SentryCrashJSON_OK;
@@ -189,7 +197,7 @@ addJSONData(const char *const data, const int length, void *const userData)
 // ============================================================================
 
 static double
-getCurentTime()
+getCurentTime(void)
 {
     struct timeval tv;
     gettimeofday(&tv, NULL);
@@ -234,6 +242,7 @@ loadState(const char *const path)
     callbacks.onEndData = onEndData;
     callbacks.onFloatingPointElement = onFloatingPointElement;
     callbacks.onIntegerElement = onIntegerElement;
+    callbacks.onUIntegerElement = onUIntegerElement;
     callbacks.onNullElement = onNullElement;
     callbacks.onStringElement = onStringElement;
 
@@ -345,7 +354,7 @@ sentrycrashstate_initialize(const char *const stateFilePath)
 }
 
 bool
-sentrycrashstate_reset()
+sentrycrashstate_reset(void)
 {
     if (g_isEnabled) {
         g_state.sessionsSinceLaunch = 1;
@@ -459,7 +468,7 @@ setEnabled(bool isEnabled)
 }
 
 static bool
-isEnabled()
+isEnabled(void)
 {
     return g_isEnabled;
 }
@@ -486,7 +495,7 @@ addContextualInfoToEvent(SentryCrash_MonitorContext *eventContext)
 }
 
 SentryCrashMonitorAPI *
-sentrycrashcm_appstate_getAPI()
+sentrycrashcm_appstate_getAPI(void)
 {
     static SentryCrashMonitorAPI api = { .setEnabled = setEnabled,
         .isEnabled = isEnabled,

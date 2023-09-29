@@ -81,8 +81,4 @@ extension LabelUpdate {
         }
         return false
     }
-
-    class func deleteAll(inContext context: NSManagedObjectContext) {
-        context.deleteAll(Attributes.entityName)
-    }
 }

@@ -22,13 +22,10 @@ import ProtonCore_TestingToolkit
 class SettingsDeviceViewControllerTests: XCTestCase {
 
     var sut: SettingsDeviceViewController!
-    var viewModel: SettingsDeviceViewModel!
     var mockUser: UserManager!
     var mockApiService: APIServiceMock!
     var mockUsers: UsersManager!
     var mockDoh: DohMock!
-    var mockCleanCache: MockCleanCacheUseCase!
-    var stubBioStatus: BioMetricStatusStub!
     var settingsDeviceCoordinatorMock: MockSettingsDeviceCoordinator!
 
     override func setUp() {
@@ -38,36 +35,23 @@ class SettingsDeviceViewControllerTests: XCTestCase {
         mockUser = UserManager(api: mockApiService, role: .none, coreKeyMaker: MockKeyMakerProtocol())
         mockUsers = UsersManager(doh: mockDoh, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
         mockUsers.add(newUser: mockUser)
-        mockCleanCache = MockCleanCacheUseCase()
-        stubBioStatus = BioMetricStatusStub()
-        viewModel = SettingsDeviceViewModel(
-            user: mockUser,
-            biometricStatus: stubBioStatus,
-            lockCacheStatus: MockLockCacheStatus(),
-            dependencies: .init(cleanCache: mockCleanCache)
-        )
+        let globalContainer = GlobalContainer()
+        globalContainer.usersManagerFactory.register { self.mockUsers }
+        let userContainer = UserContainer(userManager: mockUser, globalContainer: globalContainer)
         settingsDeviceCoordinatorMock = MockSettingsDeviceCoordinator(
             navigationController: nil,
-            user: mockUser,
-            usersManager: mockUsers,
-            services: ServiceFactory()
+            dependencies: userContainer
         )
-        sut = SettingsDeviceViewController(
-            viewModel: viewModel,
-            coordinator: settingsDeviceCoordinatorMock
-        )
+        sut = userContainer.settingsViewsFactory.makeDeviceView(coordinator: settingsDeviceCoordinatorMock)
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        viewModel = nil
         mockUsers = nil
         mockUser = nil
         mockApiService = nil
         mockDoh = nil
-        mockCleanCache = nil
-        stubBioStatus = nil
         settingsDeviceCoordinatorMock = nil
     }
 

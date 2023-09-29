@@ -7,6 +7,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class SentryId, SentrySpanId;
 
+static NSString const *SENTRY_TRACE_TYPE = @"trace";
+
 NS_SWIFT_NAME(SpanContext)
 @interface SentrySpanContext : NSObject <SentrySerializable>
 SENTRY_NO_INIT
@@ -29,60 +31,50 @@ SENTRY_NO_INIT
 /**
  * If trace is sampled.
  */
-@property (nonatomic) SentrySampleDecision sampled;
+@property (nonatomic, readonly) SentrySampleDecision sampled;
 
 /**
  * Short code identifying the type of operation the span is measuring.
  */
-@property (nonatomic, copy) NSString *operation;
+@property (nonatomic, copy, readonly) NSString *operation;
 
 /**
  * Longer description of the span's operation, which uniquely identifies the span but is
  * consistent across instances of the span.
  */
-@property (nullable, nonatomic, copy) NSString *spanDescription;
+@property (nullable, nonatomic, copy, readonly) NSString *spanDescription;
 
 /**
- * Describes the status of the Transaction.
- */
-@property (nonatomic) SentrySpanStatus status;
-
-/**
- * A map or list of tags for this event. Each tag must be less than 200 characters.
- */
-@property (nonatomic, readonly) NSDictionary<NSString *, NSString *> *tags;
-
-/**
- * Init a SentryContext with an operation code,
- * traceId and spanId with be randomly created,
- * sampled by default is false.
+ * The origin of the span indicates what created the span.
  *
- * @return SentryContext
+ * @note Gets set by the SDK. It is not expected to be set manually by users. Although the protocol
+ * allows this value to be optional, we make it nonnullable as we always send the value.
+ *
+ * @see <https://develop.sentry.dev/sdk/performance/trace-origin>
+ */
+@property (nonatomic, copy) NSString *origin;
+
+/**
+ * Init a @c SentryContext with an operation code.
+ * @note @c traceId and @c spanId with be randomly created; @c sampled by default is
+ * @c kSentrySampleDecisionUndecided .
  */
 - (instancetype)initWithOperation:(NSString *)operation;
 
 /**
- * Init a SentryContext with an operation code and mark it as sampled or not.
+ * Init a @c SentryContext with an operation code and mark it as sampled or not.
  * TraceId and SpanId with be randomly created.
- *
  * @param operation The operation this span is measuring.
  * @param sampled Determines whether the trace should be sampled.
- *
- * @return SentryContext
  */
-
 - (instancetype)initWithOperation:(NSString *)operation sampled:(SentrySampleDecision)sampled;
 
 /**
- * Init a SentryContext with given traceId, spanId and parentId.
- *
  * @param traceId Determines which trace the Span belongs to.
- * @param spanId The Span Id
+ * @param spanId The Span Id.
  * @param operation The operation this span is measuring.
  * @param parentId Id of a parent span.
  * @param sampled Determines whether the trace should be sampled.
- *
- * @return SentryContext
  */
 - (instancetype)initWithTraceId:(SentryId *)traceId
                          spanId:(SentrySpanId *)spanId
@@ -91,16 +83,19 @@ SENTRY_NO_INIT
                         sampled:(SentrySampleDecision)sampled;
 
 /**
- * Sets a tag with given value.
+ * @param traceId Determines which trace the Span belongs to.
+ * @param spanId The Span Id.
+ * @param operation The operation this span is measuring.
+ * @param parentId Id of a parent span.
+ * @param description The span description.
+ * @param sampled Determines whether the trace should be sampled.
  */
-- (void)setTagValue:(NSString *)value forKey:(NSString *)key NS_SWIFT_NAME(setTag(value:key:));
-
-/**
- * Removes a tag.
- */
-- (void)removeTagForKey:(NSString *)key NS_SWIFT_NAME(removeTag(key:));
-
-@property (class, nonatomic, readonly, copy) NSString *type;
+- (instancetype)initWithTraceId:(SentryId *)traceId
+                         spanId:(SentrySpanId *)spanId
+                       parentId:(nullable SentrySpanId *)parentId
+                      operation:(NSString *)operation
+                spanDescription:(nullable NSString *)description
+                        sampled:(SentrySampleDecision)sampled;
 
 @end
 

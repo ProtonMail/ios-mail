@@ -39,7 +39,7 @@ struct BackendConfiguration {
         isDebugOrEnterprise: () -> Bool = { UIApplication.isDebugOrEnterprise },
         configurationCache: BackendConfigurationCacheProtocol = BackendConfigurationCache()
     ) {
-        if launchArguments.contains(Arguments.uiTests) {
+        if launchArguments.contains(ProcessInfo.LaunchArgument.uiTests.rawValue) {
             guard let uiTestApiDomain = environmentVariables[EnvironmentVariableKeys.backendApiDomain] else {
                 fatalError("\(EnvironmentVariableKeys.backendApiDomain) environment variable not found")
             }
@@ -54,11 +54,6 @@ struct BackendConfiguration {
 }
 
 extension BackendConfiguration {
-    enum Arguments {
-        static let uiTests = "-uiTests"
-        static let disableToolbarSpotlight = "-toolbarSpotlightOff"
-    }
-
     enum EnvironmentVariableKeys {
         static let backendApiDomain = "MAIL_APP_API_DOMAIN"
     }

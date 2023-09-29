@@ -27,7 +27,8 @@ import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 import UIKit
 
-class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
+// swiftlint:disable:next type_body_length
+final class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     LifetimeTrackable, ScheduledAlertPresenter {
     static var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 3)
@@ -177,12 +178,16 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
 
     func cellTapped(
         messageId: MessageID,
-		caller: StaticString = #function,
         reloadCompletion: (() -> Void)? = nil
     ) {
-        // this method sometimes appears in the stack trace for this crash
-        Breadcrumbs.shared.add(message: "\(caller)", to: .conversationViewEndUpdatesCrash)
-        Breadcrumbs.shared.add(message: "cellTapped(messageId: \(messageId)", to: .conversationViewEndUpdatesCrash)
+        guard !viewModel.tableViewIsUpdating else {
+            PMAssertionFailure("Cell tapped while the table view is updating")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.cellTapped(messageId: messageId, reloadCompletion: reloadCompletion)
+            }
+
+            return
+        }
 
         viewModel.cellTapped()
 
@@ -261,26 +266,14 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
     }
 
     private func registerNotification() {
-        if #available(iOS 13.0, *) {
             NotificationCenter.default
                 .addObserver(self,
                              selector: #selector(willBecomeActive),
                              name: UIScene.willEnterForegroundNotification,
                              object: nil)
-        } else {
-            NotificationCenter.default
-                .addObserver(self,
-                             selector: #selector(willBecomeActive),
-                             name: UIApplication.willEnterForegroundNotification,
-                             object: nil)
-        }
-        NotificationCenter.default
-            .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
-                         name: UIContentSizeCategory.didChangeNotification,
-                         object: nil)
     }
 
+    // swiftlint:disable:next function_body_length
     private func setupViewModel() {
         viewModel.conversationIsReadyToBeDisplayed = { [weak self] in
              self?.displayConversation()
@@ -332,9 +325,9 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
         }
 
         viewModel.startMonitorConnectionStatus { [weak self] in
-            self?.applicationStateProvider.applicationState == .active
-        } reloadWhenAppIsActive: { [weak self] value in
-            self?.shouldReloadWhenAppIsActive = value
+            return self?.applicationStateProvider.applicationState == .active
+        } reloadWhenAppIsActive: { [weak self] in
+            self?.shouldReloadWhenAppIsActive = true
         }
 
         viewModel.viewModeIsChanged = { [weak self] _ in
@@ -349,6 +342,20 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
 
             self?.navigationController?.popViewController(animated: true)
         }
+
+        viewModel.showSpinner = { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                MBProgressHUD.showAdded(to: self.view, animated: true)
+            }
+        }
+
+        viewModel.hideSpinner = { [weak self] in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                MBProgressHUD.hide(for: self.view, animated: true)
+            }
+        }
     }
 
     @objc
@@ -357,11 +364,6 @@ class ConversationViewController: UIViewController, ComposeSaveHintProtocol,
             viewModel.fetchConversationDetails(completion: nil)
             shouldReloadWhenAppIsActive = false
         }
-    }
-
-    @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
-        refreshNavigationViewIfNeeded(forceUpdate: true)
     }
 
     required init?(coder: NSCoder) { nil }
@@ -460,7 +462,6 @@ private extension ConversationViewController {
                          Message.Location.starred.rawValue,
                          Message.HiddenLocation.sent.rawValue,
                          Message.HiddenLocation.draft.rawValue]
-        // swiftlint:disable sorted_first_last
         // Better to disable linter rule here keep it this way for readability
         guard let location = message.labels
             .sorted(by: { label1, label2 in
@@ -815,36 +816,16 @@ extension ConversationViewController {
     private func deleteAction(completion: (() -> Void)? = nil) {
         showDeleteAlert(
             deleteHandler: { [weak self] _ in
+                self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
                 self?.viewModel.handleToolBarAction(.delete)
-                self?.viewModel.navigateToNextConversation(
-                    isInPageView: self?.isInPageView ?? false,
-                    popCurrentView: {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                )
                 self?.showMessageMoved(title: LocalString._messages_has_been_deleted)
+                guard self?.isInPageView ?? false else {
+                    self?.navigationController?.popViewController(animated: true)
+                    return
+                }
             },
             completion: completion
         )
-    }
-
-    @objc
-    private func trashAction() {
-        let continueAction = { [weak self] in
-            self?.viewModel.handleToolBarAction(.trash)
-            self?.viewModel.navigateToNextConversation(
-                isInPageView: self?.isInPageView ?? false,
-                popCurrentView: {
-                    self?.navigationController?.popViewController(animated: true)
-                }
-            )
-            self?.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .trash)
-        }
-        viewModel.searchForScheduled { [weak self] scheduledNum in
-            self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
-        } continueAction: {
-            continueAction()
-        }
     }
 
     @objc
@@ -939,13 +920,12 @@ extension ConversationViewController {
             moreButtonTapped()
         case .trash:
             let continueAction: () -> Void = { [weak self] in
+                self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
                 self?.viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                    self?.viewModel.navigateToNextConversation(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    )
+                    guard self?.isInPageView ?? false else {
+                        self?.navigationController?.popViewController(animated: true)
+                        return
+                    }
                 })
             }
             viewModel.searchForScheduled(displayAlert: { [weak self] scheduledNum in
@@ -958,13 +938,12 @@ extension ConversationViewController {
                 continueAction()
             })
         case .archive, .spam, .inbox, .spamMoveToInbox:
+            viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
             viewModel.handleActionSheetAction(action, completion: { [weak self] in
-                self?.viewModel.navigateToNextConversation(
-                    isInPageView: self?.isInPageView ?? false,
-                    popCurrentView: {
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                )
+                guard self?.isInPageView ?? false else {
+                    self?.navigationController?.popViewController(animated: true)
+                    return
+                }
             })
         case .viewHeaders, .viewHTML, .reportPhishing, .viewInDarkMode,
                 .viewInLightMode, .replyOrReplyAll:
@@ -1006,9 +985,7 @@ extension ConversationViewController {
         case let .attachmentList(messageId, body, attachments):
             guard let message = viewModel.messagesDataSource.message(with: messageId) else { return }
             let cids = message.getCIDOfInlineAttachment(decryptedBody: body)
-            viewModel.handleNavigationAction(.attachmentList(message: message,
-                                                             inlineCIDs: cids,
-                                                             attachments: attachments))
+            viewModel.handleNavigationAction(.attachmentList(inlineCIDs: cids, attachments: attachments))
         case .more(let messageId):
             if let message = viewModel.messagesDataSource.message(with: messageId) {
                 handleMoreAction(messageId: messageId, message: message)
@@ -1151,56 +1128,49 @@ extension ConversationViewController {
         let labelAsViewModel = LabelAsActionSheetViewModelConversationMessages(menuLabels: labels,
                                                                                conversationMessages: convMessages)
 
-        labelAsActionSheetPresenter
-            .present(
-                on: self.navigationController ?? self,
-                listener: self,
-                viewModel: labelAsViewModel,
-                addNewLabel: { [weak self] in
-                    guard let self = self else { return }
-                    if self.allowToCreateLabels(existingLabels: labelAsViewModel.menuLabels.count) {
-                        self.viewModel.coordinator.pendingActionAfterDismissal = { [weak self] in
-                            self?.showLabelAsActionSheetForConversation()
-                        }
-                        self.viewModel.handleNavigationAction(.addNewLabel)
-                    } else {
-                        self.showAlertLabelCreationNotAllowed()
+        labelAsActionSheetPresenter.present(
+            on: self.navigationController ?? self,
+            listener: self,
+            viewModel: labelAsViewModel,
+            addNewLabel: { [weak self] in
+                guard let self = self else { return }
+                if self.allowToCreateLabels(existingLabels: labelAsViewModel.menuLabels.count) {
+                    self.viewModel.coordinator.pendingActionAfterDismissal = { [weak self] in
+                        self?.showLabelAsActionSheetForConversation()
                     }
-                },
-                selected: { [weak self] menuLabel, isOn in
-                    self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
-                },
-                cancel: { [weak self] isHavingUnsavedChanges in
-                    if isHavingUnsavedChanges {
-                        self?.showDiscardAlert(handleDiscard: {
-                            self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
-                            self?.dismissActionSheet()
-                        })
-                    } else {
-                        self?.dismissActionSheet()
-                    }
-                },
-                done: { [weak self] isArchive, currentOptionsStatus in
-                    if let conversation = self?.viewModel.conversation {
-                        self?.labelAsActionHandler
-                            .handleLabelAsAction(conversations: [conversation],
-                                                 shouldArchive: isArchive,
-                                                 currentOptionsStatus: currentOptionsStatus,
-                                                 completion: nil)
-                    }
-                    self?.dismissActionSheet()
-                    if isArchive {
-                        self?.viewModel.navigateToNextConversation(
-                            isInPageView: self?.isInPageView ?? false,
-                            popCurrentView: nil
-                        )
-                        self?.showMessageMoved(
-                            title: LocalString._messages_has_been_moved,
-                            undoActionType: .archive
-                        )
-                    }
+                    self.viewModel.handleNavigationAction(.addNewLabel)
+                } else {
+                    self.showAlertLabelCreationNotAllowed()
                 }
-            )
+            },
+            selected: { [weak self] menuLabel, isOn in
+                self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: menuLabel, isOn: isOn)
+            },
+            cancel: { [weak self] isHavingUnsavedChanges in
+                if isHavingUnsavedChanges {
+                    self?.showDiscardAlert(handleDiscard: {
+                        self?.labelAsActionHandler.updateSelectedLabelAsDestination(menuLabel: nil, isOn: false)
+                        self?.dismissActionSheet()
+                    })
+                } else {
+                    self?.dismissActionSheet()
+                }
+            },
+            done: { [weak self] isArchive, currentOptionsStatus in
+                if isArchive {
+                    self?.showMessageMoved(title: LocalString._messages_has_been_moved, undoActionType: .archive)
+                    self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
+                }
+                if let conversation = self?.viewModel.conversation {
+                    self?.labelAsActionHandler
+                        .handleLabelAsAction(conversations: [conversation],
+                                             shouldArchive: isArchive,
+                                             currentOptionsStatus: currentOptionsStatus,
+                                             completion: nil)
+                }
+                self?.dismissActionSheet()
+            }
+        )
     }
 
     private func showLabelAsActionSheet(for message: MessageEntity) {
@@ -1239,6 +1209,9 @@ extension ConversationViewController {
                          }
                      },
                      done: { [weak self] isArchive, currentOptionsStatus in
+                        if isArchive {
+                            self?.viewModel.sendSwipeNotificationIfNeeded(isInPageView: self?.isInPageView ?? false)
+                        }
                          self?.labelAsActionHandler
                              .handleLabelAsAction(messages: [message],
                                                   shouldArchive: isArchive,
@@ -1314,7 +1287,6 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
         }
         let moveToViewModel = MoveToActionSheetViewModelMessages(
             menuLabels: menuLabels,
-            messages: [message],
             isEnableColor: isEnableColor,
             isInherit: isInherit
         )
@@ -1334,39 +1306,26 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                     self.showAlertFolderCreationNotAllowed()
                 }
             },
-            selected: { [weak self] menuLabel, isOn in
-                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+            selected: { [weak self] menuLabel, isSelected in
+                guard isSelected else { return }
+                self?.didSelectFolderToMoveToForMessage(folder: menuLabel, message: message)
             },
-            cancel: { [weak self] isHavingUnsavedChanges in
-                if isHavingUnsavedChanges {
-                    self?.showDiscardAlert(handleDiscard: {
-                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
-                        self?.dismissActionSheet()
-                    })
-                } else {
-                    self?.dismissActionSheet()
-                }
-            },
-            done: { [weak self] isHavingUnsavedChanges in
-                defer {
-                    self?.dismissActionSheet()
-                    self?.viewModel.navigateToNextConversation(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    )
-                }
-                guard isHavingUnsavedChanges else {
-                    return
-                }
-                self?.moveToActionHandler
-                    .handleMoveToAction(messages: [message], isFromSwipeAction: false)
+            cancel: { [weak self] in
+                self?.dismissActionSheet()
             }
         )
     }
 
-    // swiftlint:disable function_body_length
+    private func didSelectFolderToMoveToForMessage(folder: MenuLabel, message: MessageEntity) {
+        viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
+        moveToActionHandler.handleMoveToAction(messages: [message], to: folder, isFromSwipeAction: false)
+
+        dismissActionSheet()
+        if !isInPageView {
+            navigationController?.popViewController(animated: true)
+        }
+    }
+
     private func showMoveToActionSheetForConversation() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
@@ -1374,7 +1333,6 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 
         let moveToViewModel = MoveToActionSheetViewModelMessages(
             menuLabels: viewModel.getFolderMenuItems(),
-            messages: messagesOfConversation,
             isEnableColor: isEnableColor,
             isInherit: isInherit
         )
@@ -1394,54 +1352,50 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
                     self.showAlertFolderCreationNotAllowed()
                 }
             },
-            selected: { [weak self] menuLabel, isOn in
-                self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: menuLabel, isOn: isOn)
+            selected: { [weak self] menuLabel, isSelected in
+                guard isSelected else { return }
+                self?.didSelectFolderToMoveToForConversation(folder: menuLabel)
             },
-            cancel: { [weak self] isHavingUnsavedChanges in
-                if isHavingUnsavedChanges {
-                    self?.showDiscardAlert(handleDiscard: {
-                        self?.moveToActionHandler.updateSelectedMoveToDestination(menuLabel: nil, isOn: false)
-                        self?.dismissActionSheet()
-                    })
-                } else {
-                    self?.dismissActionSheet()
-                }
-            },
-            done: { [weak self] isHavingUnsavedChanges in
-                defer {
-                    self?.dismissActionSheet()
-                    self?.viewModel.navigateToNextConversation(
-                        isInPageView: self?.isInPageView ?? false,
-                        popCurrentView: {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    )
-                }
-                guard isHavingUnsavedChanges,
-                      let conversation = self?.viewModel.conversation,
-                      let destinationId = self?.moveToActionHandler.selectedMoveToFolder?.location.labelID
-                else {
-                    return
-                }
-
-                let continueAction: () -> Void = { [weak self] in
-                    self?.moveToActionHandler.handleMoveToAction(conversations: [conversation],
-                                                                 isFromSwipeAction: false,
-                                                                 completion: nil)
-                    self?.showMessageMoved(title: LocalString._messages_has_been_moved,
-                                           undoActionType: .custom(destinationId))
-                }
-
-                if self?.moveToActionHandler.selectedMoveToFolder?.location == .trash {
-                    self?.viewModel.searchForScheduled(conversation: conversation,
-                                                       displayAlert: { scheduledNum in
-                                                           self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
-                                                       }, continueAction: continueAction)
-                } else {
-                    continueAction()
-                }
+            cancel: { [weak self] in
+                self?.dismissActionSheet()
             }
         )
+    }
+
+    private func didSelectFolderToMoveToForConversation(folder: MenuLabel) {
+        defer {
+            dismissActionSheet()
+            if !isInPageView {
+                navigationController?.popViewController(animated: true)
+            }
+        }
+
+        let conversation = viewModel.conversation
+        let continueAction: () -> Void = { [weak self] in
+            self?.moveToActionHandler.handleMoveToAction(
+                conversations: [conversation],
+                to: folder,
+                isFromSwipeAction: false,
+                completion: nil
+            )
+            self?.showMessageMoved(
+                title: LocalString._messages_has_been_moved,
+                undoActionType: .custom(folder.location.labelID)
+            )
+        }
+
+        viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
+        if folder.location == .trash {
+            viewModel.searchForScheduled(
+                conversation: conversation,
+                displayAlert: { [weak self] scheduledNum in
+                    self?.displayScheduledAlert(scheduledNum: scheduledNum, continueAction: continueAction)
+                },
+                continueAction: continueAction
+            )
+        } else {
+            continueAction()
+        }
     }
 }
 

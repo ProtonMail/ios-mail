@@ -1,6 +1,6 @@
 //
 //  AuthCredential.swift
-//  ProtonCore - Created on 20/02/2020.
+//  ProtonCore-APIClient - Created on 20/02/2020.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //

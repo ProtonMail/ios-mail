@@ -30,9 +30,12 @@ class MenuViewModelTests: XCTestCase {
     var apiMock: APIServiceMock!
     var enableColorStub = false
     var usingParentFolderColorStub = false
+    var coordinatorMock: MockMenuCoordinatorProtocol!
+    var delegate: MenuUIProtocol!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
+        coordinatorMock = .init()
         userStatusInQueueProviderMock = UserStatusInQueueProviderMock()
         coreDataContextProviderMock = MockCoreDataContextProvider()
         dohMock = DohMock()
@@ -45,13 +48,16 @@ class MenuViewModelTests: XCTestCase {
             userStatusInQueueProvider: userStatusInQueueProviderMock,
             coreDataContextProvider: coreDataContextProviderMock,
             coreKeyMaker: MockKeyMakerProtocol(),
-            unlockManager: .init(cacheStatus: CacheStatusStub(), delegate: MockUnlockManagerDelegate(), keyMaker: MockKeyMakerProtocol(), pinFailedCountCache: MockPinFailedCountCache()))
+            unlockManager: .init(cacheStatus: CacheStatusStub(), keyMaker: MockKeyMakerProtocol(), pinFailedCountCache: MockPinFailedCountCache()))
         sut.setUserEnableColorClosure {
             return self.enableColorStub
         }
         sut.setParentFolderColorClosure {
             return self.usingParentFolderColorStub
         }
+        sut.coordinator = coordinatorMock
+        delegate = TestViewController()
+        sut.set(delegate: delegate)
     }
 
     override func tearDown() {
@@ -65,24 +71,6 @@ class MenuViewModelTests: XCTestCase {
         apiMock = nil
     }
 
-    func testInit_withInAppFeedbackDisable() {
-        XCTAssertEqual(sut.sections, [.inboxes, .folders, .labels, .more])
-        XCTAssertTrue(sut.moreItems.contains(where: { $0.location == .sendFeedback }))
-    }
-
-    func testInit_withInAppFeedbackEnable() {
-        testUser.inAppFeedbackStateService.handleNewFeatureFlags([FeatureFlagKey.inAppFeedback.rawValue: 1])
-        sut = MenuViewModel(usersManager: usersManagerMock,
-                            userStatusInQueueProvider: userStatusInQueueProviderMock,
-                            coreDataContextProvider: coreDataContextProviderMock,
-                            coreKeyMaker: MockKeyMakerProtocol(),
-                            unlockManager: .init(cacheStatus: CacheStatusStub(), delegate: MockUnlockManagerDelegate(), keyMaker: MockKeyMakerProtocol(), pinFailedCountCache: MockPinFailedCountCache())
-        )
-        XCTAssertEqual(sut.sections, [.inboxes, .folders, .labels, .more])
-
-        XCTAssertTrue(sut.moreItems.contains(where: { $0.location == .sendFeedback }))
-    }
-
     func testInboxItemsAreTheExpectedOnes() {
         let expectedItems = [MenuLabel(location: .inbox),
                              MenuLabel(location: .draft),
@@ -92,7 +80,11 @@ class MenuViewModelTests: XCTestCase {
                              MenuLabel(location: .spam),
                              MenuLabel(location: .trash),
                              MenuLabel(location: .allmail)]
-        XCTAssert(MenuViewModel.inboxItems().map(\.location) == expectedItems.map(\.location))
+        XCTAssertEqual(
+            MenuViewModel.inboxItems(almostAllMailIsOn: false)
+                .map(\.location),
+            expectedItems.map(\.location)
+        )
     }
 
     func testDefaultMoreItemsAreTheExpectedOnes() {
@@ -254,30 +246,63 @@ class MenuViewModelTests: XCTestCase {
         XCTAssertEqual(sut.inboxItems.map { $0.location }, expected)
     }
 
-    func testUpdateInboxItem_reloadClosureIsOnlyTriggedWhenNeeded() {
-        let expectation1 = expectation(description: "Closure is called")
-        sut.reloadClosure = {
-            expectation1.fulfill()
-        }
-        sut.updateInboxItems(hasScheduledMessage: true) // Add scheduled location
-        XCTAssertTrue(sut.inboxItems.contains(where: { $0.location == .scheduled }))
-        waitForExpectations(timeout: 1, handler: nil)
+    func testUpdateInboxItem_almostAllMailIsFalse_inboxItemHasAllMailLocation() {
+        testUser.mailSettings.update(key: .almostAllMail, to: false)
+        sut.updateInboxItems(hasScheduledMessage: false)
 
-        let expectation2 = expectation(description: "Closure is not called")
-        expectation2.isInverted = true
-        sut.reloadClosure = {
-            expectation2.fulfill()
-        }
-        sut.updateInboxItems(hasScheduledMessage: true) // scheduled location not touched
-        waitForExpectations(timeout: 1, handler: nil)
-
-        let expectation3 = expectation(description: "Closure is called")
-        sut.reloadClosure = {
-            expectation3.fulfill()
-        }
-        sut.updateInboxItems(hasScheduledMessage: false) // Remove scheduled location
-        waitForExpectations(timeout: 1, handler: nil)
+        let expected = [
+            MenuLabel(location: .inbox),
+            MenuLabel(location: .draft),
+            MenuLabel(location: .sent),
+            MenuLabel(location: .starred),
+            MenuLabel(location: .archive),
+            MenuLabel(location: .spam),
+            MenuLabel(location: .trash),
+            MenuLabel(location: .allmail)
+        ].map { $0.location }
+        XCTAssertEqual(sut.inboxItems.map { $0.location }, expected)
     }
+
+    func testUpdateInboxItem_almostAllMailIsTrue_inboxItemHasAlmostAllMailLocation() {
+        testUser.mailSettings.update(key: .almostAllMail, to: true)
+        sut.updateInboxItems(hasScheduledMessage: false)
+
+        let expected = [
+            MenuLabel(location: .inbox),
+            MenuLabel(location: .draft),
+            MenuLabel(location: .sent),
+            MenuLabel(location: .starred),
+            MenuLabel(location: .archive),
+            MenuLabel(location: .spam),
+            MenuLabel(location: .trash),
+            MenuLabel(location: .almostAllMail)
+        ].map { $0.location }
+        XCTAssertEqual(sut.inboxItems.map { $0.location }, expected)
+    }
+
+    func testUpdateInboxItem_almostAllMailSettingUpdated_inboxItemWillBeUpdated() {
+        testUser.mailSettings.update(key: .almostAllMail, to: false)
+        sut.userDataInit()
+
+        let expected = [
+            MenuLabel(location: .inbox),
+            MenuLabel(location: .draft),
+            MenuLabel(location: .sent),
+            MenuLabel(location: .starred),
+            MenuLabel(location: .archive),
+            MenuLabel(location: .spam),
+            MenuLabel(location: .trash),
+            MenuLabel(location: .allmail)
+        ].map { $0.location }
+        XCTAssertEqual(sut.inboxItems.map { $0.location }, expected)
+
+        var newSettings = testUser.mailSettings
+        newSettings.update(key: .almostAllMail, to: true)
+        testUser.mailSettings = newSettings
+
+        wait(self.sut.inboxItems.contains(where: { $0.location == .almostAllMail }))
+    }
+
 
     func testGetIconColor_fromLabelWithoutCustomIconColor_getDefaultColor() {
         let label = MenuLabel(id: "",
@@ -292,7 +317,6 @@ class MenuViewModelTests: XCTestCase {
         XCTAssertEqual(sut.getIconColor(of: label), ColorProvider.SidebarIconWeak)
     }
 
-    @available(iOS 13.0, *)
     func testGetIconColor_fromLabelWithoutCustomIconColor_withLabelSelected_getSelectedDefaultColor() {
         let label = MenuLabel(id: "",
                               name: "",
@@ -323,7 +347,6 @@ class MenuViewModelTests: XCTestCase {
         XCTAssertEqual(sut.getIconColor(of: label), UIColor(hexColorCode: color))
     }
 
-    @available(iOS 13.0, *)
     func testGetIconColor_fromLabelWithCustomIconColor_withLabelSelected_getCustomColor() {
         let color = "#303239"
         let label = MenuLabel(id: "",
@@ -465,4 +488,59 @@ class MenuViewModelTests: XCTestCase {
 
         XCTAssertEqual(sut.getIconColor(of: folder), ColorProvider.SidebarIconWeak)
     }
+
+    func testGo_selectSameLocation_shouldNotCallGoFunctionOfCoordinator() {
+        sut.activateUser(id: testUser.userID)
+        // select inbox location
+        sut.highlight(label: .init(location: .inbox))
+
+        sut.go(to: .init(location: .inbox))
+
+        XCTAssertTrue(coordinatorMock.closeMenuStub.wasCalledExactlyOnce)
+        XCTAssertTrue(coordinatorMock.goStub.wasNotCalled)
+    }
+
+    func testGo_selectDifferentLocation_shouldCallGoFunctionOfCoordinator() throws {
+        // select inbox location
+        sut.highlight(label: .init(location: .inbox))
+
+        sut.go(to: .init(location: .archive))
+
+        XCTAssertTrue(coordinatorMock.closeMenuStub.wasNotCalled)
+        XCTAssertTrue(coordinatorMock.goStub.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(
+            coordinatorMock.goStub.lastArguments?.a1
+        )
+        XCTAssertEqual(argument.location, .archive)
+    }
+
+    func testGo_currentUserIDIsDifferentFromCurrentUser_shouldCallGoFunctionOfCoordinator() throws {
+        let userID = UserID(String.randomString(20))
+        // set currentUserID
+        sut.activateUser(id: userID)
+
+        sut.go(to: .init(location: .archive))
+
+        XCTAssertTrue(coordinatorMock.goStub.wasCalledExactlyOnce)
+        let argument = try XCTUnwrap(
+            coordinatorMock.goStub.lastArguments?.a1
+        )
+        XCTAssertEqual(argument.location, .archive)
+    }
+}
+
+class TestViewController: UIViewController, MenuUIProtocol {
+    func update(email: String) {}
+
+    func update(displayName: String) {}
+
+    func update(avatar: String) {}
+
+    func showToast(message: String) {}
+
+    func updateMenu(section: Int?) {}
+
+    func update(rows: [IndexPath], insertRows: [IndexPath], deleteRows: [IndexPath]) {}
+
+    func navigateTo(label: ProtonMail.MenuLabel) {}
 }

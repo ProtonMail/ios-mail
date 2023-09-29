@@ -1,4 +1,4 @@
-import OpenPGP
+import VCard
 
 extension PMNIBirthday {
 

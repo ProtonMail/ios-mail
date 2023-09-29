@@ -27,12 +27,12 @@ typealias LoadingProgress = () -> Void
 
 class ContactDetailsViewModel: NSObject {
     var user: UserManager
-    let coreDataService: CoreDataService
+    let coreDataService: CoreDataContextProviderProtocol
     private(set) var contact: ContactEntity
 
     var reloadView: (() -> Void)?
     
-    init(user: UserManager, coreDataService: CoreDataService, contact: ContactEntity) {
+    init(user: UserManager, coreDataService: CoreDataContextProviderProtocol, contact: ContactEntity) {
         self.user = user
         self.coreDataService = coreDataService
         self.contact = contact

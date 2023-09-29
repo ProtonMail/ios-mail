@@ -23,12 +23,13 @@ typedef void (^SentrySwizzleSendActionCallback)(
 - (void)swizzleSendAction:(SentrySwizzleSendActionCallback)callback forKey:(NSString *)key;
 
 - (void)removeSwizzleSendActionForKey:(NSString *)key;
-#endif
 
 /**
  * For testing purposes.
  */
 - (void)removeAllCallbacks;
+
+#endif
 
 @end
 

@@ -91,11 +91,9 @@ final class SearchViewModel: NSObject {
     }
 
     private var dbContents: [LocalObjectsIndexRow] = []
-    private var currentPage = 0
     private var query = ""
     private let sharedReplacingEmailsMap: [String: EmailEntity]
 
-    var selectedMoveToFolder: MenuLabel?
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
     var labelID: LabelID { Message.Location.allmail.labelID }
     var viewMode: ViewMode { self.user.getCurrentViewMode() }
@@ -103,23 +101,20 @@ final class SearchViewModel: NSObject {
         self.messages.filter { selectedIDs.contains($0.messageID.rawValue) }
     }
 
-    private let internetStatusProvider: InternetConnectionStatusProvider
     private var currentFetchedSearchResultPage: UInt = 0
     /// use this flag to stop the search query being triggered by `loadMoreDataIfNeeded`.
     private(set) var searchIsDone = false
-    private let composeViewModelFactory: ComposeViewModelDependenciesFactory
+    private let composerFactory: ComposerDependenciesFactory
 
     init(
         serviceFactory: ServiceFactory,
         user: UserManager,
         coreDataContextProvider: CoreDataContextProviderProtocol,
-        internetStatusProvider: InternetConnectionStatusProvider,
         dependencies: Dependencies
     ) {
-        self.composeViewModelFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
+        self.composerFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
         self.user = user
         self.coreDataContextProvider = coreDataContextProvider
-        self.internetStatusProvider = internetStatusProvider
         self.dependencies = dependencies
         self.sharedReplacingEmailsMap = user.contactService.allAccountEmails()
             .reduce(into: [:]) { partialResult, email in
@@ -216,7 +211,7 @@ extension SearchViewModel: SearchVMProtocol {
             action: .openDraft,
             msgService: user.messageService,
             user: user,
-            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
+            dependencies: composerFactory.makeViewModelDependencies(user: user)
         )
     }
 
@@ -231,7 +226,7 @@ extension SearchViewModel: SearchVMProtocol {
             msgService: user.messageService,
             user: user,
             isEditingScheduleMsg: isEditingScheduleMsg,
-            dependencies: composeViewModelFactory.makeViewModelDependencies(user: user)
+            dependencies: composerFactory.makeViewModelDependencies(user: user)
         )
     }
 
@@ -414,7 +409,7 @@ extension SearchViewModel: SearchVMProtocol {
                     case .failure:
                         completion(nil)
                     }
-            }
+                }
     }
 }
 
@@ -422,16 +417,12 @@ extension SearchViewModel: SearchVMProtocol {
 
 // TODO: This is quite overlap what we did in MailboxVC, try to share the logic
 extension SearchViewModel: MoveToActionSheetProtocol {
-    func handleMoveToAction(messages: [MessageEntity], isFromSwipeAction: Bool) {
-        guard let destination = selectedMoveToFolder else { return }
-        messageService.move(messages: messages, to: destination.location.labelID, queue: true)
-        selectedMoveToFolder = nil
+    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, isFromSwipeAction: Bool, completion: (() -> Void)?) {
+        // search view doesn't support conversation mode
     }
 
-    func handleMoveToAction(conversations: [ConversationEntity],
-                            isFromSwipeAction: Bool,
-                            completion: (() -> Void)? = nil) {
-        // search view doesn't support conversation mode
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool) {
+        messageService.move(messages: messages, to: folder.location.labelID, queue: true)
     }
 }
 
@@ -473,7 +464,7 @@ extension SearchViewModel: LabelAsActionSheetProtocol {
 
     func handleLabelAsAction(conversations: [ConversationEntity],
                              shouldArchive: Bool,
-                             currentOptionsStatus: [MenuLabel: PMActionSheetPlainItem.MarkType],
+                             currentOptionsStatus: [MenuLabel: PMActionSheetItem.MarkType],
                              completion: (() -> Void)?) {
         // search view doesn't support conversation mode
         fatalError("not implemented")
@@ -668,5 +659,6 @@ extension SearchViewModel {
         let fetchMessageDetail: FetchMessageDetailUseCase
         let fetchSenderImage: FetchSenderImageUseCase
         let messageSearch: SearchUseCase
+        let userIntroductionProgressProvider: UserIntroductionProgressProvider
     }
 }

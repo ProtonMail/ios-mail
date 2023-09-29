@@ -38,7 +38,7 @@ private enum EmbeddedDownloadStatus {
     case none, downloading, finish
 }
 
-// swiftlint:disable type_body_length
+// swiftlint:disable:next type_body_length
 final class MessageInfoProvider {
     private(set) var message: MessageEntity {
         willSet {
@@ -58,6 +58,7 @@ final class MessageInfoProvider {
                 prepareDisplayBody()
                 checkSenderPGP()
             }
+            delegate?.updateAttachments()
         }
     }
 
@@ -72,7 +73,7 @@ final class MessageInfoProvider {
     }
 
     var imageProxyEnabled: Bool {
-        UserInfo.isImageProxyAvailable && user.userInfo.imageProxy.contains(.imageProxy) && !message.isSent
+        user.userInfo.imageProxy.contains(.imageProxy) && !message.isSent
     }
 
     private let contactService: ContactDataService
@@ -91,6 +92,7 @@ final class MessageInfoProvider {
         let remoteContentAllowed = remoteContentPolicy == .allowed
         return messageNotSentByUs && remoteContentAllowed && imageProxyEnabled
     }
+    private let dateFormatter: PMDateFormatter
 
     init(
         message: MessageEntity,
@@ -100,7 +102,7 @@ final class MessageInfoProvider {
         labelID: LabelID,
         dependencies: Dependencies,
         highlightedKeywords: [String],
-        shouldOpenHistory: Bool = false
+        dateFormatter: PMDateFormatter = .shared
     ) {
         self.message = message
         let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
@@ -112,9 +114,7 @@ final class MessageInfoProvider {
         self.messageDecrypter = messageDecrypter ?? user.messageService.messageDecrypter
 
         // If the message is sent by us, we do not use the image proxy to load the content.
-        let imageProxyEnabled = UserInfo.isImageProxyAvailable &&
-            user.userInfo.imageProxy.contains(.imageProxy) &&
-            !message.isSent
+        let imageProxyEnabled = user.userInfo.imageProxy.contains(.imageProxy) && !message.isSent
         let allowedPolicy: WebContents.RemoteContentPolicy = !imageProxyEnabled ? .allowedAll : .allowed
         self.remoteContentPolicy = user.userInfo.isAutoLoadRemoteContentEnabled ? allowedPolicy : .disallowed
 
@@ -124,10 +124,7 @@ final class MessageInfoProvider {
         self.labelID = labelID
         self.dependencies = dependencies
         self.highlightedKeywords = highlightedKeywords
-
-        if shouldOpenHistory {
-            displayMode = .expanded
-        }
+        self.dateFormatter = dateFormatter
 
         if message.isPlainText {
             self.currentMessageRenderStyle = .dark
@@ -137,6 +134,7 @@ final class MessageInfoProvider {
     }
 
     func initialize() {
+        dependencies.imageProxy.set(delegate: self)
         self.prepareDisplayBody()
         self.checkSenderPGP()
     }
@@ -185,10 +183,6 @@ final class MessageInfoProvider {
             return .empty
         }
     }
-
-    private lazy var dateFormatter: PMDateFormatter = {
-        return PMDateFormatter.shared
-    }()
 
     lazy var date: String? = {
         guard let date = message.time else { return nil }
@@ -338,8 +332,7 @@ final class MessageInfoProvider {
     }
 
     var shouldDisplayRenderModeOptions: Bool {
-        if #available(iOS 12.0, *) {
-            if userCachedStatus.darkModeStatus == .forceOff {
+            if dependencies.darkModeCache.darkModeStatus == .forceOff {
                 return false
             }
             let keywords = ["color-scheme", "supported-color-schemes", #"color-scheme:\s?\S{0,}\s?dark"#]
@@ -348,9 +341,6 @@ final class MessageInfoProvider {
             } else {
                 return true
             }
-        } else {
-            return false
-        }
     }
 
     private let dispatchQueue = DispatchQueue(
@@ -632,7 +622,7 @@ extension MessageInfoProvider {
             contentLoadingType = .none
         }
 
-        let css = bodyParts?.darkModeCSS()
+        let css = bodyParts?.darkModeCSS(darkModeCache: dependencies.darkModeCache)
         contents = WebContents(
             body: body.keywordHighlighting.usingCSS(keywords: highlightedKeywords),
             remoteContentMode: remoteContentPolicy,
@@ -772,5 +762,6 @@ extension MessageInfoProvider {
         let imageProxy: ImageProxy
         let fetchAttachment: FetchAttachmentUseCase
         let fetchSenderImage: FetchSenderImageUseCase
+        let darkModeCache: DarkModeCacheProtocol
     }
 }

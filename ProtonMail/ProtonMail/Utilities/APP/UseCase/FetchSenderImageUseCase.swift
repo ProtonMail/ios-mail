@@ -19,7 +19,7 @@ import Foundation
 import ProtonCore_DataModel
 import UIKit
 
-typealias FetchSenderImageUseCase = NewUseCase<UIImage?, FetchSenderImage.Params>
+typealias FetchSenderImageUseCase = UseCase<UIImage?, FetchSenderImage.Params>
 
 final class FetchSenderImage: FetchSenderImageUseCase {
     private let dependencies: Dependencies
@@ -29,9 +29,11 @@ final class FetchSenderImage: FetchSenderImageUseCase {
     }
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
-        guard dependencies.localFeatureFlag &&
-                dependencies.senderImageStatusProvider.isSenderImageEnabled(userID: params.userID) &&
-                !dependencies.mailSettings.hideSenderImages else {
+        guard
+            dependencies.localFeatureFlag,
+            dependencies.featureFlagCache.isFeatureFlag(.senderImage, enabledForUserWithID: params.userID),
+            !dependencies.mailSettings.hideSenderImages
+        else {
             callback(.failure(FetchSenderImageError.featureDisabled))
             return
         }
@@ -44,7 +46,17 @@ final class FetchSenderImage: FetchSenderImageUseCase {
             completion: { result in
                 switch result {
                 case .success(let imageData):
-                    callback(.success(UIImage(data: imageData)))
+                    if let image = UIImage(data: imageData) {
+                        if #available(iOS 15.0, *) {
+                            image.prepareForDisplay(completionHandler: { preparedImage in
+                                callback(.success(preparedImage))
+                            })
+                        } else {
+                            callback(.success(image))
+                        }
+                    } else {
+                        callback(.success(nil))
+                    }
                 case .failure(let error):
                     callback(.failure(error))
                 }
@@ -64,9 +76,19 @@ extension FetchSenderImage {
     }
 
     struct Dependencies {
+        let featureFlagCache: FeatureFlagCache
         let senderImageService: SenderImageService
-        let senderImageStatusProvider: SenderImageStatusProvider
         let mailSettings: MailSettings
         let localFeatureFlag: Bool = UserInfo.isSenderImageEnabled
+
+        init(
+            featureFlagCache: FeatureFlagCache,
+            senderImageService: SenderImageService,
+            mailSettings: MailSettings
+        ) {
+            self.featureFlagCache = featureFlagCache
+            self.senderImageService = senderImageService
+            self.mailSettings = mailSettings
+        }
     }
 }

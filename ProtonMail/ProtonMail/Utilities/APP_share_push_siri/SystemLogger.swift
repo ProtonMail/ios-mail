@@ -21,6 +21,7 @@ import ProtonCore_Log
 final class SystemLogger {
     private static let shared = SystemLogger()
     private(set) static var isLoggingEnabled: Bool = true
+    private let serialQueue = DispatchQueue(label: "ch.protonmail.protonmail.SystemLogger")
 
     private var loggers = [String: Any]()
     private var bundleId: String {
@@ -56,10 +57,14 @@ final class SystemLogger {
     @available(iOS 15, *)
     private func osLog(for category: Category?) -> Logger {
         let category = "[Proton] \(category?.rawValue ?? "")"
-        if !loggers.keys.contains(category) {
-            loggers[category] = Logger(subsystem: bundleId, category: category)
+        var logger: Logger?
+        serialQueue.sync {
+            if !loggers.keys.contains(category) {
+                loggers[category] = Logger(subsystem: bundleId, category: category)
+            }
+            logger = loggers[category] as? Logger
         }
-        return loggers[category] as? Logger ?? Logger()
+        return logger ?? Logger()
     }
 
     // MARK: Public methods
@@ -95,6 +100,25 @@ final class SystemLogger {
         log(message: message, category: category, isError: isError, isDebug: false, caller: caller)
     }
 
+    /// Logs an error into the unified logging system and the log file
+    ///
+    /// The unified logging system only works for iOS 15+
+    ///
+    /// - Parameters:
+    ///   - error: the error to log.
+    ///   - category: describes the scope for this message and helps filtering the system logs.
+    static func log(
+        error: Error,
+        category: Category? = nil,
+        file: StaticString = #file,
+        function: StaticString = #function,
+        line: Int = #line,
+        column: Int = #column
+    ) {
+        let caller = Caller(file: file, function: function, line: line, column: column)
+        log(message: "\(error)", category: category, isError: true, isDebug: false, caller: caller)
+    }
+
     /// Use this function instead of `log` to indicate that calls to this method can be removed from the codebase
     /// at some point in the near future. The reason to have this function is to have a clean log and avoid clutering it
     /// with useless entries. If you want to add meaningful permanent logs, use the `log` function instead.
@@ -120,7 +144,9 @@ extension SystemLogger {
 
     enum Category: String {
         case appLifeCycle = "AppLifeCycle"
+        case appLock = "AppLock"
         case assertionFailure = "AssertionFailure"
+        case connectionStatus = "ConnectionStatus"
         case sendMessage = "SendMessage"
         case pushNotification = "PushNotification"
         case encryption = "Encryption"
@@ -129,6 +155,7 @@ extension SystemLogger {
         case queue = "Queue"
         case encryptedSearch = "EncryptedSearch"
         case blockSender = "BlockSender"
+        case backgroundTask = "BackgroundTask"
     }
 
     struct Caller {

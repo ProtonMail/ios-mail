@@ -1,428 +1,390 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>%1$d conversation moved to %2$@</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%1$d conversation moved to %2$@</string>
-			<key>other</key>
-			<string>%1$d conversations moved to %2$@</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@</string>
-	</dict>
-	<key>%1$d message moved to %2$@</key>
-	<dict>
-		<key>MSG</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%1$d message moved to %2$@</string>
-			<key>other</key>
-			<string>%1$d messages moved to %2$@</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MSG@</string>
-	</dict>
-	<key>%d Minutes</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@minutes@</string>
-		<key>minutes</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d λεπτό</string>
-			<key>other</key>
-			<string>%d λεπτά</string>
-		</dict>
-	</dict>
-	<key>%d Selected</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@selected@</string>
-		<key>selected</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d Επιλεγμένο</string>
-			<key>other</key>
-			<string>%d Επιλεγμένα</string>
-		</dict>
-	</dict>
-	<key>%d attachment</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@attachment@</string>
-		<key>attachment</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d συνημμένο</string>
-			<key>other</key>
-			<string>%d συνημμένα</string>
-		</dict>
-	</dict>
-	<key>%d attempt remaining</key>
-	<dict>
-		<key>ATTEMPT</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>απομένει %d προσπάθεια</string>
-			<key>other</key>
-			<string>απομένουν %d προσπάθειες</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ATTEMPT@</string>
-	</dict>
-	<key>%d attempt remaining until secure data wipe!</key>
-	<dict>
-		<key>ATTEMPT</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>απομένει %d προσπάθεια μέχρι την ασφαλή διαγραφή δεδομένων!</string>
-			<key>other</key>
-			<string>απομένουν %d προσπάθειες μέχρι την ασφαλή διαγραφή δεδομένων!</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@ATTEMPT@</string>
-	</dict>
-	<key>%d conversation labeled</key>
-	<dict>
-		<key>Conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d συνομιλία με ετικέτα</string>
-			<key>other</key>
-			<string>%d συνομιλίες με ετικέτα</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Conversation@</string>
-	</dict>
-	<key>%d day</key>
-	<dict>
-		<key>DAY</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d ημέρα</string>
-			<key>other</key>
-			<string>%d ημέρες</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@DAY@</string>
-	</dict>
-	<key>%d email trackers blocked</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@</string>
-		<key>trackers</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>η εφαρμογή παρακολούθησης email %d αποκλείστηκε</string>
-			<key>other</key>
-			<string>%d εφαρμογές παρακολούθησης email αποκλείστηκαν</string>
-		</dict>
-	</dict>
-	<key>%d email trackers found</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@</string>
-		<key>trackers</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d εφαρμογή παρακολούθησης email βρέθηκε</string>
-			<key>other</key>
-			<string>%d εφαρμογές παρακολούθησης email βρέθηκαν</string>
-			<key>zero</key>
-			<string>No email trackers found</string>
-		</dict>
-	</dict>
-	<key>%d hour</key>
-	<dict>
-		<key>HOUR</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d ώρα</string>
-			<key>other</key>
-			<string>%d ώρες</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@HOUR@</string>
-	</dict>
-	<key>%d member</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@member@</string>
-		<key>member</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d μέλος</string>
-			<key>other</key>
-			<string>%d μέλη</string>
-		</dict>
-	</dict>
-	<key>%d message labeled</key>
-	<dict>
-		<key>Message</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d μήνυμα με ετικέτα</string>
-			<key>other</key>
-			<string>%d μηνύματα με ετικέτα</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@Message@</string>
-	</dict>
-	<key>%d message moved to Drafts</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@</string>
-		<key>alertMessage</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d μήνυμα μετακινήθηκε στα Πρόχειρα</string>
-			<key>other</key>
-			<string>%d μηνύματα μετακινήθηκαν στα Πρόχειρα</string>
-		</dict>
-	</dict>
-	<key>%d min</key>
-	<dict>
-		<key>MINUTE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d λεπτό</string>
-			<key>other</key>
-			<string>%d λεπτά</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
-	</dict>
-	<key>%d seconds</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@second@</string>
-		<key>second</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%d δευτερόλεπτο</string>
-			<key>other</key>
-			<string>%d δευτερόλεπτα</string>
-		</dict>
-	</dict>
-	<key>%u conversation</key>
-	<dict>
-		<key>CONVERSATION</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%u συνομιλία</string>
-			<key>other</key>
-			<string>%u συνομιλίες</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@CONVERSATION@</string>
-	</dict>
-	<key>%u message</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@message@</string>
-		<key>message</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%u μήνυμα</string>
-			<key>other</key>
-			<string>%u μηνύματα</string>
-		</dict>
-	</dict>
-	<key>+%d others</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@OTHER@</string>
-		<key>OTHER</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>%d άλλος/η</string>
-			<key>other</key>
-			<string>%d άλλοι</string>
-		</dict>
-	</dict>
-	<key>Are you sure you want to permanently delete %d conversation?</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@conversation@</string>
-		<key>conversation</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d συνομιλία;</string>
-			<key>other</key>
-			<string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d συνομιλίες;</string>
-		</dict>
-	</dict>
-	<key>Are you sure you want to permanently delete %d message?</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@message@</string>
-		<key>message</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d μήνυμα;</string>
-			<key>other</key>
-			<string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d μηνύματα;</string>
-		</dict>
-	</dict>
-	<key>In %d minutes</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@minute@</string>
-		<key>minute</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Σε %d λεπτό</string>
-			<key>other</key>
-			<string>Σε %d λεπτά</string>
-			<key>zero</key>
-			<string>In %d minute</string>
-		</dict>
-	</dict>
-	<key>Proton found %d trackers on this message.</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@trackers@</string>
-		<key>trackers</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Το Proton βρήκε και απέκλεισε %d εφαρμογή παρακολούθησης σε αυτό το μήνυμα.</string>
-			<key>other</key>
-			<string>Το Proton βρήκε και απέκλεισε %d εφαρμογές παρακολούθησης σε αυτό το μήνυμα.</string>
-			<key>zero</key>
-			<string>Proton did not find any trackers on this message.</string>
-		</dict>
-	</dict>
-	<key>These %d messages will move to Drafts and have their schedule removed.</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@alertMessage@</string>
-		<key>alertMessage</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>Αυτό το %d μήνυμα θα μετακινηθεί στα Πρόχειρα και ο προγραμματισμός του θα αφαιρεθεί.</string>
-			<key>other</key>
-			<string>Αυτά τα %d μηνύματα θα μετακινηθούν στα Πρόχειρα και ο προγραμματισμός τους θα αφαιρεθεί.</string>
-		</dict>
-	</dict>
-	<key>Updated %d min ago</key>
-	<dict>
-		<key>MINUTE</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>d</string>
-			<key>one</key>
-			<string>Ενημερώθηκε %d λεπτό πριν</string>
-			<key>other</key>
-			<string>Ενημερώθηκε %d λεπτά πριν</string>
-		</dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@MINUTE@</string>
-	</dict>
-</dict>
+  <dict>
+    <key>%d email trackers blocked</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@trackers@</string>
+      <key>trackers</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>η εφαρμογή παρακολούθησης email %d αποκλείστηκε</string>
+        <key>other</key>
+        <string>%d εφαρμογές παρακολούθησης email αποκλείστηκαν</string>
+      </dict>
+    </dict>
+    <key>%d email trackers found</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@trackers@</string>
+      <key>trackers</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d εφαρμογή παρακολούθησης email βρέθηκε</string>
+        <key>other</key>
+        <string>%d εφαρμογές παρακολούθησης email βρέθηκαν</string>
+      </dict>
+    </dict>
+    <key>Proton found %d trackers on this message.</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@trackers@</string>
+      <key>trackers</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Το Proton βρήκε και απέκλεισε %d εφαρμογή παρακολούθησης σε αυτό το μήνυμα.</string>
+        <key>other</key>
+        <string>Το Proton βρήκε και απέκλεισε %d εφαρμογές παρακολούθησης σε αυτό το μήνυμα.</string>
+      </dict>
+    </dict>
+    <key>+%d others</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@OTHER@</string>
+      <key>OTHER</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d άλλος/η</string>
+        <key>other</key>
+        <string>%d άλλοι</string>
+      </dict>
+    </dict>
+    <key>Updated %d min ago</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@MINUTE@</string>
+      <key>MINUTE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Ενημερώθηκε %d λεπτό πριν</string>
+        <key>other</key>
+        <string>Ενημερώθηκε %d λεπτά πριν</string>
+      </dict>
+    </dict>
+    <key>%u message</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@message@</string>
+      <key>message</key>
+      <dict>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>one</key>
+        <string>%u μήνυμα</string>
+        <key>other</key>
+        <string>%u μηνύματα</string>
+      </dict>
+    </dict>
+    <key>%u conversation</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@CONVERSATION@</string>
+      <key>CONVERSATION</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%u συνομιλία</string>
+        <key>other</key>
+        <string>%u συνομιλίες</string>
+      </dict>
+    </dict>
+    <key>%d attempt remaining</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@ATTEMPT@</string>
+      <key>ATTEMPT</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>απομένει %d προσπάθεια</string>
+        <key>other</key>
+        <string>απομένουν %d προσπάθειες</string>
+      </dict>
+    </dict>
+    <key>%d attempt remaining until secure data wipe!</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@ATTEMPT@</string>
+      <key>ATTEMPT</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>απομένει %d προσπάθεια μέχρι την ασφαλή διαγραφή δεδομένων!</string>
+        <key>other</key>
+        <string>απομένουν %d προσπάθειες μέχρι την ασφαλή διαγραφή δεδομένων!</string>
+      </dict>
+    </dict>
+    <key>%1$d message moved to %2$@</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@MSG@</string>
+      <key>MSG</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%1$d μήνυμα μετακινήθηκε στο %2$@</string>
+        <key>other</key>
+        <string>%1$d μηνύματα μετακινήθηκαν στο %2$@</string>
+      </dict>
+    </dict>
+    <key>%1$d conversation moved to %2$@</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@Conversation@</string>
+      <key>Conversation</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%1$d συνομιλία μετακινήθηκε στο %2$@</string>
+        <key>other</key>
+        <string>%1$d συνομιλίες μετακινήθηκαν στο %2$@</string>
+      </dict>
+    </dict>
+    <key>%d message labeled</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@Message@</string>
+      <key>Message</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d μήνυμα με ετικέτα</string>
+        <key>other</key>
+        <string>%d μηνύματα με ετικέτα</string>
+      </dict>
+    </dict>
+    <key>%d conversation labeled</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@Conversation@</string>
+      <key>Conversation</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d συνομιλία με ετικέτα</string>
+        <key>other</key>
+        <string>%d συνομιλίες με ετικέτα</string>
+      </dict>
+    </dict>
+    <key>Are you sure you want to permanently delete %d message?</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@message@</string>
+      <key>message</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d μήνυμα;</string>
+        <key>other</key>
+        <string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d μηνύματα;</string>
+      </dict>
+    </dict>
+    <key>Are you sure you want to permanently delete %d conversation?</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@conversation@</string>
+      <key>conversation</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d συνομιλία;</string>
+        <key>other</key>
+        <string>Είστε βέβαιοι ότι θέλετε να διαγράψετε οριστικά %d συνομιλίες;</string>
+      </dict>
+    </dict>
+    <key>%d member</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@member@</string>
+      <key>member</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d μέλος</string>
+        <key>other</key>
+        <string>%d μέλη</string>
+      </dict>
+    </dict>
+    <key>In %d minutes</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@minute@</string>
+      <key>minute</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Σε %d λεπτό</string>
+        <key>other</key>
+        <string>Σε %d λεπτά</string>
+      </dict>
+    </dict>
+    <key>These %d messages will move to Drafts and have their schedule removed.</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@alertMessage@</string>
+      <key>alertMessage</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Αυτό το %d μήνυμα θα μετακινηθεί στα Πρόχειρα και ο προγραμματισμός του θα αφαιρεθεί.</string>
+        <key>other</key>
+        <string>Αυτά τα %d μηνύματα θα μετακινηθούν στα Πρόχειρα και ο προγραμματισμός τους θα αφαιρεθεί.</string>
+      </dict>
+    </dict>
+    <key>%d message moved to Drafts</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@alertMessage@</string>
+      <key>alertMessage</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d μήνυμα μετακινήθηκε στα Πρόχειρα</string>
+        <key>other</key>
+        <string>%d μηνύματα μετακινήθηκαν στα Πρόχειρα</string>
+      </dict>
+    </dict>
+    <key>%d seconds</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@second@</string>
+      <key>second</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d δευτερόλεπτο</string>
+        <key>other</key>
+        <string>%d δευτερόλεπτα</string>
+      </dict>
+    </dict>
+    <key>%d Selected</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@selected@</string>
+      <key>selected</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d Επιλεγμένο</string>
+        <key>other</key>
+        <string>%d Επιλεγμένα</string>
+      </dict>
+    </dict>
+    <key>%d attachment</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@attachment@</string>
+      <key>attachment</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d συνημμένο</string>
+        <key>other</key>
+        <string>%d συνημμένα</string>
+      </dict>
+    </dict>
+    <key>%d Minutes</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@minutes@</string>
+      <key>minutes</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>%d λεπτό</string>
+        <key>other</key>
+        <string>%d λεπτά</string>
+      </dict>
+    </dict>
+    <key>Are you sure you want to delete these %d messages permanently?</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@message@</string>
+      <key>message</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>u</string>
+        <key>one</key>
+        <string>Θέλετε σίγουρα να διαγράψετε οριστικά αυτό το μήνυμα;</string>
+        <key>other</key>
+        <string>Θέλετε σίγουρα να διαγράψετε οριστικά αυτά τα %d μηνύματα;</string>
+      </dict>
+    </dict>
+  </dict>
 </plist>

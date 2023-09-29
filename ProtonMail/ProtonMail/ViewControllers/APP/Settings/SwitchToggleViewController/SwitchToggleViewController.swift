@@ -25,6 +25,11 @@ final class SwitchToggleViewController: UITableViewController, AccessibleView {
 
     private let viewModel: SwitchToggleVMProtocol
 
+    enum SwitchToggleContinuation {
+        case shouldContinue
+        case shouldInterrupt(restoreValue: Bool)
+    }
+
     init(viewModel: SwitchToggleVMProtocol) {
         self.viewModel = viewModel
         super.init(style: .grouped)
@@ -58,12 +63,42 @@ final class SwitchToggleViewController: UITableViewController, AccessibleView {
             fatalError("Should have data")
         }
         cell.configCell(item.title, isOn: item.status) { [weak self] newStatus, feedback in
-            self?.showLoading(shouldShow: true)
-            self?.viewModel.input.toggle(for: indexPath, to: newStatus) { error in
-                self?.showLoading(shouldShow: false)
-                error?.alertToast()
-                let isSuccess = error == nil
-                feedback(isSuccess)
+            let continuation: ((SwitchToggleContinuation) -> Void) = { continuation in
+                switch continuation {
+                case .shouldContinue:
+                    self?.showLoading(shouldShow: true)
+                    self?.viewModel.input.toggle(for: indexPath, to: newStatus) { error in
+                        self?.showLoading(shouldShow: false)
+                        error?.alertToast()
+                        let isSuccess = error == nil
+                        feedback(isSuccess)
+                    }
+                case .shouldInterrupt(let restoreValue):
+                    cell.switchView.setOn(restoreValue, animated: true)
+                    return
+                }
+            }
+
+            let confirmation: SwitchToggleVMActionConfirmation? = newStatus ? self?.viewModel.confirmationOnEnable :
+            self?.viewModel.confirmationOnDisable
+            if let confirmation {
+                let alert = UIAlertController(
+                    title: confirmation.title,
+                    message: confirmation.message,
+                    preferredStyle: .alert
+                )
+                let buttonTitle = confirmation.confirmationButton
+                let cancelTitle = LocalString._general_cancel_button
+                let confirm = UIAlertAction(title: buttonTitle, style: .default) { _ in
+                    continuation(.shouldContinue)
+                }
+                let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in
+                    continuation(.shouldInterrupt(restoreValue: !newStatus))
+                }
+                [confirm, cancel].forEach(alert.addAction)
+                self?.present(alert, animated: true, completion: nil)
+            } else {
+                continuation(.shouldContinue)
             }
         }
         return cell
@@ -181,11 +216,11 @@ extension SwitchToggleViewController {
     }
 
     private func showLoading(shouldShow: Bool) {
-        let view = UIApplication.shared.keyWindow ?? UIView()
         if shouldShow {
             MBProgressHUD.showAdded(to: view, animated: true)
+        } else {
+            MBProgressHUD.hide(for: view, animated: true)
         }
-        MBProgressHUD.hide(for: view, animated: true)
     }
 }
 

@@ -100,32 +100,26 @@ extension Date {
 
 // MARK: Count expiration time
 extension Date {
+    private static let expirationTimeFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.day, .hour, .minute]
+        formatter.maximumUnitCount = 1
+        formatter.unitsStyle = .full
+        return formatter
+    }()
 
-    static func getReferenceDate(processInfo: SystemUpTimeProtocol?) -> Date {
-        #if APP_EXTENSION
-            return Date.getReferenceDate(reachability: nil,
-                                         processInfo: processInfo)
-        #else
-            return Date.getReferenceDate(reachability: sharedInternetReachability,
-                                         processInfo: processInfo)
-        #endif
-    }
-
-    static func getReferenceDate(reachability: Reachability?,
+    static func getReferenceDate(connectionStatus: ConnectionStatus = InternetConnectionStatusProvider.shared.status,
                                  processInfo: SystemUpTimeProtocol?,
                                  deviceDate: Date = Date()) -> Date {
-        guard let reachability = reachability,
+        guard connectionStatus != .initialize,
               let processInfo = processInfo else {
-            // App extension doesn't have reachability
             return Date.getOfflineReferenceDate(processInfo: processInfo, deviceDate: deviceDate)
         }
 
-        let status = reachability.currentReachabilityStatus()
         let serverDate = Date(timeIntervalSince1970: processInfo.localServerTime)
-        switch status {
-        case .ReachableViaWWAN, .ReachableViaWiFi:
+        if connectionStatus.isConnected {
             return serverDate
-        default:
+        } else {
             // .NotReachable and other unknown cases
             return Date.getOfflineReferenceDate(processInfo: processInfo, deviceDate: deviceDate)
         }
@@ -146,24 +140,7 @@ extension Date {
     }
 
     func countExpirationTime(processInfo: SystemUpTimeProtocol?) -> String {
-        let distance: TimeInterval
         let unixTime = Date.getReferenceDate(processInfo: processInfo)
-        if #available(iOS 13.0, *) {
-            distance = unixTime.distance(to: self) + 60
-        } else {
-            distance = timeIntervalSinceReferenceDate - unixTime.timeIntervalSinceReferenceDate + 60
-        }
-
-        if distance > 86_400 {
-            let day = Int(distance / 86_400)
-            return String.localizedStringWithFormat(LocalString._day, day)
-        } else if distance > 3_600 {
-            let hour = Int(distance / 3_600)
-            return String.localizedStringWithFormat(LocalString._hour, hour)
-        } else {
-            let minute = Int(distance / 60)
-            return String.localizedStringWithFormat(LocalString._minute, minute)
-        }
+        return Self.expirationTimeFormatter.string(from: unixTime, to: self)!
     }
-
 }

@@ -22,28 +22,19 @@ import class ProtonCore_DataModel.UserInfo
 extension String {
     struct KeywordHighlightingStringUtils {
         private let originalString: String
-        private let isHighlightKeywordEnabled: Bool
 
         private let highlightColor: UIColor = {
-            let color: UIColor
-            if #available(iOS 13.0, *) {
                 let trait = UITraitCollection(userInterfaceStyle: .dark)
-                color = ColorProvider.NotificationWarning.resolvedColor(with: trait)
-            } else {
-                color = ColorProvider.NotificationWarning
-            }
-            return color
+            return ColorProvider.NotificationWarning.resolvedColor(with: trait)
         }()
 
         // swiftlint:disable:next strict_fileprivate
-        fileprivate init(originalString: String, isHighlightKeywordEnabled: Bool) {
+        fileprivate init(originalString: String) {
             self.originalString = originalString
-            self.isHighlightKeywordEnabled = isHighlightKeywordEnabled
         }
 
         func asAttributedString(keywords: [String]) -> NSMutableAttributedString {
             let stringToHighlight = NSMutableAttributedString(string: originalString)
-            guard isHighlightKeywordEnabled else { return stringToHighlight }
             let ranges = nonIntersectingRanges(of: keywords, in: originalString)
 
             for range in ranges {
@@ -56,7 +47,7 @@ extension String {
         }
 
         func usingCSS(keywords: [String]) -> String {
-            guard !keywords.isEmpty && isHighlightKeywordEnabled else {
+            guard !keywords.isEmpty, UserInfo.isBodySearchKeywordHighlightEnabled else {
                 return originalString
             }
 
@@ -165,10 +156,7 @@ extension String {
     }
 
     var keywordHighlighting: KeywordHighlightingStringUtils {
-        KeywordHighlightingStringUtils(
-            originalString: self,
-            isHighlightKeywordEnabled: UserInfo.isHighlightKeywordEnabled
-        )
+        KeywordHighlightingStringUtils(originalString: self)
     }
 }
 

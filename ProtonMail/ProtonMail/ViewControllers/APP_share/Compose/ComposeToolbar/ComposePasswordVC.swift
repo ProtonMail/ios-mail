@@ -60,9 +60,7 @@ final class ComposePasswordVC: UIViewController, AccessibleView {
         passwordVC.encryptionConfirmPassword = confirmPassword
         passwordVC.encryptionPasswordHint = hint
         passwordVC.delegate = delegate
-        if #available(iOS 13.0, *) {
             passwordVC.isModalInPresentation = true
-        }
         return passwordVC
     }
 
@@ -270,7 +268,7 @@ extension ComposePasswordVC {
 extension ComposePasswordVC: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         scrollView.contentInset.bottom = 0
-        scrollView.scrollIndicatorInsets.bottom = 0
+        scrollView.verticalScrollIndicatorInsets.bottom = 0
     }
 
     func keyboardWillShowNotification(_ notification: Notification) {
@@ -284,7 +282,7 @@ extension ComposePasswordVC: NSNotificationCenterKeyboardObserverProtocol {
             let keyboardOverlap = max((findEditingView()?.frame.maxY ?? 0.0) - endRect.origin.y, 0)
 
             scrollView.contentInset.bottom = endRect.height
-            scrollView.scrollIndicatorInsets.bottom = endRect.height
+            scrollView.verticalScrollIndicatorInsets.bottom = endRect.height
             if keyboardOverlap > 0 {
                 scrollView.setContentOffset(CGPoint(x: 0, y: keyboardOverlap), animated: true)
             }

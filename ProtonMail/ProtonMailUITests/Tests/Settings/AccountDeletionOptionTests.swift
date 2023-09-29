@@ -24,24 +24,24 @@ class AccountDeletionOptionTests: BaseTestCase {
     let accountDeletionRobot = AccountDeletionButtonRobot()
     
     func testDeleteAccountOptionExists() {
-        let free = users["free"]!
+        let freeUser = users["plus"]!
         loginRobot
-            .loginUser(free)
+            .loginUser(freeUser)
             .menuDrawer()
             .settings()
-            .selectAccount(free.user.email)
+            .selectAccount(freeUser.email)
         
         accountDeletionRobot
             .verify.accountDeletionButtonIsDisplayed(type: .staticText)
     }
     
     func testDeleteAccountCanBeClosed() {
-        let free = users["free"]!
+        let freeUser = users["plus"]!
         loginRobot
-            .loginUser(free)
+            .loginUser(freeUser)
             .menuDrawer()
             .settings()
-            .selectAccount(free.user.email)
+            .selectAccount(freeUser.email)
         
         accountDeletionRobot
             .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)

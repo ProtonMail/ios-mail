@@ -30,6 +30,7 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
     let name: String
     let kind: Kind?
     let body: String
+    let keyValues: [String: String]
 
     init(_ string: String) {
         let components = string.components(separatedBy: ":")
@@ -37,25 +38,24 @@ struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         self.body = Array(components[1...]).joined(separator: ":").trimmingCharacters(in: .whitespaces)
         self.kind = Kind(rawValue: self.name.lowercased())
         self.raw = string
-    }
 
-    var keyValues: [String: String] {
         let trimThese = CharacterSet(charactersIn: "\"").union(.whitespacesAndNewlines)
         let commaComponents = self.body.components(separatedBy: ",")
         let seimcolonComponents = self.body.components(separatedBy: ";")
-        let components = seimcolonComponents.count > 1 ? seimcolonComponents : commaComponents
-        var results: [String: String] = [:]
+        let kvComponents = seimcolonComponents.count > 1 ? seimcolonComponents : commaComponents
 
-        for component in components {
+        keyValues = kvComponents.reduce(into: [:], { results, component in
             let pieces = component.components(separatedBy: "=")
-            guard pieces.count >= 2 else { continue }
+            guard pieces.count >= 2 else { return }
             guard let key = pieces[0]
                 .trimmingCharacters(in: trimThese)
                 .components(separatedBy: .whitespaces)
-                .last else { continue }
-            results[key] = Array(pieces[1...]).joined(separator: "=").trimmingCharacters(in: trimThese)
-        }
-        return results
+                .last else { return }
+            results[key] = Array(pieces[1...])
+                .joined(separator: "=")
+                .trimmingCharacters(in: trimThese)
+                .removingBinaryEncoding
+        })
     }
 
     var description: String {
@@ -78,5 +78,87 @@ extension Array where Element == Header {
 
     subscript(_ kind: Header.Kind) -> Header? {
         self.first(where: { $0.kind == kind })
+    }
+}
+
+private extension String {
+    static let binaryEncodingRegex: NSRegularExpression = {
+        let pattern = #"""
+=\?
+(?<charset>[^?]*)
+\?
+(?<encoding>[BQ])
+\?
+(?<encodedText>[^?]*)
+\?=
+"""#
+        do {
+            return try NSRegularExpression(
+                pattern: pattern,
+                options: [.allowCommentsAndWhitespace, .caseInsensitive]
+            )
+        } catch {
+            fatalError("\(error)")
+        }
+    }()
+
+    var removingBinaryEncoding: Self {
+        var output = self
+        var startingIndex = output.startIndex
+
+        while true {
+            let nsRange =  NSRange(startingIndex..<output.endIndex, in: output)
+            
+            guard
+                let match = Self.binaryEncodingRegex.firstMatch(in: output, range: nsRange),
+                let rangeToReplace = Range(match.range, in: output)
+            else {
+                break
+            }
+
+            let charset = output[match.range(withName: "charset")]
+            let encoding = output[match.range(withName: "encoding")]
+            let encodedText = output[match.range(withName: "encodedText")]
+
+            let decodedText: String?
+
+            switch encoding.uppercased() {
+            case "B":
+                let stringEncoding = String.Encoding(ianaCharSetName: charset) ?? .utf8
+                if let data = Data(base64Encoded: encodedText) {
+                    decodedText = String(data: data, encoding: stringEncoding)
+                } else {
+                    decodedText = nil
+                }
+            case "Q":
+                decodedText = encodedText.replacingOccurrences(of: "=", with: "%").removingPercentEncoding
+            default:
+                decodedText = nil
+            }
+
+            if let decodedText {
+                output.replaceSubrange(rangeToReplace, with: decodedText)
+            } else if !ProcessInfo.isRunningUnitTests {
+                PMAssertionFailure("Decoding error - charset:\(charset), encoding:\(encoding)")
+            }
+
+            // this is to avoid infinite loops
+            startingIndex = output.index(after: rangeToReplace.lowerBound)
+        }
+
+        return output
+    }
+}
+
+private extension String.Encoding {
+    init?(ianaCharSetName: String) {
+        let cfStringEncoding = CFStringConvertIANACharSetNameToEncoding(ianaCharSetName as CFString)
+
+        guard cfStringEncoding != kCFStringEncodingInvalidId else {
+            return nil
+        }
+
+        let nsStringEncoding = CFStringConvertEncodingToNSStringEncoding(cfStringEncoding)
+        self.init(rawValue: nsStringEncoding)
     }
 }

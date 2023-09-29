@@ -1,5 +1,5 @@
 @testable import ProtonMail
-import OpenPGP
+import VCard
 import XCTest
 
 class PMNIBirthday_FormattedBirthdayTests: XCTestCase {

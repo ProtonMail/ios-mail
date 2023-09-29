@@ -8,7 +8,10 @@
 #import "SentrySpanProtocol.h"
 #import "SentryTracer.h"
 #import "SentryTransactionContext+Private.h"
-#import "SentryUIEventTracker.h"
+
+#if SENTRY_HAS_UIKIT
+#    import "SentryUIEventTracker.h"
+#endif // SENTRY_HAS_UIKIT
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,7 +25,7 @@ SentryPerformanceTracker () <SentryTracerDelegate>
 
 @implementation SentryPerformanceTracker
 
-+ (instancetype)shared
++ (SentryPerformanceTracker *)shared
 {
     static SentryPerformanceTracker *instance = nil;
     static dispatch_once_t onceToken;
@@ -39,16 +42,10 @@ SentryPerformanceTracker () <SentryTracerDelegate>
     return self;
 }
 
-- (SentrySpanId *)startSpanWithName:(NSString *)name operation:(NSString *)operation
-{
-    return [self startSpanWithName:name
-                        nameSource:kSentryTransactionNameSourceCustom
-                         operation:operation];
-}
-
 - (SentrySpanId *)startSpanWithName:(NSString *)name
                          nameSource:(SentryTransactionNameSource)source
                           operation:(NSString *)operation
+                             origin:(NSString *)origin
 {
     id<SentrySpan> activeSpan;
     @synchronized(self.activeSpanStack) {
@@ -58,34 +55,45 @@ SentryPerformanceTracker () <SentryTracerDelegate>
     __block id<SentrySpan> newSpan;
     if (activeSpan != nil) {
         newSpan = [activeSpan startChildWithOperation:operation description:name];
+        newSpan.origin = origin;
     } else {
-        SentryTransactionContext *context =
-            [[SentryTransactionContext alloc] initWithName:name
-                                                nameSource:source
-                                                 operation:operation];
+        SentryTransactionContext *context = [[SentryTransactionContext alloc] initWithName:name
+                                                                                nameSource:source
+                                                                                 operation:operation
+                                                                                    origin:origin];
 
         [SentrySDK.currentHub.scope useSpan:^(id<SentrySpan> span) {
-            BOOL bindToScope = true;
-            if (span != nil) {
-                if ([SentryUIEventTracker isUIEventOperation:span.context.operation]) {
+            BOOL bindToScope = NO;
+            if (span == nil) {
+                bindToScope = YES;
+            }
+#if SENTRY_HAS_UIKIT
+            else {
+                if ([SentryUIEventTracker isUIEventOperation:span.operation]) {
+                    SENTRY_LOG_DEBUG(
+                        @"Cancelling previous UI event span %@", span.spanId.sentrySpanIdString);
                     [span finishWithStatus:kSentrySpanStatusCancelled];
-                } else {
-                    bindToScope = false;
+                    bindToScope = YES;
                 }
             }
+#endif // SENTRY_HAS_UIKIT
 
-            newSpan = [SentrySDK.currentHub startTransactionWithContext:context
-                                                            bindToScope:bindToScope
-                                                        waitForChildren:YES
-                                                  customSamplingContext:@ {}];
+            SENTRY_LOG_DEBUG(@"Creating new transaction bound to scope: %d", bindToScope);
 
-            if ([newSpan isKindOfClass:[SentryTracer class]]) {
-                [(SentryTracer *)newSpan setDelegate:self];
-            }
+            newSpan = [SentrySDK.currentHub
+                startTransactionWithContext:context
+                                bindToScope:bindToScope
+                      customSamplingContext:@{}
+                              configuration:[SentryTracerConfiguration configurationWithBlock:^(
+                                                SentryTracerConfiguration *configuration) {
+                                  configuration.waitForChildren = YES;
+                              }]];
+
+            [(SentryTracer *)newSpan setDelegate:self];
         }];
     }
 
-    SentrySpanId *spanId = newSpan.context.spanId;
+    SentrySpanId *spanId = newSpan.spanId;
 
     if (spanId != nil) {
         @synchronized(self.spans) {
@@ -100,23 +108,17 @@ SentryPerformanceTracker () <SentryTracerDelegate>
 }
 
 - (void)measureSpanWithDescription:(NSString *)description
-                         operation:(NSString *)operation
-                           inBlock:(void (^)(void))block
-{
-    [self measureSpanWithDescription:description
-                          nameSource:kSentryTransactionNameSourceCustom
-                           operation:operation
-                             inBlock:block];
-}
-
-- (void)measureSpanWithDescription:(NSString *)description
                         nameSource:(SentryTransactionNameSource)source
                          operation:(NSString *)operation
+                            origin:(NSString *)origin
                            inBlock:(void (^)(void))block
 {
     SentrySpanId *spanId = [self startSpanWithName:description
                                         nameSource:source
-                                         operation:operation];
+                                         operation:operation
+                                            origin:origin];
+    SENTRY_LOG_DEBUG(@"Measuring span %@; description %@; operation: %@", spanId.sentrySpanIdString,
+        description, operation);
     [self pushActiveSpan:spanId];
     block();
     [self popActiveSpan];
@@ -124,20 +126,9 @@ SentryPerformanceTracker () <SentryTracerDelegate>
 }
 
 - (void)measureSpanWithDescription:(NSString *)description
-                         operation:(NSString *)operation
-                      parentSpanId:(SentrySpanId *)parentSpanId
-                           inBlock:(void (^)(void))block
-{
-    [self measureSpanWithDescription:description
-                          nameSource:kSentryTransactionNameSourceCustom
-                           operation:operation
-                        parentSpanId:parentSpanId
-                             inBlock:block];
-}
-
-- (void)measureSpanWithDescription:(NSString *)description
                         nameSource:(SentryTransactionNameSource)source
                          operation:(NSString *)operation
+                            origin:(NSString *)origin
                       parentSpanId:(SentrySpanId *)parentSpanId
                            inBlock:(void (^)(void))block
 {
@@ -146,6 +137,7 @@ SentryPerformanceTracker () <SentryTracerDelegate>
                [self measureSpanWithDescription:description
                                      nameSource:source
                                       operation:operation
+                                         origin:origin
                                         inBlock:block];
            }];
 }
@@ -164,18 +156,20 @@ SentryPerformanceTracker () <SentryTracerDelegate>
 - (nullable SentrySpanId *)activeSpanId
 {
     @synchronized(self.activeSpanStack) {
-        return [self.activeSpanStack lastObject].context.spanId;
+        return [self.activeSpanStack lastObject].spanId;
     }
 }
 
 - (BOOL)pushActiveSpan:(SentrySpanId *)spanId
 {
+    SENTRY_LOG_DEBUG(@"Pushing active span %@", spanId.sentrySpanIdString);
     id<SentrySpan> toActiveSpan;
     @synchronized(self.spans) {
         toActiveSpan = self.spans[spanId];
     }
 
     if (toActiveSpan == nil) {
+        SENTRY_LOG_DEBUG(@"No span found with ID %@", spanId.sentrySpanIdString);
         return NO;
     }
 
@@ -194,6 +188,7 @@ SentryPerformanceTracker () <SentryTracerDelegate>
 
 - (void)finishSpan:(SentrySpanId *)spanId
 {
+    SENTRY_LOG_DEBUG(@"Finishing performance span %@", spanId.sentrySpanIdString);
     [self finishSpan:spanId withStatus:kSentrySpanStatusOk];
 }
 
@@ -202,7 +197,12 @@ SentryPerformanceTracker () <SentryTracerDelegate>
     id<SentrySpan> spanTracker;
     @synchronized(self.spans) {
         spanTracker = self.spans[spanId];
-        [self.spans removeObjectForKey:spanId];
+        // Hold reference for tracer until the tracer finishes because automatic
+        // tracers aren't referenced by anything else.
+        // callback to `tracerDidFinish` will release it.
+        if (![spanTracker isKindOfClass:SentryTracer.self]) {
+            [self.spans removeObjectForKey:spanId];
+        }
     }
 
     [spanTracker finishWithStatus:status];
@@ -226,6 +226,19 @@ SentryPerformanceTracker () <SentryTracerDelegate>
 {
     @synchronized(self.activeSpanStack) {
         return [self.activeSpanStack lastObject];
+    }
+}
+
+- (void)clear
+{
+    [self.activeSpanStack removeAllObjects];
+    [self.spans removeAllObjects];
+}
+
+- (void)tracerDidFinish:(SentryTracer *)tracer
+{
+    @synchronized(self.spans) {
+        [self.spans removeObjectForKey:tracer.spanId];
     }
 }
 

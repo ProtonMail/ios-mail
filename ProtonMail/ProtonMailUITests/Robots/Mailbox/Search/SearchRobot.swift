@@ -10,7 +10,7 @@ import XCTest
 import fusion
 
 fileprivate struct id {
-    static let searchTextFieldIdentifier = "SearchViewController.searchBar.textField"
+    static let searchBarIdentifier = "SearchViewController.customView.searchBar"
     static let searchKeyboardButtonText = LocalString._general_search_placeholder
     static let cancelButttonIdentifier = LocalString._general_cancel_button
     static func messageSenderLabelIdentifier(_ subject: String) -> String { return "\(subject).senderLabel" }
@@ -51,7 +51,7 @@ class SearchRobot: CoreElements {
     }
     
     private func typeTextToSearch(_ text: String) -> SearchRobot {
-        textField(id.searchTextFieldIdentifier).typeText(text)
+        otherElement(id.searchBarIdentifier).onDescendant(textField().byIndex(0)).typeText(text)
         return self
     }
     

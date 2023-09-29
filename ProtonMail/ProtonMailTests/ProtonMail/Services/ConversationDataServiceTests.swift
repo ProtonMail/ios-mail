@@ -186,10 +186,19 @@ final class ConversationDataServiceTests: XCTestCase {
         XCTAssertEqual(conversationID, "")
     }
 
+    func testDeleteConversations_whenDeletingMoreThanTheMaxPerRequestAllowed_itSplitsIntoMultipleRequests() {
+        let conversationIDs = (1...ConversationDeleteRequest.maxNumberOfConversations+10)
+            .map(String.init)
+            .map(ConversationID.init(rawValue:))
+        sut.deleteConversations(with: conversationIDs, labelID: LabelID(rawValue: "3"), completion: nil)
+
+        XCTAssertEqual(mockApiService.requestJSONStub.callCounter, 2)
+    }
+
     // MARK: Private methods
 
     private func updateMockApiService(with response: [String: Any], forPath expectedPath: String) {
-        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, completion in
+        mockApiService.requestJSONStub.bodyIs { _, _, path, _, _, _, _, _, _, _, _, completion in
             if path.contains(expectedPath) {
                 completion(nil, .success(response))
             } else {

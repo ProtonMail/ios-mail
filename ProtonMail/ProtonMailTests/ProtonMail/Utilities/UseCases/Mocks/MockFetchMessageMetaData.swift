@@ -22,8 +22,10 @@ final class MockFetchMessageMetaData: FetchMessageMetaDataUseCase {
     let uuid: UUID = .init()
     private(set) var messageIDs: [[MessageID]] = []
 
-    func execute(with messageIDs: [MessageID], callback: UseCaseResult<Void>) {
-        self.messageIDs.append(messageIDs)
-        callback(.success(()))
+    override func execute(params: FetchMessageMetaData.Parameters, callback: @escaping UseCase<Void, FetchMessageMetaData.Parameters>.Callback) {
+        self.messageIDs.append(params.messageIDs)
+        DispatchQueue.global().async {
+            callback(.success)
+        }
     }
 }

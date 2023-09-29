@@ -50,9 +50,7 @@ extension SingleMessageContentViewController: ContentPrintable {}
 extension SingleMessageContentViewController: CustomViewPrintable {
     func printPageRenderer() -> CustomViewPrintRenderer {
         let newHeader = EmailHeaderView(frame: .init(x: 0, y: 0, width: 300, height: 300))
-        if #available(iOS 13, *) {
             newHeader.overrideUserInterfaceStyle = .light
-        }
         newHeader.inject(recepientDelegate: self)
         newHeader.makeConstraints()
         newHeader.isShowingDetail = false
@@ -73,7 +71,7 @@ extension SingleMessageContentViewController: CustomViewPrintable {
 
     func printingWillStart(renderer: CustomViewPrintRenderer) {
         guard let newHeader = renderer.view as? EmailHeaderView else { return }
-        newHeader.prepareForPrinting(true)
+        newHeader.prepareForPrinting()
         newHeader.frame = .init(x: 18, y: 40, width: 560, height: newHeader.getHeight())
         newHeader.layoutIfNeeded()
 

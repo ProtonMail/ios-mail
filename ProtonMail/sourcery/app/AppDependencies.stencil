@@ -1,0 +1,25 @@
+{% for type in types.types where type.name == "GlobalContainer" or type.name == "UserContainer" %}
+{% for variable in type.computedVariables|definedInExtension where variable.name|hasSuffix:"Factory" and variable.typeName.name|hasPrefix:"Factory<" %}
+{% set dependencyTypeName variable.typeName.name|replace:"Factory<",""|replace:">",""  %}
+{% set dependencyVariableName %}{% if variable.name|hasSuffix:"FactoryFactory" %}{{ variable.name|replace:"FactoryFactory","Factory" }}{% else %}{{ variable.name|replace:"Factory","" }}{% endif %}{% endset %}
+{% set protocolName %}Has{{ dependencyTypeName }}{% endset %}
+protocol {{ protocolName }} {
+    var {{ dependencyVariableName }}: {{ dependencyTypeName }} { get }
+}
+
+extension {{ type.name }}: {{ protocolName }} {
+    var {{ dependencyVariableName }}: {{ dependencyTypeName }} {
+        {{ variable.name }}()
+    }
+}
+{% if type.name == "GlobalContainer" %}
+
+extension UserContainer: {{ protocolName }} {
+    var {{ dependencyVariableName }}: {{ dependencyTypeName }} {
+        globalContainer.{{ dependencyVariableName }}
+    }
+}
+{% endif %}
+
+{% endfor %}
+{% endfor %}

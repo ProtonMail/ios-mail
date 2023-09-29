@@ -23,18 +23,18 @@
 import LifetimeTracker
 import ProtonCore_UIFoundations
 
-class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
+final class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
-    var currentStep: PinCodeStep = .enterPin
+    private(set) var currentStep: PinCodeStep = .enterPin
+    private(set) var enterPin: String = ""
+    private let pinFailedCountCache: PinFailedCountCache
 
-    var enterPin: String = ""
-
-    override init() {
+    init(pinFailedCountCache: PinFailedCountCache) {
+        self.pinFailedCountCache = pinFailedCountCache
         super.init()
-
         trackLifetime()
     }
 
@@ -50,7 +50,7 @@ class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
         return LocalString._general_confirm_action
     }
 
-    override func setCode (_ code: String) -> PinCodeStep {
+    override func setCode(_ code: String) -> PinCodeStep {
         switch currentStep {
         case .enterPin:
             enterPin = code
@@ -75,11 +75,11 @@ class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
     }
 
     override func getPinFailedRemainingCount() -> Int {
-        return 10 - userCachedStatus.pinFailedCount
+        return max(10 - pinFailedCountCache.pinFailedCount, 0)
     }
 
     override func getPinFailedError() -> String {
-        let c = 10 - userCachedStatus.pinFailedCount
+        let c = 10 - pinFailedCountCache.pinFailedCount
         if c < 4 {
             let error = String.localizedStringWithFormat(LocalString._attempt_remaining_until_secure_data_wipe, c)
             return error

@@ -20,20 +20,28 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-
+#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
+import ProtonCore_TestingToolkit_UnitTests_Core
+#endif
 import ProtonCore_APIClient
 import ProtonCore_Authentication
+import ProtonCore_CryptoGoInterface
 import ProtonCore_DataModel
 import ProtonCore_Networking
-import GoLibs
+import ProtonCore_Services
 
 public struct AuthenticatorMock: AuthenticatorInterface {
-
     public init() {}
 
-    @FuncStub(AuthenticatorMock.authenticate(username:password:challenge:srpAuth:completion:)) public var authenticateStub
-    public func authenticate(username: String, password: String, challenge: ChallengeProperties?, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion) {
-        authenticateStub(username, password, challenge, srpAuth, completion)
+    @FuncStub(AuthenticatorMock.authenticate(idpEmail:responseToken:completion:)) public var authenticateStubWithSSO
+    public func authenticate(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping Authenticator.Completion) {
+        authenticateStubWithSSO(idpEmail, responseToken, completion)
+    }
+    
+    @FuncStub(AuthenticatorMock.authenticate(username:password:challenge:intent:srpAuth:completion:)) public var authenticateStub
+    // swiftlint:disable:next function_parameter_count
+    public func authenticate(username: String, password: String, challenge: ChallengeProperties?, intent: Intent?, srpAuth: SrpAuth?, completion: @escaping Authenticator.Completion) {
+        authenticateStub(username, password, challenge, intent, srpAuth, completion)
     }
 
     @FuncStub(Self.confirm2FA) public var confirm2FAStub

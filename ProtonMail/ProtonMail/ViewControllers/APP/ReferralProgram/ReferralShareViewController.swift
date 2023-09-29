@@ -48,12 +48,6 @@ final class ReferralShareViewController: UIViewController {
         setUpCloseButton(showCloseButton: true, action: #selector(self.dismissView))
         setupView()
         setupActions()
-
-        NotificationCenter.default
-            .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
-                         name: UIContentSizeCategory.didChangeNotification,
-                         object: nil)
     }
 
     private func setupView() {
@@ -97,15 +91,9 @@ final class ReferralShareViewController: UIViewController {
 
     @objc
     private func copyLinkToClipboard() {
-        if #available(iOS 14.0, *) {
             UIPasteboard.general.setValue(
                 referralLink,
                 forPasteboardType: UTType.plainText.identifier)
-        } else {
-            UIPasteboard.general.setValue(
-                referralLink,
-                forPasteboardType: kUTTypePlainText as String)
-        }
         let banner = PMBanner(
             message: L11n.ReferralProgram.linkCopied,
             style: PMBannerNewStyle.info
@@ -133,12 +121,5 @@ final class ReferralShareViewController: UIViewController {
     @objc
     private func openTermsAndConditions() {
         openLink(Link.ReferralProgram.referralTermsAndConditions)
-    }
-
-    @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
-        // The following elements can't reflect font size changed automatically
-        // Reset font when event happened
-        customView.setupFont()
     }
 }

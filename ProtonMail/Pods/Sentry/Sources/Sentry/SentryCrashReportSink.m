@@ -13,7 +13,7 @@
 #import "SentryLog.h"
 #import "SentrySDK+Private.h"
 #import "SentrySDK.h"
-#import "SentryScope.h"
+#import "SentryScope+Private.h"
 #import "SentryThread.h"
 
 static const NSTimeInterval SENTRY_APP_START_CRASH_DURATION_THRESHOLD = 2.0;
@@ -81,7 +81,7 @@ SentryCrashReportSink ()
         }
     }
     if (onCompletion) {
-        onCompletion(sentReports, TRUE, nil);
+        onCompletion(sentReports, YES, nil);
     }
 }
 
@@ -94,7 +94,7 @@ SentryCrashReportSink ()
 
     if (report[SENTRYCRASH_REPORT_ATTACHMENTS_ITEM]) {
         for (NSString *ssPath in report[SENTRYCRASH_REPORT_ATTACHMENTS_ITEM]) {
-            [scope addAttachment:[[SentryAttachment alloc] initWithPath:ssPath]];
+            [scope addCrashReportAttachmentInPath:ssPath];
         }
     }
 

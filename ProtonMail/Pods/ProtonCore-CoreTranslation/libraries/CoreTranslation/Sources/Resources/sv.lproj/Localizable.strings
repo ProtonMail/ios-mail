@@ -1,3 +1,6 @@
+/* Plan details number of email aliases message */
+"%@ email aliases" = "%@ e-postalias";
+
 /* Plan details storage */
 "%@ storage" = "%@ lagringsutrymme";
 
@@ -12,6 +15,9 @@
 
 /* Recovery skip description */
 "A recovery method will help you access your account in case you forget your password or get locked out of your account." = "En återställningsmetod hjälper dig att komma åt ditt konto om du glömmer ditt lösenord eller blir utelåst från ditt konto.";
+
+/* Delete account success */
+"Account deleted.\nLogging out..." = "Konto borttaget.\nLoggar ut...";
 
 /* *
  *  Login errors */
@@ -106,9 +112,6 @@
 /* Action button title for picking Proton Mail username */
 "Continue" = "Fortsätt";
 
-/* Signup password email view title */
-"Create a Proton account with your current email" = "Skapa ett Proton-konto med din nuvarande e-post";
-
 /* Proton Mail address button */
 "Create a secure Proton Mail address instead" = "Skapa en säker Proton Mail-adress istället";
 
@@ -118,7 +121,7 @@
 /* Create user failed error */
 "Create user failed" = "Kunde inte skapa användare";
 
-/* Signup password proton view title */
+/* Signup password view title */
 "Create your password" = "Skapa ditt lösenord";
 
 /* *
@@ -195,6 +198,9 @@
 
 /* Enter email code label */
 "Enter the verification code that was sent to %@. If you don't find the email in your inbox, please check your spam folder." = "Ange verifieringskoden som skickades till %@. Om du inte hittar e-postmeddelandet i din inkorg, kontrollera din skräppostmapp.";
+
+/* Title of a page asking to enter your password. */
+"Enter your password" = "Ange ditt lösenord";
 
 /* Login screen subtitle */
 "Enter your Proton Account details." = "Ange dina kontodetaljer för Proton.";
@@ -307,74 +313,74 @@
  * Networking */
 "Network connection error" = "Nätverksanslutningsfel";
 
-/* New_Plans Plan details used storage space */
-"New_Plans %@ of %@" = "%@ av %@";
+/* Plan details used storage space */
+"%@ of %@" = "%@ av %@";
 
-/* New_Plans Plan details Access to streaming services globally */
-"New_Plans Access to streaming services globally" = "Åtkomst till streamingtjänster globalt";
+/* Plan details Access to streaming services globally */
+"Access to streaming services globally" = "Åtkomst till streamingtjänster globalt";
 
-/* New_Plans Plan details ad-blocker */
-"New_Plans Built-in ad-blocker (NetShield)" = "Inbyggd annonsblockerare (NetShield)";
+/* Plan details ad-blocker */
+"Built-in ad-blocker (NetShield)" = "Inbyggd annonsblockerare (NetShield)";
 
-/* New_Plans Plan connection error description */
-"New_Plans Check your internet connection" = "Kontrollera din Internetanslutning";
+/* Plan connection error description */
+"Check your internet connection" = "Kontrollera din Internetanslutning";
 
-/* New_Plans Plan connection error title */
-"New_Plans Connection issues" = "Anslutningsproblem";
+/* Plan connection error title */
+"Connection issues" = "Anslutningsproblem";
 
-/* New_Plans Extend subscription button */
-"New_Plans Extend subscription" = "Förläng prenumeration";
+/* Extend subscription button */
+"Extend subscription" = "Förläng prenumeration";
 
-/* New_Plans Plan details VPN on a single device */
-"New_Plans Free VPN on a single device" = "Gratis VPN på en enhet";
+/* Plan details VPN on a single device */
+"Free VPN on a single device" = "Gratis VPN på en enhet";
 
-/* New_Plans Get plan button */
-"New_Plans Get %@" = "Skaffa %@";
+/* Get plan button */
+"Get %@" = "Skaffa %@";
 
-/* New_Plans Get free plan button */
-"New_Plans Get Proton for free" = "Skaffa Proton gratis";
+/* Get free plan button */
+"Get Proton for free" = "Skaffa Proton gratis";
 
-/* New_Plans Plan details Highest VPN speed */
-"New_Plans Highest VPN speed" = "Högsta VPN-hastighet";
+/* Plan details Highest VPN speed */
+"Highest VPN speed" = "Högsta VPN-hastighet";
 
-/* New_Plans */
-"New_Plans One plan for all Proton services" = "Ett paket för alla Proton-tjänster";
+/* */
+"One plan for all Proton services" = "Ett paket för alla Proton-tjänster";
 
-/* New_Plans Plan footer description */
-"New_Plans Only non-renewing annual subscriptions are available via this app" = "Endast icke-förnyande årsprenumerationer är tillgängliga via denna app";
+/* Plan footer description */
+"Only non-renewing annual subscriptions are available via this app" = "Endast icke-förnyande årsprenumerationer är tillgängliga via denna app";
 
-/* New_Plans Plan successfully upgraded banner message */
-"New_Plans Plan successfully upgraded" = "Paket uppgraderat";
+/* Plan successfully upgraded banner message */
+"Plan successfully upgraded" = "Paket uppgraderat";
 
-/* New_Plans Plan details Secure Core servers */
-"New_Plans Secure Core servers" = "Secure Core-servrar";
+/* Plan details Secure Core servers */
+"Secure Core servers" = "Secure Core-servrar";
 
-/* New_Plans Plan details no logs policy */
-"New_Plans Strict no-logs policy" = "Strikt policy att inte logga";
+/* Plan details no logs policy */
+"Strict no-logs policy" = "Strikt policy att inte logga";
 
-/* New_Plans Plan details free description */
-"New_Plans The no-cost starter account designed to empower everyone with privacy by default." = "Gratiskontot designat för att ge alla integritet som standard.";
+/* Plan details free description */
+"The no-cost starter account designed to empower everyone with privacy by default." = "Gratiskontot designat för att ge alla integritet som standard.";
 
-/* New_Plans Plan details plus description */
-"New_Plans The privacy-first email and calendar solution for your everyday communication needs." = "Den integritetsbaserade e-post- och kalenderlösningen för dina dagliga kommunikationsbehov.";
+/* Plan details plus description */
+"The privacy-first email and calendar solution for your everyday communication needs." = "Den integritetsbaserade e-post- och kalenderlösningen för dina dagliga kommunikationsbehov.";
 
-/* New_Plans Plan details drive plus description */
-"New_Plans The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Det lagringsfokuserade paketet med 200 GB molnlagring för att hålla dina filer privata.";
+/* Plan details drive plus description */
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Det lagringsfokuserade paketet med 200 GB molnlagring för att hålla dina filer privata.";
 
-/* New_Plans Plan details bundle description */
-"New_Plans The ultimate privacy pack with access to all premium Proton services." = "Det ultimata integritetspaketet med åtkomst till alla premium Proton-tjänster.";
+/* Plan details bundle description */
+"The ultimate privacy pack with access to all premium Proton services." = "Det ultimata integritetspaketet med åtkomst till alla premium Proton-tjänster.";
 
-/* New_Plans Plan details TOR over VPN */
-"New_Plans TOR over VPN" = "Tor över VPN";
+/* Plan details TOR over VPN */
+"TOR over VPN" = "Tor över VPN";
 
-/* New_Plans Plan details unlimited folders, labels, filters */
-"New_Plans Unlimited folders, labels, and filters" = "Obegränsade mappar, etiketter och filter";
+/* Plan details unlimited folders, labels, filters */
+"Unlimited folders, labels, and filters" = "Obegränsade mappar, etiketter och filter";
 
-/* New_Plans Plan details up to storage */
-"New_Plans Up to %@ storage" = "Upp till %@ lagringsutrymme";
+/* Plan details up to storage */
+"Up to %@ storage" = "Upp till %@ lagringsutrymme";
 
-/* New_Plans Plan details vpn plus description */
-"New_Plans Your privacy and security are our priority." = "Din integritet och säkerhet är vår prioritet.";
+/* Plan details vpn plus description */
+"Your privacy and security are our priority." = "Din integritet och säkerhet är vår prioritet.";
 
 /* Next button */
 "Next" = "Nästa";
@@ -450,11 +456,11 @@
 /* The body of the email draft created in the network troubleshoot view. */
 "Please share your problem." = "Dela ditt problem.";
 
-/* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Lås upp appen för att fortsätta med aktiveringen av din serviceplan";
-
 /* Plan details priority customer support */
 "Priority customer support" = "Prioriterad kundsupport";
+
+/* Plan details `Priority support` message */
+"Priority support" = "Prioriterad support";
 
 /* Welcome screen */
 "Privacy by default" = "Integritet som standard";
@@ -600,6 +606,9 @@
 /* Message shown when we suspect that the Proton servers are blocked */
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton-servrarna går inte att nå. Det kan bero på fel nätverkskonfiguration, att Proton-servrar inte fungerar eller att Proton-servrar är blockerade";
 
+/* Networking insecure connection error */
+"The TLS certificate validation failed when trying to connect to the Proton API. Your current Internet connection may be monitored. To keep your data secure, we are preventing the app from accessing the Proton API.\nTo log in or access your account, switch to a new network and try to connect again." = "TLS-certifikatvalideringen misslyckades när du försökte ansluta till Proton API. Din nuvarande Internetanslutning kan övervakas. För att skydda din data förhindrar vi appen från att komma åt Proton API. För att logga in eller komma åt ditt konto, byt till ett nytt nätverk och försök ansluta igen.";
+
 /* Complete view description */
 "This should take no more than a minute." = "Detta bör inte ta mer än en minut.";
 
@@ -630,12 +639,21 @@
 /* 2FA screen field title */
 "Two-factor code" = "Tvåfaktorskod";
 
+/* Plan details `Unlimited devices` message */
+"Unlimited devices" = "Obegränsat antal enheter";
+
+/* Plan details `Unlimited email aliases` message */
+"Unlimited email aliases" = "Obegränsat antal e-postalias";
+
 /* Mailbox unlock screen action button title */
 "Unlock" = "Lås upp";
 
 /* *
  * Login unlock mailbox */
 "Unlock your mailbox" = "Lås upp din brevlåda";
+
+/* Plan details `Up to %@ forwarding mailboxes` message */
+"Up to %@ forwarding mailboxes" = "Upp till %@ vidarebefordrade brevlådor";
 
 /* update button */
 "Update" = "Uppdatera";
@@ -680,9 +698,6 @@
 
 /* Error message */
 "We have been notified of an App Store purchase but cannot match the purchase with an account of yours." = "Vi har blivit aviserad om ett köp i App Store men kan inte matcha köpet med ditt konto.";
-
-/* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Vi har aktiverat ditt abonnemang. Vänligen starta om appen för att börja använda din nya serviceplan.";
 
 /* Message shown to the user if we had to top up the account with credits instead of purchasing a plan */
 "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Vi kunde inte uppgradera ditt konto till det paket du valde, så vi lade till din betalning som krediter till ditt konto. För mer information och för att slutföra uppgraderingen, kontakta supporten.";
@@ -743,4 +758,7 @@
 
 /* Signup summary free plan description */
 "Your Proton Free account was successfully created." = "Ditt Proton Free-konto har skapats.";
+
+/* Session expired info */
+"Your session has expired. Please log in again." = "Din session har löpt ut. Logga in igen.";
 

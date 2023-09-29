@@ -22,16 +22,16 @@ import XCTest
 
 final class ContactParserTest: XCTestCase {
     private var resultMock: ContactParserResultViewMock!
-    private var contactParser: ContactParser!
+    private var sut: ContactParser!
 
     override func setUpWithError() throws {
         self.resultMock = ContactParserResultViewMock()
-        self.contactParser = ContactParser(resultDelegate: resultMock)
+        self.sut = ContactParser(resultDelegate: resultMock)
     }
 
     override func tearDownWithError() throws {
         self.resultMock = nil
-        self.contactParser = nil
+        self.sut = nil
     }
 
     func getWrongKey() -> ArmoredKey {
@@ -46,7 +46,7 @@ final class ContactParserTest: XCTestCase {
         let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         let contactID: ContactID = .init(rawValue: UUID().uuidString)
         let plainText = ContactParserTestData.plainTextData
-        self.contactParser
+        self.sut
             .parsePlainTextContact(data: plainText,
                                    coreDataService: coreDataService,
                                    contactID: contactID)
@@ -60,7 +60,7 @@ final class ContactParserTest: XCTestCase {
                             signature: "")
         let passphrase = ContactParserTestData.passphrase
         let key = ContactParserTestData.privateKey
-        try self.contactParser
+        try self.sut
             .parseEncryptedOnlyContact(card: card,
                                        passphrase: passphrase,
                                        userKeys: [key])
@@ -82,7 +82,7 @@ final class ContactParserTest: XCTestCase {
         let passphrase = Passphrase(value: ContactParserTestData.passphrase.value + "fjeilfejlf")
         let key = ContactParserTestData.privateKey
         XCTAssertThrowsError(
-            try self.contactParser
+            try self.sut
                 .parseEncryptedOnlyContact(card: card,
                                            passphrase: passphrase,
                                            userKeys: [key])
@@ -97,7 +97,7 @@ final class ContactParserTest: XCTestCase {
         let passphrase = ContactParserTestData.passphrase
         let key = self.getWrongKey()
         XCTAssertThrowsError(
-            try self.contactParser
+            try self.sut
                 .parseEncryptedOnlyContact(card: card,
                                            passphrase: passphrase,
                                            userKeys: [key])
@@ -110,7 +110,7 @@ final class ContactParserTest: XCTestCase {
         let data = ContactParserTestData.signedOnlyData
         let passphrase = ContactParserTestData.passphrase
         let key = ContactParserTestData.privateKey
-        let isVerify = self.contactParser.verifySignature(signature: signature,
+        let isVerify = self.sut.verifySignature(signature: signature,
                                                           plainText: data,
                                                           userKeys: [key],
                                                           passphrase: passphrase)
@@ -122,7 +122,7 @@ final class ContactParserTest: XCTestCase {
         let data = ContactParserTestData.signedOnlyData
         let passphrase = Passphrase(value: ContactParserTestData.passphrase.value + "efsfd")
         let key = ContactParserTestData.privateKey
-        let isVerify = self.contactParser.verifySignature(signature: signature,
+        let isVerify = self.sut.verifySignature(signature: signature,
                                                           plainText: data,
                                                           userKeys: [key],
                                                           passphrase: passphrase)
@@ -134,7 +134,7 @@ final class ContactParserTest: XCTestCase {
         let data = ContactParserTestData.signedOnlyData
         let passphrase = ContactParserTestData.passphrase
         let key = self.getWrongKey()
-        let isVerify = self.contactParser.verifySignature(signature: signature,
+        let isVerify = self.sut.verifySignature(signature: signature,
                                                           plainText: data,
                                                           userKeys: [key],
                                                           passphrase: passphrase)
@@ -147,7 +147,7 @@ final class ContactParserTest: XCTestCase {
         let card = CardData(type: .SignAndEncrypt, data: data, signature: signature)
         let passphrase = ContactParserTestData.passphrase
         let key = ContactParserTestData.privateKey
-        try self.contactParser
+        try self.sut
             .parseSignAndEncryptContact(card: card,
                                         passphrase: passphrase,
                                         firstUserKey: key,
@@ -166,7 +166,7 @@ final class ContactParserTest: XCTestCase {
         let passphrase = ContactParserTestData.passphrase
         let key = ContactParserTestData.privateKey
         XCTAssertThrowsError(
-            try self.contactParser
+            try self.sut
                 .parseSignAndEncryptContact(card: card,
                                             passphrase: passphrase,
                                             firstUserKey: nil,
@@ -181,7 +181,7 @@ final class ContactParserTest: XCTestCase {
         let passphrase = Passphrase(value: ContactParserTestData.passphrase.value + "fidld")
         let key = ContactParserTestData.privateKey
         XCTAssertThrowsError(
-            try self.contactParser
+            try self.sut
                 .parseSignAndEncryptContact(card: card,
                                             passphrase: passphrase,
                                             firstUserKey: key,
@@ -197,7 +197,7 @@ final class ContactParserTest: XCTestCase {
         let passphrase = ContactParserTestData.passphrase
         let key = self.getWrongKey()
         XCTAssertThrowsError(
-            try self.contactParser
+            try self.sut
                 .parseSignAndEncryptContact(card: card,
                                             passphrase: passphrase,
                                             firstUserKey: key,
@@ -215,7 +215,7 @@ final class ContactParserTest: XCTestCase {
         let card = CardData(type: .SignAndEncrypt, data: data, signature: wrongSignature)
         let passphrase = ContactParserTestData.passphrase
         let key = ContactParserTestData.privateKey
-        try self.contactParser
+        try self.sut
             .parseSignAndEncryptContact(card: card,
                                         passphrase: passphrase,
                                         firstUserKey: key,
@@ -226,5 +226,56 @@ final class ContactParserTest: XCTestCase {
         XCTAssertEqual(self.resultMock.informations.count, 4)
         XCTAssertEqual(self.resultMock.notes.count, 1)
         XCTAssertEqual(self.resultMock.urls.count, 1)
+    }
+
+    func testParseSignAndEncryptedContact_withLastNameAndFirstName() throws {
+        let privateKey = ContactParserTestData.privateKey
+        let vCardData = "BEGIN:VCARD\nVERSION:4.0\nN:lastName;firstName\nEND:VCARD"
+        let testData = try generateSignAndEncryptedCardData(vCardData: vCardData)
+
+        try sut.parseSignAndEncryptContact(
+            card: testData,
+            passphrase: ContactParserTestData.passphrase,
+            firstUserKey: privateKey,
+            userKeys: [privateKey]
+        )
+
+        XCTAssertTrue(resultMock.verifyType3)
+        let structuredName = try XCTUnwrap(resultMock.structuredName)
+        XCTAssertEqual(structuredName.firstName, "firstName")
+        XCTAssertEqual(structuredName.lastName, "lastName")
+    }
+
+    func testVerifySignature_noUserKey_returnFalse() {
+        XCTAssertFalse(sut.verifySignature(
+            signature: ContactParserTestData.signedOnlySignature,
+            plainText: ContactParserTestData.signedOnlyData,
+            userKeys: [],
+            passphrase: ContactParserTestData.passphrase
+        ))
+    }
+}
+
+extension ContactParserTest {
+    private func generateSignAndEncryptedCardData(vCardData: String) throws -> CardData {
+        let privateKey = ContactParserTestData.privateKey
+        let signingKey = SigningKey(
+            privateKey: privateKey,
+            passphrase: ContactParserTestData.passphrase
+        )
+        let encryptedVCard = try vCardData.encryptNonOptional(
+            withPubKey: privateKey.armoredPublicKey,
+            privateKey: "",
+            passphrase: ""
+        )
+        let signature = try Sign.signDetached(
+            signingKey: signingKey,
+            plainText: vCardData
+        )
+        return CardData(
+            type: .SignAndEncrypt,
+            data: encryptedVCard,
+            signature: signature
+        )
     }
 }

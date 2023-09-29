@@ -115,15 +115,19 @@ final class ComposeViewModelTests_Forwarding: XCTestCase {
             coreDataContextProvider: mockCoreDataService,
             coreKeyMaker: MockKeyMakerProtocol(),
             fetchAndVerifyContacts: .init(),
-            internetStatusProvider: .init(),
+            internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
             fetchAttachment: .init(),
             contactProvider: contactProvider,
             helperDependencies: .init(
                 messageDataService: user.messageService,
                 cacheService: user.cacheService,
                 contextProvider: mockCoreDataService,
-                copyMessage: copyMessage
-            ), fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: MockKeyMakerProtocol(), cache: MockMobileSignatureCacheProtocol()))
+                copyMessage: copyMessage,
+                attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingMock()
+            ), fetchMobileSignatureUseCase: FetchMobileSignature(dependencies: .init(coreKeyMaker: MockKeyMakerProtocol(), cache: MockMobileSignatureCacheProtocol())),
+            darkModeCache: MockDarkModeCacheProtocol(),
+            attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock(),
+            userCachedStatusProvider: MockUserCachedStatusProvider()
         )
 
         return ComposeViewModel(
