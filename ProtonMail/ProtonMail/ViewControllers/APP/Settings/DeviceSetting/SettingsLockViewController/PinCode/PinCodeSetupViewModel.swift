@@ -76,7 +76,9 @@ final class PinCodeSetupViewModel: PinCodeSetupVMProtocol {
     /// - Returns: is activated
     func activatePinCodeProtection() async -> Bool {
         await withCheckedContinuation { (continuation: CheckedContinuation<Bool, Never>) in
-            _ = self.dependencies.keyMaker.deactivate(BioProtection())
+            LockPreventor.shared.performWhileSuppressingLock {
+                _ = self.dependencies.keyMaker.deactivate(BioProtection())
+            }
             self.dependencies.keyMaker.activate(PinProtection(pin: newPinCode)) { [weak self] activated in
                 if activated {
                     self?.dependencies.notificationCenter.post(
