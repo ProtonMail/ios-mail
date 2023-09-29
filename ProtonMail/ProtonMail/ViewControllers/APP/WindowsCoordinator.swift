@@ -489,11 +489,16 @@ extension WindowsCoordinator {
             navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
             return
         }
-        // The mainkey could be removed while changing the protection of the app.
-        // When the mainkey is removed in the background, that means the app should be locked.
-        if delegate?.currentApplicationState() != .active && !showPlaceHolderViewOnly {
-            go(dest: .lockWindow)
+        // The mainkey could be removed while changing the protection of the app. We should check
+        // if the lock notification should be ignored by checking the `LockPreventor`
+        let isLockSupressed = LockPreventor.shared.isLockSuppressed
+        let showOnlyPlaceHolder = showPlaceHolderViewOnly
+        guard !isLockSupressed && !showOnlyPlaceHolder else {
+            let msg = "lock ignored: isLockSupressed=\(isLockSupressed) showOnlyPlaceHolder=\(showOnlyPlaceHolder)"
+            SystemLogger.log(message: msg, category: .appLock)
+            return
         }
+        go(dest: .lockWindow)
     }
 
     @objc
