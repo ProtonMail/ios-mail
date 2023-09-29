@@ -45,7 +45,7 @@ class SettingsDeviceViewControllerTests: XCTestCase {
     func testAppSettings_hasCustomizeToolbarAction() throws {
         sut.loadViewIfNeeded()
 
-        XCTAssertEqual(sut.tableView.numberOfSections, 4)
+        XCTAssertEqual(sut.tableView.numberOfSections, 5)
         XCTAssertEqual(sut.tableView.numberOfRows(inSection: 1), 8)
 
         let cell = try XCTUnwrap(sut.tableView(sut.tableView, cellForRowAt: IndexPath(row: 6, section: 1)) as? SettingsGeneralCell)
