@@ -23,8 +23,12 @@
 import UIKit
 
 class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
+    private var appDelegate: AppDelegate {
+        (UIApplication.shared.delegate as! AppDelegate)
+    }
+
     lazy private(set) var coordinator: WindowsCoordinator = {
-        (UIApplication.shared.delegate as! AppDelegate).coordinator
+        appDelegate.coordinator
     }()
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -72,8 +76,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let notificationInfo = connectionOptions.notificationResponse?.notification.request.content.userInfo
         if let userInfo = notificationInfo {
-            sharedServices.get(by: PushNotificationService.self)
-                .setNotification(userInfo, fetchCompletionHandler: {})
+            appDelegate.dependencies.pushService.setNotification(userInfo, fetchCompletionHandler: {})
         }
 
         if let shortcutItem = connectionOptions.shortcutItem,
