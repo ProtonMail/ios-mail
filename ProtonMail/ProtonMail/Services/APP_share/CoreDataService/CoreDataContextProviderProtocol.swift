@@ -30,4 +30,11 @@ protocol CoreDataContextProviderProtocol: Service {
     func read<T>(block: (NSManagedObjectContext) throws -> T) throws -> T
 
     func write<T>(block: @escaping (NSManagedObjectContext) throws -> T) throws -> T
+
+    func createFetchedResultsController<T>(
+        entityName: String,
+        predicate: NSPredicate,
+        sortDescriptors: [NSSortDescriptor],
+        sectionNameKeyPath: String?
+    ) -> NSFetchedResultsController<T>
 }

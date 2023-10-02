@@ -222,7 +222,7 @@ class LabelsDataService: Service {
             // in contact group searching, predicate must be consistent with this one
             fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
         } else {
-            fetchRequest.predicate = self.fetchRequestPrecidate(type)
+            fetchRequest.predicate = self.fetchRequestPredicate(type)
         }
 
         let context = context
@@ -246,23 +246,24 @@ class LabelsDataService: Service {
         return LabelPublisher(parameters: params, dependencies: dependencies)
     }
 
-    func fetchedResultsController(_ type: LabelFetchType) -> NSFetchedResultsController<Label> {
-        let moc = dependencies.contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
-        fetchRequest.predicate = self.fetchRequestPrecidate(type)
-
-        if type != .contactGroup {
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
-        } else {
-            let strComp = NSSortDescriptor(key: Label.Attributes.name,
-                                           ascending: true,
-                                           selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-            fetchRequest.sortDescriptors = [strComp]
+    func fetchLabels(type: LabelFetchType) throws -> [LabelEntity] {
+        return try dependencies.contextProvider.read { context in
+            let request = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
+            request.predicate = fetchRequestPredicate(type)
+            if type != .contactGroup {
+                request.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
+            } else {
+                let strComp = NSSortDescriptor(key: Label.Attributes.name,
+                                               ascending: true,
+                                               selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
+                request.sortDescriptors = [strComp]
+            }
+            let result = try context.fetch(request)
+            return result.map(LabelEntity.init)
         }
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
     }
 
-    private func fetchRequestPrecidate(_ type: LabelFetchType) -> NSPredicate {
+    private func fetchRequestPredicate(_ type: LabelFetchType) -> NSPredicate {
         switch type {
         case .all:
             return NSPredicate(format: "(labelID MATCHES %@) AND ((%K == 1) OR (%K == 3)) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.type, Label.Attributes.userID, self.userID.rawValue)
@@ -299,11 +300,6 @@ class LabelsDataService: Service {
                 } catch {}
             }
         }
-    }
-
-    func labelFetchedController(by labelID: LabelID) -> NSFetchedResultsController<Label> {
-        let context = dependencies.contextProvider.mainContext
-        return Label.labelFetchController(for: labelID.rawValue, inManagedObjectContext: context)
     }
 
     func label(by labelID: LabelID) -> LabelEntity? {
