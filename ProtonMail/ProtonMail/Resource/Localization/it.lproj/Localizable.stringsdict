@@ -381,9 +381,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Sei sicuro di voler eliminare permanentemente questo messaggio?</string>
+        <string>Sei sicuro di voler eliminare definitivamente questo messaggio?</string>
         <key>other</key>
-        <string>Sei sicuro di voler eliminare permanentemente questi %d messaggi?</string>
+        <string>Sei sicuro di voler eliminare definitivamente questi %d messaggi?</string>
       </dict>
     </dict>
   </dict>

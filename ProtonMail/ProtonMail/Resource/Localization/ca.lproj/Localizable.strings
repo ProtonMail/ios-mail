@@ -1295,27 +1295,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activeu aquesta característica per a completar automàticament les adreces de correu electrònic utilitzant els contactes de tots els vostres comptes amb la sessió iniciada.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Establir codi PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Introduïu el codi PIN nou";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Introduïu un codi PIN amb almenys 4 caràcters i com a màxim 21 caràcters.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "El PIN és massa curt";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "El PIN és massa llarg";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Repetir codi PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Els codis PIN han de coincidir!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l'aplicació provar l'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat. %1$@";
 
@@ -1327,9 +1306,6 @@
 
 /* The title of Off setting options */
 "Off" = "Desactivat";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Canviar codi PIN";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Torna a autenticar";
@@ -2026,15 +2002,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Habilitar";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Voleu desactivar l'eliminació automàtica?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Els correus electrònics programats per a l'eliminació restaran a les carpetes paperera i correu brossa.";
-
-/* Button to disable auto delete */
-"Disable" = "Desactiva";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Milloreu per a eliminar automàticament els missatges que han estat a la paperera o al correu brossa durant més de 30 dies.";
 
@@ -2065,6 +2032,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Dominis de correu personalitzats";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nom a mostrar";
 
@@ -2085,6 +2058,33 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Editar foto";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Establir codi PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Repetir codi PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Introduïu el codi PIN nou";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Introduïu un codi PIN amb almenys 4 caràcters i com a màxim 21 caràcters.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "El PIN és massa curt";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "El PIN és massa llarg";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Els codis PIN han de coincidir!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Please enter old pin code ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Canviar codi PIN";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Cancel·la la subscripció de la llista de correu";

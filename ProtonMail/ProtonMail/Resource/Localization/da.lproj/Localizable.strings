@@ -1295,27 +1295,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Slå denne funktion til for at autoudfylde e-mailadresser vha. kontakter fra alle de konti, hvor du er logget ind.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Angiv pinkode";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Indtast ny pinkode";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Indtast en pinkode med min 4 tegn og maks 21 tegn.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "Pinkode for kort";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "Pinkode for lang";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Gentag pinkode";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Pinkoderne skal matche!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Hvis Proton-websteder er blokeret, giver denne indstilling appen mulighed for at prøve alternativ netværksrouting for at nå Proton, hvilket kan være nyttige til at omgå firewalls eller netværksproblemer. Vi anbefaler at holde denne indstilling slået til for større pålidelighed. %1$@";
 
@@ -1327,9 +1306,6 @@
 
 /* The title of Off setting options */
 "Off" = "Fra";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Skift pinkode";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Godkend igen";
@@ -2026,15 +2002,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Aktivér";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Deaktivér automatisk sletning?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "E-mails, der er planlagt til sletning, forbliver i papirkurven og spam-mapperne.";
-
-/* Button to disable auto delete */
-"Disable" = "Deaktivér";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Opgradér for automatisk at slette beskeder, der har været i papirkurven eller spam i mere end 30 dage.";
 
@@ -2065,6 +2032,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Brugerdefinerede e-maildomæner";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Vist navn";
 
@@ -2085,6 +2058,33 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Redigér foto";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Angiv pinkode";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Gentag pinkode";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Indtast ny pinkode";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Indtast en pinkode med min 4 tegn og maks 21 tegn.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Pinkode for kort";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Pinkode for lang";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Pinkoderne skal matche!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Please enter old pin code ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Skift pinkode";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Afmeld dig fra mailinglisten";

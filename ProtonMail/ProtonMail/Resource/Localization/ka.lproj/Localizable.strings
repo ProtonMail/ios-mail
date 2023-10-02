@@ -1,0 +1,2097 @@
+/* link opeining confirmation */
+
+"You are about to launch the web browser and navigate to" = "თქვენ ახლა გახსნით ბრაუზერს და გადახვალთ";
+
+/* link opeining confirmation */
+"Request link confirmation" = "ბმულის დადასტურების მოთხოვნა";
+
+/* Title in settings */
+"Display Name" = "საჩვენებელი სახელი";
+
+/* place holder */
+"Input Display Name…" = "შეიყვანეთ საჩვენებელი სახელი…";
+
+/* Title in signature settings */
+"Signature" = "ხელმოწერა";
+
+/* Title */
+"Enable signature" = "ხელმოწერის ჩართვა";
+
+/* No comment provided by engineer. */
+"Enter your signature here" = "შეიყვანეთ თქვენი ხელმოწერა აქ";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "მობილური ხელმოწერა";
+
+/* Title */
+"Recovery email" = "აღდგენის ელფოსტა";
+
+/* Title */
+"Enable email notices" = "ელოსტის გაფრთხილების ჩართვა";
+
+/* place holder */
+"Input Notification Email…" = "შეიყვანეთ გაფრთხილების ელფოსტა …";
+
+/* Placeholder */
+"Current password" = "მიმდინარე პაროლი";
+
+/* Placeholder */
+"New password" = "ახალი პაროლი";
+
+/* Placeholder */
+"Confirm new password" = "დაადასტურეთ ახალი პაროლი";
+
+/* Settings row */
+"Remove image metadata" = "გამოსახულების მეტამონაცემების წაშლა";
+
+/* Settings row */
+"Block email tracking" = "ელფოსტის ტრეკინგის დაბლოკვა";
+
+/* Settings row */
+"Default browser" = "ნაგულისხმები ბრაუზერი";
+
+/* menu title */
+"Menu" = "მენიუ";
+
+/* menu title */
+"Report a problem" = "პრობლემის შესახებ შეტყობინება";
+
+/* menu title */
+"Inbox" = "შემომავალი";
+
+/* menu title */
+"Starred" = "ვარსკვლავიანები";
+
+/* menu title */
+"Archive" = "არქივი";
+
+/* menu title */
+"Drafts" = "მონახაზები";
+
+/* mail location title */
+"All Mail" = "ყველა ელფოსტა";
+
+/* menu title */
+"Sent" = "გაგზავნილები";
+
+/* mail location desc */
+"Trash" = "ნაგვის ყუთი";
+
+/* menu title */
+"Spam" = "სპამი";
+
+/* Action and title */
+"Contacts" = "კონტაქტები";
+
+/* menu title (contact groups) */
+"Groups" = "ჯგუფები";
+
+/* menu title */
+"Settings" = "მორგება";
+
+/* Alert title to confirm signout */
+"Sign out" = "გასვლა";
+
+/* menu title */
+"Lock The App" = "აპის ჩაკეტვა";
+
+/* menu title */
+"Subscription" = "გამოწერა";
+
+/* menu title */
+"Manage accounts" = "ანგარიშების მართვა";
+
+/* menu title */
+"Add attachment" = "ფაილის მიმაგრება";
+
+/* menu title */
+"Refer a friend" = "მიმართეთ მეგობარს";
+
+/* mail location title */
+"Scheduled" = "დაგეგმილია";
+
+/* Description after message have been sent */
+"Message sent" = "შეტყობინება გაიგზავნა";
+
+/* Description */
+"Sent Failed" = "გაგზავნის შეცდომა";
+
+/* Description */
+"Email failed to send. Message saved as draft." = "ელფოსტის გაგზავნის შეცდომა. შეტყობინება შენახულია, როგორც მონახაზი.";
+
+/* The title will be shown when foler doesnt have emails */
+"Nothing to see here" = "აქ არაფერია სანახავი";
+
+/* The subtitle will be shown when folder doesnt have emails */
+"This folder is empty" = "საქაღალდე ცარიელია";
+
+/* The title of empty inbox */
+"You are all caught up!" = "ყველაფერი მოგვარებულია!";
+
+/* The subtitle of empty inbox */
+"Time to relax" = "დროა დაისვენოთ";
+
+/* Action */
+"Undo" = "დაბრუნება";
+
+/* Title */
+"Message has been deleted." = "შეტყობინება წაიშალა.";
+
+/* Title */
+"Message has been moved." = "შეტყობინება გადატანილია.";
+
+/* Confirmation message before deleting a message */
+"You're going to delete the message irreversibly. Are you sure?" = "ფაილები წაიშლება აღდგენის შანსის გარეშე. დარწმუნებული ბრძანდებით?";
+
+/* Title */
+"You have a new email!" = "ახალი ელფოსტა მოგივიდათ!";
+
+/* Message */
+"You have %d new emails!" = "გაქვთ %d ახალი ელფოსტა!";
+
+/* abbreviation of reply: */
+"Re:" = "პას:";
+
+/* abbreviation of forward: */
+"Fw:" = "გადა:";
+
+/* Title */
+"wrote:" = "დაწერა:";
+
+/* At {time}, e.g.: At 19:00 */
+"At %@" = "%@ - Ზე";
+
+/* On {date}, e.g.: On Aug 14 */
+"On %@" = "%@ - Ზე";
+
+/* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
+"On %@ at %@" = "%1$@ %2$@-ზე";
+
+/* message Date: text */
+"Date:" = "თარიღი:";
+
+/* subject: text when forward */
+"Subject:" = "საგანი:";
+
+/* forwarded message title */
+"Forwarded message" = "გადმოგზავნილი შეტყობინება";
+
+/* Title */
+"Set Password" = "პაროლის დაყენება";
+
+/* Description */
+"Set a password to encrypt this message for non-Proton Mail users." = "ამ შეტყობინების არა-Proton Mail-ის მომხმარებლებისთვის დასაშიფრად დააყენეთ პაროლი.";
+
+/* Placeholder */
+"Message Password" = "შეტყობინების პაროლი";
+
+/* Placeholder */
+"8 to 21 characters long" = "8-დან 15-მდე სიმბოლო";
+
+/* Error message */
+"The password must be between 8 and 21 characters long" = "პაროლი სიგრძე 8 და 21 სიმბოლოს შორის უნდა მერყეობდეს";
+
+/* textview title */
+"Repeat password" = "გაიმეორეთ პაროლი";
+
+/* Placeholder */
+"Passwords must match" = "პაროლები უნდა ემთხვეოდეს";
+
+/* Error message */
+"The 2 passwords are not matching" = "ორი პაროლი ერთმანეთს არ ემთხვევა";
+
+/* action title */
+"Remove password" = "პაროლის მოშლა";
+
+/* title */
+"Password Hint" = "პაროლის მინიშნება";
+
+/* button title */
+"Apply Password" = "პაროლის დაყენება";
+
+/* Action */
+"Compose" = "შედგენა";
+
+/* Composer expiration page title */
+"Message expiration" = "შეტყობინების ვადა";
+
+/* contacts default label type */
+"Custom" = "ხელით";
+
+/* Description */
+"Send message without subject?" = "გავაგზავნო შეტყობინება საგნის გარეშე?";
+
+/* Description */
+"You need at least one recipient to send" = "მიმღებების სია ცარიელია";
+
+/* Title */
+"Change sender address to…" = "გამგზავნის მისამართის შეცვლა…";
+
+/* Error */
+"Upgrade to a paid plan to send from your %@ address" = "თქვენი მისამართიდან (%@) გასაგზავნად გადადით ფასიან გეგმაზე";
+
+/* pm.me upgrade warning in composer */
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "%1$@ მისამართიდან შეტყობინებების გაგზავნა ფასიანი ფუნქციაა. თქვენი შეტყობინება გაიგზავნება თქვენი ნაგულისხმები მისამართიდან %2$@";
+
+/* Title */
+"From" = "გამომგზავნელი";
+
+/* Title */
+"Bcc" = "ბრმა ასლი";
+
+/* Placeholder */
+"Subject" = "საგანი";
+
+/* hint message */
+"Draft saved" = "მონახაზი შენახულია";
+
+/* Placeholder */
+"Define Hint (Optional)" = "მითითების განსაზღვრა (არასავალდებულო)";
+
+/* Menu action to remove text formatting */
+"Clear Style" = "სტილის გასუფთავება";
+
+/* new contacts add Organization  */
+"Add organization" = "ორგანიზაციის დამატება";
+
+/* new contacts add Nickname */
+"Add nickname" = "მეტსახელის დამატება";
+
+/* new contacts add Title */
+"Add title" = "სათაურის დამატება";
+
+/* new contacts add Birthday */
+"Add birthday" = "დაბადების დღის დამატება";
+
+/* new contacts add Anniversary */
+"Add anniversary" = "აღნიშვნის დამატება";
+
+/* new contacts add Gender */
+"Add gender" = "სქესის დამატება";
+
+/* Contacts add new contact */
+"New contact" = "ახალი კონტაქტი";
+
+/* add new address action */
+"Add new address" = "ახალი მისამართის დამატება";
+
+/* new custom field action */
+"Add new custom field" = "ახალი, თქვენთვის სასურველი ველის დამატება";
+
+/* new email action */
+"Add new email" = "ახალი ელფოსტის დამატება";
+
+/* new phone action */
+"Add new phone number" = "ტელეფონის ახალი ნომრის დამატება";
+
+/* new field action */
+"Add new field" = "ახალი ველის დამატება";
+
+/* default vcard types */
+"Personal" = "პირადი";
+
+/* default vcard types */
+"Work" = "სამსახურის";
+
+/* default vcard types */
+"Email" = "ელფოსტა";
+
+/* default vcard types */
+"Other" = "სხვა";
+
+/* default vcard types */
+"Phone" = "ტელეფონი";
+
+/* default vcard types */
+"Mobile" = "მობილური";
+
+/* default vcard types */
+"Fax" = "ფაქსი";
+
+/* default vcard types */
+"Address" = "მისამართი";
+
+/* default vcard types */
+"URL" = "URL";
+
+/* default vcard types */
+"Internet" = "ინტერნეტი";
+
+/* Title */
+"All contacts are imported" = "ყველა კონტაქტი შემოტანილია";
+
+/* contact placeholder */
+"Street" = "ქუჩა";
+
+/* contact placeholder */
+"City" = "ქალაქი";
+
+/* contact placeholder */
+"State" = "რეგიონი";
+
+/* contact placeholder */
+"ZIP" = "საფოსტო ინდექსი";
+
+/* contact placeholder */
+"Country" = "ქვეყანა";
+
+/* contacts talbe cell Organization title */
+"Organization" = "ორგანიზაცია";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "მეტსახელი";
+
+/* contacts talbe cell Title title */
+"Title" = "სათაური";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "დაბადების დღე";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "აღნიშვნა";
+
+/* contacts talbe cell gender title */
+"Gender" = "სქესი";
+
+/* Send an email to the current contact (button title text) */
+"Email contact" = "კონტაქტის ჩასწორება";
+
+/* Call the contact (button title text) */
+"Call contact" = "კონტაქტთან დარეკვა";
+
+/* contact detail view, email addresses section title */
+"Email addresses" = "ელფოსტის მისამართები";
+
+/* contact section title */
+"Encrypted contact details" = "დაშიფრული კონტაქტის დეტალები";
+
+/* action */
+"Share contact" = "კონტაქტის გაზიარება";
+
+/* title */
+"Notes" = "შენიშვნები";
+
+/* Action */
+"Upload device contacts" = "მოწყობილობის კონტაქტების ატვირთვა";
+
+/* top right action text */
+"Create" = "შექმნა";
+
+/* add label action */
+"Add Label" = "ჭდის დამატება";
+
+/* Action */
+"Add Folder" = "საქაღალდის დამატება";
+
+/* place holder */
+"Folder Name" = "საქაღალდის სახელი";
+
+/* createing lable input place holder */
+"Label Name" = "ჭდის სახელი";
+
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "ანგარიშზე წვდომა გათიშულია გადაუხდელობის გამო.თქვენი გადაუხდელი ინვოისის გადასახდელად გთხოვთ შეხვიდეთ proton.me-ზე.";
+
+/* Title */
+"Alert" = "გაფრთხილება";
+
+/* Done action */
+"Done" = "მზადაა";
+
+/* Button to cancel encrypted search */
+"Cancel" = "გაუქმება";
+
+/* Got it action */
+"Got it" = "გავიგე";
+
+/* Open action */
+"Open" = "გახსნა";
+
+/* remove action */
+"Remove" = "წაშლა";
+
+/* Apply action */
+"Apply" = "გადატარება";
+
+/* reply action */
+"Reply" = "პასუხი";
+
+/* reply all action */
+"Reply all" = "ყველასთვის პასუხი";
+
+/* forward action */
+"Forward" = "გადაგზავნა";
+
+/* message From: field text */
+"From:" = "გამომგზავნელი:";
+
+/* message To: feild */
+"To" = "ვის";
+
+/* message Cc: feild */
+"Cc" = "ასლი";
+
+/* message Bcc: feild */
+"Bcc:" = "ბრმა ასლი:";
+
+/* general delete action */
+"Delete" = "წაშლა";
+
+/* general close action */
+"Close" = "დახურვა";
+
+/* Description */
+"Your session has expired because you have been inactive for a while or because it has been revoked. Please log back in." = "თქვენი სესიის ვადა ამოიწურა, რადგან გარკვეული დროით უმოქმედო იყავით. ხელახლა შედით.";
+
+/* Springboard (3D Touch) shortcuts action */
+"Search" = "ძებნა";
+
+/* Alert title */
+"Notice" = "შენიშვნა";
+
+/* Action */
+"Don't remind me again" = "აღარ შემახსენო";
+
+/* Action */
+"Send" = "გაგზავნა";
+
+/* Action */
+"Schedule send" = "გაგზავნის დაგეგმვა";
+
+/* Alert title */
+"Message saved to Drafts" = "შეტყობინება შენახულია მონახაზებში";
+
+/* Alert message */
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "გაგზავნას, მეტისმეტად, ბევრი შეტყობინება ელოდება.\nდაელოდეთ, სანამ ერთი მაინც გაიგზავნება.";
+
+/* Warning message */
+"The sending time needs to be at least 5 minutes in the future." = "გაგზავნის დრო, მინიმუმ, 5 წუთით უნდა იყოს მომავალში.";
+
+/* Action */
+"Send anyway" = "მაინც გაგზავნა";
+
+/* Title */
+"Confirmation" = "დასტური";
+
+/* Action */
+"Draft" = "მონახაზი";
+
+/* Title */
+"The request timed out." = "მოთხოვნის ვადა გავიდა.";
+
+/* Message */
+"Proton servers are unreachable.\nVisit our status page for details." = "Proton-ის სერვერები მიუწვდომელია.\nდეტალებისთვის იხილეთ სტატუსის გვერდი.";
+
+/* Title */
+"No connectivity detected…" = "კავშირი არ არსებობს…";
+
+/* Title */
+"Proton Mail is currently offline…" = "Proton Mail ამჟამად გათიშულია…";
+
+/* Title */
+"Save" = "შენახვა";
+
+/* Action */
+"Edit" = "ჩასწორება";
+
+/* Error message */
+"Invalid username!" = "არასწორი მომხმარებლის სახელი!";
+
+/* Error title */
+"Bad parameter" = "ცუდი პარამეტრი";
+
+/* Error Description */
+"Bad parameter: %@" = "ცუდი პარამეტრი: %@";
+
+/* Error Description */
+"Bad response" = "ცუდი პასუხი";
+
+/* Description */
+"Can't find the value from the response body" = "პასუხში საჭირო მნიშვნელობა ვერ ვიპოვე";
+
+/* no object error, local only , this could be not translated! */
+"no object" = "საგნის გარეშე";
+
+/* Description */
+"Unable to parse response" = "პასუხის ანალიზის შეცდომა";
+
+/* Description */
+"Unable to parse the response object:\n%@" = "საპასუხო ობიექტის ანალიზის შეცდომა:\n%@";
+
+/* spam score warning */
+"This email seems to be from a Proton Mail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "როგორც ჩანს, ეს ელფოსტა არის Proton Mail მისამართიდან, მაგრამ მოვიდა ჩვენი სისტემის გარედან და ვერ გაიარა ავტორიზაცია. ის შეიძლება გაყალბებული, ან არასწორად გადაგზავნილია!";
+
+/* The error message that the incoming mail failed dmarc authentication */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "ეს ელფოსტა მისი დომენის ავთენტიკაციის მოთხოვნებს ვერ აკმაყოფილებს. ის შეიძლება ყალბია, ან არასწორადაა გადაგზავნილი.";
+
+/* spam score warning */
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "ეს შეტყობინება შეიძლება, იყოს ფიშინგის მცდელობა. გთხოვთ, გადაამოწმოთ გამომგზავნი და შემცველობა, რათა დარწმუნდეთ, რომ ისინი სანდოა.";
+
+/* Description */
+"Sending Message" = "შეტყობინების გაგზავნა";
+
+/* Sending message when device doesn't have netowrk connection description */
+"Offline, message queued for sending" = "შეტყობინება გაგზავნის რიგშია";
+
+/* Description */
+"Message sending failed. Please try again." = "შეტყობინების გაგზავნის შეცდომა. თავიდან სცადეთ.";
+
+/* import contact title */
+"Importing Contacts" = "კონტაქტების შემოტანა";
+
+/* Title */
+"Reading device contacts data…" = "მოწყობილობის კონტაქტების მონაცემების კითხვა…";
+
+/* Description */
+"Do you want to cancel the process?" = "გნებავთ პროცესის გაუქმება?";
+
+/* Hint when users create / edit contact offline  */
+"Contact saved, will be synced when connection is available" = "კონტაქტი შენახულია. დასინქრონდება ინტერნეტკავშირის აღდგენის შემდეგ";
+
+/* Hint when users delete contact offline  */
+"Contact deleted, will be synced when connection is available" = "კონტაქტი წაშლილია. დასინქრონდება ინტერნეტ-კავშირის აღდგენის შემდეგ";
+
+/* Action */
+"Confirm" = "დასტური";
+
+/* Title */
+"Canceling" = "გაუქმება";
+
+/* title, default display name */
+"Unknown" = "უცნობი";
+
+/* Action */
+"Import Error" = "შემოტანის შეცდომა";
+
+/* Action */
+"OK" = "დიახ";
+
+/* Action */
+"Later" = "მოგვიანებით";
+
+/* Action */
+"Disabled" = "გათიშულია";
+
+/* contact placeholder */
+"Email address" = "ელფოსტის მისამართი";
+
+/* top left back button */
+"Back" = "უკან";
+
+/* A *short* description saying that there is no contact group associated with this contact email */
+"None" = "არცერთი";
+
+/* lock app option */
+"Every time enter app" = "ყოველთვის აპლიკაციის გაშვებისას";
+
+/* Title */
+"Default" = "ნაგულისხმევი";
+
+/* Title */
+"Set" = "დაყენება";
+
+/* Title */
+"Resetting message cache…" = "შეტყობინებების ქეშის წაშლა…";
+
+/* Title */
+"This preference will fallback to Safari if the browser of choice is uninstalled." = "არჩეული ბრაუზერის წაშლის შემთხვევაში ეს პარამეტრი თვითონ გადართავს Safari-ზე.";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "URL, რომელზეც ცდილობთ წვდომას, არ არის სტანდარტული და შეიძლება, სწორად არ ჩაიტვირთოს. გსურთ მისი გახსნა მოწყობილობის ნაგულისხმები ბრაუზერის გამოყენებით?";
+
+/* Title */
+"Auto Lock Time" = "ავტომატური დაბლოკვის დრო";
+
+/* Title */
+"Change default address to…" = "ნაგულისხმები მისამართის შეცვლა…";
+
+/* pm.me upgrade warning in composer */
+"You can't set %@ address as default because it is a paid feature." = "თქვენ არ შეგიძლიათ %@-ის ნაგულისხმებ მისამართად დაყენება. ეს ფასიანი თვისებაა.";
+
+/* Action */
+"Continue" = "გაგრძელება";
+
+/* error message */
+"Please input a valid email address." = "შეიყვანეთ ელფოსტის სწორი მისამართი.";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "საფოსტო ყუთის განსაბლოკად შეიყვანეთ თქვენი PIN კოდი.";
+
+/* Error */
+"Incorrect PIN." = "არასწორი PIN კოდი.";
+
+/* Description */
+"Upload iOS contacts to Proton Mail?" = "ავტვირთო iOS-ის კონტაქტები Proton Mail-ზე?";
+
+/* Title-Contacts */
+"Delete contact" = "კონტაქტის წაშლა";
+
+/* Description */
+"PIN code can't be empty." = "PIN კოდი ცარიელი არ შეიძლება იყოს.";
+
+/* Error */
+"Unknown Error" = "უცნობი შეცდომა";
+
+/* Action */
+"Load remote content" = "გარე შემცველობის ჩატვირთვა";
+
+/* settings general section title */
+"Change password" = "პაროლის შეცვლა";
+
+/* Title */
+"Current sign-in password" = "შესვლის მიმდინარე პაროლი";
+
+/* Title */
+"New sign-in password" = "შესვლის ახალი პაროლი";
+
+/* Title */
+"Confirm new sign-in password" = "დაადასტურეთ შესვლის ახალი პაროლი";
+
+/* Title */
+"New mailbox password" = "საფოსტო ყუთის ახალი პაროლი";
+
+/* Title */
+"Confirm new mailbox password" = "დაადასტურეთ საფოსტო ყუთის ახალი პაროლი";
+
+/* error when sending the message */
+"Unable to send the email" = "ელფოსტის გაგზავნის შეცდომა";
+
+/* Title */
+"Star/unstar" = "ვარსკვლავის დაყენება/მოცილება";
+
+/* Title */
+"Proton Mail" = "Proton Mail";
+
+/* Title */
+"Remind Me Later" = "მოგვიანებით შემახსენე";
+
+/* Title */
+"Don't Show Again" = "აღარ მაჩვენო";
+
+/* Onboarding title */
+"Easily up-to-date" = "ადვილად განახლებადი";
+
+/* Onboarding title */
+"Privacy for all" = "პირადი სივრცე ყველასთვის";
+
+/* Onboarding title */
+"Neat and tidy" = "მოვლილი და მოწესრიგებული";
+
+/* Welcome to rebranding title */
+"Updated Proton, unified protection" = "განახლებული Proton-ი, გაერთიანებული დაცვა";
+
+/* Onboarding content */
+"Breeze through threaded messages in conversation mode." = "საუბრების რეჟიმში შეტყობინებების ნაკადების სახით ჩვენება.";
+
+/* Onboarding content */
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "მოიწვიეთ თქვენი კონტაქტები Proton Mail-ზე გამჭოლი დაშიფვრის გამოსაყენებლად და პაროლიანი ელფოსტების დასაგზავნად.";
+
+/* Onboarding content */
+"File, label, and color code messages to create your perfect, custom inbox." = "ფაილი, ჭდე და შეტყობინების ფერადი ჭდეები რათა იდეალური, თქვენზე მორგებული საფოსტო ყუთი შექმნათ.";
+
+/* Welcome to rebranding content */
+"Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "წარმოგიდგენთ Proton-ის განახლებულ იერს.\nბევრი სერვისი, ერთი მისია. მოგესალმებით ინტერნეტში, სადაც კონფიდენციალობა ნაგულისხმებია.";
+
+/* skip button title in onboarding page */
+"Skip" = "გამოტოვება";
+
+/* title of the next button */
+"Next" = "შემდეგი";
+
+/* title of the next button */
+"Get Started" = "დაიწყეთ";
+
+/* Description */
+"Unable to edit this message offline" = "შეტყობინების ჩასწორება შეუძლებელია ინტერნეტის გარეშე";
+
+/* like Date: 2017-10-10 */
+"Date: %@" = "თარიღი: %@";
+
+/* Title */
+"Details" = "დეტალები";
+
+/* Title */
+"Hide details" = "დეტალების დამალვა";
+
+/* contact placeholder */
+"Phone number" = "ტელეფონის ნომერი";
+
+/* Contacts Edit contact */
+"Edit Contact" = "კონტაქტის ჩასწორება";
+
+/* Action */
+"Discard changes" = "ცვლილებების გაუქმება";
+
+/* Action */
+"Discard" = "მოცილება";
+
+/* Message shown to user after discarding action is done */
+"Discarded" = "მოცილებულია";
+
+/* action */
+"Add new URL" = "ახალი ბმულის დამატება";
+
+/* settings general section title */
+"Change account password" = "ანგარიშის პაროლის შეცვლა";
+
+/* settings general section title */
+"Change mailbox password" = "საფოსტო ყუთის პაროლის შეცვლა";
+
+/* settings general section title */
+"Auto-load remote content" = "სხვა სერვერებიდან შემცველობის ავტომატური ჩვენება";
+
+/* settings general section title */
+"Auto-load embedded images" = "ჩადგმული გამოსახულებების ავტომატური ჩატვირთვა";
+
+/* settings swipe actions section title */
+"Left to Right" = "მარცხნიდან მარჯვნივ";
+
+/* settings swipe actions section title */
+"Right to Left" = "მარჯვნიდან მარცხნივ";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Unlock required" = "საჭიროა განბლოკვა";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"You disabled %1$@ in your system settings. %2$@ has been used to protect important account information. To access your account, go to settings and reactivate %3$@, or log back in." = "თქვენ %1$@ სისტემის პარამეტრებში გამორთეთ. %2$@ ანგარიშის მნიშვნელოვანი ინფორმაციის დასაცავად გამოიყენებოდა. ანგარიშზე წვდომისთვის გადადით პარამეტრებზე და გამორთეთ %3$@, ან თავიდან შედით.";
+
+/* A description string in pin & faceID setting page */
+"All protection settings will be reset and wiped upon signing out of the app." = "აპიდან გასვლის დროს დაცვის ყველა პარამეტრი დაბრუნდება საწყის მნიშვნელობაზე და წაიშლება.";
+
+/* A section title for timing section to set auto lock timing */
+"Timing" = "ვადა";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to settings" = "პარამეტრებზე გადასვლა";
+
+/* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
+"Go to sign in" = "შესვლის გვერდზე გადასვლა";
+
+/* Confirmation message */
+"You have unsaved changes. Do you want to save it?" = "გნებავთ შეტანილი ცვლილებების შენახვა?";
+
+/* title */
+"Save Changes" = "ცვლილებების შენახვა";
+
+/* Title */
+"Recovery Code" = "აღდგენის კოდი";
+
+/* Placeholder */
+"Two Factor Code" = "2FA კოდი";
+
+/* Title */
+"Authentication" = "ავთენტიკაცია";
+
+/* Action in 2fa popup view */
+"Enter" = "შეიყვანეთ";
+
+/* Title */
+"Storage Warning" = "საცავის გაფრთხილება";
+
+/* Content of space warning */
+"You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "თქვენ გამოიყენეთ მთელი თქვენი საცავი (%@). ელ. ფოსტის მიმოგზავნის გასაგრძელებლად განაახლეთ თქვენი გეგმა.";
+
+/* Content of space warning */
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "თქვენ  მთელი თქვენი საცავის( %2$@) %1$d%% გამოიყენეთ. ელ. ფოსტის მიმოგზავნის გასაგრძელებლად განაახლეთ თქვენი გეგმა.";
+
+/* Alert title */
+"Storage full" = "საცავი სავსეა";
+
+/* Storage warning */
+"Storage quota exceeded" = "საცავის კვოტა გადაჭარბებულია";
+
+/* Content of storage full alert */
+"Please upgrade your plan" = "განაახლეთ თქვენი გეგმა";
+
+/* Content of storage full alert */
+"Please upgrade your plan to continue to send and receive emails." = "ელფოსტების მიღებისა და გაგზავნის გასაგრძელებლად საჭიროა გეგმის განახლება.";
+
+/* Title */
+"Warning" = "გაფრთხილება";
+
+/* Action */
+"Hide" = "დამალვა";
+
+/* Action */
+"Show" = "ჩვენება";
+
+/* update password error title */
+"Change Password" = "პაროლის შეცვლა";
+
+/* update password error = typo:Modulus */
+"Can't get a Modulus ID!" = "მოდულუსის ID-ის მიღების შეცდომა!";
+
+/* update password error = typo:Modulus */
+"Can't get a Modulus!" = "მოდულუსის მიღების შეცდომა!";
+
+/* update password error */
+"Invalid hashed password!" = "პაროლის ჰეში არასწორია!";
+
+/* update password error */
+"The new password needs to be at least 8 characters long" = "საჭიროა, რომ ახალი პაროლი 8 სიმბოლო მაინც იყოს";
+
+/* update password error */
+"Can't create a SRP verifier!" = "SRP შემმოწმებლის შექმნის შეცდომა!";
+
+/* update password error */
+"Can't create a SRP Client" = "SRP კლიენტის შექმნის შეცდომა";
+
+/* update password error */
+"The password is wrong." = "პაროლი არასწორია.";
+
+/* update password error */
+"The new password does not match." = "ახალი პაროლები ერთმანეთს არ ემთხვევა.";
+
+/* update password error */
+"The new password can't be empty." = "ახალი პაროლი ცარიელი არ შეიძლება იყოს.";
+
+/* update password error */
+"The private key update failed." = "პირადი გასაღების განახლების შეცდომა.";
+
+/* update password error */
+"Password update failed" = "პაროლის განახლების შეცდომა";
+
+/* update notification email error title */
+"Update Notification Email" = "გაფრთხილების ელფოსტის განახლება";
+
+/* Title */
+"Apply Labels" = "ჭდეების გადატარება";
+
+/* Title of the view showing the message header */
+"Message headers" = "შეტყობინების თავსართები";
+
+/* Title of the view showing the message HTML source */
+"HTML" = "HTML";
+
+/* Title of the view showing the message body */
+"Message body" = "შეტყობინების ტანი";
+
+/* alert title */
+"Confirm phishing report" = "ფიშინგის ანგარიშის დასტური";
+
+/* alert message */
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "შეტყობინების ფიშინგად მონიშვნა გამოიწვევს ამ შეტყობინების ჩვენთვის გადმოგზავნას. ჩვენ გავაანალიზებთ მას და გავაუმჯობესებთ ჩვენს ფილტრებს. ეს ასევე ნიშნავს, რომ ჩვენ წვდომა გვექნება შეტყობინების სრულ შინაარსთან.";
+
+/* error title */
+"Verification error" = "შემოწმების შეცდომა";
+
+/* error details */
+"Verification of this content’s signature failed" = "ამ შემცველობის ხელმოწერის შემოწმების შეცდომა";
+
+/* error title */
+"Decryption error" = "გაშიფვრის შეცდომა";
+
+/* error details */
+"Decryption of this content failed" = "შემცველობის გაშიფვრის შეცდომა";
+
+/* error details */
+"Decryption of this message's encrypted content failed." = "Შეტყობინების დაშიფრული ნაწილის გაშიფვრის შეცდომა.";
+
+/* error title */
+"Logs" = "ჟურნალი";
+
+/* Title */
+"normal attachments" = "ნორმალურად მიმაგრებული ფაილები";
+
+/* Title */
+"inline attachments" = "იქვე მიმაგრებული ფაილები";
+
+/* Title */
+"From your photo library" = "თქვენი ფოტობიბლიოთეკიდან";
+
+/* Title */
+"Take new photo" = "ახალი სურათის გადაღება";
+
+/* Title */
+"Import from…" = "შემოტანა…";
+
+/* Alert title */
+"Attachment limit" = "მიმაგრებული ფაილის ლიმიტი";
+
+/* Description */
+"The size limit for attachments is 25 MB." = "მიმაგრებული ფაილების მაქსიმალური ზომა შეადგენს 25მბ-ს.";
+
+/* Error */
+"Can't load the file" = "ფაილის ჩატვირთვის შეცდომა";
+
+/* Error */
+"Can't open the file" = "ფაილის გახსნის შეცდომა";
+
+/* Action */
+"Learn more" = "მეტის ნახვა";
+
+/* Action */
+"Retry" = "თავიდან";
+
+/* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
+"'On' E, MMM d, yyyy 'at' %@" = "'დრო: %@ E, MMM d, yyyy-ში";
+
+/* No comment provided by engineer. */
+"Message expired" = "შეტყობინებას ვადა გაუვიდა";
+
+/* expiration time count down */
+"This message will expire in %dD %dH %dM" = "შეტყობინებას ვადა გაუვა %1$d დ %2$d სთ %3$d წთ-ში";
+
+/* Action */
+"Sign Out" = "გასვლა";
+
+/* Alert title */
+"Sending in progress" = "მიმდინარეობს გაგზავნა";
+
+/* the message will show when closing a draft from the share extension */
+"Closing" = "დახურვა";
+
+/* Alert message */
+"Please keep Proton Mail open until the operation is done." = "დატოვეთ Proton Mail გაშვებული ოპერაციის დასრულებამდე.";
+
+/* Title */
+"Bug Report Received" = "შეცდომის ანგარიში მიღებულია";
+
+/* No comment provided by engineer. */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "მადლობა შეცდომის პატაკის გამოგზავნისთვის. თქვენი პატაკი ჩამატებულია შეცდომების ჩვენს სისტემაში.";
+
+/* Title of the alert when the device is offline */
+"Offline" = "ოფლაინი";
+
+/* Title */
+"Label as…" = "ჭდის დადება…";
+
+/* Title */
+"Move to…" = "გადატანა…";
+
+/* Action */
+"Mark as read/unread" = "წაუკითხავად/წაკითხულად მონიშვნა";
+
+/* Action title of move to archive */
+"Move to archive" = "არქივში გადატანა";
+
+/* Action title of move to spam */
+"Move to spam" = "სპამში გადატანა";
+
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Failed to load content!\nPlease try again." = "შემცველობის ჩატვირთვის პრობლემა!\nთავიდან სცადეთ.";
+
+/* Title of alert in share extension. */
+"Error" = "შეცდომა";
+
+/* Error message */
+"Failed to determine type of file" = "ფაილის ტიპის გამოცნობის შეცდომა";
+
+/* Error message */
+"Unsupported file type" = "ფაილის ტიპის მხარდაჭერა არ არსებობს";
+
+/* Error */
+"Can't copy the file" = "ფაილის კოპირების შეცდომა";
+
+/* Title */
+"Copy address" = "მისამართის კოპირება";
+
+/* Title */
+"Copy name" = "სახელის კოპირება";
+
+/* Title */
+"Copy" = "კოპირება";
+
+/* Title */
+"Cut" = "ამოჭრა";
+
+/* Title */
+"Compose to" = "გაგზავნა";
+
+/* Title */
+"Add to contacts" = "კონტაქტებში ჩამატება";
+
+/* encryption lock description */
+"Sender Verification Failed" = "გამომგზავნის შემოწმების შეცდომა";
+
+/* encryption lock description */
+"End-to-end encrypted message" = "გამჭოლად დაშიფრული შეტყობინება";
+
+/* alert title */
+"Expiration not supported" = "ვადა მხარდაჭერილი არაა";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead for the following recipients:" = "გირჩევთ პაროლის დაყენებას შემდეგი მომხმარებლებისათვის:";
+
+/* alert body before list of addresses */
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "გირჩევთ პაროლის დაყენებას ან PGP-ის გათიშვას შემდეგი მომხმარებლებისათვის:";
+
+/* A option title that enable/disable notification feature */
+"Notifications" = "შეტყობინებები";
+
+/* VoiceOver: email belongs to folders */
+"Folders" = "საქაღალდეები";
+
+/* VoiceOver: email has lables */
+"Labels" = "ჭდეები";
+
+/* Error message */
+"Is this bug report about an in-app purchase?" = "შეეხება თუ არა ეს ანგარიში აპის შიგნით შეძენის პრობლემებს?";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "ჩვენი მხარდაჭერის გუნდი შეეცდება, ხელით გაააქტიუროს თქვენი სერვისის გეგმა, თუ თანახმა იქნებით, მიამაგროთ ტექნიკური მონაცემები, რომლებიც App Store-მა აპს შეძენის მომენტში მიაწოდა. ეს მონაცემები არ შეიცავს დეტალებს თქვენი iTunes ანგარიშის, Apple ID-ის, დაკავშირებული საკრედიტო ბარათების ან სხვა ინფორმაციას მომხმარებლის შესახებ. ტექნიკური მონაცემები, მხოლოდ, ტრანზაქციის App Store-ის სერვერებზე შესრულების შესახებ შემოწმებაში და დადასტურებაში გვეხმარება.";
+
+/* Error message */
+"Yes, attach details of payment" = "დიახ, მიაბი გადახდის დეტალები";
+
+/* Error message */
+"No, not related to in-app purchase" = "არა, არ ეხება აპში შეძენებს";
+
+/* The instruction label for the group name textfield */
+"Group name" = "ჯგუფის სახელი";
+
+/* The title for the contact group creation view */
+"New group" = "ახალი ჯგუფი";
+
+/* The title for the contact group editing view */
+"Edit group" = "ჯგუფის ჩასწორება";
+
+/* The title for the view where user can manage emails in the contact group */
+"Manage addresses" = "მისამართების მართვა";
+
+/* The title for the view where user can manage emails in the contact group */
+"Add contacts" = "კონტაქტების დამატება";
+
+/* The title for the view where user can select the color for the group */
+"Edit avatar" = "ავატარის ჩასწორება";
+
+/* The description of the button for deleting the contact group */
+"Delete contact group" = "კონტაქტების ჯგუფის წაშლა";
+
+/* The message will show up when the user attempts to create a contact group without any email selected */
+"Please select at least one email for the contact group" = "საკონტაქტო ჯგუფისთვის აირჩიეთ ერთი ელფოსტა მაინც";
+
+/* The message will show up when the user attempts to create a contact group without any name specified */
+"Please provide a group name" = "შეიყვანეთ ჯგუფის სახელი";
+
+/* The error message will be shown when the update of the contact group through API failed */
+"Can't update contact group through the API" = "კონტაქტების განახლება API-ის საშუალებით შეუძლებელია";
+
+/* The error message will be shown when the deletionn of the contact group through API failed */
+"Can't delete contact group through API" = "კონტაქტების ჯგუფის წაშლა API-ის საშუალებით შეუძლებელია";
+
+/* Internal type casting error */
+"Type casting error" = "ტიპის გარდაქმნის შეცდომა";
+
+/* The preconditions are not met */
+"Internal Error" = "შიდა შეცდომა";
+
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ დააგდეთ აქ მათ მისამაგრებლად";
+
+/* Downloading attachments from cloud */
+"Importing" = "შემოტანა";
+
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "მიმაგრებული ფაილის შემოტანა. ამას საკმაო დრო შეიძლება, დასჭირდეს";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "მიმაგრებული ფაილი შემოტანილია";
+
+/* Invalid URL error when click a url in contact */
+"Invalid URL" = "არასწორი URL";
+
+/* More actions button */
+"More" = "მეტი";
+
+/* Local notification title */
+"Problem sending message" = "შეტყობინების გაგზავნის პრობლემა";
+
+/* Local notification text */
+"We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "შეტყობინების გაგზავნა ვერ მოხერხდა, ქსელის ცუდი კავშირის გამო. თქვენი შეტყობინება შენახულია მონახაზებში და ავტომატურად გაიგზავნება აპის გახსნის შემდეგ.";
+
+/* Alert to confirm signout */
+"You will be switched to %@" = "თქვენ გადაირთვებით %@-ზე";
+
+/* Alert to confirm sign out */
+"Are you sure you want to sign out?" = "დარწმუნებული ბრძანდებით, რომ გნებავთ, გახვიდეთ?";
+
+/* Alert to confirm sign out when only one account signed in */
+"Are you sure you want to sign out %@?" = "დარწმუნებული ბრძანდებით, რომ გნებავთ, გახვიდეთ %@-დან?";
+
+/* Alert to confirm signout with pending message in the queue */
+"There are unsent messages that will be lost if you sign out" = "არსებობს გაუგზავნელი შეტყობინებები, რომლებიც დაიკარგება, თუ გახვალთ";
+
+/* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
+"Please select at least one email" = "აირჩიეთ ერთი ელფოსტა მაინც";
+
+/* Alert when auth token is revoked and switch to another */
+"Signed out from %@ and signed in with %@" = "გამოხვედით %1$@-დან და შეხვედით %2$@-ით";
+
+/* Alert when switched account by clicking notification of another account */
+"Switched to account '%@'" = "გადავერთე %@-ზე";
+
+/* Cert pinning failed alert title */
+"Insecure connection" = "დაუცველი კავშირი";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "TLS სერტიფიკატის გადამოწმების შეცდომა. კავშირი შეიძლება, მეთვალყურეობის ქვეშაა. თქვენი უსაფრთხოებისათვის აპლიკაცია დროებით იბლოკება.\n\nდაუყოვნებლივ შეცვალეთ ქსელი.";
+
+/* Cert pinning failed alert message */
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "TLS სერტიფიკატის გადამოწმების შეცდომა. კავშირი შეიძლება, მეთვალყურეობის ქვეშაა. თქვენი უსაფრთხოებისათვის აპლიკაცია დროებით იბლოკება.";
+
+/* Cert pinning failed alert message */
+"Disable Validation" = "ვალიდაციის გამორთვა";
+
+/* Account manager title */
+"Account" = "ანგარიში";
+
+/* Alert when the account is already logged in */
+"The user is already signed in" = "მომხმარებელი უკვე შესულია";
+
+/* Title of alert when the free account limit is reached */
+"Limit reached" = "მიაღწიეთ ლიმიტს";
+
+/* Alert when the free account limit is reached */
+"Only one free account can be added" = "შეიძლება, დაემატოს, მხოლოდ, ერთი უფასო ანგარიში";
+
+/* section title in settings */
+"Account settings" = "ანგარიშის მორგება";
+
+/* section title in settings */
+"App settings" = "აპის მორგება";
+
+/* section title in settings */
+"General settings" = "საერთო პარამეტრები";
+
+/* security title in settings */
+"App PIN" = "აპის PIN კოდი";
+
+/* security title in settings */
+"App PIN & Touch ID" = "აპის PIN-კოდი და Touch ID";
+
+/* security title in settings */
+"App PIN & Face ID" = "აპის PIN-კოდი და Face ID";
+
+/* cell title in device settings */
+"Language" = "ენა";
+
+/* cell title in device settings */
+"Combined contacts" = "გაერთიანებული კონტაქტები";
+
+/* cell title in app settings */
+"Swipe actions" = "გადათრევის ქმედებები";
+
+/* cell title in app settings */
+"Alternative routing" = "ალტერნატიული რაუტინგი";
+
+/* cell title in device settings */
+"Storage" = "საცავი";
+
+/* cell title in device settings */
+"Addresses" = "მისამართები";
+
+/* Cell title in device settings - mute notification until a later time. */
+"Snooze" = "დროებით დადუმება";
+
+/* cell title in device settings */
+"Mailbox" = "საფოსტო ყუთი";
+
+/* cell title in device settings */
+"Privacy" = "პირადი მონაცემები";
+
+/* cell title in device settings */
+"Local storage limit" = "ლოკალური საცავის ზღვარი";
+
+/* cell title in device setting */
+"Clear local cache" = "ლოკალური ქეშის გასუფთავება";
+
+/* cell title in app setting */
+"Dark mode" = "ბნელი რეჟიმი";
+
+/* network troubleshot cell title */
+"Allow alternative routing" = "ალტერნატიული რაუტინგის ჩართვა";
+
+/* network troubleshot cell title */
+"No internet connection" = "ინტერნეტი არ გაქვთ";
+
+/* The error message is shown in composer */
+"Recipient not found" = "მიმღები ნაპოვნი არაა";
+
+/* The error message is shown in composer */
+"Invalid email address" = "არასწორი ელფოსტის მისამართი";
+
+/* incorrect email format error in composer */
+"At least one recipient email address is improperly formatted, please double check them." = "მიმღების ერთი მისამართი მაინც არასწორადაა აკრეფილი. გთხოვთ, გადაამოწმოთ.";
+
+/* incorrect email format error in composer */
+"Error sending" = "გაგზავნის შეცდომა";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found" = "ამ ჯგუფში, სულ ცოტა, ერთი ელფოსტის მისამართი ნაპოვნი არაა";
+
+/* incorrect email format error while sending */
+"At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "მინიმუმ, ერთი მიმღების ელფოსტის მისამართი/დომენი არ არსებობს ან ცუდად არის შედგენილი. შეტყობინება გადატანილია მონახაზებში.";
+
+/* incorrect email format error while sending */
+"You have entered at least one invalid email address. Please verify your recipients." = "თქვენს მიერ შეყვანილი ერთი ან მეტი ელფოსტის მისამართი არასწორია. გადაამოწმეთ მიმღებების სია.";
+
+/* incorrect email format error while sending */
+"At least one email address in the group could not be found." = "ამ ჯგუფში, სულ ცოტა, ერთი ელფოსტის მისამართი ნაპოვნი არაა.";
+
+/* incorrect email format error while sending */
+"You have entered at least one unknown recipient. Please verify your recipients." = "ერთი ან მეტი უცნობი მიმღები. გადაამოწმეთ თქვენი მიმღებების სია.";
+
+/* title of incorrect email format error while sending */
+"Sending failed" = "გაგზავნის შეცდომა";
+
+/* title of alert acton of incorrect email format error */
+"Go to drafts" = "მონახაზებზე გადასვლა";
+
+/* title of toast message that user taps the message which is uploading */
+"Draft is still uploading…" = "მონახაზის ატვირთვა ჯერ კიდევ მიმდინარეობს…";
+
+/* content of the sending mesage that will display this text on the date label */
+"Sending message…" = "შეტყობინების გაგზავნა…";
+
+/* message shown in the notification when the recipient validation is failed while sending */
+"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "შეტყობინების გაგზავნა ვერ მოხერხდა. სულ ცოტა, ერთი მიმღების ელფოსტის მისამართი/დომენი არ არსებობს, ან არასწორადაა მითითებული.";
+
+/* The unread title of unread action button in mailbox view */
+"unread" = "წაუკითხავები";
+
+/* The title of navigation bar title of mailbox view while selecting the message */
+"Selected" = "მონიშნულია";
+
+/* The title of last update status of more than 1 hour */
+"Updated >1 hour ago" = "განახლდა >1 საათის წინ";
+
+/* The title of last update status of updated just now */
+"Updated just now" = "ახლახან განახლდა";
+
+/* The text shown on the mailbox when the device is in offline mode */
+"You are offline" = "ქსელი გამორთულია";
+
+/* The footer shown when there is not result in the inbox */
+"Encrypted by Proton" = "დაშიფრულია Proton-ის მიერ";
+
+/* The text shown on the mailbox when the primary user changed */
+"Signed in as %@" = "შეხვედით, როგორც %@";
+
+/* The title of the star action in action sheet */
+"Star" = "ვარსკვლავი";
+
+/* The title of the star action in action sheet */
+"Unstar" = "ვარსკვლავის მოხსნა";
+
+/* The title of the unread action in action sheet */
+"Mark as unread" = "წაუკითხავად მონიშვნა";
+
+/* Push notification action mark as read */
+"Mark as read" = "წაკითხულად მონიშვნა";
+
+/* Push notification action move to trash */
+"Move to trash" = "ნაგავში გადატანა";
+
+/* The title of the remove action in action sheet */
+"Move to inbox" = "შემომავლებში გადატანა";
+
+/* The title of the view message in light mode action in action sheet */
+"View message in Light mode" = "შეტყობინებების ღია რეჟიმში ნახვა";
+
+/* The title of the view message in dark mode action in action sheet */
+"View message in Dark mode" = "შეტყობინებების ბნელ რეჟიმში ნახვა";
+
+/* The footer of combined contact in settings */
+"Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "ჩართეთ ეს ფუნქცია თქვენი ყველა შემოსული ანგარიშის კონტაქტების გამოყენებით ელფოსტის მისამართების ავტომატურად შესავსებად.";
+
+/* alternative routing description */
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "იმ შემთხვევაში, თუ Proton-ის საიტები დაბლოკილია, ეს პარამეტრი აპს საშუალებას აძლევს, Proton-მდე მისასვლელად ქსელის ალტერნატიული რაუტინგი სცადოს, რაც შეიძლება, სასარგებლო იყოს ბრანდმაუერის ან ქსელის პრობლემების გვერდის ავლით. მეტი საიმედოობისთვის გირჩევთ, ჩართოთ ეს პარამეტრი. %1$@";
+
+/* The title of alternative routing settings */
+"Networking" = "ქსელი";
+
+/* The title of On setting options */
+"On" = "ჩართ";
+
+/* The title of Off setting options */
+"Off" = "გამორთული";
+
+/* The title of re auth alert */
+"Re-authenticate" = "ავთენტიკაცია თავიდან";
+
+/* The content of the re auth alert */
+"Enter your password to make changes" = "ცვლილებების შესატანად შეიყვანეთ პაროლი";
+
+/* Title of the banner which is displayed when sender of the message requests a read receipt */
+"Send read receipt" = "წაკითხულობის ანგარიშის გაგზავნა";
+
+/* A label text which is displayed after sending read receipt to sender */
+"Receipt sent" = "ანგარიში გაიგზავნა";
+
+/* Message of a banner which is displayed on the messages list when offline */
+"We have trouble connecting to the servers. Please reconnect." = "სერვერებთან დაკავშირების შეცდომა. კიდევ სცადეთ.";
+
+/* Title of message permanent deletion alert, singular */
+"Delete message" = "შეტყობინების წაშლა";
+
+/* Title of message permanent deletion alert, plural */
+"Delete %d Messages" = "წაშლილია %d შეტყობინება";
+
+/* No comment provided by engineer. */
+"Current Recovery Email" = "მიმდინარე აღსადგენი ელფოსტა";
+
+/* No comment provided by engineer. */
+"Recovery enabled" = "აღდგენა ჩართულია";
+
+/* No comment provided by engineer. */
+"Please set a recovery / notification email" = "დააყენეთ სხვა აღდგენის / შეტყობინებების ელფოსტის მისამართი";
+
+/* No comment provided by engineer. */
+"Unread" = "წაუკითხავები";
+
+/* No comment provided by engineer. */
+"Read" = "წაკითხული";
+
+/* No comment provided by engineer. */
+"Set up swipe gestures to access most used actions." = "გასმის ჟესტების ხშირად გამოყენებულ ქმედებებზე მინიჭება.";
+
+/* No comment provided by engineer. */
+"Tap here to set" = "დასაყენებლად დააჭირეთ";
+
+/* No comment provided by engineer. */
+"Not set" = "დაყენებული არაა";
+
+/* The section title of folder manager table */
+"Your folders" = "თქვენი საქაღალდეები";
+
+/* The title of create folder page */
+"New folder" = "ახალი საქაღალდე";
+
+/* The title of edit folder page */
+"Edit folder" = "საქაღალდის ჩასწორება";
+
+/* The title of delete folder button */
+"Delete folder" = "საქაღალდის წაშლა";
+
+/* The section title of label manager table */
+"Your labels" = "თქვენი ჭდეები";
+
+/* The title of create label page */
+"New label" = "ახალი ჭდე";
+
+/* The title of edit label page */
+"Edit label" = "ჭდის ჩასწორება";
+
+/* The title of delete label button */
+"Delete label" = "ჭდის წაშლა";
+
+/* The button to enable label list reorder */
+"Reorder" = "გადალაგება";
+
+/* Setting option title of folder setting page */
+"Parent folder" = "მშობელი საქაღალდე";
+
+/* Alert message when user tries to delete folder */
+"This action cannot be undone. Emails stored in this folder will not be deleted and can be found in the All Mail folder." = "ამ ქმედების დაბრუნება შეუძლებელია. საქაღალდეში შენახული შეტყობინებები არ წაიშლება. მათი ნახვა შესაძლებელია საქაღალდეში „ყველა შეტყობინება“.";
+
+/* Alert message when user tries to delete label */
+"This action cannot be undone." = "ეს ქმედება არ შეიძლება, დაბრუნდეს.";
+
+/* Alert message when user tries to discard unsaved changes */
+"Any unsaved changes will be lost." = "შეუნახავი ცვლილებები დაიკარგება.";
+
+/* A label message */
+"Inherited from parent folder" = "მემკვიდრეობით მშობელი საქაღალდისგან";
+
+/* Alert title */
+"Creating folder not allowed" = "საქაღალდის შექმნა აკრძალულია";
+
+/* Alert title */
+"Creating label not allowed" = "ჭდის შექმნა დაუშვებელია";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 folders" = "სამზე მეტი საქაღალდის გამოსაყენებლად გადადით ფასიან ვერსიაზე";
+
+/* Alert message */
+"Please upgrade to a paid plan to use more than 3 labels" = "სამზე მეტი ჭდის გამოსაყენებლად გადადით ფასიან ვერსიაზე";
+
+/* Alert message is shown when the device doesn't have network connection */
+"Please connect and retry" = "დაუკავშირდით და თავიდან სცადეთ";
+
+/* Option title */
+"Use folder colors" = "საქაღალდის ფერების გამოყენება";
+
+/* Option title */
+"Inherit color from parent folder" = "მემკვიდრეობით ფერი მშობელი საქაღალდისგან";
+
+/* section title */
+"Select color" = "აირჩიეთ ფერი";
+
+/* No comment provided by engineer. */
+"You are not connected. We cannot display the content of your message." = "ელფოსტის შიგთავსის ჩვენება შეუძლებელია ინტერნეტკავშირის არარსებობის გამო.";
+
+/* No comment provided by engineer. */
+"Do you really want to remove this file from attachments?" = "მართლა გნებავთ შეტყობინებიდან ამ მიმაგრებული ფაილის მოცილება?";
+
+/* The title of loading embedded image banner. */
+"Load embedded images" = "ჩადგმული გამოსახულებების ჩატვირთვა";
+
+/* No comment provided by engineer. */
+"This conversation contains trashed messages" = "საუბარი შეიცავს წაშლილ შეტყობინებებს";
+
+/* No comment provided by engineer. */
+"This conversation contains non-trashed messages." = "ეს საუბარი შეიცავს წაუშლელ შეტყობინებებს.";
+
+/* No comment provided by engineer. */
+"Message actions" = "შეტყობინების ქმედებები";
+
+/* No comment provided by engineer. */
+"Manage" = "მართვა";
+
+/* No comment provided by engineer. */
+"Move message" = "შეტყობინების გადატანა";
+
+/* No comment provided by engineer. */
+"Print" = "დაბეჭდვა";
+
+/* No comment provided by engineer. */
+"Save as PDF" = "PDF-ად შენახვა";
+
+/* No comment provided by engineer. */
+"View headers" = "თავსართების ნახვა";
+
+/* No comment provided by engineer. */
+"View HTML" = "HTML-ის ნახვა";
+
+/* No comment provided by engineer. */
+"Report phishing" = "ფიშინგის შესახებ შეტყობინება";
+
+/* No comment provided by engineer. */
+"Not a spam (move to inbox)" = "სპამი არაა (შემომავლებში გადატანა)";
+
+/* No comment provided by engineer. */
+"Move to" = "გადატანა";
+
+/* No comment provided by engineer. */
+"Do you want to discard your changes?" = "გნებავთ თქვენი ცვლილებების გაუქმება?";
+
+/* No comment provided by engineer. */
+"Your changes will be discarded" = "თქვენი ცვლილებები გაუქმდება";
+
+/* No comment provided by engineer. */
+"Label as" = "დანიშვნა, როგორც";
+
+/* Checkbox on Label as action sheet to  prompt if user wants to archive the conversation/message as well when applying one or more labels */
+"Also archive?" = "არქივის ჩათვლით?";
+
+/* No comment provided by engineer. */
+"New Label" = "ახალი ჭდე";
+
+/* No comment provided by engineer. */
+"Undisclosed Recipients" = "გაუმჟღავნებელი მიმღებები";
+
+/* No comment provided by engineer. */
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "სისტემამ ეს ელ-ფოსტა ფიშინგის მცდელობად მონიშნა. გადაამოწმეთ, სიმართლეა თუ არა.";
+
+/* No comment provided by engineer. */
+"Mark as legitimate" = "მონიშვნა, როგორც ნამდვილის";
+
+/* The title of auto reply banner */
+"This message was automatically generated" = "ეს შეტყობინება ავტომატურადაა გენერირებული";
+
+/* Warning message */
+"Do you want to discard the changes?" = "გნებავთ ცვლილებების გაუქმება?";
+
+/* No comment provided by engineer. */
+"Group emails from the same conversation together." = "ერთი საუბრის ელფოსტების ერთად დაჯგუფება.";
+
+/* No comment provided by engineer. */
+"Conversation grouping" = "საუბრების დაჯგუფება";
+
+/* No comment provided by engineer. */
+"Conversation mode" = "საუბრის რეჟიმი";
+
+/* No comment provided by engineer. */
+"Undo send" = "გაგზავნის გაუქმება";
+
+/* The protection title of PIN code protection */
+"PIN code" = "PIN კოდი";
+
+/* The protection title of Face ID protection */
+"Face ID" = "Face ID";
+
+/* The protection title of Touch ID protection */
+"Touch ID" = "Touch ID";
+
+/* The title of the button that shows in the conversation view when there is new message coming. */
+"New Message" = "ახალი შეტყობინება";
+
+/* The string that will be read by VoiceOver if the user wants to switch selection mode. */
+"Switch selection mode" = "მონიშვნის რეჟიმის შეცვლა";
+
+/* No comment provided by engineer. */
+"Yesterday" = "გუშინ";
+
+/* VoiceOver title of account switcher button in the menu */
+"Open account switcher" = "ანგარიშის გადამრთველის გახსნა";
+
+/* text displayed in composer when attachments are uploading */
+"Sending will be available\nwhen attachments are uploaded" = "გაგზავნა იმ დროს, როცა მიმდინარეობს \nფაილების მიმაგრება, შეუძლებელია";
+
+/* Alert title when attachment upload failed */
+"Attachment failure" = "მიმაგრების შეცდომა";
+
+/* Alert message when attachment upload failed */
+"The following files couldn't be attached:" = "ფაილების სია, რომლებიც ვერ იქნა მიმაგრებული:";
+
+/* The title of voice over action of expanding the folder */
+"Expand folder" = "საქაღალდის გაშლა";
+
+/* The title of voice over action of collapsing the folder */
+"Collapse folder" = "საქაღალდის ჩაკეცვა";
+
+/* The title of voice over action that switches the unread filter status in the inbox */
+"Switch unread filter" = "წაუკითხავების ფილტრის გადართვა";
+
+/* Title of user feedback view */
+"Your feedback" = "თქვენი აზრი";
+
+/* Prompt of user feedback view */
+"How would you describe your experience with the new Proton Mail?" = "როგორ მოგწონთ ახალი Proton Mail?";
+
+/* Placeholder in text view destined to gather written user feedback */
+"Tell us about your experience. (Optional)" = "მოგვიყევით თქვენი გამოცილების შესახებ. (არასავალდებულო)";
+
+/* Title of button to send feedback */
+"Send feedback" = "უკუკავშირის გაგზავნა";
+
+/* Example feedback */
+"Awful" = "საშინელი";
+
+/* Example feedback */
+"Wonderful" = "შესანიშნავია";
+
+/* Comment in banner thanking user for providing feedback */
+"Thank you for your feedback!" = "მადლობა გამოხმაურებისთვის!";
+
+/* The title of button to collapse the expanded message in conversation view for VoiceOver. */
+"Collapse message" = "შეტყობინების ჩაკეცვა";
+
+/* The title of section inside the dark mode setting page */
+"Appearance" = "გარეგნობა";
+
+/* The title of follow system option in dark mode setting */
+"Follow device setting" = "მოწყობილობის პარამეტრებზე მიყოლა";
+
+/* The title of always on option in dark mode setting */
+"Always on" = "ყოველთვის ჩართული";
+
+/* The title of always off option in dark mode setting */
+"Always off" = "ყოველთვის გამორთული";
+
+/* The title of banner that is shown after using swipe action to trash a message */
+"Message moved to trash" = "შეტყობინება გადატანილია ნაგავში";
+
+/* The title of banner that is shown after using swipe action to archive a message */
+"1 message moved to archive" = "1 შეტყობინება გადატანილია არქივში";
+
+/* The title of banner that is shown after using swipe action to spam a message */
+"1 Message moved to spam" = "1 შეტყობინება გადატანილია სპამში";
+
+/* The title of toast message that is shown after the undo action is done */
+"Action reverted" = "მოქმედება დაბრუნებულია";
+
+/* An action title shows in ellipsis menu */
+"Compose message" = "წერილის შედგენა";
+
+/* An action title shows in ellipsis menu */
+"Empty Trash" = "ნაგვის ყუთის გასუფთავება";
+
+/* Alert title */
+"Empty trash folder" = "ნაგვის ყუთის დაცარიელება";
+
+/* An action title shows in ellipsis menu */
+"Empty Spam" = "სპამი ცარიელია";
+
+/* Alert title */
+"Empty spam folder" = "სპამის საქაღალდის დაცარიელება";
+
+/* Warning message */
+"Cannot empty folder right now." = "საქაღალდის დაცარიელება ახლა შეუძლებელია.";
+
+/* Button title to show full encrypted message body when decryption failed */
+"…[Show full message]" = "…[სრული შეტყობინების ჩვენება]";
+
+/* The title of notification that will show when the token of one account is revoked */
+"Signed out of %@" = "%@-დან გახვედით";
+
+/* The body of notification that will show when the token of one account is revoked */
+"Sign in again to keep receiving updates" = "განახლებების მისაღებად შედით ისევ";
+
+/* Alert title when users want to send a message without attachments but contain attachment-related keywords in the message body */
+"No attachment found" = "მიმაგრებული ფაილების გარეშე";
+
+/* Alert body for no attachment found */
+"Do you want to send your message anyway?" = "გნებავთ ამ ელფოსტის მაინც გაგზავნა?";
+
+/* The title of the button in the composer that will show the cc/bcc field when voiceover is on. */
+"Add CC and BCC" = "BCC-ისა და CC-ის დამატება";
+
+/* The title of the button in the composer that will close the cc/bcc field when voiceover is on. */
+"Close CC and BCC" = "CC-ისა და BCC-ის დახურვა";
+
+/* The title of the button in the composer that can select different sender address. */
+"Choose different sender address" = "გამგზავნის სხვა მისამართის დაყენება";
+
+/* The voiceiver title of the add password button in the tool bar of composer. */
+"Set mail password" = "ელფოსტის პაროლის დაყენება";
+
+/* The voiceiver title of the add expiration button in the tool bar of composer */
+"Set mail expiration" = "ელფოსტის ვადის დაყენება";
+
+/* The voiceover title of the dismiss keyboard action */
+"Dismiss keyboard" = "კლავიატურის მოცილება";
+
+/* The title of the link confirmation alert of spam email. */
+"Warning: suspected fake website" = "გაფრთხილება: დიდი ალბათობით ვებგვერდი ყალბია";
+
+/* The content of the link confirmation alert of spam email. */
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "ბმული მიდის ვებგვერდამდე, რომელმაც შეიძლება, მოიპაროს თქვენი ისეთი ინფორმაცია, როგორიცაა პაროლები და საკრედიტო ბარათის დეტალები.
+\n%@\n\nთქვენი უსაფრთხოებისთვის, ნუ გადახვალთ მასზე.";
+
+/* The title of the button to open the link in spam mail. */
+"Ignore warning and continue" = "გაფრთხილების იგნორი და გაგრძელება";
+
+/* The title of the button to cancel the action of opening the link in spam mail. */
+"Go back (recommended)" = "უკან დაბრუნება (რეკომენდებულია)";
+
+/* Description for undo send */
+"This feature delays sending your emails, giving you the opportunity to undo send during the selected time frame." = "ეს ფუნქცია დააყოვნებს თქვენი ელფოსტის გაგზავნას, რაც გაძლევთ შესაძლებლობას, დროის არჩეული მონაკვეთის განმავლობაში გაგზავნა გააუქმოთ.";
+
+/* The title of the scheduled message banner. */
+"This message will be sent on %@ at %@" = "ეს შეტყობინება გაიგზავნება: %1$@ %2$@";
+
+/* The title of the time label of the scheduled message that is about to be sent today. */
+"Today, %@" = "დღეს, %@";
+
+/* The title of the time label of the scheduled message that is about to be sent tomorrow. */
+"Tomorrow, %@" = "ხვალ, %@";
+
+/* The title of the alert that will be shown when user tries to delete a scheduled message. */
+"Schedule will be removed" = "გეგმა წაიშლება";
+
+/* The alert title of the user trying to send a message that was schedule-send. */
+"Send immediately?" = "გავაგზავნო დაუყოვნებლივ?";
+
+/* The message of the alert of the user trying to send a message that was schedule-send. */
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "ეს შეტყობინება ამოღებულია მომავალში გასაგზავნი შეტყობინებების სიიდან. თუ თქვენ ჯერ კიდევ გნებავთ მისი მომავალში გაგზავნა, \"გაგზავნის დაგეგმვაზე\" დაატყაპუნეთ";
+
+/* The action title of the alert of the user trying to send a message that was schedule-send. */
+"Send immediately" = "დაუყოვნებლივ გაგზავნა";
+
+/* The content of the introducation view of the schedule send */
+"You can now schedule your messages to be sent later" = "ახლა შეგიძლიათ, შექმნათ შეტყობინებების განრიგი, რომელიც დანიშნულ დროს აგზავნის ელფოსტას";
+
+/* The title of the banner that will be shown when you schedule a message. */
+"Scheduling message..." = "შეტყობინების განრიგში ჩამატება...";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption to verified recipient" = "გაეგზავნა შემოწმებულ მიმღებს გამჭოლი შიფრაციით";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "ProtonMail-ის მიერ გაგზავნილი ნულოვანი წვდომის დაშიფვრით დამოწმებული მიმღებისთვის";
+
+/* The message after tapping the encryption icon. */
+"Sent by you with end-to-end encryption" = "გამოგეგზავნათ გამჭოლი დაშიფვრით";
+
+/* The message after tapping the encryption icon. */
+"Sent by Proton Mail with zero-access encryption" = "გამოგზავნილია Proton Mail-ის მიერ ნულოვანი წვდომის დაშიფვრით";
+
+/* The message after tapping the encryption icon. */
+"Stored with zero-access encryption" = "ინახება წვდომის გარეშე შიფრაციით";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted message from verified sender" = "გამჭოლად დაშიფრული შეტყობინება შემოწმებული გამომგზავნისგან";
+
+/* The message after tapping the encryption icon of message received. */
+"End-to-end encrypted and signed message" = "გამჭოლად დაშიფრული და ხელმოწერილი შეტყობინება";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message from verified sender" = "PGP-ით დაშიფრული შეტყობინება შემოწმებული გამგზავნიდან";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted and signed message" = "PGP-ით დაშიფრული და ხელმოწერილი შეტყობინება";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message from verified sender" = "PGP-ით ხელმოწერილი შეტყობინება შემოწმებული გამომგზავნისგან";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-encrypted message" = "PGP-ით დაშიფრული შეტყობინება";
+
+/* The message after tapping the encryption icon of message received. */
+"PGP-signed message. Sender verification failed" = "შეტყობინება ხელმოწერილია PGP-ით. გამომგზავნის შემოწმების შეცდომა";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted to verified recipient" = "გამჭოლი შიფრაცია შემოწმებულ მიმღებამდე";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"End-to-end encrypted" = "გამჭოლი შიფრაცია";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted to verified recipient" = "PGP-ით დაშიფრული შეტყობინება შემოწმებული მიმღებისთვის";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-encrypted" = "PGP-ით დაშიფრული";
+
+/* The message after tapping the encryption icon of recipient in composer. */
+"PGP-signed" = "PGP-ის ბეჭდით";
+
+/* The error message while calculating the encryption preferences */
+"Email address disabled" = "ელფოსტის მისამართი გათიშულია";
+
+/* The error message while calculating the encryption preferences */
+"No keys retrieved for internal user" = "შიდა მომხმარებლისთვის გასაღებები მიღებული არაა";
+
+/* The error message while calculating the encryption preferences */
+"No valid keys retrieved for internal user" = "შიდა მომხმარებლისთვის სწორი გასაღებები მიღებული არაა";
+
+/* The error message while calculating the encryption preferences */
+"Trusted keys are not valid for sending" = "სანდო გასაღებების გაგზავნა არ შეიძლება";
+
+/* The error message while calculating the encryption preferences */
+"No WKD key retrieved for user is valid for sending" = "მომხმარებლისათვის გამოთხოვნილი არცერთი WKD გასაღები გასაგზავნად გამოსადეგი არაა";
+
+/* The error message while calculating the encryption preferences */
+"The sending key is not valid" = "გაგზავნის გასაღები არასწორია";
+
+/* The time label for message is about to be sent less in 1 minute in the list view. */
+"<1m" = "<1წთ";
+
+/* The time label for message is about to be sent less in 1 minute not in the list view. */
+"less than 1 minute" = "1 წუთზე ნაკლები";
+
+/* The alert title of user trying to open a scheduled-send message after its time is up. */
+"The message is being sent and will move to the Sent folder once sending is complete." = "მიმდინარეობს შეტყობინების გაგზავნა. გაგზავნის შემდეგ ის გაგზავნილი ელფოსტების საქაღალდეში იქნება გადატანილი.";
+
+/* The title of the section header in the toolbar customize view. */
+"Toolbar actions (select up to 5)" = "ხელსაწყოების ზოლის ქმედებები (მაქს 5)";
+
+/* The title of the section header in the toolbar customize view. */
+"Available actions" = "ხელმისაწვდომი ქმედებები";
+
+/* The title of the info bubble view in toolbar customization view. */
+"You can choose and rearrange the actions in your toolbar" = "ხელსაწყოების პანელზე ქმედებების არჩევა და გადალაგება შეგიძლიათ";
+
+/* The title of the alert after tapping reset in toolbar customization view. */
+"Reset to default?" = "ნაგულისხმებზე დაბრუნება?";
+
+/* The content of the alert after tapping reset in toolbar customization view. */
+"The actions in the toolbar will be reset to default" = "ქმედებები ხელსაწყოების ზოლზე საწყის მნიშვნელობებზე დაბრუნდება";
+
+/* The title of the reset button in toolbar customization view. */
+"Reset to default" = "ნაგულისხმებზე დაბრუნება";
+
+/* The title of the item in the App settings section of the device setting view. */
+"Customize toolbar" = "ხელსაწყოების ზოლის მორგება";
+
+/* The title of the first item in the segment control of the Customize toolbar setting view. */
+"Message" = "შეტყობინება";
+
+/* The title of the info label in the first segment of the Customize toolbar setting view. */
+"This toolbar is visible when reading a message." = "ეს ხელსაწყოების ზოლი ხილულია, როცა შეტყობინებას კითხულობთ.";
+
+/* The title of the info label in the second segment of the Customize toolbar setting view. */
+"This toolbar appears when selecting multiple messages in your inbox." = "ეს პანელი გამოჩნდება, როცა საფოსტო ყუთში ბევრ შეტყობინებას მონიშნავთ.";
+
+/* The content of the Customize toolbar spotlight view. */
+"You can now choose and rearrange the actions in this bar" = "ახლა ამ პანელის ქმედებების არჩევა და გადალაგება შეგიძლიათ";
+
+/* Button to block a sender */
+"Block messages from this sender" = "ამ გამომგზავნის შეტყობინებების დაბლოკვა";
+
+/* Button to block a sender, keep it short to fit in the UI */
+"Block" = "დაბლოკვა";
+
+/* Settings item to open blocked sender list */
+"Block list" = "დაბლოკილი მისამართების სია";
+
+/* Title of the blocked sender list screen */
+"Blocked Senders" = "გამომგზავნების დაბლოკვა";
+
+/* Shown when the user attempts to manually refresh the list of blocked senders while offline */
+"Update queued, awaiting connectivity..." = "განახლება რიგშია. მიერთების მოლოდინი...";
+
+/* Placeholder for empty sender list */
+"No blocked senders" = "დაბლოკილი გამომგზავნების გარეშე";
+
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "ახალ ელფოსტებს %@-დან ვერ მიიღებთ და ისინი სამუდამოდ წაიშლება. დაბლოკილი ელფოსტის მისამართების მართვა მორგების ფანჯარაში შეგიძლიათ.";
+
+/* Banner in the message view */
+"Sender has been blocked" = "გამომგზავნი დაიბლოკა";
+
+/* Toast confirming the block */
+"Sender %@ blocked" = "გამომგზავნი %@ დაბლოკილია";
+
+/* Toast confirming the unblock */
+"Sender %@ unblocked" = "გამომგზავნი %@ განბლოკილია";
+
+/* Button to unblock a sender */
+"Unblock sender" = "გამომგზავნის განბლოკვა";
+
+/* Button to unblock a sender, keep it short to fit in the UI */
+"Unblock" = "განბლოკვა";
+
+/* Name of the feature */
+"Email tracking protection" = "ელფოსტის ტრეკერებისგან დაცვა";
+
+/* Short hint in the header view */
+"No email trackers found" = "ელფოსტის ტრეკერები ნაპოვნი არაა";
+
+/* Tracker protection feature explanation */
+"Email trackers can violate your privacy." = "ელფოსტის ტრეკერებს თქვენი კონფიდენციალობის დარღვევა შეუძლიათ.";
+
+/* The banner shown in case of proxy failure */
+"Some images could not be loaded with tracking protection." = "ტრეკინგისგან დაცვით ზოგიერთი გამოსახულების ჩატვირთვა შეუძლებელია.";
+
+/* Button inside the banner */
+"Load" = "ჩატვირთვა";
+
+/* Official badge next to sender's name */
+"Official" = "ოფიციალური";
+
+/* The banner title after tapping link copy button in referral share view. */
+"Link copied." = "ბმული დაკოპირდა.";
+
+/* The article title of the referral share view. */
+"Invite friends to Proton,\n get up to $90 in credits!" = "მოიწვიეთ მეგობრები Proton-ში\n მიღეთ $90-მდე კრედიტებში!";
+
+/* The article content of the referral share view. */
+"Invite your friends to Proton: they try Mail Plus for free, and you earn credits when they subscribe to a paid plan." = "მოიწვიეთ თქვენი მეგობრები Proton-ზე: ისინი სცდიან Mail Plus-ს უფასოდ და თუ ისინი ფასიან ტარიფზე გადავლენ, სანაცვლოდ თქვენ კრედიტებს მიიღებთ.";
+
+/* The title link of the textfield of the referral link in referral share view. */
+"Your invite link" = "თქვენი მოსაწვევის ბმული";
+
+/* The title of the share button in referral share view. */
+"Share" = "გაზიარება";
+
+/* The title of the track reward button in referral share view. */
+"Track your rewards" = "ადევნეთ თვალყური თქვენს ჯილდოებს";
+
+/* The title of the terms and conditions button in referral share view. */
+"Terms & conditions" = "პირობები და წესები";
+
+/* The content that is shared through the action: `Share the link` */
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "მე ვიყენებდი Proton Mail-ს და ვიფიქრე, თქვენც მოგეწონებოდათ. უფასო, დაცული ელფოსტის სერვისი, რომელიც იცავს თქვენს პირად სივრცეს. ერთთვიანი, პრემიუმ-კლასის, უფასო ანგარიშის მისაღები ბმული:";
+
+/* The content of the referral prompt view. */
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "თქვენი კონფიდენციალობა უკეთესადაა დაცული, თუ თქვენი კონტაქტებიც Proton Mail-ს იყენებენ. მოიწვიეთ თქვენი მეგობრები Proton-ზე და თქვენ ორივე მიიღებთ ფასიან ფუნქციებს - უფასოდ.";
+
+/* The title of the maybe later button in referral prompt view. */
+"Maybe later" = "მოგვიანებით";
+
+/* Settings lock protection section */
+"Protection" = "დაცვა";
+
+/* Settings lock advanced settings section */
+"Advanced settings" = "დამატებითი პარამეტრები";
+
+/* Settings lock AppKey feature */
+"AppKey protection" = "AppKey-ის დაცვა";
+
+/* Settings lock AppKey description */
+"AppKey further protects your Proton information in case of elaborate attacks, such as an attacker cloning the contents of your device. %1$@" = "AppKey დამატებით იცავს თქვენს Proton-ის ინფორმაციას ისეთი დახვეწილი თავდასხმების შემთხვევაში, როგორიცაა თავდამსხმელის მიერ თქვენი მოწყობილობის შიგთავსის კლონირება. %1$@";
+
+/* AppKey disclaimer title when turning on */
+"Disclaimer" = "პასუხისმგებლობის უარყოფა";
+
+/* AppKey disclaimer when turning on */
+"Notification actions and other background processes will become unavailable" = "შეტყობინებების მოქმედებები და სხვა ფონური პროცესები მიუწვდომელი გახდება";
+
+/* One of schedule time options */
+"Tomorrow" = "ხვალ";
+
+/* One of the schedule time options */
+"As scheduled" = "როგორც დაგეგმილია";
+
+/* The title of the up sell content of the scheduled send. */
+"Set your own schedule" = "თქვენი განრიგის დაყენება";
+
+/* The content of the up sell content of the scheduled send. */
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "განბლოკეთ შეტყობინებების მორგებული დაგეგმვა და სხვა უპირატესობები თქვენი გეგმის განახლებისას.";
+
+/* The title of the upgrade button in the schedule send promotion view. */
+"Upgrade now" = "ტარიფის განახლება";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Schedule messages at any time" = "შეტყობინებების განრიგში ნებისმიერ დროს ჩასმა";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Unlimited folders and labels" = "შეუზღუდავი საქაღალდეები და ჭდეები";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 500 GB of storage" = "500გბ-მდე საცავი";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 15 email addresses" = "15-მდე ელფოსტის მისამართი";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Up to 3 custom email domains" = "ელფოსტის 3-მდე ხელით მითითებული დომენი";
+
+/* The up sell bullet point in the schedule send promotion view. */
+"Hide My Email aliases" = "ჩემი ელფოსტის მეტსახელების დამალვა";
+
+/* One of schedule time options */
+"In the morning" = "დილით";
+
+/* Push notification action archive */
+"Archive (verb)" = "დაარქივება";
+
+/* Message to show to user after updating password. */
+"Password updated" = "პაროლი განახლებულია";
+
+/* Title for application logs settings option */
+"Application logs" = "აპლიკაციის ჟურნალი";
+
+/* The title of the setting of the next msg after move */
+"Next message after move" = "შემდეგი შეტყობინება გადატანის შემდეგ";
+
+/* The title of the row inside the setting page of next msg after move function. */
+"Navigate to next message after move" = "გადატანის შემდეგ ახალ შეტყობინებაზე გადასვლა";
+
+/* The footer title of the setting row of the next msg after move functions. */
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "შეტყობინებაზე გადატანის ქმედების შესრულება (მაგ: არქივში გადატანა) შემდეგ შეტყობინებაზე გადაგიყვანთ.";
+
+/* Error message when open message failed */
+"Couldn't open the message, try again." = "შეტყობინების გახსნის შეცდომა. თავიდან სცადეთ.";
+
+/* Error message when user open the share extension without account logged in. */
+"Please sign in to the Proton Mail app." = "შედით Proton Mail-ის აპში.";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply (to last message)" = "პასუხი (ბოლო შეტყობინებაზე)";
+
+/* The action title in the action sheet of the forward action in conversation view. */
+"Forward (last message)" = "გადაგზავნა (ბოლო შეტყობინება)";
+
+/* The action title in the action sheet of the reply action in conversation view. */
+"Reply all (to last message)" = "ყველასთვის პასუხი (ბოლო შეტყობინებაზე)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "ახალი შეტყობინება";
+
+/* The action title of the button on the toolbar customization spotlight view. (verb) */
+"Customize (verb)" = "მორგება";
+
+/* The place holder text in the bug report view. */
+"Bug Report Place Holder" = "-- იმისათვის, რომ თქვენს დახმარებაში ხელი შეგვიწყოთ, რაც შეიძლება, ბევრი დეტალი მოგვაწოდეთ --\n\nშეჯამება:\n\nპრობლემა ერთზე მეტჯერ წამოიჭრა? დიახ/არა\nპრობლემის თავიდან გამოძახების გზა:\nმოსალოდნელი შედეგი:\nმიღებული შედეგი:\nკომენტარები:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "ჟურნალის დართვა";
+
+/* The sub title of the search view if there is no result. */
+"Try a different search term." = "სცადეთ სხვა საძიებო ტერმინი.";
+
+/* zero messages matching search query */
+"No results found" = "შედეგების გარეშე";
+
+/* The title of the setting of the auto-delete option */
+"Auto-delete" = "ავტომატური წაშლა";
+
+/* The title of the row inside the setting page of auto delete option */
+"Auto-delete unwanted messages" = "არასასურველი შეტყობინებების ავტომატური წაშლა";
+
+/* The footer title of the setting row of the auto delete option */
+"Messages in trash or spam longer than 30 days will be automatically deleted." = "ნაგვის ყუთში და სპამში 30 დღეზე მეტი მყოფი შეტყობინებები ავტომატურად წაიშლება.";
+
+/* Title of the alert to confirm enabling of the auto delete option */
+"Delete messages?" = "წავშალო შეტყობინებები?";
+
+/* Message of the alert to confirm enabling of the auto delete option */
+"This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders." = "ეს ყველა შეტყობინებას, რომლებიც ნაგვის ყუთში ან სპამში 30 დღეზე მეტხანს, იმ შეტყობინებების ჩათვლით, რომლებიც ამჟამად ამ საქაღლდეებშია, წაშლის.";
+
+/* Button to enable encrypted search */
+"Enable" = "ჩართვა";
+
+/* Text to advertise the auto delete feature to free users */
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "ნაგვის ყუთში მყოფი შეტყობინებების და სპამის 30 დღეში ავტომატური წაშლისთვის აწიეთ სატარიფო გეგმა.";
+
+/* Text to prompt paid users to enable the auto delete feature */
+"Automatically delete messages that have been in trash for more than 30 days." = "ნაგვის საქაღალდეში მყოფი შეტყობინებების ავტომატური წაშლა 30 დღეში.";
+
+/* Title of button to discard auto delete option */
+"No, thanks" = "არა, მადლობა";
+
+/* Text to inform users they have the auto delete feature enabled */
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "ნაგვის ყუთში 30 დღეზე მეტი მყოფი შეტყობინებები და სპამი ავტომატურად წაიშლება.";
+
+/* Title of button to empty spam folder */
+"Empty spam" = "სპამის დაცარიელება";
+
+/* Title of button to empty trash folder */
+"Empty trash" = "ნაგვის ყუთის დაცარიელება";
+
+/* Title of the sheet to advertise the auto delete feature to free users */
+"Clear out the junk" = "ნაგვის მოსუფთავება";
+
+/* Text content of the sheet to advertise the auto delete feature to free users */
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "შეტყობინებების სპამიდან და ნაგვის ყუთიდან 30 დღეში ავტომატური წაშლა. ისიამოვნეთ ამ და სხვა ფასიანი თვისებებით, როცა პაკეტს ასწევთ.";
+
+/* Text to advertise what upgrading will provide */
+"Up to 3 TB of storage" = "3ტბ-მდე საცავი";
+
+/* Text to advertise what upgrading will provide */
+"Custom email domains" = "თქვენი ელფოსტის დომენები";
+
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "საჩვენებელი სახელი";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "სახელი";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "გვარი";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "საჩვენებელი სახელის ველი ცარიელი ვერ იქნება";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "კონტაქტის სახელი მეტისმეტად გრძელია";
+
+/* The button text for add profile picture */
+"Add photo" = "სურათის დამატება";
+
+/* The button text for edit profile picture */
+"Edit photo" = "სურათის ჩასწორება";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "დააყენეთ PIN კოდი";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "გაიმეორეთ PIN კოდი";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "შეიყვანეთ ახალი PIN კოდი";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "შეიყვანეთ 4-დან 21 სიმბოლომდე სიგრძის PIN კოდი.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN კოდი ძალიან მოკლეა";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN კოდი ძალიან გრძელია";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN კოდები ერთმანეთს უნდა ემთხვეოდეს!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Please enter old pin code ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "PIN კოდის შეცვლა";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "ელფოსტის დაგზავნის გამოწერის გაუქმება";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "გავაუქმო გამოწერა?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "ეს დაგზავნის სიის გამოწერას გააუქმებს. გამომგზავნს გავაფრთხილებთ, ამ მისამართზე, ელფოსტა აღარ გამოაგზავნოს.";

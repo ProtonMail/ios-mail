@@ -1295,27 +1295,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Zapněte tuto funkci pro automatické vyplňování e-mailových adres pomocí kontaktů ze všech vašich přihlášených účtů.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Nastavit PIN kód";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Zadejte nový PIN kód";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Zadejte PIN kód o délce 4 až 21 znaků.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN je příliš krátký";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN je příliš dlouhý";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Opakovat PIN kód";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN kódy se musí shodovat!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "V případě, že jsou stránky Proton blokovány, toto nastavení umožňuje aplikaci vyzkoušet alternativní síťové směrování na Proton, což může být užitečné pro obejití bran firewall nebo problémům se sítí. Pro větší spolehlivost doporučujeme ponechat toto nastavení zapnuté. %1$@";
 
@@ -1327,9 +1306,6 @@
 
 /* The title of Off setting options */
 "Off" = "Vypnuto";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Změnit PIN kód";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Opětovné ověření";
@@ -2027,15 +2003,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Zapnout";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Vypnout automatické mazání?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "E-maily naplánované ke smazání zůstanou ve složkách Koš a Spam.";
-
-/* Button to disable auto delete */
-"Disable" = "Zakázat";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Navyšte svůj tarif pro automatické mazání zpráv, které jsou v koši nebo spamu déle než 30 dní.";
 
@@ -2066,6 +2033,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Vlastní e-mailové domény";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Zobrazované jméno";
 
@@ -2086,6 +2059,33 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Upravit fotku";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Nastavit PIN kód";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Opakovat PIN kód";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Zadejte nový PIN kód";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Zadejte PIN kód o délce 4 až 21 znaků.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN je příliš krátký";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN je příliš dlouhý";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN kódy se musí shodovat!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Please enter old pin code ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Změnit PIN kód";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Odhlásit se z odběru";

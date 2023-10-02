@@ -1295,27 +1295,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Activați această funcție pentru autocompletarea adreselor de e-mail folosind contactele din toate conturile conectate.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Setare cod PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Introduceți noul cod PIN";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Introduceți un cod PIN de minim 4 și maxim 21 de caractere.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "Codul PIN este prea scurt.";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "Codul PIN este prea lung.";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Repere cod PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Codurile PIN trebuie să corespundă!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare. %1$@";
 
@@ -1327,9 +1306,6 @@
 
 /* The title of Off setting options */
 "Off" = "Dezactivat";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Schimbare cod PIN";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Reautentificare";
@@ -2026,15 +2002,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Activare";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Dezactivare autoștergere?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Mesajele programate pentru ștergere vor rămâne în folderele «Gunoi» și «Nedorite».";
-
-/* Button to disable auto delete */
-"Disable" = "Dezactivare";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Modificați-vă planul pentru a putea șterge automat mesajele care au stat în folderul «Gunoi» și «Nedorite» mai mult de 30 de zile.";
 
@@ -2065,6 +2032,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domenii personale e-mail";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nume afișat";
 
@@ -2085,6 +2058,33 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Editare imagine";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Setare cod PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Repere cod PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Introduceți noul cod PIN";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Introduceți un cod PIN de minim 4 și maxim 21 de caractere.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Codul PIN este prea scurt.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Codul PIN este prea lung.";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Codurile PIN trebuie să corespundă!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Please enter old pin code ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Schimbare cod PIN";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Dezabonare de la lista de discuții";

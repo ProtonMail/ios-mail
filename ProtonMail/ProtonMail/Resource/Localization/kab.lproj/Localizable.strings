@@ -1295,27 +1295,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Sermed tawuri-agi i usemmed awurman n tansiwin imayl s useqdec n yinermisen n yal imiḍanen-inek•inem yeqqnen.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Sbadu tangalt PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Sekcem tangalt PIN tamaynut";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Sekcem tangalt PIN yesɛan gar 4 ar 21 n yisekkilen.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN wezzil aṭas";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN ɣezzif aṭas";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Ales tangalt PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Tingalin PIN ilaq ad ilint kifkif!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability.%1$@";
 
@@ -1327,9 +1306,6 @@
 
 /* The title of Off setting options */
 "Off" = "Yensa";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Beddel tangalt n PIN";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Ales asesteb";
@@ -2026,15 +2002,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Rmed";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Sens tukksa tawurmant?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Imaylen yettusɣawsen i tukksa af qqimen deg tqecwalt d yikaramen ispalen";
-
-/* Button to disable auto delete */
-"Disable" = "Désactiver";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Sali aɣawas-ik i tukksa n yiznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.";
 
@@ -2065,6 +2032,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Tiɣula n yimayl tudmawanin";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Isem n uskan";
 
@@ -2085,6 +2058,33 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Ẓreg tawlaft";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Sbadu tangalt PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Ales tangalt PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Sekcem tangalt PIN tamaynut";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Sekcem tangalt PIN yesɛan gar 4 ar 21 n yisekkilen.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN wezzil aṭas";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN ɣezzif aṭas";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Tingalin PIN ilaq ad ilint kifkif!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Please enter old pin code ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Beddel tangalt n PIN";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Ffeɣ seg ujerred n tebdart n tnezwit";
