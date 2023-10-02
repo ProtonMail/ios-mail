@@ -36,12 +36,15 @@ protocol LabelAsActionSheetProtocol: AnyObject {
 
 extension LabelAsActionSheetProtocol {
     func getLabelMenuItems() -> [MenuLabel] {
-        let foldersController = user.labelService.fetchedResultsController(.label)
-        try? foldersController.performFetch()
-        let folders = foldersController.fetchedObjects?.compactMap{LabelEntity(label: $0)} ?? []
-        let datas: [MenuLabel] = Array(labels: folders, previousRawData: [])
-        let (labelItems, _) = datas.sortoutData()
-        return labelItems
+        do {
+            let folders = try user.labelService.fetchLabels(type: .label)
+            let datas: [MenuLabel] = Array(labels: folders, previousRawData: [])
+            let (labelItems, _) = datas.sortoutData()
+            return labelItems
+        } catch {
+            PMAssertionFailure(error)
+            return []
+        }
     }
 
     func updateSelectedLabelAsDestination(menuLabel: MenuLabel?, isOn: Bool) {

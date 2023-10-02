@@ -32,6 +32,7 @@ final class ComposeViewModelTests: XCTestCase {
     private var dependencies: ComposeViewModel.Dependencies!
     private var attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock!
     private let userID: UserID = .init(String.randomString(20))
+    private var mockUserCacheStatusProvider: MockUserCachedStatusProvider!
 
     override func setUp() {
         super.setUp()
@@ -50,6 +51,7 @@ final class ComposeViewModelTests: XCTestCase {
         }
 
         attachmentMetadataStrippingCache = .init()
+        mockUserCacheStatusProvider = .init()
         let helperDependencies = ComposerMessageHelper.Dependencies(
             messageDataService: fakeUserManager.messageService,
             cacheService: fakeUserManager.cacheService,
@@ -71,7 +73,7 @@ final class ComposeViewModelTests: XCTestCase {
             )),
             darkModeCache: MockDarkModeCacheProtocol(),
             attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
-            userCachedStatusProvider: MockUserCachedStatusProvider()
+            userCachedStatusProvider: mockUserCacheStatusProvider
         )
 
         self.message = testContext.performAndWait {
@@ -285,6 +287,76 @@ final class ComposeViewModelTests: XCTestCase {
         
         let bccList = sut.toContacts(draft.bccList)
         XCTAssertEqual(bccList.count, 0)
+    }
+
+	func testFetchContacts_newEmailAdded_contactsWillHaveNewlyAddedEmail() throws {
+        sut.fetchContacts()
+        XCTAssertTrue(sut.contacts.isEmpty)
+        let name = String.randomString(20)
+        let address = "\(String.randomString(20))@pm.me"
+
+        _ = try mockCoreDataService.write { context in
+            let email = Email(context: context)
+            email.userID = self.sut.user.userID.rawValue
+            email.name = name
+            email.email = address
+            email.contactID = String.randomString(20)
+            email.emailID = String.randomString(20)
+            let OtherUserEmail = Email(context: context)
+            OtherUserEmail.userID = String.randomString(20)
+            OtherUserEmail.name = String.randomString(20)
+            OtherUserEmail.email = String.randomString(20)
+            OtherUserEmail.contactID = String.randomString(20)
+            OtherUserEmail.emailID = String.randomString(20)
+        }
+
+        wait(!self.sut.contacts.isEmpty)
+
+        let newEmail = try XCTUnwrap(sut.contacts.first)
+        XCTAssertEqual(newEmail.displayName, name)
+        XCTAssertEqual(newEmail.displayEmail, address)
+    }
+
+    func testFetchContacts_newEmailAdded_withContactCombine_contactsWillHaveAllNewlyAddedEmail() throws {
+        mockUserCacheStatusProvider.isCombineContactOnStub.fixture = true
+        sut = ComposeViewModel(
+            msg: .init(message),
+            action: .openDraft,
+            dependencies: dependencies
+        )
+        sut.fetchContacts()
+        XCTAssertTrue(sut.contacts.isEmpty)
+        let name = String.randomString(20)
+        let address = "\(String.randomString(20))@pm.me"
+        let name2 = String.randomString(20)
+        let address2 = "\(String.randomString(20))@pm.me"
+
+        _ = try mockCoreDataService.write { context in
+            let email = Email(context: context)
+            email.userID = self.sut.user.userID.rawValue
+            email.name = name
+            email.email = address
+            email.contactID = String.randomString(20)
+            email.emailID = String.randomString(20)
+            let OtherUserEmail = Email(context: context)
+            OtherUserEmail.userID = String.randomString(20)
+            OtherUserEmail.name = name2
+            OtherUserEmail.email = address2
+            OtherUserEmail.contactID = String.randomString(20)
+            OtherUserEmail.emailID = String.randomString(20)
+        }
+
+        wait(!self.sut.contacts.isEmpty)
+
+        XCTAssertEqual(sut.contacts.count, 2)
+
+        let newEmail = try XCTUnwrap(sut.contacts.first(where: { $0.displayName == name } ))
+        XCTAssertEqual(newEmail.displayName, name)
+        XCTAssertEqual(newEmail.displayEmail, address)
+
+        let newEmail2 = try XCTUnwrap(sut.contacts.first(where: { $0.displayName == name2 } ))
+        XCTAssertEqual(newEmail2.displayName, name2)
+        XCTAssertEqual(newEmail2.displayEmail, address2)
     }
 }
 

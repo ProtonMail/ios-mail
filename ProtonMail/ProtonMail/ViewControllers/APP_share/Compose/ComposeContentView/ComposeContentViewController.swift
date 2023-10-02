@@ -110,10 +110,9 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         self.updateMessageView()
 
         // load all contacts and groups
+        viewModel.fetchContacts()
         // TODO: move to view model
-        firstly { () -> Promise<Void> in
-            retrievePMContacts()
-        }.then { [weak self] _ in
+        firstly { [weak self] () -> Promise<Void> in
             self?.retrievePhoneContacts() ?? Promise<Void>()
         }.done { [weak self] in
             guard let self = self else { return }
@@ -146,13 +145,6 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
 
         self.viewModel.markAsRead()
         generateAccessibilityIdentifiers()
-    }
-
-    private func retrievePMContacts() -> Promise<Void> {
-        return Promise { seal in
-            self.viewModel.fetchContacts()
-            seal.fulfill(())
-        }
     }
 
     private func retrievePhoneContacts() -> Promise<Void> {

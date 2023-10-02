@@ -20,6 +20,7 @@ import ProtonCore_Utilities
 final class ContactViewsFactory {
     typealias Dependencies = ContactEditViewController.Dependencies
     & ContactGroupDetailViewController.Dependencies
+    & HasInternetConnectionStatusProviderProtocol
     & ContactGroupSelectEmailViewModelImpl.Dependencies
     & ContactImportViewController.Dependencies
 
@@ -30,10 +31,7 @@ final class ContactViewsFactory {
     }
 
     func makeContactsView() -> ContactsViewController {
-        let contactsViewModel = ContactsViewModelImpl(
-            user: dependencies.user,
-            coreDataService: dependencies.contextProvider
-        )
+        let contactsViewModel = ContactsViewModel(dependencies: dependencies)
         return ContactsViewController(viewModel: contactsViewModel, dependencies: dependencies)
     }
 
@@ -124,7 +122,7 @@ final class ContactViewsFactory {
     }
 
     func makeGroupsView() -> ContactGroupsViewController {
-        let contactGroupViewModel = ContactGroupsViewModelImpl(user: dependencies.user)
+        let contactGroupViewModel = ContactGroupsViewModelImpl(dependencies: dependencies)
         return ContactGroupsViewController(viewModel: contactGroupViewModel, dependencies: dependencies)
     }
 
@@ -143,9 +141,10 @@ final class ContactViewsFactory {
     }
 
     func makeGroupDetailView(label: LabelEntity) -> ContactGroupDetailViewController {
-        let viewModel = ContactGroupDetailViewModel(user: dependencies.user,
-                                                    contactGroup: label,
-                                                    labelsDataService: dependencies.user.labelService)
+        let viewModel = ContactGroupDetailViewModel(
+            contactGroup: label,
+            dependencies: dependencies
+        )
         return ContactGroupDetailViewController(viewModel: viewModel, dependencies: dependencies)
     }
 

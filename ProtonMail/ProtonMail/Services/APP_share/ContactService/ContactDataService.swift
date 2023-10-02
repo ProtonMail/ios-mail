@@ -44,7 +44,6 @@ protocol ContactProviderProtocol: AnyObject {
     func fetchContacts(completion: ContactFetchComplete?)
     func cleanUp()
     func fetchContact(contactID: ContactID) async throws -> ContactEntity
-    func contactFetchedController(by contactID: ContactID) -> NSFetchedResultsController<Contact>
 }
 
 // sourcery:mock
@@ -115,37 +114,23 @@ class ContactDataService: Service {
             }
     }
 
-    /**
-     get/build fetch results controller for contacts
-
-     **/
-    func resultController(context: NSManagedObjectContext? = nil) -> NSFetchedResultsController<Contact> {
-        let moc = context ?? coreDataService.mainContext
-        let fetchRequest = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
-        let strComp = NSSortDescriptor(key: Contact.Attributes.name,
-                                       ascending: true,
-                                       selector: #selector(NSString.caseInsensitiveCompare(_:)))
-        fetchRequest.sortDescriptors = [strComp]
-        fetchRequest.predicate = NSPredicate(format: "%K == %@ AND %K == 0", Contact.Attributes.userID, self.userID.rawValue, Contact.Attributes.isSoftDeleted)
-
-        return NSFetchedResultsController(fetchRequest: fetchRequest,
-                                          managedObjectContext: moc,
-                                          sectionNameKeyPath: Contact.Attributes.sectionName,
-                                          cacheName: nil)
-    }
-
-    func contactFetchedController(by contactID: ContactID) -> NSFetchedResultsController<Contact> {
-        let moc = self.coreDataService.mainContext
-        let fetchRequest = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.contactID, contactID.rawValue)
-        let strComp = NSSortDescriptor(key: Contact.Attributes.name,
-                                       ascending: true,
-                                       selector: #selector(NSString.caseInsensitiveCompare(_:)))
-        fetchRequest.sortDescriptors = [strComp]
-        return NSFetchedResultsController(fetchRequest: fetchRequest,
-                                          managedObjectContext: moc,
-                                          sectionNameKeyPath: nil,
-                                          cacheName: nil)
+    func fetchUUIDsForAllContact() throws -> [String] {
+        return try coreDataService.read { context in
+            let request = NSFetchRequest<Contact>(entityName: Contact.Attributes.entityName)
+            let sortDescriptor = NSSortDescriptor(
+                key: Contact.Attributes.name,
+                ascending: true,
+                selector: #selector(NSString.caseInsensitiveCompare(_:))
+            )
+            request.sortDescriptors = [sortDescriptor]
+            request.predicate = NSPredicate(
+                format: "%K == %@ AND %K == 0",
+                Contact.Attributes.userID,
+                userID.rawValue,
+                Contact.Attributes.isSoftDeleted
+            )
+            return try context.fetch(request).map(\.uuid)
+        }
     }
 
     /**
@@ -655,36 +640,6 @@ extension ContactDataService {
             return
         }
         completion(addressBookService.contacts(), nil)
-    }
-
-    func makeAllEmailsFetchedResultController() -> NSFetchedResultsController<Email>? {
-        let context = coreDataService.mainContext
-        let isContactCombine = userCachedStatus.isCombineContactOn
-        let fetchRequest = NSFetchRequest<Email>(entityName: Email.Attributes.entityName)
-        let predicate = isContactCombine ? nil : NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID.rawValue)
-        fetchRequest.predicate = predicate
-        let sortByTime = NSSortDescriptor(
-            key: Email.Attributes.lastUsedTime,
-            ascending: false
-        )
-        let sortByName = NSSortDescriptor(
-            key: Email.Attributes.name,
-            ascending: true,
-            selector: #selector(NSString.caseInsensitiveCompare(_:))
-        )
-        let sortByEmail = NSSortDescriptor(
-            key: Email.Attributes.email,
-            ascending: true,
-            selector: #selector(NSString.caseInsensitiveCompare(_:))
-        )
-        fetchRequest.sortDescriptors = [sortByTime, sortByName, sortByEmail]
-        let fetchedResultController = NSFetchedResultsController<Email>(
-            fetchRequest: fetchRequest,
-            managedObjectContext: context,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-        return fetchedResultController
     }
 }
 

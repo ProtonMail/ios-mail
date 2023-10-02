@@ -50,7 +50,6 @@ class ContactImportViewController: UIViewController {
     private var appleContactParser: AppleContactParserProtocol?
 
     var reloadAllContact: (() -> Void)?
-    private var fetchedResultsController: NSFetchedResultsController<Contact>?
 
     private lazy var contacts: [CNContact] = dependencies.addressBookService.getAllContacts()
 
@@ -68,20 +67,9 @@ class ContactImportViewController: UIViewController {
         customView.cancelButton.addTarget(self, action: #selector(cancelTapped(_:)), for: .touchUpInside)
 
         delay(0.5) {
-            self.fetchedResultsController = self.getFetchedResultsController()
             self.customView.messageLabel.attributedText = LocalString._contacts_reading_contacts_data.apply(style: .CaptionWeak.alignment(.center))
             self.getContacts()
         }
-    }
-
-    private func getFetchedResultsController() -> NSFetchedResultsController<Contact> {
-        let fetchedResultsController = dependencies.contactService.resultController()
-
-        do {
-            try fetchedResultsController.performFetch()
-        } catch {}
-
-        return fetchedResultsController
     }
 
     @objc private func cancelTapped(_ sender: Any) {
@@ -183,10 +171,11 @@ extension ContactImportViewController: AppleContactParserDelegate {
         guard let userKey = dependencies.user.userInfo.firstUserKey() else { return nil }
         let passphrase = dependencies.user.mailboxPassword
         var uuids: [String] = []
-        fetchedResultsController?.managedObjectContext.performAndWait {
-            uuids = ((fetchedResultsController?.fetchedObjects as? [Contact]) ?? []).map(\.uuid)
+        do {
+            uuids = try dependencies.user.contactService.fetchUUIDsForAllContact()
+        } catch {
+            PMAssertionFailure(error)
         }
-
         return (userKey: userKey,
                 passphrase: passphrase,
                 existedContactIDs: uuids)

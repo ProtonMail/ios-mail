@@ -54,7 +54,10 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
         self.dependencies = dependencies
         super.init(nibName: "ContactGroupDetailViewController", bundle: nil)
         self.viewModel.reloadView = { [weak self] in
-            self?.reload()
+            self?.refresh()
+        }
+        self.viewModel.dismissView = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
         }
         trackLifetime()
     }
@@ -84,12 +87,12 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
         sendImage.tintColor = ColorProvider.InteractionNorm
 
         prepareTable()
+        prepareHeader()
         generateAccessibilityIdentifiers()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        reload()
         self.viewModel.user.undoActionManager.register(handler: self)
     }
 
@@ -135,15 +138,6 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
         newView.delegate = self
         let nav = UINavigationController(rootViewController: newView)
         self.present(nav, animated: true, completion: nil)
-    }
-
-    private func reload() {
-        let isReloadSuccessful = self.viewModel.reload()
-        if isReloadSuccessful {
-            self.refresh()
-        } else {
-            self.navigationController?.popViewController(animated: true)
-        }
     }
 
     private func refresh() {
@@ -219,7 +213,7 @@ extension ContactGroupDetailViewController: UITableViewDataSource, UITableViewDe
 
 extension ContactGroupDetailViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-        reload()
+        refresh()
     }
 }
 

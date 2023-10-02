@@ -51,6 +51,10 @@ final class ContactDetailViewController: UIViewController, AccessibleView {
         configureNavigationItems()
         configureTableView()
         configureButtons()
+        viewModel.reloadView = { [weak self] in
+            self?.configureHeader()
+            self?.customView.tableView.reloadData()
+        }
 
         Task {
             do {

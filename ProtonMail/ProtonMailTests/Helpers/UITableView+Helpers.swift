@@ -83,6 +83,15 @@ extension UITableView {
         dataSource?.tableView(self, cellForRowAt: IndexPath(row: row, section: section)) as? Cell
     }
 
+    public func firstVisibleCell<Cell: UITableViewCell>(
+        ofType cellTYpe: Cell.Type,
+        withLabel text: String
+    ) -> Cell? {
+        return visibleCells
+            .compactMap { $0 as? Cell }
+            .first(where: { $0.find(for: text, by: \UILabel.text) != nil })
+    }
+
     // MARK: - Private
 
     private func firstIndexedCell<Cell: UITableViewCell>(

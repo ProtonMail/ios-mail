@@ -1,5 +1,5 @@
 //
-//  ContactViewModel.swift
+//  ContactsViewModel.swift
 //  Proton Mail - Created on 5/1/17.
 //
 //
@@ -20,69 +20,133 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import Combine
 import CoreData
+import Foundation
+import UIKit
 
-class ContactsViewModel: ViewModelTimer {
-    var user: UserManager
-    let coreDataService: CoreDataContextProviderProtocol
+final class ContactsViewModel: ViewModelTimer {
+    typealias Dependencies = HasCoreDataContextProviderProtocol & HasUserManager
 
-    init(user: UserManager, coreDataService: CoreDataContextProviderProtocol) {
-        self.user = user
-        self.coreDataService = coreDataService
+    let dependencies: Dependencies
+
+    private var snapshotPublisher: SnapshotPublisher<Contact>?
+    private var cancellable: AnyCancellable?
+    var isSearching: Bool = false
+
+    private weak var uiDelegate: ContactsVCUIProtocol?
+
+    var contactService: ContactDataService {
+        return dependencies.user.contactService
+    }
+
+    var contentDidChange: ((NSDiffableDataSourceSnapshot<String, ContactEntity>) -> Void)?
+
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
         super.init()
     }
 
-    func resetFetchedController() {
-
+    func setupFetchedResults() {
+        createSnapshotPublisher(searchText: nil)
     }
 
     func set(searching isSearching: Bool) {
-        fatalError("This method must be overridden")
-    }
-    
-    func setupFetchedResults() {
-        fatalError("This method must be overridden")
+        self.isSearching = isSearching
     }
 
     func search(text: String) {
-        fatalError("This method must be overridden")
+        createSnapshotPublisher(searchText: text)
     }
 
+    private func createSnapshotPublisher(searchText: String?) {
+        let sortDescriptor = NSSortDescriptor(
+            key: Contact.Attributes.name,
+            ascending: true,
+            selector: #selector(NSString.caseInsensitiveCompare(_:))
+        )
+        let predicate: NSPredicate
+        if let searchText = searchText, !searchText.isEmpty {
+            predicate = NSPredicate(
+                format: "(name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@) AND %K == %@",
+                argumentArray: [
+                    searchText,
+                    searchText,
+                    Contact.Attributes.userID,
+                    dependencies.user.userID.rawValue
+                ]
+            )
+        } else {
+            predicate = NSPredicate(
+                format: "%K == %@ AND %K == 0",
+                Contact.Attributes.userID,
+                dependencies.user.userID.rawValue,
+                Contact.Attributes.isSoftDeleted
+            )
+        }
+
+        snapshotPublisher = SnapshotPublisher<Contact>(
+            entityName: Contact.Attributes.entityName,
+            predicate: predicate,
+            sortDescriptors: [sortDescriptor],
+            sectionNameKeyPath: Contact.Attributes.sectionName,
+            contextProvider: dependencies.contextProvider
+        )
+        cancellable = snapshotPublisher?.contentDidChange
+            .sink(receiveValue: { [weak self] snapshot in
+                let snapshot = snapshot as NSDiffableDataSourceSnapshot<String, Contact>
+                var newSnapShot = NSDiffableDataSourceSnapshot<String, ContactEntity>()
+                let sections = snapshot.sectionIdentifiers
+                newSnapShot.appendSections(sections)
+                for section in sections {
+                    let rows = snapshot.itemIdentifiers(inSection: section).map(ContactEntity.init)
+                    newSnapShot.appendItems(rows, toSection: section)
+                }
+                self?.contentDidChange?(newSnapShot)
+            })
+        snapshotPublisher?.start()
+    }
+
+    func delete(contactID: ContactID, complete: @escaping ContactDeleteComplete) {
+        self.contactService
+            .delete(contactID: contactID, completion: { error in
+                if let err = error {
+                    complete(err)
+                } else {
+                    complete(nil)
+                }
+            })
+    }
+
+    private var isFetching: Bool = false
+    private var fetchComplete: ContactFetchComplete?
     func fetchContacts(completion: ContactFetchComplete?) {
-        fatalError("This method must be overridden")
+        if let c = completion {
+            fetchComplete = c
+        }
+        if !isFetching {
+            isFetching = true
+
+            dependencies.user.eventsService.fetchEvents(byLabel: Message.Location.inbox.labelID,
+                                                        notificationMessageID: nil,
+                                                        completion: { _ in
+                                                        })
+            dependencies.user.contactService.fetchContacts { _ in
+                self.isFetching = false
+                self.fetchComplete?(nil)
+            }
+        }
     }
 
-    //
-    func sectionCount() -> Int {
-        fatalError("This method must be overridden")
+    override func fireFetch() {
+        self.fetchContacts(completion: nil)
     }
 
-    func rowCount(section: Int) -> Int {
-        fatalError("This method must be overridden")
-    }
-    
-    func item(index: IndexPath) -> ContactEntity? {
-        fatalError("This method must be overridden")
-    }
-
-    /**
-     section title index  ::Enable it later
-     **/
-    func sectionIndexTitle() -> [String]? {
-        fatalError("This method must be overridden")
-    }
-
-    func sectionForSectionIndexTitle(title: String, at index: Int) -> Int {
-        fatalError("This method must be overridden")
-    }
-
-    //
-    func delete(contactID: ContactID, complete : @escaping ContactDeleteComplete) {
-        fatalError("This method must be overridden")
+    private func notifyDelegateToRefresh() {
+        uiDelegate?.reloadTable()
     }
 
     func setup(uiDelegate: ContactsVCUIProtocol?) {
-        fatalError("This method must be overridden")
+        self.uiDelegate = uiDelegate
     }
 }

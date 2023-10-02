@@ -15,17 +15,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import fusion
+import UIKit
 import XCTest
 
-extension XCTestCase {
-    func wait(
-        _ condition: @escaping @autoclosure () -> (Bool),
-        timeout: TimeInterval = 3
-    )
-    {
-        XCTAssertTrue(
-            waitUntil(timeout: timeout, condition: condition())
-        )
+extension UISearchBar {
+    func simulateType(text: String) {
+        guard let delegate = delegate else {
+            XCTFail("Delegate is not set")
+            return
+        }
+        delegate.searchBarTextDidBeginEditing?(self)
+        self.text = text
+        delegate.searchBarTextDidEndEditing?(self)
+    }
+}
+
+extension UISearchController {
+    func simulateType(text: String) {
+        guard let resultUpdater = searchResultsUpdater else {
+            XCTFail("SearchResultsUpdater is not set")
+            return
+        }
+        searchBar.simulateType(text: text)
+        resultUpdater.updateSearchResults(for: self)
     }
 }

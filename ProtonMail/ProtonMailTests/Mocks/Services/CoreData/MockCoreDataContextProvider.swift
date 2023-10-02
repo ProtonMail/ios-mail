@@ -116,4 +116,21 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
             try block(context)
         }
     }
+
+    func createFetchedResultsController<T>(
+        entityName: String,
+        predicate: NSPredicate,
+        sortDescriptors: [NSSortDescriptor],
+        sectionNameKeyPath: String?
+    ) -> NSFetchedResultsController<T> {
+        let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = sortDescriptors
+        return NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: rootSavingContext,
+            sectionNameKeyPath: sectionNameKeyPath,
+            cacheName: nil
+        )
+    }
 }

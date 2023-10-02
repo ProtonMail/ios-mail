@@ -48,7 +48,7 @@ final class MenuViewModel: NSObject {
 
         return labelService
     }
-    private var fetchedLabels: NSFetchedResultsController<Label>?
+    private var labelPublisher: LabelPublisher?
     /// To observe the unread number change for message mode label
     private var labelUpdateFetcher: NSFetchedResultsController<LabelUpdate>?
     /// To observe the unread number change for conversation mode label
@@ -378,21 +378,22 @@ extension MenuViewModel: MenuVMProtocol {
 
 extension MenuViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == self.labelUpdateFetcher || controller == self.conversationCountFetcher {
-            updateUnread()
-            delegate?.updateMenu(section: nil)
-            return
-        }
+        updateUnread()
+    	delegate?.updateMenu(section: nil)
 
-        let dbItems = (controller.fetchedObjects as? [Label]) ?? []
-        self.handle(dbLabels: dbItems.compactMap(LabelEntity.init))
+    }
+}
+
+extension MenuViewModel: LabelListenerProtocol {
+    func receivedLabels(labels: [LabelEntity]) {
+        handle(dbLabels: labels)
     }
 }
 
 // MARK: Data source
 extension MenuViewModel {
     private func fetchLabels() {
-        guard let service = self.labelDataService else {
+        guard let userID = dependencies.usersManager.firstUser?.userID, let service = labelDataService else {
             return
         }
 
@@ -402,17 +403,12 @@ extension MenuViewModel {
             service.fetchV4Labels()
         }
 
-        self.fetchedLabels = service.fetchedResultsController(.all)
-        self.fetchedLabels?.delegate = self
-        guard let result = self.fetchedLabels else {return}
-        do {
-            try result.performFetch()
-            guard let labels = result.fetchedObjects else {
-                return
-            }
-            self.handle(dbLabels: labels.compactMap(LabelEntity.init))
-        } catch {
-        }
+        labelPublisher = .init(
+            parameters: .init(userID: userID),
+            dependencies: dependencies
+        )
+        labelPublisher?.delegate = self
+        labelPublisher?.fetchLabels(labelType: .all)
     }
 
     private func observeLabelUnreadUpdate() {

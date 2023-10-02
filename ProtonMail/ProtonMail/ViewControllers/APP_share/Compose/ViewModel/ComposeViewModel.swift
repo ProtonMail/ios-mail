@@ -20,6 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Combine
 import CoreData
 import Foundation
 import PromiseKit
@@ -52,7 +53,8 @@ class ComposeViewModel: NSObject {
     }
 
     private(set) var contacts: [ContactPickerModelProtocol] = []
-    private var emailsController: NSFetchedResultsController<Email>?
+    private var emailPublisher: EmailPublisher?
+    private var cancellable: AnyCancellable?
 
     private(set) var phoneContacts: [ContactPickerModelProtocol] = []
 
@@ -1006,28 +1008,26 @@ extension ComposeViewModel {
     }
 
     func fetchContacts() {
-        let service = user.contactService
-        emailsController = service.makeAllEmailsFetchedResultController()
-        emailsController?.delegate = self
-        try? emailsController?.performFetch()
-        let allContacts = (emailsController?.fetchedObjects ?? [])
-            .map { email in
-                ContactVO(
-                    name: email.name,
-                    email: email.email,
-                    isProtonMailContact: true
-                )
+        emailPublisher = .init(
+            userID: user.userID,
+            isContactCombine: dependencies.userCachedStatusProvider.isCombineContactOn,
+            contextProvider: dependencies.coreDataContextProvider
+        )
+        cancellable = emailPublisher?.contentDidChange.map { $0.map { email in
+            ContactVO(name: email.name, email: email.email, isProtonMailContact: true)
+        }}.sink(receiveValue: { [weak self] contactVOs in
+            // Remove the duplicated items
+            var set = Set<ContactVO>()
+            var filteredResult = [ContactVO]()
+            for contact in contactVOs {
+                if !set.contains(contact) {
+                    set.insert(contact)
+                    filteredResult.append(contact)
+                }
             }
-        // Remove the duplicated items
-        var set = Set<ContactVO>()
-        var filteredResult = [ContactVO]()
-        for contact in allContacts {
-            if !set.contains(contact) {
-                set.insert(contact)
-                filteredResult.append(contact)
-            }
-        }
-        self.contacts = filteredResult
+            self?.contacts = filteredResult
+        })
+        emailPublisher?.start()
     }
 
     func fetchPhoneContacts(completion: (() -> Void)?) {
@@ -1091,30 +1091,5 @@ extension ComposeViewModel {
         let address: String
         let group: String?
         let name: String?
-    }
-}
-
-extension ComposeViewModel: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard let emails = controller.fetchedObjects as? [Email] else {
-            return
-        }
-        let allContacts = emails.map { email in
-            ContactVO(
-                name: email.name,
-                email: email.email,
-                isProtonMailContact: true
-            )
-        }
-        // Remove the duplicated items
-        var set = Set<ContactVO>()
-        var filteredResult = [ContactVO]()
-        for contact in allContacts {
-            if !set.contains(contact) {
-                set.insert(contact)
-                filteredResult.append(contact)
-            }
-        }
-        self.contacts = filteredResult
     }
 }

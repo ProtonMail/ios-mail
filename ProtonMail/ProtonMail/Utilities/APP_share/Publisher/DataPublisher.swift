@@ -28,7 +28,7 @@ class DataPublisher<T: NSFetchRequestResult>: NSObject, NSFetchedResultsControll
 
     init(
         entityName: String,
-        predicate: NSPredicate,
+        predicate: NSPredicate?,
         sortDescriptors: [NSSortDescriptor],
         contextProvider: CoreDataContextProviderProtocol
     ) {

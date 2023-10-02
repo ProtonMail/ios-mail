@@ -355,6 +355,23 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
             }
         }
     }
+
+    func createFetchedResultsController<T>(
+        entityName: String,
+        predicate: NSPredicate,
+        sortDescriptors: [NSSortDescriptor],
+        sectionNameKeyPath: String? = nil
+    ) -> NSFetchedResultsController<T> {
+        let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = sortDescriptors
+        return NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: backgroundContext,
+            sectionNameKeyPath: sectionNameKeyPath,
+            cacheName: nil
+        )
+    }
 }
 
 #if !APP_EXTENSION
