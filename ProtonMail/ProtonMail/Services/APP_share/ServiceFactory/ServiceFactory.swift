@@ -29,15 +29,10 @@ protocol Service: AnyObject {}
 
 let sharedServices: ServiceFactory = {
     let helper = ServiceFactory()
-    let appCache = AppCacheService()
-    helper.add(AppCacheService.self, for: appCache)
-    appCache.restoreCacheWhenAppStart()
     if ProcessInfo.isRunningUnitTests {
         helper.add(CoreDataService.self, for: CoreDataService.shared)
         helper.add(LastUpdatedStore.self,
                    for: LastUpdatedStore(contextProvider: helper.get(by: CoreDataService.self)))
-        // swiftlint:disable:next force_try
-        try! CoreDataStore.shared.initialize()
     }
 
     return helper
