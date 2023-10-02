@@ -343,7 +343,7 @@ extension MenuCoordinator {
 
         let fetchLatestEvent = FetchLatestEventId(
             userId: userID,
-            dependencies: .init(eventsService: user.eventsService)
+            dependencies: .init(eventsService: user.eventsService, lastUpdatedStore: dependencies.lastUpdatedStore)
         )
 
         let fetchMessages = FetchMessages(

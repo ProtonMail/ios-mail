@@ -70,6 +70,7 @@ final class EventsService: Service, EventsFetching {
     & HasFeatureFlagCache
     & HasFetchMessageMetaData
     & HasIncomingDefaultService
+    & HasLastUpdatedStoreProtocol
     & HasNotificationCenter
     & HasQueueManager
     & HasUserCachedStatus
@@ -84,7 +85,6 @@ final class EventsService: Service, EventsFetching {
     private(set) var status: EventsFetchingStatus = .idle
     private var subscribers: [EventsObservation] = []
     private var timer: Timer?
-    private lazy var lastUpdatedStore = ServiceFactory.default.get(by: LastUpdatedStore.self)
     private weak var userManager: UserManager?
     private let dependencies: Dependencies
 
@@ -163,7 +163,7 @@ extension EventsService {
                 return
             }
         
-            let eventID = self.lastUpdatedStore.lastEventID(userID: userManager.userID)
+            let eventID = self.dependencies.lastUpdatedStore.lastEventID(userID: userManager.userID)
             let eventAPI = EventCheckRequest(eventID: eventID)
             userManager.apiService.perform(request: eventAPI, response: EventCheckResponse()) { _, eventsRes in
 
@@ -206,8 +206,8 @@ extension EventsService {
                         self.processEvents(messageCounts: eventsRes.messageCounts)
                         self.processEvents(conversationCounts: eventsRes.conversationCounts)
                         self.processEvents(space: eventsRes.usedSpace)
-                        self.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: eventsRes.eventID)
-                        
+                        self.dependencies.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: eventsRes.eventID)
+
                         let outMessages = messageEvents
                             .map { MessageEvent(event: $0) }
                             .filter { $0.Action == 1 }
@@ -253,7 +253,7 @@ extension EventsService {
     private func isOverTimeThreshold(userID: UserID) -> Bool {
         guard
             dependencies.featureFlagCache.isFeatureFlag(.refetchEventsByTime, enabledForUserWithID: userID),
-            let lastDate = lastUpdatedStore.lastEventUpdateTime(userID: userID)
+            let lastDate = dependencies.lastUpdatedStore.lastEventUpdateTime(userID: userID)
         else { return false }
         let secondDifference = lastDate.distance(to: Date())
         let hourDifference = secondDifference / 3600.0
@@ -285,7 +285,7 @@ extension EventsService {
                     completion?(.failure(error))
                 case .success(let responseDict):
                     self.dependencies.userCachedStatus.contactsCached = 0
-                    self.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: IDRes.eventID)
+                    self.dependencies.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: IDRes.eventID)
                     completion?(.success(responseDict))
                 }
             }
@@ -837,7 +837,7 @@ extension EventsService {
                 }
                 let isLast = index == counts.count - 1
                 let total = count["Total"] as? Int
-                self.lastUpdatedStore.updateUnreadCount(
+                dependencies.lastUpdatedStore.updateUnreadCount(
                     by: LabelID(labelID),
                     userID: userManager.userID,
                     unread: unread,
@@ -854,7 +854,7 @@ extension EventsService {
               primaryUser.userInfo.userId == userManager.userInfo.userId,
               primaryUser.conversationStateService.viewMode == viewMode else { return }
 
-        let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: userManager.userID, type: viewMode)
+        let unreadCount: Int = dependencies.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: userManager.userID, type: viewMode)
         UIApplication.setBadge(badge: max(0, unreadCount))
     }
 

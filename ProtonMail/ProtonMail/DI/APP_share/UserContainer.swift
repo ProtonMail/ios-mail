@@ -119,6 +119,19 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var fetchMessageDetailFactory: Factory<FetchMessageDetail> {
+        self {
+            FetchMessageDetail(
+                dependencies: .init(
+                    queueManager: self.queueManager,
+                    apiService: self.apiService,
+                    contextProvider: self.contextProvider,
+                    cacheService: self.cacheService
+                )
+            )
+        }
+    }
+
     var fetchMessageMetaDataFactory: Factory<FetchMessageMetaData> {
         self {
             FetchMessageMetaData(
@@ -196,6 +209,7 @@ final class UserContainer: ManagedContainer {
         self {
             MainQueueHandler(
                 coreDataService: self.contextProvider,
+                fetchMessageDetail: self.fetchMessageDetail,
                 apiService: self.apiService,
                 messageDataService: self.messageService,
                 conversationDataService: self.conversationService.conversationDataService,

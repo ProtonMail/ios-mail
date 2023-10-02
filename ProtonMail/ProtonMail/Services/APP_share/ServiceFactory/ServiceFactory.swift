@@ -44,8 +44,6 @@ let sharedServices: ServiceFactory = {
 }()
 
 final class ServiceFactory {
-    static let `default`: ServiceFactory = sharedServices
-
     private var servicesDictionary: [String: Service] = [:]
 
     // TODO: init userCachesStatus here instead of a global variable.

@@ -30,7 +30,7 @@ class FetchLatestEventId: FetchLatestEventIdUseCase {
     }
 
     override func executionBlock(params: Void, callback: @escaping Callback) {
-        dependencies.eventsService?.fetchLatestEventID { [weak self] latestEvent in
+        dependencies.eventsService.fetchLatestEventID { [weak self] latestEvent in
             if latestEvent.eventID.isEmpty {
                 callback(.success(latestEvent))
             } else {
@@ -53,15 +53,7 @@ extension FetchLatestEventId {
 extension FetchLatestEventId {
 
     struct Dependencies {
-        let eventsService: EventsServiceProtocol?
+        let eventsService: EventsServiceProtocol
         let lastUpdatedStore: LastUpdatedStoreProtocol
-
-        init(
-            eventsService: EventsServiceProtocol?,
-            lastUpdatedStore: LastUpdatedStoreProtocol = ServiceFactory.default.get(by: LastUpdatedStore.self)
-        ) {
-            self.eventsService = eventsService
-            self.lastUpdatedStore = lastUpdatedStore
-        }
     }
 }
