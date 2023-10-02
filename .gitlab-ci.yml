@@ -336,7 +336,7 @@ report:slack:feature:
       --path test_output/TestResults/
       --platform ios
       --job-name $TEST_PLAN
-      --slack-channel mail-ios-uitests
+      --slack-channel "$SLACK_CHANNEL"
   allow_failure: true
   tags:
     - small

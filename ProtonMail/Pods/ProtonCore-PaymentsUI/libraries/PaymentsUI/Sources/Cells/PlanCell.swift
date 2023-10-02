@@ -96,8 +96,8 @@ final class PlanCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var buttonSpacerView: UIView!
     @IBOutlet weak var selectPlanButton: ProtonButton! {
         didSet {
-            selectPlanButton.isAccessibilityElement = true
             selectPlanButton.setMode(mode: .solid)
+            selectPlanButton.isAccessibilityElement = true
         }
     }
     @IBOutlet weak var expandButton: ProtonButton! {
@@ -176,6 +176,7 @@ final class PlanCell: UITableViewCell, AccessibleCell {
         }
         drawView()
         drawAlphas()
+        self.accessibilityElements = [expandButton as Any, selectPlanButton as Any]
     }
     
     func selectCell() {

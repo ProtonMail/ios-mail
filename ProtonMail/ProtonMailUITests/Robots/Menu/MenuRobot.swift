@@ -80,6 +80,12 @@ class MenuRobot: CoreElements {
         cell(id.subscriptionStaticText).swipeUpUntilVisible().tap()
         return MenuRobot()
     }
+
+    func subscription() -> PaymentsUIRobot {
+        // fake subscription item leads to force upgrade (by http mock)
+        cell(id.subscriptionStaticText).swipeUpUntilVisible().tap()
+        return PaymentsUIRobot()
+    }
     
     func drafts() -> DraftsRobot {
         cell(id.draftsStaticText).swipeDownUntilVisible().tap()
