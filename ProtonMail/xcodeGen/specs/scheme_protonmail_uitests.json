@@ -96,6 +96,9 @@
                },
                {
                   "path": "ProtonMailUITests/Tests/TestPlans/FlakyTests.xctestplan"
+               },
+               {
+                  "path": "ProtonMailUITests/Tests/TestPlans/SubscriptionTests.xctestplan"
                }
 
             ]
