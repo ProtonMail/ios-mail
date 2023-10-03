@@ -29,13 +29,6 @@ class ConversationMigrationPolicy: NSEntityMigrationPolicy {
             return
         }
 
-        let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
-
-        guard keyMaker.mainKeyExists() else {
-            PMAssertionFailure("Conversation migration performed before the main key is available")
-            return
-        }
-
         // Setup new version of Conversation
         let newConversation = NSEntityDescription.insertNewObject(
             forEntityName: Conversation.Attributes.entityName,
