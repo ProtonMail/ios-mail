@@ -819,6 +819,7 @@ extension MailboxViewModel {
                 .callbackOn(.main)
                 .execute(
                     params: .init(
+                        labelID: labelID,
                         endTime: time,
                         isUnread: isUnread,
                         onMessagesRequestSuccess: nil
@@ -852,6 +853,7 @@ extension MailboxViewModel {
 
         dependencies.updateMailbox.execute(
             params: .init(
+                labelID: labelID,
                 showUnreadOnly: showUnreadOnly,
                 isCleanFetch: isCleanFetch,
                 time: time,

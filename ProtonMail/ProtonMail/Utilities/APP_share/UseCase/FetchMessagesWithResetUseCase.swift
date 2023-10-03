@@ -48,6 +48,7 @@ extension FetchMessagesWithReset {
                     self.dependencies.fetchMessages
                         .execute(
                             params: .init(
+                                labelID: params.labelID,
                                 endTime: params.endTime,
                                 isUnread: params.fetchOnlyUnreadMessages,
                                 onMessagesRequestSuccess: {
@@ -90,6 +91,7 @@ extension FetchMessagesWithReset {
 extension FetchMessagesWithReset {
 
     struct Params {
+        let labelID: LabelID
         let endTime: Int
         let fetchOnlyUnreadMessages: Bool
         let refetchContacts: Bool
@@ -102,21 +104,5 @@ extension FetchMessagesWithReset {
         let lastUpdatedStore: LastUpdatedStoreProtocol
         let contactProvider: ContactProviderProtocol
         let labelProvider: LabelProviderProtocol
-
-        init(
-            fetchLatestEventId: FetchLatestEventIdUseCase,
-            fetchMessages: FetchMessagesUseCase,
-            localMessageDataService: LocalMessageDataServiceProtocol,
-            lastUpdatedStore: LastUpdatedStoreProtocol,
-            contactProvider: ContactProviderProtocol,
-            labelProvider: LabelProviderProtocol
-        ) {
-            self.fetchLatestEventId = fetchLatestEventId
-            self.fetchMessages = fetchMessages
-            self.localMessageDataService = localMessageDataService
-            self.lastUpdatedStore = lastUpdatedStore
-            self.contactProvider = contactProvider
-            self.labelProvider = labelProvider
-        }
     }
 }

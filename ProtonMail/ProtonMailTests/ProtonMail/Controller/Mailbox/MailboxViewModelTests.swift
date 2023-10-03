@@ -1401,7 +1401,6 @@ extension MailboxViewModelTests {
                    totalUserCount: Int = 1) {
         let fetchMessage = MockFetchMessages()
         let updateMailbox = UpdateMailbox(dependencies: .init(
-            labelID: .init(labelID),
             eventService: eventsServiceMock,
             messageDataService: userManagerMock.messageService,
             conversationProvider: conversationProviderMock,
