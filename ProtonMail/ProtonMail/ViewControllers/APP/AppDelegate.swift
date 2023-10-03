@@ -210,7 +210,6 @@ extension AppDelegate: UIApplicationDelegate {
                 }
             )
             user.cacheService.cleanOldAttachment()
-            user.messageService.updateMessageCount()
 
             dependencies.queueManager.backgroundFetch(remainingTime: {
                 application.backgroundTimeRemaining
