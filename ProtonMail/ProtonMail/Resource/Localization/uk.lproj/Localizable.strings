@@ -1295,27 +1295,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Увімкніть цю функцію для автозавершення адрес електронної пошти, використовуючи контакти з усіх облікових записів, до яких ви ввійшли.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Встановити PIN-код";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Введіть новий PIN-код";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Введіть PIN-код від 4 до 21 символів.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN-код закороткий";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN-код задовгий";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Повторіть PIN-код";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN-коди повинні збігатися!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "У випадку блокування сайтів Proton, цей параметр дозволяє програмі спробувати альтернативний мережевий маршрут для доступу до Proton, що може бути корисним для обходу мережевих екранів чи мережевих проблем. Рекомендовано увімкнути цей параметр для підвищення надійності. %1$@";
 
@@ -1327,9 +1306,6 @@
 
 /* The title of Off setting options */
 "Off" = "Вимкнено";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Змінити PIN-код";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Повторна автентифікація";
@@ -2026,15 +2002,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Увімкнути";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Вимкнути автоматичне видалення?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Електронні листи, заплановані для видалення, залишатимуться в смітнику та спамі.";
-
-/* Button to disable auto delete */
-"Disable" = "Вимкнути";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Покращте підписку, щоб автоматично видаляти повідомлення, які перебували у смітнику або спамі понад 30 днів.";
 
@@ -2065,6 +2032,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Власні поштові домени";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Ім'я";
 
@@ -2085,6 +2058,33 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Редагувати фото";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Встановити PIN-код";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Повторіть PIN-код";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Введіть новий PIN-код";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Введіть PIN-код від 4 до 21 символів.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN-код закороткий";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN-код задовгий";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN-коди повинні збігатися!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Please enter old pin code ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Змінити PIN-код";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Відписатися від розсилки";

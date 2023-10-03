@@ -9,7 +9,7 @@
 "Display Name" = "Nome visualizzato";
 
 /* place holder */
-"Input Display Name…" = "Inserisci Nome Visualizzato…";
+"Input Display Name…" = "Inserisci il nome visualizzato…";
 
 /* Title in signature settings */
 "Signature" = "Firma";
@@ -462,7 +462,7 @@
 "Message saved to Drafts" = "Messaggio salvato nelle Bozze";
 
 /* Alert message */
-"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Troppi messaggi sono in attesa di essere inviati. \nPer poter pianificare un altro messaggio, si prega di attendere finché un altro non verrà inviato.";
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Troppi messaggi sono in attesa di essere inviati.\nPer pianificare questo messaggio, attendi finché un altro non verrà inviato.";
 
 /* Warning message */
 "The sending time needs to be at least 5 minutes in the future." = "Il tempo di invio deve essere di almeno 5 minuti nel futuro.";
@@ -888,7 +888,7 @@
 "Decryption of this message's encrypted content failed." = "La decriptazione del contenuto crittografato nel messaggio non è riuscita.";
 
 /* error title */
-"Logs" = "Registri";
+"Logs" = "Log";
 
 /* Title */
 "normal attachments" = "allegati normali";
@@ -969,7 +969,7 @@
 "Move to spam" = "Sposta in spam";
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
-"Failed to load content!\nPlease try again." = "Impossibile caricare il contenuto!\nSei pregato di riprovare.";
+"Failed to load content!\nPlease try again." = "Impossibile caricare il contenuto.\nPer favore riprova.";
 
 /* Title of alert in share extension. */
 "Error" = "Errore";
@@ -1062,7 +1062,7 @@
 "Please select at least one email for the contact group" = "Per favore seleziona almeno un'email per il gruppo di contatti";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
-"Please provide a group name" = "Si prega di fornire il nome del gruppo";
+"Please provide a group name" = "Fornisci un nome per il gruppo";
 
 /* The error message will be shown when the update of the contact group through API failed */
 "Can't update contact group through the API" = "Non è possibile aggiornare il gruppo di contatti tramite l'API";
@@ -1125,7 +1125,7 @@
 "Insecure connection" = "Connessione non sicura";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Convalida del certificato TLS non riuscita. La tua connessione potrebbe esser monitorata e l'app esser bloccata temporaneamente per la tua sicurezza.\n\nCambia immediatamente rete.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Convalida del certificato TLS non riuscita. La tua connessione potrebbe essere monitorata e l'app è temporaneamente bloccata per la tua sicurezza.\n\nCambia immediatamente rete.";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Convalida del certificato TLS non riuscita. La tua connessione potrebbe essere monitorata e l'app è temporaneamente bloccata per la tua sicurezza.";
@@ -1212,7 +1212,7 @@
 "Invalid email address" = "Indirizzo email non valido";
 
 /* incorrect email format error in composer */
-"At least one recipient email address is improperly formatted, please double check them." = "Almeno un indirizzo email del destinatario non è nel formato corretto, si prega di ricontrollarlo.";
+"At least one recipient email address is improperly formatted, please double check them." = "Almeno uno degli indirizzi email dei destinatari non è formattato correttamente. Per favore controlla.";
 
 /* incorrect email format error in composer */
 "Error sending" = "Errore nell'invio";
@@ -1295,27 +1295,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Attiva questa funzionalità per il completamento automatico degli indirizzi email, usando i contatti di tutti i tuoi profili collegati.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Imposta codice PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Inserisci il nuovo codice PIN";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Inserisci un codice PIN con minimo 4 caratteri e massimo 21 caratteri.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "Il PIN è troppo corto";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "Il PIN è troppo lungo";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Ripeti il codice PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "I codici PIN devono corrispondere!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Nel caso in cui i siti Proton siano bloccati, questa impostazione consente all'app di provare l'instradamento di rete alternativo per raggiungere Proton, che può essere utile per aggirare i firewall o problemi di rete. Consigliamo di mantenere questa impostazione per una maggiore affidabilità. %1$@";
 
@@ -1328,11 +1307,8 @@
 /* The title of Off setting options */
 "Off" = "Disattivo";
 
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Modifica codice PIN";
-
 /* The title of re auth alert */
-"Re-authenticate" = "Riautentica";
+"Re-authenticate" = "Ri-autentica";
 
 /* The content of the re auth alert */
 "Enter your password to make changes" = "Inserisci la tua password per apportare le modifiche";
@@ -1344,7 +1320,7 @@
 "Receipt sent" = "Ricevuta inviata";
 
 /* Message of a banner which is displayed on the messages list when offline */
-"We have trouble connecting to the servers. Please reconnect." = "Stiamo avendo problemi di connessione al server. Sei pregato di riconnetterti.";
+"We have trouble connecting to the servers. Please reconnect." = "Stiamo avendo problemi di connessione al server. Per favore riconnettiti.";
 
 /* Title of message permanent deletion alert, singular */
 "Delete message" = "Elimina messaggio";
@@ -1506,7 +1482,7 @@
 "Undisclosed Recipients" = "Destinatari nascosti";
 
 /* No comment provided by engineer. */
-"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Il nostro sistema ha contrassegnato questo messaggio come un tentativo di phishing. Si prega di verificare che sia attendibile.";
+"Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Il nostro sistema ha contrassegnato questo messaggio come un tentativo di phishing. Verifica che sia legittimo.";
 
 /* No comment provided by engineer. */
 "Mark as legitimate" = "Segna come legittimo";
@@ -1671,7 +1647,7 @@
 "Warning: suspected fake website" = "Attenzione: sospetto sito web falso";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Questo collegamento porta a un sito Web che potrebbe tentare di rubare le tue informazioni, come password e dettagli della carta di credito.\n%@\n\nPer la tua sicurezza, non continuare.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Questo link conduce a un sito web che potrebbe tentare di rubare le tue informazioni, come password e dettagli della carta di credito.\n%@\n\nPer la tua sicurezza, non continuare.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignora l'avviso e continua";
@@ -1838,7 +1814,7 @@
 /* Placeholder for empty sender list */
 "No blocked senders" = "Nessun mittente bloccato";
 
-"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Le nuove email da %@ non saranno consegnate e saranno eliminate permanentemente. Gestisci gli indirizzi email bloccati nelle impostazioni.";
+"New emails from %@ won’t be delivered and will be permanently deleted. Manage blocked email addresses in settings." = "Le nuove email da %@ non saranno consegnate e saranno eliminate definitivamente. Gestisci gli indirizzi email bloccati nelle impostazioni.";
 
 /* Banner in the message view */
 "Sender has been blocked" = "Il mittente è stato bloccato";
@@ -1964,7 +1940,7 @@
 "Password updated" = "Password aggiornata";
 
 /* Title for application logs settings option */
-"Application logs" = "Registri dell'applicazione";
+"Application logs" = "Log dell'applicazione";
 
 /* The title of the setting of the next msg after move */
 "Next message after move" = "Prossimo messaggio dopo lo spostamento";
@@ -2026,15 +2002,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Abilita";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Disabilitare auto eliminazione?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Le email pianificate per l'eliminazione rimarranno nelle cartelle cestino e spam.";
-
-/* Button to disable auto delete */
-"Disable" = "Disabilita";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Aggiorna il piano per eliminare automaticamente gli elementi presenti nel cestino o in spam dopo 30 giorni.";
 
@@ -2054,16 +2021,22 @@
 "Empty trash" = "Svuota il cestino";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Svuota la spazzatura";
+"Clear out the junk" = "Cancella i messaggi indesiderati";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Cancella automaticamente i messaggi più vecchi di 30 giorni da cestino e spam. Goditi questo e altri vantaggi quando esegui l'upgrade.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Cancella automaticamente i messaggi indesiderati e cestinati più vecchi di 30 giorni. Usufruisci di questo e altri benefici quando effettui l'upgrade.";
 
 /* Text to advertise what upgrading will provide */
 "Up to 3 TB of storage" = "Fino a 3 TB di spazio di archiviazione";
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domini di posta elettronica personalizzati";
+
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Mittente cambiato";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Il mittente originale di questo messaggio non è più valido. Il tuo messaggio verrà inviato dal tuo indirizzo predefinito %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nome visualizzato";
@@ -2085,6 +2058,33 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Modifica foto";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Imposta codice PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Ripeti il codice PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Inserisci il nuovo codice PIN";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Inserisci un codice PIN con minimo 4 caratteri e massimo 21 caratteri.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Il PIN è troppo corto";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Il PIN è troppo lungo";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "I codici PIN devono corrispondere!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Inserisci il vecchio codice pin ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Modifica codice PIN";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Annulla iscrizione alla mailing list";

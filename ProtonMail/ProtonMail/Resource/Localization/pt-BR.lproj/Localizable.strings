@@ -1295,27 +1295,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Ative esse recurso para preencher automaticamente endereços de e-mail usando contatos de todas as suas contas conectadas.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Definir o código PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Digite o novo código PIN";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Insira um código PIN com no mínimo 4 caracteres e no máximo 21 caracteres.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "O PIN é muito curto.";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "O PIN é muito longo.";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Repetir o código PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Os códigos PIN devem corresponder.";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "No caso dos sites da Proton estarem bloqueados, esta configuração permite que o aplicativo tente um roteamento de rede alternativo para alcançar o Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos manter esta configuração ativa para uma maior confiabilidade. %1$@";
 
@@ -1327,9 +1306,6 @@
 
 /* The title of Off setting options */
 "Off" = "Desligado";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Alterar o código PIN";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Reautenticar";
@@ -2026,15 +2002,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Ativar";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Desativar exclusão automática?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "E-mails agendados para exclusão permanecerão na lixeira e na pasta de spam.";
-
-/* Button to disable auto delete */
-"Disable" = "Desativar";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Faça upgrade para eliminar automaticamente as mensagens que se encontram na lixeira ou no spam há mais de 30 dias.";
 
@@ -2065,6 +2032,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domínios personalizados de e-mail";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Remetente alterado";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "O remetente original desta mensagem não é mais válido. Sua mensagem será enviada do seu endereço padrão %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nome de exibição";
 
@@ -2085,6 +2058,33 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Editar foto";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Definir o código PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Repetir o código PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Digite o novo código PIN";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Insira um código PIN com no mínimo 4 caracteres e no máximo 21 caracteres.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "O PIN é muito curto.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "O PIN é muito longo.";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Os códigos PIN devem corresponder.";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Insira o código PIN antigo";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Alterar o código PIN";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Cancelar a inscrição na lista de distribuição de e-mails";

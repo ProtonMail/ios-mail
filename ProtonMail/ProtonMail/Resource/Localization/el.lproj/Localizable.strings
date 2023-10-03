@@ -1295,27 +1295,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Ενεργοποιήστε αυτή τη λειτουργία για να συμπληρώνετε αυτόματα τις διευθύνσεις e-mail χρησιμοποιώντας επαφές από όλους τους συνδεδεμένους λογαριασμούς σας.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Ορισμός κωδικού PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Εισαγωγή νέου κωδικού ΡΙΝ";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Εισαγάγετε έναν κωδικό PIN με ελάχιστους 4 χαρακτήρες και έως 21 χαρακτήρες.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "Υπερβολικά μικρό PIN";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "Υπερβολικά μεγάλο PIN";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Επανάληψη κωδικού PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Οι κωδικοί PIN πρέπει να ταυτίζονται!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Σε περίπτωση που μπλοκάρουν τις ιστοσελίδες Proton, αυτή η ρύθμιση θα επιτρέψει στην εφαρμογή να δοκιμάσει εναλλακτική δρομολόγηση δικτύου ώστε να φτάσει στο Proton, το οποίο μπορεί να είναι χρήσιμο για παράκαμψη τείχους προστασίας ή ζητήματα δικτύου. Συνιστούμε να διατηρήσετε αυτήν τη ρύθμιση για μεγαλύτερη αξιοπιστία. %1$@";
 
@@ -1327,9 +1306,6 @@
 
 /* The title of Off setting options */
 "Off" = "Ανενεργό";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Αλλαγή κωδικού PIN";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Επαναταυτοποίηση";
@@ -2026,15 +2002,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Ενεργοποίηση";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Απενεργοποίηση αυτόματης διαγραφής;";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Τα προγραμματισμένα για οριστική εξάλειψη μηνύματα θα παραμείνουν στους φακέλους Διαγραμμένα και Ενοχλητικά.";
-
-/* Button to disable auto delete */
-"Disable" = "Απενεργοποίηση";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Για αυτόματη οριστική εξάλειψη των μηνυμάτων που παραμένουν στα Διαγραμμένα ή στα Ενοχλητικά για περισσότερες από 30 ημέρες, κάντε αναβάθμιση.";
 
@@ -2065,6 +2032,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Προσαρμοσμένοι τομείς ηλεκτρονικού ταχυδρομείου";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Ο αποστολέας άλλαξε";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Ο αρχικός αποστολέας αυτού του μηνύματος δεν είναι πλέον έγκυρος. Το μήνυμά σας θα αποσταλεί από την προεπιλεγμένη σας διεύθυνση %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Εμφανιζόμενο Όνομα";
 
@@ -2085,6 +2058,33 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Επεξεργασία φωτογραφίας";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Ορισμός κωδικού PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Επανάληψη κωδικού PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Εισαγωγή νέου κωδικού ΡΙΝ";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Εισαγάγετε έναν κωδικό PIN με ελάχιστους 4 χαρακτήρες και έως 21 χαρακτήρες.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "Υπερβολικά μικρό PIN";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "Υπερβολικά μεγάλο PIN";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Οι κωδικοί PIN πρέπει να ταυτίζονται!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Παρακαλούμε εισάγετε τον παλιό κωδικό PIN ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Αλλαγή κωδικού PIN";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Απεγγραφή από λίστα αλληλογραφίας";

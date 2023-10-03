@@ -1,0 +1,24 @@
+/* Bundle display name */
+
+"CFBundleDisplayName" = "Proton Mail";
+
+/* Bundle name */
+"CFBundleName" = "Proton Mail";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "სავალდებულოა მედია ფაილების მისამაგრებლად.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "სავალდებულოა ელფოსტაზე სურათების მისამაგრებლად.";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "გამოიყენება მოწყობილობაში შენახული კონტაქტების ელფოსტის მისამართებზე წვდომისათვის. მათი გამოყენება შესაძლებელია შეტყობინების შედგენისას ან მოწყობილობის კონტაქტების თქვენს ანგარიშში ხელით ატვირთვისას. თქვენი პირდაპირი ბრძანების გარეშე საკონტაქტო ინფორმაცია ჩვენს სერვერებზე არ აიტვირთება.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "საშუალებას გაძლევთ სწრაფად და უსაფრთხოდ გახსნათ თქვენი აპლიკაცია.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "საჭიროა მიმაგრებული სურათების ბიბლიოთეკაში შესანახად.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "სავალდებულოა ელფოსტაზე სურათების მისამაგრებლად.";

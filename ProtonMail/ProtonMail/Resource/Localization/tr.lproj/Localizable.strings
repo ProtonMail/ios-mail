@@ -684,10 +684,10 @@
 "Breeze through threaded messages in conversation mode." = "Yazışma kipinde, ileti dizileri arasında hızla gezinin.";
 
 /* Onboarding content */
-"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Sorunsuz uçtan uca şifrelemenin tadını çıkarmak için tanıdıklarınızı Proton Mail kullanmaya davet edin ya da gönderdiğiniz iletilere parola koruması ekleyin.";
+"Invite your contacts to Proton Mail to enjoy seamless end-to-end encryption, or add password protection to messages you send them." = "Tanıdıklarınıza sorunsuz Proton Mail uçtan uca şifrelemesini önerin ve iletilerinize parola koruması ekleyin.";
 
 /* Onboarding content */
-"File, label, and color code messages to create your perfect, custom inbox." = "Gelen kutunuzu mükemmelleştirmek için iletileri dosyalayın, etiketleyin ve renklendirin.";
+"File, label, and color code messages to create your perfect, custom inbox." = "Gelen kutunuzu düzenlemek için iletileri dosyalayın, etiketleyin ve renklendirin.";
 
 /* Welcome to rebranding content */
 "Introducing Proton’s refreshed look.\nMany services, one mission. Welcome to an Internet where privacy is the default." = "Yenilenmiş Proton böyle görünüyor. \nBirçok hizmet, tek amaç. Gizliliğe odaklanmış İnternet fikrine hoş geldiniz.";
@@ -1295,27 +1295,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "E-posta adreslerinin, oturum açtığınız tüm hesaplardaki kişilerle otomatik olarak tamamlanması için bu özelliği açın.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "PIN kodu ayarla";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Yeni PIN kodunu yazın";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "4 ile 21 karakter arasında bir PIN kodu yazın.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN kodu çok kısa";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN kodu çok uzun";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "PIN kodu onayı";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN kodu ile onayı aynı değil!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Bu seçenek ile, Proton sitelerinin engellenmiş olması durumunda, uygulama Proton ağına ulaşmak için alternatif ağ yöneltmesini dener. Güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilir. Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir. %1$@";
 
@@ -1327,9 +1306,6 @@
 
 /* The title of Off setting options */
 "Off" = "Kapalı";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "PIN kodunu değiştir";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Kimliği yeniden doğrula";
@@ -1898,7 +1874,7 @@
 "I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "Bir süredir gizliliğimi koruyan Proton Mail e-posta hizmetini kullanıyorum ve senin de beğeneceğini düşündüm. Ücretli özellikleri bir ay süreyle ücretsiz olarak kullanmak için bu bağlantıya giderek bir hesap açabilirsin:";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Kişileriniz de Proton Mail kullanıyorsa gizliliğiniz daha iyi korunur. Arkadaşlarınızı Proton kullanmaya davet edin ve ücretli özelliklerden ücretsiz olarak yararlanın.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Kişileriniz de Proton Mail kullanıyorsa gizliliğiniz daha iyi korunur. Tanıdıklarınızı Proton kullanmaya çağırın ve ücretli özellikleri ücretsiz olarak kullanın.";
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Belki daha sonra";
@@ -2026,15 +2002,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Aç";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Otomatik silme kapatılsın mı?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Silinmek üzere zamanlanmış e-postalar çöp kutusu ve istenmeyen klasöründe kalacak.";
-
-/* Button to disable auto delete */
-"Disable" = "Kapat";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Çöp veya istenmeyen kutularında 30 günden uzun süredir duran iletilerin otomatik olarak silinmesi için tarifenizi yükseltin.";
 
@@ -2065,6 +2032,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Özel e-posta etki alanları";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Görüntülenecek ad";
 
@@ -2085,6 +2058,33 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Fotoğrafı düzenle";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "PIN kodu ayarla";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "PIN kodu onayı";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Yeni PIN kodunu yazın";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "4 ile 21 karakter arasında bir PIN kodu yazın.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN kodu çok kısa";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN kodu çok uzun";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN kodu ile onayı aynı değil!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Please enter old pin code ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "PIN kodunu değiştir";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "E-posta listesinin aboneliğinden ayrıl";
