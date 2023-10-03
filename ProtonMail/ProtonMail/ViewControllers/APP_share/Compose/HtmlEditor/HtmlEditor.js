@@ -305,7 +305,7 @@ html_editor.editor.addEventListener("keydown", function (key) {
 
 html_editor.caret = document.createElement('caret'); // something happening here preventing selection of elements
 html_editor.getCaretYPosition = function () {
-    var range = window.getSelection().getRangeAt(0);
+    var range = window.getSelection().getRangeAt(0).cloneRange();
     range.collapse(false);
     range.insertNode(html_editor.caret);
 
