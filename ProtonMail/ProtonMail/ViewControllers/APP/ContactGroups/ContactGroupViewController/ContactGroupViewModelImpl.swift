@@ -39,10 +39,6 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         user.contactGroupService
     }
 
-    private var labelDataService: LabelsDataService {
-        user.labelService
-    }
-
     private var eventsService: EventsFetching {
         user.eventsService
     }

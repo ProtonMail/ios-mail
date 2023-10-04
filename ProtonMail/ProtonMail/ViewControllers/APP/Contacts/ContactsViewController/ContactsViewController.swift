@@ -27,10 +27,6 @@ import MBProgressHUD
 import ProtonCore_UIFoundations
 import UIKit
 
-protocol ContactsVCUIProtocol: AnyObject {
-    func reloadTable()
-}
-
 final class ContactsViewController: ContactsAndGroupsSharedCode {
     typealias Dependencies =
         ContactsAndGroupsSharedCode.Dependencies &
@@ -102,7 +98,6 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         }
 
         self.viewModel.setupFetchedResults()
-        self.viewModel.setup(uiDelegate: self)
         self.prepareSearchBar()
 
         emptyBackButtonTitleForNextView()
@@ -299,14 +294,12 @@ extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         self.refreshControl?.endRefreshing()
         self.refreshControl?.removeFromSuperview()
-        self.viewModel.set(searching: true)
     }
 
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
         if let refreshControl = self.refreshControl {
             self.tableView.addSubview(refreshControl)
         }
-        self.viewModel.set(searching: false)
     }
 }
 
@@ -381,11 +374,5 @@ extension ContactsViewController: NSNotificationCenterKeyboardObserverProtocol {
 extension ContactsViewController: UIAdaptivePresentationControllerDelegate {
     func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
         self.isOnMainView = true
-    }
-}
-
-extension ContactsViewController: ContactsVCUIProtocol {
-    func reloadTable() {
-        self.tableView.reloadData()
     }
 }

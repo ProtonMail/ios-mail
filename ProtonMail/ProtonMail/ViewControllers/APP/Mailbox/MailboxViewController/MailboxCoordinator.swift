@@ -28,8 +28,6 @@ import SideMenuSwift
 // sourcery: mock
 protocol MailboxCoordinatorProtocol: AnyObject {
     var pendingActionAfterDismissal: (() -> Void)? { get set }
-    var conversationCoordinator: ConversationCoordinator? { get }
-    var singleMessageCoordinator: SingleMessageCoordinator? { get }
 
     func go(to dest: MailboxCoordinator.Destination, sender: Any?)
     func presentToolbarCustomizationView(
@@ -52,8 +50,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     private(set) weak var navigation: UINavigationController?
     private weak var sideMenu: SideMenuController?
     var pendingActionAfterDismissal: (() -> Void)?
-    private(set) var singleMessageCoordinator: SingleMessageCoordinator?
-    private(set) var conversationCoordinator: ConversationCoordinator?
     private let getApplicationState: () -> UIApplication.State
     private var timeOfLastNavigationToMessageDetails: Date?
 
@@ -508,7 +504,6 @@ extension MailboxCoordinator {
         coordinator.goToDraft = { [weak self] msgID, originalScheduleTime in
             self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduleTime)
         }
-        singleMessageCoordinator = coordinator
         coordinator.start()
     }
 
@@ -521,7 +516,6 @@ extension MailboxCoordinator {
             dependencies: dependencies,
             targetID: targetID
         )
-        conversationCoordinator = coordinator
         coordinator.goToDraft = { [weak self] msgID, originalScheduledTime in
             self?.editScheduleMsg(messageID: msgID, originalScheduledTime: originalScheduledTime)
         }

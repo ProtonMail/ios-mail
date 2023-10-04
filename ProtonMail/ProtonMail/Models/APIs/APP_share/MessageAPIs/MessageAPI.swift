@@ -463,12 +463,3 @@ final class SendMessageRequest: Request {
         return .post
     }
 }
-
-final class SendResponse: Response {
-    var responseDict: [String: Any] = [:]
-
-    override func ParseResponse(_ response: [String: Any]) -> Bool {
-        self.responseDict = response
-        return super.ParseResponse(response)
-    }
-}

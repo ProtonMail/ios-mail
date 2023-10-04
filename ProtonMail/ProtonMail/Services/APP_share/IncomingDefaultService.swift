@@ -20,8 +20,6 @@ import ProtonCore_DataModel
 import ProtonCore_Networking
 import ProtonCore_Services
 
-import class PromiseKit.Promise
-
 // sourcery: mock
 protocol IncomingDefaultServiceProtocol {
     func fetchAll(location: IncomingDefaultsAPI.Location, completion: @escaping (Error?) -> Void)

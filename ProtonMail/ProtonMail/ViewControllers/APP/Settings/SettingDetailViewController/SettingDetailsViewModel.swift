@@ -23,7 +23,6 @@
 import Foundation
 
 protocol SettingDetailsViewModel {
-    var userManager: UserManager { get }
     var sectionTitle2: String { get }
     init(user: UserManager, coreKeyMaker: KeyMakerProtocol)
     func getNavigationTitle() -> String

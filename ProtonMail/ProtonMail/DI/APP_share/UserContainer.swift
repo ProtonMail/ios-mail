@@ -216,8 +216,7 @@ final class UserContainer: ManagedContainer {
                 labelDataService: self.labelService,
                 localNotificationService: self.localNotificationService,
                 undoActionManager: self.undoActionManager,
-                user: self.user,
-                featureFlagCache: self.featureFlagCache
+                user: self.user
             )
         }
     }

@@ -192,69 +192,6 @@ final class MessageSendingRequestBuilder {
 // MARK: - Build Message Body
 extension MessageSendingRequestBuilder {
 
-    func fetchAttachmentBody(
-        att: AttachmentEntity,
-        passphrase: Passphrase,
-        userInfo: UserInfo
-    ) -> Promise<String> {
-        return Promise { seal in
-            let userKeys = UserKeys(
-                privateKeys: userInfo.userPrivateKeys,
-                addressesPrivateKeys: userInfo.addressKeys,
-                mailboxPassphrase: passphrase
-            )
-            dependencies.fetchAttachment.execute(params: .init(
-                attachmentID: att.id,
-                attachmentKeyPacket: att.keyPacket,
-                purpose: .decryptAndEncodeAttachment,
-                userKeys: userKeys
-            )) { result in
-                let base64Attachment = (try? result.get().encoded) ?? ""
-                seal.fulfill(base64Attachment)
-            }
-        }
-    }
-
-    func fetchAttachmentBodyForMime(passphrase: Passphrase,
-                                    userInfo: UserInfo) -> Promise<MessageSendingRequestBuilder> {
-        var fetches = [Promise<String>]()
-        for att in preAttachments {
-            let promise = fetchAttachmentBody(att: att.att,
-                                              passphrase: passphrase,
-                                              userInfo: userInfo)
-            fetches.append(promise)
-        }
-
-        return when(resolved: fetches).then { attachmentBodys -> Promise<MessageSendingRequestBuilder> in
-            for (index, result) in attachmentBodys.enumerated() {
-                switch result {
-                case .fulfilled(let body):
-                    let preAttachment = self.preAttachments[index].att
-                    self.attachmentBodys[preAttachment.id.rawValue] = body
-                case .rejected:
-                    break
-                }
-            }
-            return .value(self)
-        }
-    }
-
-    func buildMime(senderKey: Key,
-                   passphrase: Passphrase,
-                   userKeys: [ArmoredKey],
-                   keys: [Key],
-                   in context: NSManagedObjectContext) -> Promise<MessageSendingRequestBuilder> {
-        context.performAsPromise { [unowned self] in
-            try self.prepareMime(
-                senderKey: senderKey,
-                passphrase: passphrase,
-                userKeys: userKeys,
-                keys: keys
-            )
-            return self
-        }
-    }
-
     func prepareMime(
         senderKey: Key,
         passphrase: Passphrase,
@@ -304,21 +241,6 @@ extension MessageSendingRequestBuilder {
         self.mimeSessionKey = sessionKey.sessionKey
         self.mimeSessionAlgo = sessionKey.algo
         self.mimeDataPackage = dataPacket.base64EncodedString()
-    }
-
-    func buildPlainText(senderKey: Key,
-                        passphrase: Passphrase,
-                        userKeys: [ArmoredKey],
-                        keys: [Key]) -> Promise<MessageSendingRequestBuilder> {
-        async { [unowned self] in
-            try self.preparePlainText(
-                senderKey: senderKey,
-                passphrase: passphrase,
-                userKeys: userKeys,
-                keys: keys
-            )
-            return self
-        }
     }
 
     func preparePlainText(
@@ -505,20 +427,10 @@ extension MessageSendingRequestBuilder {
         }
         return out
     }
-
-    func getBuilderPromises() throws -> [Promise<AddressPackageBase>] {
-        var result = [Promise<AddressPackageBase>]()
-        let builders = try generatePackageBuilder()
-        for builder in builders {
-            result.append(builder.build())
-        }
-        return result
-    }
 }
 
 extension MessageSendingRequestBuilder {
     struct Dependencies {
-        let fetchAttachment: FetchAttachmentUseCase
         let apiService: APIService
     }
 }

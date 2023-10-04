@@ -51,7 +51,6 @@ protocol MessageDataServiceProtocol: Service {
 
     func getMessageSendingData(for uri: String) -> MessageSendingData?
     func deleteMessage(objectID: String)
-    func getMessage(for messageID: MessageID) throws -> Message
     func getMessageEntity(for messageID: MessageID) throws -> MessageEntity
     func getAttachmentEntity(for uri: String) throws -> AttachmentEntity?
     func removeAttachmentFromDB(objectIDs: [ObjectID])
@@ -85,13 +84,11 @@ protocol MessageDataServiceProtocol: Service {
     func delete(att: AttachmentEntity, messageID: MessageID) -> Promise<Void>
     func upload(att: Attachment)
     func userAddress(of addressID: AddressID) -> Address?
-    func defaultUserAddress(of addressID: AddressID) -> Address?
 }
 
 // sourcery: mock
 protocol LocalMessageDataServiceProtocol: Service {
     func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool)
-    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message]
 }
 
 /// Message data service
