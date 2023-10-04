@@ -76,6 +76,10 @@ public enum PUITranslations: TranslationsExposing {
     case plan_details_n_vpn_connections
     case plan_details_n_high_speed_connections
     case plan_details_n_custom_domains
+    case plan_cycle_one_month
+    case plan_cycle_one_year
+    case plan_cycle_two_years
+    case plan_cycle_x_months
     case _details_n_custom_email_domains
     case _details_n_folders_labels
     case _details_n_calendars
@@ -206,6 +210,14 @@ public enum PUITranslations: TranslationsExposing {
             return localized(key: "%d high-speed VPN connections", comment: "Plan details n high-speed connections")
         case .plan_details_n_custom_domains:
             return localized(key: "%d custom domains", comment: "Plan details n custom domains")
+        case .plan_cycle_one_month:
+            return localized(key: "Pay monthly", comment: "Selecting a one month recurring payment cycle")
+        case .plan_cycle_one_year:
+            return localized(key: "Pay annually", comment: "Selecting a one year recurring payment cycle")
+        case .plan_cycle_two_years:
+            return localized(key: "Pay every two years", comment: "Selecting a two years recurring payment cycle")
+        case .plan_cycle_x_months:
+            return localized(key: "Pay for %d months", comment: "Selecting a X months recurring payment cycle")
         case ._details_n_custom_email_domains:
             return localized(key: "Support for %d custom email domains", comment: "details n custom email domains")
         case ._details_n_folders_labels:

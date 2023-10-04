@@ -43,17 +43,19 @@ class AvailablePlansPresentation {
     
     static func createAvailablePlans(from plan: AvailablePlans.AvailablePlan,
                                      for instance: AvailablePlans.AvailablePlan.Instance? = nil,
+                                     defaultCycle: Int? = nil,
                                      plansDataSource: PlansDataSourceProtocol?,
                                      storeKitManager: StoreKitManagerProtocol? = nil) async throws -> AvailablePlansPresentation? {
         if let instance, let storeKitManager {
-            return try await createAvailablePlansWithInstance(from: plan, for: instance, plansDataSource: plansDataSource, storeKitManager: storeKitManager)
+            return try await createAvailablePlansWithInstance(from: plan, for: instance, defaultCycle: defaultCycle, plansDataSource: plansDataSource, storeKitManager: storeKitManager)
         } else {
-            return try await createAvailablePlansWithoutInstance(from: plan, plansDataSource: plansDataSource)
+            return try await createAvailablePlansWithoutInstance(from: plan, defaultCycle: defaultCycle, plansDataSource: plansDataSource)
         }
     }
     
     static func createAvailablePlansWithInstance(from plan: AvailablePlans.AvailablePlan,
                                                  for instance: AvailablePlans.AvailablePlan.Instance,
+                                                 defaultCycle: Int? = nil,
                                                  plansDataSource: PlansDataSourceProtocol?,
                                                  storeKitManager: StoreKitManagerProtocol) async throws -> AvailablePlansPresentation? {
         guard let inAppPurchasePlan = InAppPurchasePlan(availablePlanInstance: instance) else {
@@ -63,6 +65,7 @@ class AvailablePlansPresentation {
         guard let details = try await AvailablePlansDetails.createPlan(
             from: plan,
             for: instance,
+            defaultCycle: defaultCycle,
             iapPlan: inAppPurchasePlan,
             plansDataSource: plansDataSource,
             storeKitManager: storeKitManager
@@ -72,9 +75,11 @@ class AvailablePlansPresentation {
     }
     
     static func createAvailablePlansWithoutInstance(from plan: AvailablePlans.AvailablePlan,
+                                                    defaultCycle: Int? = nil,
                                                     plansDataSource: PlansDataSourceProtocol?) async throws -> AvailablePlansPresentation? {
         guard let details = try await AvailablePlansDetails.createPlan(
             from: plan,
+            defaultCycle: defaultCycle,
             plansDataSource: plansDataSource
         ) else { return nil }
         return .init(availablePlan: nil, details: details)

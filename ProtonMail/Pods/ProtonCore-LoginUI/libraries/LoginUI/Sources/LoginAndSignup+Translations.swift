@@ -185,7 +185,7 @@ public enum LUITranslation: TranslationsExposing {
         case .screen_subtitle:
             return localized(key: "Enter your Proton Account details.", comment: "Login screen subtitle")
         case .username_title:
-            return localized(key: "Email or username", value: "username_title_old", comment: "Username field title")
+            return localized(key: "Email or username", comment: "Username field title")
         case .password_title:
             return localized(key: "Password", comment: "Password field title")
         case .sign_in_button:

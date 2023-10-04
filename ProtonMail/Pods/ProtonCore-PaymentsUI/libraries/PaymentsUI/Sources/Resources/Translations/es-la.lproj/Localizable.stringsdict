@@ -737,5 +737,21 @@
 			<string>Support for %d custom email domains</string>
 		</dict>
 	</dict>
+	<key>Pay for %d months</key>
+	<dict>
+		<key>VARIABLE</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string>Pay for %d month</string>
+			<key>other</key>
+			<string>Pay for %d months</string>
+		</dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@VARIABLE@</string>
+	</dict>
 </dict>
 </plist>

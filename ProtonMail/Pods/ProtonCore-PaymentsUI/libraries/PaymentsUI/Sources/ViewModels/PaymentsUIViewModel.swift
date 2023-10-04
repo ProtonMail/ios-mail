@@ -87,6 +87,15 @@ class PaymentsUIViewModel {
     private (set) var availablePlans: [AvailablePlansPresentation]?
     private (set) var currentPlan: CurrentPlanPresentation?
     
+    var defaultCycle: Int? {
+        switch planService {
+        case .left:
+            return nil
+        case .right(let dataSource):
+            return dataSource.availablePlans?.defaultCycle
+        }
+    }
+    
     var isExpandButtonHidden: Bool {
         if UIDevice.current.isIpad, UIDevice.current.orientation.isPortrait {
             return true
@@ -591,14 +600,18 @@ extension PaymentsUIViewModel {
         self.availablePlans = []
         for plan in availablePlansDataSource {
             if plan.instances.isEmpty {
-                if let plan = try await AvailablePlansPresentation.createAvailablePlans(from: plan, plansDataSource: plansDataSource) {
-                    self.availablePlans?.append(plan)
+                if let plan = try await AvailablePlansPresentation.createAvailablePlans(
+                    from: plan,
+                    defaultCycle: plansDataSource.availablePlans?.defaultCycle,
+                    plansDataSource: plansDataSource) {
+                        self.availablePlans?.append(plan)
                 }
             } else {
                 for instance in plan.instances {
                     if let plan = try await AvailablePlansPresentation.createAvailablePlans(
                         from: plan,
                         for: instance,
+                        defaultCycle: plansDataSource.availablePlans?.defaultCycle,
                         plansDataSource: plansDataSource,
                         storeKitManager: storeKitManager
                     ) {

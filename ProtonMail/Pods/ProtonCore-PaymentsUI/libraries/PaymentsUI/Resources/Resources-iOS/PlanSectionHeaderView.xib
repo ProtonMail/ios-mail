@@ -1,38 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="MhV-WQ-8V4" customClass="PlanSectionHeaderView" customModule="ProtonCorePaymentsUI">
-            <rect key="frame" x="0.0" y="0.0" width="434" height="110"/>
+            <rect key="frame" x="0.0" y="0.0" width="434" height="188"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0A-Yg-JRg">
-                    <rect key="frame" x="8" y="44" width="426" height="46"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h0A-Yg-JRg">
+                    <rect key="frame" x="8" y="44" width="426" height="26"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lgy-lL-W9c">
+                    <rect key="frame" x="8" y="86" width="149" height="48"/>
+                    <menu key="menu" id="tfN-lP-iXV">
+                        <children>
+                            <command title="Item 1" id="Md3-eX-72O"/>
+                            <command title="Item 2" id="W7z-qv-Qef"/>
+                        </children>
+                    </menu>
+                    <state key="normal" title="this is a very long text"/>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="hDW-tj-PSr"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="h0A-Yg-JRg" secondAttribute="bottom" constant="20" id="dEb-JF-fly"/>
+                <constraint firstItem="hDW-tj-PSr" firstAttribute="bottom" secondItem="lgy-lL-W9c" secondAttribute="bottom" constant="20" id="3kK-W2-bxV"/>
+                <constraint firstItem="lgy-lL-W9c" firstAttribute="top" secondItem="h0A-Yg-JRg" secondAttribute="bottom" constant="16" id="CGD-5i-afS"/>
+                <constraint firstItem="hDW-tj-PSr" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="lgy-lL-W9c" secondAttribute="trailing" id="TNC-1p-ecT"/>
+                <constraint firstItem="lgy-lL-W9c" firstAttribute="leading" secondItem="hDW-tj-PSr" secondAttribute="leading" constant="8" id="ciK-1Y-UhS"/>
                 <constraint firstItem="h0A-Yg-JRg" firstAttribute="leading" secondItem="MhV-WQ-8V4" secondAttribute="leading" constant="8" id="gmC-Qx-eoy"/>
                 <constraint firstAttribute="trailing" secondItem="h0A-Yg-JRg" secondAttribute="trailing" id="i1C-gm-ftt"/>
                 <constraint firstItem="h0A-Yg-JRg" firstAttribute="top" secondItem="MhV-WQ-8V4" secondAttribute="top" constant="44" id="t9J-Gi-khg"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="cycleSelectorButton" destination="lgy-lL-W9c" id="YV1-q9-ePw"/>
                 <outlet property="titleLabel" destination="h0A-Yg-JRg" id="XaI-SH-D1K"/>
             </connections>
-            <point key="canvasLocation" x="-353.62318840579712" y="-25.446428571428569"/>
+            <point key="canvasLocation" x="-353.62318840579712" y="0.6696428571428571"/>
         </view>
     </objects>
 </document>

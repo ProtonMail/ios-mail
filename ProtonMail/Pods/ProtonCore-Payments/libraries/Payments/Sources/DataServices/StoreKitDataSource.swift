@@ -79,7 +79,7 @@ final class StoreKitDataSource: NSObject, StoreKitDataSourceProtocol {
             )
             return updatedPlan
         }
-        return AvailablePlans(plans: updatedPlans)
+        return AvailablePlans(plans: updatedPlans, defaultCycle: originalPlans.defaultCycle)
     }
 }
 

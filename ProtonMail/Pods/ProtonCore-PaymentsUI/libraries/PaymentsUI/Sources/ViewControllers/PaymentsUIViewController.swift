@@ -26,6 +26,7 @@ import ProtonCoreFoundations
 import ProtonCoreUIFoundations
 import ProtonCoreObservability
 import ProtonCoreFeatureSwitch
+import ProtonCoreUtilities
 
 protocol PaymentsUIViewControllerDelegate: AnyObject {
     func viewControllerWillAppear(isFirstAppearance: Bool)
@@ -37,6 +38,8 @@ protocol PaymentsUIViewControllerDelegate: AnyObject {
 }
 
 public final class PaymentsUIViewController: UIViewController, AccessibleView {
+    
+    private lazy var selectedCycle = viewModel?.defaultCycle
     
     private var isDynamicPlansEnabled: Bool {
         FeatureFactory.shared.isEnabled(.dynamicPlans)
@@ -442,6 +445,8 @@ public final class PaymentsUIViewController: UIViewController, AccessibleView {
     }
 }
 
+// MARK: - UITableViewDataSource
+
 extension PaymentsUIViewController: UITableViewDataSource {
     
     public func numberOfSections(in tableView: UITableView) -> Int {
@@ -454,7 +459,7 @@ extension PaymentsUIViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isDynamicPlansEnabled {
-            return viewModel?.dynamicPlans[safeIndex: section]?.count ?? 0
+            return filteredCycles(at: section)?.count ?? 0
         } else {
             return viewModel?.plans[safeIndex: section]?.count ?? 0
         }
@@ -491,7 +496,7 @@ extension PaymentsUIViewController: UITableViewDataSource {
     
     private func cellForDynamicConfig(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = UITableViewCell()
-        guard let plan = viewModel?.dynamicPlans[safeIndex: indexPath.section]?[safeIndex: indexPath.row] else { return cell }
+        guard let plan = filteredCycles(at: indexPath.section)?[safeIndex: indexPath.row] else { return cell }
         switch plan {
         case .left(let currentPlan):
             cell = tableView.dequeueReusableCell(withIdentifier: CurrentPlanCell.reuseIdentifier, for: indexPath)
@@ -516,10 +521,14 @@ extension PaymentsUIViewController: UITableViewDataSource {
         let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: sectionHeaderView)
         if let header = view as? PlanSectionHeaderView {
             header.titleLabel.text = PUITranslations.upgrade_plan_title.l10n
+            header.cycleSelectorDelegate = self
+            header.configureCycleSelector(cycles: cycles(at: section), selectedCycle: selectedCycle)
         }
         return view
     }
 }
+
+// MARK: - UITableViewDelegate
 
 extension PaymentsUIViewController: UITableViewDelegate {
     
@@ -534,7 +543,7 @@ extension PaymentsUIViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isDynamicPlansEnabled {
-            guard let plan = viewModel?.dynamicPlans[safeIndex: indexPath.section]?[safeIndex: indexPath.row] else { return }
+            guard let plan = filteredCycles(at: indexPath.section)?[safeIndex: indexPath.row] else { return }
             if case .right = plan,
                let cell = tableView.cellForRow(at: indexPath) as? PlanCell {
                 cell.selectCell()
@@ -549,6 +558,43 @@ extension PaymentsUIViewController: UITableViewDelegate {
         }
     }
 }
+
+// MARK: - CycleSelectorDelegate
+
+extension PaymentsUIViewController: CycleSelectorDelegate {
+    func didSelectCycle(cycle: Int?) {
+        selectedCycle = cycle
+        reloadData()
+    }
+    
+    private func filteredCycles(at section: Int) -> [Either<CurrentPlanPresentation, AvailablePlansPresentation>]? {
+        if selectedCycle != nil {
+            return viewModel?.dynamicPlans[safeIndex: section]?.filter {
+                switch $0 {
+                case .left:
+                    return true
+                case .right(let availablePlansPresentation):
+                    return availablePlansPresentation.details.cycle == selectedCycle
+                }
+            }
+        } else {
+            return viewModel?.dynamicPlans[safeIndex: section]
+        }
+    }
+    
+    private func cycles(at section: Int) -> Set<Int> {
+        Set(viewModel?.dynamicPlans[safeIndex: section]?.compactMap {
+            switch $0 {
+            case .left:
+                return nil
+            case .right(let availablePlansPresentation):
+                return availablePlansPresentation.details.cycle
+            }
+        } ?? [])
+    }
+}
+
+// MARK: - PlanCellDelegate
 
 extension PaymentsUIViewController: PlanCellDelegate {
     func cellDidChange(indexPath: IndexPath) {

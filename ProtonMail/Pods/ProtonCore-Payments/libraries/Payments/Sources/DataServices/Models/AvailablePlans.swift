@@ -26,6 +26,7 @@ import Foundation
 /// list of available plans a user can subscribe to.
 public struct AvailablePlans: Decodable, Equatable {
     public var plans: [AvailablePlan]
+    public var defaultCycle: Int?
     
     public struct AvailablePlan: Decodable, Equatable {
         public var ID: String
