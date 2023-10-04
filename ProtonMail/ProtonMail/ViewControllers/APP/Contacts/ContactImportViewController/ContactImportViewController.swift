@@ -22,7 +22,6 @@
 
 import Contacts
 import CoreData
-import OpenPGP
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import UIKit

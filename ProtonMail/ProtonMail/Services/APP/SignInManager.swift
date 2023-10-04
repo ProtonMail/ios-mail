@@ -22,7 +22,7 @@
 
 import Foundation
 import LifetimeTracker
-import ProtonCoreAuthentication_KeyGeneration
+import ProtonCoreAuthenticationKeyGeneration
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreLogin
