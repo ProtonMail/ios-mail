@@ -191,8 +191,12 @@ extension SettingsLockViewModel: SettingsLockViewModelInput {
     }
 
     func didTapNoProtection() {
-        disableProtection()
-        updateProtectionItems()
+        if dependencies.coreKeyMaker.isPinCodeEnabled {
+            router.go(to: .pinCodeDisable)
+        } else {
+            disableProtection()
+            updateProtectionItems()
+        }
     }
 
     func didTapPinProtection() {

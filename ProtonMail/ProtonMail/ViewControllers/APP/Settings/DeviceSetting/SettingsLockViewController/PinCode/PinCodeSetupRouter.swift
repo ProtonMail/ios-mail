@@ -24,7 +24,7 @@ protocol PinCodeSetupRouterProtocol {
 
 final class PinCodeSetupRouter: PinCodeSetupRouterProtocol {
     enum PinCodeSetUpStep {
-        case enterNewPinCode, repeatPinCode, confirmBeforeChanging
+        case enterNewPinCode, repeatPinCode, confirmBeforeChanging, confirmBeforeDisabling
     }
 
     private weak var navigationController: UINavigationController?

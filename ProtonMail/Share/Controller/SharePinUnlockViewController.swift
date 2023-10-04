@@ -97,35 +97,45 @@ extension SharePinUnlockViewController: PinCodeViewDelegate {
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
         } else {
-            let step: PinCodeStep = self.viewModel.setCode(code)
+            let step: PinCodeStep = viewModel.setCode(code)
             if step != .done {
-                self.setUpView(true)
+                setUpView(true)
             } else {
-                self.viewModel.isPinMatched { matched in
-                    if matched {
-                        self.pinCodeView.hideAttemptError(true)
-                        self.viewModel.done { _ in
-                            self.dismiss(animated: true, completion: {
-                                self.delegate?.next()
-                            })
-                        }
-                    } else {
-                        let count = self.viewModel.getPinFailedRemainingCount()
-                        if count == 11 { // when setup
-                            self.pinCodeView.resetPin()
-                            self.pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: false)
-                        } else if count < 10 {
-                            if count <= 0 {
-                                self.cancel()
-                            } else {
-                                self.pinCodeView.resetPin()
-                                self.pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: count < 4)
-                            }
-                        }
-                        self.pinCodeView.showError()
-                    }
+                verifyPinCode()
+            }
+        }
+    }
+
+    private func verifyPinCode() {
+        Task {
+            let isVerified = await viewModel.verifyPinCode()
+            updateView(verificationResult: isVerified)
+        }
+    }
+
+    @MainActor
+    private func updateView(verificationResult isPinCodeVerified: Bool) {
+        if isPinCodeVerified {
+            pinCodeView.hideAttemptError(true)
+            viewModel.done { [unowned self] _ in
+                self.dismiss(animated: true, completion: {
+                    self.delegate?.next()
+                })
+            }
+        } else {
+            let count = viewModel.getPinFailedRemainingCount()
+            if count == 11 { // when setup
+                pinCodeView.resetPin()
+                pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: false)
+            } else if count < 10 {
+                if count <= 0 {
+                    cancel()
+                } else {
+                    pinCodeView.resetPin()
+                    pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: count < 4)
                 }
             }
+            pinCodeView.showError()
         }
     }
 }

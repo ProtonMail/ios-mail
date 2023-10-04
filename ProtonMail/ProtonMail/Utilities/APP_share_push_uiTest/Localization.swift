@@ -1473,6 +1473,7 @@ enum L11n {
     }
 
     struct PinCodeSetup {
+        static let disablePinCode = NSLocalizedString("Disable PIN code", comment: "The title of PIN code disable view ")
         static let setPinCode = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
         static let repeatPinCode = NSLocalizedString("Repeat PIN code", comment: "The title of PIN code setup2 view ")
         static let enterNewPinCode = NSLocalizedString("Enter new PIN code", comment: "The title of textfield of PIN code setup1")

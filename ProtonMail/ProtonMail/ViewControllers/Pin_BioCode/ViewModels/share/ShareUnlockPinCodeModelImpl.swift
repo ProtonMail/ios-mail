@@ -23,17 +23,16 @@
 import Foundation
 
 class ShareUnlockPinCodeModelImpl: PinCodeViewModel {
+    typealias Dependencies = HasPinFailedCountCache & HasPinCodeVerifier
 
     var currentStep: PinCodeStep = .enterPin
 
     var enterPin: String = ""
 
-    let unlockManager: UnlockManager
-    private let pinFailedCountCache: PinFailedCountCache
+    private let dependencies: Dependencies
 
-    init(unlock: UnlockManager, pinFailedCountCache: PinFailedCountCache) {
-        self.unlockManager = unlock
-        self.pinFailedCountCache = pinFailedCountCache
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
     }
 
     override func cancel() -> String {
@@ -55,17 +54,17 @@ class ShareUnlockPinCodeModelImpl: PinCodeViewModel {
         return currentStep
     }
 
-    override func isPinMatched(completion: @escaping (Bool) -> Void) {
-        unlockManager.match(userInputPin: enterPin, completion: completion)
+    override func verifyPinCode() async -> Bool {
         currentStep = .enterPin
+        return await dependencies.pinCodeVerifier.isVerified(pinCode: enterPin)
     }
 
     override func getPinFailedRemainingCount() -> Int {
-        return 10 - pinFailedCountCache.pinFailedCount
+        return max(10 - dependencies.pinFailedCountCache.pinFailedCount, 0)
     }
 
     override func getPinFailedError() -> String {
-        let c = 10 - pinFailedCountCache.pinFailedCount
+        let c = 10 - dependencies.pinFailedCountCache.pinFailedCount
         if c < 4 {
             let error = String.localizedStringWithFormat(LocalString._attempt_remaining_until_secure_data_wipe, c)
             return error

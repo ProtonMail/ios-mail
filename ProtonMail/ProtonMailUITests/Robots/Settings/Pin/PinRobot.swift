@@ -28,6 +28,7 @@ fileprivate struct id {
     static let setPinStaticTextLabel =  L11n.PinCodeSetup.setPinCode
     static let repeatPinStaticTextLabel = L11n.PinCodeSetup.repeatPinCode
     static let changePinStaticTextLabel = L11n.PinCodeSetup.changePinCode
+    static let disablePinStaticTextLabel = L11n.PinCodeSetup.disablePinCode
     static let pinTextFieldIdentifier = "PinCodeSetupView.passwordTextField.textField"
     static let confirmButtonIdentifier = "PinCodeSetupViewController.customView.confirmationButton"
     static let pinTextErrorLabelIdentifier = "PinCodeSetupView.passwordTextField.errorLabel"
@@ -68,9 +69,9 @@ class PinRobot: CoreElements {
     }
     
     @discardableResult
-    func disablePin() -> PinRobot {
+    func disablePin() -> DisablePinRobot {
         cell(id.nonePinCellIdentifier).tap()
-        return PinRobot()
+        return DisablePinRobot()
     }
     
     func backgroundApp() -> PinRobot {
@@ -181,6 +182,41 @@ class PinRobot: CoreElements {
                 let errorMessage = staticText(id.pinTextErrorLabelIdentifier).waitUntilExists().label()
                 XCTAssertEqual(errorMessage, LocalString._incorrect_pin)
                 return ChangePinRobot()
+            }
+        }
+    }
+
+    class DisablePinRobot: CoreElements {
+        let verify = Verify()
+
+        required init() {
+            super.init()
+            staticText(id.disablePinStaticTextLabel).waitUntilExists().checkExists()
+        }
+
+        func enterPin(_ pin: String) -> DisablePinRobot {
+            secureTextField(id.pinTextFieldIdentifier).tap().waitUntilExists().clearText().typeText(pin)
+            return self
+        }
+
+        func continueWithWrongPin() -> DisablePinRobot {
+            button(id.confirmButtonIdentifier).tap()
+            return self
+        }
+
+        func continueWithCorrectPin() -> PinRobot {
+            button(id.confirmButtonIdentifier).tap()
+            return PinRobot()
+        }
+
+        class Verify: CoreElements {
+            @discardableResult
+            func canSeeIncorrectPinError() -> DisablePinRobot {
+                let errorMessage = staticText(id.pinTextErrorLabelIdentifier).waitUntilExists().label()
+                var expectedMessage = LocalString._incorrect_pin
+                _ = expectedMessage.remove(at: expectedMessage.index(before: expectedMessage.endIndex))
+                XCTAssertEqual(errorMessage, expectedMessage)
+                return DisablePinRobot()
             }
         }
     }

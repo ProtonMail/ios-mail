@@ -20,6 +20,7 @@ import ProtonCore_Keymaker
 
 protocol PinCodeSetupVMProtocol {
     func activatePinCodeProtection() async -> Bool
+    func deactivatePinCodeProtection()
     func go(to step: PinCodeSetupRouter.PinCodeSetUpStep)
     @discardableResult
     func isCorrectCurrentPinCode(_ pinCode: String) async throws -> Bool
@@ -62,7 +63,7 @@ extension PinCodeSetupViewModel {
 }
 
 final class PinCodeSetupViewModel: PinCodeSetupVMProtocol {
-    typealias Dependencies = HasKeyMakerProtocol & HasUserCachedStatus & HasNotificationCenter
+    typealias Dependencies = HasKeyMakerProtocol & HasUserCachedStatus & HasNotificationCenter & HasPinCodeProtection
 
     private let dependencies: Dependencies
     private let router: PinCodeSetupRouterProtocol
@@ -75,39 +76,11 @@ final class PinCodeSetupViewModel: PinCodeSetupVMProtocol {
 
     /// - Returns: is activated
     func activatePinCodeProtection() async -> Bool {
-        await withCheckedContinuation { (continuation: CheckedContinuation<Bool, Never>) in
-            LockPreventor.shared.performWhileSuppressingLock {
-                _ = self.dependencies.keyMaker.deactivate(BioProtection())
-            }
-            self.dependencies.keyMaker.activate(PinProtection(pin: newPinCode)) { [weak self] activated in
-                if activated {
-                    self?.dependencies.notificationCenter.post(
-                        name: .appLockProtectionEnabled,
-                        object: nil,
-                        userInfo: nil
-                    )
-                }
-                self?.disableAppKey(completion: {
-                    continuation.resume(returning: activated)
-                })
-            }
-        }
+        await dependencies.pinCodeProtection.activate(with: newPinCode)
     }
 
-    private func disableAppKey(completion: (() -> Void)?) {
-        dependencies.userCachedStatus.keymakerRandomkey = String.randomString(32)
-        guard let randomProtection = RandomPinProtection.randomPin else {
-            completion?()
-            return
-        }
-        dependencies.keyMaker.activate(randomProtection) { [weak self] activated in
-            guard activated else {
-                completion?()
-                return
-            }
-            self?.dependencies.notificationCenter.post(name: .appKeyDisabled, object: nil, userInfo: nil)
-            completion?()
-        }
+    func deactivatePinCodeProtection() {
+        dependencies.pinCodeProtection.deactivate()
     }
 
     func go(to step: PinCodeSetupRouter.PinCodeSetUpStep) {

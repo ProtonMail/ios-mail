@@ -24,7 +24,7 @@ import LifetimeTracker
 import ProtonCore_UIFoundations
 
 final class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
-    typealias Dependencies = HasPinFailedCountCache & HasUnlockManager
+    typealias Dependencies = HasPinFailedCountCache & HasPinCodeVerifier
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -67,13 +67,12 @@ final class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
         return currentStep
     }
 
-    override func isPinMatched(completion: @escaping (Bool) -> Void) {
-        dependencies.unlockManager.match(userInputPin: enterPin) { matched in
-            if !matched {
-                self.currentStep = .enterPin
-            }
-            completion(matched)
+    override func verifyPinCode() async -> Bool {
+        let isVerified = await dependencies.pinCodeVerifier.isVerified(pinCode: enterPin)
+        if !isVerified {
+            currentStep = .enterPin
         }
+        return isVerified
     }
 
     override func getPinFailedRemainingCount() -> Int {

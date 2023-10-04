@@ -48,7 +48,7 @@ class PinCodeViewModel: NSObject {
         fatalError("This method must be overridden")
     }
 
-    func isPinMatched(completion: @escaping (Bool) -> Void) {
+    func verifyPinCode() async -> Bool {
         fatalError("This method must be overridden")
     }
 

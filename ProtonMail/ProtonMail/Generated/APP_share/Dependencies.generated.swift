@@ -163,6 +163,38 @@ extension UserContainer: HasNotificationCenter {
     }
 }
 
+protocol HasPinCodeProtection {
+    var pinCodeProtection: PinCodeProtection { get }
+}
+
+extension GlobalContainer: HasPinCodeProtection {
+    var pinCodeProtection: PinCodeProtection {
+        pinCodeProtectionFactory()
+    }
+}
+
+extension UserContainer: HasPinCodeProtection {
+    var pinCodeProtection: PinCodeProtection {
+        globalContainer.pinCodeProtection
+    }
+}
+
+protocol HasPinCodeVerifier {
+    var pinCodeVerifier: PinCodeVerifier { get }
+}
+
+extension GlobalContainer: HasPinCodeVerifier {
+    var pinCodeVerifier: PinCodeVerifier {
+        pinCodeVerifierFactory()
+    }
+}
+
+extension UserContainer: HasPinCodeVerifier {
+    var pinCodeVerifier: PinCodeVerifier {
+        globalContainer.pinCodeVerifier
+    }
+}
+
 protocol HasPinFailedCountCache {
     var pinFailedCountCache: PinFailedCountCache { get }
 }
