@@ -99,6 +99,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
@@ -113,6 +114,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: freeUserInfo))
     }
@@ -132,6 +134,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
@@ -146,6 +149,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertFalse(sut.isAllowedNewUser(userInfo: freeUserInfo))
     }
@@ -170,6 +174,7 @@ class UsersManagerTests: XCTestCase {
                                 linkConfirmation: nil,
                                 credit: nil,
                                 currency: nil,
+                                createTime: nil,
                                 subscribed: nil)
         XCTAssertTrue(sut.users.isEmpty)
         sut.add(auth: auth, user: userInfo, mailSettings: .init())
@@ -202,6 +207,7 @@ class UsersManagerTests: XCTestCase {
                                    linkConfirmation: nil,
                                    credit: nil,
                                    currency: nil,
+                                   createTime: nil,
                                    subscribed: nil)
         sut.update(userInfo: newUserInfo, for: newAuth.sessionID)
         XCTAssertTrue(sut.users[0].isPaid)
@@ -463,6 +469,7 @@ class UsersManagerTests: XCTestCase {
                         linkConfirmation: nil,
                         credit: nil,
                         currency: nil,
+                        createTime: nil,
                         subscribed: nil)
     }
 
@@ -478,6 +485,7 @@ class UsersManagerTests: XCTestCase {
                                 linkConfirmation: nil,
                                 credit: nil,
                                 currency: nil,
+                                createTime: nil,
                                 subscribed: nil)
         let auth = createAuth(userID: userID)
         return UserManager(api: apiMock,

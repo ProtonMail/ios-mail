@@ -20,7 +20,6 @@ import fusion
 import ProtonCoreEnvironment
 import ProtonCoreTestingToolkit
 import ProtonCoreQuarkCommands
-import ProtonCoreCoreTranslation
 
 final class ExternalAccountsTests: BaseTestCase {
 

@@ -129,6 +129,7 @@ private extension DeviceRegistrationTests {
             linkConfirmation: nil,
             credit: nil,
             currency: nil,
+            createTime: nil,
             subscribed: nil
         )
         let auth = AuthCredential(

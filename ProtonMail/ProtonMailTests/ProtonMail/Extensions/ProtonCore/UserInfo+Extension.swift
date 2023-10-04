@@ -32,6 +32,7 @@ extension UserInfo {
             linkConfirmation: nil,
             credit: nil,
             currency: nil,
+            createTime: nil,
             subscribed: nil
         )
     }

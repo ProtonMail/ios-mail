@@ -184,6 +184,7 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
                         linkConfirmation: nil,
                         credit: nil,
                         currency: nil,
+                        createTime: nil,
                         subscribed: nil)
     }
 
