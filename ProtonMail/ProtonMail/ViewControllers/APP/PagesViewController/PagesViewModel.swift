@@ -84,6 +84,7 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         let fetchedResultsController = messageService.fetchedResults(
             by: labelID,
             viewMode: viewMode,
+            onMainContext: true,
             isUnread: false,
             isAscending: isAscending
         ) as? NSFetchedResultsController<FetchResultType>
@@ -172,19 +173,25 @@ final class MessagePagesViewModel: PagesViewModel<MessageID, MessageEntity, Mess
     }
 
     override func item(for id: MessageID, offset: Int) -> (MessageEntity?, Int?) {
-        guard let messages = fetchedResultsController?.fetchedObjects,
-              let targetIndex = messages.firstIndex(where: { $0.messageID == id.rawValue }),
-              let object = messages[safe: targetIndex + offset] else { return (nil, nil) }
-        if isUnread {
-            if object.unRead {
-                return (MessageEntity(object), targetIndex + offset)
-            } else {
-                let newOffset = offset > 0 ? offset + 1 : offset - 1
-                return item(for: id, offset: newOffset)
+        var result: (MessageEntity?, Int?) = (nil, nil)
+        fetchedResultsController?.managedObjectContext.performAndWait {
+            guard let messages = fetchedResultsController?.fetchedObjects,
+                  let targetIndex = messages.firstIndex(where: { $0.messageID == id.rawValue }),
+                  let object = messages[safe: targetIndex + offset] else {
+                return
             }
-        } else {
-            return (MessageEntity(object), targetIndex + offset)
+            if isUnread {
+                if object.unRead {
+                    result = (MessageEntity(object), targetIndex + offset)
+                } else {
+                    let newOffset = offset > 0 ? offset + 1 : offset - 1
+                    result = item(for: id, offset: newOffset)
+                }
+            } else {
+                result = (MessageEntity(object), targetIndex + offset)
+            }
         }
+        return result
     }
 }
 
@@ -239,20 +246,26 @@ final class ConversationPagesViewModel: PagesViewModel<ConversationID, Conversat
     }
 
     override func item(for id: ConversationID, offset: Int) -> (ConversationEntity?, Int?) {
-        guard let contextLabels = fetchedResultsController?.fetchedObjects,
-              let targetIndex = contextLabels.firstIndex(where: { $0.conversationID == id.rawValue }),
-              let context = contextLabels[safe: targetIndex + offset],
-              let conversation = context.conversation else { return (nil, nil) }
-        if isUnread {
-            if context.unreadCount.intValue > 0 {
-                return (ConversationEntity(conversation), targetIndex + offset)
-            } else {
-                let newOffset = offset > 0 ? offset + 1 : offset - 1
-                return item(for: id, offset: newOffset)
+        var result: (ConversationEntity?, Int?) = (nil, nil)
+        fetchedResultsController?.managedObjectContext.performAndWait {
+            guard let contextLabels = fetchedResultsController?.fetchedObjects,
+                  let targetIndex = contextLabels.firstIndex(where: { $0.conversationID == id.rawValue }),
+                  let context = contextLabels[safe: targetIndex + offset],
+                  let conversation = context.conversation else {
+                return
             }
-        } else {
-            return (ConversationEntity(conversation), targetIndex + offset)
+            if isUnread {
+                if context.unreadCount.intValue > 0 {
+                    result = (ConversationEntity(conversation), targetIndex + offset)
+                } else {
+                    let newOffset = offset > 0 ? offset + 1 : offset - 1
+                    result = item(for: id, offset: newOffset)
+                }
+            } else {
+                result = (ConversationEntity(conversation), targetIndex + offset)
+            }
         }
+        return result
     }
 }
 

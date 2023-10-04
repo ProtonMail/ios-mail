@@ -360,11 +360,15 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         entityName: String,
         predicate: NSPredicate,
         sortDescriptors: [NSSortDescriptor],
-        sectionNameKeyPath: String? = nil
+        fetchBatchSize: Int,
+        sectionNameKeyPath: String? = nil,
+        onMainContext: Bool
     ) -> NSFetchedResultsController<T> {
+        let backgroundContext = Self.useNewApproach ? backgroundContext : rootSavingContext
         let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = sortDescriptors
+        fetchRequest.fetchBatchSize = fetchBatchSize
         return NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: backgroundContext,

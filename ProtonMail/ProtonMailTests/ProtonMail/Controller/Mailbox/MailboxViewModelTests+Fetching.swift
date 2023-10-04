@@ -105,11 +105,11 @@ extension MailboxViewModelTests {
         waitForExpectations(timeout: 5, handler: nil)
     }
 
-    func testSelectionContainsReadItems_inConversation_withReadConversation() {
+    func testSelectionContainsReadItems_inConversation_withReadConversation() throws {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
 
-        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, unreadStates: [true, false])
-        sut.setupFetchController(nil)
+        let conversationIDs = try setupConversations(labelID: sut.labelID.rawValue, unreadStates: [true, false])
+        wait(self.sut.diffableDataSource?.snapshot().itemIdentifiers.count == conversationIDs.count)
 
         for id in conversationIDs {
             sut.select(id: id)
@@ -121,10 +121,10 @@ extension MailboxViewModelTests {
         )
     }
 
-    func testSelectionContainsReadItems_inConversation_withoutReadConversation() {
+    func testSelectionContainsReadItems_inConversation_withoutReadConversation() throws {
         conversationStateProviderMock.viewModeStub.fixture = .conversation
 
-        let conversationIDs = setupConversations(labelID: sut.labelID.rawValue, unreadStates: [true, true])
+        let conversationIDs = try setupConversations(labelID: sut.labelID.rawValue, unreadStates: [true, true])
         sut.setupFetchController(nil)
 
         for id in conversationIDs {
@@ -137,11 +137,12 @@ extension MailboxViewModelTests {
         )
     }
 
-    func testSelectionContainsReadItems_inSingleMode_withReadMessage() {
+    func testSelectionContainsReadItems_inSingleMode_withReadMessage() throws {
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
 
-        let messageIDs = setupMessages(labelID: sut.labelID.rawValue, unreadStates: [true, false])
-        sut.setupFetchController(nil)
+        let messageIDs = try setupMessages(labelID: sut.labelID.rawValue, unreadStates: [true, false])
+        sut.setupFetchController(delegateMock)
+        wait(self.sut.diffableDataSource?.snapshot().itemIdentifiers.count == messageIDs.count + 1)
 
         for id in messageIDs {
             sut.select(id: id)
@@ -153,10 +154,10 @@ extension MailboxViewModelTests {
         )
     }
 
-    func testSelectionContainsReadItems_inSingleMode_withoutReadMessage() {
+    func testSelectionContainsReadItems_inSingleMode_withoutReadMessage() throws {
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
 
-        let messageIDs = setupMessages(labelID: sut.labelID.rawValue, unreadStates: [true, true])
+        let messageIDs = try setupMessages(labelID: sut.labelID.rawValue, unreadStates: [true, true])
         sut.setupFetchController(nil)
 
         for id in messageIDs {
@@ -169,36 +170,39 @@ extension MailboxViewModelTests {
         )
     }
 
-    private func setupConversations(labelID: String, unreadStates: [Bool]) -> [String] {
+    private func setupConversations(labelID: String, unreadStates: [Bool]) throws -> [String] {
         let messageCount: NSNumber = 3
+        return try coreDataService.write(block: { context in
+            unreadStates.map { unreadState in
+                let conversation = Conversation(context: context)
+                conversation.conversationID = UUID().uuidString
+                conversation.numMessages = messageCount
 
-        return unreadStates.map { unreadState in
-            let conversation = Conversation(context: testContext)
-            conversation.conversationID = UUID().uuidString
-            conversation.numMessages = messageCount
+                let contextLabel = ContextLabel(context: context)
+                contextLabel.labelID = labelID
+                contextLabel.conversation = conversation
+                contextLabel.unreadCount = unreadState ? messageCount : 0
+                contextLabel.userID = "1"
+                contextLabel.conversationID = conversation.conversationID
 
-            let contextLabel = ContextLabel(context: testContext)
-            contextLabel.labelID = labelID
-            contextLabel.conversation = conversation
-            contextLabel.unreadCount = unreadState ? messageCount : 0
-            contextLabel.userID = "1"
-
-            return conversation.conversationID
-        }
+                return conversation.conversationID
+            }
+        })
     }
 
-    private func setupMessages(labelID: String, unreadStates: [Bool]) -> [String] {
-        let label = Label(context: testContext)
-        label.labelID = labelID
-
-        return unreadStates.map { unreadState in
-            let testMessage = Message(context: testContext)
-            testMessage.conversationID = UUID().uuidString
-            testMessage.add(labelID: labelID)
-            testMessage.messageStatus = 1
-            testMessage.unRead = unreadState
-            testMessage.userID = "1"
-            return testMessage.messageID
-        }
+    private func setupMessages(labelID: String, unreadStates: [Bool]) throws -> [String] {
+        return try coreDataService.write(block: { context in
+            let label = Label(context: context)
+            label.labelID = labelID
+            return unreadStates.map { unreadState in
+                let testMessage = Message(context: context)
+                testMessage.conversationID = UUID().uuidString
+                testMessage.add(labelID: labelID)
+                testMessage.messageStatus = 1
+                testMessage.unRead = unreadState
+                testMessage.userID = "1"
+                return testMessage.messageID
+            }
+        })
     }
 }

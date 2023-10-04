@@ -35,6 +35,8 @@ protocol CoreDataContextProviderProtocol: Service {
         entityName: String,
         predicate: NSPredicate,
         sortDescriptors: [NSSortDescriptor],
-        sectionNameKeyPath: String?
+        fetchBatchSize: Int,
+        sectionNameKeyPath: String?,
+        onMainContext: Bool
     ) -> NSFetchedResultsController<T>
 }
