@@ -19,11 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
-import ProtonCore_Observability
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
+import ProtonCoreObservability
 
 protocol EmailVerificationViewControllerDelegate: AnyObject {
     func validatedToken(verifyToken: String)
@@ -44,20 +45,20 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
 
     @IBOutlet weak var emailVerificationTitleLabel: UILabel! {
     didSet {
-        emailVerificationTitleLabel.text = CoreString._su_email_verification_view_title
+        emailVerificationTitleLabel.text = LUITranslation.email_verification_view_title.l10n
         emailVerificationTitleLabel.textColor = ColorProvider.TextNorm
         }
     }
     @IBOutlet weak var emailVerificationDescriptionLabel: UILabel! {
     didSet {
-        emailVerificationDescriptionLabel.text = String(format: CoreString._su_email_verification_view_desc, viewModel.email ?? "")
+        emailVerificationDescriptionLabel.text = String(format: LUITranslation.email_verification_view_desc.l10n, viewModel.email ?? "")
         emailVerificationDescriptionLabel.textColor = ColorProvider.TextWeak
         }
     }
     @IBOutlet weak var verificationCodeTextField: PMTextField! {
         didSet {
-            verificationCodeTextField.title = CoreString._su_email_verification_code_name
-            verificationCodeTextField.assistiveText = CoreString._su_email_verification_code_desc
+            verificationCodeTextField.title = LUITranslation.email_verification_code_name.l10n
+            verificationCodeTextField.assistiveText = LUITranslation.email_verification_code_desc.l10n
             verificationCodeTextField.placeholder = "XXXXXX"
             verificationCodeTextField.delegate = self
             verificationCodeTextField.keyboardType = .numberPad
@@ -69,14 +70,14 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
     }
     @IBOutlet weak var nextButton: ProtonButton! {
         didSet {
-            nextButton.setTitle(CoreString._su_next_button, for: .normal)
+            nextButton.setTitle(LUITranslation.next_button.l10n, for: .normal)
             nextButton.isEnabled = false
         }
     }
     @IBOutlet weak var notReceivedCodeButton: ProtonButton! {
         didSet {
             notReceivedCodeButton.setMode(mode: .text)
-            notReceivedCodeButton.setTitle(CoreString._su_did_not_receive_code_button, for: .normal)
+            notReceivedCodeButton.setTitle(LUITranslation.did_not_receive_code_button.l10n, for: .normal)
         }
     }
     @IBOutlet weak var scrollView: UIScrollView!
@@ -169,13 +170,13 @@ class EmailVerificationViewController: UIViewController, AccessibleView, Focusab
     
     private func requestCodeDialog() {
         guard let email = viewModel.email else { return }
-        let alert = UIAlertController(title: CoreString._hv_verification_new_alert_title, message: String(format: CoreString._hv_verification_new_alert_message, email), preferredStyle: .alert)
-        let newCodeAction = UIAlertAction(title: CoreString._hv_verification_new_alert_button, style: .default, handler: { _ in
+        let alert = UIAlertController(title: LUITranslation.verification_new_alert_title.l10n, message: String(format: LUITranslation.verification_new_alert_message.l10n, email), preferredStyle: .alert)
+        let newCodeAction = UIAlertAction(title: LUITranslation.verification_new_alert_button.l10n, style: .default, handler: { _ in
             self.requestCode()
         })
         newCodeAction.accessibilityLabel = "newCodeButton"
         alert.addAction(newCodeAction)
-        let cancelAction = UIAlertAction(title: CoreString._hv_cancel_button, style: .default)
+        let cancelAction = UIAlertAction(title: LUITranslation._core_cancel_button.l10n, style: .default)
         cancelAction.accessibilityLabel = "cancelButton"
         alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
@@ -259,3 +260,5 @@ extension EmailVerificationViewController: SignUpErrorCapable {
         }
     }
 }
+
+#endif

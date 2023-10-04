@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_TroubleShootingVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_TroubleShootingVersionString[];
+FOUNDATION_EXPORT double ProtonCoreTroubleShootingVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreTroubleShootingVersionString[];
 

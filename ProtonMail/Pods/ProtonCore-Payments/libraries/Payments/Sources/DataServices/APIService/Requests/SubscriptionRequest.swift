@@ -20,35 +20,35 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreServices
 
-public final class SubscriptionRequest: BaseApiRequest<SubscriptionResponse> {
+final class SubscriptionRequest: BaseApiRequest<SubscriptionResponse> {
     private let planId: String
     private let amount: Int
     private let paymentAction: PaymentAction?
 
-    public init(api: APIService, planId: String, amount: Int, paymentAction: PaymentAction) {
+    init(api: APIService, planId: String, amount: Int, paymentAction: PaymentAction) {
         self.planId = planId
         self.amount = amount
         self.paymentAction = paymentAction
         super.init(api: api)
     }
 
-    public init(api: APIService, planId: String) {
+    init(api: APIService, planId: String) {
         self.planId = planId
         self.amount = 0
         self.paymentAction = nil
         super.init(api: api)
     }
 
-    override public var method: HTTPMethod { .post }
+    override var method: HTTPMethod { .post }
 
-    override public var path: String { super.path + "/v4/subscription" }
+    override var path: String { super.path + "/v4/subscription" }
 
-    override public var parameters: [String: Any]? {
-        var params: [String: Any] = ["Amount": amount, "Currency": "USD", "PlanIDs": [planId: 1], "Cycle": 12]
+    override var parameters: [String: Any]? {
+        var params: [String: Any] = ["Amount": amount, "Currency": "USD", "PlanIDs": [planId: 1], "Cycle": 12, "External": 1]
         guard amount != .zero, let paymentAction = paymentAction else {
             return params
         }
@@ -56,16 +56,17 @@ public final class SubscriptionRequest: BaseApiRequest<SubscriptionResponse> {
         case .token(let token):
             params["PaymentToken"] = token
         case .apple:
-            params["Payment"] = ["Type": paymentAction.getType, "Details": [paymentAction.getKey: paymentAction.getValue]]
+            let paymentData: [String: Any] = ["Type": paymentAction.getType, "Details": [paymentAction.getKey: paymentAction.getValue]]
+            params["Payment"] = paymentData
         }
         return params
     }
 }
 
-public final class SubscriptionResponse: Response {
+final class SubscriptionResponse: Response {
     var newSubscription: Subscription?
 
-    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
 
         guard let code = response["Code"] as? Int, code == 1000 else {
@@ -83,19 +84,19 @@ public final class SubscriptionResponse: Response {
     }
 }
 
-public final class GetSubscriptionRequest: BaseApiRequest<GetSubscriptionResponse> {
+final class GetSubscriptionRequest: BaseApiRequest<GetSubscriptionResponse> {
 
-    override public init(api: APIService) {
+    override init(api: APIService) {
         super.init(api: api)
     }
     
-    override public var path: String { super.path + "/v4/subscription" }
+    override var path: String { super.path + "/v4/subscription" }
 }
 
-public final class GetSubscriptionResponse: Response {
+final class GetSubscriptionResponse: Response {
     var subscription: Subscription?
 
-    override public func ParseResponse(_ response: [String: Any]!) -> Bool {
+    override func ParseResponse(_ response: [String: Any]!) -> Bool {
         PMLog.debug(response.json(prettyPrinted: true))
 
         guard let response = response["Subscription"] as? [String: Any],

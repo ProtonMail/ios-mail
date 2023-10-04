@@ -20,15 +20,14 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
-import ProtonCore_Authentication
-import ProtonCore_Authentication_KeyGeneration
-import ProtonCore_CoreTranslation
-import ProtonCore_DataModel
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_Observability
+import ProtonCoreAPIClient
+import ProtonCoreAuthentication
+import ProtonCoreAuthenticationKeyGeneration
+import ProtonCoreDataModel
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreObservability
 
 extension LoginService {
 
@@ -370,7 +369,7 @@ extension LoginService {
 
         guard let primaryKey = user.keys.first(where: { $0.primary == 1 }) else {
             PMLog.error("Cannot create address for user without primary key")
-            completion(.failure(.generic(message: CoreString._ls_error_generic,
+            completion(.failure(.generic(message: LSTranslation._loginservice_error_generic.l10n,
                                          code: 0,
                                          originalError: LoginError.invalidState)))
             return
@@ -383,7 +382,7 @@ extension LoginService {
             case let .success(salts):
                 guard let keySalt = salts.first(where: { $0.ID == primaryKey.keyID })?.keySalt, let salt = Data(base64Encoded: keySalt) else {
                     PMLog.error("Missing salt for primary key")
-                    completion(.failure(.generic(message: CoreString._ls_error_generic,
+                    completion(.failure(.generic(message: LSTranslation._loginservice_error_generic.l10n,
                                                  code: 0,
                                                  originalError: LoginError.invalidState)))
                     return

@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_QuarkCommandsVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_QuarkCommandsVersionString[];
+FOUNDATION_EXPORT double ProtonCoreQuarkCommandsVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreQuarkCommandsVersionString[];
 

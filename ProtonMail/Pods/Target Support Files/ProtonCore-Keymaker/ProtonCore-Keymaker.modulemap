@@ -1,4 +1,4 @@
-framework module ProtonCore_Keymaker {
+framework module ProtonCoreKeymaker {
   umbrella header "ProtonCore-Keymaker-umbrella.h"
 
   export *

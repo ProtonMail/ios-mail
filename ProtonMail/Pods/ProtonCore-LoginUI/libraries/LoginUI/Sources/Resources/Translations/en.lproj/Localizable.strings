@@ -1,0 +1,219 @@
+"Privacy by default" = "Privacy by default";
+
+"Proton address required" = "Proton address required";
+
+"Update required" = "Update required";
+
+"Please enter your Proton Account password." = "Please enter your Proton Account password.";
+
+"OK" = "OK";
+
+"Help" = "Help";
+
+"Continue" = "Continue";
+
+"Password" = "Password";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked";
+
+"Search country" = "Search country";
+
+"Code sent to %@" = "Code sent to %@";
+
+"Request new code?" = "Request new code?";
+
+"Resend" = "Resend";
+
+"Get a replacement code sent to %@." = "Get a replacement code sent to %@.";
+
+"Request new code" = "Request new code";
+
+"Enter your Proton Account details." = "Enter your Proton Account details.";
+
+"Email or username" = "Email or username";
+
+"Sign in" = "Sign in";
+
+"Sign in with password" = "Sign in with password";
+
+"Sign in with SSO" = "Sign in with SSO";
+
+"Sign in to your organization" = "Sign in to your organization";
+
+"Create an account" = "Create an account";
+
+"How can we help?" = "How can we help?";
+
+"Forgot username" = "Forgot username";
+
+"Forgot password" = "Forgot password";
+
+"Other sign-in issues" = "Other sign-in issues";
+
+"Customer support" = "Customer support";
+
+"Still need help? Contact us directly." = "Still need help? Contact us directly.";
+
+"Please enter your Proton Account email or username." = "Please enter your Proton Account email or username.";
+
+"Complete Setup" = "Complete Setup";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
+
+"Account setup required" = "Account setup required";
+
+"Incorrect mailbox password" = "Incorrect mailbox password";
+
+"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+
+"Proton address required" = "Proton address required";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account.";
+
+"Username" = "Username";
+
+"Please enter a username." = "Please enter a username.";
+
+"Unlock your mailbox" = "Unlock your mailbox";
+
+"Mailbox password" = "Mailbox password";
+
+"Unlock" = "Unlock";
+
+"Forgot password" = "Forgot password";
+
+"Two-factor authentication" = "Two-factor authentication";
+
+"Authenticate" = "Authenticate";
+
+"Two-factor code" = "Two-factor code";
+
+"Recovery code" = "Recovery code";
+
+"Use recovery code" = "Use recovery code";
+
+"Use two-factor code" = "Use two-factor code";
+
+"Enter the 6-digit code." = "Enter the 6-digit code.";
+
+"Enter an 8-character recovery code." = "Enter an 8-character recovery code.";
+
+"Learn more" = "Learn more";
+
+"Change your password" = "Change your password";
+
+"Change password" = "Change password";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
+
+"Error occured" = "Error occured";
+
+"Create your Proton Account" = "Create your Proton Account";
+
+"One account for all Proton services." = "One account for all Proton services.";
+
+"Next" = "Next";
+
+"Use your current email instead" = "Use your current email instead";
+
+"Create a secure Proton Mail address instead" = "Create a secure Proton Mail address instead";
+
+"Email" = "Email";
+
+"Create your password" = "Create your password";
+
+"Password must contain at least 8 characters" = "Password must contain at least 8 characters";
+
+"Repeat password" = "Repeat password";
+
+"Domain" = "Domain";
+
+"Set recovery method" = "Set recovery method";
+
+"Set recovery method (optional)" = "Set recovery method (optional)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
+
+"Email" = "Email";
+
+"Phone" = "Phone";
+
+"Recovery email" = "Recovery email";
+
+"Recovery phone number" = "Recovery phone number";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
+
+"Terms and Conditions" = "Terms and Conditions";
+
+"Skip" = "Skip";
+
+"Skip recovery method?" = "Skip recovery method?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
+
+"Set recovery method" = "Set recovery method";
+
+"Your account is being created" = "Your account is being created";
+
+"This should take no more than a minute." = "This should take no more than a minute.";
+
+"Creating your account" = "Creating your account";
+
+"Generating your address" = "Generating your address";
+
+"Securing your account" = "Securing your account";
+
+"Verifying your payment" = "Verifying your payment";
+
+"Account verification" = "Account verification";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
+
+"Verification code" = "Verification code";
+
+"Enter the 6-digit code." = "Enter the 6-digit code.";
+
+"Did not receive a code?" = "Did not receive a code?";
+
+"Terms and Conditions" = "Terms and Conditions";
+
+"Invalid token request" = "Invalid token request";
+
+"Invalid token error" = "Invalid token error";
+
+"Create user failed" = "Create user failed";
+
+"Invalid hashed password" = "Invalid hashed password";
+
+"Password can not be empty.\nPlease try again." = "Password can not be empty.\nPlease try again.";
+
+"Password must contain at least %@ characters." = "Password must contain at least %@ characters.";
+
+"Passwords do not match.\nPlease try again." = "Passwords do not match.\nPlease try again.";
+
+"Email address already used." = "Email address already used.";
+
+"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Would you like to receive a new verification code or use an alternate email address?";
+
+"Change email address" = "Change email address";
+
+"Congratulations" = "Congratulations";
+
+"Your Proton Free account was successfully created." = "Your Proton Free account was successfully created.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+
+"Your Proton account was successfully created." = "Your Proton account was successfully created.";
+
+"Enjoy the world of privacy." = "Enjoy the world of privacy.";
+
+"Cancel" = "Cancel";
+
+"Sign in" = "Sign in";
+
+"Troubleshoot" = "Troubleshoot";

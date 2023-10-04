@@ -21,7 +21,7 @@
 //
 
 import Foundation
-import ProtonCore_Log
+import ProtonCoreLog
 
 public enum AddAccountEmailError: Error {
     case cannotConstructUrl

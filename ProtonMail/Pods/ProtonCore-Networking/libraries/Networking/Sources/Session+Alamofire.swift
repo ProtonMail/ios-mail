@@ -23,9 +23,8 @@
 import Foundation
 import TrustKit
 import Alamofire
-import ProtonCore_Log
-import ProtonCore_CoreTranslation
-import ProtonCore_Utilities
+import ProtonCoreLog
+import ProtonCoreUtilities
 
 private let requestQueue = DispatchQueue(label: "ch.protonmail.alamofire")
 
@@ -87,7 +86,7 @@ public class AlamofireSession: Session {
         if let request = request as? URLRequestConvertible, let url = try? request.asURLRequest().url,
            let index = tlsFailedRequests.firstIndex(where: { $0.url?.absoluteString == url.absoluteString }) {
             tlsFailedRequests.remove(at: index)
-            return CoreString._net_insecure_connection_error
+            return NWTranslation.insecure_connection_error.l10n
         }
         return nil
     }

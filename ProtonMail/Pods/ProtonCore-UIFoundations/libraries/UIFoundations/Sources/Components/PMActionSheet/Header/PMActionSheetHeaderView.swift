@@ -22,8 +22,8 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_Foundations
-import enum ProtonCore_Utilities.Either
+import ProtonCoreFoundations
+import enum ProtonCoreUtilities.Either
 
 public final class PMActionSheetHeaderView: UIView, AccessibleView {
     private var leftItem: PMActionSheetButtonComponent?

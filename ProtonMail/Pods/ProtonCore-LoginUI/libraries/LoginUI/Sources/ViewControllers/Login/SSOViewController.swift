@@ -19,10 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import WebKit
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
-import ProtonCore_Observability
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
+import ProtonCoreObservability
 
 final class SSOViewController: UIViewController, AccessibleView {
     var webView: WKWebView?
@@ -85,3 +87,5 @@ final class SSOViewController: UIViewController, AccessibleView {
         webView?.load(request)
     }
 }
+
+#endif

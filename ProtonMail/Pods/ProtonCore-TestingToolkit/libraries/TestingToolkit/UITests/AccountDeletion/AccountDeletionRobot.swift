@@ -19,11 +19,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import XCTest
 import fusion
-import ProtonCore_CoreTranslation
+import ProtonCoreAccountDeletion
 
-private let accountDeletionButtonText = CoreString._ad_delete_account_button
+private let accountDeletionButtonText = ADTranslation.delete_account_button.l10n
 
 public final class AccountDeletionButtonRobot: CoreElements {
     
@@ -201,3 +203,5 @@ public final class AccountDeletionWebViewRobot: CoreElements {
             .tapAuthenticateButton(to: T.self)
     }
 }
+
+#endif

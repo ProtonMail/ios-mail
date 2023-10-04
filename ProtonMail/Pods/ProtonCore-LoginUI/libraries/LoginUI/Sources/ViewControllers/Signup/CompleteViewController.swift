@@ -19,11 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
-import ProtonCore_Login
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
+import ProtonCoreLogin
 import Lottie
 
 protocol CompleteViewControllerDelegate: AnyObject {
@@ -52,7 +53,7 @@ class CompleteViewController: UIViewController, AccessibleView {
     @IBOutlet weak var animationView: AnimationView!
     @IBOutlet weak var completeTitleLabel: UILabel! {
         didSet {
-            completeTitleLabel.text = CoreString._su_complete_view_title
+            completeTitleLabel.text = LUITranslation.complete_view_title.l10n
             completeTitleLabel.textColor = ColorProvider.TextNorm
             completeTitleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
             completeTitleLabel.adjustsFontForContentSizeCategory = true
@@ -61,7 +62,7 @@ class CompleteViewController: UIViewController, AccessibleView {
     }
     @IBOutlet weak var completeDescriptionLabel: UILabel! {
         didSet {
-            completeDescriptionLabel.text = CoreString._su_complete_view_desc
+            completeDescriptionLabel.text = LUITranslation.complete_view_desc.l10n
             completeDescriptionLabel.textColor = ColorProvider.TextWeak
             completeDescriptionLabel.font = .adjustedFont(forTextStyle: .subheadline)
             completeDescriptionLabel.adjustsFontForContentSizeCategory = true
@@ -160,3 +161,5 @@ extension CompleteViewController: UITableViewDataSource {
         return cell
     }
 }
+
+#endif

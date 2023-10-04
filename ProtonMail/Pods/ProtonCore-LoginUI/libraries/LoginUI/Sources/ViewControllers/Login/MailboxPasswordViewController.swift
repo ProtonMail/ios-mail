@@ -19,12 +19,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_Login
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreLogin
+import ProtonCoreUIFoundations
 
 protocol MailboxPasswordViewControllerInStandaloneFlowDelegate: AnyObject {
     func userDidRequestPasswordReset()
@@ -81,16 +82,16 @@ final class MailboxPasswordViewController: UIViewController, AccessibleView, Foc
 
     private func setupUI() {
         view.backgroundColor = ColorProvider.BackgroundNorm
-        titleLabel.text = CoreString._ls_login_mailbox_screen_title
+        titleLabel.text = LUITranslation.login_mailbox_screen_title.l10n
         titleLabel.textColor = ColorProvider.TextNorm
-        mailboxPasswordTextField.title = CoreString._ls_login_mailbox_field_title
+        mailboxPasswordTextField.title = LUITranslation.login_mailbox_field_title.l10n
         mailboxPasswordTextField.isPassword = true
         mailboxPasswordTextField.textContentType = .password
 
         forgetButton.setMode(mode: .text)
 
-        unlockButton.setTitle(CoreString._ls_login_mailbox_button_title, for: .normal)
-        forgetButton.setTitle(CoreString._ls_login_mailbox_forgot_password, for: .normal)
+        unlockButton.setTitle(LUITranslation.login_mailbox_button_title.l10n, for: .normal)
+        forgetButton.setTitle(LUITranslation.login_mailbox_forgot_password.l10n, for: .normal)
 
         if !isStandaloneComponent {
             setUpBackArrow(action: #selector(MailboxPasswordViewController.goBack(_:)))
@@ -218,3 +219,5 @@ extension MailboxPasswordViewController: PMTextFieldDelegate {
         return true
     }
 }
+
+#endif

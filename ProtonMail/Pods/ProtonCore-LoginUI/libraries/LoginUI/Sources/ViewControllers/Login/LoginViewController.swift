@@ -19,14 +19,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 import WebKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Login
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
-import ProtonCore_FeatureSwitch
-import ProtonCore_Observability
+import ProtonCoreLogin
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
+import ProtonCoreFeatureSwitch
+import ProtonCoreObservability
 
 protocol LoginStepsDelegate: AnyObject {
     func requestTwoFactorCode(username: String, password: String)
@@ -94,8 +95,6 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
         }
         
         focusOnce(view: loginTextField, delay: .milliseconds(750))
-        
-        showCloseButton = showCloseButton || isSSOEnabled
         
         setUpCloseButton(showCloseButton: showCloseButton, action: #selector(closePressed))
 
@@ -170,7 +169,7 @@ final class LoginViewController: UIViewController, AccessibleView, Focusable {
     }
     
     func setUpHelpButton(action: Selector) {
-        let helpButton = UIBarButtonItem(title: CoreString._hv_help_button, style: .plain, target: self, action: action)
+        let helpButton = UIBarButtonItem(title: LUITranslation._core_help_button.l10n, style: .plain, target: self, action: action)
         helpButton.tintColor = ColorProvider.InteractionNorm
         navigationItem.setHidesBackButton(true, animated: false)
         navigationItem.setRightBarButton(helpButton, animated: true)
@@ -453,3 +452,5 @@ extension LoginViewController: LoginErrorCapable {
 
     var bannerPosition: PMBannerPosition { .top }
 }
+
+#endif

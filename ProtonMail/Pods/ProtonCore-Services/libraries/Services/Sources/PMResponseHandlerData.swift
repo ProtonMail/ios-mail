@@ -21,7 +21,7 @@
 //
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 public struct PMResponseHandlerData {
     public var method: HTTPMethod

@@ -20,18 +20,25 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 public enum PlanName: String, Encodable, CaseIterable {
-    case unlimited
-    case plus
+    case paid
     case free
 }
 
+public enum PlanSelectionCheckoutStatus: String, Encodable, CaseIterable {
+    case successful
+    case failed
+    case processingInProgress
+    case apiMightBeBlocked
+    case canceled
+}
+
 public struct PlanSelectionCheckoutLabels: Encodable, Equatable {
-    let status: SuccessOrFailureStatus
+    let status: PlanSelectionCheckoutStatus
     let plan: PlanName
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<PlanSelectionCheckoutLabels> {
-    public static func planSelectionCheckoutTotal(status: SuccessOrFailureStatus, plan: PlanName) -> Self {
-        .init(name: "ios_core_plan_selection_checkout_total", labels: .init(status: status, plan: plan))
+    public static func planSelectionCheckoutTotal(status: PlanSelectionCheckoutStatus, plan: PlanName) -> Self {
+        .init(name: "ios_core_plan_selection_checkout_total", labels: .init(status: status, plan: plan), version: .v2)
     }
 }

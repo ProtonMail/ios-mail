@@ -21,7 +21,7 @@
 //
 
 import Foundation
-import ProtonCore_Utilities
+import ProtonCoreUtilities
 
 public enum PasswordType {
     public enum Key {}

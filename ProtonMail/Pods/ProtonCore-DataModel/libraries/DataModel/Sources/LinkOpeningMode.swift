@@ -21,6 +21,6 @@
 
 import Foundation
 
-public enum LinkOpeningMode: String {
+public enum LinkOpeningMode: String, Codable {
     case confirmationAlert, openAtWill
 }

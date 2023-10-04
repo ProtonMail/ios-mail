@@ -1,6 +1,6 @@
 //
 //  PlanDetailView.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,8 +19,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
+
+#if canImport(SDWebImage)
+import SDWebImage
+#endif
 
 final class PlanDetailView: UIView {
 
@@ -75,4 +81,18 @@ final class PlanDetailView: UIView {
         detailLabel.text = text
     }
     
+    func configure(iconUrl: URL? = nil, text: String) {
+        iconImageView.sd_setImage(with: iconUrl) { [weak self] image, error, cacheType, url in
+            guard error == nil else {
+                self?.iconImageView.image = IconProvider.checkmark
+                return
+            }
+            
+            self?.iconImageView.image = self?.iconImageView.image?.withRenderingMode(.alwaysTemplate)
+        }
+        
+        detailLabel.text = text
+    }
 }
+
+#endif

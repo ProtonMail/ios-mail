@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PMTextFieldCombo" customModule="ProtonCore_UIFoundations">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PMTextFieldCombo" customModule="ProtonCoreUIFoundations">
             <connections>
                 <outlet property="assistiveTextLabel" destination="KwT-5E-H5t" id="X6V-yg-9Gi"/>
                 <outlet property="mainView" destination="iN0-l3-epB" id="hy4-Uc-35w"/>
@@ -34,12 +34,12 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dKl-wh-Uzq" customClass="PMInternalTextField" customModule="ProtonCore_UIFoundations">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dKl-wh-Uzq" customClass="PMInternalTextField" customModule="ProtonCoreUIFoundations">
                     <rect key="frame" x="117" y="52" width="416" height="75"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3dA-GC-FgZ" userLabel="PickerButton" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3dA-GC-FgZ" userLabel="PickerButton" customClass="ProtonButton" customModule="ProtonCoreUIFoundations">
                     <rect key="frame" x="0.0" y="52" width="116" height="75"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="116" id="XaQ-HG-Xat"/>

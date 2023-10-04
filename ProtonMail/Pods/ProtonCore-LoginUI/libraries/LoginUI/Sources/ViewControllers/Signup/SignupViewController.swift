@@ -19,15 +19,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_FeatureSwitch
-import ProtonCore_Foundations
-import ProtonCore_HumanVerification
-import ProtonCore_Login
-import ProtonCore_Services
-import ProtonCore_UIFoundations
-import ProtonCore_Observability
+import ProtonCoreFeatureSwitch
+import ProtonCoreFoundations
+import ProtonCoreHumanVerification
+import ProtonCoreLogin
+import ProtonCoreServices
+import ProtonCoreUIFoundations
+import ProtonCoreObservability
 
 enum SignupAccountType {
     case `internal`
@@ -59,7 +60,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var createAccountTitleLabel: UILabel! {
         didSet {
-            createAccountTitleLabel.text = CoreString._su_main_view_title
+            createAccountTitleLabel.text = LUITranslation.main_view_title.l10n
             createAccountTitleLabel.textColor = ColorProvider.TextNorm
             createAccountTitleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
             createAccountTitleLabel.adjustsFontForContentSizeCategory = true
@@ -68,7 +69,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
     @IBOutlet weak var createAccountDescriptionLabel: UILabel! {
         didSet {
-            createAccountDescriptionLabel.text = CoreString._su_main_view_desc
+            createAccountDescriptionLabel.text = LUITranslation.main_view_desc.l10n
             createAccountDescriptionLabel.textColor = ColorProvider.TextWeak
             createAccountDescriptionLabel.font = .adjustedFont(forTextStyle: .subheadline)
             createAccountDescriptionLabel.adjustsFontForContentSizeCategory = true
@@ -77,7 +78,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
     @IBOutlet weak var internalNameTextField: PMTextField! {
         didSet {
-            internalNameTextField.title = CoreString._su_username_field_title
+            internalNameTextField.title = LUITranslation.username_field_title.l10n
             internalNameTextField.keyboardType = .default
             internalNameTextField.textContentType = .username
             internalNameTextField.isPassword = false
@@ -94,7 +95,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     @IBOutlet weak var domainsBottomSeparatorView: UIView!
     @IBOutlet weak var externalEmailTextField: PMTextField! {
         didSet {
-            externalEmailTextField.title = CoreString._su_email_field_title
+            externalEmailTextField.title = LUITranslation.email_field_title.l10n
             externalEmailTextField.autocorrectionType = .no
             externalEmailTextField.keyboardType = .emailAddress
             externalEmailTextField.textContentType = .emailAddress
@@ -134,14 +135,14 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     }
     @IBOutlet weak var nextButton: ProtonButton! {
         didSet {
-            nextButton.setTitle(CoreString._su_next_button, for: .normal)
+            nextButton.setTitle(LUITranslation.next_button.l10n, for: .normal)
             nextButton.isEnabled = false
         }
     }
     @IBOutlet weak var signinButton: ProtonButton! {
         didSet {
             signinButton.setMode(mode: .text)
-            signinButton.setTitle(CoreString._su_signin_button, for: .normal)
+            signinButton.setTitle(LUITranslation.signin_button.l10n, for: .normal)
         }
     }
     @IBOutlet weak var scrollView: UIScrollView!
@@ -221,7 +222,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             }
         }
         let header = PMActionSheetHeaderView(
-            title: CoreString._su_domains_sheet_title,
+            title: LUITranslation.domains_sheet_title.l10n,
             subtitle: nil,
             leftItem: .right(IconProvider.crossSmall),
             rightItem: nil,
@@ -290,8 +291,8 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             internalNameTextField.isHidden = false
         case .none: break
         }
-        let title = signupAccountType == .internal ? CoreString._su_email_address_button
-                                                   : CoreString._su_proton_address_button
+        let title = signupAccountType == .internal ? LUITranslation.email_address_button.l10n
+                                                   : LUITranslation.proton_address_button.l10n
         otherAccountButton.setTitle(title, for: .normal)
         configureDomainSuffix()
     }
@@ -318,7 +319,7 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
     private func setupDomainsView() {
         domainsButton.setMode(mode: .image(type: .textWithImage(image: nil)))
         domainsLabel.textColor = ColorProvider.TextNorm
-        domainsLabel.text = CoreString._su_domains_sheet_title
+        domainsLabel.text = LUITranslation.domains_sheet_title.l10n
         domainsLabel.font = .adjustedFont(forTextStyle: .caption1, weight: .semibold)
         domainsLabel.adjustsFontForContentSizeCategory = true
     }
@@ -408,21 +409,30 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             // this error is not user-facing
             return
         case .generic(let message, let code, _):
-            if isExternalEmail, code == APIErrorCode.humanVerificationAddressAlreadyTaken {
-                self.delegate?.hvEmailAlreadyExists(email: email)
-            } else if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
+            if code == APIErrorCode.humanVerificationAddressAlreadyTaken {
+                if isExternalEmail {
+                    ObservabilityEnv.report(.externalAccountAvailableSignupTotal(status: .notAvailable))
+                } else {
+                    ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .notAvailable))
+                }
+            } else {
                 if isExternalEmail {
                     ObservabilityEnv.report(.externalAccountAvailableSignupTotal(status: .failed))
                 } else {
                     ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .failed))
                 }
+            }
+
+            if isExternalEmail, code == APIErrorCode.humanVerificationAddressAlreadyTaken {
+                self.delegate?.hvEmailAlreadyExists(email: email)
+            } else if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                 self.showError(message: message)
             }
         case .notAvailable(let message):
             if isExternalEmail {
-                ObservabilityEnv.report(.externalAccountAvailableSignupTotal(status: .failed))
+                ObservabilityEnv.report(.externalAccountAvailableSignupTotal(status: .notAvailable))
             } else {
-                ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .failed))
+                ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .notAvailable))
             }
             self.currentlyUsedTextField.isError = true
             if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
@@ -430,13 +440,13 @@ class SignupViewController: UIViewController, AccessibleView, Focusable {
             }
         case let .apiMightBeBlocked(message, _):
             if isExternalEmail {
-                ObservabilityEnv.report(.externalAccountAvailableSignupTotal(status: .failed))
+                ObservabilityEnv.report(.externalAccountAvailableSignupTotal(status: .apiMightBeBlocked))
             } else {
-                ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .failed))
+                ObservabilityEnv.report(.protonAccountAvailableSignupTotal(status: .apiMightBeBlocked))
             }
             if self.customErrorPresenter?.willPresentError(error: error, from: self) == true { } else {
                 self.showError(message: message,
-                               button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+                               button: LUITranslation._core_api_might_be_blocked_button.l10n) { [weak self] in
                     self?.onDohTroubleshooting()
                 }
             }
@@ -513,3 +523,5 @@ extension SignupViewController: PMActionSheetEventsListener {
     
     func didDismiss() { }
 }
+
+#endif

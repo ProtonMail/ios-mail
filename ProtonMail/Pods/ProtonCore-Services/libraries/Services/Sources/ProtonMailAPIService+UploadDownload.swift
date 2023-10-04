@@ -22,11 +22,11 @@
 // swiftlint:disable function_parameter_count
 
 import Foundation
-import ProtonCore_Doh
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_Utilities
-import ProtonCore_FeatureSwitch
+import ProtonCoreDoh
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreUtilities
+import ProtonCoreFeatureSwitch
 
 // MARK: - Performing the upload and download operation
 
@@ -331,10 +331,6 @@ extension PMAPIService {
                 switch result {
                 case .found(let credentials):
                     authBlock(credentials.accessToken, credentials.sessionID, nil)
-                // legacy path
-                case .notFound where !FeatureFactory.shared.isEnabled(.unauthSession) && authenticated,
-                     .wrongConfigurationNoDelegate where !FeatureFactory.shared.isEnabled(.unauthSession) && authenticated:
-                    authBlock(nil, nil, result.toNSError)
                 case .notFound, .wrongConfigurationNoDelegate:
                     authBlock(nil, nil, nil)
                 }

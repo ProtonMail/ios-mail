@@ -24,11 +24,18 @@ import Foundation
 // MARK: - TODO:: we'd better move to Codable or at least NSSecureCoding when will happen to refactor this part of app from Anatoly
 extension Address: NSCoding {
     public func archive() -> Data {
+        // This can be replaced with `NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)` to suppress this warning.
+        // But new `NSKeyedArchiver.archivedData` method throws. And `archive() -> Data` method doesn't have any mechanism how to return error.
+        // For now keep the warning in favor of refactoring this method.
         return NSKeyedArchiver.archivedData(withRootObject: self)
     }
     
     public static func unarchive(_ data: Data?) -> Address? {
         guard let data = data else { return nil }
+        // Unarchive method that suppress this warning doesn't work when using old archive method (see above). Solution for this is to switch to
+        // Codable.
+        NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ProtonCore_DataModel.Address")
+        NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ProtonCoreDataModel.Address")
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? Address
     }
     

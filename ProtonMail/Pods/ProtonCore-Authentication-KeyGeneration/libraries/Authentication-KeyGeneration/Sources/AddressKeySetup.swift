@@ -19,12 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
 import Foundation
-import ProtonCore_Authentication
-import ProtonCore_Hash
-import ProtonCore_DataModel
+import ProtonCoreAuthentication
+import ProtonCoreHash
+import ProtonCoreDataModel
 
 final class AddressKeySetup {
     
@@ -66,7 +66,7 @@ final class AddressKeySetup {
         let userKeyPassphrase = PasswordHash.passphrase(password, salt: salt)
         
         // Generate a 32 byte random secret and encode it in a 64 byte hex string
-        let addrKeyPassphrase = PasswordHash.genAddrPassphrase()
+        let addrKeyPassphrase = try PasswordHash.genAddrPassphrase()
         
         /// generate a new key.  id: address email.  passphrase: hexed secret (should be 64 bytes) with default key type
         let armoredAddrKey = try Generator.generateECCKey(email: email, passphase: addrKeyPassphrase)
@@ -111,8 +111,8 @@ final class AddressKeySetup {
                                    signedKeyList: signedKeyList)
     }
     
-    func generateRandomSecret() -> String {
-        let secret = PasswordHash.random(bits: PasswordSaltSize.addressKey.int32Bits) // generate random 32 bytes
+    func generateRandomSecret() throws -> String {
+        let secret = try PasswordHash.random(bits: PasswordSaltSize.addressKey.int32Bits) // generate random 32 bytes
         return HMAC.hexStringFromData(secret)
     }
     

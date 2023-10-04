@@ -1,6 +1,6 @@
 //
 //  PaymentsUI+Bundle.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,10 +19,21 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
+#if SPM
+import ProtonCorePaymentsUIResourcesiOS
+#endif
 import Foundation
 
 extension PaymentsUI {
     public static var bundle: Bundle {
+        #if SPM
+        return spmResourcesBundle
+        #else
         return Bundle(path: Bundle(for: PaymentsUI.self).path(forResource: "Resources-PaymentsUI", ofType: "bundle")!)!
+        #endif
     }
 }
+
+#endif

@@ -19,18 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Networking
-import ProtonCore_Utilities
-
-public enum SSOIDPPageLoadStatus: String, Encodable, CaseIterable {
-    case http2xx
-    case http4xx
-    case http5xx
-    case unknown
-}
+import ProtonCoreNetworking
+import ProtonCoreUtilities
 
 public struct SSPIDPPageLoadLabels: Encodable, Equatable {
-    let status: SSOIDPPageLoadStatus
+    let status: HTTPResponseCodeStatus
 
     enum CodingKeys: String, CodingKey {
         case status
@@ -38,7 +31,7 @@ public struct SSPIDPPageLoadLabels: Encodable, Equatable {
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<SSPIDPPageLoadLabels> {
-    public static func ssoIDPPageLoadCountTotal(status: SSOIDPPageLoadStatus) -> Self {
+    public static func ssoIDPPageLoadCountTotal(status: HTTPResponseCodeStatus) -> Self {
         .init(name: "ios_core_login_ssoIdentityProvider_pageLoad_total", labels: .init(status: status))
     }
     

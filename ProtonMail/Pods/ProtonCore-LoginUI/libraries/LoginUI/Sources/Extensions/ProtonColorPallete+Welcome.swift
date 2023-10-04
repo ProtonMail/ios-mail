@@ -19,7 +19,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_UIFoundations
+#if os(iOS)
+
+import UIKit
+import ProtonCoreUIFoundations
 
 extension ProtonColorPaletteiOS {
 
@@ -36,3 +39,5 @@ extension ProtonColorPaletteiOS {
         }
     }
 }
+
+#endif

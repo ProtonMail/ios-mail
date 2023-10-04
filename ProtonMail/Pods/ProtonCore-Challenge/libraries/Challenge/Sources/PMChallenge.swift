@@ -23,8 +23,8 @@
 
 import UIKit
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_Foundations
+import ProtonCoreDataModel
+import ProtonCoreFoundations
 
 public final class PMChallenge: ChallengeProtocol {
     private static let queue = DispatchQueue(label: "com.protonmail.challenge")

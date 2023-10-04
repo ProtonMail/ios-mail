@@ -19,7 +19,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
+import ProtonCoreFoundations
 
 public extension UIEdgeInsets {
     static var baner: UIEdgeInsets {
@@ -27,6 +30,8 @@ public extension UIEdgeInsets {
     }
 
     static var saveAreaBottom: CGFloat {
-        return UIApplication.getInstance()?.keyWindow?.safeAreaInsets.bottom ?? 0
+        return UIApplication.firstKeyWindow?.safeAreaInsets.bottom ?? 0
     }
 }
+
+#endif

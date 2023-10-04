@@ -21,14 +21,17 @@
 
 import Foundation
 
-import ProtonCore_Authentication
-import ProtonCore_APIClient
-import ProtonCore_Log
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_Login
+import ProtonCoreAuthentication
+import ProtonCoreAPIClient
+import ProtonCoreLog
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreLogin
+#if canImport(ProtonCoreTestingToolkitUnitTestsCore)
+import ProtonCoreTestingToolkitUnitTestsCore
+#endif
 
 public class LoginMock: Login {
     public init() {}

@@ -20,12 +20,18 @@
 //  along with ProtonCore. If not, see https://www.gnu.org/licenses/.
 //
 
-import ProtonCore_CryptoGoInterface
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreCryptoGoInterface
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 public protocol SRPBuilderProtocol {
     func buildSRP(username: String, password: String, authInfo: AuthInfoResponse, srpAuth: SrpAuth?) throws -> Result<SRPClientInfo, AuthErrors>
+}
+
+public extension SRPBuilderProtocol {
+    func buildSRP(username: String, password: String, authInfo: AuthInfoResponse) throws -> Result<SRPClientInfo, AuthErrors> {
+        try buildSRP(username: username, password: password, authInfo: authInfo, srpAuth: nil)
+    }
 }
 
 public struct SRPBuilder: SRPBuilderProtocol {

@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 public enum HelpItem {
     case forgotUsername
@@ -37,13 +38,13 @@ extension HelpItem: CustomStringConvertible {
     public var description: String {
         switch self {
         case .forgotUsername:
-            return CoreString._ls_help_forgot_username
+            return LUITranslation.help_forgot_username.l10n
         case .forgotPassword:
-            return CoreString._ls_help_forgot_password
+            return LUITranslation.help_forgot_password.l10n
         case .otherIssues:
-            return CoreString._ls_help_other_issues
+            return LUITranslation.help_other_issues.l10n
         case .support:
-            return CoreString._ls_help_customer_support
+            return LUITranslation.help_customer_support.l10n
         case .staticText(let text):
             return text
         case let .custom(_, title, _):
@@ -70,3 +71,5 @@ extension HelpItem {
         }
     }
 }
+
+#endif

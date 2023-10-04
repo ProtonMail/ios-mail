@@ -22,7 +22,7 @@
 // swiftlint:disable no_print
 
 import Foundation
-import ProtonCore_Log
+import ProtonCoreLog
 
 public extension URLRequest {
 

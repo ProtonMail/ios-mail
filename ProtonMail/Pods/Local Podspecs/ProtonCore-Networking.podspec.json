@@ -1,6 +1,7 @@
 {
   "name": "ProtonCore-Networking",
-  "version": "9.3.0",
+  "module_name": "ProtonCoreNetworking",
+  "version": "12.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "9.3.0"
+    "tag": "12.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -29,17 +30,14 @@
     "APPLICATION_EXTENSION_API_ONLY": "YES"
   },
   "dependencies": {
-    "ProtonCore-CoreTranslation": [
-      "9.3.0"
-    ],
     "ProtonCore-Log": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Utilities": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Environment": [
-      "9.3.0"
+      "12.0.0"
     ],
     "Alamofire": [
       "5.4.4"
@@ -51,18 +49,23 @@
   "default_subspecs": [
 
   ],
+  "resource_bundles": {
+    "Translations-Networking": [
+      "libraries/Networking/Sources/Resources/*"
+    ]
+  },
   "source_files": "libraries/Networking/Sources/**/*",
   "testspecs": [
     {
       "name": "Tests",
       "test_type": "unit",
-      "source_files": "libraries/Networking/Tests/*.swift",
+      "source_files": "libraries/Networking/Tests/UnitTests/*.swift",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Networking": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-Doh": [
-          "9.3.0"
+          "12.0.0"
         ],
         "OHHTTPStubs/Swift": [
 

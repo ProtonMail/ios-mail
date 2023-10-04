@@ -48,4 +48,5 @@ public struct ObservabilityEvent<Payload>: Encodable where Payload: Encodable {
 /// Defines the versioning for the event schema
 public enum ObservabilityEventVersion: Int, Encodable {
     case v1 = 1
+    case v2 = 2
 }

@@ -201,7 +201,7 @@ public struct PMActionBarItem {
         item.shouldSpin = true
         item.pressedBackgroundColor = pressedBackgroundColor
         
-        item.activityIndicator = .init(style: .white)
+        item.activityIndicator = .init(style: .medium)
         item.activityIndicator?.hidesWhenStopped = true
         item.activityIndicator?.isHidden = true
         return item

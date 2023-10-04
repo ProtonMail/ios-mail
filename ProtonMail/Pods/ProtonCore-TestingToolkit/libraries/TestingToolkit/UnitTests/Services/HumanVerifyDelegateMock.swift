@@ -20,24 +20,24 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
-import ProtonCore_TestingToolkit_UnitTests_Core
+#if canImport(ProtonCoreTestingToolkitUnitTestsCore)
+import ProtonCoreTestingToolkitUnitTestsCore
 #endif
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 public final class HumanVerifyDelegateMock: HumanVerifyDelegate {
 
     public init() {}
 
     @PropertyStub(\HumanVerifyDelegateMock.responseDelegateForLoginAndSignup, initialGet: nil) public var responseDelegateForLoginAndSignupStub
-    public var responseDelegateForLoginAndSignup: ProtonCore_Services.HumanVerifyResponseDelegate? {
+    public var responseDelegateForLoginAndSignup: ProtonCoreServices.HumanVerifyResponseDelegate? {
         get { responseDelegateForLoginAndSignupStub() }
         set { responseDelegateForLoginAndSignupStub(newValue) }
     }
 
     @PropertyStub(\HumanVerifyDelegateMock.paymentDelegateForLoginAndSignup, initialGet: nil) public var paymentDelegateForLoginAndSignupStub
-    public var paymentDelegateForLoginAndSignup: ProtonCore_Services.HumanVerifyPaymentDelegate? {
+    public var paymentDelegateForLoginAndSignup: ProtonCoreServices.HumanVerifyPaymentDelegate? {
         get { paymentDelegateForLoginAndSignupStub() }
         set { paymentDelegateForLoginAndSignupStub(newValue) }
     }

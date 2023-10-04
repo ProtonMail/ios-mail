@@ -1,4 +1,4 @@
-framework module ProtonCore_Login {
+framework module ProtonCoreLogin {
   umbrella header "ProtonCore-Login-umbrella.h"
 
   export *

@@ -20,10 +20,10 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Doh
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_Utilities
+import ProtonCoreDoh
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreUtilities
 
 // MARK: - Handling Refresh Credential
 extension APIService {
@@ -54,7 +54,7 @@ extension PMAPIService {
                                                parameters: route.calculatedParameters,
                                                headers: route.header,
                                                authenticated: route.isAuth,
-                                               authRetry: route.autoRetry,
+                                               authRetry: route.authRetry,
                                                authRetryRemains: 3,
                                                fetchingCredentialsResult: .found(credentials: AuthCredential(oldCredential)),
                                                nonDefaultTimeout: route.nonDefaultTimeout,

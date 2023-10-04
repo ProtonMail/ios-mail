@@ -19,10 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import Foundation
 import XCTest
 import fusion
-import ProtonCore_CoreTranslation
+import ProtonCoreLoginUI
 
 private let titleId = "RecoveryViewController.recoveryMethodTitleLabel"
 private let emailTextFieldId = "RecoveryViewController.recoveryEmailTextField.textField"
@@ -32,14 +34,14 @@ private let phonePickerId = "RecoveryViewController.recoveryPhoneTextField.picke
 private let skipButtonId = "UINavigationItem.rightBarButtonItem"
 private let nextButtonId = "RecoveryViewController.nextButton"
 private let segmenedControlId = "RecoveryViewController.methodSegmenedControl"
-private let recoveryDialogTitleName = CoreString._su_recovery_skip_title
-private let recoveryDialogMessageName = CoreString._su_recovery_skip_desc
+private let recoveryDialogTitleName = LUITranslation.recovery_skip_title.l10n
+private let recoveryDialogMessageName = LUITranslation.recovery_skip_desc.l10n
 private let recoveryDialogSkipButtonAccessibilityId = "DialogSkipButton"
 private let recoveryDialogRecoveryButtonAccessibilityId = "DialogRecoveryMethodButton"
-private let linkString = CoreString._su_recovery_t_c_link
+private let linkString = LUITranslation.recovery_t_c_link.l10n
 private let errorBannerHVRequired = "Human verification required"
 private let errorBannerInvalidNumber = "Phone number failed validation"
-private let errorBannerButton = CoreString._hv_ok_button
+private let errorBannerButton = LUITranslation._core_ok_button.l10n
 
 public final class RecoveryRobot: CoreElements {
     
@@ -60,7 +62,7 @@ public final class RecoveryRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func recoveryScreenIsShown() -> RecoveryRobot {
-            staticText(titleId).wait().checkExists()
+            staticText(titleId).waitUntilExists().checkExists()
             return RecoveryRobot()
         }
 
@@ -78,15 +80,15 @@ public final class RecoveryRobot: CoreElements {
         
         @discardableResult
         public func humanVerificationRequired() -> RecoveryRobot {
-            textView(errorBannerHVRequired).wait().checkExists()
+            textView(errorBannerHVRequired).waitUntilExists().checkExists()
             button(errorBannerButton).tap()
             return RecoveryRobot()
         }
 
         @discardableResult
         public func phoneNumberInvalid() -> SignupRobot {
-            textView(errorBannerInvalidNumber).wait().checkExists()
-            button(errorBannerButton).wait().checkExists().tap()
+            textView(errorBannerInvalidNumber).waitUntilExists().checkExists()
+            button(errorBannerButton).waitUntilExists().checkExists().tap()
             return SignupRobot()
         }
     }
@@ -97,7 +99,7 @@ public final class RecoveryRobot: CoreElements {
     }
     
     public func nextButtonTap() -> RecoveryRobot {
-        button(nextButtonId).wait().tap()
+        button(nextButtonId).waitUntilExists().tap()
         return self
     }
     
@@ -107,8 +109,8 @@ public final class RecoveryRobot: CoreElements {
         
         public final class Verify: CoreElements {
             public func recoveryDialogDisplay() -> RecoveryDialogRobot {
-                staticText(recoveryDialogTitleName).wait().checkExists()
-                staticText(recoveryDialogMessageName).wait().checkExists()
+                staticText(recoveryDialogTitleName).waitUntilExists().checkExists()
+                staticText(recoveryDialogMessageName).waitUntilExists().checkExists()
                 return RecoveryDialogRobot()
             }
         }
@@ -152,3 +154,5 @@ public final class RecoveryRobot: CoreElements {
     }
 
 }
+
+#endif

@@ -20,9 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Services
-import ProtonCore_Networking
-import ProtonCore_Utilities
+import ProtonCoreServices
+import ProtonCoreNetworking
+import ProtonCoreUtilities
 
 public final class SSOChallengeResponse: Response, APIDecodableResponse {
     public var ssoChallengeToken: String

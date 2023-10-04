@@ -22,10 +22,10 @@
 // swiftlint:disable identifier_name todo
 
 import Foundation
-import ProtonCore_Log
-import ProtonCore_Utilities
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreLog
+import ProtonCoreUtilities
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 public protocol AuthHelperDelegate: AuthSessionInvalidatedDelegate {
     // if credentials are persisted, this is the place to persist new ones

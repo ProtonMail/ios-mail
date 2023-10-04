@@ -33,6 +33,12 @@ public struct PayloadWithValueAndLabels<Value, Labels>: Encodable where Value: E
 }
 
 extension ObservabilityEvent {
+    init<Labels>(name: String, labels: Labels, version: ObservabilityEventVersion) where Payload == PayloadWithLabels<Labels>, Labels: Encodable {
+        self.init(name: name, version: version, data: .init(value: version.rawValue, labels: labels))
+    }
+}
+
+extension ObservabilityEvent {
     init<Labels>(name: String, value: Int, labels: Labels) where Payload == PayloadWithLabels<Labels>, Labels: Encodable {
         self.init(name: name, version: .v1, data: .init(value: value, labels: labels))
     }

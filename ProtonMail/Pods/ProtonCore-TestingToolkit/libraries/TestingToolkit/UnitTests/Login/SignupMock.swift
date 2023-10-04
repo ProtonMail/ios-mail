@@ -23,7 +23,7 @@
 
 import Foundation
 
-import ProtonCore_Login
+import ProtonCoreLogin
 
 public class SignupServiceMock: Signup {
     

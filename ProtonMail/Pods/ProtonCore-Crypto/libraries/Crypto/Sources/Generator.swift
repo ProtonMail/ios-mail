@@ -21,7 +21,7 @@
 //
 
 import Foundation
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCryptoGoInterface
 
 public enum Generator {
     

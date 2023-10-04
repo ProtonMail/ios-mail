@@ -19,24 +19,25 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_CoreTranslation
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 extension PMTextField {
     func set(mode: TwoFactorViewModel.Mode) {
         switch mode {
         case .twoFactorCode:
-            title = CoreString._ls_login_2fa_field_title
+            title = LUITranslation.login_2fa_field_title.l10n
             keyboardType = .numberPad
             textContentType = .oneTimeCode
-            assistiveText = CoreString._ls_login_2fa_field_info
+            assistiveText = LUITranslation.login_2fa_field_info.l10n
         case .recoveryCode:
-            title = CoreString._ls_login_2fa_recovery_field_title
+            title = LUITranslation.login_2fa_recovery_field_title.l10n
             allowOnlyNumbers = false
             textContentType = .none
             keyboardType = .default
-            assistiveText = CoreString._ls_login_2fa_recovery_field_info
+            assistiveText = LUITranslation.login_2fa_recovery_field_info.l10n
         }
         value = ""
 
@@ -52,3 +53,5 @@ extension PMTextField {
         }
     }
 }
+
+#endif

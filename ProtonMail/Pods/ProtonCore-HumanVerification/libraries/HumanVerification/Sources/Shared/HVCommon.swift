@@ -20,9 +20,16 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Utilities
-import ProtonCore_DataModel
+import ProtonCoreNetworking
+import ProtonCoreUtilities
+import ProtonCoreDataModel
+
+#if canImport(ProtonCoreHumanVerificationResourcesiOS)
+import ProtonCoreHumanVerificationResourcesiOS
+#endif
+#if canImport(ProtonCoreHumanVerificationResourcesmacOS)
+import ProtonCoreHumanVerificationResourcesmacOS
+#endif
 
 public final class HVCommon {
 
@@ -36,6 +43,10 @@ public final class HVCommon {
     }
 
     public static var bundle: Bundle {
+        #if SPM
+        return spmResourcesBundle
+        #else
         return Bundle(path: Bundle(for: HVCommon.self).path(forResource: "Resources-HumanVerification", ofType: "bundle")!)!
+        #endif
     }
 }

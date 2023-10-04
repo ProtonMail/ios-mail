@@ -20,26 +20,26 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import WebKit
-#if canImport(ProtonCore_UIFoundations)
-import ProtonCore_UIFoundations
+#if canImport(ProtonCoreUIFoundations)
+import ProtonCoreUIFoundations
 #else
 import PMUIFoundations
 #endif
-#if canImport(ProtonCore_Log)
-import ProtonCore_Log
+#if canImport(ProtonCoreLog)
+import ProtonCoreLog
 #else
 import PMLog
 #endif
-#if canImport(ProtonCore_Foundations)
-import ProtonCore_Foundations
+#if canImport(ProtonCoreFoundations)
+import ProtonCoreFoundations
 #endif
-#if canImport(ProtonCore_Networking)
-import ProtonCore_Networking
+#if canImport(ProtonCoreNetworking)
+import ProtonCoreNetworking
 #else
 import PMCommon
 #endif
-#if canImport(ProtonCore_Services)
-import ProtonCore_Services
+#if canImport(ProtonCoreServices)
+import ProtonCoreServices
 #endif
 
 final class WeaklyProxingScriptHandler<OtherHandler: WKScriptMessageHandler>: NSObject, WKScriptMessageHandler {
@@ -91,7 +91,7 @@ final class AccountDeletionWebView: AccountDeletionViewController {
         let webView = configureUI()
         loadWebContent(webView: webView)
         self.webView = webView
-        #if canImport(UIKit) && canImport(ProtonCore_Foundations)
+        #if canImport(UIKit) && canImport(ProtonCoreFoundations)
         generateAccessibilityIdentifiers()
         #endif
     }
@@ -245,6 +245,6 @@ extension AccountDeletionWebView: WKScriptMessageHandler {
     }
 }
 
-#if canImport(UIKit) && canImport(ProtonCore_Foundations)
+#if canImport(UIKit) && canImport(ProtonCoreFoundations)
 extension AccountDeletionWebView: AccessibleView {}
 #endif

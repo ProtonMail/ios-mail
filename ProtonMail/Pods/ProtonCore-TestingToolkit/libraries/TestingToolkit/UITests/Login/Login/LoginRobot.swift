@@ -19,19 +19,21 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import fusion
 import XCTest
-import ProtonCore_CoreTranslation
+import ProtonCoreLoginUI
 
 private let titleId = "LoginViewController.titleLabel"
 private let subtitleId = "LoginViewController.subtitleLabel"
 private let loginViewCloseButtonId = "UINavigationItem.leftBarButtonItem"
 private let errorBannerMessage = "Email address already used."
-private let errorBannerButton = CoreString._hv_ok_button
+private let errorBannerButton = LUITranslation._core_ok_button.l10n
 private let loginTextFieldId = "LoginViewController.loginTextField.textField"
 private let passwordTextFieldId = "LoginViewController.passwordTextField.textField"
 private let signInButtonId = "LoginViewController.signInButton"
-private let invalidCredentialText = "Incorrect login credentials. Please try again."
+private let invalidCredentialText = "Incorrect login credentials. Please try again"
 private let signUpButtonId = "LoginViewController.signUpButton"
 private let helpButtonId = "UINavigationItem.rightBarButtonItem"
 private let loginFieldTitleLabel = "LoginViewController.loginTextField.titleLabel"
@@ -52,14 +54,14 @@ public final class LoginRobot: CoreElements {
         
         @discardableResult
         public func loginScreenIsShown() -> LoginRobot {
-            staticText(titleId).wait().checkExists()
-            staticText(subtitleId).wait().checkExists()
+            staticText(titleId).waitUntilExists().checkExists()
+            staticText(subtitleId).waitUntilExists().checkExists()
             return LoginRobot()
         }
 
         @discardableResult
         public func switchToCreateAccountButtonIsShown() -> LoginRobot {
-            button(signUpButtonId).wait().checkExists()
+            button(signUpButtonId).waitUntilExists().checkExists()
             return LoginRobot()
         }
 
@@ -77,36 +79,36 @@ public final class LoginRobot: CoreElements {
         
         @discardableResult
         public func emailAlreadyExists() -> LoginRobot {
-            LoginRobot().textView(errorBannerMessage).wait().checkExists()
+            LoginRobot().textView(errorBannerMessage).waitUntilExists().checkExists()
             LoginRobot().button(errorBannerButton).tap()
             return LoginRobot()
         }
         
         public func incorrectCredentialsErrorDialog() {
-            textView(invalidCredentialText).wait(time: 20).checkExists()
+            textView(invalidCredentialText).waitUntilExists(time: 20).checkExists()
         }
         
         public func suspendedErrorDialog() {
-            textView(textPredicate).wait().checkExists()
+            textView(textPredicate).waitUntilExists().checkExists()
         }
         
         public func changePassword() -> LoginRobot {
-            staticText(textChangePassword).wait(time: 20).checkExists()
+            staticText(textChangePassword).waitUntilExists(time: 20).checkExists()
             return LoginRobot()
         }
         
         public func changePasswordCancel() -> LoginRobot {
-            button(buttonChangePasswordCancel).wait(time: 20).checkExists()
+            button(buttonChangePasswordCancel).waitUntilExists(time: 20).checkExists()
             return LoginRobot()
         }
         
         public func changePasswordConfirm() {
-            button(buttonChangePassword).wait(time: 20).checkExists()
+            button(buttonChangePassword).waitUntilExists(time: 20).checkExists()
         }
         
         @discardableResult
         public func closeButtonIsShown() -> LoginRobot {
-            button(closeButton).wait().checkExists()
+            button(closeButton).waitUntilExists().checkExists()
             return LoginRobot()
         }
         
@@ -133,7 +135,7 @@ public final class LoginRobot: CoreElements {
     }
     
     public func fillpassword(password: String) -> LoginRobot {
-        secureTextField(passwordTextFieldId).tap().wait().typeText(password)
+        secureTextField(passwordTextFieldId).tap().waitUntilExists().typeText(password)
         return self
     }
     
@@ -143,7 +145,7 @@ public final class LoginRobot: CoreElements {
     }
     
     public func signInElementsDisplayed() {
-        button(loginViewCloseButtonId).wait().checkExists()
+        button(loginViewCloseButtonId).waitUntilExists().checkExists()
         staticText(titleId).checkExists()
         staticText(loginFieldTitleLabel).checkExists()
         staticText(passwordFieldTitleLabel).checkExists()
@@ -167,10 +169,10 @@ public final class LoginRobot: CoreElements {
     }
 }
 
-private let externalAccountsNotSupportedText = CoreString._ls_external_accounts_address_required_popup_title
-private let externalAccountsUpdateRequiredText = CoreString._ls_external_accounts_update_required_popup_title
-private let externalAccountsNotSupportedCloseButton = CoreString._hv_cancel_button
-private let externalAccountsNotSupportedLearnMoreButton = CoreString._ls_external_accounts_not_supported_popup_action_button
+private let externalAccountsNotSupportedText = LUITranslation._core_external_accounts_address_required_popup_title.l10n
+private let externalAccountsUpdateRequiredText = LUITranslation._core_external_accounts_update_required_popup_title.l10n
+private let externalAccountsNotSupportedCloseButton = LUITranslation._core_cancel_button.l10n
+private let externalAccountsNotSupportedLearnMoreButton = LUITranslation.external_accounts_not_supported_popup_action_button.l10n
 
 public final class ExternalAccountsNotSupportedDialogRobot: CoreElements {
     
@@ -208,9 +210,9 @@ public final class ExternalAccountsNotSupportedDialogRobot: CoreElements {
     }
 }
 
-private let createAddressTitle = CoreString._ls_create_address_screen_title
+private let createAddressTitle = LUITranslation.create_address_screen_title.l10n
 private func createAddressDescription(email: String) -> String {
-    return String(format: CoreString._ls_create_address_screen_info, email)
+    return String(format: LUITranslation.create_address_screen_info.l10n, email)
 }
 private let continueButtonIdentifier = "CreateAddressViewController.continueButton"
 private let cancelButtonIdentifier = "CreateAddressViewController.cancelButton"
@@ -224,15 +226,15 @@ public final class CreateAddressRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func createAddress(email: String) -> CreateAddressRobot {
-            staticText(createAddressTitle).wait().checkExists()
+            staticText(createAddressTitle).waitUntilExists().checkExists()
             let predicate = NSPredicate(format: "label LIKE %@", createAddressDescription(email: email))
-            staticText(predicate).wait().checkExists()
+            staticText(predicate).waitUntilExists().checkExists()
             return CreateAddressRobot()
         }
         
         @discardableResult
         public func invalidCharactersBanner() -> CreateAddressRobot {
-            textView(errorInvalidCharacters).wait().checkExists()
+            textView(errorInvalidCharacters).waitUntilExists().checkExists()
             button(errorBannerButton).tap()
             return CreateAddressRobot()
         }
@@ -259,3 +261,5 @@ public final class CreateAddressRobot: CoreElements {
         return LoginRobot()
     }
 }
+
+#endif

@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_NetworkingVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_NetworkingVersionString[];
+FOUNDATION_EXPORT double ProtonCoreNetworkingVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreNetworkingVersionString[];
 

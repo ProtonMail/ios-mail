@@ -20,10 +20,10 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import XCTest
-import ProtonCore_Doh
-import ProtonCore_Utilities
-#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
-import ProtonCore_TestingToolkit_UnitTests_Core
+import ProtonCoreDoh
+import ProtonCoreUtilities
+#if canImport(ProtonCoreTestingToolkitUnitTestsCore)
+import ProtonCoreTestingToolkitUnitTestsCore
 #endif
 
 public struct DohInterfaceMock: DoHInterface, ServerConfig {
@@ -161,9 +161,9 @@ public struct DohInterfaceMock: DoHInterface, ServerConfig {
     @FuncStub(DohInterfaceMock.getSignUpString, initialReturn: .empty) public var getSignUpStringStub
     public func getSignUpString() -> String { getSignUpStringStub() }
     
-    @FuncStub(DohInterfaceMock.synchronizeCookies) public var synchronizeCookiesStub
-    public func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String]) { synchronizeCookiesStub(response, requestHeaders) }
-    
+    public var synchronizeCookiesStub: ((URLResponse?, [String: String]) async -> Void)?
+    public func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String]) async { await synchronizeCookiesStub?(response, requestHeaders) }
+
     @FuncStub(DohInterfaceMock.setUpCookieSynchronization) public var setUpCookieSynchronizationStub
     public func setUpCookieSynchronization(storage: HTTPCookieStorage?) { setUpCookieSynchronizationStub(storage) }
     
@@ -299,9 +299,9 @@ public final class DohMock: DoH, ServerConfig {
     @FuncStub(DohInterfaceMock.getSignUpString, initialReturn: .empty) public var getSignUpStringStub
     override public func getSignUpString() -> String { getSignUpStringStub() }
     
-    @FuncStub(DohInterfaceMock.synchronizeCookies) public var synchronizeCookiesStub
-    override public func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String]) { synchronizeCookiesStub(response, requestHeaders) }
-    
+    public var synchronizeCookiesStub: ((URLResponse?, [String: String]) async -> Void)?
+    override public func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String]) async { await synchronizeCookiesStub?(response, requestHeaders) }
+
     @FuncStub(DohInterfaceMock.setUpCookieSynchronization) public var setUpCookieSynchronizationStub
     override public func setUpCookieSynchronization(storage: HTTPCookieStorage?) { setUpCookieSynchronizationStub(storage) }
 }

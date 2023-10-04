@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import Foundation
 import fusion
 
@@ -31,8 +33,10 @@ public final class CompleteRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func completeScreenIsShown<T: CoreElements>(robot _: T.Type) -> T {
-            staticText(titleId).wait().checkExists()
+            staticText(titleId).waitUntilExists().checkExists()
             return T()
         }
     }
 }
+
+#endif

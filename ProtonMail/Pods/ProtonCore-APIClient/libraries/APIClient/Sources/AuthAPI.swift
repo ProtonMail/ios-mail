@@ -22,7 +22,7 @@
 // swiftlint:disable identifier_name
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 // Auth API
 public struct AuthAPI: APIClient {
