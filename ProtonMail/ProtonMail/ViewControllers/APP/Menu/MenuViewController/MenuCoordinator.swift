@@ -21,9 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_AccountSwitcher
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
+import ProtonCoreAccountSwitcher
+import ProtonCoreNetworking
+import ProtonCoreUIFoundations
 import SideMenuSwift
 
 protocol MenuCoordinatorDelegate: AnyObject {

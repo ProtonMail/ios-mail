@@ -28,10 +28,10 @@ import UIKit
 import SideMenuSwift
 #endif
 import CoreData
-import ProtonCore_DataModel
-import ProtonCore_Foundations
+import ProtonCoreDataModel
+import ProtonCoreFoundations
 import WebKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 protocol ComposeContentViewControllerDelegate: AnyObject {
     func displayExpirationWarning()

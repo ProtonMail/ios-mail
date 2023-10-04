@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import enum ProtonCore_Crypto.Algorithm
-import class ProtonCore_DataModel.Key
+import enum ProtonCoreCrypto.Algorithm
+import class ProtonCoreDataModel.Key
 
 /// Information needed to compose the final message content to execute a send request
 struct SendMessageMetadata {

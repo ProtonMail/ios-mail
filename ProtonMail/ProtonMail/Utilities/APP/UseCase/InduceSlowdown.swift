@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import MBProgressHUD
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 /*
  The purpose of this is to test how the app handles the load when the event loop receives a lot of messages.

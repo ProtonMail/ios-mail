@@ -24,12 +24,12 @@
 import LifetimeTracker
 #endif
 import PromiseKit
-import ProtonCore_Challenge
-import ProtonCore_DataModel
-import ProtonCore_Doh
-import ProtonCore_Keymaker
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreChallenge
+import ProtonCoreDataModel
+import ProtonCoreDoh
+import ProtonCoreKeymaker
+import ProtonCoreNetworking
+import ProtonCoreServices
 import ProtonMailAnalytics
 
 // sourcery: mock

@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 final class ToolbarSettingViewModel {
     typealias Dependencies = ToolbarCustomizeViewModel<MessageViewActionSheetAction>.Dependencies

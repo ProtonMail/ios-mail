@@ -22,12 +22,12 @@
 
 import Foundation
 import LifetimeTracker
-import ProtonCore_Authentication_KeyGeneration
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Login
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreAuthentication_KeyGeneration
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreLogin
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 class SignInManager {
     let usersManager: UsersManager

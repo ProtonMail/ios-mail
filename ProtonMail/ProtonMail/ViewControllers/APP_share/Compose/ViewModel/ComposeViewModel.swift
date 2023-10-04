@@ -24,8 +24,8 @@ import Combine
 import CoreData
 import Foundation
 import PromiseKit
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 import ProtonMailAnalytics
 import SwiftSoup
 

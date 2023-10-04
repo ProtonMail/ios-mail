@@ -22,15 +22,15 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_Authentication
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreAuthentication
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 #if !APP_EXTENSION
-import ProtonCore_Payments
+import ProtonCorePayments
 #endif
-import ProtonCore_Services
-import ProtonCore_Keymaker
+import ProtonCoreServices
+import ProtonCoreKeymaker
 
 /// TODO:: this is temp
 protocol UserDataSource: AnyObject {

@@ -22,9 +22,9 @@
 
 import LifetimeTracker
 import PromiseKit
-import ProtonCore_Foundations
-import ProtonCore_PaymentsUI
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCorePaymentsUI
+import ProtonCoreUIFoundations
 import UIKit
 
 final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView, LifetimeTrackable {

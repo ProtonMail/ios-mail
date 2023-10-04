@@ -17,8 +17,8 @@
 
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 final class ContactDetailViewController: UIViewController, AccessibleView {

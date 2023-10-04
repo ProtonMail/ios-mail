@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_Keymaker
+import ProtonCoreDataModel
+import ProtonCoreKeymaker
 
 extension Locked where T == UserInfo {
     internal init(clearValue: T, with key: MainKey) throws {

@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 enum ProtonCSS {
     /// For message detail view, general case

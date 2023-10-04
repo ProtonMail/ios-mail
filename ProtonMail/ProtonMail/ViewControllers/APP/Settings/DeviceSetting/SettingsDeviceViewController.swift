@@ -22,7 +22,7 @@
 
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrackable {

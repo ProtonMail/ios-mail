@@ -24,7 +24,7 @@ import Foundation
 import CoreData
 import Groot
 import PromiseKit
-import ProtonCore_Services
+import ProtonCoreServices
 
 // sourcery: mock
 protocol ContactGroupsProviderProtocol: AnyObject {

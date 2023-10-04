@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Networking
-import class ProtonCore_Services.APIErrorCode
+import ProtonCoreNetworking
+import class ProtonCoreServices.APIErrorCode
 
 struct TaskCompletionHelper {
     enum Constant {

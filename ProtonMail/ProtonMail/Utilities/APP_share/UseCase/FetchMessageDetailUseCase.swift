@@ -17,7 +17,7 @@
 
 import Foundation
 import Groot
-import ProtonCore_Services
+import ProtonCoreServices
 
 /// Update given message's detail
 /// There are 2 common cases

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 final class PinCodeSetupViewController: ProtonMailViewController {
@@ -168,11 +168,11 @@ extension PinCodeSetupViewController {
 }
 
 extension PinCodeSetupViewController: PMTextFieldDelegate {
-    func didEndEditing(textField: ProtonCore_UIFoundations.PMTextField) { }
+    func didEndEditing(textField: ProtonCoreUIFoundations.PMTextField) { }
 
-    func textFieldShouldReturn(_ textField: ProtonCore_UIFoundations.PMTextField) -> Bool { true }
+    func textFieldShouldReturn(_ textField: ProtonCoreUIFoundations.PMTextField) -> Bool { true }
 
-    func didBeginEditing(textField: ProtonCore_UIFoundations.PMTextField) { }
+    func didBeginEditing(textField: ProtonCoreUIFoundations.PMTextField) { }
 
     func didChangeValue(_ textField: PMTextField, value: String) {
         hideTextFieldError()

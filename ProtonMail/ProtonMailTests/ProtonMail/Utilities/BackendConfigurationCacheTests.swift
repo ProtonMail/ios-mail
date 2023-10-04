@@ -18,7 +18,7 @@
 import Foundation
 
 @testable import ProtonMail
-import ProtonCore_Environment
+import ProtonCoreEnvironment
 import XCTest
 
 class BackendConfigurationCacheTests: XCTestCase {

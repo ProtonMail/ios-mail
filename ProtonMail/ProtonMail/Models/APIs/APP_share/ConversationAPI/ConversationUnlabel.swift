@@ -22,7 +22,7 @@
 //
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 protocol ConversationLabelActionBatchableRequest: Request {
     /// Maximum number of conversations that the request can pass to the backend

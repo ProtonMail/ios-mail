@@ -17,10 +17,10 @@
 
 import Foundation
 import Groot
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 

@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Services
+import ProtonCoreServices
 
 typealias FetchEmailAddressesPublicKeyUseCase = UseCase<[String: KeysResponse], FetchEmailAddressesPublicKey.Params>
 

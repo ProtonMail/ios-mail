@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_Networking
+import ProtonCoreCrypto
+import ProtonCoreNetworking
 
 // message attachment key package
 final class AttachmentPackage {

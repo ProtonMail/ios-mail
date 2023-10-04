@@ -22,7 +22,7 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 
 class SettingsLockViewModelTests: XCTestCase {
     var sut: SettingsLockViewModel!

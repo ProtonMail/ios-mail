@@ -17,9 +17,9 @@
 
 import OpenPGP
 import PromiseKit
-import ProtonCore_APIClient
-import ProtonCore_Crypto
-import ProtonCore_Services
+import ProtonCoreAPIClient
+import ProtonCoreCrypto
+import ProtonCoreServices
 
 /// Encrypt outside address builder
 class EOAddressBuilder: PackageBuilder {

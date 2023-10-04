@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import protocol ProtonCore_Services.APIService
+import protocol ProtonCoreServices.APIService
 
 /// Singleton that centralizes all file downloads. It keeps a reference to all downloads in progress
 /// and notifies all observers whenever the task finishes.

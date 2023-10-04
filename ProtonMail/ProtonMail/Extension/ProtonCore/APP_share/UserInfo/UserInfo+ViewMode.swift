@@ -1,4 +1,4 @@
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 enum ViewMode: Int, CaseIterable {
     case conversation = 0

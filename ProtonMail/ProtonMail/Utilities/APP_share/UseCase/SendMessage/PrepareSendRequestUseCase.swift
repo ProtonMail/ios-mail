@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
-import enum ProtonCore_Crypto.Based64
-import struct ProtonCore_Crypto.Password
-import class ProtonCore_Networking.AuthCredential
-import ProtonCore_Services
+import enum ProtonCoreCrypto.Based64
+import struct ProtonCoreCrypto.Password
+import class ProtonCoreNetworking.AuthCredential
+import ProtonCoreServices
 import ProtonMailAnalytics
 
 typealias PrepareSendRequestUseCase = UseCase<SendMessageRequest, PrepareSendRequest.Params>

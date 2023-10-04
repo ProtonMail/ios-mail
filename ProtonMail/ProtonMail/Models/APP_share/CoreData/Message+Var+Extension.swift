@@ -21,9 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 
 extension Message {
 

@@ -1,7 +1,7 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
-import ProtonCore_Keymaker
-import ProtonCore_Services
+import ProtonCoreKeymaker
+import ProtonCoreServices
 
 protocol HasAttachmentMetadataStrippingProtocol {
     var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol { get }

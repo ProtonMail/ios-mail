@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 /*
  This API allows for marking email addresses and whole domains as spam or blocking them.

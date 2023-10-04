@@ -17,10 +17,10 @@
 
 import CoreData
 import PromiseKit
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Hash
-import ProtonCore_Services
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreHash
+import ProtonCoreServices
 import SwiftSoup
 
 /// A sending message request builder

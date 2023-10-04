@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 @testable import ProtonMail
-import ProtonCore_Doh
+import ProtonCoreDoh
 
 class DohStub: DohCacheProtocol {
     var isDohOn: Bool = true

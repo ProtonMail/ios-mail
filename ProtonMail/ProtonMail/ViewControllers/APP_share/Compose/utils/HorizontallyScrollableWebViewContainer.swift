@@ -22,7 +22,7 @@
 
 import UIKit
 import TrustKit
-import ProtonCore_Services
+import ProtonCoreServices
 import WebKit
 
 class HorizontallyScrollableWebViewContainer: UIViewController {

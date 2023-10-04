@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import class ProtonCore_DataModel.Address
-import class ProtonCore_DataModel.UserInfo
-import class ProtonCore_Networking.AuthCredential
-import ProtonCore_Crypto
+import class ProtonCoreDataModel.Address
+import class ProtonCoreDataModel.UserInfo
+import class ProtonCoreNetworking.AuthCredential
+import ProtonCoreCrypto
 
 /// Encapsulates the data needed to send a message that is obtained from the CoreData `Message` object
 struct MessageSendingData {

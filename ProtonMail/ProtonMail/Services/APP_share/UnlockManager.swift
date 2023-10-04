@@ -22,11 +22,11 @@
 
 import Foundation
 import LocalAuthentication
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 import ProtonMailAnalytics
 #if !APP_EXTENSION
 import LifetimeTracker
-import ProtonCore_Payments
+import ProtonCorePayments
 #endif
 
 enum SignInUIFlow: Int {

@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 
 // Addresses API
 // Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_addresses.md

@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import LifetimeTracker
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 final class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
     typealias Dependencies = HasPinFailedCountCache & HasPinCodeVerifier

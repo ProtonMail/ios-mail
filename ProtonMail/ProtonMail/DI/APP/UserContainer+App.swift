@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
-import ProtonCore_Payments
+import ProtonCorePayments
 
 extension UserContainer {
     var appRatingServiceFactory: Factory<AppRatingService> {

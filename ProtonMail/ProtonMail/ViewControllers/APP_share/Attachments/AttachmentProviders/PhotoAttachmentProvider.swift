@@ -22,7 +22,7 @@
 
 import Foundation
 import PhotosUI
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 class PhotoAttachmentProvider: AnyImagePickerDelegate {
     override var actionSheetItem: PMActionSheetItem {

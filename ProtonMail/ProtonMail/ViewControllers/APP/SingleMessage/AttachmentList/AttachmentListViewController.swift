@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PassKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import QuickLook
 import UIKit
 

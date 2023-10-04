@@ -24,7 +24,7 @@ import Contacts
 import CoreData
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol ContactsVCUIProtocol: AnyObject {

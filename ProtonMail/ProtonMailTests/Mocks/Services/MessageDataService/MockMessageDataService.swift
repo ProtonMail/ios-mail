@@ -17,11 +17,11 @@
 
 import CoreData
 import PromiseKit
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_TestingToolkit
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 
 class MockMessageDataService: MessageDataServiceProtocol {

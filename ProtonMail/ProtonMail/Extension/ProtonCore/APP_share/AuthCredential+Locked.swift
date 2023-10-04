@@ -21,9 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_Keymaker
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreKeymaker
+import ProtonCoreNetworking
 
 extension Locked where T == [AuthCredential] {
     internal init(clearValue: T, with key: MainKey) throws {

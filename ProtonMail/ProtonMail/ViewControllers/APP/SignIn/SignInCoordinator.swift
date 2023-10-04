@@ -20,12 +20,12 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Login
-import ProtonCore_LoginUI
-import ProtonCore_Networking
-import class ProtonCore_Services.APIErrorCode
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreLogin
+import ProtonCoreLoginUI
+import ProtonCoreNetworking
+import class ProtonCoreServices.APIErrorCode
 
 // swiftlint:disable type_body_length
 final class SignInCoordinator {

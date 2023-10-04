@@ -17,8 +17,8 @@
 
 import CoreData
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 protocol UploadDraftUseCase {
     func execute(messageObjectID: String) async throws

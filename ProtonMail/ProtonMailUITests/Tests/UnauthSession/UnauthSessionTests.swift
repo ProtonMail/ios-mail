@@ -17,9 +17,9 @@
 
 import XCTest
 
-import ProtonCore_Environment
-import ProtonCore_QuarkCommands
-import ProtonCore_TestingToolkit
+import ProtonCoreEnvironment
+import ProtonCoreQuarkCommands
+import ProtonCoreTestingToolkit
 
 private enum CommonUnauthSessionTests {
 

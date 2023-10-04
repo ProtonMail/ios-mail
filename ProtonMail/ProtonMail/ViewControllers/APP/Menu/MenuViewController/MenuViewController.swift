@@ -21,9 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import UIKit
-import ProtonCore_AccountSwitcher
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreAccountSwitcher
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 
 final class MenuViewController: UIViewController, AccessibleView {
 

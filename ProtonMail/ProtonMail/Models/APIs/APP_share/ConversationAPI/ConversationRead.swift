@@ -22,7 +22,7 @@
 //
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 /// Mark an array of conversations as read
 ///

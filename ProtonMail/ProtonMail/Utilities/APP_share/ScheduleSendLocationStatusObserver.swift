@@ -17,7 +17,7 @@
 
 import CoreData
 import Foundation
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 /// This class is used to observe the message count of the location (LabelID == 12).
 final class ScheduleSendLocationStatusObserver: NSObject, NSFetchedResultsControllerDelegate {

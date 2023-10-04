@@ -21,9 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Services
-import class ProtonCore_Services.APIErrorCode
+import ProtonCoreNetworking
+import ProtonCoreServices
+import class ProtonCoreServices.APIErrorCode
 
 extension APIErrorCode {
     static let forcePasswordChange = 2011

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Log
+import ProtonCoreLog
 
 extension PMLog {
     // TODO: remove this once we verify that the number of disk writes is reduced

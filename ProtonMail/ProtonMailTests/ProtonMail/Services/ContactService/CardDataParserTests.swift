@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 import XCTest
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 import GoLibs
 
 @testable import ProtonMail

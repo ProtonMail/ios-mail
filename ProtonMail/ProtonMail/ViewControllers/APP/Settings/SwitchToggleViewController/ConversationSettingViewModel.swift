@@ -17,7 +17,7 @@
 
 import Foundation
 import struct UIKit.CGFloat
-import enum ProtonCore_Utilities.Either
+import enum ProtonCoreUtilities.Either
 
 final class ConversationSettingViewModel: SwitchToggleVMProtocol {
     var input: SwitchToggleVMInput { self }

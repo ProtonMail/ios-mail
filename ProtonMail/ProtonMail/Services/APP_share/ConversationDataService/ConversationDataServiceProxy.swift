@@ -22,7 +22,7 @@
 
 import CoreData
 import Foundation
-import ProtonCore_Services
+import ProtonCoreServices
 import ProtonMailAnalytics
 
 final class ConversationDataServiceProxy: ConversationProvider {

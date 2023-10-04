@@ -17,10 +17,10 @@
 
 import XCTest
 import fusion
-import ProtonCore_Environment
-import ProtonCore_TestingToolkit
-import ProtonCore_QuarkCommands
-import ProtonCore_CoreTranslation
+import ProtonCoreEnvironment
+import ProtonCoreTestingToolkit
+import ProtonCoreQuarkCommands
+import ProtonCoreCoreTranslation
 
 final class ExternalAccountsTests: BaseTestCase {
 

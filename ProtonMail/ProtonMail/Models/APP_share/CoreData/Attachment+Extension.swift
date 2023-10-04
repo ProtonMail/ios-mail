@@ -22,9 +22,9 @@
 
 import CoreData
 import PromiseKit
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
 
 // TODO::fixme import header
 extension Attachment {

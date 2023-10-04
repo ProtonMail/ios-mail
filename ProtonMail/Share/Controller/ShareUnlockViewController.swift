@@ -23,8 +23,8 @@
 import CoreServices
 import MBProgressHUD
 import PromiseKit
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 import UIKit
 
 class ShareUnlockViewController: UIViewController, BioCodeViewDelegate {

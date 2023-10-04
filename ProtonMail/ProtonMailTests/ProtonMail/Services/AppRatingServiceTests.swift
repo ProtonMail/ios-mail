@@ -17,7 +17,7 @@
 
 import Foundation
 @testable import ProtonMail
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 import XCTest
 
 final class AppRatingServiceTests: XCTestCase {

@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import class ProtonCore_DataModel.Address
-import class ProtonCore_DataModel.UserInfo
-import class ProtonCore_Networking.AuthCredential
+import class ProtonCoreDataModel.Address
+import class ProtonCoreDataModel.UserInfo
+import class ProtonCoreNetworking.AuthCredential
 
 struct UserSendPrivateData {
     let userInfo: UserInfo

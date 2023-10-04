@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import LifetimeTracker
-import ProtonCore_PaymentsUI
+import ProtonCorePaymentsUI
 
 final class PaymentsUIFactory {
     typealias Dependencies = HasUserManager

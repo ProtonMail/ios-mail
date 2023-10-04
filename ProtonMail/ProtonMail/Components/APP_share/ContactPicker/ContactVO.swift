@@ -22,7 +22,7 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_Services
+import ProtonCoreServices
 
 enum PGPTypeErrorCode: Int {
     case recipientNotFound = 33102

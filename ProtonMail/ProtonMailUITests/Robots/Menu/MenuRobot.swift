@@ -7,8 +7,8 @@
 //
 
 import XCTest
-import ProtonCore_CoreTranslation
-import ProtonCore_TestingToolkit
+import ProtonCoreCoreTranslation
+import ProtonCoreTestingToolkit
 import fusion
 
 fileprivate struct id {

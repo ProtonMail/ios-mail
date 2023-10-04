@@ -5,8 +5,8 @@
 //  Created by AnsonChen on 2022/9/16.
 //
 
-import ProtonCore_Crypto
-import ProtonCore_Networking
+import ProtonCoreCrypto
+import ProtonCoreNetworking
 import XCTest
 @testable import ProtonMail
 

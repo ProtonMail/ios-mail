@@ -23,7 +23,7 @@
 import CoreServices
 import Foundation
 import PromiseKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UniformTypeIdentifiers
 
 protocol FileCoordinationProvider {

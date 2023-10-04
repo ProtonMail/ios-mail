@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 // TODO:: move this to UI
