@@ -70,7 +70,12 @@ class UserManager: Service, ObservableObject {
             try incomingDefaultService.cleanUp()
             self.deactivatePayments()
             #if !APP_EXTENSION
-            self.payments.planService.currentSubscription = nil
+            switch self.payments.planService {
+            case .left(let servicePlanDataService):
+                servicePlanDataService.currentSubscription = nil
+            case .right:
+                break
+            }
             #endif
                 userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
