@@ -364,6 +364,7 @@ extension UsersManager {
             }
 
 #if !APP_EXTENSION
+            userCachedStatus.markBlockedSendersAsFetched(false, userID: user.userID)
             ImageProxyCache.shared.purge()
             SenderImageCache.shared.purge()
 #endif
