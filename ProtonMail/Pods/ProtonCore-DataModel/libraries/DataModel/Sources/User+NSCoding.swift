@@ -198,6 +198,8 @@ extension UserInfo {
         // Codable.
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonCore_DataModel.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonCoreDataModel.UserInfo")
+        NSKeyedUnarchiver.setClass(ToolbarActions.classForKeyedUnarchiver(), forClassName: "ProtonCore_DataModel.ToolbarActions")
+        NSKeyedUnarchiver.setClass(ReferralProgram.classForKeyedUnarchiver(), forClassName: "ProtonCore_DataModel.ReferralProgram")
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? UserInfo
     }
 }
