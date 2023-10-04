@@ -1,0 +1,687 @@
+name: Alamofire, nameSpecified: 
+body: Copyright (c) 2014-2…
+version: 5.4.4
+
+name: Alamofire, nameSpecified: 
+body: Copyright (c) 2014-2…
+version: 5.4.4
+
+name: Alamofire, nameSpecified: 
+body: Copyright (c) 2014-2…
+version: 5.4.4
+
+name: Alamofire, nameSpecified: 
+body: Copyright (c) 2014-2…
+version: 5.4.4
+
+name: EllipticCurveKeyPair, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.0
+
+name: EllipticCurveKeyPair, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.0
+
+name: EllipticCurveKeyPair, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.0
+
+name: EllipticCurveKeyPair, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.0
+
+name: EllipticCurveKeyPair, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.0
+
+name: fusion, nameSpecified: 
+body: The MIT License (MIT…
+version: 2.0.1
+
+name: fusion, nameSpecified: 
+body: The MIT License (MIT…
+version: 2.0.1
+
+name: Groot, nameSpecified: 
+body: **Groot**
+
+**Copyrig…
+version: 3.0.1
+
+name: Groot, nameSpecified: 
+body: **Groot**
+
+**Copyrig…
+version: 3.0.1
+
+name: Groot, nameSpecified: 
+body: **Groot**
+
+**Copyrig…
+version: 3.0.1
+
+name: iosMonkey, nameSpecified: 
+body: The MIT License (MIT…
+version: 0.0.1
+
+name: lottie-ios, nameSpecified: 
+body:                     …
+version: 3.4.3
+
+name: lottie-ios, nameSpecified: 
+body:                     …
+version: 3.4.3
+
+name: MBProgressHUD, nameSpecified: 
+body: Copyright © 2009-201…
+version: 1.1.0
+
+name: MBProgressHUD, nameSpecified: 
+body: Copyright © 2009-201…
+version: 1.1.0
+
+name: MBProgressHUD, nameSpecified: 
+body: Copyright © 2009-201…
+version: 1.1.0
+
+name: OHHTTPStubs, nameSpecified: 
+body: - MIT LICENSE -
+
+Cop…
+version: 9.0.0
+
+name: OHHTTPStubs, nameSpecified: 
+body: - MIT LICENSE -
+
+Cop…
+version: 9.0.0
+
+name: PromiseKit, nameSpecified: 
+body: Copyright 2016-prese…
+version: 6.13.1
+
+name: PromiseKit, nameSpecified: 
+body: Copyright 2016-prese…
+version: 6.13.1
+
+name: PromiseKit, nameSpecified: 
+body: Copyright 2016-prese…
+version: 6.13.1
+
+name: ProtonCore-AccountDeletion, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-AccountDeletion, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-AccountSwitcher, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-AccountSwitcher, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-APIClient, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-APIClient, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-APIClient, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Authentication, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Authentication, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Authentication, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Authentication-KeyGeneration, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Authentication-KeyGeneration, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Authentication-KeyGeneration, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Challenge, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Challenge, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Challenge, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CoreTranslation, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CoreTranslation, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CoreTranslation, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CoreTranslation, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Crypto, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Crypto, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Crypto, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Crypto, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CryptoGoImplementation, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CryptoGoImplementation, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CryptoGoImplementation, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CryptoGoImplementation, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CryptoGoInterface, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CryptoGoInterface, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CryptoGoInterface, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CryptoGoInterface, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-CryptoGoInterface, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-DataModel, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-DataModel, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-DataModel, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-DataModel, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Doh, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Doh, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Doh, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Doh, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Environment, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Environment, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Environment, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Environment, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-FeatureSwitch, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-FeatureSwitch, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-FeatureSwitch, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-FeatureSwitch, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-ForceUpgrade, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-ForceUpgrade, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Foundations, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Foundations, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Foundations, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Foundations, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-GoLibs, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-GoLibs, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-GoLibs, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-GoLibs, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Hash, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Hash, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Hash, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-HumanVerification, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-HumanVerification, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Keymaker, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Keymaker, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Keymaker, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Keymaker, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Keymaker, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Log, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Log, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Log, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Log, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Log, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Log, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Login, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Login, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-LoginUI, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-LoginUI, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Networking, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Networking, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Networking, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Networking, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Observability, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Observability, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Observability, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Observability, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-OpenPGP, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-OpenPGP, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-OpenPGP, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Payments, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Payments, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-PaymentsUI, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-PaymentsUI, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-QuarkCommands, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Services, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Services, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Services, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Services, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-TestingToolkit, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-TestingToolkit, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-TroubleShooting, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-TroubleShooting, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-UIFoundations, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-UIFoundations, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-UIFoundations, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Utilities, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Utilities, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Utilities, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Utilities, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-Utilities, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-VCard, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-VCard, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ProtonCore-VCard, nameSpecified: 
+body:                     …
+version: 9.3.0
+
+name: ReachabilitySwift, nameSpecified: 
+body: Copyright (c) 2016 A…
+version: 5.0.0
+
+name: ReachabilitySwift, nameSpecified: 
+body: Copyright (c) 2016 A…
+version: 5.0.0
+
+name: SDWebImage, nameSpecified: 
+body: Copyright (c) 2009-2…
+version: 5.13.3
+
+name: SDWebImage, nameSpecified: 
+body: Copyright (c) 2009-2…
+version: 5.13.3
+
+name: Sentry, nameSpecified: 
+body: The MIT License (MIT…
+version: 8.9.3
+
+name: Sentry, nameSpecified: 
+body: The MIT License (MIT…
+version: 8.9.3
+
+name: SentryPrivate, nameSpecified: 
+body: The MIT License (MIT…
+version: 8.9.3
+
+name: SentryPrivate, nameSpecified: 
+body: The MIT License (MIT…
+version: 8.9.3
+
+name: SideMenuSwift, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.0.9
+
+name: SideMenuSwift, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.0.9
+
+name: SkeletonView, nameSpecified: 
+body: The MIT License (MIT…
+version: 1.30.4
+
+name: SkeletonView, nameSpecified: 
+body: The MIT License (MIT…
+version: 1.30.4
+
+name: swift-snapshot-testing, nameSpecified: 
+body:                     …
+version: 1.10.0
+
+name: SwiftSoup, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.4.3
+
+name: SwiftSoup, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.4.3
+
+name: SwiftSoup, nameSpecified: 
+body: MIT License
+
+Copyrig…
+version: 2.4.3
+
+name: SwipyCell, nameSpecified: 
+body: The MIT License (MIT…
+version: 4.1.1
+
+name: SwipyCell, nameSpecified: 
+body: The MIT License (MIT…
+version: 4.1.1
+
+name: TrustKit, nameSpecified: 
+body: The MIT License (MIT…
+version: 2.0.0
+
+name: TrustKit, nameSpecified: 
+body: The MIT License (MIT…
+version: 2.0.0
+
+name: TrustKit, nameSpecified: 
+body: The MIT License (MIT…
+version: 2.0.0
+
+name: TrustKit, nameSpecified: 
+body: The MIT License (MIT…
+version: 2.0.0
+
+name: Yams, nameSpecified: 
+body: The MIT License (MIT…
+version: 5.0.5
+
+name: Difference, nameSpecified: Difference, owner: krzysztofzablocki, version: 1.0.2, source: https://github.com/krzysztofzablocki/Difference
+
+name: Factory, nameSpecified: Factory, owner: hmlongco, version: 2.2.0, source: https://github.com/hmlongco/Factory
+
+name: LifetimeTracker, nameSpecified: LifetimeTracker, owner: krzysztofzablocki, version: 1.8.1, source: https://github.com/krzysztofzablocki/LifetimeTracker
+
+add-version-numbers: false
+
+LicensePlist Version: 3.24.10
