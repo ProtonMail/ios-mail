@@ -561,34 +561,51 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
      :returns: NSFetchedResultsController
      */
-    func fetchedResults(by labelID: LabelID,
-                        viewMode: ViewMode,
-                        isUnread: Bool = false,
-                        isAscending: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func fetchedResults(
+        by labelID: LabelID,
+        viewMode: ViewMode,
+        onMainContext: Bool,
+        isUnread: Bool = false,
+        isAscending: Bool = false
+    ) -> NSFetchedResultsController<NSFetchRequestResult>? {
         guard let parent = parent else { return nil }
         let showMoved = parent.mailSettings.showMoved
         switch viewMode {
         case .singleMessage:
-            let moc = self.contextProvider.mainContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-
-            fetchRequest.predicate = predicatesForSingleMessageMode(
+            let predicate = predicatesForSingleMessageMode(
                 labelID: labelID,
                 isUnread: isUnread,
                 showMoved: showMoved
             )
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: isAscending),
-                                            NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)]
-            fetchRequest.fetchBatchSize = 30
-            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+            let sortDescriptors = [
+                NSSortDescriptor(
+                    key: #keyPath(Message.time),
+                    ascending: isAscending
+                ),
+                NSSortDescriptor(key: #keyPath(Message.order), ascending: isAscending)
+            ]
+            return contextProvider.createFetchedResultsController(
+                entityName: Message.Attributes.entityName,
+                predicate: predicate,
+                sortDescriptors: sortDescriptors,
+                fetchBatchSize: 30,
+                sectionNameKeyPath: nil,
+                onMainContext: onMainContext
+            )
         case .conversation:
-            let moc = self.contextProvider.mainContext
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ContextLabel.Attributes.entityName)
-            fetchRequest.predicate = predicatesForConversationMode(labelID: labelID, isUnread: isUnread)
-            fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
-                                            NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)]
-            fetchRequest.fetchBatchSize = 30
-            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+            let predicate = predicatesForConversationMode(labelID: labelID, isUnread: isUnread)
+            let sortDescriptors = [
+                NSSortDescriptor(keyPath: \ContextLabel.time, ascending: isAscending),
+                NSSortDescriptor(keyPath: \ContextLabel.order, ascending: isAscending)
+            ]
+            return contextProvider.createFetchedResultsController(
+                entityName: ContextLabel.Attributes.entityName,
+                predicate: predicate,
+                sortDescriptors: sortDescriptors,
+                fetchBatchSize: 30,
+                sectionNameKeyPath: nil,
+                onMainContext: onMainContext
+            )
         }
     }
 

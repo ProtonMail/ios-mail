@@ -109,6 +109,25 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         }
     }
 
+    func createFetchedResultsController<T>(
+        entityName: String,
+        predicate: NSPredicate,
+        sortDescriptors: [NSSortDescriptor],
+        fetchBatchSize: Int,
+        onMainContext: Bool
+    ) -> NSFetchedResultsController<T> {
+        let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = sortDescriptors
+        fetchRequest.fetchBatchSize = fetchBatchSize
+        return NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: onMainContext ? mainContext : rootSavingContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+    }
+
     private func rethrowingRead<T>(block: (NSManagedObjectContext) throws -> T) rethrows -> T {
         let context = rootSavingContext
 
@@ -121,11 +140,14 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         entityName: String,
         predicate: NSPredicate,
         sortDescriptors: [NSSortDescriptor],
-        sectionNameKeyPath: String?
+        fetchBatchSize: Int,
+        sectionNameKeyPath: String?,
+        onMainContext: Bool
     ) -> NSFetchedResultsController<T> {
         let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
         fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = sortDescriptors
+        fetchRequest.fetchBatchSize = fetchBatchSize
         return NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: rootSavingContext,

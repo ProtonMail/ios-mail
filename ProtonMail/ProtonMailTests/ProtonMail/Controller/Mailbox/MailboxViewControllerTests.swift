@@ -262,7 +262,7 @@ final class MailboxViewControllerTests: XCTestCase {
         )
         sut.loadViewIfNeeded()
 
-        wait(self.sut.tableView.visibleCells.isEmpty == false)
+        wait(!self.sut.tableView.visibleCells.isEmpty)
 
         // Select cell
         let cell = sut.tableView.visibleCells.first as? NewMailboxMessageCell

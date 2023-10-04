@@ -97,7 +97,15 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     private var lastNetworkStatus: ConnectionStatus? = nil
 
-    private var shouldAnimateSkeletonLoading = false
+    private var shouldAnimateSkeletonLoading = false {
+        didSet {
+            if shouldAnimateSkeletonLoading {
+                viewModel.diffableDataSource?.animateSkeletonLoading()
+            } else {
+                reloadTableViewDataSource(animate: false)
+            }
+        }
+    }
     private var shouldKeepSkeletonUntilManualDismissal = false
     var isShowingUnreadMessageOnly: Bool {
         return self.unreadFilterButton.isSelected
@@ -116,11 +124,10 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
             if
                 hasChangedFromTrueToFalse,
-                contentChangeOccurredDuringLastSwipeGesture,
-                let fetchedResultsController = viewModel.fetchedResultsController
+                contentChangeOccurredDuringLastSwipeGesture
             {
                 contentChangeOccurredDuringLastSwipeGesture = false
-                controllerDidChangeContent(fetchedResultsController)
+                tableView.reloadData()
             }
         }
     }
@@ -135,7 +142,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     private var inAppFeedbackScheduler: InAppFeedbackPromptScheduler?
 
     private var customUnreadFilterElement: UIAccessibilityElement?
-    private var diffableDataSource: MailboxDataSource?
     let connectionStatusProvider = InternetConnectionStatusProvider.shared
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
@@ -218,8 +224,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             unreadMessageFilterButtonTapped(unreadFilterButton as Any)
         }
 
-        self.viewModel.setupFetchController(self,
-                                            isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
+        self.loadDiffableDataSource()
+        self.viewModel.setupFetchController(self, isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
 
         self.setNavigationTitleText(viewModel.localizedNavigationTitle)
 
@@ -228,8 +234,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         self.tableView.separatorStyle = .none
         self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
         self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
-
-        self.loadDiffableDataSource()
 
         self.updateNavigationController(viewModel.listEditing)
 
@@ -348,7 +352,9 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         showDropVersionsAlertIfNeeded()
         updateReferralPresenterAndShowPromptIfNeeded()
 
-        viewModel.prefetchIfNeeded()
+        DispatchQueue.global().async { [weak self] in
+            self?.viewModel.prefetchIfNeeded()
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -411,18 +417,22 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     private func loadDiffableDataSource() {
         let cellConfigurator = { [weak self] (tableView: UITableView, indexPath: IndexPath, rowItem: MailboxRow) -> UITableViewCell in
-            let cellIdentifier = self?.shouldAnimateSkeletonLoading == true ? MailBoxSkeletonLoadingCell.Constant.identifier : NewMailboxMessageCell.defaultID()
+            let cellIdentifier: String
+            switch rowItem {
+            case .real(_):
+                cellIdentifier = NewMailboxMessageCell.defaultID()
+            case .skeleton(_):
+                cellIdentifier = MailBoxSkeletonLoadingCell.Constant.identifier
+            }
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
             self?.configure(cell: cell, rowItem: rowItem)
             return cell
         }
 
-        self.diffableDataSource = MailboxDiffableDataSource(
-            viewModel: viewModel,
-            tableView: self.tableView,
+        viewModel.setupDiffableDataSource(
+            tableView: tableView,
             shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading,
-            cellProvider: cellConfigurator
-        )
+            cellConfigurator: cellConfigurator)
     }
 
     private func addSubViews() {
@@ -896,9 +906,10 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     private func forceRefreshAllMessages() {
         guard !self.viewModel.isFetchingMessage else { return }
-        self.shouldAnimateSkeletonLoading = true
         self.shouldKeepSkeletonUntilManualDismissal = true
-        self.reloadTableViewDataSource(animate: false)
+
+        shouldAnimateSkeletonLoading = true
+
         stopAutoFetch()
 
         self.viewModel.updateMailbox(showUnreadOnly: self.isShowingUnreadMessageOnly, isCleanFetch: true) {  [weak self] error in
@@ -909,7 +920,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             delay(0.5) {
                 self?.shouldAnimateSkeletonLoading = false
                 self?.shouldKeepSkeletonUntilManualDismissal = false
-                self?.reloadTableViewDataSource(animate: false)
 
                 if self?.refreshControl.isRefreshing ?? false {
                     self?.refreshControl.endRefreshing()
@@ -2102,35 +2112,58 @@ extension MailboxViewController: UITableViewDataSource {
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
         if shouldKeepSkeletonUntilManualDismissal {
             return
         }
-
         if isSwipingCell {
             contentChangeOccurredDuringLastSwipeGesture = true
             return
         }
-
-        self.refreshActionBarItems()
-
-            self.reloadTableViewDataSource(animate: false)
-        if self.refreshControl.isRefreshing {
-            self.refreshControl.endRefreshing()
+        let remappedSnapshot = remapToNewSnapshot(controller: controller, snapshot: snapshot)
+        reloadTableViewDataSource(
+            animate: false,
+            snapshot: remappedSnapshot
+        ) {
+            DispatchQueue.main.async {
+                if self.refreshControl.isRefreshing {
+                    self.refreshControl.endRefreshing()
+                }
+            }
         }
-        self.showNewMessageCount(self.newMessageCount)
-        self.showNoResultLabelIfNeeded()
+        DispatchQueue.main.async {
+            self.refreshActionBarItems()
+            self.showNewMessageCount(self.newMessageCount)
+            self.showNoResultLabelIfNeeded()
+        }
     }
 
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        if shouldKeepSkeletonUntilManualDismissal {
-            return
-        }
+    private func remapToNewSnapshot(controller: NSFetchedResultsController<NSFetchRequestResult>, snapshot: NSDiffableDataSourceSnapshotReference) -> NSDiffableDataSourceSnapshot<Int, MailboxRow> {
+        let viewMode = viewModel.locationViewMode
+        let snapshot = snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
+        var newSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxRow>()
+        for (index, section) in snapshot.sectionIdentifiers.enumerated() {
+            let items = snapshot.itemIdentifiers(inSection: section)
+            let mailboxRows = items.compactMap { objectID in
+                let object = controller.managedObjectContext.object(with: objectID)
+                switch viewMode {
+                case .singleMessage:
+                    if let message = object as? Message {
+                        return MailboxRow.real(.message(.init(message)))
+                    }
+                case .conversation:
+                    if let contextLabel = object as? ContextLabel,
+                       let conversation = contextLabel.conversation {
+                        return MailboxRow.real(.conversation(.init(conversation)))
+                    }
+                }
+                return nil
+            }
 
-        if type == .delete {
-            popPresentedItemIfNeeded(anObject)
-            hideActionBarIfNeeded(anObject)
+            newSnapshot.appendSections([index])
+            newSnapshot.appendItems(mailboxRows, toSection: index)
         }
+        return newSnapshot
     }
 }
 
@@ -2447,15 +2480,16 @@ extension MailboxViewController {
 
 // MARK: Data Source Refresh
 extension MailboxViewController {
-    private func reloadTableViewDataSource(animate: Bool) {
-        if let diffableDataSource = diffableDataSource {
-            diffableDataSource.reloadSnapshot(shouldAnimateSkeletonLoading: self.shouldAnimateSkeletonLoading,
-                                              animate: animate)
-            // Using diffable data source triggers an issue that make
-            // refresh control dismiss only after a couple of seconds
-            // so we dismiss it manually
-            self.refreshControl.endRefreshing()
-        }
+    private func reloadTableViewDataSource(
+        animate: Bool,
+        snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>? = nil,
+        completion: (() -> Void)? = nil
+    ) {
+        viewModel.diffableDataSource?.reloadSnapshot(
+            snapshot: snapshot,
+            animate: animate,
+            completion: completion
+        )
     }
 }
 
