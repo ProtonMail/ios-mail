@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import CoreData
 import Foundation
 import ProtonCore_DataModel
@@ -82,7 +83,10 @@ final class SearchViewModel: NSObject {
     }
 
     private(set) var selectedIDs: Set<String> = []
-    private var fetchController: NSFetchedResultsController<Message>?
+
+    private var dataPublisher: DataPublisher<Message>?
+    private var cancellable: AnyCancellable?
+
     private var messageService: MessageDataService { self.user.messageService }
     private let localObjectIndexing: Progress = .init(totalUnitCount: 1)
     private var localObjectsIndexingObserver: NSKeyValueObservation? {
@@ -121,19 +125,14 @@ final class SearchViewModel: NSObject {
 
 extension SearchViewModel: SearchVMProtocol {
     func viewDidLoad() {
-        self.indexLocalObjects { [weak self] in
-            guard let self = self,
-                  self.messages.isEmpty,
-                  !self.query.isEmpty else { return }
-            self.fetchLocalObjects()
-        }
+        indexLocalObjects {}
     }
 
     func cleanLocalIndex() {
         // switches off indexing of Messages in local db
-        self.localObjectIndexing.cancel()
-        self.fetchController?.delegate = nil
-        self.fetchController = nil
+        localObjectIndexing.cancel()
+        cancellable?.cancel()
+        dataPublisher = nil
     }
 
     func fetchRemoteData(query: String, fromStart: Bool) {
@@ -197,7 +196,7 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     func getMessageObject(by msgID: MessageID) -> MessageEntity? {
-        let msg: MessageEntity? = try? dependencies.contextProvider.read { context in
+        let msg: MessageEntity? = dependencies.contextProvider.read { context in
             if let msg = Message.messageForMessageID(msgID.rawValue, in: context) {
                 return MessageEntity(msg)
             } else {
@@ -569,7 +568,7 @@ extension SearchViewModel {
             "toList"
         ]
 
-        let messageIds: [NSManagedObjectID] = self.dbContents.compactMap {
+        let messageObjectIDs: [NSManagedObjectID] = self.dbContents.compactMap {
             for field in fieldsToMatchQueryAgainst {
                 if let value = $0[field] as? String,
                    value.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) != nil {
@@ -579,10 +578,9 @@ extension SearchViewModel {
             return nil
         }
 
-        let context = dependencies.contextProvider.mainContext
-        context.performAndWait {
-            self.messages = messageIds.compactMap { oldId -> Message? in
-                let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
+        self.messages = dependencies.contextProvider.read { context in
+            return messageObjectIDs.compactMap { oldId -> Message? in
+                let uri = oldId.uriRepresentation()
                 guard let newId = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: uri) else {
                     return nil
                 }
@@ -592,41 +590,30 @@ extension SearchViewModel {
     }
 
     private func updateFetchController(messageIDs: [MessageID]) {
-        if let previous = self.fetchController {
-            previous.delegate = nil
-            self.fetchController = nil
-        }
-
-        let context = dependencies.contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
         let ids = messageIDs.map { $0.rawValue }
-        fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, ids)
-        fetchRequest.sortDescriptors = [
+        let predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, ids)
+        let sortDescriptors = [
             NSSortDescriptor(key: #keyPath(Message.time), ascending: false),
             NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
         ]
-        fetchRequest.includesPropertyValues = true
-        self.fetchController = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                          managedObjectContext: context,
-                                                          sectionNameKeyPath: nil,
-                                                          cacheName: nil)
-        self.fetchController?.delegate = self
-        do {
-            try self.fetchController?.performFetch()
-        } catch {}
+        dataPublisher = .init(
+            entityName: Message.Attributes.entityName,
+            predicate: predicate,
+            sortDescriptors: sortDescriptors,
+            contextProvider: dependencies.contextProvider
+        )
+        cancellable = dataPublisher?.contentDidChange
+            .map { $0.map(MessageEntity.init) }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { messages in
+                self.messages = messages
+                self.uiDelegate?.refreshActionBarItems()
+            })
+        dataPublisher?.start()
     }
 
     private func date(of message: MessageEntity, weekStart: WeekStart) -> String {
         guard let date = message.time else { return .empty }
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
-    }
-}
-
-extension SearchViewModel: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if let dbObjects = self.fetchController?.fetchedObjects {
-            self.messages = dbObjects.map(MessageEntity.init)
-        }
-        self.uiDelegate?.refreshActionBarItems()
     }
 }
