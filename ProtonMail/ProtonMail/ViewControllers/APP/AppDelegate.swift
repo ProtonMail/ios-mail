@@ -147,7 +147,6 @@ extension AppDelegate: UIApplicationDelegate {
         }
         #endif
         configureCrypto()
-        configureCoreFeatureFlags(launchArguments: ProcessInfo.launchArguments)
         configureCoreObservability()
         configureAnalytics()
         configureAppearance()
@@ -413,23 +412,6 @@ extension AppDelegate {
 
     private func configureCrypto() {
         Crypto().initializeGoCryptoWithDefaultConfiguration()
-    }
-
-    private func configureCoreFeatureFlags(launchArguments: [String]) {
-        FeatureFactory.shared.enable(&.observability)
-
-        FeatureFactory.shared.enable(&.externalSignup)
-        FeatureFactory.shared.enable(&.externalAccountConversion)
-
-        guard !launchArguments.contains("-testNoUnauthSessions") else { return }
-
-        FeatureFactory.shared.enable(&.unauthSession)
-
-        #if DEBUG
-        guard launchArguments.contains("-testUnauthSessionsWithHeader") else { return }
-        // this is only a test flag used before backend whitelists the app version
-        FeatureFactory.shared.enable(&.enforceUnauthSessionStrictVerificationOnBackend)
-        #endif
     }
 
     private func configureCoreObservability() {

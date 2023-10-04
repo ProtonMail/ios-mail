@@ -50,7 +50,6 @@ class ShareExtensionEntry: UINavigationController {
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true
         TrustKitWrapper.start(delegate: self)
-        configureCoreFeatureFlags()
         appCoordinator = ShareAppCoordinator(navigation: self)
         if #available(iOSApplicationExtension 15.0, *) {
             setupNavigationBarAppearance()
@@ -61,10 +60,6 @@ class ShareExtensionEntry: UINavigationController {
         super.viewDidLoad()
 
         self.appCoordinator?.start()
-    }
-
-    private func configureCoreFeatureFlags() {
-        FeatureFactory.shared.enable(&.unauthSession)
     }
 }
 
