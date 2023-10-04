@@ -76,6 +76,8 @@ class SettingsTests : FixtureAuthenticatedTestCase {
             .settings()
             .pin()
             .disablePin()
+            .enterPin(correctPin)
+            .continueWithCorrectPin()
             .navigateUpToSettings()
             .close()
             .backgroundAppWithoutPin()

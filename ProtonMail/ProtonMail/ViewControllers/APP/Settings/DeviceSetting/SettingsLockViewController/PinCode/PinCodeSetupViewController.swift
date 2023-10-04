@@ -56,37 +56,38 @@ extension PinCodeSetupViewController {
         switch step {
         case .enterNewPinCode:
             title = L11n.PinCodeSetup.setPinCode
-
-            customView.passwordTextField.delegate = self
-            customView.passwordTextField.isPassword = true
-            customView.passwordTextField.title = L11n.PinCodeSetup.enterNewPinCode
-            customView.passwordTextField.allowOnlyNumbers = true
-            customView.passwordTextField.assistiveText = L11n.PinCodeSetup.enterNewPinCodeAssistiveText
-
+            setupPasswordTextField(
+                title: L11n.PinCodeSetup.enterNewPinCode,
+                assistiveText: L11n.PinCodeSetup.enterNewPinCodeAssistiveText
+            )
             customView.confirmationButton.setTitle(LocalString._genernal_continue, for: .normal)
 
             setUpNavigationBar()
         case .repeatPinCode:
             title = L11n.PinCodeSetup.repeatPinCode
-
-            customView.passwordTextField.delegate = self
-            customView.passwordTextField.isPassword = true
-            customView.passwordTextField.title = L11n.PinCodeSetup.repeatPinCode
-            customView.passwordTextField.allowOnlyNumbers = true
-
+            setupPasswordTextField(title: L11n.PinCodeSetup.repeatPinCode)
             customView.confirmationButton.setTitle(LocalString._general_confirm_action, for: .normal)
         case .confirmBeforeChanging:
             title = L11n.PinCodeSetup.changePinCode
+            setupPasswordTextField(title: L11n.PinCodeSetup.enterOldPinCode)
+            customView.confirmationButton.setTitle(LocalString._general_confirm_action, for: .normal)
 
-            customView.passwordTextField.delegate = self
-            customView.passwordTextField.isPassword = true
-            customView.passwordTextField.title = L11n.PinCodeSetup.enterOldPinCode
-            customView.passwordTextField.allowOnlyNumbers = true
-
+            setUpNavigationBar()
+        case .confirmBeforeDisabling:
+            title = L11n.PinCodeSetup.disablePinCode
+            setupPasswordTextField(title: L11n.PinCodeSetup.enterOldPinCode)
             customView.confirmationButton.setTitle(LocalString._general_confirm_action, for: .normal)
 
             setUpNavigationBar()
         }
+    }
+
+    private func setupPasswordTextField(title: String, assistiveText: String? = nil) {
+        customView.passwordTextField.delegate = self
+        customView.passwordTextField.isPassword = true
+        customView.passwordTextField.title = title
+        customView.passwordTextField.allowOnlyNumbers = true
+        customView.passwordTextField.assistiveText = assistiveText
         _ = customView.passwordTextField.becomeFirstResponder()
     }
 
@@ -145,6 +146,18 @@ extension PinCodeSetupViewController {
                     try await viewModel.isCorrectCurrentPinCode(pinCode)
                     await MainActor.run(body: {
                         self.viewModel.go(to: .enterNewPinCode)
+                    })
+                } catch {
+                    showPinCodeError(error: error)
+                }
+            }
+        case .confirmBeforeDisabling:
+            Task {
+                do {
+                    try await viewModel.isCorrectCurrentPinCode(pinCode)
+                    await MainActor.run(body: {
+                        self.viewModel.deactivatePinCodeProtection()
+                        self.dismissPinScreen()
                     })
                 } catch {
                     showPinCodeError(error: error)

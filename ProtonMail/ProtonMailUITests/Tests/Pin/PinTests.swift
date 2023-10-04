@@ -29,8 +29,14 @@ class PinTests: FixtureAuthenticatedTestCase {
     }
 
     func testTurnOnAndOffPin() {
+        let wrongPin = "6789"
         pinRobot
             .disablePin()
+            .enterPin(wrongPin)
+            .continueWithWrongPin()
+            .verify.canSeeIncorrectPinError()
+            .enterPin(correctPin)
+            .continueWithCorrectPin()
             .verify.isPinEnabled(false)
     }
 

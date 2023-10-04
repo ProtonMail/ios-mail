@@ -23,7 +23,7 @@
 import UIKit
 
 final class ShareUnlockCoordinator {
-    typealias Dependencies = ShareUnlockViewController.Dependencies & HasPinFailedCountCache
+    typealias Dependencies = ShareUnlockViewController.Dependencies & HasPinFailedCountCache  & HasPinCodeVerifier
 
     private var viewController: ShareUnlockViewController?
     private var nextCoordinator: SharePinUnlockCoordinator?
@@ -52,12 +52,11 @@ final class ShareUnlockCoordinator {
     private func goPin() {
         // UI refe
         guard let navigationController = self.navigationController else { return }
-        let pinView = SharePinUnlockCoordinator(navigation: navigationController,
-                                                vm: ShareUnlockPinCodeModelImpl(
-                                                    unlock: dependencies.unlockManager,
-                                                    pinFailedCountCache: dependencies.pinFailedCountCache
-                                                ),
-                                                delegate: self)
+        let pinView = SharePinUnlockCoordinator(
+            navigation: navigationController,
+            vm: ShareUnlockPinCodeModelImpl(dependencies: dependencies),
+            delegate: self
+        )
         self.nextCoordinator = pinView
         pinView.start()
     }

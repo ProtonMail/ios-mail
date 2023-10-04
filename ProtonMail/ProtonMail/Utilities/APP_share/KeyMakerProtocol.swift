@@ -21,6 +21,7 @@ protocol KeyMakerProtocol: AnyObject, LockCacheStatus, Service {
     func mainKey(by protection: RandomPinProtection?) -> MainKey?
     func obtainMainKey(
         with protector: ProtectionStrategy,
+        returnExistingKey: Bool,
         handler: @escaping (MainKey?) -> Void
     )
     func verify(protector: ProtectionStrategy) async throws

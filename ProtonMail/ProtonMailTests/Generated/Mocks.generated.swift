@@ -961,6 +961,19 @@ class MockPaymentsUIProtocol: PaymentsUIProtocol {
 
 }
 
+class MockPinCodeProtection: PinCodeProtection {
+    @FuncStub(MockPinCodeProtection.activate, initialReturn: Bool()) var activateStub
+    func activate(with newPinCode: String) -> Bool {
+        activateStub(newPinCode)
+    }
+
+    @FuncStub(MockPinCodeProtection.deactivate) var deactivateStub
+    func deactivate() {
+        deactivateStub()
+    }
+
+}
+
 class MockPinCodeSetupRouterProtocol: PinCodeSetupRouterProtocol {
     @FuncStub(MockPinCodeSetupRouterProtocol.go) var goStub
     func go(to step: PinCodeSetupRouter.PinCodeSetUpStep, existingVM: PinCodeSetupViewModel) {

@@ -17,7 +17,7 @@ final class LockCoordinator: LifetimeTrackable {
         case mailbox
     }
 
-    typealias Dependencies = UnlockPinCodeModelImpl.Dependencies & HasUsersManager
+    typealias Dependencies = UnlockPinCodeModelImpl.Dependencies & HasUsersManager & HasUnlockManager
     typealias VC = CoordinatorKeepingViewController<LockCoordinator>
 
     class var lifetimeConfiguration: LifetimeConfiguration {

@@ -174,41 +174,51 @@ extension PinCodeViewController: PinCodeViewDelegate {
         if code.isEmpty {
             let alert = LocalString._pin_code_cant_be_empty.alertController()
             alert.addOKAction()
-            self.present(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         } else {
-            let step: PinCodeStep = self.viewModel.setCode(code)
+            let step: PinCodeStep = viewModel.setCode(code)
             if step != .done {
-                self.setUpView(true)
+                setUpView(true)
             } else {
-                self.viewModel.isPinMatched { matched in
-                    if matched {
-                        self.pinCodeView.hideAttemptError(true)
-                        self.viewModel.done { shouldPop in
-                            self.delegate?.next()
-                            if shouldPop {
-                                self.navigationController?.popViewController(animated: true)
-                            }
-                        }
-                    } else {
-                        let remainingCount = self.viewModel.getPinFailedRemainingCount()
-                        if remainingCount == 11 { // when setup
-                            self.pinCodeView.resetPin()
-                            self.pinCodeView.showAttemptError(self.viewModel.getPinFailedError(), low: false)
-                        } else if remainingCount < 10 {
-                            if remainingCount <= 0 {
-                                self.proceedCancel()
-                            } else {
-                                self.pinCodeView.resetPin()
-                                self.pinCodeView.showAttemptError(
-                                    self.viewModel.getPinFailedError(),
-                                    low: remainingCount < 4
-                                )
-                            }
-                        }
-                        self.pinCodeView.showError()
-                    }
+                verifyPinCode()
+            }
+        }
+    }
+
+    private func verifyPinCode() {
+        Task {
+            let isVerified = await viewModel.verifyPinCode()
+            updateView(validationResult: isVerified)
+        }
+    }
+
+    @MainActor
+    private func updateView(validationResult isPinCodeValid: Bool) {
+        if isPinCodeValid {
+            pinCodeView.hideAttemptError(true)
+            viewModel.done { [unowned self] shouldPop in
+                self.delegate?.next()
+                if shouldPop {
+                    self.navigationController?.popViewController(animated: true)
                 }
             }
+        } else {
+            let remainingCount = viewModel.getPinFailedRemainingCount()
+            if remainingCount == 11 { // when setup
+                pinCodeView.resetPin()
+                pinCodeView.showAttemptError(viewModel.getPinFailedError(), low: false)
+            } else if remainingCount < 10 {
+                if remainingCount <= 0 {
+                    proceedCancel()
+                } else {
+                    pinCodeView.resetPin()
+                    pinCodeView.showAttemptError(
+                        viewModel.getPinFailedError(),
+                        low: remainingCount < 4
+                    )
+                }
+            }
+            pinCodeView.showError()
         }
     }
 }

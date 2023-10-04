@@ -25,6 +25,7 @@ import UIKit
 enum SettingsLockRouterDestination: String {
     case pinCodeSetup = "pincode_setup"
     case changePinCode = "change_pinCode"
+    case pinCodeDisable = "pincode_disable"
 }
 
 // sourcery: mock
@@ -60,6 +61,8 @@ final class SettingsLockRouter: SettingsLockRouterProtocol {
             step = .enterNewPinCode
         case .changePinCode:
             step = .confirmBeforeChanging
+        case .pinCodeDisable:
+            step = .confirmBeforeDisabling
         }
 
         let nav = UINavigationController()

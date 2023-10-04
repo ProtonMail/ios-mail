@@ -61,7 +61,7 @@ final class GlobalContainer: ManagedContainer {
         self {
             Keymaker(
                 autolocker: Autolocker(lockTimeProvider: self.userCachedStatus),
-                keychain: KeychainWrapper.keychain
+                keychain: self.keychain
             )
         }
     }
@@ -81,6 +81,18 @@ final class GlobalContainer: ManagedContainer {
     var notificationCenterFactory: Factory<NotificationCenter> {
         self {
             .default
+        }
+    }
+
+    var pinCodeProtectionFactory: Factory<PinCodeProtection> {
+        self {
+            DefaultPinCodeProtection(dependencies: self)
+        }
+    }
+
+    var pinCodeVerifierFactory: Factory<PinCodeVerifier> {
+        self {
+            DefaultPinCodeVerifier(dependencies: self)
         }
     }
 
