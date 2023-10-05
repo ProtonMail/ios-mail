@@ -55,6 +55,22 @@ extension UserContainer {
         }
     }
 
+    var cleanUserLocalMessagesFactory: Factory<CleanUserLocalMessages> {
+        self {
+            CleanUserLocalMessages(
+                contactCacheStatus: self.userCachedStatus,
+                fetchInboxMessages: FetchMessages(
+                    dependencies: .init(
+                        messageDataService: self.messageService,
+                        cacheService: self.cacheService,
+                        eventsService: self.eventsService
+                    )
+                ),
+                dependencies: self
+            )
+        }
+    }
+
     var reportServiceFactory: Factory<BugReportService> {
         self {
             BugReportService(api: self.apiService)

@@ -1083,44 +1083,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         self.queueManager?.addTask(task)
     }
 
-    func cleanLocalMessageCache(completion: @escaping (Error?) -> Void) {
-        let getLatestEventID = EventLatestIDRequest()
-        self.apiService.perform(request: getLatestEventID, response: EventLatestIDResponse()) { _, response in
-            guard response.error == nil, !response.eventID.isEmpty else {
-                completion(response.error)
-                return
-            }
-            self.contactCacheStatus.contactsCached = 0
-            let completionBlock: () -> Void = {
-                self.labelDataService.fetchV4Labels { _ in
-                    self.contactDataService.cleanUp()
-                        self.contactDataService.fetchContacts { error in
-                            if error == nil {
-                                self.lastUpdatedStore.updateEventID(by: self.userID, eventID: response.eventID)
-                            }
-                            DispatchQueue.main.async {
-                                completion(error)
-                            }
-                        }
-                }
-            }
-
-            self.fetchMessages(
-                byLabel: Message.Location.inbox.labelID,
-                time: 0,
-                forceClean: false,
-                isUnread: false,
-                completion: { _, _, _ in
-                    completionBlock()
-                },
-                onDownload: {
-                    self.cleanMessage(cleanBadgeAndNotifications: true)
-                        self.contactDataService.cleanUp()
-                }
-            )
-        }
-    }
-
     func encryptBody(_ addressID: AddressID,
                      clearBody: String,
                      mailbox_pwd: Passphrase) throws -> String {
