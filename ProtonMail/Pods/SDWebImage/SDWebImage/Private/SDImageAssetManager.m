@@ -9,11 +9,13 @@
 #import "SDImageAssetManager.h"
 #import "SDInternalMacros.h"
 
-static NSArray *SDBundlePreferredScales() {
+static NSArray *SDBundlePreferredScales(void) {
     static NSArray *scales;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-#if SD_WATCH
+#if SD_VISION
+        CGFloat screenScale = UITraitCollection.currentTraitCollection.displayScale;
+#elif SD_WATCH
         CGFloat screenScale = [WKInterfaceDevice currentDevice].screenScale;
 #elif SD_UIKIT
         CGFloat screenScale = [UIScreen mainScreen].scale;

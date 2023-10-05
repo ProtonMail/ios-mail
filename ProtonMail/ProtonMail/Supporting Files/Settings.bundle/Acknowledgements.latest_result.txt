@@ -584,11 +584,11 @@ version: 5.0.0
 
 name: SDWebImage, nameSpecified: 
 body: Copyright (c) 2009-2…
-version: 5.13.3
+version: 5.18.2
 
 name: SDWebImage, nameSpecified: 
 body: Copyright (c) 2009-2…
-version: 5.13.3
+version: 5.18.2
 
 name: Sentry, nameSpecified: 
 body: The MIT License (MIT…

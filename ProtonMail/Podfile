@@ -79,7 +79,7 @@ end
 
 def app_pods
   app_share_pods
-  pod 'SDWebImage', '5.13.3'
+  pod 'SDWebImage'
   pod 'OHHTTPStubs/Swift', :configurations => ['Debug', 'Enterprise Debug']
   pod "ProtonCore-AccountDeletion", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
