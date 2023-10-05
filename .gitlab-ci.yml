@@ -27,7 +27,6 @@ stages:
   - cd ProtonMail
   - bundle config --local build.ffi -- --enable-libffi-alloc
   - bundle install
-  - bundle exec pod update SDWebImage
   - cd ..
 
 .setup_project: &setup_project
