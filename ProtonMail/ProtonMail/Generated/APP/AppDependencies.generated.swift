@@ -208,6 +208,16 @@ extension UserContainer: HasBlockedSendersPublisher {
     }
 }
 
+protocol HasCleanUserLocalMessages {
+    var cleanUserLocalMessages: CleanUserLocalMessages { get }
+}
+
+extension UserContainer: HasCleanUserLocalMessages {
+    var cleanUserLocalMessages: CleanUserLocalMessages {
+        cleanUserLocalMessagesFactory()
+    }
+}
+
 protocol HasBugReportService {
     var reportService: BugReportService { get }
 }
