@@ -11,15 +11,41 @@
 #import "SDInternalMacros.h"
 #import "SDWebImageDownloaderResponseModifier.h"
 #import "SDWebImageDownloaderDecryptor.h"
+#import "SDImageCacheDefine.h"
+#import "SDCallbackQueue.h"
 
-static NSString *const kProgressCallbackKey = @"progress";
-static NSString *const kCompletedCallbackKey = @"completed";
+// A handler to represent individual request
+@interface SDWebImageDownloaderOperationToken : NSObject
 
-typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
+@property (nonatomic, copy, nullable) SDWebImageDownloaderCompletedBlock completedBlock;
+@property (nonatomic, copy, nullable) SDWebImageDownloaderProgressBlock progressBlock;
+@property (nonatomic, copy, nullable) SDImageCoderOptions *decodeOptions;
+
+@end
+
+@implementation SDWebImageDownloaderOperationToken
+
+- (BOOL)isEqual:(id)other {
+    if (nil == other) {
+      return NO;
+    }
+    if (self == other) {
+      return YES;
+    }
+    if (![other isKindOfClass:[self class]]) {
+      return NO;
+    }
+    SDWebImageDownloaderOperationToken *object = (SDWebImageDownloaderOperationToken *)other;
+    // warn: only compare decodeOptions, ignore pointer, use `removeObjectIdenticalTo`
+    BOOL result = [self.decodeOptions isEqualToDictionary:object.decodeOptions];
+    return result;
+}
+
+@end
 
 @interface SDWebImageDownloaderOperation ()
 
-@property (strong, nonatomic, nonnull) NSMutableArray<SDCallbacksDictionary *> *callbackBlocks;
+@property (strong, nonatomic, nonnull) NSMutableArray<SDWebImageDownloaderOperationToken *> *callbackTokens;
 
 @property (assign, nonatomic, readwrite) SDWebImageDownloaderOptions options;
 @property (copy, nonatomic, readwrite, nullable) SDWebImageContext *context;
@@ -33,6 +59,8 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
 @property (strong, nonatomic, nullable, readwrite) NSURLResponse *response;
 @property (strong, nonatomic, nullable) NSError *responseError;
 @property (assign, nonatomic) double previousProgress; // previous progress percent
+
+@property (assign, nonatomic, getter = isDownloadCompleted) BOOL downloadCompleted;
 
 @property (strong, nonatomic, nullable) id<SDWebImageDownloaderResponseModifier> responseModifier; // modify original URLResponse
 @property (strong, nonatomic, nullable) id<SDWebImageDownloaderDecryptor> decryptor; // decrypt image data
@@ -48,6 +76,8 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
 @property (strong, nonatomic, readwrite, nullable) NSURLSessionTaskMetrics *metrics API_AVAILABLE(macosx(10.12), ios(10.0), watchos(3.0), tvos(10.0));
 
 @property (strong, nonatomic, nonnull) NSOperationQueue *coderQueue; // the serial operation queue to do image decoding
+
+@property (strong, nonatomic, nonnull) NSMapTable<SDImageCoderOptions *, UIImage *> *imageMap; // each variant of image is weak-referenced to avoid too many re-decode during downloading
 #if SD_UIKIT
 @property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTaskId;
 #endif
@@ -75,15 +105,18 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
         _request = [request copy];
         _options = options;
         _context = [context copy];
-        _callbackBlocks = [NSMutableArray new];
+        _callbackTokens = [NSMutableArray new];
         _responseModifier = context[SDWebImageContextDownloadResponseModifier];
         _decryptor = context[SDWebImageContextDownloadDecryptor];
         _executing = NO;
         _finished = NO;
         _expectedSize = 0;
         _unownedSession = session;
-        _coderQueue = [NSOperationQueue new];
+        _downloadCompleted = NO;
+        _coderQueue = [[NSOperationQueue alloc] init];
         _coderQueue.maxConcurrentOperationCount = 1;
+        _coderQueue.name = @"com.hackemist.SDWebImageDownloaderOperation.coderQueue";
+        _imageMap = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsStrongMemory valueOptions:NSPointerFunctionsWeakMemory capacity:1];
 #if SD_UIKIT
         _backgroundTaskId = UIBackgroundTaskInvalid;
 #endif
@@ -93,33 +126,31 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
 
 - (nullable id)addHandlersForProgress:(nullable SDWebImageDownloaderProgressBlock)progressBlock
                             completed:(nullable SDWebImageDownloaderCompletedBlock)completedBlock {
-    SDCallbacksDictionary *callbacks = [NSMutableDictionary new];
-    if (progressBlock) callbacks[kProgressCallbackKey] = [progressBlock copy];
-    if (completedBlock) callbacks[kCompletedCallbackKey] = [completedBlock copy];
-    @synchronized (self) {
-        [self.callbackBlocks addObject:callbacks];
-    }
-    return callbacks;
+    return [self addHandlersForProgress:progressBlock completed:completedBlock decodeOptions:nil];
 }
 
-- (nullable NSArray<id> *)callbacksForKey:(NSString *)key {
-    NSMutableArray<id> *callbacks;
+- (nullable id)addHandlersForProgress:(nullable SDWebImageDownloaderProgressBlock)progressBlock
+                            completed:(nullable SDWebImageDownloaderCompletedBlock)completedBlock
+                        decodeOptions:(nullable SDImageCoderOptions *)decodeOptions {
+    if (!completedBlock && !progressBlock && !decodeOptions) return nil;
+    SDWebImageDownloaderOperationToken *token = [SDWebImageDownloaderOperationToken new];
+    token.completedBlock = completedBlock;
+    token.progressBlock = progressBlock;
+    token.decodeOptions = decodeOptions;
     @synchronized (self) {
-        callbacks = [[self.callbackBlocks valueForKey:key] mutableCopy];
+        [self.callbackTokens addObject:token];
     }
-    // We need to remove [NSNull null] because there might not always be a progress block for each callback
-    [callbacks removeObjectIdenticalTo:[NSNull null]];
-    return [callbacks copy]; // strip mutability here
+    
+    return token;
 }
 
 - (BOOL)cancel:(nullable id)token {
-    if (!token) return NO;
+    if (![token isKindOfClass:SDWebImageDownloaderOperationToken.class]) return NO;
     
     BOOL shouldCancel = NO;
     @synchronized (self) {
-        NSMutableArray *tempCallbackBlocks = [self.callbackBlocks mutableCopy];
-        [tempCallbackBlocks removeObjectIdenticalTo:token];
-        if (tempCallbackBlocks.count == 0) {
+        NSArray *tokens = self.callbackTokens;
+        if (tokens.count == 1 && [tokens indexOfObjectIdenticalTo:token] != NSNotFound) {
             shouldCancel = YES;
         }
     }
@@ -129,14 +160,9 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
     } else {
         // Only callback this token's completion block
         @synchronized (self) {
-            [self.callbackBlocks removeObjectIdenticalTo:token];
+            [self.callbackTokens removeObjectIdenticalTo:token];
         }
-        SDWebImageDownloaderCompletedBlock completedBlock = [token valueForKey:kCompletedCallbackKey];
-        dispatch_main_async_safe(^{
-            if (completedBlock) {
-                completedBlock(nil, nil, [NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorCancelled userInfo:@{NSLocalizedDescriptionKey : @"Operation cancelled by user during sending the request"}], YES);
-            }
-        });
+        [self callCompletionBlockWithToken:token image:nil imageData:nil error:[NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorCancelled userInfo:@{NSLocalizedDescriptionKey : @"Operation cancelled by user during sending the request"}] finished:YES];
     }
     return shouldCancel;
 }
@@ -209,17 +235,20 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
     if (self.dataTask) {
         if (self.options & SDWebImageDownloaderHighPriority) {
             self.dataTask.priority = NSURLSessionTaskPriorityHigh;
-            self.coderQueue.qualityOfService = NSQualityOfServiceUserInteractive;
         } else if (self.options & SDWebImageDownloaderLowPriority) {
             self.dataTask.priority = NSURLSessionTaskPriorityLow;
-            self.coderQueue.qualityOfService = NSQualityOfServiceBackground;
         } else {
             self.dataTask.priority = NSURLSessionTaskPriorityDefault;
-            self.coderQueue.qualityOfService = NSQualityOfServiceDefault;
         }
         [self.dataTask resume];
-        for (SDWebImageDownloaderProgressBlock progressBlock in [self callbacksForKey:kProgressCallbackKey]) {
-            progressBlock(0, NSURLResponseUnknownLength, self.request.URL);
+        NSArray<SDWebImageDownloaderOperationToken *> *tokens;
+        @synchronized (self) {
+            tokens = [self.callbackTokens copy];
+        }
+        for (SDWebImageDownloaderOperationToken *token in tokens) {
+            if (token.progressBlock) {
+                token.progressBlock(0, NSURLResponseUnknownLength, self.request.URL);
+            }
         }
         __block typeof(self) strongSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -275,7 +304,7 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
 
 - (void)reset {
     @synchronized (self) {
-        [self.callbackBlocks removeAllObjects];
+        [self.callbackTokens removeAllObjects];
         self.dataTask = nil;
         
         if (self.ownedSession) {
@@ -306,8 +335,92 @@ typedef NSMutableDictionary<NSString *, id> SDCallbacksDictionary;
     [self didChangeValueForKey:@"isExecuting"];
 }
 
-- (BOOL)isConcurrent {
+- (BOOL)isAsynchronous {
     return YES;
+}
+
+// Check for unprocessed tokens.
+// if all tokens have been processed call [self done].
+- (void)checkDoneWithImageData:(NSData *)imageData
+                finishedTokens:(NSArray<SDWebImageDownloaderOperationToken *> *)finishedTokens {
+    @synchronized (self) {
+        NSMutableArray<SDWebImageDownloaderOperationToken *> *tokens = [self.callbackTokens mutableCopy];
+        [finishedTokens enumerateObjectsUsingBlock:^(SDWebImageDownloaderOperationToken * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [tokens removeObjectIdenticalTo:obj];
+        }];
+        if (tokens.count == 0) {
+            [self done];
+        } else {
+            // If there are new tokens added during the decoding operation, the decoding operation is supplemented with these new tokens.
+            [self startCoderOperationWithImageData:imageData pendingTokens:tokens finishedTokens:finishedTokens];
+        }
+    }
+}
+
+- (void)startCoderOperationWithImageData:(NSData *)imageData
+                           pendingTokens:(NSArray<SDWebImageDownloaderOperationToken *> *)pendingTokens
+                          finishedTokens:(NSArray<SDWebImageDownloaderOperationToken *> *)finishedTokens {
+    @weakify(self);
+    for (SDWebImageDownloaderOperationToken *token in pendingTokens) {
+        [self.coderQueue addOperationWithBlock:^{
+            @strongify(self);
+            if (!self) {
+                return;
+            }
+            UIImage *image;
+            // check if we already decode this variant of image for current callback
+            if (token.decodeOptions) {
+                image = [self.imageMap objectForKey:token.decodeOptions];
+            }
+            if (!image) {
+                // check if we already use progressive decoding, use that to produce faster decoding
+                id<SDProgressiveImageCoder> progressiveCoder = SDImageLoaderGetProgressiveCoder(self);
+                SDWebImageOptions options = [[self class] imageOptionsFromDownloaderOptions:self.options];
+                SDWebImageContext *context;
+                if (token.decodeOptions) {
+                    SDWebImageMutableContext *mutableContext = [NSMutableDictionary dictionaryWithDictionary:self.context];
+                    SDSetDecodeOptionsToContext(mutableContext, &options, token.decodeOptions);
+                    context = [mutableContext copy];
+                } else {
+                    context = self.context;
+                }
+                if (progressiveCoder) {
+                    image = SDImageLoaderDecodeProgressiveImageData(imageData, self.request.URL, YES, self, options, context);
+                } else {
+                    image = SDImageLoaderDecodeImageData(imageData, self.request.URL, options, context);
+                }
+                if (image && token.decodeOptions) {
+                    [self.imageMap setObject:image forKey:token.decodeOptions];
+                }
+            }
+            CGSize imageSize = image.size;
+            if (imageSize.width == 0 || imageSize.height == 0) {
+                NSString *description = image == nil ? @"Downloaded image decode failed" : @"Downloaded image has 0 pixels";
+                NSError *error = [NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorBadImageData userInfo:@{NSLocalizedDescriptionKey : description}];
+                [self callCompletionBlockWithToken:token image:nil imageData:nil error:error finished:YES];
+            } else {
+                [self callCompletionBlockWithToken:token image:image imageData:imageData error:nil finished:YES];
+            }
+        }];
+    }
+    // call [self done] after all completed block was dispatched
+    dispatch_block_t doneBlock = ^{
+        @strongify(self);
+        if (!self) {
+            return;
+        }
+        // Check for new tokens added during the decode operation.
+        [self checkDoneWithImageData:imageData
+                      finishedTokens:[finishedTokens arrayByAddingObjectsFromArray:pendingTokens]];
+    };
+    if (@available(iOS 13, tvOS 13, macOS 10.15, watchOS 6, *)) {
+        // seems faster than `addOperationWithBlock`
+        [self.coderQueue addBarrierBlock:doneBlock];
+    } else {
+        // serial queue, this does the same effect in semantics
+        [self.coderQueue addOperationWithBlock:doneBlock];
+    }
+
 }
 
 #pragma mark NSURLSessionDataDelegate
@@ -374,8 +487,14 @@ didReceiveResponse:(NSURLResponse *)response
     }
     
     if (valid) {
-        for (SDWebImageDownloaderProgressBlock progressBlock in [self callbacksForKey:kProgressCallbackKey]) {
-            progressBlock(0, expected, self.request.URL);
+        NSArray<SDWebImageDownloaderOperationToken *> *tokens;
+        @synchronized (self) {
+            tokens = [self.callbackTokens copy];
+        }
+        for (SDWebImageDownloaderOperationToken *token in tokens) {
+            if (token.progressBlock) {
+                token.progressBlock(0, expected, self.request.URL);
+            }
         }
     } else {
         // Status code invalid and marked as cancelled. Do not call `[self.dataTask cancel]` which may mass up URLSession life cycle
@@ -398,10 +517,16 @@ didReceiveResponse:(NSURLResponse *)response
     [self.imageData appendData:data];
     
     self.receivedSize = self.imageData.length;
+    NSArray<SDWebImageDownloaderOperationToken *> *tokens;
+    @synchronized (self) {
+        tokens = [self.callbackTokens copy];
+    }
     if (self.expectedSize == 0) {
         // Unknown expectedSize, immediately call progressBlock and return
-        for (SDWebImageDownloaderProgressBlock progressBlock in [self callbacksForKey:kProgressCallbackKey]) {
-            progressBlock(self.receivedSize, self.expectedSize, self.request.URL);
+        for (SDWebImageDownloaderOperationToken *token in tokens) {
+            if (token.progressBlock) {
+                token.progressBlock(self.receivedSize, self.expectedSize, self.request.URL);
+            }
         }
         return;
     }
@@ -420,19 +545,27 @@ didReceiveResponse:(NSURLResponse *)response
     
     // Using data decryptor will disable the progressive decoding, since there are no support for progressive decrypt
     BOOL supportProgressive = (self.options & SDWebImageDownloaderProgressiveLoad) && !self.decryptor;
+    // When multiple thumbnail decoding use different size, this progressive decoding will cause issue because each callback assume called with different size's image, can not share the same decoding part
+    // We currently only pick the first thumbnail size, see #3423 talks
     // Progressive decoding Only decode partial image, full image in `URLSession:task:didCompleteWithError:`
     if (supportProgressive && !finished) {
         // Get the image data
         NSData *imageData = self.imageData;
         
         // keep maximum one progressive decode process during download
-        if (self.coderQueue.operationCount == 0) {
+        if (imageData && self.coderQueue.operationCount == 0) {
             // NSOperation have autoreleasepool, don't need to create extra one
             @weakify(self);
             [self.coderQueue addOperationWithBlock:^{
                 @strongify(self);
                 if (!self) {
                     return;
+                }
+                // When cancelled or transfer finished (`didCompleteWithError`), cancel the progress callback, only completed block is called and enough
+                @synchronized (self) {
+                    if (self.isCancelled || self.isDownloadCompleted) {
+                        return;
+                    }
                 }
                 UIImage *image = SDImageLoaderDecodeProgressiveImageData(imageData, self.request.URL, NO, self, [[self class] imageOptionsFromDownloaderOptions:self.options], self.context);
                 if (image) {
@@ -444,8 +577,10 @@ didReceiveResponse:(NSURLResponse *)response
         }
     }
     
-    for (SDWebImageDownloaderProgressBlock progressBlock in [self callbacksForKey:kProgressCallbackKey]) {
-        progressBlock(self.receivedSize, self.expectedSize, self.request.URL);
+    for (SDWebImageDownloaderOperationToken *token in tokens) {
+        if (token.progressBlock) {
+            token.progressBlock(self.receivedSize, self.expectedSize, self.request.URL);
+        }
     }
 }
 
@@ -471,7 +606,11 @@ didReceiveResponse:(NSURLResponse *)response
     // If we already cancel the operation or anything mark the operation finished, don't callback twice
     if (self.isFinished) return;
     
-    @synchronized(self) {
+    self.downloadCompleted = YES;
+    
+    NSArray<SDWebImageDownloaderOperationToken *> *tokens;
+    @synchronized (self) {
+        tokens = [self.callbackTokens copy];
         self.dataTask = nil;
         __block typeof(self) strongSelf = self;
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -491,9 +630,8 @@ didReceiveResponse:(NSURLResponse *)response
         [self callCompletionBlocksWithError:error];
         [self done];
     } else {
-        if ([self callbacksForKey:kCompletedCallbackKey].count > 0) {
+        if (tokens.count > 0) {
             NSData *imageData = self.imageData;
-            self.imageData = nil;
             // data decryptor
             if (imageData && self.decryptor) {
                 imageData = [self.decryptor decryptedDataWithData:imageData response:self.response];
@@ -513,29 +651,9 @@ didReceiveResponse:(NSURLResponse *)response
                 } else {
                     // decode the image in coder queue, cancel all previous decoding process
                     [self.coderQueue cancelAllOperations];
-                    @weakify(self);
-                    [self.coderQueue addOperationWithBlock:^{
-                        @strongify(self);
-                        if (!self) {
-                            return;
-                        }
-                        // check if we already use progressive decoding, use that to produce faster decoding
-                        id<SDProgressiveImageCoder> progressiveCoder = SDImageLoaderGetProgressiveCoder(self);
-                        UIImage *image;
-                        if (progressiveCoder) {
-                            image = SDImageLoaderDecodeProgressiveImageData(imageData, self.request.URL, YES, self, [[self class] imageOptionsFromDownloaderOptions:self.options], self.context);
-                        } else {
-                            image = SDImageLoaderDecodeImageData(imageData, self.request.URL, [[self class] imageOptionsFromDownloaderOptions:self.options], self.context);
-                        }
-                        CGSize imageSize = image.size;
-                        if (imageSize.width == 0 || imageSize.height == 0) {
-                            NSString *description = image == nil ? @"Downloaded image decode failed" : @"Downloaded image has 0 pixels";
-                            [self callCompletionBlocksWithError:[NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorBadImageData userInfo:@{NSLocalizedDescriptionKey : description}]];
-                        } else {
-                            [self callCompletionBlocksWithImage:image imageData:imageData error:nil finished:YES];
-                        }
-                        [self done];
-                    }];
+                    [self startCoderOperationWithImageData:imageData
+                                             pendingTokens:tokens
+                                            finishedTokens:@[]];
                 }
             } else {
                 [self callCompletionBlocksWithError:[NSError errorWithDomain:SDWebImageErrorDomain code:SDWebImageErrorBadImageData userInfo:@{NSLocalizedDescriptionKey : @"Image data is nil"}]];
@@ -584,6 +702,8 @@ didReceiveResponse:(NSURLResponse *)response
 }
 
 #pragma mark Helper methods
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (SDWebImageOptions)imageOptionsFromDownloaderOptions:(SDWebImageDownloaderOptions)downloadOptions {
     SDWebImageOptions options = 0;
     if (downloadOptions & SDWebImageDownloaderScaleDownLargeImages) options |= SDWebImageScaleDownLargeImages;
@@ -594,6 +714,7 @@ didReceiveResponse:(NSURLResponse *)response
     
     return options;
 }
+#pragma clang diagnostic pop
 
 - (BOOL)shouldContinueWhenAppEntersBackground {
     return SD_OPTIONS_CONTAINS(self.options, SDWebImageDownloaderContinueInBackground);
@@ -607,12 +728,33 @@ didReceiveResponse:(NSURLResponse *)response
                             imageData:(nullable NSData *)imageData
                                 error:(nullable NSError *)error
                              finished:(BOOL)finished {
-    NSArray<id> *completionBlocks = [self callbacksForKey:kCompletedCallbackKey];
-    dispatch_main_async_safe(^{
-        for (SDWebImageDownloaderCompletedBlock completedBlock in completionBlocks) {
-            completedBlock(image, imageData, error, finished);
+    NSArray<SDWebImageDownloaderOperationToken *> *tokens;
+    @synchronized (self) {
+        tokens = [self.callbackTokens copy];
+    }
+    for (SDWebImageDownloaderOperationToken *token in tokens) {
+        SDWebImageDownloaderCompletedBlock completedBlock = token.completedBlock;
+        if (completedBlock) {
+            SDCallbackQueue *queue = self.context[SDWebImageContextCallbackQueue];
+            [(queue ?: SDCallbackQueue.mainQueue) async:^{
+                completedBlock(image, imageData, error, finished);
+            }];
         }
-    });
+    }
+}
+
+- (void)callCompletionBlockWithToken:(nonnull SDWebImageDownloaderOperationToken *)token
+                               image:(nullable UIImage *)image
+                           imageData:(nullable NSData *)imageData
+                               error:(nullable NSError *)error
+                            finished:(BOOL)finished {
+    SDWebImageDownloaderCompletedBlock completedBlock = token.completedBlock;
+    if (completedBlock) {
+        SDCallbackQueue *queue = self.context[SDWebImageContextCallbackQueue];
+        [(queue ?: SDCallbackQueue.mainQueue) async:^{
+            completedBlock(image, imageData, error, finished);
+        }];
+    }
 }
 
 @end

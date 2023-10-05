@@ -18,6 +18,7 @@
 #import "SDAnimatedImageRep.h"
 #import "SDAnimatedImageView+WebCache.h"
 #import "SDAnimatedImageView.h"
+#import "SDCallbackQueue.h"
 #import "SDDiskCache.h"
 #import "SDGraphicsImageRenderer.h"
 #import "SDImageAPNGCoder.h"
@@ -68,6 +69,7 @@
 #import "UIImageView+WebCache.h"
 #import "UIView+WebCache.h"
 #import "UIView+WebCacheOperation.h"
+#import "UIView+WebCacheState.h"
 #import "SDWebImage.h"
 
 FOUNDATION_EXPORT double SDWebImageVersionNumber;

@@ -253,9 +253,9 @@ PODS:
     - ProtonCore-Log (= 9.3.0)
   - ProtonCore-VCard (9.3.0)
   - ReachabilitySwift (5.0.0)
-  - SDWebImage (5.13.3):
-    - SDWebImage/Core (= 5.13.3)
-  - SDWebImage/Core (5.13.3)
+  - SDWebImage (5.18.2):
+    - SDWebImage/Core (= 5.18.2)
+  - SDWebImage/Core (5.18.2)
   - Sentry (8.9.3):
     - Sentry/Core (= 8.9.3)
     - SentryPrivate (= 8.9.3)
@@ -323,7 +323,7 @@ DEPENDENCIES:
   - "ProtonCore-UIFoundations (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
   - "ProtonCore-Utilities (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
   - "ProtonCore-VCard (from `git@gitlab.protontech.ch:apple/shared/protoncore.git`, tag `9.3.0`)"
-  - SDWebImage (= 5.13.3)
+  - SDWebImage
   - "Sentry (from `git@gitlab.protontech.ch:jchen/sentry-cocoa.git`, tag `8.9.3.fork`)"
   - "SideMenuSwift (from `git@gitlab.protontech.ch:jchen/SideMenu.git`, tag `v2.0.9.autolayout`)"
   - SkeletonView (= 1.30.4)
@@ -651,7 +651,7 @@ SPEC CHECKSUMS:
   ProtonCore-Utilities: ed2fbcb10faf21bdf78fcbba183c7f3813e6963b
   ProtonCore-VCard: 961c457993fcb37257c9e93f867545ef00683a9f
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  SDWebImage: af5bbffef2cde09f148d826f9733dcde1a9414cd
+  SDWebImage: c0de394d7cf7f9838aed1fd6bb6037654a4572e4
   Sentry: 97161cac725da1ecbe77d1445bf8a61c1e5667f1
   SentryPrivate: 9a76def09fb08f9501997b8df946e8097947b94f
   SideMenuSwift: 39f1922e225da4aaa8b16591037a929defe960c9
@@ -662,6 +662,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: b0edb15917866c3d951c8d090227aaef694adcc1
+PODFILE CHECKSUM: 32f777c62eb8c0646847811d4f14632dbf2ddd39
 
 COCOAPODS: 1.13.0
