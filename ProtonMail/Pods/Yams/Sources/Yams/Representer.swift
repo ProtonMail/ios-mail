@@ -64,6 +64,8 @@ extension Dictionary: NodeRepresentable {
 private func represent(_ value: Any) throws -> Node {
     if let representable = value as? NodeRepresentable {
         return try representable.represented()
+    } else if (value as? NSDictionary)?.count == 0 {
+        return .mapping(Node.Mapping([]))
     }
     throw YamlError.representer(problem: "Failed to represent \(value)")
 }
