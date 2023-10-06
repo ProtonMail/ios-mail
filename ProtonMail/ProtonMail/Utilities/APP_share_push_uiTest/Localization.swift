@@ -111,8 +111,6 @@ class LocalizedString {
     lazy var _message_sent_ok_desc          = NSLocalizedString("Message sent", comment: "Description after message have been sent")
     /// "Sent Failed"
     lazy var _message_sent_failed_desc      = NSLocalizedString("Sent Failed", comment: "Description")
-    /// "Email failed to send. Message saved as draft."
-    lazy var _email_failed_to_send = NSLocalizedString("Email failed to send. Message saved as draft.", comment: "Description")
 
     lazy var _folder_no_message = NSLocalizedString("Nothing to see here", comment: "The title will be shown when foler doesnt have emails")
     lazy var _folder_is_empty = NSLocalizedString("This folder is empty", comment: "The subtitle will be shown when folder doesnt have emails")
@@ -177,8 +175,6 @@ class LocalizedString {
     lazy var _composer_send_no_subject_desc = NSLocalizedString("Send message without subject?", comment: "Description")
     /// "You need at least one recipient to send"
     lazy var _composer_no_recipient_error = NSLocalizedString("You need at least one recipient to send", comment: "Description")
-    /// "Change sender address to…"
-    lazy var _composer_change_sender_address_to = NSLocalizedString("Change sender address to…", comment: "Title")
     /// "Upgrade to a paid plan to send from your %@ address"
     lazy var _composer_change_paid_plan_sender_error = NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error")
     /// "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@"
@@ -521,9 +517,6 @@ class LocalizedString {
     /// "Confirm new mailbox password"
     lazy var _confirm_new_mailbox_password = NSLocalizedString("Confirm new mailbox password", comment: "Title")
 
-    /// "Unable to send the email"
-    lazy var unable_to_send_the_email = NSLocalizedString("Unable to send the email", comment: "error when sending the message")
-
     /// "Star"
     lazy var _star_unstar = NSLocalizedString("Star/unstar", comment: "Title")
 
@@ -812,8 +805,6 @@ class LocalizedString {
     lazy var _copy_name       = NSLocalizedString("Copy name", comment: "Title")
     lazy var _general_copy = NSLocalizedString("Copy", comment: "Title")
     lazy var _general_cut = NSLocalizedString("Cut", comment: "Title")
-    /// "Compose to"
-    lazy var _compose_to      = NSLocalizedString("Compose to", comment: "Title")
     /// "Add to contacts"
     lazy var _add_to_contacts = NSLocalizedString("Add to contacts", comment: "Title")
     /// "Sender Verification Failed"
@@ -992,7 +983,6 @@ class LocalizedString {
 
     lazy var _mailbox_draft_is_uploading = NSLocalizedString("Draft is still uploading…", comment: "title of toast message that user taps the message which is uploading")
     lazy var _mailbox_draft_is_sending = NSLocalizedString("Sending message…", comment: "content of the sending mesage that will display this text on the date label")
-    lazy var _messages_validation_failed_try_again = NSLocalizedString("Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.", comment: "message shown in the notification when the recipient validation is failed while sending")
 
     lazy var _unread_action = NSLocalizedString("unread", comment: "The unread title of unread action button in mailbox view")
 
