@@ -37,10 +37,11 @@ var beforeSanitizeElements = function (node) {
             var attribute = element.getAttribute(item);
             // Don't update base64 string
             // Mainly for signature case
+            // Also don't update CID string, it is for inline images
             try {
                 let url = new URL(attribute);
-                if (url.protocol == 'data:') {
-                    throw `don't update base64 string`
+                if (url.protocol == 'data:' || url.protocol == 'cid:') {
+                    throw `don't update base64 string and cid`
                 }
                 const originalUrl = attribute;
                 const replacedUrl = 'proton-' + attribute;
