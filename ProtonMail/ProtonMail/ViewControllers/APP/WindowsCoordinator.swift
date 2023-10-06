@@ -29,10 +29,6 @@ import ProtonCore_UIFoundations
 import ProtonMailAnalytics
 import SafariServices
 
-protocol WindowsCoordinatorDelegate: AnyObject {
-    func currentApplicationState() -> UIApplication.State
-}
-
 final class WindowsCoordinator {
     typealias Dependencies = MenuCoordinator.Dependencies
     & LockCoordinator.Dependencies
@@ -86,7 +82,6 @@ final class WindowsCoordinator {
                 assert(scene is UIWindowScene, "Scene should be of type UIWindowScene")
         }
     }
-    weak var delegate: WindowsCoordinatorDelegate?
     private let dependencies: Dependencies
     private let showPlaceHolderViewOnly: Bool
 

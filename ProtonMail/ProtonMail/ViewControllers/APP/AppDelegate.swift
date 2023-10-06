@@ -164,7 +164,6 @@ extension AppDelegate: UIApplicationDelegate {
                                                selector: #selector(didSignOutNotification(_:)),
                                                name: .didSignOutLastAccount,
                                                object: nil)
-        coordinator.delegate = self
         
         dependencies.backgroundTaskHelper.registerBackgroundTask(task: .eventLoop)
 
@@ -298,11 +297,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 }
 
-extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
-    func currentApplicationState() -> UIApplication.State {
-        UIApplication.shared.applicationState
-    }
-
+extension AppDelegate: UnlockManagerDelegate {
     func isUserStored() -> Bool {
         let users = dependencies.usersManager
         if users.hasUserName() || users.hasUsers() {

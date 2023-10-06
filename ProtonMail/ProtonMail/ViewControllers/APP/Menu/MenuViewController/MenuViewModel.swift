@@ -378,14 +378,6 @@ extension MenuViewModel: MenuVMProtocol {
     }
 }
 
-extension MenuViewModel: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        updateUnread()
-    	delegate?.updateMenu(section: nil)
-
-    }
-}
-
 extension MenuViewModel: LabelListenerProtocol {
     func receivedLabels(labels: [LabelEntity]) {
         handle(dbLabels: labels)
