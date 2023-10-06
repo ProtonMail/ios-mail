@@ -343,7 +343,6 @@ extension AppDelegate: UnlockManagerDelegate {
         usersManager.run()
         usersManager.tryRestore()
 
-        #if !APP_EXTENSION
         DispatchQueue.global().async {
             usersManager.users.forEach {
                 $0.messageService.injectTransientValuesIntoMessages()
@@ -353,7 +352,6 @@ extension AppDelegate: UnlockManagerDelegate {
         if let primaryUser = usersManager.firstUser {
             primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
         }
-        #endif
     }
 }
 

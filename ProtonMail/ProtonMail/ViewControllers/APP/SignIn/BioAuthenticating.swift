@@ -41,23 +41,17 @@ extension BioAuthenticating where Self: UIViewController {
     }
 
     func decideOnBioAuthentication() {
-        #if APP_EXTENSION
-        self.authenticateUser()
-        #else
         if UIDevice.current.biometricType == .touchID,
             (UIApplication.shared.applicationState != .active || self.view?.window?.windowScene?.activationState != .foregroundActive) {
             // mystery that makes TouchID prompt a little bit more stable on iOS 13.0 - 13.1.2
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                #if !APP_EXTENSION
                 // TouchID prompt can appear unlock the app if this method was called from background, which can spoil logic of autolocker
                 // in our app only unlocking from foreground makes sense
                 guard UIApplication.shared.applicationState == .active else { return }
-                #endif
                 self.authenticateUser()
             }
         } else {
             self.authenticateUser()
         }
-        #endif
     }
 }
