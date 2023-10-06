@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-private extension UserCachedStatus.Key {
+extension UserCachedStatus.Key {
     static let usersThatFetchedTheirBlockedSenderLists = "usersThatFetchedTheirBlockedSenderLists"
 }
 
@@ -28,10 +28,19 @@ extension UserCachedStatus: BlockedSenderFetchStatusProviderProtocol {
         idsOfUsersThatSuccessfullyFetchedBlockedSenders().contains(userID.rawValue)
     }
 
-    func markBlockedSendersAsFetched(userID: UserID) {
+    func markBlockedSendersAsFetched(_ fetched: Bool, userID: UserID) {
         var userIDs = idsOfUsersThatSuccessfullyFetchedBlockedSenders()
-        userIDs.insert(userID.rawValue)
-        userDefaults.set(Array(userIDs), forKey: Key.usersThatFetchedTheirBlockedSenderLists)
+
+        let hasMadeAnActualChange: Bool
+        if fetched {
+            hasMadeAnActualChange = userIDs.insert(userID.rawValue).inserted
+        } else {
+            hasMadeAnActualChange = userIDs.remove(userID.rawValue) != nil
+        }
+
+        if hasMadeAnActualChange {
+            userDefaults.set(Array(userIDs), forKey: Key.usersThatFetchedTheirBlockedSenderLists)
+        }
     }
 
     private func idsOfUsersThatSuccessfullyFetchedBlockedSenders() -> Set<String> {

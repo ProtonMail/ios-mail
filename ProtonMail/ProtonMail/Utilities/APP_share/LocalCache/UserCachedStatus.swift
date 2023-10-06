@@ -327,6 +327,10 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         getShared().removeObject(forKey: Key.darkModeFlag)
         getShared().removeObject(forKey: Key.toolbarCustomizeSpotlightShownUserIds)
 
+#if !APP_EXTENSION
+        getShared().removeObject(forKey: Key.usersThatFetchedTheirBlockedSenderLists)
+#endif
+
         getShared().synchronize()
     }
 

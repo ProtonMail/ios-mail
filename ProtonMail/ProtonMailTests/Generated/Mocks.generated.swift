@@ -106,8 +106,8 @@ class MockBlockedSenderFetchStatusProviderProtocol: BlockedSenderFetchStatusProv
     }
 
     @FuncStub(MockBlockedSenderFetchStatusProviderProtocol.markBlockedSendersAsFetched) var markBlockedSendersAsFetchedStub
-    func markBlockedSendersAsFetched(userID: UserID) {
-        markBlockedSendersAsFetchedStub(userID)
+    func markBlockedSendersAsFetched(_ fetched: Bool, userID: UserID) {
+        markBlockedSendersAsFetchedStub(fetched, userID)
     }
 
 }
