@@ -809,6 +809,19 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
+    func deleteDraft(message: MessageEntity) {
+        queueManager?.removeAllTasks(of: message.messageID.rawValue, removalCondition: { action in
+            switch action {
+            case .saveDraft:
+                return true
+            default:
+                return false
+            }
+        }, completeHandler: { [weak self] in
+            self?.delete(messages: [message], label: Message.Location.draft.labelID)
+        })
+    }
+
     func fetchMessageMetaData(messageIDs: [MessageID], completion: @escaping (FetchMessagesByIDResponse) -> Void) {
         let messages: [String] = messageIDs.map(\.rawValue)
         let request = FetchMessagesByID(msgIDs: messages)
