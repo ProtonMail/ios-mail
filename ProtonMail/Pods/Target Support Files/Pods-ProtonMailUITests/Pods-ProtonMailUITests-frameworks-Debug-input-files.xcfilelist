@@ -2,6 +2,7 @@ ${PODS_ROOT}/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests-
 ${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-APIClient/ProtonCoreAPIClient.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-AccountDeletion/ProtonCoreAccountDeletion.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-AccountSwitcher/ProtonCoreAccountSwitcher.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication/ProtonCoreAuthentication.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Authentication-KeyGeneration/ProtonCoreAuthenticationKeyGeneration.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Challenge/ProtonCoreChallenge.framework
@@ -11,6 +12,7 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-DataModel/ProtonCoreDataModel.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Doh/ProtonCoreDoh.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Environment/ProtonCoreEnvironment.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-FeatureSwitch/ProtonCoreFeatureSwitch.framework
+${BUILT_PRODUCTS_DIR}/ProtonCore-ForceUpgrade/ProtonCoreForceUpgrade.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Foundations/ProtonCoreFoundations.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Hash/ProtonCoreHash.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-HumanVerification/ProtonCoreHumanVerification.framework
