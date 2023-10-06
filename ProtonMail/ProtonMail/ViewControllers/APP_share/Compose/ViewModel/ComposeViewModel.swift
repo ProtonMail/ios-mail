@@ -466,9 +466,7 @@ extension ComposeViewModel {
 
     func deleteDraft() {
         guard let rawMessage = composerMessageHelper.getMessageEntity() else { return }
-
-        messageService.delete(messages: [rawMessage],
-                              label: Message.Location.draft.labelID)
+        messageService.deleteDraft(message: rawMessage)
     }
 
     func markAsRead() {
