@@ -30,7 +30,7 @@ final class ContactDetailsViewModelTests: XCTestCase {
         apiService = APIServiceMock()
 
         let contact = ContactEntity.make(contactID: "foo", name: "John something", isDownloaded: false)
-        let user = UserManager(api: apiService, role: .none)
+        let user = UserManager(api: apiService)
         let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
 
         sut = ContactDetailsViewModel(contact: contact, dependencies: .init(user: user, coreDataService: coreDataService, contactService: user.contactService))

@@ -97,7 +97,6 @@ extension Quark {
         
         do {
             let (textData, urlResponse) = try executeQuarkRequest(request)
-            let jsonData = try? makeQuarkCommandTextToJson(data: textData)
             guard let responseHTML = String(data: textData, encoding: .utf8) else {
                 throw QuarkError(urlResponse: urlResponse, message: "Update delinquent state failed")
             }

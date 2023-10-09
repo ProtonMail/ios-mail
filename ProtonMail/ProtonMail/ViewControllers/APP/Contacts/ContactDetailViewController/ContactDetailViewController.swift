@@ -271,7 +271,7 @@ extension ContactDetailViewController: UITableViewDataSource {
                 titleStyle: titleStyle
             )
         case .email_header, .encrypted_header, .delete, .share,
-             .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails, .display_name, .addNewField, .share:
+             .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails, .display_name, .addNewField:
             break
         }
         return cell ?? UITableViewCell()

@@ -22,16 +22,12 @@
 
 import MBProgressHUD
 import PromiseKit
-import ProtonMailAnalytics
-import UIKit
+import ProtonCore_DataModel
+import ProtonCore_Foundations
+import ProtonCore_UIFoundations
 #if !APP_EXTENSION
 import SideMenuSwift
 #endif
-import CoreData
-import ProtonCore_DataModel
-import ProtonCore_Foundations
-import WebKit
-import ProtonCore_UIFoundations
 
 protocol ComposeContentViewControllerDelegate: AnyObject {
     func displayExpirationWarning()

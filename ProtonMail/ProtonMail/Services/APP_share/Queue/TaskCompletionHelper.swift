@@ -93,7 +93,6 @@ struct TaskCompletionHelper {
         var statusCode = 200
         let errorCode = error.code
         var isInternetIssue = false
-        let errorUserInfo = error.userInfo
 
         // Check if error returns from the network response. Otherwise, check if it is internet issue
         if let statusCodeFromResponse = error.httpCode {

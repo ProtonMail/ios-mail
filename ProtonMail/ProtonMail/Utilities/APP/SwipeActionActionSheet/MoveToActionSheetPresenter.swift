@@ -34,8 +34,6 @@ final class MoveToActionSheetPresenter {
         selected: @escaping (MenuLabel, Bool) -> Void,
         cancel: @escaping () -> Void
     ) {
-        var folderSelectionActionSheet: PMActionSheet?
-
         let rows = viewModel.menuLabels.getNumberOfRows()
         var folderActions: [PMActionSheetItem] = []
         for i in 0..<rows {
@@ -106,7 +104,6 @@ final class MoveToActionSheetPresenter {
         let actionSheet = PMActionSheet(headerView: headerView, itemGroups: itemGroups) /*, maximumOccupy: 0.7) */
         actionSheet.eventsListener = listener
         actionSheet.presentAt(viewController, hasTopConstant: false, animated: true)
-        folderSelectionActionSheet = actionSheet
         delay(0.3) {
             if UIAccessibility.isVoiceOverRunning {
                 UIAccessibility.post(notification: .screenChanged, argument: actionSheet)

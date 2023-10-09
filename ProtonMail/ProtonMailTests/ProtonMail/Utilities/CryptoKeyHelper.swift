@@ -38,7 +38,7 @@ enum CryptoKeyHelper {
             throw NSError()
         }
         let cryptoKey = try unlockedKey.lock(passphrase.value.data(using: .utf8))
-        unlockedKey.clearPrivateParams()
+        _ = unlockedKey.clearPrivateParams()
         let publicKey = cryptoKey.getArmoredPublicKey(&error)
         if let concreteError = error {
             throw concreteError

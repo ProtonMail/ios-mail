@@ -71,8 +71,7 @@ final class PMDatePicker: UIView {
         UIView.animate(withDuration: 0.25) {
             self.layoutIfNeeded()
         }
-        if #available(iOS 15, *) {
-        } else {
+        if #unavailable(iOS 15) {
             NotificationCenter.default.addKeyboardObserver(self)
         }
     }

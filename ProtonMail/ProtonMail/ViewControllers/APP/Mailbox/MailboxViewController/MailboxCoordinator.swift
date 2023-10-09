@@ -196,8 +196,6 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
                   let originalScheduledTime = path.states?["originalScheduledTime"] as? Date else {
                 return
             }
-            let user = self.viewModel.user
-            let msgService = user.messageService
             if let message = fetchMessage(by: .init(messageID)) {
                 navigateToComposer(
                     existingMessage: message,

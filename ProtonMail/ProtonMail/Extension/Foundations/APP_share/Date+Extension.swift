@@ -43,7 +43,7 @@ extension Date {
         let formatter = DateFormatter()
         formatter.locale = locale
         formatter.timeZone = timeZone
-        var template = DateFormatter
+        let template = DateFormatter
             .dateFormat(fromTemplate: "MMM dd jj mm", options: 0, locale: locale) ?? "MMM dd jj mm"
         // Some template will return `MM`, e.g. de_DE (24 H)
             .preg_replace(#"M{1,4}([\.,\\,\-,،]){0,1}"#, replaceto: "MMM$1", options: [.dotMatchesLineSeparators])

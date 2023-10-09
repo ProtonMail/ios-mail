@@ -27,7 +27,7 @@ final class ToolbarSettingViewControllerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         let mockApiService = APIServiceMock()
-        mockUser = UserManager(api: mockApiService, role: .none)
+        mockUser = UserManager(api: mockApiService)
         makeSUT()
     }
 

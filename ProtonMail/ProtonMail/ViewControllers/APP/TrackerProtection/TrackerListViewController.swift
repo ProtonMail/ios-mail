@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import LifetimeTracker
-import ProtonCore_UIFoundations
 import ProtonCore_Foundations
+import ProtonCore_UIFoundations
 import UIKit
 
 class TrackerListViewController: UIViewController, LifetimeTrackable, AccessibleView {

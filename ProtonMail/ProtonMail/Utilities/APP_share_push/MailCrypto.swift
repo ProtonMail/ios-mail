@@ -57,7 +57,7 @@ class MailCrypto {
         }
 
         let cryptoKey = try unlockedKey.lock(passphrase.data(using: .utf8))
-        unlockedKey.clearPrivateParams()
+        _ = unlockedKey.clearPrivateParams()
 
         let publicKey = cryptoKey.getArmoredPublicKey(&error)
         if let concreteError = error {

@@ -36,7 +36,7 @@ class ConversationViewControllerTests: XCTestCase {
         let fakeConversation = ConversationEntity(Conversation(context: contextProvider.viewContext))
         let coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
         let apiMock = APIServiceMock()
-        let fakeUser = UserManager(api: apiMock, role: .none)
+        let fakeUser = UserManager(api: apiMock)
         let connectionMonitor = MockConnectionMonitor()
         notificationCenterMock = NotificationCenter()
         internetStatusProviderMock = InternetConnectionStatusProvider(connectionMonitor: connectionMonitor)

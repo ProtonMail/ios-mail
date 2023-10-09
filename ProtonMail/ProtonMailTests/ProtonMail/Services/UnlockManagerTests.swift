@@ -292,11 +292,6 @@ final class UnlockManagerTests: XCTestCase {
 
     func testUnlockIfRemberedCredentials_MainKeyExist_UserIsStored_mailboxPWDStored_TouchIDEnabled_unlockIsCalled() {
         let e = expectation(description: "Closure is called")
-        let notiExpectation = expectation(
-            forNotification: .didUnlock,
-            object: nil,
-            notificationCenter: notificationCenter
-        )
         keyMakerMock.mainKeyExistsStub.bodyIs { _ in
             return true
         }
@@ -323,11 +318,6 @@ final class UnlockManagerTests: XCTestCase {
 
     func testUnlockIfRemberedCredentials_MainKeyExist_UserIsStored_mailboxPWDStored_PinEnabled_unlockIsCalled() {
         let e = expectation(description: "Closure is called")
-        let notiExpectation = expectation(
-            forNotification: .didUnlock,
-            object: nil,
-            notificationCenter: notificationCenter
-        )
         keyMakerMock.mainKeyExistsStub.bodyIs { _ in
             return true
         }
