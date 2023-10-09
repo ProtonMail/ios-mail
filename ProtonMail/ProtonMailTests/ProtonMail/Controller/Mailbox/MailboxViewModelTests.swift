@@ -1473,7 +1473,7 @@ extension MailboxViewModelTests {
             return totalUserCount
         })
         delegateMock = .init(viewModel: sut)
-        sut.setupDiffableDataSource(tableView: fakeTableView, shouldAnimateSkeletonLoading: false) { _, _, _ in return .init()}
+        sut.setupDiffableDataSource(tableView: fakeTableView) { _, _, _ in return .init()}
         sut.setupFetchController(delegateMock)
         wait({
             var fetched = false
@@ -1562,5 +1562,51 @@ final class MockCoreDataDelegateObject: NSObject, NSFetchedResultsControllerDele
             newSnapshot.appendItems(mailboxRows, toSection: index)
         }
         return newSnapshot
+    }
+}
+
+private extension MailboxItem {
+    var toConversation: ConversationEntity? {
+        switch self {
+        case .conversation(let entity):
+            return entity
+        case .message:
+            return nil
+        }
+    }
+
+    var toMessage: MessageEntity? {
+        switch self {
+        case .conversation:
+            return nil
+        case .message(let entity):
+            return entity
+        }
+    }
+
+    var isConversation: Bool {
+        toConversation != nil
+    }
+
+    var isMessage: Bool {
+        toMessage != nil
+    }
+}
+
+private extension Collection where Element == MailboxItem {
+    var areAllConversations: Bool {
+        allSatisfy { $0.isConversation }
+    }
+
+    var areAllMessages: Bool {
+        allSatisfy { $0.isMessage }
+    }
+
+    var allConversations: [ConversationEntity] {
+        compactMap { $0.toConversation }
+    }
+
+    var allMessages: [MessageEntity] {
+        compactMap { $0.toMessage }
     }
 }

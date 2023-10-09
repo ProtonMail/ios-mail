@@ -431,7 +431,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         viewModel.setupDiffableDataSource(
             tableView: tableView,
-            shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading,
             cellConfigurator: cellConfigurator)
     }
 
@@ -2164,53 +2163,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             newSnapshot.appendItems(mailboxRows, toSection: index)
         }
         return newSnapshot
-    }
-}
-
-// MARK: - Popping Handling
-extension MailboxViewController {
-    private func popPresentedItemIfNeeded(_ anObject: Any) {
-        /*
-         When the unread filter is enable and we enter message or conversation detail view,
-         the message or conversation will be set to read.
-         This action results in the message or conversation will be removed from the list.
-         And will trigger the detail view to be popped.
-         */
-        guard !unreadFilterButton.isSelected else {
-            return
-        }
-        if navigationController?.topViewController is ConversationViewController
-            || navigationController?.topViewController is SingleMessageViewController {
-            if let contextLabel = anObject as? ContextLabel {
-                if coordinator?.conversationCoordinator?.conversation.conversationID.rawValue == contextLabel.conversationID {
-                    navigationController?.popViewController(animated: true)
-                }
-            }
-            if let message = anObject as? Message {
-                if coordinator?.singleMessageCoordinator?.message.messageID == MessageID(message.messageID) {
-                    navigationController?.popViewController(animated: true)
-                }
-            }
-        }
-    }
-
-    private func hideActionBarIfNeeded(_ anObject: Any) {
-        guard let _ = navigationController?.topViewController as? MailboxViewController else {
-            return
-        }
-        var id: String = ""
-        if let contextLabel = anObject as? ContextLabel {
-            id = contextLabel.conversationID
-        } else if let message = anObject as? Message {
-            id = message.messageID
-        }
-        guard viewModel.selectedIDs.contains(id) else { return }
-        viewModel.removeSelected(id: id)
-        self.setupNavigationTitle(showSelected: self.viewModel.listEditing)
-        self.dismissActionSheet()
-        if viewModel.selectedIDs.isEmpty {
-            hideActionBar()
-        }
     }
 }
 

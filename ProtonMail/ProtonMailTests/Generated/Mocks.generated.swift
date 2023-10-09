@@ -685,11 +685,6 @@ class MockLocalMessageDataServiceProtocol: LocalMessageDataServiceProtocol {
         cleanMessageStub(removeAllDraft, cleanBadgeAndNotifications)
     }
 
-    @FuncStub(MockLocalMessageDataServiceProtocol.fetchMessages, initialReturn: [Message]()) var fetchMessagesStub
-    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Message] {
-        fetchMessagesStub(selected, context)
-    }
-
 }
 
 class MockLockCacheStatus: LockCacheStatus {
@@ -760,16 +755,6 @@ class MockMailboxCoordinatorProtocol: MailboxCoordinatorProtocol {
         set {
             pendingActionAfterDismissalStub(newValue)
         }
-    }
-
-    @PropertyStub(\MockMailboxCoordinatorProtocol.conversationCoordinator, initialGet: nil) var conversationCoordinatorStub
-    var conversationCoordinator: ConversationCoordinator? {
-        conversationCoordinatorStub()
-    }
-
-    @PropertyStub(\MockMailboxCoordinatorProtocol.singleMessageCoordinator, initialGet: nil) var singleMessageCoordinatorStub
-    var singleMessageCoordinator: SingleMessageCoordinator? {
-        singleMessageCoordinatorStub()
     }
 
     @FuncStub(MockMailboxCoordinatorProtocol.go) var goStub

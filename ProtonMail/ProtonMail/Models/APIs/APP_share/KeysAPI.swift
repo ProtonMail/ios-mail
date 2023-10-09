@@ -58,16 +58,6 @@ final class UserEmailPubKeys: Request {
     }
 }
 
-extension Array where Element: UserEmailPubKeys {
-    func getPromises(api: APIService) -> [Promise<KeysResponse>] {
-        var out: [Promise<KeysResponse>] = [Promise<KeysResponse>]()
-        for it in self {
-            out.append(api.run(route: it))
-        }
-        return out
-    }
-}
-
 final class KeyResponse {
     let flags: Key.Flags
     let publicKey: String?

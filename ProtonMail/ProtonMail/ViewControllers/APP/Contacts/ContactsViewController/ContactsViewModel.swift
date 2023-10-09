@@ -32,9 +32,6 @@ final class ContactsViewModel: ViewModelTimer {
 
     private var snapshotPublisher: SnapshotPublisher<Contact>?
     private var cancellable: AnyCancellable?
-    var isSearching: Bool = false
-
-    private weak var uiDelegate: ContactsVCUIProtocol?
 
     var contactService: ContactDataService {
         return dependencies.user.contactService
@@ -49,10 +46,6 @@ final class ContactsViewModel: ViewModelTimer {
 
     func setupFetchedResults() {
         createSnapshotPublisher(searchText: nil)
-    }
-
-    func set(searching isSearching: Bool) {
-        self.isSearching = isSearching
     }
 
     func search(text: String) {
@@ -140,13 +133,5 @@ final class ContactsViewModel: ViewModelTimer {
 
     override func fireFetch() {
         self.fetchContacts(completion: nil)
-    }
-
-    private func notifyDelegateToRefresh() {
-        uiDelegate?.reloadTable()
-    }
-
-    func setup(uiDelegate: ContactsVCUIProtocol?) {
-        self.uiDelegate = uiDelegate
     }
 }

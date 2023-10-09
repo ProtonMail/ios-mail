@@ -53,8 +53,7 @@ final class MainQueueHandler: QueueHandler {
          labelDataService: LabelsDataService,
          localNotificationService: LocalNotificationService,
          undoActionManager: UndoActionManagerProtocol,
-         user: UserManager,
-         featureFlagCache: FeatureFlagCache
+         user: UserManager
     ) {
         self.userID = user.userID
         self.coreDataService = coreDataService
@@ -108,7 +107,6 @@ final class MainQueueHandler: QueueHandler {
         )
 
         self.dependencies = Dependencies(
-            featureFlagCache: featureFlagCache,
             incomingDefaultService: user.incomingDefaultService,
             uploadDraft: uploadDraftUseCase,
             uploadAttachment: uploadAttachment
@@ -818,20 +816,17 @@ extension MainQueueHandler {
 extension MainQueueHandler {
     struct Dependencies {
         let actionRequest: ExecuteNotificationActionUseCase
-        let featureFlagCache: FeatureFlagCache
         let incomingDefaultService: IncomingDefaultServiceProtocol
         let uploadDraft: UploadDraftUseCase
         let uploadAttachment: UploadAttachmentUseCase
 
         init(
             actionRequest: ExecuteNotificationActionUseCase = ExecuteNotificationAction(),
-            featureFlagCache: FeatureFlagCache,
             incomingDefaultService: IncomingDefaultServiceProtocol,
             uploadDraft: UploadDraftUseCase,
             uploadAttachment: UploadAttachmentUseCase
         ) {
             self.actionRequest = actionRequest
-            self.featureFlagCache = featureFlagCache
             self.incomingDefaultService = incomingDefaultService
             self.uploadDraft = uploadDraft
             self.uploadAttachment = uploadAttachment

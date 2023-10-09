@@ -265,14 +265,9 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
 
     func setupDiffableDataSource(
         tableView: UITableView,
-        shouldAnimateSkeletonLoading: Bool,
         cellConfigurator: @escaping (UITableView, IndexPath, MailboxRow) -> UITableViewCell
     ) {
-        diffableDataSource = .init(
-            tableView: tableView,
-            shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading,
-            cellProvider: cellConfigurator
-        )
+        diffableDataSource = .init(tableView: tableView, cellProvider: cellConfigurator)
     }
 
     func contactGroups() -> [ContactGroupVO] {

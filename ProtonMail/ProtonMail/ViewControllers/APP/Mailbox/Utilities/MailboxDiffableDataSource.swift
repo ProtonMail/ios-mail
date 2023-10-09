@@ -17,24 +17,13 @@
 
 import UIKit
 
-protocol MailboxDataSource {
-    func animateSkeletonLoading()
-    func reloadSnapshot(
-        snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>?,
-        animate: Bool,
-        completion: (() -> Void)?
-    )
-    func snapshot() -> NSDiffableDataSourceSnapshot<Int, MailboxRow>
-    func item(of indexPath: IndexPath) -> MailboxRow?
-}
-
 enum MailboxRow: Hashable {
     case real(MailboxItem)
     // the Int is needed for diffable data sources to generate unique identifiers
     case skeleton(Int)
 }
 
-final class MailboxDiffableDataSource: MailboxDataSource {
+final class MailboxDiffableDataSource {
     private let diffableDataSource: UITableViewDiffableDataSource<Int, MailboxRow>
     private var dataSnapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>?
     private let queue = DispatchQueue(label: "ch.protonmail.inbox.dataSource")
@@ -42,7 +31,6 @@ final class MailboxDiffableDataSource: MailboxDataSource {
 
     init(
         tableView: UITableView,
-        shouldAnimateSkeletonLoading: Bool,
         cellProvider: @escaping UITableViewDiffableDataSource<Int, MailboxRow>.CellProvider
     ) {
         self.diffableDataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: cellProvider)

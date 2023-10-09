@@ -54,10 +54,6 @@ final class ReferralProgramPromptPresenter {
         static let inboxNavigation = 3
     }
 
-    enum ReferralPromptPreConditionEvent {
-        case inboxNavigation
-    }
-
     private let userID: UserID
     private let referralProgram: ReferralProgram
     private let featureFlagCache: FeatureFlagCache

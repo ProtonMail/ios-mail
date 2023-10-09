@@ -30,8 +30,6 @@ extension APIErrorCode {
     /// The error means "Message has already been sent"
     static let alreadyExist = 2500
     static let resourceDoesNotExist = 2501
-    /// The model exists but its current state doesn't allow to execute the action
-    static let incompatible = 2511
     static let invalidRequirements = 2000
 
     static let deviceHavingLowConnectivity = 111222333
