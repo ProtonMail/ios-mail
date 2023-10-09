@@ -53,9 +53,9 @@ class SettingsRobot: CoreElements {
         return DarkModeRobot()
     }
     
-    func selectSwipeActions() -> SwipeActionRobot {
-            staticText(id.swipeActionStaticTextIdentifier).tap()
-            return SwipeActionRobot()
+    func openSwipeActions() -> SwipeActionRobot {
+        staticText(id.swipeActionStaticTextIdentifier).tap()
+        return SwipeActionRobot()
     }
 
     /**

@@ -27,29 +27,35 @@ fileprivate struct id {
     static let moveToTrash = "Trash"
     static let trashIcon = "ic-trash"
     static let archiveIcon = "ic-archive-box"
+    static let spamIcon = "ic-fire"
+    static let labelAsIcon = "ic-tag"
     static let checkmarkButton = "checkmark"
+    static let moveToTrashCellIdentifier = "SelectableTableViewCell.Trash"
+    static let moveToSpamCellIdentifier = "SelectableTableViewCell.Move to spam"
+    static let moveToArchiveCellIdentifier = "SelectableTableViewCell.Move to archive"
+    static let labelAsCellIdentifier = "SelectableTableViewCell.Label as…"
 }
 
 class SwipeActionRobot: CoreElements {
     
     var verify = Verify()
     
-    func leftToRight() -> SwipeActionRobot {
+    func selectLeftToRight() -> SwipeActionRobot {
         cell(id.leftToRightText).tap()
         return self
     }
     
-    func rightToLeft() -> SwipeActionRobot {
+    func selectRightToLeft() -> SwipeActionRobot {
         cell(id.rightToLeftText).tap()
         return self
     }
     
-    func moveToSpam() -> SwipeActionRobot {
+    func selectMoveToSpam() -> SwipeActionRobot {
         staticText(id.moveToSpam).tap()
         return self
     }
     
-    func labelAs() -> SwipeActionRobot {
+    func selectLabelAs() -> SwipeActionRobot {
         staticText(id.labelAs).tap()
         return self
     }
@@ -67,14 +73,27 @@ class SwipeActionRobot: CoreElements {
 
 class Verify: CoreElements {
 
+@discardableResult
     func leftToRightIsMoveToTrash() -> SwipeActionRobot {
-        cell().hasDescendant(image(id.archiveIcon)).checkHasChild(button(id.checkmarkButton))
+        cell(id.moveToTrashCellIdentifier).waitUntilExists(time: 5).onChild(button(id.checkmarkButton)).waitUntilExists().checkExists()
+        return SwipeActionRobot()
+    }
+    
+    @discardableResult
+    func leftToRightIsMoveToSpam() -> SwipeActionRobot {
+        cell(id.moveToSpamCellIdentifier).onChild(button(id.checkmarkButton)).waitUntilExists().checkExists()
         return SwipeActionRobot()
     }
     
     @discardableResult
     func rightToLeftIsMoveToArchive() -> SwipeActionRobot {
-        cell().hasDescendant(image(id.archiveIcon)).checkHasChild(button(id.checkmarkButton))
+        cell(id.moveToArchiveCellIdentifier).onChild(button(id.checkmarkButton)).waitUntilExists().checkExists()
+        return SwipeActionRobot()
+    }
+    
+    @discardableResult
+    func rightToLeftIsLabelAs() -> SwipeActionRobot {
+        cell(id.labelAsCellIdentifier).onChild(button(id.checkmarkButton)).waitUntilExists().checkExists()
         return SwipeActionRobot()
     }
 }

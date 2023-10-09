@@ -118,11 +118,25 @@ class SettingsTests : FixtureAuthenticatedTestCase {
     func testDefaultSwipeActions() {
         MenuRobot()
             .settings()
-            .selectSwipeActions()
-            .leftToRight()
+            .openSwipeActions()
+            .selectLeftToRight()
             .verify.leftToRightIsMoveToTrash()
             .backButton()
-            .rightToLeft()
+            .selectRightToLeft()
             .verify.rightToLeftIsMoveToArchive()
     }
+        
+    func testCustomSwipeActions() {
+        MenuRobot()
+            .settings()
+            .openSwipeActions()
+            .selectLeftToRight()
+            .selectMoveToSpam()
+            .verify.leftToRightIsMoveToSpam()
+            .backButton()
+            .selectRightToLeft()
+            .selectLabelAs()
+            .verify.rightToLeftIsLabelAs()
+    }
 }
+
