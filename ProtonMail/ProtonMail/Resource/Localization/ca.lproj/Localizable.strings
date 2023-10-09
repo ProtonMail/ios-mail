@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Enviament fallit";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "No s'ha pogut enviar el correu electrònic. El missatge s'ha desat com a esborrany.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Aquí no hi ha res";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Necessites almenys un destinatari per enviar";
-
-/* Title */
-"Change sender address to…" = "Canvia l'adreça del remitent a…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Actualitzeu a un pla de pagament per enviar des de la vostra adreça %@";
@@ -480,7 +474,7 @@
 "The request timed out." = "S'ha esgotat la sol·licitud.";
 
 /* Message */
-"Proton servers are unreachable.\nVisit our status page for details." = "Proton servers are unreachable.\nVisit our status page for details.";
+"Proton servers are unreachable.\nVisit our status page for details." = "Els servidors de Proton no són accessibles.\nVisiteu la nostra pàgina d'estat per a més informació.";
 
 /* Title */
 "No connectivity detected…" = "No s'ha detectat cap connectivitat…";
@@ -652,9 +646,6 @@
 
 /* Title */
 "Confirm new mailbox password" = "Confirmeu la contrasenya de la bústia nova";
-
-/* error when sending the message */
-"Unable to send the email" = "No es pot enviar el correu electrònic";
 
 /* Title */
 "Star/unstar" = "Destaca / no destaquis";
@@ -996,9 +987,6 @@
 "Cut" = "Retalla";
 
 /* Title */
-"Compose to" = "Composa per a";
-
-/* Title */
 "Add to contacts" = "Afegeix als contactes";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Enviant missatge…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "El missatge no s'ha pogut enviar. Almenys un domini o adreça electrònica de destinatari no existeix o bé té un format incorrecte.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "no llegit";
@@ -1797,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Ara podeu escollir i reorganitzar les accions d'aquesta barra";
 
 /* Button to block a sender */
-"Block messages from this sender" = "Block messages from this sender";
+"Block messages from this sender" = "Bloqueja els missatges d'aquest remitent";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloqueja";
@@ -1976,7 +1961,7 @@
 "Bug Report Place Holder" = "---Per ajudar-nos a ajudar-vos, proporcioneu tants detalls com pugueu---\n\nResum:\n\nEl problema ha passat més d'una vegada: sí/no\nPassos per reproduir el problema:\nResultat esperat:\nResultat real:\nComentaris:";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Include logs";
+"Include logs" = "Inclou els registres";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Proveu un terme de cerca diferent.";
@@ -2033,10 +2018,10 @@
 "Custom email domains" = "Dominis de correu personalitzats";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "S'ha canviat el remitent.";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "El remitent original d'aquest missatge ja no és vàlid. El missatge s'enviarà des de la seva adreça per defecte %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nom a mostrar";
@@ -2048,16 +2033,19 @@
 "Last name" = "Cognom";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "El camp del nom a mostrar no pot estar buit.";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "El nom del contacte és massa llarg.";
 
 /* The button text for add profile picture */
 "Add photo" = "Afegir foto";
 
 /* The button text for edit profile picture */
 "Edit photo" = "Editar foto";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Establir codi PIN";
@@ -2081,7 +2069,7 @@
 "The PIN codes must match!" = "Els codis PIN han de coincidir!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Please enter old pin code ";
+"Please enter old pin code " = "Introduïu el codi PIN antic ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Canviar codi PIN";
@@ -2093,4 +2081,4 @@
 "Unsubscribe?" = "Voleu anul·lar la subscripció?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Això us donarà de baixa de la llista de correu. El remitent serà notificat per deixar d'enviar correus electrònics a aquesta adreça.";

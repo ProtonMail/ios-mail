@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Не ўдалося адправіць";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Не ўдалося адправіць. Паведамленне захавана ў чарнавіках.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Тут нічога няма";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Для адпраўкі вам неабходны прынамсі адзін атрымальнік";
-
-/* Title */
-"Change sender address to…" = "Змяніць адрас адпраўніка на…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перайдзіце на платны тарыфны план, каб мець магчымасць адпраўляць з вашага адраса %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Пацвердзіць новы пароль паштовай скрыні";
 
-/* error when sending the message */
-"Unable to send the email" = "Немагчыма адправіць ліст";
-
 /* Title */
 "Star/unstar" = "Паставіць/прыбраць зорачку";
 
@@ -996,9 +987,6 @@
 "Cut" = "Выразаць";
 
 /* Title */
-"Compose to" = "Напісаць";
-
-/* Title */
 "Add to contacts" = "Дадаць у кантакты";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Адпраўка паведамлення…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Не атрымалася адправіць паведамленне. Прынамсі адзін адрас электроннай пошты/дамен атрымальніка не існуе або ён дрэнна адфарматаваны.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "непрачытаныя";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Рэдагаваць фатаграфію";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Задаць PIN-код";

@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Afsendelse mislykkedes";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Kunne ikke sende e-mail. Gemte beskeden som kladde.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Intet at se her";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Minimum én adressat kræves for at kunne afsende";
-
-/* Title */
-"Change sender address to…" = "Skift afsenderadresse til…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Opgradér til et abonnement for at sende fra din %@-adresse";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Bekræft ny postkasseadgangskode";
 
-/* error when sending the message */
-"Unable to send the email" = "Kan ikke sende e-mailen";
-
 /* Title */
 "Star/unstar" = "Tilføj stjerne/Fjern stjerne";
 
@@ -996,9 +987,6 @@
 "Cut" = "Klip";
 
 /* Title */
-"Compose to" = "Skriv til";
-
-/* Title */
 "Add to contacts" = "Føj til kontakter";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Sender besked…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Besked kunne ikke sendes. Mindst én modtager e-mailadresse/domæne findes ikke eller er fejlagtigt formateret.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "ulæst";
@@ -2033,10 +2018,10 @@
 "Custom email domains" = "Brugerdefinerede e-maildomæner";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "Afsender ændret";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Den originale afsender af denne besked er ikke længere gyldig. Din besked vil blive sendt fra din standardadresse %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Vist navn";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Redigér foto";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Deaktivér pinkode";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Angiv pinkode";
@@ -2081,7 +2069,7 @@
 "The PIN codes must match!" = "Pinkoderne skal matche!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Please enter old pin code ";
+"Please enter old pin code " = "Indtast gammel pinkode ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Skift pinkode";

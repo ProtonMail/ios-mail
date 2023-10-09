@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "送信に失敗しました。";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "メールの送信に失敗しました。メッセージは下書きに保存されました。";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "何もありません";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "送信するには少なくとも 1 人の宛先が必要です";
-
-/* Title */
-"Change sender address to…" = "送信アドレスを…に変更";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "%@ アドレスから送信するには有料プランへのアップグレードが必要です";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "メールボックスの新しいパスワードの確認";
 
-/* error when sending the message */
-"Unable to send the email" = "メールを送信できません";
-
 /* Title */
 "Star/unstar" = "星印を切り替える";
 
@@ -996,9 +987,6 @@
 "Cut" = "カット";
 
 /* Title */
-"Compose to" = "新規作成";
-
-/* Title */
 "Add to contacts" = "連絡先に追加";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "メッセージを送信中…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "メッセージを送信できませんでした。メールアドレスやドメインが存在しないか、フォーマットが正しくない宛先があります。";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "未読";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "写真を編集";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "PIN コードの設定";

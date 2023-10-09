@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Senden fehlgeschlagen";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "E-Mail konnte nicht gesendet werden. Nachricht wurde als Entwurf gespeichert.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Hier gibt's nichts zu sehen";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Du benötigst mindestens einen Empfänger, um die Nachricht senden zu können";
-
-/* Title */
-"Change sender address to…" = "Absenderadresse ändern zu…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Upgrade auf ein kostenpflichtiges Abonnement, um von deiner Adresse „%@“ senden zu können.";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Neues Mailbox-Passwort bestätigen";
 
-/* error when sending the message */
-"Unable to send the email" = "Fehler beim Senden der E-Mail";
-
 /* Title */
 "Star/unstar" = "Markieren/Markierung entfernen";
 
@@ -996,9 +987,6 @@
 "Cut" = "Ausschneiden";
 
 /* Title */
-"Compose to" = "Nachricht an";
-
-/* Title */
 "Add to contacts" = "Zu Kontakten hinzufügen";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Nachricht senden...";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Nachricht konnte nicht gesendet werden. Mindestens eine Empfänger-E-Mail-Adresse/-Domain existiert nicht oder enthält Fehler in der Formatierung.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "ungelesen";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Foto bearbeiten";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "PIN-Code festlegen";

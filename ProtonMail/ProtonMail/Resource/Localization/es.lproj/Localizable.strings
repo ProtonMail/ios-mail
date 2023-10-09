@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Error con el envió";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Error al enviar el correo. Mensaje guardado como borrador.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Nada que ver aquí";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Necesitas al menos un destinatario para enviar";
-
-/* Title */
-"Change sender address to…" = "Cambiar la dirección del remitente a…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Mejora a un plan de pago para enviar desde tu dirección %@.";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Confirmar nueva contraseña del buzón";
 
-/* error when sending the message */
-"Unable to send the email" = "No se ha podido enviar el mensaje.";
-
 /* Title */
 "Star/unstar" = "Destacar/no destacar";
 
@@ -996,9 +987,6 @@
 "Cut" = "Cortar";
 
 /* Title */
-"Compose to" = "Redactar a";
-
-/* Title */
 "Add to contacts" = "Añadir a contactos";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Enviando mensaje…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "No se ha podido enviar el mensaje. Al menos una dirección de correo electrónico o un dominio del destinatario no existe o tiene un formato incorrecto.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "no leído";
@@ -2059,6 +2044,9 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Editar foto";
 
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Deshabilitar el código PIN";
+
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Establecer código PIN";
 
@@ -2081,7 +2069,7 @@
 "The PIN codes must match!" = "Los códigos PIN deben coincidir.";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Introduce el código PIN antiguo.";
+"Please enter old pin code " = "Introduce el código PIN antiguo ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Cambiar código PIN";

@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Erro ao enviar";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "O e-mail não foi enviado. Mensagem guardada como rascunho.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Não há nada para ver aqui";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Precisa de pelo menos um destinatário para enviar";
-
-/* Title */
-"Change sender address to…" = "Alterar o endereço para…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Subscreva um plano pago para poder enviar do seu endereço %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Confirmar a nova palavra-passe da caixa de correio";
 
-/* error when sending the message */
-"Unable to send the email" = "Não é possível enviar o e-mail.";
-
 /* Title */
 "Star/unstar" = "Adicionar/Remover estrela";
 
@@ -996,9 +987,6 @@
 "Cut" = "Cortar";
 
 /* Title */
-"Compose to" = "Compor para";
-
-/* Title */
 "Add to contacts" = "Adicionar aos contactos";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "A enviar a mensagem…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "A mensagem não pôde ser enviada. Pelo menos um endereço/domínio do destinatário não existe ou está mal formatado.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "não lido";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Editar fotografia";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Definir código PIN";

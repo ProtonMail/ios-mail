@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Ошибка отправки";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Письмо не удалось отправить. Письмо сохранено как черновик.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Тут ничего нет";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Для отправки необходим хотя бы один получатель";
-
-/* Title */
-"Change sender address to…" = "Изменить адрес отправителя на...";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перейдите на платный тариф для отправки с вашего адреса %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Подтвердить новый пароль почтового ящика";
 
-/* error when sending the message */
-"Unable to send the email" = "Невозможно отправить письмо";
-
 /* Title */
 "Star/unstar" = "Отметить как важное/неважное";
 
@@ -996,9 +987,6 @@
 "Cut" = "Вырезать";
 
 /* Title */
-"Compose to" = "Написать письмо";
-
-/* Title */
 "Add to contacts" = "Добавить в контакты";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Отправка сообщения…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Сообщение не может быть отправлено. По крайней мере один адрес электронной почты/домен получателя не существует или неправильно отформатирован.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "непрочитанное";
@@ -2059,6 +2044,9 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Изменить фото";
 
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
+
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Установите PIN-код";
 
@@ -2081,7 +2069,7 @@
 "The PIN codes must match!" = "PIN-коды должны совпадать!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Please enter old pin code ";
+"Please enter old pin code " = "Введите старый PIN-код ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Изменить PIN-код";

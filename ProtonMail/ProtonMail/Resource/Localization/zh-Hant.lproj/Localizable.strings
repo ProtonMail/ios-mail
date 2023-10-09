@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "傳送失敗";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "電郵寄送失敗。訊息儲存為草稿。";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "這裡空空如也";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "至少需有一位收件人";
-
-/* Title */
-"Change sender address to…" = "變更寄件人電郵位址為...";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "升級至付款方案後，您將能夠從 %@ 傳送郵件";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "確認新郵箱密碼";
 
-/* error when sending the message */
-"Unable to send the email" = "無法寄送信件";
-
 /* Title */
 "Star/unstar" = "加上星號/移除星號";
 
@@ -996,9 +987,6 @@
 "Cut" = "剪下";
 
 /* Title */
-"Compose to" = "撰寫到";
-
-/* Title */
 "Add to contacts" = "加入至通訊錄";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "正在傳送郵件…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "無法傳送郵件。至少一個收件人的電郵位址/網域不存在或格式不正確。";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "未讀";
@@ -2035,10 +2020,10 @@
 "Custom email domains" = "自訂電子郵件網域";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "寄件者已變更";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "此郵件的原寄件者已無效，您的訊息將會從預設電子郵件 %@ 寄出。";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "顯示名稱";
@@ -2060,6 +2045,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "編輯相片";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "設定 PIN 碼";
@@ -2083,7 +2071,7 @@
 "The PIN codes must match!" = "PIN 碼必須相符！";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Please enter old pin code ";
+"Please enter old pin code " = "請輸入舊的個人識別數字代碼 ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "變更 PIN 碼";
