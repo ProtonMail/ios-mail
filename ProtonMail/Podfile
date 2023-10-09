@@ -161,4 +161,9 @@ post_install do | installer |
       end
     end
   end
+
+  installer.pods_project.build_configurations.each do |config|
+    # -warn-long-function-bodies refers to compilation time, not actual length in lines
+    config.build_settings['OTHER_SWIFT_FLAGS'] = "#{config.build_settings['OTHER_SWIFT_FLAGS']} -Xfrontend -warn-long-function-bodies=100 -Xfrontend -warn-long-expression-type-checking=100"
+  end
 end
