@@ -100,6 +100,10 @@ extension Locked where T == [UserInfo] {
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PushService.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "PMCommon.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonCore_DataModel.UserInfo")
+        NSKeyedUnarchiver.setClass(ToolbarActions.classForKeyedUnarchiver(), 
+                                   forClassName: "ProtonCore_DataModel.ToolbarActions")
+        NSKeyedUnarchiver.setClass(ReferralProgram.classForKeyedUnarchiver(), 
+                                   forClassName: "ProtonCore_DataModel.ReferralProgram")
 
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "ProtonMail.Address")
         NSKeyedUnarchiver.setClass(Address.classForKeyedUnarchiver(), forClassName: "Share.Address")

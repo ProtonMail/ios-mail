@@ -142,6 +142,10 @@ name: ProtonCore-AccountSwitcher, nameSpecified:
 body:                     …
 version: 12.0.0
 
+name: ProtonCore-AccountSwitcher, nameSpecified: 
+body:                     …
+version: 12.0.0
+
 name: ProtonCore-APIClient, nameSpecified: 
 body:                     …
 version: 12.0.0
@@ -331,6 +335,10 @@ body:                     …
 version: 12.0.0
 
 name: ProtonCore-FeatureSwitch, nameSpecified: 
+body:                     …
+version: 12.0.0
+
+name: ProtonCore-ForceUpgrade, nameSpecified: 
 body:                     …
 version: 12.0.0
 
