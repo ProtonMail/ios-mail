@@ -75,7 +75,7 @@ protocol MessageDataServiceProtocol: Service {
                              mailbox_pwd: Passphrase,
                              sendAddress: Address,
                              inManagedObjectContext context: NSManagedObjectContext) -> Message
-    func saveDraft(_ message: Message?)
+    func saveDraft(_ message: MessageEntity)
     func updateMessage(_ message: Message,
                        expirationTimeInterval: TimeInterval,
                        body: String,
@@ -271,17 +271,15 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     // MARK : Send message
 
-    func send(inQueue message: Message, deliveryTime: Date?) {
-        message.managedObjectContext!.perform {
+    func send(inQueue message: MessageEntity, deliveryTime: Date?) {
             self.localNotificationService.scheduleMessageSendingFailedNotification(
-                .init(messageID: .init(message.messageID), subtitle: message.title)
+                .init(messageID: message.messageID, subtitle: message.title)
             )
 
             self.queueMessage(
-                message: message,
-                action: .send(messageObjectID: message.objectID.uriRepresentation().absoluteString, deliveryTime: deliveryTime)
+                with: message.objectID,
+                action: .send(messageObjectID: message.objectID.rawValue.uriRepresentation().absoluteString, deliveryTime: deliveryTime)
             )
-        }
     }
 
     func updateMessageCount(completion: (() -> Void)? = nil) {
@@ -793,20 +791,21 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
-    func saveDraft(_ message: Message?) {
-        if let message = message, let context = message.managedObjectContext {
-            context.performAndWait {
-                if message.title.isEmpty {
-                    message.title = "(No Subject)"
-                }
+    func saveDraft(_ message: MessageEntity) {
+        if message.title.isEmpty {
+            contextProvider.performAndWaitOnRootSavingContext { context in
+                guard let msg = try? context.existingObject(with: message.objectID.rawValue) as? Message else { return }
+                
+                msg.title = "(No Subject)"
                 _ = context.saveUpstreamIfNeeded()
-
-                self.queueMessage(
-                    message: message,
-                    action: .saveDraft(messageObjectID: message.objectID.uriRepresentation().absoluteString)
-                )
+                
             }
         }
+
+        queueMessage(
+            with: message.objectID,
+            action: .saveDraft(messageObjectID: message.objectID.rawValue.uriRepresentation().absoluteString)
+        )
     }
 
     func deleteDraft(message: MessageEntity) {
@@ -1047,20 +1046,25 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         cleanUp()
     }
 
-    private func queueMessage(message: Message, action: MessageAction) {
-        if message.objectID.isTemporaryID {
-            do {
-                try message.managedObjectContext?.obtainPermanentIDs(for: [message])
-            } catch {
-                assertionFailure("\(error)")
-            }
-        }
+    private func queueMessage(with messageObjectID: ObjectID, action: MessageAction) {
         var messageID = ""
-        message.managedObjectContext?.performAndWait {
+        
+        contextProvider.performAndWaitOnRootSavingContext { context in
+            guard let message = try? context.existingObject(with: messageObjectID.rawValue) as? Message else {
+                return
+            }
+            
+            if message.objectID.isTemporaryID {
+                do {
+                    try context.obtainPermanentIDs(for: [message])
+                } catch {
+                    assertionFailure("\(error)")
+                }
+            }
             self.cachePropertiesForBackground(in: message)
             messageID = message.messageID
         }
-
+        
         let task = QueueManager.Task(messageID: messageID, action: action, userID: userID, dependencyIDs: [], isConversation: false)
         queueManager?.addTask(task)
     }

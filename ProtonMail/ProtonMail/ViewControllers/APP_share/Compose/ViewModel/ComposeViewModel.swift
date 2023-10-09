@@ -497,7 +497,7 @@ extension ComposeViewModel {
             guard let self = self else { return }
 
             self.updateDraft()
-            guard let msg = self.composerMessageHelper.getRawMessageObject() else {
+            guard let msg = self.composerMessageHelper.getMessageEntity() else {
                 return
             }
             self.messageService.send(inQueue: msg, deliveryTime: deliveryTime)

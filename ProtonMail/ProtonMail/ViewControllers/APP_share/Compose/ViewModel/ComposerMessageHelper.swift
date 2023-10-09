@@ -112,7 +112,11 @@ final class ComposerMessageHelper {
     }
 
     func uploadDraft() {
-        dependencies.messageDataService.saveDraft(self.rawMessage)
+        guard let message = getMessageEntity() else {
+            return
+        }
+
+        dependencies.messageDataService.saveDraft(message)
     }
 
     func markAsRead() {
@@ -242,11 +246,10 @@ final class ComposerMessageHelper {
         guard let rawMessage = self.rawMessage else {
             return nil
         }
-        var message: MessageEntity?
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            message = MessageEntity(rawMessage)
+
+        return dependencies.contextProvider.read { context in
+            MessageEntity(rawMessage)
         }
-        return message
     }
 
     func originalTo() -> String? {
