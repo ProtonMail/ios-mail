@@ -75,6 +75,7 @@ struct TaskCompletionHelper {
 
     func handleReachabilityChangedNotification(isTimeoutError: Bool, isInternetIssue: Bool) {
         // Show timeout error banner or not reachable banner in mailbox
+        guard isTimeoutError || isInternetIssue else { return }
         let reason: ConnectionFailedReason = isTimeoutError ? .timeout : .internetIssue
         NotificationCenter.default.post(Notification(name: .tempNetworkError, object: reason, userInfo: nil))
     }
@@ -102,9 +103,8 @@ struct TaskCompletionHelper {
                 error: error,
                 currentNetworkStatus: InternetConnectionStatusProvider.shared.status
             )
-
-            handleReachabilityChangedNotification(isTimeoutError: errorCode == NSURLErrorTimedOut,
-                                                  isInternetIssue: isInternetIssue)
+            let isTimeoutError = errorCode == NSURLErrorTimedOut
+            handleReachabilityChangedNotification(isTimeoutError: isTimeoutError, isInternetIssue: isInternetIssue)
         }
 
         calculateTaskResult(result: &taskResult,
