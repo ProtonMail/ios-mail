@@ -33,12 +33,10 @@ typealias FetchAndVerifyContactsUseCase = UseCase<[PreContact], FetchAndVerifyCo
 /// - If a fetching contact request fails, the error is ignored and that Contact won't be returned.
 /// - Contacts that fail verification of their digital signature are ignored and not returned.
 final class FetchAndVerifyContacts: FetchAndVerifyContactsUseCase {
-    private let currentUser: UserID
     private let currentUserKeys: [ArmoredKey]
     private let dependencies: Dependencies
 
-    init(currentUser: UserID, currentUserKeys: [ArmoredKey], dependencies: Dependencies) {
-        self.currentUser = currentUser
+    init(currentUserKeys: [ArmoredKey], dependencies: Dependencies) {
         self.currentUserKeys = currentUserKeys
         self.dependencies = dependencies
     }
@@ -184,6 +182,6 @@ extension FetchAndVerifyContacts {
             cacheService: user.cacheService,
             contactProvider: user.contactService
         )
-        self.init(currentUser: user.userID, currentUserKeys: user.userInfo.userPrivateKeys, dependencies: dependencies)
+        self.init(currentUserKeys: user.userInfo.userPrivateKeys, dependencies: dependencies)
     }
 }

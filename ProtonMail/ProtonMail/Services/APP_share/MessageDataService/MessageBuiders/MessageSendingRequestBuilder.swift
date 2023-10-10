@@ -39,7 +39,6 @@ final class MessageSendingRequestBuilder {
         case sessionKeyFailedToCreate
     }
 
-    private(set) var bodyDataPacket: Data?
     private(set) var bodySessionKey: Data?
     private(set) var bodySessionAlgo: Algorithm?
 
@@ -68,8 +67,7 @@ final class MessageSendingRequestBuilder {
         self.dependencies = dependencies
     }
 
-    func update(bodyData data: Data, bodySession: Data, algo: Algorithm) {
-        self.bodyDataPacket = data
+    func update(bodySession: Data, algo: Algorithm) {
         self.bodySessionKey = bodySession
         self.bodySessionAlgo = algo
     }

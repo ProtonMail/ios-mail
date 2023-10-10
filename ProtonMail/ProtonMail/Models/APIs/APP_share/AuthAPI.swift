@@ -37,8 +37,4 @@ final class AuthDeleteRequest: Request {
     var isAuth: Bool {
         return true
     }
-
-    var autoRetry: Bool {
-        return false
-    }
 }

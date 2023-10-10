@@ -81,8 +81,7 @@ class UserManager: Service, ObservableObject {
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
-                self.authCredentialAccessQueue.async { [weak self] in
-                    self?.isLoggedOut = true
+                self.authCredentialAccessQueue.async {
                     seal.fulfill_()
                 }
         }
@@ -108,7 +107,6 @@ class UserManager: Service, ObservableObject {
     }
     let authHelper: AuthHelper
     private(set) var authCredential: AuthCredential
-    private(set) var isLoggedOut = false
 
     var isUserSelectedUnreadFilterInInbox = false
 
@@ -523,7 +521,6 @@ extension UserManager: AuthHelperDelegate {
             assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
         }
         self.authCredential = authCredential
-        isLoggedOut = false
         self.save()
     }
 
@@ -531,7 +528,6 @@ extension UserManager: AuthHelperDelegate {
         if !isAuthenticatedSession {
             assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
         }
-        isLoggedOut = true
         self.eventsService.stop()
         NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": sessionUID])
     }

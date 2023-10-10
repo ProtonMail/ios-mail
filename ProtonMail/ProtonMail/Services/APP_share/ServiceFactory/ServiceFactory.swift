@@ -46,14 +46,6 @@ final class ServiceFactory {
         return get(by: UserCachedStatus.self)
     }
 
-    var isEmpty: Bool {
-        servicesDictionary.isEmpty
-    }
-
-    var count: Int {
-        servicesDictionary.count
-    }
-
     func add<T>(_ protocolType: T.Type, for instance: Service, with name: String? = nil) {
         let name = name ?? String(reflecting: protocolType)
         servicesDictionary[name] = instance
@@ -68,10 +60,6 @@ final class ServiceFactory {
             fatalError("firstly you have to add the service. Missing: \(name)")
         }
         return service
-    }
-
-    func removeAll() {
-        servicesDictionary.removeAll()
     }
 }
 

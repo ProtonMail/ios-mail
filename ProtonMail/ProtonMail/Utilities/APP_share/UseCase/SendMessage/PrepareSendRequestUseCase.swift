@@ -155,7 +155,7 @@ private enum SendMessageRequestStep: String {
 private extension MessageSendingRequestBuilder {
 
     func update(with data: SendMessageMetadata) {
-        update(bodyData: data.encryptedBody, bodySession: data.bodySessionKey, algo: data.bodySessionAlgorithm)
+        update(bodySession: data.bodySessionKey, algo: data.bodySessionAlgorithm)
         if let decryptedBody = data.decryptedBody {
             set(clearBody: decryptedBody)
         }

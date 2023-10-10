@@ -44,7 +44,6 @@ protocol MailboxViewModelUIProtocol: AnyObject {
 
 class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     let labelID: LabelID
-    let labelType: PMLabelType
     /// This field saves the label object of custom folder/label
     private(set) var label: LabelInfo?
     /// This field stores the latest update time of the user event.
@@ -126,7 +125,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
 
     init(labelID: LabelID,
          label: LabelInfo?,
-         labelType: PMLabelType,
          userManager: UserManager,
          pushService: PushNotificationServiceProtocol,
          coreDataContextProvider: CoreDataContextProviderProtocol,
@@ -145,7 +143,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     ) {
         self.labelID = labelID
         self.label = label
-        self.labelType = labelType
         self.user = userManager
         self.messageService = userManager.messageService
         self.eventsService = eventsService
