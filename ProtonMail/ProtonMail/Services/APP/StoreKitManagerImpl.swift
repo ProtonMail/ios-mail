@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Payments
+import ProtonCorePayments
 
 class StoreKitManagerImpl: StoreKitManagerDelegate {
     typealias Dependencies = AnyObject & HasUsersManager & HasUnlockManager

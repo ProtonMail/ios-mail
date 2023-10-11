@@ -24,9 +24,9 @@ import Combine
 import CoreData
 import Foundation
 import PromiseKit
-import ProtonCore_AccountSwitcher
-import ProtonCore_DataModel
-import ProtonCore_UIFoundations
+import ProtonCoreAccountSwitcher
+import ProtonCoreDataModel
+import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import UIKit
 

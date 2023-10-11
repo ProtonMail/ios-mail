@@ -19,11 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
-import ProtonCore_Observability
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
+import ProtonCoreObservability
 
 public typealias SummaryStartButtonText = String
 
@@ -63,7 +64,7 @@ class SummaryViewController: UIViewController, AccessibleView {
     @IBOutlet weak var header: UILabel! {
         didSet {
             header.textColor = ColorProvider.TextNorm
-            header.text = CoreString._su_summary_title
+            header.text = LUITranslation.summary_title.l10n
             header.font = .adjustedFont(forTextStyle: .title1, weight: .bold)
             header.adjustsFontForContentSizeCategory = true
             header.adjustsFontSizeToFitWidth = false
@@ -80,7 +81,7 @@ class SummaryViewController: UIViewController, AccessibleView {
     @IBOutlet weak var welcomeLabel: UILabel! {
         didSet {
             welcomeLabel.textColor = ColorProvider.TextNorm
-            welcomeLabel.text = CoreString._su_summary_welcome
+            welcomeLabel.text = LUITranslation.summary_welcome.l10n
             welcomeLabel.font = .adjustedFont(forTextStyle: .body)
             welcomeLabel.adjustsFontForContentSizeCategory = true
             welcomeLabel.adjustsFontSizeToFitWidth = false
@@ -115,3 +116,5 @@ class SummaryViewController: UIViewController, AccessibleView {
     }
 
 }
+
+#endif

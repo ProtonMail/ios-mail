@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_DataModel
+import ProtonCoreCrypto
+import ProtonCoreDataModel
 @testable import ProtonMail
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 final class MockPrepareSendMetadata: UseCase<SendMessageMetadata, PrepareSendMetadata.Params> {
 

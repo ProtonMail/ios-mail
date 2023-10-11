@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 class NonExpandedHeaderViewModel: HeaderViewModel {
     enum TrackerDetectionStatus {

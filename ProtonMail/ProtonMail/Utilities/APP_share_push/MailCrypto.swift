@@ -21,10 +21,10 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CryptoKit
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
-import ProtonCore_Log
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
+import ProtonCoreLog
 
 /// Helper
 class MailCrypto {

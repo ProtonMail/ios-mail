@@ -8,7 +8,7 @@
 
 import XCTest
 
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 class SpamTests: FixtureAuthenticatedTestCase {
 

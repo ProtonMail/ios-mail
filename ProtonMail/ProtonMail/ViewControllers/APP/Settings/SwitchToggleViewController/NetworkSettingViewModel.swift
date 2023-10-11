@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Doh
-import ProtonCore_UIFoundations
-import enum ProtonCore_Utilities.Either
+import ProtonCoreDoh
+import ProtonCoreUIFoundations
+import enum ProtonCoreUtilities.Either
 
 final class NetworkSettingViewModel: SwitchToggleVMProtocol {
     var input: SwitchToggleVMInput { self }

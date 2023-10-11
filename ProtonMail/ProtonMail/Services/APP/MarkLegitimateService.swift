@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import PromiseKit
-import ProtonCore_Services
+import ProtonCoreServices
 
 // sourcery: mock
 protocol MarkLegitimateActionHandler: AnyObject {

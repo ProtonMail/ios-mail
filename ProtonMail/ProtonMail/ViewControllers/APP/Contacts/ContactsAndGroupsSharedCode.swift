@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Contacts
-import ProtonCore_UIFoundations
-import ProtonCore_PaymentsUI
+import ProtonCoreUIFoundations
+import ProtonCorePaymentsUI
 
 class ContactsAndGroupsSharedCode: ProtonMailViewController {
     typealias Dependencies = HasPaymentsUIFactory

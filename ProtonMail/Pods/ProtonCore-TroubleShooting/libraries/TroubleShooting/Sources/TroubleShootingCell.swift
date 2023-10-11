@@ -20,9 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#if os(iOS)
+
 import UIKit
 import MessageUI
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 protocol TroubleShootingCellDelegate: AnyObject {
     func mailto(email: String)
@@ -105,3 +107,5 @@ class TroubleShootingCell: UITableViewCell, UITextViewDelegate {
         return true
     }
 }
+
+#endif

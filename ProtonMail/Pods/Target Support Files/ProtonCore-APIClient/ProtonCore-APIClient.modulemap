@@ -1,4 +1,4 @@
-framework module ProtonCore_APIClient {
+framework module ProtonCoreAPIClient {
   umbrella header "ProtonCore-APIClient-umbrella.h"
 
   export *

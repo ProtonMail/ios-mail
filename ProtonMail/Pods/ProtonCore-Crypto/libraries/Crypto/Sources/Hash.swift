@@ -22,8 +22,8 @@
 
 import Foundation
 import CommonCrypto
-import ProtonCore_Utilities
-import ProtonCore_CryptoGoInterface
+import ProtonCoreUtilities
+import ProtonCoreCryptoGoInterface
 
 public struct Hashable<Type> {
     public init(value: Type) {

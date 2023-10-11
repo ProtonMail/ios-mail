@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import protocol ProtonCore_Doh.DoHInterface
-import protocol ProtonCore_Services.APIService
+import protocol ProtonCoreDoh.DoHInterface
+import protocol ProtonCoreServices.APIService
 
 typealias FetchAttachmentUseCase = UseCase<AttachmentFile, FetchAttachment.Params>
 

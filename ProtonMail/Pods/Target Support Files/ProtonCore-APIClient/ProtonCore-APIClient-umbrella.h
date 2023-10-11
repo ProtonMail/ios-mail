@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_APIClientVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_APIClientVersionString[];
+FOUNDATION_EXPORT double ProtonCoreAPIClientVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreAPIClientVersionString[];
 

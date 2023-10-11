@@ -4,15 +4,15 @@ import BackgroundTasks
 import CoreData
 import LocalAuthentication
 import Network
-import ProtonCore_Crypto
-import ProtonCore_Environment
-import ProtonCore_Keymaker
-import ProtonCore_PaymentsUI
-import ProtonCore_Services
-import ProtonCore_TestingToolkit
+import ProtonCoreCrypto
+import ProtonCoreEnvironment
+import ProtonCoreKeymaker
+import ProtonCorePaymentsUI
+import ProtonCoreServices
+import ProtonCoreTestingToolkit
 
 import class PromiseKit.Promise
-import class ProtonCore_DataModel.UserInfo
+import class ProtonCoreDataModel.UserInfo
 
 @testable import ProtonMail
 

@@ -20,21 +20,24 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import OpenPGP
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import ProtonCore_Hash
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import ProtonCoreHash
 
 public final class PasswordHash {
     enum PasswordError: Error {
         case hashEmpty
         case hashEmptyEncode
         case hashSizeWrong
+        case cantGenerateRandomBits
     }
     
-    public static func random(bits: Int32) -> Data {
-        let salt: Data = PMNOpenPgp.randomBits(bits)
-        return salt
+    public static func random(bits: Int32) throws -> Data {
+        guard let data = try SrpRandomBits(Int(bits)) else {
+            throw PasswordError.cantGenerateRandomBits
+        }
+
+        return data
     }
 
     public static func hashPassword(_ password: String, salt: Data) -> String {
@@ -64,9 +67,9 @@ public final class PasswordHash {
     
     /// Generate a 32 byte random secret and encode it in a 64 byte hex string
     /// - Returns: Passphrase
-    public static func genAddrPassphrase() -> Passphrase {
+    public static func genAddrPassphrase() throws -> Passphrase {
         /// generate address key secret size 32 bytes or 256 bits
-        let secret = PasswordHash.random(bits: PasswordSaltSize.addressKey.int32Bits) // generate random 32 bytes
+        let secret = try PasswordHash.random(bits: PasswordSaltSize.addressKey.int32Bits) // generate random 32 bytes
         /// hex string of secret data
         let hexSecret = HMAC.hexStringFromData(secret)
         assert(hexSecret.count == 64)

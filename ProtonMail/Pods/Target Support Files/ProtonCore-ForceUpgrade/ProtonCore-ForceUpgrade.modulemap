@@ -1,4 +1,4 @@
-framework module ProtonCore_ForceUpgrade {
+framework module ProtonCoreForceUpgrade {
   umbrella header "ProtonCore-ForceUpgrade-umbrella.h"
 
   export *

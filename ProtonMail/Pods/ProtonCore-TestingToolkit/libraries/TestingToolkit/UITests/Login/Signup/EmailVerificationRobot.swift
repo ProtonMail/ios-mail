@@ -19,20 +19,22 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import Foundation
 import fusion
-import ProtonCore_CoreTranslation
+import ProtonCoreLoginUI
 
 private let titleId = "EmailVerificationViewController.emailVerificationTitleLabel"
 private let verificationCodeTextField = "EmailVerificationViewController.verificationCodeTextField.textField"
 private let nextButtonId = "EmailVerificationViewController.nextButton"
 private let resendCodeButtonId = "EmailVerificationViewController.notReceivedCodeButton"
-private let bannerSendMessage = CoreString._hv_verification_sent_banner
+private let bannerSendMessage = LUITranslation.verification_sent_banner.l10n
 private let verificationDialogTitleName = "Invalid verification code"
-private let verificationDialogMessageName = CoreString._su_invalid_verification_alert_message
+private let verificationDialogMessageName = LUITranslation.invalid_verification_alert_message.l10n
 private let verificationDialogResendButtonAccessibility = "resendButton"
 private let verificationDialogChangeEmailButtonAccessibility = "changeEmailButton"
-private let resendDialogTitleName = CoreString._hv_verification_new_alert_title
+private let resendDialogTitleName = LUITranslation.verification_new_alert_title.l10n
 private let resendDialogNewCodeButtonAccessibility = "newCodeButton"
 private let resendDialogCancelButtonAccessibility = "cancelButton"
 
@@ -43,14 +45,14 @@ public class EmailVerificationRobot: CoreElements {
     public class Verify: CoreElements {
         @discardableResult
         public func emailVerificationScreenIsShown() -> EmailVerificationRobot {
-            staticText(titleId).wait().checkExists()
+            staticText(titleId).waitUntilExists().checkExists()
             return EmailVerificationRobot()
         }
         
         @discardableResult
         public func resendEmailMessage(email: String) -> EmailVerificationRobot {
             let msg = String(format: bannerSendMessage, email)
-            textView(msg).wait().checkExists()
+            textView(msg).waitUntilExists().checkExists()
             return EmailVerificationRobot()
         }
         
@@ -88,8 +90,8 @@ public class EmailVerificationRobot: CoreElements {
         public final class Verify: CoreElements {
             @discardableResult
             public func verificationDialogDisplay() -> EmailVerificationDialogRobot {
-                staticText(verificationDialogTitleName).wait().checkExists()
-                staticText(verificationDialogMessageName).wait().checkExists()
+                staticText(verificationDialogTitleName).waitUntilExists().checkExists()
+                staticText(verificationDialogMessageName).waitUntilExists().checkExists()
                 return EmailVerificationDialogRobot()
             }
         }
@@ -113,9 +115,9 @@ public class EmailVerificationRobot: CoreElements {
         public final class Verify: CoreElements {
             @discardableResult
             public func resendDialogDisplay(email: String) -> ResendDialogRobot {
-                let messageName = String(format: CoreString._hv_verification_new_alert_message, email)
-                staticText(resendDialogTitleName).wait().checkExists()
-                staticText(messageName).wait().checkExists()
+                let messageName = String(format: LUITranslation.verification_new_alert_message.l10n, email)
+                staticText(resendDialogTitleName).waitUntilExists().checkExists()
+                staticText(messageName).waitUntilExists().checkExists()
                 return ResendDialogRobot()
             }
         }
@@ -133,3 +135,5 @@ public class EmailVerificationRobot: CoreElements {
         }
     }
 }
+
+#endif

@@ -19,11 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
-import ProtonCore_TestingToolkit_UnitTests_Core
+#if canImport(ProtonCoreTestingToolkitUnitTestsCore)
+import ProtonCoreTestingToolkitUnitTestsCore
 #endif
 import TrustKit
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 public typealias AnyDecodableResponseCompletion = (_ task: URLSessionDataTask?, _ result: Result<Any, SessionResponseError>) -> Void
 
@@ -44,7 +44,7 @@ public final class SessionMock: Session {
     }
     
     @FuncStub(SessionMock.request(with:onDataTaskCreated:completion:)) public var requestJSONStub
-    public func request(with request: ProtonCore_Networking.SessionRequest,
+    public func request(with request: ProtonCoreNetworking.SessionRequest,
                         onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                         completion: @escaping JSONResponseCompletion) {
         requestJSONStub(request, onDataTaskCreated, completion)
@@ -55,7 +55,7 @@ public final class SessionMock: Session {
                                       onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                                       completion: @escaping AnyDecodableResponseCompletion) {}
     @FuncStub(SessionMock.genericRequestErased(with:jsonDecoder:onDataTaskCreated:completion:)) public var requestDecodableStub
-    public func request<T>(with request: ProtonCore_Networking.SessionRequest,
+    public func request<T>(with request: ProtonCoreNetworking.SessionRequest,
                            jsonDecoder: JSONDecoder?,
                            onDataTaskCreated: @escaping (URLSessionDataTask) -> Void,
                            completion: @escaping DecodableResponseCompletion<T>) where T: Decodable {

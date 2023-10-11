@@ -20,9 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_Authentication
-import ProtonCore_Networking
+import ProtonCoreCrypto
+import ProtonCoreAuthentication
+import ProtonCoreNetworking
 
 extension AuthService {
     struct SetupKeysEndpointResponse: APIDecodableResponse {}

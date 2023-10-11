@@ -22,6 +22,7 @@
 #if os(iOS)
 
 import UIKit
+import ProtonCoreFoundations
 
 extension UIViewController {
     public func lockUI() {
@@ -68,7 +69,7 @@ public extension UIViewController {
 
     static var topVC: UIViewController? {
         var topViewController: UIViewController?
-        let keyWindow = UIApplication.getInstance()?.windows.filter { $0.isKeyWindow }.first
+        let keyWindow = UIApplication.firstKeyWindow
         if var top = keyWindow?.rootViewController {
             while let presentedViewController = top.presentedViewController {
                 top = presentedViewController

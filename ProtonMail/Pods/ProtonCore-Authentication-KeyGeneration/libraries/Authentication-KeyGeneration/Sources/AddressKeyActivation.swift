@@ -19,14 +19,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import OpenPGP
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
 import Foundation
-import ProtonCore_Authentication
-import ProtonCore_DataModel
-import ProtonCore_Utilities
-import ProtonCore_Hash
+import ProtonCoreAuthentication
+import ProtonCoreDataModel
+import ProtonCoreUtilities
+import ProtonCoreHash
 
 final class AddressKeyActivation {
     
@@ -100,7 +99,7 @@ final class AddressKeyActivation {
                 let clearToken = try activation.decryptMessageWithSingleKeyNonOptional(armoredUserKey, passphrase: mailboxPassphrase)
                                 
                 // generate random addr passphrase
-                let newPassphrase = PasswordHash.genAddrPassphrase()
+                let newPassphrase = try PasswordHash.genAddrPassphrase()
                 
                 // use the new hexed secret to update the address private key
                 let updatedPrivateKey = try Crypto.updatePassphrase(privateKey: ArmoredKey.init(value: key.privateKey),

@@ -21,9 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_Keymaker
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreKeymaker
+import ProtonCoreNetworking
 
 extension Locked where T == [AuthCredential] {
     internal init(clearValue: T, with key: MainKey) throws {
@@ -51,6 +51,7 @@ extension Locked where T == [AuthCredential] {
 
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PMCommon.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "AuthCredential")
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonCore_Networking.AuthCredential")
 
         guard let value = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? T else {
             throw LockedErrors.keyDoesNotMatch

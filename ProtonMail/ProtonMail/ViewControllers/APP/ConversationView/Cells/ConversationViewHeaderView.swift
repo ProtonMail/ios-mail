@@ -1,4 +1,4 @@
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 class ConversationViewHeaderView: UIView {

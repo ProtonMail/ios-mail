@@ -22,9 +22,8 @@
 
 import Contacts
 import CoreData
-import OpenPGP
-import ProtonCore_Crypto
-import ProtonCore_DataModel
+import ProtonCoreCrypto
+import ProtonCoreDataModel
 import UIKit
 
 class ContactImportViewController: UIViewController {

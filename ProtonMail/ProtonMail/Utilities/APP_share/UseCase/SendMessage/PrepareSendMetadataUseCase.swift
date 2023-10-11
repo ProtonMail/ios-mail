@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import class ProtonCore_DataModel.Address
-import class ProtonCore_DataModel.Key
-import class ProtonCore_DataModel.UserInfo
-import ProtonCore_Crypto
+import class ProtonCoreDataModel.Address
+import class ProtonCoreDataModel.Key
+import class ProtonCoreDataModel.UserInfo
+import ProtonCoreCrypto
 import ProtonMailAnalytics
 
 typealias PrepareSendMetadataUseCase = UseCase<SendMessageMetadata, PrepareSendMetadata.Params>

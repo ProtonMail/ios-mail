@@ -22,7 +22,7 @@
 //
 
 import Foundation
-import ProtonCore_Services
+import ProtonCoreServices
 
 protocol SettingsSwipeActionSelectViewModel {
     var settingSwipeActions: [SwipeActionSettingType] { get }

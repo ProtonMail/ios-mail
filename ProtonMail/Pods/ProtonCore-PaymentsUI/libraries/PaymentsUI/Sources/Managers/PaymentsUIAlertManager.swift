@@ -1,6 +1,6 @@
 //
 //  PaymentsUIAlertManager.swift
-//  ProtonCore_PaymentsUI - Created on 19/08/2021.
+//  ProtonCorePaymentsUI - Created on 19/08/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,9 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_CoreTranslation
-import ProtonCore_Payments
-import ProtonCore_UIFoundations
+#if os(iOS)
+
+import Foundation
+import ProtonCorePayments
+import ProtonCoreUIFoundations
 
 protocol PaymentsUIAlertManager: AlertManagerProtocol {
     var viewController: PaymentsUIViewController? { get set }
@@ -43,7 +45,7 @@ extension PaymentsUIAlertManager {
     func showErrorOnDelegatedManager(message: String) {
         delegatedAlertManager.title = nil
         delegatedAlertManager.message = message
-        delegatedAlertManager.confirmButtonTitle = CoreString._hv_ok_button
+        delegatedAlertManager.confirmButtonTitle = PUITranslations._core_ok_button.l10n
         delegatedAlertManager.cancelButtonTitle = nil
         delegatedAlertManager.confirmButtonStyle = .cancel
         delegatedAlertManager.cancelButtonStyle = .default
@@ -90,7 +92,7 @@ final class LocallyPresentingPaymentsUIAlertManager: PaymentsUIAlertManager {
             viewController.showOverlayConnectionError()
         } else {
             let banner = PMBanner(message: message, style: PMBannerNewStyle.error, dismissDuration: Double.infinity)
-            banner.addButton(text: CoreString._hv_ok_button) {
+            banner.addButton(text: PUITranslations._core_ok_button.l10n) {
                 $0.dismiss()
                 action?()
             }
@@ -123,3 +125,5 @@ final class AlwaysDelegatingPaymentsUIAlertManager: PaymentsUIAlertManager {
         showErrorOnDelegatedManager(message: message)
     }
 }
+
+#endif

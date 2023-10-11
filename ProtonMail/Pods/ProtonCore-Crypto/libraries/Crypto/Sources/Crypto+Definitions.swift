@@ -20,9 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCryptoGoInterface
 
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 internal func throwing<T>(operation: (inout NSError?) -> T) throws -> T {
     var error: NSError?

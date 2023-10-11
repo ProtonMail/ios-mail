@@ -20,7 +20,10 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-import ProtonCore_Doh
+#if os(iOS)
+
+import ProtonCoreDoh
+import UIKit
 
 // use this call back to update your local cache
 public typealias OnStatusChanged = (_ newStatus: DoHStatus) -> Void
@@ -134,3 +137,5 @@ extension UIViewController {
         self.present(nav, animated: false, completion: onPresent)
     }
 }
+
+#endif

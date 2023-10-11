@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_CryptoGoInterfaceVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_CryptoGoInterfaceVersionString[];
+FOUNDATION_EXPORT double ProtonCoreCryptoGoInterfaceVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreCryptoGoInterfaceVersionString[];
 

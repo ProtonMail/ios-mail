@@ -20,9 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_Log
-import ProtonCore_Services
+import ProtonCoreDataModel
+import ProtonCoreLog
+import ProtonCoreServices
 
 public protocol ServicePlanDataServiceProtocol: Service, AnyObject {
 
@@ -96,7 +96,7 @@ public struct Credits: Codable {
     }
 }
 
-public struct PaymentMethod: Codable {
+public struct PaymentMethod: Codable, Equatable {
     
     // we don't use any properties so it's ok to leave it as simple as possible
     public let type: String
@@ -216,23 +216,23 @@ extension ServicePlanDataService {
         }
         
         // get API atatus
-        let statusApi = self.paymentsApi.statusRequest(api: self.service)
-        let statusRes = try statusApi.awaitResponse(responseObject: StatusResponse())
-        self.paymentsBackendStatusAcceptsIAP = statusRes.isAvailable ?? false
+        let paymentStatusApi = paymentsApi.paymentStatusRequest(api: service)
+        let paymentStatusResponse = try paymentStatusApi.awaitResponse(responseObject: PaymentStatusResponse())
+        paymentsBackendStatusAcceptsIAP = paymentStatusResponse.isAvailable ?? false
 
         // get service plans
-        let servicePlanApi = self.paymentsApi.plansRequest(api: self.service)
+        let servicePlanApi = paymentsApi.plansRequest(api: service)
         let servicePlanRes = try servicePlanApi.awaitResponse(responseObject: PlansResponse())
-        self.availablePlansDetails = servicePlanRes.availableServicePlans?
+        availablePlansDetails = servicePlanRes.availableServicePlans?
             .filter {
                 InAppPurchasePlan.protonPlanIsPresentInIAPIdentifierList(protonPlan: $0, identifiers: self.listOfIAPIdentifiers())
             }
             .sorted(by: Plan.sortPurchasablePlans)
             ?? []
 
-        let defaultServicePlanApi = self.paymentsApi.defaultPlanRequest(api: self.service)
+        let defaultServicePlanApi = paymentsApi.defaultPlanRequest(api: service)
         let defaultServicePlanRes = try defaultServicePlanApi.awaitResponse(responseObject: DefaultPlanResponse())
-        self.defaultPlanDetails = defaultServicePlanRes.defaultServicePlanDetails
+        defaultPlanDetails = defaultServicePlanRes.defaultServicePlanDetails
     }
 
     public func updateCurrentSubscription(callBlocksOnParticularQueue: DispatchQueue?, success: @escaping () -> Void, failure: @escaping (Error) -> Void) {

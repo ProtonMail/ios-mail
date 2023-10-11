@@ -48,6 +48,7 @@ extension UserInfo {
             linkConfirmation: response["ConfirmLink"] as? Int,
             credit: credit?.intValue,
             currency: currency,
+            createTime: response["CreateTime"] as? Int64,
             subscribed: subscribed.map(User.Subscribed.init(rawValue:))
         )
     }

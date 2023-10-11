@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Groot
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreTestingToolkit
 import XCTest
 @testable import ProtonMail
 

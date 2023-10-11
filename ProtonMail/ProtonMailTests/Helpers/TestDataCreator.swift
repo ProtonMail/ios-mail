@@ -17,7 +17,7 @@
 
 import CoreData
 import Groot
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 @testable import ProtonMail
 
 enum TestDataCreator {

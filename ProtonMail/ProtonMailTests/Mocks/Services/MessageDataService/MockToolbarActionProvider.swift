@@ -17,7 +17,7 @@
 
 import Foundation
 @testable import ProtonMail
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 class MockToolbarActionProvider: ToolbarActionProvider {
     var messageToolbarActions: [MessageViewActionSheetAction] = [.markUnread, .trash, .moveTo, .labelAs]

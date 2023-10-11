@@ -22,10 +22,10 @@
 
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_DataModel
-import ProtonCore_Keymaker
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreKeymaker
+import ProtonCoreNetworking
+import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SafariServices
 

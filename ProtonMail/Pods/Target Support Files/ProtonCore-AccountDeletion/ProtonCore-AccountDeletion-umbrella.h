@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_AccountDeletionVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_AccountDeletionVersionString[];
+FOUNDATION_EXPORT double ProtonCoreAccountDeletionVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreAccountDeletionVersionString[];
 

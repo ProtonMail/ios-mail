@@ -17,9 +17,9 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_DataModel
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 
 protocol MessageInfoProviderDelegate: AnyObject {
     func providerHasChanged()

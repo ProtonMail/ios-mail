@@ -22,7 +22,7 @@
 //
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 /// Get Grouped Conversation Count
 class ConversationCountRequest: Request {

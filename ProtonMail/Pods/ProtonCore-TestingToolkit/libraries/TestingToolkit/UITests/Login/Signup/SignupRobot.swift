@@ -19,9 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import Foundation
 import fusion
-import ProtonCore_CoreTranslation
+import ProtonCoreLoginUI
 
 private let titleId = "SignupViewController.createAccountTitleLabel"
 private let nameTextFieldId = "SignupViewController.internalNameTextField.textField"
@@ -30,10 +32,10 @@ private let nextButtonId = "SignupViewController.nextButton"
 private let signinButtonId = "SignupViewController.signinButton"
 private let domainsButtonId = "SignupViewController.domainsButton"
 private let errorBannerMessage = "Username already used"
-private let errorBannerButton = CoreString._hv_ok_button
+private let errorBannerButton = LUITranslation._core_ok_button.l10n
 private let otherAccountButton = "SignupViewController.otherAccountButton"
-private let otherAccountExtName = CoreString._su_email_address_button
-private let otherAccountIntName = CoreString._su_proton_address_button
+private let otherAccountExtName = LUITranslation.email_address_button.l10n
+private let otherAccountIntName = LUITranslation.proton_address_button.l10n
 private let closeButton = "UINavigationItem.leftBarButtonItem"
 
 public final class SignupRobot: CoreElements {
@@ -44,20 +46,20 @@ public final class SignupRobot: CoreElements {
 
         @discardableResult
         public func signupScreenIsShown() -> SignupRobot {
-            staticText(titleId).wait().checkExists()
+            staticText(titleId).waitUntilExists().checkExists()
             return SignupRobot()
         }
         
         @discardableResult
         public func usernameAlreadyExists() -> SignupRobot {
-            textView(errorBannerMessage).wait().checkExists()
-            button(errorBannerButton).wait().checkExists().tap()
+            textView(errorBannerMessage).waitUntilExists().checkExists()
+            button(errorBannerButton).waitUntilExists().checkExists().tap()
             return SignupRobot()
         }
         
         @discardableResult
         public func closeButtonIsShown() -> SignupRobot {
-            button(closeButton).wait().checkExists()
+            button(closeButton).waitUntilExists().checkExists()
             return SignupRobot()
         }
         
@@ -69,13 +71,13 @@ public final class SignupRobot: CoreElements {
         
         @discardableResult
         public func otherAccountIntButtonIsShown() -> SignupRobot {
-            button(otherAccountIntName).wait().checkExists()
+            button(otherAccountIntName).waitUntilExists().checkExists()
             return SignupRobot()
         }
 
         @discardableResult
         public func otherAccountExtButtonIsShown() -> SignupRobot {
-            button(otherAccountExtName).wait().checkExists()
+            button(otherAccountExtName).waitUntilExists().checkExists()
             return SignupRobot()
         }
         
@@ -147,3 +149,5 @@ public final class SignupRobot: CoreElements {
     }
 
 }
+
+#endif

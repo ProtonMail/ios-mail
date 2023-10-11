@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import fusion
 
 private let twoFAFieldId = "TwoFactorViewController.codeTextField.textField"
@@ -26,7 +28,7 @@ private let authenticateButtonId = "TwoFactorViewController.authenticateButton"
 private let recoveryCodeButtonId = "TwoFactorViewController.recoveryCodeButton"
 private let twoFALabel = "Two-factor authentication"
 private let twoFATitleLabel = "TwoFactorViewController.codeTextField.titleLabel"
-private let invalidCredentialStaticText = "Incorrect login credentials. Please try again."
+private let invalidCredentialStaticText = "Incorrect login credentials. Please try again"
 
 public final class TwoFaRobot: CoreElements {
     
@@ -45,7 +47,9 @@ public final class TwoFaRobot: CoreElements {
     public final class Verify: CoreElements {
         
         public func incorrectCredentialsErrorDialog() {
-            textView(invalidCredentialStaticText).wait().checkExists()
+            textView(invalidCredentialStaticText).waitUntilExists().checkExists()
         }
     }
 }
+
+#endif

@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 
 protocol UndoActionManagerProtocol {
     func addUndoToken(_ token: UndoTokenData, undoActionType: UndoAction?)

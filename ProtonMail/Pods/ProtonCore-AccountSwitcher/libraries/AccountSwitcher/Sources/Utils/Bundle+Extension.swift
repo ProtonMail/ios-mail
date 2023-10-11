@@ -23,13 +23,13 @@
 
 import Foundation
 
-#if canImport(ProtonCore_AccountSwitcher_Resources_iOS)
-import ProtonCore_AccountSwitcher_Resources_iOS
+#if canImport(ProtonCoreAccountSwitcherResourcesiOS)
+import ProtonCoreAccountSwitcherResourcesiOS
 #endif
 
 extension Bundle {
     static let switchBundle: Bundle = {
-        #if canImport(ProtonCore_AccountSwitcher_Resources_iOS)
+        #if canImport(ProtonCoreAccountSwitcherResourcesiOS)
         return resourceBundle
         #else
         let moduleBundle = Bundle(for: AccountSwitcher.self)

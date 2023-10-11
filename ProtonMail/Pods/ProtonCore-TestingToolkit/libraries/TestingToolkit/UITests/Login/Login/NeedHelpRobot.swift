@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import fusion
 import XCTest
 
@@ -75,7 +77,9 @@ public final class NeedHelpRobot: CoreElements {
     }
     
     public func closeNeedHelpScreen() -> LoginRobot{
-        button(helpViewCloseButtonId).wait().tap()
+        button(helpViewCloseButtonId).waitUntilExists().tap()
         return LoginRobot()
     }
 }
+
+#endif

@@ -24,7 +24,7 @@ import CoreData
 import Foundation
 import Groot
 import PromiseKit
-import ProtonCore_Services
+import ProtonCoreServices
 
 enum LabelFetchType: Int {
     case all = 0

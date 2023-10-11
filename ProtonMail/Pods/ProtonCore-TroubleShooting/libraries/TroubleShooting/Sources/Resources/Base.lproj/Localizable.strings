@@ -1,0 +1,49 @@
+"support form" = "support form";
+
+"email" = "email";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Troubleshooting";
+
+"Allow alternative routing" = "Allow alternative routing";
+
+"No internet connection" = "No internet connection";
+
+"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+
+"Government block" = "Government block";
+
+"Antivirus interference" = "Antivirus interference";
+
+"Proxy/Firewall interference" = "Proxy/Firewall interference";
+
+"Proton is down" = "Proton is down";
+
+"Still can't find a solution" = "Still can't find a solution";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@";
+
+"Learn more" = "Learn more";
+
+"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Try connecting to Proton from a different network (or use %1$@ or %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.";
+
+"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
+
+"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+
+"Proton Status" = "Proton Status";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter.";
+
+"Subject..." = "Subject...";
+
+"Please share your problem." = "Please share your problem.";
+
+"Back" = "Back";

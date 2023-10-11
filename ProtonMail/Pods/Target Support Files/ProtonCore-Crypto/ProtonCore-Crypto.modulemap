@@ -1,4 +1,4 @@
-framework module ProtonCore_Crypto {
+framework module ProtonCoreCrypto {
   umbrella header "ProtonCore-Crypto-umbrella.h"
 
   export *

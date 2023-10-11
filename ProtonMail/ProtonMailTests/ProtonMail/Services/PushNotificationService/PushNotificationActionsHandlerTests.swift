@@ -17,9 +17,9 @@
 
 @testable import ProtonMail
 import XCTest
-import class ProtonCore_DataModel.UserInfo
-import class ProtonCore_Networking.AuthCredential
-import ProtonCore_TestingToolkit
+import class ProtonCoreDataModel.UserInfo
+import class ProtonCoreNetworking.AuthCredential
+import ProtonCoreTestingToolkit
 
 final class PushNotificationActionsHandlerTests: XCTestCase {
     private var sut: PushNotificationActionsHandler!
@@ -221,6 +221,7 @@ final class PushNotificationActionsHandlerTests: XCTestCase {
             linkConfirmation: nil,
             credit: nil,
             currency: nil,
+            createTime: nil,
             subscribed: nil
         )
         let auth = AuthCredential(

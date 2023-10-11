@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import UIKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 class PMToolBarView: UIView {
 

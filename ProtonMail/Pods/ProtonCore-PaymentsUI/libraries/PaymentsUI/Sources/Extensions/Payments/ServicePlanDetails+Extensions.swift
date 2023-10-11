@@ -1,6 +1,6 @@
 //
 //  ServicePlanDetails+Extensions.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,9 +19,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_Payments
-import ProtonCore_CoreTranslation
+import ProtonCorePayments
 
 extension Plan {
     
@@ -50,78 +51,78 @@ extension Plan {
     }
     
     var XGBStorageDescription: String {
-        String(format: CoreString._pu_plan_details_storage,
+        String(format: PUITranslations.plan_details_storage.l10n,
                storageformatter.format(value: maxSpace))
     }
     
     var XGBStoragePerUserDescription: String {
-        return String(format: CoreString._pu_plan_details_storage_per_user,
+        return String(format: PUITranslations.plan_details_storage_per_user.l10n,
                       storageformatter.format(value: maxSpace))
     }
     
     var YAddressesDescription: String {
-        String(format: CoreString._pu_plan_details_n_addresses, maxAddresses)
+        String(format: PUITranslations.plan_details_n_addresses.l10n, maxAddresses)
     }
     
     var YAddressesPerUserDescription: String {
-        String(format: CoreString._pu_plan_details_n_addresses_per_user, maxAddresses)
+        String(format: PUITranslations.plan_details_n_addresses_per_user.l10n, maxAddresses)
     }
     
     var ZCalendarsDescription: String? {
         guard let maxCalendars = maxCalendars else { return nil }
-        return String(format: CoreString._pu_plan_details_n_calendars, maxCalendars)
+        return String(format: PUITranslations.plan_details_n_calendars.l10n, maxCalendars)
     }
     
     var UConnectionsDescription: String {
-        String(format: CoreString._pu_plan_details_n_connections, maxVPN)
+        String(format: PUITranslations.plan_details_n_connections.l10n, maxVPN)
     }
     
     var UVPNConnectionsDescription: String {
-        String(format: CoreString._pu_plan_details_n_vpn_connections, maxVPN)
+        String(format: PUITranslations.plan_details_n_vpn_connections.l10n, maxVPN)
     }
     
     var UHighSpeedVPNConnectionsDescription: String {
-        String(format: CoreString._pu_plan_details_n_high_speed_connections, maxVPN)
+        String(format: PUITranslations.plan_details_n_high_speed_connections.l10n, maxVPN)
     }
     
     var VCustomDomainDescription: String {
-        String(format: CoreString._pu_plan_details_n_custom_domains, maxDomains)
+        String(format: PUITranslations.plan_details_n_custom_domains.l10n, maxDomains)
     }
     
     var WUsersDescription: String {
-        String(format: CoreString._pu_plan_details_n_users, maxMembers)
+        String(format: PUITranslations.plan_details_n_users.l10n, maxMembers)
     }
     
     var plusLabelsDescription: String {
-        return String(format: CoreString._pu_plan_details_n_folders, 200)
+        return String(format: PUITranslations.plan_details_n_folders.l10n, 200)
     }
     
     var customEmailDescription: String {
-        return CoreString._pu_plan_details_custom_email
+        return PUITranslations.plan_details_custom_email.l10n
     }
     
     var priorityCustomerSupportDescription: String {
-        return CoreString._pu_plan_details_priority_support
+        return PUITranslations.plan_details_priority_support.l10n
     }
     
     var highSpeedDescription: String {
-        CoreString._pu_plan_details_high_speed
+        PUITranslations.plan_details_high_speed.l10n
     }
     
     var highestSpeedDescription: String {
-        CoreString._pu_plan_details_highest_speed
+        PUITranslations.plan_details_highest_speed.l10n
     }
     
     var multiUserSupportDescription: String {
-        CoreString._pu_plan_details_multi_user_support
+        PUITranslations.plan_details_multi_user_support.l10n
     }
     
     var adblockerDescription: String {
-        CoreString._pu_plan_details_adblocker
+        PUITranslations.plan_details_adblocker.l10n
     }
     
     var streamingServiceDescription: String {
-        CoreString._pu_plan_details_streaming_service
+        PUITranslations.plan_details_streaming_service.l10n
     }
     
     var cycleDescription: String? {
@@ -134,78 +135,78 @@ extension Plan {
             cycleString = monthsFormatter.string(from: dateComponents)
         }
         guard let cycleString = cycleString else { return nil }
-        return String(format: CoreString._pu_plan_details_price_time_period_no_unit, cycleString)
+        return String(format: PUITranslations.plan_details_price_time_period_no_unit.l10n, cycleString)
     }
     
     var upToXGBStorageDescription: String {
-        String(format: CoreString._details_up_to_storage,
+        String(format: PUITranslations._details_up_to_storage.l10n,
                       storageformatter.format(value: maxRewardsSpace ?? maxSpace))
     }
 
     var VCustomEmailDomainDescription: String {
-        String(format: CoreString._details_n_custom_email_domains, maxDomains)
+        String(format: PUITranslations._details_n_custom_email_domains.l10n, maxDomains)
     }
     
     var unlimitedFoldersLabelsFiltersDescription: String {
-        CoreString._details_unlimited_folders_labels_filters
+        PUITranslations._details_unlimited_folders_labels_filters.l10n
     }
     
     var freeFoldersLabelsDescription: String {
-        String(format: CoreString._details_n_folders_labels, 3)
+        String(format: PUITranslations._details_n_folders_labels.l10n, 3)
     }
     
     var VPNFreeDescription: String {
-        CoreString._details_vpn_on_single_device
+        PUITranslations._details_vpn_on_single_device.l10n
     }
     
     var VPNUDevicesDescription: String {
-        String(format: CoreString._details_vpn_on_n_devices, maxVPN)
+        String(format: PUITranslations._details_vpn_on_n_devices.l10n, maxVPN)
     }
     
     var VPNHighestSpeedDescription: String {
-        CoreString._details_highest_VPN_speed
+        PUITranslations._details_highest_VPN_speed.l10n
     }
     
     func VPNServersDescription(countries: Int?) -> String {
         let countries = countries ?? 63
-        return String(format: CoreString._details_vpn_servers, 1500, countries)
+        return String(format: PUITranslations._details_vpn_servers.l10n, 1500, countries)
     }
     
     func VPNFreeServersDescription(countries: Int?) -> String {
         let countries = countries ?? 3
-        return String(format: CoreString._details_vpn_free_servers, 24, countries)
+        return String(format: PUITranslations._details_vpn_free_servers.l10n, 24, countries)
     }
     
     var VPNFreeSpeedDescription: String {
-        String(format: CoreString._details_vpn_free_speed_n_connections, maxVPN)
+        String(format: PUITranslations._details_vpn_free_speed_n_connections.l10n, maxVPN)
     }
     
     var VPNNoLogsPolicy: String {
-        CoreString._details_no_logs_policy
+        PUITranslations._details_no_logs_policy.l10n
     }
     
     var adBlockerDescription: String {
-        CoreString._details_ad_blocker
+        PUITranslations._detailsblocker.l10n
     }
     
     var accessStreamingServicesDescription: String {
-        CoreString._details_access_streaming_services
+        PUITranslations._details_access_streaming_services.l10n
     }
     
     var secureCoreServersDescription: String {
-        CoreString._details_secure_core_servers
+        PUITranslations._details_secure_core_servers.l10n
     }
     
     var torOverVPNDescription: String {
-        CoreString._details_tor_over_vpn
+        PUITranslations._details_tor_over_vpn.l10n
     }
 
     var p2pDescription: String {
-        CoreString._details_p2p
+        PUITranslations._details_p2p.l10n
     }
 
     func RSGBUsedStorageSpaceDescription(usedSpace: Int64, maxSpace: Int64) -> String {
-        String(format: CoreString._details_used_storage_space,
+        String(format: PUITranslations._details_used_storage_space.l10n,
                storageformatter.format(value: usedSpace), storageformatter.format(value: maxSpace))
     }
 
@@ -213,7 +214,7 @@ extension Plan {
         guard let usedMembers = usedMembers, maxMembers > 1 else {
             return WUsersDescription
         }
-        return String(format: CoreString._details_n_of_m_users, usedMembers, maxMembers)
+        return String(format: PUITranslations._details_n_of_m_users.l10n, usedMembers, maxMembers)
     }
     
     func PYAddressesDescription(usedAddresses: Int?) -> String {
@@ -222,7 +223,7 @@ extension Plan {
         }
         // avoid showing usedAddresses == 0
         let usedAddr = usedAddresses > 0 ? usedAddresses : 1
-        return String(format: CoreString._details_n_of_m_addresses, usedAddr, maxAddresses)
+        return String(format: PUITranslations._details_n_of_m_addresses.l10n, usedAddr, maxAddresses)
     }
     
     func QZCalendarsDescription(usedCalendars: Int?) -> String? {
@@ -230,61 +231,61 @@ extension Plan {
         guard let usedCalendars = usedCalendars, maxCalendars > 1 else {
             return ZCalendarsDescription
         }
-        return String(format: CoreString._details_n_of_m_calendars, usedCalendars, maxCalendars)
+        return String(format: PUITranslations._details_n_of_m_calendars.l10n, usedCalendars, maxCalendars)
     }
     
     var YAddressesPerUserDescriptionV5: String {
-        return String(format: CoreString._details_n_addresses_per_user, maxMembers > 0 ? maxAddresses / maxMembers : maxAddresses)
+        return String(format: PUITranslations._details_n_addresses_per_user.l10n, maxMembers > 0 ? maxAddresses / maxMembers : maxAddresses)
     }
     
     var ZCalendarsPerUserDescription: String {
         let maxCalendars = maxCalendars ?? 0
-        return String(format: CoreString._details_n_calendars_per_user, maxCalendars)
+        return String(format: PUITranslations._details_n_calendars_per_user.l10n, maxCalendars)
     }
     
     var UConnectionsPerUserDescription: String {
-        String(format: CoreString._details_n_connections_per_user, maxMembers > 0 ? maxVPN / maxMembers : maxVPN)
+        String(format: PUITranslations._details_n_connections_per_user.l10n, maxMembers > 0 ? maxVPN / maxMembers : maxVPN)
     }
     
     func vpnPaidCountriesDescription(countries: Int?) -> String {
         let countries = countries ?? 63
-        return String(format: CoreString._pu_plan_details_countries, countries)
+        return String(format: PUITranslations.plan_details_countries.l10n, countries)
     }
 
     var unlimitedLoginsAndNotesDescription: String {
-        CoreString._plan_details_logins_and_notes_unlimited
+        PUITranslations._plan_details_logins_and_notes_unlimited.l10n
     }
 
     var unlimitedDevicesDescription: String {
-        CoreString._plan_details_devices_unlimited
+        PUITranslations._plan_details_devices_unlimited.l10n
     }
 
     func vaultsDescription(number: Int) -> String {
-        String(format: CoreString._plan_details_n_vaults, number)
+        String(format: PUITranslations._plan_details_n_vaults.l10n, number)
     }
 
     var unlimitedEmailAliasesDescription: String {
-        CoreString._plan_details_email_aliases_unlimited
+        PUITranslations._plan_details_email_aliases_unlimited.l10n
     }
 
     var integrated2FADescription: String {
-        CoreString._plan_details_2fa_authenticator
+        PUITranslations._plan_details_2fa_authenticator.l10n
     }
 
     func forwardingMailboxesDescription(number: Int) -> String {
-        String(format: CoreString._plan_details_forwarding_mailboxes, "\(number)")
+        String(format: PUITranslations._plan_details_forwarding_mailboxes.l10n, "\(number)")
     }
     
     var customFieldsDescription: String {
-        CoreString._plan_details_custom_fields
+        PUITranslations._plan_details_custom_fields.l10n
     }
 
     var prioritySupportDescription: String {
-        CoreString._plan_details_priority_support
+        PUITranslations._plan_details_priority_support.l10n
     }
 
     func numberOfEmailAliasesDescription(number: Int) -> String {
-        String(format: CoreString._plan_details_email_aliases_number, "\(number)")
+        String(format: PUITranslations._plan_details_email_aliases_number.l10n, "\(number)")
     }
 
 }
@@ -303,3 +304,5 @@ private func createSingleUnitFormatter(unit: NSCalendar.Unit) -> DateComponentsF
     formatter.unitsStyle = .full
     return formatter
 }
+
+#endif

@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_GoLibsVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_GoLibsVersionString[];
+FOUNDATION_EXPORT double ProtonCoreGoLibsVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreGoLibsVersionString[];
 

@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Groot
-import ProtonCore_Crypto
-import ProtonCore_TestingToolkit
-import ProtonCore_UIFoundations
+import ProtonCoreCrypto
+import ProtonCoreTestingToolkit
+import ProtonCoreUIFoundations
 @testable import ProtonMail
 import XCTest
 

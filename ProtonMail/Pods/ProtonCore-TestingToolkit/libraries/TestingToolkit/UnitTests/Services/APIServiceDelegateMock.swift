@@ -20,12 +20,12 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
-import ProtonCore_TestingToolkit_UnitTests_Core
+#if canImport(ProtonCoreTestingToolkitUnitTestsCore)
+import ProtonCoreTestingToolkitUnitTestsCore
 #else
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 #endif
-import ProtonCore_Services
+import ProtonCoreServices
 
 public final class APIServiceDelegateMock: APIServiceDelegate {
     

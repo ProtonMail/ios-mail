@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 extension Key {
     struct Flags: OptionSet {

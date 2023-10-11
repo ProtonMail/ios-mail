@@ -1,6 +1,7 @@
 {
   "name": "ProtonCore-HumanVerification",
-  "version": "9.3.0",
+  "module_name": "ProtonCoreHumanVerification",
+  "version": "12.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "9.3.0"
+    "tag": "12.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -36,8 +37,10 @@
     ],
     "resource_bundles": {
       "Resources-HumanVerification": [
-        "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
-        "libraries/HumanVerification/Sources/iOS/*.{xib,storyboard,geojson}"
+        "libraries/HumanVerification/Resources-iOS/**/*.{xib,storyboard,geojson}"
+      ],
+      "Translations-HumanVerification": [
+        "libraries/HumanVerification/Resources-Shared/Translations/*"
       ]
     }
   },
@@ -49,35 +52,34 @@
     ],
     "resource_bundles": {
       "Resources-HumanVerification": [
-        "libraries/HumanVerification/Resources/**/*.{xib,storyboard,geojson}",
-        "libraries/HumanVerification/Sources/macOS/*.{xib,storyboard,geojson}"
+        "libraries/HumanVerification/Resources-macOS/**/*.{xib,storyboard,geojson}"
+      ],
+      "Translations-HumanVerification": [
+        "libraries/HumanVerification/Resources-Shared/Translations/*"
       ]
     }
   },
   "dependencies": {
     "ProtonCore-UIFoundations": [
-      "9.3.0"
-    ],
-    "ProtonCore-CoreTranslation": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Foundations": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Utilities": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-APIClient": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Observability": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Crypto": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-CryptoGoInterface": [
-      "9.3.0"
+      "12.0.0"
     ]
   },
   "default_subspecs": [
@@ -89,64 +91,64 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "9.3.0"
+          "12.0.0"
         ]
       },
-      "source_files": "libraries/HumanVerification/Tests/**/*"
+      "source_files": "libraries/HumanVerification/Tests/UnitTests/**/*"
     },
     {
       "name": "Tests-Crypto-patched-Go",
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "9.3.0"
+          "12.0.0"
         ]
       },
-      "source_files": "libraries/HumanVerification/Tests/**/*"
+      "source_files": "libraries/HumanVerification/Tests/UnitTests/**/*"
     },
     {
       "name": "Tests-Crypto+VPN-patched-Go",
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "9.3.0"
+          "12.0.0"
         ]
       },
-      "source_files": "libraries/HumanVerification/Tests/**/*"
+      "source_files": "libraries/HumanVerification/Tests/UnitTests/**/*"
     },
     {
       "name": "Tests-Crypto+Search-Go",
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "9.3.0"
+          "12.0.0"
         ]
       },
-      "source_files": "libraries/HumanVerification/Tests/**/*"
+      "source_files": "libraries/HumanVerification/Tests/UnitTests/**/*"
     }
   ],
   "swift_version": "5.6"

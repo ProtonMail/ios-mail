@@ -1,4 +1,4 @@
-framework module ProtonCore_Doh {
+framework module ProtonCoreDoh {
   umbrella header "ProtonCore-Doh-umbrella.h"
 
   export *

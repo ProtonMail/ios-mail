@@ -20,13 +20,12 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Authentication
-import ProtonCore_APIClient
-import ProtonCore_DataModel
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_FeatureSwitch
-import ProtonCore_CoreTranslation
+import ProtonCoreAuthentication
+import ProtonCoreAPIClient
+import ProtonCoreDataModel
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreFeatureSwitch
 
 // these methods are responsible for fetching and refreshing the data: user, addresses, keys, salts etc.
 // in case we detect the need for account migration, it's also performed (if possible, otherwise process fails with error)
@@ -51,9 +50,6 @@ extension LoginService {
         // external account used but internal needed
         // account migration needs to take place and we cannot do it automatically because user has not chosen the internal username yet
         if user.isExternal, self.minimumAccountType == .internal {
-
-            // Cap C blocked
-            guard isCapCEnabled(completion: completion) else { return }
 
             // external to internal conversion flow kick-off
             withAuthDelegateAvailable(completion) { authManager in
@@ -456,24 +452,11 @@ extension LoginService {
 
             case let .failure(error):
                 PMLog.debug("Making passphrases failed with \(error)")
-                completion(.failure(.generic(message: error.messageForTheUser,
+                completion(.failure(.generic(message: error.localizedDescription,
                                              code: error.bestShotAtReasonableErrorCode,
                                              originalError: error)))
             }
         }
-    }
-    
-    private func isCapCEnabled(completion: @escaping (Result<LoginStatus, LoginError>) -> Void) -> Bool {
-        guard FeatureFactory.shared.isEnabled(.externalAccountConversion) else {
-            let localError = NSError.asProtonAddrRequiredError()
-            completion(.failure(.externalAccountsNotSupported(
-                message: CoreString._ls_external_accounts_not_supported_popup_local_desc, title: CoreString._ls_external_accounts_address_required_popup_title,
-                originalError: localError
-            )))
-            return false
-        }
-        
-        return true
     }
 }
 
@@ -482,6 +465,6 @@ extension NSError {
     class func asProtonAddrRequiredError() -> Error {
         return NSError.init(domain: "protoncore-login",
                             code: -100,
-                            localizedDescription: CoreString._ls_external_accounts_not_supported_popup_local_desc)
+                            localizedDescription: LSTranslation._loginservice_external_accounts_not_supported_popup_local_desc.l10n)
     }
 }

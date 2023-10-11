@@ -22,8 +22,8 @@
 
 import Foundation
 import LifetimeTracker
-import ProtonCore_ForceUpgrade
-import ProtonCore_Networking
+import ProtonCoreForceUpgrade
+import ProtonCoreNetworking
 #if DEBUG
 import OHHTTPStubs
 #endif

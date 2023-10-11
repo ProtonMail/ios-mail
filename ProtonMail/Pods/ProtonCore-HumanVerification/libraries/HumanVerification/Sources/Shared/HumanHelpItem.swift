@@ -19,9 +19,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_CoreTranslation
-import enum ProtonCore_DataModel.ClientApp
-import ProtonCore_UIFoundations
+import Foundation
+import enum ProtonCoreDataModel.ClientApp
+import ProtonCoreUIFoundations
 
 enum HumanHelpItem: CaseIterable {
     case requestInvite
@@ -32,18 +32,18 @@ extension HumanHelpItem {
     var title: String {
         switch self {
         case .requestInvite:
-            return CoreString._hv_help_request_item_title
+            return HVTranslation.help_request_item_title.l10n
         case .visitHelpCenter:
-            return CoreString._hv_help_visit_item_title
+            return HVTranslation.help_visit_item_title.l10n
         }
     }
 
     var subtitle: String {
         switch self {
         case .requestInvite:
-            return CoreString._hv_help_request_item_message
+            return HVTranslation.help_request_item_message.l10n
         case .visitHelpCenter:
-            return CoreString._hv_help_visit_item_message
+            return HVTranslation.help_visit_item_message.l10n
         }
     }
 

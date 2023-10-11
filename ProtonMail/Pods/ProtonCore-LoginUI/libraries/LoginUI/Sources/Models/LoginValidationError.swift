@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 
 enum LoginValidationError: Error, Equatable {
     case emptyUsername
@@ -33,9 +34,11 @@ extension LoginValidationError: CustomStringConvertible {
     var description: String {
         switch self {
         case .emptyUsername:
-            return CoreString._ls_validation_invalid_username
+            return LUITranslation.validation_invalid_username.l10n
         case .emptyPassword:
-            return CoreString._ls_validation_invalid_password
+            return LUITranslation._core_validation_invalid_password.l10n
         }
     }
 }
+
+#endif

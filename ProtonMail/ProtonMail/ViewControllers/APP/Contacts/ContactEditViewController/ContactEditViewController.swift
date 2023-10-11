@@ -18,8 +18,8 @@
 import LifetimeTracker
 import MBProgressHUD
 import PhotosUI
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol ContactEditViewControllerDelegate: AnyObject {

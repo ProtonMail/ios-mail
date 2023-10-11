@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import OpenPGP
 import PromiseKit
-import ProtonCore_APIClient
-import ProtonCore_Crypto
-import ProtonCore_Services
+import ProtonCoreAPIClient
+import ProtonCoreCrypto
+import ProtonCoreServices
 
 /// Encrypt outside address builder
 class EOAddressBuilder: PackageBuilder {
@@ -72,7 +71,7 @@ class EOAddressBuilder: PackageBuilder {
             }
 
             // generat new verifier
-            let newSaltForLoginPwd: Data = PMNOpenPgp.randomBits(80) // for the login password needs to set 80 bits
+            let newSaltForLoginPwd: Data = try Crypto.random(byte: 10) // for the login password needs to set 80 bits
 
             guard let auth = try SrpAuthForVerifier(self.password, newModuls, newSaltForLoginPwd) else {
                 throw UpdatePasswordError.cantHashPassword.error

@@ -22,7 +22,7 @@
 //
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 /// Delete trashed messages in an array of conversations
 class ConversationDeleteRequest: Request {

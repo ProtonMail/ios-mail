@@ -20,10 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import class ProtonCore_DataModel.UserInfo
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import class ProtonCoreDataModel.UserInfo
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 
 final class LabelManagerViewModel: LabelManagerViewModelProtocol {
     var input: LabelManagerViewModelInput { self }

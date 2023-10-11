@@ -23,11 +23,11 @@
 import Alamofire
 import CoreData
 import LifetimeTracker
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_PaymentsUI
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCorePaymentsUI
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SkeletonView
 import SwipyCell

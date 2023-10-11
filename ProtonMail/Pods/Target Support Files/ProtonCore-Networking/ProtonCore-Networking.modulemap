@@ -1,4 +1,4 @@
-framework module ProtonCore_Networking {
+framework module ProtonCoreNetworking {
   umbrella header "ProtonCore-Networking-umbrella.h"
 
   export *

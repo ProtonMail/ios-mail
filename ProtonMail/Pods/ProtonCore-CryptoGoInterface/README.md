@@ -302,19 +302,6 @@ Sources: [libraries/ObfuscatedConstants](libraries/ObfuscatedConstants)
 
 Platforms supported: iOS, macOS
 
-
-### OpenPGP
-
-Delivery mechanism for the OpenPGP library, built into `vendor/OpenPGP/OpenPGP.xcframework`. 
-No actual Swift sources here.
-
-Podspec: [ProtonCore-OpenPGP.podspec](ProtonCore-OpenPGP.podspec)
-
-Uses and deliveres framework: [OpenPGP.xcframework](vendor/OpenPGP/OpenPGP.xcframework)
-
-Platforms supported: iOS, macOS
-
-
 ### Payments
 
 Payments services and logic.

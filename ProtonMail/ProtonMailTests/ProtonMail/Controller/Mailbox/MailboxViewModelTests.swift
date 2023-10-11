@@ -18,10 +18,10 @@
 import XCTest
 import Groot
 @testable import ProtonMail
-import ProtonCore_TestingToolkit
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
+import ProtonCoreTestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreUIFoundations
 
 final class MailboxViewModelTests: XCTestCase {
 
@@ -85,6 +85,7 @@ final class MailboxViewModelTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         userManagerMock = UserManager(api: apiServiceMock,
                                       userInfo: stubUserInfo,

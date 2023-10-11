@@ -21,8 +21,8 @@
 //
 
 import Foundation
-import ProtonCore_CryptoGoInterface
-import ProtonCore_Utilities
+import ProtonCoreCryptoGoInterface
+import ProtonCoreUtilities
 
 public final class KeyRingBuilder {
 

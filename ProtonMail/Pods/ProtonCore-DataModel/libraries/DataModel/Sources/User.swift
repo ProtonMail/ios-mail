@@ -28,6 +28,7 @@ public struct User: Codable, Equatable {
     public let usedSpace: Double
     public let currency: String
     public let credit: Int
+    public let createTime: Double?
     public let maxSpace: Double
     public let maxUpload: Double
     public let role: Int
@@ -39,6 +40,8 @@ public struct User: Codable, Equatable {
     public let email: String?
     public let displayName: String?
     public let keys: [Key]
+
+    public let accountRecovery: AccountRecovery?
     // public let driveEarlyAccess: Int
     // public let mailSettings: MailSetting
     // public let addresses: [Address]
@@ -62,11 +65,45 @@ public struct User: Codable, Equatable {
         public static let vpn      = Subscribed(rawValue: 1 << 2)
     }
 
+    public struct AccountRecovery: Codable, Equatable {
+        public let state: RecoveryState
+        public let reason: RecoveryReason?
+        public let startTime: TimeInterval
+        public let endTime: TimeInterval
+        public let UID: String
+    }
+
+    public enum RecoveryState: Int, Codable {
+        case none = 0
+        case grace = 1
+        case cancelled = 2
+        case insecure = 3
+        case expired = 4
+    }
+
+    public enum RecoveryReason: Int, Codable {
+        case none = 0
+        case cancelled = 1
+        case authentication = 2
+
+        public var localizableDescription: String {
+            switch self {
+            case .cancelled:
+        return "cancelled by the user"
+            case .authentication:
+                return "authenticated in another session"
+            case .none:
+                return "none"
+            }
+        }
+    }
+
     public init(ID: String,
                 name: String?,
                 usedSpace: Double,
                 currency: String,
                 credit: Int,
+                createTime: Double? = nil,
                 maxSpace: Double,
                 maxUpload: Double,
                 role: Int,
@@ -77,12 +114,14 @@ public struct User: Codable, Equatable {
                 orgPrivateKey: String?,
                 email: String?,
                 displayName: String?,
-                keys: [Key]) {
+                keys: [Key],
+                accountRecovery: AccountRecovery? = nil) {
         self.ID = ID
         self.name = name
         self.usedSpace = usedSpace
         self.currency = currency
         self.credit = credit
+        self.createTime = createTime
         self.maxSpace = maxSpace
         self.maxUpload = maxUpload
         self.role = role
@@ -94,17 +133,19 @@ public struct User: Codable, Equatable {
         self.email = email
         self.displayName = displayName
         self.keys = keys
+        self.accountRecovery = accountRecovery
     }
 }
 
 @objc(UserInfo)
-public final class UserInfo: NSObject {
+public final class UserInfo: NSObject, Codable {
     public var attachPublicKey: Int
     public var autoSaveContact: Int
     public var conversationToolbarActions: ToolbarActions
     public var crashReports: Int
     public var credit: Int
     public var currency: String
+    public var createTime: Int64
     public var defaultSignature: String
     public var delaySendSeconds: Int
     public var delinquent: Int
@@ -144,7 +185,7 @@ public final class UserInfo: NSObject {
         return .init(maxSpace: 0, usedSpace: 0, language: "",
                      maxUpload: 0, role: 0, delinquent: 0,
                      keys: nil, userId: "", linkConfirmation: 0,
-                     credit: 0, currency: "", subscribed: DefaultValue.subscribed)
+                     credit: 0, currency: "", createTime: 0, subscribed: DefaultValue.subscribed)
     }
 
     // init from cache
@@ -173,6 +214,7 @@ public final class UserInfo: NSObject {
         linkConfirmation: String?,
         credit: Int?,
         currency: String?,
+        createTime: Int64?,
         pwdMode: Int?,
         twoFA: Int?,
         enableFolderColor: Int?,
@@ -201,6 +243,7 @@ public final class UserInfo: NSObject {
         self.crashReports = crashReports ?? DefaultValue.crashReports
         self.credit = credit ?? DefaultValue.credit
         self.currency = currency ?? DefaultValue.currency
+        self.createTime = createTime ?? DefaultValue.createTime
         self.enableFolderColor = enableFolderColor ?? DefaultValue.enableFolderColor
         self.inheritParentFolderColor = inheritParentFolderColor ?? DefaultValue.inheritParentFolderColor
         self.notificationEmail = notificationEmail ?? DefaultValue.notificationEmail
@@ -248,6 +291,7 @@ public final class UserInfo: NSObject {
                          linkConfirmation: Int?,
                          credit: Int?,
                          currency: String?,
+                         createTime: Int64?,
                          subscribed: User.Subscribed?) {
         self.attachPublicKey = DefaultValue.attachPublicKey
         self.autoSaveContact = DefaultValue.autoSaveContact
@@ -255,6 +299,7 @@ public final class UserInfo: NSObject {
         self.crashReports = DefaultValue.crashReports
         self.credit = credit ?? DefaultValue.credit
         self.currency = currency ?? DefaultValue.currency
+        self.createTime = createTime ?? DefaultValue.createTime
         self.defaultSignature = DefaultValue.defaultSignature
         self.delaySendSeconds = DefaultValue.delaySendSeconds
         self.delinquent = delinquent ?? DefaultValue.delinquent
@@ -378,6 +423,7 @@ extension UserInfo {
         static let attachPublicKey: Int = 0
         static let autoSaveContact: Int = 0
         static let crashReports: Int = 1
+        static let createTime: Int64 = 0
         static let credit: Int = 0
         static let currency: String = "USD"
         static let defaultSignature: String = ""

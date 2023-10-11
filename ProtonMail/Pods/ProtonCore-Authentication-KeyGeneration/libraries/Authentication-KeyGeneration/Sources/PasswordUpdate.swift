@@ -19,13 +19,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
 import Foundation
-import ProtonCore_Authentication
-import ProtonCore_Utilities
-import ProtonCore_Hash
+import ProtonCoreAuthentication
+import ProtonCoreUtilities
+import ProtonCoreHash
 
 /// update password address/user  no UI yet. need get back to here when client need to migrate this
 final class PasswordUpdate {

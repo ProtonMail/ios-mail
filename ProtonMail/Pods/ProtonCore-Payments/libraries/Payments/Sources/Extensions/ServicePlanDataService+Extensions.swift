@@ -1,6 +1,6 @@
 //
 //  ServicePlanDataService+Extensions.swift
-//  ProtonCore_Payments - Created on 28/09/2022.
+//  ProtonCorePayments - Created on 28/09/2022.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //

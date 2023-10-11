@@ -19,9 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import fusion
-import ProtonCore_QuarkCommands
-import ProtonCore_Doh
+import ProtonCoreQuarkCommands
+import ProtonCoreDoh
 
 public class CreateAddressTestCases {
 
@@ -109,4 +111,5 @@ public class CreateAddressTestCases {
         return "\(StringUtils.randomAlphanumericString(length: 8))\(StringUtils.randomAlphanumericString(length: 8))"
     }
 }
- 
+
+#endif

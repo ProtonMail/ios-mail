@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Intents
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 
 class IntentHandler: INExtension {
 

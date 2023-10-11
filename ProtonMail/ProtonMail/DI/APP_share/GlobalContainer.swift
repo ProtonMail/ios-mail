@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 
 final class GlobalContainer: ManagedContainer {
     let manager = ContainerManager()

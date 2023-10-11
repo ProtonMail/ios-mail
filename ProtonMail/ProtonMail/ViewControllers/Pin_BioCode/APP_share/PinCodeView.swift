@@ -24,7 +24,7 @@ import AudioToolbox
 #if !APP_EXTENSION
 import LifetimeTracker
 #endif
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol PinCodeViewDelegate: AnyObject {

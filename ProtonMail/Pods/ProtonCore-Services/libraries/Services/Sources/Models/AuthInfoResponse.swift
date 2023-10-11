@@ -21,7 +21,7 @@
 //
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 /**
  A class representing the data required to compute the SRP

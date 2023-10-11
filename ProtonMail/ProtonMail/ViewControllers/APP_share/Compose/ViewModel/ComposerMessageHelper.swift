@@ -17,8 +17,8 @@
 
 import CoreData
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_DataModel
+import ProtonCoreCrypto
+import ProtonCoreDataModel
 
 final class ComposerMessageHelper {
     private(set) var draft: Draft?

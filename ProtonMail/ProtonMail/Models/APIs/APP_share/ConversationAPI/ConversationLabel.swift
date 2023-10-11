@@ -22,7 +22,7 @@
 //
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 /// Label/move an array of conversations
 ///

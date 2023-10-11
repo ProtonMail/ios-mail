@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import OSLog
-import ProtonCore_Log
+import ProtonCoreLog
 
 final class SystemLogger {
     private static let shared = SystemLogger()

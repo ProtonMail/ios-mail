@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_CoreTranslation
-import protocol ProtonCore_Networking.ForceUpgradeResponseDelegate
-import ProtonCore_UIFoundations
+import protocol ProtonCoreNetworking.ForceUpgradeResponseDelegate
+import ProtonCoreUIFoundations
 
 extension ForceUpgradeHelper {
     public convenience init(config: ForceUpgradeConfig, responseDelegate: ForceUpgradeResponseDelegate? = nil) {
@@ -42,16 +43,16 @@ final class ForceUpgradeControllerForUIKit: ForceUpgradeController {
 
         let buttonTitle: String
         switch config {
-        case .mobile: buttonTitle = CoreString._fu_alert_learn_more_button
-        case .desktop: buttonTitle = CoreString._fu_alert_quit_button
+        case .mobile: buttonTitle = FUTranslation.alert_learn_more_button.l10n
+        case .desktop: buttonTitle = FUTranslation.alert_quit_button.l10n
         }
 
-        alert = UIAlertController(title: CoreString._fu_alert_title, message: message, preferredStyle: .alert)
+        alert = UIAlertController(title: FUTranslation.alert_title.l10n, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: buttonTitle, style: .default, handler: { _ in
             secondaryButtonAction()
             self.alertWindow?.rootViewController?.present(self.alert, animated: true, completion: nil)
         }))
-        alert.addAction(UIAlertAction(title: CoreString._fu_alert_update_button, style: .default, handler: { _ in
+        alert.addAction(UIAlertAction(title: FUTranslation.alert_update_button.l10n, style: .default, handler: { _ in
             primaryButtonAction()
             self.alertWindow?.rootViewController?.present(self.alert, animated: true, completion: nil)
         }))
@@ -93,3 +94,5 @@ final class ForceUpgradeControllerForUIKit: ForceUpgradeController {
         return alertWindow
     }()
 }
+
+#endif

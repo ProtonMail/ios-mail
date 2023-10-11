@@ -1,4 +1,4 @@
-framework module ProtonCore_PaymentsUI {
+framework module ProtonCorePaymentsUI {
   umbrella header "ProtonCore-PaymentsUI-umbrella.h"
 
   export *

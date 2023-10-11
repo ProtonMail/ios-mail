@@ -24,7 +24,7 @@ import CoreData
 import LifetimeTracker
 import MBProgressHUD
 import PromiseKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import StoreKit
 import UIKit
 

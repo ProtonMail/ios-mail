@@ -21,9 +21,9 @@
 //
 
 import Foundation
-import ProtonCore_FeatureSwitch
-import ProtonCore_Networking
-import ProtonCore_Utilities
+import ProtonCoreFeatureSwitch
+import ProtonCoreNetworking
+import ProtonCoreUtilities
 
 public protocol ObservabilityService {
     /// Reports events to Back-End
@@ -34,7 +34,7 @@ public protocol ObservabilityService {
 
 public class ObservabilityServiceImpl: ObservabilityService {
     
-    private let requestPerformer: ProtonCore_Networking.RequestPerforming?
+    private let requestPerformer: ProtonCoreNetworking.RequestPerforming?
     
     private let timer: ObservabilityTimer
     private let aggregator: ObservabilityAggregator
@@ -76,11 +76,6 @@ public class ObservabilityServiceImpl: ObservabilityService {
     }
     
     public func report<Labels: Encodable & Equatable>(_ event: ObservabilityEvent<PayloadWithLabels<Labels>>) {
-        
-        guard FeatureFactory.shared.isEnabled(.unauthSession), FeatureFactory.shared.isEnabled(.observability) else {
-            return
-        }
-        
         isTimerRunning.mutate { value in
             guard value else {
                 value = true

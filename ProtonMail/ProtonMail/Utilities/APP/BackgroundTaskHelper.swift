@@ -17,7 +17,7 @@
 
 import BackgroundTasks
 import Foundation
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 import UIKit
 
 protocol BackgroundTaskHelperProtocol {

@@ -23,10 +23,10 @@
 import Foundation
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_HumanVerification
-import ProtonCore_Log
-import ProtonCore_TroubleShooting
-import ProtonCore_UIFoundations
+import ProtonCoreHumanVerification
+import ProtonCoreLog
+import ProtonCoreTroubleShooting
+import ProtonCoreUIFoundations
 import SideMenuSwift
 
 final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {

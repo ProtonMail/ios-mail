@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 extension AuthService {
     
@@ -57,7 +57,7 @@ extension AuthService {
             auth
         }
         
-        var autoRetry: Bool {
+        var authRetry: Bool {
             false
         }
     }

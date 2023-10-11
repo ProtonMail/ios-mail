@@ -22,7 +22,7 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_Foundations
+import ProtonCoreFoundations
 
 public protocol CountryPickerViewControllerDelegate: AnyObject {
     func didSelectCountryCode(countryCode: CountryCode)

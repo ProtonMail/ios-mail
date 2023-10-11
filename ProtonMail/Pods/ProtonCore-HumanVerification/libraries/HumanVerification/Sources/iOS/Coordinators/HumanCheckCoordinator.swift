@@ -19,12 +19,14 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import enum ProtonCore_DataModel.ClientApp
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_UIFoundations
-import ProtonCore_CoreTranslation
+import enum ProtonCoreDataModel.ClientApp
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreUIFoundations
+import ProtonCoreFoundations
 
 class HumanCheckCoordinator {
 
@@ -103,7 +105,7 @@ class HumanCheckCoordinator {
             }
         } else {
             var topViewController: UIViewController?
-            let keyWindow = UIApplication.getInstance()?.windows.filter { $0.isKeyWindow }.first
+            let keyWindow = UIApplication.firstKeyWindow
             if var top = keyWindow?.rootViewController {
                 while let presentedViewController = top.presentedViewController {
                     top = presentedViewController
@@ -200,3 +202,5 @@ extension HumanCheckCoordinator {
         return customViewController
     }
 }
+
+#endif

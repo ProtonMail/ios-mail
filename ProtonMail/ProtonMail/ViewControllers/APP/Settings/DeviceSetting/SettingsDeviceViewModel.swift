@@ -22,8 +22,8 @@
 
 import Foundation
 import MBProgressHUD
-import ProtonCore_DataModel
-import ProtonCore_Log
+import ProtonCoreDataModel
+import ProtonCoreLog
 
 enum SettingDeviceSection: Int, CustomStringConvertible {
     case account

@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import ProtonCore_Keymaker
-import ProtonCore_TestingToolkit
+import ProtonCoreKeymaker
+import ProtonCoreTestingToolkit
 
 class MockKeyMakerProtocol: KeyMakerProtocol {
     @PropertyStub(\MockLockCacheStatus.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub

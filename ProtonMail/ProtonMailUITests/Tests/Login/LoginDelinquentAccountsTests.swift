@@ -23,7 +23,7 @@
 import XCTest
 import fusion
 import RegexBuilder
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 final class LoginDelinquentAccountsTests: FixtureAuthenticatedTestCase {
 

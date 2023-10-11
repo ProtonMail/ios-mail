@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import struct ProtonCore_Crypto.Armored
+import struct ProtonCoreCrypto.Armored
 
 extension Armored: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {

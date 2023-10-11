@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 protocol ReferralProgramPromptStatus {
     var referralProgramPromptWasShown: Bool { get set }

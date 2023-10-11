@@ -22,8 +22,8 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 
 struct UsersAPI {
     static let path: String = "/users"

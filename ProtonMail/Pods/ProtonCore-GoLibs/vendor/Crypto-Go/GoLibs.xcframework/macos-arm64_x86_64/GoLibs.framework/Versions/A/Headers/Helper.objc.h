@@ -185,6 +185,8 @@ It clones the data to avoid the garbage collector freeing the data too early.
 @property (nonatomic) NSData* _Nullable data;
 @end
 
+FOUNDATION_EXPORT const int64_t HelperAES_BLOCK_SIZE;
+
 /**
  * DecryptAttachment takes a keypacket and datpacket
 and returns a decrypted PlainMessage
@@ -396,6 +398,22 @@ FOUNDATION_EXPORT HelperMobile2GoWriterWithSHA256* _Nullable HelperNewMobile2GoW
 It clones the data to avoid the garbage collector freeing the data too early.
  */
 FOUNDATION_EXPORT HelperMobileReadResult* _Nullable HelperNewMobileReadResult(long n, BOOL eof, NSData* _Nullable data);
+
+/**
+ * QuickCheckDecrypt checks with high probability if the provided session key
+can decrypt the encrypted data packet given its 24 byte long prefix.
+The method only considers the first 24 bytes of the prefix slice (prefix[:24]).
+NOTE: Only works for SEIPDv1 packets with AES.
+ */
+FOUNDATION_EXPORT BOOL HelperQuickCheckDecrypt(CryptoSessionKey* _Nullable sessionKey, NSData* _Nullable prefix, BOOL* _Nullable ret0_, NSError* _Nullable* _Nullable error);
+
+/**
+ * QuickCheckDecryptReader checks with high probability if the provided session key
+can decrypt a data packet given its 24 byte long prefix.
+The method reads up to but not exactly 24 bytes from the prefixReader.
+NOTE: Only works for SEIPDv1 packets with AES.
+ */
+FOUNDATION_EXPORT BOOL HelperQuickCheckDecryptReader(CryptoSessionKey* _Nullable sessionKey, id<CryptoReader> _Nullable prefixReader, BOOL* _Nullable ret0_, NSError* _Nullable* _Nullable error);
 
 /**
  * SignCleartextMessage signs text given a private keyring, canonicalizes and

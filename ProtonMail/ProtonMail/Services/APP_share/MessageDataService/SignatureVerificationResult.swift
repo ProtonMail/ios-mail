@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import GoLibs
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 
 enum SignatureVerificationResult {
     case success
