@@ -235,7 +235,7 @@ extension PrepareSendMetadataTests {
         return try! dummyMessageBody.encrypt(
             withKey: dummySenderAddressKey,
             userKeys: mockUserManager.userInfo.userPrivateKeys,
-            mailbox_pwd: Passphrase(value: dummyUserKey.passphrase)
+            mailboxPassphrase: Passphrase(value: dummyUserKey.passphrase)
         )
     }
 
@@ -244,7 +244,7 @@ extension PrepareSendMetadataTests {
         return try! dummyMessageBody.encrypt(
             withKey: randomKey,
             userKeys: mockUserManager.userInfo.userPrivateKeys,
-            mailbox_pwd: Passphrase(value: dummyUserKey.passphrase)
+            mailboxPassphrase: Passphrase(value: dummyUserKey.passphrase)
         )
     }
 

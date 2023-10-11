@@ -26,13 +26,13 @@ import ProtonCoreDataModel
 // MARK: - OpenPGP String extension
 
 extension String {
-    func encrypt(withKey key: Key, userKeys: [ArmoredKey], mailbox_pwd: Passphrase) throws -> String {
-        let armoredMessage: ArmoredMessage = try encrypt(withKey: key, userKeys: userKeys, mailbox_pwd: mailbox_pwd)
+    func encrypt(withKey key: Key, userKeys: [ArmoredKey], mailboxPassphrase: Passphrase) throws -> String {
+        let armoredMessage: ArmoredMessage = try encrypt(withKey: key, userKeys: userKeys, mailboxPassphrase: mailboxPassphrase)
         return armoredMessage.value
     }
 
-    private func encrypt(withKey key: Key, userKeys: [ArmoredKey], mailbox_pwd: Passphrase) throws -> ArmoredMessage {
-        let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: mailbox_pwd)
+    private func encrypt(withKey key: Key, userKeys: [ArmoredKey], mailboxPassphrase: Passphrase) throws -> ArmoredMessage {
+        let addressKeyPassphrase = try key.passphrase(userPrivateKeys: userKeys, mailboxPassphrase: mailboxPassphrase)
 
         let signerKey = SigningKey(
             privateKey: ArmoredKey(value: key.privateKey),

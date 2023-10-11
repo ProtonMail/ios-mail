@@ -226,7 +226,7 @@ extension MessageSendingRequestBuilder {
 
         let encrypted = try signbody.encrypt(withKey: senderKey,
                                              userKeys: userKeys,
-                                             mailbox_pwd: passphrase)
+                                             mailboxPassphrase: passphrase)
         let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)
 
         guard let sessionKey = try keyPacket.getSessionFromPubKeyPackage(
@@ -252,7 +252,7 @@ extension MessageSendingRequestBuilder {
         let encrypted = try plainText.encrypt(
             withKey: senderKey,
             userKeys: userKeys,
-            mailbox_pwd: passphrase
+            mailboxPassphrase: passphrase
         )
 
         let (keyPacket, dataPacket) = try self.preparePackages(encrypted: encrypted)

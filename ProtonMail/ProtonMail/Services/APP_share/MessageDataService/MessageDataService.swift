@@ -1087,7 +1087,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         if let key = self.userDataSource?.userInfo.getAddressKey(address_id: addressId) {
             return try clearBody.encrypt(withKey: key,
                                          userKeys: self.userDataSource!.userInfo.userPrivateKeys,
-                                         mailbox_pwd: mailbox_pwd)
+                                         mailboxPassphrase: mailbox_pwd)
         } else { // fallback
             let key = self.userDataSource!.userInfo.getAddressPrivKey(address_id: addressId)
             return try clearBody.encryptNonOptional(withPrivKey: key, mailbox_pwd: mailbox_pwd.value)

@@ -155,7 +155,7 @@ final class MessageDecrypterTests: XCTestCase {
         let encryptedBody = try body.encrypt(
             withKey: mockUserData.userInfo.addressKeys[0],
             userKeys: mockUserData.userInfo.userPrivateKeys,
-            mailbox_pwd: mockUserData.mailboxPassword
+            mailboxPassphrase: mockUserData.mailboxPassword
         )
 
         return MessageEntity.make(mimeType: mimeType.rawValue, body: encryptedBody)
