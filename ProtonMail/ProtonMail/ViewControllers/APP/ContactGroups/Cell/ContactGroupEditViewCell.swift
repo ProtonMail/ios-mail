@@ -63,6 +63,7 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
         super.awakeFromNib()
         contentView.backgroundColor = ColorProvider.BackgroundNorm
         shortNameLabel.layer.cornerRadius = shortNameLabel.frame.size.width / 2
+        shortNameLabel.clipsToBounds = true
     }
 
     @IBAction func deleteButtonTapped(_ sender: UIButton) {
