@@ -61,6 +61,10 @@ public class Keymaker: NSObject {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+
+    public var isMainKeyInMemory: Bool {
+        _mainKey != nil
+    }
     
     // stored in-memory value
     private var _mainKey: MainKey? {

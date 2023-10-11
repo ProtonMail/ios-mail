@@ -20,6 +20,8 @@ import ProtonCoreKeymaker
 import ProtonCoreTestingToolkit
 
 class MockKeyMakerProtocol: KeyMakerProtocol {
+    var isMainKeyInMemory: Bool = false
+
     @PropertyStub(\MockLockCacheStatus.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub
     var isPinCodeEnabled: Bool {
         isPinCodeEnabledStub()

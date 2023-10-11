@@ -147,6 +147,22 @@ extension UserContainer: HasLockCacheStatus {
     }
 }
 
+protocol HasLockPreventor {
+    var lockPreventor: LockPreventor { get }
+}
+
+extension GlobalContainer: HasLockPreventor {
+    var lockPreventor: LockPreventor {
+        lockPreventorFactory()
+    }
+}
+
+extension UserContainer: HasLockPreventor {
+    var lockPreventor: LockPreventor {
+        globalContainer.lockPreventor
+    }
+}
+
 protocol HasNotificationCenter {
     var notificationCenter: NotificationCenter { get }
 }
@@ -272,6 +288,22 @@ extension GlobalContainer: HasUsersManager {
 extension UserContainer: HasUsersManager {
     var usersManager: UsersManager {
         globalContainer.usersManager
+    }
+}
+
+protocol HasUsersManagerProtocol {
+    var usersManagerProtocol: UsersManagerProtocol { get }
+}
+
+extension GlobalContainer: HasUsersManagerProtocol {
+    var usersManagerProtocol: UsersManagerProtocol {
+        usersManagerProtocolFactory()
+    }
+}
+
+extension UserContainer: HasUsersManagerProtocol {
+    var usersManagerProtocol: UsersManagerProtocol {
+        globalContainer.usersManagerProtocol
     }
 }
 
