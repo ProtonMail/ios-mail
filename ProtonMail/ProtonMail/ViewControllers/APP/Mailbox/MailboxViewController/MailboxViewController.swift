@@ -2250,6 +2250,11 @@ extension MailboxViewController: UITableViewDelegate {
         return !shouldAnimateSkeletonLoading
     }
 
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        hapticFeedbackGenerator.prepare()
+        return indexPath
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch viewModel.locationViewMode {
         case .singleMessage:
@@ -2291,6 +2296,8 @@ extension MailboxViewController: UITableViewDelegate {
         let itemAlreadySelected = viewModel.selectionContains(id: id)
         let selectionAction = itemAlreadySelected ? viewModel.removeSelected : viewModel.select
         selectionAction(id)
+
+        hapticFeedbackGenerator.impactOccurred()
 
         // update checkbox state
         if let mailboxCell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell {

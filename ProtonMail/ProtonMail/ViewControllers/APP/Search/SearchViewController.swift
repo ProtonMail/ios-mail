@@ -63,6 +63,7 @@ class SearchViewController: ProtonMailViewController, ComposeSaveHintProtocol, C
     private let cellPresenter = NewMailboxMessageCellPresenter()
     var pendingActionAfterDismissal: (() -> Void)?
     private let dependencies: Dependencies
+    private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
     init(viewModel: SearchVMProtocol, dependencies: Dependencies) {
         self.viewModel = viewModel
@@ -725,13 +726,21 @@ extension SearchViewController: UITableViewDataSource, UITableViewDelegate {
         self.viewModel.loadMoreDataIfNeeded(currentRow: indexPath.row)
     }
 
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        hapticFeedbackGenerator.prepare()
+        return indexPath
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let message = self.viewModel.messages[indexPath.row]
         let breadcrumbMsg = "SearchVC selected message (msgId: \(message.messageID.rawValue), convId: \(message.conversationID.rawValue)"
         Breadcrumbs.shared.add(message: breadcrumbMsg, to: .malformedConversationRequest)
         guard !listEditing else {
-            self.handleEditingDataSelection(of: message.messageID.rawValue,
-                                            indexPath: indexPath)
+            hapticFeedbackGenerator.impactOccurred()
+            handleEditingDataSelection(
+                of: message.messageID.rawValue,
+                indexPath: indexPath
+            )
             return
         }
         if self.getTapped() {
