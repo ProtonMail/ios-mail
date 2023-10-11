@@ -94,7 +94,7 @@ extension UITableView {
 
 extension UITableView {
 
-    func RegisterCell(_ cellID: String) {
+    func registerCell(_ cellID: String) {
         self.register(UINib(nibName: cellID, bundle: nil), forCellReuseIdentifier: cellID)
     }
 
