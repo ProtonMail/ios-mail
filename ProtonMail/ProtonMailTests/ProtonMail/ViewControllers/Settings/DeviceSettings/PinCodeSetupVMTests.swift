@@ -21,30 +21,23 @@ import XCTest
 
 final class PinCodeSetupVMTests: XCTestCase {
     private var sut: PinCodeSetupViewModel!
-    private var keyMaker: Keymaker!
-    private var keyChain: KeychainWrapper!
-    private var notificationCenter: NotificationCenter!
-    private var userCachedStatus: UserCachedStatus!
-    private var globalContainer: GlobalContainer!
+    private var globalContainer: TestContainer!
     private var router: MockPinCodeSetupRouterProtocol!
+
+    private var keyMaker: KeyMakerProtocol {
+        globalContainer.keyMaker
+    }
+
+    private var notificationCenter: NotificationCenter {
+        globalContainer.notificationCenter
+    }
 
     override func setUpWithError() throws {
         router = MockPinCodeSetupRouterProtocol()
-        userCachedStatus = UserCachedStatus(userDefaults: UserDefaults(suiteName: "ch.protonmail.test")!)
-        keyChain = KeychainWrapper(
-            service: "ch.protonmail.test",
-            accessGroup: "2SB5Z68H26.ch.protonmail.protonmail"
-        )
-        keyMaker = Keymaker(
-            autolocker: Autolocker(lockTimeProvider: userCachedStatus),
-            keychain: keyChain
-        )
-        notificationCenter = NotificationCenter()
 
         globalContainer = .init()
-        globalContainer.keyMakerFactory.register { self.keyMaker }
-        globalContainer.notificationCenterFactory.register { self.notificationCenter }
-        globalContainer.userCachedStatusFactory.register { self.userCachedStatus }
+        // TODO: KeychainWrapper.keychain is integrated too tightly into the SUT to fully abstract it, so we go the opposite way for now
+        globalContainer.keychainFactory.register { KeychainWrapper.keychain }
         sut = PinCodeSetupViewModel(
             dependencies: globalContainer,
             router: router
@@ -53,10 +46,6 @@ final class PinCodeSetupVMTests: XCTestCase {
 
     override func tearDownWithError() throws {
         router = nil
-        userCachedStatus = nil
-        keyChain = nil
-        keyMaker = nil
-        notificationCenter = nil
         globalContainer = nil
         sut = nil
     }
@@ -78,10 +67,10 @@ final class PinCodeSetupVMTests: XCTestCase {
         wait(for: [lockEnabledEX, appKeyDisabled], timeout: 5)
 
         do {
-            try await keyMaker.verify(protector: PinProtection(pin: "1111"))
+            try await keyMaker.verify(protector: PinProtection(pin: "1111", keychain: globalContainer.keychain))
             XCTFail("Wrong pin shouldn't success")
         } catch { }
-        try await keyMaker.verify(protector: PinProtection(pin: "1234"))
+        try await keyMaker.verify(protector: PinProtection(pin: "1234", keychain: globalContainer.keychain))
     }
 
     func testGoTo() {
@@ -101,7 +90,7 @@ final class PinCodeSetupVMTests: XCTestCase {
 
     func testIsCorrectCurrentPinCode() async {
         let activateEX = expectation(description: "Activate pin")
-        keyMaker.activate(PinProtection(pin: "1234")) { _ in
+        keyMaker.activate(PinProtection(pin: "1234", keychain: globalContainer.keychain)) { _ in
             activateEX.fulfill()
         }
 

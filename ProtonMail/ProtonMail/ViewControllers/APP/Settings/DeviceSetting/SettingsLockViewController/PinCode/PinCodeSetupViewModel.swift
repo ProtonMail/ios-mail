@@ -63,7 +63,7 @@ extension PinCodeSetupViewModel {
 }
 
 final class PinCodeSetupViewModel: PinCodeSetupVMProtocol {
-    typealias Dependencies = HasKeyMakerProtocol & HasUserCachedStatus & HasNotificationCenter & HasPinCodeProtection
+    typealias Dependencies = HasKeychain & HasKeyMakerProtocol & HasPinCodeProtection
 
     private let dependencies: Dependencies
     private let router: PinCodeSetupRouterProtocol
@@ -89,7 +89,7 @@ final class PinCodeSetupViewModel: PinCodeSetupVMProtocol {
 
     @discardableResult
     func isCorrectCurrentPinCode(_ pinCode: String) async throws -> Bool {
-        let protection = PinProtection(pin: pinCode)
+        let protection = PinProtection(pin: pinCode, keychain: dependencies.keychain)
         do {
             try await self.dependencies.keyMaker.verify(protector: protection)
             return true

@@ -16,19 +16,19 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import ProtonCoreKeymaker
 import XCTest
 
 final class BiometricLockTests: XCTestCase {
 
     private var sut: BiometricLock!
     private var LAContextMock: MockLAContextProtocol!
-    private var keyChain: KeychainWrapper!
-
+    private var keyChain: Keychain!
 
     override func setUp() {
         super.setUp()
         LAContextMock = .init()
-        keyChain = .makeTestingKeychain()
+        keyChain = TestContainer().keychain
         sut = .init(keyChain: keyChain, localAuthenticationContext: LAContextMock)
     }
 
