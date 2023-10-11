@@ -42,7 +42,7 @@
             {
                "basedOnDependencyAnalysis": false,
                "name": "SwiftLint",
-               "path": "xcodeGen/swiftlint_build_phase.sh"
+               "path": "xcodeGen/swiftlint.sh"
             },
             {
                "basedOnDependencyAnalysis": false,
