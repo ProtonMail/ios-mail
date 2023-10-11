@@ -19,8 +19,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 final class SummaryProgressCell: UITableViewCell {
 
@@ -64,3 +66,5 @@ final class SummaryProgressCell: UITableViewCell {
         return (size?.width ?? 0) + labelLeadingConstraint.constant + 1
     }
 }
+
+#endif

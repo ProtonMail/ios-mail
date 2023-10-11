@@ -446,7 +446,7 @@
                         <constraint firstItem="zM2-1N-P6W" firstAttribute="top" secondItem="B8u-Fp-tL4" secondAttribute="bottom" id="y7L-CX-J0x"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZi-Xu-g8R" customClass="ProtonButton" customModule="ProtonCore_UIFoundations">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZi-Xu-g8R" customClass="ProtonButton" customModule="ProtonCoreUIFoundations">
                     <rect key="frame" x="24" y="774" width="366" height="48"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="Owz-um-MLh"/>

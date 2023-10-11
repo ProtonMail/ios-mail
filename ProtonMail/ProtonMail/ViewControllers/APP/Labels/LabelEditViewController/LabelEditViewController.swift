@@ -21,9 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import MBProgressHUD
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
-import ProtonCore_Foundations
+import ProtonCoreFoundations
 
 final class LabelEditViewController: UITableViewController, AccessibleView {
     private var navBarDoneButton: UIBarButtonItem = SubviewFactory.navBarButton

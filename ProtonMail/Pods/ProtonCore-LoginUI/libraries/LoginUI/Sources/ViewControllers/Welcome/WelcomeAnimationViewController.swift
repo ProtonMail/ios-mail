@@ -19,9 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_UIFoundations
-import ProtonCore_DataModel
+import ProtonCoreUIFoundations
+import ProtonCoreDataModel
 import Lottie
 
 public final class WelcomeAnimationViewController: UIViewController {
@@ -73,3 +75,5 @@ public final class WelcomeAnimationViewController: UIViewController {
         }
     }
 }
+
+#endif

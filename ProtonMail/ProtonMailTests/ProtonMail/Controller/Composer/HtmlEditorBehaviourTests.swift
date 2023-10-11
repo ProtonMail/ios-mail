@@ -18,7 +18,7 @@
 @testable import ProtonMail
 import XCTest
 import WebKit
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 class MockComposerSchemeHandler: ComposerSchemeHandler {}
 

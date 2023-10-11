@@ -17,8 +17,8 @@
 
 import Foundation
 import ProtonMailAnalytics
-import struct ProtonCore_Networking.ResponseError
-import class ProtonCore_Services.APIErrorCode
+import struct ProtonCoreNetworking.ResponseError
+import class ProtonCoreServices.APIErrorCode
 
 /// Object responsible for triggering the actual send action. SendMessageTask also
 /// manages anything related to the before and after of the actual send request,

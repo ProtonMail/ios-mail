@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 @testable import ProtonMail
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 final class MockPrepareSendRequest: UseCase<SendMessageRequest, PrepareSendRequest.Params> {
 

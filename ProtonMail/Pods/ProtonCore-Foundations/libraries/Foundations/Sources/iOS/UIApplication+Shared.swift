@@ -30,10 +30,21 @@ public extension UIApplication {
     }
 
     static func openURLIfPossible(_ url: URL) {
+        // Can't use `#selector("openURL:")` here because this Swift error emerges:
+        // Argument of '#selector' does not refer to an '@objc' method, property, or initializer
         let selector = Selector("openURL:")
         if UIApplication.getInstance()?.responds(to: selector) == true {
             UIApplication.getInstance()?.perform(selector, with: url as NSURL)
         }
+    }
+
+    // Replacement for `UIAppplication.shared.keyWindow` because `UIApplication.shared.keyWindow` is deprecated.
+    static var firstKeyWindow: UIWindow? {
+        guard let application = UIApplication.getInstance() else { return nil }
+        return application.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
     }
 }
 #endif

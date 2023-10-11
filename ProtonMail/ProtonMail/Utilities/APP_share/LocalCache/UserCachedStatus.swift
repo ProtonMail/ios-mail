@@ -21,9 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 #if !APP_EXTENSION
-import ProtonCore_Payments
+import ProtonCorePayments
 #endif
 
 let userCachedStatus = UserCachedStatus()

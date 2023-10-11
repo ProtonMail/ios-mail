@@ -22,13 +22,14 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_Foundations
+import ProtonCoreFoundations
 
 public final class PMHeaderView: UIView, AccessibleView {
 
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var titleLabelLeft: NSLayoutConstraint!
     @IBOutlet private var titleLabelBottom: NSLayoutConstraint!
+    @IBOutlet private var titleLabelTop: NSLayoutConstraint!
     @IBOutlet private var contentView: UIView!
     private let title: String
     private var fontSize: CGFloat?
@@ -36,6 +37,7 @@ public final class PMHeaderView: UIView, AccessibleView {
     private let titleColor: UIColor
     private let titleLeft: CGFloat
     private let titleBottom: CGFloat
+    private let titleTop: CGFloat
     private let background: UIColor
 
     required init?(coder: NSCoder) {
@@ -51,6 +53,7 @@ public final class PMHeaderView: UIView, AccessibleView {
                 titleColor: UIColor = ColorProvider.TextWeak,
                 titleLeft: CGFloat = 16,
                 titleBottom: CGFloat = 8,
+                titleTop: CGFloat = 24,
                 background: UIColor = ColorProvider.BackgroundSecondary) {
         self.title = title
         self.fontSize = fontSize
@@ -58,6 +61,7 @@ public final class PMHeaderView: UIView, AccessibleView {
         self.titleColor = titleColor
         self.titleLeft = titleLeft
         self.titleBottom = titleBottom
+        self.titleTop = titleTop
         self.background = background
         super.init(frame: .zero)
         self.nibSetup()
@@ -96,6 +100,7 @@ extension PMHeaderView {
         }
         self.titleLabelLeft.constant = self.titleLeft
         self.titleLabelBottom.constant = self.titleBottom
+        self.titleLabelTop.constant = self.titleTop
     }
 }
 

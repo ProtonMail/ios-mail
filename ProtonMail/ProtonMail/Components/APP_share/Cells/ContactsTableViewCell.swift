@@ -22,8 +22,8 @@
 
 import Foundation
 import UIKit
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 
 /// Custom cell for Contact list, Group list and composer autocomplete
 final class ContactsTableViewCell: UITableViewCell, AccessibleCell {

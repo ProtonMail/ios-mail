@@ -18,8 +18,8 @@
 import Combine
 import CoreData
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreUIFoundations
 
 protocol SearchVMProtocol: AnyObject {
     var user: UserManager { get }

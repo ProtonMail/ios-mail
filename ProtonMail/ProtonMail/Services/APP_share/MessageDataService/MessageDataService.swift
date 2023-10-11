@@ -24,10 +24,10 @@ import CoreData
 import Foundation
 import Groot
 import PromiseKit
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
 import ProtonMailAnalytics
 
 protocol MessageDataServiceProtocol: Service {

@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import class ProtonCore_DataModel.Key
-import typealias ProtonCore_Crypto.ArmoredKey
-import typealias ProtonCore_Crypto.Passphrase
+import class ProtonCoreDataModel.Key
+import typealias ProtonCoreCrypto.ArmoredKey
+import typealias ProtonCoreCrypto.Passphrase
 
 struct UserKeys: Equatable {
     let privateKeys: [ArmoredKey]

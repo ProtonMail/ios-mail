@@ -1,4 +1,4 @@
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 extension ConversationViewController {
     func handleActionSheetAction(_ action: MessageViewActionSheetAction, message: MessageEntity, body: String?) {

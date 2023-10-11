@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_FeatureSwitchVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_FeatureSwitchVersionString[];
+FOUNDATION_EXPORT double ProtonCoreFeatureSwitchVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreFeatureSwitchVersionString[];
 

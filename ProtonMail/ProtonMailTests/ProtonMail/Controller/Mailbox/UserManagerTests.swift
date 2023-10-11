@@ -17,9 +17,9 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreTestingToolkit
 
 class UserManagerTests: XCTestCase {
     private var mockAppTelemetry: MockAppTelemetry!

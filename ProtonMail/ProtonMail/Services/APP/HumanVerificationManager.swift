@@ -22,8 +22,8 @@
 
 import Foundation
 import LifetimeTracker
-import ProtonCore_HumanVerification
-import ProtonCore_Services
+import ProtonCoreHumanVerification
+import ProtonCoreServices
 #if DEBUG
 import OHHTTPStubs
 #endif

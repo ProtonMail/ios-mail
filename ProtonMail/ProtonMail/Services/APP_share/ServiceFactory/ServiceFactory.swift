@@ -22,8 +22,8 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_Keymaker
-import ProtonCore_Services
+import ProtonCoreKeymaker
+import ProtonCoreServices
 
 protocol Service: AnyObject {}
 

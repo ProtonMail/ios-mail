@@ -17,7 +17,7 @@
 
 import Foundation
 import Network
-import ProtonCore_Doh
+import ProtonCoreDoh
 
 protocol CheckProtonServerStatusUseCase {
     func execute() async -> ServerStatus

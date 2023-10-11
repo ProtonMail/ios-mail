@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import MBProgressHUD
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
-import enum ProtonCore_Utilities.Either
-import protocol ProtonCore_Foundations.AccessibleView
+import enum ProtonCoreUtilities.Either
+import protocol ProtonCoreFoundations.AccessibleView
 
 final class SwitchToggleViewController: UITableViewController, AccessibleView {
 

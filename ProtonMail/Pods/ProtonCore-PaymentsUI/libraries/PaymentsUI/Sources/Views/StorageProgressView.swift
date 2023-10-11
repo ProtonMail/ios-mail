@@ -1,6 +1,6 @@
 //
 //  StorageProgressView.swift
-//  ProtonCore_PaymentsUI - Created on 24/02/2022.
+//  ProtonCorePaymentsUI - Created on 24/02/2022.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,9 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_UIFoundations
-import ProtonCore_Foundations
+import ProtonCoreUIFoundations
+import ProtonCoreFoundations
 
 final class StorageProgressView: UIView, AccessibleCell {
 
@@ -99,3 +101,5 @@ final class StorageProgressView: UIView, AccessibleCell {
         }
     }
 }
+
+#endif

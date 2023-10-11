@@ -19,11 +19,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
 import UIKit
-import ProtonCore_UIFoundations
-import ProtonCore_Login
-import ProtonCore_FeatureSwitch
+import ProtonCoreUIFoundations
+import ProtonCoreLogin
+import ProtonCoreFeatureSwitch
 
 protocol CreateAddressCoordinatorDelegate: AnyObject {
     func userDidGoBack()
@@ -95,3 +97,5 @@ extension CreateAddressCoordinator: CreateAddressViewControllerDelegate {
         delegate?.createAddressCoordinatorDidFinish(endLoading: endLoading, createAddressCoordinator: self, data: data)
     }
 }
+
+#endif

@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 
 protocol HelpViewControllerDelegate: AnyObject {
     func userDidDismissHelpViewController()
@@ -60,7 +61,7 @@ final class HelpViewController: UIViewController, AccessibleView {
         titleLabel.textColor = ColorProvider.TextNorm
         closeButton.setImage(IconProvider.cross, for: .normal)
         closeButton.tintColor = ColorProvider.IconNorm
-        titleLabel.text = CoreString._ls_help_screen_title
+        titleLabel.text = LUITranslation.help_screen_title.l10n
         titleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
         titleLabel.adjustsFontForContentSizeCategory = true
     }
@@ -119,3 +120,5 @@ extension HelpViewController: UITableViewDelegate {
         delegate?.userDidRequestHelp(item: helpItem)
     }
 }
+
+#endif

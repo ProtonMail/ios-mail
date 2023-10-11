@@ -1,6 +1,7 @@
 {
   "name": "ProtonCore-Login",
-  "version": "9.3.0",
+  "module_name": "ProtonCoreLogin",
+  "version": "12.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "9.3.0"
+    "tag": "12.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -33,34 +34,28 @@
 
     ],
     "ProtonCore-Log": [
-      "9.3.0"
-    ],
-    "ProtonCore-OpenPGP": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Foundations": [
-      "9.3.0"
-    ],
-    "ProtonCore-CoreTranslation": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-DataModel": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Observability": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Crypto": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-CryptoGoInterface": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Authentication": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Authentication-KeyGeneration": [
-      "9.3.0"
+      "12.0.0"
     ]
   },
   "source_files": [
@@ -70,6 +65,9 @@
   "resource_bundles": {
     "Resources-Login": [
       "libraries/Login/Tests/UnitTests/Mocks/Responses/**/*.json"
+    ],
+    "Translations-Login": [
+      "libraries/Login/Sources/Resources/Translations/*"
     ]
   },
   "default_subspecs": [
@@ -81,31 +79,31 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-Authentication": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login": [
-          "9.3.0"
+          "12.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -125,31 +123,31 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-Authentication": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login": [
-          "9.3.0"
+          "12.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -169,31 +167,31 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-Authentication": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login": [
-          "9.3.0"
+          "12.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -213,31 +211,31 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-Authentication": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-Authentication-KeyGeneration": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-ObfuscatedConstants": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/TestData": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Authentication-KeyGeneration": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Login": [
-          "9.3.0"
+          "12.0.0"
         ],
         "OHHTTPStubs/Swift": [
 
@@ -257,22 +255,22 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "9.3.0"
+          "12.0.0"
         ],
         "TrustKit": [
 
@@ -291,22 +289,22 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto-patched-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "9.3.0"
+          "12.0.0"
         ],
         "TrustKit": [
 
@@ -325,22 +323,22 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+VPN-patched-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "9.3.0"
+          "12.0.0"
         ],
         "TrustKit": [
 
@@ -359,22 +357,22 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-Crypto": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoInterface": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-CryptoGoImplementation/Crypto+Search-Go": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-QuarkCommands": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Core": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
-          "9.3.0"
+          "12.0.0"
         ],
         "TrustKit": [
 

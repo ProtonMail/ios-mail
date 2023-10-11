@@ -18,12 +18,14 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
+
+#if os(iOS)
+
 import Foundation
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_Login
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreLogin
+import ProtonCoreUIFoundations
 
 protocol TwoFactorViewControllerDelegate: NavigationDelegate, LoginStepsDelegate {
     func twoFactorViewControllerDidFinish(endLoading: @escaping () -> Void, data: LoginData)
@@ -89,9 +91,9 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
         view.backgroundColor = ColorProvider.BackgroundNorm
         recoveryCodeButton.setMode(mode: .text)
 
-        titleView.text = CoreString._ls_login_2fa_screen_title
+        titleView.text = LUITranslation.login_2fa_screen_title.l10n
         titleView.textColor = ColorProvider.TextNorm
-        authenticateButton.setTitle(CoreString._ls_login_2fa_action_button_title, for: .normal)
+        authenticateButton.setTitle(LUITranslation.login_2fa_action_button_title.l10n, for: .normal)
     }
 
     // Set up username and password textField to enable keyChain auto remember password
@@ -134,7 +136,7 @@ final class TwoFactorViewController: UIViewController, AccessibleView, Focusable
     private func setupBinding() {
         viewModel.mode.bind { [weak self] mode in
             self?.codeTextField.set(mode: mode)
-            self?.recoveryCodeButton.setTitle(mode == TwoFactorViewModel.Mode.twoFactorCode ? CoreString._ls_login_2fa_recovery_button_title : CoreString._ls_login_2fa_2fa_button_title, for: .normal)
+            self?.recoveryCodeButton.setTitle(mode == TwoFactorViewModel.Mode.twoFactorCode ? LUITranslation.login_2fa_recovery_button_title.l10n : LUITranslation.login_2fa_2fa_button_title.l10n, for: .normal)
         }
         viewModel.error.bind { [weak self] error in
             guard let self = self else { return }
@@ -245,3 +247,5 @@ extension TwoFactorViewController: LoginErrorCapable {
 
     var bannerPosition: PMBannerPosition { .top }
 }
+
+#endif

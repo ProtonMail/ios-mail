@@ -17,10 +17,9 @@
 
 import XCTest
 import fusion
-import ProtonCore_Environment
-import ProtonCore_TestingToolkit
-import ProtonCore_QuarkCommands
-import ProtonCore_CoreTranslation
+import ProtonCoreEnvironment
+import ProtonCoreTestingToolkit
+import ProtonCoreQuarkCommands
 
 final class ExternalAccountsTests: BaseTestCase {
 
@@ -140,7 +139,7 @@ final class ExternalAccountsTests: BaseTestCase {
             .verify.recoveryScreenIsShown()
             .skipButtonTap()
             .verify.recoveryDialogDisplay()
-            .skipButtonTap(robot: PaymentsUIRobot.self)
+            .skipButtonTap(robot: SignupPaymentsRobot.self)
             .verify.paymentsUIScreenIsShown()
             .expandPlan(plan: .free)
             .freePlanV3ButtonTap(wait: 30.0)

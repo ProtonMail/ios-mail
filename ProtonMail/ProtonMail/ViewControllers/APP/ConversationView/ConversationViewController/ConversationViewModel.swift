@@ -1,6 +1,6 @@
 import CoreData
-import ProtonCore_UIFoundations
-import ProtonCore_DataModel
+import ProtonCoreUIFoundations
+import ProtonCoreDataModel
 import ProtonMailAnalytics
 
 enum MessageDisplayRule {

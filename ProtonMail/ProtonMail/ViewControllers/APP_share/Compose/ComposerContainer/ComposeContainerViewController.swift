@@ -22,13 +22,13 @@
 
 #if !APP_EXTENSION
 import LifetimeTracker
-import ProtonCore_PaymentsUI
+import ProtonCorePaymentsUI
 #endif
 import MBProgressHUD
 import PromiseKit
-import ProtonCore_DataModel
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol ComposeContainerViewControllerDelegate: AnyObject {

@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 typealias ExecuteNotificationActionUseCase = UseCase<Void, ExecuteNotificationAction.Parameters>
 

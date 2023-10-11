@@ -1,4 +1,4 @@
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 extension ConversationViewModel {
 

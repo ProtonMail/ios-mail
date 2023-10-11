@@ -1,6 +1,6 @@
 //
 //  LoginService+Bundle.swift
-//  ProtonCore_Login - Created on 30/09/2022.
+//  ProtonCoreLogin - Created on 30/09/2022.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -23,6 +23,10 @@ import Foundation
 
 extension LoginService {
     public static var bundle: Bundle {
+        #if SPM
+        return Bundle.module
+        #else
         return Bundle(path: Bundle(for: LoginService.self).path(forResource: "Resources-Login", ofType: "bundle")!)!
+        #endif
     }
 }

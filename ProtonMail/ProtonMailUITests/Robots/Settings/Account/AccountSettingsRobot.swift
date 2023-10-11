@@ -7,7 +7,7 @@
 //
 
 import fusion
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 fileprivate struct id {
     static let singlePasswordLabel = LocalString._single_password

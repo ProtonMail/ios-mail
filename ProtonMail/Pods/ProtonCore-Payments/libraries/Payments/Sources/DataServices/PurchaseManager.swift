@@ -1,6 +1,6 @@
 //
 //  PaymentsManager.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -20,7 +20,10 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Services
+import ProtonCoreFeatureSwitch
+import ProtonCoreServices
+import ProtonCoreObservability
+import ProtonCoreUtilities
 
 public enum PurchaseResult {
     case purchasedPlan(accountPlan: InAppPurchasePlan)
@@ -50,7 +53,7 @@ public extension PurchaseManagerProtocol {
 
 final class PurchaseManager: PurchaseManagerProtocol {
 
-    private let planService: ServicePlanDataServiceProtocol
+    private let planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>
     private let storeKitManager: StoreKitManagerProtocol
     private var paymentsApi: PaymentsApiProtocol
     private let apiService: APIService
@@ -62,7 +65,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
         return InAppPurchasePlan(storeKitProductId: transaction.payment.productIdentifier)
     }
 
-    init(planService: ServicePlanDataServiceProtocol,
+    init(planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>,
          storeKitManager: StoreKitManagerProtocol,
          paymentsApi: PaymentsApiProtocol,
          apiService: APIService) {
@@ -112,16 +115,33 @@ final class PurchaseManager: PurchaseManagerProtocol {
             return
         }
 
-        guard let details = planService.detailsOfPlanCorrespondingToIAP(plan),
-              let planId = planService.detailsOfPlanCorrespondingToIAP(plan)?.iD else {
-            // the plan details, including its id, are unknown, preventing us from doing any further operation
-            assertionFailure("Programmer's error: buy plan method must be called when the plan details are available")
-            throw StoreKitManagerErrors.transactionFailedByUnknownReason
+        // TODO: test purchase process with PlansDataSource object
+        let planName: String
+        let planId: String
+        switch planService {
+        case .left(let planService):
+            guard let details = planService.detailsOfPlanCorrespondingToIAP(plan),
+                  let id = planService.detailsOfPlanCorrespondingToIAP(plan)?.ID else {
+                // the plan details, including its id, are unknown, preventing us from doing any further operation
+                assertionFailure("Programmer's error: buy plan method must be called when the plan details are available")
+                throw StoreKitManagerErrors.transactionFailedByUnknownReason
+            }
+            planName = details.name
+            planId = id
+
+        case .right(let planDataSource):
+            guard let availablePlan = planDataSource.detailsOfAvailablePlanCorrespondingToIAP(plan) else {
+                // the plan details, including its id, are unknown, preventing us from doing any further operation
+                assertionFailure("Programmer's error: buy plan method must be called when the plan details are available")
+                throw StoreKitManagerErrors.transactionFailedByUnknownReason
+            }
+            planName = availablePlan.name
+            planId = availablePlan.ID
         }
 
         var amountDue = 0
         if !addCredits {
-            amountDue = try fetchAmountDue(protonPlanName: details.name)
+            amountDue = try fetchAmountDue(protonPlanName: planName)
             guard amountDue != .zero else {
                 // backend indicated that plan can be bought for free — no need to initiate the IAP flow
                 try buyPlanWhenAmountDueIsZero(plan: plan, planId: planId, finishCallback: finishCallback)
@@ -141,6 +161,12 @@ final class PurchaseManager: PurchaseManagerProtocol {
         )
 
         let validationResponse = try validateSubscriptionRequest.awaitResponse(responseObject: ValidateSubscriptionResponse())
+        if let validationError = validationResponse.error {
+            ObservabilityEnv.report(.paymentValidatePlanTotal(error: validationError))
+        } else {
+            ObservabilityEnv.report(.paymentValidatePlanTotal(status: .http2xx))
+        }
+
         guard let amountDue = validationResponse.validateSubscription?.amountDue
         else { throw StoreKitManagerErrors.transactionFailedByUnknownReason }
 
@@ -153,14 +179,30 @@ final class PurchaseManager: PurchaseManagerProtocol {
         let subscriptionRequest = paymentsApi.buySubscriptionForZeroRequest(api: apiService, planId: planId)
         let subscriptionResponse = try subscriptionRequest.awaitResponse(responseObject: SubscriptionResponse())
         if let newSubscription = subscriptionResponse.newSubscription {
-            planService.updateCurrentSubscription { [weak self] in
-                finishCallback(.purchasedPlan(accountPlan: plan))
-                self?.storeKitManager.refreshHandler(.finished(.resolvingIAPToSubscription))
-            } failure: { [weak self] _ in
-                // if updateCurrentSubscription is failed for some reason, update subscription with newSubscription data
-                self?.planService.currentSubscription = newSubscription
-                finishCallback(.purchasedPlan(accountPlan: plan))
-                self?.storeKitManager.refreshHandler(.finished(.resolvingIAPToSubscription))
+            // TODO: test purchase process with PlansDataSource object
+            switch planService {
+            case .left(let planService):
+                planService.updateCurrentSubscription { [weak self] in
+                    finishCallback(.purchasedPlan(accountPlan: plan))
+                    self?.storeKitManager.refreshHandler(.finished(.resolvingIAPToSubscription))
+                } failure: { [weak self] _ in
+                    // if updateCurrentSubscription is failed for some reason, update subscription with newSubscription data
+                    planService.currentSubscription = newSubscription
+                    finishCallback(.purchasedPlan(accountPlan: plan))
+                    self?.storeKitManager.refreshHandler(.finished(.resolvingIAPToSubscription))
+                }
+
+            case .right(let planDataSource):
+                Task { [weak self] in
+                    do {
+                        try await planDataSource.fetchCurrentPlan()
+                        finishCallback(.purchasedPlan(accountPlan: plan))
+                        self?.storeKitManager.refreshHandler(.finished(.resolvingIAPToSubscription))
+                    } catch {
+                        finishCallback(.purchasedPlan(accountPlan: plan))
+                        self?.storeKitManager.refreshHandler(.errored(StoreKitManagerErrors.noNewSubscriptionInSuccessfullResponse))
+                    }
+                }
             }
         } else {
             throw StoreKitManager.Errors.noNewSubscriptionInSuccessfullResponse
@@ -171,6 +213,7 @@ final class PurchaseManager: PurchaseManagerProtocol {
     private func buyPlanWhenIAPIsNecessaryToProvideMoney(
         plan: InAppPurchasePlan, amountDue: Int, finishCallback: @escaping (PurchaseResult) -> Void
     ) {
+        ObservabilityEnv.report(.paymentScreenView(screenID: .aiapBilling))
         self.storeKitManager.purchaseProduct(plan: plan, amountDue: amountDue) { result in
             if case .cancelled = result {
                 finishCallback(.purchaseCancelled)

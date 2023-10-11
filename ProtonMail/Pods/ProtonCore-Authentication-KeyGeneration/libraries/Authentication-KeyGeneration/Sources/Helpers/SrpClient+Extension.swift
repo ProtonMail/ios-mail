@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCryptoGoInterface
 
 // public func SrpAuth(version hashVersion: Int,
 //                    userName: String,

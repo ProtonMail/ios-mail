@@ -17,7 +17,7 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 class SettingsAccountViewControllerTests: XCTestCase {
     var sut: SettingsAccountViewController!

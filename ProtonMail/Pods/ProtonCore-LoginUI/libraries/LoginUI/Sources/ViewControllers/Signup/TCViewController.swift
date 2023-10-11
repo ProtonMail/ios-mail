@@ -19,11 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
 import WebKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 
 protocol TCViewControllerDelegate: AnyObject {
     func termsAndConditionsClose()
@@ -45,7 +46,7 @@ class TCViewController: UIViewController, AccessibleView {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = ColorProvider.BackgroundNorm
-        navigationItem.title = CoreString._su_terms_conditions_view_title
+        navigationItem.title = LUITranslation.terms_conditions_view_title.l10n
         navigationController?.navigationBar.tintColor = ColorProvider.IconNorm
         setUpCloseButton(showCloseButton: true, action: #selector(TCViewController.onCloseButtonTap(_:)))
         setupWebView()
@@ -86,3 +87,5 @@ extension TCViewController: WKNavigationDelegate {
         }
     }
 }
+
+#endif

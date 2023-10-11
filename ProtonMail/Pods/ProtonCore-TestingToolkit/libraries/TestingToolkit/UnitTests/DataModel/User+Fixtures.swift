@@ -19,9 +19,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_DataModel
-#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
-import ProtonCore_TestingToolkit_UnitTests_Core
+import ProtonCoreDataModel
+#if canImport(ProtonCoreTestingToolkitUnitTestsCore)
+import ProtonCoreTestingToolkitUnitTestsCore
 #endif
 
 public extension User {
@@ -32,6 +32,7 @@ public extension User {
              usedSpace: .zero,
              currency: .empty,
              credit: .zero,
+             createTime: nil,
              maxSpace: .zero,
              maxUpload: .zero,
              role: .zero,
@@ -42,7 +43,8 @@ public extension User {
              orgPrivateKey: nil,
              email: nil,
              displayName: nil,
-             keys: .empty)
+             keys: .empty,
+             accountRecovery: nil)
     }
     
     func updated(ID: String? = nil,
@@ -66,6 +68,7 @@ public extension User {
              usedSpace: usedSpace ?? self.usedSpace,
              currency: currency ?? self.currency,
              credit: credit ?? self.credit,
+             createTime: createTime ?? self.createTime,
              maxSpace: maxSpace ?? self.maxSpace,
              maxUpload: maxUpload ?? self.maxUpload,
              role: role ?? self.role,
@@ -76,6 +79,7 @@ public extension User {
              orgPrivateKey: orgPrivateKey ?? self.orgPrivateKey,
              email: email ?? self.email,
              displayName: displayName ?? self.displayName,
-             keys: keys ?? self.keys)
+             keys: keys ?? self.keys,
+             accountRecovery: nil)
     }
 }

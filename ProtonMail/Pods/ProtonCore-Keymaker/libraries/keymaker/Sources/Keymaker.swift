@@ -20,7 +20,6 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import EllipticCurveKeyPair
 
 #if canImport(UIKit)
 import UIKit
@@ -238,7 +237,7 @@ public class Keymaker: NSObject {
     }
     
     public func obtainMainKey(with protector: ProtectionStrategy,
-                              returnExistingKey: Bool = true,
+                              returnExistingKey: Bool,
                               handler: @escaping (MainKey?) -> Void)
     {
         // usually calling a method developers assume to get the callback on the same thread,

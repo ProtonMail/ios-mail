@@ -21,8 +21,8 @@
 //
 
 import Foundation
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
 
 public enum Decryptor {
     

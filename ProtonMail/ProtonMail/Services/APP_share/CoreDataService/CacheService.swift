@@ -22,7 +22,7 @@
 
 import CoreData
 import Groot
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 // sourcery: mock
 protocol CacheServiceProtocol: Service {

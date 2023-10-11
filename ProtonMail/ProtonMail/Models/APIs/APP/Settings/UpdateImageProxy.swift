@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 
 final class UpdateImageProxy: Request {
     enum Action: Int {
@@ -24,11 +24,11 @@ final class UpdateImageProxy: Request {
         case remove = 0
     }
 
-    let flags: ProtonCore_DataModel.ImageProxy
+    let flags: ProtonCoreDataModel.ImageProxy
     let action: Action
     let authCredential: AuthCredential
 
-    init(flags: ProtonCore_DataModel.ImageProxy, action: Action, authCredential: AuthCredential) {
+    init(flags: ProtonCoreDataModel.ImageProxy, action: Action, authCredential: AuthCredential) {
         self.flags = flags
         self.action = action
         self.authCredential = authCredential

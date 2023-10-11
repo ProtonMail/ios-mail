@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 /// Blind object to returned to clients in order to continue authentication upon 2FA code input
 public typealias TwoFactorContext = (credential: Credential, passwordMode: PasswordMode)

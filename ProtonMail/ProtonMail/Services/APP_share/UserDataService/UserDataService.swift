@@ -22,13 +22,13 @@
 
 import PromiseKit
 
-import ProtonCore_APIClient
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_Keymaker
+import ProtonCoreAPIClient
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreKeymaker
 
 /// Stores information related to the user
 class UserDataService: Service {
@@ -212,7 +212,7 @@ class UserDataService: Service {
         }
 
         // currently Image Incorporator is not yet supported by any Proton product
-        let flag: ProtonCore_DataModel.ImageProxy = .imageProxy
+        let flag: ProtonCoreDataModel.ImageProxy = .imageProxy
 
         let api = UpdateImageProxy(flags: flag, action: action, authCredential: authCredential)
         self.apiService.exec(route: api, responseObject: VoidResponse()) { task, response in

@@ -19,18 +19,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import Foundation
 import fusion
-import ProtonCore_CoreTranslation
+import ProtonCoreLoginUI
 
 private let titleId = "PasswordViewController.createPasswordTitleLabel"
 private let passwordNameTextFieldId = "PasswordViewController.passwordTextField.textField"
 private let repeatPasswordNameTextFieldId = "PasswordViewController.repeatPasswordTextField.textField"
 private let nextButtonId = "PasswordViewController.nextButton"
-private let errorBannerPassEmpty = CoreString._su_error_password_empty
-private let errorBannerPassTooShort = String(format: CoreString._su_error_password_too_short, NSNumber(8))
-private let errorBannerPassNotEqual = CoreString._su_error_password_not_equal
-private let errorBannerButton = CoreString._hv_ok_button
+private let errorBannerPassEmpty = LUITranslation.error_password_empty.l10n
+private let errorBannerPassTooShort = String(format: LUITranslation.error_password_too_short.l10n, NSNumber(8))
+private let errorBannerPassNotEqual = LUITranslation.error_password_not_equal.l10n
+private let errorBannerButton = LUITranslation._core_ok_button.l10n
 private let backtButtonName = "Back"
 
 public final class PasswordRobot: CoreElements {
@@ -40,34 +42,34 @@ public final class PasswordRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func passwordScreenIsShown() -> PasswordRobot {
-            staticText(titleId).wait().checkExists()
+            staticText(titleId).waitUntilExists().checkExists()
             return PasswordRobot()
         }
 
         @discardableResult
         public func passwordEmpty() -> PasswordRobot {
-            textView(errorBannerPassEmpty).wait().checkExists()
+            textView(errorBannerPassEmpty).waitUntilExists().checkExists()
             button(errorBannerButton).tap()
             return PasswordRobot()
         }
 
         @discardableResult
         public func passwordTooShort() -> PasswordRobot {
-            textView(errorBannerPassTooShort).wait().checkExists()
+            textView(errorBannerPassTooShort).waitUntilExists().checkExists()
             button(errorBannerButton).tap()
             return PasswordRobot()
         }
         
         @discardableResult
         public func passwordNotEqual() -> PasswordRobot {
-            textView(errorBannerPassNotEqual).wait().checkExists()
+            textView(errorBannerPassNotEqual).waitUntilExists().checkExists()
             button(errorBannerButton).tap()
             return PasswordRobot()
         }
     }
     
     public func insertPassword(password: String) -> PasswordRobot {
-        secureTextField(passwordNameTextFieldId).wait().tap().typeText(password)
+        secureTextField(passwordNameTextFieldId).waitUntilExists().tap().typeText(password)
         return self
     }
     
@@ -86,3 +88,5 @@ public final class PasswordRobot: CoreElements {
         return T()
     }
 }
+
+#endif

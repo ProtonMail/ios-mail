@@ -1,5 +1,5 @@
 import Foundation
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 extension String {
 

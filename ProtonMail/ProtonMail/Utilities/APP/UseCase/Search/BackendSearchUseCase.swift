@@ -17,7 +17,7 @@
 
 import Foundation
 import Groot
-import ProtonCore_Services
+import ProtonCoreServices
 
 typealias BackendSearchUseCase = UseCase<[MessageEntity], BackendSearch.Params>
 

@@ -22,16 +22,16 @@
 // swiftlint:disable function_parameter_count
 
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_APIClient
-import ProtonCore_Authentication
-import ProtonCore_Authentication_KeyGeneration
-import ProtonCore_DataModel
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_Utilities
-import ProtonCore_Foundations
+import ProtonCoreCrypto
+import ProtonCoreAPIClient
+import ProtonCoreAuthentication
+import ProtonCoreAuthenticationKeyGeneration
+import ProtonCoreDataModel
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreUtilities
+import ProtonCoreFoundations
 
 public protocol Signup {
 
@@ -65,7 +65,7 @@ public class SignupService: Signup {
                 if response.responseCode != APIErrorCode.responseOK {
                     if let error = response.error {
                         completion(.failure(SignupError.generic(
-                            message: error.networkResponseMessageForTheUser,
+                            message: error.localizedDescription,
                             code: error.bestShotAtReasonableErrorCode,
                             originalError: error
                         )))
@@ -93,7 +93,7 @@ public class SignupService: Signup {
                     } else {
                         if let error = response.error {
                             completion(.failure(SignupError.generic(
-                                message: error.networkResponseMessageForTheUser,
+                                message: error.localizedDescription,
                                 code: error.bestShotAtReasonableErrorCode,
                                 originalError: error
                             )))
@@ -230,7 +230,7 @@ public class SignupService: Signup {
             if let signupError = error as? SignupError {
                 completion(.failure(signupError))
             } else {
-                completion(.failure(.generateVerifier(underlyingErrorDescription: error.messageForTheUser)))
+                completion(.failure(.generateVerifier(underlyingErrorDescription: error.localizedDescription)))
             }
         }
     }
@@ -259,7 +259,7 @@ public class SignupService: Signup {
             if let signupError = error as? SignupError {
                 completion(.failure(signupError))
             } else {
-                completion(.failure(.generateVerifier(underlyingErrorDescription: error.messageForTheUser)))
+                completion(.failure(.generateVerifier(underlyingErrorDescription: error.localizedDescription)))
             }
         }
     }

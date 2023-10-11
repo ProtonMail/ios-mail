@@ -19,11 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
 import Foundation
-import ProtonCore_Authentication
-import ProtonCore_DataModel
+import ProtonCoreAuthentication
+import ProtonCoreDataModel
 
 @available(*, deprecated, renamed: "AddressKeySetupV2", message: "keep this until AddressKeySetupV2 is fully tested")
 final class AddressKeySetupV1 {
@@ -40,7 +40,6 @@ final class AddressKeySetupV1 {
         
         let hashedPassword = PasswordHash.hashPassword(password, salt: salt)
         
-        // new openpgp instance
         var error: NSError?
         let armoredKey = CryptoGo.HelperGenerateKey(keyName, email, hashedPassword.data(using: .utf8),
                                            PublicKeyAlgorithms.x25519.raw, 0, &error)

@@ -20,14 +20,14 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import WebKit
-import enum ProtonCore_DataModel.ClientApp
-import ProtonCore_Log
-import ProtonCore_Doh
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_UIFoundations
-import ProtonCore_CoreTranslation
-import ProtonCore_Observability
+import enum ProtonCoreDataModel.ClientApp
+import ProtonCoreLog
+import ProtonCoreDoh
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreUIFoundations
+import ProtonCoreObservability
+import ProtonCoreFoundations
 
 final class WeaklyProxingScriptHandler<OtherHandler: WKScriptMessageHandler>: NSObject, WKScriptMessageHandler {
     private weak var otherHandler: OtherHandler?
@@ -91,7 +91,7 @@ class HumanVerifyViewModel {
     func setup(webViewConfiguration: WKWebViewConfiguration) {
         let requestInterceptor = AlternativeRoutingRequestInterceptor(
             headersGetter: apiService.dohInterface.getHumanVerificationV3Headers,
-            cookiesSynchronization: apiService.dohInterface.synchronizeCookies(with:requestHeaders:),
+            cookiesSynchronization: apiService.dohInterface.synchronizeCookies(with:requestHeaders:completion:),
             cookiesStorage: apiService.dohInterface.currentlyUsedCookiesStorage
         ) { challenge, completionHandler in
             handleAuthenticationChallenge(
@@ -170,7 +170,7 @@ class HumanVerifyViewModel {
             errorHandler?(responseError, true)
         case .error:
             guard let messageError: MessageError = decode(json: json) else { return }
-            let message = messageError.payload.message ?? CoreString._ad_delete_network_error
+            let message = messageError.payload.message ?? HVTranslation.delete_network_error.l10n
             let responseError = ResponseError(httpCode: nil, responseCode: messageError.payload.code, userFacingMessage: message, underlyingError: nil)
             errorHandler?(responseError, false)
         case .resize:
@@ -221,7 +221,7 @@ extension HumanVerifyViewModel {
 import UIKit
 extension HumanVerifyViewModel {
     private var getTheme: Int {
-        if let vc = UIApplication.shared.keyWindow?.rootViewController, vc.traitCollection.userInterfaceStyle == .dark {
+        if let vc = UIApplication.firstKeyWindow?.rootViewController, vc.traitCollection.userInterfaceStyle == .dark {
             return 1
         } else {
             return 2

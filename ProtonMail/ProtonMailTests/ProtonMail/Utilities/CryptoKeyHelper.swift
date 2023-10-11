@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Authentication_KeyGeneration
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
+import ProtonCoreAuthenticationKeyGeneration
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
 
 @testable import ProtonMail
 
@@ -27,7 +27,7 @@ enum CryptoKeyHelper {
     /// Creates a public/private key pair with a passphrase that follows a 64 byte hex string format. The same
     /// format used in the mail app.
     static func makeKeyPair() throws -> (passphrase: String, publicKey: String, privateKey: String) {
-        let passphrase = PasswordHash.genAddrPassphrase()
+        let passphrase = try PasswordHash.genAddrPassphrase()
         let username = UUID().uuidString
         let domain = "protonmail.com"
         let email = "\(username)@\(domain)"

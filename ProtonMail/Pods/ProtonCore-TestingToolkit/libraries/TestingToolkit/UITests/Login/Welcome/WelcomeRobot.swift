@@ -19,12 +19,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import fusion
-import ProtonCore_CoreTranslation
+#if canImport(fusion)
 
-private let footerText = CoreString._ls_welcome_footer
-private let logInButton = CoreString._ls_sign_in_button
-private let signUpButton = CoreString._ls_create_account_button
+import Foundation
+import fusion
+import ProtonCoreLoginUI
+
+private let footerText = LUITranslation._ls_welcome_footer.l10n
+private let logInButton = LUITranslation.sign_in_button.l10n
+private let signUpButton = LUITranslation.create_account_button.l10n
 
 public final class WelcomeRobot: CoreElements {
 
@@ -62,7 +65,7 @@ public final class WelcomeRobot: CoreElements {
 
         @discardableResult
         public func welcomeScreenVariantIsShown(variant: WelcomeScreenVariant) -> WelcomeRobot {
-            image(variant.imageNameForVariant).wait().checkExists()
+            image(variant.imageNameForVariant).waitUntilExists().checkExists()
             return WelcomeRobot()
         }
         
@@ -74,13 +77,13 @@ public final class WelcomeRobot: CoreElements {
 
         @discardableResult
         public func signUpButtonExists() -> WelcomeRobot {
-            button(signUpButton).wait().checkExists()
+            button(signUpButton).waitUntilExists().checkExists()
             return WelcomeRobot()
         }
         
         @discardableResult
         public func loginButtonExists() -> WelcomeRobot {
-            button(logInButton).wait().checkExists()
+            button(logInButton).waitUntilExists().checkExists()
             return WelcomeRobot()
         }
 
@@ -101,3 +104,5 @@ public final class WelcomeRobot: CoreElements {
         return SignupRobot()
     }
 }
+
+#endif

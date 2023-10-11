@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 import UIKit
 
 typealias FetchSenderImageUseCase = UseCase<UIImage?, FetchSenderImage.Params>

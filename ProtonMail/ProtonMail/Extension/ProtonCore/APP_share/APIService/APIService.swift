@@ -21,13 +21,13 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import ProtonCore_Authentication
-import ProtonCore_Challenge
-import ProtonCore_Environment
-import ProtonCore_Log
-import ProtonCore_Keymaker
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreAuthentication
+import ProtonCoreChallenge
+import ProtonCoreEnvironment
+import ProtonCoreLog
+import ProtonCoreKeymaker
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 extension PMAPIService {
     private static let dispatchQueue = DispatchQueue(label: "ch.protonmail.PMAPIService.unauthorized")

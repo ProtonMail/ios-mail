@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
-import ProtonCore_Services
+import ProtonCoreServices
 
 final class UserContainer: ManagedContainer {
     let manager = ContainerManager()

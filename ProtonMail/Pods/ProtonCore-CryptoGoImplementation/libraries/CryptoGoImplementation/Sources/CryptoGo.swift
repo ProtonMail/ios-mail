@@ -22,7 +22,7 @@
 
 import Foundation
 import GoLibs
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCryptoGoInterface
 
 public func injectDefaultCryptoImplementation() {
     inject(cryptoImplementation: CryptoGoMethodsImplementation.instance)

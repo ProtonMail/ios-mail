@@ -22,9 +22,8 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 
 public protocol AccountManagerUIProtocl: AnyObject {
     func reload()
@@ -109,7 +108,7 @@ extension AccountManagerVC: UITableViewDataSource, UITableViewDelegate, Accountm
     }
 
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let title = section == 0 ? CoreString._as_signed_in_to_protonmail : CoreString._as_signed_out_of_protonmail
+        let title = section == 0 ? ASTranslation.signed_in_to_protonmail.l10n : ASTranslation.signed_out_of_protonmail.l10n
         let view = UIView(frame: .zero)
         view.backgroundColor = ColorProvider.BackgroundNorm
 
@@ -117,6 +116,7 @@ extension AccountManagerVC: UITableViewDataSource, UITableViewDelegate, Accountm
         let label = UILabel(title, font: font, textColor: ColorProvider.TextWeak)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.backgroundColor = ColorProvider.BackgroundNorm
+        label.adjustsFontForContentSizeCategory = true
         view.addSubview(label)
 
         NSLayoutConstraint.activate([
@@ -173,19 +173,19 @@ extension AccountManagerVC: UITableViewDataSource, UITableViewDelegate, Accountm
             return
         }
         // todo i18n
-        let signout = UIAlertAction(title: CoreString._as_signout, style: .default) { [weak self] (_) in
+        let signout = UIAlertAction(title: ASTranslation.signout.l10n, style: .default) { [weak self] (_) in
             self?.checkLogoutWill(mail: data.mail, userID: userID)
         }
 
-        let remove = UIAlertAction(title: CoreString._as_remove_account_from_this_device, style: .destructive) { [weak self] (_) in
+        let remove = UIAlertAction(title: ASTranslation.remove_account_from_this_device.l10n, style: .destructive) { [weak self] (_) in
             self?.checkRemoveWill(userID: userID)
         }
 
-        let signin = UIAlertAction(title: CoreString._ls_screen_title, style: .default) { [weak self] (_) in
+        let signin = UIAlertAction(title: ASTranslation.sign_in_screen_title.l10n, style: .default) { [weak self] (_) in
             self?.viewModel.signinAccount(for: data.mail, userID: data.userID)
         }
 
-        let cancel = UIAlertAction(title: CoreString._hv_cancel_button, style: .cancel, handler: nil)
+        let cancel = UIAlertAction(title: ASTranslation.cancel_button.l10n, style: .cancel, handler: nil)
 
         let arr = data.isSignin ? [signout, remove, cancel] : [signin, remove, cancel]
 
@@ -228,9 +228,10 @@ extension AccountManagerVC {
     private func setupView() {
         self.setupNavigationBar()
         self.setupTableview()
-        self.titleLabel.text = CoreString._as_manage_accounts
+        self.titleLabel.text = ASTranslation.manage_accounts.l10n
         self.titleLabel.textColor = ColorProvider.TextNorm
         titleLabel.font = .adjustedFont(forTextStyle: .title2, weight: .bold)
+        titleLabel.adjustsFontForContentSizeCategory = true
         self.view.backgroundColor = ColorProvider.BackgroundNorm
     }
 
@@ -243,7 +244,7 @@ extension AccountManagerVC {
 
         // Left item
         let closeBtn = UIBarButtonItem(image: IconProvider.cross, style: .plain, target: self, action: #selector(self.dismissView))
-        closeBtn.accessibilityLabel = CoreString._as_dismiss_button
+        closeBtn.accessibilityLabel = ASTranslation.dismiss_button.l10n
         closeBtn.tintColor = ColorProvider.TextNorm
         self.navigationItem.leftBarButtonItem = closeBtn
 
@@ -252,7 +253,7 @@ extension AccountManagerVC {
                                      target: self,
                                      action: #selector(self.clickAddButton))
         addBtn.tintColor = ColorProvider.TextNorm
-        addBtn.accessibilityLabel = CoreString._as_sign_in_button
+        addBtn.accessibilityLabel = ASTranslation.sign_in_button.l10n
         self.navigationItem.rightBarButtonItem = addBtn
         
         self.navigationItem.assignNavItemIndentifiers()
@@ -287,12 +288,12 @@ extension AccountManagerVC {
     }
 
     private func checkLogoutWill(mail: String, userID: String) {
-        let title = CoreString._as_signout
-        let message = String(format: CoreString._as_signout_alert_text, mail)
+        let title = ASTranslation.signout.l10n
+        let message = String(format: ASTranslation.signout_alert_text.l10n, mail)
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        let cancel = UIAlertAction(title: CoreString._hv_cancel_button, style: .default, handler: nil)
-        let logout = UIAlertAction(title: CoreString._as_signout, style: .destructive) { [weak self] (_) in
+        let cancel = UIAlertAction(title: ASTranslation.cancel_button.l10n, style: .default, handler: nil)
+        let logout = UIAlertAction(title: ASTranslation.signout.l10n, style: .destructive) { [weak self] (_) in
             self?.viewModel.signoutAccount(userID: userID)
         }
         alert.addAction(cancel)
@@ -301,12 +302,12 @@ extension AccountManagerVC {
     }
 
     private func checkRemoveWill(userID: String) {
-        let title = CoreString._as_remove_account_from_this_device + "?"
-        let message = CoreString._as_remove_account_alert_text
+        let title = ASTranslation.remove_account_from_this_device.l10n + "?"
+        let message = ASTranslation.remove_account_alert_text.l10n
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-        let cancel = UIAlertAction(title: CoreString._hv_cancel_button, style: .default, handler: nil)
-        let remove = UIAlertAction(title: CoreString._as_remove_button, style: .destructive) { [weak self](_) in
+        let cancel = UIAlertAction(title: ASTranslation.cancel_button.l10n, style: .default, handler: nil)
+        let remove = UIAlertAction(title: ASTranslation.remove_button.l10n, style: .destructive) { [weak self](_) in
             self?.viewModel.removeAccount(userID: userID)
         }
         alert.addAction(cancel)

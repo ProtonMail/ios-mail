@@ -23,9 +23,9 @@
 import EllipticCurveKeyPair
 import Foundation
 import Groot
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
 import ProtonMailAnalytics
 
 enum EventsFetchingStatus {

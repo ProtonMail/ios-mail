@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_CoreTranslation
-import ProtonCore_Login
-import ProtonCore_Utilities
+import ProtonCoreLogin
+import ProtonCoreUtilities
 
 final class HelpViewModel {
     
@@ -36,7 +37,7 @@ final class HelpViewModel {
                 .otherIssues
             ],
             [
-                .staticText(text: CoreString._ls_help_more_help)
+                .staticText(text: LUITranslation.help_more_help.l10n)
             ],
             [
                 .support
@@ -45,3 +46,5 @@ final class HelpViewModel {
         helpSections = helpDecorator(defaultHelp)
     }
 }
+
+#endif

@@ -20,12 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
-import ProtonCore_Networking
-import ProtonCore_DataModel
-import ProtonCore_CoreTranslation
-import ProtonCore_Authentication
-import ProtonCore_Services
+import ProtonCoreAPIClient
+import ProtonCoreNetworking
+import ProtonCoreDataModel
+import ProtonCoreAuthentication
+import ProtonCoreServices
 
 public struct CreateAddressData {
     public let email: String

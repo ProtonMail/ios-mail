@@ -7,7 +7,7 @@
 //
 
 import XCTest
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 extension LoginRobot {
 

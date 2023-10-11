@@ -17,8 +17,8 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCore_DataModel
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreTestingToolkit
 
 class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
     var sut: SaveToolbarActionSettingsForUsersUseCase!
@@ -184,6 +184,7 @@ class SaveToolbarActionSettingsForUsersUseCaseTests: XCTestCase {
                         linkConfirmation: nil,
                         credit: nil,
                         currency: nil,
+                        createTime: nil,
                         subscribed: nil)
     }
 

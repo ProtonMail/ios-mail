@@ -20,8 +20,8 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Doh
+import ProtonCoreNetworking
+import ProtonCoreDoh
 
 public final class SessionsRequestResponse: Response, Codable {
     public let accessToken: String

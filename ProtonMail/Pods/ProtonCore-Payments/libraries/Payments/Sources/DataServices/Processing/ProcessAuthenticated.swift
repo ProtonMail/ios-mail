@@ -21,9 +21,9 @@
 
 import Foundation
 import StoreKit
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 /*
 
@@ -109,16 +109,21 @@ final class ProcessAuthenticated: ProcessProtocol {
                 amountDue: plan.amountDue,
                 paymentAction: .token(token: token.token)
             )
-            let recieptRes = try request.awaitResponse(responseObject: SubscriptionResponse())
+            let receiptRes = try request.awaitResponse(responseObject: SubscriptionResponse())
             PMLog.debug("StoreKit: success (1)")
-            if let newSubscription = recieptRes.newSubscription {
+            if let newSubscription = receiptRes.newSubscription {
                 dependencies.updateCurrentSubscription { [weak self] in
                     self?.finish(transaction: transaction, result: .finished(.resolvingIAPToSubscription), completion: completion)
                     
                 } failure: { [weak self] _ in
                     // if updateCurrentSubscription is failed for some reason, update subscription with newSubscription data
-                    self?.dependencies.updateSubscription(newSubscription)
-                    self?.finish(transaction: transaction, result: .finished(.resolvingIAPToSubscription), completion: completion)
+                    do {
+                        try self?.dependencies.updateSubscription(newSubscription)
+                        self?.finish(transaction: transaction, result: .finished(.resolvingIAPToSubscription), completion: completion)
+                    } catch {
+                        self?.finish(transaction: transaction, result: .errored(.noNewSubscriptionInSuccessfullResponse), completion: completion)
+                    }
+
                     
                 }
             } else {

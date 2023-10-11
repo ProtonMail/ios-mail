@@ -34,7 +34,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '9.3.0'
+  '12.1.1'
 end
 
 def crypto_variant
@@ -83,16 +83,15 @@ def app_pods
   pod 'OHHTTPStubs/Swift', :configurations => ['Debug', 'Enterprise Debug']
   pod "ProtonCore-AccountDeletion", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-CoreTranslation', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Foundations', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-HumanVerification", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Login", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-LoginUI", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Observability', :git => proton_core_path, :tag => proton_core_version
-  pod 'ProtonCore-OpenPGP', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Payments", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-PaymentsUI", :git => proton_core_path, :tag => proton_core_version
+  pod "ProtonCore-Subscriptions", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', :git=> 'git@gitlab.protontech.ch:jchen/SideMenu.git', :tag=>'v2.0.9.autolayout'
   pod 'SwipyCell', :git=> 'git@gitlab.protontech.ch:jchen/SwipyCell.git', :commit => '923310a'
@@ -132,6 +131,8 @@ target 'ProtonMailUITests' do
   pod 'ProtonCore-TestingToolkit/UITests/Login', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/AccountDeletion', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UITests/PaymentsUI', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
+  pod 'ProtonCore-ForceUpgrade', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-QuarkCommands', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-Environment', :git => proton_core_path, :tag => proton_core_version
   pod 'Yams'

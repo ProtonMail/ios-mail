@@ -21,8 +21,8 @@
 //  along with Proton Mail. If not, see <https://www.gnu.org/licenses/>.
 
 import LifetimeTracker
-import ProtonCore_DataModel
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreUIFoundations
 import SafariServices
 import UIKit
 

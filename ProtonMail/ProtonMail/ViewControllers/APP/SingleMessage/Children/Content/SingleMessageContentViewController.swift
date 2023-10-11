@@ -1,6 +1,6 @@
 import UIKit
 import MBProgressHUD
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 class SingleMessageContentViewController: UIViewController {
 

@@ -22,8 +22,8 @@
 // swiftlint:disable empty_string
 
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 // Test API
 

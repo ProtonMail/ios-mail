@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_Networking
-import ProtonCore_Services
-import class ProtonCore_DataModel.Key
+import ProtonCoreCrypto
+import ProtonCoreNetworking
+import ProtonCoreServices
+import class ProtonCoreDataModel.Key
 
 protocol UploadAttachmentUseCase {
     func execute(attachmentURI: String) async throws

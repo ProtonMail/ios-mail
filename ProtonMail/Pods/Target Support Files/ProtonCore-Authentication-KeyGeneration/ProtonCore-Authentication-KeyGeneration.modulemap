@@ -1,4 +1,4 @@
-framework module ProtonCore_Authentication_KeyGeneration {
+framework module ProtonCoreAuthenticationKeyGeneration {
   umbrella header "ProtonCore-Authentication-KeyGeneration-umbrella.h"
 
   export *

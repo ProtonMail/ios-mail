@@ -17,8 +17,8 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCore_DataModel
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreTestingToolkit
 
 class LabelManagerViewModelTests: XCTestCase {
     private var sut: LabelManagerViewModel!

@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 /// This enum maps the toolbar action value in string from server.
 enum ServerToolbarAction: String, CaseIterable {

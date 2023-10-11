@@ -1,4 +1,4 @@
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 struct MarkAsUnsubscribed: Request {
 

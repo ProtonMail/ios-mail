@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_UIFoundations
-import ProtonCore_Foundations
+import ProtonCoreUIFoundations
+import ProtonCoreFoundations
 
 protocol HVHelpViewControllerDelegate: AnyObject {
     func didDismissHelpViewController()
@@ -73,10 +74,10 @@ public class HVHelpViewController: UIViewController, AccessibleView {
         closeBarButtonItem.image = IconProvider.arrowLeft
         view.backgroundColor = ColorProvider.BackgroundNorm
         tableView.backgroundColor = ColorProvider.BackgroundNorm
-        title = CoreString._hv_help_button
+        title = HVTranslation.help_button.l10n
         tableView.noSeparatorsBelowFooter()
         headerLabel.textColor = ColorProvider.TextWeak
-        headerLabel.text = CoreString._hv_help_header
+        headerLabel.text = HVTranslation.help_header.l10n
     }
 
 }
@@ -114,3 +115,5 @@ extension HVHelpViewController: UITableViewDelegate {
         UIApplication.openURLIfPossible(url)
     }
 }
+
+#endif

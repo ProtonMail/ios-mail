@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 
 enum SettingLockSection: Int {
     case protection = 0
@@ -261,7 +261,7 @@ extension UserCachedStatus: LockPreferences {
         keymakerRandomkey = key
     }
 
-    func setLockTime(value: ProtonCore_Keymaker.AutolockTimeout) {
+    func setLockTime(value: ProtonCoreKeymaker.AutolockTimeout) {
         lockTime = value
     }
 }

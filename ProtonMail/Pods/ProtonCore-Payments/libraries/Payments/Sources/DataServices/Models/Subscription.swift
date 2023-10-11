@@ -68,7 +68,7 @@ extension Subscription {
         let subscriptionPlan = Plan.combineDetails(planDetails, droppingPrice: true)
         guard let organization = organization else { return subscriptionPlan }
         return Plan(name: subscriptionPlan.name,
-                    iD: subscriptionPlan.iD,
+                    ID: subscriptionPlan.ID,
                     maxAddresses: max(subscriptionPlan.maxAddresses, organization.maxAddresses),
                     maxMembers: max(subscriptionPlan.maxMembers, organization.maxMembers),
                     pricing: subscriptionPlan.pricing,

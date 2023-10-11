@@ -1,7 +1,7 @@
 @testable import ProtonMail
 import XCTest
 import Network
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 class InternetConnectionStatusProviderTests: XCTestCase {
 

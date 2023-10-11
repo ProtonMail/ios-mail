@@ -22,9 +22,9 @@
 
 import MBProgressHUD
 import PromiseKit
-import ProtonCore_DataModel
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 #if !APP_EXTENSION
 import SideMenuSwift
 #endif

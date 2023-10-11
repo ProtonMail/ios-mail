@@ -1,4 +1,4 @@
-framework module ProtonCore_Utilities {
+framework module ProtonCoreUtilities {
   umbrella header "ProtonCore-Utilities-umbrella.h"
 
   export *

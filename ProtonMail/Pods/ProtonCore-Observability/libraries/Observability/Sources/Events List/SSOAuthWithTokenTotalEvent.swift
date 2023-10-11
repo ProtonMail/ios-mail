@@ -19,17 +19,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Networking
-
-public enum SSOAuthWithTokenStatus: String, Encodable, CaseIterable {
-    case http2xx
-    case http4xx
-    case http5xx
-    case unknown
-}
+import ProtonCoreNetworking
 
 public struct SSOAuthWithTokenLabels: Encodable, Equatable {
-    let status: SSOAuthWithTokenStatus
+    let status: HTTPResponseCodeStatus
 
     enum CodingKeys: String, CodingKey {
         case status
@@ -37,7 +30,7 @@ public struct SSOAuthWithTokenLabels: Encodable, Equatable {
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<SSOAuthWithTokenLabels> {
-    public static func ssoAuthWithTokenTotalEvent(status: SSOAuthWithTokenStatus) -> Self {
+    public static func ssoAuthWithTokenTotalEvent(status: HTTPResponseCodeStatus) -> Self {
         .init(name: "ios_core_login_sso_auth_total", labels: .init(status: status))
     }
     

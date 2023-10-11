@@ -22,10 +22,10 @@
 
 import Foundation
 import CoreData
-import ProtonCore_DataModel
-import ProtonCore_Utilities
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreUtilities
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 
 struct LabelInfo {

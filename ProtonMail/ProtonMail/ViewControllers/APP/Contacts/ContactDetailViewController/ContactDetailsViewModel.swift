@@ -23,8 +23,8 @@
 import Combine
 import CoreData
 import Foundation
-import ProtonCore_Crypto
-import ProtonCore_DataModel
+import ProtonCoreCrypto
+import ProtonCoreDataModel
 import VCard
 
 final class ContactDetailsViewModel: NSObject {

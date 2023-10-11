@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 
 /// Address Builder for building the packages
 class PGPAddressBuilder: PackageBuilder {

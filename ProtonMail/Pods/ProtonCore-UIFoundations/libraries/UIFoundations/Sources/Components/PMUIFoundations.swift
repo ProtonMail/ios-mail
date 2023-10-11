@@ -19,10 +19,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-#if canImport(ProtonCore_UIFoundations_Resources_iOS)
-import ProtonCore_UIFoundations_Resources_iOS
-#elseif canImport(ProtonCore_UIFoundations_Resources_macOS)
-import ProtonCore_UIFoundations_Resources_macOS
+#if canImport(ProtonCoreUIFoundationsResourcesiOS)
+import ProtonCoreUIFoundationsResourcesiOS
+#elseif canImport(ProtonCoreUIFoundationsResourcesmacOS)
+import ProtonCoreUIFoundationsResourcesmacOS
 #endif
 import Foundation
 

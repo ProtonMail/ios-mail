@@ -25,10 +25,10 @@ import CoreData
 import Contacts
 import Groot
 import PromiseKit
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 typealias ContactFetchComplete = (NSError?) -> Void
 typealias ContactDeleteComplete = (NSError?) -> Void

@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Services
-import enum ProtonCore_Utilities.Either
+import ProtonCoreServices
+import enum ProtonCoreUtilities.Either
 
 final class NextMessageAfterMoveViewModel: SwitchToggleVMProtocol, SwitchToggleVMOutput {
     var input: SwitchToggleVMInput { self }

@@ -15,11 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Doh
-import ProtonCore_Environment
+import ProtonCoreDoh
+import ProtonCoreEnvironment
 
 struct BackendConfiguration {
-    typealias Environment = ProtonCore_Environment.Environment
+    typealias Environment = ProtonCoreEnvironment.Environment
 
     static let shared = BackendConfiguration()
 

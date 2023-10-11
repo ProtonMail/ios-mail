@@ -1,6 +1,6 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
-import ProtonCore_Payments
+import ProtonCorePayments
 
 protocol HasAddressBookService {
     var addressBookService: AddressBookService { get }

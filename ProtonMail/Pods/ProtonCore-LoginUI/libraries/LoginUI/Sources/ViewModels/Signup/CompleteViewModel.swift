@@ -19,11 +19,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_CoreTranslation
-import ProtonCore_Login
-import ProtonCore_UIFoundations
-import ProtonCore_Services
+import UIKit
+import ProtonCoreLogin
+import ProtonCoreUIFoundations
+import ProtonCoreServices
 
 enum DisplayProgressStep: Hashable {
     case createAccount
@@ -240,13 +242,13 @@ extension DisplayProgressStep {
     var localizedString: String {
         switch self {
         case .createAccount:
-            return CoreString._su_complete_step_creation
+            return LUITranslation.complete_step_creation.l10n
         case .generatingAddress:
-            return CoreString._su_complete_step_address_generation
+            return LUITranslation.complete_step_address_generation.l10n
         case .generatingKeys:
-            return CoreString._su_complete_step_keys_generation
+            return LUITranslation.complete_step_keys_generation.l10n
         case .payment:
-            return CoreString._su_complete_step_payment_verification
+            return LUITranslation.complete_step_payment_verification.l10n
         case .custom(let text):
             return text
         }
@@ -282,3 +284,5 @@ extension Sequence where Element: Hashable {
         return filter { set.insert($0).inserted }
     }
 }
+
+#endif

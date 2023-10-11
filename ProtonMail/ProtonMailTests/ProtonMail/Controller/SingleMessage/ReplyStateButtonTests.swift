@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 @testable import ProtonMail
 
 final class ReplyStateButtonTests: XCTestCase {
