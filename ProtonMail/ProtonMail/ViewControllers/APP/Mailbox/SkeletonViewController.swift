@@ -57,7 +57,7 @@ class SkeletonViewController: ProtonMailTableViewController {
         self.tableView.isScrollEnabled = false
         self.tableView.showsVerticalScrollIndicator = false
         self.tableView.separatorColor = ColorProvider.InteractionWeak
-        self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
+        self.tableView.registerCell(MailBoxSkeletonLoadingCell.Constant.identifier)
         self.tableView.backgroundColor = ColorProvider.BackgroundNorm
 
         guard

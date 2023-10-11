@@ -26,7 +26,7 @@ final class MetricDarkMode: Request {
     private enum ParameterKeys: String {
         case log = "Log"
         case title = "Title"
-        case Data = "Data"
+        case data = "Data"
     }
 
     private enum LogType: String {
@@ -57,7 +57,7 @@ final class MetricDarkMode: Request {
             let out: [String: Any] = [
                 ParameterKeys.log.rawValue: LogType.darkStyles.rawValue,
                 ParameterKeys.title.rawValue: Title.updateDarkStyles.rawValue,
-                ParameterKeys.Data.rawValue: data
+                ParameterKeys.data.rawValue: data
             ]
             return out
         } else {
@@ -65,7 +65,7 @@ final class MetricDarkMode: Request {
             let out: [String: Any] = [
                 ParameterKeys.log.rawValue: LogType.darkStyles.rawValue,
                 ParameterKeys.title.rawValue: Title.updateDarkStyles.rawValue,
-                ParameterKeys.Data.rawValue: data
+                ParameterKeys.data.rawValue: data
             ]
             return out
         }

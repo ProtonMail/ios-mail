@@ -233,7 +233,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         self.tableView.separatorStyle = .none
         self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
-        self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
+        self.tableView.registerCell(MailBoxSkeletonLoadingCell.Constant.identifier)
 
         self.updateNavigationController(viewModel.listEditing)
 
