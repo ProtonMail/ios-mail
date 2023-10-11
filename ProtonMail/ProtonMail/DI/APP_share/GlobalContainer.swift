@@ -78,6 +78,12 @@ final class GlobalContainer: ManagedContainer {
         }
     }
 
+    var lockPreventorFactory: Factory<LockPreventor> {
+        self {
+            LockPreventor.shared
+        }
+    }
+
     var notificationCenterFactory: Factory<NotificationCenter> {
         self {
             .default
@@ -130,6 +136,12 @@ final class GlobalContainer: ManagedContainer {
     var usersManagerFactory: Factory<UsersManager> {
         self {
             UsersManager(dependencies: self)
+        }
+    }
+
+    var usersManagerProtocolFactory: Factory<UsersManagerProtocol> {
+        self {
+            self.usersManager
         }
     }
 
