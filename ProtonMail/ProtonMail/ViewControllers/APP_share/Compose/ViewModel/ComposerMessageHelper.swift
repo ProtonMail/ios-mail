@@ -243,13 +243,15 @@ final class ComposerMessageHelper {
     }
 
     func getMessageEntity() -> MessageEntity? {
-        guard let rawMessage = self.rawMessage else {
+        guard let rawMessage, let context = rawMessage.managedObjectContext else {
             return nil
         }
 
-        return dependencies.contextProvider.read { context in
-            MessageEntity(rawMessage)
+        var message: MessageEntity?
+        context.performAndWait {
+            message = MessageEntity(rawMessage)
         }
+        return message
     }
 
     func originalTo() -> String? {
