@@ -121,12 +121,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
         self.contentShouldBeScrollableByDefaultChanged = callBack
     }
 
-    private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
-        let smallestSupportedWidth: CGFloat = 375
-        var screenWidth = webView?.window?.screen.bounds.width ?? smallestSupportedWidth
-        let paddingOfCell: CGFloat = 8
-        screenWidth = screenWidth - 2 * paddingOfCell
-        schemeHandler.contents = contents
+    private func generateCSS(from contents: WebContents) -> String {
         var css: String
         switch contents.renderStyle {
         case .lightOnly:
@@ -140,64 +135,66 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
                 css = WebContents.cssLightModeOnly
             }
         }
+        let smallestSupportedWidth: CGFloat = 375
+        var screenWidth = webView?.window?.screen.bounds.width ?? smallestSupportedWidth
+        let paddingOfCell: CGFloat = 8
+        screenWidth = screenWidth - 2 * paddingOfCell
+        return css.replacingOccurrences(of: "{{screen-width}}", with: "\(Int(screenWidth))px")
+    }
 
-        let loadingType = contents.contentLoadingType
-        var imageProxyCodeBlock: String = .empty
-        switch loadingType {
+    private func generateContentSanitizationJSCode(from contents: WebContents) -> String {
+        var jsCodeBlock = """
+            // Get original message body string
+            var dirty = document.documentElement.outerHTML.toString();
+
+            var clean0 = DOMPurify.sanitize(dirty, \(DomPurifyConfig.imageCache.value));
+        """
+        switch contents.contentLoadingType {
         case .direct:
-            imageProxyCodeBlock = """
-            var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
+            jsCodeBlock += """
+                // Sanitize message head
+                let protonizer = DOMPurify.sanitize(dirty, \(DomPurifyConfig.protonizer.value));
+                let messageHead = protonizer.querySelector('head').innerHTML.trim()
+
+                // Sanitize message content
+                var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
             """
         case .proxy, .proxyDryRun, .none:
-            imageProxyCodeBlock = """
-            DOMPurify.addHook('beforeSanitizeElements', beforeSanitizeElements);
-            var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
-            DOMPurify.removeHook('beforeSanitizeElements');
+            /* 
+             `escapeForbiddenStyleInElement` function is used to escape the forbidden element in the `STYLE` tag.
+             It will add `proton-` prefix to the tag e.g. `background:image-set` will become `background:proton-image-set`, `background:url(XXX` will become `background:url(proton-XXX`.
+
+             `beforeSanitizeElements` function will add `proton-` to the attribute of the specific element e.g. `https` will become `proton-https`.
+            */
+            jsCodeBlock += """
+                // Sanitize message head
+                DOMPurify.addHook('beforeSanitizeElements', escapeForbiddenStyleInElement);
+                let protonizer = DOMPurify.sanitize(dirty, \(DomPurifyConfig.protonizer.value));
+                DOMPurify.removeHook('beforeSanitizeElements');
+                let messageHead = protonizer.querySelector('head').innerHTML.trim()
+
+                // Sanitize message content
+                DOMPurify.addHook('beforeSanitizeElements', beforeSanitizeElements);
+                var clean1 = DOMPurify.sanitize(clean0, \(DomPurifyConfig.default.value));
+                DOMPurify.removeHook('beforeSanitizeElements');
             """
         }
-
-        css = css.replacingOccurrences(of: "{{screen-width}}", with: "\(Int(screenWidth))px")
-        var loggerCode: String = .empty
-        #if DEBUG
-        loggerCode = """
-            // Print log on console
-            var console = {};
-            console.log = function(message){window.webkit.messageHandlers['logger'].postMessage(message)};
+        jsCodeBlock += """
+            // Generate HTTP DOM to be used to show in the webView
+            var clean2 = DOMPurify.sanitize(clean1, \(DomPurifyConfig.raw.value));
+            document.documentElement.replaceWith(clean2);
         """
-        #endif
+        return jsCodeBlock
+    }
 
-        let sanitizeRaw = """
-        \(loggerCode)
-        // Remove color related `!important`
-        let styles = document.head.querySelectorAll('style')
-        for (var i = 0, max = styles.length; i < max; i++) {
-            let style = styles[i]
-            if (!style.textContent.includes('!important')) { continue }
-            let css = style.textContent.replace(/((color|bgcolor|background-color|background|border):.*?) (!important)/g, "$1")
-            styles[0].textContent = css;
-        }
+    private func prepareRendering(_ contents: WebContents, into config: WKWebViewConfiguration) {
+        schemeHandler.contents = contents
 
-        let targetDOMs = document.querySelectorAll('*:not(html):not(head):not(body):not(script):not(meta):not(title)')
-        for (var i = 0, max = targetDOMs.length; i < max; i++) {
-            let dom = targetDOMs[i]
-            if (!dom.style.cssText.includes('!important')) { continue }
-            let css = dom.getAttribute('style').replace(/((color|bgcolor|background-color|background|border):.*?) (!important)/g, "$1")
-            dom.setAttribute('style', css);
-        }
+        let css = generateCSS(from: contents)
+        let contentLoadingCodeBlock = generateContentSanitizationJSCode(from: contents)
 
-        // Purify message head
-        var dirty = document.documentElement.outerHTML.toString();
-        DOMPurify.addHook('beforeSanitizeElements', escapeForbiddenStyleInElement);
-        let protonizer = DOMPurify.sanitize(dirty, \(DomPurifyConfig.protonizer.value));
-        DOMPurify.removeHook('beforeSanitizeElements');
-        let messageHead = protonizer.querySelector('head').innerHTML.trim()
-
-        // Purify message body
-        var clean0 = DOMPurify.sanitize(dirty, \(DomPurifyConfig.imageCache.value));
-        \(imageProxyCodeBlock)
-        var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
-        document.documentElement.replaceWith(clean2);
-
+        let sanitizeContentJSCode = """
+        \(contentLoadingCodeBlock)
         var style = document.createElement('style');
         style.type = 'text/css';
         style.appendChild(document.createTextNode(`\(css)`));
@@ -227,8 +224,17 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
         window.webkit.messageHandlers.loaded.postMessage({'preheight': ratio * rects.height, 'clearBody': document.documentElement.outerHTML.toString()});
         """
 
-        let sanitize = WKUserScript(source: sanitizeRaw + message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        let sanitize = WKUserScript(source: sanitizeContentJSCode + message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         config.userContentController.removeAllUserScripts()
+        #if DEBUG
+        let loggerCode = """
+            // Print log on console
+            var console = {};
+            console.log = function(message){window.webkit.messageHandlers['logger'].postMessage(message)};
+        """
+        let loggerScript = WKUserScript(source: loggerCode, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        config.userContentController.addUserScript(loggerScript)
+        #endif
         config.userContentController.addUserScript(WebContents.domPurifyConstructor)
         config.userContentController.addUserScript(WebContents.escapeJS)
         config.userContentController.addUserScript(WebContents.loaderJS)

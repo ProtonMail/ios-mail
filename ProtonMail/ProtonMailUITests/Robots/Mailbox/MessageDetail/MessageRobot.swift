@@ -204,7 +204,7 @@ class MessageRobot: CoreElements {
         }
         
         func messageBodyWithLinkExists(_ label: String) {
-            webView().byIndex(0).onDescendant(link(label)).waitUntilExists().checkExists()
+            webView().byIndex(0).onDescendant(link(label)).waitUntilExists().waitForHittable().checkExists()
         }
 
         func attachmentWithLabelExistInMessageBody(label: String) {
