@@ -24,7 +24,7 @@ import Foundation
 import WebKit
 
 enum DomPurifyConfig {
-    case `default`, protonizer, imageCache, composer
+    case `default`, protonizer, imageCache, composer, raw
 
     var value: String {
         switch self {
@@ -75,10 +75,25 @@ enum DomPurifyConfig {
             return """
             {
             ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data|\(scheme)):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
-                        WHOLE_DOCUMENT: true,
-                        RETURN_DOM: true
+            WHOLE_DOCUMENT: true,
+            RETURN_DOM: true
             }
             """.replacingOccurrences(of: "\n", with: "")
+        case .raw:
+            // This is used to generate the HTML DOM to display in the webview.
+            let scheme = HTTPRequestSecureLoader.imageCacheScheme
+            let httpScheme = HTTPRequestSecureLoader.ProtonScheme.http.rawValue
+            let httpsScheme = HTTPRequestSecureLoader.ProtonScheme.https.rawValue
+            let noScheme = HTTPRequestSecureLoader.ProtonScheme.noProtocol.rawValue
+            let imageScheme = HTTPRequestSecureLoader.ProtonScheme.pmCache.rawValue
+            let valueToAdd = "\(httpScheme)|\(httpsScheme)|\(noScheme)|\(scheme)|\(imageScheme)"
+            return """
+            {
+            ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data|\(valueToAdd)):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
+            WHOLE_DOCUMENT: true,
+            RETURN_DOM: true
+            }
+            """
         }
     }
 }

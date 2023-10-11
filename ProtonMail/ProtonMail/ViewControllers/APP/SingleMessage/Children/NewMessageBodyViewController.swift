@@ -170,6 +170,11 @@ class NewMessageBodyViewController: UIViewController {
             existingWebView.stopLoading()
         } else {
             self.webView = PMWebView(frame: .zero, configuration: config)
+            #if DEBUG
+            if #available(iOS 16.4, *) {
+                self.webView?.isInspectable = true
+            }
+            #endif
             guard let webView = self.webView else {
                 return
             }
