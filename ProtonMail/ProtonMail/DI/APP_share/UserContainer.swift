@@ -147,7 +147,11 @@ final class UserContainer: ManagedContainer {
 
     var imageProxyFactory: Factory<ImageProxy> {
         self {
-            ImageProxy(dependencies: .init(apiService: self.user.apiService))
+            #if APP_EXTENSION
+            ImageProxy(dependencies: .init(apiService: self.user.apiService, imageCache: nil))
+            #else
+            ImageProxy(dependencies: .init(apiService: self.user.apiService, imageCache: self.imageProxyCache))
+            #endif
         }
     }
 

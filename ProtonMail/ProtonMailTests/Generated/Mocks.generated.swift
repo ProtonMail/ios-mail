@@ -442,6 +442,29 @@ class MockFeatureFlagsDownloadServiceProtocol: FeatureFlagsDownloadServiceProtoc
 
 }
 
+class MockImageProxyCacheProtocol: ImageProxyCacheProtocol {
+    @ThrowingFuncStub(MockImageProxyCacheProtocol.remoteImage, initialReturn: nil) var remoteImageStub
+    func remoteImage(forURL remoteURL: SafeRemoteURL) throws -> RemoteImage? {
+        try remoteImageStub(remoteURL)
+    }
+
+    @ThrowingFuncStub(MockImageProxyCacheProtocol.setRemoteImage) var setRemoteImageStub
+    func setRemoteImage(_ remoteImage: RemoteImage, forURL remoteURL: SafeRemoteURL) throws {
+        try setRemoteImageStub(remoteImage, remoteURL)
+    }
+
+    @FuncStub(MockImageProxyCacheProtocol.removeRemoteImage) var removeRemoteImageStub
+    func removeRemoteImage(forURL remoteURL: SafeRemoteURL) {
+        removeRemoteImageStub(remoteURL)
+    }
+
+    @FuncStub(MockImageProxyCacheProtocol.purge) var purgeStub
+    func purge() {
+        purgeStub()
+    }
+
+}
+
 class MockImageProxyDelegate: ImageProxyDelegate {
     @FuncStub(MockImageProxyDelegate.imageProxy) var imageProxyStub
     func imageProxy(_ imageProxy: ImageProxy, output: ImageProxyOutput) {

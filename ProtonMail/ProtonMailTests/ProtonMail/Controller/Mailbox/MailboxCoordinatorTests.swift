@@ -54,15 +54,7 @@ class MailboxCoordinatorTests: XCTestCase {
             fetchMessages: MockFetchMessages(),
             updateMailbox: MockUpdateMailbox(),
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(
-                    featureFlagCache: featureFlagCache,
-                    senderImageService: .init(
-                        dependencies: .init(
-                            apiService: dummyAPIService,
-                            internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
-                    mailSettings: dummyUser.mailSettings)
-            ),
+            fetchSenderImage: dummyUser.container.fetchSenderImage,
             featureFlagCache: featureFlagCache
         )
         viewModelMock = MockMailBoxViewModel(labelID: "",

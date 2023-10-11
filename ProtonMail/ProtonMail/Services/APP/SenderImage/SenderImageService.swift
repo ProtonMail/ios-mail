@@ -167,7 +167,7 @@ final class SenderImageService {
         init(
             apiService: APIService,
             internetStatusProvider: InternetConnectionStatusProviderProtocol,
-            imageCache: SenderImageCache = .shared
+            imageCache: SenderImageCache
         ) {
             self.apiService = apiService
             self.internetStatusProvider = internetStatusProvider

@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Proton Technologies AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,12 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
-@testable import ProtonMail
+import Foundation
 
-class ImageProxyMock: ProtonMail.ImageProxy {
-    init(apiService: APIServiceMock) {
-        let dependencies = Dependencies(apiService: apiService)
-        super.init(dependencies: dependencies)
-    }
+// sourcery: mock
+protocol ImageProxyCacheProtocol {
+    func remoteImage(forURL remoteURL: SafeRemoteURL) throws -> RemoteImage?
+    func setRemoteImage(_ remoteImage: RemoteImage, forURL remoteURL: SafeRemoteURL) throws
+    func removeRemoteImage(forURL remoteURL: SafeRemoteURL)
+    func purge()
 }

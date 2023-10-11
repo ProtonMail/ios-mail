@@ -41,7 +41,7 @@ final class HTTPRequestSecureLoaderTests: XCTestCase {
             privateKeys: [],
             addressesPrivateKeys: [],
             mailboxPassphrase: .init(value: "")
-        ), imageProxy: .init(dependencies: .init(apiService: apiMock))))
+        ), imageProxy: .init(dependencies: .init(apiService: apiMock, imageCache: MockImageProxyCacheProtocol()))))
         sut.inject(into: config)
 
         webView = PMWebView(frame: .zero, configuration: config)

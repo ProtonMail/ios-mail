@@ -431,18 +431,7 @@ extension MailboxViewControllerTests {
             fetchMessages: MockFetchMessages(),
             updateMailbox: updateMailbox,
             fetchMessageDetail: mockFetchMessageDetail,
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(
-                    featureFlagCache: featureFlagCache,
-                    senderImageService: .init(
-                        dependencies: .init(
-                            apiService: userManagerMock.apiService,
-                            internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
-                        )
-                    ),
-                    mailSettings: userManagerMock.mailSettings
-                )
-            ),
+            fetchSenderImage: userContainer.fetchSenderImage,
             featureFlagCache: featureFlagCache
         )
         let label = LabelInfo(name: labelName ?? "")
