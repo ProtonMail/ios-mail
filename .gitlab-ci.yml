@@ -101,8 +101,7 @@ linting:
   except:
     - schedules
   script:
-    - pip3 install -r Scripts/requirements.txt
-    - python3 Scripts/linkAvailabilityCheck.py
+    - ./Scripts/check_link_availability.sh
   tags:
     - iOS_GENERAL
 
