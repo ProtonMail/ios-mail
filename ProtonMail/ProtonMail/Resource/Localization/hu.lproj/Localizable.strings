@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Küldés sikertelen";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Az e-mailt nem sikerült elküldeni. Az üzenet vázlatként mentve.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Nincs itt semmi látnivaló";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "A küldéshez legalább 1 címzett megadása szükséges";
-
-/* Title */
-"Change sender address to…" = "A feladó címének módosítása erre…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Váltson előfizetéses csomagra, hogy erről a címről is küldhessen üzenetet: %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Új e-mail jelszó megerősítése";
 
-/* error when sending the message */
-"Unable to send the email" = "Az üzenet küldése sikertelen";
-
 /* Title */
 "Star/unstar" = "Csillagozás/Vagy nem";
 
@@ -996,9 +987,6 @@
 "Cut" = "Kivágás";
 
 /* Title */
-"Compose to" = "Levélírás neki";
-
-/* Title */
 "Add to contacts" = "Hozzáadása a névjegyekhez";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Üzenet küldése…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Az üzenetet nem lehetett elküldeni. Legalább az egyik címzett e-mail címe vagy domainje nem létezik vagy rossz formátumú.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "olvasatlan";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Fénykép szerkesztése";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "PIN kód beállítása";

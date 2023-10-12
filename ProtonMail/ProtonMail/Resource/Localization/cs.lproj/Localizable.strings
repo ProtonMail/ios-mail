@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Odeslání selhalo";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Odeslání e-mailu selhalo. Zpráva byla uložena jako koncept.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Zde není nic k zobrazení";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Potřebujete alespoň jednoho příjemce k odeslání";
-
-/* Title */
-"Change sender address to…" = "Změnit adresu odesílatele na…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Přejděte na placený tarif pro odesílání z vaší %@ adresy";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Potvrdit nové heslo poštovní schránky";
 
-/* error when sending the message */
-"Unable to send the email" = "Nelze odeslat e-mail";
-
 /* Title */
 "Star/unstar" = "Přidat/odebrat hvězdičku";
 
@@ -996,9 +987,6 @@
 "Cut" = "Vyjmout";
 
 /* Title */
-"Compose to" = "Napsat pro";
-
-/* Title */
 "Add to contacts" = "Přidat do kontaktů";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Odesílání zprávy…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Zpráva nemohla být odeslána. Nejméně jeden e-mail/doména příjemce neexistuje nebo má nesprávný formát.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "nepřečteno";
@@ -2034,10 +2019,10 @@
 "Custom email domains" = "Vlastní e-mailové domény";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "Odesílatel byl změněn";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Původní odesílatel této zprávy již není platný. Vaše zpráva bude odeslána z Vaší výchozí adresy %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Zobrazované jméno";
@@ -2059,6 +2044,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Upravit fotku";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Nastavit PIN kód";
@@ -2082,7 +2070,7 @@
 "The PIN codes must match!" = "PIN kódy se musí shodovat!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Please enter old pin code ";
+"Please enter old pin code " = "Zadejte prosím starý pin kód ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Změnit PIN kód";

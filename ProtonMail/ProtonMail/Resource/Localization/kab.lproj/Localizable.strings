@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Tuzna ur teddi ara";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Tecceḍ tuzna n yimayl. Izen yettwasekles d arewway.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Ulac acu ara twaliḍ dagi";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Tesriḍ xarsum yiwen n uɣerwaḍ akken ad tazneḍ";
-
-/* Title */
-"Change sender address to…" = "Beddel tansa n umesgal ɣer…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Ali ar lqem s yidrimen akken ad tazneḍ imaylen seg tansa-ik %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Sentem awal uffir n tnaka n yimayl amaynut";
 
-/* error when sending the message */
-"Unable to send the email" = "Ur izmir ara ad yazen imayl";
-
 /* Title */
 "Star/unstar" = "Err itri/Kkes itri";
 
@@ -996,9 +987,6 @@
 "Cut" = "Gzem";
 
 /* Title */
-"Compose to" = "Aru i";
-
-/* Title */
 "Add to contacts" = "Rnu γer inermisen";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Tuzna n yizen…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Imayl ur yettwazen ara. Xersum yiwet n tansa/taɣult n unermas ur telli ara neɣ ur temsil ara akken ilaq.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "ar yettwaɣra ara";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Ẓreg tawlaft";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Sbadu tangalt PIN";

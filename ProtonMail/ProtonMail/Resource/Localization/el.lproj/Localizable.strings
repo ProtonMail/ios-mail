@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Αποτυχία αποστολής";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Το μήνυμα ηλεκτρονικού ταχυδρομείου απέτυχε να σταλεί. Το μήνυμα αποθηκεύτηκε ως πρόχειρο.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Τίποτα ενδιαφέρον εδώ";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Χρειάζεστε τουλάχιστον έναν παραλήπτη για αποστολή";
-
-/* Title */
-"Change sender address to…" = "Αλλαγή διεύθυνσης αποστολέα σε…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Για αποστολή από τη διεύθυνσή σας %@, αναβαθμίστε σε πρόγραμμα επί πληρωμή";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Επιβεβαίωση νέου κωδικού πρόσβασης θυρίδας";
 
-/* error when sending the message */
-"Unable to send the email" = "Δεν είναι δυνατή η αποστολή του E-mail";
-
 /* Title */
 "Star/unstar" = "Με/χωρίς αστέρι";
 
@@ -996,9 +987,6 @@
 "Cut" = "Αποκοπή";
 
 /* Title */
-"Compose to" = "Σύνταξη προς";
-
-/* Title */
 "Add to contacts" = "Προσθήκη στις επαφές";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Γίνεται αποστολή μηνύματος…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Δεν ήταν δυνατή η αποστολή μηνύματος. Τουλάχιστον μία διεύθυνση email παραλήπτη/domain δεν υπάρχει ή δεν έχει μορφοποιηθεί σωστά.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "μη διαβασμένα";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Επεξεργασία φωτογραφίας";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Απενεργοποίηση του κωδικού PIN";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Ορισμός κωδικού PIN";

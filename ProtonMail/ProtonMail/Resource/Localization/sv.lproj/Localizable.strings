@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Kunde inte skicka";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "E-post kunde inte skickas. Meddelande sparat som utkast.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Inget att se här";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Du behöver minst en mottagare för att skicka";
-
-/* Title */
-"Change sender address to…" = "Ändra avsändaradress till…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Uppgradera till ett betalt paket för att skicka från din %@-adress";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Bekräfta nytt lösenord för brevlåda";
 
-/* error when sending the message */
-"Unable to send the email" = "Kan inte skicka e-postmeddelandet";
-
 /* Title */
 "Star/unstar" = "Stjärnmärk/ta bort stjärnmärkning";
 
@@ -996,9 +987,6 @@
 "Cut" = "Klipp ut";
 
 /* Title */
-"Compose to" = "Skriv till";
-
-/* Title */
 "Add to contacts" = "Lägg till i kontakter";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Skickar meddelande…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Meddelandet kunde inte skickas. Minst en mottagares e-postadress/domän finns inte eller är felaktigt formaterad.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "oläst";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Redigera foto";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Inaktivera PIN-kod";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Ställ in PIN-kod";

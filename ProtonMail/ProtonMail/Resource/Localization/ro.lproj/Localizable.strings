@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Trimitere eșuată";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Mesajul nu s-a putut trimite. Mesajul a fost salvat în ciorne.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Nimic de văzut aici";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Trebuie cel puțin un destinatar pentru a trimite mesajul.";
-
-/* Title */
-"Change sender address to…" = "Schimbare adresă expeditor cu…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Treceți la un plan cu plată pentru a trimite de la adresa %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Confirmare parolă nouă mesaje";
 
-/* error when sending the message */
-"Unable to send the email" = "Mesajul nu poate fi trimis";
-
 /* Title */
 "Star/unstar" = "Cu stea/Fără stea";
 
@@ -996,9 +987,6 @@
 "Cut" = "Decupare";
 
 /* Title */
-"Compose to" = "Scrie lui";
-
-/* Title */
 "Add to contacts" = "Adăugare la contacte";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Se trimite mesajul…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Mesajul nu a putut fi trimis. Cel puțin o adresă a unui destinatar/domeniu nu există sau nu este în format corespunzător.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "necitit";
@@ -2033,10 +2018,10 @@
 "Custom email domains" = "Domenii personale e-mail";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "Expeditor schimbat";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Expeditorul original al acestui mesaj nu mai este valid. Mesajul va fi trimis de la adresa implicită %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nume afișat";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Editare imagine";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Setare cod PIN";
@@ -2081,7 +2069,7 @@
 "The PIN codes must match!" = "Codurile PIN trebuie să corespundă!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Please enter old pin code ";
+"Please enter old pin code " = "Introduceți vechiul cod PIN";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Schimbare cod PIN";

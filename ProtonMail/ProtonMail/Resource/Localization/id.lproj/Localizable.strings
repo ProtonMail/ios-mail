@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Pengiriman Gagal";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Surel gagal dikirim. Pesan disimpan sebagai draf.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Tidak ada apa-apa di sini";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Anda harus memasukkan setidaknya satu nama penerima untuk dapat mengirim pesan";
-
-/* Title */
-"Change sender address to…" = "Ubah alamat pengirim ke…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Tingkatkan jenis akun Anda ke akun berbayar untuk dapat mengirim dari alamat %@ Anda";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Konfirmasi kata sandi kotak surat baru";
 
-/* error when sending the message */
-"Unable to send the email" = "Surel tidak dapat dikirim";
-
 /* Title */
 "Star/unstar" = "Bintangi/Hapus Bintang";
 
@@ -996,9 +987,6 @@
 "Cut" = "Potong";
 
 /* Title */
-"Compose to" = "Tulis untuk";
-
-/* Title */
 "Add to contacts" = "Tambah ke kontak";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Mengirim pesan…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Pesan tidak dapat dikirim. Setidaknya satu domain/alamat surel penerima yang dituju tidak ada atau tidak tertulis dengan benar.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "belum dibaca";
@@ -1928,7 +1913,7 @@
 "Up to 3 custom email domains" = "Hingga 3 domain surel khusus";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias Hide My Surel";
+"Hide My Email aliases" = "Alias Hide My Email";
 
 /* One of schedule time options */
 "In the morning" = "Di pagi hari";
@@ -2033,10 +2018,10 @@
 "Custom email domains" = "Domain surel khusus";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "Pengirim diubah";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Pengirim pesan ini sudah tidak lagi valid. Pesan Anda akan dikirim dari alamat %@ bawaan milik Anda.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Nama tampilan";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Sunting foto";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Nonaktifkan kode PIN";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Tentukan kode PIN";
@@ -2081,7 +2069,7 @@
 "The PIN codes must match!" = "Kode PIN harus sesuai!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Please enter old pin code ";
+"Please enter old pin code " = "Silakan masukkan kode PIN yang lama ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Ubah kode PIN";

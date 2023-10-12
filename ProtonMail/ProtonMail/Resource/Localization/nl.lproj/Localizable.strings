@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Verzenden mislukt";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "E-mail kon niet worden verzonden. Bericht bewaard als concept.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Niets te zien hier";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "U moet minstens één ontvanger invoeren om het bericht te verzenden";
-
-/* Title */
-"Change sender address to…" = "Wijzig afzenderadres naar…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Upgrade naar een betaald abonnement om te kunnen verzenden vanaf uw adres %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Bevestig nieuw mailboxwachtwoord";
 
-/* error when sending the message */
-"Unable to send the email" = "E-mail kon niet worden verzonden";
-
 /* Title */
 "Star/unstar" = "Ster/verwijder ster";
 
@@ -996,9 +987,6 @@
 "Cut" = "Knippen";
 
 /* Title */
-"Compose to" = "Opstellen aan";
-
-/* Title */
 "Add to contacts" = "Toevoegen aan contactpersonen";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Bericht wordt verzonden…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Het bericht kon niet worden verzonden. Ten minste één e-mailadres/domein van de ontvanger bestaat niet of is slecht opgemaakt.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "ongelezen";
@@ -1968,7 +1953,7 @@
 "Reply all (to last message)" = "Beantwoord allen (laatste boodschap)";
 
 /* The action title in the action sheet of the composing new message */
-"New message" = "New message";
+"New message" = "Nieuw bericht";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personaliseer";
@@ -2034,7 +2019,7 @@
 "Custom email domains" = "Aangepaste e-maildomeinen";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "Afzender gewijzigd";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
@@ -2052,13 +2037,16 @@
 "Display name field cannot be empty" = "Weergavenaam veld kan niet leeg zijn";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Naam van contact is te lang";
 
 /* The button text for add profile picture */
 "Add photo" = "Foto toevoegen";
 
 /* The button text for edit profile picture */
 "Edit photo" = "Foto bewerken";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Pincode instellen";

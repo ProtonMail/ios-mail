@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Error al enviar";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Error al enviar el correo. Mensaje guardado como borrador.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Nada que ver aquí";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Necesita al menos un destinatario para enviar";
-
-/* Title */
-"Change sender address to…" = "Cambiar dirección del remitente a…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Actualice a un plan de pago para enviar desde su dirección %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Confirmar contraseña nueva del buzón";
 
-/* error when sending the message */
-"Unable to send the email" = "No se puede enviar el mensaje";
-
 /* Title */
 "Star/unstar" = "Destacar/no destacar";
 
@@ -996,9 +987,6 @@
 "Cut" = "Cortar";
 
 /* Title */
-"Compose to" = "Redactar a";
-
-/* Title */
 "Add to contacts" = "Añadir a contactos";
 
 /* encryption lock description */
@@ -1104,10 +1092,10 @@
 "You will be switched to %@" = "Cambiará a %@";
 
 /* Alert to confirm sign out */
-"Are you sure you want to sign out?" = "¿En verdad desea salir?";
+"Are you sure you want to sign out?" = "¿Está seguro de que quiere salir?";
 
 /* Alert to confirm sign out when only one account signed in */
-"Are you sure you want to sign out %@?" = "¿En verdad desea cerrar la sesión %@?";
+"Are you sure you want to sign out %@?" = "¿Está seguro de que quiere cerrar la sesión %@?";
 
 /* Alert to confirm signout with pending message in the queue */
 "There are unsent messages that will be lost if you sign out" = "Hay mensajes sin enviar que se perderán si cierra la sesión";
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Enviando mensaje…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "El mensaje no ha podido ser enviado. Al menos una dirección de correo o un dominio del destinatario no existe o tiene un formato incorrecto.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "no leído";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Editar imagen";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Deshabilitar código PIN";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Definir código PIN";

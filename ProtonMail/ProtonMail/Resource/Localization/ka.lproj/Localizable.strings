@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "გაგზავნის შეცდომა";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "ელფოსტის გაგზავნის შეცდომა. შეტყობინება შენახულია, როგორც მონახაზი.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "აქ არაფერია სანახავი";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "მიმღებების სია ცარიელია";
-
-/* Title */
-"Change sender address to…" = "გამგზავნის მისამართის შეცვლა…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "თქვენი მისამართიდან (%@) გასაგზავნად გადადით ფასიან გეგმაზე";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "დაადასტურეთ საფოსტო ყუთის ახალი პაროლი";
 
-/* error when sending the message */
-"Unable to send the email" = "ელფოსტის გაგზავნის შეცდომა";
-
 /* Title */
 "Star/unstar" = "ვარსკვლავის დაყენება/მოცილება";
 
@@ -996,9 +987,6 @@
 "Cut" = "ამოჭრა";
 
 /* Title */
-"Compose to" = "გაგზავნა";
-
-/* Title */
 "Add to contacts" = "კონტაქტებში ჩამატება";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "შეტყობინების გაგზავნა…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "შეტყობინების გაგზავნა ვერ მოხერხდა. სულ ცოტა, ერთი მიმღების ელფოსტის მისამართი/დომენი არ არსებობს, ან არასწორადაა მითითებული.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "წაუკითხავები";
@@ -2034,10 +2019,10 @@
 "Custom email domains" = "თქვენი ელფოსტის დომენები";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "გამგზავნი შეიცვალა";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "ამ შეტყობინების საწყისი გამოგზავნი მოქმედი აღარაა. შეტყობინება თქვენი ნაგულისხმები მისამართიდან გაიგზავნება %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "საჩვენებელი სახელი";
@@ -2059,6 +2044,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "სურათის ჩასწორება";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "დააყენეთ PIN კოდი";
@@ -2082,7 +2070,7 @@
 "The PIN codes must match!" = "PIN კოდები ერთმანეთს უნდა ემთხვეოდეს!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Please enter old pin code ";
+"Please enter old pin code " = "შეიყვანეთ ძველი PIN-კოდი ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "PIN კოდის შეცვლა";

@@ -60,7 +60,7 @@
 "Inbox" = "Posta in arrivo";
 
 /* menu title */
-"Starred" = "Preferiti";
+"Starred" = "Preferita";
 
 /* menu title */
 "Archive" = "Archivio";
@@ -69,7 +69,7 @@
 "Drafts" = "Bozze";
 
 /* mail location title */
-"All Mail" = "Tutte le email";
+"All Mail" = "Tutta la posta";
 
 /* menu title */
 "Sent" = "Inviata";
@@ -115,9 +115,6 @@
 
 /* Description */
 "Sent Failed" = "Invio non riuscito";
-
-/* Description */
-"Email failed to send. Message saved as draft." = "Invio email non riuscito. Il messaggio è stato salvato come bozza.";
 
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Niente da vedere qui";
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Hai bisogno di almeno un destinatario per inviare";
-
-/* Title */
-"Change sender address to…" = "Modifica l'indirizzo del mittente con…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Effettua l'upgrade ad un piano a pagamento per inviare dal tuo indirizzo %@";
@@ -615,7 +609,7 @@
 "Please input a valid email address." = "Per favore, inserisca un indirizzo email valido.";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Immetta il PIN per sbloccare la sua casella email.";
+"Enter your PIN to unlock your inbox." = "Immetti il PIN per sbloccare la casella di posta.";
 
 /* Error */
 "Incorrect PIN." = "PIN errato.";
@@ -651,13 +645,10 @@
 "New mailbox password" = "Nuova password della casella di posta";
 
 /* Title */
-"Confirm new mailbox password" = "Conferma della nuova password della casella email";
-
-/* error when sending the message */
-"Unable to send the email" = "Impossibile inviare l'email";
+"Confirm new mailbox password" = "Conferma la nuova password della casella di posta";
 
 /* Title */
-"Star/unstar" = "Aggiungi/rimuovi preferiti";
+"Star/unstar" = "Aggiungi/rimuovi preferenza";
 
 /* Title */
 "Proton Mail" = "Proton Mail";
@@ -735,7 +726,7 @@
 "Change account password" = "Cambia la password dell'account";
 
 /* settings general section title */
-"Change mailbox password" = "Cambia la password della casella email";
+"Change mailbox password" = "Cambia la password della casella di posta";
 
 /* settings general section title */
 "Auto-load remote content" = "Carica automaticamente il contenuto remoto";
@@ -996,9 +987,6 @@
 "Cut" = "Taglia";
 
 /* Title */
-"Compose to" = "Comporre a";
-
-/* Title */
 "Add to contacts" = "Aggiungi ai contatti";
 
 /* encryption lock description */
@@ -1200,7 +1188,7 @@
 "Dark mode" = "Modalità scura";
 
 /* network troubleshot cell title */
-"Allow alternative routing" = "Consenti routing alternativo";
+"Allow alternative routing" = "Consenti percorso alternativo";
 
 /* network troubleshot cell title */
 "No internet connection" = "Nessuna connessione Internet";
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Inviando il messaggio…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Il messaggio non può essere inviato. Almeno un indirizzo email/dominio del destinatario non esiste o è formattato male.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "non letto";
 
@@ -1269,10 +1254,10 @@
 "Signed in as %@" = "Acceduto come %@";
 
 /* The title of the star action in action sheet */
-"Star" = "Preferito";
+"Star" = "Aggiungi alla posta preferita";
 
 /* The title of the star action in action sheet */
-"Unstar" = "Rimuovi dai Preferiti";
+"Unstar" = "Rimuovi dalla posta preferita";
 
 /* The title of the unread action in action sheet */
 "Mark as unread" = "Segna come non letto";
@@ -1296,7 +1281,7 @@
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Attiva questa funzionalità per il completamento automatico degli indirizzi email, usando i contatti di tutti i tuoi profili collegati.";
 
 /* alternative routing description */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Nel caso in cui i siti Proton siano bloccati, questa impostazione consente all'app di provare l'instradamento di rete alternativo per raggiungere Proton, che può essere utile per aggirare i firewall o problemi di rete. Consigliamo di mantenere questa impostazione per una maggiore affidabilità. %1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Nel caso in cui i siti di Proton siano bloccati, questa impostazione consente all'app di provare l'indirizzamento di rete alternativo per raggiungere Proton, che potrebbe esser utile per evitare firewall o problemi di rete. Consigliamo di mantenere questa impostazione attiva per una maggiore affidabilità. %1$@";
 
 /* The title of alternative routing settings */
 "Networking" = "Reti";
@@ -1392,7 +1377,7 @@
 "Any unsaved changes will be lost." = "Ogni modifica non salvata sarà persa.";
 
 /* A label message */
-"Inherited from parent folder" = "Ereditato dalla cartella superiore";
+"Inherited from parent folder" = "Ereditato dalla cartella principale";
 
 /* Alert title */
 "Creating folder not allowed" = "La creazione della cartella non è consentita";
@@ -1413,7 +1398,7 @@
 "Use folder colors" = "Usa i colori delle cartelle";
 
 /* Option title */
-"Inherit color from parent folder" = "Eredita il colore dalla cartella superiore";
+"Inherit color from parent folder" = "Eredita il colore dalla cartella principale";
 
 /* section title */
 "Select color" = "Seleziona il colore";
@@ -2059,6 +2044,9 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Modifica foto";
 
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disabilita codice PIN";
+
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Imposta codice PIN";
 
@@ -2081,7 +2069,7 @@
 "The PIN codes must match!" = "I codici PIN devono corrispondere!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Inserisci il vecchio codice pin ";
+"Please enter old pin code " = "Inserisci il vecchio codice PIN ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Modifica codice PIN";

@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Не вдалося надіслати";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Не вдалося надіслати електронний лист. Повідомлення збережено до чернетки.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Тут нічого немає";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Необхідно вказати принаймні одного отримувача";
-
-/* Title */
-"Change sender address to…" = "Змінити адресу відправника на…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перейдіть на платний тарифний план, щоб надіслати з вашої адреси %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Підтвердження нового пароля поштової скриньки";
 
-/* error when sending the message */
-"Unable to send the email" = "Не вдається надіслати е-пошту";
-
 /* Title */
 "Star/unstar" = "Позначити/прибрати зірочку";
 
@@ -996,9 +987,6 @@
 "Cut" = "Вирізати";
 
 /* Title */
-"Compose to" = "Написати";
-
-/* Title */
 "Add to contacts" = "Додати до контактів";
 
 /* encryption lock description */
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Надсилання повідомлення…";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Не вдається надіслати повідомлення. Адреса чи домен принаймні одного отримувача не існує, або має неправильний формат.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "непрочитане";
@@ -2033,10 +2018,10 @@
 "Custom email domains" = "Власні поштові домени";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Sender changed";
+"Sender changed" = "Відправника змінено";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
-"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Початковий відправник цього повідомлення більше недійсний. Ваше повідомлення буде надіслано з типової адреси %@.";
 
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Ім'я";
@@ -2058,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Редагувати фото";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Встановити PIN-код";
@@ -2081,7 +2069,7 @@
 "The PIN codes must match!" = "PIN-коди повинні збігатися!";
 
 /* The textField title when user trying to update its pin code setting */
-"Please enter old pin code " = "Please enter old pin code ";
+"Please enter old pin code " = "Введіть старий PIN-код ";
 
 /* The title of change PIN code option in security settings */
 "Change PIN code" = "Змінити PIN-код";
