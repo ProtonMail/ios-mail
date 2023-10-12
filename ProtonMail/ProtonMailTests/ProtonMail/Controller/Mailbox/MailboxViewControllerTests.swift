@@ -439,7 +439,6 @@ extension MailboxViewControllerTests {
         viewModel = MailboxViewModel(
             labelID: labelID,
             label: isCustom ? label : nil,
-            labelType: labelType,
             userManager: userManagerMock,
             pushService: MockPushNotificationService(),
             coreDataContextProvider: coreDataService,

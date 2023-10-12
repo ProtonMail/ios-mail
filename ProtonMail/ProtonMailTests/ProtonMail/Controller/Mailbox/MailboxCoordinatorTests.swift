@@ -59,7 +59,6 @@ class MailboxCoordinatorTests: XCTestCase {
         )
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,
-                                             labelType: .unknown,
                                              userManager: dummyUser,
                                              pushService: pushServiceMock,
                                              coreDataContextProvider: contextProviderMock,

@@ -29,7 +29,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     private var context: NSManagedObjectContext!
     private var mockApi: APIServiceMock!
 
-    let testBody = "body".data(using: .utf8)!
     let testSession = "session".data(using: .utf8)!
     let algo: Algorithm = .AES256
     var testPublicKey: CryptoKey!
@@ -54,14 +53,10 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         context = nil
     }
 
-    func testUpdateBodyData_bodySessionAndBodyAlgorithm() {
-        let testData = "Body".data(using: .utf8)!
+    func testUpdate_bodySessionAndBodyAlgorithm() {
         let testSession = "Key".data(using: .utf8)!
         let testAlgo = Algorithm.TripleDES
-        sut.update(bodyData: testData,
-                   bodySession: testSession,
-                   algo: testAlgo)
-        XCTAssertEqual(sut.bodyDataPacket, testData)
+        sut.update(bodySession: testSession, algo: testAlgo)
         XCTAssertEqual(sut.bodySessionKey, testSession)
         XCTAssertEqual(sut.bodySessionAlgo, testAlgo)
     }
@@ -161,16 +156,12 @@ class MessageSendingRequestBuilderTests: XCTestCase {
         XCTAssertTrue(sut.hasPlainText)
     }
 
-    func testEncodedBody() {
-        let testBody = "Body".data(using: .utf8)!
+    func testEncodedSession() {
         let testSessionKey = "Key".data(using: .utf8)!
         let testEncodedSession = testSessionKey.base64EncodedString(options: .init(rawValue: 0))
 
-        sut.update(bodyData: testBody,
-                   bodySession: testSessionKey,
-                   algo: .AES256)
+        sut.update(bodySession: testSessionKey, algo: .AES256)
 
-        XCTAssertEqual(sut.bodyDataPacket, testBody)
         XCTAssertEqual(sut.bodySessionKey, testSessionKey)
         XCTAssertEqual(sut.encodedSessionKey, testEncodedSession)
     }
@@ -454,8 +445,6 @@ class MessageSendingRequestBuilderTests: XCTestCase {
     }
 
     private func setupTestBody() {
-        sut.update(bodyData: testBody,
-                   bodySession: testSession,
-                   algo: algo)
+        sut.update(bodySession: testSession, algo: algo)
     }
 }

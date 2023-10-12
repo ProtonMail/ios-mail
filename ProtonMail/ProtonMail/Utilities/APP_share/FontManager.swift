@@ -253,20 +253,6 @@ struct FontManager {
         return attributes
     }
 
-    static var OverlineRegularInteractionStrong: [NSAttributedString.Key: Any] {
-        let font = UIFont.adjustedFont(forTextStyle: .caption2)
-        let foregroundColor: UIColor = ColorProvider.InteractionStrong
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.07
-        let attributes: [NSAttributedString.Key: Any] = [
-            .kern: 0.07,
-            .font: font,
-            .foregroundColor: foregroundColor,
-            .paragraphStyle: paragraphStyle
-        ]
-        return attributes
-    }
-
     static var OverlineRegularTextWeak: [NSAttributedString.Key: Any] {
         let font = UIFont.adjustedFont(forTextStyle: .caption2)
         let foregroundColor: UIColor = ColorProvider.TextWeak

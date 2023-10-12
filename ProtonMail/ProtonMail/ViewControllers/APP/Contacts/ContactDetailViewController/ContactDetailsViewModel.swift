@@ -109,53 +109,6 @@ final class ContactDetailsViewModel: NSObject {
         return self.decryptError
     }
 
-    func hasEncryptedContacts() -> Bool {
-        if self.type3Error() {
-            return true
-        }
-
-        if !verifyType3 {
-            return true
-        }
-
-        if phones.count > 0 {
-            return true
-        }
-        if addresses.count > 0 {
-            return true
-        }
-        if fields.count > 0 {
-            return true
-        }
-        if notes.count > 0 {
-            return true
-        }
-        if urls.count > 0 {
-            return true
-        }
-        if birthday != nil {
-            return true
-        }
-        if !organizations.isEmpty {
-            return true
-        }
-        if !nickNames.isEmpty {
-            return true
-        }
-        if !titles.isEmpty {
-            return true
-        }
-        if gender != nil {
-            return true
-        }
-
-        if !paidUser() {
-            return true
-        }
-
-        return false
-    }
-
     @discardableResult
     func rebuild() -> Bool {
         if self.contact.needsRebuild {
@@ -345,10 +298,6 @@ extension ContactDetailsViewModel{
         let contact = try await dependencies.contactService.fetchContact(contactID: contact.contactID)
         setContact(contact)
         try setupEmails()
-    }
-
-    func paidUser() -> Bool {
-        return dependencies.user.hasPaidMailPlan
     }
 }
 

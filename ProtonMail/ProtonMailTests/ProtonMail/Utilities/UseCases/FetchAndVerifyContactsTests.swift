@@ -147,11 +147,7 @@ extension FetchAndVerifyContactsTests {
             cacheService: makeMockCacheService(),
             contactProvider: mockContactProvider
         )
-        return FetchAndVerifyContacts(
-            currentUser: "",
-            currentUserKeys: [ContactParserTestData.privateKey],
-            dependencies: dependencies
-        )
+        return FetchAndVerifyContacts(currentUserKeys: [ContactParserTestData.privateKey], dependencies: dependencies)
     }
 
     private func makeMockApiService() -> APIServiceMock {

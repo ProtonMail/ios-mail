@@ -391,14 +391,12 @@ extension MenuCoordinator {
     private func createMailboxViewModel(
         userManager: UserManager,
         labelID: LabelID,
-        labelInfo: LabelInfo?,
-        labelType: PMLabelType
+        labelInfo: LabelInfo?
     ) -> MailboxViewModel {
         let mailboxVMDependencies = self.mailBoxVMDependencies(user: userManager, labelID: labelID)
         return MailboxViewModel(
             labelID: labelID,
             label: labelInfo,
-            labelType: labelType,
             userManager: userManager,
             pushService: dependencies.pushService,
             coreDataContextProvider: dependencies.contextProvider,
@@ -444,16 +442,14 @@ extension MenuCoordinator {
             viewModel = createMailboxViewModel(
                 userManager: user,
                 labelID: label.labelID,
-                labelInfo: LabelInfo(name: label.name),
-                labelType: labelInfo.type
+                labelInfo: LabelInfo(name: label.name)
             )
 
         case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled, .almostAllMail:
             viewModel = createMailboxViewModel(
                 userManager: user,
                 labelID: labelInfo.location.labelID,
-                labelInfo: nil,
-                labelType: .folder
+                labelInfo: nil
             )
         default:
             return

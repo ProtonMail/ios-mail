@@ -1456,7 +1456,6 @@ extension MailboxViewModelTests {
         let label = LabelInfo(name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),
                                label: isCustom ? label : nil,
-                               labelType: labelType,
                                userManager: userManagerMock,
                                pushService: MockPushNotificationService(),
                                coreDataContextProvider: coreDataService,

@@ -130,7 +130,6 @@ class ConversationViewModel {
             .allSatisfy { $0.message.contains(location: .archive) }
     }
 
-    private let observerID = UUID()
     var isInitialDataFetchCalled = false
     private let conversationStateProvider: ConversationStateProviderProtocol
     /// This is used to restore the message status when the view mode is changed.

@@ -160,7 +160,7 @@ final class MainQueueHandler: QueueHandler {
             case .saveDraft(let messageObjectID):
                 self.draft(save: messageObjectID, completion: completeHandler)
             case .uploadAtt(let attachmentObjectID), .uploadPubkey(let attachmentObjectID):
-                self.uploadAttachment(with: attachmentObjectID, UID: UID, completion: completeHandler)
+                self.uploadAttachment(with: attachmentObjectID, completion: completeHandler)
             case .deleteAtt(let attachmentObjectID, let attachmentID):
                 self.deleteAttachmentWithAttachmentID(
                     attachmentObjectID,
@@ -320,7 +320,7 @@ extension MainQueueHandler {
         }
     }
 
-    private func uploadAttachment(with attachmentURI: String, UID: String, completion: @escaping Completion) {
+    private func uploadAttachment(with attachmentURI: String, completion: @escaping Completion) {
         Task {
             do {
                 try await dependencies.uploadAttachment.execute(attachmentURI: attachmentURI)
