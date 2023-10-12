@@ -142,7 +142,8 @@ def build_release_app
             "ch.protonmail.protonmail.PushService" => "protonmail push service release",
             "ch.protonmail.protonmail.Siri" => "Protonmail Siri kit release"
         }
-    }
+    },
+    skip_package_dependencies_resolution: true
   )
 end
 
@@ -160,7 +161,8 @@ def build_enterprise_app
             "com.protonmail.protonmail.SiriDev" => "production siriDev"
         },
         iCloudContainerEnvironment: "Production"
-    }
+    },
+    skip_package_dependencies_resolution: true
   )
 end
 
@@ -370,8 +372,7 @@ platform :ios do
       app_identifier: APP_IDENTIFIER,
       reset_simulator: true,
       test_without_building: true,
-      output_directory: "../test_output/",
-      skip_package_dependencies_resolution: true
+      output_directory: "../test_output/"
     )
   end
 
@@ -391,8 +392,7 @@ platform :ios do
       app_identifier: APP_IDENTIFIER,
       output_directory: "../test_output/TestResults",
       output_files: "report.xml",
-      result_bundle: true,
-      skip_package_dependencies_resolution: true
+      result_bundle: true
     )
   end
 
