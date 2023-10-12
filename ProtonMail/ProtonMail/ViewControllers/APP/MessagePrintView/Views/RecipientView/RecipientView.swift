@@ -47,7 +47,7 @@ class RecipientView: PMView {
         self.tableView.alwaysBounceVertical = false
         self.tableView.separatorStyle = .none
         self.tableView.allowsSelection = false
-
+        self.tableView.backgroundColor = .white
     }
 
     func showLock(isShow: Bool) {
