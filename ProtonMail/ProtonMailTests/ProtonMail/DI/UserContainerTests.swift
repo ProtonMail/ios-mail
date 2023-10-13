@@ -27,8 +27,12 @@ final class UserContainerTests: XCTestCase {
         var strongRefToContainer: UserContainer? = strongRefToUser?.container
         var strongRefToDependency: AnyObject? = strongRefToContainer?.settingsViewsFactory
 
+        let unregisterEX = expectation(description: "Unregister user")
         // undo a side-effect of UserManager.init
-        globalContainer.queueManager.unregisterHandler(for: "foo")
+        globalContainer.queueManager.unregisterHandler(for: "foo") {
+            unregisterEX.fulfill()
+        }
+        wait(for: [unregisterEX], timeout: 5)
 
         weak var weakRefToUser: UserManager? = strongRefToUser
         weak var weakRefToContainer: UserContainer? = strongRefToContainer

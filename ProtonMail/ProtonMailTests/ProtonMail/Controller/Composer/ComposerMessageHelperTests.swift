@@ -212,7 +212,8 @@ final class ComposerMessageHelperTests: XCTestCase {
         let newAddress = String.randomString(20)
         sut.setNewMessage(objectID: testMessage.objectID)
 
-        sut.updateAddressID(addressID: newAddressID, emailAddress: newAddress) {
+        let address = Address(addressID: newAddressID, domainID: nil, email: newAddress, send: .active, receive: .active, status: .enabled, type: .protonDomain, order: 1, displayName: "", signature: "", hasKeys: 0, keys: [])
+        sut.updateAddress(to: address) {
             e.fulfill()
         }
         waitForExpectations(timeout: 1)

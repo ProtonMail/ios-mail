@@ -26,6 +26,7 @@ class LabelManagerViewModelTests: XCTestCase {
     private var mockLabelPublisher: MockLabelPublisherProtocol!
     private var mockLabelManagerRouter: MockLabelManagerRouterProtocol!
     private var mockUIDelegate: MockLabelManagerUIProtocol!
+    private var connectionStatusProvider: MockInternetConnectionStatusProviderProtocol!
     private let indexToCreateNewLabel = IndexPath(row: 0, section: 0)
 
     override func setUp() {
@@ -34,11 +35,14 @@ class LabelManagerViewModelTests: XCTestCase {
         mockLabelManagerRouter = MockLabelManagerRouterProtocol()
         mockLabelPublisher = MockLabelPublisherProtocol()
         mockUIDelegate = MockLabelManagerUIProtocol()
+        connectionStatusProvider = MockInternetConnectionStatusProviderProtocol()
+        connectionStatusProvider.statusStub.fixture = .connected
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
+        connectionStatusProvider = nil
         mockLabelManagerRouter = nil
         mockLabelPublisher = nil
         mockUIDelegate = nil
@@ -108,7 +112,8 @@ extension LabelManagerViewModelTests {
             labelService: mockUserManager.labelService,
             labelPublisher: mockLabelPublisher,
             userManagerSaveAction: mockUserManager,
-            mailSettingsHandler: mockUserManager
+            mailSettingsHandler: mockUserManager,
+            connectionStatusProvider: connectionStatusProvider
         )
         return dependencies
     }

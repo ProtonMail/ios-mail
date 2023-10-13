@@ -130,8 +130,11 @@ extension Date {
         return serverDate >= deviceDate ? serverDate : deviceDate
     }
 
-    func countExpirationTime(processInfo: SystemUpTimeProtocol?) -> String {
-        let unixTime = Date.getReferenceDate(processInfo: processInfo)
+    func countExpirationTime(
+        connectionStatus: ConnectionStatus = InternetConnectionStatusProvider.shared.status,
+        processInfo: SystemUpTimeProtocol?
+    ) -> String {
+        let unixTime = Date.getReferenceDate(connectionStatus: connectionStatus, processInfo: processInfo)
         return Self.expirationTimeFormatter.string(from: unixTime, to: self)!
     }
 }

@@ -27,6 +27,9 @@ class InternetConnectionStatusProviderTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         connectionMonitor = nil
+        connectionStatusReceiver = nil
+        mockNWPath = nil
+        session = nil
         sut = nil
     }
 
@@ -112,7 +115,6 @@ class InternetConnectionStatusProviderTests: XCTestCase {
 
     func testHasConnection_whenConnectedViaVPN_andPingSucceeds_itShouldReturnConnected() {
         sut.register(receiver: connectionStatusReceiver, fireWhenRegister: false)
-
         let expectation1 = expectation(description: "status updated")
         connectionStatusReceiver.connectionStatusHasChangedStub.bodyIs { _, newStatus in
             XCTAssertEqual(newStatus, .connected)

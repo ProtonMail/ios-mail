@@ -274,7 +274,6 @@ extension CSSMagicTest {
         nodes = CSSMagic.getColorNodes(from: document!)
         XCTAssertEqual(nodes.count, 1)
         result = try XCTUnwrap(CSSMagic.getDarkModeCSSDict(for: nodes, startTime: Date().timeIntervalSinceReferenceDate), "Should have value")
-        print("a")
         XCTAssertEqual(Array(result.keys).count, 1)
         let value = try XCTUnwrap(result["div[style*=\"COLOR: aqua\"]"])
         XCTAssertEqual(value.first, "COLOR: hsla(180, 100%, 90%, 1.0) !important")

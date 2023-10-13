@@ -190,6 +190,8 @@ extension SendMessageTask {
         } else if error.responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue {
             dependencies.notificationCenter.post(name: .messageSendFailAddressValidationIncorrect, object: nil)
             notifySendMessageError(error, message: message)
+        } else if error.responseCode == APIErrorCode.incompatible {
+            notifySendMessageError(error, message: message)
         } else {
             notifySendMessageError(error, message: message)
         }

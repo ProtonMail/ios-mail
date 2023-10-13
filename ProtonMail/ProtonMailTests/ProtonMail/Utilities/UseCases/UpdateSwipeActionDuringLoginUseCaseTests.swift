@@ -142,5 +142,5 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
 class FakeQueueHandlerRegister: QueueHandlerRegister {
     func registerHandler(_ handler: QueueHandler) {}
 
-    func unregisterHandler(for userID: UserID) {}
+    func unregisterHandler(for userID: ProtonMail.UserID, completion: (() -> Void)?) {}
 }

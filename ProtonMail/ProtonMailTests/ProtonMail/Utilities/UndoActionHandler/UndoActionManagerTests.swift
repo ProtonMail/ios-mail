@@ -58,6 +58,7 @@ class UndoActionManagerTests: XCTestCase {
         apiServiceMock = nil
         contextProviderMock = nil
         userManagerMock = nil
+        eventService = nil
     }
 
     func testRegisterHandler() {
@@ -102,7 +103,7 @@ class UndoActionManagerTests: XCTestCase {
         sut.addTitleWithAction(title: "title", action: .archive)
         XCTAssertFalse(handlerMock.isShowUndoActionCalled)
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + UndoActionManager.Const.delayThreshold) {
+        DispatchQueue.global().asyncAfter(deadline: .now() + UndoActionManager.Const.delayThreshold) {
             self.sut.addUndoToken(token, undoActionType: .archive)
             expectation1.fulfill()
         }

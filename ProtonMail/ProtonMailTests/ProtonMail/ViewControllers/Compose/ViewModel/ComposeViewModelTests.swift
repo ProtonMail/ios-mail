@@ -31,7 +31,9 @@ final class ComposeViewModelTests: XCTestCase {
     private var contactProvider: MockContactProvider!
     private var dependencies: ComposeViewModel.Dependencies!
     private var attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock!
+    private var notificationCenter: NotificationCenter!
     private let userID: UserID = .init(String.randomString(20))
+    private var mockUIDelegate: MockComposeUIProtocol!
     private var mockUserCacheStatusProvider: MockUserCachedStatusProvider!
 
     override func setUp() {
@@ -39,6 +41,8 @@ final class ComposeViewModelTests: XCTestCase {
 
         self.mockCoreDataService = MockCoreDataContextProvider()
         self.apiMock = APIServiceMock()
+        self.notificationCenter = NotificationCenter()
+        self.mockUIDelegate = MockComposeUIProtocol()
 
         testContext = MockCoreDataStore.testPersistentContainer.viewContext
         fakeUserManager = mockUserManager()
@@ -73,7 +77,8 @@ final class ComposeViewModelTests: XCTestCase {
             )),
             darkModeCache: MockDarkModeCacheProtocol(),
             attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
-            userCachedStatusProvider: mockUserCacheStatusProvider
+            userCachedStatusProvider: mockUserCacheStatusProvider,
+            notificationCenter: notificationCenter
         )
 
         self.message = testContext.performAndWait {
@@ -93,6 +98,8 @@ final class ComposeViewModelTests: XCTestCase {
         self.apiMock = nil
         self.message = nil
         self.testContext = nil
+        self.notificationCenter = nil
+        self.mockUIDelegate = nil
         FileManager.default.cleanTemporaryDirectory()
 
         super.tearDown()
@@ -144,6 +151,89 @@ final class ComposeViewModelTests: XCTestCase {
         let lists = sut.getAddresses()
         XCTAssertEqual(lists.count, addresses.count)
         XCTAssertEqual(lists, addresses)
+    }
+    
+    func testInitializeAddress_whenReply_theOriginalToAddressIsInvalid_shouldUseDefaultAddress() {
+        var addresses = generateAddress(number: 2)
+        let invalidAddress = updateAddressStatus(address: addresses[0], status: .disabled)
+        addresses[0] = invalidAddress
+        fakeUserManager.userInfo.set(addresses: addresses)
+        let aliasAddress = aliasAddress(from: addresses[0])
+        
+        message = mockCoreDataService.mainContext.performAndWait {
+            let original = Message(context: self.mockCoreDataService.mainContext)
+            original.messageID = UUID().uuidString
+            original.parsedHeaders = "{\"X-Original-To\": \"\(aliasAddress.email)\"}"
+
+            let repliedMessage = Message(context: self.mockCoreDataService.mainContext)
+            repliedMessage.orginalMessageID = original.messageID
+            return repliedMessage
+        }
+
+        sut = ComposeViewModel(
+            msg: MessageEntity(message),
+            action: .reply,
+            dependencies: dependencies
+        )
+        XCTAssertEqual(sut.currentSenderAddress(), fakeUserManager.addresses.defaultAddress())
+    }
+    
+    func testInitializeAddress_whenReply_theOriginalToAddressIsValid_shouldUseIt() {
+        let addresses = generateAddress(number: 2)
+        fakeUserManager.userInfo.set(addresses: addresses)
+        let aliasAddress = aliasAddress(from: addresses[0])
+        
+        message = mockCoreDataService.mainContext.performAndWait {
+            let original = Message(context: self.mockCoreDataService.mainContext)
+            original.messageID = UUID().uuidString
+            original.parsedHeaders = "{\"X-Original-To\": \"\(aliasAddress.email)\"}"
+
+            let repliedMessage = Message(context: self.mockCoreDataService.mainContext)
+            repliedMessage.orginalMessageID = original.messageID
+            return repliedMessage
+        }
+
+        sut = ComposeViewModel(
+            msg: MessageEntity(message),
+            action: .reply,
+            dependencies: dependencies
+        )
+        wait(self.sut.currentSenderAddress() == aliasAddress, timeout: 5)
+    }
+    
+    func testAddressesStatusChanged_theCurrentAddressIsInvalid_shouldChangeToDefaultOne() {
+        var addresses = generateAddress(number: 2)
+        fakeUserManager.userInfo.set(addresses: addresses)
+        let aliasAddress = aliasAddress(from: addresses[0])
+        
+        message = mockCoreDataService.mainContext.performAndWait {
+            let original = Message(context: self.mockCoreDataService.mainContext)
+            original.messageID = UUID().uuidString
+            original.parsedHeaders = "{\"X-Original-To\": \"\(aliasAddress.email)\"}"
+
+            let repliedMessage = Message(context: self.mockCoreDataService.mainContext)
+            repliedMessage.orginalMessageID = original.messageID
+            return repliedMessage
+        }
+
+        sut = ComposeViewModel(
+            msg: MessageEntity(message),
+            action: .reply,
+            dependencies: dependencies
+        )
+        sut.uiDelegate = mockUIDelegate
+        wait(self.sut.currentSenderAddress() == aliasAddress, timeout: 5)
+        
+        let invalidAddress = updateAddressStatus(address: addresses[0], status: .disabled)
+        addresses[0] = invalidAddress
+        fakeUserManager.userInfo.set(addresses: addresses)
+        let ex = expectation(description: "Change event is called")
+        mockUIDelegate.changeInvalidSenderAddressStub.bodyIs { _, newAddress  in
+            XCTAssertEqual(newAddress, addresses[1])
+            ex.fulfill()
+        }
+        notificationCenter.post(name: .addressesStatusAreChanged, object: nil)
+        wait(for: [ex], timeout: 5)
     }
 
     // MARK: isEmptyDraft tests
@@ -384,7 +474,7 @@ extension ComposeViewModelTests {
 
     func generateAddress(number: Int) -> [Address] {
         let key = Key(keyID: "keyID", privateKey: KeyTestData.privateKey1)
-        let list = (0..<number).map { _ in
+        let list = (0..<number).map { index in
             let id = UUID().uuidString
             let domain = "\(String.randomString(3)).\(String.randomString(3))"
             let userPart = String.randomString(5)
@@ -404,6 +494,43 @@ extension ComposeViewModelTests {
             )
         }
         return list
+    }
+    
+    func updateAddressStatus(address: Address, status: Address.AddressStatus) -> Address {
+        return Address(
+            addressID: address.addressID,
+            domainID: address.domainID,
+            email: address.email,
+            send: address.send,
+            receive: address.receive,
+            status: status,
+            type: address.type,
+            order: address.order,
+            displayName: address.displayName,
+            signature: address.signature,
+            hasKeys: address.hasKeys,
+            keys: address.keys
+        )
+    }
+    
+    func aliasAddress(from address: Address) -> Address {
+        let email = address.email
+        let splits = email.components(separatedBy: "@")
+        let alias = "\(splits[0])+alias@\(splits[1])"
+        return Address(
+            addressID: address.addressID,
+            domainID: address.domainID,
+            email: alias,
+            send: address.send,
+            receive: address.receive,
+            status: address.status,
+            type: address.type,
+            order: address.order,
+            displayName: address.displayName,
+            signature: address.signature,
+            hasKeys: address.hasKeys,
+            keys: address.keys
+        )
     }
 
     private func loadImage(fileName: String) throws -> ConcreteFileData {
