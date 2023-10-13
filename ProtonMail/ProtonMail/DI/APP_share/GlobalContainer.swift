@@ -18,7 +18,7 @@
 import Factory
 import ProtonCoreKeymaker
 
-final class GlobalContainer: ManagedContainer {
+class GlobalContainer: ManagedContainer {
     let manager = ContainerManager()
 
     var attachmentMetadataStripStatusProviderFactory: Factory<AttachmentMetadataStrippingProtocol> {

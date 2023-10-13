@@ -29,26 +29,24 @@ class UsersManagerTests: XCTestCase {
     var cachedUserDataProviderMock: MockCachedUserDataProvider!
     let suiteName = String.randomString(10)
     var customCache: SharedCacheBase!
-    var customKeyChain: Keychain!
-    var notificationCenter: NotificationCenter!
-    var keyMaker: KeyMakerProtocol!
-    private var globalContainer: GlobalContainer!
+    private var globalContainer: TestContainer!
+
+    private var customKeyChain: Keychain {
+        globalContainer.keychain
+    }
+
+    private var keyMaker: KeyMakerProtocol {
+        globalContainer.keyMaker
+    }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         self.cachedUserDataProviderMock = .init()
         self.apiMock = APIServiceMock()
         self.customCache = .init(userDefaults: .init(suiteName: suiteName)!)
-        self.customKeyChain = .init(service: String.randomString(10),
-                                    accessGroup: "2SB5Z68H26.ch.protonmail.protonmail")
-        self.notificationCenter = NotificationCenter()
-        self.keyMaker = Keymaker(autolocker: nil, keychain: customKeyChain)
 
         globalContainer = .init()
         globalContainer.cachedUserDataProviderFactory.register { self.cachedUserDataProviderMock }
-        globalContainer.keychainFactory.register { self.customKeyChain }
-        globalContainer.keyMakerFactory.register { Keymaker(autolocker: nil, keychain: self.customKeyChain) }
-        globalContainer.notificationCenterFactory.register { self.notificationCenter }
 
         sut = UsersManager(
             userDefaultCache: customCache,
@@ -68,9 +66,6 @@ class UsersManagerTests: XCTestCase {
         customCache.getShared().remove(forKey: UsersManager.CoderKey.usersInfo)
         self.customCache = nil
         self.customKeyChain.removeEverything()
-        self.customKeyChain = nil
-        notificationCenter = nil
-        keyMaker = nil
         globalContainer = nil
     }
 
@@ -302,7 +297,7 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user1)
         XCTAssertEqual(sut.users.count, 1)
         let expectation1 = expectation(description: "Closure is called")
-        expectation(forNotification: .didSignOutLastAccount, object: nil, notificationCenter: notificationCenter)
+        expectation(forNotification: .didSignOutLastAccount, object: nil, notificationCenter: globalContainer.notificationCenter)
 
         sut.logout(user: user1) {
             XCTAssertTrue(self.sut.users.isEmpty)

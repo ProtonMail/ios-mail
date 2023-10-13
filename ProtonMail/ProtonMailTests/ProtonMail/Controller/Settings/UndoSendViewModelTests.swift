@@ -25,13 +25,9 @@ final class UndoSendViewModelTests: XCTestCase {
     private var user: UserManager!
     private var apiService: APIServiceMock!
     private var uiMock: SettingsSingleCheckMarkUIMock!
-    private var keyMaker: Keymaker!
-    private var keyChain: KeychainWrapper!
 
     override func setUpWithError() throws {
         apiService = APIServiceMock()
-        keyChain = .makeTestingKeychain()
-        keyMaker = .init(autolocker: nil, keychain: keyChain)
         user = UserManager(api: apiService, role: .member)
         sut = UndoSendSettingViewModel(user: user, delaySeconds: 0)
         uiMock = SettingsSingleCheckMarkUIMock()
@@ -43,9 +39,6 @@ final class UndoSendViewModelTests: XCTestCase {
         user = nil
         sut = nil
         uiMock = nil
-        keyMaker = nil
-        keyChain.removeEverything()
-        keyChain = nil
     }
 
     func testHeaderFooter() throws {

@@ -16,28 +16,26 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import ProtonCoreKeymaker
 import XCTest
 
 final class UILockPinCodeTests: XCTestCase {
     private var sut: UILockPinCode!
-    private var keychain: KeychainWrapper!
-    private var globalContainer: GlobalContainer!
+    private var globalContainer: TestContainer!
+
+    private var keychain: Keychain {
+        globalContainer.keychain
+    }
 
     private let keychainKeyForPinCode = "UILockPinCode.hashedPinCode"
     private let keychainKeyForSalt = "UILockPinCode.salt"
 
     override func setUp() {
-        keychain = KeychainWrapper(
-            service: "ch.protonmail.test",
-            accessGroup: "2SB5Z68H26.ch.protonmail.protonmail"
-        )
         globalContainer = .init()
-        globalContainer.keychainFactory.register { self.keychain }
         sut = UILockPinCode(dependencies: globalContainer)
     }
 
     override func tearDown() {
-        keychain = nil
         globalContainer = nil
         sut = nil
     }

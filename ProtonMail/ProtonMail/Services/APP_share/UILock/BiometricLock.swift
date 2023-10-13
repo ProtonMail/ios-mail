@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import LocalAuthentication
+import ProtonCoreKeymaker
 
 final class BiometricLock: UILock {
     enum Constants {
@@ -26,13 +27,10 @@ final class BiometricLock: UILock {
         keyChain.string(forKey: Constants.key) != nil
     }
 
-    private let keyChain: KeychainWrapper
+    private let keyChain: Keychain
     private let localAuthenticationContext: LAContextProtocol
 
-    init(
-        keyChain: KeychainWrapper,
-        localAuthenticationContext: LAContextProtocol = LAContext()
-    ) {
+    init(keyChain: Keychain, localAuthenticationContext: LAContextProtocol = LAContext()) {
         self.keyChain = keyChain
         self.localAuthenticationContext = localAuthenticationContext
     }

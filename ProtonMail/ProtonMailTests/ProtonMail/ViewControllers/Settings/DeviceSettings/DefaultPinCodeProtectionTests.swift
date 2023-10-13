@@ -21,36 +21,27 @@ import XCTest
 
 final class DefaultPinCodeProtectionTests: XCTestCase {
     private var sut: DefaultPinCodeProtection!
-    private var keyMaker: Keymaker!
-    private var keyChain: KeychainWrapper!
-    private var notificationCenter: NotificationCenter!
-    private var globalContainer: GlobalContainer!
+    private var globalContainer: TestContainer!
+
+    private var keyChain: Keychain {
+        globalContainer.keychain
+    }
+
+    private var keyMaker: KeyMakerProtocol {
+        globalContainer.keyMaker
+    }
+
+    private var notificationCenter: NotificationCenter {
+        globalContainer.notificationCenter
+    }
 
     override func setUpWithError() throws {
-        let userCachedStatus = UserCachedStatus(userDefaults: UserDefaults(suiteName: "ch.protonmail.test")!)
-        keyChain = KeychainWrapper(
-            service: "ch.protonmail.test.\(String.randomString(7))",
-            accessGroup: "2SB5Z68H26.ch.protonmail.protonmail"
-        )
-        keyMaker = Keymaker(
-            autolocker: Autolocker(lockTimeProvider: userCachedStatus),
-            keychain: keyChain
-        )
-        notificationCenter = NotificationCenter()
-
         globalContainer = .init()
-        globalContainer.keyMakerFactory.register { self.keyMaker }
-        globalContainer.keychainFactory.register { self.keyChain }
-        globalContainer.notificationCenterFactory.register { self.notificationCenter }
-        globalContainer.userCachedStatusFactory.register { userCachedStatus }
 
         sut = DefaultPinCodeProtection(dependencies: globalContainer)
     }
 
     override func tearDownWithError() throws {
-        keyChain = nil
-        keyMaker = nil
-        notificationCenter = nil
         globalContainer = nil
         sut = nil
     }
@@ -73,7 +64,7 @@ final class DefaultPinCodeProtectionTests: XCTestCase {
         wait(for: [lockNotificationExpectation, appKeyNotificationExpectation], timeout: 5)
 
         let wrongPingExpectation = expectation(description: "Wrong pin")
-        keyMaker.obtainMainKey(with: PinProtection(pin: "1111"), returnExistingKey: false) { key in
+        keyMaker.obtainMainKey(with: PinProtection(pin: "1111", keychain: keyChain), returnExistingKey: false) { key in
             XCTAssertNil(key)
             wrongPingExpectation.fulfill()
         }
