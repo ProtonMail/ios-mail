@@ -139,12 +139,6 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
-    var usersManagerProtocolFactory: Factory<UsersManagerProtocol> {
-        self {
-            self.usersManager
-        }
-    }
-
     var userCachedStatusFactory: Factory<UserCachedStatus> {
         self {
             UserCachedStatus()
