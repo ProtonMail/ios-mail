@@ -18,18 +18,9 @@
 import Combine
 import ProtonCoreKeymaker
 
-enum AppAccess {
+enum AppAccess: Equatable {
     case accessGranted
     case accessDenied(reason: DeniedAccessReason)
-
-    var isAccessGranted: Bool {
-        switch self {
-        case .accessGranted:
-            return true
-        default:
-            return false
-        }
-    }
 }
 
 enum DeniedAccessReason {
@@ -40,7 +31,7 @@ enum DeniedAccessReason {
 }
 
 final class AppAccessResolver {
-    typealias Dependencies = HasNotificationCenter & HasUsersManagerProtocol & HasKeyMakerProtocol & HasLockPreventor
+    typealias Dependencies = HasNotificationCenter & HasUsersManager & HasKeyMakerProtocol & HasLockPreventor
 
     private let dependencies: Dependencies
 
@@ -87,7 +78,7 @@ final class AppAccessResolver {
 extension AppAccessResolver {
 
     private var appHasValidAccountCredentials: Bool {
-        dependencies.usersManagerProtocol.hasUsers()
+        dependencies.usersManager.hasUsers()
     }
 
     /// Returns `true` if there is no need to lock the access to the app

@@ -291,22 +291,6 @@ extension UserContainer: HasUsersManager {
     }
 }
 
-protocol HasUsersManagerProtocol {
-    var usersManagerProtocol: UsersManagerProtocol { get }
-}
-
-extension GlobalContainer: HasUsersManagerProtocol {
-    var usersManagerProtocol: UsersManagerProtocol {
-        usersManagerProtocolFactory()
-    }
-}
-
-extension UserContainer: HasUsersManagerProtocol {
-    var usersManagerProtocol: UsersManagerProtocol {
-        globalContainer.usersManagerProtocol
-    }
-}
-
 protocol HasUserCachedStatus {
     var userCachedStatus: UserCachedStatus { get }
 }

@@ -24,76 +24,77 @@ import XCTest
 
 final class AppAccessResolverTests: XCTestCase {
     private var sut: AppAccessResolver!
-    private var notificationCenter: NotificationCenter!
-    private var mockUsersManager: MockUsersManagerProtocol!
+    private var mockUsersManager: UsersManager!
+    private var apiMock: APIServiceMock!
     private var mockKeyMaker: MockKeyMakerProtocol!
     private var lockPreventor: LockPreventor!
-    private var globalContainer: GlobalContainer!
+    private var testContainer: TestContainer!
     private var cancellables: Set<AnyCancellable>!
+
+    private let userID = String.randomString(10)
 
     override func setUp() {
         super.setUp()
 
-        notificationCenter = .init()
+        testContainer = .init()
+
         mockKeyMaker = .init()
         lockPreventor = .init()
-        mockUsersManager = .init()
+        apiMock = .init()
 
-        globalContainer = .init()
-        globalContainer.notificationCenterFactory.register { self.notificationCenter }
-        globalContainer.keyMakerFactory.register { self.mockKeyMaker }
-        globalContainer.usersManagerProtocolFactory.register { self.mockUsersManager }
-        globalContainer.lockCacheStatusFactory.register { CacheStatusStub() }
-        globalContainer.lockPreventorFactory.register { self.lockPreventor }
+        testContainer.keyMakerFactory.register { self.mockKeyMaker }
+        testContainer.lockPreventorFactory.register { self.lockPreventor }
 
-        sut = AppAccessResolver(dependencies: globalContainer)
+        mockUsersManager = UsersManager(userDefaultCache: testContainer.userCachedStatus, dependencies: testContainer)
+        testContainer.usersManagerFactory.register { self.mockUsersManager }
+
+        mockKeyMaker.mainKeyStub.bodyIs { _, _ in
+            RandomPinProtection.generateRandomValue(length: 32)
+        }
+
+        sut = AppAccessResolver(dependencies: testContainer)
         cancellables = []
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        notificationCenter = nil
         mockUsersManager = nil
+        apiMock = nil
         mockKeyMaker = nil
         lockPreventor = nil
-        globalContainer = nil
+        testContainer = nil
         cancellables = nil
     }
 
     // MARK: evaluateAppAccessAtLaunch
 
     func testEvaluateAppAccessAtLaunch_whenThereAreUsersAndAppIsUnlocked_returnsAccessGranted() {
-        mockUsersManager.hasUsersStub.bodyIs { _ in true }
+        mockUsersManager.add(newUser: .init(api: apiMock, userID: userID))
         mockKeyMaker.isMainKeyInMemory = true
 
         let result = sut.evaluateAppAccessAtLaunch()
-        XCTAssertTrue(result.isAccessGranted)
+        XCTAssertEqual(result, .accessGranted)
     }
 
     func testEvaluateAppAccessAtLaunch_whenThereAreUsersAndAppIsLocked_returnsAccessDeniedLock() {
-        mockUsersManager.hasUsersStub.bodyIs { _ in true }
+        mockUsersManager.add(newUser: .init(api: apiMock, userID: userID))
         mockKeyMaker.isMainKeyInMemory = false
 
         let result = sut.evaluateAppAccessAtLaunch()
-        XCTAssertFalse(result.isAccessGranted)
-        XCTAssertTrue(result.iDeniedAccessReasonLock)
+        XCTAssertEqual(result, .accessDenied(reason: .lockProtectionRequired))
     }
 
     func testEvaluateAppAccessAtLaunch_whenThereAreNoUsers_andNoMainKey_returnsAccessDeniedNoAccounts() {
-        mockUsersManager.hasUsersStub.bodyIs { _ in false }
         mockKeyMaker.isMainKeyInMemory = false
         let result = sut.evaluateAppAccessAtLaunch()
-        XCTAssertFalse(result.isAccessGranted)
-        XCTAssertTrue(result.isDeniedAccessReasonNoAccounts)
+        XCTAssertEqual(result, .accessDenied(reason: .noAuthenticatedAccountFound))
     }
 
     func testEvaluateAppAccessAtLaunch_whenThereAreNoUsers_butThereIsMainKey_returnsAccessDeniedNoAccounts() {
-        mockUsersManager.hasUsersStub.bodyIs { _ in false }
         mockKeyMaker.isMainKeyInMemory = true
         let result = sut.evaluateAppAccessAtLaunch()
-        XCTAssertFalse(result.isAccessGranted)
-        XCTAssertTrue(result.isDeniedAccessReasonNoAccounts)
+        XCTAssertEqual(result, .accessDenied(reason: .noAuthenticatedAccountFound))
     }
 
     // MARK: deniedAccessPublisher
@@ -104,7 +105,7 @@ final class AppAccessResolverTests: XCTestCase {
             expectation.fulfill()
         }.store(in: &cancellables)
 
-        notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
+        testContainer.notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
         wait(for: [expectation], timeout: 2.0)
     }
 
@@ -120,15 +121,15 @@ final class AppAccessResolverTests: XCTestCase {
             expectation2.fulfill()
         }.store(in: &cancellables)
 
-        notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
-        notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
-        notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
-        notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
+        testContainer.notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
+        testContainer.notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
+        testContainer.notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
+        testContainer.notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
         wait(for: [expectation1, expectation2], timeout: 2.0)
     }
 
     func testDeniedAccessPublisher_whenMainKeyNotification_andThereAreUsers_sendsDeniedAccess() {
-        mockUsersManager.hasUsersStub.bodyIs { _ in true }
+        mockUsersManager.add(newUser: .init(api: apiMock, userID: userID))
 
         let expectation = expectation(description: "Receives denied access event")
 
@@ -141,12 +142,12 @@ final class AppAccessResolverTests: XCTestCase {
             }
         }.store(in: &cancellables)
 
-        notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
+        testContainer.notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
         wait(for: [expectation], timeout: 2.0)
     }
 
     func testDeniedAccessPublisher_whenMainKeyNotificationUsingLockPreventor_andThereAreUsers_doesNotSendAnEvent() {
-        mockUsersManager.hasUsersStub.bodyIs { _ in true }
+        mockUsersManager.add(newUser: .init(api: apiMock, userID: userID))
 
         let expectation = expectation(description: "Receives an event (inverted)")
         expectation.isInverted = true
@@ -156,14 +157,12 @@ final class AppAccessResolverTests: XCTestCase {
         }.store(in: &cancellables)
 
         lockPreventor.performWhileSuppressingLock {
-            notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
+            testContainer.notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
         }
         wait(for: [expectation], timeout: 2.0)
     }
 
     func testDeniedAccessPublisher_whenMainKeyNotification_butThereAreNoUsers_sendsNoUsers() {
-        mockUsersManager.hasUsersStub.bodyIs { _ in false }
-
         let expectation = expectation(description: "Receives no user event")
 
         sut.deniedAccessPublisher.sink { deniedAccess in
@@ -175,24 +174,7 @@ final class AppAccessResolverTests: XCTestCase {
             }
         }.store(in: &cancellables)
 
-        notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
+        testContainer.notificationCenter.post(name: Keymaker.Const.removedMainKeyFromMemory, object: nil)
         wait(for: [expectation], timeout: 2.0)
-    }
-}
-
-private extension AppAccess {
-
-    var iDeniedAccessReasonLock: Bool {
-        if case .accessDenied(let reason) = self {
-            return reason == .lockProtectionRequired
-        }
-        return false
-    }
-
-    var isDeniedAccessReasonNoAccounts: Bool {
-        if case .accessDenied(let reason) = self {
-            return reason == .noAuthenticatedAccountFound
-        }
-        return false
     }
 }
