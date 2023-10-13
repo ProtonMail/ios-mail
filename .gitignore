@@ -14,14 +14,12 @@ bundler-cache
 
 # ignored because of XcodeGen
 ProtonMail/Pods/Pods.xcodeproj/project.pbxproj
-ProtonMail/ProtonMail.xcworkspace
+ProtonMail/ProtonMail.xcodeproj
 
 # Add Package.resolved to git only
-ProtonMail/ProtonMail.xcodeproj/*
-!ProtonMail/ProtonMail.xcodeproj/project.xcworkspace
-ProtonMail/ProtonMail.xcodeproj/project.xcworkspace/*
-!ProtonMail/ProtonMail.xcodeproj/project.xcworkspace/xcshareddata
-ProtonMail/ProtonMail.xcodeproj/project.xcworkspace/xcshareddata/*
-!ProtonMail/ProtonMail.xcodeproj/project.xcworkspace/xcshareddata/swiftpm
-ProtonMail/ProtonMail.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/*
-!ProtonMail/ProtonMail.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
+ProtonMail/ProtonMail.xcworkspace/*
+!ProtonMail/ProtonMail.xcworkspace/xcshareddata
+ProtonMail/ProtonMail.xcworkspace/xcshareddata/*
+!ProtonMail/ProtonMail.xcworkspace/xcshareddata/swiftpm
+ProtonMail/ProtonMail.xcworkspace/xcshareddata/swiftpm/*
+!ProtonMail/ProtonMail.xcworkspace/xcshareddata/swiftpm/Package.resolved
