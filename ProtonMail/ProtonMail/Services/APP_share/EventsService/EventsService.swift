@@ -75,6 +75,7 @@ final class EventsService: Service, EventsFetching {
     & HasQueueManager
     & HasUserCachedStatus
     & HasUsersManager
+    & HasNotificationCenter
 
     private static let defaultPollingInterval: TimeInterval = 30
 
@@ -735,7 +736,10 @@ extension EventsService {
     private func processEvents(addresses: [[String: Any]]?){
         assertProperExecution()
 
-        guard let events = addresses, events.isEmpty == false else { return }
+        guard
+            let events = addresses,
+            events.isEmpty == false
+        else { return }
         for eventDict in events {
             let event = AddressEvent(event: eventDict)
             switch event.action {
@@ -765,6 +769,7 @@ extension EventsService {
             }
             dependencies.notificationCenter.post(name: .addressesStatusAreChanged, object: nil)
         }
+        dependencies.notificationCenter.post(name: .addressesStatusAreChanged, object: nil)
     }
 
     private func processEvents(incomingDefaults: [[String: Any]]?) {

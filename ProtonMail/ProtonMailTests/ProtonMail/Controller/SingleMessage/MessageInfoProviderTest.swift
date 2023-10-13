@@ -395,7 +395,7 @@ extension MessageInfoProviderTest {
 
     /// This method is needed because most of the related code runs on a background queue
     private func waitForMessageToBePrepared() {
-        Thread.sleep(forTimeInterval: 0.1)
+        Thread.sleep(forTimeInterval: 0.5)
     }
 
     private func simulateMessageUpdateWithSameBodyAsBefore() {

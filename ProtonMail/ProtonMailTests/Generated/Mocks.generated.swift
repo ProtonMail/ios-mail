@@ -11,6 +11,7 @@ import ProtonCorePaymentsUI
 import ProtonCoreServices
 import ProtonCoreTestingToolkit
 
+import class ProtonCoreDataModel.Address
 import class PromiseKit.Promise
 import class ProtonCoreDataModel.UserInfo
 
@@ -190,6 +191,16 @@ class MockCachedUserDataProvider: CachedUserDataProvider {
 }
 
 class MockComposeUIProtocol: ComposeUIProtocol {
+    @FuncStub(MockComposeUIProtocol.changeInvalidSenderAddress) var changeInvalidSenderAddressStub
+    func changeInvalidSenderAddress(to newAddress: Address) {
+        changeInvalidSenderAddressStub(newAddress)
+    }
+
+    @FuncStub(MockComposeUIProtocol.updateSenderAddressesList) var updateSenderAddressesListStub
+    func updateSenderAddressesList() {
+        updateSenderAddressesListStub()
+    }
+
     @FuncStub(MockComposeUIProtocol.show) var showStub
     func show(error: String) {
         showStub(error)
@@ -1036,8 +1047,8 @@ class MockQueueHandlerRegister: QueueHandlerRegister {
     }
 
     @FuncStub(MockQueueHandlerRegister.unregisterHandler) var unregisterHandlerStub
-    func unregisterHandler(for userID: UserID) {
-        unregisterHandlerStub(userID)
+    func unregisterHandler(for userID: UserID, completion: (() -> Void)?) {
+        unregisterHandlerStub(userID, completion)
     }
 
 }

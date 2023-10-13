@@ -170,14 +170,17 @@ class MailboxCoordinatorTests: XCTestCase {
 
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
 
+        let ex = expectation(description: "follow deep link")
+        ex.expectedFulfillmentCount = 3
         for offset in stride(from: 0, through: 0.3, by: 0.1) {
             DispatchQueue.main.asyncAfter(deadline: .now() + offset) {
                 let deepLink = DeepLink(MailboxCoordinator.Destination.details.rawValue, sender: messageID)
                 self.sut.follow(deepLink)
+                ex.fulfill()
             }
         }
 
-        try await Task.sleep(for: .milliseconds(500))
+        wait(for: [ex], timeout: 5)
 
         await MainActor.run {
             // 1st call by UINavigationController.init(rootViewController:)

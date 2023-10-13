@@ -523,7 +523,7 @@ extension WindowsCoordinator {
 
             Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
 
-            dependencies.queueManager.unregisterHandler(for: user.userID)
+            dependencies.queueManager.unregisterHandler(for: user.userID, completion: nil)
             dependencies.usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
                 guard let self = self else { return }
                 guard let appWindow = self.appWindow else {return}

@@ -246,46 +246,13 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             )
         }
 
-        guard let addr = self.viewModel.getDefaultSendAddress() else {
-            return
+        if let currentSenderAddress = viewModel.currentSenderAddress() {
+            headerView.updateFromValue(currentSenderAddress.email, pickerEnabled: true)
         }
 
-        var isFromValid = true
-        self.headerView.updateFromValue(addr.email, pickerEnabled: true)
-        if let origAddr = self.viewModel.fromAddress() {
-            if origAddr.send == .inactive {
-                self.viewModel.updateAddressID(addr.addressID, emailAddress: addr.email).done {
-                    //
-                }.catch { _ in
-                    if self.viewModel.messageAction != .openDraft {
-                        self.viewModel.updateDraft()
-                    }
-                }
-                isFromValid = false
-                if origAddr.email.lowercased().range(of: "@pm.me") != nil {
-                    guard viewModel.dependencies.userCachedStatusProvider.isPMMEWarningDisabled == false else {
-                        return
-                    }
-                    let msg = String(format: LocalString._composer_sending_messages_from_a_paid_feature, origAddr.email, addr.email)
-                    let alertController = msg.alertController(LocalString._general_notice_alert_title)
-                    alertController.addOKAction()
-                    alertController.addAction(
-                        UIAlertAction(
-                            title: LocalString._general_dont_remind_action,
-                            style: .destructive,
-                            handler: { [weak self] _ in
-                                self?.viewModel.dependencies.userCachedStatusProvider.isPMMEWarningDisabled = true
-                            }
-                        )
-                    )
-                    self.present(alertController, animated: true, completion: nil)
-                }
-            } else if origAddr.addressID == addr.addressID {
-                viewModel.updateAddressID(addr.addressID, emailAddress: addr.email).cauterize()
-            }
-        }
+        showErrorWhenOriginalAddressIsAnUnpaidPMAddress()
         // update draft if first time create
-        if viewModel.messageAction != .openDraft && isFromValid {
+        if viewModel.messageAction != .openDraft {
             self.viewModel.updateDraft()
         }
     }
@@ -719,6 +686,41 @@ extension ComposeContentViewController {
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
+
+    /// Send message from pm alias is a paid feature
+    /// Show error to user in this case
+    private func showErrorWhenOriginalAddressIsAnUnpaidPMAddress() {
+        guard
+            let currentSenderAddress = viewModel.currentSenderAddress(),
+            let originalAddress = viewModel.originalSenderAddress(),
+            originalAddress.addressID != currentSenderAddress.addressID,
+            originalAddress.send == .inactive,
+            originalAddress.isPMAlias,
+            viewModel.dependencies.userCachedStatusProvider.isPMMEWarningDisabled == false
+        else { return }
+
+        showPaidFeatureAddressAlert(originalAddress: originalAddress, currentSenderAddress: currentSenderAddress)
+    }
+
+    private func showPaidFeatureAddressAlert(originalAddress: Address, currentSenderAddress: Address) {
+        let errorMessage = String(
+            format: LocalString._composer_sending_messages_from_a_paid_feature,
+            originalAddress.email,
+            currentSenderAddress.email
+        )
+        let alertController = errorMessage.alertController(LocalString._general_notice_alert_title)
+        alertController.addOKAction()
+        alertController.addAction(
+            UIAlertAction(
+                title: LocalString._general_dont_remind_action,
+                style: .destructive,
+                handler: { [weak self] _ in
+                    self?.viewModel.dependencies.userCachedStatusProvider.isPMMEWarningDisabled = true
+                }
+            )
+        )
+        self.present(alertController, animated: true, completion: nil)
+    }
 }
 
 // MARK: - Expiration unavailability alert
@@ -780,36 +782,33 @@ extension ComposeContentViewController: ComposeViewDelegate {
     }
 
     func setupComposeFromMenu(for button: UIButton) {
-        var multiDomains = self.viewModel.getAddresses()
-        multiDomains.sort(by: { $0.order < $1.order })
-        let defaultAddr = self.viewModel.getDefaultSendAddress()
+        let addresses = viewModel.getAddresses()
+        let currentSenderAddress = viewModel.currentSenderAddress()
         var actions: [UIAction] = []
-        for addr in multiDomains {
-            guard addr.status == .enabled && addr.receive == .active else {
-                continue
-            }
+        for address in addresses {
+            guard address.status == .enabled && address.receive == .active else { continue }
 
-            let state: UIMenuElement.State = defaultAddr == addr ? .on : .off
-            let item = UIAction(title: addr.email, state: state) { [weak self] action in
+            let state: UIMenuElement.State = currentSenderAddress == address ? .on : .off
+            let item = UIAction(title: address.email, state: state) { [weak self] action in
                 guard action.state == .off, let self = self else { return }
-                if addr.send == .inactive {
-                    let alertController = String(format: LocalString._composer_change_paid_plan_sender_error,
-                                                 addr.email).alertController()
+                guard address.send == .active else {
+                    let error = String(format: LocalString._composer_change_paid_plan_sender_error, address.email)
+                    let alertController = error.alertController()
                     alertController.addOKAction()
                     self.present(alertController, animated: true, completion: nil)
-                } else {
-                    if let signature = self.viewModel.getCurrentSignature(addr.addressID) {
-                        self.htmlEditor.update(signature: signature)
-                    }
-                    if let viewToAdd = self.parent?.navigationController?.view {
-                        MBProgressHUD.showAdded(to: viewToAdd, animated: true)
-                        self.updateSenderMail(addr: addr) { [weak self] in
-                            self?.setupComposeFromMenu(for: button)
-                        }
+                    return
+                }
+                if let signature = self.viewModel.getCurrentSignature(address.addressID) {
+                    self.htmlEditor.update(signature: signature)
+                }
+                if let viewToAdd = self.parent?.navigationController?.view {
+                    MBProgressHUD.showAdded(to: viewToAdd, animated: true)
+                    self.updateSenderMail(addr: address) { [weak self] in
+                        self?.setupComposeFromMenu(for: button)
                     }
                 }
             }
-            item.accessibilityLabel = addr.email
+            item.accessibilityLabel = address.email
             actions.append(item)
         }
         let menu = UIMenu(title: "", options: .displayInline, children: actions)
@@ -819,7 +818,7 @@ extension ComposeContentViewController: ComposeViewDelegate {
 
     private func updateSenderMail(addr: Address, complete: (() -> Void)?) {
         self.queue.sync { [weak self] in
-            self?.viewModel.updateAddressID(addr.addressID, emailAddress: addr.email)
+            self?.viewModel.updateAddress(to: addr)
                 .done { _ in
                     self?.headerView.updateFromValue(addr.email, pickerEnabled: true)
                 }
@@ -948,6 +947,27 @@ extension ComposeContentViewController {
 }
 
 extension ComposeContentViewController: ComposeUIProtocol {
+    func changeInvalidSenderAddress(to newAddress: Address) {
+        updateSenderMail(addr: newAddress) { [weak self] in
+            DispatchQueue.main.async {
+                let alert = UIAlertController(
+                    title: L11n.Compose.senderChanged,
+                    message: String(format: L11n.Compose.senderChangedMessage, newAddress.email),
+                    preferredStyle: .alert
+                )
+                alert.addOKAction()
+                self?.present(alert, animated: true)
+            }
+        }
+    }
+
+    func updateSenderAddressesList() {
+        DispatchQueue.main.async {
+            guard let button = self.headerView.fromPickerButton else { return }
+            self.setupComposeFromMenu(for: button)
+        }
+    }
+
     func show(error: String) {
         error.alertToast(view: view)
     }

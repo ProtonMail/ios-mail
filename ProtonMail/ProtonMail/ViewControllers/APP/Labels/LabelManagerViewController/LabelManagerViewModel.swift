@@ -46,7 +46,7 @@ final class LabelManagerViewModel: LabelManagerViewModelProtocol {
     }
 
     private var hasNetworking: Bool {
-        InternetConnectionStatusProvider.shared.status.isConnected
+        dependencies.connectionStatusProvider.status.isConnected
     }
 
     init(router: LabelManagerRouterProtocol, type: PMLabelType, dependencies: Dependencies) {
@@ -436,6 +436,7 @@ extension LabelManagerViewModel {
         let labelPublisher: LabelPublisherProtocol
         let userManagerSaveAction: UserManagerSaveAction
         var mailSettingsHandler: MailSettingsHandler
+        var connectionStatusProvider: InternetConnectionStatusProviderProtocol
 
         init(
             userInfo: UserInfo,
@@ -443,7 +444,8 @@ extension LabelManagerViewModel {
             labelService: LabelsDataService,
             labelPublisher: LabelPublisherProtocol,
             userManagerSaveAction: UserManagerSaveAction,
-            mailSettingsHandler: MailSettingsHandler
+            mailSettingsHandler: MailSettingsHandler,
+            connectionStatusProvider: InternetConnectionStatusProviderProtocol = InternetConnectionStatusProvider.shared
         ) {
             self.userInfo = userInfo
             self.apiService = apiService
@@ -451,15 +453,20 @@ extension LabelManagerViewModel {
             self.labelPublisher = labelPublisher
             self.userManagerSaveAction = userManagerSaveAction
             self.mailSettingsHandler = mailSettingsHandler
+            self.connectionStatusProvider = connectionStatusProvider
         }
 
-        init(userManager: UserManager) {
+        init(
+            userManager: UserManager,
+            connectionStatusProvider: InternetConnectionStatusProviderProtocol = InternetConnectionStatusProvider.shared
+        ) {
             self.userInfo = userManager.userInfo
             self.apiService = userManager.apiService
             self.labelService = userManager.labelService
             self.labelPublisher = labelService.makePublisher()
             self.userManagerSaveAction = userManager
             self.mailSettingsHandler = userManager
+            self.connectionStatusProvider = connectionStatusProvider
         }
     }
 }

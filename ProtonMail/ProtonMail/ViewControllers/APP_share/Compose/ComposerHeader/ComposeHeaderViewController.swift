@@ -35,7 +35,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     // MARK: - From field
     @IBOutlet private(set) var fromView: UIView!
     @IBOutlet private var fromAddress: UILabel!
-    @IBOutlet private var fromPickerButton: UIButton!
+    @IBOutlet private(set) var fromPickerButton: UIButton!
     @IBOutlet private var fromLabel: UILabel!
     @IBOutlet private var fromGrayView: UIView!
     @IBOutlet private weak var subjectGrayView: UIView!

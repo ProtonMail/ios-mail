@@ -25,17 +25,21 @@ final class EventsServiceTests: XCTestCase {
     private var sut: EventsService!
     private var mockApiService: APIServiceMock!
     private var mockContextProvider: CoreDataContextProviderProtocol!
+    private var mockQueueManager: QueueManager!
     private let dummyUserID = "dummyUserID"
     private let timeout = 3.0
 
     override func setUp() {
         super.setUp()
-
+        let messageQueue = PMPersistentQueue(queueName: String.randomString(6))
+        let miscQueue = PMPersistentQueue(queueName: String.randomString(6))
+        mockQueueManager = QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
 
         let globalContainer = GlobalContainer()
         globalContainer.contextProviderFactory.register { self.mockContextProvider }
+        globalContainer.queueManagerFactory.register { self.mockQueueManager }
 
         let mockUserManager = UserManager(api: mockApiService, userID: dummyUserID, globalContainer: globalContainer)
         sut = EventsService(userManager: mockUserManager, dependencies: mockUserManager.container)
@@ -46,6 +50,7 @@ final class EventsServiceTests: XCTestCase {
         sut = nil
         mockApiService = nil
         mockContextProvider = nil
+        mockQueueManager = nil
     }
 
     func testFetchEvents_whenNewIncomingDefault_itSucceedsSavingIt() throws {

@@ -149,7 +149,7 @@ final class Date_ExtensionTests: XCTestCase {
         let processInfo = SystemUpTimeMock(localServerTime: serverTime, localSystemUpTime: localSystemUpTime, systemUpTime: systemUpTime)
 
         let time = Date(timeIntervalSince1970: Double(interval) + 120.0)
-        let result = time.countExpirationTime(processInfo: processInfo)
+        let result = time.countExpirationTime(connectionStatus: .connected, processInfo: processInfo)
         XCTAssertEqual(result, "2 minutes")
     }
 
