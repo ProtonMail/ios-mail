@@ -258,6 +258,48 @@ final class ComposeViewModelTests: XCTestCase {
         XCTAssertTrue(sut.isEmptyDraft())
     }
 
+    func testIsEmptyDraft_whenBodyHasNoTextOrImages_itShouldReturnTrue() {
+        message.body = "<div><br></div><div><br></div></body>"
+        sut.initialize(message: .init(message), action: .openDraft)
+
+        XCTAssertTrue(sut.isEmptyDraft())
+    }
+
+    func testIsEmptyDraft_whenBodyOnlyHasText_itShouldReturnFalse() {
+        message.body =
+        """
+        <body>
+        <div>
+         <br>
+        </div>
+        <div dir="auto">
+         Hey there
+        </div>
+        </body>
+        """
+        sut.initialize(message: .init(message), action: .openDraft)
+
+        XCTAssertFalse(sut.isEmptyDraft())
+    }
+
+    func testIsEmptyDraft_whenBodyOnlyHasImages_itShouldReturnFalse() {
+        message.body =
+        """
+        <body>
+        <div>
+         <br>
+        </div>
+        <div dir="auto">
+         <br>
+         <img src-original-pm-cid="cid:b5480987_image.jpeg" src="cid:b5480987_image.jpeg">
+        </div>
+        </body>
+        """
+        sut.initialize(message: .init(message), action: .openDraft)
+
+        XCTAssertFalse(sut.isEmptyDraft())
+    }
+
     func testDecodingRecipients_prefersMatchingLocalContactName() throws {
         let email = EmailEntity.make(contactName: "My friend I don't like")
 
