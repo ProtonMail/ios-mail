@@ -230,16 +230,6 @@ extension UserContainer: HasBlockedSenderCacheUpdater {
     }
 }
 
-protocol HasBlockedSendersPublisher {
-    var blockedSendersPublisher: BlockedSendersPublisher { get }
-}
-
-extension UserContainer: HasBlockedSendersPublisher {
-    var blockedSendersPublisher: BlockedSendersPublisher {
-        blockedSendersPublisherFactory()
-    }
-}
-
 protocol HasCleanUserLocalMessages {
     var cleanUserLocalMessages: CleanUserLocalMessages { get }
 }
