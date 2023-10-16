@@ -386,10 +386,13 @@ class ComposeViewModel: NSObject {
             let decryptedBody = composerMessageHelper.decryptBody()
             let bodyDocument = try? SwiftSoup.parse(decryptedBody)
             let body = try? bodyDocument?.body()?.text()
-
             let signatureDocument = try? SwiftSoup.parse(self.htmlSignature())
             let signature = try? signatureDocument?.body()?.text()
-            return (body?.isEmpty ?? false) || body == signature
+
+            let isBodyTextEmpty = (body?.isEmpty ?? false) || body == signature
+            let noImages = (try? bodyDocument?.body()?.select("img").isEmpty()) ?? true
+
+            return isBodyTextEmpty && noImages
         }
         return false
     }
