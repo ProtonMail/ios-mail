@@ -343,6 +343,7 @@ extension UsersManager {
             }
 
 #if !APP_EXTENSION
+            userCachedStatus.markBlockedSendersAsFetched(false, userID: user.userID)
             self.dependencies.imageProxyCache.purge()
             self.dependencies.senderImageCache.purge()
 #endif

@@ -146,7 +146,7 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
 
     // MARK: fetch status flag
 
-    func testSuccessfulUpdate_storesCompletedFlag() {
+    func testSuccessfulUpdate_storesCompletedFlag() throws {
         refetchAllBlockedSenders.executeStub.bodyIs { _, completion in
             completion(nil)
         }
@@ -155,10 +155,10 @@ final class BlockedSenderCacheUpdaterTests: XCTestCase {
         wait(self.fetchStatusProvider.markBlockedSendersAsFetchedStub.callCounter == 1, timeout: 5)
 
         XCTAssertEqual(fetchStatusProvider.markBlockedSendersAsFetchedStub.callCounter, 1)
-        XCTAssertEqual(
-            fetchStatusProvider.markBlockedSendersAsFetchedStub.lastArguments?.value.rawValue,
-            userInfo.userId
-        )
+
+        let latestCall = try XCTUnwrap(fetchStatusProvider.markBlockedSendersAsFetchedStub.lastArguments)
+        XCTAssert(latestCall.a1)
+        XCTAssertEqual(latestCall.a2, UserID(userInfo.userId))
     }
 
     func testFailedUpdate_doesntStoreCompletedFlag() {

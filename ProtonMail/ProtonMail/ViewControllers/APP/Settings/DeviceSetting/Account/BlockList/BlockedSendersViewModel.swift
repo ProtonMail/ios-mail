@@ -19,9 +19,13 @@ import Combine
 import LifetimeTracker
 
 final class BlockedSendersViewModel {
-    typealias Dependencies = HasBlockedSendersPublisher & HasUnblockSender & HasBlockedSenderCacheUpdater
+    typealias Dependencies = HasBlockedSenderCacheUpdater
+    & HasCoreDataContextProviderProtocol
+    & HasUnblockSender
+    & HasUserManager
 
     private let dependencies: Dependencies
+    private let blockedSendersPublisher: BlockedSendersPublisher
     private var cancellables = Set<AnyCancellable>()
 
     private var cellModels: [BlockedSenderCellModel] = [] {
@@ -40,12 +44,16 @@ final class BlockedSendersViewModel {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
+        blockedSendersPublisher = BlockedSendersPublisher(
+            contextProvider: dependencies.contextProvider,
+            userID: dependencies.user.userID
+        )
 
         trackLifetime()
     }
 
     private func setupBinding() {
-        dependencies.blockedSendersPublisher.contentDidChange
+        blockedSendersPublisher.contentDidChange
             .sink { [weak self] incomingDefaults in
                 self?.cellModels = incomingDefaults.map { incomingDefault in
                     BlockedSenderCellModel(title: incomingDefault.email)
@@ -53,7 +61,7 @@ final class BlockedSendersViewModel {
             }
             .store(in: &cancellables)
 
-        dependencies.blockedSendersPublisher.start()
+        blockedSendersPublisher.start()
     }
 
     private func notifyView() {

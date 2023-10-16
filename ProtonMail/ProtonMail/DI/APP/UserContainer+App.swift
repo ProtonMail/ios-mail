@@ -49,12 +49,6 @@ extension UserContainer {
         }
     }
 
-    var blockedSendersPublisherFactory: Factory<BlockedSendersPublisher> {
-        self {
-            BlockedSendersPublisher(contextProvider: self.contextProvider, userID: self.user.userID)
-        }
-    }
-
     var cleanUserLocalMessagesFactory: Factory<CleanUserLocalMessages> {
         self {
             CleanUserLocalMessages(

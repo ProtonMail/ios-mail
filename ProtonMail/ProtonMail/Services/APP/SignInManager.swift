@@ -117,7 +117,7 @@ class SignInManager {
         showSkeleton()
 
         if UserInfo.isBlockSenderEnabled {
-            user.blockedSenderCacheUpdater.requestUpdate()
+            user.blockedSenderCacheUpdater.requestUpdate(force: true)
         }
 
         guard user.userInfo.delinquentParsed.isAvailable else {

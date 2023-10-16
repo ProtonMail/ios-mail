@@ -99,7 +99,7 @@ final class BlockedSenderCacheUpdater {
     }
 
     private func markUpdateAsFinished() {
-        dependencies.fetchStatusProvider.markBlockedSendersAsFetched(userID: userID)
+        dependencies.fetchStatusProvider.markBlockedSendersAsFetched(true, userID: userID)
     }
 
     private func attemptUpdateIfOnline() {

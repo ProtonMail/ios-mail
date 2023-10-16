@@ -20,5 +20,5 @@ import Foundation
 // sourcery: mock
 protocol BlockedSenderFetchStatusProviderProtocol {
     func checkIfBlockedSendersAreFetched(userID: UserID) -> Bool
-    func markBlockedSendersAsFetched(userID: UserID)
+    func markBlockedSendersAsFetched(_ fetched: Bool, userID: UserID)
 }
