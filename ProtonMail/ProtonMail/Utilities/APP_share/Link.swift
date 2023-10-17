@@ -24,7 +24,7 @@ import Foundation
 
 enum Link {
     static let alternativeRouting = "https://proton.me/blog/anti-censorship-alternative-routing"
-    static let dmarcFailedInfo = "https://proton.me/support/email-has-failed-its-domains-authentication-requirements-warning/"
+    static let dmarcFailedInfo = "https://proton.me/support/email-has-failed-its-domains-authentication-requirements-warning"
     static let emailTrackerProtection = "https://proton.me/support/email-tracker-protection"
     static let encryptOutsideInfo = "https://proton.me/support/password-protected-emails"
     static let promoteInMobilSignature = "https://proton.me/mail/home"
