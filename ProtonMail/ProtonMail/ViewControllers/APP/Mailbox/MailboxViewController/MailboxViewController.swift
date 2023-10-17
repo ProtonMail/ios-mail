@@ -672,6 +672,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                     self?.tableView.isScrollEnabled = false
                     self?.tableView.setContentOffset(.zero, animated: false)
                     self?.tableView.isScrollEnabled = true
+                    self?.updateLastUpdateTimeLabel()
                 }
             }
         self.viewModel.isCurrentUserSelectedUnreadFilterInInbox = isSelected
@@ -893,6 +894,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                 if self?.refreshControl.isRefreshing ?? false {
                     self?.refreshControl.endRefreshing()
                 }
+                self?.updateLastUpdateTimeLabel()
             }
         }
     }
@@ -918,6 +920,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                     self?.refreshControl.endRefreshing()
                 }
                 self?.showNoResultLabelIfNeeded()
+                self?.updateLastUpdateTimeLabel()
             }
             self?.startAutoFetch(false)
         }
@@ -1108,6 +1111,27 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         // Delay 5 seconds to retry can prevent some relative error
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
             self.getLatestMessages()
+        }
+    }
+
+	private func updateLastUpdateTimeLabel() {
+        if let status = self.lastNetworkStatus, status == .notConnected {
+            updateTimeLabel.set(text: LocalString._mailbox_offline_text,
+                                preferredFont: .footnote,
+                                weight: .regular,
+                                textColor: ColorProvider.NotificationError)
+            return
+        }
+
+        if !viewModel.isFetchingMessage {
+            // last update time only updated when all requests for messages have finished
+            let timeText = viewModel.getLastUpdateTimeText()
+            updateTimeLabel.set(
+                text: timeText,
+                preferredFont: .footnote,
+                weight: .regular,
+                textColor: ColorProvider.TextHint
+            )
         }
     }
 
