@@ -692,6 +692,35 @@ extension LastUpdatedStoreTests {
         XCTAssertEqual(result.total, total)
     }
 
+    func testBatchUpdateUnreadCounts() throws {
+        let counts: [CountData] = [
+            CountData(labelID: "Label 1", total: 10, unread: 3),
+            CountData(labelID: "Label 2", total: 5, unread: 0),
+            CountData(labelID: "Label 3", total: 6, unread: 1)
+        ]
+        let labelIDs = counts.map(\.labelID)
+
+        for labelID in labelIDs {
+            prepareConversationCountTestData(
+                labelID: labelID,
+                start: .distantPast,
+                end: .distantFuture,
+                update: .now,
+                total: -1,
+                unread: -1,
+                userID: userID
+            )
+        }
+
+        try sut.batchUpdateUnreadCounts(counts: counts, userID: userID, type: .conversation)
+
+        for count in counts {
+            let lastUpdate = try XCTUnwrap(sut.lastUpdate(by: count.labelID, userID: userID, type: .conversation))
+            XCTAssertEqual(lastUpdate.total, count.total)
+            XCTAssertEqual(lastUpdate.unread, count.unread)
+        }
+    }
+
     func testGetUnreadCounts_noDataInCache_conversation_returnEmpty() {
         let labelID2: LabelID = "label2"
         let result = sut.getUnreadCounts(by: [labelID, labelID2], userID: userID, type: .conversation)

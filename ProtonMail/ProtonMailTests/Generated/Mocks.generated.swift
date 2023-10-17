@@ -686,6 +686,11 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
         updateUnreadCountStub(labelID, userID, unread, total, type, shouldSave)
     }
 
+    @ThrowingFuncStub(MockLastUpdatedStoreProtocol.batchUpdateUnreadCounts) var batchUpdateUnreadCountsStub
+    func batchUpdateUnreadCounts(counts: [CountData], userID: UserID, type: ViewMode) throws {
+        try batchUpdateUnreadCountsStub(counts, userID, type)
+    }
+
     @FuncStub(MockLastUpdatedStoreProtocol.removeUpdateTime) var removeUpdateTimeStub
     func removeUpdateTime(by userID: UserID) {
         removeUpdateTimeStub(userID)

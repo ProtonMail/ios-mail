@@ -40,6 +40,7 @@ protocol LastUpdatedStoreProtocol: Service {
                            total: Int?,
                            type: ViewMode,
                            shouldSave: Bool)
+    func batchUpdateUnreadCounts(counts: [CountData], userID: UserID, type: ViewMode) throws
     func removeUpdateTime(by userID: UserID)
     func resetCounter(labelID: LabelID, userID: UserID)
     func removeUpdateTimeExceptUnread(by userID: UserID)
@@ -162,6 +163,20 @@ extension LastUpdatedStore {
 
             if shouldSave {
                 _ = context.saveUpstreamIfNeeded()
+            }
+        }
+    }
+
+    func batchUpdateUnreadCounts(counts: [CountData], userID: UserID, type: ViewMode) throws {
+        try contextProvider.performAndWaitOnRootSavingContext { context in
+            for count in counts {
+                let update = self.lastUpdateDefault(by: count.labelID, userID: userID, type: type, in: context)
+                update.unread = Int32(count.unread)
+                update.total = Int32(count.total)
+            }
+
+            if let error = context.saveUpstreamIfNeeded() {
+                throw error
             }
         }
     }
