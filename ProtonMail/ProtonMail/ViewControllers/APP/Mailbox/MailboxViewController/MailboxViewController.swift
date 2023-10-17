@@ -2557,7 +2557,9 @@ extension MailboxViewController {
             promptBanner.enableButtonAction = { [weak self] in
                 guard let self else { return }
                 let alert = self.viewModel.alertToConfirmEnabling { [weak self] error in
-                    if error == nil {
+                    if let error {
+                        PMAssertionFailure(error)
+                    } else {
                         self?.viewModel.user.isAutoDeleteEnabled = true
                         self?.tableView.reloadData()
                     }
@@ -2566,8 +2568,12 @@ extension MailboxViewController {
             }
             promptBanner.noThanksButtonAction = { [weak self] in
                 guard let self else { return }
-                self.viewModel.updateAutoDeleteSetting(to: false, for: self.viewModel.user, completion: { [weak self] error in
-                    if error == nil {
+                self.viewModel.updateAutoDeleteSetting(to: false, 
+                                                       for: self.viewModel.user,
+                                                       completion: { [weak self] error in
+                    if let error {
+                        PMAssertionFailure(error)
+                    } else {
                         self?.viewModel.user.isAutoDeleteEnabled = false
                         self?.tableView.reloadData()
                     }
