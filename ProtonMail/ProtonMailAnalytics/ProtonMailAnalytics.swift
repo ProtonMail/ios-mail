@@ -184,6 +184,9 @@ public enum MailAnalyticsErrorEvent: Error {
     case sendMessageInvalidSignature
 
     case conversationViewEndUpdatesCrash
+    case userObjectsJsonEncodingError(Error, String)
+    case userObjectsJsonDecodingError(Error, String)
+    case userObjectsCouldNotBeSavedError(Error, String)
 
     case assertionFailure(
         message: String,
@@ -213,6 +216,12 @@ public enum MailAnalyticsErrorEvent: Error {
             return "Conversation view endUpdates() crash"
         case let .assertionFailure(message, _, _, _):
             return "Asssertion failure: \(message)"
+        case .userObjectsJsonDecodingError(_, let type):
+            return "Error while decoding user object: \(type)"
+        case .userObjectsJsonEncodingError(_ , let type):
+            return "Error while encoding user object: \(type)"
+        case .userObjectsCouldNotBeSavedError(_, let type):
+            return "Error while saving user object: \(type)"
         }
     }
 
@@ -247,6 +256,21 @@ public enum MailAnalyticsErrorEvent: Error {
                 "File": file,
                 "Line": line,
                 "Message": message
+            ]
+        case let .userObjectsJsonDecodingError(error, type):
+            info = [
+                "Error": error,
+                "Type": type
+            ]
+        case let .userObjectsJsonEncodingError(error, type):
+            info = [
+                "Error": error,
+                "Type": type
+            ]
+        case let .userObjectsCouldNotBeSavedError(error, type):
+            info = [
+                "Error": error,
+                "Type": type
             ]
         }
         return info

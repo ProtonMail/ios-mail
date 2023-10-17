@@ -112,9 +112,10 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
             return
         }
 
-        let authlocked = Locked<[AuthCredential]>(encryptedValue: data)
+        let authCredentialsCodable = try? UserObjectsPersistence.shared.read(AuthCredential.self, key: mainKey)
+        let authUnlockedNSCoding = try? Locked<[AuthCredential]>(encryptedValue: data).unlock(with: mainKey).first
 
-        guard let authCredential = try? authlocked.unlock(with: mainKey).first else {
+        guard let authCredential = authCredentialsCodable ?? authUnlockedNSCoding else {
             SharedCacheBase.getDefault().remove(forKey: key)
             self.authDelegateForUnauthorized = AuthHelper()
             self.initialSessionUID = nil
@@ -128,6 +129,7 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
     func credentialsWereUpdated(authCredential: AuthCredential, credential _: Credential, for _: String) {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let lockedAuth = try? Locked<[AuthCredential]>(clearValue: [authCredential], with: mainKey) else { return }
+        try? UserObjectsPersistence.shared.write(authCredential, key: mainKey)
         SharedCacheBase.getDefault()?.setValue(lockedAuth.encryptedValue, forKey: key)
     }
 

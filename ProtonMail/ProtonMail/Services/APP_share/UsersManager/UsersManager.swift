@@ -287,7 +287,20 @@ class UsersManager: Service, UsersManagerProtocol {
         }
         userDefaultCache.getShared().setValue(lockedAuth.encryptedValue, forKey: CoderKey.authKeychainStore)
 
+        do {
+            try UserObjectsPersistence.shared.write(authList, key: mainKey)
+        } catch {
+            Analytics.shared.sendError(.userObjectsCouldNotBeSavedError(error, 
+                                                                        Mirror(reflecting: authList.self).description))
+        }
+
         let userList = self.users.compactMap { $0.userInfo }
+        do {
+            try UserObjectsPersistence.shared.write(userList, key: mainKey)
+        } catch {
+            Analytics.shared.sendError(.userObjectsCouldNotBeSavedError(error,
+                                                                        Mirror(reflecting: userList.self).description))
+        }
         guard let lockedUsers = try? Locked<[UserInfo]>(clearValue: userList, with: mainKey) else {
             return
         }
@@ -503,7 +516,11 @@ extension UsersManager {
             return nil
         }
         let lockedAuthData = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
-        guard let authCredentials: [AuthCredential] = try? lockedAuthData.unlock(with: mainKey) else {
+
+        let authCredentialsFromCodable = try? UserObjectsPersistence.shared.read([AuthCredential].self, key: mainKey)
+        let authCredentialsFromNSCoding = try? lockedAuthData.unlock(with: mainKey)
+
+        guard let authCredentials: [AuthCredential] = authCredentialsFromCodable ?? authCredentialsFromNSCoding else {
             userDefaultCache.getShared().remove(forKey: CoderKey.authKeychainStore)
             keychain.remove(forKey: CoderKey.authKeychainStore)
             return nil
@@ -512,8 +529,9 @@ extension UsersManager {
         guard let encryptedUserData = userDefaultCache.getShared().data(forKey: CoderKey.usersInfo) else {
             return nil
         }
-        let lockedUserInfos = Locked<[UserInfo]>(encryptedValue: encryptedUserData)
-        guard let userInfos = try? lockedUserInfos.unlock(with: mainKey) else {
+        let userInfoFromCodable = try? UserObjectsPersistence.shared.read([UserInfo].self, key: mainKey)
+        let userInfoFromNSCoding = try? Locked<[UserInfo]>(encryptedValue: encryptedUserData).unlock(with: mainKey)
+        guard let userInfos = userInfoFromCodable ?? userInfoFromNSCoding  else {
             return nil
         }
         guard userInfos.count == authCredentials.count else {
