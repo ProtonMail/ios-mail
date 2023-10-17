@@ -49,6 +49,11 @@ extension FileManager {
         return urls[0]
     }
 
+    var documentDirectoryURL: URL {
+        let urls = self.urls(for: .documentDirectory, in: .userDomainMask)
+        return urls[0]
+    }
+
     var appGroupsTempDirectoryURL: URL {
         var tempUrl = self.appGroupsDirectoryURL.appendingPathComponent("tmp", isDirectory: true)
         if !FileManager.default.fileExists(atPath: tempUrl.path) {

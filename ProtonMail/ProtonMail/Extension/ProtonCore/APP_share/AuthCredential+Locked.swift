@@ -41,7 +41,9 @@ extension Locked where T == [AuthCredential] {
     internal func unlock(with key: MainKey) throws -> T {
         let locked = Locked<Data>(encryptedValue: self.encryptedValue)
         let data = try locked.unlock(with: key)
-        return try self.parse(data: data)
+        let parsedData = try self.parse(data: data)
+        try UserObjectsPersistence.shared.write(parsedData, key: key)
+        return parsedData
     }
 
     internal func parse(data: Data) throws -> T {
