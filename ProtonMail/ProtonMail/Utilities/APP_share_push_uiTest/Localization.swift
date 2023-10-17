@@ -1462,6 +1462,10 @@ enum L11n {
         static let editPhoto = NSLocalizedString("Edit photo", comment: "The button text for edit profile picture in contact edit view")
     }
 
+    struct MailBox {
+        static let selectAll = NSLocalizedString("Select all", comment: "The title of select all button for select all messages feature")
+    }
+
     struct PinCodeSetup {
         static let disablePinCode = NSLocalizedString("Disable PIN code", comment: "The title of PIN code disable view ")
         static let setPinCode = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")

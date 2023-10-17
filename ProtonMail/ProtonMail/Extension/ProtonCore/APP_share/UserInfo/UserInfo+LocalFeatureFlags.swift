@@ -57,4 +57,8 @@ extension UserInfo {
         true
         #endif
     }
+
+    static var enableSelectAll: Bool {
+        UIApplication.isDebugOrEnterprise
+    }
 }
