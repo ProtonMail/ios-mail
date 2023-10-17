@@ -333,115 +333,115 @@ extension EventsService {
         }
         var error: NSError?
         dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
-                guard let userManager else {
-                    return
-                }
+            guard let userManager else {
+                return
+            }
 
-                var messagesNoCache : [MessageID] = []
-                for message in messages {
-                    let msg = MessageEvent(event: message)
-                    switch msg.Action {
-                    case .some(IncrementalUpdateType.delete):
-                        if let messageID = msg.ID {
-                            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                                let labelObjs = message.mutableSetValue(forKey: "labels")
-                                labelObjs.removeAllObjects()
-                                message.setValue(labelObjs, forKey: "labels")
-                                context.delete(message)
+            var messagesNoCache : [MessageID] = []
+            for message in messages {
+                let msg = MessageEvent(event: message)
+                switch msg.Action {
+                case .some(IncrementalUpdateType.delete):
+                    if let messageID = msg.ID {
+                        if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                            let labelObjs = message.mutableSetValue(forKey: "labels")
+                            labelObjs.removeAllObjects()
+                            message.setValue(labelObjs, forKey: "labels")
+                            context.delete(message)
+                        }
+                    }
+                case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update_draft), .some(IncrementalUpdateType.update_flags):
+                    if IncrementalUpdateType.insert == msg.Action {
+                        if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
+                            if !cachedMessage.contains(label: .sent) {
+                                continue
                             }
                         }
-                    case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update_draft), .some(IncrementalUpdateType.update_flags):
-                        if IncrementalUpdateType.insert == msg.Action {
-                            if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
-                                if !cachedMessage.contains(label: .sent) {
-                                    continue
-                                }
-                            }
-                            if let notify_msg_id = notificationMessageID?.rawValue {
-                                if notify_msg_id == msg.ID {
-                                    _ = msg.message?.removeValue(forKey: "Unread")
-                                }
-                                msg.message?["messageStatus"] = 1
-                                msg.message?["UserID"] = userManager.userID.rawValue
+                        if let notify_msg_id = notificationMessageID?.rawValue {
+                            if notify_msg_id == msg.ID {
+                                _ = msg.message?.removeValue(forKey: "Unread")
                             }
                             msg.message?["messageStatus"] = 1
+                            msg.message?["UserID"] = userManager.userID.rawValue
                         }
-                        if msg.isDraft,
-                           let existing = Helper.getMessageWithMetaData(for: msg.ID, context: context) {
-                            Helper.mergeDraft(event: msg, existing: existing)
-                            self.applyLabelDeletion(msgEvent: msg, context: context, message: existing)
-                            self.applyLabelAddition(msgEvent: msg, context: context, message: existing)
-                            continue
-                        }
+                        msg.message?["messageStatus"] = 1
+                    }
+                    if msg.isDraft,
+                        let existing = Helper.getMessageWithMetaData(for: msg.ID, context: context) {
+                        Helper.mergeDraft(event: msg, existing: existing)
+                        self.applyLabelDeletion(msgEvent: msg, context: context, message: existing)
+                        self.applyLabelAddition(msgEvent: msg, context: context, message: existing)
+                        continue
+                    }
 
-                        do {
-                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String: Any](), in: context) as? Message {
-                                self.applyLabelDeletion(msgEvent: msg, context: context, message: messageObject)
+                    do {
+                        if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String: Any](), in: context) as? Message {
+                            self.applyLabelDeletion(msgEvent: msg, context: context, message: messageObject)
 
-                                messageObject.userID = userManager.userInfo.userId
-                                if msg.Action == IncrementalUpdateType.update_draft {
-                                    messageObject.isDetailDownloaded = false
+                            messageObject.userID = userManager.userInfo.userId
+                            if msg.Action == IncrementalUpdateType.update_draft {
+                                messageObject.isDetailDownloaded = false
+                            }
+
+                            self.applyLabelAddition(msgEvent: msg, context: context, message: messageObject)
+
+                            if (msg.message?["LabelIDs"] as? NSArray) != nil {
+                                messageObject.checkLabels()
+                                // TODO : add later need to know when it is happening
+                            }
+
+                            if messageObject.messageStatus == 0 {
+                                if messageObject.subject.isEmpty {
+                                    messagesNoCache.append(MessageID(messageObject.messageID))
+                                } else {
+                                    messageObject.messageStatus = 1
                                 }
+                            }
 
-                                self.applyLabelAddition(msgEvent: msg, context: context, message: messageObject)
-
-                                if (msg.message?["LabelIDs"] as? NSArray) != nil {
-                                    messageObject.checkLabels()
-                                    // TODO : add later need to know when it is happening
-                                }
-
-                                if messageObject.messageStatus == 0 {
-                                    if messageObject.subject.isEmpty {
-                                        messagesNoCache.append(MessageID(messageObject.messageID))
-                                    } else {
-                                        messageObject.messageStatus = 1
-                                    }
-                                }
-
-                                if messageObject.managedObjectContext == nil {
-                                    if let messageid = msg.message?["ID"] as? String {
-                                        messagesNoCache.append(MessageID(messageid))
-                                    }
-                                }
-
-                                if msg.Action == IncrementalUpdateType.insert {
-                                    messageObject.labels.allObjects
-                                        .compactMap { $0 as? Label }
-                                        .forEach { label in
-                                            let msgCount = LabelUpdate.lastUpdate(
-                                                by: label.labelID,
-                                                userID: userManager.userID.rawValue,
-                                                inManagedObjectContext: context
-                                            )
-                                            msgCount?.unread += 1
-                                            msgCount?.total += 1
-                                        }
-
-                                }
-                            } else {
-                                // when GRTJSONSerialization insert returns nothing
+                            if messageObject.managedObjectContext == nil {
                                 if let messageid = msg.message?["ID"] as? String {
                                     messagesNoCache.append(MessageID(messageid))
                                 }
                             }
-                        } catch {
-                            PMAssertionFailure(error)
-                            // when GRTJSONSerialization insert failed
+
+                            if msg.Action == IncrementalUpdateType.insert {
+                                messageObject.labels.allObjects
+                                    .compactMap { $0 as? Label }
+                                    .forEach { label in
+                                        let msgCount = LabelUpdate.lastUpdate(
+                                            by: label.labelID,
+                                            userID: userManager.userID.rawValue,
+                                            inManagedObjectContext: context
+                                        )
+                                        msgCount?.unread += 1
+                                        msgCount?.total += 1
+                                    }
+
+                            }
+                        } else {
+                            // when GRTJSONSerialization insert returns nothing
                             if let messageid = msg.message?["ID"] as? String {
                                 messagesNoCache.append(MessageID(messageid))
                             }
                         }
-                    default:
-                        break
-
+                    } catch {
+                        PMAssertionFailure(error)
+                        // when GRTJSONSerialization insert failed
+                        if let messageid = msg.message?["ID"] as? String {
+                            messagesNoCache.append(MessageID(messageid))
+                        }
                     }
-                }
-                error = context.saveUpstreamIfNeeded() ?? error
+                default:
+                    break
 
-                self.dependencies
-                    .fetchMessageMetaData
-                    .execute(params: .init(messageIDs: messagesNoCache)) { _ in }
+                }
             }
+            error = context.saveUpstreamIfNeeded() ?? error
+
+            self.dependencies
+                .fetchMessageMetaData
+                .execute(params: .init(messageIDs: messagesNoCache)) { _ in }
+        }
 
         if let error = error {
             throw error
