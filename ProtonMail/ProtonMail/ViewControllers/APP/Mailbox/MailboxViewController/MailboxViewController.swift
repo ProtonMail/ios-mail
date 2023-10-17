@@ -1266,8 +1266,50 @@ extension MailboxViewController {
     }
 
     @objc
-    private func tapSelectAllButton() {
+    private func tapSelectAllButton(gesture: UITapGestureRecognizer) {
+        let state = gesture.state
+        switch state {
+        case .began, .changed:
+            selectAllButton.backgroundColor = ColorProvider.BackgroundSecondary
+        case .ended:
+            selectAllButton.backgroundColor = .clear
+            selectAllMessages()
+        default:
+            break
+        }
+    }
 
+    private func selectAllMessages() {
+        let indexPaths = Array(0..<viewModel.rowCount(section: 0))
+            .map { IndexPath(row: $0, section: 0) }
+        let loadedIDs = indexPaths
+            .compactMap { index -> String? in
+                switch viewModel.locationViewMode {
+                case .singleMessage:
+                    guard let item = viewModel.item(index: index) else { return nil }
+                    return item.messageID.rawValue
+                case .conversation:
+                    guard let item = viewModel.itemOfConversation(index: index) else { return nil }
+                    return item.conversationID.rawValue
+                }
+            }
+        loadedIDs.forEach(viewModel.select(id:))
+
+        hapticFeedbackGenerator.impactOccurred()
+
+        // update checkbox state
+        for indexPath in indexPaths {
+            guard let cell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell else { continue }
+            messageCellPresenter.presentSelectionStyle(
+                style: .selection(isSelected: true),
+                in: cell.customView
+            )
+        }
+
+        setupNavigationTitle(showSelected: true)
+        PMBanner.dismissAll(on: self)
+        refreshActionBarItems()
+        showActionBar()
     }
 }
 
