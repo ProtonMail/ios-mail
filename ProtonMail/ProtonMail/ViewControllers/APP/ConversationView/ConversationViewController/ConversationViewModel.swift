@@ -351,7 +351,7 @@ class ConversationViewModel {
     }
 
 	func shouldShowToolbarCustomizeSpotlight() -> Bool {
-        guard UserInfo.isToolbarCustomizationEnable else {
+        guard !ProcessInfo.hasLaunchArgument(.disableToolbarSpotlight) else {
             return false
         }
 
