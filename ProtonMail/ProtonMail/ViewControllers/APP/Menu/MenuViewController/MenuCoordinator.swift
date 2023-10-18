@@ -654,20 +654,21 @@ extension MenuCoordinator {
             }
         }
 
-        let coreDataService = dependencies.contextProvider
-
         guard let messageId = messageId,
-              let message = Message.messageForMessageID(messageId, inManagedObjectContext: coreDataService.mainContext)
-        else {
-            return false
-        }
+              let message = dependencies.contextProvider.read(block: { context in
+                  if let msg = Message.messageForMessageID(messageId, in: context) {
+                      return MessageEntity(msg)
+                  } else {
+                      return nil
+                  }
+              }) else { return false }
 
         var isFound = false
         if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
             window.enumerateViewControllerHierarchy { controller, stop in
                 if let conversationVC = controller as? ConversationViewController,
-                   conversationVC.viewModel.conversation.conversationID.rawValue == message.conversationID {
-                    conversationVC.showMessage(of: MessageID(message.messageID))
+                   conversationVC.viewModel.conversation.conversationID == message.conversationID {
+                    conversationVC.showMessage(of: message.messageID)
                     isFound = true
                     stop = true
                 }

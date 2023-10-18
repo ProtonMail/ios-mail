@@ -446,18 +446,20 @@ extension MailboxCoordinator {
             return
         }
         fetchConversationFromBEIfNeeded(conversationID: conversationID) { [weak self] in
-            guard
-                let context = self?.contextProvider.mainContext,
-                let conversation = Conversation
-                    .conversationForConversationID(
-                        conversationID.rawValue,
-                        inManagedObjectContext: context
-                    )
-            else {
+            guard let conversation = self?.contextProvider.read(block: { context in
+                if let conversation = Conversation.conversationForConversationID(
+                    conversationID.rawValue,
+                    inManagedObjectContext: context
+                ) {
+                    return ConversationEntity(conversation)
+                } else {
+                    return nil
+                }
+            }) else {
                 completion(nil)
                 return
             }
-            completion(ConversationEntity(conversation))
+            completion(conversation)
         }
     }
 
