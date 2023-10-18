@@ -166,7 +166,7 @@ class NonExpandedHeaderView: HeaderView {
             senderLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 20)
         ].activate()
 
-        timeLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        timeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         timeLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
 
