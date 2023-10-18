@@ -99,7 +99,9 @@ extension ConversationDataService {
                         )
 
                         if let messages = objects as? [Message] {
-                            messages.first(where: { $0.messageID == messageID?.rawValue })?.isDetailDownloaded = true
+                            messages
+                                .filter { $0.messageID == messageID?.rawValue || !$0.body.isEmpty }
+                                .forEach { $0.isDetailDownloaded = true }
                             if let conversation = conversation as? Conversation {
                                 self.softDeleteMessageIfNeeded(conversation: conversation, messages: messages)
                             }
