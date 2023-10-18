@@ -146,6 +146,7 @@ extension AppDelegate: UIApplicationDelegate {
             UIView.setAnimationsEnabled(false)
         }
         #endif
+        PMAPIService.setupTrustIfNeeded()
         configureCrypto()
         configureCoreObservability()
         configureAnalytics()
@@ -314,11 +315,12 @@ extension AppDelegate: UnlockManagerDelegate {
     }
 
     func cleanAll(completion: @escaping () -> Void) {
+        guard dependencies.usersManager.hasUsers() else {
+            completion()
+            return
+        }
         Breadcrumbs.shared.add(message: "AppDelegate.cleanAll called", to: .randomLogout)
         dependencies.usersManager.clean().ensure {
-            let coreKeyMaker = self.dependencies.keyMaker
-            coreKeyMaker.wipeMainKey()
-            _ = coreKeyMaker.mainKeyExists()
             completion()
         }.cauterize()
     }
