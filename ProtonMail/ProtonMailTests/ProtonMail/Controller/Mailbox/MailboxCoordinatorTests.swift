@@ -32,7 +32,6 @@ class MailboxCoordinatorTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        let dummyServices = ServiceFactory()
         dummyAPIService = APIServiceMock()
         let dummyUser = UserManager(api: dummyAPIService, role: .none)
 
@@ -40,14 +39,11 @@ class MailboxCoordinatorTests: XCTestCase {
         let lastUpdatedStoreMock = MockLastUpdatedStoreProtocol()
         let pushServiceMock = MockPushNotificationService()
         let contextProviderMock = MockCoreDataContextProvider()
-        let mailboxViewControllerMock = MailboxViewController()
-        uiNavigationControllerMock = .init(rootViewController: mailboxViewControllerMock)
         let contactGroupProviderMock = MockContactGroupsProviderProtocol()
         let labelProviderMock = MockLabelProviderProtocol()
         let contactProviderMock = MockContactProvider(coreDataContextProvider: contextProviderMock)
         let conversationProviderMock = MockConversationProvider()
         let eventServiceMock = EventsServiceMock()
-        let infoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         let toolbarActionProviderMock = MockToolbarActionProvider()
         let saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         connectionStatusProviderMock = MockInternetConnectionStatusProviderProtocol()
@@ -92,13 +88,13 @@ class MailboxCoordinatorTests: XCTestCase {
         globalContainer.internetConnectionStatusProviderFactory.register { self.connectionStatusProviderMock }
         let userContainer = UserContainer(userManager: dummyUser, globalContainer: globalContainer)
 
+        let mailboxViewControllerMock = MailboxViewController(viewModel: viewModelMock, dependencies: userContainer)
+        uiNavigationControllerMock = .init(rootViewController: mailboxViewControllerMock)
+
         sut = MailboxCoordinator(sideMenu: nil,
                                  nav: uiNavigationControllerMock,
                                  viewController: mailboxViewControllerMock,
                                  viewModel: viewModelMock,
-                                 services: dummyServices,
-                                 contextProvider: contextProviderMock,
-                                 infoBubbleViewStatusProvider: infoBubbleViewStatusProviderMock,
                                  dependencies: userContainer,
                                  getApplicationState: {
             return self.applicationStateStub

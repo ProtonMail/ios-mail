@@ -50,7 +50,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
      */
     init(selectedEmails: Set<EmailEntity>, contactService: ContactDataService, refreshHandler: @escaping (Set<EmailEntity>) -> Void) {
         self.contactService = contactService
-        self.allEmails = self.contactService.allEmails().compactMap(EmailEntity.init)
+        self.allEmails = self.contactService.allEmails()
         self.allEmails.sort {
             if $0.name == $1.name {
                 return $0.email < $1.email

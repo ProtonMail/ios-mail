@@ -1,5 +1,22 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
+import ProtonCore_Payments
+
+protocol HasBackgroundTaskHelper {
+    var backgroundTaskHelper: BackgroundTaskHelper { get }
+}
+
+extension GlobalContainer: HasBackgroundTaskHelper {
+    var backgroundTaskHelper: BackgroundTaskHelper {
+        backgroundTaskHelperFactory()
+    }
+}
+
+extension UserContainer: HasBackgroundTaskHelper {
+    var backgroundTaskHelper: BackgroundTaskHelper {
+        globalContainer.backgroundTaskHelper
+    }
+}
 
 protocol HasBiometricStatusProvider {
     var biometricStatusProvider: BiometricStatusProvider { get }
@@ -33,6 +50,38 @@ extension UserContainer: HasCleanCache {
     }
 }
 
+protocol HasDarkModeCacheProtocol {
+    var darkModeCache: DarkModeCacheProtocol { get }
+}
+
+extension GlobalContainer: HasDarkModeCacheProtocol {
+    var darkModeCache: DarkModeCacheProtocol {
+        darkModeCacheFactory()
+    }
+}
+
+extension UserContainer: HasDarkModeCacheProtocol {
+    var darkModeCache: DarkModeCacheProtocol {
+        globalContainer.darkModeCache
+    }
+}
+
+protocol HasPushNotificationService {
+    var pushService: PushNotificationService { get }
+}
+
+extension GlobalContainer: HasPushNotificationService {
+    var pushService: PushNotificationService {
+        pushServiceFactory()
+    }
+}
+
+extension UserContainer: HasPushNotificationService {
+    var pushService: PushNotificationService {
+        globalContainer.pushService
+    }
+}
+
 protocol HasSaveSwipeActionSettingForUsersUseCase {
     var saveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase { get }
 }
@@ -46,6 +95,22 @@ extension GlobalContainer: HasSaveSwipeActionSettingForUsersUseCase {
 extension UserContainer: HasSaveSwipeActionSettingForUsersUseCase {
     var saveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
         globalContainer.saveSwipeActionSetting
+    }
+}
+
+protocol HasSignInManager {
+    var signInManager: SignInManager { get }
+}
+
+extension GlobalContainer: HasSignInManager {
+    var signInManager: SignInManager {
+        signInManagerFactory()
+    }
+}
+
+extension UserContainer: HasSignInManager {
+    var signInManager: SignInManager {
+        globalContainer.signInManager
     }
 }
 
@@ -65,6 +130,32 @@ extension UserContainer: HasSwipeActionCacheProtocol {
     }
 }
 
+protocol HasToolbarCustomizationInfoBubbleViewStatusProvider {
+    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider { get }
+}
+
+extension GlobalContainer: HasToolbarCustomizationInfoBubbleViewStatusProvider {
+    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
+        toolbarCustomizationInfoBubbleViewStatusProviderFactory()
+    }
+}
+
+extension UserContainer: HasToolbarCustomizationInfoBubbleViewStatusProvider {
+    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
+        globalContainer.toolbarCustomizationInfoBubbleViewStatusProvider
+    }
+}
+
+protocol HasAppRatingService {
+    var appRatingService: AppRatingService { get }
+}
+
+extension UserContainer: HasAppRatingService {
+    var appRatingService: AppRatingService {
+        appRatingServiceFactory()
+    }
+}
+
 protocol HasBlockedSenderCacheUpdater {
     var blockedSenderCacheUpdater: BlockedSenderCacheUpdater { get }
 }
@@ -75,13 +166,93 @@ extension UserContainer: HasBlockedSenderCacheUpdater {
     }
 }
 
-protocol HasBlockedSendersPublisher {
-    var blockedSendersPublisher: BlockedSendersPublisher { get }
+protocol HasBugReportService {
+    var reportService: BugReportService { get }
 }
 
-extension UserContainer: HasBlockedSendersPublisher {
-    var blockedSendersPublisher: BlockedSendersPublisher {
-        blockedSendersPublisherFactory()
+extension UserContainer: HasBugReportService {
+    var reportService: BugReportService {
+        reportServiceFactory()
+    }
+}
+
+protocol HasContactViewsFactory {
+    var contactViewsFactory: ContactViewsFactory { get }
+}
+
+extension UserContainer: HasContactViewsFactory {
+    var contactViewsFactory: ContactViewsFactory {
+        contactViewsFactoryFactory()
+    }
+}
+
+protocol HasFetchSenderImage {
+    var fetchSenderImage: FetchSenderImage { get }
+}
+
+extension UserContainer: HasFetchSenderImage {
+    var fetchSenderImage: FetchSenderImage {
+        fetchSenderImageFactory()
+    }
+}
+
+protocol HasFetchMessageDetail {
+    var fetchMessageDetail: FetchMessageDetail { get }
+}
+
+extension UserContainer: HasFetchMessageDetail {
+    var fetchMessageDetail: FetchMessageDetail {
+        fetchMessageDetailFactory()
+    }
+}
+
+protocol HasImageProxy {
+    var imageProxy: ImageProxy { get }
+}
+
+extension UserContainer: HasImageProxy {
+    var imageProxy: ImageProxy {
+        imageProxyFactory()
+    }
+}
+
+protocol HasSearchUseCase {
+    var messageSearch: SearchUseCase { get }
+}
+
+extension UserContainer: HasSearchUseCase {
+    var messageSearch: SearchUseCase {
+        messageSearchFactory()
+    }
+}
+
+protocol HasNextMessageAfterMoveStatusProvider {
+    var nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider { get }
+}
+
+extension UserContainer: HasNextMessageAfterMoveStatusProvider {
+    var nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider {
+        nextMessageAfterMoveStatusProviderFactory()
+    }
+}
+
+protocol HasPayments {
+    var payments: Payments { get }
+}
+
+extension UserContainer: HasPayments {
+    var payments: Payments {
+        paymentsFactory()
+    }
+}
+
+protocol HasPaymentsUIFactory {
+    var paymentsUIFactory: PaymentsUIFactory { get }
+}
+
+extension UserContainer: HasPaymentsUIFactory {
+    var paymentsUIFactory: PaymentsUIFactory {
+        paymentsUIFactoryFactory()
     }
 }
 
@@ -92,6 +263,46 @@ protocol HasSettingsViewsFactory {
 extension UserContainer: HasSettingsViewsFactory {
     var settingsViewsFactory: SettingsViewsFactory {
         settingsViewsFactoryFactory()
+    }
+}
+
+protocol HasSaveToolbarActionSettings {
+    var saveToolbarActionSettings: SaveToolbarActionSettings { get }
+}
+
+extension UserContainer: HasSaveToolbarActionSettings {
+    var saveToolbarActionSettings: SaveToolbarActionSettings {
+        saveToolbarActionSettingsFactory()
+    }
+}
+
+protocol HasSendBugReport {
+    var sendBugReport: SendBugReport { get }
+}
+
+extension UserContainer: HasSendBugReport {
+    var sendBugReport: SendBugReport {
+        sendBugReportFactory()
+    }
+}
+
+protocol HasToolbarActionProvider {
+    var toolbarActionProvider: ToolbarActionProvider { get }
+}
+
+extension UserContainer: HasToolbarActionProvider {
+    var toolbarActionProvider: ToolbarActionProvider {
+        toolbarActionProviderFactory()
+    }
+}
+
+protocol HasToolbarSettingViewFactory {
+    var toolbarSettingViewFactory: ToolbarSettingViewFactory { get }
+}
+
+extension UserContainer: HasToolbarSettingViewFactory {
+    var toolbarSettingViewFactory: ToolbarSettingViewFactory {
+        toolbarSettingViewFactoryFactory()
     }
 }
 

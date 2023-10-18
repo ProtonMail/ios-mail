@@ -20,21 +20,29 @@ import XCTest
 @testable import ProtonMail
 
 final class UserContainerTests: XCTestCase {
-    func testDependenciesThatRetainSelf_doNotCreateRetainCycles() {
-        let user = UserManager(api: APIServiceMock(), role: .none)
+    func testDoesNotCreateRetainCycleWithEmbeddingUserManager() {
         let globalContainer = GlobalContainer()
-        var strongRefToContainer: UserContainer? = .init(userManager: user, globalContainer: globalContainer)
-        var strongRefToDependency: SettingsViewsFactory? = strongRefToContainer?.settingsViewsFactory
 
+        var strongRefToUser: UserManager? = UserManager(api: APIServiceMock(), userID: "foo", globalContainer: globalContainer)
+        var strongRefToContainer: UserContainer? = strongRefToUser?.container
+        var strongRefToDependency: AnyObject? = strongRefToContainer?.settingsViewsFactory
+
+        // undo a side-effect of UserManager.init
+        globalContainer.queueManager.unregisterHandler(for: "foo")
+
+        weak var weakRefToUser: UserManager? = strongRefToUser
         weak var weakRefToContainer: UserContainer? = strongRefToContainer
-        weak var weakRefToDependency: SettingsViewsFactory? = strongRefToDependency
+        weak var weakRefToDependency: AnyObject? = strongRefToDependency
 
+        XCTAssertNotNil(weakRefToUser)
         XCTAssertNotNil(weakRefToContainer)
         XCTAssertNotNil(weakRefToDependency)
 
+        strongRefToUser = nil
         strongRefToContainer = nil
         strongRefToDependency = nil
 
+        XCTAssertNil(weakRefToUser)
         XCTAssertNil(weakRefToContainer)
         XCTAssertNil(weakRefToDependency)
     }

@@ -32,6 +32,8 @@ protocol ContactsVCUIProtocol: AnyObject {
 }
 
 final class ContactsViewController: ContactsAndGroupsSharedCode {
+    typealias Dependencies = HasContactViewsFactory & ContactsAndGroupsSharedCode.Dependencies
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
@@ -42,6 +44,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     @IBOutlet var searchViewConstraint: NSLayoutConstraint!
 
     private let viewModel: ContactsViewModel
+    private let dependencies: Dependencies
     private var searchString: String = ""
     private var refreshControl: UIRefreshControl?
     private var searchController: UISearchController?
@@ -51,9 +54,10 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
         self.viewModel.resetFetchedController()
     }
 
-    init(viewModel: ContactsViewModel) {
+    init(viewModel: ContactsViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
-        super.init(nibName: "ContactsViewController", bundle: nil)
+        self.dependencies = dependencies
+        super.init(dependencies: dependencies, nibName: "ContactsViewController")
         trackLifetime()
     }
 
@@ -101,7 +105,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
 
         setupMenuButton()
 
-        prepareNavigationItemRightDefault(self.viewModel.user)
+        prepareNavigationItemRightDefault()
 
         generateAccessibilityIdentifiers()
         navigationItem.assignNavItemIndentifiers()
@@ -164,14 +168,14 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     }
 
     override func addContactGroupTapped() {
-        if self.viewModel.user.hasPaidMailPlan {
-            let viewModel = ContactGroupEditViewModelImpl(state: .create,
-                                                          user: viewModel.user,
-                                                          groupID: nil,
-                                                          name: nil,
-                                                          color: nil,
-                                                          emailIDs: Set<EmailEntity>())
-            let newView = ContactGroupEditViewController(viewModel: viewModel)
+        if viewModel.user.hasPaidMailPlan {
+            let newView = dependencies.contactViewsFactory.makeGroupEditView(
+                state: .create,
+                groupID: nil,
+                name: nil,
+                color: nil,
+                emailIDs: []
+            )
             let nav = UINavigationController(rootViewController: newView)
             self.present(nav, animated: true, completion: nil)
         } else {
@@ -182,7 +186,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     override func showContactImportView() {
         self.isOnMainView = true
 
-        let newView = ContactImportViewController(user: viewModel.user)
+        let newView = dependencies.contactViewsFactory.makeImportView()
         setPresentationStyleForSelfController(presentingController: newView, style: .overFullScreen)
         newView.reloadAllContact = { [weak self] in
             self?.tableView.reloadData()
@@ -191,10 +195,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     }
 
     private func showContactDetailView(contact: ContactEntity) {
-        let viewModel = ContactDetailsViewModelImpl(contact: contact,
-                                                    user: viewModel.user,
-                                                    coreDataService: viewModel.coreDataService)
-        let newView = ContactDetailViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeDetailView(contact: contact)
         self.show(newView, sender: nil)
         isOnMainView = false
 
@@ -206,9 +207,7 @@ final class ContactsViewController: ContactsAndGroupsSharedCode {
     }
 
     override func addContactTapped() {
-        let viewModel = ContactAddViewModelImpl(user: viewModel.user,
-                                                coreDataService: viewModel.coreDataService)
-        let newView = ContactEditViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeEditView(contact: nil)
         let nav = UINavigationController(rootViewController: newView)
         self.present(nav, animated: true)
 

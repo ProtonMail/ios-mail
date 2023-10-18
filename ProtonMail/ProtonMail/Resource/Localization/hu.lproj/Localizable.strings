@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-mail cím";
 
-/* The button text for add profile picture */
-"Add photo" = "Fénykép hozzáadása";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Fénykép szerkesztése";
-
 /* contact section title */
 "Encrypted contact details" = "Titkosított névjegy adatok";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Címke neve";
-
-/* when server not reachable */
-"API Server not reachable…" = "Az API szerver nem elérhető…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "A fiókhoz való hozzáférés számlatartozás miatt le van tiltva. Kérjük, jelentkezzen be a proton.me oldalon a kifizetetlen számla kifizetéséhez.";
@@ -1514,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Címzettek nem láthatók";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Leiratkozás levelezési listáról";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "A rendszerünk úgy érzékelte, hogy ez egy adathalász kísérlet. Kérjük ellenőrizze, hogy esetleg mégsem az.";
 
@@ -1799,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Az üzenet küldés alatt áll. Az elküldött üzenetek mappába kerül az küldés befejezésekor.";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Amennyiben a WiFi kapcsolata megszakad, a letöltés mobil hálózaton fog folytatódni.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Letöltés mobiladat-kapcsolattal";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Letöltési folyamat";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Üzenetek listája";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Tárhely korlát";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Tárhely felhasználva";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Az összes üzenete letöltésre került";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Nem minden üzenet került letöltésre. Letöltésükhöz szabadítson fel tárhelyet a készüléken.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Nem minden üzenet került letöltésre. Letöltésükhöz növelje az alábbi tárolási limitet.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "Nincsenek üzenetei.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Az üzenetei letöltés alatt vannak...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Gyorsítótárazott adatok";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Mellékletek";
-
-/* cell title in device settings */
-"Downloaded messages" = "Letöltött üzenetek";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Információ arról, mennyi tárhelyet használ ez a Proton Mail fiók az eszközén.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Törlés";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Lehetővé teszi, hogy internetkapcsolat nélkül is megnyissa a korábban elolvasott üzeneteket.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Lehetővé teszi, hogy internetkapcsolat nélkül is megnyissa a már korábban megtekintett mellékleteket.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Lehetővé teszi a keresést az üzeneteken belül. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Részletek megjelenítése";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Eszköztári műveletek (legfeljebb 5-öt válasszon ki)";
 
@@ -2035,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Jelszó frissítve";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "A gyorsítótár törlése...";
-
 /* Title for application logs settings option */
 "Application logs" = "Alkalmazás napló";
 
@@ -2070,6 +1995,9 @@
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Kérjük adjon meg annyi részletet, amennyit csak lehetséges---\n\nÖsszesítés:\n\nMegtörtént ez már korábban is? Igen/Nem.\nA probléma előhozásához szükséges lépések:\nVárt eredmény:\nJelenlegi eredmény:\nMegjegyzések:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Include logs";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Próbáljon más keresést.";
@@ -2133,3 +2061,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Custom email domains";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Display name";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "First name";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Last name";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Display name field cannot be empty";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Contact name is too long";
+
+/* The button text for add profile picture */
+"Add photo" = "Fénykép hozzáadása";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Fénykép szerkesztése";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Leiratkozás levelezési listáról";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Unsubscribe?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

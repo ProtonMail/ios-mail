@@ -158,6 +158,7 @@ private enum SubviewsFactory {
     static var titleLabel: UILabel {
         let label = UILabel()
         label.numberOfLines = 0
+        label.adjustsFontForContentSizeCategory = true
         return label
     }
 }

@@ -37,7 +37,6 @@ final class MainQueueHandler: QueueHandler {
     private let messageDataService: MessageDataService
     private let conversationDataService: ConversationProvider
     private let labelDataService: LabelsDataService
-    private let localNotificationService: LocalNotificationService
     private let contactService: ContactDataService
     private let contactGroupService: ContactGroupsDataService
     private let undoActionManager: UndoActionManagerProtocol
@@ -62,7 +61,6 @@ final class MainQueueHandler: QueueHandler {
         self.messageDataService = messageDataService
         self.conversationDataService = conversationDataService
         self.labelDataService = labelDataService
-        self.localNotificationService = localNotificationService
         self.contactService = user.contactService
         self.contactGroupService = user.contactGroupService
         self.undoActionManager = undoActionManager
@@ -151,20 +149,17 @@ final class MainQueueHandler: QueueHandler {
                 self.readConversations(itemIDs, completion: completeHandler)
             case .delete(let currentLabelID, let itemIDs):
                 self.deleteConversations(itemIDs, labelID: currentLabelID ?? "", completion: completeHandler)
-            case .label(let currentLabelID, _, let isSwipeAction, let itemIDs, _):
+            case .label(let currentLabelID, _, let itemIDs, _):
                 self.labelConversations(itemIDs,
                                         labelID: currentLabelID,
-                                        isSwipeAction: isSwipeAction,
                                         completion: completeHandler)
-            case .unlabel(let currentLabelID, _, let isSwipeAction, let itemIDs, _):
+            case .unlabel(let currentLabelID, _, let itemIDs, _):
                 self.unlabelConversations(itemIDs,
                                           labelID: currentLabelID,
-                                          isSwipeAction: isSwipeAction,
                                           completion: completeHandler)
-            case .folder(let nextLabelID, _, let isSwipeAction, let itemIDs, _):
+            case .folder(let nextLabelID, _, let itemIDs, _):
                 self.labelConversations(itemIDs,
                                         labelID: nextLabelID,
-                                        isSwipeAction: isSwipeAction,
                                         completion: completeHandler)
             case let .notificationAction(messageID, action):
                 notificationAction(messageId: messageID, action: action, completion: completeHandler)
@@ -216,19 +211,19 @@ final class MainQueueHandler: QueueHandler {
                 self.messageAction(objectIDs, action: action.rawValue, UID: UID, completion: completeHandler)
             case .delete(_, let itemIDs):
                 self.messageDelete(itemIDs, action: action.rawValue, UID: UID, completion: completeHandler)
-            case .label(let currentLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
+            case .label(let currentLabelID, let shouldFetch, let itemIDs, _):
                 self.labelMessage(LabelID(currentLabelID),
                                   messageIDs: itemIDs,
                                   UID: UID,
                                   shouldFetchEvent: shouldFetch ?? false,
                                   completion: completeHandler)
-            case .unlabel(let currentLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
+            case .unlabel(let currentLabelID, let shouldFetch, let itemIDs, _):
                 self.unLabelMessage(LabelID(currentLabelID),
                                     messageIDs: itemIDs,
                                     UID: UID,
                                     shouldFetchEvent: shouldFetch ?? false,
                                     completion: completeHandler)
-            case .folder(let nextLabelID, let shouldFetch, let isSwipeAction, let itemIDs, _):
+            case .folder(let nextLabelID, let shouldFetch, let itemIDs, _):
                 self.labelMessage(LabelID(nextLabelID),
                                   messageIDs: itemIDs,
                                   UID: UID,
@@ -775,24 +770,20 @@ extension MainQueueHandler {
 
     fileprivate func labelConversations(_ conversationIds: [String],
                                         labelID: String,
-                                        isSwipeAction: Bool,
                                         completion: @escaping Completion) {
         conversationDataService
             .label(conversationIDs: conversationIds.map{ConversationID($0)},
-                   as: LabelID(labelID),
-                   isSwipeAction: isSwipeAction) { result in
+                   as: LabelID(labelID)) { result in
             completion(result.error)
         }
     }
 
     fileprivate func unlabelConversations(_ conversationIds: [String],
                                           labelID: String,
-                                          isSwipeAction: Bool,
                                           completion: @escaping Completion) {
         conversationDataService
             .unlabel(conversationIDs: conversationIds.map{ConversationID($0)},
-                     as: LabelID(labelID),
-                     isSwipeAction: isSwipeAction) { result in
+                     as: LabelID(labelID)) { result in
             completion(result.error)
         }
     }
@@ -859,21 +850,5 @@ extension MainQueueHandler {
             self.uploadDraft = uploadDraft
             self.uploadAttachment = uploadAttachment
         }
-    }
-}
-
-enum MainQueueHandlerHelper {
-    static func removeAllAttachmentsNotUploaded(of message: Message,
-                                                context: NSManagedObjectContext) throws {
-        let toBeDeleted = message.attachments
-            .compactMap({ $0 as? Attachment })
-            .filter({ !$0.isUploaded })
-
-        toBeDeleted.forEach { attachment in
-            context.delete(attachment)
-        }
-        let attachmentCount = message.numAttachments.intValue
-        message.numAttachments = NSNumber(integerLiteral: max(attachmentCount - toBeDeleted.count, 0))
-        try context.save()
     }
 }

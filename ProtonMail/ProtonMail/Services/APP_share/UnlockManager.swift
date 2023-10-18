@@ -45,18 +45,23 @@ protocol UnlockManagerDelegate: AnyObject {
     func cleanAll(completion: @escaping () -> Void)
     func isUserStored() -> Bool
     func isMailboxPasswordStored(forUser uid: String?) -> Bool
-    func setupCoreData()
+    func setupCoreData() throws
     func loadUserDataAfterUnlock()
 }
 
 // sourcery: mock
 protocol LAContextProtocol: AnyObject {
     func canEvaluatePolicy(_ policy: LAPolicy, error: NSErrorPointer) -> Bool
+    func evaluatePolicy(
+        _ policy: LAPolicy,
+        localizedReason: String,
+        reply: @escaping (Bool, Error?) -> Void
+    )
 }
 
 extension LAContext: LAContextProtocol {}
 
-final class UnlockManager: Service {
+final class UnlockManager {
     weak var delegate: UnlockManagerDelegate?
 
     private(set) var cacheStatus: LockCacheStatus
@@ -64,10 +69,6 @@ final class UnlockManager: Service {
     private let localAuthenticationContext: LAContextProtocol
     private let notificationCenter: NotificationCenter
     private var pinFailedCountCache: PinFailedCountCache
-
-    static var shared: UnlockManager {
-        return sharedServices.get(by: UnlockManager.self)
-    }
 
     init(
         cacheStatus: LockCacheStatus,
@@ -215,7 +216,13 @@ final class UnlockManager: Service {
         }
 
         guard keyMaker.mainKeyExists(), delegate.isUserStored() else {
-            delegate.setupCoreData()
+
+            do {
+                try delegate.setupCoreData()
+            } catch {
+                fatalError("\(error)")
+            }
+
             delegate.cleanAll {
                 unlockFailed?()
             }
@@ -223,12 +230,21 @@ final class UnlockManager: Service {
         }
 
         guard delegate.isMailboxPasswordStored(forUser: uid) else { // this will provoke mainKey obtention
-            delegate.setupCoreData()
+            do {
+                try delegate.setupCoreData()
+            } catch {
+                fatalError("\(error)")
+            }
+
             requestMailboxPassword()
             return
         }
 
-        delegate.setupCoreData()
+        do {
+            try delegate.setupCoreData()
+        } catch {
+            fatalError("\(error)")
+        }
 
         pinFailedCountCache.pinFailedCount = 0
 

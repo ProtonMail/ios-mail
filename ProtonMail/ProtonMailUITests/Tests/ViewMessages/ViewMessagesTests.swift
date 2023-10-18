@@ -46,11 +46,13 @@ class ViewMessagesTests: FixtureAuthenticatedTestCase {
     
     func testOpenMessageWithEmailTrackers() {
         let bounceexchange = "bounceexchange.com"
+        let trackerStaticTextLabel = "31 email trackers blocked"
+        let messageSubject = "014_2_messages_with_remote_content_1_message_with_tracking_in_inbox"
         runTestWithScenario(.qaMail014) {
             InboxRobot()
-                .clickMessageByIndex(1)
+                .clickMessageBySubject(messageSubject)
                 .clickFilledEmailTrackerShieldIcon()
-                .clickEmailTrackerShevronImage()
+                .clickTrackerRowWithLabel(trackerStaticTextLabel)
                 .clickOnTrackerWithLabel(bounceexchange)
                 .verify.trackerCountByLabelIs(label: bounceexchange, count: 1)
                 .verify.trackerCellIsShown(name:  "https://bounceexchange.com/tag/em/1990.gif")

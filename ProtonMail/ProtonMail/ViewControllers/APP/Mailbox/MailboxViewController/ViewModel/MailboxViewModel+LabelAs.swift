@@ -73,14 +73,12 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
                 let conversationsToApply = conversations.filter({ !$0.getLabelIDs().contains(label.location.labelID )})
                 conversationProvider.label(conversationIDs: conversationsToApply.map(\.conversationID),
                                           as: label.location.labelID,
-                                          isSwipeAction: false,
                                           completion: fetchEvents)
             } else if markType != .dash { // Ignore the option in dash
                 group.enter()
                 let conversationsToRemove = conversations.filter({ $0.getLabelIDs().contains(label.location.labelID )})
                 conversationProvider.unlabel(conversationIDs: conversationsToRemove.map(\.conversationID),
                                             as: label.location.labelID,
-                                            isSwipeAction: false,
                                             completion: fetchEvents)
             }
         }
@@ -92,7 +90,6 @@ extension MailboxViewModel: LabelAsActionSheetProtocol {
             conversationProvider.move(conversationIDs: conversations.map(\.conversationID),
                                      from: "",
                                      to: Message.Location.archive.labelID,
-                                      isSwipeAction: false,
                                       callOrigin: "MailboxViewModel - handleLabelAsAction",
                                      completion: fetchEvents)
         }

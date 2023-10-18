@@ -29,7 +29,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
 
     /**
      Setup the sub-selection view of a specific group, at a specific state
-     
+
      For every given contact group, we
      (1) Attempt to get all emails associated with the group name -> email list G
      - might be empty, if the group name was changed to others, etc.
@@ -48,12 +48,14 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel {
         var emailData: [ContactGroupSubSelectionViewModelEmailInfomation] = []
 
         // (1)
-        if let label = labelsDataService.label(name: groupName),
-            let emails = label.emails.allObjects as? [Email] {
-
-            for email in emails {
-                emailData.append(ContactGroupSubSelectionViewModelEmailInfomation.init(email: email.email,
-                                                                                       name: email.name))
+        if let label = labelsDataService.label(name: groupName) {
+            for email in label.emailRelations {
+                emailData.append(
+                    ContactGroupSubSelectionViewModelEmailInfomation(
+                        email: email.email,
+                        name: email.name
+                    )
+                )
             }
         }
 

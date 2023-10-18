@@ -26,20 +26,19 @@ struct CheckedSenderContact {
 
 final class MessageSenderPGPChecker {
     typealias Complete = (CheckedSenderContact?) -> Void
+    typealias Dependencies = HasUserManager & HasFetchAttachment & HasFetchAndVerifyContacts
 
     private let message: MessageEntity
-    private let user: UserManager
-    private var messageService: MessageDataService { user.messageService }
+    private var messageService: MessageDataService { dependencies.user.messageService }
     private let fetchVerificationKeys: FetchVerificationKeys
     private let dependencies: Dependencies
 
-    init(message: MessageEntity, user: UserManager, dependencies: Dependencies) {
+    init(message: MessageEntity, dependencies: Dependencies) {
         self.message = message
-        self.user = user
         self.fetchVerificationKeys = FetchVerificationKeys(
             dependencies: .init(
-                fetchAndVerifyContacts: FetchAndVerifyContacts(user: user),
-                fetchEmailsPublicKeys: FetchEmailAddressesPublicKey(dependencies: .init(apiService: user.apiService))
+                fetchAndVerifyContacts: dependencies.fetchAndVerifyContacts,
+                fetchEmailsPublicKeys: FetchEmailAddressesPublicKey(dependencies: .init(apiService: dependencies.user.apiService))
             ),
             userAddresses: []
         )
@@ -141,7 +140,7 @@ final class MessageSenderPGPChecker {
         var dataToReturn: [ArmoredKey] = []
         let group = DispatchGroup()
 
-        let userKeys = user.toUserKeys()
+        let userKeys = dependencies.user.toUserKeys()
         for attachment in attachments {
             group.enter()
             dependencies.fetchAttachment.execute(
@@ -161,11 +160,5 @@ final class MessageSenderPGPChecker {
         group.notify(queue: .main) {
             completion(dataToReturn)
         }
-    }
-}
-
-extension MessageSenderPGPChecker {
-    struct Dependencies {
-        let fetchAttachment: FetchAttachmentUseCase
     }
 }

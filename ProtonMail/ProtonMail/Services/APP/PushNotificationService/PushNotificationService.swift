@@ -89,7 +89,7 @@ final class PushNotificationService: NSObject, Service, PushNotificationServiceP
     }
 
     func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
-        guard dependencies.signInProvider.isSignedIn, dependencies.unlockProvider.isUnlocked else {
+        guard dependencies.usersManager.hasUsers(), dependencies.unlockProvider.isUnlocked() else {
             deviceTokenRegistrationPendingUnlock = deviceToken
             return
         }
@@ -203,7 +203,7 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
 extension PushNotificationService {
     private func handleRemoteNotification(response: UNNotificationResponse, completionHandler: @escaping () -> Void) {
         let userInfo = response.notification.request.content.userInfo
-        if UnlockManager.shared.isUnlocked() { // unlocked
+        if dependencies.unlockProvider.isUnlocked() { // unlocked
             do {
                 try didReceiveRemoteNotification(userInfo, completionHandler: completionHandler)
             } catch {
@@ -244,7 +244,7 @@ extension PushNotificationService {
     }
 
     private func shouldHandleNotification(payload: PushNotificationPayload) -> Bool {
-        guard sharedServices.get(by: UsersManager.self).hasUsers() && UnlockManager.shared.isUnlocked() else {
+        guard dependencies.usersManager.hasUsers() && dependencies.unlockProvider.isUnlocked() else {
             return false
         }
         return payload.isLocalNotification || (!payload.isLocalNotification && isUserManagerReady(payload: payload))
@@ -304,11 +304,16 @@ extension PushNotificationService {
             action.completionHandler()
             return
         }
+        let completion = {
+            DispatchQueue.main.async {
+                action.completionHandler()
+            }
+        }
         notificationActions.handle(
             action: action.payload.actionIdentifier,
             userId: userId,
             messageId: action.payload.messageId,
-            completion: action.completionHandler
+            completion: completion
         )
     }
 }
@@ -337,7 +342,7 @@ private extension PushNotificationService {
 
 extension PushNotificationService {
     struct Dependencies {
-        let signInProvider: SignInProvider
+        let usersManager: UsersManagerProtocol
         let unlockProvider: UnlockProvider
         let pushEncryptionManager: PushEncryptionManagerProtocol
         let navigationResolver: PushNavigationResolver
@@ -345,14 +350,14 @@ extension PushNotificationService {
         let notificationCenter: NotificationCenter
 
         init(
-            signInProvider: SignInProvider = SignInManagerProvider(),
-            unlockProvider: UnlockProvider = UnlockManagerProvider(),
+            usersManager: UsersManagerProtocol,
+            unlockProvider: UnlockProvider,
             pushEncryptionManager: PushEncryptionManagerProtocol = PushEncryptionManager.shared,
             navigationResolver: PushNavigationResolver = PushNavigationResolver(dependencies: .init()),
             lockCacheStatus: LockCacheStatus,
             notificationCenter: NotificationCenter = NotificationCenter.default
         ) {
-            self.signInProvider = signInProvider
+            self.usersManager = usersManager
             self.unlockProvider = unlockProvider
             self.pushEncryptionManager = pushEncryptionManager
             self.navigationResolver = navigationResolver

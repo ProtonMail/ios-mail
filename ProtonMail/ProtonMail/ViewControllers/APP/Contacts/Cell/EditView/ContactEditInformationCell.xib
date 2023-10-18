@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sec-dY-5KD">
-                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <rect key="frame" x="8" y="7" width="50" height="30"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="CAK-JG-oZF"/>
                         </constraints>
@@ -26,7 +26,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EMD-AA-tki">
-                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <rect key="frame" x="8" y="7" width="50" height="30"/>
                         <connections>
                             <action selector="typeAction:" destination="BZm-iK-Rop" eventType="touchUpInside" id="djm-Kp-AZe"/>
                         </connections>
@@ -39,7 +39,7 @@
                         </constraints>
                     </view>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Organization" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="RVV-GY-oxM">
-                        <rect key="frame" x="74.5" y="0.0" width="331.5" height="44"/>
+                        <rect key="frame" x="74.5" y="12" width="331.5" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                     </textField>
@@ -57,9 +57,10 @@
                     <constraint firstItem="mvl-7v-F4l" firstAttribute="top" secondItem="hZu-1x-ll4" secondAttribute="top" id="1gZ-HB-8mh"/>
                     <constraint firstItem="RVV-GY-oxM" firstAttribute="centerY" secondItem="hZu-1x-ll4" secondAttribute="centerY" id="4tV-Fp-UEE"/>
                     <constraint firstItem="mvl-7v-F4l" firstAttribute="centerY" secondItem="hZu-1x-ll4" secondAttribute="centerY" id="6jF-vc-YRs"/>
+                    <constraint firstItem="Sec-dY-5KD" firstAttribute="centerY" secondItem="hZu-1x-ll4" secondAttribute="centerY" id="BCA-I9-uIh"/>
                     <constraint firstAttribute="bottom" secondItem="mvl-7v-F4l" secondAttribute="bottom" id="KgP-YH-SEU"/>
                     <constraint firstItem="EMD-AA-tki" firstAttribute="height" secondItem="Sec-dY-5KD" secondAttribute="height" id="M7r-PK-2wf"/>
-                    <constraint firstItem="RVV-GY-oxM" firstAttribute="top" secondItem="hZu-1x-ll4" secondAttribute="top" id="RCm-Z6-tK6"/>
+                    <constraint firstItem="RVV-GY-oxM" firstAttribute="top" secondItem="hZu-1x-ll4" secondAttribute="top" constant="12" id="RCm-Z6-tK6"/>
                     <constraint firstItem="mvl-7v-F4l" firstAttribute="centerX" secondItem="hZu-1x-ll4" secondAttribute="centerX" id="SKy-zE-zZE"/>
                     <constraint firstItem="mvl-7v-F4l" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="VAB-xX-T0O" secondAttribute="trailing" id="WC4-Mm-2uv"/>
                     <constraint firstItem="RVV-GY-oxM" firstAttribute="leading" secondItem="VAB-xX-T0O" secondAttribute="trailing" constant="8" id="WOb-Pf-i7M"/>
@@ -68,9 +69,7 @@
                     <constraint firstItem="Sec-dY-5KD" firstAttribute="leading" secondItem="EMD-AA-tki" secondAttribute="leading" id="fol-qs-gnL"/>
                     <constraint firstAttribute="bottom" secondItem="VAB-xX-T0O" secondAttribute="bottom" id="kNN-kD-d2q"/>
                     <constraint firstItem="VAB-xX-T0O" firstAttribute="leading" secondItem="EMD-AA-tki" secondAttribute="trailing" constant="8" id="l2m-M7-2WP"/>
-                    <constraint firstItem="Sec-dY-5KD" firstAttribute="top" secondItem="hZu-1x-ll4" secondAttribute="top" id="liI-OL-ybI"/>
-                    <constraint firstAttribute="bottom" secondItem="Sec-dY-5KD" secondAttribute="bottom" id="oge-au-ZyF"/>
-                    <constraint firstAttribute="bottom" secondItem="RVV-GY-oxM" secondAttribute="bottom" id="xw3-vX-G4y"/>
+                    <constraint firstAttribute="bottom" secondItem="RVV-GY-oxM" secondAttribute="bottom" constant="12" id="xw3-vX-G4y"/>
                     <constraint firstItem="VAB-xX-T0O" firstAttribute="top" secondItem="hZu-1x-ll4" secondAttribute="top" constant="1" id="xy6-LO-qKa"/>
                 </constraints>
             </tableViewCellContentView>

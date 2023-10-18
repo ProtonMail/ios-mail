@@ -101,7 +101,7 @@ extension LabelEditViewModel {
 
         uiDelegate?.showLoadingHUD()
         dependencies.labelService.updateLabel(
-            LabelEntity(label: dbLabel),
+            dbLabel,
             name: editingProperties.name,
             color: editingProperties.iconColor,
             parentID: editingProperties.parentID,
@@ -232,9 +232,8 @@ extension LabelEditViewModel: LabelEditViewModelInput {
 
         let subFolders = label.flattenSubFolders()
             .compactMap { dependencies.labelService.label(by: $0.location.labelID) }
-            .compactMap(LabelEntity.init)
 
-        dependencies.labelService.deleteLabel(LabelEntity(label: dbLabel), subLabels: subFolders) { [weak self] in
+        dependencies.labelService.deleteLabel(dbLabel, subLabels: subFolders) { [weak self] in
             guard let self = self else { return }
             self.uiDelegate?.hideLoadingHUD()
             self.router.closeView()

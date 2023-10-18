@@ -375,15 +375,15 @@ extension SingleMessageViewModel: ToolbarCustomizationActionHandler {
 // MARK: - Move to functions
 extension SingleMessageViewModel: MoveToActionSheetProtocol {
 
-    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, isFromSwipeAction: Bool, completion: (() -> Void)?) {
+    func handleMoveToAction(conversations: [ConversationEntity], to folder: MenuLabel, completion: (() -> Void)?) {
 
     }
 
-    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel, isFromSwipeAction: Bool) {
+    func handleMoveToAction(messages: [MessageEntity], to folder: MenuLabel) {
         messageService.move(messages: messages, to: folder.location.labelID, queue: true)
     }
 
-    func handleMoveToAction(conversations: [ConversationEntity], isFromSwipeAction: Bool, completion: (() -> Void)?) {
+    func handleMoveToAction(conversations: [ConversationEntity], completion: (() -> Void)?) {
         fatalError("Not implemented")
     }
 }

@@ -25,41 +25,36 @@ import SafariServices
 import UIKit
 
 class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
+    typealias Dependencies = HasComposerViewFactory
+    & HasContactViewsFactory
+    & HasToolbarSettingViewFactory
+    & AttachmentListViewModel.Dependencies
+    & SingleMessageViewModelFactory.Dependencies
 
     weak var viewController: SingleMessageViewController?
 
     private let labelId: LabelID
     let message: MessageEntity
-    private let coreDataService: CoreDataService
     private let user: UserManager
     private let highlightedKeywords: [String]
     private weak var navigationController: UINavigationController?
     var pendingActionAfterDismissal: (() -> Void)?
-    private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
     var goToDraft: ((MessageID, Date?) -> Void)?
-    private let composerFactory: ComposerDependenciesFactory
-    private let factory: ServiceFactory
+    private let dependencies: Dependencies
 
     init(
-        serviceFactory: ServiceFactory,
         navigationController: UINavigationController,
         labelId: LabelID,
         message: MessageEntity,
-        user: UserManager,
-        infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        coreDataService: CoreDataService =
-        sharedServices.get(by: CoreDataService.self),
+        dependencies: Dependencies,
         highlightedKeywords: [String] = []
     ) {
         self.navigationController = navigationController
         self.labelId = labelId
         self.message = message
-        self.user = user
-        self.coreDataService = coreDataService
-        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
+        self.user = dependencies.user
         self.highlightedKeywords = highlightedKeywords
-        self.composerFactory = serviceFactory.makeComposeViewModelDependenciesFactory()
-        self.factory = serviceFactory
+        self.dependencies = dependencies
     }
 
     func start() {
@@ -76,12 +71,10 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
     }
 
     func makeSingleMessageVC() -> SingleMessageViewController {
-        let singleMessageViewModelFactory = SingleMessageViewModelFactory()
+        let singleMessageViewModelFactory = SingleMessageViewModelFactory(dependencies: dependencies)
         let viewModel = singleMessageViewModelFactory.createViewModel(
             labelId: labelId,
             message: message,
-            user: user,
-            internetStatusProvider: InternetConnectionStatusProvider.shared,
             highlightedKeywords: highlightedKeywords,
             coordinator: self,
             goToDraft: { [weak self] msgID, originalScheduleTime in
@@ -135,23 +128,16 @@ class SingleMessageCoordinator: NSObject, CoordinatorDismissalObserver {
 // MARK: - Private functions
 extension SingleMessageCoordinator {
     private func presentCompose(with contact: ContactVO) {
-        let viewModel = ComposeViewModel(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: nil,
             action: .newDraft,
-            msgService: user.messageService,
-            user: user,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
+            toContact: contact
         )
-        viewModel.addToContacts(contact)
-
-        presentCompose(viewModel: viewModel)
+        viewController?.present(composer, animated: true)
     }
 
     private func presentAddContacts(with contact: ContactVO) {
-        let viewModel = ContactAddViewModelImpl(contactVO: contact,
-                                                user: user,
-                                                coreDataService: coreDataService)
-        let newView = ContactEditViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeEditView(contact: contact)
         let nav = UINavigationController(rootViewController: newView)
         self.viewController?.present(nav, animated: true)
     }
@@ -178,25 +164,24 @@ extension SingleMessageCoordinator {
             return
         }
         let contextProvider = sharedServices.get(by: CoreDataService.self)
-        guard let msg = contextProvider.mainContext.object(with: message.objectID.rawValue) as? Message else { return }
-        let viewModel = ComposeViewModel(
-            msg: msg,
-            action: composeAction,
-            msgService: user.messageService,
-            user: user,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
-        )
+        guard let msg: MessageEntity? = contextProvider.read(block: { context in
+            if let msg = context.object(with: self.message.objectID.rawValue) as? Message {
+                return MessageEntity(msg)
+            } else {
+                return nil
+            }
+        }) else { return }
 
-        presentCompose(viewModel: viewModel)
+        let composer = dependencies.composerViewFactory.makeComposer(msg: msg, action: composeAction)
+        viewController?.present(composer, animated: true)
     }
 
     private func presentAttachmentListView(decryptedBody: String?, attachments: [AttachmentInfo]) {
         let inlineCIDS = message.getCIDOfInlineAttachment(decryptedBody: decryptedBody)
         let viewModel = AttachmentListViewModel(
             attachments: attachments,
-            user: user,
             inlineCIDS: inlineCIDS,
-            dependencies: .init(fetchAttachment: FetchAttachment(dependencies: .init(apiService: user.apiService)))
+            dependencies: dependencies
         )
         let viewController = AttachmentListViewController(viewModel: viewModel)
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -216,47 +201,7 @@ extension SingleMessageCoordinator {
     }
 
     private func presentCompose(mailToURL: URL) {
-        guard let mailToData = mailToURL.parseMailtoLink() else { return }
-
-        let viewModel = ComposeViewModel(
-            msg: nil,
-            action: .newDraft,
-            msgService: user.messageService,
-            user: user,
-            dependencies: composerFactory.makeViewModelDependencies(user: user)
-        )
-
-        mailToData.to.forEach { recipient in
-            viewModel.addToContacts(ContactVO(name: recipient, email: recipient))
-        }
-
-        mailToData.cc.forEach { recipient in
-            viewModel.addCcContacts(ContactVO(name: recipient, email: recipient))
-        }
-
-        mailToData.bcc.forEach { recipient in
-            viewModel.addBccContacts(ContactVO(name: recipient, email: recipient))
-        }
-
-        if let subject = mailToData.subject {
-            viewModel.setSubject(subject)
-        }
-
-        if let body = mailToData.body {
-            viewModel.setBody(body)
-        }
-
-        presentCompose(viewModel: viewModel)
-    }
-
-    private func presentCompose(viewModel: ComposeViewModel) {
-        let composer = ComposerViewFactory.makeComposer(
-            childViewModel: viewModel,
-            contextProvider: coreDataService,
-            userIntroductionProgressProvider: factory.userCachedStatus,
-            attachmentMetadataStrippingCache: factory.userCachedStatus,
-            featureFlagCache: factory.userCachedStatus
-        )
+        let composer = dependencies.composerViewFactory.makeComposer(msg: nil, action: .newDraft, mailToUrl: mailToURL)
         viewController?.present(composer, animated: true)
     }
 
@@ -277,14 +222,9 @@ extension SingleMessageCoordinator {
         allActions: [MessageViewActionSheetAction],
         currentActions: [MessageViewActionSheetAction]
     ) {
-        let viewController = ToolbarCustomizeViewController<MessageViewActionSheetAction>(
-            viewModel: .init(
-                currentActions: currentActions,
-                allActions: allActions,
-                actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
-                defaultActions: MessageViewActionSheetAction.defaultActions,
-                infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
-            )
+        let viewController = dependencies.toolbarSettingViewFactory.makeCustomizeView(
+            currentActions: currentActions,
+            allActions: allActions
         )
         viewController.customizationIsDone = { [weak self] result in
             self?.viewController?.showProgressHud()
@@ -303,12 +243,7 @@ extension SingleMessageCoordinator {
     }
 
     private func presentToolbarCustomizationSettingView() {
-        let viewModel = ToolbarSettingViewModel(
-            infoBubbleViewStatusProvider: factory.userCachedStatus,
-            toolbarActionProvider: user,
-            saveToolbarActionUseCase: SaveToolbarActionSettings(dependencies: .init(user: user))
-        )
-        let settingView = ToolbarSettingViewController(viewModel: viewModel)
+        let settingView = dependencies.toolbarSettingViewFactory.makeSettingView()
         self.viewController?.navigationController?.pushViewController(settingView, animated: true)
     }
 }

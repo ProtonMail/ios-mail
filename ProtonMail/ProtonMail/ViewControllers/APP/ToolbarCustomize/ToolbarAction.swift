@@ -18,6 +18,9 @@
 import UIKit
 
 protocol ToolbarAction: CaseIterable, Equatable {
+    static var actionsNotAddableToToolbar: [Self] { get }
+    static var defaultActions: [Self] { get }
+
     var icon: UIImage? { get }
     var title: String? { get }
 }

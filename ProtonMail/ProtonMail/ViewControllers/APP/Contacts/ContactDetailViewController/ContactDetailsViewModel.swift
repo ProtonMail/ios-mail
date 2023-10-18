@@ -20,111 +20,404 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import CoreData
 import Foundation
-import PromiseKit
+import ProtonCore_Crypto
+import ProtonCore_DataModel
+import VCard
 
-typealias LoadingProgress = () -> Void
+final class ContactDetailsViewModel: NSObject {
+    private var contactParser: ContactParserProtocol?
 
-class ContactDetailsViewModel: NSObject {
-    var user: UserManager
-    let coreDataService: CoreDataContextProviderProtocol
-    private(set) var contact: ContactEntity
+    private(set) var emails: [ContactEditEmail] = []
+    private(set) var addresses: [ContactEditAddress] = []
+    private(set) var phones: [ContactEditPhone] = []
+
+    private(set) var birthday: ContactEditInformation?
+    private(set) var organizations: [ContactEditInformation] = []
+    private(set) var nickNames: [ContactEditInformation] = []
+    private(set) var titles: [ContactEditInformation] = []
+    private(set) var gender: ContactEditInformation?
+
+    private(set) var fields: [ContactEditField] = []
+    private(set) var notes: [ContactEditNote] = []
+    private(set) var urls: [ContactEditUrl] = []
+    private(set) var profilePicture: UIImage?
+
+    private(set) var verifyType2: Bool = true
+    private(set) var verifyType3: Bool = true
+
+    private var decryptError: Bool = false
+
+    private var typeSection: [ContactEditSectionType] = [
+        .email_header,
+        .type2_warning,
+        .emails,
+        .encrypted_header,
+        .type3_error,
+        .type3_warning,
+        .cellphone,
+        .home_address,
+        .birthday,
+        .url,
+        .organization,
+        .nickName,
+        .title,
+        .gender,
+        .custom_field,
+        .notes
+    ]
 
     var reloadView: (() -> Void)?
-    
-    init(user: UserManager, coreDataService: CoreDataContextProviderProtocol, contact: ContactEntity) {
-        self.user = user
-        self.coreDataService = coreDataService
+
+    private let contactFetchedController: NSFetchedResultsController<Contact>
+    let dependencies: Dependencies
+    private(set) var contact: ContactEntity
+
+    init(
+        contact: ContactEntity,
+        dependencies: Dependencies
+    ) {
         self.contact = contact
+        self.dependencies = dependencies
+        contactFetchedController = dependencies.contactService
+            .contactFetchedController(by: contact.contactID)
         super.init()
+        self.contactParser = ContactParser(resultDelegate: self)
+        contactFetchedController.delegate = self
+        try? contactFetchedController.performFetch()
     }
 
-    func paidUser() -> Bool {
-        return user.hasPaidMailPlan
+    func sections() -> [ContactEditSectionType] {
+        return typeSection
+    }
+
+    func type3Error() -> Bool {
+        return self.decryptError
+    }
+
+    func hasEncryptedContacts() -> Bool {
+        if self.type3Error() {
+            return true
+        }
+
+        if !verifyType3 {
+            return true
+        }
+
+        if phones.count > 0 {
+            return true
+        }
+        if addresses.count > 0 {
+            return true
+        }
+        if fields.count > 0 {
+            return true
+        }
+        if notes.count > 0 {
+            return true
+        }
+        if urls.count > 0 {
+            return true
+        }
+        if birthday != nil {
+            return true
+        }
+        if !organizations.isEmpty {
+            return true
+        }
+        if !nickNames.isEmpty {
+            return true
+        }
+        if !titles.isEmpty {
+            return true
+        }
+        if gender != nil {
+            return true
+        }
+
+        if !paidUser() {
+            return true
+        }
+
+        return false
     }
 
     @discardableResult
     func rebuild() -> Bool {
-        fatalError("This method must be overridden")
+        if self.contact.needsRebuild {
+            clearAddData()
+            try? setupEmails()
+            return true
+        }
+        return false
     }
 
-    func sections() -> [ContactEditSectionType] {
-        fatalError("This method must be overridden")
+    private func clearAddData() {
+        emails = []
+        addresses = []
+        phones = []
+        fields = []
+        notes = []
+        urls = []
+        profilePicture = nil
+        birthday = nil
+        organizations = []
+        nickNames = []
+        titles = []
+        gender = nil
+
+        verifyType2 = true
+        verifyType3 = true
     }
 
-    func statusType2() -> Bool {
-        fatalError("This method must be overridden")
+    private func rebuildData() {
+        clearAddData()
+        try?setupEmails(forceRebuild: true)
     }
 
-    func statusType3() -> Bool {
-        fatalError("This method must be overridden")
+    private func setupEmails(forceRebuild: Bool = false) throws {
+        let userInfo = self.dependencies.user.userInfo
+
+        //  origEmails
+        let cards = self.contact.cardDatas
+        for card in cards.sorted(by: { $0.type.rawValue < $1.type.rawValue }) {
+            switch card.type {
+            case .PlainText:
+                self.contactParser?
+                    .parsePlainTextContact(data: card.data,
+                                           contextProvider: self.dependencies.coreDataService,
+                                           contactID: self.contact.contactID)
+            case .EncryptedOnly:
+                try self.contactParser?
+                    .parseEncryptedOnlyContact(card: card,
+                                               passphrase: dependencies.user.mailboxPassword,
+                                               userKeys: userInfo.userKeys.toArmoredPrivateKeys)
+            case .SignedOnly:
+                self.verifyType2 = self.contactParser?.verifySignature(
+                    signature: ArmoredSignature(value: card.signature),
+                    plainText: card.data,
+                    userKeys: userInfo.userKeys.toArmoredPrivateKeys,
+                    passphrase: dependencies.user.mailboxPassword
+                ) ?? false
+                self.contactParser?
+                    .parsePlainTextContact(data: card.data,
+                                           contextProvider: self.dependencies.coreDataService,
+                                           contactID: self.contact.contactID)
+            case .SignAndEncrypt:
+                try self.contactParser?
+                    .parseSignAndEncryptContact(
+                        card: card,
+                        passphrase: dependencies.user.mailboxPassword,
+                        firstUserKey: userInfo.firstUserKey().map { ArmoredKey(value: $0.privateKey) },
+                        userKeys: userInfo.userKeys.toArmoredPrivateKeys
+                    )
+            }
+        }
+
+        if !forceRebuild {
+            self.updateRebuildFlag()
+        }
+
+        if self.emails.count == 0 {
+            for (index, item) in self.typeSection.enumerated() {
+                if item == .email_header {
+                    self.typeSection.remove(at: index)
+                    break
+                }
+            }
+        }
     }
 
-    func type3Error() -> Bool {
-        fatalError("This method must be overridden")
+    @MainActor
+    func getDetails(loading: () -> Void) async throws {
+        if contact.isDownloaded && contact.needsRebuild == false {
+            try setupEmails()
+        } else {
+            loading()
+            try await updateContactDetail()
+        }
     }
 
-    func debugging() -> Bool {
-        fatalError("This method must be overridden")
+    func getProfile() -> ContactEditProfile {
+        return ContactEditProfile(n_displayname: contact.name, isNew: false)
     }
 
-    func hasEncryptedContacts() -> Bool {
-        fatalError("This method must be overridden")
+    func export() -> String {
+        let cards = self.contact.cardDatas
+        var vcard: PMNIVCard? = nil
+        let userInfo = dependencies.user.userInfo
+        for card in cards {
+            if card.type == .SignAndEncrypt {
+                var pt_contact: String?
+                let userkeys = userInfo.userKeys
+                for key in userkeys {
+                    do {
+                        pt_contact = try? card.data.decryptMessageWithSingleKeyNonOptional(ArmoredKey(value: key.privateKey),
+                                                                                           passphrase: dependencies.user.mailboxPassword)
+                        break
+                    }
+                }
+
+                guard let pt_contact_vcard = pt_contact else {
+                    break
+                }
+                vcard = PMNIEzvcard.parseFirst(pt_contact_vcard)
+            }
+        }
+
+        for cardData in cards {
+            if cardData.type == .PlainText {
+                if let card = PMNIEzvcard.parseFirst(cardData.data) {
+                    let emails = card.getEmails()
+                    let formattedName = card.getFormattedName()
+                    if vcard != nil {
+                        vcard!.setEmails(emails)
+                        vcard!.setFormattedName(formattedName)
+                    } else {
+                        vcard = card
+                    }
+                }
+            }
+        }
+
+        for cardData in cards {
+            if cardData.type == .SignedOnly {
+                if let card = PMNIEzvcard.parseFirst(cardData.data) {
+                    let emails = card.getEmails()
+                    let formattedName = card.getFormattedName()
+                    if vcard != nil {
+                        vcard!.setEmails(emails)
+                        vcard!.setFormattedName(formattedName)
+                    } else {
+                        vcard = card
+                    }
+                }
+            }
+        }
+
+        guard let outVCard = vcard else {
+            return ""
+        }
+
+        return PMNIEzvcard.write(outVCard)
     }
-    
-    func getDetails(loading : LoadingProgress) -> Promise<Void> {
-        fatalError("This method must be overridden")
-    }
-    
-    func getContact() -> ContactEntity? {
-        fatalError("This method must be overridden")
+
+    func exportName() -> String {
+        let name = contact.name.trimmingCharacters(in: .whitespacesAndNewlines)
+        if !name.isEmpty {
+            return name + ".vcf"
+        }
+        return "exported.vcf"
     }
 
     func setContact(_ contact: ContactEntity) {
         self.contact = contact
     }
-    
-    func getProfile() -> ContactEditProfile {
-        fatalError("This method must be overridden")
+}
+
+// MARK: CoreData related
+
+extension ContactDetailsViewModel: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        if let object = self.getContactObject() {
+            self.setContact(ContactEntity(contact: object))
+        }
+        rebuildData()
+        reloadView?()
     }
 
-    func getProfilePicture() -> UIImage? {
-        fatalError("This method must be overridden")
+    private func updateRebuildFlag() {
+        let objectID = self.contact.objectID.rawValue
+        dependencies.coreDataService.performAndWaitOnRootSavingContext { context in
+            if let contactToUpdate = try? context.existingObject(with: objectID) as? Contact {
+                contactToUpdate.needsRebuild = false
+                _ = context.saveUpstreamIfNeeded()
+            }
+        }
     }
 
-    func getEmails() -> [ContactEditEmail] {
-        fatalError("This method must be overridden")
+    @MainActor
+    private func updateContactDetail() async throws {
+        let contact = try await dependencies.contactService.fetchContact(contactID: contact.contactID)
+        setContact(contact)
+        try setupEmails()
     }
 
-    func getPhones() -> [ContactEditPhone] {
-        fatalError("This method must be overridden")
+    private func getContactObject() -> Contact? {
+        self.contactFetchedController.fetchedObjects?.first
     }
 
-    func getAddresses() -> [ContactEditAddress] {
-        fatalError("This method must be overridden")
+    func paidUser() -> Bool {
+        return dependencies.user.hasPaidMailPlan
+    }
+}
+
+extension ContactDetailsViewModel: ContactParserResultDelegate {
+    func append(structuredName: ContactEditStructuredName) {
+        // TODO: show structuredName
     }
 
-    func getInformations() -> [ContactEditInformation] {
-        fatalError("This method must be overridden")
+    func append(emails: [ContactEditEmail]) {
+        self.emails.append(contentsOf: emails)
     }
 
-    func getFields() -> [ContactEditField] {
-        fatalError("This method must be overridden")
+    func append(addresses: [ContactEditAddress]) {
+        self.addresses.append(contentsOf: addresses)
     }
 
-    func getNotes() -> [ContactEditNote] {
-        fatalError("This method must be overridden")
+    func append(telephones: [ContactEditPhone]) {
+        self.phones.append(contentsOf: telephones)
     }
 
-    func getUrls() -> [ContactEditUrl] {
-        fatalError("This method must be overridden")
+    func append(informations: [ContactEditInformation]) {
+        for info in informations {
+            switch info.infoType {
+            case .gender:
+                gender = info
+            case .birthday:
+                birthday = info
+            case .title:
+                titles.append(info)
+            case .organization:
+                organizations.append(info)
+            case .nickname:
+                nickNames.append(info)
+            case .anniversary, .url:
+                fatalError("Should not reach here")
+            }
+        }
     }
 
-    func export() -> String {
-        fatalError("This method must be overridden")
+    func append(fields: [ContactEditField]) {
+        self.fields.append(contentsOf: fields)
     }
 
-    func exportName() -> String {
-        fatalError("This method must be overridden")
+    func append(notes: [ContactEditNote]) {
+        self.notes.append(contentsOf: notes)
+    }
+
+    func append(urls: [ContactEditUrl]) {
+        self.urls.append(contentsOf: urls)
+    }
+
+    func update(verifyType3: Bool) {
+        self.verifyType3 = verifyType3
+    }
+
+    func update(decryptionError: Bool) {
+        self.decryptError = decryptionError
+    }
+
+    func update(profilePicture: UIImage?) {
+        self.profilePicture = profilePicture
+    }
+}
+
+extension ContactDetailsViewModel {
+    struct Dependencies {
+        let user: UserManager
+        let coreDataService: CoreDataContextProviderProtocol
+        let contactService: ContactProviderProtocol
     }
 }

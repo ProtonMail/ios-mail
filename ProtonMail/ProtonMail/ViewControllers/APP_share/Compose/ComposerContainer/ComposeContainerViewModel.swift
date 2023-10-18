@@ -28,6 +28,10 @@ protocol ComposeContainerUIProtocol: AnyObject {
 }
 
 class ComposeContainerViewModel: TableContainerViewModel {
+    typealias Dependencies = HasAttachmentMetadataStrippingProtocol
+    & HasFeatureFlagCache
+    & HasUserIntroductionProgressProvider
+
     var childViewModel: ComposeViewModel
 
     private let dependencies: Dependencies
@@ -38,12 +42,9 @@ class ComposeContainerViewModel: TableContainerViewModel {
     private var contactChanged: NSKeyValueObservation?
     weak var uiDelegate: ComposeContainerUIProtocol?
     var user: UserManager { self.childViewModel.user }
-    let coreDataContextProvider: CoreDataContextProviderProtocol
-
-    private var userIntroductionProgressProvider: UserIntroductionProgressProvider
 
     var isScheduleSendIntroViewShown: Bool {
-        !userIntroductionProgressProvider.shouldShowSpotlight(for: .scheduledSend, toUserWith: user.userID)
+        !dependencies.userIntroductionProgressProvider.shouldShowSpotlight(for: .scheduledSend, toUserWith: user.userID)
     }
 
     private let router: ComposerRouter
@@ -59,17 +60,13 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 
     init(
-        dependencies: Dependencies,
         router: ComposerRouter,
-        editorViewModel: ComposeViewModel,
-        userIntroductionProgressProvider: UserIntroductionProgressProvider,
-        contextProvider: CoreDataContextProviderProtocol
+        dependencies: Dependencies,
+        editorViewModel: ComposeViewModel
     ) {
         self.dependencies = dependencies
         self.router = router
         self.childViewModel = editorViewModel
-        self.userIntroductionProgressProvider = userIntroductionProgressProvider
-        self.coreDataContextProvider = contextProvider
         super.init()
         self.contactChanged = observeRecipients()
     }
@@ -109,7 +106,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
 
     func userHasSeenScheduledSendSpotlight() {
-        userIntroductionProgressProvider.markSpotlight(for: .scheduledSend, asSeen: true, byUserWith: user.userID)
+        dependencies.userIntroductionProgressProvider.markSpotlight(for: .scheduledSend, asSeen: true, byUserWith: user.userID)
     }
 
     private func observeRecipients() -> NSKeyValueObservation {
@@ -199,12 +196,5 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
     func sendAction(deliveryTime: Date?) {
         childViewModel.deliveryTime = deliveryTime
         // TODO: handle sending message here.
-    }
-}
-
-extension ComposeContainerViewModel {
-    struct Dependencies {
-        let featureFlagCache: FeatureFlagCache
-        let attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol
     }
 }

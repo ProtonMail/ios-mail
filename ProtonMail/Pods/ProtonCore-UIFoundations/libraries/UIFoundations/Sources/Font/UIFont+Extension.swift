@@ -32,9 +32,9 @@ extension UIFont {
 
         let metrics = UIFontMetrics(forTextStyle: style)
         if DFSSetting.limitToXXXLarge {
-            return metrics.scaledFont(for: font, maximumPointSize: limit, compatibleWith: trait)
+            return metrics.scaledFont(for: font, maximumPointSize: limit)
         } else {
-            let result = metrics.scaledFont(for: font, compatibleWith: trait)
+            let result = metrics.scaledFont(for: font)
             return result
         }
     }

@@ -58,7 +58,6 @@ end
 def app_share_pods
   app_share_push_pods
 
-  pod 'AwaitKit', :git => 'https://github.com/yannickl/AwaitKit.git', :commit => '4b725f40dd189f40c0962cba792f06a2073bd977'
   pod 'Groot', '3.0.1'
   pod 'MBProgressHUD' , '1.1.0'
   pod 'PromiseKit', '6.13.1'
@@ -122,6 +121,7 @@ target 'ProtonMailTests' do
   pod 'ProtonCore-TestingToolkit/UnitTests/DataModel', :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TestingToolkit/UnitTests/Networking', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-TestingToolkit/UnitTests/Authentication", :git => proton_core_path, :tag => proton_core_version
+  pod 'fusion', :git => proton_test_path, :commit => proton_test_commit
   app_pods
 end
 

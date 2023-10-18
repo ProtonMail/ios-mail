@@ -1,7 +1,5 @@
 PODS:
   - Alamofire (5.4.4)
-  - AwaitKit (5.2.0):
-    - PromiseKit (~> 6)
   - EllipticCurveKeyPair (2.0)
   - fusion (2.0.1)
   - Groot (3.0.1):
@@ -273,7 +271,6 @@ PODS:
   - Yams (5.0.5)
 
 DEPENDENCIES:
-  - AwaitKit (from `https://github.com/yannickl/AwaitKit.git`, commit `4b725f40dd189f40c0962cba792f06a2073bd977`)
   - "fusion (from `git@gitlab.protontech.ch:tpe/apple-fusion.git`, commit `9b250a7f`)"
   - Groot (= 3.0.1)
   - "iosMonkey (from `git@gitlab.protontech.ch:tpe/ios-monkey.git`, commit `fa348f33`)"
@@ -354,9 +351,6 @@ SPEC REPOS:
     - Yams
 
 EXTERNAL SOURCES:
-  AwaitKit:
-    :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
-    :git: https://github.com/yannickl/AwaitKit.git
   fusion:
     :commit: 9b250a7f
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
@@ -485,9 +479,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/ProtonMail/TrustKit.git
 
 CHECKOUT OPTIONS:
-  AwaitKit:
-    :commit: 4b725f40dd189f40c0962cba792f06a2073bd977
-    :git: https://github.com/yannickl/AwaitKit.git
   fusion:
     :commit: 9b250a7f
     :git: "git@gitlab.protontech.ch:tpe/apple-fusion.git"
@@ -617,7 +608,6 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
-  AwaitKit: 512626cd12c82b1fbffddc8f414d0364cb456004
   EllipticCurveKeyPair: 8c69e5238a6e47243a10a48fbd41dfb19110b22e
   fusion: 4ce692b0bd8030d952dde9b4ceae3ab9fd3d2b72
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
@@ -673,6 +663,6 @@ SPEC CHECKSUMS:
   TrustKit: f830ff5af0a8cbad5178aef1d0951389b096d312
   Yams: 271b5757cee031e087ae6322128895c04826c4f3
 
-PODFILE CHECKSUM: 909c16ca321bafdd06be4a5f397b6a35f3c14c68
+PODFILE CHECKSUM: 7809078cae7e70580d42f1bff97b83dacfb28681
 
 COCOAPODS: 1.12.1

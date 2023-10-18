@@ -66,8 +66,7 @@ final class ChangePasswordViewModelTests: XCTestCase {
             authCredential: auth,
             mailSettings: nil,
             parent: nil,
-            appTelemetry: MailAppTelemetry(),
-            coreKeyMaker: keyMaker
+            globalContainer: .init()
         )
     }
 

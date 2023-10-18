@@ -28,11 +28,14 @@ import ProtonCore_UIFoundations
 import UIKit
 
 final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintProtocol, AccessibleView, LifetimeTrackable {
+    typealias Dependencies = HasComposerViewFactory & HasContactViewsFactory & HasCoreDataContextProviderProtocol  & HasPaymentsUIFactory
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
     var viewModel: ContactGroupDetailVMProtocol!
+    private let dependencies: Dependencies
 
     @IBOutlet weak var headerContainerView: UIView!
     @IBOutlet weak var groupNameLabel: UILabel!
@@ -46,8 +49,9 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
 
     private let kContactGroupViewCellIdentifier = "ContactGroupEditCell"
 
-    init(viewModel: ContactGroupDetailVMProtocol) {
+    init(viewModel: ContactGroupDetailVMProtocol, dependencies: Dependencies) {
         self.viewModel = viewModel
+        self.dependencies = dependencies
         super.init(nibName: "ContactGroupDetailViewController", bundle: nil)
         self.viewModel.reloadView = { [weak self] in
             self?.reload()
@@ -99,24 +103,17 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
             return
         }
 
-        let user = self.viewModel.user
-        let contactGroupVO = ContactGroupVO(ID: self.viewModel.groupID.rawValue, name: self.viewModel.name)
+        let contactGroupVO = ContactGroupVO(
+            ID: viewModel.groupID.rawValue,
+            name: viewModel.name,
+            contextProvider: dependencies.contextProvider
+        )
         contactGroupVO.selectAllEmailFromGroup()
 
-        let composer = ComposerViewFactory.makeComposer(
+        let composer = dependencies.composerViewFactory.makeComposer(
             msg: nil,
             action: .newDraft,
-            user: user,
-            contextProvider: sharedServices.get(by: CoreDataService.self),
             isEditingScheduleMsg: false,
-            userIntroductionProgressProvider: userCachedStatus,
-            internetStatusProvider: InternetConnectionStatusProvider.shared,
-            coreKeyMaker: sharedServices.get(),
-            darkModeCache: sharedServices.userCachedStatus,
-            mobileSignatureCache: sharedServices.userCachedStatus,
-            attachmentMetadataStrippingCache: sharedServices.userCachedStatus,
-            featureFlagCache: sharedServices.userCachedStatus,
-            userCachedStatusProvider: sharedServices.userCachedStatus,
             toContact: contactGroupVO
         )
 
@@ -128,13 +125,13 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
             presentPlanUpgrade()
             return
         }
-        let viewModel = ContactGroupEditViewModelImpl(state: .edit,
-                                                      user: viewModel.user,
-                                                      groupID: viewModel.groupID.rawValue,
-                                                      name: viewModel.name,
-                                                      color: viewModel.color,
-                                                      emailIDs: Set(viewModel.emails))
-        let newView = ContactGroupEditViewController(viewModel: viewModel)
+        let newView = dependencies.contactViewsFactory.makeGroupEditView(
+            state: .edit,
+            groupID: viewModel.groupID.rawValue,
+            name: viewModel.name,
+            color: viewModel.color,
+            emailIDs: Set(viewModel.emails)
+        )
         newView.delegate = self
         let nav = UINavigationController(rootViewController: newView)
         self.present(nav, animated: true, completion: nil)
@@ -177,16 +174,9 @@ final class ContactGroupDetailViewController: UIViewController, ComposeSaveHintP
     }
 
     private func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(
-            payments: viewModel.user.payments,
-            clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames,
-            customization: .empty
-        )
-        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
-                                         backendFetch: true) { _ in }
+        paymentsUI = dependencies.paymentsUIFactory.makeView()
+        paymentsUI?.presentUpgradePlan()
     }
-
 }
 
 extension ContactGroupDetailViewController: UITableViewDataSource, UITableViewDelegate {

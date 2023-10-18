@@ -130,6 +130,7 @@ class SingleMessageContentViewController: UIViewController {
         setUpFooterButtons()
 
         viewModel.viewDidLoad()
+        updateAttachmentBannerIfNeeded()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

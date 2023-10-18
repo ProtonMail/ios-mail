@@ -30,7 +30,7 @@ final class PushNotificationServiceTests: XCTestCase {
     private var sut: PushNotificationService!
 
     private var mockPushEncryptionManager: MockPushEncryptionManagerProtocol!
-    private var mockSignInProvider: MockSignInProvider!
+    private var mockUsersManager: MockUsersManagerProtocol!
     private var mockUnlockProvider: MockUnlockProvider!
     private var mockNotificationCenter: NotificationCenter!
     private let dummyToken = "dummy_token"
@@ -39,12 +39,12 @@ final class PushNotificationServiceTests: XCTestCase {
         try super.setUpWithError()
         mockPushEncryptionManager = .init()
         mockNotificationCenter = .init()
-        mockSignInProvider = .init()
-        mockSignInProvider.isSignedInStub.fixture = true
+        mockUsersManager = .init()
+        mockUsersManager.hasUsersStub.bodyIs { _ in true }
         mockUnlockProvider = .init()
-        mockUnlockProvider.isUnlockedStub.fixture = true
+        mockUnlockProvider.isUnlockedStub.bodyIs { _ in true }
         let dependencies: PushNotificationService.Dependencies = .init(
-            signInProvider: mockSignInProvider,
+            usersManager: mockUsersManager,
             unlockProvider: mockUnlockProvider,
             pushEncryptionManager: mockPushEncryptionManager,
             navigationResolver: PushNavigationResolver(dependencies: .init()),
@@ -58,7 +58,7 @@ final class PushNotificationServiceTests: XCTestCase {
         super.tearDown()
         mockPushEncryptionManager = nil
         mockNotificationCenter = nil
-        mockSignInProvider = nil
+        mockUsersManager = nil
         mockUnlockProvider = nil
         sut = nil
     }
@@ -96,7 +96,7 @@ final class PushNotificationServiceTests: XCTestCase {
     }
 
     func testOnNotificationDidUnlock_whenPengingToken_itShouldCallPushEncryptionManagerToRegisterDeviceToken() {
-        mockSignInProvider.isSignedInStub.fixture = false
+        mockUsersManager.hasUsersStub.bodyIs { _ in false }
         sut.didRegisterForRemoteNotifications(withDeviceToken: dummyToken)
         mockNotificationCenter.post(name: .didUnlock, object: nil)
 

@@ -27,7 +27,6 @@ enum Link {
     static let dmarcFailedInfo = "https://proton.me/support/email-has-failed-its-domains-authentication-requirements-warning/"
     static let emailTrackerProtection = "https://proton.me/support/email-tracker-protection"
     static let encryptOutsideInfo = "https://proton.me/support/password-protected-emails"
-    static let encryptedSearchInfo = "https://proton.me/support/search-message-content"
     static let promoteInMobilSignature = "https://proton.me/mail/home"
     static let protonStatusPage = "https://status.proton.me"
 

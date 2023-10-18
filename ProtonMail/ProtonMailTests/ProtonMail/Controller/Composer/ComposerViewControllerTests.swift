@@ -23,34 +23,40 @@ import ProtonCore_UIFoundations
 import XCTest
 
 final class ComposerViewControllerTests: XCTestCase {
-    var contextProviderMock: MockCoreDataContextProvider!
-    var apiMock: APIServiceMock!
     var user: UserManager!
-    var draft: Message!
+    var draft: MessageEntity!
     var nav: UINavigationController!
     var sut: ComposeContainerViewController!
 
+    private var composerViewFactory: ComposerViewFactory!
+
     override func setUpWithError() throws {
         try super.setUpWithError()
-        apiMock = .init()
+        let apiMock = APIServiceMock()
         user = try UserManager.prepareUser(apiMock: apiMock)
-        contextProviderMock = .init()
+        let contextProviderMock = MockCoreDataContextProvider()
+
         draft = try prepareEncryptedMessage(
             plaintextBody: MessageDecrypterTestData.decryptedHTMLMimeBody(),
             mimeType: .multipartMixed,
             user: user,
             contextProvider: contextProviderMock
         )
+
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { contextProviderMock }
+        let userContainer = UserContainer(userManager: user, globalContainer: globalContainer)
+
+        composerViewFactory = userContainer.composerViewFactory
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
+        composerViewFactory = nil
         nav = nil
         draft = nil
         user = nil
-        apiMock = nil
-        contextProviderMock = nil
     }
 
     func testEditorOpenScheduleSendActionSheet_whenScheduledTime_withOriginalScheduledTime_itShouldShowScheduleAsOption() {
@@ -85,20 +91,10 @@ final class ComposerViewControllerTests: XCTestCase {
 
 extension ComposerViewControllerTests {
     private func makeSUT(originalScheduledTime: Date?) {
-        nav = ComposerViewFactory.makeComposer(
+        nav = composerViewFactory.makeComposer(
             msg: draft,
             action: .openDraft,
-            user: user,
-            contextProvider: contextProviderMock,
             isEditingScheduleMsg: true,
-            userIntroductionProgressProvider: MockUserIntroductionProgressProvider(),
-            internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
-            coreKeyMaker: MockKeyMakerProtocol(),
-            darkModeCache: MockDarkModeCacheProtocol(),
-            mobileSignatureCache: MockMobileSignatureCacheProtocol(),
-            attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock(),
-            featureFlagCache: MockFeatureFlagCache(),
-            userCachedStatusProvider: MockUserCachedStatusProvider(),
             originalScheduledTime: originalScheduledTime
         )
         sut = nav.topViewController as? ComposeContainerViewController
@@ -109,14 +105,14 @@ extension ComposerViewControllerTests {
         mimeType: Message.MimeType,
         user: UserManager,
         contextProvider: CoreDataContextProviderProtocol
-    ) throws -> Message {
+    ) throws -> MessageEntity {
         let encryptedBody = try Encryptor.encrypt(
             publicKey: user.userInfo.addressKeys.toArmoredPrivateKeys[0],
             cleartext: plaintextBody
         ).value
 
         let parsedObject = testMessageDetailData.parseObjectAny()!
-        return try contextProvider.performAndWaitOnRootSavingContext(block: { context in
+        let rawMsg = try contextProvider.performAndWaitOnRootSavingContext(block: { context in
             let messageObject = try XCTUnwrap(
                 GRTJSONSerialization.object(
                     withEntityName: "Message",
@@ -130,5 +126,6 @@ extension ComposerViewControllerTests {
             messageObject.mimeType = mimeType.rawValue
             return messageObject
         })
+        return .init(rawMsg)
     }
 }

@@ -151,26 +151,6 @@ class ContactDetailResponse: Response {
     }
 }
 
-final class ContactEmail: Package {
-    let id: String
-    let email: String
-    let type: String
-
-    init(email: String, type: String) {
-        self.email = email
-        self.type = type
-        self.id = ""
-    }
-
-    var parameters: [String: Any]? {
-        return [
-            "ID": self.id,
-            "Email": self.email,
-            "Type": self.type
-        ]
-    }
-}
-
 // 0, 1, 2, 3 // 0 for cleartext, 1 for encrypted only (not used), 2 for signed, 3 for both
 enum CardDataType: Int, Codable {
     case PlainText = 0

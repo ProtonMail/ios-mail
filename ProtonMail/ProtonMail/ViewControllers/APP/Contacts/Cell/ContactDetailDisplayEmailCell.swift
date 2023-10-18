@@ -28,10 +28,16 @@ class ContactDetailDisplayEmailCell: UITableViewCell {
     @IBOutlet weak var value: UILabel!
     @IBOutlet weak var iconStackView: UIStackView!
 
-    func configCell(title: String, value: String, contactGroupColors: [String]) {
+    func configCell(
+        title: String,
+        value: String,
+        contactGroupColors: [String],
+        titleStyle: [NSAttributedString.Key : Any] = .DefaultSmall
+    ) {
+        backgroundColor = ColorProvider.BackgroundNorm
         contentView.backgroundColor = ColorProvider.BackgroundNorm
 
-        self.title.attributedText = title.apply(style: .DefaultSmallWeek)
+        self.title.attributedText = title.apply(style: titleStyle)
         self.value.attributedText = value.apply(style: .Default)
 
         prepareContactGroupIcons(cell: self,

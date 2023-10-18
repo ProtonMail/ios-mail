@@ -28,6 +28,7 @@ import ProtonCore_PaymentsUI
 import ProtonCore_Foundations
 
 class SettingDetailViewController: UIViewController, AccessibleView {
+    typealias Dependencies = HasPaymentsUIFactory
 
     @IBOutlet weak var switchView: UIView!
     @IBOutlet weak var switchLabel: UILabel!
@@ -47,10 +48,19 @@ class SettingDetailViewController: UIViewController, AccessibleView {
     @IBOutlet weak var notesLabel: UILabel!
 
     fileprivate var doneButton: UIBarButtonItem!
-    fileprivate var viewModel: SettingDetailsViewModel!
     private var paymentsUI: PaymentsUI?
-    func setViewModel(_ vm: SettingDetailsViewModel) {
-        self.viewModel = vm
+
+    private let viewModel: SettingDetailsViewModel
+    private let dependencies: Dependencies
+
+    init(viewModel: SettingDetailsViewModel, dependencies: Dependencies) {
+        self.viewModel = viewModel
+        self.dependencies = dependencies
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -202,14 +212,8 @@ class SettingDetailViewController: UIViewController, AccessibleView {
     }
 
     private func presentPlanUpgrade() {
-        self.paymentsUI = PaymentsUI(
-            payments: viewModel.userManager.payments,
-            clientApp: .mail,
-            shownPlanNames: Constants.shownPlanNames,
-            customization: .empty
-        )
-        self.paymentsUI?.showUpgradePlan(presentationType: .modal,
-                                         backendFetch: true) { _ in }
+        paymentsUI = dependencies.paymentsUIFactory.makeView()
+        paymentsUI?.presentUpgradePlan()
     }
 
     fileprivate func dismissKeyboard() {

@@ -190,18 +190,51 @@ test:ui:smoke:
   tags:
     - iOS_GENERAL
 
+test:ui:sanity:
+  dependencies:
+    - deploy:review
+    - build:debug:for-testing
+  stage: test
+  rules:
+      # Allow job to run automatically on each scheduled job with sanity test type
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TEST_TYPE == "sanity"'
+      when: always
+    - when: manual
+  before_script:
+    - *setup_project
+    - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
+  script:
+    - cd ProtonMail
+    - bundle exec fastlane ui_test testplan:"SanityTests" concurrent_workers:"4"
+  artifacts:
+    when: always
+    name: "test-report"
+    paths:
+      - test_output/TestResults
+    expire_in: 10 days
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: test_output/slatherOutput/cobertura.xml
+      junit: test_output/TestResults/report.xml
+  allow_failure: true
+  tags:
+    - iOS_UITEST
+
 report:slack:smoke:
   dependencies:
     - test:ui:smoke
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
-  rules:
-    - if: "$CI_COMMIT_BRANCH"
-      when: never
-    - if: "$CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS"
-      when: never
-    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-      when: always
+  except:
+    - schedules
+  only:
+    refs:
+      - master
+      - main
+      - develop
+      - /^release\/.*$/
+      - merge_requests
   script:
     - test_reporter.py
       --path test_output/TestResults/
@@ -218,7 +251,8 @@ test:ui:feature:
     - build:debug:for-testing
   stage: test
   rules:
-    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
+    - if: '$TEST_TYPE == "feature"'
+      when: always
   artifacts:
     when: always
     name: "test-report"
@@ -236,6 +270,34 @@ test:ui:feature:
   tags:
     - iOS_UITEST
 
+test:ui:regression:
+  dependencies:
+    - deploy:review
+    - build:debug:for-testing
+  stage: test
+  rules:
+      # Allow job to run automatically on each scheduled job with regression test type
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $TEST_TYPE == "regression"'
+      when: always
+    - when: manual
+  artifacts:
+    when: always
+    name: "test-report"
+    paths:
+      - test_output/TestResults
+    expire_in: 10 days
+    reports:
+      junit: test_output/TestResults/report.xml
+  before_script:
+    - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
+    - *setup_project
+  script:
+    - cd ProtonMail
+    - bundle exec fastlane ui_test testplan:RegressionTests concurrent_workers:$NUMBER_OF_DEVICES
+  allow_failure: true
+  tags:
+    - iOS_UITEST
+
 test:ui:monkey:
   dependencies:
     - deploy:review
@@ -243,7 +305,7 @@ test:ui:monkey:
   timeout: 2 hours
   stage: test
   rules:
-    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "monkey"'
+    - if: '$TEST_TYPE == "monkey"'
   artifacts:
     when: always
     name: "monkey-report"
@@ -263,6 +325,7 @@ test:ui:monkey:
 report:slack:feature:
   dependencies:
     - test:ui:feature
+    - test:ui:regression
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   rules:
@@ -284,7 +347,7 @@ report:slack:monkey:
   image: $CI_REGISTRY/tpe/test-scripts
   stage: report
   rules:
-    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "monkey"'
+    - if: '$TEST_TYPE == "monkey"'
       when: always
   script:
     - test_reporter.py
@@ -296,20 +359,41 @@ report:slack:monkey:
   tags:
     - small
 
-report:testmo:feature:
+report:testmo:regression:
   dependencies:
-    - test:ui:feature
+    - test:ui:regression
   stage: report
   extends: .testmo-upload
-  dependencies:
-    - test:ui:feature
   rules:
-    - if: '$TEST_TYPE == "regression" || $TEST_TYPE == "feature"'
-      when: always
+    - when: manual
+  before_script:
+    - echo "$MILESTONE"
+    - 'if [ -z $MILESTONE ]; then echo "Testmo MILESTONE is not provided. Failing the job."; exit 1; fi'
   variables:
     PROJECT_ID: "7"
     NAME: "$TEST_PLAN"
-    MILESTONE: "nightly-automation"
+    MILESTONE: "$MILESTONE"
+    TAGS: "$CI_COMMIT_REF_SLUG"
+    SOURCE: "ios"
+    RESULT_FOLDER: "./test_output/TestResults/*.xml"
+  allow_failure: true
+  tags:
+    - small
+
+report:testmo:sanity:
+  needs:
+    - test:ui:sanity
+  stage: report
+  extends: .testmo-upload
+  rules:
+    - when: manual
+  before_script:
+    - echo "$MILESTONE"
+    - 'if [ -z $MILESTONE ]; then echo "Testmo MILESTONE is not provided. Failing the job."; exit 1; fi'
+  variables:
+    PROJECT_ID: "7"
+    NAME: "SanityTests"
+    MILESTONE: "$MILESTONE"
     TAGS: "$CI_COMMIT_REF_SLUG"
     SOURCE: "ios"
     RESULT_FOLDER: "./test_output/TestResults/*.xml"

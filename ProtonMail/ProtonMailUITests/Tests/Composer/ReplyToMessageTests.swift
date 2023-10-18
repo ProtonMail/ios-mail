@@ -22,6 +22,7 @@ class ReplyToMessageTests: FixtureAuthenticatedTestCase {
 
             InboxRobot()
                 .clickMessageByIndex(0)
+                .verify.messageBodyWithStaticTextExists("Auto generated email")
                 .reply()
                 .changeSubjectTo(subject)
                 .sendMessageFromMessageRobot()

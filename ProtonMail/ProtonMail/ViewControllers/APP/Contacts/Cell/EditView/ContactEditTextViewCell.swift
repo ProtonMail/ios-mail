@@ -25,7 +25,6 @@ import ProtonCore_UIFoundations
 protocol ContactEditTextViewCellDelegate: AnyObject {
     func beginEditing(textView: UITextView)
     func didChanged()
-    func featureBlocked()
 }
 
 final class ContactEditTextViewCell: UITableViewCell {
@@ -34,8 +33,6 @@ final class ContactEditTextViewCell: UITableViewCell {
     fileprivate weak var delegate: ContactEditTextViewCellDelegate?
 
     @IBOutlet weak var textView: UITextView!
-
-    fileprivate var isPaid: Bool = false
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -50,9 +47,8 @@ final class ContactEditTextViewCell: UITableViewCell {
         self.textView.becomeFirstResponder()
     }
 
-    func configCell(obj: ContactEditNote, paid: Bool, callback: ContactEditTextViewCellDelegate?) {
+    func configCell(obj: ContactEditNote, callback: ContactEditTextViewCellDelegate?) {
         self.note = obj
-        self.isPaid = paid
         self.delegate = callback
 
         self.textView.text = self.note.newNote
@@ -62,23 +58,11 @@ final class ContactEditTextViewCell: UITableViewCell {
 }
 
 extension ContactEditTextViewCell: UITextViewDelegate {
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return false
-        }
-        return true
-    }
-
     func textViewDidBeginEditing(_ textView: UITextView) {
         self.delegate?.beginEditing(textView: textView)
     }
 
     func textViewDidChange(_ textView: UITextView) {
-        guard self.isPaid else {
-            self.delegate?.featureBlocked()
-            return
-        }
         if let text = textView.text, text != note.newNote {
             note.newNote = text
             self.delegate?.didChanged()

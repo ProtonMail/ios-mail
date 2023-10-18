@@ -19,34 +19,28 @@ import Foundation
 import UIKit
 
 final class ToolbarCustomizeViewModel<T: ToolbarAction> {
+    typealias Dependencies = HasToolbarCustomizationInfoBubbleViewStatusProvider
+
     private(set) var currentActions: [T]
-    private let actionsNotAddableToToolbar: [T]
     private let allActions: [T]
-    private let defaultActions: [T]
     var availableActions: [T] {
         return allActions
-            .filter { !currentActions.contains($0) && !actionsNotAddableToToolbar.contains($0) }
+            .filter { !currentActions.contains($0) && !T.actionsNotAddableToToolbar.contains($0) }
     }
 
     var reloadTableView: (() -> Void)?
     var shouldShowInfoBubbleView: Bool {
-        !infoBubbleViewStatusProvider.shouldHideToolbarCustomizeInfoBubbleView
+        !dependencies.toolbarCustomizationInfoBubbleViewStatusProvider.shouldHideToolbarCustomizeInfoBubbleView
     }
     let numberOfSections = 2
-    private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
+    private let dependencies: Dependencies
     let alertTitle = LocalString._toolbar_customize_reset_alert_title
     let alertContent = LocalString._toolbar_customize_reset_alert_content
 
-    init(currentActions: [T],
-         allActions: [T],
-         actionsNotAddableToToolbar: [T],
-         defaultActions: [T],
-         infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider) {
+    init(currentActions: [T], allActions: [T], dependencies: Dependencies) {
         self.currentActions = currentActions
         self.allActions = allActions
-        self.defaultActions = defaultActions
-        self.actionsNotAddableToToolbar = actionsNotAddableToToolbar
-        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
+        self.dependencies = dependencies
     }
 
     func numberOfRowsInSection(section: Int) -> Int {
@@ -114,7 +108,7 @@ final class ToolbarCustomizeViewModel<T: ToolbarAction> {
     }
 
     func hideInfoBubbleView() {
-        infoBubbleViewStatusProvider.shouldHideToolbarCustomizeInfoBubbleView = true
+        dependencies.toolbarCustomizationInfoBubbleViewStatusProvider.shouldHideToolbarCustomizeInfoBubbleView = true
     }
 
     func moveAction(from source: IndexPath, to destination: IndexPath) {
@@ -130,7 +124,7 @@ final class ToolbarCustomizeViewModel<T: ToolbarAction> {
     }
 
     func resetActionsToDefault() {
-        currentActions = defaultActions
+        currentActions = T.defaultActions
         reloadTableView?()
     }
 

@@ -23,37 +23,57 @@
 import Foundation
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_Payments
+import ProtonCore_HumanVerification
+import ProtonCore_Log
 import ProtonCore_TroubleShooting
 import ProtonCore_UIFoundations
-import Reachability
 import SideMenuSwift
 
-class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
+final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
+    typealias Dependencies = HasSendBugReport & HasUserManager
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
-    private let user: UserManager
-    fileprivate let bottomPadding: CGFloat = 30.0
-    fileprivate let textViewDefaultHeight: CGFloat = 120.0
-    fileprivate var beginningVerticalPositionOfKeyboard: CGFloat = 30.0
+    fileprivate let textViewMinimumHeight: CGFloat = 120.0
     fileprivate let textViewInset: CGFloat = 16.0
     fileprivate let topTextViewMargin: CGFloat = 24.0
 
     fileprivate var sendButton: UIBarButtonItem!
 
+    private let scrollView = UIScrollView()
+    private let stackView = UIStackView.stackView(axis: .vertical, distribution: .equalSpacing)
+    private let topSpacer = UIView()
     private let textView = UITextView()
-    private weak var textViewHeightConstraint: NSLayoutConstraint!
+
+    private let logAttachmentSwitch: UISwitch = {
+        let isEnabled: Bool
+        if let logFile = PMLog.logFile {
+            isEnabled = FileManager.default.fileExists(atPath: logFile.path)
+        } else {
+            isEnabled = false
+        }
+
+        let switchView = UISwitch()
+        switchView.onTintColor = ColorProvider.BrandNorm
+        switchView.isEnabled = isEnabled
+        switchView.isOn = switchView.isEnabled  // on by default if possible
+        return switchView
+    }()
+
+    private let logAttachmentSwitchRow = UIStackView.stackView(alignment: .center, spacing: 8)
+    private let logAttachmentSwitchRowContainer = UIView()
 
     private var reportSent: Bool = false
 
     private let doh = BackendConfiguration.shared.doh
+    private let dependencies: Dependencies
     private let troubleShootingHelper: TroubleShootingHelper
 
-    init(user: UserManager) {
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
         troubleShootingHelper = TroubleShootingHelper(doh: doh)
-        self.user = user
 
         super.init(nibName: nil, bundle: nil)
         trackLifetime()
@@ -82,7 +102,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         self.title = LocalString._menu_bugs_title
 
         setupMenuButton()
-        setupTextView()
+        setupSubviews()
         setupLayout()
         NotificationCenter.default
             .addObserver(self,
@@ -91,7 +111,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
                          object: nil)
     }
 
-    func setUpSendButtonAttribute() {
+    private func setUpSendButtonAttribute() {
         let sendButtonAttributes = FontManager.HeadlineSmall
         self.sendButton.setTitleTextAttributes(
             sendButtonAttributes.foregroundColor(ColorProvider.InteractionNormDisabled),
@@ -103,25 +123,54 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         )
     }
 
-    func setupTextView() {
+    private func setupSubviews() {
+        view.addSubview(scrollView)
+
         self.textView.delegate = self
         self.textView.backgroundColor = ColorProvider.BackgroundNorm
+        self.textView.isScrollEnabled = false
         self.textView.textContainer.lineFragmentPadding = 0
         self.textView.textContainerInset = .init(all: textViewInset)
         setUpSideMenuMethods()
 
-        self.view.addSubview(self.textView)
+        let logAttachmentLabel = UILabel()
+        logAttachmentLabel.set(text: L11n.BugReport.includeLogs, preferredFont: .body)
+        [logAttachmentLabel, logAttachmentSwitch].forEach(logAttachmentSwitchRow.addArrangedSubview)
+
+        logAttachmentSwitchRowContainer.addSubview(logAttachmentSwitchRow)
+
+        [topSpacer, textView, logAttachmentSwitchRowContainer].forEach(stackView.addArrangedSubview)
+
+        scrollView.addSubview(stackView)
     }
 
-    func setupLayout() {
-        self.textViewHeightConstraint = self.textView.heightAnchor.constraint(equalToConstant: self.textViewDefaultHeight)
+    private func setupLayout() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
 
-        [
-            self.textView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24),
-            self.textView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            self.textView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            textViewHeightConstraint
-        ].activate()
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+
+            stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+
+            topSpacer.heightAnchor.constraint(equalToConstant: topTextViewMargin),
+
+            textView.heightAnchor.constraint(greaterThanOrEqualToConstant: textViewMinimumHeight),
+
+            logAttachmentSwitchRow.topAnchor.constraint(
+                equalTo: logAttachmentSwitchRowContainer.topAnchor,
+                constant: 8
+            ),
+            logAttachmentSwitchRow.leadingAnchor.constraint(
+                equalTo: logAttachmentSwitchRowContainer.leadingAnchor,
+                constant: 8
+            )
+        ])
+
+        stackView.fillSuperview()
+        logAttachmentSwitchRow.centerInSuperview()
     }
 
     private func setUpSideMenuMethods() {
@@ -140,7 +189,6 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         updateSendButtonForText(textView.text)
         NotificationCenter.default.addKeyboardObserver(self)
         textView.becomeFirstResponder()
-        resizeHeightIfNeeded()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -168,11 +216,6 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         }
     }
 
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        resizeHeightIfNeeded()
-    }
-
     // MARK: - Private methods
 
     fileprivate func addPlaceholder() {
@@ -183,7 +226,6 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         addPlaceholder()
         cachedBugReport.cachedBug = ""
         updateSendButtonForText(textView.text)
-        resizeHeightIfNeeded()
         addPlaceholder()
     }
 
@@ -204,7 +246,7 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
             return
         }
 
-        let storeKitManager = self.user.payments.storeKitManager
+        let storeKitManager = dependencies.user.payments.storeKitManager
         if storeKitManager.hasUnfinishedPurchase(),
             let receipt = try? storeKitManager.readReceipt() {
             let alert = UIAlertController(title: LocalString._iap_bugreport_title, message: LocalString._iap_bugreport_user_agreement, preferredStyle: .alert)
@@ -224,13 +266,8 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
         let v: UIView = self.navigationController?.view ?? self.view
         MBProgressHUD.showAdded(to: v, animated: true)
         sendButton.isEnabled = false
-        let username = self.user.defaultEmail.split(separator: "@")[0]
-        let reachabilityStatus: String = (try? Reachability().connection.description) ?? Reachability.Connection.unavailable.description
-        user.reportService.reportBug(text,
-                                     username: String(username),
-                                     email: self.user.defaultEmail,
-                                     lastReceivedPush: "n/a",
-                                     reachabilityStatus: reachabilityStatus) { error in
+
+        send(text: text) { error in
             MBProgressHUD.hide(for: v, animated: true)
             self.sendButton.isEnabled = true
             if let error = error {
@@ -244,6 +281,32 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
                 self.reportSent = true
                 self.reset()
                 NotificationCenter.default.post(name: .switchView, object: nil)
+            }
+        }
+    }
+
+    private func send(text: String, completion: @MainActor @escaping (NSError?) -> Void) {
+        let username = String(dependencies.user.defaultEmail.split(separator: "@")[0])
+        let shouldIncludeLogs = logAttachmentSwitch.isOn
+
+        let sendBugReportParams = SendBugReport.Params(
+            reportBody: text,
+            userName: username,
+            emailAddress: dependencies.user.defaultEmail,
+            logFile: shouldIncludeLogs ? PMLog.logFile : nil
+        )
+
+        Task {
+            do {
+                try await dependencies.sendBugReport.execute(params: sendBugReportParams)
+
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    completion(error as NSError)
+                }
             }
         }
     }
@@ -267,35 +330,21 @@ class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
 
         return true
     }
-
-    fileprivate func resizeHeightIfNeeded() {
-        let maxTextViewSize = CGSize(width: textView.frame.size.width, height: CGFloat.greatestFiniteMagnitude)
-        let wantedHeightAfterVerticalGrowth = textView.sizeThatFits(maxTextViewSize).height
-        if wantedHeightAfterVerticalGrowth < textViewDefaultHeight {
-            textViewHeightConstraint.constant = textViewDefaultHeight
-        } else {
-            let heightMinusKeyboard = view.bounds.height - topTextViewMargin - beginningVerticalPositionOfKeyboard
-            textViewHeightConstraint.constant = min(wantedHeightAfterVerticalGrowth + textViewInset * 2, heightMinusKeyboard)
-        }
-    }
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 
 extension ReportBugsViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
-        let keyboardInfo = notification.keyboardInfo
-        beginningVerticalPositionOfKeyboard = bottomPadding
-        resizeHeightIfNeeded()
-        UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
-            self.view.layoutIfNeeded()
-            }, completion: nil)
+        updateKeyboardHeight(keyboardInfo: notification.keyboardInfo)
     }
 
     func keyboardWillShowNotification(_ notification: Notification) {
-        let keyboardInfo = notification.keyboardInfo
-        beginningVerticalPositionOfKeyboard = view.window?.convert(keyboardInfo.endFrame, to: view).origin.y ?? bottomPadding
-        resizeHeightIfNeeded()
+        updateKeyboardHeight(keyboardInfo: notification.keyboardInfo)
+    }
+
+    private func updateKeyboardHeight(keyboardInfo: KeyboardInfo) {
+        scrollView.contentInset.bottom = keyboardInfo.endFrame.height
     }
 }
 
@@ -306,7 +355,6 @@ extension ReportBugsViewController: UITextViewDelegate {
         let changedText = oldText.replacingCharacters(in: range, with: text)
         updateSendButtonForText(changedText)
         cachedBugReport.cachedBug = changedText
-        resizeHeightIfNeeded()
         return true
     }
 

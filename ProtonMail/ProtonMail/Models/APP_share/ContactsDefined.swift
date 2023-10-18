@@ -26,22 +26,26 @@ import VCard
 
 enum ContactEditSectionType: Int {
     case display_name = 0
-    case emails = 1
-    case encrypted_header = 2
-    case cellphone = 3
-    case home_address = 4
-    case information = 5  // org, birthday, anniversary, nickname, title and may add more prebuild types later.
-    case custom_field = 6 // string field
-    case notes = 7
-    case delete = 8
-    case upgrade = 9
-    case share = 10
-    case url = 11 // links
-    case type2_warning = 12
-    case type3_error = 13
-    case type3_warning = 14
-    case email_header = 15
-    case debuginfo = 16
+    case emails
+    case encrypted_header
+    case cellphone
+    case home_address
+    case custom_field // string field
+    case notes
+    case delete
+    case share
+    case url // links
+    case type2_warning
+    case type3_error
+    case type3_warning
+    case email_header
+    case debuginfo
+    case birthday
+    case organization
+    case nickName
+    case title
+    case gender
+    case addNewField
 }
 
 protocol ContactEditTypeInterface {
@@ -104,7 +108,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     var mimeType: PMNIPMMimeType?
 
     private let delegate: ContactEditViewModelContactGroupDelegate?
-    private let coreDataService: CoreDataContextProviderProtocol
+    private let contextProvider: CoreDataContextProviderProtocol
 
     init(order: Int,
          type: ContactFieldType,
@@ -117,9 +121,9 @@ final class ContactEditEmail: ContactEditTypeInterface {
          scheme: PMNIPMScheme?,
          mimeType: PMNIPMMimeType?,
          delegate: ContactEditViewModelContactGroupDelegate?,
-         coreDataService: CoreDataContextProviderProtocol) {
+         contextProvider: CoreDataContextProviderProtocol) {
         self.delegate = delegate
-        self.coreDataService = coreDataService
+        self.contextProvider = contextProvider
 
         self.newOrder = order
         self.newType = type
@@ -164,40 +168,35 @@ final class ContactEditEmail: ContactEditTypeInterface {
         self.newOrder = order
     }
 
-    // to
-    func toContactEmail() -> ContactEmail {
-        ContactEmail(email: newEmail, type: newType.vcardType)
-    }
-
     private func getContactGroupIDsFromCoreData(contactID: String) {
         // we decide to stick with using core data information for now
         origContactGroupIDs.removeAll()
 
-        let context = self.coreDataService.mainContext
-        let emailObject = Email.EmailForAddressWithContact(self.newEmail,
-                                                           contactID: contactID,
-                                                           inManagedObjectContext: context)
-        if let emailObject = emailObject {
-            if let contactGroups = emailObject.labels.allObjects as? [Label] {
-                for contactGroup in contactGroups {
-                    origContactGroupIDs.insert(contactGroup.labelID)
-                }
+        let contactGroupIDs = contextProvider.read { context in
+            if let email = Email.EmailForAddressWithContact(
+                self.newEmail,
+                contactID: contactID,
+                inManagedObjectContext: context
+            ), let contactGroups = email.labels.allObjects as? [Label] {
+                return contactGroups.map { $0.labelID }
+            } else {
+                return []
             }
         }
-
-        newContactGroupIDs = origContactGroupIDs
+        newContactGroupIDs = Set(contactGroupIDs)
     }
 
     func getContactGroupNames() -> [String] {
-        var result: [String] = []
-        for labelID in newContactGroupIDs {
-            let context = self.coreDataService.mainContext
-            if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
-                result.append(label.name)
+        let names = contextProvider.read { context in
+            var result: [String] = []
+            for labelID in newContactGroupIDs {
+                if let label = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
+                    result.append(label.name)
+                }
             }
+            return result
         }
-
-        return result
+        return names
     }
 
     // contact group
@@ -212,18 +211,15 @@ final class ContactEditEmail: ContactEditTypeInterface {
      - Returns: all currently selected contact group's color
     */
     func getCurrentlySelectedContactGroupColors() -> [String] {
-        var colors = [String]()
-
-        let context = self.coreDataService.mainContext
-        for ID in newContactGroupIDs {
-            let label = Label.labelForLabelID(ID, inManagedObjectContext: context)
-
-            if let label = label {
-                colors.append(label.color)
+        return contextProvider.read { context in
+            var colors = [String]()
+            for groupID in newContactGroupIDs {
+                if let label = Label.labelForLabelID(groupID, inManagedObjectContext: context) {
+                    colors.append(label.color)
+                }
             }
+            return colors
         }
-
-        return colors
     }
 
     /**
@@ -549,10 +545,6 @@ final class ContactEditInformation {
         }
         return true
     }
-
-    func isEmpty() -> Bool {
-        return newValue.isEmpty
-    }
 }
 
 // custom field
@@ -632,29 +624,35 @@ final class ContactEditNote {
 }
 
 final class ContactEditStructuredName {
-    private(set) var firstName = ""
+    var firstName = ""
     private(set) var originalFirstName = ""
-    private(set) var lastName = ""
+    var lastName = ""
     private(set) var originalLastName = ""
-    private(set) var isNew = false
+    private(set) var isCreatingContact = false
 
-    init(firstName: String, lastName: String, isNew: Bool) {
+    init(firstName: String, lastName: String, isCreatingContact: Bool) {
         self.firstName = firstName
         self.lastName = lastName
-        self.isNew = isNew
-        if !isNew {
+        self.originalFirstName = firstName
+        self.originalLastName = lastName
+        self.isCreatingContact = isCreatingContact
+        if !isCreatingContact {
             self.firstName = firstName
             self.lastName = lastName
         }
     }
 
     func needsUpdate() -> Bool {
-        if isNew && firstName.isEmpty && lastName.isEmpty {
+        if isCreatingContact && firstName.isEmpty && lastName.isEmpty {
             return false
         }
         if firstName == originalFirstName && lastName == originalLastName {
             return false
         }
         return true
+    }
+
+    func isEmpty() -> Bool {
+        return firstName.isEmpty && lastName.isEmpty
     }
 }

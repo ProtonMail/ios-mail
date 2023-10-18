@@ -34,6 +34,7 @@ final class PushEncryptionManagerTests: XCTestCase {
     private var mockKitsSaver: InMemorySaver<[EncryptionKit]>!
     private var mockFailedPushProvider: MockFailedPushDecryptionProvider!
     private var mockUserDefaults: UserDefaults!
+    private var globalContainer: GlobalContainer!
 
     private let dummyDeviceToken = "dummy_token1"
     private let dummyEncryptionKit = EncryptionKit(passphrase: "a1", privateKey: "a2", publicKey: "a3")
@@ -41,9 +42,8 @@ final class PushEncryptionManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         mockApiService = APIServiceMock()
-        let mockKeyMaker = MockKeyMakerProtocol()
-        let userDataCache = UserDataCache(keyMaker: mockKeyMaker)
-        mockUsers = UsersManager(doh: DohMock(), userDataCache: userDataCache, coreKeyMaker: mockKeyMaker)
+        globalContainer = .init()
+        mockUsers = globalContainer.usersManager
         mockDeviceRegistration = .init()
         mockDeviceRegistration.executeStub.bodyIs { _, sessionsIDs, _, _ in
             sessionsIDs.map{ DeviceRegistrationResult(sessionID: $0, error: nil) }
@@ -75,6 +75,7 @@ final class PushEncryptionManagerTests: XCTestCase {
         mockUserDefaults.removePersistentDomain(forName: #fileID)
         mockUserDefaults = nil
         mockFailedPushProvider = nil
+        globalContainer = nil
     }
 
     // MARK: Tests for registerDeviceForNotifications
@@ -362,6 +363,6 @@ extension PushEncryptionManagerTests {
                 scopes: []
             )
         )
-        return UserManager(api: apiService, userID: userID, authCredential: auth)
+        return UserManager(api: apiService, authCredential: auth)
     }
 }

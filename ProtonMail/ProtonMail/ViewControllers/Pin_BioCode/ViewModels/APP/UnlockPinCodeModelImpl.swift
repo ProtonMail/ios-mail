@@ -24,16 +24,18 @@ import LifetimeTracker
 import ProtonCore_UIFoundations
 
 final class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
+    typealias Dependencies = HasPinFailedCountCache & HasUnlockManager
+
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
     }
 
     private(set) var currentStep: PinCodeStep = .enterPin
     private(set) var enterPin: String = ""
-    private let pinFailedCountCache: PinFailedCountCache
+    private let dependencies: Dependencies
 
-    init(pinFailedCountCache: PinFailedCountCache) {
-        self.pinFailedCountCache = pinFailedCountCache
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
         super.init()
         trackLifetime()
     }
@@ -66,7 +68,7 @@ final class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
     }
 
     override func isPinMatched(completion: @escaping (Bool) -> Void) {
-        UnlockManager.shared.match(userInputPin: enterPin) { matched in
+        dependencies.unlockManager.match(userInputPin: enterPin) { matched in
             if !matched {
                 self.currentStep = .enterPin
             }
@@ -75,11 +77,11 @@ final class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
     }
 
     override func getPinFailedRemainingCount() -> Int {
-        return max(10 - pinFailedCountCache.pinFailedCount, 0)
+        return max(10 - dependencies.pinFailedCountCache.pinFailedCount, 0)
     }
 
     override func getPinFailedError() -> String {
-        let c = 10 - pinFailedCountCache.pinFailedCount
+        let c = 10 - dependencies.pinFailedCountCache.pinFailedCount
         if c < 4 {
             let error = String.localizedStringWithFormat(LocalString._attempt_remaining_until_secure_data_wipe, c)
             return error

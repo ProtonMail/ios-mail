@@ -40,14 +40,11 @@ enum MessageAction: Equatable {
         case color
         case isFolder
         case addressID
-        case contactID
         case cardDatas
         case emailIDs
         case removedEmailIDs
-        case isSwipeAction
         case importFromDevice
         case deliveryTime
-        case notificationAction
         case messageID
         case emailAddress
     }
@@ -78,17 +75,14 @@ enum MessageAction: Equatable {
 
     case label(currentLabelID: String,
                shouldFetch: Bool?,
-               isSwipeAction: Bool,
                itemIDs: [String],
                objectIDs: [String])
     case unlabel(currentLabelID: String,
                  shouldFetch: Bool?,
-                 isSwipeAction: Bool,
                  itemIDs: [String],
                  objectIDs: [String])
     case folder(nextLabelID: String,
                 shouldFetch: Bool?,
-                isSwipeAction: Bool,
                 itemIDs: [String],
                 objectIDs: [String])
 

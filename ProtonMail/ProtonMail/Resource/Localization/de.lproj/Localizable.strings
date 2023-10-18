@@ -231,7 +231,7 @@
 "Upgrade to a paid plan to send from your %@ address" = "Upgrade auf ein kostenpflichtiges Abonnement, um von deiner Adresse „%@“ senden zu können.";
 
 /* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Senden von Nachrichten von einer %1$@-Adresse ist eine Funktion für kostenpflichtige Konten. Deine Nachricht wird von deiner Standardadresse „%2$@“ gesendet";
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Senden von Nachrichten von einer %1$@-Adresse ist eine kostenpflichtige Funktion. Deine Nachricht wird von deiner Standardadresse „%2$@“ gesendet";
 
 /* Title */
 "From" = "Von";
@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "E‐Mail‐Adressen";
 
-/* The button text for add profile picture */
-"Add photo" = "Foto hinzufügen";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Foto bearbeiten";
-
 /* contact section title */
 "Encrypted contact details" = "Verschlüsselte Kontaktdaten";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Kategoriename";
-
-/* when server not reachable */
-"API Server not reachable…" = "API-Server nicht erreichbar…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Der Zugang zu diesem Konto ist wegen Nichtbezahlung gesperrt. Bitte melde dich über proton.me an, um deine unbezahlte Rechnung zu bezahlen.";
@@ -1514,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Verborgene Empfänger";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Aus Verteilerliste austragen";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Unser System hat diese Nachricht als Phishing-Versuch gekennzeichnet. Bitte überprüfe, ob sie seriös ist.";
 
@@ -1799,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Die Nachricht wird gesendet und nach Abschluss des Sendevorgangs in den Ordner „Gesendet“ verschoben.";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Wenn du deine WLAN-Verbindung verlierst, wird der Download über mobile Daten fortgesetzt.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Download über mobile Daten";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Downloadfortschritt";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Nachrichtenverlauf";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Speicherlimit";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Verwendeter Speicher";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Alle deine Nachrichten wurden heruntergeladen.";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Es wurden nicht alle Nachrichten heruntergeladen. Gib Speicherplatz auf dem Gerät frei, um sie herunterzuladen.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Es wurden nicht alle Nachrichten heruntergeladen. Um sie herunterzuladen, erhöhe das Speicherlimit unten.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "Du hast keine Nachrichten.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Deine Nachrichten werden heruntergeladen...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Zwischengespeicherte Daten";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Anhänge";
-
-/* cell title in device settings */
-"Downloaded messages" = "Heruntergeladene Nachrichten";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Informationen darüber, wie viel Speicherplatz dieses Proton Mail-Konto auf deinem Gerät verbraucht.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Löschen";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Erlaubt es dir, zuvor gelesene Nachrichten zu öffnen, während du offline bist.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Erlaubt es dir, zuvor geöffnete Anhänge zu öffnen, während du offline bist.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Ermöglicht dir die Suche innerhalb deiner Nachrichten. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Details anzeigen";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Symbolleistenaktionen (bis zu 5 auswählen)";
 
@@ -2035,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Passwort aktualisiert";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Cache wird geleert...";
-
 /* Title for application logs settings option */
 "Application logs" = "Anwendungsprotokolle";
 
@@ -2070,6 +1995,9 @@
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Um uns zu helfen, dir zu helfen, gib bitte so viele Details wie möglich an---\n\nZusammenfassung:\n\nIst das Problem mehr als einmal aufgetreten: ja/nein\nSchritte zur Reproduktion des Problems:\nErwartetes Ergebnis:\nTatsächliches Ergebnis:\nKommentare:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Protokolle hinzufügen";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Versuche es mit einem anderen Suchbegriff.";
@@ -2133,3 +2061,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Eigene E-Mail-Domains";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Anzeigename";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Vorname";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Nachname";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Der Anzeigename darf nicht leer sein";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Name des Kontakts ist zu lang";
+
+/* The button text for add profile picture */
+"Add photo" = "Foto hinzufügen";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Foto bearbeiten";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Aus Verteilerliste austragen";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Abbestellen?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Dadurch wirst du von der Mailingliste abgemeldet. Der Absender wird benachrichtigt, keine E-Mails mehr an diese Adresse zu senden.";

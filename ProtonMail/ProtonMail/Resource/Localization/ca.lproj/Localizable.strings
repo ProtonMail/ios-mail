@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Adreces de correu electrònic";
 
-/* The button text for add profile picture */
-"Add photo" = "Afegir foto";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Editar foto";
-
 /* contact section title */
 "Encrypted contact details" = "Detalls de contacte xifrats";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Nom de etiqueta";
-
-/* when server not reachable */
-"API Server not reachable…" = "Servidor API no disponible…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "L'accés a aquest compte està desactivat per falta de pagament. Inicieu la sessió a proton.me per pagar la factura pendent.";
@@ -1514,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinataris ocults";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Cancel·la la subscripció de la llista de correu";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "El nostre sistema ha marcat aquest missatge com un intent de suplantació d'identitat. Comproveu que sigui legítim.";
 
@@ -1799,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "El missatge s'està enviant i es mourà a la carpeta Enviats una vegada es completi l'enviament.";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Si perdeu la connexió WiFi, la descàrrega continuarà amb les dades mòbils.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Descàrrega mitjançant dades mòbils";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Progrés de la descàrrega";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Historial de missatges";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Límit d'emmagatzematge";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Emmagatzematge utilitzat";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Tots els vostres missatges s'han descarregat";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "No s'han descarregat tots els missatges. Per a descarregar-los, allibereu emmagatzematge al dispositiu.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "No s'han descarregat tots els missatges. Per a descarregar-los, augmenteu el límit d'emmagatzematge a continuació.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "No teniu cap missatge.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "S'estan descarregant els missatges...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Dades en la memòria cau";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Adjunts";
-
-/* cell title in device settings */
-"Downloaded messages" = "Missatges descarregats";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Informació sobre quant d'espai d'emmagatzematge del vostre dispositiu està utilitzant aquest compte de Proton Mail.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Neteja";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Us permet obrir missatges llegits prèviament mentre esteu fora de línia.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Us permet obrir adjunts oberts prèviament mentre esteu fora de línia.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Us permet cercar dintre dels vostres missatges. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Mostra els detalls";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Accions de la barra d'eines (seleccioneu-ne fins a 5)";
 
@@ -2035,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Contrasenya actualitzada";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Netejant la memòria cau…";
-
 /* Title for application logs settings option */
 "Application logs" = "Registres de l'aplicació";
 
@@ -2070,6 +1995,9 @@
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Per ajudar-nos a ajudar-vos, proporcioneu tants detalls com pugueu---\n\nResum:\n\nEl problema ha passat més d'una vegada: sí/no\nPassos per reproduir el problema:\nResultat esperat:\nResultat real:\nComentaris:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Include logs";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Proveu un terme de cerca diferent.";
@@ -2133,3 +2061,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Dominis de correu personalitzats";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Nom a mostrar";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "First name";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Cognom";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Display name field cannot be empty";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Contact name is too long";
+
+/* The button text for add profile picture */
+"Add photo" = "Afegir foto";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Editar foto";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Cancel·la la subscripció de la llista de correu";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Unsubscribe?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

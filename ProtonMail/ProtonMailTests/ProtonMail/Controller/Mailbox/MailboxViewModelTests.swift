@@ -45,6 +45,8 @@ class MailboxViewModelTests: XCTestCase {
     var mockFetchMessageDetail: MockFetchMessageDetail!
     var mockLoadedMessage: Message!
 
+    private var globalContainer: GlobalContainer!
+
     var testContext: NSManagedObjectContext {
         coreDataService.mainContext
     }
@@ -54,6 +56,9 @@ class MailboxViewModelTests: XCTestCase {
 
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         sharedServices.add(CoreDataService.self, for: coreDataService)
+
+        globalContainer = .init()
+        globalContainer.contextProviderFactory.register { self.coreDataService }
 
         apiServiceMock = APIServiceMock()
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
@@ -84,7 +89,7 @@ class MailboxViewModelTests: XCTestCase {
                                       authCredential: fakeAuth,
                                       mailSettings: nil,
                                       parent: nil,
-                                      coreKeyMaker: MockKeyMakerProtocol())
+                                      globalContainer: globalContainer)
         featureFlagCache = .init()
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
@@ -115,7 +120,7 @@ class MailboxViewModelTests: XCTestCase {
             completion?(.success(()))
         }
 
-        conversationProviderMock.labelStub.bodyIs { _, _, _, _, completion in
+        conversationProviderMock.labelStub.bodyIs { _, _, _, completion in
             completion?(.success(()))
         }
 
@@ -127,11 +132,11 @@ class MailboxViewModelTests: XCTestCase {
             completion?(.success(()))
         }
 
-        conversationProviderMock.moveStub.bodyIs { _, _, _, _, _, _, completion in
+        conversationProviderMock.moveStub.bodyIs { _, _, _, _, _, completion in
             completion?(.success(()))
         }
 
-        conversationProviderMock.unlabelStub.bodyIs { _, _, _, _, completion in
+        conversationProviderMock.unlabelStub.bodyIs { _, _, _, completion in
             completion?(.success(()))
         }
 
@@ -155,6 +160,7 @@ class MailboxViewModelTests: XCTestCase {
         saveToolbarActionUseCaseMock = nil
         internetConnectionProvider = nil
         apiServiceMock = nil
+        globalContainer = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
     }
@@ -496,7 +502,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetGroupContacts() {
-        let testData = ContactGroupVO(ID: "1", name: "name1")
+        let testData = ContactGroupVO(ID: "1", name: "name1", contextProvider: coreDataService)
         contactGroupProviderMock.getAllContactGroupVOsStub.bodyIs { _ in
             [testData]
         }
@@ -521,9 +527,7 @@ class MailboxViewModelTests: XCTestCase {
     }
 
     func testGetAllEmails() {
-        let testData = Email(context: testContext)
-        testData.emailID = "1"
-        testData.email = "test@pm.me"
+        let testData = EmailEntity.make(emailID: .init("1"), email: "test@pm.me")
         contactProviderMock.allEmailsToReturn = [testData]
         createSut(labelID: "1", labelType: .folder, isCustom: false, labelName: nil)
 
@@ -677,7 +681,6 @@ class MailboxViewModelTests: XCTestCase {
             XCTAssertTrue(argument?.first.contains("1") ?? false)
             XCTAssertTrue(argument?.first.contains("2") ?? false)
             XCTAssertEqual(argument?.a2, "labelID")
-            XCTAssertFalse(argument?.a3 ?? true)
 
             XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
             XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -699,7 +702,6 @@ class MailboxViewModelTests: XCTestCase {
             XCTAssertTrue(argument?.first.contains("1") ?? false)
             XCTAssertTrue(argument?.first.contains("2") ?? false)
             XCTAssertEqual(argument?.a2, "labelID")
-            XCTAssertFalse(argument?.a3 ?? true)
 
             XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
             XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -753,14 +755,13 @@ class MailboxViewModelTests: XCTestCase {
         let expectation1 = expectation(description: "Closure called")
         let conversationToMove = ConversationEntity.make(conversationID: "1")
 
-        sut.handleMoveToAction(conversations: [conversationToMove], to: labelToMoveTo, isFromSwipeAction: false) {
+        sut.handleMoveToAction(conversations: [conversationToMove], to: labelToMoveTo) {
             XCTAssertTrue(self.conversationProviderMock.moveStub.wasCalledExactlyOnce)
             do {
                 let argument = try XCTUnwrap(self.conversationProviderMock.moveStub.lastArguments)
                 XCTAssertTrue(argument.first.contains("1"))
                 XCTAssertEqual(argument.a2, self.sut.labelID)
                 XCTAssertEqual(argument.a3, labelToMoveTo.location.labelID)
-                XCTAssertFalse(argument.a4)
 
                 XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.a1, self.sut.labelID)
                 XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
@@ -799,14 +800,12 @@ class MailboxViewModelTests: XCTestCase {
                 let argument = try XCTUnwrap(self.conversationProviderMock.labelStub.lastArguments)
                 XCTAssertTrue(argument.first.contains(conversationToAddLabel.conversationID))
                 XCTAssertEqual(argument.a2, label.labelID)
-                XCTAssertFalse(argument.a3)
 
                 // Check is move function called
                 let argument2 = try XCTUnwrap(self.conversationProviderMock.moveStub.lastArguments)
                 XCTAssertTrue(argument2.first.contains(conversationToAddLabel.conversationID))
                 XCTAssertEqual(argument2.a2, "")
                 XCTAssertEqual(argument2.a3, Message.Location.archive.labelID)
-                XCTAssertFalse(argument2.a4)
 
                 // Check event api is called
                 let argument3 = try XCTUnwrap(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments)
@@ -851,7 +850,6 @@ class MailboxViewModelTests: XCTestCase {
                 let argument = try XCTUnwrap(self.conversationProviderMock.unlabelStub.lastArguments)
                 XCTAssertTrue(argument.first.contains(conversationToRemoveLabel.conversationID))
                 XCTAssertEqual(argument.a2, label.labelID)
-                XCTAssertFalse(argument.a3)
 
                 // Check event api is called
                 let argument2 = try XCTUnwrap(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments)

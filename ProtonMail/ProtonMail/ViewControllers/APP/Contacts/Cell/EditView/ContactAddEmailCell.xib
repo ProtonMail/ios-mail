@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Type" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s7M-1d-BXm">
-                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <rect key="frame" x="8" y="7" width="50" height="30"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="s5N-Nt-Uo3"/>
                         </constraints>
@@ -26,7 +26,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U8D-3i-zxE">
-                        <rect key="frame" x="8" y="0.0" width="50" height="44"/>
+                        <rect key="frame" x="8" y="7" width="50" height="30"/>
                         <connections>
                             <action selector="selectTypeTapped:" destination="xxT-9p-ctk" eventType="touchUpInside" id="sMW-0D-upo"/>
                         </connections>
@@ -39,7 +39,7 @@
                         </constraints>
                     </view>
                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="HhF-ik-eNw" userLabel="Email address">
-                        <rect key="frame" x="74.5" y="0.0" width="237.5" height="44"/>
+                        <rect key="frame" x="74.5" y="12" width="237.5" height="20"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                     </textField>
@@ -56,9 +56,9 @@
                     <constraint firstItem="Z9I-pH-SAi" firstAttribute="top" secondItem="Km6-5M-0Hc" secondAttribute="top" id="63k-BF-eV3"/>
                     <constraint firstItem="HhF-ik-eNw" firstAttribute="centerY" secondItem="Km6-5M-0Hc" secondAttribute="centerY" id="6Sg-p5-9wC"/>
                     <constraint firstItem="Z9I-pH-SAi" firstAttribute="centerX" secondItem="Km6-5M-0Hc" secondAttribute="centerX" id="9ba-qu-n1Z"/>
-                    <constraint firstAttribute="bottom" secondItem="HhF-ik-eNw" secondAttribute="bottom" id="ARe-pT-j3n"/>
-                    <constraint firstItem="s7M-1d-BXm" firstAttribute="top" secondItem="Km6-5M-0Hc" secondAttribute="top" id="Dt1-lA-Yav"/>
+                    <constraint firstAttribute="bottom" secondItem="HhF-ik-eNw" secondAttribute="bottom" constant="12" id="ARe-pT-j3n"/>
                     <constraint firstItem="HhF-ik-eNw" firstAttribute="leading" secondItem="9gZ-DE-sbO" secondAttribute="trailing" constant="8" id="EBg-KQ-KcN"/>
+                    <constraint firstItem="s7M-1d-BXm" firstAttribute="centerY" secondItem="Km6-5M-0Hc" secondAttribute="centerY" id="G7s-W3-Mvh"/>
                     <constraint firstItem="Z9I-pH-SAi" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="9gZ-DE-sbO" secondAttribute="trailing" id="JY1-Lx-l4W"/>
                     <constraint firstItem="s7M-1d-BXm" firstAttribute="leading" secondItem="Km6-5M-0Hc" secondAttribute="leading" constant="8" id="U6Y-if-Jvy"/>
                     <constraint firstItem="s7M-1d-BXm" firstAttribute="leading" secondItem="U8D-3i-zxE" secondAttribute="leading" id="Vld-yM-YPB"/>
@@ -66,11 +66,10 @@
                     <constraint firstItem="U8D-3i-zxE" firstAttribute="height" secondItem="s7M-1d-BXm" secondAttribute="height" id="ZyJ-pk-t1U"/>
                     <constraint firstItem="s7M-1d-BXm" firstAttribute="top" secondItem="U8D-3i-zxE" secondAttribute="top" id="bAN-gP-8iQ"/>
                     <constraint firstItem="9gZ-DE-sbO" firstAttribute="top" secondItem="Km6-5M-0Hc" secondAttribute="top" constant="1" id="bNT-3n-0UG"/>
-                    <constraint firstAttribute="bottom" secondItem="s7M-1d-BXm" secondAttribute="bottom" id="dG2-dL-tXV"/>
                     <constraint firstItem="U8D-3i-zxE" firstAttribute="width" secondItem="s7M-1d-BXm" secondAttribute="width" id="drZ-gh-GEp"/>
                     <constraint firstItem="9gZ-DE-sbO" firstAttribute="leading" secondItem="U8D-3i-zxE" secondAttribute="trailing" constant="8" id="dyV-vG-IEV"/>
                     <constraint firstAttribute="bottom" secondItem="9gZ-DE-sbO" secondAttribute="bottom" id="pcH-DI-p5x"/>
-                    <constraint firstItem="HhF-ik-eNw" firstAttribute="top" secondItem="Km6-5M-0Hc" secondAttribute="top" id="uFJ-U3-TVx"/>
+                    <constraint firstItem="HhF-ik-eNw" firstAttribute="top" secondItem="Km6-5M-0Hc" secondAttribute="top" constant="12" id="uFJ-U3-TVx"/>
                     <constraint firstAttribute="trailing" secondItem="HhF-ik-eNw" secondAttribute="trailing" constant="8" id="zqY-Dl-SA6"/>
                 </constraints>
             </tableViewCellContentView>

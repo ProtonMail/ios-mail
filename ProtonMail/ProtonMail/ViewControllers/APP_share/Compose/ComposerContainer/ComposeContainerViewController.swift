@@ -642,7 +642,7 @@ extension ComposeContainerViewController: AttachmentController {
                 var newAttachment: AttachmentEntity?
                 let attachmentGroup = DispatchGroup()
                 attachmentGroup.enter()
-                self.viewModel.coreDataContextProvider.performOnRootSavingContext { context in
+                self.contextProvider.performOnRootSavingContext { context in
                     fileData.contents.toAttachment(
                         context, fileName: fileData.name,
                         type: fileData.ext,

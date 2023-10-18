@@ -36,8 +36,7 @@ final class SendMessageTask {
             let initialSendingData = try getMessageSendingData(for: params.messageURI)
 
             updateMessageDetails(
-                messageSendingData: initialSendingData,
-                userID: params.userID
+                messageSendingData: initialSendingData
             ) { [unowned self] updatedSendingData in
                 sendMessage(messageSendingData: updatedSendingData, params: params) { [unowned self] sendResult in
                     switch sendResult {
@@ -83,11 +82,9 @@ final class SendMessageTask {
 
     private func updateMessageDetails(
         messageSendingData: MessageSendingData,
-        userID: UserID,
         completion: @escaping (MessageSendingData) -> Void
     ) {
         dependencies.fetchMessageDetail.execute(params: .init(
-            userID: userID,
             message: messageSendingData.message,
             hasToBeQueued: false
         )) { result in

@@ -26,20 +26,14 @@ final class ConversationDataServiceTests: XCTestCase {
     var mockApiService: APIServiceMock!
     var mockContextProvider: MockCoreDataContextProvider!
     var mockEventsService: MockEventsService!
-    var fakeUndoActionManager: UndoActionManagerProtocol!
 
     override func setUp() {
         super.setUp()
         mockApiService = APIServiceMock()
         mockContextProvider = MockCoreDataContextProvider()
         mockEventsService = MockEventsService()
-        let factory = sharedServices.makeUndoActionManagerDependenciesFactory()
-        fakeUndoActionManager = UndoActionManager(
-            factory: factory,
-            dependencies: factory.makeDependencies(apiService: mockApiService),
-            getEventFetching: { nil },
-            getUserManager: { nil }
-        )
+        let user = UserManager(api: mockApiService, role: .none)
+
         let mockContactCacheStatus = MockContactCacheStatusProtocol()
         sut = ConversationDataService(api: mockApiService,
                                       userID: userID,
@@ -47,7 +41,7 @@ final class ConversationDataServiceTests: XCTestCase {
                                       lastUpdatedStore: MockLastUpdatedStoreProtocol(),
                                       messageDataService: MockMessageDataService(),
                                       eventsService: mockEventsService,
-                                      undoActionManager: fakeUndoActionManager,
+                                      undoActionManager: MockUndoActionManager(),
                                       contactCacheStatus: mockContactCacheStatus)
     }
 
@@ -57,7 +51,6 @@ final class ConversationDataServiceTests: XCTestCase {
         mockApiService = nil
         mockContextProvider = nil
         mockEventsService = nil
-        fakeUndoActionManager = nil
     }
 
     func testFilterMessagesDictionary() {
@@ -94,11 +87,7 @@ final class ConversationDataServiceTests: XCTestCase {
         updateMockApiService(with: response, forPath: "/label")
 
         DispatchQueue.global().async {
-            self.sut.label(
-                conversationIDs: conversationsIDs,
-                as: LabelID(rawValue: "dummy-label-id"),
-                isSwipeAction: Bool.random()
-            ) { _ in
+            self.sut.label(conversationIDs: conversationsIDs, as: LabelID(rawValue: "dummy-label-id")) { _ in
                 XCTAssertTrue(self.mockApiService.requestJSONStub.callCounter == 1)
                 expectation.fulfill()
             }
@@ -114,11 +103,7 @@ final class ConversationDataServiceTests: XCTestCase {
         updateMockApiService(with: response, forPath: "/label")
 
         DispatchQueue.global().async {
-            self.sut.label(
-                conversationIDs: conversationsIDs,
-                as: LabelID(rawValue: "dummy-label-id"),
-                isSwipeAction: Bool.random()
-            ) { _ in
+            self.sut.label(conversationIDs: conversationsIDs, as: LabelID(rawValue: "dummy-label-id")) { _ in
                 XCTAssertTrue(self.mockApiService.requestJSONStub.callCounter == 2)
                 expectation.fulfill()
             }
@@ -134,11 +119,7 @@ final class ConversationDataServiceTests: XCTestCase {
         updateMockApiService(with: response, forPath: "/unlabel")
 
         DispatchQueue.global().async {
-            self.sut.unlabel(
-                conversationIDs: conversationIDs,
-                as: LabelID(rawValue: "dummy-label-id"),
-                isSwipeAction: Bool.random()
-            ) { _ in
+            self.sut.unlabel(conversationIDs: conversationIDs, as: LabelID(rawValue: "dummy-label-id")) { _ in
                 XCTAssertTrue(self.mockApiService.requestJSONStub.callCounter == 1)
                 expectation.fulfill()
             }
@@ -154,11 +135,7 @@ final class ConversationDataServiceTests: XCTestCase {
         updateMockApiService(with: response, forPath: "/unlabel")
 
         DispatchQueue.global().async {
-            self.sut.unlabel(
-                conversationIDs: conversationIDs,
-                as: LabelID(rawValue: "dummy-label-id"),
-                isSwipeAction: Bool.random()
-            ) { _ in
+            self.sut.unlabel(conversationIDs: conversationIDs, as: LabelID(rawValue: "dummy-label-id")) { _ in
                 XCTAssertTrue(self.mockApiService.requestJSONStub.callCounter == 2)
                 expectation.fulfill()
             }

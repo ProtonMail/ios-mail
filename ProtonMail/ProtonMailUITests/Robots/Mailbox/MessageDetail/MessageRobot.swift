@@ -26,7 +26,6 @@ fileprivate struct id {
     static let forwardButtonIdentifier = "SingleMessageFooterButtons.forwardButton"
     
     static let trackerShieldImageIdentifier = "ic-shield-filled"
-    static let trackerStaticTextLabel = "31 email trackers blocked"
     static let trackerShevronImageIdentifier = "ic-chevron-right-filled"
 }
 
@@ -87,12 +86,14 @@ class MessageRobot: CoreElements {
     }
     
     func openFoldersModal() -> MoveToFolderRobot {
-        button(id.folderNavBarButtonIdentifier).tap()
+        button(id.replyButtonIdentifier).wait()
+        button(id.folderNavBarButtonIdentifier).waitForHittable().tap()
         return MoveToFolderRobot()
     }
     
     func openLabelsModal() -> MoveToFolderRobot {
-        button(id.labelNavBarButtonIdentifier).tap()
+        button(id.replyButtonIdentifier).wait()
+        button(id.labelNavBarButtonIdentifier).waitForHittable().tap()
         return MoveToFolderRobot()
     }
     
@@ -127,7 +128,12 @@ class MessageRobot: CoreElements {
     }
 
     func clickEmailTrackerShevronImage() -> EmailTrackingProtectionRobot {
-        image(id.trackerShevronImageIdentifier).waitForEnabled().tap()
+        image(id.trackerShevronImageIdentifier).waitUntilExists(time: 30).tap()
+        return EmailTrackingProtectionRobot()
+    }
+
+    func clickTrackerRowWithLabel(_ label: String) -> EmailTrackingProtectionRobot {
+        staticText(label).waitUntilExists(time: 30).tap()
         return EmailTrackingProtectionRobot()
     }
     
@@ -192,8 +198,9 @@ class MessageRobot: CoreElements {
     
     class Verify: CoreElements {
 
-        func messageBodyWithStaticTextExists(_ text: String) {
+        func messageBodyWithStaticTextExists(_ text: String) -> MessageRobot {
             webView().byIndex(0).onDescendant(staticText(text)).checkExists().checkHasLabel(text)
+            return MessageRobot()
         }
         
         func messageBodyWithLinkExists(_ label: String) {

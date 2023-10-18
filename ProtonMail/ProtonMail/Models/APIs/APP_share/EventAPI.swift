@@ -65,8 +65,11 @@ struct RefreshStatus: OptionSet {
     let rawValue: Int
     // 255 means throw out client cache and reload everything from server, 1 is mail, 2 is contacts
     static let ok       = RefreshStatus([])
+    /// When the user was delinquent and is not anymore
     static let mail     = RefreshStatus(rawValue: 1 << 0)
+    /// When the user cleared his contacts
     static let contacts = RefreshStatus(rawValue: 1 << 1)
+    /// When given ID < lowest ID stored (3 weeks old)
     static let all      = RefreshStatus(rawValue: 0xFF)
 }
 

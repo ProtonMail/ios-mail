@@ -19,36 +19,29 @@ import Foundation
 import ProtonCore_DataModel
 
 final class ToolbarSettingViewModel {
+    typealias Dependencies = ToolbarCustomizeViewModel<MessageViewActionSheetAction>.Dependencies
+    & HasSaveToolbarActionSettings
+    & HasToolbarActionProvider
+
     lazy var listViewToolbarCustomizeViewModel: ToolbarCustomizeViewModel<MessageViewActionSheetAction> = {
         let viewModel = ToolbarCustomizeViewModel<MessageViewActionSheetAction>(
-            currentActions: toolbarActionProvider.listViewToolbarActions,
+            currentActions: dependencies.toolbarActionProvider.listViewToolbarActions,
             allActions: MessageViewActionSheetAction.allActionsOfListView(),
-            actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
-            defaultActions: MessageViewActionSheetAction.defaultActions,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
+            dependencies: dependencies
         )
         return viewModel
     }()
     let currentViewModeToolbarCustomizeViewModel: ToolbarCustomizeViewModel<MessageViewActionSheetAction>
 
-    private let infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider
-    private let toolbarActionProvider: ToolbarActionProvider
-    private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
+    private let dependencies: Dependencies
 
-    init(
-        infoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider,
-        toolbarActionProvider: ToolbarActionProvider,
-        saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
-    ) {
-        self.infoBubbleViewStatusProvider = infoBubbleViewStatusProvider
-        self.toolbarActionProvider = toolbarActionProvider
-        self.saveToolbarActionUseCase = saveToolbarActionUseCase
+    init(dependencies: Dependencies) {
+        self.dependencies = dependencies
+
         currentViewModeToolbarCustomizeViewModel = .init(
-            currentActions: toolbarActionProvider.messageToolbarActions,
+            currentActions: dependencies.toolbarActionProvider.messageToolbarActions,
             allActions: MessageViewActionSheetAction.allActionsOfMessageView(),
-            actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
-            defaultActions: MessageViewActionSheetAction.defaultActions,
-            infoBubbleViewStatusProvider: infoBubbleViewStatusProvider
+            dependencies: dependencies
         )
     }
 
@@ -58,7 +51,7 @@ final class ToolbarSettingViewModel {
             messageActions: messageActions,
             listViewActions: listViewToolbarCustomizeViewModel.currentActions
         )
-        saveToolbarActionUseCase
+        dependencies.saveToolbarActionSettings
             .callbackOn(.main)
             .execute(params: .init(preference: preference)) { _ in
                 completion()

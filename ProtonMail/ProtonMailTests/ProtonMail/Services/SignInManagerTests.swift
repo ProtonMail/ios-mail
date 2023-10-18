@@ -28,6 +28,7 @@ final class SignInManagerTests: XCTestCase {
     private var contactCacheStatusMock: MockContactCacheStatusProtocol!
     private var queueHandlerRegisterMock: MockQueueHandlerRegister!
     private var updateSwipeActionUseCaseMock: MockUpdateSwipeActionDuringLoginUseCase!
+    private var globalContainer: GlobalContainer!
 
     private var sut: SignInManager!
 
@@ -38,7 +39,8 @@ final class SignInManagerTests: XCTestCase {
         super.setUp()
         apiMock = .init()
         coreKeyMaker = sharedServices.get(by: KeyMakerProtocol.self)
-        usersManager = .init(doh: DohMock(), userDataCache: UserDataCache(keyMaker: coreKeyMaker), coreKeyMaker: coreKeyMaker)
+        globalContainer = .init()
+        usersManager = globalContainer.usersManager
         contactCacheStatusMock = .init()
         updateSwipeActionUseCaseMock = .init()
         queueHandlerRegisterMock = .init()
@@ -58,6 +60,7 @@ final class SignInManagerTests: XCTestCase {
         usersManager = nil
         apiMock = nil
         coreKeyMaker = nil
+        globalContainer = nil
     }
 
     func testSaveLoginData_newUserIsAddedToUsersManager() {
@@ -75,21 +78,21 @@ final class SignInManagerTests: XCTestCase {
 
     func testSaveLoginData_whenUserIsExist_returnError() {
         let userData = createLoginData(userID: userID, sessionID: sessionID)
-        usersManager.add(newUser: .init(api: apiMock, userID: userID, coreKeyMaker: coreKeyMaker))
+        usersManager.add(newUser: .init(api: apiMock, userID: userID))
 
         XCTAssertEqual(sut.saveLoginData(loginData: userData), .errorOccurred)
     }
 
     func testSaveLoginData_whenOneFreeAccountIsLoggedIn_returnFreeAccountsLimitReached() {
         let userData = createLoginData(userID: userID, sessionID: sessionID)
-        usersManager.add(newUser: .init(api: apiMock, userID: String.randomString(10), coreKeyMaker: coreKeyMaker))
+        usersManager.add(newUser: .init(api: apiMock, userID: String.randomString(10)))
 
         XCTAssertEqual(sut.saveLoginData(loginData: userData), .freeAccountsLimitReached)
     }
 
     func testFinalizeSignIn_tryUnlockClosureIsCalled() throws {
         let userData = createLoginData(userID: userID, sessionID: sessionID)
-        usersManager.add(newUser: .init(api: apiMock, userInfo: userData.toUserInfo, authCredential: userData.credential, mailSettings: nil, parent: nil, coreKeyMaker: coreKeyMaker))
+        usersManager.add(newUser: .init(api: apiMock, userInfo: userData.toUserInfo, authCredential: userData.credential, mailSettings: nil, parent: nil, globalContainer: .init()))
         let skeletonExpectation = expectation(description: "Closure is called")
         let unlockExpectation = expectation(description: "Closure is called")
         let errorExpectation = expectation(description: "Closure should not be called")
@@ -134,8 +137,8 @@ final class SignInManagerTests: XCTestCase {
 
     func testFinalizeSignIn_withOneLoggedAccount_tryUnlockClosureIsCalled_newUserIsSetAsActive() throws {
         let userData = createLoginData(userID: userID, sessionID: sessionID)
-        usersManager.add(newUser: .init(api: apiMock, userID: String.randomString(10), coreKeyMaker: coreKeyMaker))
-        usersManager.add(newUser: .init(api: apiMock, userInfo: userData.toUserInfo, authCredential: userData.credential, mailSettings: nil, parent: nil, coreKeyMaker: coreKeyMaker))
+        usersManager.add(newUser: .init(api: apiMock, userID: String.randomString(10)))
+        usersManager.add(newUser: .init(api: apiMock, userInfo: userData.toUserInfo, authCredential: userData.credential, mailSettings: nil, parent: nil, globalContainer: .init()))
         let skeletonExpectation = expectation(description: "Closure is called")
         let unlockExpectation = expectation(description: "Closure is called")
         let errorExpectation = expectation(description: "Closure should not be called")
@@ -180,7 +183,7 @@ final class SignInManagerTests: XCTestCase {
 
     func testFinalizeSignIn_apiFailed_newUserIsRemoved() {
         let userData = createLoginData(userID: userID, sessionID: sessionID)
-        usersManager.add(newUser: .init(api: apiMock, userInfo: userData.toUserInfo, authCredential: userData.credential, mailSettings: nil, parent: nil, coreKeyMaker: coreKeyMaker))
+        usersManager.add(newUser: .init(api: apiMock, userInfo: userData.toUserInfo, authCredential: userData.credential, mailSettings: nil, parent: nil, globalContainer: .init()))
         let skeletonExpectation = expectation(description: "Closure is called")
         let unlockExpectation = expectation(description: "Closure is called")
         unlockExpectation.isInverted = true
@@ -208,7 +211,7 @@ final class SignInManagerTests: XCTestCase {
 
     func testFinalizeSignIn_userIsNotAvailableInDelinquent_newUserIsRemoved() {
         let userData = createLoginData(userID: userID, sessionID: sessionID, delinquent: 4)
-        usersManager.add(newUser: .init(api: apiMock, userInfo: userData.toUserInfo, authCredential: userData.credential, mailSettings: nil, parent: nil, coreKeyMaker: coreKeyMaker))
+        usersManager.add(newUser: .init(api: apiMock, userInfo: userData.toUserInfo, authCredential: userData.credential, mailSettings: nil, parent: nil, globalContainer: .init()))
         let skeletonExpectation = expectation(description: "Closure is called")
         let unlockExpectation = expectation(description: "Closure is called")
         unlockExpectation.isInverted = true

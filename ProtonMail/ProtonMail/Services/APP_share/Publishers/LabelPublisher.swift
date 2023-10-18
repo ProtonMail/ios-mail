@@ -38,7 +38,7 @@ final class LabelPublisher: NSObject, LabelPublisherProtocol {
 
     init(
         parameters: Parameters,
-        dependencies: Dependencies = LabelPublisher.Dependencies()
+        dependencies: Dependencies
     ) {
         self.params = parameters
         self.dependencies = dependencies
@@ -165,9 +165,9 @@ extension LabelPublisher {
     }
 
     struct Dependencies {
-        let coreDataService: CoreDataService
+        let coreDataService: CoreDataContextProviderProtocol
 
-        init(coreDataService: CoreDataService = sharedServices.get(by: CoreDataService.self)) {
+        init(coreDataService: CoreDataContextProviderProtocol) {
             self.coreDataService = coreDataService
         }
     }

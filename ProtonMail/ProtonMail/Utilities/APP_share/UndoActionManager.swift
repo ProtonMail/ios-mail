@@ -59,16 +59,13 @@ final class UndoActionManager: UndoActionManagerProtocol {
     }
 
     private(set) var undoTitles: [UndoModel] = []
-    private let factory: UndoActionManagerDependenciesFactory
     private let dependencies: Dependencies
 
     init(
-        factory: UndoActionManagerDependenciesFactory,
         dependencies: Dependencies,
         getEventFetching: @escaping () -> EventsFetching?,
         getUserManager: @escaping () -> UserManager?
     ) {
-        self.factory = factory
         self.dependencies = dependencies
         self.getEventFetching = getEventFetching
         self.getUserManager = getUserManager
@@ -209,16 +206,27 @@ extension UndoActionManager {
         #if !APP_EXTENSION
         DispatchQueue.main.async {
             guard let message = self.message(id: messageID), let user = self.getUserManager() else { return }
-            let composer = self.factory.makeComposer(user: user, message: message)
+            let composerViewFactory = user.container.composerViewFactory
+            let composer = composerViewFactory.makeComposer(
+                msg: message,
+                action: .openDraft,
+                isEditingScheduleMsg: false
+            )
+
             guard let presentingVC = self.handler?.composerPresentingVC else { return }
             presentingVC.present(composer, animated: true)
         }
         #endif
     }
 
-    private func message(id messageID: MessageID) -> Message? {
-        let context = dependencies.contextProvider.mainContext
-        return Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context)
+    private func message(id messageID: MessageID) -> MessageEntity? {
+        return dependencies.contextProvider.read { context in
+            if let msg = Message.messageForMessageID(messageID.rawValue, inManagedObjectContext: context) {
+                return MessageEntity(msg)
+            } else {
+                return nil
+            }
+        }
     }
 }
 

@@ -65,6 +65,24 @@ class MockAutoDeleteSpamAndTrashDaysProvider: AutoDeleteSpamAndTrashDaysProvider
 
 }
 
+class MockBGTaskSchedulerProtocol: BGTaskSchedulerProtocol {
+    @ThrowingFuncStub(MockBGTaskSchedulerProtocol.submit) var submitStub
+    func submit(_ taskRequest: BGTaskRequest) throws {
+        try submitStub(taskRequest)
+    }
+
+    @FuncStub(MockBGTaskSchedulerProtocol.register, initialReturn: Bool()) var registerStub
+    func register(forTaskWithIdentifier identifier: String, using queue: DispatchQueue?, launchHandler: @escaping (BGTask) -> Void) -> Bool {
+        registerStub(identifier, queue, launchHandler)
+    }
+
+    @FuncStub(MockBGTaskSchedulerProtocol.cancel) var cancelStub
+    func cancel(taskRequestWithIdentifier identifier: String) {
+        cancelStub(identifier)
+    }
+
+}
+
 class MockBackendConfigurationCacheProtocol: BackendConfigurationCacheProtocol {
     @FuncStub(MockBackendConfigurationCacheProtocol.readEnvironment, initialReturn: nil) var readEnvironmentStub
     func readEnvironment() -> Environment? {
@@ -88,8 +106,8 @@ class MockBlockedSenderFetchStatusProviderProtocol: BlockedSenderFetchStatusProv
     }
 
     @FuncStub(MockBlockedSenderFetchStatusProviderProtocol.markBlockedSendersAsFetched) var markBlockedSendersAsFetchedStub
-    func markBlockedSendersAsFetched(userID: UserID) {
-        markBlockedSendersAsFetchedStub(userID)
+    func markBlockedSendersAsFetched(_ fetched: Bool, userID: UserID) {
+        markBlockedSendersAsFetchedStub(fetched, userID)
     }
 
 }
@@ -131,11 +149,6 @@ class MockCacheServiceProtocol: CacheServiceProtocol {
     @ThrowingFuncStub(MockCacheServiceProtocol.parseMessagesResponse) var parseMessagesResponseStub
     func parseMessagesResponse(labelID: LabelID, isUnread: Bool, response: [String: Any], idsOfMessagesBeingSent: [String]) throws {
         try parseMessagesResponseStub(labelID, isUnread, response, idsOfMessagesBeingSent)
-    }
-
-    @FuncStub(MockCacheServiceProtocol.updateCounterSync) var updateCounterSyncStub
-    func updateCounterSync(markUnRead: Bool, on labelIDs: [LabelID]) {
-        updateCounterSyncStub(markUnRead, labelIDs)
     }
 
     @FuncStub(MockCacheServiceProtocol.updateExpirationOffset) var updateExpirationOffsetStub
@@ -207,6 +220,24 @@ class MockContactCacheStatusProtocol: ContactCacheStatusProtocol {
 
 }
 
+class MockContactDataServiceProtocol: ContactDataServiceProtocol {
+    @FuncStub(MockContactDataServiceProtocol.queueUpdate) var queueUpdateStub
+    func queueUpdate(objectID: NSManagedObjectID, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?) {
+        queueUpdateStub(objectID, cardDatas, newName, emails, completion)
+    }
+
+    @FuncStub(MockContactDataServiceProtocol.queueAddContact, initialReturn: nil) var queueAddContactStub
+    func queueAddContact(cardDatas: [CardData], name: String, emails: [ContactEditEmail], importedFromDevice: Bool) -> NSError? {
+        queueAddContactStub(cardDatas, name, emails, importedFromDevice)
+    }
+
+    @FuncStub(MockContactDataServiceProtocol.queueDelete) var queueDeleteStub
+    func queueDelete(objectID: NSManagedObjectID, completion: ContactDeleteComplete?) {
+        queueDeleteStub(objectID, completion)
+    }
+
+}
+
 class MockContactGroupsProviderProtocol: ContactGroupsProviderProtocol {
     @FuncStub(MockContactGroupsProviderProtocol.getAllContactGroupVOs, initialReturn: [ContactGroupVO]()) var getAllContactGroupVOsStub
     func getAllContactGroupVOs() -> [ContactGroupVO] {
@@ -265,18 +296,18 @@ class MockConversationProvider: ConversationProvider {
     }
 
     @FuncStub(MockConversationProvider.label) var labelStub
-    func label(conversationIDs: [ConversationID], as labelID: LabelID, isSwipeAction: Bool, completion: ((Result<Void, Error>) -> Void)?) {
-        labelStub(conversationIDs, labelID, isSwipeAction, completion)
+    func label(conversationIDs: [ConversationID], as labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
+        labelStub(conversationIDs, labelID, completion)
     }
 
     @FuncStub(MockConversationProvider.unlabel) var unlabelStub
-    func unlabel(conversationIDs: [ConversationID], as labelID: LabelID, isSwipeAction: Bool, completion: ((Result<Void, Error>) -> Void)?) {
-        unlabelStub(conversationIDs, labelID, isSwipeAction, completion)
+    func unlabel(conversationIDs: [ConversationID], as labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?) {
+        unlabelStub(conversationIDs, labelID, completion)
     }
 
     @FuncStub(MockConversationProvider.move) var moveStub
-    func move(conversationIDs: [ConversationID], from previousFolderLabel: LabelID, to nextFolderLabel: LabelID, isSwipeAction: Bool, callOrigin: String?, completion: ((Result<Void, Error>) -> Void)?) {
-        moveStub(conversationIDs, previousFolderLabel, nextFolderLabel, isSwipeAction, callOrigin, completion)
+    func move(conversationIDs: [ConversationID], from previousFolderLabel: LabelID, to nextFolderLabel: LabelID, callOrigin: String?, completion: ((Result<Void, Error>) -> Void)?) {
+        moveStub(conversationIDs, previousFolderLabel, nextFolderLabel, callOrigin, completion)
     }
 
     @FuncStub(MockConversationProvider.fetchLocalConversations, initialReturn: [Conversation]()) var fetchLocalConversationsStub
@@ -465,6 +496,11 @@ class MockLAContextProtocol: LAContextProtocol {
         canEvaluatePolicyStub(policy, error)
     }
 
+    @FuncStub(MockLAContextProtocol.evaluatePolicy) var evaluatePolicyStub
+    func evaluatePolicy(_ policy: LAPolicy, localizedReason: String, reply: @escaping (Bool, Error?) -> Void) {
+        evaluatePolicyStub(policy, localizedReason, reply)
+    }
+
 }
 
 class MockLabelManagerRouterProtocol: LabelManagerRouterProtocol {
@@ -605,9 +641,9 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
         removeUpdateTimeExceptUnreadStub(userID)
     }
 
-    @FuncStub(MockLastUpdatedStoreProtocol.getUnreadCounts) var getUnreadCountsStub
-    func getUnreadCounts(by labelIDs: [LabelID], userID: UserID, type: ViewMode, completion: @escaping ([String: Int]) -> Void) {
-        getUnreadCountsStub(labelIDs, userID, type, completion)
+    @FuncStub(MockLastUpdatedStoreProtocol.getUnreadCounts, initialReturn: [String: Int]()) var getUnreadCountsStub
+    func getUnreadCounts(by labelIDs: [LabelID], userID: UserID, type: ViewMode) -> [String: Int] {
+        getUnreadCountsStub(labelIDs, userID, type)
     }
 
     @FuncStub(MockLastUpdatedStoreProtocol.updateLastUpdatedTime) var updateLastUpdatedTimeStub
@@ -1070,14 +1106,6 @@ class MockSideMenuProtocol: SideMenuProtocol {
 
 }
 
-class MockSignInProvider: SignInProvider {
-    @PropertyStub(\MockSignInProvider.isSignedIn, initialGet: Bool()) var isSignedInStub
-    var isSignedIn: Bool {
-        isSignedInStub()
-    }
-
-}
-
 class MockSwipeActionInfo: SwipeActionInfo {
     @PropertyStub(\MockSwipeActionInfo.swipeLeft, initialGet: Int()) var swipeLeftStub
     var swipeLeft: Int {
@@ -1141,9 +1169,9 @@ class MockUnlockManagerDelegate: UnlockManagerDelegate {
         isMailboxPasswordStoredStub(uid)
     }
 
-    @FuncStub(MockUnlockManagerDelegate.setupCoreData) var setupCoreDataStub
-    func setupCoreData() {
-        setupCoreDataStub()
+    @ThrowingFuncStub(MockUnlockManagerDelegate.setupCoreData) var setupCoreDataStub
+    func setupCoreData() throws {
+        try setupCoreDataStub()
     }
 
     @FuncStub(MockUnlockManagerDelegate.loadUserDataAfterUnlock) var loadUserDataAfterUnlockStub
@@ -1154,8 +1182,8 @@ class MockUnlockManagerDelegate: UnlockManagerDelegate {
 }
 
 class MockUnlockProvider: UnlockProvider {
-    @PropertyStub(\MockUnlockProvider.isUnlocked, initialGet: Bool()) var isUnlockedStub
-    var isUnlocked: Bool {
+    @FuncStub(MockUnlockProvider.isUnlocked, initialReturn: Bool()) var isUnlockedStub
+    func isUnlocked() -> Bool {
         isUnlockedStub()
     }
 

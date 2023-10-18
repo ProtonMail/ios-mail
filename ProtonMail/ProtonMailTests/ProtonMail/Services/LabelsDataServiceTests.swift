@@ -36,7 +36,8 @@ final class LabelsDataServiceTests: XCTestCase {
                                 userID: UserID(userID),
                                 contextProvider: mockContextProvider,
                                 lastUpdatedStore: MockLastUpdatedStoreProtocol(),
-                                cacheService: mockCacheService)
+                                cacheService: mockCacheService,
+                                viewModeDataSource: ConversationStateService(viewMode: .singleMessage))
     }
 
     override func tearDown() {

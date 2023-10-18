@@ -28,6 +28,12 @@ final class ToolbarSettingView: UIView {
         addSubviews()
         setupLayout()
         backgroundColor = ColorProvider.BackgroundNorm
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(userChangedTextSize),
+            name: UIContentSizeCategory.didChangeNotification,
+            object: nil
+        )
     }
 
     required init?(coder: NSCoder) {
@@ -61,12 +67,20 @@ final class ToolbarSettingView: UIView {
             containerView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ].activate()
     }
+
+    @objc
+    private func userChangedTextSize() {
+        let font = UIFont.adjustedFont(forTextStyle: .footnote)
+        segmentControl.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
+    }
 }
 
 private enum SubviewsFactory {
     static var segmentControl: UISegmentedControl {
         let control = UISegmentedControl(items: [LocalString._toolbar_setting_segment_title_message,
                                                  LocalString._menu_inbox_title])
+        let font = UIFont.adjustedFont(forTextStyle: .footnote)
+        control.setTitleTextAttributes([NSAttributedString.Key.font: font], for: .normal)
         return control
     }
 
@@ -78,6 +92,7 @@ private enum SubviewsFactory {
         infoIcon.tintColor = ColorProvider.IconNorm
         let infoLabel = UILabel()
         infoLabel.numberOfLines = 0
+        infoLabel.adjustsFontForContentSizeCategory = true
 
         view.addSubview(infoIcon)
         view.addSubview(infoLabel)

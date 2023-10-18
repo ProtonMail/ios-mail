@@ -25,12 +25,16 @@ final class ToolbarCustomizeViewModelTests: XCTestCase {
     override func setUp() {
         super.setUp()
         toolbarCustomizationInfoBubbleViewStatusProviderMock = MockToolbarCustomizationInfoBubbleViewStatusProvider()
+
+        let globalContainer = GlobalContainer()
+        globalContainer.toolbarCustomizationInfoBubbleViewStatusProviderFactory.register {
+            self.toolbarCustomizationInfoBubbleViewStatusProviderMock
+        }
+
         sut = ToolbarCustomizeViewModel<MessageViewActionSheetAction>(
             currentActions: [],
             allActions: MessageViewActionSheetAction.allCases,
-            actionsNotAddableToToolbar: MessageViewActionSheetAction.actionsNotAddableToToolbar,
-            defaultActions: MessageViewActionSheetAction.defaultActions,
-            infoBubbleViewStatusProvider: toolbarCustomizationInfoBubbleViewStatusProviderMock
+            dependencies: globalContainer
         )
     }
 

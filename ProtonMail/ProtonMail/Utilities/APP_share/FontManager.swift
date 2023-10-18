@@ -87,7 +87,7 @@ struct FontManager {
     }
 
     static var DefaultStrong: [NSAttributedString.Key: Any] {
-        let font = UIFont.adjustedFont(forTextStyle: .body)
+        let font = UIFont.adjustedFont(forTextStyle: .body, weight: .semibold)
         let foregroundColor: UIColor = ColorProvider.TextNorm
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineHeightMultiple = 1.18

@@ -1,0 +1,82 @@
+{
+  "configurations" : [
+    {
+      "id" : "DBA648F7-A3F7-4D42-B290-223D3D83E88F",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "DYNAMIC_DOMAIN",
+        "value" : "$(DYNAMIC_DOMAIN)"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ProtonMail.xcodeproj",
+      "identifier" : "67596B012358FAE8B0782EE2",
+      "name" : "ProtonMailUITests"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "skippedTests" : [
+        "AccountDeletionOptionTests",
+        "AccountSettingsTests\/testChangeDisplayName()",
+        "AccountSettingsTests\/testCreateAndDeleteFolderFromAccountSettings()",
+        "AccountSettingsTests\/testCreateAndDeleteLabelFromAccountSettings()",
+        "AccountSettingsTests\/testDisablePrivacyAutoShowImages()",
+        "AccountSettingsTests\/testSwitchMobileSignatureToggleOff()",
+        "AccountSettingsTests\/testSwitchMobileSignatureToggleOn()",
+        "BaseTestCase",
+        "DraftsTests\/testAddRecipientsToDraft()",
+        "DraftsTests\/testChangeDraftSubjectAndSendMessage()",
+        "DraftsTests\/testEditDraftMultipleTimes()",
+        "DraftsTests\/testEditDraftMultipleTimesAndSend()",
+        "DraftsTests\/testEditDraftWithEnabledPublicKeyMultipleTimesAndSend()",
+        "DraftsTests\/testEditEveryFieldInDraftWithEnabledPublicKeyAndSend()",
+        "DraftsTests\/testMinimiseAppWhileComposingDraft()",
+        "DraftsTests\/testSaveDraft()",
+        "DraftsTests\/testSaveDraftWithoutSubject()",
+        "DraftsTests\/testSendDraftWithAttachment()",
+        "ExternalAccountsTests",
+        "FixtureAuthenticatedTestCase",
+        "ForceUpgradeTests",
+        "ForwardMessageTests",
+        "HumanVerificationTests",
+        "LoginExtAccountsTests",
+        "MenuTests",
+        "MonkeyTests",
+        "MultiuserManagementTests\/testAddSecondAccount_Mail2022User()",
+        "NoUnauthSessionTests",
+        "PinTests\/testEnterCorrectPinCanUnlock()",
+        "PinTests\/testEnterEmptyPin()",
+        "PinTests\/testEnterIncorrectPinTenTimesLogOut()",
+        "PinTests\/testErrorMessageOnThreeRmainingPinTries()",
+        "PinTests\/testIncorrectPinBeforeThirtySec()",
+        "PinTests\/testLogoutBeforeUnlockingDoesNotCrash()",
+        "PinTests\/testTurnOnAndOffPin()",
+        "RecipientAddressesTests",
+        "ReferralPromptTests",
+        "ReplyToMessageTests",
+        "SendNewMessageTests",
+        "SettingsTests\/testBlockList()",
+        "SettingsTests\/testDarkModeEnable()",
+        "SettingsTests\/testEnableAndDisablePinForMultipleAccounts()",
+        "SpamTests\/testSpamMessageFromDetailPage()",
+        "SpamTests\/testSpamSingleMessageFromLongClick()",
+        "UnauthSessionTests"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "67596B012358FAE8B0782EE2",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

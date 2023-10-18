@@ -18,36 +18,36 @@
 import ProtonCore_TestingToolkit
 
 // Validates account deletion option in the app without actual deletion.
-class AccountDeletionOptionTests: BaseTestCase {
+class AccountDeletionOptionTests: FixtureAuthenticatedTestCase {
     
     let loginRobot = LoginRobot()
     let accountDeletionRobot = AccountDeletionButtonRobot()
     
     func testDeleteAccountOptionExists() {
-        let freeUser = users["plus"]!
-        loginRobot
-            .loginUser(freeUser)
-            .menuDrawer()
-            .settings()
-            .selectAccount(freeUser.email)
-        
-        accountDeletionRobot
-            .verify.accountDeletionButtonIsDisplayed(type: .staticText)
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .menuDrawer()
+                .settings()
+                .selectAccount(user.email)
+            
+            accountDeletionRobot
+                .verify.accountDeletionButtonIsDisplayed(type: .staticText)
+        }
     }
     
     func testDeleteAccountCanBeClosed() {
-        let freeUser = users["plus"]!
-        loginRobot
-            .loginUser(freeUser)
-            .menuDrawer()
-            .settings()
-            .selectAccount(freeUser.email)
-        
-        accountDeletionRobot
-            .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
-            .verify.accountDeletionWebViewIsOpened()
-            .verify.accountDeletionWebViewIsLoaded(application: app)
-            .tapCancelButton(to: AccountDeletionButtonRobot.self)
-            .verify.accountDeletionButtonIsDisplayed(type: .staticText)
+        runTestWithScenario(.qaMail001) {
+            InboxRobot()
+                .menuDrawer()
+                .settings()
+                .selectAccount(user.email)
+            
+            accountDeletionRobot
+                .openAccountDeletionWebView(type: .staticText, to: AccountDeletionWebViewRobot.self)
+                .verify.accountDeletionWebViewIsOpened()
+                .verify.accountDeletionWebViewIsLoaded(application: app)
+                .tapCancelButton(to: AccountDeletionButtonRobot.self)
+                .verify.accountDeletionButtonIsDisplayed(type: .staticText)
+        }
     }
 }

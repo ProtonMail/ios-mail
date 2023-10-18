@@ -19,7 +19,7 @@ import XCTest
 import ProtonCore_TestingToolkit
 @testable import ProtonMail
 
-class ReferralPromptTests: BaseTestCase {
+class ReferralPromptTests: FixtureAuthenticatedTestCase {
 
     override func setUp() {
         launchArguments.append("-showReferralPromptView")
@@ -27,26 +27,29 @@ class ReferralPromptTests: BaseTestCase {
     }
 
     func testTapOutsideShouldDismiss() {
-        let user = users["plus"]!
-        LoginRobot()
-            .loginUserWithReferralPrompt(user)
-            .dismissReferralByTapOutside()
-            .verify.referralPromptIsNotShown()
+        runTestWithScenarioDoNotLogin(.qaMail001) {
+            LoginRobot()
+                .loginUserWithReferralPrompt(user)
+                .dismissReferralByTapOutside()
+                .verify.referralPromptIsNotShown()
+        }
     }
 
     func testCloseButtonShouldDismiss() {
-        let user = users["plus"]!
-        LoginRobot()
-            .loginUserWithReferralPrompt(user)
-            .dismissReferralWithCloseButton()
-            .verify.referralPromptIsNotShown()
+        runTestWithScenarioDoNotLogin(.qaMail001) {
+            LoginRobot()
+                .loginUserWithReferralPrompt(user)
+                .dismissReferralWithCloseButton()
+                .verify.referralPromptIsNotShown()
+        }
     }
 
     func testLaterButtonShouldDismiss() {
-        let user = users["plus"]!
-        LoginRobot()
-            .loginUserWithReferralPrompt(user)
-            .dismissReferralWithLaterButton()
-            .verify.referralPromptIsNotShown()
+        runTestWithScenarioDoNotLogin(.qaMail001) {
+            LoginRobot()
+                .loginUserWithReferralPrompt(user)
+                .dismissReferralWithLaterButton()
+                .verify.referralPromptIsNotShown()
+        }
     }
 }

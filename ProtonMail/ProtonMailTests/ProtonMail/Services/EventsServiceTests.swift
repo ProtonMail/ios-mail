@@ -47,11 +47,12 @@ final class EventsServiceTests: XCTestCase {
             )
         )
         let dependencies = EventsService.Dependencies(
-            fetchMessageMetaData: mockFetchMessageMetaData,
             contactCacheStatus: mockContactCacheStatus,
+            coreDataProvider: mockContextProvider,
+            featureFlagCache: MockFeatureFlagCache(),
+            fetchMessageMetaData: mockFetchMessageMetaData,
             incomingDefaultService: incomingDefaultService,
-            queueManager: MockQueueManager(),
-            coreDataProvider: mockContextProvider
+            queueManager: MockQueueManager()
         )
         sut = EventsService(userManager: mockUserManager, dependencies: dependencies)
     }
@@ -238,7 +239,7 @@ final class EventsServiceTests: XCTestCase {
 extension EventsServiceTests {
 
     private func makeUserManager(apiMock: APIServiceMock) -> UserManager {
-        let user = UserManager(api: apiMock, role: .member, coreKeyMaker: MockKeyMakerProtocol())
+        let user = UserManager(api: apiMock, role: .member)
         user.userInfo.userId = dummyUserID
         return user
     }

@@ -20,24 +20,15 @@ import XCTest
 import ProtonCore_TestingToolkit
 
 class SettingsDeviceViewControllerTests: XCTestCase {
-
     var sut: SettingsDeviceViewController!
-    var mockUser: UserManager!
-    var mockApiService: APIServiceMock!
-    var mockUsers: UsersManager!
-    var mockDoh: DohMock!
     var settingsDeviceCoordinatorMock: MockSettingsDeviceCoordinator!
 
     override func setUp() {
         super.setUp()
-        mockDoh = DohMock()
-        mockApiService = APIServiceMock()
-        mockUser = UserManager(api: mockApiService, role: .none, coreKeyMaker: MockKeyMakerProtocol())
-        mockUsers = UsersManager(doh: mockDoh, userDataCache: UserDataCache(keyMaker: MockKeyMakerProtocol()), coreKeyMaker: MockKeyMakerProtocol())
-        mockUsers.add(newUser: mockUser)
+        let mockApiService = APIServiceMock()
         let globalContainer = GlobalContainer()
-        globalContainer.usersManagerFactory.register { self.mockUsers }
-        let userContainer = UserContainer(userManager: mockUser, globalContainer: globalContainer)
+        let mockUser = UserManager(api: mockApiService, globalContainer: globalContainer)
+        let userContainer = mockUser.container
         settingsDeviceCoordinatorMock = MockSettingsDeviceCoordinator(
             navigationController: nil,
             dependencies: userContainer
@@ -48,10 +39,6 @@ class SettingsDeviceViewControllerTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
-        mockUsers = nil
-        mockUser = nil
-        mockApiService = nil
-        mockDoh = nil
         settingsDeviceCoordinatorMock = nil
     }
 

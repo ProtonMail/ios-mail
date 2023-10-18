@@ -60,13 +60,13 @@ final class ScheduledSendHelperTests: XCTestCase {
         let firstItemTitle = try XCTUnwrap(itemGroup.items.first?.components.first as? PMActionSheetTextComponent)
         let firstItemDetail = try XCTUnwrap(itemGroup.items.first?.components.last as? PMActionSheetTextComponent)
         XCTAssertEqual(firstItemTitle.text.mapRight { $0.string }.value(), L11n.ScheduledSend.inTheMorning)
-        XCTAssertEqual(firstItemDetail.text.mapRight { $0.string }.value(), tomorrowDate.localizedString(withTemplate: nil))
+        XCTAssertEqual(firstItemDetail.text.mapRight { $0.string }.value(), tomorrowDate.localizedString())
 
         let nextMondayDate = try XCTUnwrap(date.next(.monday, hour: 8, minute: 0))
         let secondItemTitle = try XCTUnwrap(itemGroup.items[safe: 1]?.components.first as? PMActionSheetTextComponent)
         let secondItemDetails = try XCTUnwrap(itemGroup.items[safe: 1]?.components.last as? PMActionSheetTextComponent)
         XCTAssertEqual(secondItemTitle.text.mapRight { $0.string }.value(), nextMondayDate.formattedWith("EEEE").capitalized)
-        XCTAssertEqual(secondItemDetails.text.mapRight { $0.string }.value(), nextMondayDate.localizedString(withTemplate: nil))
+        XCTAssertEqual(secondItemDetails.text.mapRight { $0.string }.value(), nextMondayDate.localizedString())
 
         let lastItem = try XCTUnwrap(itemGroup.items[safe: 2]?.components.first as? PMActionSheetTextComponent)
         XCTAssertEqual(lastItem.text.mapRight { $0.string }.value(), L11n.ScheduledSend.custom)
@@ -89,13 +89,13 @@ final class ScheduledSendHelperTests: XCTestCase {
         let firstItemTitle = try XCTUnwrap(itemGroup.items.first?.components.first as? PMActionSheetTextComponent)
         XCTAssertEqual(firstItemTitle.text.mapRight { $0.string }.value(), L11n.ScheduledSend.tomorrow)
         let firstItemDetail = try XCTUnwrap(itemGroup.items.first?.components.last as? PMActionSheetTextComponent)
-        XCTAssertEqual(firstItemDetail.text.mapRight { $0.string }.value(), tomorrowDate.localizedString(withTemplate: nil))
+        XCTAssertEqual(firstItemDetail.text.mapRight { $0.string }.value(), tomorrowDate.localizedString())
 
         let nextMondayDate = try XCTUnwrap(date.next(.monday, hour: 8, minute: 0))
         let secondItemTitle = try XCTUnwrap(itemGroup.items[safe: 1]?.components.first as? PMActionSheetTextComponent)
         let secondItemDetail = try XCTUnwrap(itemGroup.items[safe: 1]?.components.last as? PMActionSheetTextComponent)
         XCTAssertEqual(secondItemTitle.text.mapRight { $0.string }.value(), nextMondayDate.formattedWith("EEEE").capitalized)
-        XCTAssertEqual(secondItemDetail.text.mapRight { $0.string }.value(), nextMondayDate.localizedString(withTemplate: nil))
+        XCTAssertEqual(secondItemDetail.text.mapRight { $0.string }.value(), nextMondayDate.localizedString())
 
         let lastItem = try XCTUnwrap(itemGroup.items[safe: 2]?.components.first as? PMActionSheetTextComponent)
         XCTAssertEqual(lastItem.text.mapRight { $0.string }.value(), L11n.ScheduledSend.custom)

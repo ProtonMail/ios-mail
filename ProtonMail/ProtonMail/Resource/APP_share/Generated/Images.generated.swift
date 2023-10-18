@@ -42,7 +42,6 @@ internal enum Asset {
   internal static let mailFolderNoResultIcon = ImageAsset(name: "mail_folder_no_result_icon")
   internal static let mailLabelCrossIcon = ImageAsset(name: "mail_label_cross_icon")
   internal static let mailNoResultIcon = ImageAsset(name: "mail_no_result_icon")
-  internal static let trashIconClock = ImageAsset(name: "trash-icon-clock")
   internal static let upgradeIconBig = ImageAsset(name: "upgrade-icon-big")
   internal static let upgradeIcon = ImageAsset(name: "upgrade_Icon")
   internal static let upsellPromotion = ImageAsset(name: "upsell_promotion")

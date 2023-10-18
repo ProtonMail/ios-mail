@@ -48,7 +48,7 @@ final class ContactParserTest: XCTestCase {
         let plainText = ContactParserTestData.plainTextData
         self.sut
             .parsePlainTextContact(data: plainText,
-                                   coreDataService: coreDataService,
+                                   contextProvider: coreDataService,
                                    contactID: contactID)
         XCTAssertEqual(self.resultMock.emails.count, 1)
         XCTAssertEqual(self.resultMock.emails[0].newEmail, "iamtest@aaa.bbb")

@@ -24,37 +24,27 @@ import ProtonCore_TestingToolkit
 extension UserManager {
     convenience init(
         api: APIService,
-        role: UserInfo.OrganizationRole,
-        userInfo: UserInfo = UserInfo.getDefault()
-    ) {
-        self.init(api: api, role: role, userInfo: userInfo, coreKeyMaker: MockKeyMakerProtocol())
-    }
-
-    convenience init(
-        api: APIService,
-        userID: String,
+        userInfo: UserInfo = UserInfo.getDefault(),
+        role: UserInfo.OrganizationRole? = nil,
+        userID: String? = nil,
         authCredential: AuthCredential = .none,
-        coreKeyMaker: KeyMakerProtocol = MockKeyMakerProtocol()
+        globalContainer: GlobalContainer? = nil
     ) {
+        if let role {
+            userInfo.role = role.rawValue
+        }
+
+        if let userID {
+            userInfo.userId = userID
+        }
+
         self.init(
             api: api,
-            role: .none,
-            userInfo: .init(
-                maxSpace: nil,
-                usedSpace: nil,
-                language: nil,
-                maxUpload: nil,
-                role: nil,
-                delinquent: nil,
-                keys: nil,
-                userId: userID,
-                linkConfirmation: nil,
-                credit: nil,
-                currency: nil,
-                subscribed: nil
-            ),
-            coreKeyMaker: coreKeyMaker,
-            authCredential: authCredential
+            userInfo: userInfo,
+            authCredential: authCredential,
+            mailSettings: nil,
+            parent: nil,
+            globalContainer: globalContainer ?? (UIApplication.shared.delegate as! AppDelegate).dependencies
         )
     }
 

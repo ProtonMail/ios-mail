@@ -9,7 +9,7 @@
 "Display Name" = "Nome visualizzato";
 
 /* place holder */
-"Input Display Name…" = "Inserisci Nome Mostrato…";
+"Input Display Name…" = "Inserisci Nome Visualizzato…";
 
 /* Title in signature settings */
 "Signature" = "Firma";
@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Indirizzi email";
 
-/* The button text for add profile picture */
-"Add photo" = "Aggiungi foto";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Modifica foto";
-
 /* contact section title */
 "Encrypted contact details" = "Dettagli di contatto cifrati";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Nome Etichetta";
-
-/* when server not reachable */
-"API Server not reachable…" = "Server API non raggiungibile…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "L'accesso a questo account è disabilitato a causa di un mancato pagamento. Per favore, accedi a proton.me per provvedere al pagamento della fattura scaduta.";
@@ -894,7 +885,7 @@
 "Decryption of this content failed" = "Decriptazione di questo contenuto non riuscita";
 
 /* error details */
-"Decryption of this message's encrypted content failed." = "La decriptazione del contenuto cifrato nel messaggio non è riuscita.";
+"Decryption of this message's encrypted content failed." = "La decriptazione del contenuto crittografato nel messaggio non è riuscita.";
 
 /* error title */
 "Logs" = "Registri";
@@ -1023,7 +1014,7 @@
 "We recommend setting up a password instead for the following recipients:" = "Consigliamo invece di configurare una password per i seguenti destinatari:";
 
 /* alert body before list of addresses */
-"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Consigliamo invece di configurare una password o disabilitare il PGP per i seguenti destinatari:";
+"We recommend setting up a password instead, or disabling PGP for the following recipients:" = "Consigliamo invece di configurare una password o disabilitare PGP per i seguenti destinatari:";
 
 /* A option title that enable/disable notification feature */
 "Notifications" = "Notifiche";
@@ -1284,7 +1275,7 @@
 "Unstar" = "Rimuovi dai Preferiti";
 
 /* The title of the unread action in action sheet */
-"Mark as unread" = "Segna come da leggere";
+"Mark as unread" = "Segna come non letto";
 
 /* Push notification action mark as read */
 "Mark as read" = "Segna come letto";
@@ -1514,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Destinatari nascosti";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Annulla iscrizione alla mailing list";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Il nostro sistema ha contrassegnato questo messaggio come un tentativo di phishing. Si prega di verificare che sia attendibile.";
 
@@ -1722,10 +1710,10 @@
 "Scheduling message..." = "Pianificazione messaggio...";
 
 /* The message after tapping the encryption icon. */
-"Sent by you with end-to-end encryption to verified recipient" = "Inviato da te con crittografia end-to-end al destinatario verificato";
+"Sent by you with end-to-end encryption to verified recipient" = "Inviato da te con la crittografia end-to-end al destinatario verificato";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption to verified recipient" = "Inviato da Proton Mail con crittografia ad accesso zero al destinatario verificato";
+"Sent by Proton Mail with zero-access encryption to verified recipient" = "Inviato da Proton Mail con la crittografia zero access al destinatario verificato";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption" = "Inviato da te con crittografia end-to-end";
@@ -1743,19 +1731,19 @@
 "End-to-end encrypted and signed message" = "Messaggio crittografato e firmato end-to-end";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message from verified sender" = "Messaggio crittografato PGP dal mittente verificato";
+"PGP-encrypted message from verified sender" = "Messaggio crittografato con PGP dal mittente verificato";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-encrypted and signed message" = "Messaggio crittografato e firmato PGP";
+"PGP-encrypted and signed message" = "Messaggio crittografato e firmato con PGP";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message from verified sender" = "Messaggio firmato PGP dal mittente verificato";
+"PGP-signed message from verified sender" = "Messaggio firmato con PGP dal mittente verificato";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-encrypted message" = "Messaggio PGP crittografato";
+"PGP-encrypted message" = "Messaggio crittografato con PGP";
 
 /* The message after tapping the encryption icon of message received. */
-"PGP-signed message. Sender verification failed" = "Messaggio firmato PGP. Verifica del mittente non riuscito.";
+"PGP-signed message. Sender verification failed" = "Messaggio firmato con PGP. Verifica del mittente non riuscita.";
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "End-to-end encrypted to verified recipient" = "Crittografato end-to-end al destinatario verificato";
@@ -1764,13 +1752,13 @@
 "End-to-end encrypted" = "Crittografato end-to-end";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted to verified recipient" = "Crittografato PGP al destinatario verificato";
+"PGP-encrypted to verified recipient" = "Crittografato con PGP al destinatario verificato";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-encrypted" = "Crittografato PGP";
+"PGP-encrypted" = "Crittografato con PGP";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"PGP-signed" = "Firmato PGP";
+"PGP-signed" = "Firmato con PGP";
 
 /* The error message while calculating the encryption preferences */
 "Email address disabled" = "Indirizzo email disabilitato";
@@ -1798,66 +1786,6 @@
 
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Il messaggio è in fase di invio e si sposterà nella cartella Inviati una volta completato l'invio.";
-
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Se perdi la connessione WiFi, i download continueranno usando i dati mobili.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Download tramite dati mobili";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Avanzamento Download";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Storia dei messaggi";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Limite di memoria";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Memoria utilizzata";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Tutti i tuoi messaggi vengono scaricati";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Non tutti i messaggi sono stati scaricati. Per scaricarli, libera spazio sul dispositivo.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Non tutti i messaggi sono stati scaricati. Per scaricarli, alza il limite di memoria qui sotto.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "Non hai messaggi.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "I tuoi messaggi sono in fase di scaricamento...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Dati memorizzati nella cache";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Allegati";
-
-/* cell title in device settings */
-"Downloaded messages" = "Messaggi scaricati";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Informazioni su quanto spazio di memoria sta utilizzando questo account Proton Mail sul tuo dispositivo.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Elimina";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Ti consente di aprire messaggi precedentemente letti mentre sei offline.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Consenti di aprire file precedentemente aperti mentre sei offline.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Ti consente di cercare tra i tuoi messaggi. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Vedi dettagli";
 
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Comandi toolbar (seleziona fino a 5)";
@@ -2035,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Password aggiornata";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Cancellazione cache...";
-
 /* Title for application logs settings option */
 "Application logs" = "Registri dell'applicazione";
 
@@ -2070,6 +1995,9 @@
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Per permetterci di aiutarti, per favore fornisci più dettagli possibili---\n\nSommario:\n\nIl problema è accaduto più di una volta: sì/no\nPassaggi per riprodurre il problema:\nRisultato atteso:\nRisultato ottenuto:\nCommenti:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Includi i log";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Prova un termine di ricerca diverso.";
@@ -2133,3 +2061,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domini di posta elettronica personalizzati";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Nome visualizzato";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Nome";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Cognome";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Il campo del nome visualizzato non può essere vuoto";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Il nome del contatto è troppo lungo";
+
+/* The button text for add profile picture */
+"Add photo" = "Aggiungi foto";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Modifica foto";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Annulla iscrizione alla mailing list";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Vuoi disiscriverti?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Questo ti disiscriverà dalla mailing list. Il mittente verrà avvisato di non inviare più email a questo indirizzo.";

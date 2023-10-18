@@ -27,7 +27,6 @@ final class PagesViewModelTests: XCTestCase {
     private var user: UserManager!
     private var userIntroduction: UserIntroductionProgressProvider!
     private var userInfo: UserInfo!
-    private var toolbarStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider!
     private var userID: String!
     private var mockPagesVMUIDelegate: MockPagesViewUIProtocol!
 
@@ -47,6 +46,9 @@ final class PagesViewModelTests: XCTestCase {
         )
         userInfo = UserInfo.getDefault()
         userInfo.userId = userID
+
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.contextProvider }
         user = UserManager(
             api: apiServiceMock,
             userInfo: userInfo,
@@ -54,10 +56,9 @@ final class PagesViewModelTests: XCTestCase {
             mailSettings: nil,
             parent: nil,
             appTelemetry: MailAppTelemetry(),
-            coreKeyMaker: MockKeyMakerProtocol()
+            globalContainer: globalContainer
         )
         userIntroduction = MockUserIntroductionProgressProvider()
-        toolbarStatusProvider = MockToolbarCustomizationInfoBubbleViewStatusProvider()
     }
 
     override func tearDownWithError() throws {
@@ -80,7 +81,6 @@ final class PagesViewModelTests: XCTestCase {
         user = nil
         userInfo = nil
         userIntroduction = nil
-        toolbarStatusProvider = nil
     }
 
     func testMessageSpotlight_no_spotlight() throws {
@@ -300,8 +300,7 @@ extension PagesViewModelTests {
             isUnread: false,
             labelID: LabelID("0"),
             user: user,
-            userIntroduction: userIntroduction,
-            infoBubbleViewStatusProvider: toolbarStatusProvider
+            userIntroduction: userIntroduction
         ) { _, _ in }
         return (sut, ids)
     }
@@ -322,8 +321,7 @@ extension PagesViewModelTests {
             labelID: LabelID("0"),
             user: user,
             targetMessageID: nil,
-            userIntroduction: userIntroduction,
-            infoBubbleViewStatusProvider: toolbarStatusProvider
+            userIntroduction: userIntroduction
         ) { _, _ in }
         return (sut, ids)
     }

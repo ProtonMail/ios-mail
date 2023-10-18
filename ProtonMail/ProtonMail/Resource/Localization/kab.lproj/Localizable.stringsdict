@@ -381,9 +381,9 @@
         <key>NSStringFormatValueTypeKey</key>
         <string>u</string>
         <key>one</key>
-        <string>Are you sure you want to delete this message permanently?</string>
+        <string>Tebɣiḍ d tidet ad tekkseḍ yizen-a i lebda?</string>
         <key>other</key>
-        <string>Are you sure you want to delete these %d messages permanently?</string>
+        <string>Tebɣiḍ d tidet ad tekkseḍ %d yiznan-a i lebda?</string>
       </dict>
     </dict>
   </dict>

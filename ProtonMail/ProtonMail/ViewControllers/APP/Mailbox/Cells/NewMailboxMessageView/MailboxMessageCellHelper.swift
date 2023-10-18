@@ -21,9 +21,9 @@ final class MailboxMessageCellHelper {
     func senderRowComponents(
         for message: MessageEntity,
         basedOn emailReplacements: [String: EmailEntity],
-        groupContacts: [ContactGroupVO]
-    ) -> [SenderRowComponent] {
-        if message.isSent || message.isDraft || message.isScheduledSend {
+        groupContacts: [ContactGroupVO],
+        shouldReplaceSenderWithRecipients: Bool) -> [SenderRowComponent] {
+        if shouldReplaceSenderWithRecipients && (message.isSent || message.isDraft || message.isScheduledSend) {
             return [.string(message.allEmailAddresses(emailReplacements, allGroupContacts: groupContacts))]
         } else {
             return senderRowComponents(for: .message(message), basedOn: emailReplacements)

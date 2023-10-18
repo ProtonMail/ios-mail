@@ -191,7 +191,7 @@ class NewMessageBodyViewController: UIViewController {
             webView.scrollView.showsHorizontalScrollIndicator = true
 
             self.customView.embed(webView)
-            showSkeletonView(in: webView)
+            showSkeletonView()
         }
 
         if viewMode == .singleMessage {
@@ -622,7 +622,8 @@ extension NewMessageBodyViewController: UIGestureRecognizerDelegate {
 
 // MARK: - HTTPRequestSecureLoaderDelegate
 extension NewMessageBodyViewController: HTTPRequestSecureLoaderDelegate {
-    func showSkeletonView(in webView: WKWebView) {
+    func showSkeletonView() {
+        guard let webView = self.webView else { return }
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
         label.isSkeletonable = true
@@ -639,11 +640,13 @@ extension NewMessageBodyViewController: HTTPRequestSecureLoaderDelegate {
         label.showAnimatedGradientSkeleton()
     }
 
-    func hideSkeletonView(in webView: WKWebView) {
+    func hideSkeletonView() {
+        guard let webView = self.webView else { return }
         webView.subviews.compactMap { $0 as? UILabel }.forEach { view in
             view.stopSkeletonAnimation()
             view.removeFromSuperview()
         }
+        updateViewHeight(to: webView.scrollView.contentSize.height)
     }
 }
 

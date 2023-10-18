@@ -35,7 +35,8 @@ extension MailboxViewController {
         let senderRowComponents = MailboxMessageCellHelper().senderRowComponents(
             for: message,
             basedOn: replacingEmailsMap,
-            groupContacts: contactGroups
+            groupContacts: contactGroups,
+            shouldReplaceSenderWithRecipients: true
         )
         let isSending = viewModel.messageService.isMessageBeingSent(id: message.messageID)
 

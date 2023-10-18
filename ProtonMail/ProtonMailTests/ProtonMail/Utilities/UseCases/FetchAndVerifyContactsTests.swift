@@ -189,7 +189,7 @@ extension FetchAndVerifyContactsTests {
             emails,
             hasSendPreferences: existsInContacts && hasSendPreferences
         )
-        mockContactProvider.getEmailsByAddressStub.bodyIs { _, _, _ in
+        mockContactProvider.getEmailsByAddressStub.bodyIs { _, _ in
             emails
         }
         if existsInContacts {

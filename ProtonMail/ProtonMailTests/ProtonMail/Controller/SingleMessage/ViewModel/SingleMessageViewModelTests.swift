@@ -26,7 +26,6 @@ final class SingleMessageViewModelTests: XCTestCase {
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var toolbarCustomizeSpotlightStatusProvider: MockToolbarCustomizeSpotlightStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
-    var toolbarCustomizationInfoBubbleViewStatusProvider: MockToolbarCustomizationInfoBubbleViewStatusProvider!
     var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
     var coordinatorMock: SingleMessageCoordinator!
     var notificationCenterMock: NotificationCenter!
@@ -38,7 +37,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         toolbarCustomizeSpotlightStatusProvider = MockToolbarCustomizeSpotlightStatusProvider()
         userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
-        toolbarCustomizationInfoBubbleViewStatusProvider = MockToolbarCustomizationInfoBubbleViewStatusProvider()
         nextMessageAfterMoveStatusProviderMock = .init()
         notificationCenterMock = .init()
     }
@@ -50,7 +48,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         toolbarProviderMock = nil
         saveToolbarActionUseCaseMock = nil
         toolbarCustomizeSpotlightStatusProvider = nil
-        toolbarCustomizationInfoBubbleViewStatusProvider = nil
         notificationCenterMock = nil
     }
 
@@ -251,12 +248,14 @@ final class SingleMessageViewModelTests: XCTestCase {
         messageObject.unRead = false
         let message = message ?? MessageEntity(messageObject)
 
-        coordinatorMock = SingleMessageCoordinator(serviceFactory: sharedServices,
-                                                   navigationController: UINavigationController(),
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.contextProviderMock }
+        let userContainer = UserContainer(userManager: fakeUser, globalContainer: globalContainer)
+
+        coordinatorMock = SingleMessageCoordinator(navigationController: UINavigationController(),
                                                    labelId: labelID,
                                                    message: message,
-                                                   user: fakeUser,
-                                                   infoBubbleViewStatusProvider: toolbarCustomizationInfoBubbleViewStatusProvider)
+                                                   dependencies: userContainer)
 
         let context = SingleMessageContentViewContext(labelId: labelID, message: message, viewMode: .singleMessage)
 
@@ -270,10 +269,8 @@ final class SingleMessageViewModelTests: XCTestCase {
             toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProvider,
             coordinator: coordinatorMock,
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            contentViewModel: SingleMessageContentViewModelFactory().createViewModel(
+            contentViewModel: SingleMessageContentViewModelFactory(dependencies: userContainer).createViewModel(
                 context: context,
-                user: fakeUser,
-                internetStatusProvider: MockInternetConnectionStatusProviderProtocol(),
                 highlightedKeywords: [],
                 goToDraft: { _, _ in }
             ),

@@ -82,13 +82,11 @@ class ComposeViewModel: NSObject {
         body: String,
         files: [FileData],
         action: ComposeMessageAction,
-        msgService: MessageDataService,
-        user: UserManager,
         originalScheduledTime: Date? = nil,
         dependencies: Dependencies
     ) {
-        self.user = user
-        self.messageService = msgService
+        self.user = dependencies.user
+        messageService = dependencies.user.messageService
         self.isEditingScheduleMsg = false
 
         // We have dependencies as an optional input parameter to avoid making
@@ -128,16 +126,14 @@ class ComposeViewModel: NSObject {
     }
 
     init(
-        msg: Message?,
+        msg: MessageEntity?,
         action: ComposeMessageAction,
-        msgService: MessageDataService,
-        user: UserManager,
         isEditingScheduleMsg: Bool = false,
         originalScheduledTime: Date? = nil,
         dependencies: Dependencies
     ) {
-        self.user = user
-        self.messageService = msgService
+        self.user = dependencies.user
+        messageService = dependencies.user.messageService
         self.isEditingScheduleMsg = isEditingScheduleMsg
         self.originalScheduledTime = originalScheduledTime
 
@@ -154,20 +150,19 @@ class ComposeViewModel: NSObject {
         initialize(message: msg, action: action)
     }
 
-    func initialize(message msg: Message?, action: ComposeMessageAction) {
-        if msg == nil || msg?.draft == true {
+    func initialize(message msg: MessageEntity?, action: ComposeMessageAction) {
+        if msg == nil || msg?.isDraft == true {
             if let msg = msg {
-                self.composerMessageHelper.setNewMessage(objectID: msg.objectID)
+                self.composerMessageHelper.setNewMessage(objectID: msg.objectID.rawValue)
             }
             self.subject = self.composerMessageHelper.draft?.title ?? ""
-        } else if msg?.managedObjectContext != nil {
-            // TODO: -v4 change to composer context
+        } else {
             guard let msg = msg else {
                 fatalError("This should not happened.")
             }
 
             do {
-                try composerMessageHelper.copyAndCreateDraft(from: msg, action: action)
+                try composerMessageHelper.copyAndCreateDraft(from: msg.messageID, action: action)
             } catch {
                 PMAssertionFailure(error)
             }
@@ -177,7 +172,7 @@ class ComposeViewModel: NSObject {
         self.messageAction = action
 
         // get original message if from sent
-        let fromSent: Bool = msg?.sentHardCheck ?? false
+        let fromSent: Bool = msg?.isSent ?? false
         self.updateContacts(fromSent)
     }
 
@@ -471,9 +466,7 @@ extension ComposeViewModel {
 
     func deleteDraft() {
         guard let rawMessage = composerMessageHelper.getMessageEntity() else { return }
-
-        messageService.delete(messages: [rawMessage],
-                              label: Message.Location.draft.labelID)
+        messageService.deleteDraft(message: rawMessage)
     }
 
     func markAsRead() {
@@ -868,7 +861,11 @@ extension ComposeViewModel {
 
             // finish parsing contact groups
             for group in groups {
-                let contactGroup = ContactGroupVO(ID: "", name: group.key)
+                let contactGroup = ContactGroupVO(
+                    ID: "",
+                    name: group.key,
+                    contextProvider: dependencies.coreDataContextProvider
+                )
                 contactGroup.overwriteSelectedEmails(with: group.value)
                 out.append(contactGroup)
             }
@@ -882,7 +879,7 @@ extension ComposeViewModel {
 
     /// Provides the display name for the recipient according to https://jira.protontech.ch/browse/MAILIOS-3027
     private func displayNameForRecipient(_ recipient: DecodableRecipient) -> String {
-        if let email = dependencies.contactProvider.getEmailsByAddress([recipient.address], for: user.userID).first {
+        if let email = dependencies.contactProvider.getEmailsByAddress([recipient.address]).first {
             return email.contactName
         } else if let backendName = recipient.name, !backendName.replacingOccurrences(of: " ", with: "").isEmpty {
             return backendName
@@ -1111,8 +1108,8 @@ extension ComposeViewModel {
 
 extension ComposeViewModel {
     struct Dependencies {
+        let user: UserManager
         let coreDataContextProvider: CoreDataContextProviderProtocol
-        let coreKeyMaker: KeyMakerProtocol
         let fetchAndVerifyContacts: FetchAndVerifyContactsUseCase
         let internetStatusProvider: InternetConnectionStatusProviderProtocol
         let fetchAttachment: FetchAttachmentUseCase

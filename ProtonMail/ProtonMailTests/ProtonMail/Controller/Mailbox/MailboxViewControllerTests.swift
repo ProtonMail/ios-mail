@@ -46,6 +46,8 @@ final class MailboxViewControllerTests: XCTestCase {
     var mockFetchMessageDetail: MockFetchMessageDetail!
     var fakeCoordinator: MockMailboxCoordinatorProtocol!
 
+    private var globalContainer: GlobalContainer!
+
     var testContext: NSManagedObjectContext {
         coreDataService.mainContext
     }
@@ -56,6 +58,9 @@ final class MailboxViewControllerTests: XCTestCase {
         userID = .init(String.randomString(20))
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
         sharedServices.add(CoreDataService.self, for: coreDataService)
+
+        globalContainer = .init()
+        globalContainer.contextProviderFactory.register { self.coreDataService }
 
         apiServiceMock = APIServiceMock()
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
@@ -84,7 +89,7 @@ final class MailboxViewControllerTests: XCTestCase {
                                       authCredential: fakeAuth,
                                       mailSettings: nil,
                                       parent: nil,
-                                      coreKeyMaker: MockKeyMakerProtocol())
+                                      globalContainer: globalContainer)
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
@@ -110,7 +115,7 @@ final class MailboxViewControllerTests: XCTestCase {
             completion?(.success(()))
         }
 
-        conversationProviderMock.labelStub.bodyIs { _, _, _, _, completion in
+        conversationProviderMock.labelStub.bodyIs { _, _, _, completion in
             completion?(.success(()))
         }
 
@@ -122,11 +127,11 @@ final class MailboxViewControllerTests: XCTestCase {
             completion?(.success(()))
         }
 
-        conversationProviderMock.moveStub.bodyIs { _, _, _, _, _, _, completion in
+        conversationProviderMock.moveStub.bodyIs { _, _, _, _, _, completion in
             completion?(.success(()))
         }
 
-        conversationProviderMock.unlabelStub.bodyIs { _, _, _, _, completion in
+        conversationProviderMock.unlabelStub.bodyIs { _, _, _, completion in
             completion?(.success(()))
         }
         fakeCoordinator = .init()
@@ -145,6 +150,7 @@ final class MailboxViewControllerTests: XCTestCase {
         toolbarActionProviderMock = nil
         saveToolbarActionUseCaseMock = nil
         apiServiceMock = nil
+        globalContainer = nil
     }
 
     func testTitle_whenChangeCustomLabelName_titleWillBeUpdatedAccordingly() {
@@ -255,7 +261,8 @@ final class MailboxViewControllerTests: XCTestCase {
             labelName: nil
         )
         sut.loadViewIfNeeded()
-        XCTAssertFalse(sut.tableView.visibleCells.isEmpty)
+
+        wait(self.sut.tableView.visibleCells.isEmpty == false)
 
         // Select cell
         let cell = sut.tableView.visibleCells.first as? NewMailboxMessageCell
@@ -367,6 +374,8 @@ final class MailboxViewControllerTests: XCTestCase {
         makeSUT(labelID: .init("0"), labelType: .folder, isCustom: false, labelName: nil)
         sut.loadViewIfNeeded()
 
+        wait(self.sut.tableView.visibleCells.isEmpty == false)
+
         // Enter selection mode
         let cell = try XCTUnwrap(sut.tableView.visibleCells.first as? NewMailboxMessageCell)
         sut.didSelectButtonStatusChange(cell: cell)
@@ -400,7 +409,9 @@ extension MailboxViewControllerTests {
         labelName: String?,
         totalUserCount: Int = 1
     ) {
-        sut = .init()
+        let globalContainer = GlobalContainer()
+        let userContainer = UserContainer(userManager: userManagerMock, globalContainer: globalContainer)
+
         let fetchMessage = MockFetchMessages()
         let updateMailbox = UpdateMailbox(dependencies: .init(
             labelID: labelID,
@@ -455,7 +466,8 @@ extension MailboxViewControllerTests {
                 totalUserCount
             }
         )
-        sut.set(viewModel: viewModel)
+
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
         sut.set(coordinator: fakeCoordinator)
     }
 }

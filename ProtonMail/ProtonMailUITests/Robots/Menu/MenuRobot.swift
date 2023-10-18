@@ -92,7 +92,7 @@ class MenuRobot: CoreElements {
     }
     
     func spam() -> SpamRobot {
-        cell(id.spamStaticText).swipeDownUntilVisible().tap()
+        cell(id.spamStaticText).swipeDownUntilVisible().waitForHittable().tap()
         return SpamRobot()
     }
     

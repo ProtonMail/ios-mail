@@ -21,7 +21,6 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import Photos
 import ProtonCore_UIFoundations
 
 // abstract
@@ -35,36 +34,11 @@ class AnyImagePickerDelegate: NSObject, AttachmentProvider, ImageProcessor {
     var actionSheetItem: PMActionSheetItem {
         fatalError() // override
     }
-
-    func checkPhotoPermission(_ handler: @escaping (_ granted: Bool) -> Void) {
-        func hasPhotoPermission() -> Bool {
-            return PHPhotoLibrary.authorizationStatus() == .authorized
-        }
-
-        func needsToRequestPhotoPermission() -> Bool {
-            return PHPhotoLibrary.authorizationStatus() == .notDetermined
-        }
-
-        if hasPhotoPermission() {
-            handler(true)
-        } else if needsToRequestPhotoPermission() {
-            PHPhotoLibrary.requestAuthorization({ status in
-                DispatchQueue.main.async(execute: { () in
-                    hasPhotoPermission() ? handler(true) : handler(false)
-                })
-            })
-        } else {
-            handler(false)
-        }
-    }
 }
 
 extension AnyImagePickerDelegate: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     @objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        if let asset = info[.phAsset] as? PHAsset {
-            self.process(asset: asset)
-            picker.dismiss(animated: true, completion: nil)
-        } else if let originalImage = info[.originalImage] as? UIImage {
+        if let originalImage = info[.originalImage] as? UIImage {
             self.process(original: originalImage).done { (_) in
                 picker.dismiss(animated: true, completion: nil)
             }.cauterize()

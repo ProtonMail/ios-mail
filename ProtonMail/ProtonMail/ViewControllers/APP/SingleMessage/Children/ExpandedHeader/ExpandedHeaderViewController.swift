@@ -155,7 +155,7 @@ class ExpandedHeaderViewController: UIViewController {
             let title = viewModel.infoProvider.originFolderTitle(isExpanded: true) {
             presentOriginRow(image: image, title: title)
         }
-
+        customView.isUserInteractionEnabled = true
         presentSizeRow(size: viewModel.infoProvider.size)
 
         if let (title, trackersFound) = viewModel.trackerProtectionRowInfo {
@@ -284,6 +284,7 @@ class ExpandedHeaderViewController: UIViewController {
 
         let titleLabel = UILabel()
         titleLabel.set(text: title, preferredFont: .footnote, textColor: ColorProvider.TextWeak)
+        titleLabel.isUserInteractionEnabled = true
         row.contentStackView.addArrangedSubview(titleLabel)
 
         row.contentStackView.addArrangedSubview(UIView())
@@ -295,12 +296,14 @@ class ExpandedHeaderViewController: UIViewController {
         [
             chevronImageView.heightAnchor.constraint(equalToConstant: 16).setPriority(as: .defaultHigh)
         ].activate()
+        chevronImageView.isUserInteractionEnabled = true
         row.contentStackView.addArrangedSubview(chevronImageView)
 
         let button = UIButton()
         button.addTarget(self, action: #selector(trackerInfoTapped), for: .touchUpInside)
         row.addSubview(button)
         button.fillSuperview()
+        button.isUserInteractionEnabled = true
 
         customView.contentStackView.addArrangedSubview(row)
     }

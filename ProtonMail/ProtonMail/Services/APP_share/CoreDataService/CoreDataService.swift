@@ -189,10 +189,13 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
         }
 
         var output: T!
+        let startTime = Date()
 
         context.performAndWait {
             output = block(context)
         }
+
+        checkForOverlyLongExecutionIfOnMainThread(startTime: startTime)
 
         return output
     }
@@ -257,10 +260,21 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
                 }
             }
 
+            let startTime = Date()
+
             serialQueue.waitUntilAllOperationsAreFinished()
+
+            checkForOverlyLongExecutionIfOnMainThread(startTime: startTime)
         }
 
         return try result.get()
+    }
+
+    private func checkForOverlyLongExecutionIfOnMainThread(startTime: Date, caller: StaticString = #function) {
+        let elapsedTime = Date().timeIntervalSince(startTime)
+        if Thread.isMainThread && elapsedTime > 0.2 {
+            PMAssertionFailure("\(self).\(caller) took too long on the main thread")
+        }
     }
 
     func enqueueOnRootSavingContext(block: @escaping (_ context: NSManagedObjectContext) -> Void) {

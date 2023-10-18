@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "E-postadresser";
 
-/* The button text for add profile picture */
-"Add photo" = "Lägg till foto";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Redigera foto";
-
 /* contact section title */
 "Encrypted contact details" = "Krypterade kontaktdetaljer";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Etikettnamn";
-
-/* when server not reachable */
-"API Server not reachable…" = "API-server kan inte nås…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Åtkomst till detta konto är inaktiverat på grund av utebliven betalning. Logga in via proton.me för att betala din obetalda faktura.";
@@ -1514,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Hemliga mottagare";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Avsluta prenumeration från e-postlista";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Vårt system flaggade detta meddelande som ett nätfiskeförsök. Kontrollera att det är legitimt.";
 
@@ -1799,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Meddelandet skickas och kommer flyttas till mappen “Skickat“ när sändningen är klar.";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Om du förlorar din WiFi-anslutning kommer nedladdningen att fortsätta via mobildata.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Ladda ner via mobildata";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Nedladdningsförlopp";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Meddelandehistorik";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Lagringsbegränsning";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Använt lagringsutrymme";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Alla dina meddelanden laddas ner";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Inte alla meddelanden laddades ner. För att hämta dessa, frigör utrymme på enheten.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Inte alla meddelanden laddades ner. För att hämta dessa, utöka lagringsbegränsningen nedan.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "Du har inga meddelanden.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Dina meddelanden laddas ner …";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Cachelagrad data";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Bilagor";
-
-/* cell title in device settings */
-"Downloaded messages" = "Nedladdade meddelanden";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Information gällande hur mycket lagringsutrymme detta Proton Mail-konto använder på din enhet.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Rensa";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Låter dig öppna tidigare lästa meddelanden när du är offline.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Låter dig öppna tidigare öppnade bilagor när du är offline.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Låter dig söka inom dina meddelanden. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Se detaljer";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Verktygsfältsåtgärder (välj upp till 5)";
 
@@ -2035,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Lösenord uppdaterat";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Rensar cache…";
-
 /* Title for application logs settings option */
 "Application logs" = "Applikationsloggar";
 
@@ -2070,6 +1995,9 @@
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---För att hjälpa oss att hjälpa dig, ange så många detaljer som möjligt---\n\nSammanfattning:\n\nHar problemet hänt mer än en gång: ja/nej\nSteg för att återskapa problemet:\nFörväntat resultat:\nFaktiskt resultat:\nKommentarer:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Inkludera loggar";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Prova en annan sökterm.";
@@ -2133,3 +2061,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Anpassade e-domäner";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Visningsnamn";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Förnamn";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Efternamn";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Fält för visningsnamn kan inte vara tomt";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Kontaktnamn är för långt";
+
+/* The button text for add profile picture */
+"Add photo" = "Lägg till foto";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Redigera foto";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Avsluta prenumeration från e-postlista";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Avsluta prenumeration?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Detta kommer avsluta din prenumeration från e-postlistan. Avsändaren kommer aviseras att inte längre skicka e-post till denna adress.";

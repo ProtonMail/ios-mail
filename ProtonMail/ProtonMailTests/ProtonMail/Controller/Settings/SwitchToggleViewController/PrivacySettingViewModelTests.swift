@@ -44,7 +44,7 @@ final class PrivacySettingViewModelTests: XCTestCase {
     override func setUpWithError() throws {
         self.apiMock = APIServiceMock()
         self.keyMaker = sharedServices.get(by: Keymaker.self)
-        self.user = UserManager(api: apiMock, role: .member, coreKeyMaker: keyMaker)
+        self.user = UserManager(api: apiMock, role: .member)
         self.metadataStrippingProvider = AttachmentMetadataStrippingMock()
         self.sut = PrivacySettingViewModel(user: user, metaStrippingProvider: metadataStrippingProvider)
     }

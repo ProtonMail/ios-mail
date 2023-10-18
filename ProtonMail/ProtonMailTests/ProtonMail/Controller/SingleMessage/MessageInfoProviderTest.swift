@@ -32,9 +32,8 @@ final class MessageInfoProviderTest: XCTestCase {
     private var messageDecrypter: MessageDecrypterMock!
     private var sut: MessageInfoProvider!
     private var user: UserManager!
-    private var mockFetchAttachment: MockFetchAttachment!
     private var imageTempUrl: URL!
-    private var internetConnectionProvider: MockInternetConnectionStatusProviderProtocol!
+    private var userContainer: UserContainer!
 
     private let systemUpTime = SystemUpTimeMock(
         localServerTime: TimeInterval(1635745851),
@@ -48,13 +47,10 @@ final class MessageInfoProviderTest: XCTestCase {
 
         LocaleEnvironment.locale = { .enUS }
         LocaleEnvironment.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-        LocaleEnvironment.locale = { .enUS }
 
         apiMock = APIServiceMock()
         apiMock.sessionUIDStub.fixture = String.randomString(10)
         apiMock.dohInterfaceStub.fixture = DohMock()
-        internetConnectionProvider = MockInternetConnectionStatusProviderProtocol()
-        internetConnectionProvider.statusStub.fixture = .connectedViaWiFi
 
         featureFlagCache = .init()
 
@@ -69,30 +65,18 @@ final class MessageInfoProviderTest: XCTestCase {
         )
 
         messageDecrypter = MessageDecrypterMock(userDataSource: user)
-        mockFetchAttachment = MockFetchAttachment()
+
+        let globalContainer = GlobalContainer()
+        globalContainer.featureFlagCacheFactory.register { self.featureFlagCache }
+
+        userContainer = UserContainer(userManager: user, globalContainer: globalContainer)
 
         sut = MessageInfoProvider(
             message: message,
             messageDecrypter: messageDecrypter,
-            user: user,
             systemUpTime: systemUpTime,
             labelID: labelID,
-            dependencies: .init(
-                imageProxy: .init(dependencies: .init(apiService: apiMock)),
-                fetchAttachment: mockFetchAttachment,
-                fetchSenderImage: FetchSenderImage(
-                    dependencies: .init(
-                        featureFlagCache: featureFlagCache,
-                        senderImageService: .init(
-                            dependencies: .init(
-                                apiService: user.apiService,
-                                internetStatusProvider: internetConnectionProvider)
-                        ),
-                        mailSettings: user.mailSettings
-                    )
-                ),
-                darkModeCache: MockDarkModeCacheProtocol()
-            ),
+            dependencies: userContainer,
             highlightedKeywords: ["contact", "feng"],
             dateFormatter: .init()
         )
@@ -113,7 +97,7 @@ final class MessageInfoProviderTest: XCTestCase {
         message = nil
         messageDecrypter = nil
         user = nil
-        internetConnectionProvider = nil
+        userContainer = nil
 
         try FileManager.default.removeItem(at: imageTempUrl)
         try super.tearDownWithError()
@@ -145,7 +129,11 @@ final class MessageInfoProviderTest: XCTestCase {
         XCTAssertEqual(sut.initials, "P")
         checkHighlight(source: sut.senderEmail, expectedString: "contact@protonmail.ch", highlight: NSRange(location: 0, length: 7))
         XCTAssertEqual(sut.time, "May 02, 2018")
-        XCTAssertEqual(sut.date, "May 2, 2018 at 4:43:19 PM")
+        if #available(iOS 17.0, *) {
+            XCTAssertEqual(sut.date, "May 2, 2018 at 4:43:19 PM")
+        } else {
+            XCTAssertEqual(sut.date, "May 2, 2018 at 4:43:19 PM")
+        }
         XCTAssertEqual(sut.originFolderTitle(isExpanded: false), "Inbox")
         XCTAssertEqual(sut.size, "2 KB")
         checkHighlight(source: sut.simpleRecipient, expectedString: "cc name, feng88@proton.me", highlight: NSRange(location: 9, length: 4))
@@ -263,26 +251,9 @@ final class MessageInfoProviderTest: XCTestCase {
         sut = MessageInfoProvider(
             message: message,
             messageDecrypter: messageDecrypter,
-            user: user,
             systemUpTime: systemUpTime,
             labelID: labelID,
-            dependencies: .init(
-                imageProxy: .init(dependencies: .init(apiService: apiMock)),
-                fetchAttachment: mockFetchAttachment,
-                fetchSenderImage: FetchSenderImage(
-                    dependencies: .init(
-                        featureFlagCache: MockFeatureFlagCache(),
-                        senderImageService: .init(
-                            dependencies: .init(
-                                apiService: apiMock,
-                                internetStatusProvider: MockInternetConnectionStatusProviderProtocol()
-                            )
-                        ),
-                        mailSettings: user.mailSettings
-                    )
-                ),
-                darkModeCache: MockDarkModeCacheProtocol()
-            ),
+            dependencies: userContainer,
             highlightedKeywords: []
         )
 

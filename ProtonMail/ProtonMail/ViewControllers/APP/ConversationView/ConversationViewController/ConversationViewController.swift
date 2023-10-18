@@ -123,7 +123,7 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
             showToolbarCustomizeSpotlightIfNeeded()
         }
 
-        conversationIsReadyToBeDisplayedTimer = .scheduledTimer(withTimeInterval: 2, repeats: false) { [weak self] _ in
+        conversationIsReadyToBeDisplayedTimer = .scheduledTimer(withTimeInterval: 0.25, repeats: false) { [weak self] _ in
             self?.displayConversation()
         }
 
@@ -471,7 +471,6 @@ private extension ConversationViewController {
                 !forbidden.contains($0.labelID.rawValue)
                     && ($0.type == .folder || Int($0.labelID.rawValue) != nil)
             }) else { return }
-        // swiftlint:enable sorted_first_last
         self.selectedMessageID = message.messageID
         let viewModel = MessageViewActionSheetViewModel(title: message.title,
                                                         labelID: location.labelID,
@@ -1318,7 +1317,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 
     private func didSelectFolderToMoveToForMessage(folder: MenuLabel, message: MessageEntity) {
         viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
-        moveToActionHandler.handleMoveToAction(messages: [message], to: folder, isFromSwipeAction: false)
+        moveToActionHandler.handleMoveToAction(messages: [message], to: folder)
 
         dismissActionSheet()
         if !isInPageView {
@@ -1329,7 +1328,6 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
     private func showMoveToActionSheetForConversation() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
-        let messagesOfConversation = viewModel.messagesDataSource.compactMap { $0.message }
 
         let moveToViewModel = MoveToActionSheetViewModelMessages(
             menuLabels: viewModel.getFolderMenuItems(),
@@ -1375,7 +1373,6 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
             self?.moveToActionHandler.handleMoveToAction(
                 conversations: [conversation],
                 to: folder,
-                isFromSwipeAction: false,
                 completion: nil
             )
             self?.showMessageMoved(

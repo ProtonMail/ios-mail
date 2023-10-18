@@ -26,12 +26,6 @@ class ConversationViewControllerTests: XCTestCase {
     var viewModelMock: MockConversationViewModel!
     var applicationStateMock: MockApplicationStateProvider!
     var internetStatusProviderMock: InternetConnectionStatusProvider!
-    var connectionMonitor: MockConnectionMonitor!
-    var labelProviderMock: MockLabelProviderProtocol!
-    var toolbarCustomizeSpotlightStatusProviderMock: MockToolbarCustomizeSpotlightStatusProvider!
-    var toolbarActionProviderMock: MockToolbarActionProvider!
-    var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
-    var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
     var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
     var notificationCenterMock: NotificationCenter!
     var contextProvider: MockCoreDataContextProvider!
@@ -43,42 +37,31 @@ class ConversationViewControllerTests: XCTestCase {
         let coordinatorMock = MockConversationCoordinator(conversation: fakeConversation)
         let apiMock = APIServiceMock()
         let fakeUser = UserManager(api: apiMock, role: .none)
-        connectionMonitor = MockConnectionMonitor()
+        let connectionMonitor = MockConnectionMonitor()
         notificationCenterMock = NotificationCenter()
         internetStatusProviderMock = InternetConnectionStatusProvider(connectionMonitor: connectionMonitor)
-        labelProviderMock = MockLabelProviderProtocol()
-        toolbarActionProviderMock = MockToolbarActionProvider()
-        toolbarCustomizeSpotlightStatusProviderMock = MockToolbarCustomizeSpotlightStatusProvider()
-        saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
         nextMessageAfterMoveStatusProviderMock = .init()
         notificationCenterMock = .init()
 
-        let dependencies = ConversationViewModel.Dependencies(
-            fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
-            nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
-            notificationCenter: notificationCenterMock,
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(featureFlagCache: MockFeatureFlagCache(), senderImageService: .init(dependencies: .init(apiService: fakeUser.apiService, internetStatusProvider: internetStatusProviderMock)), mailSettings: fakeUser.mailSettings)
-            )
-        )
+        let globalContainer = GlobalContainer()
+        globalContainer.internetConnectionStatusProviderFactory.register { self.internetStatusProviderMock }
+        globalContainer.notificationCenterFactory.register { self.notificationCenterMock }
+
+        let userContainer = UserContainer(userManager: fakeUser, globalContainer: globalContainer)
+        userContainer.nextMessageAfterMoveStatusProviderFactory.register { self.nextMessageAfterMoveStatusProviderMock }
 
         viewModelMock = MockConversationViewModel(labelId: "",
                                                   conversation: fakeConversation,
                                                   coordinator: coordinatorMock,
-                                                  user: fakeUser,
-                                                  contextProvider: contextProvider,
-                                                  internetStatusProvider: internetStatusProviderMock,
                                                   conversationStateProvider: MockConversationStateProviderProtocol(),
-                                                  labelProvider: labelProviderMock,
-                                                  userIntroductionProgressProvider: userIntroductionProgressProviderMock,
+                                                  labelProvider: MockLabelProviderProtocol(),
                                                   targetID: nil,
-                                                  toolbarActionProvider: toolbarActionProviderMock,
-                                                  saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
-                                                  toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProviderMock,
+                                                  toolbarActionProvider: MockToolbarActionProvider(),
+                                                  saveToolbarActionUseCase: MockSaveToolbarActionSettingsForUsersUseCase(),
+                                                  toolbarCustomizeSpotlightStatusProvider: MockToolbarCustomizeSpotlightStatusProvider(),
                                                   highlightedKeywords: [],
                                                   goToDraft: { _, _  in },
-                                                  dependencies: dependencies)
+                                                  dependencies: userContainer)
         applicationStateMock = MockApplicationStateProvider(state: .background)
         sut = ConversationViewController(viewModel: viewModelMock,
                                          applicationStateProvider: applicationStateMock)
@@ -90,10 +73,6 @@ class ConversationViewControllerTests: XCTestCase {
         viewModelMock = nil
         applicationStateMock = nil
         internetStatusProviderMock = nil
-        connectionMonitor = nil
-        labelProviderMock = nil
-        toolbarActionProviderMock = nil
-        saveToolbarActionUseCaseMock = nil
         notificationCenterMock = nil
     }
 
@@ -110,7 +89,7 @@ class ConversationViewControllerTests: XCTestCase {
         XCTAssertEqual(viewModelMock.callFetchConversationDetail.callCounter, 1)
 
         // Connection status changed
-        viewModelMock.connectionStatusProvider.updateNewStatusToAll(.connectedViaCellular)
+        internetStatusProviderMock.updateNewStatusToAll(.connectedViaCellular)
         XCTAssertTrue(sut.shouldReloadWhenAppIsActive)
 
         // Simulate app brings to foreground
@@ -133,15 +112,15 @@ class ConversationViewControllerTests: XCTestCase {
 
         XCTAssertEqual(viewModelMock.callFetchConversationDetail.callCounter, 1)
         // Connection status changed
-        viewModelMock.connectionStatusProvider.updateNewStatusToAll(.connectedViaCellular)
+        internetStatusProviderMock.updateNewStatusToAll(.connectedViaCellular)
         XCTAssertFalse(sut.shouldReloadWhenAppIsActive)
         XCTAssertEqual(viewModelMock.callFetchConversationDetail.callCounter, 2)
 
-        viewModelMock.connectionStatusProvider.updateNewStatusToAll(.connectedViaWiFi)
+        internetStatusProviderMock.updateNewStatusToAll(.connectedViaWiFi)
         XCTAssertFalse(sut.shouldReloadWhenAppIsActive)
         XCTAssertEqual(viewModelMock.callFetchConversationDetail.callCounter, 3)
 
-        viewModelMock.connectionStatusProvider.updateNewStatusToAll(.notConnected)
+        internetStatusProviderMock.updateNewStatusToAll(.notConnected)
         XCTAssertFalse(sut.shouldReloadWhenAppIsActive)
         // No call api when there is no connection
         XCTAssertEqual(viewModelMock.callFetchConversationDetail.callCounter, 3)

@@ -53,7 +53,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     /// for updating the ContactGroupEditViewController
     weak var delegate: ContactGroupEditViewControllerDelegate?
 
-    private(set) var user: UserManager
     var contactGroupService: ContactGroupsDataService
 
     /**
@@ -73,7 +72,6 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                              name: name,
                                              color: color,
                                              emailIDs: emailIDs)
-        self.user = user
         self.contactGroupService = user.contactGroupService
         self.prepareEmailArray()
     }

@@ -29,7 +29,7 @@ import ProtonCore_Login
 import ProtonCore_Networking
 import ProtonCore_Services
 
-class SignInManager: Service {
+class SignInManager {
     let usersManager: UsersManager
     let queueHandlerRegister: QueueHandlerRegister
     private var contactCacheStatus: ContactCacheStatusProtocol
@@ -117,7 +117,7 @@ class SignInManager: Service {
         showSkeleton()
 
         if UserInfo.isBlockSenderEnabled {
-            user.blockedSenderCacheUpdater.requestUpdate()
+            user.blockedSenderCacheUpdater.requestUpdate(force: true)
         }
 
         guard user.userInfo.delinquentParsed.isAvailable else {

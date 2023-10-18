@@ -198,7 +198,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     /// TestId: 35877
     func testEditDraftMinimiseAppAndSend() {
-        let newRecipient = users["plus"]!.email
+        let newRecipient = createUser()
         let newSubject = testData.newMessageSubject
         runTestWithScenario(.qaMail001) {
             InboxRobot()
@@ -206,7 +206,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
                 .draftToSubjectBody(to, subject, body)
                 .backgroundApp()
                 .foregroundApp()
-                .editRecipients(newRecipient)
+                .editRecipients(newRecipient.email)
                 .changeSubjectTo(newSubject)
                 .tapCancel()
                 .menuDrawer()
@@ -221,8 +221,8 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     /// TestId: 34634
     func testEditDraftMultipleTimesAndSend() {
-        let plusUser = users["plus"]!
-        let proUser = users["pro"]!
+        let user1 = createUser()
+        let user2 = createUser()
         let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
         let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
         runTestWithScenario(.qaMail001) {
@@ -233,11 +233,11 @@ class DraftsTests: FixtureAuthenticatedTestCase {
                 .menuDrawer()
                 .drafts()
                 .clickDraftBySubject(subject)
-                .editRecipients(plusUser.email)
+                .editRecipients(user1.email)
                 .changeSubjectTo(editOneSubject)
                 .tapCancelFromDrafts()
                 .clickDraftBySubject(editOneSubject)
-                .editRecipients(proUser.email)
+                .editRecipients(user2.email)
                 .changeSubjectTo(editTwoSubject)
                 .tapCancelFromDrafts()
                 .verify.messageWithSubjectExists(editTwoSubject)
@@ -246,7 +246,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     /// TestId: 35856
     func testEditEveryFieldInDraftWithEnabledPublicKeyAndSend() {
-        let newRecipient = users["plus"]!.email
+        let newRecipient = createUser()
         let newSubject = testData.newMessageSubject
         runTestWithScenario(.qaMail001) {
             InboxRobot()
@@ -256,7 +256,7 @@ class DraftsTests: FixtureAuthenticatedTestCase {
                 .menuDrawer()
                 .drafts()
                 .clickDraftBySubject(subject)
-                .editRecipients(newRecipient)
+                .editRecipients(newRecipient.email)
                 .changeSubjectTo(newSubject)
                 .tapCancelFromDrafts()
                 .clickDraftBySubject(newSubject)
@@ -269,8 +269,8 @@ class DraftsTests: FixtureAuthenticatedTestCase {
 
     /// TestId: 35854
     func testEditDraftWithEnabledPublicKeyMultipleTimesAndSend() {
-        let editOneRecipient = users["pro"]!.email
-        let editTwoRecipient = users["plus"]!.email
+        let editOneRecipient = createUser()
+        let editTwoRecipient = createUser()
         let editOneSubject = "Edit one \(Date().millisecondsSince1970)"
         let editTwoSubject = "Edit two \(Date().millisecondsSince1970)"
         runTestWithScenario(.qaMail001) {
@@ -281,11 +281,11 @@ class DraftsTests: FixtureAuthenticatedTestCase {
                 .menuDrawer()
                 .drafts()
                 .clickDraftBySubject(subject)
-                .editRecipients(editOneRecipient)
+                .editRecipients(editOneRecipient.email)
                 .changeSubjectTo(editOneSubject)
                 .tapCancelFromDrafts()
                 .clickDraftBySubject(editOneSubject)
-                .editRecipients(editTwoRecipient)
+                .editRecipients(editTwoRecipient.email)
                 .changeSubjectTo(editTwoSubject)
                 .tapCancelFromDrafts()
                 .verify.messageWithSubjectExists(editTwoSubject)

@@ -23,34 +23,10 @@ protocol PushNotificationServiceProtocol: AnyObject {
     func processCachedLaunchOptions()
 }
 
-protocol SessionIdProvider {
-    var sessionIDs: [String] { get }
-}
-
-struct AuthCredentialSessionIDProvider: SessionIdProvider {
-    var sessionIDs: [String] {
-        return sharedServices.get(by: UsersManager.self).users.map { $0.authCredential.sessionID }
-    }
-}
-
-// sourcery: mock
-protocol SignInProvider {
-    var isSignedIn: Bool { get }
-}
-
-struct SignInManagerProvider: SignInProvider {
-    var isSignedIn: Bool {
-        return sharedServices.get(by: UsersManager.self).hasUsers()
-    }
-}
-
 // sourcery: mock
 protocol UnlockProvider {
-    var isUnlocked: Bool { get }
+    func isUnlocked() -> Bool
 }
 
-struct UnlockManagerProvider: UnlockProvider {
-    var isUnlocked: Bool {
-        return sharedServices.get(by: UnlockManager.self).isUnlocked()
-    }
+extension UnlockManager: UnlockProvider {
 }

@@ -36,7 +36,7 @@ class TaskCompletionHelperTests: XCTestCase {
     }
 
     func testCalculateIsInternetIssue_normalError() {
-        let error = NSError.encryptionError()
+        let error = SenderError.senderStringIsNil as NSError
         XCTAssertFalse(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .connectedViaCellular))
         XCTAssertFalse(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .connectedViaWiFi))
         XCTAssertFalse(sut.calculateIsInternetIssue(error: error, currentNetworkStatus: .connectedViaEthernet))

@@ -273,9 +273,6 @@ class LocalizedString {
     lazy var _contacts_call_contact_title = NSLocalizedString("Call contact", comment: "Call the contact (button title text)")
     /// "Email addresses"
     lazy var _contacts_email_addresses_title = NSLocalizedString("Email addresses", comment: "contact detail view, email addresses section title")
-    /// "Profile picture"
-    lazy var _contacts_add_profile_picture = NSLocalizedString("Add photo", comment: "The button text for add profile picture")
-    lazy var _contacts_edit_profile_picture = NSLocalizedString("Edit photo", comment: "The button text for edit profile picture")
     /// "Encrypted Contact Details"
     lazy var _contacts_encrypted_contact_details_title = NSLocalizedString("Encrypted contact details", comment: "contact section title")
     /// "Share Contact"
@@ -300,8 +297,6 @@ class LocalizedString {
 
     // Mark General
 
-    /// "API Server not reachable…"
-    lazy var _general_api_server_not_reachable = NSLocalizedString("API Server not reachable…", comment: "when server not reachable")
     /// "Access to this account is disabled due to non-payment. Please log in through proton.me to pay your outstanding invoice(s)."
     lazy var _general_account_disabled_non_payment = NSLocalizedString("Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice.", comment: "error message")
     /// "Alert"
@@ -1152,8 +1147,6 @@ class LocalizedString {
 
     lazy var _undisclosed_recipients = NSLocalizedString("Undisclosed Recipients", comment: "")
 
-    lazy var _unsubscribe_compact_banner_description = NSLocalizedString("Unsubscribe from mailing list", comment: "The title of unsubscribe banner")
-
     lazy var _auto_phising_banner_message = NSLocalizedString("Our system flagged this message as a phishing attempt. Please check that it is legitimate.", comment: "")
     lazy var _auto_phising_banner_button_title = NSLocalizedString("Mark as legitimate", comment: "")
 
@@ -1296,29 +1289,6 @@ class LocalizedString {
 
     lazy var _scheduled_send_message_timeup: String = NSLocalizedString("The message is being sent and will move to the Sent folder once sending is complete.", comment: "The alert title of user trying to open a scheduled-send message after its time is up.")
 
-    // MARK: - Encrypted search
-    lazy var _settings_footer_of_download_via_mobile_data = NSLocalizedString("If you lose your WiFi connection, download will continue over mobile data.", comment: "The footer of the slider for download via mobile data in settings")
-    lazy var _settings_title_of_download_via_mobile_data = NSLocalizedString("Download via mobile data", comment: "The title of the slider for download via mobile data in settings")
-    lazy var _settings_title_of_downloaded_messages_progress = NSLocalizedString("Download progress", comment: "The title of downloaded messages in settings")
-    lazy var _settings_title_of_message_history = NSLocalizedString("Message history", comment: "The title of message history in settings for encrypted search")
-    lazy var _settings_title_of_storage_limit = NSLocalizedString("Storage limit", comment: "The title of storage limit in settings for encrypted search")
-    lazy var _settings_title_of_storage_usage = NSLocalizedString("Storage used", comment: "The title of storage usage in settings for encrypted search")
-    lazy var _settings_message_history_status_all_downloaded = NSLocalizedString("All your messages are downloaded", comment: "The status text of message history in downloaded messages if all messages are downloaded")
-    lazy var _settings_message_history_status_low_storage = NSLocalizedString("Not all messages were downloaded. To download them, free up storage on the device.", comment: "The status text of message history in downloaded messages if the device is out of memory.")
-    lazy var _settings_message_history_status_partial_index = NSLocalizedString("Not all messages were downloaded. To download them, increase the storage limit below.", comment: "The status text of message history in downloaded messages if the storage limit is reached.")
-    lazy var _settings_message_history_status_no_messages = NSLocalizedString("You have no messages.", comment: "The status text of message history in downloaded messages if the user has no messages.")
-    lazy var _settings_message_history_status_download_in_progress = NSLocalizedString("Your messages are being downloaded...", comment: "The status text of message history in downloaded messages if indexbuilding is in progress.")
-    lazy var _settings_title_of_cached_data = NSLocalizedString("Cached data", comment: "The title of cached data in local storage settings")
-    lazy var _settings_title_of_attachments = NSLocalizedString("Attachments", comment: "The title of attachments in local storage settings")
-    lazy var _settings_title_of_downloaded_messages_local_storage = NSLocalizedString("Downloaded messages", comment: "The title of downloaded messages in local storage settings")
-    lazy var _settings_foot_of_downloaded_messages_local_storage = NSLocalizedString("Information about how much storage space this Proton Mail account is using on your device.", comment: "The foot of downloaded messages in local storage settings")
-    lazy var _settings_local_storage_cached_data_button = NSLocalizedString("Clear", comment: "The title of the button in local storage cached data")
-    lazy var _settings_local_storage_cached_data_text = NSLocalizedString("Allows you to open previously read messages while offline.", comment: "The text explaining what chached data is used for.")
-    lazy var _settings_local_storage_attachments_button = NSLocalizedString("Clear", comment: "The title of the button in local storage attachments")
-    lazy var _settings_local_storage_attachments_text = NSLocalizedString("Allows you to open previously opened attachments while offline.", comment: "The text explaining what attachments in local storage is used for.")
-    lazy var _settings_local_storage_downloaded_messages_text = NSLocalizedString("Allows you to search within your messages. %1$@", comment: "The text explaining what downloaded messages in local storage is used for.")
-    lazy var _settings_local_storage_downloaded_messages_text_link = NSLocalizedString("See details", comment: "The link in local storage downloaded messages.")
-    lazy var _settings_local_storage_downloaded_messages_text_disabled = NSLocalizedString("Disabled", comment: "The text for downloaded messages in local storage when encrypted search is disabled.")
     lazy var _toolbar_customize_header_title_of_first_section = NSLocalizedString("Toolbar actions (select up to 5)", comment: "The title of the section header in the toolbar customize view.")
     lazy var _toolbar_customize_header_title_of_second_section = NSLocalizedString("Available actions", comment: "The title of the section header in the toolbar customize view.")
 
@@ -1347,7 +1317,7 @@ class LocalizedString {
 
 enum L11n {
     struct BlockSender {
-        static let blockActionTitleLong = NSLocalizedString("Block sender", comment: "Button to block a sender")
+        static let blockActionTitleLong = NSLocalizedString("Block messages from this sender", comment: "Button to block a sender")
         static let blockActionTitleShort = NSLocalizedString("Block", comment: "Button to block a sender, keep it short to fit in the UI")
         static let blockListSettingsItem = NSLocalizedString("Block list", comment: "Settings item to open blocked sender list")
         static let blockListScreenTitle = NSLocalizedString("Blocked Senders", comment: "Title of the blocked sender list screen")
@@ -1423,7 +1393,6 @@ enum L11n {
 
     struct Settings {
         static let passwordUpdated = NSLocalizedString("Password updated", comment: "Message to show to user after updating password.")
-        static let local_storage_clearing_cache = NSLocalizedString("Clearing cache…", comment: "Alert message when local cache is deleted")
         static let applicationLogs = NSLocalizedString("Application logs", comment: "Title for application logs settings option")
     }
 
@@ -1452,6 +1421,10 @@ enum L11n {
         static let placeHolder = NSLocalizedString(
             "Bug Report Place Holder",
             comment: "The place holder text in the bug report view."
+        )
+        static let includeLogs = NSLocalizedString(
+            "Include logs",
+            comment: "Checkbox to attach local application logs to the bug report."
         )
     }
 
@@ -1497,5 +1470,21 @@ enum L11n {
         static let upsellLineThree = NSLocalizedString("Unlimited folders and labels", comment: "Text to advertise what upgrading will provide")
         static let upsellLineFour = NSLocalizedString("Custom email domains", comment: "Text to advertise what upgrading will provide")
         static let upgradeButtonTitle = NSLocalizedString("Upgrade now", comment: "Title of button to upgrade to a paid plan")
+    }
+
+    struct ContactEdit {
+        static let displayNamePlaceholder = NSLocalizedString("Display name", comment: "The placeholder for the display name text field in contact edit view.")
+        static let firstNamePlaceholder = NSLocalizedString("First name", comment: "The placeholder for the first name text field in contact edit view.")
+        static let lastNamePlaceholder = NSLocalizedString("Last name", comment: "The placeholder for the last name text field in contact edit view.")
+        static let emptyDisplayNameError = NSLocalizedString("Display name field cannot be empty", comment: "The error message that is shown when no display name provided in contact edit view")
+        static let contactNameTooLong = NSLocalizedString("Contact name is too long", comment: "The error message that is shown when display name is too long provided in contact edit view")
+        static let addPhoto = NSLocalizedString("Add photo", comment: "The button text for add profile picture in contact edit view")
+        static let editPhoto = NSLocalizedString("Edit photo", comment: "The button text for edit profile picture in contact edit view")
+    }
+
+    struct Unsubscribe {
+        static let bannerMessage = NSLocalizedString("Unsubscribe from mailing list", comment: "The title of unsubscribe banner")
+        static let confirmationTitle = NSLocalizedString("Unsubscribe?", comment: "The title of unsubscribe confirmation")
+        static let confirmationMessage = NSLocalizedString("This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.", comment: "Unsubscribe confirmation message")
     }
 }

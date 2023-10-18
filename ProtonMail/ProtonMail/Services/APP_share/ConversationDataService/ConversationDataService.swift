@@ -49,16 +49,13 @@ protocol ConversationProvider: AnyObject {
     func markAsUnread(conversationIDs: [ConversationID], labelID: LabelID, completion: ((Result<Void, Error>) -> Void)?)
     func label(conversationIDs: [ConversationID],
                as labelID: LabelID,
-               isSwipeAction: Bool,
                completion: ((Result<Void, Error>) -> Void)?)
     func unlabel(conversationIDs: [ConversationID],
                  as labelID: LabelID,
-                 isSwipeAction: Bool,
                  completion: ((Result<Void, Error>) -> Void)?)
     func move(conversationIDs: [ConversationID],
               from previousFolderLabel: LabelID,
               to nextFolderLabel: LabelID,
-              isSwipeAction: Bool,
               callOrigin: String?,
               completion: ((Result<Void, Error>) -> Void)?)
     // MARK: - Local for legacy reasons

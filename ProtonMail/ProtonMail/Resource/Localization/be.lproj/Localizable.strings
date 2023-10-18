@@ -362,12 +362,6 @@
 /* contact detail view, email addresses section title */
 "Email addresses" = "Адрасы электроннай пошты";
 
-/* The button text for add profile picture */
-"Add photo" = "Дадаць фатаграфію";
-
-/* The button text for edit profile picture */
-"Edit photo" = "Рэдагаваць фатаграфію";
-
 /* contact section title */
 "Encrypted contact details" = "Зашыфраваныя кантактныя звесткі";
 
@@ -394,9 +388,6 @@
 
 /* createing lable input place holder */
 "Label Name" = "Назва меткі";
-
-/* when server not reachable */
-"API Server not reachable…" = "Сервер з API недаступны…";
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through proton.me to pay your unpaid invoice." = "Доступ да гэтага ўліковага запісу адключаны па прычыне пратэрмінаванага плацяжу. Увайдзіце праз proton.me, каб аплаціць рахунак.";
@@ -1514,9 +1505,6 @@
 /* No comment provided by engineer. */
 "Undisclosed Recipients" = "Схаваныя атрымальнікі";
 
-/* The title of unsubscribe banner */
-"Unsubscribe from mailing list" = "Адпісацца ад спіса рассылкі";
-
 /* No comment provided by engineer. */
 "Our system flagged this message as a phishing attempt. Please check that it is legitimate." = "Наша сістэма пазначыла гэта паведамленне як спробу фішынгу. Праверце яго надзейнасць.";
 
@@ -1799,66 +1787,6 @@
 /* The alert title of user trying to open a scheduled-send message after its time is up. */
 "The message is being sent and will move to the Sent folder once sending is complete." = "Паведамленне адпраўляецца і пасля завяршэння адпраўкі будзе перамешчана ў папку \"Адпраўленыя\".";
 
-/* The footer of the slider for download via mobile data in settings */
-"If you lose your WiFi connection, download will continue over mobile data." = "Пры страце падключэння па Wi-Fi працягваць спампоўваць праз мабільны інтэрнэт.";
-
-/* The title of the slider for download via mobile data in settings */
-"Download via mobile data" = "Спампоўванне праз мабільны інтэрнэт";
-
-/* The title of downloaded messages in settings */
-"Download progress" = "Выконваецца спампоўванне";
-
-/* The title of message history in settings for encrypted search */
-"Message history" = "Гісторыя паведамленняў";
-
-/* The title of storage limit in settings for encrypted search */
-"Storage limit" = "Абмежаванне сховішча";
-
-/* The title of storage usage in settings for encrypted search */
-"Storage used" = "Выкарыстана сховішча";
-
-/* The status text of message history in downloaded messages if all messages are downloaded */
-"All your messages are downloaded" = "Усе вашы паведамленні спампаваны";
-
-/* The status text of message history in downloaded messages if the device is out of memory. */
-"Not all messages were downloaded. To download them, free up storage on the device." = "Не ўсе паведамленні былі спампаваны. Вызваліце месца на прыладзе, каб спампаваць іх усе.";
-
-/* The status text of message history in downloaded messages if the storage limit is reached. */
-"Not all messages were downloaded. To download them, increase the storage limit below." = "Не ўсе паведамленні былі спампаваны. Павялічце абмежаванне сховішча ніжэй, каб спампаваць іх усе.";
-
-/* The status text of message history in downloaded messages if the user has no messages. */
-"You have no messages." = "У вас няма паведамленняў.";
-
-/* The status text of message history in downloaded messages if indexbuilding is in progress. */
-"Your messages are being downloaded..." = "Вашы паведамленні спампоўваюцца...";
-
-/* The title of cached data in local storage settings */
-"Cached data" = "Кэшаваныя даныя";
-
-/* The title of attachments in local storage settings */
-"Attachments" = "Далучэнні";
-
-/* cell title in device settings */
-"Downloaded messages" = "Спампаваныя паведамленні";
-
-/* The foot of downloaded messages in local storage settings */
-"Information about how much storage space this Proton Mail account is using on your device." = "Інфармацыя пра аб'ём сховішча, які выкарыстоўвае ўліковы запіс Proton Mail на вашай прыладзе.";
-
-/* The title of the button in local storage attachments */
-"Clear" = "Ачысціць";
-
-/* The text explaining what chached data is used for. */
-"Allows you to open previously read messages while offline." = "Дазваляе вам адкрываць раней прачытаныя паведамленні пакуль вы знаходзіцеся па-за сеткай.";
-
-/* The text explaining what attachments in local storage is used for. */
-"Allows you to open previously opened attachments while offline." = "Дазваляе вам адкрываць раней адкрытыя далучэнні, пакуль вы знаходзіцеся па-за сеткай.";
-
-/* The text explaining what downloaded messages in local storage is used for. */
-"Allows you to search within your messages. %1$@" = "Дазваляе вам шукаць сярод вашых паведамленняў. %1$@";
-
-/* The link in local storage downloaded messages. */
-"See details" = "Паглядзець падрабязнасці";
-
 /* The title of the section header in the toolbar customize view. */
 "Toolbar actions (select up to 5)" = "Дзеянні панэлі інструментаў (выберыце да 5 дзеянняў)";
 
@@ -2035,9 +1963,6 @@
 /* Message to show to user after updating password. */
 "Password updated" = "Пароль абноўлены";
 
-/* Alert message when local cache is deleted */
-"Clearing cache…" = "Ачыстка кэша…";
-
 /* Title for application logs settings option */
 "Application logs" = "Журнал праграмы";
 
@@ -2070,6 +1995,9 @@
 
 /* The place holder text in the bug report view. */
 "Bug Report Place Holder" = "---Каб мы маглі дапамагчы вам, дадайце як мага больш падрабязнасцей---\n\nПадсумаванне:\n\nЦі сутыкаліся вы з праблемай больш за адзін раз: так/не\nКрокі пры выкананні якіх узнікае праблема:\nВынік, які чакаўся:\nАтрыманы вынік:\nКаментарыі:";
+
+/* Checkbox to attach local application logs to the bug report. */
+"Include logs" = "Уключыць журнал";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Паспрабуйце іншы тэрмін для пошуку.";
@@ -2133,3 +2061,33 @@
 
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Карыстальніцкія дамены электроннай пошты";
+
+/* The placeholder for the display name text field in contact edit view. */
+"Display name" = "Бачнае імя";
+
+/* The placeholder for the first name text field in contact edit view. */
+"First name" = "Імя";
+
+/* The placeholder for the last name text field in contact edit view. */
+"Last name" = "Прозвішча";
+
+/* The error message that is shown when no display name provided in contact edit view */
+"Display name field cannot be empty" = "Поле з бачным імем не можа быць пустым";
+
+/* The error message that is shown when display name is too long provided in contact edit view */
+"Contact name is too long" = "Імя кантакту занадта доўгае";
+
+/* The button text for add profile picture */
+"Add photo" = "Дадаць фатаграфію";
+
+/* The button text for edit profile picture */
+"Edit photo" = "Рэдагаваць фатаграфію";
+
+/* The title of unsubscribe banner */
+"Unsubscribe from mailing list" = "Адпісацца ад спіса рассылкі";
+
+/* The title of unsubscribe confirmation */
+"Unsubscribe?" = "Unsubscribe?";
+
+/* Unsubscribe confirmation message */
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

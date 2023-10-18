@@ -108,6 +108,7 @@ final class CoreDataStore {
                 container.viewContext.automaticallyMergesChangesFromParent = true
                 container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             } catch {
+                try? FileManager.default.removeItem(at: databaseURL)
                 let err = String(describing: error)
                 CoreDataStore.reportPersistentContainerError(
                     message: "Error loading persistent store: \(err)",
@@ -131,18 +132,6 @@ final class CoreDataStore {
     private static func reportPersistentContainerError(message: String, dataProtectionStatus: String) {
         SystemLogger.log(message: message, category: .coreData, isError: true)
         Analytics.shared.sendError(.coreDataInitialisation(error: message, dataProtectionStatus: dataProtectionStatus))
-    }
-}
-
-extension CoreDataStore: CoreDataMetadata {
-    var sqliteFileSize: Measurement<UnitInformationStorage>? {
-        do {
-            let dbValues = try databaseURL.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
-            return Measurement(value: Double(dbValues.totalFileAllocatedSize!), unit: .bytes)
-        } catch let error {
-            PMAssertionFailure("CoreDataStore databaseSize error: \(error)")
-            return nil
-        }
     }
 }
 

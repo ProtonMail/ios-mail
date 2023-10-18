@@ -31,18 +31,11 @@ class PhotoAttachmentProvider: AnyImagePickerDelegate {
             icon: IconProvider.image,
             iconColor: ColorProvider.IconNorm
         ) { _ in
-            self.checkPhotoPermission { granted in
-                guard granted else {
-                    return
-                }
-
-                let photoLibrary = PHPhotoLibrary.shared()
-                var config = PHPickerConfiguration(photoLibrary: photoLibrary)
-                config.selectionLimit = 0
-                let picker = PHPickerViewController(configuration: config)
-                picker.delegate = self
-                self.controller?.present(picker, animated: true, completion: nil)
-            }
+            var config = PHPickerConfiguration()
+            config.selectionLimit = 0
+            let picker = PHPickerViewController(configuration: config)
+            picker.delegate = self
+            self.controller?.present(picker, animated: true, completion: nil)
         }
     }
 }
@@ -51,10 +44,6 @@ extension PhotoAttachmentProvider: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         picker.dismiss(animated: true)
 
-        let identifiers = results.compactMap(\.assetIdentifier)
-        let fetchResult = PHAsset.fetchAssets(withLocalIdentifiers: identifiers, options: nil)
-        fetchResult.enumerateObjects { asset, _, _ in
-            self.process(asset: asset)
-        }
+        results.forEach { process(result: $0) }
     }
 }

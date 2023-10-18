@@ -56,7 +56,6 @@ protocol MessageDataServiceProtocol: Service {
     func getAttachmentEntity(for uri: String) throws -> AttachmentEntity?
     func removeAttachmentFromDB(objectIDs: [ObjectID])
     func updateAttachment(by uploadResponse: UploadAttachment.UploadingResponse, attachmentObjectID: ObjectID)
-    func removeAllAttachmentsNotUploaded(messageID: MessageID)
 
     func updateMessageAfterSend(
         message: MessageEntity,
@@ -105,7 +104,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     let apiService: APIService
     let userID: UserID
-    weak var userDataSource: UserDataSource?
     let labelDataService: LabelsDataService
     let contactDataService: ContactDataService
     let localNotificationService: LocalNotificationService
@@ -116,7 +114,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     let undoActionManager: UndoActionManagerProtocol
     let contactCacheStatus: ContactCacheStatusProtocol
 
-    weak var viewModeDataSource: ViewModeDataSource?
+    private var userDataSource: UserDataSource? {
+        parent
+    }
 
     weak var queueManager: QueueManager?
     weak var parent: UserManager?
@@ -289,10 +289,7 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 
     func updateMessageCount(completion: (() -> Void)? = nil) {
         self.queueManager?.queue {
-            guard let viewMode = self.viewModeDataSource?.getCurrentViewMode() else {
-                completion?()
-                return
-            }
+            let viewMode = self.dependencies.viewModeDataSource.viewMode
 
             switch viewMode {
             case .singleMessage:
@@ -798,6 +795,19 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         }
     }
 
+    func deleteDraft(message: MessageEntity) {
+        queueManager?.removeAllTasks(of: message.messageID.rawValue, removalCondition: { action in
+            switch action {
+            case .saveDraft:
+                return true
+            default:
+                return false
+            }
+        }, completeHandler: { [weak self] in
+            self?.delete(messages: [message], label: Message.Location.draft.labelID)
+        })
+    }
+
     func fetchMessageMetaData(messageIDs: [MessageID], completion: @escaping (FetchMessagesByIDResponse) -> Void) {
         let messages: [String] = messageIDs.map(\.rawValue)
         let request = FetchMessagesByID(msgIDs: messages)
@@ -955,13 +965,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                         "attachmentID": attachment.attachmentID
                     ]
                 )
-        }
-    }
-
-    func removeAllAttachmentsNotUploaded(messageID: MessageID) {
-        guard let message = try? getMessage(for: messageID) else { return }
-        try? contextProvider.performAndWaitOnRootSavingContext { context in
-            try? MainQueueHandlerHelper.removeAllAttachmentsNotUploaded(of: message, context: context)
         }
     }
 
@@ -1518,8 +1521,8 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         // TODO: add monitoring for didBecomeActive
     }
 
-    @objc fileprivate func didSignOutNotification(_ notification: Notification) {
-        _ = cleanUp()
+    @objc fileprivate func didSignOutNotification(_: Notification) {
+        cleanUp()
     }
 
     private func queue(message: Message, action: MessageAction) {
@@ -1586,10 +1589,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
                 return
             }
             self.contactCacheStatus.contactsCached = 0
-            guard self.viewModeDataSource?.getCurrentViewMode() != nil else {
-                return
-            }
-
             let completionBlock: () -> Void = {
                 self.labelDataService.fetchV4Labels { _ in
                     self.contactDataService.cleanUp()
@@ -1637,14 +1636,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
             let key = self.userDataSource!.userInfo.getAddressPrivKey(address_id: addressId)
             return try clearBody.encryptNonOptional(withPrivKey: key, mailbox_pwd: mailbox_pwd.value)
         }
-    }
-
-    func getUserAddressID(for message: Message) -> String {
-        if let addressID = message.addressID,
-           let addr = defaultUserAddress(of: AddressID(addressID)) {
-            return addr.addressID
-        }
-        return ""
     }
 
     func defaultUserAddress(of addressID: AddressID) -> Address? {
@@ -1754,5 +1745,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
 extension MessageDataService {
     struct Dependencies {
         let moveMessageInCacheUseCase: MoveMessageInCacheUseCase
+        let viewModeDataSource: ViewModeDataSource
     }
 }
