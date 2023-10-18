@@ -39,10 +39,6 @@ extension PMAPIService {
             if let _unauthorized {
                 return _unauthorized
             }
-            
-            // TODO: setupTrustIfNeeded should be called elsewhere, it's not related to this method specifically
-            PMAPIService.setupTrustIfNeeded()
-            
             let authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService(coreKeyMaker: keyMaker)
             
             let unauthorized: PMAPIService
