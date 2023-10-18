@@ -2238,7 +2238,7 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 extension MailboxViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if UserInfo.isAutoDeleteEnabled && bannerHeaderView() != nil {
+        if viewModel.headerBanner != nil {
             return UITableView.automaticDimension
         } else {
             return 0
@@ -2246,11 +2246,7 @@ extension MailboxViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if UserInfo.isAutoDeleteEnabled {
-            return bannerHeaderView()
-        } else {
-            return nil
-        }
+        bannerHeaderView()
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

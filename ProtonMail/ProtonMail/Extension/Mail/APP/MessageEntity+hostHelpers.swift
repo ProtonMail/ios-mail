@@ -48,14 +48,9 @@ extension MessageEntity {
 // MARK: Helper functions only for host app
 extension MessageEntity {
     var isAutoDeleting: Bool {
-        if UserInfo.isAutoDeleteEnabled
-            && (self.contains(location: .trash) || self.contains(location: .spam))
+        (self.contains(location: .trash) || self.contains(location: .spam))
             && expirationTime != nil
-            && flag.contains(.isExpirationTimeFrozen) == false {
-            return true
-        } else {
-            return false
-        }
+            && !flag.contains(.isExpirationTimeFrozen)
     }
 
     func getLocationImage(in labelID: LabelID,

@@ -32,13 +32,6 @@ extension UserInfo {
         false
     }
 
-    static var isAutoDeleteEnabled: Bool {
-        #if DEBUG_ENTERPRISE
-        true
-        #else
-        true
-        #endif
-    }
 
     static var enableSelectAll: Bool {
         UIApplication.isDebugOrEnterprise
