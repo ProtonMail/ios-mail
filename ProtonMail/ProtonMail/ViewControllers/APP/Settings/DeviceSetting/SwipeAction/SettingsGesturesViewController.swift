@@ -75,7 +75,7 @@ class SettingsGesturesViewController: ProtonMailViewController {
         self.navigationItem.backBarButtonItem = backItem
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
     }
@@ -121,7 +121,7 @@ class SettingsGesturesViewController: ProtonMailViewController {
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         topInfoTitle.font = .adjustedFont(forTextStyle: .footnote, weight: .regular)
     }
 }

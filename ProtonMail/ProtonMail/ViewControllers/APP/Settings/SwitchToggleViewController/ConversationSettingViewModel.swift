@@ -73,11 +73,11 @@ extension ConversationSettingViewModel: SwitchToggleVMOutput {
         (LocalString._conversation_settings_row_title, conversationStateService.viewMode == .conversation)
     }
 
-    func sectionHeader(of section: Int) -> String? {
+    func sectionHeader() -> String? {
         nil
     }
 
-    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
+    func sectionFooter() -> Either<String, NSAttributedString>? {
         Either.left(LocalString._conversation_settings_footer_title)
     }
 }

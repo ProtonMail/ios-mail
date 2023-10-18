@@ -160,7 +160,7 @@ extension AppDelegate: UIApplicationDelegate {
         self.configurePushService(launchOptions: launchOptions)
         self.registerKeyMakerNotification()
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(didSignOutNotification(_:)),
+                                               selector: #selector(didSignOutNotification),
                                                name: .didSignOutLastAccount,
                                                object: nil)
         
@@ -173,7 +173,7 @@ extension AppDelegate: UIApplicationDelegate {
         return true
     }
 
-    @objc fileprivate func didSignOutNotification(_: Notification) {
+    @objc fileprivate func didSignOutNotification() {
         self.onLogout()
     }
 

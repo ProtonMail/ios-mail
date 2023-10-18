@@ -63,7 +63,7 @@ class ContactImportViewController: UIViewController {
                                                      coreDataService: dependencies.contextProvider)
         customView.progressView.progress = 0.0
         customView.titleLabel.attributedText = LocalString._contacts_import_title.apply(style: .Headline.alignment(.center))
-        customView.cancelButton.addTarget(self, action: #selector(cancelTapped(_:)), for: .touchUpInside)
+        customView.cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
 
         delay(0.5) {
             self.customView.messageLabel.attributedText = LocalString._contacts_reading_contacts_data.apply(style: .CaptionWeak.alignment(.center))
@@ -71,7 +71,7 @@ class ContactImportViewController: UIViewController {
         }
     }
 
-    @objc private func cancelTapped(_ sender: Any) {
+    @objc private func cancelTapped() {
         if self.finished {
             return
         }

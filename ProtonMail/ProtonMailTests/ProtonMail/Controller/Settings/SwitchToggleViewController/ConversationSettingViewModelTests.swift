@@ -59,8 +59,8 @@ final class ConversationSettingViewModelTests: XCTestCase {
         item = try XCTUnwrap(sut.output.cellData(for: indexPath))
         XCTAssertEqual(item.status, false)
 
-        XCTAssertNil(sut.output.sectionHeader(of: 0))
-        let footer = try XCTUnwrap(sut.output.sectionFooter(of: 0))
+        XCTAssertNil(sut.output.sectionHeader())
+        let footer = try XCTUnwrap(sut.output.sectionFooter())
         switch footer {
         case .left(let text):
             XCTAssertEqual(text, LocalString._conversation_settings_footer_title)

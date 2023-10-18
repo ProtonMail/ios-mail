@@ -95,14 +95,14 @@ class TrackerListViewController: UIViewController, LifetimeTrackable, Accessible
         super.viewDidLoad()
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
         generateAccessibilityIdentifiers()
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         // The following elements can't reflect font size changed automatically
         // Reset font when event happened
         tableView.reloadData()

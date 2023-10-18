@@ -37,13 +37,13 @@ final class DarkModeSettingViewModel: SettingsSingleCheckMarkVMProtocol {
         self.darkModeCache = darkModeCache
     }
 
-    func sectionHeader(of section: Int) -> NSAttributedString? {
+    func sectionHeader() -> NSAttributedString? {
         let textAttribute = FontManager.DefaultSmallWeak.alignment(.left)
         return NSAttributedString(string: LocalString._settings_dark_mode_section_title,
                                   attributes: textAttribute)
     }
 
-    func sectionFooter(of section: Int) -> NSAttributedString? {
+    func sectionFooter() -> NSAttributedString? {
         nil
     }
 

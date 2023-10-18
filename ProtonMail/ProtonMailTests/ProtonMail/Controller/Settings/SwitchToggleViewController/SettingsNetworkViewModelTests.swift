@@ -76,8 +76,8 @@ final class NetworkSettingViewModelTests: XCTestCase {
     }
 
     func testNetworkSettingsSection() throws {
-        let header = try XCTUnwrap(sut.output.sectionHeader(of: 0))
-        let footer = try XCTUnwrap(sut.output.sectionFooter(of: 0))
+        let header = try XCTUnwrap(sut.output.sectionHeader())
+        let footer = try XCTUnwrap(sut.output.sectionFooter())
         XCTAssertEqual(header, LocalString._settings_alternative_routing_title)
         switch footer {
         case .left(_):

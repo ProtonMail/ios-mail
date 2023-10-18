@@ -47,7 +47,7 @@ final class NextMessageAfterMoveViewModelTests: XCTestCase {
     }
 
     func testGetSectionFooterAndHeader() throws {
-        let result = try XCTUnwrap(sut.sectionFooter(of: 0))
+        let result = try XCTUnwrap(sut.sectionFooter())
         switch result {
         case .left(let text):
             XCTAssertEqual(text, L11n.NextMsgAfterMove.rowFooterTitle)
@@ -57,7 +57,7 @@ final class NextMessageAfterMoveViewModelTests: XCTestCase {
 
 
 
-        XCTAssertNil(sut.sectionHeader(of: 0))
+        XCTAssertNil(sut.sectionHeader())
     }
 
     func testCallToggleWithNewStatus_statusWillBeChangedToFalse() throws {

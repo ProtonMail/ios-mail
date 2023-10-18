@@ -42,8 +42,8 @@ final class UndoSendViewModelTests: XCTestCase {
     }
 
     func testHeaderFooter() throws {
-        XCTAssertNil(sut.sectionHeader(of: 0))
-        XCTAssertEqual(sut.sectionFooter(of: 0)?.string, LocalString._undo_send_description)
+        XCTAssertNil(sut.sectionHeader())
+        XCTAssertEqual(sut.sectionFooter()?.string, LocalString._undo_send_description)
     }
 
     func testCellTitle() throws {

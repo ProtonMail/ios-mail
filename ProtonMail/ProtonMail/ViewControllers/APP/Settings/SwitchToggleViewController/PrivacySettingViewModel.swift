@@ -108,11 +108,11 @@ extension PrivacySettingViewModel: SwitchToggleVMOutput {
         return (item.description, status)
     }
 
-    func sectionHeader(of section: Int) -> String? {
+    func sectionHeader() -> String? {
         nil
     }
 
-    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
+    func sectionFooter() -> Either<String, NSAttributedString>? {
         nil
     }
 }

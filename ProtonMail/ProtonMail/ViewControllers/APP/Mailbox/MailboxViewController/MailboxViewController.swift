@@ -280,7 +280,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
         NotificationCenter.default
@@ -609,7 +609,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         // Somehow unreadFilterButton can't reflect font size change automatically
         // reset font again when user preferred font size changed
         unreadFilterButton.titleLabel?.font = .preferredFont(for: .footnote, weight: .semibold)
