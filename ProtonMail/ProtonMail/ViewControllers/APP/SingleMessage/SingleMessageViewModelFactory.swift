@@ -98,6 +98,7 @@ class SingleMessageViewModelFactory {
                 highlightedKeywords: highlightedKeywords,
                 goToDraft: goToDraft
             ),
+            contextProvider: dependencies.contextProvider,
             highlightedKeywords: highlightedKeywords
         )
     }

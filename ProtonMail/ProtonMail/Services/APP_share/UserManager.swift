@@ -249,7 +249,7 @@ class UserManager: Service, ObservableObject {
 
     @MainActor
     func fetchUserInfo() async {
-        featureFlagsDownloadService.getFeatureFlags(completion: nil)
+        try? await featureFlagsDownloadService.getFeatureFlags()
         let tuple = await self.userService.fetchUserInfo(auth: self.authCredential)
         guard let info = tuple.0 else { return }
         self.userInfo = info

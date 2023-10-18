@@ -2183,24 +2183,20 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+        let remappedSnapshot = remapToNewSnapshot(controller: controller, snapshot: snapshot)
         if shouldKeepSkeletonUntilManualDismissal {
+            viewModel.diffableDataSource?.cacheSnapshot(remappedSnapshot)
             return
         }
         if isSwipingCell {
+            viewModel.diffableDataSource?.cacheSnapshot(remappedSnapshot)
             contentChangeOccurredDuringLastSwipeGesture = true
             return
         }
-        let remappedSnapshot = remapToNewSnapshot(controller: controller, snapshot: snapshot)
         reloadTableViewDataSource(
             animate: false,
             snapshot: remappedSnapshot
-        ) {
-            DispatchQueue.main.async {
-                if self.refreshControl.isRefreshing {
-                    self.refreshControl.endRefreshing()
-                }
-            }
-        }
+        )
         DispatchQueue.main.async {
             self.refreshActionBarItems()
             self.showNewMessageCount(self.newMessageCount)

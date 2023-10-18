@@ -274,6 +274,7 @@ final class SingleMessageViewModelTests: XCTestCase {
                 highlightedKeywords: [],
                 goToDraft: { _, _ in }
             ),
+            contextProvider: contextProviderMock,
             highlightedKeywords: [],
             notificationCenter: notificationCenterMock
         )

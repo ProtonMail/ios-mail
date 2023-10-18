@@ -654,22 +654,6 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         return NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
     }
 
-
-    /**
-     fetch the message from local cache use message id
-
-     :param: messageID String
-
-     :returns: NSFetchedResultsController
-     */
-    func fetchedMessageControllerForID(_ messageID: MessageID) -> NSFetchedResultsController<Message> {
-        let moc = self.contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID.rawValue)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false), NSSortDescriptor(key: #keyPath(Message.order), ascending: false)]
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-    }
-
     /**
      clean all the local cache data.
      when use this :

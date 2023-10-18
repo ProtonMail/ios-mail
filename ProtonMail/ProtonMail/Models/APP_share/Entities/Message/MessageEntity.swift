@@ -128,11 +128,6 @@ struct MessageEntity: Equatable, Hashable {
     let passwordHint: String
 
     let objectID: ObjectID
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(messageID)
-        hasher.combine(objectID)
-    }
 }
 
 extension MessageEntity {

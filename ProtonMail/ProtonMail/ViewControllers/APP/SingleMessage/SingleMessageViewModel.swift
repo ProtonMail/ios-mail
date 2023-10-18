@@ -71,6 +71,7 @@ class SingleMessageViewModel {
          coordinator: SingleMessageCoordinator,
          nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider,
          contentViewModel: SingleMessageContentViewModel,
+         contextProvider: CoreDataContextProviderProtocol,
          highlightedKeywords: [String],
          notificationCenter: NotificationCenter = .default
     ) {
@@ -78,7 +79,7 @@ class SingleMessageViewModel {
         self.message = message
         self.messageService = user.messageService
         self.user = user
-        self.messageObserver = MessageObserver(messageId: message.messageID, messageService: messageService)
+        self.messageObserver = MessageObserver(messageID: message.messageID, contextProvider: contextProvider)
         self.highlightedKeywords = highlightedKeywords
         self.contentViewModel = contentViewModel
         self.coordinator = coordinator
