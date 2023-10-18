@@ -216,7 +216,6 @@ extension AppDelegate: UIApplicationDelegate {
                 }
             )
             user.cacheService.cleanOldAttachment()
-            user.messageService.updateMessageCount()
 
             dependencies.queueManager.backgroundFetch(remainingTime: {
                 application.backgroundTimeRemaining
@@ -325,12 +324,8 @@ extension AppDelegate: UnlockManagerDelegate {
         }.cauterize()
     }
 
-    func setupCoreData() {
-        do {
-            try CoreDataStore.shared.initialize()
-        } catch {
-            fatalError("\(error)")
-        }
+    func setupCoreData() throws {
+        try CoreDataStore.shared.initialize()
 
         sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
         sharedServices.add(CoreDataService.self, for: CoreDataService.shared)

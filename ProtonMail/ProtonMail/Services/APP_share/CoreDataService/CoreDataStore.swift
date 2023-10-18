@@ -108,6 +108,7 @@ final class CoreDataStore {
                 container.viewContext.automaticallyMergesChangesFromParent = true
                 container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             } catch {
+                try? FileManager.default.removeItem(at: databaseURL)
                 let err = String(describing: error)
                 CoreDataStore.reportPersistentContainerError(
                     message: "Error loading persistent store: \(err)",

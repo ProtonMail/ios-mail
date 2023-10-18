@@ -564,6 +564,9 @@ extension StoreKitManager: SKProductsRequestDelegate {
         availableProducts = response.products
         updateAvailableProductsListCompletionBlock?(nil)
         updateAvailableProductsListCompletionBlock = nil
+    }
+
+    func requestDidFinish(_ request: SKRequest) {
         self.request = nil
         ObservabilityEnv.report(.paymentQuerySubscriptionsTotal(status: .successful))
     }

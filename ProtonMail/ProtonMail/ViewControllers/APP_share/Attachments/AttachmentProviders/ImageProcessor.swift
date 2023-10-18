@@ -21,12 +21,11 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import Photos
+import PhotosUI
 import PromiseKit
 
 protocol ImageProcessor {
     func process(original originalImage: UIImage) -> Promise<Void>
-    func process(asset: PHAsset)
 }
 extension ImageProcessor where Self: AttachmentProvider {
 
@@ -41,133 +40,55 @@ extension ImageProcessor where Self: AttachmentProvider {
         let ext = "image/png"
         var fileData: FileData!
 
-        #if APP_EXTENSION
-            guard let data = originalImage.pngData(),
-                let newUrl = try? self.writeItemToTempDirectory(data, filename: fileName) else {
-                self.controller?.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
-                return Promise()
-            }
-            fileData = ConcreteFileData(name: fileName, ext: ext, contents: newUrl)
-        #else
-            fileData = ConcreteFileData(name: fileName, ext: ext, contents: originalImage)
-        #endif
+#if APP_EXTENSION
+        guard let data = originalImage.pngData(),
+              let newUrl = try? self.writeItemToTempDirectory(data, filename: fileName) else {
+            self.controller?.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
+            return Promise()
+        }
+        fileData = ConcreteFileData(name: fileName, ext: ext, contents: newUrl)
+#else
+        fileData = ConcreteFileData(name: fileName, ext: ext, contents: originalImage)
+#endif
 
         return self.controller?.fileSuccessfullyImported(as: fileData) ?? Promise()
     }
 
-    internal func process(asset: PHAsset) {
-        switch asset.mediaType {
-        case .video:
-            let options = PHVideoRequestOptions()
-            options.isNetworkAccessAllowed = true
-            options.progressHandler = { progress, error, pointer, info in
-                DispatchQueue.main.async {
-                    (LocalString._importing + " \(Int(progress * 100))%").alertToastBottom()
+    func process(result: PHPickerResult) {
+        let provider = result.itemProvider
+        if provider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) {
+            provider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier) { url, error in
+                guard error == nil, let url = url else {
+                    self.controller?.error(error.debugDescription)
+                    return
+                }
+                do {
+                    let videoData = try Data(contentsOf: url)
+                    let fileName = url.lastPathComponent
+                    let fileData = ConcreteFileData(name: fileName, ext: fileName.mimeType(), contents: videoData)
+                    self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
+                } catch {
+                    self.controller?.error(error.localizedDescription)
                 }
             }
-            PHImageManager.default().requestAVAsset(forVideo: asset, options: options, resultHandler: { asset, audioMix, info in
-                if let error = info?[PHImageErrorKey] as? NSError {
-                    DispatchQueue.main.async {
-                        self.controller?.error(error.debugDescription)
-                    }
+        } else if provider.canLoadObject(ofClass: UIImage.self) {
+            provider.loadObject(ofClass: UIImage.self) { image, error in
+                guard error == nil, let image = image as? UIImage else {
+                    self.controller?.error(error.debugDescription)
                     return
                 }
-
-                var fileData: ConcreteFileData?
-                var isSlowMotion = false
-
-                if let asset = asset as? AVURLAsset,
-                   let image_data = try? Data(contentsOf: asset.url) { // video files
-                    let fileName = asset.url.lastPathComponent
-                    fileData = ConcreteFileData(name: fileName, ext: fileName.mimeType(), contents: image_data)
-                } else if let asset = asset as? AVComposition,
-                          let exportSession = AVAssetExportSession(asset: asset, presetName: AVAssetExportPresetMediumQuality) { // slow motion files
-                    isSlowMotion = true
-
-                    convertMovieFilesForSlowMotionVideo(exportSession: exportSession) { fileData in
-                        self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
-                    }
-                } else {
-                    DispatchQueue.main.async {
-                        self.controller?.error(LocalString._cant_open_the_file)
-                    }
+                let fileName = "\(provider.suggestedName ?? UUID().uuidString).jpeg"
+                // 80% JPEG quality gives a greater file size reduction with almost no loss in quality.
+                // https://sirv.com/help/articles/jpeg-quality-comparison/
+                guard let imageDataToSave = image.jpegData(compressionQuality: 0.8), imageDataToSave.count > 0 else {
+                    self.controller?.error(LocalString._cant_open_the_file)
                     return
-                }
-
-                guard !isSlowMotion else {
-                    return
-                }
-
-                guard let fileData = fileData else {
-                    DispatchQueue.main.async {
-                        self.controller?.error(LocalString._cant_open_the_file)
-                    }
-                    return
-                }
-                self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
-            })
-
-        case .image:
-            let options = PHImageRequestOptions()
-            options.isNetworkAccessAllowed = true
-            options.progressHandler = { progress, error, pointer, info in
-                DispatchQueue.main.async {
-                    (LocalString._importing + " \(Int(progress * 100))%").alertToastBottom()
-                }
-            }
-            PHImageManager.default().requestImageDataAndOrientation(for: asset, options: options) { data, dataUTI, orientation, info in
-                guard let imageData = data, imageData.count > 0 else {
-                    DispatchQueue.main.async {
-                        self.controller?.error(LocalString._cant_open_the_file)
-                    }
-                    return
-                }
-                let resource = PHAssetResource.assetResources(for: asset)
-                var fileName = resource.first?.originalFilename ?? "\(UUID().uuidString).jpg"
-                let dataUTI = dataUTI ?? ""
-
-                var imageDataToSave = imageData
-                if fileName.preg_match(".(heif|heic)") || dataUTI.preg_match(".(heif|heic)") {
-                    if let image = UIImage(data: imageData) {
-                        // 80% JPEG quality gives a greater file size reduction with almost no loss in quality.
-                        // https://sirv.com/help/articles/jpeg-quality-comparison/
-                        if let jpegImageData = image.jpegData(compressionQuality: 0.8), jpegImageData.count > 0 {
-                            imageDataToSave = jpegImageData
-                            fileName = fileName.preg_replace(".(heif|heic)", replaceto: ".jpeg")
-                        }
-                    }
                 }
                 let fileData = ConcreteFileData(name: fileName, ext: fileName.mimeType(), contents: imageDataToSave)
                 self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
             }
-
-        default:
+        } else {
             self.controller?.error(LocalString._cant_open_the_file)
-        }
-    }
-
-    private func convertMovieFilesForSlowMotionVideo(exportSession: AVAssetExportSession, completion: ((ConcreteFileData) -> Void)?) {
-        let tempUrl = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).mov")
-        exportSession.outputURL = tempUrl
-        exportSession.outputFileType = AVFileType.mov
-        exportSession.shouldOptimizeForNetworkUse = true
-
-        exportSession.exportAsynchronously {
-            defer {
-                try? FileManager.default.removeItem(at: tempUrl)
-            }
-            let exportedAsset = AVURLAsset(url: tempUrl)
-
-            guard let videoData = try? Data(contentsOf: exportedAsset.url) else {
-                DispatchQueue.main.async {
-                    self.controller?.error(LocalString._cant_open_the_file)
-                }
-                return
-            }
-
-            let fileName = exportedAsset.url.lastPathComponent
-            let fileData = ConcreteFileData(name: fileName, ext: fileName.mimeType(), contents: videoData)
-            completion?(fileData)
         }
     }
 }

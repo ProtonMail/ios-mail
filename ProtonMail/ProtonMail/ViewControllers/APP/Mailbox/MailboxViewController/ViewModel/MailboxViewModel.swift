@@ -1208,13 +1208,13 @@ extension MailboxViewModel {
         let alert = L11n.AutoDeleteSettings.enableAlertMessage.alertController()
         alert.title = L11n.AutoDeleteSettings.enableAlertTitle
         let cancelTitle = LocalString._general_cancel_button
-        let confirm = UIAlertAction(title: L11n.AutoDeleteSettings.enableAlertButton, style: .default) { _ in }
-        let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { [weak self] _ in
+        let confirm = UIAlertAction(title: L11n.AutoDeleteSettings.enableAlertButton, style: .default) { [weak self] _ in
             guard let self else { return }
             self.updateAutoDeleteSetting(to: true, for: self.user, completion: { error in
                 completion(error)
             })
         }
+        let cancel = UIAlertAction(title: cancelTitle, style: .cancel) { _ in }
         [confirm, cancel].forEach(alert.addAction)
         return alert
     }

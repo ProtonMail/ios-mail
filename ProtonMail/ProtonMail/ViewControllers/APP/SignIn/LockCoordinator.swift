@@ -113,7 +113,11 @@ extension LockCoordinator: PinCodeViewControllerDelegate {
 
          Note: calling `setupCoreData` before the main key is available might break the migration process, but it doesn't matter in this particular case, because we're going to clean the DB anyway.
          */
-        dependencies.unlockManager.delegate?.setupCoreData()
+        do {
+            try dependencies.unlockManager.delegate?.setupCoreData()
+        } catch {
+            fatalError("\(error)")
+        }
 
         _ = dependencies.usersManager.clean().done { [weak self] in
             completion()
