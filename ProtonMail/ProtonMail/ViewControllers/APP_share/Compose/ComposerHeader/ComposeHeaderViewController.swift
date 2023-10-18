@@ -253,7 +253,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, delay: 0, options: UIView.AnimationOptions(), animations: {
             self.updateViewSize()
             self.size = CGSize(width: self.view.frame.width, height: self.subject.frame.origin.y + self.subject.frame.height + self.pickerHeight)
-            self.delegate?.composeViewDidSizeChanged(self.size, showPicker: self.pickerHeight > 0.0)
             }, completion: nil)
     }
 

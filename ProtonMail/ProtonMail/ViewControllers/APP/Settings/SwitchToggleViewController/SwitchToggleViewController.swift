@@ -131,7 +131,7 @@ final class SwitchToggleViewController: UITableViewController, AccessibleView {
         case .left(let text):
             return headerFooterView(text: text, titleTopPadding: padding)
         case .right(let attributedString):
-            return attributedView(attributedString: attributedString, titleTopPadding: padding)
+            return attributedView(attributedString: attributedString)
         }
     }
 }
@@ -181,10 +181,7 @@ extension SwitchToggleViewController {
         return hfView
     }
 
-    private func attributedView(
-        attributedString: NSAttributedString,
-        titleTopPadding: CGFloat
-    ) -> UIView? {
+    private func attributedView(attributedString: NSAttributedString) -> UIView? {
         let id = UITableViewHeaderFooterView.reuseIdentifier
         guard let footerView = tableView
             .dequeueReusableHeaderFooterView(withIdentifier: id) else {

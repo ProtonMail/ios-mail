@@ -20,10 +20,6 @@ import ProtonCoreNetworking
 import class ProtonCoreServices.APIErrorCode
 
 struct TaskCompletionHelper {
-    enum Constant {
-        static let networkResponseErrorKey = "com.alamofire.serialization.response.error.response"
-    }
-
     private let internetConnectionStatusProvider: InternetConnectionStatusProviderProtocol
 
     init(

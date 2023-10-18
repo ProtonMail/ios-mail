@@ -44,7 +44,6 @@ final class BannerViewController: UIViewController {
     private(set) var expirationBanner: CompactBannerView?
     private(set) lazy var spamBanner = SpamBannerView()
     private(set) var receiptBanner: CompactBannerView?
-    private(set) var scheduledSendBanner: EditScheduledBanner?
 
     private(set) var displayedBanners: [BannerType: UIView] = [:] {
         didSet {
@@ -304,7 +303,6 @@ final class BannerViewController: UIViewController {
         banner.configure(date: timeTuple.0, time: timeTuple.1) { [weak self] in
             self?.viewModel.editScheduledMessage?()
         }
-        scheduledSendBanner = banner
         addBannerView(type: .scheduledSend, shouldAddContainer: true, bannerView: banner)
     }
 

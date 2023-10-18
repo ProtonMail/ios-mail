@@ -43,8 +43,5 @@ struct ApplyLabelToMessagesRequest: Request {
 }
 
 struct ApplyLabelToMessagesResponse: APIDecodableResponse {
-    var code: Int?
-    var error: String?
-    var details: HumanVerificationDetails?
     let undoToken: UndoTokenData?
 }

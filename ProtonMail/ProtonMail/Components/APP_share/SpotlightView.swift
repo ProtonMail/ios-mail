@@ -19,7 +19,6 @@ import ProtonCoreUIFoundations
 import UIKit
 
 class SpotlightView: UIView {
-    private var dismissGesture: UITapGestureRecognizer?
     private let shadowView = UIView()
     private let infoView = UIView()
     private let iconImageView = SubViewFactory.iconImageView
@@ -82,7 +81,6 @@ class SpotlightView: UIView {
     private func setupGesture() {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(self.dismiss))
         addGestureRecognizer(gesture)
-        self.dismissGesture = gesture
     }
 
     @objc

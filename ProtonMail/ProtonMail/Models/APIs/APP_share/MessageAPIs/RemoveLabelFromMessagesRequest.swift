@@ -43,8 +43,5 @@ struct RemoveLabelFromMessagesRequest: Request {
 }
 
 struct RemoveLabelFromMessagesResponse: APIDecodableResponse {
-    var code: Int?
-    var error: String?
-    var details: HumanVerificationDetails?
     let undoToken: UndoTokenData?
 }

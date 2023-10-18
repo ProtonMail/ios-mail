@@ -326,10 +326,6 @@ private extension PushNotificationService {
         let actionIdentifier: String
     }
 
-    enum Key {
-        static let subscription = "pushNotificationSubscription"
-    }
-
     enum PushNotificationServiceError: Error {
         case userIsNotReady
     }

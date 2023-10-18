@@ -127,7 +127,3 @@ class SettingsDeviceCoordinator {
         navigationController?.pushViewController(viewController, animated: true)
     }
 }
-
-extension DeepLink.Node {
-    static let accountSetting = DeepLink.Node(name: "settings_account_settings")
-}

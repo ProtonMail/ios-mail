@@ -35,7 +35,6 @@ struct AttachmentEntity: Hashable, Equatable {
     private(set) var fileData: Data?
     private(set) var fileSize: NSNumber
     private(set) var localURL: URL?
-    private(set) var isTemp: Bool
     private(set) var keyChanged: Bool
     let objectID: ObjectID
     let order: Int
@@ -56,7 +55,6 @@ extension AttachmentEntity {
         self.fileData = attachment.fileData
         self.fileSize = attachment.fileSize
         self.localURL = attachment.localURL
-        self.isTemp = attachment.isTemp
         self.keyChanged = attachment.keyChanged
         self.objectID = .init(rawValue: attachment.objectID)
         self.order = Int(attachment.order)

@@ -174,8 +174,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
     private(set) var hasShownStorageOverAlert: Bool = false
 
-    var isForcedLogout: Bool = false
-
     /// Record the last draft messageID, so the app can do delete / restore
     var lastDraftMessageID: String?
 

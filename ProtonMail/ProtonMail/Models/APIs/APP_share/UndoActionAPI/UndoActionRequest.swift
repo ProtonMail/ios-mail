@@ -51,7 +51,4 @@ struct UndoActionRequest: Request {
 }
 
 struct UndoActionResponse: APIDecodableResponse {
-    var code: Int?
-    var error: String?
-    var details: HumanVerificationDetails?
 }
