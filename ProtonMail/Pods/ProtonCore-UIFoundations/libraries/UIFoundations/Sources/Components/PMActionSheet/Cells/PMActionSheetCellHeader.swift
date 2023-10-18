@@ -22,7 +22,7 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_Foundations
+import ProtonCoreFoundations
 
 final class PMActionSheetCellHeader: UITableViewHeaderFooterView, LineSeparatable, Reusable, AccessibleView {
     private lazy var label = UILabel(

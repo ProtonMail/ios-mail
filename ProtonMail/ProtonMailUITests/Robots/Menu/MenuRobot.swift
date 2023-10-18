@@ -7,8 +7,10 @@
 //
 
 import XCTest
-import ProtonCore_CoreTranslation
-import ProtonCore_TestingToolkit
+import ProtonCoreAccountSwitcher
+import ProtonCoreForceUpgrade
+import ProtonCoreLoginUI
+import ProtonCoreTestingToolkit
 import fusion
 
 fileprivate struct id {
@@ -24,18 +26,18 @@ fileprivate struct id {
     static let settingsStaticText = "MenuItemTableViewCell.\(LocalString._menu_settings_title)"
     static let subscriptionStaticText = "MenuItemTableViewCell.\(LocalString._menu_service_plan_title)"
     static let sidebarHeaderViewOtherIdentifier = "MenuViewController.primaryUserview"
-    static let manageAccountsStaticTextLabel = CoreString._as_manage_accounts
+    static let manageAccountsStaticTextLabel = ASTranslation.manage_accounts.l10n
     static let primaryViewIdentifier = "AccountSwitcher.primaryView"
     static let primaryUserViewIdentifier = "MenuViewController.primaryUserview"
     static let primaryUserNameTextIdentifier = "AccountSwitcher.username"
     static let primaryUserMailTextIdentifier = "AccountSwitcher.usermail"
     static func primaryUserMailStaticTextIdentifier(_ name: String) -> String { return "\(name).usermail" }
     static let iapErrorAlertTitle = LocalString._general_alert_title
-    static let forceUpgrateAlertTitle = CoreString._fu_alert_title
+    static let forceUpgrateAlertTitle = FUTranslation.alert_title.l10n
     static let forceUpgrateAlertMessage = "Test error description"
-    static let forceUpgrateLearnMoreButton = CoreString._fu_alert_learn_more_button
-    static let forceUpgrateUpdateButton = CoreString._fu_alert_update_button
-    static let signInButtonLabel = CoreString._ls_sign_in_button
+    static let forceUpgrateLearnMoreButton = FUTranslation.alert_learn_more_button.l10n
+    static let forceUpgrateUpdateButton = FUTranslation.alert_update_button.l10n
+    static let signInButtonLabel = LUITranslation.sign_in_button.l10n
     static func signInButtonIdentifier(_ name: String) -> String { return "\(name).signInBtn" }
     static func userAccountCellIdentifier(_ name: String) -> String { return "AccountSwitcherCell.\(name)" }
     static func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
@@ -79,6 +81,12 @@ class MenuRobot: CoreElements {
         // fake subscription item leads to force upgrade (by http mock)
         cell(id.subscriptionStaticText).swipeUpUntilVisible().tap()
         return MenuRobot()
+    }
+
+    func subscription() -> PaymentsUIRobot {
+        // fake subscription item leads to force upgrade (by http mock)
+        cell(id.subscriptionStaticText).swipeUpUntilVisible().tap()
+        return PaymentsUIRobot()
     }
     
     func drafts() -> DraftsRobot {

@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 //
 
-enum ExternalLink {
+public enum ExternalLink {
     static let alternativeRouting = "https://proton.me/blog/anti-censorship-alternative-routing"
     static let protonvpn = "https://protonvpn.com"
     static let tor = "https://www.torproject.org"

@@ -19,17 +19,18 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
 import UIKit
-import ProtonCore_UIFoundations
-import ProtonCore_Login
-import ProtonCore_Authentication
-import ProtonCore_Networking
-import ProtonCore_CoreTranslation
-import ProtonCore_TroubleShooting
-import ProtonCore_FeatureSwitch
-import ProtonCore_Services
-import ProtonCore_Utilities
+import ProtonCoreUIFoundations
+import ProtonCoreLogin
+import ProtonCoreAuthentication
+import ProtonCoreNetworking
+import ProtonCoreTroubleShooting
+import ProtonCoreFeatureSwitch
+import ProtonCoreServices
+import ProtonCoreUtilities
 
 protocol LoginCoordinatorDelegate: AnyObject {
     func userDidDismissLoginCoordinator(loginCoordinator: LoginCoordinator)
@@ -217,7 +218,7 @@ final class LoginCoordinator {
                     case .success:
                         self?.completeLoginFlow(data: data)
                     case .failure(let error):
-                        self?.popAndShowError(error: .generic(message: error.messageForTheUser,
+                        self?.popAndShowError(error: .generic(message: error.localizedDescription,
                                                               code: error.bestShotAtReasonableErrorCode,
                                                               originalError: error))
                     }
@@ -268,17 +269,7 @@ extension LoginCoordinator: LoginStepsDelegate {
     }
 
     func createAddressNeeded(data: CreateAddressData, defaultUsername: String?) {
-        if FeatureFactory.shared.isEnabled(.externalAccountConversion) {
-            showCreateAddress(data: data, defaultUsername: defaultUsername)
-        } else {
-            // account conversion not supported by feature flag
-            let externalAccountsNotSupportedError = LoginError.externalAccountsNotSupported(
-                message: CoreString._ls_external_accounts_not_supported_popup_local_desc,
-                title: CoreString._ls_external_accounts_address_required_popup_title,
-                originalError: NSError()
-            )
-            popAndShowError(error: externalAccountsNotSupportedError)
-        }
+        showCreateAddress(data: data, defaultUsername: defaultUsername)
     }
 
     func userAccountSetupNeeded() {
@@ -475,7 +466,9 @@ extension LoginCoordinator: AuthSessionInvalidatedDelegate {
         }
         guard isAuthenticatedSession else { return }
         CompletionBlockExecutor.asyncMainExecutor.execute { [weak self] in
-            self?.popAndShowInfo(message: CoreString._ls_info_session_expired)
+            self?.popAndShowInfo(message: LUITranslation.info_session_expired.l10n)
         }
     }
 }
+
+#endif

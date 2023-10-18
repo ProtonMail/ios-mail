@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Tuzna ur teddi ara";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Email failed to send. Message saved as draft.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Ulac acu ara twaliḍ dagi";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Tesriḍ xarsum yiwen n uɣerwaḍ akken ad tazneḍ";
-
-/* Title */
-"Change sender address to…" = "Beddel tansa n umesgal ɣer…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Ali ar lqem s yidrimen akken ad tazneḍ imaylen seg tansa-ik %@";
@@ -480,7 +474,7 @@
 "The request timed out." = "Asuter yemmut.";
 
 /* Message */
-"Proton servers are unreachable.\nVisit our status page for details." = "Proton servers are unreachable.\nVisit our status page for details.";
+"Proton servers are unreachable.\nVisit our status page for details." = "Iqeddacen n Proton ulac abrid ɣur-sen.\nRzu ɣer usebter-nneɣ n waddaden i telqayt.";
 
 /* Title */
 "No connectivity detected…" = "Ulac tuqqna yettwafen…";
@@ -652,9 +646,6 @@
 
 /* Title */
 "Confirm new mailbox password" = "Sentem awal uffir n tnaka n yimayl amaynut";
-
-/* error when sending the message */
-"Unable to send the email" = "Ur izmir ara ad yazen imayl";
 
 /* Title */
 "Star/unstar" = "Err itri/Kkes itri";
@@ -996,9 +987,6 @@
 "Cut" = "Gzem";
 
 /* Title */
-"Compose to" = "Aru i";
-
-/* Title */
 "Add to contacts" = "Rnu γer inermisen";
 
 /* encryption lock description */
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Tuzna n yizen…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Imayl ur yettwazen ara. Xersum yiwet n tansa/taɣult n unermas ur telli ara neɣ ur temsil ara akken ilaq.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "ar yettwaɣra ara";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Sermed tawuri-agi i usemmed awurman n tansiwin imayl s useqdec n yinermisen n yal imiḍanen-inek•inem yeqqnen.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Sbadu tangalt PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Sekcem tangalt PIN tamaynut";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Sekcem tangalt PIN yesɛan gar 4 ar 21 n yisekkilen.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN wezzil aṭas";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN ɣezzif aṭas";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Ales tangalt PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Tingalin PIN ilaq ad ilint kifkif!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability.%1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Yensa";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Beddel tangalt n PIN";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Ales asesteb";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "You can now choose and rearrange the actions in this bar";
 
 /* Button to block a sender */
-"Block sender" = "Sewḥel amazan";
+"Block messages from this sender" = "Block messages from this sender";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Sewḥel";
@@ -1928,7 +1889,7 @@
 "As scheduled" = "Akken yettusɣawes";
 
 /* The title of the up sell content of the scheduled send. */
-"Set your own schedule" = "Set your own schedule";
+"Set your own schedule" = "Sbadu asɣawas-ik";
 
 /* The content of the up sell content of the scheduled send. */
 "Unlock custom message scheduling and other benefits when you upgrade your plan." = "Unlock custom message scheduling and other benefits when you upgrade your plan.";
@@ -1937,7 +1898,7 @@
 "Upgrade now" = "Sali aswir tura";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Schedule messages at any time" = "Schedule messages at any time";
+"Schedule messages at any time" = "Sɣawes akud n tuzna n yizen melmi i tebɣiḍ";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Unlimited folders and labels" = "Ikaramen d tebzimin war talast";
@@ -1970,10 +1931,10 @@
 "Next message after move" = "Izen uḍfir seld asenkez";
 
 /* The title of the row inside the setting page of next msg after move function. */
-"Navigate to next message after move" = "Navigate to next message after move";
+"Navigate to next message after move" = "Uɣal ɣer yizen uḍfir seld asenkez";
 
 /* The footer title of the setting row of the next msg after move functions. */
-"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Performing a move action on a message (e.g. archive) will navigate to the next message.";
+"Performing a move action on a message (e.g. archive) will navigate to the next message." = "Mi ara n tesnekzeḍ izen (am. ɣer teṛcivt) ad tuɣaleḍ ɣer yizen uḍfir.j";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Yegguma ad yeldi yizen, ales ticki.";
@@ -1989,6 +1950,9 @@
 
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Tiririt i meṛṛa (i yizen aneggaru)";
+
+/* The action title in the action sheet of the composing new message */
+"New message" = "Izen amaynut";
 
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Sagen";
@@ -2009,7 +1973,7 @@
 "Auto-delete" = "Tukksa tawurmant";
 
 /* The title of the row inside the setting page of auto delete option */
-"Auto-delete unwanted messages" = "Auto-delete unwanted messages";
+"Auto-delete unwanted messages" = "Tukksa tawurmant n yiznan ur tebɣiḍ ara";
 
 /* The footer title of the setting row of the auto delete option */
 "Messages in trash or spam longer than 30 days will be automatically deleted." = "Messages in trash or spam longer than 30 days will be automatically deleted.";
@@ -2023,26 +1987,17 @@
 /* Button to enable encrypted search */
 "Enable" = "Rmed";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Sens tukksa tawurmant?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Emails scheduled for deletion will remain in the trash and spam folders.";
-
-/* Button to disable auto delete */
-"Disable" = "Désactiver";
-
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days.";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Sali aɣawas-ik i tukksa n yiznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.";
 
 /* Text to prompt paid users to enable the auto delete feature */
-"Automatically delete messages that have been in trash for more than 30 days." = "Automatically delete messages that have been in trash for more than 30 days.";
+"Automatically delete messages that have been in trash for more than 30 days." = "Kkes iznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan.";
 
 /* Title of button to discard auto delete option */
 "No, thanks" = "Uhu, tanemmirt";
 
 /* Text to inform users they have the auto delete feature enabled */
-"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Messages that have been in trash and spam more than 30 days will be automatically deleted.";
+"Messages that have been in trash and spam more than 30 days will be automatically deleted." = "Iznan s wudem awurman i yellan deg tqecwalt neɣ deg uspam i wugar n 30 wussan, ad ttwakksen s wudem awurman.";
 
 /* Title of button to empty spam folder */
 "Empty spam" = "Silem ispamen";
@@ -2062,6 +2017,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Tiɣula n yimayl tudmawanin";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Isem n uskan";
 
@@ -2075,7 +2036,7 @@
 "Display name field cannot be empty" = "Urti n yisem n uskan ur ilaq ara ad yili d ilem";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Isem unermis ɣezzif aṭas";
 
 /* The button text for add profile picture */
 "Add photo" = "Rnu Tawlaft";
@@ -2083,11 +2044,41 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Ẓreg tawlaft";
 
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Sbadu tangalt PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Ales tangalt PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Sekcem tangalt PIN tamaynut";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Sekcem tangalt PIN yesɛan gar 4 ar 21 n yisekkilen.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN wezzil aṭas";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN ɣezzif aṭas";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Tingalin PIN ilaq ad ilint kifkif!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Please enter old pin code ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Beddel tangalt n PIN";
+
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Ffeɣ seg ujerred n tebdart n tnezwit";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Ffeɣ seg ujerred?";
 
 /* Unsubscribe confirmation message */
 "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";

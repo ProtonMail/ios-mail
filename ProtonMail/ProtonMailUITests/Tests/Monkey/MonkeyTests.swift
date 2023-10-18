@@ -18,9 +18,9 @@
 import XCTest
 import fusion
 import iosMonkey
-import ProtonCore_Environment
-import ProtonCore_QuarkCommands
-import ProtonCore_TestingToolkit
+import ProtonCoreEnvironment
+import ProtonCoreQuarkCommands
+import ProtonCoreTestingToolkit
 
 
 @available(iOS 15.0, *)

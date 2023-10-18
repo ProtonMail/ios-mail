@@ -19,16 +19,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Login
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
-import ProtonCore_Payments
-import ProtonCore_PaymentsUI
-import ProtonCore_HumanVerification
-import ProtonCore_Foundations
-import ProtonCore_FeatureSwitch
+import ProtonCoreLogin
+import ProtonCoreNetworking
+import ProtonCoreUIFoundations
+import ProtonCorePayments
+import ProtonCorePaymentsUI
+import ProtonCoreHumanVerification
+import ProtonCoreFoundations
+import ProtonCoreFeatureSwitch
 
 enum FlowStartKind {
     case over(UIViewController, UIModalTransitionStyle)
@@ -72,7 +73,7 @@ final class SignupCoordinator {
     private var signupViewController: SignupViewController?
     private var recoveryViewController: RecoveryViewController?
     private var countryPickerViewController: CountryPickerViewController?
-    private var countryPicker = PMCountryPicker(searchBarPlaceholderText: CoreString._hv_sms_search_placeholder)
+    private var countryPicker = PMCountryPicker(searchBarPlaceholderText: LUITranslation.sms_search_placeholder.l10n)
     private var completeViewModel: CompleteViewModel?
     
     private let signupAccountTypeManager: SignupAccountTypeManagerProtocol
@@ -89,15 +90,12 @@ final class SignupCoordinator {
     private let paymentsAvailability: PaymentsAvailability
     private let paymentsManager: PaymentsManager?
 
-    private let isExternalSignupFeatureEnabled: Bool
-    
     init(container: Container,
          minimumAccountType: AccountType,
          isCloseButton: Bool,
          paymentsAvailability: PaymentsAvailability,
          signupAvailability: SignupAvailability,
          customization: LoginCustomizationOptions,
-         isExternalSignupFeatureEnabled: Bool = FeatureFactory.shared.isEnabled(.externalSignup),
          signupAccountTypeManager: SignupAccountTypeManagerProtocol = SignupAccountTypeManager()) {
         self.container = container
         self.minimumAccountType = minimumAccountType
@@ -105,7 +103,6 @@ final class SignupCoordinator {
         self.signupAvailability = signupAvailability
         self.customization = customization
         self.paymentsAvailability = paymentsAvailability
-        self.isExternalSignupFeatureEnabled = isExternalSignupFeatureEnabled
         self.signupAccountTypeManager = signupAccountTypeManager
         if case .available(let paymentParameters) = paymentsAvailability {
             self.paymentsManager = container.makePaymentsCoordinator(
@@ -141,11 +138,7 @@ final class SignupCoordinator {
 
         switch minimumAccountType {
         case .username, .external:
-            if isExternalSignupFeatureEnabled {
-                signupAccountTypeManager.setSignupAccountType(type: .external)
-            } else {
-                signupAccountTypeManager.setSignupAccountType(type: .internal)
-            }
+            signupAccountTypeManager.setSignupAccountType(type: .external)
         case .internal:
             signupAccountTypeManager.setSignupAccountType(type: .internal)
         }
@@ -160,7 +153,7 @@ final class SignupCoordinator {
         case .internal:
             signupViewController.showOtherAccountButton = false
         case .username, .external:
-            signupViewController.showOtherAccountButton = isExternalSignupFeatureEnabled
+            signupViewController.showOtherAccountButton = true
         }
         signupViewController.showSeparateDomainsButton = signupParameters.separateDomainsButton
         signupViewController.showCloseButton = isCloseButton
@@ -639,7 +632,7 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
                 case .apiMightBeBlocked(let message, let originalError):
                     vc.showError(error: SignupError.apiMightBeBlocked(message: message, originalError: originalError))
                 case .cannotCreateInternalAddress, .alreadyHaveInternalOrCustomDomainAddress:
-                    vc.showError(error: SignupError.generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode, originalError: error))
+                    vc.showError(error: SignupError.generic(message: error.localizedDescription, code: error.bestShotAtReasonableErrorCode, originalError: error))
                 }
             }
         } else if let error = error as? CreateAddressKeysError {
@@ -651,7 +644,7 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
                 case .apiMightBeBlocked(let message, let originalError):
                     vc.showError(error: SignupError.apiMightBeBlocked(message: message, originalError: originalError))
                 case .alreadySet:
-                    vc.showError(error: SignupError.generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode, originalError: error))
+                    vc.showError(error: SignupError.generic(message: error.localizedDescription, code: error.bestShotAtReasonableErrorCode, originalError: error))
                 }
             }
         } else if let error = error as? ResponseError, let message = error.userFacingMessage ?? error.underlyingError?.localizedDescription {
@@ -662,9 +655,9 @@ extension SignupCoordinator: CompleteViewControllerDelegate {
         } else {
             if let vc = errorVC, self.customization.customErrorPresenter?.willPresentError(error: error, from: vc) == true {
             } else if let vc = errorVC as? SignUpErrorCapable {
-                vc.showError(error: SignupError.generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode, originalError: error))
+                vc.showError(error: SignupError.generic(message: error.localizedDescription, code: error.bestShotAtReasonableErrorCode, originalError: error))
             } else if let vc = errorVC as? LoginErrorCapable {
-                vc.showError(error: LoginError.generic(message: error.messageForTheUser, code: error.bestShotAtReasonableErrorCode, originalError: error))
+                vc.showError(error: LoginError.generic(message: error.localizedDescription, code: error.bestShotAtReasonableErrorCode, originalError: error))
             }
         }
         if let vc = errorVC as? PaymentsUIViewController {
@@ -711,3 +704,5 @@ private extension UIStoryboard {
         self.instantiate(storyboardName: "PMSignup", controllerType: controllerType, inAppTheme: inAppTheme)
     }
 }
+
+#endif

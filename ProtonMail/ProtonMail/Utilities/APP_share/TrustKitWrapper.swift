@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Environment
-import ProtonCore_Services
+import ProtonCoreEnvironment
+import ProtonCoreServices
 import TrustKit
 
 extension TrustKitWrapper {

@@ -19,32 +19,29 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-#if canImport(ProtonCore_Authentication)
-import ProtonCore_Authentication
+import Foundation
+
+#if canImport(ProtonCoreAuthentication)
+import ProtonCoreAuthentication
 #else
 import PMAuthentication
 #endif
-#if canImport(ProtonCore_CoreTranslation)
-import ProtonCore_CoreTranslation
-#else
-import PMCoreTranslation
-#endif
-#if canImport(ProtonCore_Networking)
-import ProtonCore_Networking
+#if canImport(ProtonCoreNetworking)
+import ProtonCoreNetworking
 #else
 import PMCommon
 #endif
-#if canImport(ProtonCore_Doh)
-import ProtonCore_Doh
+#if canImport(ProtonCoreDoh)
+import ProtonCoreDoh
 #endif
-#if canImport(ProtonCore_Services)
-import ProtonCore_Services
+#if canImport(ProtonCoreServices)
+import ProtonCoreServices
 #endif
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 public typealias AccountDeletionSuccess = Void
 
-#if canImport(ProtonCore_Networking)
+#if canImport(ProtonCoreNetworking)
 public typealias CannotDeleteYourselfReasonError = ResponseError
 #else
 public typealias CannotDeleteYourselfReasonError = Error
@@ -64,7 +61,7 @@ public enum AccountDeletionError: Error {
     
     public var userFacingMessageInAccountDeletion: String {
         switch self {
-        case .cannotDeleteYourself(let error): return error.networkResponseMessageForTheUser
+        case .cannotDeleteYourself(let error): return error.localizedDescription
         case .sessionForkingError(let message): return message
         case .closedByUser: return ""
         case .deletionFailure(let message): return message
@@ -100,14 +97,14 @@ public extension AccountDeletion {
     }
 }
 
-#if canImport(ProtonCore_Services)
+#if canImport(ProtonCoreServices)
 public extension AccountDeletion {
     static var defaultButtonName: String {
-        CoreString._ad_delete_account_button
+        ADTranslation.delete_account_button.l10n
     }
     
     static var defaultExplanationMessage: String {
-        CoreString._ad_delete_account_message
+        ADTranslation.delete_account_message.l10n
     }
 }
 #endif
@@ -127,7 +124,7 @@ public final class AccountDeletionService {
     private let authenticator: Authenticator
     private let preferredLanguage: String
 
-    #if canImport(ProtonCore_Services)
+    #if canImport(ProtonCoreServices)
     public convenience init(api: APIService, preferredLanguage: String = NSLocale.autoupdatingCurrent.identifier) {
         self.init(api: api, doh: api.dohInterface, preferredLanguage: preferredLanguage)
     }
@@ -158,7 +155,7 @@ public final class AccountDeletionService {
         api.perform(request: CanDeleteRequest(), response: CanDeleteResponse()) { [self] (_, response: CanDeleteResponse) in
             if let error = response.error {
                 if error.isApiIsBlockedError {
-                    completion(.failure(.apiMightBeBlocked(message: error.networkResponseMessageForTheUser, originalError: error.underlyingError ?? error as NSError)))
+                    completion(.failure(.apiMightBeBlocked(message: error.localizedDescription, originalError: error.underlyingError ?? error as NSError)))
                 } else {
                     completion(.failure(.cannotDeleteYourself(becauseOf: error)))
                 }

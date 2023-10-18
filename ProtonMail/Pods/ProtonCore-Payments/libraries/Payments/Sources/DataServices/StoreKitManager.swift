@@ -22,10 +22,12 @@
 import Foundation
 import StoreKit
 import Reachability
-import ProtonCore_CoreTranslation
-import ProtonCore_Log
-import ProtonCore_Hash
-import ProtonCore_Services
+import ProtonCoreFeatureSwitch
+import ProtonCoreLog
+import ProtonCoreHash
+import ProtonCoreServices
+import ProtonCoreObservability
+import ProtonCoreUtilities
 
 final class StoreKitManager: NSObject, StoreKitManagerProtocol {
 
@@ -41,7 +43,8 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     }
     private let inAppPurchaseIdentifiersGet: ListOfIAPIdentifiersGet
     private let inAppPurchaseIdentifiersSet: ListOfIAPIdentifiersSet
-    let planService: ServicePlanDataServiceProtocol
+    // it's internal because of the ValidationManagerDependencies protocol
+    let planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>
     private let paymentsAlertManager: PaymentsAlertManager
     private let paymentsApi: PaymentsApiProtocol
     let apiService: APIService
@@ -56,7 +59,22 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     var errorRetryIn: Double = 2
     var alertViewDelay: Double = 1.0
     var receiptError: Error?
-    var availableProducts: [SKProduct] = []
+    var availableProducts: [SKProduct] {
+        get {
+            guard let storeKitDataSource else { return storedAvailableProducts }
+            return storeKitDataSource.availableProducts
+        }
+        set {
+            guard storeKitDataSource == nil else {
+                assertionFailure("The available products should never be set here if store kit data source is used")
+                return
+            }
+            storedAvailableProducts = newValue
+        }
+    }
+    var storedAvailableProducts: [SKProduct] = []
+
+    private let storeKitDataSource: StoreKitDataSource?
 
     // MARK: Private properties
     private lazy var processAuthenticated = ProcessAuthenticated(dependencies: self)
@@ -181,8 +199,16 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     
     private var processingType: ProcessingType {
         guard applicationUserId() == nil else {
-            if planService.currentSubscription?.endDate?.isFuture ?? false {
-                return .existingUserAddCredits
+            // TODO: test purchase process with PlansDataSource object
+            switch planService {
+            case .left(let planService):
+                if planService.currentSubscription?.endDate?.isFuture ?? false {
+                    return .existingUserAddCredits
+                }
+            case .right(let planDataSource):
+                if planDataSource.currentPlan?.endDate?.isFuture ?? false {
+                    return .existingUserAddCredits
+                }
             }
             return .existingUserNewSubscription
         }
@@ -202,7 +228,8 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
 
     init(inAppPurchaseIdentifiersGet: @escaping ListOfIAPIdentifiersGet,
          inAppPurchaseIdentifiersSet: @escaping ListOfIAPIdentifiersSet,
-         planService: ServicePlanDataServiceProtocol,
+         planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol>,
+         storeKitDataSource: StoreKitDataSource?,
          paymentsApi: PaymentsApiProtocol,
          apiService: APIService,
          canExtendSubscription: Bool,
@@ -213,6 +240,7 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         self.inAppPurchaseIdentifiersGet = inAppPurchaseIdentifiersGet
         self.inAppPurchaseIdentifiersSet = inAppPurchaseIdentifiersSet
         self.planService = planService
+        self.storeKitDataSource = storeKitDataSource
         self.paymentsApi = paymentsApi
         self.apiService = apiService
         self.canExtendSubscription = canExtendSubscription
@@ -240,6 +268,10 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     }
 
     public func updateAvailableProductsList(completion: @escaping (Error?) -> Void) {
+        // This is just for early detection of programmers errors and to indicate what can be removed when we remove the feature flag
+        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            assertionFailure("This method should never be called with dynamic plans. The StoreKitDataSource object fetches the SKProducts")
+        }
         updateAvailableProductsListCompletionBlock = { error in DispatchQueue.main.async { completion(error) } }
         request = SKProductsRequest(productIdentifiers: inAppPurchaseIdentifiersGet())
         request?.delegate = self
@@ -259,19 +291,37 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
     }
 
     public func isValidPurchase(storeKitProductId: String, completion: @escaping (Bool) -> Void) {
-        let planService = planService
-        planService.updateServicePlans(callBlocksOnParticularQueue: nil) { [weak self] in
-            guard planService.isIAPAvailable else {
-                completion(false)
-                return
-            }
-            planService.updateCurrentSubscription(callBlocksOnParticularQueue: nil) { [weak self] in
-                completion(self?.validationManager.isValidPurchase(storeKitProductId: storeKitProductId) ?? false)
+        // TODO: test purchase process with PlansDataSource object
+        switch planService {
+        case .left(let planService):
+            planService.updateServicePlans(callBlocksOnParticularQueue: nil) { [weak self] in
+                guard planService.isIAPAvailable else {
+                    completion(false)
+                    return
+                }
+                planService.updateCurrentSubscription(callBlocksOnParticularQueue: nil) { [weak self] in
+                    completion(self?.validationManager.isValidPurchase(storeKitProductId: storeKitProductId) ?? false)
+                } failure: { _ in
+                    completion(false)
+                }
             } failure: { _ in
                 completion(false)
             }
-        } failure: { _ in
-            completion(false)
+
+        case .right(let planDataSource):
+            Task { [weak self] in
+                do {
+                    try await planDataSource.fetchAvailablePlans()
+                    guard planDataSource.isIAPAvailable else {
+                        completion(false)
+                        return
+                    }
+                    try await planDataSource.fetchCurrentPlan()
+                    completion(self?.validationManager.isValidPurchase(storeKitProductId: storeKitProductId) ?? false)
+                } catch {
+                    completion(false)
+                }
+            }
         }
     }
 
@@ -285,37 +335,77 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
               let product = availableProducts.first(where: { $0.productIdentifier == storeKitProductId })
         else { return errorCompletion(Errors.unavailableProduct) }
 
-        planService.updateServicePlans(callBlocksOnParticularQueue: nil) { [weak self] in
-            guard let self = self else {
-                errorCompletion(Errors.transactionFailedByUnknownReason)
-                return
-            }
-            guard self.planService.isIAPAvailable,
-                  let details = self.planService.detailsOfPlanCorrespondingToIAP(plan),
-                  details.isPurchasable else {
-                errorCompletion(Errors.unavailableProduct)
-                return
+        // TODO: test purchase process with PlansDataSource object
+        switch planService {
+        case .left(let planService):
+            planService.updateServicePlans(callBlocksOnParticularQueue: nil) { [weak self] in
+                guard let self = self else {
+                    errorCompletion(Errors.transactionFailedByUnknownReason)
+                    return
+                }
+                guard planService.isIAPAvailable,
+                      let details = planService.detailsOfPlanCorrespondingToIAP(plan),
+                      details.isPurchasable else {
+                    errorCompletion(Errors.unavailableProduct)
+                    return
+                }
+
+                guard let userId = self.applicationUserId() else {
+                    self.purchaseProductWithoutAnAuthorizedUser(storeKitProduct: product,
+                                                                amountDue: amountDue,
+                                                                successCompletion: successCompletion,
+                                                                errorCompletion: errorCompletion,
+                                                                deferredCompletion: deferredCompletion)
+                    return
+                }
+
+                self.purchaseProductBeingAuthorized(plan: plan,
+                                                    storeKitProduct: product,
+                                                    amountDue: amountDue,
+                                                    userId: userId,
+                                                    successCompletion: successCompletion,
+                                                    errorCompletion: errorCompletion,
+                                                    deferredCompletion: deferredCompletion)
+
+            } failure: { error in
+                errorCompletion(error)
             }
 
-            guard let userId = self.applicationUserId() else {
-                self.purchaseProductWithoutAnAuthorizedUser(storeKitProduct: product,
-                                                            amountDue: amountDue,
-                                                            successCompletion: successCompletion,
-                                                            errorCompletion: errorCompletion,
-                                                            deferredCompletion: deferredCompletion)
-                return
+        case .right(let plansDataSource):
+            Task { [weak self] in
+                do {
+                    try await plansDataSource.fetchAvailablePlans()
+                    guard let self = self else {
+                        errorCompletion(Errors.transactionFailedByUnknownReason)
+                        return
+                    }
+                    guard plansDataSource.isIAPAvailable,
+                          plansDataSource.detailsOfAvailablePlanInstanceCorrespondingToIAP(plan) != nil
+                    else {
+                        errorCompletion(Errors.unavailableProduct)
+                        return
+                    }
+
+                    guard let userId = self.applicationUserId() else {
+                        self.purchaseProductWithoutAnAuthorizedUser(storeKitProduct: product,
+                                                                    amountDue: amountDue,
+                                                                    successCompletion: successCompletion,
+                                                                    errorCompletion: errorCompletion,
+                                                                    deferredCompletion: deferredCompletion)
+                        return
+                    }
+
+                    self.purchaseProductBeingAuthorized(plan: plan,
+                                                        storeKitProduct: product,
+                                                        amountDue: amountDue,
+                                                        userId: userId,
+                                                        successCompletion: successCompletion,
+                                                        errorCompletion: errorCompletion,
+                                                        deferredCompletion: deferredCompletion)
+                } catch {
+                    errorCompletion(error)
+                }
             }
-
-            self.purchaseProductBeingAuthorized(plan: plan,
-                                                storeKitProduct: product,
-                                                amountDue: amountDue,
-                                                userId: userId,
-                                                successCompletion: successCompletion,
-                                                errorCompletion: errorCompletion,
-                                                deferredCompletion: deferredCompletion)
-
-        } failure: { error in
-            errorCompletion(error)
         }
     }
 
@@ -349,24 +439,53 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
         
         threadSafeCache.set(value: amountDue, for: amountDueCacheKey, in: \.amountDue)
 
-        planService.updateCurrentSubscription(callBlocksOnParticularQueue: nil) { [weak self] in
-            guard let self = self else {
-                errorCompletion(Errors.transactionFailedByUnknownReason)
-                return
-            }
-            
-            guard self.planService.currentSubscription?.hasExistingProtonSubscription == false || (!self.planService.hasPaymentMethods && self.planService.currentSubscription?.hasExistingProtonSubscription == true && self.canExtendSubscription && !self.planService.willRenewAutomatically(plan: plan)) else {
-                errorCompletion(Errors.invalidPurchase)
-                return
+        // TODO: test purchase process with PlansDataSource object
+        switch planService {
+        case .left(let planService):
+            planService.updateCurrentSubscription(callBlocksOnParticularQueue: nil) { [weak self] in
+                guard let self = self else {
+                    errorCompletion(Errors.transactionFailedByUnknownReason)
+                    return
+                }
+
+                guard planService.currentSubscription?.hasExistingProtonSubscription == false || (!planService.hasPaymentMethods && planService.currentSubscription?.hasExistingProtonSubscription == true && self.canExtendSubscription && !planService.willRenewAutomatically(plan: plan)) else {
+                    errorCompletion(Errors.invalidPurchase)
+                    return
+                }
+
+                self.initiateStoreKitInAppPurchaseFlow(storeKitProduct: storeKitProduct,
+                                                       hashedUserId: hashedUserId,
+                                                       successCompletion: successCompletion,
+                                                       errorCompletion: errorCompletion,
+                                                       deferredCompletion: deferredCompletion)
+            } failure: { error in
+                errorCompletion(error)
             }
 
-            self.initiateStoreKitInAppPurchaseFlow(storeKitProduct: storeKitProduct,
-                                                   hashedUserId: hashedUserId,
-                                                   successCompletion: successCompletion,
-                                                   errorCompletion: errorCompletion,
-                                                   deferredCompletion: deferredCompletion)
-        } failure: { error in
-            errorCompletion(error)
+        case .right(let planDataSource):
+            Task { [weak self] in
+                do {
+                    try await planDataSource.fetchCurrentPlan()
+                    guard let self else {
+                        errorCompletion(Errors.transactionFailedByUnknownReason)
+                        return
+                    }
+
+                    guard planDataSource.currentPlan?.hasExistingProtonSubscription == false || (!planDataSource.hasPaymentMethods && planDataSource.currentPlan?.hasExistingProtonSubscription == true && self.canExtendSubscription && !planDataSource.willRenewAutomatically) else {
+                        errorCompletion(Errors.invalidPurchase)
+                        return
+                    }
+
+                    self.initiateStoreKitInAppPurchaseFlow(storeKitProduct: storeKitProduct,
+                                                           hashedUserId: hashedUserId,
+                                                           successCompletion: successCompletion,
+                                                           errorCompletion: errorCompletion,
+                                                           deferredCompletion: deferredCompletion)
+
+                } catch {
+                    errorCompletion(error)
+                }
+            }
         }
     }
 
@@ -434,6 +553,10 @@ final class StoreKitManager: NSObject, StoreKitManagerProtocol {
 
 extension StoreKitManager: SKProductsRequestDelegate {
     public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        // This is just for early detection of programmers errors and to indicate what can be removed when we remove the feature flag
+        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            assertionFailure("This method should never be called with dynamic plans. The StoreKitDataSource object fetches the SKProducts")
+        }
         if !response.invalidProductIdentifiers.isEmpty {
             PMLog.error("Some IAP identifiers are reported as invalid by the AppStore: \(response.invalidProductIdentifiers)")
         }
@@ -445,9 +568,14 @@ extension StoreKitManager: SKProductsRequestDelegate {
 
     func requestDidFinish(_ request: SKRequest) {
         self.request = nil
+        ObservabilityEnv.report(.paymentQuerySubscriptionsTotal(status: .successful))
     }
 
     func request(_: SKRequest, didFailWithError error: Error) {
+        // This is just for early detection of programmers errors and to indicate what can be removed when we remove the feature flag
+        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            assertionFailure("This method should never be called with dynamic plans. The StoreKitDataSource object fetches the SKProducts")
+        }
         #if targetEnvironment(simulator)
         if let skerror = error as? SKError, skerror.code == .unknown {
             updateAvailableProductsListCompletionBlock?(nil)
@@ -459,6 +587,7 @@ extension StoreKitManager: SKProductsRequestDelegate {
         #endif
         updateAvailableProductsListCompletionBlock = nil
         self.request = nil
+        ObservabilityEnv.report(.paymentQuerySubscriptionsTotal(status: .failed))
     }
 }
 
@@ -612,46 +741,82 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         guard let plan = InAppPurchasePlan(storeKitProductId: transaction.payment.productIdentifier)
         else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
 
-        if planService.detailsOfPlanCorrespondingToIAP(plan) == nil {
-            try planService.updateServicePlans()
-        }
+        // TODO: test purchase process with PlansDataSource object
+        let planName: String
+        let planAmount: Int
+        let planIdentifier: String
+        switch planService {
+        case .left(let planService):
+            if planService.detailsOfPlanCorrespondingToIAP(plan) == nil {
+                try planService.updateServicePlans()
+            }
 
-        guard let details = planService.detailsOfPlanCorrespondingToIAP(plan),
-              let amount = details.pricing(for: plan.period),
-              let protonIdentifier = details.iD
-        else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
+            guard let details = planService.detailsOfPlanCorrespondingToIAP(plan),
+                  let amount = details.pricing(for: plan.period),
+                  let protonIdentifier = details.ID
+            else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
+
+            planName = details.name
+            planAmount = amount
+            planIdentifier = protonIdentifier
+
+        case .right(let planDataSource):
+            guard let details = planDataSource.detailsOfAvailablePlanCorrespondingToIAP(plan),
+                  let instance = planDataSource.detailsOfAvailablePlanInstanceCorrespondingToIAP(plan),
+                  let price = instance.price.first(where: { $0.currency.lowercased() == plan.currency?.lowercased() })
+            else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
+
+            planName = details.name
+            planAmount = price.current
+            planIdentifier = details.ID
+        }
 
         let amountDue: Int
         if let cachedAmountDue = threadSafeCache.removeValueSynchronously(for: cacheKey, in: \.amountDue) {
             amountDue = cachedAmountDue
         } else {
             let validateSubscriptionRequest = paymentsApi.validateSubscriptionRequest(
-                api: apiService, protonPlanName: details.name, isAuthenticated: applicationUserId() != nil
+                api: apiService, protonPlanName: planName, isAuthenticated: applicationUserId() != nil
             )
             let response = try? validateSubscriptionRequest.awaitResponse(responseObject: ValidateSubscriptionResponse())
             let fetchedAmountDue = response?.validateSubscription?.amountDue
-            amountDue = fetchedAmountDue ?? amount
+            amountDue = fetchedAmountDue ?? planAmount
         }
 
-        let planToBeProcessed = PlanToBeProcessed(protonIdentifier: protonIdentifier, amount: amount, amountDue: amountDue)
+        let planToBeProcessed = PlanToBeProcessed(protonIdentifier: planIdentifier, amount: planAmount, amountDue: amountDue)
 
-        switch processingType {
-        case .existingUserNewSubscription:
-            if transactionsMadeBeforeSignup.contains(transaction) {
-                try processUnathenticated.processAuthenticatedBeforeSignup(
-                    transaction: transaction, plan: planToBeProcessed, completion: completion
-                )
-            } else {
-                try processAuthenticated.process(
-                    transaction: transaction, plan: planToBeProcessed, completion: completion
+        do {
+            let customCompletion: ProcessCompletionCallback = { result in
+                switch result {
+                case .finished:
+                    ObservabilityEnv.report(.paymentSubscribeTotal(status: .successful))
+                case .errored, .erroredWithUnspecifiedError:
+                    ObservabilityEnv.report(.paymentSubscribeTotal(status: .failed))
+                }
+                completion(result)
+            }
+
+            switch processingType {
+            case .existingUserNewSubscription:
+                if transactionsMadeBeforeSignup.contains(transaction) {
+                    try processUnathenticated.processAuthenticatedBeforeSignup(
+                        transaction: transaction, plan: planToBeProcessed, completion: customCompletion
+                    )
+                } else {
+                    try processAuthenticated.process(
+                        transaction: transaction, plan: planToBeProcessed, completion: customCompletion
+                    )
+                }
+            case .existingUserAddCredits:
+                try processAddCredits.process(transaction: transaction, plan: planToBeProcessed, completion: customCompletion)
+            case .registration:
+                try processUnathenticated.process(
+                    transaction: transaction, plan: planToBeProcessed, completion: customCompletion
                 )
             }
-        case .existingUserAddCredits:
-            try processAddCredits.process(transaction: transaction, plan: planToBeProcessed, completion: completion)
-        case .registration:
-            try processUnathenticated.process(
-                transaction: transaction, plan: planToBeProcessed, completion: completion
-            )
+        } catch {
+            ObservabilityEnv.report(.paymentSubscribeTotal(status: .failed))
+            throw error
         }
     }
 }
@@ -704,13 +869,13 @@ extension StoreKitManager {
     }
 
     private func confirmUserValidationAlertView(error: Error, userName: String, completion: @escaping () -> Void) {
-        let activateMsg = String(format: CoreString._do_you_want_to_bypass_validation, userName)
+        let activateMsg = String(format: PSTranslation.do_you_want_to_bypass_validation.l10n, userName)
         let message = """
         \(error.userFacingMessageInPayments)
 
         \(activateMsg)
         """
-        let confirmButtonTitle = CoreString._yes_bypass_validation + userName
+        let confirmButtonTitle = PSTranslation.yes_bypass_validation.l10n + userName
         paymentsAlertManager.userValidationAlert(message: message, confirmButtonTitle: confirmButtonTitle) {
             completion()
         }
@@ -719,12 +884,36 @@ extension StoreKitManager {
 
 extension StoreKitManager: ProcessDependencies {
     var storeKitDelegate: StoreKitManagerDelegate? { return delegate }
+
     var tokenStorage: PaymentTokenStorage { return commonTokenStorage }
+
     var paymentsApiProtocol: PaymentsApiProtocol { return paymentsApi }
+
     var alertManager: PaymentsAlertManager { return paymentsAlertManager }
-    var updateSubscription: (Subscription) -> Void { { [weak self] in self?.planService.currentSubscription = $0 } }
+
+    var updateSubscription: (Subscription) throws -> Void { { [weak self] in
+        // TODO: test purchase process with PlansDataSource object
+        guard !FeatureFactory.shared.isEnabled(.dynamicPlans), case .left(let planService) = self?.planService else {
+            throw StoreKitManagerErrors.noNewSubscriptionInSuccessfullResponse
+        }
+        planService.currentSubscription = $0
+    } }
+
     func updateCurrentSubscription(success: @escaping () -> Void, failure: @escaping (Error) -> Void) {
-        planService.updateCurrentSubscription(success: success, failure: failure)
+        // TODO: test purchase process with PlansDataSource object
+        switch planService {
+        case .left(let planService):
+            planService.updateCurrentSubscription(success: success, failure: failure)
+        case .right(let planDataSource):
+            Task {
+                do {
+                    try await planDataSource.fetchCurrentPlan()
+                    success()
+                } catch {
+                    failure(error)
+                }
+            }
+        }
     }
     
     var finishTransaction: (SKPaymentTransaction, (() -> Void)?) -> Void { {

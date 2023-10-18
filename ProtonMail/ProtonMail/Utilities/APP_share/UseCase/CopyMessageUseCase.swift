@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 // sourcery: mock
 protocol CopyMessageUseCase {

@@ -22,13 +22,13 @@
 
 #if !APP_EXTENSION
 import LifetimeTracker
-import ProtonCore_PaymentsUI
+import ProtonCorePaymentsUI
 #endif
 import MBProgressHUD
 import PromiseKit
-import ProtonCore_DataModel
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol ComposeContainerViewControllerDelegate: AnyObject {
@@ -36,6 +36,8 @@ protocol ComposeContainerViewControllerDelegate: AnyObject {
 }
 
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel> {
+    typealias Dependencies = HasCoreDataContextProviderProtocol & ContainableComposeViewController.Dependencies
+
     #if !APP_EXTENSION
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -93,7 +95,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         }
     }
 
-    private let contextProvider: CoreDataContextProviderProtocol
+    private let dependencies: Dependencies
 
     // MARK: - Child ViewControllers
 
@@ -103,6 +105,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         parentView: self,
         headerView: header,
         viewModel: viewModel.childViewModel,
+        dependencies: dependencies,
         openScheduleSendActionSheet: { [weak self] in
             self?.showScheduleSendActionSheet()
         },
@@ -111,7 +114,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
     lazy var attachmentView: ComposerAttachmentVC = ComposerChildViewFactory.makeAttachmentView(
         viewModel: viewModel.childViewModel,
-        contextProvider: contextProvider,
+        contextProvider: dependencies.contextProvider,
         delegate: self,
         isUploading: { [weak self] in
             self?.isUploadingAttachments = $0
@@ -120,11 +123,9 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
     weak var delegate: ComposeContainerViewControllerDelegate?
 
-    init(
-        viewModel: ComposeContainerViewModel,
-        contextProvider: CoreDataContextProviderProtocol
-    ) {
-        self.contextProvider = contextProvider
+
+    init(viewModel: ComposeContainerViewModel, dependencies: Dependencies) {
+        self.dependencies = dependencies
         super.init(viewModel: viewModel)
         viewModel.uiDelegate = self
         #if !APP_EXTENSION
@@ -642,7 +643,7 @@ extension ComposeContainerViewController: AttachmentController {
                 var newAttachment: AttachmentEntity?
                 let attachmentGroup = DispatchGroup()
                 attachmentGroup.enter()
-                self.contextProvider.performOnRootSavingContext { context in
+                self.dependencies.contextProvider.performOnRootSavingContext { context in
                     fileData.contents.toAttachment(
                         context, fileName: fileData.name,
                         type: fileData.ext,

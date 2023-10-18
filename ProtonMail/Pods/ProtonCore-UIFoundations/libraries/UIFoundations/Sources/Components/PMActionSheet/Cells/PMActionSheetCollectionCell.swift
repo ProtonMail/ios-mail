@@ -22,7 +22,7 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_Foundations
+import ProtonCoreFoundations
 
 final class PMActionSheetCollectionCell: UITableViewCell, AccessibleView {
     private var collectionView: UICollectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())

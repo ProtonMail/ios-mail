@@ -19,10 +19,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
+import UIKit
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreUIFoundations
 
 protocol MailboxPasswordCoordinatorDelegate: AnyObject {
     func mailboxPasswordCoordinatorDidFinish(mailboxPasswordCoordinator: MailboxPasswordCoordinator, mailboxPassword: String)
@@ -75,3 +78,5 @@ extension MailboxPasswordCoordinator: MailboxPasswordViewControllerInStandaloneF
         UIApplication.openURLIfPossible(externalLinks.passwordReset)
     }
 }
+
+#endif

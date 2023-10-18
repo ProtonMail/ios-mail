@@ -16,14 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Groot
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreTestingToolkit
 import XCTest
 @testable import ProtonMail
 
 final class PagesViewModelTests: XCTestCase {
-    private var contextProvider: CoreDataService!
+    private var contextProvider: CoreDataContextProviderProtocol!
     private var user: UserManager!
     private var userIntroduction: UserIntroductionProgressProvider!
     private var userInfo: UserInfo!
@@ -32,7 +32,8 @@ final class PagesViewModelTests: XCTestCase {
 
     override func setUpWithError() throws {
         userID = UUID().uuidString
-        contextProvider = sharedServices.get(by: CoreDataService.self)
+        let globalContainer = GlobalContainer()
+        contextProvider = globalContainer.contextProvider
         mockPagesVMUIDelegate = MockPagesViewUIProtocol()
         let apiServiceMock = APIServiceMock()
         let auth = AuthCredential(
@@ -47,8 +48,6 @@ final class PagesViewModelTests: XCTestCase {
         userInfo = UserInfo.getDefault()
         userInfo.userId = userID
 
-        let globalContainer = GlobalContainer()
-        globalContainer.contextProviderFactory.register { self.contextProvider }
         user = UserManager(
             api: apiServiceMock,
             userInfo: userInfo,

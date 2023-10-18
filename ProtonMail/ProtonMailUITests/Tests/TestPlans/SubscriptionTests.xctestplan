@@ -1,0 +1,40 @@
+{
+  "configurations" : [
+    {
+      "id" : "755E9EC9-BECC-4B7E-8CCF-59F2FA7145C4",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "DYNAMIC_DOMAIN",
+        "value" : "$(DYNAMIC_DOMAIN)"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ProtonMail.xcodeproj",
+      "identifier" : "67596B012358FAE8B0782EE2",
+      "name" : "ProtonMailUITests"
+    },
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "selectedTests" : [
+        "SubscriptionTests\/testUpgradeAccountFromFreeToMail2022()",
+        "SubscriptionTests\/testUpgradeAccountFromFreeToUnlimited()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "67596B012358FAE8B0782EE2",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

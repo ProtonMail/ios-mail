@@ -22,7 +22,7 @@
 
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrackable {
@@ -156,7 +156,7 @@ extension SettingsDeviceViewController {
                 return self.viewModel.appSettings.count
             case .general:
                 return self.viewModel.generalSettings.count
-            case .clearCache:
+            case .clearCache, .induceSlowdown:
                 return 1
             }
         }
@@ -248,10 +248,10 @@ extension SettingsDeviceViewController {
                 }
             }
             return cell
-        case .clearCache:
+        case .clearCache, .induceSlowdown:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsButtonCell.CellID, for: indexPath)
             if let cellToConfig = cell as? SettingsButtonCell {
-                cellToConfig.configue(title: LocalString._empty_cache)
+                cellToConfig.configue(title: eSection.description)
             }
             return cell
         }
@@ -356,6 +356,8 @@ extension SettingsDeviceViewController {
             }
         case .clearCache:
             cleanCache()
+        case .induceSlowdown:
+            viewModel.induceSlowdown()
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

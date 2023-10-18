@@ -104,7 +104,7 @@ public extension CGColor {
 
 #if canImport(AppKit)
 import AppKit
-import ProtonCore_Utilities
+import ProtonCoreUtilities
 
 public struct AppearanceAwareColor {
 

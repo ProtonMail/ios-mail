@@ -22,12 +22,12 @@
 
 import Foundation
 import LifetimeTracker
-import ProtonCore_Authentication_KeyGeneration
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Login
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreAuthenticationKeyGeneration
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreLogin
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 class SignInManager {
     let usersManager: UsersManager
@@ -121,7 +121,7 @@ class SignInManager {
         }
 
         guard user.userInfo.delinquentParsed.isAvailable else {
-            queueHandlerRegister.unregisterHandler(for: user.userID)
+            queueHandlerRegister.unregisterHandler(for: user.userID, completion: nil)
             usersManager.logout(user: user, shouldShowAccountSwitchAlert: false) {
                 onError(NSError(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
             }
@@ -147,7 +147,7 @@ class SignInManager {
                     tryUnlock()
                 }
         }.catch(on: .main) { [weak self] error in
-            self?.queueHandlerRegister.unregisterHandler(for: user.userID)
+            self?.queueHandlerRegister.unregisterHandler(for: user.userID, completion: nil)
             _ = self?.usersManager.logout(user: user, completion: {
                 onError(error as NSError)
             })

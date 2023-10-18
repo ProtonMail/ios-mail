@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Senden fehlgeschlagen";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "E-Mail konnte nicht gesendet werden. Nachricht wurde als Entwurf gespeichert.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Hier gibt's nichts zu sehen";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Du benötigst mindestens einen Empfänger, um die Nachricht senden zu können";
-
-/* Title */
-"Change sender address to…" = "Absenderadresse ändern zu…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Upgrade auf ein kostenpflichtiges Abonnement, um von deiner Adresse „%@“ senden zu können.";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Neues Mailbox-Passwort bestätigen";
 
-/* error when sending the message */
-"Unable to send the email" = "Fehler beim Senden der E-Mail";
-
 /* Title */
 "Star/unstar" = "Markieren/Markierung entfernen";
 
@@ -996,9 +987,6 @@
 "Cut" = "Ausschneiden";
 
 /* Title */
-"Compose to" = "Nachricht an";
-
-/* Title */
 "Add to contacts" = "Zu Kontakten hinzufügen";
 
 /* encryption lock description */
@@ -1224,7 +1212,7 @@
 "At least one recipient email address/domain doesn't exist or is badly formatted. Message moved to drafts." = "Mindestens eine Empfänger-E-Mail-Adresse/Domäne existiert nicht oder ist ungültig. Nachricht wurde in Entwürfe verschoben.";
 
 /* incorrect email format error while sending */
-"You have entered at least one invalid email address. Please verify your recipients." = "Du hast mindestens eine ungültige E-Mail Adresse eingegeben. Bitte verifiziere deine Empfänger.";
+"You have entered at least one invalid email address. Please verify your recipients." = "Du hast mindestens eine ungültige E-Mail-Adresse eingegeben. Bitte verifiziere deine Empfänger.";
 
 /* incorrect email format error while sending */
 "At least one email address in the group could not be found." = "Mindestens eine E-Mail-Adresse in der Gruppe konnte nicht gefunden werden.";
@@ -1243,9 +1231,6 @@
 
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Nachricht senden...";
-
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Nachricht konnte nicht gesendet werden. Mindestens eine Empfänger-E-Mail-Adresse/-Domain existiert nicht oder enthält Fehler in der Formatierung.";
 
 /* The unread title of unread action button in mailbox view */
 "unread" = "ungelesen";
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktiviere diese Funktion, um E-Mail-Adressen aus Kontakten von all deinen angemeldeten Konten automatisch zu vervollständigen.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "PIN-Code festlegen";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Neuen PIN-Code eingeben";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "PIN-Code mit min. 4 und max. 21 Zeichen eingeben.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN ist zu kurz";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN ist zu lang";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "PIN-Code erneut eingeben";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN-Codes stimmen nicht überein!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Für den Fall, dass Proton-Websites gesperrt sind, ermöglicht diese Einstellung der App, eine alternative Netzwerkweiterleitung auszuprobieren, um Proton zu erreichen, was zur Umgehung von Firewalls oder Netzwerkproblemen nützlich sein kann. Wir empfehlen, diese Einstellung für eine größere Zuverlässigkeit beizubehalten. %1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Aus";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "PIN ändern";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Neu authentifizieren";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Du kannst jetzt die Aktionen in deiner Symbolleiste auswählen und neu anordnen";
 
 /* Button to block a sender */
-"Block sender" = "Absender sperren";
+"Block messages from this sender" = "Nachrichten von diesem Absender sperren";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blockieren";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Allen antworten (auf die letzte Nachricht)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Neue Nachricht";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Anpassen";
 
@@ -2023,15 +1987,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Aktivieren";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Automatisches Löschen deaktivieren?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Zur Löschung vorgesehene E-Mails verbleiben im Papierkorb und im Spam-Ordner.";
-
-/* Button to disable auto delete */
-"Disable" = "Deaktivieren";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Führe ein Upgrade durch, um Nachrichten, die sich seit mehr als 30 Tagen im Papierkorb oder Spam befinden automatisch zu löschen.";
 
@@ -2062,6 +2017,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Eigene E-Mail-Domains";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Absender geändert";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Der ursprüngliche Absender dieser Nachricht ist nicht mehr gültig. Deine Nachricht wird von deiner Standardadresse %@ gesendet.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Anzeigename";
 
@@ -2082,6 +2043,36 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Foto bearbeiten";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "PIN-Code festlegen";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "PIN-Code erneut eingeben";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Neuen PIN-Code eingeben";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "PIN-Code mit min. 4 und max. 21 Zeichen eingeben.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN ist zu kurz";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN ist zu lang";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN-Codes stimmen nicht überein!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Bitte gib den alten PIN-Code ein";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "PIN ändern";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Aus Verteilerliste austragen";

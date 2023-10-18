@@ -21,14 +21,16 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_Log
+import MBProgressHUD
+import ProtonCoreDataModel
+import ProtonCoreLog
 
 enum SettingDeviceSection: Int, CustomStringConvertible {
-    case account = 0
-    case app = 1
-    case general = 2
-    case clearCache = 3
+    case account
+    case app
+    case general
+    case clearCache
+    case induceSlowdown
 
     var description: String {
         switch self {
@@ -39,7 +41,9 @@ enum SettingDeviceSection: Int, CustomStringConvertible {
         case .general:
             return LocalString._app_general_settings
         case .clearCache:
-            return ""
+            return LocalString._empty_cache
+        case .induceSlowdown:
+            return "Induce slowdown"
         }
     }
 }
@@ -97,11 +101,28 @@ final class SettingsDeviceViewModel {
     & HasLockCacheStatus
     & HasUserCachedStatus
 
-    let sections: [SettingDeviceSection] = [.account, .app, .general, .clearCache]
-    private(set) var appSettings: [DeviceSectionItem] = [.appPIN, .combineContacts, .browser, .alternativeRouting, .swipeAction]
+    let sections: [SettingDeviceSection] = {
+        var standardSections: [SettingDeviceSection] = [.account, .app, .general, .clearCache]
+#if DEBUG_ENTERPRISE
+        standardSections.append(.induceSlowdown)
+#endif
+        return standardSections
+    }()
+
+    private(set) var appSettings: [DeviceSectionItem] = [
+        .darkMode,
+        .appPIN,
+        .combineContacts,
+        .browser,
+        .alternativeRouting,
+        .swipeAction
+    ]
+
     private(set) var generalSettings: [GeneralSectionItem] = [.notification, .language]
 
     private let dependencies: Dependencies
+
+    private let induceSlowdownUseCase: InduceSlowdown
 
     var lockOn: Bool {
         dependencies.lockCacheStatus.isPinCodeEnabled || dependencies.lockCacheStatus.isTouchIDEnabled
@@ -137,16 +158,13 @@ final class SettingsDeviceViewModel {
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
-
-            appSettings.insert(.darkMode, at: 0)
+        induceSlowdownUseCase = .init(user: dependencies.user)
 
         if UserInfo.isToolbarCustomizationEnable {
             appSettings.append(.toolbar)
         }
 
-        if PMLog.isEnabled {
-            appSettings.append(.applicationLogs)
-        }
+        appSettings.append(.applicationLogs)
     }
 
     func appVersion() -> String {
@@ -170,6 +188,18 @@ final class SettingsDeviceViewModel {
                 completion?(.success(()))
             case .failure(let error):
                 completion?(.failure(error as NSError))
+            }
+        }
+    }
+
+    func induceSlowdown() {
+        Task {
+            do {
+                try await induceSlowdownUseCase.execute()
+            } catch {
+                SystemLogger.log(error: error, category: .artificialSlowdown)
+
+                await MBProgressHUD.alert(errorString: error.localizedDescription)
             }
         }
     }

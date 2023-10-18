@@ -20,11 +20,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_CryptoGoImplementation
-import ProtonCore_Environment
-import ProtonCore_FeatureSwitch
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreCryptoGoImplementation
+import ProtonCoreEnvironment
+import ProtonCoreFeatureSwitch
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 import UIKit
 
 @objc(ShareExtensionEntry)
@@ -50,7 +50,6 @@ class ShareExtensionEntry: UINavigationController {
         DFSSetting.enableDFS = true
         DFSSetting.limitToXXXLarge = true
         TrustKitWrapper.start(delegate: self)
-        configureCoreFeatureFlags()
         appCoordinator = ShareAppCoordinator(navigation: self)
         if #available(iOSApplicationExtension 15.0, *) {
             setupNavigationBarAppearance()
@@ -61,10 +60,6 @@ class ShareExtensionEntry: UINavigationController {
         super.viewDidLoad()
 
         self.appCoordinator?.start()
-    }
-
-    private func configureCoreFeatureFlags() {
-        FeatureFactory.shared.enable(&.unauthSession)
     }
 }
 

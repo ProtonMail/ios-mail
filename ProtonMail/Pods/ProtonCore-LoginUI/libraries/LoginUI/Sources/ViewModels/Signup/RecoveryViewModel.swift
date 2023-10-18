@@ -19,10 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_Challenge
-import ProtonCore_CoreTranslation
-import ProtonCore_Login
+import UIKit
+import ProtonCoreChallenge
+import ProtonCoreLogin
 
 class RecoveryViewModel {
 
@@ -54,9 +56,9 @@ class RecoveryViewModel {
     }
     
     func termsAttributedString(textView: UITextView) -> NSAttributedString {
-        /// Fix me poissble bug: if _su_recovery_t_c_desc translated string doesnt match in _su_recovery_t_c_link translated string. the hyper link could be failed when clicking.
-        var text = CoreString._su_recovery_t_c_desc
-        let linkText = CoreString._su_recovery_t_c_link
+        /// Fix me poissble bug: if _login_recovery_t_c_desc translated string doesnt match in _login_recovery_t_c_link translated string. the hyper link could be failed when clicking.
+        var text = LUITranslation.recovery_t_c_desc.l10n
+        let linkText = LUITranslation.recovery_t_c_link.l10n
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             // Workaround for UI test automation to detect link in separated line
             let texts = text.components(separatedBy: linkText)
@@ -68,3 +70,5 @@ class RecoveryViewModel {
         return .hyperlink(in: text, as: linkText, path: "", subfont: textView.font)
     }
 }
+
+#endif

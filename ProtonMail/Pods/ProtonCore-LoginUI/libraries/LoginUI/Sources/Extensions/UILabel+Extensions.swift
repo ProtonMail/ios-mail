@@ -21,6 +21,8 @@
 
 // swiftlint:disable legacy_constructor
 
+#if os(iOS)
+
 import Foundation
 import UIKit
 
@@ -42,3 +44,5 @@ extension UILabel {
         self.attributedText = attrString
     }
 }
+
+#endif

@@ -23,11 +23,11 @@
 import Alamofire
 import CoreData
 import LifetimeTracker
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_PaymentsUI
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCorePaymentsUI
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SkeletonView
 import SwipyCell
@@ -65,7 +65,10 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     @IBOutlet weak var updateTimeLabel: UILabel!
     @IBOutlet weak var unreadFilterButton: UIButton!
     @IBOutlet weak var unreadFilterButtonWidth: NSLayoutConstraint!
-
+    @IBOutlet weak var selectAllButton: UIView!
+    @IBOutlet weak var selectAllIcon: UIImageView!
+    @IBOutlet weak var selectAllLabel: UILabel!
+    
     // MARK: PMToolBarView
     @IBOutlet private var toolBar: PMToolBarView!
 
@@ -97,7 +100,15 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     private var lastNetworkStatus: ConnectionStatus? = nil
 
-    private var shouldAnimateSkeletonLoading = false
+    private var shouldAnimateSkeletonLoading = false {
+        didSet {
+            if shouldAnimateSkeletonLoading {
+                viewModel.diffableDataSource?.animateSkeletonLoading()
+            } else {
+                reloadTableViewDataSource(animate: false)
+            }
+        }
+    }
     private var shouldKeepSkeletonUntilManualDismissal = false
     var isShowingUnreadMessageOnly: Bool {
         return self.unreadFilterButton.isSelected
@@ -116,11 +127,10 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
             if
                 hasChangedFromTrueToFalse,
-                contentChangeOccurredDuringLastSwipeGesture,
-                let fetchedResultsController = viewModel.fetchedResultsController
+                contentChangeOccurredDuringLastSwipeGesture
             {
                 contentChangeOccurredDuringLastSwipeGesture = false
-                controllerDidChangeContent(fetchedResultsController)
+                tableView.reloadData()
             }
         }
     }
@@ -135,7 +145,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     private var inAppFeedbackScheduler: InAppFeedbackPromptScheduler?
 
     private var customUnreadFilterElement: UIAccessibilityElement?
-    private var diffableDataSource: MailboxDataSource?
     let connectionStatusProvider = InternetConnectionStatusProvider.shared
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
@@ -161,7 +170,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         if viewModel.reloadTable() {
             resetTableView()
         }
-        self.updateLastUpdateTimeLabel()
+        self.updateTheUpdateTimeLabel()
         self.updateUnreadButton(count: viewModel.unreadCount)
 
         refetchAllIfNeeded()
@@ -208,6 +217,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         }
 
         configureUnreadFilterButton()
+        configureSelectAllButton()
 
         self.addSubViews()
         if [Message.Location.spam,
@@ -218,8 +228,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             unreadMessageFilterButtonTapped(unreadFilterButton as Any)
         }
 
-        self.viewModel.setupFetchController(self,
-                                            isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
+        self.loadDiffableDataSource()
+        self.viewModel.setupFetchController(self, isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
 
         self.setNavigationTitleText(viewModel.localizedNavigationTitle)
 
@@ -227,9 +237,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         self.tableView.separatorStyle = .none
         self.tableView.register(NewMailboxMessageCell.self, forCellReuseIdentifier: NewMailboxMessageCell.defaultID())
-        self.tableView.RegisterCell(MailBoxSkeletonLoadingCell.Constant.identifier)
-
-        self.loadDiffableDataSource()
+        self.tableView.registerCell(MailBoxSkeletonLoadingCell.Constant.identifier)
 
         self.updateNavigationController(viewModel.listEditing)
 
@@ -248,7 +256,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         self.topActionsView.layer.zPosition = tableView.layer.zPosition + 1
 
         self.updateUnreadButton(count: viewModel.unreadCount)
-        self.updateLastUpdateTimeLabel()
+        self.updateTheUpdateTimeLabel()
 
         self.viewModel.cleanReviewItems()
         generateAccessibilityIdentifiers()
@@ -348,19 +356,14 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         showDropVersionsAlertIfNeeded()
         updateReferralPresenterAndShowPromptIfNeeded()
 
-        viewModel.prefetchIfNeeded()
+        DispatchQueue.global().async { [weak self] in
+            self?.viewModel.prefetchIfNeeded()
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         inAppFeedbackScheduler?.cancelScheduledPrompt()
-    }
-
-    @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
-        // Somehow unreadFilterButton can't reflect font size change automatically
-        // reset font again when user preferred font size changed
-        unreadFilterButton.titleLabel?.font = .preferredFont(for: .footnote, weight: .semibold)
     }
 
     @objc
@@ -411,18 +414,21 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
     private func loadDiffableDataSource() {
         let cellConfigurator = { [weak self] (tableView: UITableView, indexPath: IndexPath, rowItem: MailboxRow) -> UITableViewCell in
-            let cellIdentifier = self?.shouldAnimateSkeletonLoading == true ? MailBoxSkeletonLoadingCell.Constant.identifier : NewMailboxMessageCell.defaultID()
+            let cellIdentifier: String
+            switch rowItem {
+            case .real(_):
+                cellIdentifier = NewMailboxMessageCell.defaultID()
+            case .skeleton(_):
+                cellIdentifier = MailBoxSkeletonLoadingCell.Constant.identifier
+            }
             let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
             self?.configure(cell: cell, rowItem: rowItem)
             return cell
         }
 
-        self.diffableDataSource = MailboxDiffableDataSource(
-            viewModel: viewModel,
-            tableView: self.tableView,
-            shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading,
-            cellProvider: cellConfigurator
-        )
+        viewModel.setupDiffableDataSource(
+            tableView: tableView,
+            cellConfigurator: cellConfigurator)
     }
 
     private func addSubViews() {
@@ -602,6 +608,13 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         self.present(action, animated: true, completion: nil)
     }
 
+    @objc
+    private func preferredContentSizeChanged(_ notification: Notification) {
+        // Somehow unreadFilterButton can't reflect font size change automatically
+        // reset font again when user preferred font size changed
+        unreadFilterButton.titleLabel?.font = .preferredFont(for: .footnote, weight: .semibold)
+    }
+
     func isAllowedEmptyFolder() -> Bool {
         guard self.viewModel.isTrashOrSpam else { return false }
         guard self.hasNetworking else {
@@ -659,6 +672,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                     self?.tableView.isScrollEnabled = false
                     self?.tableView.setContentOffset(.zero, animated: false)
                     self?.tableView.isScrollEnabled = true
+                    self?.updateLastUpdateTimeLabel()
                 }
             }
         self.viewModel.isCurrentUserSelectedUnreadFilterInInbox = isSelected
@@ -667,16 +681,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     }
 
     // MARK: - Private methods
-
-    private func hideSelectionMode() {
-        self.hideCheckOptions()
-        self.updateNavigationController(false)
-        if viewModel.eventsService.status != .running {
-            self.startAutoFetch(false)
-        }
-        self.hideActionBar()
-        self.dismissActionSheet()
-    }
 
     private func handleViewModeIsChanged() {
         // Cancel selected items
@@ -890,15 +894,17 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                 if self?.refreshControl.isRefreshing ?? false {
                     self?.refreshControl.endRefreshing()
                 }
+                self?.updateLastUpdateTimeLabel()
             }
         }
     }
 
     private func forceRefreshAllMessages() {
         guard !self.viewModel.isFetchingMessage else { return }
-        self.shouldAnimateSkeletonLoading = true
         self.shouldKeepSkeletonUntilManualDismissal = true
-        self.reloadTableViewDataSource(animate: false)
+
+        shouldAnimateSkeletonLoading = true
+
         stopAutoFetch()
 
         self.viewModel.updateMailbox(showUnreadOnly: self.isShowingUnreadMessageOnly, isCleanFetch: true) {  [weak self] error in
@@ -909,12 +915,12 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             delay(0.5) {
                 self?.shouldAnimateSkeletonLoading = false
                 self?.shouldKeepSkeletonUntilManualDismissal = false
-                self?.reloadTableViewDataSource(animate: false)
 
                 if self?.refreshControl.isRefreshing ?? false {
                     self?.refreshControl.endRefreshing()
                 }
                 self?.showNoResultLabelIfNeeded()
+                self?.updateLastUpdateTimeLabel()
             }
             self?.startAutoFetch(false)
         }
@@ -1094,33 +1100,6 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
         }
     }
 
-    private func hideCheckOptions() {
-        guard viewModel.listEditing else { return }
-        viewModel.listEditing = false
-        tableView.reloadData()
-    }
-
-    private func enterListEditingMode(indexPath: IndexPath) {
-        self.viewModel.listEditing = true
-
-        guard let visibleRowsIndexPaths = self.tableView.indexPathsForVisibleRows else { return }
-        visibleRowsIndexPaths.forEach { visibleRowIndexPath in
-            let visibleCell = self.tableView.cellForRow(at: visibleRowIndexPath)
-            guard let messageCell = visibleCell as? NewMailboxMessageCell else { return }
-            messageCellPresenter.presentSelectionStyle(style: .selection(isSelected: false), in: messageCell.customView)
-            guard indexPath == visibleRowIndexPath else { return }
-            tableView(tableView, didSelectRowAt: indexPath)
-        }
-    }
-
-    private func showCheckOptions(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
-        let point: CGPoint = longPressGestureRecognizer.location(in: self.tableView)
-        let indexPath: IndexPath? = self.tableView.indexPathForRow(at: point)
-        guard let touchedRowIndexPath = indexPath,
-              longPressGestureRecognizer.state == .began && viewModel.listEditing == false else { return }
-        enterListEditingMode(indexPath: touchedRowIndexPath)
-    }
-
     private func updateNavigationController(_ editingMode: Bool) {
         self.setupLeftButtons(editingMode)
         self.setupNavigationTitle(showSelected: editingMode)
@@ -1144,12 +1123,17 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             return
         }
 
-        let timeText = self.viewModel.getLastUpdateTimeText()
-        updateTimeLabel.set(text: timeText,
-                            preferredFont: .footnote,
-                            weight: .regular,
-                            textColor: ColorProvider.TextHint)
-	}
+        if !viewModel.isFetchingMessage {
+            // last update time only updated when all requests for messages have finished
+            let timeText = viewModel.getLastUpdateTimeText()
+            updateTimeLabel.set(
+                text: timeText,
+                preferredFont: .footnote,
+                weight: .regular,
+                textColor: ColorProvider.TextHint
+            )
+        }
+    }
 
     private func configureBannerContainer() {
         let bannerContainer = UIView(frame: .zero)
@@ -1254,6 +1238,102 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             return
         }
         tableView.reloadData()
+    }
+}
+
+// MARK: - Selection mode
+extension MailboxViewController {
+    private func enterListEditingMode(indexPath: IndexPath) {
+        self.viewModel.listEditing = true
+        updateTopBarItemDisplay()
+
+        guard let visibleRowsIndexPaths = self.tableView.indexPathsForVisibleRows else { return }
+        visibleRowsIndexPaths.forEach { visibleRowIndexPath in
+            let visibleCell = self.tableView.cellForRow(at: visibleRowIndexPath)
+            guard let messageCell = visibleCell as? NewMailboxMessageCell else { return }
+            messageCellPresenter.presentSelectionStyle(style: .selection(isSelected: false), in: messageCell.customView)
+            guard indexPath == visibleRowIndexPath else { return }
+            tableView(tableView, didSelectRowAt: indexPath)
+        }
+    }
+
+    private func hideSelectionMode() {
+        self.hideCheckOptions()
+        self.updateNavigationController(false)
+        if viewModel.eventsService.status != .running {
+            self.startAutoFetch(false)
+        }
+        self.hideActionBar()
+        self.dismissActionSheet()
+    }
+
+    private func hideCheckOptions() {
+        guard viewModel.listEditing else { return }
+        viewModel.listEditing = false
+        updateTopBarItemDisplay()
+        tableView.reloadData()
+    }
+
+    private func showCheckOptions(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        let point: CGPoint = longPressGestureRecognizer.location(in: self.tableView)
+        let indexPath: IndexPath? = self.tableView.indexPathForRow(at: point)
+        guard let touchedRowIndexPath = indexPath,
+              longPressGestureRecognizer.state == .began && viewModel.listEditing == false else { return }
+        enterListEditingMode(indexPath: touchedRowIndexPath)
+    }
+
+    private func updateTopBarItemDisplay() {
+        guard UserInfo.enableSelectAll else { return }
+        updateTimeLabel.isHidden = viewModel.listEditing
+        unreadFilterButton.isHidden = viewModel.listEditing
+        selectAllButton.isHidden = !viewModel.listEditing
+    }
+
+    @objc
+    private func tapSelectAllButton(gesture: UITapGestureRecognizer) {
+        let state = gesture.state
+        switch state {
+        case .began, .changed:
+            selectAllButton.backgroundColor = ColorProvider.BackgroundSecondary
+        case .ended:
+            selectAllButton.backgroundColor = .clear
+            selectAllMessages()
+        default:
+            break
+        }
+    }
+
+    private func selectAllMessages() {
+        let indexPaths = Array(0..<viewModel.rowCount(section: 0))
+            .map { IndexPath(row: $0, section: 0) }
+        let loadedIDs = indexPaths
+            .compactMap { index -> String? in
+                switch viewModel.locationViewMode {
+                case .singleMessage:
+                    guard let item = viewModel.item(index: index) else { return nil }
+                    return item.messageID.rawValue
+                case .conversation:
+                    guard let item = viewModel.itemOfConversation(index: index) else { return nil }
+                    return item.conversationID.rawValue
+                }
+            }
+        loadedIDs.forEach(viewModel.select(id:))
+
+        hapticFeedbackGenerator.impactOccurred()
+
+        // update checkbox state
+        for indexPath in indexPaths {
+            guard let cell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell else { continue }
+            messageCellPresenter.presentSelectionStyle(
+                style: .selection(isSelected: true),
+                in: cell.customView
+            )
+        }
+
+        setupNavigationTitle(showSelected: true)
+        PMBanner.dismissAll(on: self)
+        refreshActionBarItems()
+        showActionBar()
     }
 }
 
@@ -2102,82 +2182,54 @@ extension MailboxViewController: UITableViewDataSource {
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
+        let remappedSnapshot = remapToNewSnapshot(controller: controller, snapshot: snapshot)
         if shouldKeepSkeletonUntilManualDismissal {
+            viewModel.diffableDataSource?.cacheSnapshot(remappedSnapshot)
             return
         }
-
         if isSwipingCell {
+            viewModel.diffableDataSource?.cacheSnapshot(remappedSnapshot)
             contentChangeOccurredDuringLastSwipeGesture = true
             return
         }
-
-        self.refreshActionBarItems()
-
-            self.reloadTableViewDataSource(animate: false)
-        if self.refreshControl.isRefreshing {
-            self.refreshControl.endRefreshing()
-        }
-        self.showNewMessageCount(self.newMessageCount)
-        self.showNoResultLabelIfNeeded()
-    }
-
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        if shouldKeepSkeletonUntilManualDismissal {
-            return
-        }
-
-        if type == .delete {
-            popPresentedItemIfNeeded(anObject)
-            hideActionBarIfNeeded(anObject)
+        reloadTableViewDataSource(
+            animate: false,
+            snapshot: remappedSnapshot
+        )
+        DispatchQueue.main.async {
+            self.refreshActionBarItems()
+            self.showNewMessageCount(self.newMessageCount)
+            self.showNoResultLabelIfNeeded()
         }
     }
-}
 
-// MARK: - Popping Handling
-extension MailboxViewController {
-    private func popPresentedItemIfNeeded(_ anObject: Any) {
-        /*
-         When the unread filter is enable and we enter message or conversation detail view,
-         the message or conversation will be set to read.
-         This action results in the message or conversation will be removed from the list.
-         And will trigger the detail view to be popped.
-         */
-        guard !unreadFilterButton.isSelected else {
-            return
-        }
-        if navigationController?.topViewController is ConversationViewController
-            || navigationController?.topViewController is SingleMessageViewController {
-            if let contextLabel = anObject as? ContextLabel {
-                if coordinator?.conversationCoordinator?.conversation.conversationID.rawValue == contextLabel.conversationID {
-                    navigationController?.popViewController(animated: true)
+    private func remapToNewSnapshot(controller: NSFetchedResultsController<NSFetchRequestResult>, snapshot: NSDiffableDataSourceSnapshotReference) -> NSDiffableDataSourceSnapshot<Int, MailboxRow> {
+        let viewMode = viewModel.locationViewMode
+        let snapshot = snapshot as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
+        var newSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxRow>()
+        for (index, section) in snapshot.sectionIdentifiers.enumerated() {
+            let items = snapshot.itemIdentifiers(inSection: section)
+            let mailboxRows = items.compactMap { objectID in
+                let object = controller.managedObjectContext.object(with: objectID)
+                switch viewMode {
+                case .singleMessage:
+                    if let message = object as? Message {
+                        return MailboxRow.real(.message(.init(message)))
+                    }
+                case .conversation:
+                    if let contextLabel = object as? ContextLabel,
+                       let conversation = contextLabel.conversation {
+                        return MailboxRow.real(.conversation(.init(conversation)))
+                    }
                 }
+                return nil
             }
-            if let message = anObject as? Message {
-                if coordinator?.singleMessageCoordinator?.message.messageID == MessageID(message.messageID) {
-                    navigationController?.popViewController(animated: true)
-                }
-            }
-        }
-    }
 
-    private func hideActionBarIfNeeded(_ anObject: Any) {
-        guard let _ = navigationController?.topViewController as? MailboxViewController else {
-            return
+            newSnapshot.appendSections([index])
+            newSnapshot.appendItems(mailboxRows, toSection: index)
         }
-        var id: String = ""
-        if let contextLabel = anObject as? ContextLabel {
-            id = contextLabel.conversationID
-        } else if let message = anObject as? Message {
-            id = message.messageID
-        }
-        guard viewModel.selectedIDs.contains(id) else { return }
-        viewModel.removeSelected(id: id)
-        self.setupNavigationTitle(showSelected: self.viewModel.listEditing)
-        self.dismissActionSheet()
-        if viewModel.selectedIDs.isEmpty {
-            hideActionBar()
-        }
+        return newSnapshot
     }
 }
 
@@ -2265,6 +2317,11 @@ extension MailboxViewController: UITableViewDelegate {
         return !shouldAnimateSkeletonLoading
     }
 
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        hapticFeedbackGenerator.prepare()
+        return indexPath
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch viewModel.locationViewMode {
         case .singleMessage:
@@ -2306,6 +2363,8 @@ extension MailboxViewController: UITableViewDelegate {
         let itemAlreadySelected = viewModel.selectionContains(id: id)
         let selectionAction = itemAlreadySelected ? viewModel.removeSelected : viewModel.select
         selectionAction(id)
+
+        hapticFeedbackGenerator.impactOccurred()
 
         // update checkbox state
         if let mailboxCell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell {
@@ -2367,6 +2426,18 @@ extension MailboxViewController {
         self.unreadFilterButton.imageView?.tintColor = ColorProvider.IconInverted
         self.unreadFilterButton.imageView?.contentMode = .scaleAspectFit
         self.unreadFilterButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
+    }
+
+    private func configureSelectAllButton() {
+        selectAllIcon.tintColor = ColorProvider.IconAccent
+        selectAllIcon.image = IconProvider.checkmark
+        selectAllLabel.set(text: L11n.MailBox.selectAll, preferredFont: .subheadline, textColor: ColorProvider.TextAccent)
+
+        selectAllButton.roundCorner(12)
+        selectAllButton.backgroundColor = .clear
+
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapSelectAllButton))
+        selectAllButton.addGestureRecognizer(tapGesture)
     }
 }
 
@@ -2447,15 +2518,16 @@ extension MailboxViewController {
 
 // MARK: Data Source Refresh
 extension MailboxViewController {
-    private func reloadTableViewDataSource(animate: Bool) {
-        if let diffableDataSource = diffableDataSource {
-            diffableDataSource.reloadSnapshot(shouldAnimateSkeletonLoading: self.shouldAnimateSkeletonLoading,
-                                              animate: animate)
-            // Using diffable data source triggers an issue that make
-            // refresh control dismiss only after a couple of seconds
-            // so we dismiss it manually
-            self.refreshControl.endRefreshing()
-        }
+    private func reloadTableViewDataSource(
+        animate: Bool,
+        snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>? = nil,
+        completion: (() -> Void)? = nil
+    ) {
+        viewModel.diffableDataSource?.reloadSnapshot(
+            snapshot: snapshot,
+            animate: animate,
+            completion: completion
+        )
     }
 }
 
@@ -2655,7 +2727,11 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
         let isInUnreadFilter = unreadFilterButton.isSelected
         let shouldShowUnreadFilter = unread != 0
         unreadFilterButton.backgroundColor = isInUnreadFilter ? ColorProvider.BrandNorm : ColorProvider.BackgroundSecondary
-        unreadFilterButton.isHidden = isInUnreadFilter ? false : unread == 0
+        if viewModel.listEditing {
+            unreadFilterButton.isHidden = true
+        } else {
+            unreadFilterButton.isHidden = isInUnreadFilter ? false : unread == 0
+        }
         customUnreadFilterElement?.isAccessibilityElement = shouldShowUnreadFilter
         let number = unread > 9999 ? " +9999" : "\(unread)"
 

@@ -273,7 +273,11 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
     private func checkForOverlyLongExecutionIfOnMainThread(startTime: Date, caller: StaticString = #function) {
         let elapsedTime = Date().timeIntervalSince(startTime)
         if Thread.isMainThread && elapsedTime > 0.2 {
-            PMAssertionFailure("\(self).\(caller) took too long on the main thread")
+            SystemLogger.log(
+                message: "\(self).\(caller) took too long on the main thread",
+                category: .coreData,
+                isError: true
+            )
         }
     }
 
@@ -350,6 +354,27 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
                 self.mainContext.reset()
             }
         }
+    }
+
+    func createFetchedResultsController<T>(
+        entityName: String,
+        predicate: NSPredicate,
+        sortDescriptors: [NSSortDescriptor],
+        fetchBatchSize: Int,
+        sectionNameKeyPath: String? = nil,
+        onMainContext: Bool
+    ) -> NSFetchedResultsController<T> {
+        let backgroundContext = Self.useNewApproach ? backgroundContext : rootSavingContext
+        let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = sortDescriptors
+        fetchRequest.fetchBatchSize = fetchBatchSize
+        return NSFetchedResultsController(
+            fetchRequest: fetchRequest,
+            managedObjectContext: backgroundContext,
+            sectionNameKeyPath: sectionNameKeyPath,
+            cacheName: nil
+        )
     }
 }
 

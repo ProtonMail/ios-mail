@@ -1,7 +1,7 @@
 // Generated using Sourcery 2.0.2 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
-import ProtonCore_Keymaker
-import ProtonCore_Services
+import ProtonCoreKeymaker
+import ProtonCoreServices
 
 protocol HasAttachmentMetadataStrippingProtocol {
     var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol { get }
@@ -115,18 +115,18 @@ extension UserContainer: HasKeyMakerProtocol {
     }
 }
 
-protocol HasLastUpdatedStore {
-    var lastUpdatedStore: LastUpdatedStore { get }
+protocol HasLastUpdatedStoreProtocol {
+    var lastUpdatedStore: LastUpdatedStoreProtocol { get }
 }
 
-extension GlobalContainer: HasLastUpdatedStore {
-    var lastUpdatedStore: LastUpdatedStore {
+extension GlobalContainer: HasLastUpdatedStoreProtocol {
+    var lastUpdatedStore: LastUpdatedStoreProtocol {
         lastUpdatedStoreFactory()
     }
 }
 
-extension UserContainer: HasLastUpdatedStore {
-    var lastUpdatedStore: LastUpdatedStore {
+extension UserContainer: HasLastUpdatedStoreProtocol {
+    var lastUpdatedStore: LastUpdatedStoreProtocol {
         globalContainer.lastUpdatedStore
     }
 }
@@ -147,6 +147,22 @@ extension UserContainer: HasLockCacheStatus {
     }
 }
 
+protocol HasLockPreventor {
+    var lockPreventor: LockPreventor { get }
+}
+
+extension GlobalContainer: HasLockPreventor {
+    var lockPreventor: LockPreventor {
+        lockPreventorFactory()
+    }
+}
+
+extension UserContainer: HasLockPreventor {
+    var lockPreventor: LockPreventor {
+        globalContainer.lockPreventor
+    }
+}
+
 protocol HasNotificationCenter {
     var notificationCenter: NotificationCenter { get }
 }
@@ -163,6 +179,38 @@ extension UserContainer: HasNotificationCenter {
     }
 }
 
+protocol HasPinCodeProtection {
+    var pinCodeProtection: PinCodeProtection { get }
+}
+
+extension GlobalContainer: HasPinCodeProtection {
+    var pinCodeProtection: PinCodeProtection {
+        pinCodeProtectionFactory()
+    }
+}
+
+extension UserContainer: HasPinCodeProtection {
+    var pinCodeProtection: PinCodeProtection {
+        globalContainer.pinCodeProtection
+    }
+}
+
+protocol HasPinCodeVerifier {
+    var pinCodeVerifier: PinCodeVerifier { get }
+}
+
+extension GlobalContainer: HasPinCodeVerifier {
+    var pinCodeVerifier: PinCodeVerifier {
+        pinCodeVerifierFactory()
+    }
+}
+
+extension UserContainer: HasPinCodeVerifier {
+    var pinCodeVerifier: PinCodeVerifier {
+        globalContainer.pinCodeVerifier
+    }
+}
+
 protocol HasPinFailedCountCache {
     var pinFailedCountCache: PinFailedCountCache { get }
 }
@@ -176,6 +224,22 @@ extension GlobalContainer: HasPinFailedCountCache {
 extension UserContainer: HasPinFailedCountCache {
     var pinFailedCountCache: PinFailedCountCache {
         globalContainer.pinFailedCountCache
+    }
+}
+
+protocol HasPushUpdater {
+    var pushUpdater: PushUpdater { get }
+}
+
+extension GlobalContainer: HasPushUpdater {
+    var pushUpdater: PushUpdater {
+        pushUpdaterFactory()
+    }
+}
+
+extension UserContainer: HasPushUpdater {
+    var pushUpdater: PushUpdater {
+        globalContainer.pushUpdater
     }
 }
 
@@ -366,6 +430,36 @@ protocol HasFetchAttachment {
 extension UserContainer: HasFetchAttachment {
     var fetchAttachment: FetchAttachment {
         fetchAttachmentFactory()
+    }
+}
+
+protocol HasFetchMessageDetail {
+    var fetchMessageDetail: FetchMessageDetail { get }
+}
+
+extension UserContainer: HasFetchMessageDetail {
+    var fetchMessageDetail: FetchMessageDetail {
+        fetchMessageDetailFactory()
+    }
+}
+
+protocol HasFetchMessageMetaData {
+    var fetchMessageMetaData: FetchMessageMetaData { get }
+}
+
+extension UserContainer: HasFetchMessageMetaData {
+    var fetchMessageMetaData: FetchMessageMetaData {
+        fetchMessageMetaDataFactory()
+    }
+}
+
+protocol HasImageProxy {
+    var imageProxy: ImageProxy { get }
+}
+
+extension UserContainer: HasImageProxy {
+    var imageProxy: ImageProxy {
+        imageProxyFactory()
     }
 }
 

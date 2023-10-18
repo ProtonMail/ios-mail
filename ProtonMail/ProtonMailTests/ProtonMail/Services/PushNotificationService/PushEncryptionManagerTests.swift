@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_TestingToolkit
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreTestingToolkit
 import XCTest
 
 final class PushEncryptionManagerTests: XCTestCase {
@@ -84,7 +84,7 @@ final class PushEncryptionManagerTests: XCTestCase {
         prepareMockSessions(num: 1)
 
         sut.registerDeviceForNotifications(deviceToken: dummyDeviceToken)
-        sleepToAllowAsyncTaskToFinish()
+        wait(self.mockKitsSaver.get() != nil, timeout: 5)
 
         // made request
         XCTAssertEqual(mockDeviceRegistration.executeStub.callCounter, 1)
@@ -104,7 +104,7 @@ final class PushEncryptionManagerTests: XCTestCase {
         prepareMockSessions(num: 4)
 
         sut.registerDeviceForNotifications(deviceToken: dummyDeviceToken)
-        sleepToAllowAsyncTaskToFinish()
+        wait(self.mockKitsSaver.get() != nil, timeout: 5)
 
         // made request
         XCTAssertEqual(mockDeviceRegistration.executeStub.callCounter, 1)
@@ -116,7 +116,7 @@ final class PushEncryptionManagerTests: XCTestCase {
         XCTAssertEqual(kitsSaved.first?.publicKey, mockDeviceRegistration.executeStub.lastArguments?.a3)
 
         // token saved
-        let lastTokenRegistered = mockUserDefaults.object(forKey: "pushEncryptionLastRegisteredDeviceToken") as! String
+        let lastTokenRegistered = mockUserDefaults.object(forKey: "pushEncryptionLastRegisteredDeviceToken") as? String
         XCTAssertEqual(lastTokenRegistered, dummyDeviceToken)
     }
 
@@ -125,7 +125,7 @@ final class PushEncryptionManagerTests: XCTestCase {
         prepareOneSessionToFailRegistration(failingSession: sessionsIDs.randomElement()!)
 
         sut.registerDeviceForNotifications(deviceToken: dummyDeviceToken)
-        sleepToAllowAsyncTaskToFinish()
+        wait(self.mockUserDefaults.bool(forKey: "pushEncryptionRetryDeviceTokenRegistration") == true, timeout: 5)
 
         // encryption kit saved
         let kitsSaved = mockKitsSaver.get()!
@@ -146,7 +146,7 @@ final class PushEncryptionManagerTests: XCTestCase {
         prepareAllSessionsToFailRegistration()
 
         sut.registerDeviceForNotifications(deviceToken: "new token")
-        sleepToAllowAsyncTaskToFinish()
+        wait(self.mockDeviceRegistration.executeStub.wasCalled)
 
         // made request
         XCTAssertEqual(mockDeviceRegistration.executeStub.callCounter, 1)
@@ -163,14 +163,13 @@ final class PushEncryptionManagerTests: XCTestCase {
         prepareAllSessionsToFailRegistration()
 
         sut.registerDeviceForNotifications(deviceToken: "new token")
-        sleepToAllowAsyncTaskToFinish()
 
         // made request
-        XCTAssertEqual(mockDeviceRegistration.executeStub.callCounter, 1)
+        wait(self.mockDeviceRegistration.executeStub.callCounter == 1)
         XCTAssertEqual(mockDeviceRegistration.executeStub.lastArguments?.a2, "new token")
 
         // retry flag set
-        XCTAssertTrue(mockUserDefaults.bool(forKey: "pushEncryptionRetryDeviceTokenRegistration"))
+        wait(self.mockUserDefaults.bool(forKey: "pushEncryptionRetryDeviceTokenRegistration"))
     }
 
     func testRegisterDeviceForNotifications_whenMultipleSessions_andAllFail_itShouldNotStoreKeys() {
@@ -180,7 +179,7 @@ final class PushEncryptionManagerTests: XCTestCase {
             sessionsIDs.map{ .init(sessionID: $0, error: .noSessionIdFound(sessionId: sessionsIDs.first!)) }
         }
         sut.registerDeviceForNotifications(deviceToken: dummyDeviceToken)
-        sleepToAllowAsyncTaskToFinish()
+        wait(self.mockKitsSaver.get() != nil, timeout: 5)
 
         XCTAssertEqual(mockKitsSaver.get()?.count, 0)
     }
@@ -190,7 +189,6 @@ final class PushEncryptionManagerTests: XCTestCase {
         setLastUsedDeviceToken(dummyDeviceToken)
 
         sut.registerDeviceForNotifications(deviceToken: dummyDeviceToken)
-        sleepToAllowAsyncTaskToFinish()
 
         XCTAssertEqual(mockDeviceRegistration.executeStub.callCounter, 0)
     }
@@ -201,7 +199,7 @@ final class PushEncryptionManagerTests: XCTestCase {
         mockKitsSaver.set(newValue: [dummyEncryptionKit])
 
         sut.registerDeviceForNotifications(deviceToken: "new token")
-        sleepToAllowAsyncTaskToFinish()
+        wait(self.mockDeviceRegistration.executeStub.lastArguments?.a2 == "new token", timeout: 5)
 
         XCTAssertEqual(mockDeviceRegistration.executeStub.lastArguments?.a2, "new token")
         XCTAssertEqual(mockDeviceRegistration.executeStub.lastArguments?.a3, dummyEncryptionKit.publicKey)
@@ -215,7 +213,7 @@ final class PushEncryptionManagerTests: XCTestCase {
         mockFailedPushProvider.hadPushNotificationDecryptionFailedStub.fixture = true
         
         sut.registerDeviceForNotifications(deviceToken: dummyDeviceToken)
-        sleepToAllowAsyncTaskToFinish()
+        wait(self.mockDeviceRegistration.executeStub.lastArguments?.a2 == self.dummyDeviceToken, timeout: 5)
 
         XCTAssertEqual(mockDeviceRegistration.executeStub.lastArguments?.a2, dummyDeviceToken)
         XCTAssertNotEqual(mockDeviceRegistration.executeStub.lastArguments?.a3, dummyEncryptionKit.publicKey)
@@ -229,7 +227,7 @@ final class PushEncryptionManagerTests: XCTestCase {
         setRetryTokenRegistrationFlag()
 
         sut.registerDeviceForNotifications(deviceToken: dummyDeviceToken)
-        sleepToAllowAsyncTaskToFinish()
+        wait(self.mockDeviceRegistration.executeStub.lastArguments?.a2 == self.dummyDeviceToken, timeout: 5)
 
         XCTAssertEqual(mockDeviceRegistration.executeStub.lastArguments?.a2, dummyDeviceToken)
         XCTAssertEqual(mockDeviceRegistration.executeStub.lastArguments?.a3, dummyEncryptionKit.publicKey)
@@ -245,13 +243,16 @@ final class PushEncryptionManagerTests: XCTestCase {
         let maxKeysStored = PushEncryptionManager.maxNumberOfKitsInCache
         var tokens = (1...maxKeysStored+1).map {"token\($0)"}
         sut.registerDeviceForNotifications(deviceToken: tokens.first!)
-        sleepToAllowAsyncTaskToFinish()
+        wait(self.mockKitsSaver.get() != nil, timeout: 5)
         let firstEncryptionKitUsed = mockKitsSaver.get()!.first!
         tokens.removeFirst(1)
 
         // test
         tokens.forEach(sut.registerDeviceForNotifications(deviceToken:))
-        sleepToAllowAsyncTaskToFinish()
+        wait(
+            self.mockKitsSaver.get()?.contains(where: { $0.privateKey == firstEncryptionKitUsed.privateKey }) == false,
+            timeout: 5
+        )
 
         // expectations
         XCTAssertEqual(mockKitsSaver.get()!.count, maxKeysStored)
@@ -265,7 +266,7 @@ final class PushEncryptionManagerTests: XCTestCase {
         mockKitsSaver.set(newValue: [])
 
         sut.registerDeviceAfterNewAccountSignIn()
-        sleepToAllowAsyncTaskToFinish()
+        wait(self.mockKitsSaver.get() != nil, timeout: 5)
 
         XCTAssertEqual(mockDeviceRegistration.executeStub.callCounter, 0)
         XCTAssertEqual(mockKitsSaver.get()!.count, 0)
@@ -277,7 +278,7 @@ final class PushEncryptionManagerTests: XCTestCase {
         mockKitsSaver.set(newValue: [dummyEncryptionKit])
 
         sut.registerDeviceAfterNewAccountSignIn()
-        sleepToAllowAsyncTaskToFinish()
+        wait(self.mockDeviceRegistration.executeStub.lastArguments?.a2 == self.dummyDeviceToken, timeout: 5)
 
         XCTAssertEqual(mockDeviceRegistration.executeStub.callCounter, 1)
         XCTAssertEqual(mockDeviceRegistration.executeStub.lastArguments?.a2, dummyDeviceToken)
@@ -307,13 +308,6 @@ final class PushEncryptionManagerTests: XCTestCase {
 }
 
 extension PushEncryptionManagerTests {
-
-    /// Reading decryption keys in the real world does not depend on the result of registering a device
-    /// token, push notifications can arrive at any time. For that reason we need to give time to
-    /// finish asynchronous tasks
-    func sleepToAllowAsyncTaskToFinish() {
-        Thread.sleep(forTimeInterval: 0.1)
-    }
 
     private func prepareMockSessions(num: UInt) {
         sessionsIDs = (1...num).map { "session\($0)" }

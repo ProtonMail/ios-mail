@@ -20,8 +20,8 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Doh
-import ProtonCore_Environment
+import ProtonCoreDoh
+import ProtonCoreEnvironment
 
 public final class QuarkCommands {
     private let doh: DoHInterface

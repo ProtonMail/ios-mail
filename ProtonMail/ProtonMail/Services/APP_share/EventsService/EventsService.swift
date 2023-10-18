@@ -23,9 +23,9 @@
 import EllipticCurveKeyPair
 import Foundation
 import Groot
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
 import ProtonMailAnalytics
 
 enum EventsFetchingStatus {
@@ -66,6 +66,17 @@ protocol EventsServiceProtocol: AnyObject {
 }
 
 final class EventsService: Service, EventsFetching {
+    typealias Dependencies = HasCoreDataContextProviderProtocol
+    & HasFeatureFlagCache
+    & HasFetchMessageMetaData
+    & HasIncomingDefaultService
+    & HasLastUpdatedStoreProtocol
+    & HasNotificationCenter
+    & HasQueueManager
+    & HasUserCachedStatus
+    & HasUsersManager
+    & HasNotificationCenter
+
     private static let defaultPollingInterval: TimeInterval = 30
 
     // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
@@ -75,7 +86,6 @@ final class EventsService: Service, EventsFetching {
     private(set) var status: EventsFetchingStatus = .idle
     private var subscribers: [EventsObservation] = []
     private var timer: Timer?
-    private lazy var lastUpdatedStore = ServiceFactory.default.get(by: LastUpdatedStore.self)
     private weak var userManager: UserManager?
     private let dependencies: Dependencies
 
@@ -115,8 +125,7 @@ final class EventsService: Service, EventsFetching {
     }
 
     func call() {
-        if case .running = status,
-           sharedServices.get(by: QueueManager.self).checkQueueStatus() == .idle {
+        if case .running = status, dependencies.queueManager.checkQueueStatus() == .idle {
             subscribers.forEach({ $0?() })
         }
     }
@@ -155,7 +164,7 @@ extension EventsService {
                 return
             }
         
-            let eventID = self.lastUpdatedStore.lastEventID(userID: userManager.userID)
+            let eventID = self.dependencies.lastUpdatedStore.lastEventID(userID: userManager.userID)
             let eventAPI = EventCheckRequest(eventID: eventID)
             userManager.apiService.perform(request: eventAPI, response: EventCheckResponse()) { _, eventsRes in
 
@@ -198,8 +207,8 @@ extension EventsService {
                         self.processEvents(messageCounts: eventsRes.messageCounts)
                         self.processEvents(conversationCounts: eventsRes.conversationCounts)
                         self.processEvents(space: eventsRes.usedSpace)
-                        self.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: eventsRes.eventID)
-                        
+                        self.dependencies.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: eventsRes.eventID)
+
                         let outMessages = messageEvents
                             .map { MessageEvent(event: $0) }
                             .filter { $0.Action == 1 }
@@ -245,7 +254,7 @@ extension EventsService {
     private func isOverTimeThreshold(userID: UserID) -> Bool {
         guard
             dependencies.featureFlagCache.isFeatureFlag(.refetchEventsByTime, enabledForUserWithID: userID),
-            let lastDate = lastUpdatedStore.lastEventUpdateTime(userID: userID)
+            let lastDate = dependencies.lastUpdatedStore.lastEventUpdateTime(userID: userID)
         else { return false }
         let secondDifference = lastDate.distance(to: Date())
         let hourDifference = secondDifference / 3600.0
@@ -276,8 +285,8 @@ extension EventsService {
                 case .failure(let error):
                     completion?(.failure(error))
                 case .success(let responseDict):
-                    self.dependencies.contactCacheStatus.contactsCached = 0
-                    self.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: IDRes.eventID)
+                    self.dependencies.userCachedStatus.contactsCached = 0
+                    self.dependencies.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: IDRes.eventID)
                     completion?(.success(responseDict))
                 }
             }
@@ -323,7 +332,7 @@ extension EventsService {
             static let update_flags = 3
         }
         var error: NSError?
-        dependencies.coreDataProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
+        dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
                 guard let userManager else {
                     return
                 }
@@ -452,7 +461,7 @@ extension EventsService {
         guard let conversationsDict = conversations else {
             return
         }
-                dependencies.coreDataProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
+                dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
                     guard let userManager else {
                         return
                     }
@@ -559,7 +568,7 @@ extension EventsService {
             return
         }
 
-            dependencies.coreDataProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
+            dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
                 guard let userManager else {
                     return
                 }
@@ -615,7 +624,7 @@ extension EventsService {
             return
         }
 
-            dependencies.coreDataProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
+            dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
                 guard let userManager else {
                     return
                 }
@@ -670,36 +679,36 @@ extension EventsService {
         }
 
         if let labels = labels {
-                    dependencies.coreDataProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
-                        guard let userManager else {
-                            return
-                        }
-
-                        for labelEvent in labels {
-                            let label = LabelEvent(event: labelEvent)
-                            switch label.Action {
-                            case .some(IncrementalUpdateType.delete):
-                                if let labelID = label.ID {
-                                    if let dLabel = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
-                                        context.delete(dLabel)
-                                    }
-                                }
-                            case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update):
-                                do {
-                                    if var new_or_update_label = label.label {
-                                        new_or_update_label["UserID"] = userManager.userID.rawValue
-                                        try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: new_or_update_label, in: context)
-                                    }
-                                } catch {
-                                    PMAssertionFailure(error)
-                                }
-                            default:
-                                break
+            dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak userManager] context in
+                guard let userManager else {
+                    return
+                }
+                
+                for labelEvent in labels {
+                    let label = LabelEvent(event: labelEvent)
+                    switch label.Action {
+                    case .some(IncrementalUpdateType.delete):
+                        if let labelID = label.ID {
+                            if let dLabel = Label.labelForLabelID(labelID, inManagedObjectContext: context) {
+                                context.delete(dLabel)
                             }
                         }
-                        _ = context.saveUpstreamIfNeeded()
+                    case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update):
+                        do {
+                            if var new_or_update_label = label.label {
+                                new_or_update_label["UserID"] = userManager.userID.rawValue
+                                try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: new_or_update_label, in: context)
+                            }
+                        } catch {
+                            PMAssertionFailure(error)
+                        }
+                    default:
+                        break
                     }
+                }
+                _ = context.saveUpstreamIfNeeded()
             }
+        }
     }
 
     /// Process User information
@@ -727,7 +736,10 @@ extension EventsService {
     private func processEvents(addresses: [[String: Any]]?){
         assertProperExecution()
 
-        guard let events = addresses else { return }
+        guard
+            let events = addresses,
+            events.isEmpty == false
+        else { return }
         for eventDict in events {
             let event = AddressEvent(event: eventDict)
             switch event.action {
@@ -755,7 +767,9 @@ extension EventsService {
             default:
                 break
             }
+            dependencies.notificationCenter.post(name: .addressesStatusAreChanged, object: nil)
         }
+        dependencies.notificationCenter.post(name: .addressesStatusAreChanged, object: nil)
     }
 
     private func processEvents(incomingDefaults: [[String: Any]]?) {
@@ -828,7 +842,7 @@ extension EventsService {
                 }
                 let isLast = index == counts.count - 1
                 let total = count["Total"] as? Int
-                self.lastUpdatedStore.updateUnreadCount(
+                dependencies.lastUpdatedStore.updateUnreadCount(
                     by: LabelID(labelID),
                     userID: userManager.userID,
                     unread: unread,
@@ -845,7 +859,7 @@ extension EventsService {
               primaryUser.userInfo.userId == userManager.userInfo.userId,
               primaryUser.conversationStateService.viewMode == viewMode else { return }
 
-        let unreadCount: Int = self.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: userManager.userID, type: viewMode)
+        let unreadCount: Int = dependencies.lastUpdatedStore.unreadCount(by: Message.Location.inbox.labelID, userID: userManager.userID, type: viewMode)
         UIApplication.setBadge(badge: max(0, unreadCount))
     }
 
@@ -886,7 +900,7 @@ extension EventsService {
 
     // TODO: moving this to a better place
     private func updateBadgeIfNeeded(unread: Int, labelID: String, type: ViewMode) {
-        let users: UsersManager = sharedServices.get(by: UsersManager.self)
+        let users = dependencies.usersManager
         guard let firstUser = users.firstUser else {
             return
         }

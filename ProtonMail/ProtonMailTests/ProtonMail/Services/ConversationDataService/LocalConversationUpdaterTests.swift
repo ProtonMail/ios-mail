@@ -34,10 +34,11 @@ final class LocalConversationUpdaterTests: XCTestCase {
         msgID = .init(String.randomString(20))
         conversationID = .init(String.randomString(20))
         contextProvider = .init()
-        sut = LocalConversationUpdater(
-            contextProvider: contextProvider,
-            userID: userID.rawValue
-        )
+
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.contextProvider }
+
+        sut = LocalConversationUpdater(userID: userID.rawValue, dependencies: globalContainer)
     }
 
     override func tearDown() {

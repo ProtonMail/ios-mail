@@ -1,4 +1,4 @@
-framework module ProtonCore_TroubleShooting {
+framework module ProtonCoreTroubleShooting {
   umbrella header "ProtonCore-TroubleShooting-umbrella.h"
 
   export *

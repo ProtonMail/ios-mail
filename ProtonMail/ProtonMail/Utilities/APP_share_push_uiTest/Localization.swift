@@ -111,8 +111,6 @@ class LocalizedString {
     lazy var _message_sent_ok_desc          = NSLocalizedString("Message sent", comment: "Description after message have been sent")
     /// "Sent Failed"
     lazy var _message_sent_failed_desc      = NSLocalizedString("Sent Failed", comment: "Description")
-    /// "Email failed to send. Message saved as draft."
-    lazy var _email_failed_to_send = NSLocalizedString("Email failed to send. Message saved as draft.", comment: "Description")
 
     lazy var _folder_no_message = NSLocalizedString("Nothing to see here", comment: "The title will be shown when foler doesnt have emails")
     lazy var _folder_is_empty = NSLocalizedString("This folder is empty", comment: "The subtitle will be shown when folder doesnt have emails")
@@ -177,8 +175,6 @@ class LocalizedString {
     lazy var _composer_send_no_subject_desc = NSLocalizedString("Send message without subject?", comment: "Description")
     /// "You need at least one recipient to send"
     lazy var _composer_no_recipient_error = NSLocalizedString("You need at least one recipient to send", comment: "Description")
-    /// "Change sender address to…"
-    lazy var _composer_change_sender_address_to = NSLocalizedString("Change sender address to…", comment: "Title")
     /// "Upgrade to a paid plan to send from your %@ address"
     lazy var _composer_change_paid_plan_sender_error = NSLocalizedString("Upgrade to a paid plan to send from your %@ address", comment: "Error")
     /// "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@"
@@ -521,9 +517,6 @@ class LocalizedString {
     /// "Confirm new mailbox password"
     lazy var _confirm_new_mailbox_password = NSLocalizedString("Confirm new mailbox password", comment: "Title")
 
-    /// "Unable to send the email"
-    lazy var unable_to_send_the_email = NSLocalizedString("Unable to send the email", comment: "error when sending the message")
-
     /// "Star"
     lazy var _star_unstar = NSLocalizedString("Star/unstar", comment: "Title")
 
@@ -812,8 +805,6 @@ class LocalizedString {
     lazy var _copy_name       = NSLocalizedString("Copy name", comment: "Title")
     lazy var _general_copy = NSLocalizedString("Copy", comment: "Title")
     lazy var _general_cut = NSLocalizedString("Cut", comment: "Title")
-    /// "Compose to"
-    lazy var _compose_to      = NSLocalizedString("Compose to", comment: "Title")
     /// "Add to contacts"
     lazy var _add_to_contacts = NSLocalizedString("Add to contacts", comment: "Title")
     /// "Sender Verification Failed"
@@ -992,7 +983,6 @@ class LocalizedString {
 
     lazy var _mailbox_draft_is_uploading = NSLocalizedString("Draft is still uploading…", comment: "title of toast message that user taps the message which is uploading")
     lazy var _mailbox_draft_is_sending = NSLocalizedString("Sending message…", comment: "content of the sending mesage that will display this text on the date label")
-    lazy var _messages_validation_failed_try_again = NSLocalizedString("Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted.", comment: "message shown in the notification when the recipient validation is failed while sending")
 
     lazy var _unread_action = NSLocalizedString("unread", comment: "The unread title of unread action button in mailbox view")
 
@@ -1032,18 +1022,6 @@ class LocalizedString {
     lazy var _settings_footer_of_combined_contact = NSLocalizedString("Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts.", comment: "The footer of combined contact in settings")
     lazy var _settings_title_of_combined_contact = NSLocalizedString("Combined contacts", comment: "The title of combined contact in settings")
 
-    lazy var _pin_code_setup1_title = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
-    lazy var _pin_code_setup1_textfield_title = NSLocalizedString("Enter new PIN code", comment: "The title of textfield of PIN code setup1")
-    lazy var _pin_code_setup1_textfield_assistiveText = NSLocalizedString("Enter a PIN code with min 4 characters and max 21 characters.", comment: "The assistive text of textfield of PIN code setup1")
-    lazy var _pin_code_setup1_textfield_pin_too_short = NSLocalizedString("PIN is too short", comment: "The error message of entering a short pin")
-    lazy var _pin_code_setup1_textfield_pin_too_long = NSLocalizedString("PIN is too long", comment: "The error message of entering a long pin")
-
-    lazy var _pin_code_setup1_button_title = NSLocalizedString("Continue", comment: "The title of button of PIN code setup1")
-
-    lazy var _pin_code_setup2_title = NSLocalizedString("Repeat PIN code", comment: "The title of PIN code setup2 view ")
-    lazy var _pin_code_setup2_textfield_title = NSLocalizedString("Repeat PIN code", comment: "The title of textfield of PIN code setup2")
-    lazy var _pin_code_setup2_textfield_invalid_password = NSLocalizedString("The PIN codes must match!", comment: "The error message of entering an invalid password")
-
     lazy var _settings_alternative_routing_footer = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@", comment: "The footer of alternative routing setting")
     lazy var _settings_alternative_routing_title = NSLocalizedString("Networking", comment: "The title of alternative routing settings")
     lazy var _settings_alternative_routing_learn = NSLocalizedString("Learn more", comment: "The title of learn more link")
@@ -1051,7 +1029,6 @@ class LocalizedString {
     lazy var _settings_On_title = NSLocalizedString("On", comment: "The title of On setting options")
     lazy var _settings_Off_title = NSLocalizedString("Off", comment: "The title of Off setting options")
 
-    lazy var _settings_change_pin_code_title = NSLocalizedString("Change PIN code", comment: "The title of change PIN code option in security settings")
     lazy var _settings_detail_re_auth_alert_title = NSLocalizedString("Re-authenticate", comment: "The title of re auth alert")
     lazy var _settings_detail_re_auth_alert_content = NSLocalizedString("Enter your password to make changes", comment: "The content of the re auth alert")
     // MARK: - Banners
@@ -1411,6 +1388,7 @@ enum L11n {
         static let reply_in_conversation = NSLocalizedString("Reply (to last message)", comment: "The action title in the action sheet of the reply action in conversation view.")
         static let forward_in_conversation = NSLocalizedString("Forward (last message)", comment: "The action title in the action sheet of the forward action in conversation view.")
         static let replyAll_in_conversation = NSLocalizedString("Reply all (to last message)", comment: "The action title in the action sheet of the reply action in conversation view.")
+        static let newMessage = NSLocalizedString("New message", comment: "The action title in the action sheet of the composing new message")
 	}
 
     struct Toolbar {
@@ -1443,9 +1421,6 @@ enum L11n {
         static let enableAlertTitle = NSLocalizedString("Delete messages?", comment: "Title of the alert to confirm enabling of the auto delete option")
         static let enableAlertMessage = NSLocalizedString("This will delete all messages that are in trash or spam for more than 30 days, including messages currently in these folders.", comment: "Message of the alert to confirm enabling of the auto delete option")
         static let enableAlertButton = NSLocalizedString("Enable", comment: "Button to enable auto delete")
-        static let disableAlertTitle = NSLocalizedString("Disable auto-delete?", comment: "Title of the alert to confirm disabling of the auto delete option")
-        static let disableAlertMessage = NSLocalizedString("Emails scheduled for deletion will remain in the trash and spam folders.", comment: "Message of the alert to confirm disabling of the auto delete option")
-        static let disableAlertButton = NSLocalizedString("Disable", comment: "Button to disable auto delete")
     }
 
     struct AutoDeleteBanners {
@@ -1472,6 +1447,11 @@ enum L11n {
         static let upgradeButtonTitle = NSLocalizedString("Upgrade now", comment: "Title of button to upgrade to a paid plan")
     }
 
+    struct Compose {
+        static let senderChanged = NSLocalizedString("Sender changed", comment: "Alert title, shows when current sender address in the composer is invalid anymore.")
+        static let senderChangedMessage = NSLocalizedString("The original sender of this message is no longer valid. Your message will be sent from your default address %@.", comment: "Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address.")
+    }
+
     struct ContactEdit {
         static let displayNamePlaceholder = NSLocalizedString("Display name", comment: "The placeholder for the display name text field in contact edit view.")
         static let firstNamePlaceholder = NSLocalizedString("First name", comment: "The placeholder for the first name text field in contact edit view.")
@@ -1480,6 +1460,23 @@ enum L11n {
         static let contactNameTooLong = NSLocalizedString("Contact name is too long", comment: "The error message that is shown when display name is too long provided in contact edit view")
         static let addPhoto = NSLocalizedString("Add photo", comment: "The button text for add profile picture in contact edit view")
         static let editPhoto = NSLocalizedString("Edit photo", comment: "The button text for edit profile picture in contact edit view")
+    }
+
+    struct MailBox {
+        static let selectAll = NSLocalizedString("Select all", comment: "The title of select all button for select all messages feature")
+    }
+
+    struct PinCodeSetup {
+        static let disablePinCode = NSLocalizedString("Disable PIN code", comment: "The title of PIN code disable view ")
+        static let setPinCode = NSLocalizedString("Set PIN code", comment: "The title of PIN code setup1 view ")
+        static let repeatPinCode = NSLocalizedString("Repeat PIN code", comment: "The title of PIN code setup2 view ")
+        static let enterNewPinCode = NSLocalizedString("Enter new PIN code", comment: "The title of textfield of PIN code setup1")
+        static let enterNewPinCodeAssistiveText = NSLocalizedString("Enter a PIN code with min 4 characters and max 21 characters.", comment: "The assistive text of textfield of PIN code setup1")
+        static let pinTooShortError = NSLocalizedString("PIN is too short", comment: "The error message of entering a short pin")
+        static let pinTooLongError = NSLocalizedString("PIN is too long", comment: "The error message of entering a long pin")
+        static let pinMustMatch = NSLocalizedString("The PIN codes must match!", comment: "The error message of entering an invalid password")
+        static let enterOldPinCode = NSLocalizedString("Please enter old pin code ", comment: "The textField title when user trying to update its pin code setting")
+        static let changePinCode = NSLocalizedString("Change PIN code", comment: "The title of change PIN code option in security settings")
     }
 
     struct Unsubscribe {

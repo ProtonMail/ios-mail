@@ -20,9 +20,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_DataModel
-import ProtonCore_Services
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreServices
+import ProtonCoreUIFoundations
 import SkeletonView
 import TrustKit
 import UIKit
@@ -170,6 +170,11 @@ class NewMessageBodyViewController: UIViewController {
             existingWebView.stopLoading()
         } else {
             self.webView = PMWebView(frame: .zero, configuration: config)
+            #if DEBUG
+            if #available(iOS 16.4, *) {
+                self.webView?.isInspectable = true
+            }
+            #endif
             guard let webView = self.webView else {
                 return
             }

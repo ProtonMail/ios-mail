@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import XCTest
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 @testable import ProtonMail
 
 final class UserInfoOrganizationRoleTests: XCTestCase {
@@ -35,6 +35,7 @@ final class UserInfoOrganizationRoleTests: XCTestCase {
                        linkConfirmation: nil,
                        credit: nil,
                        currency: nil,
+                       createTime: nil,
                        subscribed: nil)
     }
 

@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 enum ContactGroupEditViewCellState {
@@ -63,6 +63,7 @@ class ContactGroupEditViewCell: UITableViewCell, AccessibleCell {
         super.awakeFromNib()
         contentView.backgroundColor = ColorProvider.BackgroundNorm
         shortNameLabel.layer.cornerRadius = shortNameLabel.frame.size.width / 2
+        shortNameLabel.clipsToBounds = true
     }
 
     @IBAction func deleteButtonTapped(_ sender: UIButton) {

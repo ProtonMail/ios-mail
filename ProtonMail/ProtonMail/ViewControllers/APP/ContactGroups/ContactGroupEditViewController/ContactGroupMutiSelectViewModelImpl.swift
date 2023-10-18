@@ -187,7 +187,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         self.fetchContacts()
     }
     
-    func setFetchResultController() { }
+    func setupDataSource() { }
 
     func set(uiDelegate: ContactGroupsUIProtocol) { }
     

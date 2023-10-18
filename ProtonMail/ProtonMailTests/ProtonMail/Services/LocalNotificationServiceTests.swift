@@ -24,16 +24,20 @@ class LocalNotificationServiceTests: XCTestCase {
     var notificationHandlerMock: MockNotificationHandler!
     var userID: UserID = "sdifosnvdnoids"
 
+    private var messageID: MessageID!
+
     override func setUp() {
         super.setUp()
         notificationHandlerMock = MockNotificationHandler()
         sut = LocalNotificationService(userID: self.userID, notificationHandler: self.notificationHandlerMock)
+        messageID = .init(.randomString(20))
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
         notificationHandlerMock = nil
+        messageID = nil
     }
 
     func testShowSessionRevokeNotification() throws {
@@ -49,7 +53,7 @@ class LocalNotificationServiceTests: XCTestCase {
     }
 
     func testScheduleMessageSendingFailedNotification() throws {
-        let detail = LocalNotificationService.MessageSendingDetails(messageID: String.randomString(20), subtitle: String.randomString(20))
+        let detail = LocalNotificationService.MessageSendingDetails(messageID: messageID, subtitle: String.randomString(20))
         sut.scheduleMessageSendingFailedNotification(detail)
 
         XCTAssertTrue(notificationHandlerMock.callAdd.wasCalledExactlyOnce)
@@ -59,7 +63,7 @@ class LocalNotificationServiceTests: XCTestCase {
         XCTAssertEqual(content.subtitle, detail.subtitle)
         XCTAssertEqual(content.body, detail.error)
         XCTAssertEqual(content.categoryIdentifier, LocalNotificationService.Categories.failedToSend.rawValue)
-        XCTAssertEqual(content.userInfo["message_id"] as? String, detail.messageID)
+        XCTAssertEqual(content.userInfo["message_id"] as? String, detail.messageID.rawValue)
         XCTAssertEqual(content.userInfo["category"] as? String, LocalNotificationService.Categories.failedToSend.rawValue)
         XCTAssertEqual(content.userInfo["localNotification"] as? Bool, true)
 
@@ -69,13 +73,13 @@ class LocalNotificationServiceTests: XCTestCase {
     }
 
     func testUnscheduleMessageSendingFailedNotification() throws {
-        let detail = LocalNotificationService.MessageSendingDetails(messageID: String.randomString(20), subtitle: String.randomString(20))
+        let detail = LocalNotificationService.MessageSendingDetails(messageID: messageID, subtitle: String.randomString(20))
         sut.unscheduleMessageSendingFailedNotification(detail)
 
         XCTAssertTrue(notificationHandlerMock.callRemovePendingNoti.wasCalledExactlyOnce)
 
         let argument = try XCTUnwrap(notificationHandlerMock.callRemovePendingNoti.lastArguments)
-        XCTAssertEqual(argument.a1, [detail.messageID])
+        XCTAssertEqual(argument.a1, [detail.messageID.rawValue])
     }
 
     func testCleanUp() {

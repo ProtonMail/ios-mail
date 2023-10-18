@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 @testable import ProtonMail
 import XCTest
 
@@ -122,7 +122,7 @@ final class UnlockManagerTests: XCTestCase {
     func testMatch_pinIsMatch_returnTrue() {
         let e = expectation(description: "Closure is called")
         pinFailedCountCacheMock.pinFailedCountStub.fixture = 0
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
             XCTAssertTrue(strategy is PinProtection)
             completion([])
         }
@@ -139,7 +139,7 @@ final class UnlockManagerTests: XCTestCase {
     func testMatch_pinIsNotMatch_returnFalse() {
         let e = expectation(description: "Closure is called")
         pinFailedCountCacheMock.pinFailedCountStub.fixture = 0
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
             XCTAssertTrue(strategy is PinProtection)
             completion(nil)
         }
@@ -158,7 +158,7 @@ final class UnlockManagerTests: XCTestCase {
         LAContextMock.canEvaluatePolicyStub.bodyIs { _, _, _ in
             return true
         }
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
             XCTAssertTrue(strategy is BioProtection)
             completion([])
         }
@@ -176,7 +176,7 @@ final class UnlockManagerTests: XCTestCase {
         LAContextMock.canEvaluatePolicyStub.bodyIs { _, _, _ in
             return true
         }
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
             XCTAssertTrue(strategy is BioProtection)
             completion(nil)
         }
@@ -292,11 +292,6 @@ final class UnlockManagerTests: XCTestCase {
 
     func testUnlockIfRemberedCredentials_MainKeyExist_UserIsStored_mailboxPWDStored_TouchIDEnabled_unlockIsCalled() {
         let e = expectation(description: "Closure is called")
-        let notiExpectation = expectation(
-            forNotification: .didUnlock,
-            object: nil,
-            notificationCenter: notificationCenter
-        )
         keyMakerMock.mainKeyExistsStub.bodyIs { _ in
             return true
         }
@@ -323,11 +318,6 @@ final class UnlockManagerTests: XCTestCase {
 
     func testUnlockIfRemberedCredentials_MainKeyExist_UserIsStored_mailboxPWDStored_PinEnabled_unlockIsCalled() {
         let e = expectation(description: "Closure is called")
-        let notiExpectation = expectation(
-            forNotification: .didUnlock,
-            object: nil,
-            notificationCenter: notificationCenter
-        )
         keyMakerMock.mainKeyExistsStub.bodyIs { _ in
             return true
         }
@@ -393,7 +383,7 @@ final class UnlockManagerTests: XCTestCase {
         LAContextMock.canEvaluatePolicyStub.bodyIs { _, _, _ in
             return true
         }
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
             XCTAssertTrue(strategy is BioProtection)
             completion([])
         }
@@ -422,7 +412,7 @@ final class UnlockManagerTests: XCTestCase {
         LAContextMock.canEvaluatePolicyStub.bodyIs { _, _, _ in
             return true
         }
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
             XCTAssertTrue(strategy is BioProtection)
             completion([])
         }

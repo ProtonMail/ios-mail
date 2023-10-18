@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import ProtonCore_DataModel
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -31,13 +31,18 @@ final class ComposeViewModelTests: XCTestCase {
     private var contactProvider: MockContactProvider!
     private var dependencies: ComposeViewModel.Dependencies!
     private var attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock!
+    private var notificationCenter: NotificationCenter!
     private let userID: UserID = .init(String.randomString(20))
+    private var mockUIDelegate: MockComposeUIProtocol!
+    private var mockUserCacheStatusProvider: MockUserCachedStatusProvider!
 
     override func setUp() {
         super.setUp()
 
         self.mockCoreDataService = MockCoreDataContextProvider()
         self.apiMock = APIServiceMock()
+        self.notificationCenter = NotificationCenter()
+        self.mockUIDelegate = MockComposeUIProtocol()
 
         testContext = MockCoreDataStore.testPersistentContainer.viewContext
         fakeUserManager = mockUserManager()
@@ -50,6 +55,7 @@ final class ComposeViewModelTests: XCTestCase {
         }
 
         attachmentMetadataStrippingCache = .init()
+        mockUserCacheStatusProvider = .init()
         let helperDependencies = ComposerMessageHelper.Dependencies(
             messageDataService: fakeUserManager.messageService,
             cacheService: fakeUserManager.cacheService,
@@ -71,7 +77,8 @@ final class ComposeViewModelTests: XCTestCase {
             )),
             darkModeCache: MockDarkModeCacheProtocol(),
             attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
-            userCachedStatusProvider: MockUserCachedStatusProvider()
+            userCachedStatusProvider: mockUserCacheStatusProvider,
+            notificationCenter: notificationCenter
         )
 
         self.message = testContext.performAndWait {
@@ -91,6 +98,8 @@ final class ComposeViewModelTests: XCTestCase {
         self.apiMock = nil
         self.message = nil
         self.testContext = nil
+        self.notificationCenter = nil
+        self.mockUIDelegate = nil
         FileManager.default.cleanTemporaryDirectory()
 
         super.tearDown()
@@ -143,6 +152,89 @@ final class ComposeViewModelTests: XCTestCase {
         XCTAssertEqual(lists.count, addresses.count)
         XCTAssertEqual(lists, addresses)
     }
+    
+    func testInitializeAddress_whenReply_theOriginalToAddressIsInvalid_shouldUseDefaultAddress() {
+        var addresses = generateAddress(number: 2)
+        let invalidAddress = updateAddressStatus(address: addresses[0], status: .disabled)
+        addresses[0] = invalidAddress
+        fakeUserManager.userInfo.set(addresses: addresses)
+        let aliasAddress = aliasAddress(from: addresses[0])
+        
+        message = mockCoreDataService.mainContext.performAndWait {
+            let original = Message(context: self.mockCoreDataService.mainContext)
+            original.messageID = UUID().uuidString
+            original.parsedHeaders = "{\"X-Original-To\": \"\(aliasAddress.email)\"}"
+
+            let repliedMessage = Message(context: self.mockCoreDataService.mainContext)
+            repliedMessage.orginalMessageID = original.messageID
+            return repliedMessage
+        }
+
+        sut = ComposeViewModel(
+            msg: MessageEntity(message),
+            action: .reply,
+            dependencies: dependencies
+        )
+        XCTAssertEqual(sut.currentSenderAddress(), fakeUserManager.addresses.defaultAddress())
+    }
+    
+    func testInitializeAddress_whenReply_theOriginalToAddressIsValid_shouldUseIt() {
+        let addresses = generateAddress(number: 2)
+        fakeUserManager.userInfo.set(addresses: addresses)
+        let aliasAddress = aliasAddress(from: addresses[0])
+        
+        message = mockCoreDataService.mainContext.performAndWait {
+            let original = Message(context: self.mockCoreDataService.mainContext)
+            original.messageID = UUID().uuidString
+            original.parsedHeaders = "{\"X-Original-To\": \"\(aliasAddress.email)\"}"
+
+            let repliedMessage = Message(context: self.mockCoreDataService.mainContext)
+            repliedMessage.orginalMessageID = original.messageID
+            return repliedMessage
+        }
+
+        sut = ComposeViewModel(
+            msg: MessageEntity(message),
+            action: .reply,
+            dependencies: dependencies
+        )
+        wait(self.sut.currentSenderAddress() == aliasAddress, timeout: 5)
+    }
+    
+    func testAddressesStatusChanged_theCurrentAddressIsInvalid_shouldChangeToDefaultOne() {
+        var addresses = generateAddress(number: 2)
+        fakeUserManager.userInfo.set(addresses: addresses)
+        let aliasAddress = aliasAddress(from: addresses[0])
+        
+        message = mockCoreDataService.mainContext.performAndWait {
+            let original = Message(context: self.mockCoreDataService.mainContext)
+            original.messageID = UUID().uuidString
+            original.parsedHeaders = "{\"X-Original-To\": \"\(aliasAddress.email)\"}"
+
+            let repliedMessage = Message(context: self.mockCoreDataService.mainContext)
+            repliedMessage.orginalMessageID = original.messageID
+            return repliedMessage
+        }
+
+        sut = ComposeViewModel(
+            msg: MessageEntity(message),
+            action: .reply,
+            dependencies: dependencies
+        )
+        sut.uiDelegate = mockUIDelegate
+        wait(self.sut.currentSenderAddress() == aliasAddress, timeout: 5)
+        
+        let invalidAddress = updateAddressStatus(address: addresses[0], status: .disabled)
+        addresses[0] = invalidAddress
+        fakeUserManager.userInfo.set(addresses: addresses)
+        let ex = expectation(description: "Change event is called")
+        mockUIDelegate.changeInvalidSenderAddressStub.bodyIs { _, newAddress  in
+            XCTAssertEqual(newAddress, addresses[1])
+            ex.fulfill()
+        }
+        notificationCenter.post(name: .addressesStatusAreChanged, object: nil)
+        wait(for: [ex], timeout: 5)
+    }
 
     // MARK: isEmptyDraft tests
 
@@ -164,6 +256,48 @@ final class ComposeViewModelTests: XCTestCase {
         sut.initialize(message: .init(message), action: .openDraft)
 
         XCTAssertTrue(sut.isEmptyDraft())
+    }
+
+    func testIsEmptyDraft_whenBodyHasNoTextOrImages_itShouldReturnTrue() {
+        message.body = "<div><br></div><div><br></div></body>"
+        sut.initialize(message: .init(message), action: .openDraft)
+
+        XCTAssertTrue(sut.isEmptyDraft())
+    }
+
+    func testIsEmptyDraft_whenBodyOnlyHasText_itShouldReturnFalse() {
+        message.body =
+        """
+        <body>
+        <div>
+         <br>
+        </div>
+        <div dir="auto">
+         Hey there
+        </div>
+        </body>
+        """
+        sut.initialize(message: .init(message), action: .openDraft)
+
+        XCTAssertFalse(sut.isEmptyDraft())
+    }
+
+    func testIsEmptyDraft_whenBodyOnlyHasImages_itShouldReturnFalse() {
+        message.body =
+        """
+        <body>
+        <div>
+         <br>
+        </div>
+        <div dir="auto">
+         <br>
+         <img src-original-pm-cid="cid:b5480987_image.jpeg" src="cid:b5480987_image.jpeg">
+        </div>
+        </body>
+        """
+        sut.initialize(message: .init(message), action: .openDraft)
+
+        XCTAssertFalse(sut.isEmptyDraft())
     }
 
     func testDecodingRecipients_prefersMatchingLocalContactName() throws {
@@ -230,6 +364,132 @@ final class ComposeViewModelTests: XCTestCase {
         let urlToLoad = try XCTUnwrap(imageUrl)
         XCTAssertFalse(urlToLoad.hasGPSData())
     }
+
+    func testInit_whenReplyAll_shouldRespectReplyToField() throws {
+        self.message = testContext.performAndWait {
+            let message = Message(context: testContext)
+            message.replyTos = "[{\"Address\":\"tester@pm.test\",\"Name\":\"abc\",\"BimiSelector\":null,\"IsProton\":0,\"DisplaySenderImage\":0,\"IsSimpleLogin\":0}]"
+            message.toList = #"""
+[
+    {
+        "Address": "tester@pm.test",
+        "Name": "tester"
+    },
+    {
+        "Address": "tester002@pm.test",
+        "Name": "tester002"
+    },
+    {
+        "Address": "tester003@pm.test",
+        "Name": "tester003"
+    }
+]
+"""#
+            message.ccList = #"""
+[
+    {
+        "Address": "ccTester@pm.test",
+        "Name": "ccTester"
+    },
+    {
+        "Address": "ccTester002@pm.test",
+        "Name": "ccTester002"
+    }
+]
+"""#
+            return message
+        }
+
+        sut = ComposeViewModel(
+            msg: .init(message),
+            action: .replyAll,
+            dependencies: dependencies
+        )
+        sut.collectDraft("", body: "", expir: 0, pwd: "", pwdHit: "")
+        let draft = try XCTUnwrap(sut.composerMessageHelper.draft)
+        
+        let toList = sut.toContacts(draft.recipientList)
+        XCTAssertEqual(toList.count, 1)
+        XCTAssertEqual(toList.first?.displayEmail, "tester@pm.test")
+        
+        let ccList = sut.toContacts(draft.ccList)
+        XCTAssertEqual(ccList.count, 4)
+        let mails = ccList.compactMap(\.displayEmail)
+        XCTAssertEqual(mails, ["tester002@pm.test", "tester003@pm.test", "ccTester@pm.test", "ccTester002@pm.test"])
+        
+        let bccList = sut.toContacts(draft.bccList)
+        XCTAssertEqual(bccList.count, 0)
+    }
+
+	func testFetchContacts_newEmailAdded_contactsWillHaveNewlyAddedEmail() throws {
+        sut.fetchContacts()
+        XCTAssertTrue(sut.contacts.isEmpty)
+        let name = String.randomString(20)
+        let address = "\(String.randomString(20))@pm.me"
+
+        _ = try mockCoreDataService.write { context in
+            let email = Email(context: context)
+            email.userID = self.sut.user.userID.rawValue
+            email.name = name
+            email.email = address
+            email.contactID = String.randomString(20)
+            email.emailID = String.randomString(20)
+            let OtherUserEmail = Email(context: context)
+            OtherUserEmail.userID = String.randomString(20)
+            OtherUserEmail.name = String.randomString(20)
+            OtherUserEmail.email = String.randomString(20)
+            OtherUserEmail.contactID = String.randomString(20)
+            OtherUserEmail.emailID = String.randomString(20)
+        }
+
+        wait(!self.sut.contacts.isEmpty)
+
+        let newEmail = try XCTUnwrap(sut.contacts.first)
+        XCTAssertEqual(newEmail.displayName, name)
+        XCTAssertEqual(newEmail.displayEmail, address)
+    }
+
+    func testFetchContacts_newEmailAdded_withContactCombine_contactsWillHaveAllNewlyAddedEmail() throws {
+        mockUserCacheStatusProvider.isCombineContactOnStub.fixture = true
+        sut = ComposeViewModel(
+            msg: .init(message),
+            action: .openDraft,
+            dependencies: dependencies
+        )
+        sut.fetchContacts()
+        XCTAssertTrue(sut.contacts.isEmpty)
+        let name = String.randomString(20)
+        let address = "\(String.randomString(20))@pm.me"
+        let name2 = String.randomString(20)
+        let address2 = "\(String.randomString(20))@pm.me"
+
+        _ = try mockCoreDataService.write { context in
+            let email = Email(context: context)
+            email.userID = self.sut.user.userID.rawValue
+            email.name = name
+            email.email = address
+            email.contactID = String.randomString(20)
+            email.emailID = String.randomString(20)
+            let OtherUserEmail = Email(context: context)
+            OtherUserEmail.userID = String.randomString(20)
+            OtherUserEmail.name = name2
+            OtherUserEmail.email = address2
+            OtherUserEmail.contactID = String.randomString(20)
+            OtherUserEmail.emailID = String.randomString(20)
+        }
+
+        wait(!self.sut.contacts.isEmpty)
+
+        XCTAssertEqual(sut.contacts.count, 2)
+
+        let newEmail = try XCTUnwrap(sut.contacts.first(where: { $0.displayName == name } ))
+        XCTAssertEqual(newEmail.displayName, name)
+        XCTAssertEqual(newEmail.displayEmail, address)
+
+        let newEmail2 = try XCTUnwrap(sut.contacts.first(where: { $0.displayName == name2 } ))
+        XCTAssertEqual(newEmail2.displayName, name2)
+        XCTAssertEqual(newEmail2.displayEmail, address2)
+    }
 }
 
 extension ComposeViewModelTests {
@@ -256,7 +516,7 @@ extension ComposeViewModelTests {
 
     func generateAddress(number: Int) -> [Address] {
         let key = Key(keyID: "keyID", privateKey: KeyTestData.privateKey1)
-        let list = (0..<number).map { _ in
+        let list = (0..<number).map { index in
             let id = UUID().uuidString
             let domain = "\(String.randomString(3)).\(String.randomString(3))"
             let userPart = String.randomString(5)
@@ -276,6 +536,43 @@ extension ComposeViewModelTests {
             )
         }
         return list
+    }
+    
+    func updateAddressStatus(address: Address, status: Address.AddressStatus) -> Address {
+        return Address(
+            addressID: address.addressID,
+            domainID: address.domainID,
+            email: address.email,
+            send: address.send,
+            receive: address.receive,
+            status: status,
+            type: address.type,
+            order: address.order,
+            displayName: address.displayName,
+            signature: address.signature,
+            hasKeys: address.hasKeys,
+            keys: address.keys
+        )
+    }
+    
+    func aliasAddress(from address: Address) -> Address {
+        let email = address.email
+        let splits = email.components(separatedBy: "@")
+        let alias = "\(splits[0])+alias@\(splits[1])"
+        return Address(
+            addressID: address.addressID,
+            domainID: address.domainID,
+            email: alias,
+            send: address.send,
+            receive: address.receive,
+            status: address.status,
+            type: address.type,
+            order: address.order,
+            displayName: address.displayName,
+            signature: address.signature,
+            hasKeys: address.hasKeys,
+            keys: address.keys
+        )
     }
 
     private func loadImage(fileName: String) throws -> ConcreteFileData {

@@ -1,0 +1,63 @@
+{
+  "name": "ProtonCore-Subscriptions",
+  "module_name": "ProtonCoreSubscriptions",
+  "version": "12.0.0",
+  "summary": "shared frameworks",
+  "description": "ios shared frameworks for all client apps",
+  "homepage": "https://github.com/ProtonMail",
+  "license": {
+    "type": "GPLv3",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me",
+    "magohamote": "cedric.rolland@proton.ch",
+    "siejkowski": "krzysztof.siejkowski@proton.ch",
+    "vjalencas": "victor.jalencas@proton.ch"
+  },
+  "source": {
+    "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
+    "tag": "12.0.0"
+  },
+  "platforms": {
+    "ios": "14.0",
+    "osx": "11.0"
+  },
+  "swift_versions": [
+    "5.6"
+  ],
+  "pod_target_xcconfig": {
+    "APPLICATION_EXTENSION_API_ONLY": "NO"
+  },
+  "dependencies": {
+    "SDWebImage": [
+      "~> 5.0"
+    ],
+    "ProtonCore-FeatureSwitch": [
+      "12.0.0"
+    ]
+  },
+  "source_files": [
+    "libraries/Subscriptions/Sources/**/*.swift",
+    "libraries/Subscriptions/Sources/*.swift"
+  ],
+  "default_subspecs": [
+
+  ],
+  "testspecs": [
+    {
+      "name": "Tests",
+      "test_type": "unit",
+      "dependencies": {
+        "ProtonCore-FeatureSwitch": [
+          "12.0.0"
+        ],
+        "ProtonCore-TestingToolkit/UnitTests/FeatureSwitch": [
+          "12.0.0"
+        ]
+      },
+      "source_files": "libraries/Subscriptions/Tests/UnitTests/**/*.swift"
+    }
+  ],
+  "swift_version": "5.6"
+}

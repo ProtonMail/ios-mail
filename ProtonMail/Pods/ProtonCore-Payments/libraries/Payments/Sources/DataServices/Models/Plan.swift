@@ -36,7 +36,7 @@ public struct Plan: Codable, Equatable {
     // amount is ignored
     public let name: String
     public var hashedName: String { name.sha256 }
-    public let iD: String?
+    public let ID: String?
     public let maxAddresses: Int
     public let maxMembers: Int
     // max tier is ignored
@@ -73,13 +73,13 @@ public struct Plan: Codable, Equatable {
     public let state: Int?
 
     public static var empty: Plan {
-        Plan(name: "", iD: nil, maxAddresses: 0, maxMembers: 0, pricing: nil,
+        Plan(name: "", ID: nil, maxAddresses: 0, maxMembers: 0, pricing: nil,
              defaultPricing: nil, vendors: nil, offer: nil, maxDomains: 0, maxSpace: 0, maxRewardsSpace: nil,
              type: 0, title: "", maxVPN: 0, maxTier: 0, features: 0, maxCalendars: nil, state: nil, cycle: nil)
     }
 
     public init(name: String,
-                iD: String?,
+                ID: String?,
                 maxAddresses: Int,
                 maxMembers: Int,
                 pricing: [String: Int]?,
@@ -98,7 +98,7 @@ public struct Plan: Codable, Equatable {
                 state: Int?,
                 cycle: Int?) {
         self.name = name
-        self.iD = iD
+        self.ID = ID
         self.maxAddresses = maxAddresses
         self.maxMembers = maxMembers
         self.pricing = pricing
@@ -125,7 +125,7 @@ public extension Plan {
     func defaultPricing(for period: String?) -> Int? { period.flatMap { defaultPricing?[$0] } }
     
     func updating(cycle: Int?) -> Plan {
-        Plan(name: name, iD: iD, maxAddresses: maxAddresses, maxMembers: maxMembers,
+        Plan(name: name, ID: ID, maxAddresses: maxAddresses, maxMembers: maxMembers,
              pricing: pricing, defaultPricing: defaultPricing, vendors: vendors, offer: offer,
              maxDomains: maxDomains, maxSpace: maxSpace, maxRewardsSpace: maxRewardsSpace, type: type,
              title: title, maxVPN: maxVPN, maxTier: maxTier,
@@ -133,7 +133,7 @@ public extension Plan {
     }
     
     func updating(vendors: Vendors?) -> Plan {
-        Plan(name: name, iD: iD, maxAddresses: maxAddresses, maxMembers: maxMembers,
+        Plan(name: name, ID: ID, maxAddresses: maxAddresses, maxMembers: maxMembers,
              pricing: pricing, defaultPricing: defaultPricing, vendors: vendors, offer: offer,
              maxDomains: maxDomains, maxSpace: maxSpace, maxRewardsSpace: maxRewardsSpace, type: type,
              title: title, maxVPN: maxVPN, maxTier: maxTier,
@@ -184,7 +184,7 @@ public extension Plan {
 
         return Plan(
             name: plansForNames.map(\.name).joined(separator: " + "),
-            iD: plansForNames.first?.iD,
+            ID: plansForNames.first?.ID,
             maxAddresses: combinedValue(planDetails, \.maxAddresses),
             maxMembers: combinedValue(planDetails, \.maxMembers),
             pricing: droppingPrice ? nil : primaryPlan?.pricing,

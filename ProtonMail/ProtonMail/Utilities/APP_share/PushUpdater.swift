@@ -71,7 +71,7 @@ struct PushUpdater {
     init(
         notificationCenter: NotificationCenterProtocol = UNUserNotificationCenter.current(),
         application: UIApplicationBadgeProtocol = UIApplicationBadge(),
-        userStatus: UserSessionProvider = sharedServices.userCachedStatus
+        userStatus: UserSessionProvider
     ) {
         self.notificationCenter = notificationCenter
         self.application = application

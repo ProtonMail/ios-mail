@@ -22,10 +22,10 @@
 
 import UIKit
 import MBProgressHUD
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
-import ProtonCore_PaymentsUI
-import ProtonCore_Foundations
+import ProtonCoreNetworking
+import ProtonCoreUIFoundations
+import ProtonCorePaymentsUI
+import ProtonCoreFoundations
 
 class SettingDetailViewController: UIViewController, AccessibleView {
     typealias Dependencies = HasPaymentsUIFactory

@@ -1,6 +1,7 @@
 {
   "name": "ProtonCore-PaymentsUI",
-  "version": "9.3.0",
+  "module_name": "ProtonCorePaymentsUI",
+  "version": "12.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,10 +17,11 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "9.3.0"
+    "tag": "12.0.0"
   },
   "platforms": {
-    "ios": "14.0"
+    "ios": "14.0",
+    "osx": "11.0"
   },
   "swift_versions": [
     "5.6"
@@ -27,34 +29,41 @@
   "pod_target_xcconfig": {
     "APPLICATION_EXTENSION_API_ONLY": "NO"
   },
-  "frameworks": "UIKit",
+  "ios": {
+    "frameworks": "UIKit",
+    "resource_bundles": {
+      "Resources-PaymentsUI": "libraries/PaymentsUI/Resources/**/*.{xib,storyboard}",
+      "Translations-PaymentsUI": [
+        "libraries/PaymentsUI/Sources/Resources/Translations/*"
+      ]
+    }
+  },
+  "osx": {
+    "frameworks": "AppKit",
+    "resource_bundles": {
+      "Translations-PaymentsUI": [
+        "libraries/PaymentsUI/Sources/Resources/Translations/*"
+      ]
+    }
+  },
   "dependencies": {
     "ProtonCore-Log": [
-      "9.3.0"
-    ],
-    "ProtonCore-CoreTranslation": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Foundations": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-UIFoundations": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Observability": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Payments": [
-      "9.3.0"
+      "12.0.0"
     ]
   },
   "source_files": "libraries/PaymentsUI/Sources/**/*.swift",
-  "resource_bundles": {
-    "Resources-PaymentsUI": [
-      "libraries/PaymentsUI/Sources/**/*.xib",
-      "libraries/PaymentsUI/Sources/PaymentsUI.storyboard"
-    ]
-  },
   "default_subspecs": [
 
   ],
@@ -69,17 +78,20 @@
         "ProtonCore-Payments": [
 
         ],
+        "ProtonCore-Subscriptions": [
+
+        ],
         "ProtonCore-ObfuscatedConstants": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "9.3.0"
+          "12.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Payments": [
-          "9.3.0"
+          "12.0.0"
         ]
       },
-      "source_files": "libraries/PaymentsUI/Tests/**/*.swift"
+      "source_files": "libraries/PaymentsUI/Tests/UnitTests/**/*.swift"
     }
   ],
   "swift_version": "5.6"

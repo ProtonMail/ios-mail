@@ -20,11 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreAPIClient
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 public protocol AuthenticatorInterface {
     func authenticate(idpEmail: String, responseToken: SSOResponseToken, completion: @escaping Authenticator.Completion)

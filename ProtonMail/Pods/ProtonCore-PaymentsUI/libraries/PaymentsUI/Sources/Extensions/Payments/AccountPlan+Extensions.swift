@@ -1,6 +1,6 @@
 //
 //  AccountPlan+Extensions.swift
-//  ProtonCore_PaymentsUI - Created on 01/06/2021.
+//  ProtonCorePaymentsUI - Created on 01/06/2021.
 //
 //  Copyright (c) 2022 Proton Technologies AG
 //
@@ -19,15 +19,17 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_Payments
+import ProtonCorePayments
 
 extension InAppPurchasePlan {
     func planPrice(from storeKitManager: StoreKitManagerProtocol) -> String? {
         guard let storeKitProductId = storeKitProductId,
               let price = storeKitManager.priceLabelForProduct(storeKitProductId: storeKitProductId)
         else { return nil }
-        return InAppPurchasePlan.formatPlanPrice(price: price.0, locale: price.1)
+        return PriceFormatter.formatPlanPrice(price: price.0.doubleValue, locale: price.1)
     }
     
     func planLocale(from storeKitManager: StoreKitManagerProtocol) -> Locale? {
@@ -36,14 +38,6 @@ extension InAppPurchasePlan {
         else { return nil }
         return price.1
     }
-    
-    static func formatPlanPrice(price: NSDecimalNumber, locale: Locale, maximumFractionDigits: Int = 2) -> String? {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = locale
-        formatter.maximumFractionDigits = maximumFractionDigits
-        let total = price as Decimal
-        let priceString = formatter.string(from: total as NSNumber) ?? ""
-        return priceString
-    }
 }
+
+#endif

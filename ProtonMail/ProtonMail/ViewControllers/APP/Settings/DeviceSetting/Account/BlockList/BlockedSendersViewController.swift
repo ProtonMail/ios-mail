@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import LifetimeTracker
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 final class BlockedSendersViewController: ProtonMailTableViewController {
     private let viewModel: BlockedSendersViewModelProtocol

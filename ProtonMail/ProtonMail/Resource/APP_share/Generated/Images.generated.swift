@@ -17,7 +17,6 @@
 internal enum Asset {
   internal static let icMinusCircleFilled = ImageAsset(name: "ic-minus-circle-filled")
   internal static let composeScheduleStar = ImageAsset(name: "compose_schedule_star")
-  internal static let esIcon = ImageAsset(name: "es-icon")
   internal static let launchScreenBackground = ColorAsset(name: "LaunchScreenBackground")
   internal static let launchScreenMailLogo = ImageAsset(name: "LaunchScreenMailLogo")
   internal static let mailAttachmentDoc = ImageAsset(name: "mail_attachment-doc")

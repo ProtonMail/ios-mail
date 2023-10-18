@@ -22,7 +22,7 @@
 import Foundation
 import Network
 import TrustKit
-import ProtonCore_Doh
+import ProtonCoreDoh
 
 public final class TrustKitWrapper {
     

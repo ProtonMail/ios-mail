@@ -1,8 +1,6 @@
 .DS_Store
 xcuserdata
 ProtonMail/DerivedData
-ProtonMail/Certificates.p12
-ProtonMail/*.mobileprovision
 ProtonMail/fastlane/report.xml
 test_output
 .vscode/*
@@ -12,11 +10,16 @@ builds
 outputs
 env-vars
 ProtonMail/Brewfile.lock.json
+bundler-cache
 
 # ignored because of XcodeGen
 ProtonMail/Pods/Pods.xcodeproj/project.pbxproj
 ProtonMail/ProtonMail.xcodeproj
-ProtonMail/ProtonMail.xcworkspace
 
-bundler-cache
-ProtonMail/ProtonMail/Supporting Files/Settings.bundle/Acknowledgements*
+# Add Package.resolved to git only
+ProtonMail/ProtonMail.xcworkspace/*
+!ProtonMail/ProtonMail.xcworkspace/xcshareddata
+ProtonMail/ProtonMail.xcworkspace/xcshareddata/*
+!ProtonMail/ProtonMail.xcworkspace/xcshareddata/swiftpm
+ProtonMail/ProtonMail.xcworkspace/xcshareddata/swiftpm/*
+!ProtonMail/ProtonMail.xcworkspace/xcshareddata/swiftpm/Package.resolved

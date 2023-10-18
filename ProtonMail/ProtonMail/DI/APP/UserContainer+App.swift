@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
-import ProtonCore_Payments
+import ProtonCorePayments
 
 extension UserContainer {
     var appRatingServiceFactory: Factory<AppRatingService> {
@@ -49,6 +49,22 @@ extension UserContainer {
         }
     }
 
+    var cleanUserLocalMessagesFactory: Factory<CleanUserLocalMessages> {
+        self {
+            CleanUserLocalMessages(
+                contactCacheStatus: self.userCachedStatus,
+                fetchInboxMessages: FetchMessages(
+                    dependencies: .init(
+                        messageDataService: self.messageService,
+                        cacheService: self.cacheService,
+                        eventsService: self.eventsService
+                    )
+                ),
+                dependencies: self
+            )
+        }
+    }
+
     var reportServiceFactory: Factory<BugReportService> {
         self {
             BugReportService(api: self.apiService)
@@ -69,31 +85,13 @@ extension UserContainer {
                     senderImageService: .init(
                         dependencies: .init(
                             apiService: self.user.apiService,
-                            internetStatusProvider: self.internetConnectionStatusProvider
+                            internetStatusProvider: self.internetConnectionStatusProvider, 
+                            imageCache: self.senderImageCache
                         )
                     ),
                     mailSettings: self.user.mailSettings
                 )
             )
-        }
-    }
-
-    var fetchMessageDetailFactory: Factory<FetchMessageDetail> {
-        self {
-            FetchMessageDetail(
-                dependencies: .init(
-                    queueManager: self.queueManager,
-                    apiService: self.user.apiService,
-                    contextProvider: self.contextProvider,
-                    cacheService: self.user.cacheService
-                )
-            )
-        }
-    }
-
-    var imageProxyFactory: Factory<ImageProxy> {
-        self {
-            ImageProxy(dependencies: .init(apiService: self.user.apiService))
         }
     }
 

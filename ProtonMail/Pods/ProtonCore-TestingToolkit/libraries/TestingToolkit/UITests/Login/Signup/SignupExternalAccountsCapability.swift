@@ -21,10 +21,11 @@
 
 // swiftlint:disable function_parameter_count
 
+#if canImport(fusion)
+
 import Foundation
 import XCTest
 import fusion
-import ProtonCore_CoreTranslation
 
 public class SignupExternalAccountsCapability {
     public init() {}
@@ -70,3 +71,5 @@ public class SignupExternalAccountsCapability {
             .nextButtonTap(robot: retRobot)
     }
 }
+
+#endif

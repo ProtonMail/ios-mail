@@ -20,10 +20,17 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#if canImport(ProtonCoreTroubleShootingResourcesiOS)
+import ProtonCoreTroubleShootingResourcesiOS
+#endif
 import Foundation
 
 public final class TSCommon {
     public static var bundle: Bundle {
+        #if canImport(ProtonCoreTroubleShootingResourcesiOS)
+        return spmResourcesBundle
+        #else
         return Bundle(path: Bundle(for: TSCommon.self).path(forResource: "Resources-TroubleShooting", ofType: "bundle")!)!
+        #endif
     }
 }

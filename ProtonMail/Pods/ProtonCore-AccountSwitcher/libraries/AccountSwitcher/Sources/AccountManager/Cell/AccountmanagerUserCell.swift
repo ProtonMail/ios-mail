@@ -22,10 +22,9 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
-import ProtonCore_Utilities
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
+import ProtonCoreUtilities
 
 protocol AccountmanagerUserCellDelegate: AnyObject {
     /// Show more option action sheet, only call this function before iOS 14
@@ -101,7 +100,11 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
         name.font = .adjustedFont(forTextStyle: .subheadline)
         mail.font = .adjustedFont(forTextStyle: .footnote)
         shortNameLabel.font = .adjustedFont(forTextStyle: .footnote, fontSize: 14)
-        shortNameLabel.adjustsFontSizeToFitWidth = true
+
+        [shortNameLabel, name, mail].forEach { label in
+            label?.adjustsFontForContentSizeCategory = true
+            label?.adjustsFontSizeToFitWidth = true
+        }
     }
 
     func config(userID: String, name: String,
@@ -128,19 +131,19 @@ final class AccountmanagerUserCell: UITableViewCell, AccessibleCell {
     private func configMoreButton(isSignin: Bool) {
         // todo i18n
 
-        let signOut = UIAction(title: CoreString._as_signout,
+        let signOut = UIAction(title: ASTranslation.signout.l10n,
                                image: IconProvider.arrowOutFromRectangle) { [weak self] _ in
             guard let self = self else { return }
             self.delegate?.prepareSignOut(for: self.userID)
         }
 
-        let signIn = UIAction(title: CoreString._ls_screen_title,
+        let signIn = UIAction(title: ASTranslation.sign_in_screen_title.l10n,
                               image: IconProvider.arrowOutFromRectangle) { [weak self] _ in
             guard let self = self else { return }
             self.delegate?.prepareSignIn(for: self.userID)
         }
 
-        let remove = UIAction(title: CoreString._as_remove_account_from_this_device,
+        let remove = UIAction(title: ASTranslation.remove_account_from_this_device.l10n,
                               image: IconProvider.minusCircle,
                               attributes: .destructive) { [weak self] _ in
             guard let self = self else { return }

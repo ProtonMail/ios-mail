@@ -11,6 +11,6 @@
 #endif
 
 
-FOUNDATION_EXPORT double ProtonCore_HumanVerificationVersionNumber;
-FOUNDATION_EXPORT const unsigned char ProtonCore_HumanVerificationVersionString[];
+FOUNDATION_EXPORT double ProtonCoreHumanVerificationVersionNumber;
+FOUNDATION_EXPORT const unsigned char ProtonCoreHumanVerificationVersionString[];
 

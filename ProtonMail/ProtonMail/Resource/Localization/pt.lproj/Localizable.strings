@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Erro ao enviar";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "O e-mail não foi enviado. Mensagem guardada como rascunho.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Não há nada para ver aqui";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Precisa de pelo menos um destinatário para enviar";
-
-/* Title */
-"Change sender address to…" = "Alterar o endereço para…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Subscreva um plano pago para poder enviar do seu endereço %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Confirmar a nova palavra-passe da caixa de correio";
 
-/* error when sending the message */
-"Unable to send the email" = "Não é possível enviar o e-mail.";
-
 /* Title */
 "Star/unstar" = "Adicionar/Remover estrela";
 
@@ -924,7 +915,7 @@
 "Retry" = "Repetir";
 
 /* reply time template, e.g. On Fri, Jul 23, 2021 at 3:40 PM. E, M...yyyy is date formate */
-"'On' E, MMM d, yyyy 'at' %@" = "A E d de MMM de yyyy, %@";
+"'On' E, MMM d, yyyy 'at' %@" = "A E, d de MMM, yyyy às %@";
 
 /* No comment provided by engineer. */
 "Message expired" = "A mensagem expirou";
@@ -994,9 +985,6 @@
 
 /* Title */
 "Cut" = "Cortar";
-
-/* Title */
-"Compose to" = "Compor para";
 
 /* Title */
 "Add to contacts" = "Adicionar aos contactos";
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "A enviar a mensagem…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "A mensagem não pôde ser enviada. Pelo menos um endereço/domínio do destinatário não existe ou está mal formatado.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "não lido";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Ative esta funcionalidade para auto completar os endereços de e-mail utilizando os contactos de todas as suas contas em que está com sessão iniciada.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Definir código PIN";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Inserir novo código PIN";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Introduza um código PIN com no mínimo 4 carateres e no máximo 21.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "O código PIN é demasiado curto.";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "O código PIN é demasiado longo.";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Repetir o código PIN";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "Os códigos PIN devem ser iguais!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Caso as páginas do Proton estejam bloqueadas, esta definição permite à aplicação tentar redirecionar o tráfego para ligar ao Proton, o que pode ser útil para contornar firewalls ou problemas de rede. Recomendamos que mantenha esta definição para maior confiança. %1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Desligado";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Alterar o código PIN";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Re-autenticar";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Pode agora escolher e reordenar as acções nesta barra";
 
 /* Button to block a sender */
-"Block sender" = "Bloquear o remetente";
+"Block messages from this sender" = "Bloquear mensagens deste remetente";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Bloquear";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Responder a todos (última mensagem)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nova mensagem";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Personalizar";
 
@@ -1997,7 +1961,7 @@
 "Bug Report Place Holder" = "---Para nos ajudar a ajudá-lo, forneça o máximo de detalhes possível---\n\nResumo:\n\nO problema ocorreu mais de uma vez: sim/não\nPassos para reproduzir o problema:\nResultado esperado:\nResultado real:\nComentários:";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Include logs";
+"Include logs" = "Incluir registos";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Tente um termo de pesquisa diferente.";
@@ -2022,15 +1986,6 @@
 
 /* Button to enable encrypted search */
 "Enable" = "Ativar";
-
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Desativar a eliminação automática?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Os e-mails programados para eliminação permanecerão no lixo e na pasta de spam.";
-
-/* Button to disable auto delete */
-"Disable" = "Desativar";
 
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Actualize para eliminar automaticamente as mensagens que se encontram no lixo ou no spam há mais de 30 dias.";
@@ -2062,20 +2017,26 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Domínios de e-mail personalizados";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Sender changed";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "The original sender of this message is no longer valid. Your message will be sent from your default address %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Nome exibido";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Primeiro nome";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Último nome";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "Campo de nome exibido não pode estar vazio";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "O nome do contacto é demasiado longo.";
 
 /* The button text for add profile picture */
 "Add photo" = "Adicionar fotografia";
@@ -2083,11 +2044,41 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Editar fotografia";
 
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Definir código PIN";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Repetir o código PIN";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Inserir novo código PIN";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Introduza um código PIN com no mínimo 4 carateres e no máximo 21.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "O código PIN é demasiado curto.";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "O código PIN é demasiado longo.";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "Os códigos PIN devem ser iguais!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Please enter old pin code ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Alterar o código PIN";
+
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Cancelar a inscrição nesta lista de correio";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Cancelar subscrição?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Isto irá cancelar a sua subscrição da lista de emails. O remetente será notificado para não enviar mais emails para este endereço.";

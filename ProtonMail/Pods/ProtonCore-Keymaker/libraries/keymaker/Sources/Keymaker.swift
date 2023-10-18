@@ -20,7 +20,6 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import EllipticCurveKeyPair
 
 #if canImport(UIKit)
 import UIKit
@@ -31,6 +30,12 @@ public enum Constants {
     public static let errorObtainingMainKey: NSNotification.Name = .init("Keymaker" + ".errorObtainingMainKey")
     public static let obtainedMainKey: NSNotification.Name = .init("Keymaker" + ".obtainedMainKey")
     public static let requestMainKey: NSNotification.Name = .init("Keymaker" + ".requestMainKey")
+}
+
+public extension Keymaker {
+    enum Errors: Error {
+        case cypherBitsIsNil
+    }
 }
 
 public typealias MainKey = [UInt8]
@@ -55,6 +60,10 @@ public class Keymaker: NSObject {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+
+    public var isMainKeyInMemory: Bool {
+        _mainKey != nil
     }
     
     // stored in-memory value
@@ -232,6 +241,7 @@ public class Keymaker: NSObject {
     }
     
     public func obtainMainKey(with protector: ProtectionStrategy,
+                              returnExistingKey: Bool,
                               handler: @escaping (MainKey?) -> Void)
     {
         // usually calling a method developers assume to get the callback on the same thread,
@@ -240,7 +250,8 @@ public class Keymaker: NSObject {
         let isMainThread = Thread.current.isMainThread
         
         self.controlThread.addOperation {
-            guard self._mainKey == nil else {
+            if self._mainKey != nil,
+               returnExistingKey {
                 isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
                 return
             }
@@ -262,6 +273,26 @@ public class Keymaker: NSObject {
             
             isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
         }
+    }
+
+    /// Verify the given protection
+    /// - Parameter protector: Protection wants to be validated
+    public func verify(protector: ProtectionStrategy) async throws {
+        return try await withCheckedThrowingContinuation({ continuation in
+            self.controlThread.addOperation {
+                guard let cypherBits = protector.getCypherBits() else {
+                    continuation.resume(throwing: Errors.cypherBitsIsNil)
+                    return
+                }
+
+                do {
+                    _ = try protector.unlock(cypherBits: cypherBits)
+                    continuation.resume(returning: Void())
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        })
     }
     
     // completion says whether protector was activated or not

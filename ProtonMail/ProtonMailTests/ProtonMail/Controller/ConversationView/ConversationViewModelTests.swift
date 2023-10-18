@@ -17,8 +17,8 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCore_DataModel
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreTestingToolkit
 
 class ConversationViewModelTests: XCTestCase {
 
@@ -47,7 +47,7 @@ class ConversationViewModelTests: XCTestCase {
         apiServiceMock.sessionUIDStub.fixture = String.randomString(10)
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
         featureFlagCache = .init()
-        userManagerStub = UserManager(api: apiServiceMock, role: .none)
+        userManagerStub = UserManager(api: apiServiceMock)
         internetStatusProviderMock = .init()
         internetStatusProviderMock.statusStub.fixture = .connectedViaWiFi
         toolbarActionProviderMock = MockToolbarActionProvider()
@@ -808,7 +808,7 @@ class ConversationViewModelTests: XCTestCase {
     private func makeSUT(labelID: LabelID, conversation: Conversation? = nil) {
         let conversation = conversation ?? Conversation(context: contextProviderMock.mainContext)
         let fakeConversation = ConversationEntity(conversation)
-        let fakeUser = UserManager(api: apiServiceMock, role: .none)
+        let fakeUser = UserManager(api: apiServiceMock)
         userManagerStub = fakeUser
 
         let globalContainer = GlobalContainer()
@@ -840,8 +840,7 @@ class ConversationViewModelTests: XCTestCase {
         location: Message.Location = .inbox,
         multipleRecipients: Bool = false
     ) -> ConversationMessageViewModel {
-        let fakeInternetProvider = InternetConnectionStatusProvider(connectionMonitor: MockConnectionMonitor())
-        let fakeUserManager = UserManager(api: APIServiceMock(), role: .none)
+        let fakeUserManager = UserManager(api: APIServiceMock())
         userManagerStub = fakeUserManager
 
         let globalContainer = GlobalContainer()

@@ -19,8 +19,8 @@ import UIKit
 
 final class ComposerViewFactory {
     typealias Dependencies = ComposeContainerViewModel.Dependencies
+    & ComposeContainerViewController.Dependencies
     & HasUserManager
-    & HasCoreDataContextProviderProtocol
     & HasInternetConnectionStatusProviderProtocol
     & HasKeyMakerProtocol
     & HasUserCachedStatus
@@ -95,10 +95,7 @@ final class ComposerViewFactory {
             editorViewModel: childViewModel
         )
 
-        return ComposeContainerViewController(
-            viewModel: viewModel,
-            contextProvider: dependencies.contextProvider
-        )
+        return ComposeContainerViewController(viewModel: viewModel, dependencies: dependencies)
     }
 
     var composeViewModelDependencies: ComposeViewModel.Dependencies {
@@ -132,7 +129,8 @@ final class ComposerViewFactory {
             ),
             darkModeCache: dependencies.userCachedStatus,
             attachmentMetadataStrippingCache: dependencies.attachmentMetadataStripStatusProvider,
-            userCachedStatusProvider: dependencies.userCachedStatus
+            userCachedStatusProvider: dependencies.userCachedStatus,
+            notificationCenter: NotificationCenter.default
         )
     }
 }

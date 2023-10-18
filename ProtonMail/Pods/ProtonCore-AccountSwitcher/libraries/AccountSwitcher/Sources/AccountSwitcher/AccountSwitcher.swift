@@ -22,10 +22,9 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
-import ProtonCore_Utilities
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
+import ProtonCoreUtilities
 
 public extension AccountSwitcher {
     struct AccountData {
@@ -98,6 +97,13 @@ public final class AccountSwitcher: UIView, AccessibleView {
         self.accountTable.dataSource = self
         primaryUserView.update(account: accounts[0])
         setUpGesture()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(self.preferredContentSizeChanged),
+            name: UIContentSizeCategory.didChangeNotification,
+            object: nil
+        )
     }
 
     required init?(coder: NSCoder) {
@@ -275,7 +281,7 @@ extension AccountSwitcher {
         let view = UIView(frame: .zero)
         view.backgroundColor = ColorProvider.BlenderNorm
         view.accessibilityTraits = .button
-        view.accessibilityLabel = CoreString._as_dismiss_button
+        view.accessibilityLabel = ASTranslation.dismiss_button.l10n
         return view
     }
 
@@ -289,7 +295,7 @@ extension AccountSwitcher {
 
     private static func tableHeader() -> UILabel {
         let label = UILabel(frame: .zero)
-        label.text = CoreString._as_switch_to_title
+        label.text = ASTranslation.switch_to_title.l10n
         label.font = .adjustedFont(forTextStyle: .subheadline)
         label.textColor = ColorProvider.TextWeak
         label.adjustsFontForContentSizeCategory = true
@@ -308,6 +314,13 @@ extension AccountSwitcher {
         table.separatorColor = .clear
         table.separatorStyle = .none
         return table
+    }
+
+    @objc
+    private func preferredContentSizeChanged() {
+        DispatchQueue.main.async {
+            self.accountTableHeight.constant = self.accountTable.contentSize.height
+        }
     }
 }
 
@@ -511,7 +524,7 @@ extension AccountSwitcher {
 
         private static func manageLabel() -> UILabel {
             let label = UILabel(frame: .zero)
-            label.text = CoreString._as_manage_accounts
+            label.text = ASTranslation.manage_accounts.l10n
             label.backgroundColor = .clear
             label.font = .adjustedFont(forTextStyle: .subheadline)
             label.adjustsFontSizeToFitWidth = true

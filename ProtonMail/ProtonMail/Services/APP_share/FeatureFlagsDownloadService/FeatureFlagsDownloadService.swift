@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Services
+import ProtonCoreServices
 
 enum FeatureFlagKey: String, CaseIterable {
     case appRating = "RatingIOSMail"
@@ -58,6 +58,18 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
     enum FeatureFlagFetchingError: Error {
         case fetchingTooOften
         case selfIsReleased
+    }
+
+    func getFeatureFlags() async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            self.getFeatureFlags { error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
+                }
+            }
+        }
     }
 
     func getFeatureFlags(completion: ((Error?) -> Void)?) {

@@ -17,7 +17,7 @@
 
 import Combine
 import Foundation
-import ProtonCore_Log
+import ProtonCoreLog
 
 protocol ApplicationLogsViewModelProtocol {
     var input: ApplicationLogsViewModelInput { get }

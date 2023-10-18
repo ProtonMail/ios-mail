@@ -22,7 +22,6 @@ public enum BreadcrumbEvent: String {
     case malformedConversationRequest
     case randomLogout
     case malformedConversationLabelRequest
-    case invalidSignatureWhenSendingMessage
     case sendMessage
 }
 

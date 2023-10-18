@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
-import ProtonCore_Services
+import ProtonCoreServices
 
 final class UserContainer: ManagedContainer {
     let manager = ContainerManager()
@@ -31,13 +31,7 @@ final class UserContainer: ManagedContainer {
 
     var cacheServiceFactory: Factory<CacheService> {
         self {
-            CacheService(
-                userID: self.user.userID,
-                dependencies: .init(
-                    coreDataService: self.contextProvider,
-                    lastUpdatedStore: self.lastUpdatedStore
-                )
-            )
+            CacheService(userID: self.user.userID, dependencies: self)
         }
     }
 
@@ -84,7 +78,8 @@ final class UserContainer: ManagedContainer {
                 eventsService: self.eventsService,
                 undoActionManager: self.undoActionManager,
                 queueManager: self.queueManager,
-                contactCacheStatus: self.userCachedStatus
+                contactCacheStatus: self.userCachedStatus,
+                localConversationUpdater: .init(userID: self.user.userID.rawValue, dependencies: self)
             )
         }
     }
@@ -97,24 +92,7 @@ final class UserContainer: ManagedContainer {
 
     var eventsServiceFactory: Factory<EventsFetching> {
         self {
-            let useCase = FetchMessageMetaData(
-                dependencies: .init(
-                    userID: self.user.userID,
-                    messageDataService: self.messageService,
-                    contextProvider: self.contextProvider
-                )
-            )
-            return EventsService(
-                userManager: self.user,
-                dependencies: .init(
-                    contactCacheStatus: self.userCachedStatus,
-                    coreDataProvider: self.contextProvider,
-                    featureFlagCache: self.featureFlagCache,
-                    fetchMessageMetaData: useCase,
-                    incomingDefaultService: self.incomingDefaultService,
-                    queueManager: self.queueManager
-                )
-            )
+            EventsService(userManager: self.user, dependencies: self)
         }
     }
 
@@ -141,6 +119,42 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var fetchMessageDetailFactory: Factory<FetchMessageDetail> {
+        self {
+            FetchMessageDetail(
+                dependencies: .init(
+                    queueManager: self.queueManager,
+                    apiService: self.apiService,
+                    contextProvider: self.contextProvider,
+                    cacheService: self.cacheService
+                )
+            )
+        }
+    }
+
+    var fetchMessageMetaDataFactory: Factory<FetchMessageMetaData> {
+        self {
+            FetchMessageMetaData(
+                dependencies: .init(
+                    userID: self.user.userID,
+                    messageDataService: self.messageService,
+                    contextProvider: self.contextProvider,
+                    queueManager: self.queueManager
+                )
+            )
+        }
+    }
+
+    var imageProxyFactory: Factory<ImageProxy> {
+        self {
+            #if APP_EXTENSION
+            ImageProxy(dependencies: .init(apiService: self.user.apiService, imageCache: nil))
+            #else
+            ImageProxy(dependencies: .init(apiService: self.user.apiService, imageCache: self.imageProxyCache))
+            #endif
+        }
+    }
+
     var incomingDefaultServiceFactory: Factory<IncomingDefaultService> {
         self {
             IncomingDefaultService(
@@ -155,14 +169,7 @@ final class UserContainer: ManagedContainer {
 
     var labelServiceFactory: Factory<LabelsDataService> {
         self {
-            LabelsDataService(
-                api: self.apiService,
-                userID: self.user.userID,
-                contextProvider: self.contextProvider,
-                lastUpdatedStore: self.lastUpdatedStore,
-                cacheService: self.cacheService,
-                viewModeDataSource: self.conversationStateService
-            )
+            LabelsDataService(userID: self.user.userID, dependencies: self)
         }
     }
 
@@ -185,17 +192,17 @@ final class UserContainer: ManagedContainer {
                 lastUpdatedStore: self.lastUpdatedStore,
                 user: self.user,
                 cacheService: self.cacheService,
-                undoActionManager: self.undoActionManager,
-                contactCacheStatus: sharedServices.userCachedStatus,
+                contactCacheStatus: self.userCachedStatus,
                 dependencies: .init(
                     moveMessageInCacheUseCase: MoveMessageInCache(
                         dependencies: .init(
                             contextProvider: self.contextProvider,
                             lastUpdatedStore: self.lastUpdatedStore,
                             userID: self.user.userID,
-                            pushUpdater: PushUpdater()
+                            pushUpdater: self.pushUpdater
                         )
                     ),
+                    pushUpdater: self.pushUpdater,
                     viewModeDataSource: self.conversationStateService
                 )
             )
@@ -206,14 +213,14 @@ final class UserContainer: ManagedContainer {
         self {
             MainQueueHandler(
                 coreDataService: self.contextProvider,
+                fetchMessageDetail: self.fetchMessageDetail,
                 apiService: self.apiService,
                 messageDataService: self.messageService,
                 conversationDataService: self.conversationService.conversationDataService,
                 labelDataService: self.labelService,
                 localNotificationService: self.localNotificationService,
                 undoActionManager: self.undoActionManager,
-                user: self.user,
-                featureFlagCache: self.featureFlagCache
+                user: self.user
             )
         }
     }

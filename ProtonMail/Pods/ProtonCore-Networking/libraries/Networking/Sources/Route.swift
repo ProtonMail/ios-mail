@@ -55,7 +55,7 @@ public protocol Request: Package {
     var isAuth: Bool { get }
 
     var authCredential: AuthCredential? { get }
-    var autoRetry: Bool { get }
+    var authRetry: Bool { get }
     var retryPolicy: ProtonRetryPolicy.RetryMode { get }
     
     /// initially using for sending the fingerprint
@@ -67,7 +67,7 @@ extension Request {
         return true
     }
 
-    public var autoRetry: Bool {
+    public var authRetry: Bool {
         return true
     }
 

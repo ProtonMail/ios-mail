@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Kunde inte skicka";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "E-post kunde inte skickas. Meddelande sparat som utkast.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Inget att se här";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Du behöver minst en mottagare för att skicka";
-
-/* Title */
-"Change sender address to…" = "Ändra avsändaradress till…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Uppgradera till ett betalt paket för att skicka från din %@-adress";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Bekräfta nytt lösenord för brevlåda";
 
-/* error when sending the message */
-"Unable to send the email" = "Kan inte skicka e-postmeddelandet";
-
 /* Title */
 "Star/unstar" = "Stjärnmärk/ta bort stjärnmärkning";
 
@@ -996,9 +987,6 @@
 "Cut" = "Klipp ut";
 
 /* Title */
-"Compose to" = "Skriv till";
-
-/* Title */
 "Add to contacts" = "Lägg till i kontakter";
 
 /* encryption lock description */
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Skickar meddelande…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Meddelandet kunde inte skickas. Minst en mottagares e-postadress/domän finns inte eller är felaktigt formaterad.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "oläst";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Aktivera den här funktionen för att automatiskt fylla i e-postadresser med kontakter från alla dina inloggade konton.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Ställ in PIN-kod";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Ange ny PIN-kod";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Ange en PIN-kod med minst 4 tecken och högst 21 tecken.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN-kod är för kort";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN-kod är för lång";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Upprepa PIN-kod";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN-koderna måste matcha!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Om Proton-webbplatser är blockerade kan denna inställning göra det möjligt för appen att prova alternativ nätverksroutning för att nå Proton, vilket kan vara användbart för att kringgå brandväggar eller nätverksproblem. Vi rekommenderar att du behåller den här inställningen aktiverad för bättre tillförlitlighet. %1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Av";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Ändra PIN-kod";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Autentisera igen";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Du kan nu välja och sortera om åtgärderna i denna list";
 
 /* Button to block a sender */
-"Block sender" = "Blockera avsändare";
+"Block messages from this sender" = "Blockera meddelanden från denna avsändare";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Blockera";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Svara alla (på sista meddelandet)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Nytt meddelande";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Anpassa";
 
@@ -2023,15 +1987,6 @@
 /* Button to enable encrypted search */
 "Enable" = "Aktivera";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Inaktivera automatisk borttagning?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "E-postmeddelanden som schemalagts för borttagning kommer finnas kvar i papperskorgen och skräppostmapparna.";
-
-/* Button to disable auto delete */
-"Disable" = "Inaktivera";
-
 /* Text to advertise the auto delete feature to free users */
 "Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Uppgradera för att ta bort meddelanden som har legat i papperskorg och skräppost i mer än 30 dagar automatiskt.";
 
@@ -2062,6 +2017,12 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Anpassade e-domäner";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Avsändare ändrad";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Den ursprungliga avsändaren av detta meddelande är inte längre giltig. Ditt meddelande kommer att skickas från din standardadress %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
 "Display name" = "Visningsnamn";
 
@@ -2082,6 +2043,36 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Redigera foto";
+
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Inaktivera PIN-kod";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Ställ in PIN-kod";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Upprepa PIN-kod";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Ange ny PIN-kod";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Ange en PIN-kod med minst 4 tecken och högst 21 tecken.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN-kod är för kort";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN-kod är för lång";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN-koderna måste matcha!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Ange gammal PIN-kod ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Ändra PIN-kod";
 
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Avsluta prenumeration från e-postlista";

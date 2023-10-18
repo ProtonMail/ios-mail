@@ -21,7 +21,7 @@
 
 import Foundation
 
-public final class AuthCredential: NSObject, NSCoding {
+public final class AuthCredential: NSObject, NSCoding, Codable {
 
     struct Key {
         static let keychainStore = "keychainStoreKeyProtectedWithMainKey"
@@ -213,13 +213,20 @@ public final class AuthCredential: NSObject, NSCoding {
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushService.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "PushServiceDev.AuthCredential")
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonCore_Networking.AuthCredential")
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonCoreNetworking.AuthCredential")
 
+        // Unarchive method that suppress this warning doesn't work when using old archive method (see below). Solution for this is to switch to
+        // Codable.
         return NSKeyedUnarchiver.unarchiveObject(with: data) as? AuthCredential
     }
 
     // MARK: - Class methods
 
     public func archive() -> Data {
+        // This can be replaced with `NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)` to suppress this warning.
+        // But new `NSKeyedArchiver.archivedData` method throws. And `archive() -> Data` method doesn't have any mechanism how to return error.
+        // For now keep the warning in favor of refactoring this method.
         return NSKeyedArchiver.archivedData(withRootObject: self)
     }
 

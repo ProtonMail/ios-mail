@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 class FeatureFlagsResponse: Response {
     private(set) var result: [String: Any] = [:]
@@ -87,5 +87,4 @@ class FeatureFlags {
     static let refetchEventsHourThreshold = FeatureFlag<Int>(code: .refetchEventsHourThreshold, defaultValue: 24)
     static let scheduleSend = FeatureFlag<Bool>(code: .scheduleSend, defaultValue: false)
     static let senderImage = FeatureFlag<Bool>(code: .senderImage, defaultValue: false)
-    static let sendRefactor = FeatureFlag<Bool>(code: .sendRefactor, defaultValue: false)
 }

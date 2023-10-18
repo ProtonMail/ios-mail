@@ -22,19 +22,18 @@
 
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_DataModel
-import ProtonCore_Keymaker
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreKeymaker
+import ProtonCoreNetworking
+import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SafariServices
 
-protocol WindowsCoordinatorDelegate: AnyObject {
-    func currentApplicationState() -> UIApplication.State
-}
-
 final class WindowsCoordinator {
     typealias Dependencies = MenuCoordinator.Dependencies
+    & LockCoordinator.Dependencies
+    & HasDarkModeCacheProtocol
+    & HasNotificationCenter
 
     private lazy var snapshot = Snapshot()
     private var launchedByNotification = false
@@ -83,7 +82,6 @@ final class WindowsCoordinator {
                 assert(scene is UIWindowScene, "Scene should be of type UIWindowScene")
         }
     }
-    weak var delegate: WindowsCoordinatorDelegate?
     private let dependencies: Dependencies
     private let showPlaceHolderViewOnly: Bool
 
@@ -525,7 +523,7 @@ extension WindowsCoordinator {
 
             Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
 
-            dependencies.queueManager.unregisterHandler(for: user.userID)
+            dependencies.queueManager.unregisterHandler(for: user.userID, completion: nil)
             dependencies.usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
                 guard let self = self else { return }
                 guard let appWindow = self.appWindow else {return}

@@ -17,8 +17,8 @@
 
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 final class ContactDetailViewController: UIViewController, AccessibleView {
@@ -51,6 +51,10 @@ final class ContactDetailViewController: UIViewController, AccessibleView {
         configureNavigationItems()
         configureTableView()
         configureButtons()
+        viewModel.reloadView = { [weak self] in
+            self?.configureHeader()
+            self?.customView.tableView.reloadData()
+        }
 
         Task {
             do {
@@ -267,7 +271,7 @@ extension ContactDetailViewController: UITableViewDataSource {
                 titleStyle: titleStyle
             )
         case .email_header, .encrypted_header, .delete, .share,
-             .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails, .display_name, .addNewField, .share:
+             .type2_warning, .type3_error, .type3_warning, .debuginfo, .emails, .display_name, .addNewField:
             break
         }
         return cell ?? UITableViewCell()

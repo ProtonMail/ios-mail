@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 struct ConversationEntity: Equatable, Hashable {
     let objectID: ObjectID
@@ -35,11 +35,6 @@ struct ConversationEntity: Equatable, Hashable {
     /// Local use flag to mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
     let isSoftDeleted: Bool
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(conversationID)
-        hasher.combine(objectID)
-    }
 }
 
 extension ConversationEntity {

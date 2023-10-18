@@ -101,8 +101,7 @@ linting:
   except:
     - schedules
   script:
-    - pip3 install -r Scripts/requirements.txt
-    - python3 Scripts/linkAvailabilityCheck.py
+    - ./Scripts/check_link_availability.sh
   tags:
     - iOS_GENERAL
 
@@ -243,7 +242,7 @@ report:slack:smoke:
       --slack-channel mail-ios-uitests
   allow_failure: true
   tags:
-    - small
+    - shared-small
 
 test:ui:feature:
   dependencies:
@@ -336,10 +335,10 @@ report:slack:feature:
       --path test_output/TestResults/
       --platform ios
       --job-name $TEST_PLAN
-      --slack-channel mail-ios-uitests
+      --slack-channel "$SLACK_CHANNEL"
   allow_failure: true
   tags:
-    - small
+    - shared-small
 
 report:slack:monkey:
   dependencies:
@@ -357,7 +356,7 @@ report:slack:monkey:
       --slack-channel mail-ios-uitests
   allow_failure: true
   tags:
-    - small
+    - shared-small
 
 report:testmo:regression:
   dependencies:
@@ -378,7 +377,7 @@ report:testmo:regression:
     RESULT_FOLDER: "./test_output/TestResults/*.xml"
   allow_failure: true
   tags:
-    - small
+    - shared-small
 
 report:testmo:sanity:
   needs:
@@ -399,7 +398,7 @@ report:testmo:sanity:
     RESULT_FOLDER: "./test_output/TestResults/*.xml"
   allow_failure: true
   tags:
-    - small
+    - shared-small
 
 appetize:start:
   dependencies: [build:debug:for-testing]

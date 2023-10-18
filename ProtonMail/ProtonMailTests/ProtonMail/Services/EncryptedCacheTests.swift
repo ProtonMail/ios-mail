@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 import SDWebImage
 import XCTest
 
@@ -24,13 +24,14 @@ import XCTest
 class EncryptedCacheTests: XCTestCase {
     private var internalCache: SDDiskCache!
     private var mainKey: MainKey!
-    private var keyMaker: Keymaker!
     private var sut: EncryptedCache!
     private let cacheFolderName = "EncryptedCacheTests"
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        keyMaker = sharedServices.get(by: Keymaker.self)
+
+        let globalContainer = GlobalContainer()
+        let keyMaker = globalContainer.keyMaker
 
         let config = SDImageCacheConfig()
         config.diskCacheWritingOptions = [.atomic, .completeFileProtection]
@@ -50,7 +51,6 @@ class EncryptedCacheTests: XCTestCase {
         sut.purge()
         sut = nil
         mainKey = nil
-        keyMaker = nil
 
         try super.tearDownWithError()
     }

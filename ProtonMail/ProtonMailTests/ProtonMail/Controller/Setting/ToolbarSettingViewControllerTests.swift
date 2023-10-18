@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 @testable import ProtonMail
 import XCTest
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 final class ToolbarSettingViewControllerTests: XCTestCase {
     var sut: ToolbarSettingViewController!
@@ -27,7 +27,7 @@ final class ToolbarSettingViewControllerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         let mockApiService = APIServiceMock()
-        mockUser = UserManager(api: mockApiService, role: .none)
+        mockUser = UserManager(api: mockApiService)
         makeSUT()
     }
 

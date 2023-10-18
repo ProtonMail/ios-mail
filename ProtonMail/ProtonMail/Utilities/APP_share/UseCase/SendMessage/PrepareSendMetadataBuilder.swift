@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Services
+import ProtonCoreServices
 
 enum PrepareSendMetadataBuilder {
 
@@ -35,7 +35,6 @@ enum PrepareSendMetadataBuilder {
         let fetchPublicKeyDependencies: FetchEmailAddressesPublicKey.Dependencies = .init(apiService: apiService)
         let sendPreferencesDependencies: ResolveSendPreferences.Dependencies = .init(
             fetchVerifiedContacts: FetchAndVerifyContacts(
-                currentUser: userData.userID,
                 currentUserKeys: userData.userInfo.userPrivateKeys,
                 dependencies: fetchContactsDependencies
             ),

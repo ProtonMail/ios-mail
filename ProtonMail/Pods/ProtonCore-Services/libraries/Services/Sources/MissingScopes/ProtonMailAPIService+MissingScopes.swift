@@ -21,8 +21,8 @@
 //
 
 import Foundation
-import ProtonCore_Log
-import ProtonCore_Networking
+import ProtonCoreLog
+import ProtonCoreNetworking
 
 extension PMAPIService {
     func missingScopesHandler<T>(username: String,

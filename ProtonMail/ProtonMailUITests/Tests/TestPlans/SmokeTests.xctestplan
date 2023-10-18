@@ -45,6 +45,8 @@
         "MultiuserManagementTests\/testSwitchAccount()",
         "PinTests\/testEnableAutoLockPin()",
         "PinTests\/testTurnOnAndOffPin()",
+        "SettingsTests\/testCustomSwipeActions()",
+        "SettingsTests\/testDefaultSwipeActions()",
         "SpamTests\/testSwipeToSpamMessage()",
         "ViewMessagesTests\/testOpenMessageWithAttachment()",
         "ViewMessagesTests\/testOpenMessageWithLink()",

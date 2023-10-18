@@ -57,14 +57,6 @@ enum MailboxItem: Hashable {
         }
     }
 
-    var objectID: ObjectID {
-        switch self {
-        case .message(let message):
-            return message.objectID
-        case .conversation(let conversation):
-            return conversation.objectID
-        }
-    }
 
     func isUnread(labelID: LabelID) -> Bool {
         switch self {
@@ -82,49 +74,5 @@ enum MailboxItem: Hashable {
         case .conversation(let conversation):
             return conversation.getTime(labelID: labelID)
         }
-    }
-
-    var toConversation: ConversationEntity? {
-        switch self {
-        case .conversation(let entity):
-            return entity
-        case .message:
-            return nil
-        }
-    }
-
-    var toMessage: MessageEntity? {
-        switch self {
-        case .conversation:
-            return nil
-        case .message(let entity):
-            return entity
-        }
-    }
-
-    var isConversation: Bool {
-        toConversation != nil
-    }
-
-    var isMessage: Bool {
-        toMessage != nil
-    }
-}
-
-extension Collection where Element == MailboxItem {
-    var areAllConversations: Bool {
-        reduce(true) { $0 && $1.isConversation }
-    }
-
-    var areAllMessages: Bool {
-        reduce(true) { $0 && $1.isMessage }
-    }
-
-    var allConversations: [ConversationEntity] {
-        compactMap { $0.toConversation }
-    }
-
-    var allMessages: [MessageEntity] {
-        compactMap { $0.toMessage }
     }
 }

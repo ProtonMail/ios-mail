@@ -19,13 +19,12 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import OpenPGP
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
 import Foundation
-import ProtonCore_Authentication
-import ProtonCore_DataModel
-import ProtonCore_Utilities
+import ProtonCoreAuthentication
+import ProtonCoreDataModel
+import ProtonCoreUtilities
 
 /// class for key migeration phase 2
 final class AccountKeySetup {
@@ -91,7 +90,7 @@ final class AccountKeySetup {
     /// - Returns: `GeneratedAccountKey`
     func generateAccountKey(addresses: [Address], password: String) throws -> GeneratedAccountKey {
         /// generate key salt 128 bits
-        let newPasswordSalt: Data = PMNOpenPgp.randomBits(PasswordSaltSize.accountKey.int32Bits)
+        let newPasswordSalt: Data = try PasswordHash.random(bits: PasswordSaltSize.accountKey.int32Bits)
         /// generate key hashed password.
         let userKeyPassphrase = PasswordHash.passphrase(password, salt: newPasswordSalt)
         
@@ -109,7 +108,7 @@ final class AccountKeySetup {
 
         let addressKeys = try addresses.map { addr -> AddressKey in
             // generate addr passphrase
-            let addrPassphrase = PasswordHash.genAddrPassphrase()
+            let addrPassphrase = try PasswordHash.genAddrPassphrase()
             
             /// generate a new key.  id: address email.  passphrase: hexed secret (should be 64 bytes) with default key type
             let armoredAddrKey = try Generator.generateECCKey(email: addr.email, passphase: addrPassphrase)
@@ -171,7 +170,7 @@ final class AccountKeySetup {
                              modulus: String, modulusId: String) throws -> AuthService.SetupKeysEndpoint {
 
         // for the login password needs to set 80 bits & srp auth use 80 bits
-        let newSaltForKey: Data = PMNOpenPgp.randomBits(PasswordSaltSize.login.int32Bits)
+        let newSaltForKey: Data = try PasswordHash.random(bits: PasswordSaltSize.login.int32Bits)
 
         // generate new verifier
         guard let authForKey = try SrpAuthForVerifier(password, modulus, newSaltForKey) else {

@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Services
-import ProtonCore_TestingToolkit
+import ProtonCoreServices
+import ProtonCoreTestingToolkit
 import XCTest
 
 @testable import ProtonMail
@@ -130,8 +130,7 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
 
         apiServiceMock = APIServiceMock()
         delegate = MockImageProxyDelegate()
-        let dependencies = ImageProxy.Dependencies(apiService: apiServiceMock)
-        sut = ImageProxy(dependencies: dependencies)
+        sut = ImageProxy(dependencies: .init(apiService: apiServiceMock, imageCache: MockImageProxyCacheProtocol()))
 
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
 
@@ -178,8 +177,6 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
         sut.predefinedUUIDForURL = { [unowned self] url in
             self.predefinedUUIDs[url]!
         }
-
-        ImageProxyCache.shared.purge()
     }
 
     override func tearDownWithError() throws {

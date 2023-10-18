@@ -15,11 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_DataModel
-import ProtonCore_Keymaker
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreKeymaker
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -29,26 +29,24 @@ class UsersManagerTests: XCTestCase {
     var cachedUserDataProviderMock: MockCachedUserDataProvider!
     let suiteName = String.randomString(10)
     var customCache: SharedCacheBase!
-    var customKeyChain: Keychain!
-    var notificationCenter: NotificationCenter!
-    var keyMaker: KeyMakerProtocol!
-    private var globalContainer: GlobalContainer!
+    private var globalContainer: TestContainer!
+
+    private var customKeyChain: Keychain {
+        globalContainer.keychain
+    }
+
+    private var keyMaker: KeyMakerProtocol {
+        globalContainer.keyMaker
+    }
 
     override func setUpWithError() throws {
         try super.setUpWithError()
         self.cachedUserDataProviderMock = .init()
         self.apiMock = APIServiceMock()
         self.customCache = .init(userDefaults: .init(suiteName: suiteName)!)
-        self.customKeyChain = .init(service: String.randomString(10),
-                                    accessGroup: "2SB5Z68H26.ch.protonmail.protonmail")
-        self.notificationCenter = NotificationCenter()
-        self.keyMaker = Keymaker(autolocker: nil, keychain: customKeyChain)
 
         globalContainer = .init()
         globalContainer.cachedUserDataProviderFactory.register { self.cachedUserDataProviderMock }
-        globalContainer.keychainFactory.register { self.customKeyChain }
-        globalContainer.keyMakerFactory.register { Keymaker(autolocker: nil, keychain: self.customKeyChain) }
-        globalContainer.notificationCenterFactory.register { self.notificationCenter }
 
         sut = UsersManager(
             userDefaultCache: customCache,
@@ -68,9 +66,6 @@ class UsersManagerTests: XCTestCase {
         customCache.getShared().remove(forKey: UsersManager.CoderKey.usersInfo)
         self.customCache = nil
         self.customKeyChain.removeEverything()
-        self.customKeyChain = nil
-        notificationCenter = nil
-        keyMaker = nil
         globalContainer = nil
     }
 
@@ -99,6 +94,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
@@ -113,6 +109,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: freeUserInfo))
     }
@@ -132,6 +129,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertTrue(sut.isAllowedNewUser(userInfo: paidUserInfo))
 
@@ -146,6 +144,7 @@ class UsersManagerTests: XCTestCase {
                                     linkConfirmation: nil,
                                     credit: nil,
                                     currency: nil,
+                                    createTime: nil,
                                     subscribed: nil)
         XCTAssertFalse(sut.isAllowedNewUser(userInfo: freeUserInfo))
     }
@@ -170,6 +169,7 @@ class UsersManagerTests: XCTestCase {
                                 linkConfirmation: nil,
                                 credit: nil,
                                 currency: nil,
+                                createTime: nil,
                                 subscribed: nil)
         XCTAssertTrue(sut.users.isEmpty)
         sut.add(auth: auth, user: userInfo, mailSettings: .init())
@@ -202,6 +202,7 @@ class UsersManagerTests: XCTestCase {
                                    linkConfirmation: nil,
                                    credit: nil,
                                    currency: nil,
+                                   createTime: nil,
                                    subscribed: nil)
         sut.update(userInfo: newUserInfo, for: newAuth.sessionID)
         XCTAssertTrue(sut.users[0].isPaid)
@@ -296,7 +297,7 @@ class UsersManagerTests: XCTestCase {
         sut.add(newUser: user1)
         XCTAssertEqual(sut.users.count, 1)
         let expectation1 = expectation(description: "Closure is called")
-        expectation(forNotification: .didSignOutLastAccount, object: nil, notificationCenter: notificationCenter)
+        expectation(forNotification: .didSignOutLastAccount, object: nil, notificationCenter: globalContainer.notificationCenter)
 
         sut.logout(user: user1) {
             XCTAssertTrue(self.sut.users.isEmpty)
@@ -463,6 +464,7 @@ class UsersManagerTests: XCTestCase {
                         linkConfirmation: nil,
                         credit: nil,
                         currency: nil,
+                        createTime: nil,
                         subscribed: nil)
     }
 
@@ -478,6 +480,7 @@ class UsersManagerTests: XCTestCase {
                                 linkConfirmation: nil,
                                 credit: nil,
                                 currency: nil,
+                                createTime: nil,
                                 subscribed: nil)
         let auth = createAuth(userID: userID)
         return UserManager(api: apiMock,

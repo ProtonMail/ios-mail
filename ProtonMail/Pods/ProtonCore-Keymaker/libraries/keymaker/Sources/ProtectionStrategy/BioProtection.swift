@@ -58,6 +58,8 @@ public struct BioProtection: ProtectionStrategy {
     }
     
     private static func makeAsymmetricEncryptor(in keychain: Keychain) -> EllipticCurveKeyPair.Manager {
+        // Changing value of `protection` param to suppress warning could break the API. Some clients may rely on behavior defined by
+        // `kSecAttrAccessibleAlwaysThisDeviceOnly`.
         let publicAccessControl = EllipticCurveKeyPair.AccessControl(protection: kSecAttrAccessibleAlwaysThisDeviceOnly, flags: [.userPresence, .privateKeyUsage])
         let privateAccessControl = EllipticCurveKeyPair.AccessControl(protection: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, flags: [.userPresence, .privateKeyUsage])
         let config = EllipticCurveKeyPair.Config(publicLabel: Constants.publicLabelKey,

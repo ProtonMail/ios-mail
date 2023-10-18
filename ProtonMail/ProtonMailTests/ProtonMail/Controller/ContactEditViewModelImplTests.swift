@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Crypto
-import ProtonCore_TestingToolkit
+import ProtonCoreCrypto
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import VCard
 import XCTest
@@ -31,7 +31,7 @@ final class ContactEditViewModelImplTests: XCTestCase {
     override func setUpWithError() throws {
         try super.setUpWithError()
         mockApi = .init()
-        mockUser = .init(api: mockApi, role: .none)
+        mockUser = .init(api: mockApi)
         fakeCoreDataService = CoreDataService(
             container: MockCoreDataStore.testPersistentContainer
         )

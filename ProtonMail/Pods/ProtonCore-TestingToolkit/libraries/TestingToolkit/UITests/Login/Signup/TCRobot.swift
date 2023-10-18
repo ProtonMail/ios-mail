@@ -19,11 +19,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import Foundation
 import fusion
-import ProtonCore_CoreTranslation
+import ProtonCoreLoginUI
 
-private let titleId = CoreString._su_terms_conditions_view_title
+private let titleId = LUITranslation.terms_conditions_view_title.l10n
 private let backtButtonId = "UINavigationItem.leftBarButtonItem"
 private let webViewId = "TCViewController.webView"
 
@@ -34,7 +36,7 @@ public final class TCRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func tcScreenIsShown() -> TCRobot {
-            staticText(titleId).wait().checkExists()
+            staticText(titleId).waitUntilExists().checkExists()
             return TCRobot()
         }
     }
@@ -50,3 +52,5 @@ public final class TCRobot: CoreElements {
     }
     
 }
+
+#endif

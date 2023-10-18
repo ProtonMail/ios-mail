@@ -15,20 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Login
-import ProtonCore_TestingToolkit
+import ProtonCoreLogin
+import ProtonCoreTestingToolkit
+import ProtonCoreKeymaker
 @testable import ProtonMail
 import XCTest
 
 final class SignInManagerTests: XCTestCase {
-
-    private var coreKeyMaker: KeyMakerProtocol!
     private var usersManager: UsersManager!
     private var apiMock: APIServiceMock!
     private var contactCacheStatusMock: MockContactCacheStatusProtocol!
-    private var queueHandlerRegisterMock: MockQueueHandlerRegister!
     private var updateSwipeActionUseCaseMock: MockUpdateSwipeActionDuringLoginUseCase!
-    private var globalContainer: GlobalContainer!
+    private var globalContainer: TestContainer!
 
     private var sut: SignInManager!
 
@@ -38,12 +36,12 @@ final class SignInManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         apiMock = .init()
-        coreKeyMaker = sharedServices.get(by: KeyMakerProtocol.self)
+
         globalContainer = .init()
         usersManager = globalContainer.usersManager
         contactCacheStatusMock = .init()
         updateSwipeActionUseCaseMock = .init()
-        queueHandlerRegisterMock = .init()
+        let queueHandlerRegisterMock = MockQueueHandlerRegister()
         sut = .init(
             usersManager: usersManager,
             contactCacheStatus: contactCacheStatusMock,
@@ -59,7 +57,6 @@ final class SignInManagerTests: XCTestCase {
         contactCacheStatusMock = nil
         usersManager = nil
         apiMock = nil
-        coreKeyMaker = nil
         globalContainer = nil
     }
 

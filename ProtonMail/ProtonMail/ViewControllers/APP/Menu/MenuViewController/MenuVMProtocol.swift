@@ -22,7 +22,7 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_AccountSwitcher
+import ProtonCoreAccountSwitcher
 import ProtonMailAnalytics
 
 protocol MenuVMProtocol: AnyObject {

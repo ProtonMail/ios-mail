@@ -20,11 +20,12 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 //
 
+#if os(iOS)
+
 import UIKit
 import MessageUI
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
-import ProtonCore_CoreTranslation
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 
 public typealias OnPresentComplete = () -> Void
 public typealias OnDismissComplete = () -> Void
@@ -59,7 +60,7 @@ public class TroubleShootingViewController: UITableViewController, AccessibleVie
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.tableFooterView = UIView(frame: CGRect.zero)
 
-        let newBackButton = UIBarButtonItem(title: CoreString._general_back_action,
+        let newBackButton = UIBarButtonItem(title: TSTranslation._general_back_action.l10n,
                                             style: UIBarButtonItem.Style.plain,
                                             target: self,
                                             action: #selector(TroubleShootingViewController.back(sender:)))
@@ -138,8 +139,10 @@ extension TroubleShootingViewController: TroubleShootingCellDelegate, MFMailComp
     func openMFMail(email: String) {
         let mailComposer = MFMailComposeViewController()
         mailComposer.setToRecipients([email])
-        mailComposer.setSubject(CoreString._troubleshoot_support_subject)
-        mailComposer.setMessageBody(CoreString._troubleshoot_support_body, isHTML: false)
+        mailComposer.setSubject(TSTranslation._troubleshoot_support_subject.l10n)
+        mailComposer.setMessageBody(TSTranslation._troubleshoot_support_body.l10n, isHTML: false)
         present(mailComposer, animated: true, completion: nil)
     }
 }
+
+#endif

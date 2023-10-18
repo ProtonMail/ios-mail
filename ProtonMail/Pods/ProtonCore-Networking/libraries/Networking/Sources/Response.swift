@@ -22,8 +22,7 @@
 // swiftlint:disable identifier_name todo
 
 import Foundation
-import ProtonCore_CoreTranslation
-import ProtonCore_Log
+import ProtonCoreLog
 
 public enum ResponseErrorDomains: String {
     case withResponseCode = "ProtonCore-Networking-ResponseCode"
@@ -81,7 +80,7 @@ extension ResponseError: LocalizedError {
         } else if let underlyingError = underlyingError {
             return "\(underlyingError.localizedDescription)\(httpCodeMessage)"
         } else if isNetworkIssueError {
-            return CoreString._net_connection_error
+            return NWTranslation.connection_error.l10n
         } else {
             return "Network error\(httpCodeMessage)"
         }

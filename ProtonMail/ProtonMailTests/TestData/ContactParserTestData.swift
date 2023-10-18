@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 
 struct ContactParserTestData {
     static let emailUsedInSignedData = "emaile@aaa.bbb"
@@ -87,6 +87,32 @@ struct ContactParserTestData {
     VERSION:4.0
     FN;PREF=1:Full field
     ITEM1.EMAIL;PREF=1:emaile@aaa.bbb
+    ITEM2.EMAIL;TYPE=home;PREF=2:home@aaa.bbb
+    ITEM3.EMAIL;TYPE=work;PREF=3:work@aaa.bbb
+    ITEM4.EMAIL;TYPE=other;PREF=4:other@aaa.bbb
+    UID:proton-web-4bdbbabd-1ac2-2850-a809-42d673d7771a
+    END:VCARD
+    """
+
+    static let signedOnlyDataWithPMSignTrue = """
+    BEGIN:VCARD
+    VERSION:4.0
+    FN;PREF=1:Full field
+    ITEM1.EMAIL;PREF=1:emaile@aaa.bbb
+    ITEM1.X-PM-SIGN:true
+    ITEM2.EMAIL;TYPE=home;PREF=2:home@aaa.bbb
+    ITEM3.EMAIL;TYPE=work;PREF=3:work@aaa.bbb
+    ITEM4.EMAIL;TYPE=other;PREF=4:other@aaa.bbb
+    UID:proton-web-4bdbbabd-1ac2-2850-a809-42d673d7771a
+    END:VCARD
+    """
+
+    static let signedOnlyDataWithPMSignFalse = """
+    BEGIN:VCARD
+    VERSION:4.0
+    FN;PREF=1:Full field
+    ITEM1.EMAIL;PREF=1:emaile@aaa.bbb
+    ITEM1.X-PM-SIGN:false
     ITEM2.EMAIL;TYPE=home;PREF=2:home@aaa.bbb
     ITEM3.EMAIL;TYPE=work;PREF=3:work@aaa.bbb
     ITEM4.EMAIL;TYPE=other;PREF=4:other@aaa.bbb

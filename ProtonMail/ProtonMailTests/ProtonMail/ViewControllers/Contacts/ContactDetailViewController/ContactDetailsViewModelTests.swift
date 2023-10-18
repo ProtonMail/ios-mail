@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 import XCTest
 
 @testable import ProtonMail
@@ -30,7 +30,7 @@ final class ContactDetailsViewModelTests: XCTestCase {
         apiService = APIServiceMock()
 
         let contact = ContactEntity.make(contactID: "foo", name: "John something", isDownloaded: false)
-        let user = UserManager(api: apiService, role: .none)
+        let user = UserManager(api: apiService)
         let coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
 
         sut = ContactDetailsViewModel(contact: contact, dependencies: .init(user: user, coreDataService: coreDataService, contactService: user.contactService))

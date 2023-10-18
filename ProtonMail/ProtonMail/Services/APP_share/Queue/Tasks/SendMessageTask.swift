@@ -17,8 +17,8 @@
 
 import Foundation
 import ProtonMailAnalytics
-import struct ProtonCore_Networking.ResponseError
-import class ProtonCore_Services.APIErrorCode
+import struct ProtonCoreNetworking.ResponseError
+import class ProtonCoreServices.APIErrorCode
 
 /// Object responsible for triggering the actual send action. SendMessageTask also
 /// manages anything related to the before and after of the actual send request,
@@ -190,6 +190,8 @@ extension SendMessageTask {
         } else if error.responseCode == PGPTypeErrorCode.emailAddressFailedValidation.rawValue {
             dependencies.notificationCenter.post(name: .messageSendFailAddressValidationIncorrect, object: nil)
             notifySendMessageError(error, message: message)
+        } else if error.responseCode == APIErrorCode.incompatible {
+            notifySendMessageError(error, message: message)
         } else {
             notifySendMessageError(error, message: message)
         }
@@ -212,7 +214,7 @@ extension SendMessageTask {
         dependencies
             .localNotificationService
             .scheduleMessageSendingFailedNotification(.init(
-                messageID: message.messageID.rawValue,
+                messageID: message.messageID,
                 error: errorMessage,
                 timeInterval: 1.0,
                 subtitle: message.title
@@ -244,7 +246,7 @@ extension SendMessageTask {
     private func unscheduleNotification(messageID: MessageID) {
         dependencies
             .localNotificationService
-            .unscheduleMessageSendingFailedNotification(.init(messageID: messageID.rawValue))
+            .unscheduleMessageSendingFailedNotification(.init(messageID: messageID))
     }
 }
 

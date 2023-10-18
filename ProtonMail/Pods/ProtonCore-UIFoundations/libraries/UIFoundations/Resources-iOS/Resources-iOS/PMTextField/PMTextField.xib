@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PMTextField" customModule="ProtonCore_UIFoundations">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PMTextField" customModule="ProtonCoreUIFoundations">
             <connections>
                 <outlet property="assistiveTextLabel" destination="KwT-5E-H5t" id="X6V-yg-9Gi"/>
                 <outlet property="errorLabel" destination="Og9-23-ADj" id="Ubd-2b-scc"/>
@@ -41,7 +41,7 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dKl-wh-Uzq" customClass="PMInternalTextField" customModule="ProtonCore_UIFoundations">
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dKl-wh-Uzq" customClass="PMInternalTextField" customModule="ProtonCoreUIFoundations">
                     <rect key="frame" x="0.0" y="68" width="533" height="321"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <textInputTraits key="textInputTraits"/>

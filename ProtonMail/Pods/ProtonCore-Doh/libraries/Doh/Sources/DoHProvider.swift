@@ -20,8 +20,8 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Log
-import ProtonCore_FeatureSwitch
+import ProtonCoreLog
+import ProtonCoreFeatureSwitch
 
 enum DoHProvider {
     case google
@@ -67,7 +67,7 @@ extension DoHProviderInternal {
 
     func query(host: String, type: DNSRecordType, sessionId: String?) -> String {
         var query = host
-        if let sessionId {
+        if let sessionId, !sessionId.isEmpty {
             query = sessionId + "." + host
         }
 

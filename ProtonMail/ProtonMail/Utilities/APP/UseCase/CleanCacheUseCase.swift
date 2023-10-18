@@ -27,11 +27,15 @@ final class CleanCache: CleanCacheUseCase {
     }
 
     override func executionBlock(params: Void, callback: @escaping UseCase<Void, Void>.Callback) {
+        SystemLogger.log(message: "cleaning cache")
         var lastError: NSError?
         let group = DispatchGroup()
         for user in dependencies.usersManager.users {
             group.enter()
-            user.messageService.cleanLocalMessageCache { error in
+            user.cleanUserLocalMessages.execute(params: .init(userId: user.userID)) { result in
+                if let error = result.error {
+                    SystemLogger.log(error: error)
+                }
                 user.conversationService.cleanAll()
                 user.conversationService.fetchConversations(
                     for: Message.Location.inbox.labelID,
@@ -64,14 +68,6 @@ extension CleanCache {
 
     struct Dependencies {
         let usersManager: UsersManager
-        let imageProxyCache: ImageProxyCache
-
-        init(
-            usersManager: UsersManager = sharedServices.get(by: UsersManager.self),
-            imageProxyCache: ImageProxyCache = ImageProxyCache.shared
-        ) {
-            self.usersManager = usersManager
-            self.imageProxyCache = imageProxyCache
-        }
+        let imageProxyCache: ImageProxyCacheProtocol
     }
 }

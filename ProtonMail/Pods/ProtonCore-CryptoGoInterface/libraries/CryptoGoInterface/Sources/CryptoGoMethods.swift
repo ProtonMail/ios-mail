@@ -62,10 +62,10 @@ public protocol CryptoGoMethods {
     func ArmorArmorKey(_ input: Data?, _ error: NSErrorPointer) -> String
     func ArmorArmorWithType(_ input: Data?, _ armorType: String?, _ error: NSErrorPointer) -> String
 
+    func CryptoGenerateKey(_ name: String?, _ email: String?, _ keyType: String?, _ bits: Int, _ error: NSErrorPointer) -> CryptoKey?
+
     func CryptoNewKey(_ binKeys: Data?, _ error: NSErrorPointer) -> CryptoKey?
     func CryptoNewKeyFromArmored(_ armored: String?, _ error: NSErrorPointer) -> CryptoKey?
-
-    func CryptoGenerateKey(_ name: String?, _ email: String?, _ keyType: String?, _ bits: Int, _ error: NSErrorPointer) -> CryptoKey?
 
     func CryptoGenerateSessionKey(_ error: NSErrorPointer) -> CryptoSessionKey?
     func CryptoGenerateSessionKeyAlgo(_ algo: String?, _ error: NSErrorPointer) -> CryptoSessionKey?

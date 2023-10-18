@@ -24,7 +24,7 @@ import CoreData
 import LifetimeTracker
 import MBProgressHUD
 import PromiseKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import StoreKit
 import UIKit
 
@@ -73,7 +73,7 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
     @IBOutlet private var tableViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private var searchView: UIView!
     @IBOutlet private var searchViewConstraint: NSLayoutConstraint!
-    @IBOutlet private var tableView: UITableView!
+    @IBOutlet var tableView: UITableView!
 
     init(viewModel: ContactGroupsViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
@@ -94,8 +94,8 @@ final class ContactGroupsViewController: ContactsAndGroupsSharedCode, ComposeSav
 
         prepareTable()
         prepareSearchBar()
-        self.viewModel.setFetchResultController()
-        self.viewModel.set(uiDelegate: self)
+        viewModel.set(uiDelegate: self)
+        viewModel.setupDataSource()
 
         generateAccessibilityIdentifiers()
 

@@ -46,11 +46,11 @@ class CacheServiceTest: XCTestCase {
 
         lastUpdatedStore = LastUpdatedStore(contextProvider: contextProviderMock)
 
-        let dependencies = CacheService.Dependencies(
-            coreDataService: contextProviderMock,
-            lastUpdatedStore: lastUpdatedStore
-        )
-        sut = CacheService(userID: "userID", dependencies: dependencies)
+        let globalContainer = GlobalContainer()
+        globalContainer.contextProviderFactory.register { self.contextProviderMock }
+        globalContainer.lastUpdatedStoreFactory.register { self.lastUpdatedStore }
+
+        sut = CacheService(userID: "userID", dependencies: globalContainer)
     }
     
     override func tearDown() {

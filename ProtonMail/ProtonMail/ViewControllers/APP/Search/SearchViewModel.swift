@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import CoreData
 import Foundation
-import ProtonCore_DataModel
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreUIFoundations
 
 protocol SearchVMProtocol: AnyObject {
     var user: UserManager { get }
@@ -82,7 +83,8 @@ final class SearchViewModel: NSObject {
     }
 
     private(set) var selectedIDs: Set<String> = []
-    private var fetchController: NSFetchedResultsController<Message>?
+    private var messagesPublisher: MessagesPublisher?
+    private var cancellable: AnyCancellable?
     private var messageService: MessageDataService { self.user.messageService }
     private let localObjectIndexing: Progress = .init(totalUnitCount: 1)
     private var localObjectsIndexingObserver: NSKeyValueObservation? {
@@ -121,19 +123,14 @@ final class SearchViewModel: NSObject {
 
 extension SearchViewModel: SearchVMProtocol {
     func viewDidLoad() {
-        self.indexLocalObjects { [weak self] in
-            guard let self = self,
-                  self.messages.isEmpty,
-                  !self.query.isEmpty else { return }
-            self.fetchLocalObjects()
-        }
+        indexLocalObjects {}
     }
 
     func cleanLocalIndex() {
         // switches off indexing of Messages in local db
-        self.localObjectIndexing.cancel()
-        self.fetchController?.delegate = nil
-        self.fetchController = nil
+        localObjectIndexing.cancel()
+        cancellable?.cancel()
+        messagesPublisher = nil
     }
 
     func fetchRemoteData(query: String, fromStart: Bool) {
@@ -197,7 +194,7 @@ extension SearchViewModel: SearchVMProtocol {
     }
 
     func getMessageObject(by msgID: MessageID) -> MessageEntity? {
-        let msg: MessageEntity? = try? dependencies.contextProvider.read { context in
+        let msg: MessageEntity? = dependencies.contextProvider.read { context in
             if let msg = Message.messageForMessageID(msgID.rawValue, in: context) {
                 return MessageEntity(msg)
             } else {
@@ -502,62 +499,64 @@ extension SearchViewModel {
 extension SearchViewModel {
     // swiftlint:disable function_body_length
     private func indexLocalObjects(_ completion: @escaping () -> Void) {
-        var count = 0
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            overallCountRequest.resultType = .countResultType
-            overallCountRequest.predicate = NSPredicate(format: "%K == %@",
-                                                        Message.Attributes.userID,
-                                                        self.user.userInfo.userId)
-            do {
+        do {
+            let count = try dependencies.contextProvider.read { context in
+                let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+                overallCountRequest.resultType = .countResultType
+                overallCountRequest.predicate = NSPredicate(format: "%K == %@",
+                                                            Message.Attributes.userID,
+                                                            self.user.userInfo.userId)
                 let result = try context.fetch(overallCountRequest)
-                count = (result.first as? Int) ?? 1
-            } catch {
-                assertionFailure("Failed to fetch message dicts")
-            }
-        }
-
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userInfo.userId)
-        fetchRequest.sortDescriptors = [
-            NSSortDescriptor(key: Message.Attributes.time, ascending: false),
-            NSSortDescriptor(key: #keyPath(Message.order), ascending: true)
-        ]
-        fetchRequest.resultType = .dictionaryResultType
-
-        let objectId = NSExpressionDescription()
-        objectId.name = "objectID"
-        objectId.expression = NSExpression.expressionForEvaluatedObject()
-        objectId.expressionResultType = NSAttributeType.objectIDAttributeType
-
-        fetchRequest.propertiesToFetch = [objectId,
-                                          Message.Attributes.title,
-                                          Message.Attributes.sender,
-                                          Message.Attributes.toList]
-        let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
-            self?.dbContents = result.finalResult as? [LocalObjectsIndexRow] ?? []
-            self?.localObjectsIndexingObserver = nil
-            completion()
-        })
-
-        dependencies.contextProvider.performOnRootSavingContext { context in
-            self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
-            guard let indexRaw = try? context.execute(async),
-                  let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
-                self.localObjectIndexing.resignCurrent()
-                return
+                return (result.first as? Int) ?? 1
             }
 
-            self.localObjectIndexing.resignCurrent()
-            self.localObjectsIndexingObserver = index.progress?.observe(
-                \Progress.completedUnitCount,
-                options: NSKeyValueObservingOptions.new
-            ) { [weak self] progress, _ in
-                DispatchQueue.main.async {
-                    let completionRate = Float(progress.completedUnitCount) / Float(count)
-                    self?.uiDelegate?.update(progress: completionRate)
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userInfo.userId)
+            fetchRequest.sortDescriptors = [
+                NSSortDescriptor(key: Message.Attributes.time, ascending: false),
+                NSSortDescriptor(key: #keyPath(Message.order), ascending: true)
+            ]
+            fetchRequest.resultType = .dictionaryResultType
+
+            let objectId = NSExpressionDescription()
+            objectId.name = "objectID"
+            objectId.expression = NSExpression.expressionForEvaluatedObject()
+            objectId.expressionResultType = NSAttributeType.objectIDAttributeType
+            fetchRequest.propertiesToFetch = [
+                objectId,
+                Message.Attributes.title,
+                Message.Attributes.sender,
+                Message.Attributes.toList
+            ]
+
+            let asyncRequest = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
+                self?.dbContents = result.finalResult as? [LocalObjectsIndexRow] ?? []
+                self?.localObjectsIndexingObserver = nil
+                completion()
+            })
+
+
+            dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak self] context in
+                self?.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
+                guard let indexRaw = try? context.execute(asyncRequest),
+                      let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
+                    self?.localObjectIndexing.resignCurrent()
+                    return
+                }
+
+                self?.localObjectIndexing.resignCurrent()
+                self?.localObjectsIndexingObserver = index.progress?.observe(
+                    \Progress.completedUnitCount,
+                    options: NSKeyValueObservingOptions.new
+                ) { [weak self] progress, _ in
+                    DispatchQueue.main.async {
+                        let completionRate = Float(progress.completedUnitCount) / Float(count)
+                        self?.uiDelegate?.update(progress: completionRate)
+                    }
                 }
             }
+        } catch {
+            PMAssertionFailure(error)
         }
     }
 
@@ -569,7 +568,7 @@ extension SearchViewModel {
             "toList"
         ]
 
-        let messageIds: [NSManagedObjectID] = self.dbContents.compactMap {
+        let messageObjectIDs: [NSManagedObjectID] = self.dbContents.compactMap {
             for field in fieldsToMatchQueryAgainst {
                 if let value = $0[field] as? String,
                    value.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive]) != nil {
@@ -579,10 +578,9 @@ extension SearchViewModel {
             return nil
         }
 
-        let context = dependencies.contextProvider.mainContext
-        context.performAndWait {
-            self.messages = messageIds.compactMap { oldId -> Message? in
-                let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
+        self.messages = dependencies.contextProvider.read { context in
+            return messageObjectIDs.compactMap { oldId -> Message? in
+                let uri = oldId.uriRepresentation()
                 guard let newId = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: uri) else {
                     return nil
                 }
@@ -592,41 +590,23 @@ extension SearchViewModel {
     }
 
     private func updateFetchController(messageIDs: [MessageID]) {
-        if let previous = self.fetchController {
-            previous.delegate = nil
-            self.fetchController = nil
-        }
+        self.messagesPublisher = .init(
+            messageIDs: messageIDs,
+            contextProvider: dependencies.contextProvider
+        )
 
-        let context = dependencies.contextProvider.mainContext
-        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
-        let ids = messageIDs.map { $0.rawValue }
-        fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, ids)
-        fetchRequest.sortDescriptors = [
-            NSSortDescriptor(key: #keyPath(Message.time), ascending: false),
-            NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
-        ]
-        fetchRequest.includesPropertyValues = true
-        self.fetchController = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                          managedObjectContext: context,
-                                                          sectionNameKeyPath: nil,
-                                                          cacheName: nil)
-        self.fetchController?.delegate = self
-        do {
-            try self.fetchController?.performFetch()
-        } catch {}
+        cancellable = messagesPublisher?.contentDidChange
+            .map { $0.map(MessageEntity.init) }
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: { [weak self] messages in
+                self?.messages = messages
+                self?.uiDelegate?.refreshActionBarItems()
+        })
+        messagesPublisher?.start()
     }
 
     private func date(of message: MessageEntity, weekStart: WeekStart) -> String {
         guard let date = message.time else { return .empty }
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
-    }
-}
-
-extension SearchViewModel: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if let dbObjects = self.fetchController?.fetchedObjects {
-            self.messages = dbObjects.map(MessageEntity.init)
-        }
-        self.uiDelegate?.refreshActionBarItems()
     }
 }

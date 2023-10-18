@@ -29,6 +29,8 @@ protocol LabelListenerProtocol: AnyObject {
 }
 
 final class LabelPublisher: NSObject, LabelPublisherProtocol {
+    typealias Dependencies = HasCoreDataContextProviderProtocol
+
     private var fetchResultsController: NSFetchedResultsController<Label>?
 
     let dependencies: Dependencies
@@ -36,10 +38,7 @@ final class LabelPublisher: NSObject, LabelPublisherProtocol {
 
     weak var delegate: LabelListenerProtocol?
 
-    init(
-        parameters: Parameters,
-        dependencies: Dependencies
-    ) {
+    init(parameters: Parameters, dependencies: Dependencies) {
         self.params = parameters
         self.dependencies = dependencies
     }
@@ -58,7 +57,42 @@ final class LabelPublisher: NSObject, LabelPublisherProtocol {
         }
     }
 
+    func fetchLabel(_ labelID: LabelID) {
+        setUpResultsController(labelID: labelID)
+
+        do {
+            try fetchResultsController?.performFetch()
+            handleFetchResult(objects: fetchResultsController?.fetchedObjects)
+        } catch {
+            let message = "LabelPublisher error: \(String(describing: error))"
+            SystemLogger.log(message: message, category: .coreData, isError: true)
+        }
+    }
+
     // MARK: Private methods
+
+    private func setUpResultsController(labelID: LabelID) {
+        let fetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(
+            format: "%K == %@ AND %K == 0",
+            Label.Attributes.labelID,
+            labelID.rawValue,
+            Label.Attributes.isSoftDeleted
+        )
+        let sortDescriptor = NSSortDescriptor(
+            key: Label.Attributes.name,
+            ascending: true,
+            selector: #selector(NSString.localizedCaseInsensitiveCompare(_:))
+        )
+        fetchRequest.sortDescriptors = [sortDescriptor]
+        fetchResultsController = .init(
+            fetchRequest: fetchRequest,
+            managedObjectContext: dependencies.contextProvider.mainContext,
+            sectionNameKeyPath: nil,
+            cacheName: nil
+        )
+        fetchResultsController?.delegate = self
+    }
 
     private func setUpResultsController(labelType: LabelFetchType) {
         let fetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
@@ -67,7 +101,7 @@ final class LabelPublisher: NSObject, LabelPublisherProtocol {
 
         fetchResultsController = NSFetchedResultsController(
             fetchRequest: fetchRequest,
-            managedObjectContext: dependencies.coreDataService.mainContext,
+            managedObjectContext: dependencies.contextProvider.mainContext,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
@@ -162,13 +196,5 @@ extension LabelPublisher {
 
     struct Parameters {
         let userID: UserID
-    }
-
-    struct Dependencies {
-        let coreDataService: CoreDataContextProviderProtocol
-
-        init(coreDataService: CoreDataContextProviderProtocol) {
-            self.coreDataService = coreDataService
-        }
     }
 }

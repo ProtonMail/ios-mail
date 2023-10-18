@@ -20,7 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Services
+import ProtonCoreFeatureSwitch
+import ProtonCoreServices
+import ProtonCoreUtilities
 
 typealias ListOfIAPIdentifiersGet = () -> ListOfIAPIdentifiers
 typealias ListOfIAPIdentifiersSet = (ListOfIAPIdentifiers) -> Void
@@ -46,25 +48,45 @@ public final class Payments {
         planService: planService, storeKitManager: storeKitManager, paymentsApi: paymentsApi, apiService: apiService
     )
 
-    public internal(set) lazy var planService: ServicePlanDataServiceProtocol = ServicePlanDataService(
-        inAppPurchaseIdentifiers: { [weak self] in self?.inAppPurchaseIdentifiers ?? [] },
-        paymentsApi: paymentsApi,
-        apiService: apiService,
-        localStorage: localStorage,
-        paymentsAlertManager: paymentsAlertManager
-    )
+    lazy var storeKitDataSource: StoreKitDataSource = StoreKitDataSource()
 
-    public internal(set) lazy var storeKitManager: StoreKitManagerProtocol = StoreKitManager(
-        inAppPurchaseIdentifiersGet: { [weak self] in self?.inAppPurchaseIdentifiers ?? [] },
-        inAppPurchaseIdentifiersSet: { [weak self] in self?.inAppPurchaseIdentifiers = $0 },
-        planService: planService,
-        paymentsApi: paymentsApi,
-        apiService: apiService,
-        canExtendSubscription: canExtendSubscription,
-        paymentsAlertManager: paymentsAlertManager,
-        reportBugAlertHandler: reportBugAlertHandler,
-        refreshHandler: { _ in } // default refresh handler does nothing
-    )
+    public internal(set) lazy var planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol> = {
+        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            return .right(PlansDataSource(apiService: apiService, storeKitDataSource: storeKitDataSource))
+        } else {
+            return .left(
+                ServicePlanDataService(
+                    inAppPurchaseIdentifiers: { [weak self] in self?.inAppPurchaseIdentifiers ?? [] },
+                    paymentsApi: paymentsApi,
+                    apiService: apiService,
+                    localStorage: localStorage,
+                    paymentsAlertManager: paymentsAlertManager
+                )
+            )
+        }
+
+    }()
+
+    public internal(set) lazy var storeKitManager: StoreKitManagerProtocol = {
+        let dataSource: StoreKitDataSource?
+        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            dataSource = storeKitDataSource
+        } else {
+            dataSource = nil
+        }
+        return StoreKitManager(
+            inAppPurchaseIdentifiersGet: { [weak self] in self?.inAppPurchaseIdentifiers ?? [] },
+            inAppPurchaseIdentifiersSet: { [weak self] in self?.inAppPurchaseIdentifiers = $0 },
+            planService: planService,
+            storeKitDataSource: dataSource,
+            paymentsApi: paymentsApi,
+            apiService: apiService,
+            canExtendSubscription: canExtendSubscription,
+            paymentsAlertManager: paymentsAlertManager,
+            reportBugAlertHandler: reportBugAlertHandler,
+            refreshHandler: { _ in } // default refresh handler does nothing
+        )
+    }()
 
     public init(inAppPurchaseIdentifiers: ListOfIAPIdentifiers,
                 apiService: APIService,
@@ -79,6 +101,37 @@ public final class Payments {
         self.canExtendSubscription = canExtendSubscription
         paymentsAlertManager = PaymentsAlertManager(alertManager: alertManager ?? AlertManager())
         paymentsApi = PaymentsApiImplementation()
+    }
+
+    public func activate(delegate: StoreKitManagerDelegate, storeKitProductsFetched: @escaping (Error?) -> Void = { _ in }) {
+        // Setting delegate is a requirement before any purchase-related operation is performed
+        storeKitManager.delegate = delegate
+
+        // To initiate purchase recovery path, start listening for the transactions in the payment queue
+        // If there are no transactions, nothing will happen
+        // If there are transactions, they will be processed
+        // Part of the processing will be fetching the available plans from the BE
+        storeKitManager.subscribeToPaymentQueue()
+
+        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            // No-op by design
+            // In the dynamic plans, fetching available IAPs from StoreKit is not a prerequisite.
+            // It is done alongside fetching available plans
+        } else {
+            // Before dynamic plans, to be ready to present the available plans, we must fetch the available IAPs from StoreKit
+            storeKitManager.updateAvailableProductsList(completion: storeKitProductsFetched)
+        }
+    }
+
+    public func deactivate() {
+        // After we unsubscribe from payments queue, StoreKit won't be informing us about any purchases, neither new nor restored
+        storeKitManager.unsubscribeFromPaymentQueue()
+
+        // In case any reference was captured in the refresh handler, we clean it
+        // The handler will be re-registered next time we call `showPaymentsUI`
+        storeKitManager.refreshHandler = { _ in }
+
+        storeKitManager.delegate = nil
     }
 }
 

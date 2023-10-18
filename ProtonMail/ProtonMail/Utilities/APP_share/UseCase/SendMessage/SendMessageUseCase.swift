@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import class ProtonCore_DataModel.UserInfo
-import protocol ProtonCore_Services.APIService
-import typealias ProtonCore_Networking.JSONDictionary
+import class ProtonCoreDataModel.UserInfo
+import protocol ProtonCoreServices.APIService
+import typealias ProtonCoreNetworking.JSONDictionary
 
 typealias SendMessageUseCase = UseCase<Void, SendMessage.Params>
 

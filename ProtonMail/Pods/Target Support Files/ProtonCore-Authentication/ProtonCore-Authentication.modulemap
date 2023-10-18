@@ -1,4 +1,4 @@
-framework module ProtonCore_Authentication {
+framework module ProtonCoreAuthentication {
   umbrella header "ProtonCore-Authentication-umbrella.h"
 
   export *

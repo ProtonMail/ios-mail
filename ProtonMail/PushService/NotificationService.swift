@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_CryptoGoImplementation
+import ProtonCoreCryptoGoImplementation
 import UserNotifications
 
 class NotificationService: UNNotificationServiceExtension {

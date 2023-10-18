@@ -50,14 +50,14 @@ extension Dictionary: APIResponse where Key == String, Value == Any {
         get {
             guard let details = self["Details"] as? [String: Any],
                   let code = self["Code"] as? Int else { return nil }
-            return detailsFormDictionary(jsonDictionary: details, code: code)
+            return detailsFromDictionary(jsonDictionary: details, code: code)
         }
         set {
             self["Details"] = newValue?.serializedDetails
         }
     }
     
-    private func detailsFormDictionary(jsonDictionary: [String: Any], code: Int) -> APIResponseDetails {
+    private func detailsFromDictionary(jsonDictionary: [String: Any], code: Int) -> APIResponseDetails {
         if code == APIErrorCode.humanVerificationRequired,
            let token = jsonDictionary[HumanVerificationDetails.CodingKeys.token.uppercased] as? String,
            let title = jsonDictionary[HumanVerificationDetails.CodingKeys.title.uppercased] as? String,

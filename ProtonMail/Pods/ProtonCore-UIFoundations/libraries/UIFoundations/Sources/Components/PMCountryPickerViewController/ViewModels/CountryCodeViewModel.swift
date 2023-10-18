@@ -22,7 +22,7 @@
 #if os(iOS)
 
 import Foundation
-import ProtonCore_Log
+import ProtonCoreLog
 
 public class CountryCodeViewModel {
 

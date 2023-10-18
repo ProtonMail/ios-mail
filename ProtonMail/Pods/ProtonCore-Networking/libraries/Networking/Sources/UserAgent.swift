@@ -79,7 +79,9 @@ public final class UserAgent {
     private func appNameAndVersion() -> String {
         let dictionary = Bundle.main.infoDictionary!
         let version = dictionary["CFBundleShortVersionString"] as? String ?? "Unknown"
-        let name = dictionary["CFBundleName"] as? String ?? "Unknown"
+        var name = dictionary["CFBundleName"] as? String ?? "Unknown"
+        // matches the name format to other clients. change `Proton XXXX` to `ProtonXXX`
+        name = name.replacingOccurrences(of: " ", with: "")
         return "\(name)/\(version)"
     }
     

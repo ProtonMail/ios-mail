@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import Foundation
 import fusion
 
@@ -46,8 +48,10 @@ public final class AccountSummaryRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func startUsingPassButtonIsShown() -> AccountSummaryRobot {
-            button(startUsingAppButtonId).wait().checkExists()
+            button(startUsingAppButtonId).waitUntilExists().checkExists()
             return AccountSummaryRobot()
         }
     }
 }
+
+#endif

@@ -38,43 +38,11 @@ extension NSError {
         )
     }
 
-    func alertSentErrorToast() {
-        NotificationCenter.default.post(
-            name: NSError.errorOccuredNotification,
-            object: nil,
-            userInfo: ["text": "\(LocalString._message_sent_failed_desc): \(self.localizedDescription)"]
-        )
-    }
-
-    class func alertLocalCacheErrorToast() {
-        NotificationCenter.default.post(
-            name: NSError.errorOccuredNotification,
-            object: nil,
-            userInfo: ["text": LocalString._email_failed_to_send]
-        )
-    }
-
     func alertErrorToast() {
         NotificationCenter.default.post(
             name: NSError.errorOccuredNotification,
             object: nil,
             userInfo: ["text": NSLocalizedString(localizedDescription, comment: "Title")]
-        )
-    }
-
-    class func alertMessageSentErrorToast() {
-        NotificationCenter.default.post(
-            name: NSError.errorOccuredNotification,
-            object: nil,
-            userInfo: ["text": LocalString._messages_sending_failed_try_again]
-        )
-    }
-
-    class func alertMessageSentError(details: String) {
-        NotificationCenter.default.post(
-            name: NSError.errorOccuredNotification,
-            object: nil,
-            userInfo: ["text": LocalString._messages_sending_failed_try_again + " " + details]
         )
     }
 

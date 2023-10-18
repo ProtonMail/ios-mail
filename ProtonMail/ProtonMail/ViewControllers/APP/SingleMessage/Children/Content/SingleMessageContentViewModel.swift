@@ -1,6 +1,6 @@
 import Combine
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 
 struct SingleMessageContentViewContext {
     let labelId: LabelID

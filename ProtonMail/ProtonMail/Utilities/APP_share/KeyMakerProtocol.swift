@@ -15,14 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 
 protocol KeyMakerProtocol: AnyObject, LockCacheStatus, Service {
+    var isMainKeyInMemory: Bool { get }
+
     func mainKey(by protection: RandomPinProtection?) -> MainKey?
     func obtainMainKey(
         with protector: ProtectionStrategy,
+        returnExistingKey: Bool,
         handler: @escaping (MainKey?) -> Void
     )
+    func verify(protector: ProtectionStrategy) async throws
     @discardableResult
     func deactivate(_ protector: ProtectionStrategy) -> Bool
     func lockTheApp()

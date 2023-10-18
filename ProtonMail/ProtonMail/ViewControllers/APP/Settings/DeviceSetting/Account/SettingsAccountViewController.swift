@@ -22,9 +22,9 @@
 
 import LifetimeTracker
 import MBProgressHUD
-import ProtonCore_AccountDeletion
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreAccountDeletion
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 class SettingsAccountViewController: UITableViewController, AccessibleView, LifetimeTrackable {

@@ -20,15 +20,15 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
-import ProtonCore_TestingToolkit_UnitTests_Core
+#if canImport(ProtonCoreTestingToolkitUnitTestsCore)
+import ProtonCoreTestingToolkitUnitTestsCore
 #endif
-import ProtonCore_APIClient
-import ProtonCore_Authentication
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreAPIClient
+import ProtonCoreAuthentication
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 public struct AuthenticatorMock: AuthenticatorInterface {
     public init() {}

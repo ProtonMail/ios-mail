@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import PromiseKit
-import ProtonCore_DataModel
-import ProtonCore_TestingToolkit
+import ProtonCoreDataModel
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import XCTest
 
@@ -34,7 +34,7 @@ final class ComposerMessageHelperTests: XCTestCase {
     override func setUp() {
         super.setUp()
         contextProviderMock = MockCoreDataContextProvider()
-        fakeUser = UserManager(api: APIServiceMock(), role: .none)
+        fakeUser = UserManager(api: APIServiceMock())
         messageDataServiceMock = MockMessageDataService()
         testMessage = createTestMessage()
         cacheServiceMock = .init()
@@ -162,7 +162,7 @@ final class ComposerMessageHelperTests: XCTestCase {
 
         XCTAssertTrue(messageDataServiceMock.callSaveDraft.wasCalledExactlyOnce)
         let argument = try XCTUnwrap(messageDataServiceMock.callSaveDraft.lastArguments)
-        XCTAssertEqual(argument.a1, testMessage)
+        XCTAssertEqual(argument.a1, MessageEntity(testMessage))
     }
 
     func testMarkAsRead_withReadMsg_markIsNotCalled() {
@@ -212,7 +212,8 @@ final class ComposerMessageHelperTests: XCTestCase {
         let newAddress = String.randomString(20)
         sut.setNewMessage(objectID: testMessage.objectID)
 
-        sut.updateAddressID(addressID: newAddressID, emailAddress: newAddress) {
+        let address = Address(addressID: newAddressID, domainID: nil, email: newAddress, send: .active, receive: .active, status: .enabled, type: .protonDomain, order: 1, displayName: "", signature: "", hasKeys: 0, keys: [])
+        sut.updateAddress(to: address) {
             e.fulfill()
         }
         waitForExpectations(timeout: 1)

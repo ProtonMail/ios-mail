@@ -1,7 +1,7 @@
 import Foundation
 import Network
-import ProtonCore_Doh
-import ProtonCore_Services
+import ProtonCoreDoh
+import ProtonCoreServices
 
 // sourcery: mock
 protocol ConnectionStatusReceiver: AnyObject {

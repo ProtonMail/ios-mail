@@ -22,7 +22,7 @@
 #if os(iOS)
 
 import Foundation
-import ProtonCore_Doh
+import ProtonCoreDoh
 import TrustKit
 
 extension TrustKitWrapper {

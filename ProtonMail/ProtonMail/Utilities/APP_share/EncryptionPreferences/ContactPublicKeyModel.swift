@@ -15,15 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCryptoGoInterface
 
 struct ContactPublicKeyModel {
     let encrypt: Bool
-    // swiftlint:disable discouraged_optional_boolean
-    let sign: Bool?
+    let sign: PreContact.SignStatus
     let scheme: String?
     let mimeType: String?
-    // swiftlint:enable discouraged_optional_boolean
     let email: String
     let publicKeys: ContactPublicKeys
     let trustedFingerprints: Set<String>

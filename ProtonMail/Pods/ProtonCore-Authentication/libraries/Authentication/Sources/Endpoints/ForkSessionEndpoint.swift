@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Networking
+import ProtonCoreNetworking
 
 extension AuthService {
     public struct ForkSessionResponse: APIDecodableResponse, Encodable, Equatable {

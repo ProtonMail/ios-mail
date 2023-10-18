@@ -21,8 +21,8 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 public extension APIService {
 

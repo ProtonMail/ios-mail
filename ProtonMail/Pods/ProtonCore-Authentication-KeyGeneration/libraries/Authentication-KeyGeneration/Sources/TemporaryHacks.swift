@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_FeatureSwitch
+import ProtonCoreFeatureSwitch
 
 extension Feature {
     public static var useKeymigrationPhaseV2: Feature = Feature.init(name: "useKeymigrationPhaseV2", isEnable: true)

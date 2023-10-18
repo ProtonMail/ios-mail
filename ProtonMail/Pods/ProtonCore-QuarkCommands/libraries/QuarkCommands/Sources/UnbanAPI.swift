@@ -21,9 +21,9 @@
 //
 
 import Foundation
-import ProtonCore_Log
-import ProtonCore_Doh
-import ProtonCore_Services
+import ProtonCoreLog
+import ProtonCoreDoh
+import ProtonCoreServices
 
 public typealias UnbanDetails = Void
 

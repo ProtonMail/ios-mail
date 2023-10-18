@@ -1,6 +1,6 @@
 import CoreData
-import ProtonCore_UIFoundations
-import ProtonCore_DataModel
+import ProtonCoreUIFoundations
+import ProtonCoreDataModel
 import ProtonMailAnalytics
 
 enum MessageDisplayRule {
@@ -38,8 +38,8 @@ class ConversationViewModel {
 
     var showNewMessageArrivedFloaty: ((MessageID) -> Void)?
 
-    var showSpinner: (() -> Void)?
-    var hideSpinner: (() -> Void)?
+    var reloadTableView: (() -> Void)?
+    private(set) var isShowingSkeletonView = true
 
     var messagesTitle: String {
         .localizedStringWithFormat(LocalString._general_message, conversation.messageCount)
@@ -130,7 +130,6 @@ class ConversationViewModel {
             .allSatisfy { $0.message.contains(location: .archive) }
     }
 
-    private let observerID = UUID()
     var isInitialDataFetchCalled = false
     private let conversationStateProvider: ConversationStateProviderProtocol
     /// This is used to restore the message status when the view mode is changed.
@@ -205,9 +204,6 @@ class ConversationViewModel {
             completion?()
             return
         }
-        if messagesDataSource.isEmpty {
-            showSpinner?()
-        }
         conversationService.fetchConversation(
             with: conversation.conversationID,
             includeBodyOf: nil,
@@ -222,7 +218,6 @@ class ConversationViewModel {
                     .compactMap{ $0.message?.objectID.rawValue }
                 self.messageService.markLocally(messageObjectIDs: ids, labelID: self.labelId, unRead: false)
             }
-            self?.hideSpinner?()
 
             if let completion = completion {
                 DispatchQueue.main.async(execute: completion)
@@ -254,6 +249,10 @@ class ConversationViewModel {
         }
 
         conversationMessagesProvider.observe { [weak self] update in
+            if case .willUpdate = update {
+                self?.isShowingSkeletonView = false
+                self?.reloadTableView?()
+            }
             self?.perform(update: update, on: tableView)
             if case .didUpdate = update {
                 self?.checkTrashedHintBanner()
@@ -261,15 +260,23 @@ class ConversationViewModel {
                 self?.markMessagesReadIfNeeded()
             }
         } storedMessages: { [weak self] messages in
-            var messageDataModels = messages.compactMap { self?.messageType(with: $0) }
-
-            if messages.count == self?.conversation.messageCount {
-                _ = self?.expandSpecificMessage(dataModels: &messageDataModels)
-            }
-            self?.messagesDataSource = messageDataModels
+            self?.updateMessageDataSource(messages: messages)
             self?.markMessagesReadIfNeeded()
             self?.checkTrashedHintBanner()
+            self?.reloadTableView?()
         }
+    }
+
+    private func updateMessageDataSource(messages: [MessageEntity]) {
+        var messageDataModels = messages.compactMap { messageType(with: $0) }
+
+        if messages.count == conversation.messageCount {
+            _ = expandSpecificMessage(dataModels: &messageDataModels)
+        }
+        if !messageDataModels.allSatisfy({ $0.message?.body.isEmpty == true }) {
+            isShowingSkeletonView = false
+        }
+        messagesDataSource = messageDataModels
     }
 
     func stopObserveConversationAndMessages() {
@@ -606,6 +613,7 @@ class ConversationViewModel {
     // MARK: - Actions
 
     private func perform(update: ConversationUpdateType, on tableView: UITableView) {
+        guard !isShowingSkeletonView else { return }
         switch update {
         case .willUpdate:
             tableViewIsUpdating = true

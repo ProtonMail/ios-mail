@@ -15,18 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Hash
+import ProtonCoreHash
 
-class ImageProxyCache {
-    static let shared = ImageProxyCache(coreKeyMaker: sharedServices.get())
-
+class ImageProxyCache: ImageProxyCacheProtocol {
     struct CacheKey {
         let rawValue: String
     }
 
     private let encryptedCache: EncryptedCache
 
-    private init(coreKeyMaker: KeyMakerProtocol) {
+    init(coreKeyMaker: KeyMakerProtocol) {
         encryptedCache = EncryptedCache(
             maxDiskSize: Constants.ImageProxy.cacheDiskSizeLimitInBytes,
             subdirectory: "me.proton.imageproxy",

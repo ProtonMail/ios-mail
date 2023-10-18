@@ -20,14 +20,14 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Services
-import ProtonCore_APIClient
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_FeatureSwitch
-import ProtonCore_Utilities
-import ProtonCore_Observability
-import ProtonCore_Log
+import ProtonCoreServices
+import ProtonCoreAPIClient
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreFeatureSwitch
+import ProtonCoreUtilities
+import ProtonCoreObservability
+import ProtonCoreLog
 
 public class AuthService: Client {
     public var apiService: APIService

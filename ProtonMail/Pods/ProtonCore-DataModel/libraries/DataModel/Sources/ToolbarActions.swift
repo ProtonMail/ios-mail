@@ -22,7 +22,7 @@
 
 import Foundation
 
-public final class ToolbarActions: NSObject, NSCoding {
+public final class ToolbarActions: NSObject, NSCoding, Codable {
     /// Are the actions the same as the default toolbar actions.
     public var isCustom: Bool
     /// The list of actions of the toolbar

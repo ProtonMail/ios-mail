@@ -21,12 +21,12 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Payments
+import ProtonCorePayments
 
-class StoreKitManagerImpl: StoreKitManagerDelegate, Service {
-    typealias Dependencies = HasUsersManager & HasUnlockManager
+class StoreKitManagerImpl: StoreKitManagerDelegate {
+    typealias Dependencies = AnyObject & HasUsersManager & HasUnlockManager
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies

@@ -22,7 +22,7 @@
 
 import CoreData
 import Groot
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 
 // sourcery: mock
 protocol CacheServiceProtocol: Service {
@@ -44,14 +44,25 @@ protocol CacheServiceProtocol: Service {
 }
 
 class CacheService: CacheServiceProtocol {
+    typealias Dependencies = HasCoreDataContextProviderProtocol
+    & HasLastUpdatedStoreProtocol
+    & HasPushUpdater
+
     let userID: UserID
-    let lastUpdatedStore: LastUpdatedStoreProtocol
-    let coreDataService: CoreDataContextProviderProtocol
+
+    private let dependencies: Dependencies
+    
+    private var lastUpdatedStore: LastUpdatedStoreProtocol {
+        dependencies.lastUpdatedStore
+    }
+
+    private var coreDataService: CoreDataContextProviderProtocol{
+        dependencies.contextProvider
+    }
 
     init(userID: UserID, dependencies: Dependencies) {
         self.userID = userID
-        self.lastUpdatedStore = dependencies.lastUpdatedStore
-        self.coreDataService = dependencies.coreDataService
+        self.dependencies = dependencies
     }
 
     // MARK: - Generic functions
@@ -152,7 +163,7 @@ class CacheService: CacheServiceProtocol {
         msgToUpdate.unRead = unRead
 
         if unRead == false {
-            PushUpdater().remove(notificationIdentifiers: [msgToUpdate.notificationId])
+            dependencies.pushUpdater.remove(notificationIdentifiers: [msgToUpdate.notificationId])
         }
         if let conversation = Conversation.conversationForConversationID(msgToUpdate.conversationID, inManagedObjectContext: context) {
             conversation.applySingleMarkAsChanges(unRead: unRead, labelID: labelID.rawValue)
@@ -653,21 +664,6 @@ extension CacheService {
             } catch {
                 completion?(nil, error as NSError)
             }
-        }
-    }
-}
-
-extension CacheService {
-    struct Dependencies {
-        let coreDataService: CoreDataContextProviderProtocol
-        let lastUpdatedStore: LastUpdatedStoreProtocol
-
-        init(
-            coreDataService: CoreDataContextProviderProtocol,
-            lastUpdatedStore: LastUpdatedStoreProtocol
-        ) {
-            self.coreDataService = coreDataService
-            self.lastUpdatedStore = lastUpdatedStore
         }
     }
 }

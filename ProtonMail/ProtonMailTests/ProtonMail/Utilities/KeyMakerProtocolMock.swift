@@ -16,10 +16,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import ProtonCore_Keymaker
-import ProtonCore_TestingToolkit
+import ProtonCoreKeymaker
+import ProtonCoreTestingToolkit
 
 class MockKeyMakerProtocol: KeyMakerProtocol {
+    var isMainKeyInMemory: Bool = false
+
     @PropertyStub(\MockLockCacheStatus.isPinCodeEnabled, initialGet: Bool()) var isPinCodeEnabledStub
     var isPinCodeEnabled: Bool {
         isPinCodeEnabledStub()
@@ -50,9 +52,16 @@ class MockKeyMakerProtocol: KeyMakerProtocol {
         mainKeyStub(protection)
     }
 
+    var verifyError: Error?
+    func verify(protector: ProtectionStrategy) async throws {
+        if let error = verifyError {
+            throw error
+        }
+    }
+
     @FuncStub(MockKeyMakerProtocol.obtainMainKey) var obtainMainKeyStub
-    func obtainMainKey(with protector: ProtectionStrategy, handler: @escaping (MainKey?) -> Void) {
-        obtainMainKeyStub(protector, handler)
+    func obtainMainKey(with protector: ProtectionStrategy, returnExistingKey: Bool, handler: @escaping (MainKey?) -> Void) {
+        obtainMainKeyStub(protector, returnExistingKey, handler)
     }
 
     @FuncStub(MockKeyMakerProtocol.deactivate, initialReturn: Bool()) var deactivateStub

@@ -20,13 +20,21 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Combine
 import CoreData
 import Foundation
 import PromiseKit
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 import ProtonMailAnalytics
 import SwiftSoup
+
+// sourcery: mock
+protocol ComposeUIProtocol: AnyObject {
+    func changeInvalidSenderAddress(to newAddress: Address)
+    func updateSenderAddressesList()
+    func show(error: String)
+}
 
 class ComposeViewModel: NSObject {
     /// Only to notify ComposeContainerViewModel that contacts changed
@@ -47,15 +55,16 @@ class ComposeViewModel: NSObject {
     }
 
     private(set) var contacts: [ContactPickerModelProtocol] = []
-    private var emailsController: NSFetchedResultsController<Email>?
+    private var emailPublisher: EmailPublisher?
+    private var cancellable: AnyCancellable?
 
     private(set) var phoneContacts: [ContactPickerModelProtocol] = []
 
     private(set) var messageAction: ComposeMessageAction = .newDraft
     private(set) var subject: String = .empty
     var body: String = .empty
-    var showError: ((String) -> Void)?
     var deliveryTime: Date?
+    weak var uiDelegate: ComposeUIProtocol?
 
     var toSelectedContacts: [ContactPickerModelProtocol] = [] {
         didSet { self.contactsChange += 1 }
@@ -174,6 +183,8 @@ class ComposeViewModel: NSObject {
         // get original message if from sent
         let fromSent: Bool = msg?.isSent ?? false
         self.updateContacts(fromSent)
+        initializeSenderAddress()
+        observeAddressStatusChangedEvent()
     }
 
     func getAttachments() -> [AttachmentEntity] {
@@ -182,83 +193,10 @@ class ComposeViewModel: NSObject {
             .sorted(by: { $0.order < $1.order })
     }
 
-    func getAddresses() -> [Address] {
-        if let referenceAddress = composerMessageHelper.originalTo() ?? composerMessageHelper.originalFrom() {
-            return getFromAddressList(originalTo: referenceAddress)
-        }
-        return self.user.addresses
-    }
-
     private func showToastIfNeeded(errorCode: Int) {
         if errorCode == PGPTypeErrorCode.recipientNotFound.rawValue {
             LocalString._address_in_group_not_found_error.alertToast()
         }
-    }
-
-    func getDefaultSendAddress() -> Address? {
-        guard let draft = composerMessageHelper.draft else {
-            return user.userInfo.userAddresses.defaultSendAddress()
-        }
-
-        if let id = draft.nextAddressID,
-           let entity = composerMessageHelper.getMessageEntity(),
-           let sender = try? entity.parseSender(),
-           let address = user.userInfo.userAddresses.first(where: { $0.addressID == id && $0.email == sender.address }) {
-            return address
-        }
-        let referenceAddress = composerMessageHelper.originalTo() ?? composerMessageHelper.originalFrom() ?? ""
-        if let aliasAddress = getAddressFromPlusAlias(userAddress: user.addresses, originalAddress: referenceAddress) {
-            return aliasAddress
-        }
-        return messageService.defaultUserAddress(of: draft.sendAddressID)
-    }
-
-    private func getFromAddressList(originalTo: String?) -> [Address] {
-        var validUserAddress = user.addresses
-            .filter { $0.status == .enabled && $0.receive == .active && $0.send == .active }
-            .sorted(by: { $0.order >= $1.order })
-
-        if let aliasAddress = getAddressFromPlusAlias(
-            userAddress: validUserAddress,
-            originalAddress: originalTo ?? ""
-        ) {
-            validUserAddress.insert(aliasAddress, at: 0)
-        }
-        return validUserAddress
-    }
-
-    private func getAddressFromPlusAlias(userAddress: [Address], originalAddress: String) -> Address? {
-        guard let _ = originalAddress.firstIndex(of: "+"),
-              let _ = originalAddress.firstIndex(of: "@") else { return nil }
-        let normalizedAddress = originalAddress.canonicalizeEmail(scheme: .proton)
-        guard let address = userAddress
-            .first(where: { $0.email.canonicalizeEmail(scheme: .proton) == normalizedAddress })
-        else { return nil }
-        if address.email == originalAddress {
-            return nil
-        } else {
-            return Address(
-                addressID: address.addressID,
-                domainID: address.domainID,
-                email: originalAddress,
-                send: address.send,
-                receive: address.receive,
-                status: address.status,
-                type: address.type,
-                order: address.order,
-                displayName: address.displayName,
-                signature: address.signature,
-                hasKeys: address.hasKeys,
-                keys: address.keys
-            )
-        }
-    }
-
-    func fromAddress() -> Address? {
-        if let draft = self.composerMessageHelper.draft {
-            return self.messageService.userAddress(of: draft.sendAddressID)
-        }
-        return nil
     }
 
     func getCurrentSignature(_ addressId: String) -> String? {
@@ -448,10 +386,13 @@ class ComposeViewModel: NSObject {
             let decryptedBody = composerMessageHelper.decryptBody()
             let bodyDocument = try? SwiftSoup.parse(decryptedBody)
             let body = try? bodyDocument?.body()?.text()
-
             let signatureDocument = try? SwiftSoup.parse(self.htmlSignature())
             let signature = try? signatureDocument?.body()?.text()
-            return (body?.isEmpty ?? false) || body == signature
+
+            let isBodyTextEmpty = (body?.isEmpty ?? false) || body == signature
+            let noImages = (try? bodyDocument?.body()?.select("img").isEmpty()) ?? true
+
+            return isBodyTextEmpty && noImages
         }
         return false
     }
@@ -490,7 +431,7 @@ extension ComposeViewModel {
             guard let self = self else { return }
 
             self.updateDraft()
-            guard let msg = self.composerMessageHelper.getRawMessageObject() else {
+            guard let msg = self.composerMessageHelper.getMessageEntity() else {
                 return
             }
             self.messageService.send(inQueue: msg, deliveryTime: deliveryTime)
@@ -507,7 +448,7 @@ extension ComposeViewModel {
         }
     }
 
-    func updateAddressID(_ addressId: String, emailAddress: String) -> Promise<Void> {
+    func updateAddress(to address: Address, uploadDraft: Bool = true) -> Promise<Void> {
         return Promise { [weak self] seal in
             guard self?.composerMessageHelper.draft != nil else {
                 let error = NSError(domain: "",
@@ -517,10 +458,10 @@ extension ComposeViewModel {
                 return
             }
             if self?.user.userInfo.userAddresses
-                .contains(where: { $0.addressID == addressId }) == true {
-                self?.composerMessageHelper.updateAddressID(addressID: addressId, emailAddress: emailAddress) {
+                .contains(where: { $0.addressID == address.addressID }) == true {
+                self?.composerMessageHelper.updateAddress(to: address, uploadDraft: uploadDraft, completion: {
                     seal.fulfill_()
-                }
+                })
             } else {
                 let error = NSError(domain: "",
                                     code: -1,
@@ -557,7 +498,7 @@ extension ComposeViewModel {
                       pwdHit: String) {
         self.subject = title
 
-        guard let sendAddress = getDefaultSendAddress() else {
+        guard let sendAddress = currentSenderAddress() else {
             return
         }
 
@@ -573,9 +514,184 @@ extension ComposeViewModel {
     }
 }
 
+// MARK: - Address
+extension ComposeViewModel {
+    private func observeAddressStatusChangedEvent() {
+        dependencies.notificationCenter.addObserver(
+            self,
+            selector: #selector(self.addressesStatusChanged),
+            name: .addressesStatusAreChanged,
+            object: nil
+        )
+    }
+    
+    @objc
+    private func addressesStatusChanged() {
+        defer {
+            uiDelegate?.updateSenderAddressesList()
+        }
+        switch messageAction {
+        case .forward, .reply, .replyAll, .openDraft:
+            guard
+                let senderAddress = currentSenderAddress(),
+                senderAddress.status == .disabled,
+                let validAddress = validSenderAddressFromMessage(),
+                validAddress.addressID != senderAddress.addressID,
+                validAddress.email != senderAddress.addressID
+            else { return }
+            uiDelegate?.changeInvalidSenderAddress(to: validAddress)
+        case .newDraft, .newDraftFromShare:
+            guard
+                let senderAddress = currentSenderAddress(),
+                senderAddress.status == .disabled,
+                let defaultAddress = user.addresses.defaultSendAddress()
+            else { return }
+            uiDelegate?.changeInvalidSenderAddress(to: defaultAddress)
+        }
+    }
+
+    /// The sender address needs to be updated to a valid address
+    /// Not the sender of the original message
+    private func initializeSenderAddress() {
+        switch messageAction {
+        case .forward, .reply, .replyAll, .openDraft:
+            if let address = validSenderAddressFromMessage() {
+                updateAddress(to: address, uploadDraft: false).cauterize()
+            }
+        case .newDraft, .newDraftFromShare:
+            if let address = user.addresses.defaultAddress() {
+                updateAddress(to: address, uploadDraft: false).cauterize()
+            }
+        }
+    }
+
+    private func validSenderAddressFromMessage() -> Address? {
+        let userAddresses = user.addresses
+        var validAddress: Address?
+        let referenceAddress = composerMessageHelper.originalTo() ?? composerMessageHelper.originalFrom() ?? ""
+        if let address = userAddresses.first(where: {
+            $0.email == referenceAddress &&
+            $0.status == .enabled &&
+            $0.receive == .active
+        }) {
+            validAddress = address
+        } else if let aliasAddress = getAddressFromPlusAlias(
+            userAddress: userAddresses,
+            originalAddress: referenceAddress
+        ) {
+            validAddress = aliasAddress
+        } else if let draft = composerMessageHelper.draft,
+                  let defaultAddress = messageService.defaultUserAddress(of: draft.sendAddressID) {
+            validAddress = defaultAddress
+        } else {
+            validAddress = userAddresses.defaultAddress()
+        }
+        return validAddress
+    }
+
+    /// Original sender address based on original message information
+    /// The returned address could be disabled for serval reason
+    func originalSenderAddress() -> Address? {
+        let referenceAddress = composerMessageHelper.originalTo() ?? composerMessageHelper.originalFrom() ?? ""
+        if let address = user.addresses.first(where: { $0.email == referenceAddress }) {
+            return address
+        } else if let aliasAddress = getAddressFromPlusAlias(
+            userAddress: user.addresses,
+            originalAddress: referenceAddress
+        ) {
+            return aliasAddress
+        }
+        return nil
+    }
+
+    func currentSenderAddress() -> Address? {
+        let defaultAddress = user.addresses.defaultAddress()
+        guard
+            let entity = composerMessageHelper.getMessageEntity(),
+            let draft = composerMessageHelper.draft,
+            let sender = try? entity.parseSender(),
+            let address = user.addresses.first(where: { $0.addressID == draft.sendAddressID.rawValue })
+        else { return defaultAddress }
+
+        if address.email == sender.address {
+            return address
+        } else {
+            return Address(
+                addressID: address.addressID,
+                domainID: address.domainID,
+                email: sender.address,
+                send: address.send,
+                receive: address.receive,
+                status: address.status,
+                type: address.type,
+                order: address.order,
+                displayName: address.displayName,
+                signature: address.signature,
+                hasKeys: address.hasKeys,
+                keys: address.keys
+            )
+        }
+    }
+
+    func getAddresses() -> [Address] {
+        var addresses: [Address] = user.addresses
+        if let referenceAddress = composerMessageHelper.originalTo() ?? composerMessageHelper.originalFrom() {
+            addresses = getFromAddressList(originalTo: referenceAddress)
+        }
+        return addresses
+            .filter { $0.status == .enabled && $0.receive == .active }
+            .sorted(by: { $0.order < $1.order })
+    }
+
+    private func getFromAddressList(originalTo: String?) -> [Address] {
+        var validUserAddress = user.addresses
+            .filter { $0.status == .enabled && $0.receive == .active }
+            .sorted(by: { $0.order >= $1.order })
+
+        if let aliasAddress = getAddressFromPlusAlias(
+            userAddress: validUserAddress,
+            originalAddress: originalTo ?? ""
+        ) {
+            validUserAddress.insert(aliasAddress, at: 0)
+        }
+        return validUserAddress
+    }
+
+    private func getAddressFromPlusAlias(userAddress: [Address], originalAddress: String) -> Address? {
+        guard let _ = originalAddress.firstIndex(of: "+"),
+              let _ = originalAddress.firstIndex(of: "@") else { return nil }
+        let normalizedAddress = originalAddress.canonicalizeEmail(scheme: .proton)
+        guard let address = userAddress
+            .first(where: {
+                $0.email.canonicalizeEmail(scheme: .proton) == normalizedAddress &&
+                $0.status == .enabled &&
+                $0.receive == .active
+            })
+        else { return nil }
+        if address.email == originalAddress {
+            return nil
+        } else {
+            return Address(
+                addressID: address.addressID,
+                domainID: address.domainID,
+                email: originalAddress,
+                send: address.send,
+                receive: address.receive,
+                status: address.status,
+                type: address.type,
+                order: address.order,
+                displayName: address.displayName,
+                signature: address.signature,
+                hasKeys: address.hasKeys,
+                keys: address.keys
+            )
+        }
+    }
+}
+
 extension ComposeViewModel {
     func htmlSignature() -> String {
-        var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
+        var signature = currentSenderAddress()?.signature ?? self.user.userDefaultSignature
         signature = signature.ln2br()
 
         let mobileSignature = self.mobileSignature()
@@ -657,141 +773,82 @@ extension ComposeViewModel {
 // MARK: - Contact related methods
 
 extension ComposeViewModel {
+    private func updateContact(from jsonList: String, to selectedContacts: inout [ContactPickerModelProtocol]) {
+        // Json to contact/group objects
+        let parsedContacts = toContacts(jsonList)
+        
+        for contact in parsedContacts {
+            switch contact.modelType {
+            case .contact:
+                guard let contact = contact as? ContactVO else {
+                    PMAssertionFailure("Model type and value doesn't match when init composer recipient, \(contact.modelType)")
+                    continue
+                }
+                if !contact.exists(in: selectedContacts) {
+                    selectedContacts.append(contact)
+                }
+            case .contactGroup:
+                guard let group = contact as? ContactGroupVO else {
+                    PMAssertionFailure("Model type and value doesn't match when init composer recipient, \(contact.modelType)")
+                    continue
+                }
+                selectedContacts.append(group)
+            }
+        }
+    }
     /**
      Load the contacts and groups back for the message
 
      contact group only shows up in draft, so the reply, reply all, etc., no contact group will show up
      */
     private func updateContacts(_ origFromSent: Bool) {
-        if let draft = composerMessageHelper.draft {
-            switch messageAction {
-            case .newDraft, .forward, .newDraftFromShare:
-                break
-            case .openDraft:
-                let toContacts = self.toContacts(draft.recipientList) // Json to contact/group objects
+        guard let draft = composerMessageHelper.draft else { return }
+        switch messageAction {
+        case .newDraft, .forward, .newDraftFromShare:
+            break
+        case .openDraft:
+            updateContact(from: draft.recipientList, to: &toSelectedContacts)
+            updateContact(from: draft.ccList, to: &ccSelectedContacts)
+            updateContact(from: draft.bccList, to: &bccSelectedContacts)
+        case .reply:
+            if origFromSent {
+                let toContacts = self.toContacts(draft.recipientList)
                 for cont in toContacts {
-                    switch cont.modelType {
-                    case .contact:
-                        if let cont = cont as? ContactVO {
-                            if !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
-                                self.toSelectedContacts.append(cont)
-                            }
-                        } else {
-                            // TODO: error handling
-                        }
-                    case .contactGroup:
-                        if let group = cont as? ContactGroupVO {
-                            self.toSelectedContacts.append(group)
-                        } else {
-                            // TODO: error handling
-                        }
-                    }
+                    self.toSelectedContacts.append(cont)
                 }
-
-                let ccContacts = self.toContacts(draft.ccList)
-                for cont in ccContacts {
-                    switch cont.modelType {
-                    case .contact:
-                        if let cont = cont as? ContactVO {
-                            if !cont.isDuplicatedWithContacts(self.ccSelectedContacts) {
-                                self.ccSelectedContacts.append(cont)
-                            }
-                        } else {
-                            // TODO: error handling
-                        }
-                    case .contactGroup:
-                        if let group = cont as? ContactGroupVO {
-                            self.ccSelectedContacts.append(group)
-                        } else {
-                            // TODO: error handling
-                        }
-                    }
-                }
-
-                let bccContacts = self.toContacts(draft.bccList)
-                for cont in bccContacts {
-                    switch cont.modelType {
-                    case .contact:
-                        if let cont = cont as? ContactVO {
-                            if !cont.isDuplicatedWithContacts(self.bccSelectedContacts) {
-                                self.bccSelectedContacts.append(cont)
-                            }
-                        } else {
-                            // TODO: error handling
-                        }
-                    case .contactGroup:
-                        if let group = cont as? ContactGroupVO {
-                            self.bccSelectedContacts.append(group)
-                        } else {
-                            // TODO: error handling
-                        }
-                    }
-                }
-            case .reply:
-                if origFromSent {
-                    let toContacts = self.toContacts(draft.recipientList)
-                    for cont in toContacts {
-                        self.toSelectedContacts.append(cont)
-                    }
+            } else {
+                var senders: [ContactPickerModelProtocol] = []
+                let replytos = self.toContacts(draft.replyTos)
+                if !replytos.isEmpty {
+                    senders += replytos
                 } else {
-                    var senders: [ContactPickerModelProtocol] = []
-                    let replytos = self.toContacts(draft.replyTos)
-                    if !replytos.isEmpty {
-                        senders += replytos
-                    } else {
-                        if let newSender = self.toContact(draft.sender) {
-                            senders.append(newSender)
-                        } else {
-                            // ignore
-                        }
+                    if let newSender = self.toContact(draft.sender) {
+                        senders.append(newSender)
                     }
-                    self.toSelectedContacts.append(contentsOf: senders)
                 }
-            case .replyAll:
-                if origFromSent {
-                    self.toContacts(draft.recipientList).forEach { self.toSelectedContacts.append($0) }
-                    self.toContacts(draft.ccList).forEach { self.ccSelectedContacts.append($0) }
-                    self.toContacts(draft.bccList).forEach { self.bccSelectedContacts.append($0) }
-                } else {
-                    let userAddress = self.user.addresses
-                    var senders = [ContactPickerModelProtocol]()
-                    let replytos = self.toContacts(draft.replyTos)
-                    if !replytos.isEmpty {
-                        senders += replytos
-                    } else {
-                        if let newSender = self.toContact(draft.sender) {
-                            senders.append(newSender)
-                        } else {
-                            // ignore
-                        }
-                    }
-
-                    for sender in senders {
-                        if let sender = sender as? ContactVO,
-                           !sender.isDuplicated(userAddress) {
-                            self.toSelectedContacts.append(sender)
-                        }
-                    }
-
-                    let toContacts = self.toContacts(draft.recipientList)
-                    for cont in toContacts {
-                        if let cont = cont as? ContactVO,
-                           !cont.isDuplicated(userAddress), !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
-                            self.toSelectedContacts.append(cont)
-                        }
-                    }
-                    if self.toSelectedContacts.isEmpty {
-                        self.toSelectedContacts.append(contentsOf: senders)
-                    }
-
-                    self.toContacts(draft.ccList).compactMap { $0 as? ContactVO }
-                        .filter { !$0.isDuplicated(userAddress) && !$0.isDuplicatedWithContacts(self.toSelectedContacts) }
-                        .forEach { self.ccSelectedContacts.append($0) }
-                    self.toContacts(draft.bccList).compactMap { $0 as? ContactVO }
-                        .filter { !$0.isDuplicated(userAddress) && !$0.isDuplicatedWithContacts(self.toSelectedContacts) }
-                        .forEach { self.bccSelectedContacts.append($0) }
-                }
+                self.toSelectedContacts.append(contentsOf: senders)
             }
+        case .replyAll:
+            if origFromSent {
+                self.toContacts(draft.recipientList).forEach { self.toSelectedContacts.append($0) }
+                self.toContacts(draft.ccList).forEach { self.ccSelectedContacts.append($0) }
+                self.toContacts(draft.bccList).forEach { self.bccSelectedContacts.append($0) }
+                return
+            }
+
+            if toContacts(draft.replyTos).isEmpty {
+                updateContact(from: draft.sender, to: &toSelectedContacts)
+            } else {
+                updateContact(from: draft.replyTos, to: &toSelectedContacts)
+            }
+
+            let userAddress = user.addresses
+            // Reply all doesn't have bcc
+            let recipients = toContacts(draft.recipientList) + toContacts(draft.ccList)
+            recipients
+                .compactMap { $0 as? ContactVO }
+                .filter { !$0.isDuplicated(userAddress) && !$0.exists(in: toSelectedContacts) }
+                .forEach { ccSelectedContacts.append($0) }
         }
     }
 
@@ -964,7 +1021,7 @@ extension ComposeViewModel {
                     contactVO.encryptionIconStatus = iconStatus
                     complete?(iconStatus?.iconWithColor, errorCode ?? 0)
                     if errorCode != nil, let errorString = iconStatus?.text {
-                        self?.showError?(errorString)
+                        self?.uiDelegate?.show(error: errorString)
                     }
                 }
             }
@@ -1058,28 +1115,26 @@ extension ComposeViewModel {
     }
 
     func fetchContacts() {
-        let service = user.contactService
-        emailsController = service.makeAllEmailsFetchedResultController()
-        emailsController?.delegate = self
-        try? emailsController?.performFetch()
-        let allContacts = (emailsController?.fetchedObjects ?? [])
-            .map { email in
-                ContactVO(
-                    name: email.name,
-                    email: email.email,
-                    isProtonMailContact: true
-                )
+        emailPublisher = .init(
+            userID: user.userID,
+            isContactCombine: dependencies.userCachedStatusProvider.isCombineContactOn,
+            contextProvider: dependencies.coreDataContextProvider
+        )
+        cancellable = emailPublisher?.contentDidChange.map { $0.map { email in
+            ContactVO(name: email.name, email: email.email, isProtonMailContact: true)
+        }}.sink(receiveValue: { [weak self] contactVOs in
+            // Remove the duplicated items
+            var set = Set<ContactVO>()
+            var filteredResult = [ContactVO]()
+            for contact in contactVOs {
+                if !set.contains(contact) {
+                    set.insert(contact)
+                    filteredResult.append(contact)
+                }
             }
-        // Remove the duplicated items
-        var set = Set<ContactVO>()
-        var filteredResult = [ContactVO]()
-        for contact in allContacts {
-            if !set.contains(contact) {
-                set.insert(contact)
-                filteredResult.append(contact)
-            }
-        }
-        self.contacts = filteredResult
+            self?.contacts = filteredResult
+        })
+        emailPublisher?.start()
     }
 
     func fetchPhoneContacts(completion: (() -> Void)?) {
@@ -1119,6 +1174,7 @@ extension ComposeViewModel {
         let darkModeCache: DarkModeCacheProtocol
         let attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol
         let userCachedStatusProvider: UserCachedStatusProvider
+        let notificationCenter: NotificationCenter
     }
 
     struct EncodableRecipient: Encodable {
@@ -1143,30 +1199,5 @@ extension ComposeViewModel {
         let address: String
         let group: String?
         let name: String?
-    }
-}
-
-extension ComposeViewModel: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard let emails = controller.fetchedObjects as? [Email] else {
-            return
-        }
-        let allContacts = emails.map { email in
-            ContactVO(
-                name: email.name,
-                email: email.email,
-                isProtonMailContact: true
-            )
-        }
-        // Remove the duplicated items
-        var set = Set<ContactVO>()
-        var filteredResult = [ContactVO]()
-        for contact in allContacts {
-            if !set.contains(contact) {
-                set.insert(contact)
-                filteredResult.append(contact)
-            }
-        }
-        self.contacts = filteredResult
     }
 }

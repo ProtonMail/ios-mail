@@ -19,13 +19,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import enum ProtonCore_DataModel.ClientApp
-import ProtonCore_Login
-import ProtonCore_Networking
-import ProtonCore_Services
-import enum ProtonCore_Payments.StoreKitManagerErrors
-import ProtonCore_UIFoundations
-import ProtonCore_FeatureSwitch
+#if os(iOS)
+
+import UIKit
+import enum ProtonCoreDataModel.ClientApp
+import ProtonCoreLogin
+import ProtonCoreNetworking
+import ProtonCoreServices
+import enum ProtonCorePayments.StoreKitManagerErrors
+import ProtonCoreUIFoundations
+import ProtonCoreFeatureSwitch
 
 public enum ScreenVariant<SpecificScreenData, CustomScreenData> {
     case mail(SpecificScreenData)
@@ -495,3 +498,5 @@ extension LoginAndSignupInterface {
 
 @available(*, deprecated, renamed: "LoginAndSignup")
 public typealias PMLogin = LoginAndSignup
+
+#endif

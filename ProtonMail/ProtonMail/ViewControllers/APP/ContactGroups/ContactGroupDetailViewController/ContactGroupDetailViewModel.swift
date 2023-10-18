@@ -20,12 +20,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import CoreData
 import Foundation
 import PromiseKit
-import CoreData
 
 protocol ContactGroupDetailVMProtocol {
     var reloadView: (() -> Void)? { get set }
+    var dismissView: (() -> Void)? { get set }
 
     var user: UserManager { get }
     var groupID: LabelID { get }
@@ -34,11 +35,11 @@ protocol ContactGroupDetailVMProtocol {
     var emails: [EmailEntity] { get }
 
     func getTotalEmailString() -> String
-
-    func reload() -> Bool
 }
 
 final class ContactGroupDetailViewModel: NSObject, ContactGroupDetailVMProtocol {
+    typealias Dependencies = HasUserManager & HasCoreDataContextProviderProtocol
+
     private var contactGroup: LabelEntity
     /// the contact group label ID
     var groupID: LabelID { self.contactGroup.labelID }
@@ -46,23 +47,30 @@ final class ContactGroupDetailViewModel: NSObject, ContactGroupDetailVMProtocol 
     var color: String { self.contactGroup.color }
     private(set) var emails: [EmailEntity] = []
 
-    let user: UserManager
-    private let fetchedController: NSFetchedResultsController<Label>
+    var user: UserManager {
+        dependencies.user
+    }
+
+    private let labelPublisher: LabelPublisher
+    private let dependencies: Dependencies
 
     var reloadView: (() -> Void)?
-    
-    init(user: UserManager, contactGroup: LabelEntity, labelsDataService: LabelsDataService) {
-        self.user = user
+    var dismissView: (() -> Void)?
+
+    init(contactGroup: LabelEntity, dependencies: Dependencies) {
+        self.dependencies = dependencies
         self.contactGroup = contactGroup
-        fetchedController = labelsDataService.labelFetchedController(by: contactGroup.labelID)
+        labelPublisher = .init(
+            parameters: .init(userID: dependencies.user.userID),
+            dependencies: dependencies
+        )
 
         super.init()
         self.sortEmails(emailArray: contactGroup.emailRelations)
-
-        try? fetchedController.performFetch()
-        fetchedController.delegate = self
+        labelPublisher.delegate = self
+        labelPublisher.fetchLabel(contactGroup.labelID)
     }
-    
+
     private func sortEmails(emailArray: [EmailEntity]) {
         self.emails = emailArray.sorted { first, second in
             if first.name == second.name {
@@ -71,35 +79,24 @@ final class ContactGroupDetailViewModel: NSObject, ContactGroupDetailVMProtocol 
             return first.name < second.name
         }
     }
-    
+
     func getTotalEmailString() -> String {
         let count = self.emails.count
         return String(format: LocalString._contact_groups_member_count_description, count)
     }
-
-    /**
-     Reloads the contact group from core data
-     
-     - Returns: Bool. true if the reloading succeeds because the contact group can be fetched from core data; false if the contact group has been deleted from core data
-     */
-    func reload() -> Bool {
-        guard let label = self.fetchedController.fetchedObjects?.first else {
-            // deleted case
-            return false
-        }
-        self.contactGroup = LabelEntity(label: label)
-        return true
-    }
 }
 
-extension ContactGroupDetailViewModel: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        guard let objects = controller.fetchedObjects as? [Label],
-              let labelObject = objects.first else {
+extension ContactGroupDetailViewModel: LabelListenerProtocol {
+    func receivedLabels(labels: [LabelEntity]) {
+        guard let label = labels.first else {
+            dismissView?()
             return
         }
-        self.contactGroup = LabelEntity(label: labelObject)
-        self.sortEmails(emailArray: contactGroup.emailRelations)
-        self.reloadView?()
+        guard label != contactGroup else {
+            return
+        }
+        contactGroup = label
+        sortEmails(emailArray: label.emailRelations)
+        reloadView?()
     }
 }

@@ -19,12 +19,20 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+public enum HumanVerificationOutcomeStatus: String, Encodable, CaseIterable {
+    case successful
+    case failed
+    case canceled
+    case addressAlreadyTaken
+    case invalidVerificationCode
+}
+
 public struct HumanVerificationOutcomeLabels: Encodable, Equatable {
-    let status: SuccessOrFailureOrCanceledStatus
+    let status: HumanVerificationOutcomeStatus
 }
 
 extension ObservabilityEvent where Payload == PayloadWithLabels<HumanVerificationOutcomeLabels> {
-    public static func humanVerificationOutcomeTotal(status: SuccessOrFailureOrCanceledStatus) -> Self {
-        .init(name: "ios_core_human_verification_outcome_total", labels: .init(status: status))
+    public static func humanVerificationOutcomeTotal(status: HumanVerificationOutcomeStatus) -> Self {
+        .init(name: "ios_core_human_verification_outcome_total", labels: .init(status: status), version: .v2)
     }
 }

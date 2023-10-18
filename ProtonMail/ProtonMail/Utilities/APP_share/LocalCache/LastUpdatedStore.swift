@@ -21,11 +21,11 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import ProtonCore_DataModel
+import ProtonCoreDataModel
 import UIKit
 
 // sourcery: mock
-protocol LastUpdatedStoreProtocol {
+protocol LastUpdatedStoreProtocol: Service {
     func cleanUp(userId: UserID)
 
     func updateEventID(by userID: UserID, eventID: String)
@@ -53,7 +53,7 @@ protocol LastUpdatedStoreProtocol {
                                type: ViewMode)
 }
 
-final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol, Service {
+final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol {
 
     let contextProvider: CoreDataContextProviderProtocol
 

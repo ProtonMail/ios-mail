@@ -24,6 +24,8 @@ extension XCTestCase {
         timeout: TimeInterval = 3
     )
     {
-        waitUntil(timeout: timeout, condition: condition())
+        XCTAssertTrue(
+            waitUntil(timeout: timeout, condition: condition())
+        )
     }
 }

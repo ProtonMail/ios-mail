@@ -19,8 +19,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_CoreTranslation
 
 enum UsernameValidationError: Error {
     case emptyUsername
@@ -30,7 +31,9 @@ extension UsernameValidationError: CustomStringConvertible {
     var description: String {
         switch self {
         case .emptyUsername:
-            return CoreString._ls_username_username_error
+            return LUITranslation.username_username_error.l10n
         }
     }
 }
+
+#endif

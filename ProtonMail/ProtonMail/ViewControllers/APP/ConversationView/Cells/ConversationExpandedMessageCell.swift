@@ -1,4 +1,4 @@
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 class ConversationExpandedMessageCell: UITableViewCell {
 

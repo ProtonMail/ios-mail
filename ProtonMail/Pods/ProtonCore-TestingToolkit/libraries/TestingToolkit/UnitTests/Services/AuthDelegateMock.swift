@@ -20,11 +20,11 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-#if canImport(ProtonCore_TestingToolkit_UnitTests_Core)
-import ProtonCore_TestingToolkit_UnitTests_Core
+#if canImport(ProtonCoreTestingToolkitUnitTestsCore)
+import ProtonCoreTestingToolkitUnitTestsCore
 #endif
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 public final class AuthDelegateMock: AuthDelegate {
 
@@ -58,7 +58,7 @@ public final class AuthDelegateMock: AuthDelegate {
     }
 
     @PropertyStub(\AuthDelegateMock.authSessionInvalidatedDelegateForLoginAndSignup, initialGet: nil) public var authSessionInvalidatedDelegateForLoginAndSignupStub
-    public var authSessionInvalidatedDelegateForLoginAndSignup: ProtonCore_Services.AuthSessionInvalidatedDelegate? {
+    public var authSessionInvalidatedDelegateForLoginAndSignup: ProtonCoreServices.AuthSessionInvalidatedDelegate? {
         get { authSessionInvalidatedDelegateForLoginAndSignupStub() }
         set { authSessionInvalidatedDelegateForLoginAndSignupStub(newValue) }
     }

@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 import WebKit
 import XCTest
@@ -41,7 +41,7 @@ final class HTTPRequestSecureLoaderTests: XCTestCase {
             privateKeys: [],
             addressesPrivateKeys: [],
             mailboxPassphrase: .init(value: "")
-        ), imageProxy: .init(dependencies: .init(apiService: apiMock))))
+        ), imageProxy: .init(dependencies: .init(apiService: apiMock, imageCache: MockImageProxyCacheProtocol()))))
         sut.inject(into: config)
 
         webView = PMWebView(frame: .zero, configuration: config)

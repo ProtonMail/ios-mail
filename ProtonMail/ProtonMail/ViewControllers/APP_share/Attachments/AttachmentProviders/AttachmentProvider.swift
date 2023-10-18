@@ -22,7 +22,7 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 protocol AttachmentProvider {
     var actionSheetItem: PMActionSheetItem { get }

@@ -22,7 +22,7 @@
 #if os(iOS)
 
 import UIKit
-import ProtonCore_Foundations
+import ProtonCoreFoundations
 
 public final class PMTabBarController: UITabBarController, AccessibleView {
     // MARK: Constant

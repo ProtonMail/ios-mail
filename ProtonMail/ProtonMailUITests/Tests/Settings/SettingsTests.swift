@@ -6,7 +6,7 @@
 //  Copyright © 2020 Proton Mail. All rights reserved.
 //
 
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 class SettingsTests : FixtureAuthenticatedTestCase {
     
@@ -76,6 +76,8 @@ class SettingsTests : FixtureAuthenticatedTestCase {
             .settings()
             .pin()
             .disablePin()
+            .enterPin(correctPin)
+            .continueWithCorrectPin()
             .navigateUpToSettings()
             .close()
             .backgroundAppWithoutPin()
@@ -112,4 +114,29 @@ class SettingsTests : FixtureAuthenticatedTestCase {
             .expectedTitleIsShown()
             .emptyListPlaceholderIsShown()
     }
+    
+    func testDefaultSwipeActions() {
+        MenuRobot()
+            .settings()
+            .openSwipeActions()
+            .selectLeftToRight()
+            .verify.leftToRightIsMoveToTrash()
+            .backButton()
+            .selectRightToLeft()
+            .verify.rightToLeftIsMoveToArchive()
+    }
+        
+    func testCustomSwipeActions() {
+        MenuRobot()
+            .settings()
+            .openSwipeActions()
+            .selectLeftToRight()
+            .selectMoveToSpam()
+            .verify.leftToRightIsMoveToSpam()
+            .backButton()
+            .selectRightToLeft()
+            .selectLabelAs()
+            .verify.rightToLeftIsLabelAs()
+    }
 }
+

@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 import XCTest
 
 final class PushNavigationResolverTests: XCTestCase {

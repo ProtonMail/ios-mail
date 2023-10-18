@@ -22,10 +22,10 @@
 // swiftlint:disable function_parameter_count
 
 import Foundation
-import ProtonCore_Doh
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_Utilities
+import ProtonCoreDoh
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreUtilities
 
 // MARK: - Handling device verification
 

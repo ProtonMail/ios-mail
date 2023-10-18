@@ -20,8 +20,8 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Log
-import ProtonCore_Utilities
+import ProtonCoreLog
+import ProtonCoreUtilities
 
 struct RuntimeError: Error {
     let message: String
@@ -138,7 +138,7 @@ public protocol DoHInterface {
     
     var currentlyUsedCookiesStorage: HTTPCookieStorage? { get }
     func setUpCookieSynchronization(storage: HTTPCookieStorage?)
-    func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String])
+    func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String]) async
 
     // swiftlint:disable function_parameter_count
     func handleErrorResolvingProxyDomainIfNeeded(
@@ -222,5 +222,13 @@ public extension DoHInterface {
                                                                         callCompletionBlockUsing: CompletionBlockExecutor, completion: @escaping (Bool) -> Void) {
         handleErrorResolvingProxyDomainAndSynchronizingCookiesIfNeeded(host: host, requestHeaders: [:], sessionId: sessionId, response: response,
                                                                        error: error, callCompletionBlockUsing: .asyncMainExecutor, completion: completion)
+    }
+
+    @available(*, deprecated, message: "Please use the async variant of this function instead.")
+    func synchronizeCookies(with response: URLResponse?, requestHeaders: [String: String], completion: @escaping () -> Void) {
+        Task {
+            await synchronizeCookies(with: response, requestHeaders: requestHeaders)
+            completion()
+        }
     }
 }

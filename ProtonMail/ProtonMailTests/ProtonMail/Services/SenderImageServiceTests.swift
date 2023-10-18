@@ -15,12 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_TestingToolkit
-import ProtonCore_UIFoundations
+import ProtonCoreTestingToolkit
+import ProtonCoreUIFoundations
 @testable import ProtonMail
 import XCTest
 
 final class SenderImageServiceTests: XCTestCase {
+    private var globalContainer: GlobalContainer!
     var apiServiceMock: APIServiceMock!
     var sut: SenderImageService!
     var cacheUrl: URL!
@@ -36,8 +37,11 @@ final class SenderImageServiceTests: XCTestCase {
         apiServiceMock.dohInterfaceStub.fixture = DohMock()
         internetStatusProviderMock = .init()
         internetStatusProviderMock.statusStub.fixture = .connected
+
+        globalContainer = .init()
         sut = .init(dependencies: .init(apiService: apiServiceMock,
-                                        internetStatusProvider: internetStatusProviderMock))
+                                        internetStatusProvider: internetStatusProviderMock,
+                                        imageCache: globalContainer.senderImageCache))
 
         // Prepare for api mock to write image data to disk
         imageTempUrl = FileManager.default.temporaryDirectory
@@ -47,9 +51,12 @@ final class SenderImageServiceTests: XCTestCase {
 
     override func tearDownWithError() throws {
         try super.tearDownWithError()
+
+        globalContainer.senderImageCache.purge()
+
         sut = nil
+        globalContainer = nil
         apiServiceMock = nil
-        try FileManager.default.removeItem(at: cacheUrl)
         try FileManager.default.removeItem(at: imageTempUrl)
     }
 
@@ -89,7 +96,7 @@ final class SenderImageServiceTests: XCTestCase {
         }
         wait(for: [e2], timeout: 1)
         // The second fetch should not trigger the api.
-        XCTAssertTrue(apiServiceMock.downloadStub.wasCalledExactlyOnce)
+        XCTAssertEqual(apiServiceMock.downloadStub.callCounter, 1)
 
         // Different parameter will trigger another api request.
         sut.fetchSenderImage(email: "test@pm.me", isDarkMode: true) { result in

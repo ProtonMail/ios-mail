@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Factory
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 
-final class GlobalContainer: ManagedContainer {
+class GlobalContainer: ManagedContainer {
     let manager = ContainerManager()
 
     var attachmentMetadataStripStatusProviderFactory: Factory<AttachmentMetadataStrippingProtocol> {
@@ -61,12 +61,12 @@ final class GlobalContainer: ManagedContainer {
         self {
             Keymaker(
                 autolocker: Autolocker(lockTimeProvider: self.userCachedStatus),
-                keychain: KeychainWrapper.keychain
+                keychain: self.keychain
             )
         }
     }
 
-    var lastUpdatedStoreFactory: Factory<LastUpdatedStore> {
+    var lastUpdatedStoreFactory: Factory<LastUpdatedStoreProtocol> {
         self {
             LastUpdatedStore(contextProvider: self.contextProvider)
         }
@@ -78,15 +78,39 @@ final class GlobalContainer: ManagedContainer {
         }
     }
 
+    var lockPreventorFactory: Factory<LockPreventor> {
+        self {
+            LockPreventor.shared
+        }
+    }
+
     var notificationCenterFactory: Factory<NotificationCenter> {
         self {
             .default
         }
     }
 
+    var pinCodeProtectionFactory: Factory<PinCodeProtection> {
+        self {
+            DefaultPinCodeProtection(dependencies: self)
+        }
+    }
+
+    var pinCodeVerifierFactory: Factory<PinCodeVerifier> {
+        self {
+            DefaultPinCodeVerifier(dependencies: self)
+        }
+    }
+
     var pinFailedCountCacheFactory: Factory<PinFailedCountCache> {
         self {
             self.userCachedStatus
+        }
+    }
+
+    var pushUpdaterFactory: Factory<PushUpdater> {
+        self {
+            PushUpdater(userStatus: self.userCachedStatus)
         }
     }
 

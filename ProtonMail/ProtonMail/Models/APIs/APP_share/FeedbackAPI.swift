@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 /// See https://protonmail.gitlab-pages.protontech.ch/Slim-API/core_legacy/#tag/Feedback
 struct UserFeedbackRequest: Request {

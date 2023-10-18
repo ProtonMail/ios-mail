@@ -31,16 +31,14 @@ ENTERPRISE_PUSH_SERVICE_PATH = "PushService.mobileprovision"
 ENTERPRISE_SHARE_PATH = "Share.mobileprovision"
 
 UNIT_TEST_SCHEME = "ProtonMailTests"
-UNIT_TEST_DEVICE = "iPhone 8"
-# do not use 16.4 because of  https://github.com/NativeScript/NativeScript/issues/10267 that's apparently causing the tests to fail
-# 17.0 might be OK though, check it once it's available
-UI_TEST_IOS_VERSION = "16.2"
+UNIT_TEST_DEVICE = "iPhone 14"
+UI_TEST_IOS_VERSION = "17.0"
 UI_TEST_DEVICES = ["iPhone 14 Plus (#{UI_TEST_IOS_VERSION})"]
 UI_TEST_SCHEME = "ProtonMailUITests"
 
 def select_xcode
   xcodes(
-    version: '14.2',
+    version: '15.0',
     select_for_current_build_only: true,
   )
 end
@@ -144,7 +142,8 @@ def build_release_app
             "ch.protonmail.protonmail.PushService" => "protonmail push service release",
             "ch.protonmail.protonmail.Siri" => "Protonmail Siri kit release"
         }
-    }
+    },
+    skip_package_dependencies_resolution: true
   )
 end
 
@@ -162,7 +161,8 @@ def build_enterprise_app
             "com.protonmail.protonmail.SiriDev" => "production siriDev"
         },
         iCloudContainerEnvironment: "Production"
-    }
+    },
+    skip_package_dependencies_resolution: true
   )
 end
 
@@ -372,8 +372,7 @@ platform :ios do
       app_identifier: APP_IDENTIFIER,
       reset_simulator: true,
       test_without_building: true,
-      output_directory: "../test_output/",
-      skip_package_dependencies_resolution: true
+      output_directory: "../test_output/"
     )
   end
 
@@ -393,8 +392,7 @@ platform :ios do
       app_identifier: APP_IDENTIFIER,
       output_directory: "../test_output/TestResults",
       output_files: "report.xml",
-      result_bundle: true,
-      skip_package_dependencies_resolution: true
+      result_bundle: true
     )
   end
 

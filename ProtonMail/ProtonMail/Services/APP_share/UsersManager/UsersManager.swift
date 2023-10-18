@@ -24,19 +24,33 @@
 import LifetimeTracker
 #endif
 import PromiseKit
-import ProtonCore_Challenge
-import ProtonCore_DataModel
-import ProtonCore_Doh
-import ProtonCore_Keymaker
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreChallenge
+import ProtonCoreDataModel
+import ProtonCoreDoh
+import ProtonCoreKeymaker
+import ProtonCoreNetworking
+import ProtonCoreServices
 import ProtonMailAnalytics
 
 // sourcery: mock
 protocol UsersManagerProtocol: AnyObject {
-    var firstUser: UserManager? { get }
+    var users: [UserManager] { get }
 
     func hasUsers() -> Bool
+}
+
+extension UsersManagerProtocol {
+    var firstUser: UserManager? {
+        users.first
+    }
+
+    func getUser(by userID: UserID) -> UserManager? {
+        users.first { $0.userID == userID }
+    }
+
+    func getUser(by sessionID: String) -> UserManager? {
+        users.first { $0.isMatch(sessionID: sessionID) }
+    }
 }
 
 /// manager all the users and there services
@@ -81,11 +95,8 @@ class UsersManager: Service, UsersManagerProtocol {
         static let mailSettingsStore = "mailSettingsKeyProtectedWithMainKey"
     }
 
-    typealias Dependencies = AnyObject
-    & HasCachedUserDataProvider
-    & HasKeychain
-    & HasKeyMakerProtocol
-    & HasNotificationCenter
+    // UsersManager needs GlobalContainer to instantiate UserManagers
+    typealias Dependencies = GlobalContainer
 
     /// Server's config like url port path etc..
     private let doh = BackendConfiguration.shared.doh
@@ -94,10 +105,6 @@ class UsersManager: Service, UsersManagerProtocol {
         didSet {
             userCachedStatus.primaryUserSessionId = self.users.first?.authCredential.sessionID
         }
-    }
-
-    var firstUser: UserManager? {
-        return self.users.first
     }
 
     var count: Int {
@@ -163,21 +170,13 @@ class UsersManager: Service, UsersManagerProtocol {
         authCredential: AuthCredential,
         mailSettings: MailSettings?
     ) -> UserManager {
-        let globalContainer: GlobalContainer
-#if APP_EXTENSION
-        globalContainer = GlobalContainer.shared
-#else
-        // swiftlint:disable:next force_cast
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        globalContainer = appDelegate.dependencies
-#endif
         return UserManager(
             api: apiService,
             userInfo: userInfo,
             authCredential: authCredential,
             mailSettings: mailSettings,
             parent: self,
-            globalContainer: globalContainer
+            globalContainer: dependencies
         )
     }
 
@@ -218,26 +217,6 @@ class UsersManager: Service, UsersManagerProtocol {
         users.insert(user, at: 0)
         save()
         firstUser?.becomeActiveUser()
-    }
-
-    func getUser(by sessionID: String) -> UserManager? {
-        let found = self.users.filter { user -> Bool in
-            user.isMatch(sessionID: sessionID)
-        }
-        guard let user = found.first else {
-            return nil
-        }
-        return user
-    }
-
-    func getUser(by userId: UserID) -> UserManager? {
-        let found = self.users.filter { user -> Bool in
-            user.userID == userId
-        }
-        guard let user = found.first else {
-            return nil
-        }
-        return user
     }
 
     func isExist(userID: UserID) -> Bool {
@@ -308,7 +287,20 @@ class UsersManager: Service, UsersManagerProtocol {
         }
         userDefaultCache.getShared().setValue(lockedAuth.encryptedValue, forKey: CoderKey.authKeychainStore)
 
+        do {
+            try UserObjectsPersistence.shared.write(authList, key: mainKey)
+        } catch {
+            Analytics.shared.sendError(.userObjectsCouldNotBeSavedError(error, 
+                                                                        Mirror(reflecting: authList.self).description))
+        }
+
         let userList = self.users.compactMap { $0.userInfo }
+        do {
+            try UserObjectsPersistence.shared.write(userList, key: mainKey)
+        } catch {
+            Analytics.shared.sendError(.userObjectsCouldNotBeSavedError(error,
+                                                                        Mirror(reflecting: userList.self).description))
+        }
         guard let lockedUsers = try? Locked<[UserInfo]>(clearValue: userList, with: mainKey) else {
             return
         }
@@ -365,8 +357,8 @@ extension UsersManager {
 
 #if !APP_EXTENSION
             userCachedStatus.markBlockedSendersAsFetched(false, userID: user.userID)
-            ImageProxyCache.shared.purge()
-            SenderImageCache.shared.purge()
+            self.dependencies.imageProxyCache.purge()
+            self.dependencies.senderImageCache.purge()
 #endif
 
             guard !self.users.isEmpty else {
@@ -524,7 +516,11 @@ extension UsersManager {
             return nil
         }
         let lockedAuthData = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
-        guard let authCredentials: [AuthCredential] = try? lockedAuthData.unlock(with: mainKey) else {
+
+        let authCredentialsFromCodable = try? UserObjectsPersistence.shared.read([AuthCredential].self, key: mainKey)
+        let authCredentialsFromNSCoding = try? lockedAuthData.unlock(with: mainKey)
+
+        guard let authCredentials: [AuthCredential] = authCredentialsFromCodable ?? authCredentialsFromNSCoding else {
             userDefaultCache.getShared().remove(forKey: CoderKey.authKeychainStore)
             keychain.remove(forKey: CoderKey.authKeychainStore)
             return nil
@@ -533,8 +529,9 @@ extension UsersManager {
         guard let encryptedUserData = userDefaultCache.getShared().data(forKey: CoderKey.usersInfo) else {
             return nil
         }
-        let lockedUserInfos = Locked<[UserInfo]>(encryptedValue: encryptedUserData)
-        guard let userInfos = try? lockedUserInfos.unlock(with: mainKey) else {
+        let userInfoFromCodable = try? UserObjectsPersistence.shared.read([UserInfo].self, key: mainKey)
+        let userInfoFromNSCoding = try? Locked<[UserInfo]>(encryptedValue: encryptedUserData).unlock(with: mainKey)
+        guard let userInfos = userInfoFromCodable ?? userInfoFromNSCoding  else {
             return nil
         }
         guard userInfos.count == authCredentials.count else {

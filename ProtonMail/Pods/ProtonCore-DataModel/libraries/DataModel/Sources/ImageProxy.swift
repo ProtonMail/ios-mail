@@ -21,7 +21,7 @@
 
 import Foundation
 
-public struct ImageProxy: OptionSet {
+public struct ImageProxy: OptionSet, Codable {
     public let rawValue: Int
 
     public init(rawValue: Int) {

@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import SwiftSoup
 
 private enum CSSKeys: String {
@@ -343,12 +343,12 @@ extension CSSMagic {
         var result: [String: [String]] = [:]
         for css in styleCSS {
             do {
-                let regex = try RegularExpressionCache.regex(for: "(.*?)\\{(.*?)\\}", options: [.allowCommentsAndWhitespace, .dotMatchesLineSeparators])
+                let regex = try RegularExpressionCache.regex(for: #"(((?!(;|\)|\{\n.|\})).)*?)\{(.*?)\}"#, options: [.allowCommentsAndWhitespace, .dotMatchesLineSeparators])
                 let length = (css as NSString).length
                 let matches = regex.matches(in: css, range: NSRange(location: 0, length: length))
-                for match in matches where match.numberOfRanges == 3 {
+                for match in matches where match.numberOfRanges == 5 {
                     let keyRange = match.range(at: 1)
-                    let attributeRange = match.range(at: 2)
+                    let attributeRange = match.range(at: 4)
                     // e.g. html, .textBlock
                     let selectorKey = (css as NSString).substring(with: keyRange).trim()
                     // e.g. background: black; width: 100px;

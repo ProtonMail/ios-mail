@@ -199,16 +199,16 @@ class MessageRobot: CoreElements {
     class Verify: CoreElements {
 
         func messageBodyWithStaticTextExists(_ text: String) -> MessageRobot {
-            webView().byIndex(0).onDescendant(staticText(text)).checkExists().checkHasLabel(text)
+            webView().byIndex(0).onDescendant(staticText(text)).waitUntilExists().checkExists().checkHasLabel(text)
             return MessageRobot()
         }
         
         func messageBodyWithLinkExists(_ label: String) {
-            webView().byIndex(0).onDescendant(link(label)).checkExists()
+            webView().byIndex(0).onDescendant(link(label)).waitUntilExists().waitForHittable().checkExists()
         }
 
         func attachmentWithLabelExistInMessageBody(label: String) {
-            webView().byIndex(0).onDescendant(staticText(label)).checkExists().checkHasLabel(label)
+            webView().byIndex(0).onDescendant(staticText(label)).waitUntilExists().checkExists().checkHasLabel(label)
         }
     }
 }

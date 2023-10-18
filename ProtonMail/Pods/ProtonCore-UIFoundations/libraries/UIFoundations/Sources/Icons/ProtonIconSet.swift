@@ -500,13 +500,13 @@ public struct ProtonIconSet {
 
     public let threeDotsVertical = ProtonIcon(name: "ic-three-dots-vertical")
 
+    public let trashClock = ProtonIcon(name: "ic-trash-clock")
+
     public let trashCrossFilled = ProtonIcon(name: "ic-trash-cross-filled")
 
     public let trashCross = ProtonIcon(name: "ic-trash-cross")
 
     public let trash = ProtonIcon(name: "ic-trash")
-    
-    public let trashClock = ProtonIcon(name: "ic-trash-clock")
 
     public let tv = ProtonIcon(name: "ic-tv")
 

@@ -17,8 +17,8 @@
 
 import CoreData
 import Foundation
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 protocol UploadDraftUseCase {
     func execute(messageObjectID: String) async throws
@@ -34,10 +34,10 @@ final class UploadDraft: UploadDraftUseCase {
     /// - Parameters:
     ///   - objectID: Message object ID
     func execute(messageObjectID: String) async throws {
-        guard let messageData = dependencies.messageDataService.getMessageSendingData(for: messageObjectID) else {
-            throw UploadDraftError.resourceDoesNotExist
-        }
         do {
+            guard let messageData = dependencies.messageDataService.getMessageSendingData(for: messageObjectID) else {
+                throw UploadDraftError.resourceDoesNotExist
+            }
             let jsonResponse = try await sendUploadRequest(messageData: messageData)
             try apply(response: jsonResponse, to: messageObjectID)
         } catch {
@@ -48,6 +48,8 @@ final class UploadDraft: UploadDraftUseCase {
                 if underlyingError.isStorageExceeded {
                     dependencies.messageDataService.deleteMessage(objectID: messageObjectID)
                 }
+            } else if error is UploadDraftError {
+                SystemLogger.log(message: "UploadDraftError: \(error)", isError: true)
             } else {
                 await NSError.alertSavingDraftError(details: error.localizedDescription)
             }

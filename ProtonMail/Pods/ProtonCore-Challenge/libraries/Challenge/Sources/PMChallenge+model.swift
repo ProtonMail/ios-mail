@@ -25,7 +25,7 @@
 
 import UIKit
 import Foundation
-import ProtonCore_Foundations
+import ProtonCoreFoundations
 
 // MARK: Enum
 extension PMChallenge {

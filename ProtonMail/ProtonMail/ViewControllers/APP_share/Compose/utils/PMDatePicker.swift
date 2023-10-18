@@ -16,7 +16,7 @@
 // along with ProtonMail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 protocol PMDatePickerDelegate: AnyObject {
@@ -71,8 +71,7 @@ final class PMDatePicker: UIView {
         UIView.animate(withDuration: 0.25) {
             self.layoutIfNeeded()
         }
-        if #available(iOS 15, *) {
-        } else {
+        if #unavailable(iOS 15) {
             NotificationCenter.default.addKeyboardObserver(self)
         }
     }

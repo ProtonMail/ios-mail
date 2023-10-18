@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 final class ComposeHeaderViewController: UIViewController, AccessibleView {
@@ -35,7 +35,7 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
     // MARK: - From field
     @IBOutlet private(set) var fromView: UIView!
     @IBOutlet private var fromAddress: UILabel!
-    @IBOutlet private var fromPickerButton: UIButton!
+    @IBOutlet private(set) var fromPickerButton: UIButton!
     @IBOutlet private var fromLabel: UILabel!
     @IBOutlet private var fromGrayView: UIView!
     @IBOutlet private weak var subjectGrayView: UIView!
@@ -223,10 +223,6 @@ final class ComposeHeaderViewController: UIViewController, AccessibleView {
         self.plusButtonHandle()
         self.notifyViewSize(true)
         sender.accessibilityLabel = isShowingCcBccView ? LocalString._composer_voiceover_close_cc_bcc : LocalString._composer_voiceover_show_cc_bcc
-    }
-
-    @IBAction func fromPickerAction(_ sender: AnyObject) {
-        self.delegate?.composeViewPickFrom(self)
     }
 
     func updateFromValue (_ email: String, pickerEnabled: Bool) {

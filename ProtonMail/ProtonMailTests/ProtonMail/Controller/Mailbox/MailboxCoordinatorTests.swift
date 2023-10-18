@@ -17,7 +17,7 @@
 
 import XCTest
 @testable import ProtonMail
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 class MailboxCoordinatorTests: XCTestCase {
 
@@ -33,7 +33,7 @@ class MailboxCoordinatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
         dummyAPIService = APIServiceMock()
-        let dummyUser = UserManager(api: dummyAPIService, role: .none)
+        let dummyUser = UserManager(api: dummyAPIService)
 
         conversationStateProviderMock = .init()
         let lastUpdatedStoreMock = MockLastUpdatedStoreProtocol()
@@ -48,23 +48,17 @@ class MailboxCoordinatorTests: XCTestCase {
         let saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         connectionStatusProviderMock = MockInternetConnectionStatusProviderProtocol()
 
+        let featureFlagCache = MockFeatureFlagCache()
+
         let dependencies = MailboxViewModel.Dependencies(
             fetchMessages: MockFetchMessages(),
             updateMailbox: MockUpdateMailbox(),
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
-            fetchSenderImage: FetchSenderImage(
-                dependencies: .init(
-                    featureFlagCache: MockFeatureFlagCache(),
-                    senderImageService: .init(
-                        dependencies: .init(
-                            apiService: dummyAPIService,
-                            internetStatusProvider: MockInternetConnectionStatusProviderProtocol())),
-                    mailSettings: dummyUser.mailSettings)
-            )
+            fetchSenderImage: dummyUser.container.fetchSenderImage,
+            featureFlagCache: featureFlagCache
         )
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,
-                                             labelType: .unknown,
                                              userManager: dummyUser,
                                              pushService: pushServiceMock,
                                              coreDataContextProvider: contextProviderMock,
@@ -176,14 +170,17 @@ class MailboxCoordinatorTests: XCTestCase {
 
         conversationStateProviderMock.viewModeStub.fixture = .singleMessage
 
+        let ex = expectation(description: "follow deep link")
+        ex.expectedFulfillmentCount = 3
         for offset in stride(from: 0, through: 0.3, by: 0.1) {
             DispatchQueue.main.asyncAfter(deadline: .now() + offset) {
                 let deepLink = DeepLink(MailboxCoordinator.Destination.details.rawValue, sender: messageID)
                 self.sut.follow(deepLink)
+                ex.fulfill()
             }
         }
 
-        try await Task.sleep(for: .milliseconds(500))
+        wait(for: [ex], timeout: 5)
 
         await MainActor.run {
             // 1st call by UINavigationController.init(rootViewController:)

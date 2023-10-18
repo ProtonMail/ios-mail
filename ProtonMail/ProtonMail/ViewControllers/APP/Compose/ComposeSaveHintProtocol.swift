@@ -21,16 +21,16 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 protocol ComposeSaveHintProtocol: UIViewController {
     func removeDraftSaveHintBanner()
     func showDraftSaveHintBanner(cache: UserCachedStatusProvider,
                                  messageService: MessageDataService,
                                  coreDataContextProvider: CoreDataContextProviderProtocol)
-    func showMessageSendingHintBanner(messageID: String,
+    func showMessageSendingHintBanner(messageID: MessageID,
                                       messageDataService: MessageDataProcessProtocol)
-    func showMessageSchedulingHintBanner(messageID: String)
+    func showMessageSchedulingHintBanner(messageID: MessageID)
 }
 
 extension ComposeSaveHintProtocol {
@@ -47,15 +47,16 @@ extension ComposeSaveHintProtocol {
               let manager = user.parentManager,
               manager.users.contains(where: { $0.userInfo.userId == user.userInfo.userId }),
               let messageID = cache.lastDraftMessageID else { return }
-        let messages = messageService.fetchMessages(withIDs: [messageID], in: coreDataContextProvider.mainContext)
-
         let banner = PMBanner(
             message: LocalString._composer_draft_saved,
             style: PMBannerNewStyle.info,
             bannerHandler: PMBanner.dismiss
         )
         banner.addButton(text: LocalString._general_discard) { [weak self] _ in
-            messageService.delete(messages: messages.map(MessageEntity.init), label: LabelLocation.draft.labelID)
+            let messages = coreDataContextProvider.read { context in
+                return messageService.fetchMessages(withIDs: [messageID], in: context).map(MessageEntity.init)
+            }
+            messageService.delete(messages: messages, label: LabelLocation.draft.labelID)
             self?.showDiscardedBanner()
             banner.dismiss(animated: false)
         }
@@ -79,7 +80,7 @@ extension ComposeSaveHintProtocol {
         banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
     }
 
-    func showMessageSendingHintBanner(messageID: String,
+    func showMessageSendingHintBanner(messageID: MessageID,
                                       messageDataService: MessageDataProcessProtocol) {
         let internetConnection = InternetConnectionStatusProvider.shared
         guard internetConnection.status != .notConnected else {
@@ -88,7 +89,7 @@ extension ComposeSaveHintProtocol {
         }
         typealias Key = PMBanner.UserInfoKey
         let userInfo: [AnyHashable: Any] = [Key.type.rawValue: Key.sending.rawValue,
-                                            Key.messageID.rawValue: messageID]
+                                            Key.messageID.rawValue: messageID.rawValue]
         let banner = PMBanner(
             message: LocalString._messages_sending_message,
             style: PMBannerNewStyle.info,
@@ -98,10 +99,10 @@ extension ComposeSaveHintProtocol {
         banner.show(at: getPosition(), on: self, ignoreKeyboard: true)
     }
 
-    func showMessageSchedulingHintBanner(messageID: String) {
+    func showMessageSchedulingHintBanner(messageID: MessageID) {
         typealias Key = PMBanner.UserInfoKey
         let userInfo: [AnyHashable: Any] = [Key.type.rawValue: Key.sending.rawValue,
-                                            Key.messageID.rawValue: messageID]
+                                            Key.messageID.rawValue: messageID.rawValue]
         let banner = PMBanner(
             message: LocalString._scheduling_message_title,
             style: PMBannerNewStyle.info,
@@ -113,7 +114,7 @@ extension ComposeSaveHintProtocol {
     }
 
     private func showMessageSendingOfflineHintBanner(
-        messageID: String,
+        messageID: MessageID,
         messageDataService: MessageDataProcessProtocol
     ) {
         let title = LocalString._message_queued_for_sending

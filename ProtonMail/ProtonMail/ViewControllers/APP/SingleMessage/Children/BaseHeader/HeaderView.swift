@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 
 class HeaderView: UIView {
     let initialsContainer = SubviewsFactory.container
@@ -36,12 +36,29 @@ class HeaderView: UIView {
         spacing: 5
     )
 
+    var onSenderContainerTapped: (() -> Void)?
+
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(initialsContainerWasTapped))
+        initialsContainer.addGestureRecognizer(tapGesture)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("Please use init(frame:)")
+    }
+
+    @objc
+    func initialsContainerWasTapped() {
+        onSenderContainerTapped?()
+    }
+
     class SubviewsFactory {
         class var container: UIView {
             let view = UIView()
             view.backgroundColor = ColorProvider.InteractionWeak
             view.layer.cornerRadius = 8
-            view.isUserInteractionEnabled = false
+            view.isUserInteractionEnabled = true
             return view
         }
 

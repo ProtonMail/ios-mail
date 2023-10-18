@@ -20,7 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_CryptoGoInterface
+import ProtonCoreCryptoGoInterface
 
 extension Data { // need follow the gomobile fixes
     /// This computed value is only needed because of [this](https://github.com/golang/go/issues/33745) issue in the

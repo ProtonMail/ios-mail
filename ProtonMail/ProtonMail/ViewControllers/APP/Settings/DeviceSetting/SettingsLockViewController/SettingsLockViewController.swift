@@ -20,8 +20,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_Foundations
-import ProtonCore_UIFoundations
+import ProtonCoreFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 class SettingsLockViewController: UITableViewController, AccessibleView {
@@ -187,10 +187,11 @@ class SettingsLockViewController: UITableViewController, AccessibleView {
     private func cellForChangePinCodeSection() -> UITableViewCell {
         let cell = tableView.dequeue(cellType: UITableViewCell.self)
         cell.textLabel?.set(
-            text: LocalString._settings_change_pin_code_title,
+            text: L11n.PinCodeSetup.changePinCode,
             preferredFont: .body,
             textColor: ColorProvider.InteractionNorm
         )
+        cell.accessibilityIdentifier = "SettingsLockView.changePingCodeCell"
         return cell
     }
 

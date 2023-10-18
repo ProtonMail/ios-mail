@@ -20,16 +20,12 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_APIClient
-import ProtonCore_DataModel
-import ProtonCore_FeatureSwitch
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_Utilities
-
-extension Feature {
-    public static var externalSignupHeader = Feature.init(name: "externalSignupHeader", isEnable: false, flags: [.availableCoreInternal])
-}
+import ProtonCoreAPIClient
+import ProtonCoreDataModel
+import ProtonCoreFeatureSwitch
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreUtilities
 
 extension AuthService {
     
@@ -75,10 +71,6 @@ extension AuthService {
         }
         
         var header: [String: Any] {
-            guard FeatureFactory.shared.isEnabled(.externalSignupHeader) else {
-                return [:]
-            }
-            
             return ["X-Accept-ExtAcc": true]
         }
         

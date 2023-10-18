@@ -19,15 +19,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
-import ProtonCore_Challenge
-import ProtonCore_CoreTranslation
-import ProtonCore_Login
-import ProtonCore_DataModel
-import ProtonCore_Authentication
-import ProtonCore_Services
-import ProtonCore_Networking
-import ProtonCore_Observability
+import ProtonCoreChallenge
+import ProtonCoreLogin
+import ProtonCoreDataModel
+import ProtonCoreAuthentication
+import ProtonCoreServices
+import ProtonCoreNetworking
+import ProtonCoreObservability
 
 final class LoginViewModel {
     enum LoginResult {
@@ -45,19 +46,19 @@ final class LoginViewModel {
     let isLoading = Observable<Bool>(false)
 
     var isSsoUIEnabled = false
-    let subtitleLabel = CoreString._ls_screen_subtitle
+    let subtitleLabel = LUITranslation.screen_subtitle.l10n
     var loginTextFieldTitle: String {
-        isSsoUIEnabled ? CoreString._su_email_field_title : CoreString._ls_username_title
+        isSsoUIEnabled ? LUITranslation.email_field_title.l10n : LUITranslation.username_title.l10n
     }
     var titleLabel: String {
-        isSsoUIEnabled ? CoreString._ls_sign_in_with_sso_title : CoreString._ls_screen_title
+        isSsoUIEnabled ? LUITranslation.sign_in_with_sso_title.l10n : LUITranslation._core_sign_in_screen_title.l10n
     }
     var signInWithSSOButtonTitle: String {
-        isSsoUIEnabled ? CoreString._ls_sign_in_button_with_password : CoreString._ls_sign_in_with_sso_button
+        isSsoUIEnabled ? LUITranslation.sign_in_button_with_password.l10n : LUITranslation.sign_in_with_sso_button.l10n
     }
-    let passwordTextFieldTitle = CoreString._ls_password_title
-    let signInButtonTitle = CoreString._ls_sign_in_button
-    let signUpButtonTitle = CoreString._ls_create_account_button
+    let passwordTextFieldTitle = LUITranslation.password_title.l10n
+    let signInButtonTitle = LUITranslation.sign_in_button.l10n
+    let signUpButtonTitle = LUITranslation.create_account_button.l10n
     
     private let login: Login
     private let api: APIService
@@ -168,3 +169,5 @@ final class LoginViewModel {
         login.isProtonPage(url: url)
     }
 }
+
+#endif

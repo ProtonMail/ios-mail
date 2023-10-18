@@ -22,15 +22,15 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_Authentication
-import ProtonCore_Crypto
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreAuthentication
+import ProtonCoreCrypto
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 #if !APP_EXTENSION
-import ProtonCore_Payments
+import ProtonCorePayments
 #endif
-import ProtonCore_Services
-import ProtonCore_Keymaker
+import ProtonCoreServices
+import ProtonCoreKeymaker
 
 /// TODO:: this is temp
 protocol UserDataSource: AnyObject {
@@ -66,18 +66,22 @@ class UserManager: Service, ObservableObject {
             labelService.cleanUp()
             contactService.cleanUp()
             contactGroupService.cleanUp()
-            lastUpdatedStore.cleanUp(userId: self.userID)
+            container.lastUpdatedStore.cleanUp(userId: userID)
             try incomingDefaultService.cleanUp()
             self.deactivatePayments()
             #if !APP_EXTENSION
-            self.payments.planService.currentSubscription = nil
+            switch self.payments.planService {
+            case .left(let servicePlanDataService):
+                servicePlanDataService.currentSubscription = nil
+            case .right:
+                break
+            }
             #endif
                 userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
                 userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
                 userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
-                self.authCredentialAccessQueue.async { [weak self] in
-                    self?.isLoggedOut = true
+                self.authCredentialAccessQueue.async {
                     seal.fulfill_()
                 }
         }
@@ -103,7 +107,6 @@ class UserManager: Service, ObservableObject {
     }
     let authHelper: AuthHelper
     private(set) var authCredential: AuthCredential
-    private(set) var isLoggedOut = false
 
     var isUserSelectedUnreadFilterInInbox = false
 
@@ -182,10 +185,6 @@ class UserManager: Service, ObservableObject {
 
     private let appTelemetry: AppTelemetry
 
-    private var lastUpdatedStore: LastUpdatedStoreProtocol {
-        return sharedServices.get(by: LastUpdatedStore.self)
-    }
-
     var hasTelemetryEnabled: Bool {
         #if DEBUG
         if !ProcessInfo.isRunningUnitTests {
@@ -250,7 +249,7 @@ class UserManager: Service, ObservableObject {
 
     @MainActor
     func fetchUserInfo() async {
-        featureFlagsDownloadService.getFeatureFlags(completion: nil)
+        try? await featureFlagsDownloadService.getFeatureFlags()
         let tuple = await self.userService.fetchUserInfo(auth: self.authCredential)
         guard let info = tuple.0 else { return }
         self.userInfo = info
@@ -269,12 +268,14 @@ class UserManager: Service, ObservableObject {
 
     func resignAsActiveUser() {
         deactivatePayments()
+        appTelemetry.assignUser(userID: nil)
     }
 
     func becomeActiveUser() {
         updateTelemetry()
         refreshFeatureFlags()
         activatePayments()
+        appTelemetry.assignUser(userID: userID)
     }
 
     private func updateTelemetry() {
@@ -287,7 +288,7 @@ class UserManager: Service, ObservableObject {
 
     func activatePayments() {
         #if !APP_EXTENSION
-        self.payments.storeKitManager.delegate = sharedServices.get(by: StoreKitManagerImpl.self)
+        self.payments.storeKitManager.delegate = container.storeKitManager
         self.payments.storeKitManager.subscribeToPaymentQueue()
         self.payments.storeKitManager.updateAvailableProductsList { _ in }
         #endif
@@ -520,7 +521,6 @@ extension UserManager: AuthHelperDelegate {
             assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
         }
         self.authCredential = authCredential
-        isLoggedOut = false
         self.save()
     }
 
@@ -528,7 +528,6 @@ extension UserManager: AuthHelperDelegate {
         if !isAuthenticatedSession {
             assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
         }
-        isLoggedOut = true
         self.eventsService.stop()
         NotificationCenter.default.post(name: .didRevoke, object: nil, userInfo: ["uid": sessionUID])
     }

@@ -1,4 +1,4 @@
-framework module ProtonCore_GoLibs {
+framework module ProtonCoreGoLibs {
   umbrella header "ProtonCore-GoLibs-umbrella.h"
 
   export *

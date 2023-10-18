@@ -1,6 +1,0 @@
-framework module OpenPGP {
-  umbrella header "OpenPGP.h"
-
-  export *
-  module * { export * }
-}

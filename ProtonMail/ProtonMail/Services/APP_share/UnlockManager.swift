@@ -22,11 +22,11 @@
 
 import Foundation
 import LocalAuthentication
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 import ProtonMailAnalytics
 #if !APP_EXTENSION
 import LifetimeTracker
-import ProtonCore_Payments
+import ProtonCorePayments
 #endif
 
 enum SignInUIFlow: Int {
@@ -110,7 +110,7 @@ final class UnlockManager {
             completion(false)
             return
         }
-        keyMaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
+        keyMaker.obtainMainKey(with: PinProtection(pin: userInputPin), returnExistingKey: true) { key in
             guard self.validate(mainKey: key) else {
                 self.pinFailedCountCache.pinFailedCount += 1
                 completion(false)
@@ -152,7 +152,7 @@ final class UnlockManager {
 
         guard !isRequestingBiometricAuthentication else { return }
         isRequestingBiometricAuthentication = true
-        keyMaker.obtainMainKey(with: BioProtection()) { key in
+        keyMaker.obtainMainKey(with: BioProtection(), returnExistingKey: true) { key in
             defer {
                 self.isRequestingBiometricAuthentication = false
             }
@@ -211,11 +211,14 @@ final class UnlockManager {
     ) {
         Breadcrumbs.shared.add(message: "UnlockManager.unlockIfRememberedCredentials called", to: .randomLogout)
         guard let delegate else {
+            SystemLogger.log(message: "UnlockManager delegate is nil", category: .loginUnlockFailed, isError: true)
             unlockFailed?()
             return
         }
 
         guard keyMaker.mainKeyExists(), delegate.isUserStored() else {
+            let message = "UnlockManager mainKeyExists: \(keyMaker.mainKeyExists()), userStored: \(delegate.isUserStored())"
+            SystemLogger.log(message: message, category: .loginUnlockFailed, isError: true)
 
             do {
                 try delegate.setupCoreData()

@@ -17,41 +17,68 @@
 
 import UIKit
 
-protocol MailboxDataSource {
-    func reloadSnapshot(shouldAnimateSkeletonLoading: Bool, animate: Bool)
-}
-
 enum MailboxRow: Hashable {
     case real(MailboxItem)
     // the Int is needed for diffable data sources to generate unique identifiers
     case skeleton(Int)
 }
 
-final class MailboxDiffableDataSource: MailboxDataSource {
+final class MailboxDiffableDataSource {
     private let diffableDataSource: UITableViewDiffableDataSource<Int, MailboxRow>
-    private let viewModel: MailboxViewModel
+    private var dataSnapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>?
     private let queue = DispatchQueue(label: "ch.protonmail.inbox.dataSource")
+    private(set) var reloadSnapshotHasBeenCalled = false
 
-    init(viewModel: MailboxViewModel,
-         tableView: UITableView,
-         shouldAnimateSkeletonLoading: Bool,
-         cellProvider: @escaping UITableViewDiffableDataSource<Int, MailboxRow>.CellProvider) {
-        self.viewModel = viewModel
+    init(
+        tableView: UITableView,
+        cellProvider: @escaping UITableViewDiffableDataSource<Int, MailboxRow>.CellProvider
+    ) {
         self.diffableDataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: cellProvider)
-        self.reloadSnapshot(shouldAnimateSkeletonLoading: shouldAnimateSkeletonLoading, animate: false)
     }
 
-    func reloadSnapshot(shouldAnimateSkeletonLoading: Bool, animate: Bool) {
-        let newSnapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>
-        if shouldAnimateSkeletonLoading {
-            newSnapshot = reloadSkeletonData()
+    func animateSkeletonLoading() {
+        dataSnapshot = diffableDataSource.snapshot()
+        let newSnapshot = reloadSkeletonData()
+        queue.async {
+            self.diffableDataSource.apply(newSnapshot)
+        }
+    }
+
+    func cacheSnapshot(_ snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>) {
+        dataSnapshot = snapshot
+    }
+
+    func reloadSnapshot(
+        snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>?,
+        animate: Bool,
+        completion: (() -> Void)?
+    ) {
+        reloadSnapshotHasBeenCalled = true
+        var snapshotToLoad: NSDiffableDataSourceSnapshot<Int, MailboxRow>?
+        if let snapshot = snapshot {
+            dataSnapshot = snapshot
+            snapshotToLoad = snapshot
         } else {
-            newSnapshot = reloadMailData()
+            snapshotToLoad = dataSnapshot
         }
 
+        guard let snapshotToLoad = snapshotToLoad else { return }
+
         queue.async {
-            self.diffableDataSource.apply(newSnapshot, animatingDifferences: animate)
+            self.diffableDataSource.apply(
+                snapshotToLoad,
+                animatingDifferences: animate,
+                completion: completion
+            )
         }
+    }
+
+    func snapshot() -> NSDiffableDataSourceSnapshot<Int, MailboxRow> {
+        return diffableDataSource.snapshot()
+    }
+
+    func item(of indexPath: IndexPath) -> MailboxRow? {
+        return diffableDataSource.itemIdentifier(for: indexPath)
     }
 
     private func reloadSkeletonData() -> NSDiffableDataSourceSnapshot<Int, MailboxRow> {
@@ -62,34 +89,5 @@ final class MailboxDiffableDataSource: MailboxDataSource {
         skeletonSnapshot.appendItems(itemsToReload, toSection: 0)
 
         return skeletonSnapshot
-    }
-
-    private func reloadMailData() -> NSDiffableDataSourceSnapshot<Int, MailboxRow> {
-        var realSnapshot = NSDiffableDataSourceSnapshot<Int, MailboxRow>()
-
-        for section in 0..<viewModel.sectionCount() {
-            realSnapshot.appendSections([section])
-            var items: [MailboxRow] = []
-            for row in 0..<viewModel.rowCount(section: section) {
-                let indexPath = IndexPath(row: row, section: section)
-                guard let mailboxItem = viewModel.mailboxItem(at: indexPath) else {
-                    continue
-                }
-
-                let rowItem = MailboxRow.real(mailboxItem)
-
-                items.append(rowItem)
-            }
-
-            do {
-                try ObjC.catchException {
-                    realSnapshot.appendItems(items, toSection: section)
-                }
-            } catch {
-                PMAssertionFailure(error)
-            }
-        }
-
-        return realSnapshot
     }
 }

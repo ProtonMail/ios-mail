@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCoreTestingToolkit
 import ProtonMailAnalytics
 
 class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
@@ -33,6 +34,11 @@ class MockProtonMailAnalytics: ProtonMailAnalyticsProtocol {
     func setup(environment: String, debug: Bool) {
         self.environment = environment
         self.debug = debug
+    }
+
+    @FuncStub(MockProtonMailAnalytics.assignUser) var assignUserStub
+    func assignUser(userID: String?) {
+        assignUserStub(userID)
     }
 
     public func track(event: MailAnalyticsEvent, trace: String?) {

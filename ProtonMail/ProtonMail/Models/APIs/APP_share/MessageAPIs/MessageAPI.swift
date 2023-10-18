@@ -22,8 +22,8 @@
 
 import Foundation
 import PromiseKit
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 
 // Message API
 // Doc: V1 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages.md
@@ -461,14 +461,5 @@ final class SendMessageRequest: Request {
 
     var method: HTTPMethod {
         return .post
-    }
-}
-
-final class SendResponse: Response {
-    var responseDict: [String: Any] = [:]
-
-    override func ParseResponse(_ response: [String: Any]) -> Bool {
-        self.responseDict = response
-        return super.ParseResponse(response)
     }
 }

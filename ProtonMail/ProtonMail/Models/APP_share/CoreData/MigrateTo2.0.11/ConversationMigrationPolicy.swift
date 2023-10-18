@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreData
-import ProtonCore_Keymaker
+import ProtonCoreKeymaker
 
 class ConversationMigrationPolicy: NSEntityMigrationPolicy {
 
@@ -26,13 +26,6 @@ class ConversationMigrationPolicy: NSEntityMigrationPolicy {
         manager: NSMigrationManager
     ) throws {
         guard sInstance.entity.name == Conversation.Attributes.entityName else {
-            return
-        }
-
-        let keyMaker = sharedServices.get(by: KeyMakerProtocol.self)
-
-        guard keyMaker.mainKeyExists() else {
-            PMAssertionFailure("Conversation migration performed before the main key is available")
             return
         }
 

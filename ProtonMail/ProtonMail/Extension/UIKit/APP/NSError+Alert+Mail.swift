@@ -27,32 +27,6 @@ extension NSError {
 
     static var isAlertShown = false
 
-    func alertSentErrorToast() {
-        guard let window: UIWindow = UIApplication.shared.topMostWindow else {
-            return
-        }
-        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = "\(LocalString._message_sent_failed_desc): \(self.localizedDescription)"
-        hud.removeFromSuperViewOnHide = true
-        hud.margin = 10
-        hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 3)
-    }
-
-    class func alertLocalCacheErrorToast() {
-        guard let window: UIWindow = UIApplication.shared.topMostWindow else {
-            return
-        }
-        let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
-        hud.mode = MBProgressHUDMode.text
-        hud.detailsLabel.text = LocalString._email_failed_to_send
-        hud.removeFromSuperViewOnHide = true
-        hud.margin = 10
-        hud.offset.y = 250.0
-        hud.hide(animated: true, afterDelay: 2)
-    }
-
     class func alertBadToken(in window: UIWindow) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1000)) {
             guard !NSError.isAlertShown else {

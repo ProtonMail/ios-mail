@@ -21,42 +21,50 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CoreData
-import ProtonCore_Authentication
-import ProtonCore_Challenge
-import ProtonCore_Environment
-import ProtonCore_Log
-import ProtonCore_Keymaker
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreAuthentication
+import ProtonCoreChallenge
+import ProtonCoreEnvironment
+import ProtonCoreLog
+import ProtonCoreKeymaker
+import ProtonCoreNetworking
+import ProtonCoreServices
 
 extension PMAPIService {
+    private static let dispatchQueue = DispatchQueue(label: "ch.protonmail.PMAPIService.unauthorized")
+    private static var _unauthorized: PMAPIService?
+    private static var _authManagerForUnauthorizedAPIService: AuthManagerForUnauthorizedAPIService?
 
-    private static var authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService(coreKeyMaker: sharedServices.get())
-
-    static var unauthorized: PMAPIService = {
-        PMAPIService.setupTrustIfNeeded()
-
-        let unauthorized: PMAPIService
-        if let initialSessionUID = authManagerForUnauthorizedAPIService.initialSessionUID {
-            unauthorized = PMAPIService.createAPIService(
-                environment: BackendConfiguration.shared.environment,
-                sessionUID: initialSessionUID,
-                challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
-            )
-        } else {
-            unauthorized = PMAPIService.createAPIServiceWithoutSession(
-                environment: BackendConfiguration.shared.environment,
-                challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
-            )
+    static func unauthorized(keyMaker: KeyMakerProtocol) -> PMAPIService {
+        dispatchQueue.sync {
+            if let _unauthorized {
+                return _unauthorized
+            }
+            let authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService(coreKeyMaker: keyMaker)
+            
+            let unauthorized: PMAPIService
+            if let initialSessionUID = authManagerForUnauthorizedAPIService.initialSessionUID {
+                unauthorized = PMAPIService.createAPIService(
+                    environment: BackendConfiguration.shared.environment,
+                    sessionUID: initialSessionUID,
+                    challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+                )
+            } else {
+                unauthorized = PMAPIService.createAPIServiceWithoutSession(
+                    environment: BackendConfiguration.shared.environment,
+                    challengeParametersProvider: .forAPIService(clientApp: .mail, challenge: PMChallenge())
+                )
+            }
+#if !APP_EXTENSION
+            unauthorized.serviceDelegate = PMAPIService.ServiceDelegate.shared
+            unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: unauthorized)
+            unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
+#endif
+            unauthorized.authDelegate = authManagerForUnauthorizedAPIService.authDelegateForUnauthorized
+            _unauthorized = unauthorized
+            _authManagerForUnauthorizedAPIService = authManagerForUnauthorizedAPIService
+            return unauthorized
         }
-        #if !APP_EXTENSION
-        unauthorized.serviceDelegate = PMAPIService.ServiceDelegate.shared
-        unauthorized.humanDelegate = HumanVerificationManager.shared.humanCheckHelper(apiService: unauthorized)
-        unauthorized.forceUpgradeDelegate = ForceUpgradeManager.shared.forceUpgradeHelper
-        #endif
-        unauthorized.authDelegate = authManagerForUnauthorizedAPIService.authDelegateForUnauthorized
-        return unauthorized
-    }()
+    }
 
     static func setupTrustIfNeeded() {
 //        #if DEBUG
@@ -100,9 +108,10 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
             return
         }
 
-        let authlocked = Locked<[AuthCredential]>(encryptedValue: data)
+        let authCredentialsCodable = try? UserObjectsPersistence.shared.read(AuthCredential.self, key: mainKey)
+        let authUnlockedNSCoding = try? Locked<[AuthCredential]>(encryptedValue: data).unlock(with: mainKey).first
 
-        guard let authCredential = try? authlocked.unlock(with: mainKey).first else {
+        guard let authCredential = authCredentialsCodable ?? authUnlockedNSCoding else {
             SharedCacheBase.getDefault().remove(forKey: key)
             self.authDelegateForUnauthorized = AuthHelper()
             self.initialSessionUID = nil
@@ -116,6 +125,7 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
     func credentialsWereUpdated(authCredential: AuthCredential, credential _: Credential, for _: String) {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let lockedAuth = try? Locked<[AuthCredential]>(clearValue: [authCredential], with: mainKey) else { return }
+        try? UserObjectsPersistence.shared.write(authCredential, key: mainKey)
         SharedCacheBase.getDefault()?.setValue(lockedAuth.encryptedValue, forKey: key)
     }
 

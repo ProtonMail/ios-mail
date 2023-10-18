@@ -20,9 +20,9 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Authentication
-import ProtonCore_DataModel
-import ProtonCore_Networking
+import ProtonCoreAuthentication
+import ProtonCoreDataModel
+import ProtonCoreNetworking
 
 extension AuthService {
     struct CreateAddressKeysEndpointResponseV1: Codable {

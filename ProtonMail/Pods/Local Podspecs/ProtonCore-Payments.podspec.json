@@ -1,6 +1,7 @@
 {
   "name": "ProtonCore-Payments",
-  "version": "9.3.0",
+  "module_name": "ProtonCorePayments",
+  "version": "12.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -16,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "9.3.0"
+    "tag": "12.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -32,32 +33,37 @@
     "ReachabilitySwift": [
       "~> 5.0.0"
     ],
-    "ProtonCore-CoreTranslation": [
-      "9.3.0"
-    ],
     "ProtonCore-Foundations": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Hash": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Log": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Authentication": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Networking": [
-      "9.3.0"
+      "12.0.0"
     ],
     "ProtonCore-Services": [
-      "9.3.0"
+      "12.0.0"
+    ],
+    "ProtonCore-Subscriptions": [
+      "12.0.0"
     ]
   },
   "source_files": [
     "libraries/Payments/Sources/**/*.swift",
     "libraries/Payments/Sources/*.swift"
   ],
+  "resource_bundles": {
+    "Translations-Payments": [
+      "libraries/Payments/Sources/Resources/*"
+    ]
+  },
   "default_subspecs": [
 
   ],
@@ -67,10 +73,32 @@
       "test_type": "unit",
       "dependencies": {
         "ProtonCore-TestingToolkit/UnitTests/Payments": [
-          "9.3.0"
+          "12.0.0"
+        ],
+        "ProtonCore-Authentication": [
+          "12.0.0"
+        ],
+        "ProtonCore-Challenge": [
+          "12.0.0"
+        ],
+        "ProtonCore-DataModel": [
+          "12.0.0"
+        ],
+        "ProtonCore-Doh": [
+          "12.0.0"
+        ],
+        "ProtonCore-Log": [
+          "12.0.0"
+        ],
+        "ProtonCore-Login": [
+          "12.0.0"
+        ],
+        "ProtonCore-Services": [
+          "12.0.0"
         ]
       },
-      "source_files": "libraries/Payments/Tests/**/*.swift"
+      "source_files": "libraries/Payments/Tests/UnitTests/**/*.swift",
+      "resources": "libraries/Payments/Tests/UnitTests/Mocks/Responses/**/*.json"
     }
   ],
   "swift_version": "5.6"

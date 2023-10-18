@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCore_Crypto
+import ProtonCoreCrypto
 
 // sourcery: mock
 protocol PushEncryptionManagerProtocol {
@@ -44,13 +44,12 @@ protocol PushEncryptionManagerProtocol {
 }
 
 final class PushEncryptionManager: PushEncryptionManagerProtocol {
-    static let shared: PushEncryptionManager = .init()
     static let maxNumberOfKitsInCache = 8
 
     private let dependencies: Dependencies
     private let serialQueue = DispatchQueue(label: "ch.protonmail.protonmail.DeviceService")
 
-    init(dependencies: Dependencies = .init()) {
+    init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
@@ -238,8 +237,8 @@ extension PushEncryptionManager {
         let failedPushDecryptionProvider: FailedPushDecryptionProvider
 
         init(
-            usersManager: UsersManager = sharedServices.get(by: UsersManager.self),
-            deviceRegistration: DeviceRegistrationUseCase = DeviceRegistration(),
+            usersManager: UsersManager,
+            deviceRegistration: DeviceRegistrationUseCase,
             encryptionKitsCache: Saver<[EncryptionKit]> = PushEncryptionKitSaver.shared.saver,
             pushEncryptionProvider: PushEncryptionProvider = UserDefaults.standard,
             failedPushDecryptionDefaults: FailedPushDecryptionProvider = SharedUserDefaults.shared

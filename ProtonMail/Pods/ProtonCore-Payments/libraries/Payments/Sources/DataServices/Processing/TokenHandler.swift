@@ -21,9 +21,12 @@
 
 import Foundation
 import StoreKit
-import ProtonCore_Log
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreFeatureSwitch
+import ProtonCoreLog
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreObservability
+import ProtonCoreSubscriptions
 
 /*
 
@@ -37,6 +40,7 @@ import ProtonCore_Services
 final class TokenHandler {
 
     unowned let dependencies: ProcessDependencies
+    let areSubscriptionsEnabled = FeatureFactory.shared.isEnabled(.subscriptions)
 
     init(dependencies: ProcessDependencies) {
         self.dependencies = dependencies
@@ -58,7 +62,7 @@ final class TokenHandler {
         do {
             PMLog.debug("Making TokenRequestStatus")
             // Step 3. Wait until the token is ready for consumption (status `chargeable`)
-            let tokenStatusApi = dependencies.paymentsApiProtocol.tokenStatusRequest(api: dependencies.apiService, token: token)
+            let tokenStatusApi = dependencies.paymentsApiProtocol.paymentTokenStatusRequest(api: dependencies.apiService, token: token)
             let tokenStatusRes = try tokenStatusApi.awaitResponse(responseObject: TokenStatusResponse())
             let status = tokenStatusRes.paymentTokenStatus?.status ?? .failed
             switch status {
@@ -104,11 +108,37 @@ final class TokenHandler {
             PMLog.debug("StoreKit: No proton token found")
             
             // Step 2. Exchange the receipt for a token that's worth product's Proton price amount of money
-            let tokenApi = dependencies.paymentsApiProtocol.tokenRequest(
-                api: dependencies.apiService, amount: plan.amount, receipt: receipt
-            )
+            let tokenApi: BaseApiRequest<TokenResponse>
+            if areSubscriptionsEnabled {
+                guard let transactionIdentifier = transaction.transactionIdentifier else {
+                    throw StoreKitManagerErrors.transactionFailedByUnknownReason
+                }
+                guard let bundleIdentifier = Bundle.main.bundleIdentifier else {
+                    assertionFailure("You shouldn't be running this outside an application bundle")
+                    throw StoreKitManagerErrors.notAllowed
+                }
+
+                tokenApi = dependencies.paymentsApiProtocol.paymentTokenRequest(
+                    api: dependencies.apiService,
+                    amount: plan.amount,
+                    receipt: receipt,
+                    transactionId: transactionIdentifier,
+                    bundleId: bundleIdentifier,
+                    productId: transaction.payment.productIdentifier
+                )
+            } else {
+                tokenApi = dependencies.paymentsApiProtocol.paymentTokenOldRequest(
+                    api: dependencies.apiService, amount: plan.amount, receipt: receipt
+                )
+            }
             PMLog.debug("Making TokenRequest")
             let tokenRes = try tokenApi.awaitResponse(responseObject: TokenResponse())
+            if let tokenError = tokenRes.error {
+                ObservabilityEnv.report(.paymentCreatePaymentTokenTotal(error: tokenError))
+            } else {
+                ObservabilityEnv.report(.paymentCreatePaymentTokenTotal(status: .http2xx))
+            }
+
             guard let token = tokenRes.paymentToken else { throw StoreKitManagerErrors.transactionFailedByUnknownReason }
             dependencies.tokenStorage.add(token)
             try getToken(transaction: transaction, plan: plan, completion: completion, finishCompletion: finishCompletion, tokenCompletion: tokenCompletion) // Exception would've been thrown on the first call

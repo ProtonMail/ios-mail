@@ -21,9 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_AccountSwitcher
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
+import ProtonCoreAccountSwitcher
+import ProtonCoreNetworking
+import ProtonCoreUIFoundations
 import SideMenuSwift
 
 protocol MenuCoordinatorDelegate: AnyObject {
@@ -57,8 +57,12 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
         }
     }
 
-    // MenuCoordinator needs everything in order to build `UserContainer`
-    typealias Dependencies = GlobalContainer
+    typealias Dependencies = MenuViewModel.Dependencies
+    & SignInCoordinatorEnvironment.Dependencies
+    & HasFeatureFlagCache
+    & HasLastUpdatedStoreProtocol
+    & HasPushNotificationService
+    & HasUserCachedStatus
 
     private(set) var viewController: MenuViewController?
     private let viewModel: MenuVMProtocol
@@ -339,15 +343,14 @@ extension MenuCoordinator {
 
         let fetchLatestEvent = FetchLatestEventId(
             userId: userID,
-            dependencies: .init(eventsService: user.eventsService)
+            dependencies: .init(eventsService: user.eventsService, lastUpdatedStore: dependencies.lastUpdatedStore)
         )
 
         let fetchMessages = FetchMessages(
             dependencies: .init(
                 messageDataService: user.messageService,
                 cacheService: user.cacheService,
-                eventsService: user.eventsService,
-                labelID: labelID
+                eventsService: user.eventsService
             )
         )
 
@@ -357,6 +360,7 @@ extension MenuCoordinator {
                 fetchLatestEventId: fetchLatestEvent,
                 fetchMessages: fetchMessages,
                 localMessageDataService: user.messageService,
+                lastUpdatedStore: dependencies.lastUpdatedStore,
                 contactProvider: user.contactService,
                 labelProvider: user.labelService
             )
@@ -365,8 +369,7 @@ extension MenuCoordinator {
         let purgeOldMessages = PurgeOldMessages(user: user, coreDataService: dependencies.contextProvider)
 
         let updateMailbox = UpdateMailbox(
-            dependencies: .init(labelID: labelID,
-                                eventService: user.eventsService,
+            dependencies: .init(eventService: user.eventsService,
                                 messageDataService: user.messageService,
                                 conversationProvider: user.conversationService,
                                 purgeOldMessages: purgeOldMessages,
@@ -375,12 +378,12 @@ extension MenuCoordinator {
                                 fetchLatestEventID: fetchLatestEvent,
                                 internetConnectionStatusProvider: InternetConnectionStatusProvider.shared)
         )
-        let userContainer = userContainer(for: user)
         let mailboxVMDependencies = MailboxViewModel.Dependencies(
             fetchMessages: fetchMessages,
             updateMailbox: updateMailbox,
-            fetchMessageDetail: userContainer.fetchMessageDetail,
-            fetchSenderImage: userContainer.fetchSenderImage
+            fetchMessageDetail: user.container.fetchMessageDetail,
+            fetchSenderImage: user.container.fetchSenderImage,
+            featureFlagCache: dependencies.featureFlagCache
         )
         return mailboxVMDependencies
     }
@@ -388,14 +391,12 @@ extension MenuCoordinator {
     private func createMailboxViewModel(
         userManager: UserManager,
         labelID: LabelID,
-        labelInfo: LabelInfo?,
-        labelType: PMLabelType
+        labelInfo: LabelInfo?
     ) -> MailboxViewModel {
         let mailboxVMDependencies = self.mailBoxVMDependencies(user: userManager, labelID: labelID)
         return MailboxViewModel(
             labelID: labelID,
             label: labelInfo,
-            labelType: labelType,
             userManager: userManager,
             pushService: dependencies.pushService,
             coreDataContextProvider: dependencies.contextProvider,
@@ -441,22 +442,20 @@ extension MenuCoordinator {
             viewModel = createMailboxViewModel(
                 userManager: user,
                 labelID: label.labelID,
-                labelInfo: LabelInfo(name: label.name),
-                labelType: labelInfo.type
+                labelInfo: LabelInfo(name: label.name)
             )
 
         case .inbox, .draft, .sent, .starred, .archive, .spam, .trash, .allmail, .scheduled, .almostAllMail:
             viewModel = createMailboxViewModel(
                 userManager: user,
                 labelID: labelInfo.location.labelID,
-                labelInfo: nil,
-                labelType: .folder
+                labelInfo: nil
             )
         default:
             return
         }
 
-        let userContainer = userContainer(for: user)
+        let userContainer = user.container
 
         let view = MailboxViewController(viewModel: viewModel, dependencies: userContainer)
         view.scheduleUserFeedbackCallOnAppear = showFeedbackActionSheet
@@ -489,7 +488,7 @@ extension MenuCoordinator {
     private func navigateToSubscribe() {
         guard let user = dependencies.usersManager.firstUser,
               let sideMenuViewController = viewController?.sideMenuController else { return }
-        let paymentsUI = userContainer(for: user).paymentsUIFactory.makeView()
+        let paymentsUI = user.container.paymentsUIFactory.makeView()
         let coordinator = StorefrontCoordinator(
             paymentsUI: paymentsUI,
             sideMenu: sideMenuViewController,
@@ -508,7 +507,7 @@ extension MenuCoordinator {
 
         let settings = SettingsDeviceCoordinator(
             navigationController: navigation,
-            dependencies: userContainer(for: userManager)
+            dependencies: userManager.container
         )
         settings.start()
         self.settingsDeviceCoordinator = settings
@@ -534,7 +533,7 @@ extension MenuCoordinator {
         }
         let contacts = ContactTabBarCoordinator(sideMenu: viewController?.sideMenuController,
                                                 vc: view,
-                                                dependencies: userContainer(for: user))
+                                                dependencies: user.container)
         contacts.start()
         self.setupContentVC(destination: view)
     }
@@ -544,7 +543,7 @@ extension MenuCoordinator {
             return
         }
 
-        let view = ReportBugsViewController(dependencies: userContainer(for: user))
+        let view = ReportBugsViewController(dependencies: user.container)
         self.viewModel.highlight(label: MenuLabel(location: .bugs))
         let navigation = UINavigationController(rootViewController: view)
         self.setupContentVC(destination: navigation)
@@ -655,20 +654,21 @@ extension MenuCoordinator {
             }
         }
 
-        let coreDataService = dependencies.contextProvider
-
         guard let messageId = messageId,
-              let message = Message.messageForMessageID(messageId, inManagedObjectContext: coreDataService.mainContext)
-        else {
-            return false
-        }
+              let message = dependencies.contextProvider.read(block: { context in
+                  if let msg = Message.messageForMessageID(messageId, in: context) {
+                      return MessageEntity(msg)
+                  } else {
+                      return nil
+                  }
+              }) else { return false }
 
         var isFound = false
         if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
             window.enumerateViewControllerHierarchy { controller, stop in
                 if let conversationVC = controller as? ConversationViewController,
-                   conversationVC.viewModel.conversation.conversationID.rawValue == message.conversationID {
-                    conversationVC.showMessage(of: MessageID(message.messageID))
+                   conversationVC.viewModel.conversation.conversationID == message.conversationID {
+                    conversationVC.showMessage(of: message.messageID)
                     isFound = true
                     stop = true
                 }
@@ -698,10 +698,6 @@ extension MenuCoordinator {
         let navigation = UINavigationController(rootViewController: view)
         navigation.modalPresentationStyle = .fullScreen
         sideMenu.present(navigation, animated: true)
-    }
-
-    private func userContainer(for user: UserManager) -> UserContainer {
-        user.container
     }
 }
 

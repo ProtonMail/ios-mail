@@ -40,7 +40,6 @@ typedef NSMapTable<NSString *, id<SDWebImageOperation>> SDOperationsDictionary;
 
 - (void)sd_setImageLoadOperation:(nullable id<SDWebImageOperation>)operation forKey:(nullable NSString *)key {
     if (key) {
-        [self sd_cancelImageLoadOperationWithKey:key];
         if (operation) {
             SDOperationsDictionary *operationDictionary = [self sd_operationDictionary];
             @synchronized (self) {
@@ -60,7 +59,7 @@ typedef NSMapTable<NSString *, id<SDWebImageOperation>> SDOperationsDictionary;
             operation = [operationDictionary objectForKey:key];
         }
         if (operation) {
-            if ([operation conformsToProtocol:@protocol(SDWebImageOperation)]) {
+            if ([operation respondsToSelector:@selector(cancel)]) {
                 [operation cancel];
             }
             @synchronized (self) {

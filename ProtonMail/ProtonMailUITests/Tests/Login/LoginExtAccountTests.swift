@@ -22,7 +22,7 @@
 
 import XCTest
 import fusion
-import ProtonCore_TestingToolkit
+import ProtonCoreTestingToolkit
 
 class LoginExtAccountsTests: BaseTestCase {
 

@@ -1,0 +1,45 @@
+"Contact customer support" = "Contact customer support";
+
+"Failed to get list of available products from App Store." = "Failed to get list of available products from App Store.";
+
+"Purchase is not possible." = "Purchase is not possible.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple informed us you've upgraded the service plan, but we detected you have signed out of the account since then.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Please sign in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase.";
+
+"Apple informed us they could not process the purchase." = "Apple informed us they could not process the purchase.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "We have successfully activated your subscription. Please relaunch the app to start using your new service plan.";
+
+"Please unlock the app to proceed with your service plan activation" = "Please unlock the app to proceed with your service plan activation";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Please sign in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Wrong payment token status. Please relaunch the app. If error persists, contact support.";
+
+"Do you want to activate the purchase for %@ address?" = "Do you want to activate the purchase for %@ address?";
+
+"Yes, activate it for " = "Yes, activate it for ";
+
+"No, for another Proton Mail account" = "No, for another Proton Mail account";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support.";
+
+"Contact Support" = "Contact Support";
+
+"Dismiss" = "Dismiss";
+
+"Payment failed" = "Payment failed";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support.";
+
+"Retry" = "Retry";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked";

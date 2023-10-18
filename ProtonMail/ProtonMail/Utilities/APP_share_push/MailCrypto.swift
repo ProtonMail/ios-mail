@@ -21,10 +21,10 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import CryptoKit
-import ProtonCore_Crypto
-import ProtonCore_CryptoGoInterface
-import ProtonCore_DataModel
-import ProtonCore_Log
+import ProtonCoreCrypto
+import ProtonCoreCryptoGoInterface
+import ProtonCoreDataModel
+import ProtonCoreLog
 
 /// Helper
 class MailCrypto {
@@ -57,7 +57,7 @@ class MailCrypto {
         }
 
         let cryptoKey = try unlockedKey.lock(passphrase.data(using: .utf8))
-        unlockedKey.clearPrivateParams()
+        _ = unlockedKey.clearPrivateParams()
 
         let publicKey = cryptoKey.getArmoredPublicKey(&error)
         if let concreteError = error {

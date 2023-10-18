@@ -19,11 +19,13 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import Foundation
 import DeviceCheck
-import ProtonCore_Challenge
-import ProtonCore_Login
-import ProtonCore_Services
+import ProtonCoreChallenge
+import ProtonCoreLogin
+import ProtonCoreServices
 
 class SignupViewModel {
 
@@ -90,3 +92,5 @@ class SignupViewModel {
         signupService.requestValidationToken(email: email, completion: completion)
     }
 }
+
+#endif

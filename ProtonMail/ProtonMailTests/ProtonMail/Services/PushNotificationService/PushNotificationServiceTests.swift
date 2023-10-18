@@ -21,9 +21,9 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import XCTest
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_TestingToolkit
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 
 final class PushNotificationServiceTests: XCTestCase {
@@ -44,11 +44,17 @@ final class PushNotificationServiceTests: XCTestCase {
         mockUnlockProvider = .init()
         mockUnlockProvider.isUnlockedStub.bodyIs { _ in true }
         let dependencies: PushNotificationService.Dependencies = .init(
+            actionsHandler: .init(
+                dependencies: .init(
+                    queue: MockQueueManagerProtocol(),
+                    lockCacheStatus: MockLockCacheStatus(),
+                    usersManager: mockUsersManager
+                )
+            ),
             usersManager: mockUsersManager,
             unlockProvider: mockUnlockProvider,
             pushEncryptionManager: mockPushEncryptionManager,
             navigationResolver: PushNavigationResolver(dependencies: .init()),
-            lockCacheStatus: MockLockCacheStatus(),
             notificationCenter: mockNotificationCenter
         )
         sut = PushNotificationService(dependencies: dependencies)

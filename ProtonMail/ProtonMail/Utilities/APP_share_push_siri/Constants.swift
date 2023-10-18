@@ -67,9 +67,11 @@ struct Constants {
         static let cacheDiskSizeLimitInBytes: UInt = 1_024 * 1_024 * 100 // 100 MB
     }
 
-    static let mailPlanIDs: Set<String> = ["ios_plus_12_usd_non_renewing",
-                                           "iosmail_mail2022_12_usd_non_renewing",
-                                           "iosmail_bundle2022_12_usd_non_renewing"]
+    static let mailPlanIDs: Set<String> = [
+        "iosmail_mail2022_12_usd_non_renewing",
+        "iosmail_bundle2022_12_usd_non_renewing"
+    ]
+
     static let shownPlanNames: Set<String> = ["plus",
                                               "professional",
                                               "visionary",

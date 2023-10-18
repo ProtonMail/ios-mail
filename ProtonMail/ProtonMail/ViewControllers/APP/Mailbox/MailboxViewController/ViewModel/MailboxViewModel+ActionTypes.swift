@@ -21,8 +21,8 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_UIFoundations
-import ProtonCore_DataModel
+import ProtonCoreUIFoundations
+import ProtonCoreDataModel
 
 extension MailboxViewModel: ToolbarCustomizationActionHandler {
     // Move to trash becomes delete permanently in "Trash" and "Spam".

@@ -19,10 +19,11 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
-import ProtonCore_APIClient
-import ProtonCore_Networking
-import ProtonCore_Services
-import ProtonCore_Crypto
+import Foundation
+import ProtonCoreAPIClient
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreCrypto
 
 public extension HumanVerifyDelegate {
     

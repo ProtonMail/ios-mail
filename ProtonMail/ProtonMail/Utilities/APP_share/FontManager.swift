@@ -21,7 +21,7 @@
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_UIFoundations
+import ProtonCoreUIFoundations
 import UIKit
 
 struct FontManager {
@@ -246,20 +246,6 @@ struct FontManager {
 
         let attributes: [NSAttributedString.Key: Any] = [
             .kern: -0.08,
-            .font: font,
-            .foregroundColor: foregroundColor,
-            .paragraphStyle: paragraphStyle
-        ]
-        return attributes
-    }
-
-    static var OverlineRegularInteractionStrong: [NSAttributedString.Key: Any] {
-        let font = UIFont.adjustedFont(forTextStyle: .caption2)
-        let foregroundColor: UIColor = ColorProvider.InteractionStrong
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineHeightMultiple = 1.07
-        let attributes: [NSAttributedString.Key: Any] = [
-            .kern: 0.07,
             .font: font,
             .foregroundColor: foregroundColor,
             .paragraphStyle: paragraphStyle

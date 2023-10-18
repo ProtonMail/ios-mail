@@ -19,11 +19,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_Login
-import ProtonCore_LoginUI
-import ProtonCore_Networking
-import ProtonCore_UIFoundations
+import ProtonCoreLogin
+import ProtonCoreLoginUI
+import ProtonCoreNetworking
+import ProtonCoreUIFoundations
+#if canImport(ProtonCoreTestingToolkitUnitTestsCore)
+import ProtonCoreTestingToolkitUnitTestsCore
+#endif
 
 public class LoginInterfaceMock: LoginAndSignupInterface {
     
@@ -99,3 +104,5 @@ public class LoginInterfaceMock: LoginAndSignupInterface {
         welcomeScreenForPresentingFlowWithUpdateBlockStub(welcomeScreen, customization, updateBlock)
     }
 }
+
+#endif

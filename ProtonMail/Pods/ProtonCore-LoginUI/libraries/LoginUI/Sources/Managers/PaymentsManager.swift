@@ -19,14 +19,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if os(iOS)
+
 import UIKit
-import ProtonCore_CoreTranslation
-import ProtonCore_DataModel
-import ProtonCore_Services
-import ProtonCore_Payments
-import ProtonCore_Login
-import ProtonCore_PaymentsUI
-import ProtonCore_UIFoundations
+import ProtonCoreDataModel
+import ProtonCoreFeatureSwitch
+import ProtonCoreServices
+import ProtonCorePayments
+import ProtonCoreLogin
+import ProtonCorePaymentsUI
+import ProtonCoreUIFoundations
 
 class PaymentsManager {
 
@@ -37,17 +39,28 @@ class PaymentsManager {
     private var loginData: LoginData?
     private weak var existingDelegate: StoreKitManagerDelegate?
     
-    init(apiService: APIService, iaps: ListOfIAPIdentifiers, shownPlanNames: ListOfShownPlanNames, clientApp: ClientApp, customization: PaymentsUICustomizationOptions, reportBugAlertHandler: BugAlertHandler) {
+    init(apiService: APIService,
+         iaps: ListOfIAPIdentifiers,
+         shownPlanNames: ListOfShownPlanNames,
+         clientApp: ClientApp,
+         customization: PaymentsUICustomizationOptions,
+         reportBugAlertHandler: BugAlertHandler) {
         self.api = apiService
         self.payments = Payments(inAppPurchaseIdentifiers: iaps,
                                  apiService: api,
                                  localStorage: DataStorageImpl(),
                                  reportBugAlertHandler: reportBugAlertHandler)
-        payments.storeKitManager.updateAvailableProductsList { [weak self] error in
-            self?.payments.storeKitManager.subscribeToPaymentQueue()
-        }
         storeExistingDelegate()
         payments.storeKitManager.delegate = self
+        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            // In the dynamic plans, fetching available IAPs from StoreKit is done alongside fetching available plans
+            self.payments.storeKitManager.subscribeToPaymentQueue()
+        } else {
+            // Before dynamic plans, to be ready to present the available plans, we must fetch the available IAPs from StoreKit
+            payments.storeKitManager.updateAvailableProductsList { [weak self] error in
+                self?.payments.storeKitManager.subscribeToPaymentQueue()
+            }
+        }
         paymentsUI = PaymentsUI(
             payments: payments, clientApp: clientApp, shownPlanNames: shownPlanNames, customization: customization
         )
@@ -57,59 +70,96 @@ class PaymentsManager {
                              planShownHandler: (() -> Void)?,
                              completionHandler: @escaping (Result<(), Error>) -> Void) {
 
-        payments.storeKitManager.updateAvailableProductsList { [weak self] error in
-
-            if let error = error {
-                planShownHandler?()
-                completionHandler(.failure(error))
-                return
-            }
-
-            var shownHandlerCalled = false
-            self?.paymentsUI?.showSignupPlans(viewController: signupViewController, completionHandler: { [weak self] reason in
-                switch reason {
-                case .open:
-                    shownHandlerCalled = true
+        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            // In the dynamic plans, fetching available IAPs from StoreKit is done alongside fetching available plans
+            continuePaymentProcess(signupViewController: signupViewController,
+                                   planShownHandler: planShownHandler,
+                                   completionHandler: completionHandler)
+        } else {
+            // Before dynamic plans, to be ready to present the available plans, we must fetch the available IAPs from StoreKit
+            payments.storeKitManager.updateAvailableProductsList { [weak self] error in
+                if let error = error {
                     planShownHandler?()
-                case .purchasedPlan(let plan):
-                    self?.selectedPlan = plan
-                    completionHandler(.success(()))
-                case .purchaseError(let error):
-                    if !shownHandlerCalled {
-                        planShownHandler?()
-                    }
                     completionHandler(.failure(error))
-                case let .apiMightBeBlocked(message, originalError):
-                    completionHandler(.failure(LoginError.apiMightBeBlocked(message: message, originalError: originalError)))
-                case .close:
-                    break
-                case .toppedUpCredits:
-                    // TODO: some popup?
-                    completionHandler(.success(()))
-                case .planPurchaseProcessingInProgress:
-                    break
+                    return
                 }
-            })
-
+                self?.continuePaymentProcess(signupViewController: signupViewController,
+                                             planShownHandler: planShownHandler,
+                                             completionHandler: completionHandler)
+            }
         }
     }
+
+    private func continuePaymentProcess(signupViewController: SignupViewController,
+                                        planShownHandler: (() -> Void)?,
+                                        completionHandler: @escaping (Result<(), Error>) -> Void) {
+        var shownHandlerCalled = false
+        paymentsUI?.showSignupPlans(viewController: signupViewController, completionHandler: { [weak self] reason in
+            switch reason {
+            case .open:
+                shownHandlerCalled = true
+                planShownHandler?()
+            case .purchasedPlan(let plan):
+                self?.selectedPlan = plan
+                completionHandler(.success(()))
+            case .purchaseError(let error):
+                if !shownHandlerCalled {
+                    planShownHandler?()
+                }
+                completionHandler(.failure(error))
+            case let .apiMightBeBlocked(message, originalError):
+                completionHandler(.failure(LoginError.apiMightBeBlocked(message: message, originalError: originalError)))
+            case .close:
+                break
+            case .toppedUpCredits:
+                // TODO: some popup?
+                completionHandler(.success(()))
+            case .planPurchaseProcessingInProgress:
+                break
+            }
+        })
+    }
     
-    func finishPaymentProcess(loginData: LoginData, completionHandler: @escaping (Result<(InAppPurchasePlan?), Error>) -> Void) {
+    func finishPaymentProcess(loginData: LoginData,
+                              completionHandler: @escaping (Result<(InAppPurchasePlan?), Error>) -> Void) {
         self.loginData = loginData
         if selectedPlan != nil {
-            payments.planService.updateCurrentSubscription { [weak self] in
-                self?.payments.storeKitManager.retryProcessingAllPendingTransactions { [weak self] in
-                    var result: InAppPurchasePlan?
-                    if self?.payments.planService.currentSubscription?.hasExistingProtonSubscription ?? false {
-                        result = self?.selectedPlan
+            // TODO: test purchase process with PlansDataSource object
+            switch payments.planService {
+            case .left(let planService):
+                planService.updateCurrentSubscription { [weak self] in
+                    self?.payments.storeKitManager.retryProcessingAllPendingTransactions { [weak self] in
+                        var result: InAppPurchasePlan?
+                        if planService.currentSubscription?.hasExistingProtonSubscription ?? false {
+                            result = self?.selectedPlan
+                        }
+
+                        self?.restoreExistingDelegate()
+                        self?.payments.storeKitManager.unsubscribeFromPaymentQueue()
+                        completionHandler(.success(result))
                     }
-                    
-                    self?.restoreExistingDelegate()
-                    self?.payments.storeKitManager.unsubscribeFromPaymentQueue()
-                    completionHandler(.success(result))
+                } failure: { error in
+                    completionHandler(.failure(error))
                 }
-            } failure: { error in
-                completionHandler(.failure(error))
+
+            case .right(let planDataSource):
+                Task { [weak self] in
+                    do {
+                        try await planDataSource.fetchCurrentPlan()
+                        self?.payments.storeKitManager.retryProcessingAllPendingTransactions { [weak self] in
+                            var result: InAppPurchasePlan?
+                            if planDataSource.currentPlan?.hasExistingProtonSubscription ?? false {
+                                result = self?.selectedPlan
+                            }
+
+                            self?.restoreExistingDelegate()
+                            self?.payments.storeKitManager.unsubscribeFromPaymentQueue()
+                            completionHandler(.success(result))
+                        }
+                    } catch {
+                        completionHandler(.failure(error))
+                    }
+                }
             }
         } else {
             self.restoreExistingDelegate()
@@ -128,15 +178,18 @@ class PaymentsManager {
     
     func planTitle(plan: InAppPurchasePlan?) -> String? {
         guard let plan else { return nil }
-        return servicePlanDataService?.detailsOfPlanCorrespondingToIAP(plan)?.titleDescription
+
+        // TODO: test purchase process with PlansDataSource object
+        switch self.payments.planService {
+        case .left(let planService):
+            return planService.detailsOfPlanCorrespondingToIAP(plan)?.titleDescription
+        case .right(let planDataSource):
+            return planDataSource.detailsOfAvailablePlanCorrespondingToIAP(plan)?.title
+        }
     }
 }
 
 extension PaymentsManager: StoreKitManagerDelegate {
-    var apiService: APIService? {
-        return api
-    }
-
     var tokenStorage: PaymentTokenStorage? {
         return TokenStorageImp.default
     }
@@ -152,10 +205,6 @@ extension PaymentsManager: StoreKitManagerDelegate {
     var activeUsername: String? { loginData?.user.name ?? loginData?.credential.userName }
 
     var userId: String? { loginData?.user.ID ?? loginData?.credential.userID }
-
-    var servicePlanDataService: ServicePlanDataServiceProtocol? {
-        return payments.planService
-    }
 }
 
 class TokenStorageImp: PaymentTokenStorage {
@@ -192,7 +241,7 @@ protocol PaymentErrorCapable: ErrorCapable {
 extension PaymentErrorCapable {
     func showError(error: StoreKitManagerErrors) {
         if case let .apiMightBeBlocked(message, _) = error {
-            showBanner(message: message, button: CoreString._net_api_might_be_blocked_button) { [weak self] in
+            showBanner(message: message, button: LUITranslation._core_api_might_be_blocked_button.l10n) { [weak self] in
                 self?.onDohTroubleshooting()
             }
         } else {
@@ -209,3 +258,5 @@ extension PaymentErrorCapable {
 extension PaymentsUIViewController: SignUpErrorCapable, LoginErrorCapable, PaymentErrorCapable {
     var bannerPosition: PMBannerPosition { .top }
 }
+
+#endif

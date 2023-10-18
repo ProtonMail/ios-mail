@@ -19,6 +19,8 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
+#if canImport(fusion)
+
 import fusion
 
 private let createProtonmailTitleId = "CreateAddressViewController.titleLabel"
@@ -30,7 +32,7 @@ private let createPMAddressTitle = "Proton address required"
 public final class CreateProtonmailRobot: CoreElements {
     
     public func fillPMUsername(username: String) -> CreateProtonmailRobot {
-        textField(usernameFieldId).wait().tap().typeText(username)
+        textField(usernameFieldId).waitUntilExists().tap().typeText(username)
         return self
     }
     
@@ -40,11 +42,13 @@ public final class CreateProtonmailRobot: CoreElements {
     }
     
     public func pressCreateAddress<Robot: CoreElements>(to: Robot.Type) -> Robot {
-        button(buttonCreateAddressId).wait().tap()
+        button(buttonCreateAddressId).waitUntilExists().tap()
         return Robot()
     }
     
     public func createPMAddressIsShown() {
-            staticText(createPMAddressTitle).wait().checkExists()
+            staticText(createPMAddressTitle).waitUntilExists().checkExists()
     }
 }
+
+#endif

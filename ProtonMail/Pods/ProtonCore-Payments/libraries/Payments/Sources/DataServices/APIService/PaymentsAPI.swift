@@ -20,11 +20,12 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_Authentication
-import ProtonCore_Log
-import ProtonCore_DataModel
-import ProtonCore_Networking
-import ProtonCore_Services
+import ProtonCoreAuthentication
+import ProtonCoreLog
+import ProtonCoreDataModel
+import ProtonCoreNetworking
+import ProtonCoreServices
+import ProtonCoreUtilities
 
 struct ResponseWrapper<T: Response> {
     
@@ -55,6 +56,28 @@ public class BaseApiRequest<T: Response>: Request {
         self.api = api
     }
     
+    func response(responseObject: T) async throws -> T {
+        
+        let (_, response): (URLSessionDataTask?, T) = await self.api.perform(
+            request: self,
+            response: responseObject,
+            callCompletionBlockUsing: .asyncExecutor(dispatchQueue: awaitQueue)
+        )
+        
+        if let responseError = response.error {
+            if responseError.isApiIsBlockedError {
+                throw StoreKitManagerErrors.apiMightBeBlocked(
+                    message: responseError.localizedDescription,
+                    originalError: responseError.underlyingError ?? responseError
+                )
+            } else {
+                throw responseError
+            }
+        } else {
+            return response
+        }
+    }
+    
     func awaitResponse(responseObject: T) throws -> T {
         
         guard Thread.isMainThread == false else {
@@ -72,7 +95,7 @@ public class BaseApiRequest<T: Response>: Request {
                 
                 if let responseError = response.error {
                     if responseError.isApiIsBlockedError {
-                        result = .failure(StoreKitManagerErrors.apiMightBeBlocked(message: responseError.networkResponseMessageForTheUser,
+                        result = .failure(StoreKitManagerErrors.apiMightBeBlocked(message: responseError.localizedDescription,
                                                                                   originalError: responseError.underlyingError ?? responseError))
                     } else {
                         result = .failure(responseError)
@@ -101,13 +124,13 @@ public class BaseApiRequest<T: Response>: Request {
 
     public var authCredential: AuthCredential? { nil }
 
-    public var autoRetry: Bool { true }
+    public var authRetry: Bool { true }
 }
 
 let decodeError = NSError(domain: "Payment decode error", code: 0, userInfo: nil)
 
-public protocol PaymentsApiProtocol {
-    func statusRequest(api: APIService) -> StatusRequest
+protocol PaymentsApiProtocol {
+    func paymentStatusRequest(api: APIService) -> PaymentStatusRequest
     func buySubscriptionRequest(
         api: APIService, planId: String, amount: Int, amountDue: Int, paymentAction: PaymentAction
     ) throws -> SubscriptionRequest
@@ -118,17 +141,17 @@ public protocol PaymentsApiProtocol {
     func plansRequest(api: APIService) -> PlansRequest
     func creditRequest(api: APIService, amount: Int, paymentAction: PaymentAction) -> CreditRequest
     func methodsRequest(api: APIService) -> MethodRequest
-    func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest
-    func tokenStatusRequest(api: APIService, token: PaymentToken) -> TokenStatusRequest
+    func paymentTokenOldRequest(api: APIService, amount: Int, receipt: String) -> PaymentTokenOldRequest
+    func paymentTokenRequest(api: APIService, amount: Int, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest
+    func paymentTokenStatusRequest(api: APIService, token: PaymentToken) -> PaymentTokenStatusRequest
     func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool) -> ValidateSubscriptionRequest
     func countriesCountRequest(api: APIService) -> CountriesCountRequest
     func getUser(api: APIService) throws -> User
 }
 
 class PaymentsApiImplementation: PaymentsApiProtocol {
-
-    func statusRequest(api: APIService) -> StatusRequest {
-        StatusRequest(api: api)
+    func paymentStatusRequest(api: APIService) -> PaymentStatusRequest {
+        PaymentStatusRequest(api: api)
     }
 
     func buySubscriptionRequest(api: APIService, planId: String, amount: Int, amountDue: Int, paymentAction: PaymentAction) throws -> SubscriptionRequest {
@@ -176,12 +199,16 @@ class PaymentsApiImplementation: PaymentsApiProtocol {
         MethodRequest(api: api)
     }
 
-    func tokenRequest(api: APIService, amount: Int, receipt: String) -> TokenRequest {
-        TokenRequest(api: api, amount: amount, receipt: receipt)
+    func paymentTokenOldRequest(api: APIService, amount: Int, receipt: String) -> PaymentTokenOldRequest {
+        PaymentTokenOldRequest(api: api, amount: amount, receipt: receipt)
     }
 
-    func tokenStatusRequest(api: APIService, token: PaymentToken) -> TokenStatusRequest {
-        TokenStatusRequest(api: api, token: token)
+    func paymentTokenRequest(api: APIService, amount: Int, receipt: String, transactionId: String, bundleId: String, productId: String) -> PaymentTokenRequest {
+        PaymentTokenRequest(api: api, amount: amount, receipt: receipt, transactionId: transactionId, bundleId: bundleId, productId: productId)
+    }
+
+    func paymentTokenStatusRequest(api: APIService, token: PaymentToken) -> PaymentTokenStatusRequest {
+        PaymentTokenStatusRequest(api: api, token: token)
     }
 
     func validateSubscriptionRequest(api: APIService, protonPlanName: String, isAuthenticated: Bool) -> ValidateSubscriptionRequest {
@@ -253,8 +280,7 @@ extension Response {
                 throw errorToReturn.toResponseError(updating: error)
             }
             let data = try JSONSerialization.data(withJSONObject: response, options: [])
-            let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .custom(decapitalizeFirstLetter)
+            let decoder = JSONDecoder.decapitalisingFirstLetter
             let object = try decoder.decode(T.self, from: data)
             return (true, object)
         } catch let decodingError {

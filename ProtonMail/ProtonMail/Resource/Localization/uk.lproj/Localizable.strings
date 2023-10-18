@@ -116,9 +116,6 @@
 /* Description */
 "Sent Failed" = "Не вдалося надіслати";
 
-/* Description */
-"Email failed to send. Message saved as draft." = "Не вдалося надіслати електронний лист. Повідомлення збережено до чернетки.";
-
 /* The title will be shown when foler doesnt have emails */
 "Nothing to see here" = "Тут нічого немає";
 
@@ -223,9 +220,6 @@
 
 /* Description */
 "You need at least one recipient to send" = "Необхідно вказати принаймні одного отримувача";
-
-/* Title */
-"Change sender address to…" = "Змінити адресу відправника на…";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Перейдіть на платний тарифний план, щоб надіслати з вашої адреси %@";
@@ -653,9 +647,6 @@
 /* Title */
 "Confirm new mailbox password" = "Підтвердження нового пароля поштової скриньки";
 
-/* error when sending the message */
-"Unable to send the email" = "Не вдається надіслати е-пошту";
-
 /* Title */
 "Star/unstar" = "Позначити/прибрати зірочку";
 
@@ -792,7 +783,7 @@
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали весь обсяг свого сховища (%@). Перейдіть на тарифний план вищого рівня, щоб надсилати й отримувати електронні листи.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали %1$d%% місця у сховищі (%2$@). Будь ласка, поліпшіть свій тарифний план, щоб продовжити надсилати та отримувати листи.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали %1$d%% місця у сховищі (%2$@). Будь ласка, покращте свій тарифний план, щоб продовжити надсилати та отримувати листи.";
 
 /* Alert title */
 "Storage full" = "Сховище заповнене";
@@ -930,7 +921,7 @@
 "Message expired" = "Термін дії повідомлення завершився";
 
 /* expiration time count down */
-"This message will expire in %dD %dH %dM" = "Термін дії цього повідомлення завершиться через %1$dД %2$dГ %3$dХВ";
+"This message will expire in %dD %dH %dM" = "Термін дії цього повідомлення завершиться через %1$dД %2$dГ %3$dХв";
 
 /* Action */
 "Sign Out" = "Вийти";
@@ -994,9 +985,6 @@
 
 /* Title */
 "Cut" = "Вирізати";
-
-/* Title */
-"Compose to" = "Написати";
 
 /* Title */
 "Add to contacts" = "Додати до контактів";
@@ -1244,9 +1232,6 @@
 /* content of the sending mesage that will display this text on the date label */
 "Sending message…" = "Надсилання повідомлення…";
 
-/* message shown in the notification when the recipient validation is failed while sending */
-"Message could not be sent. At least one recipient email address/domain doesn't exist or is badly formatted." = "Не вдається надіслати повідомлення. Адреса чи домен принаймні одного отримувача не існує, або має неправильний формат.";
-
 /* The unread title of unread action button in mailbox view */
 "unread" = "непрочитане";
 
@@ -1295,27 +1280,6 @@
 /* The footer of combined contact in settings */
 "Turn this feature on to auto-complete email addresses using contacts from all your signed in accounts." = "Увімкніть цю функцію для автозавершення адрес електронної пошти, використовуючи контакти з усіх облікових записів, до яких ви ввійшли.";
 
-/* The title of PIN code setup1 view  */
-"Set PIN code" = "Встановити PIN-код";
-
-/* The title of textfield of PIN code setup1 */
-"Enter new PIN code" = "Введіть новий PIN-код";
-
-/* The assistive text of textfield of PIN code setup1 */
-"Enter a PIN code with min 4 characters and max 21 characters." = "Введіть PIN-код від 4 до 21 символів.";
-
-/* The error message of entering a short pin */
-"PIN is too short" = "PIN-код закороткий";
-
-/* The error message of entering a long pin */
-"PIN is too long" = "PIN-код задовгий";
-
-/* The title of PIN code setup2 view */
-"Repeat PIN code" = "Повторіть PIN-код";
-
-/* The error message of entering an invalid password */
-"The PIN codes must match!" = "PIN-коди повинні збігатися!";
-
 /* alternative routing description */
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "У випадку блокування сайтів Proton, цей параметр дозволяє програмі спробувати альтернативний мережевий маршрут для доступу до Proton, що може бути корисним для обходу мережевих екранів чи мережевих проблем. Рекомендовано увімкнути цей параметр для підвищення надійності. %1$@";
 
@@ -1327,9 +1291,6 @@
 
 /* The title of Off setting options */
 "Off" = "Вимкнено";
-
-/* The title of change PIN code option in security settings */
-"Change PIN code" = "Змінити PIN-код";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Повторна автентифікація";
@@ -1551,7 +1512,7 @@
 "Open account switcher" = "Відкрити перемикач облікових записів";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Надсилання буде можливе\nколи вивантажаться вкладення";
+"Sending will be available\nwhen attachments are uploaded" = "Надсилання буде можливе \nколи вивантажаться вкладення";
 
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Помилка вкладення";
@@ -1821,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Відтепер ви можете вибирати й переставляти дії на цій панелі";
 
 /* Button to block a sender */
-"Block sender" = "Блокувати відправника";
+"Block messages from this sender" = "Блокувати повідомлення від цього відправника.";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Блокувати";
@@ -1990,6 +1951,9 @@
 /* The action title in the action sheet of the reply action in conversation view. */
 "Reply all (to last message)" = "Відповісти всім (на останнє повідомлення)";
 
+/* The action title in the action sheet of the composing new message */
+"New message" = "Нове повідомлення";
+
 /* The action title of the button on the toolbar customization spotlight view. (verb) */
 "Customize (verb)" = "Налаштувати";
 
@@ -1997,7 +1961,7 @@
 "Bug Report Place Holder" = "---Допоможіть нам усунути вашу проблему, надавши якомога більше подробиць---\n\nПідсумок:\n\nЧи траплялася проблема більше одного разу: так/ні \nКроки для відтворення проблеми: \nОчікуваний результат: \nФактичний результат: \nКоментарі:";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Include logs";
+"Include logs" = "Включаючи журнали";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Спробуйте інший пошуковий термін.";
@@ -2023,17 +1987,8 @@
 /* Button to enable encrypted search */
 "Enable" = "Увімкнути";
 
-/* Title of the alert to confirm disabling of the auto delete option */
-"Disable auto-delete?" = "Вимкнути автоматичне видалення?";
-
-/* Message of the alert to confirm disabling of the auto delete option */
-"Emails scheduled for deletion will remain in the trash and spam folders." = "Електронні листи, заплановані для видалення, залишатимуться в смітнику та спамі.";
-
-/* Button to disable auto delete */
-"Disable" = "Вимкнути";
-
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Поліпшіть підписку , щоб автоматично видаляти повідомлення, які перебували у смітнику або спамі понад 30 днів.";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Покращте підписку, щоб автоматично видаляти повідомлення, які перебували у смітнику або спамі понад 30 днів.";
 
 /* Text to prompt paid users to enable the auto delete feature */
 "Automatically delete messages that have been in trash for more than 30 days." = "Автоматично видаляти повідомлення, які перебувають у смітнику понад 30 днів.";
@@ -2062,20 +2017,26 @@
 /* Text to advertise what upgrading will provide */
 "Custom email domains" = "Власні поштові домени";
 
+/* Alert title, shows when current sender address in the composer is invalid anymore. */
+"Sender changed" = "Відправника змінено";
+
+/* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
+"The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Початковий відправник цього повідомлення більше недійсний. Ваше повідомлення буде надіслано з типової адреси %@.";
+
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "Ім'я";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "Ім'я";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "Прізвище";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "Поле ім'я не може бути порожнім";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "Ім'я контакту задовге";
 
 /* The button text for add profile picture */
 "Add photo" = "Додати фото";
@@ -2083,11 +2044,41 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Редагувати фото";
 
+/* The title of PIN code disable view  */
+"Disable PIN code" = "Disable PIN code";
+
+/* The title of PIN code setup1 view  */
+"Set PIN code" = "Встановити PIN-код";
+
+/* The title of PIN code setup2 view */
+"Repeat PIN code" = "Повторіть PIN-код";
+
+/* The title of textfield of PIN code setup1 */
+"Enter new PIN code" = "Введіть новий PIN-код";
+
+/* The assistive text of textfield of PIN code setup1 */
+"Enter a PIN code with min 4 characters and max 21 characters." = "Введіть PIN-код від 4 до 21 символів.";
+
+/* The error message of entering a short pin */
+"PIN is too short" = "PIN-код закороткий";
+
+/* The error message of entering a long pin */
+"PIN is too long" = "PIN-код задовгий";
+
+/* The error message of entering an invalid password */
+"The PIN codes must match!" = "PIN-коди повинні збігатися!";
+
+/* The textField title when user trying to update its pin code setting */
+"Please enter old pin code " = "Введіть старий PIN-код ";
+
+/* The title of change PIN code option in security settings */
+"Change PIN code" = "Змінити PIN-код";
+
 /* The title of unsubscribe banner */
 "Unsubscribe from mailing list" = "Відписатися від розсилки";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "Відписатися?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Це скасує вашу підписку на список розсилки. Відправника буде сповіщено більше не надсилати електронні листи на цю адресу.";

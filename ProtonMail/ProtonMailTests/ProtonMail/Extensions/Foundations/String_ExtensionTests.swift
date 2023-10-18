@@ -76,6 +76,18 @@ final class String_ExtensionTests: XCTestCase {
         XCTAssertTrue("abccdew".preg_match("cc"))
     }
 
+    func testPreg_match_resultInGroup() throws {
+        var text = "src=\"cid:abcde\""
+        var result = try XCTUnwrap(text.preg_match(resultInGroup: 1, "src=(['|\"])cid:abcde"))
+        XCTAssertEqual(result, "\"")
+
+        text = "src='cid:abcde'"
+        result = try XCTUnwrap(text.preg_match(resultInGroup: 1, "src=(['|\"])cid:abcde"))
+        XCTAssertEqual(result, "'")
+
+        XCTAssertNil(text.preg_match(resultInGroup: 2, "src=(['|\"])cid:abcde"))
+    }
+
     func testHasImage() {
         let testSrc1 = "<embed type=\"image/svg+xml\" src=\"cid:5d13cdcaf81f4108654c36fc.svg@www.emailprivacytester.com\"/>"
         XCTAssertFalse(testSrc1.hasRemoteImage())

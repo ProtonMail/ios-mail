@@ -54,6 +54,7 @@ struct MessageEntity: Equatable, Hashable {
     let size: Int
     let spamScore: SpamScore
 
+    @available(*, deprecated, message: "use `rawParsedHeaders` instead")
     let rawHeader: String?
     let rawParsedHeaders: String?
 
@@ -127,11 +128,6 @@ struct MessageEntity: Equatable, Hashable {
     let passwordHint: String
 
     let objectID: ObjectID
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(messageID)
-        hasher.combine(objectID)
-    }
 }
 
 extension MessageEntity {

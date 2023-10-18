@@ -20,8 +20,8 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import ProtonCore_CryptoGoInterface
-import ProtonCore_Utilities
+import ProtonCoreCryptoGoInterface
+import ProtonCoreUtilities
 
 // Helper
 extension Crypto {
