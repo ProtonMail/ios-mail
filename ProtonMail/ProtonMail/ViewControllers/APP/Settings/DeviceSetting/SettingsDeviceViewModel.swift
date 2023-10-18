@@ -109,13 +109,15 @@ final class SettingsDeviceViewModel {
         return standardSections
     }()
 
-    private(set) var appSettings: [DeviceSectionItem] = [
+    let appSettings: [DeviceSectionItem] = [
         .darkMode,
         .appPIN,
         .combineContacts,
         .browser,
         .alternativeRouting,
-        .swipeAction
+        .swipeAction,
+        .toolbar,
+        .applicationLogs
     ]
 
     private(set) var generalSettings: [GeneralSectionItem] = [.notification, .language]
@@ -159,12 +161,6 @@ final class SettingsDeviceViewModel {
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
         induceSlowdownUseCase = .init(user: dependencies.user)
-
-        if UserInfo.isToolbarCustomizationEnable {
-            appSettings.append(.toolbar)
-        }
-
-        appSettings.append(.applicationLogs)
     }
 
     func appVersion() -> String {

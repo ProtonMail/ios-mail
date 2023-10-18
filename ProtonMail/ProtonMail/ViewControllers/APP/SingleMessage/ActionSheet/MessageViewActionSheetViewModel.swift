@@ -91,13 +91,9 @@ struct MessageViewActionSheetViewModel: ActionSheetViewModel {
             .moveTo,
             .saveAsPDF,
             .print,
+            .toolbarCustomization,
             .viewHeaders
         ])
-
-        if UserInfo.isToolbarCustomizationEnable,
-           let indexOfViewHeader = items.firstIndex(of: .viewHeaders) {
-            items.insert(.toolbarCustomization, at: indexOfViewHeader)
-        }
 
         if isBodyDecryptable {
             items.append(.viewHTML)

@@ -18,16 +18,6 @@
 import ProtonCoreDataModel
 
 extension UserInfo {
-    static var isToolbarCustomizationEnable: Bool {
-        if ProcessInfo.isRunningUnitTests {
-            return true
-        }
-        if ProcessInfo.hasLaunchArgument(.disableToolbarSpotlight) {
-            return false
-        }
-        return true
-    }
-
     /// Swipe to show previous / next conversation or messages
     static var isConversationSwipeEnabled: Bool {
         #if DEBUG_ENTERPRISE

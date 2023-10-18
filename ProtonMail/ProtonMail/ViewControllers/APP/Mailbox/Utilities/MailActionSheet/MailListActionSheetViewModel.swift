@@ -57,9 +57,7 @@ struct MailListActionSheetViewModel {
         } else if labelId != Message.Location.scheduled.rawValue {
             items += [.moveToSpam()]
         }
-        items += [.moveToActionViewModel()]
-        if UserInfo.isToolbarCustomizationEnable {
-            items += [.customizeToolbarActionViewModel()]
-        }
+
+        items += [.moveToActionViewModel(), .customizeToolbarActionViewModel()]
     }
 }

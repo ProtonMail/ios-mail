@@ -181,10 +181,8 @@ extension SignInManager: LifetimeTrackable {
 private extension SpotlightableFeatureKey {
     var isFeatureEnabledLocallyByDefault: Bool {
         switch self {
-        case .scheduledSend:
+        case .scheduledSend, .toolbarCustomization:
             return true
-        case .toolbarCustomization:
-            return UserInfo.isToolbarCustomizationEnable
         case .messageSwipeNavigation:
             return UserInfo.isConversationSwipeEnabled
         }

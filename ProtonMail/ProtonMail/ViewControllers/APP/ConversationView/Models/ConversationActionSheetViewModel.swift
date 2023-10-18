@@ -55,13 +55,13 @@ struct ConversationActionSheetViewModel: ActionSheetViewModel {
             items.append(contentsOf: [.trash, .archive, .spam, .moveTo])
         }
 
-        items.append(.saveAsPDF)
-        items.append(.print)
-        if UserInfo.isToolbarCustomizationEnable {
-            items.append(.toolbarCustomization)
-        }
-        items.append(.viewHeaders)
-        items.append(.viewHTML)
-        items.append(.reportPhishing)
+        items.append(contentsOf: [
+            .saveAsPDF,
+            .print,
+            .toolbarCustomization,
+            .viewHeaders,
+            .viewHTML,
+            .reportPhishing
+        ])
     }
 }

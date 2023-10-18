@@ -82,11 +82,5 @@ struct Constants {
                                               "visionary2022",
                                               "bundlepro2022"]
 
-    #if !APP_EXTENSION
-    static let defaultToolbarActions: [MessageViewActionSheetAction] = [
-        .markUnread, .trash, .moveTo, .labelAs
-    ]
-    #endif
-
     static let defaultMobileSignature = "Sent from Proton Mail for iOS"
 }
