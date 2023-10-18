@@ -103,7 +103,7 @@ class UsersManager: Service, UsersManagerProtocol {
 
     private(set) var users: [UserManager] = [] {
         didSet {
-            userCachedStatus.primaryUserSessionId = self.users.first?.authCredential.sessionID
+            dependencies.userCachedStatus.primaryUserSessionId = users.first?.authCredential.sessionID
         }
     }
 
@@ -119,7 +119,7 @@ class UsersManager: Service, UsersManagerProtocol {
     private unowned let dependencies: Dependencies
 
     init(userDefaultCache: SharedCacheBase = .init(), dependencies: Dependencies) {
-        self.doh.status = userCachedStatus.isDohOn ? .on : .off
+        self.doh.status = dependencies.userCachedStatus.isDohOn ? .on : .off
         /// for migrate
         self.latestVersion = Version.version
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
@@ -358,7 +358,7 @@ extension UsersManager {
             }
 
 #if !APP_EXTENSION
-            userCachedStatus.markBlockedSendersAsFetched(false, userID: user.userID)
+            self.dependencies.userCachedStatus.markBlockedSendersAsFetched(false, userID: user.userID)
             self.dependencies.imageProxyCache.purge()
             self.dependencies.senderImageCache.purge()
 #endif
@@ -442,7 +442,7 @@ extension UsersManager {
 
             self.currentVersion = self.latestVersion
 
-            userCachedStatus.cleanAllData()
+            self.dependencies.userCachedStatus.cleanAllData()
 
             if !ProcessInfo.isRunningUnitTests {
                 self.coreKeyMaker.wipeMainKey()
@@ -861,7 +861,7 @@ extension UsersManager {
             if let randomProtection = RandomPinProtection.randomPin {
                 coreKeyMaker.deactivate(randomProtection)
             }
-            userCachedStatus.keymakerRandomkey = nil
+            dependencies.userCachedStatus.keymakerRandomkey = nil
             RandomPinProtection.removeCyphertext(from: keychain)
             return
         }
