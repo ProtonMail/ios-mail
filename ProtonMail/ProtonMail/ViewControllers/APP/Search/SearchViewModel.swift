@@ -83,10 +83,8 @@ final class SearchViewModel: NSObject {
     }
 
     private(set) var selectedIDs: Set<String> = []
-
-    private var dataPublisher: DataPublisher<Message>?
+    private var messagesPublisher: MessagesPublisher?
     private var cancellable: AnyCancellable?
-
     private var messageService: MessageDataService { self.user.messageService }
     private let localObjectIndexing: Progress = .init(totalUnitCount: 1)
     private var localObjectsIndexingObserver: NSKeyValueObservation? {
@@ -132,7 +130,7 @@ extension SearchViewModel: SearchVMProtocol {
         // switches off indexing of Messages in local db
         localObjectIndexing.cancel()
         cancellable?.cancel()
-        dataPublisher = nil
+        messagesPublisher = nil
     }
 
     func fetchRemoteData(query: String, fromStart: Bool) {
@@ -501,62 +499,64 @@ extension SearchViewModel {
 extension SearchViewModel {
     // swiftlint:disable function_body_length
     private func indexLocalObjects(_ completion: @escaping () -> Void) {
-        var count = 0
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
-            let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            overallCountRequest.resultType = .countResultType
-            overallCountRequest.predicate = NSPredicate(format: "%K == %@",
-                                                        Message.Attributes.userID,
-                                                        self.user.userInfo.userId)
-            do {
+        do {
+            let count = try dependencies.contextProvider.read { context in
+                let overallCountRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+                overallCountRequest.resultType = .countResultType
+                overallCountRequest.predicate = NSPredicate(format: "%K == %@",
+                                                            Message.Attributes.userID,
+                                                            self.user.userInfo.userId)
                 let result = try context.fetch(overallCountRequest)
-                count = (result.first as? Int) ?? 1
-            } catch {
-                assertionFailure("Failed to fetch message dicts")
-            }
-        }
-
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userInfo.userId)
-        fetchRequest.sortDescriptors = [
-            NSSortDescriptor(key: Message.Attributes.time, ascending: false),
-            NSSortDescriptor(key: #keyPath(Message.order), ascending: true)
-        ]
-        fetchRequest.resultType = .dictionaryResultType
-
-        let objectId = NSExpressionDescription()
-        objectId.name = "objectID"
-        objectId.expression = NSExpression.expressionForEvaluatedObject()
-        objectId.expressionResultType = NSAttributeType.objectIDAttributeType
-
-        fetchRequest.propertiesToFetch = [objectId,
-                                          Message.Attributes.title,
-                                          Message.Attributes.sender,
-                                          Message.Attributes.toList]
-        let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
-            self?.dbContents = result.finalResult as? [LocalObjectsIndexRow] ?? []
-            self?.localObjectsIndexingObserver = nil
-            completion()
-        })
-
-        dependencies.contextProvider.performOnRootSavingContext { context in
-            self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
-            guard let indexRaw = try? context.execute(async),
-                  let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
-                self.localObjectIndexing.resignCurrent()
-                return
+                return (result.first as? Int) ?? 1
             }
 
-            self.localObjectIndexing.resignCurrent()
-            self.localObjectsIndexingObserver = index.progress?.observe(
-                \Progress.completedUnitCount,
-                options: NSKeyValueObservingOptions.new
-            ) { [weak self] progress, _ in
-                DispatchQueue.main.async {
-                    let completionRate = Float(progress.completedUnitCount) / Float(count)
-                    self?.uiDelegate?.update(progress: completionRate)
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.user.userInfo.userId)
+            fetchRequest.sortDescriptors = [
+                NSSortDescriptor(key: Message.Attributes.time, ascending: false),
+                NSSortDescriptor(key: #keyPath(Message.order), ascending: true)
+            ]
+            fetchRequest.resultType = .dictionaryResultType
+
+            let objectId = NSExpressionDescription()
+            objectId.name = "objectID"
+            objectId.expression = NSExpression.expressionForEvaluatedObject()
+            objectId.expressionResultType = NSAttributeType.objectIDAttributeType
+            fetchRequest.propertiesToFetch = [
+                objectId,
+                Message.Attributes.title,
+                Message.Attributes.sender,
+                Message.Attributes.toList
+            ]
+
+            let asyncRequest = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
+                self?.dbContents = result.finalResult as? [LocalObjectsIndexRow] ?? []
+                self?.localObjectsIndexingObserver = nil
+                completion()
+            })
+
+
+            dependencies.contextProvider.performAndWaitOnRootSavingContext { [weak self] context in
+                self?.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
+                guard let indexRaw = try? context.execute(asyncRequest),
+                      let index = indexRaw as? NSPersistentStoreAsynchronousResult else {
+                    self?.localObjectIndexing.resignCurrent()
+                    return
+                }
+
+                self?.localObjectIndexing.resignCurrent()
+                self?.localObjectsIndexingObserver = index.progress?.observe(
+                    \Progress.completedUnitCount,
+                    options: NSKeyValueObservingOptions.new
+                ) { [weak self] progress, _ in
+                    DispatchQueue.main.async {
+                        let completionRate = Float(progress.completedUnitCount) / Float(count)
+                        self?.uiDelegate?.update(progress: completionRate)
+                    }
                 }
             }
+        } catch {
+            PMAssertionFailure(error)
         }
     }
 
@@ -590,26 +590,19 @@ extension SearchViewModel {
     }
 
     private func updateFetchController(messageIDs: [MessageID]) {
-        let ids = messageIDs.map { $0.rawValue }
-        let predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, ids)
-        let sortDescriptors = [
-            NSSortDescriptor(key: #keyPath(Message.time), ascending: false),
-            NSSortDescriptor(key: #keyPath(Message.order), ascending: false)
-        ]
-        dataPublisher = .init(
-            entityName: Message.Attributes.entityName,
-            predicate: predicate,
-            sortDescriptors: sortDescriptors,
+        self.messagesPublisher = .init(
+            messageIDs: messageIDs,
             contextProvider: dependencies.contextProvider
         )
-        cancellable = dataPublisher?.contentDidChange
+
+        cancellable = messagesPublisher?.contentDidChange
             .map { $0.map(MessageEntity.init) }
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { messages in
-                self.messages = messages
-                self.uiDelegate?.refreshActionBarItems()
-            })
-        dataPublisher?.start()
+            .sink(receiveValue: { [weak self] messages in
+                self?.messages = messages
+                self?.uiDelegate?.refreshActionBarItems()
+        })
+        messagesPublisher?.start()
     }
 
     private func date(of message: MessageEntity, weekStart: WeekStart) -> String {

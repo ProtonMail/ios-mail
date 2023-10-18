@@ -44,6 +44,10 @@ final class MailboxDiffableDataSource {
         }
     }
 
+    func cacheSnapshot(_ snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>) {
+        dataSnapshot = snapshot
+    }
+
     func reloadSnapshot(
         snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>?,
         animate: Bool,

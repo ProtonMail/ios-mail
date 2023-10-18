@@ -60,6 +60,18 @@ class FeatureFlagsDownloadService: FeatureFlagsDownloadServiceProtocol {
         case selfIsReleased
     }
 
+    func getFeatureFlags() async throws {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
+            self.getFeatureFlags { error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                } else {
+                    continuation.resume()
+                }
+            }
+        }
+    }
+
     func getFeatureFlags(completion: ((Error?) -> Void)?) {
         if let time = self.lastFetchingTime,
             Date().timeIntervalSince1970 - time.timeIntervalSince1970 > 300.0 {
