@@ -864,28 +864,18 @@ extension MailboxViewModel {
 // MARK: Message Actions
 extension MailboxViewModel {
     func containsStarMessages(messageIDs: Set<String>) -> Bool {
-        var starCount = 0
         switch self.locationViewMode {
         case .conversation:
-            let conversations = self.conversationProvider.fetchLocalConversations(withIDs: NSMutableSet(set: messageIDs), in: coreDataContextProvider.mainContext)
-            starCount = conversations.reduce(0) { (result, next) -> Int in
-                if next.contains(of: Message.Location.starred.labelID.rawValue) {
-                    return result + 1
-                } else {
-                    return result
-                }
+            return coreDataContextProvider.read { context in
+                let conversations = self.conversationProvider.fetchLocalConversations(withIDs: NSMutableSet(set: messageIDs), in: context)
+                return conversations.contains { $0.contains(of: Message.Location.starred.labelID.rawValue) }
             }
         case .singleMessage:
-            let messages = self.messageService.fetchMessages(withIDs: NSMutableSet(set: messageIDs), in: coreDataContextProvider.mainContext)
-            starCount = messages.reduce(0) { (result, next) -> Int in
-                if next.contains(label: .starred) {
-                    return result + 1
-                } else {
-                    return result
-                }
+            return coreDataContextProvider.read { context in
+                let messages = self.messageService.fetchMessages(withIDs: NSMutableSet(set: messageIDs), in: context)
+                return messages.contains { $0.contains(label: .starred) }
             }
         }
-        return starCount > 0
     }
 
     func selectionContainsReadItems() -> Bool {

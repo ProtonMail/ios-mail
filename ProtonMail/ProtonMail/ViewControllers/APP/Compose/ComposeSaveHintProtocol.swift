@@ -47,15 +47,16 @@ extension ComposeSaveHintProtocol {
               let manager = user.parentManager,
               manager.users.contains(where: { $0.userInfo.userId == user.userInfo.userId }),
               let messageID = cache.lastDraftMessageID else { return }
-        let messages = messageService.fetchMessages(withIDs: [messageID], in: coreDataContextProvider.mainContext)
-
         let banner = PMBanner(
             message: LocalString._composer_draft_saved,
             style: PMBannerNewStyle.info,
             bannerHandler: PMBanner.dismiss
         )
         banner.addButton(text: LocalString._general_discard) { [weak self] _ in
-            messageService.delete(messages: messages.map(MessageEntity.init), label: LabelLocation.draft.labelID)
+            let messages = coreDataContextProvider.read { context in
+                return messageService.fetchMessages(withIDs: [messageID], in: context).map(MessageEntity.init)
+            }
+            messageService.delete(messages: messages, label: LabelLocation.draft.labelID)
             self?.showDiscardedBanner()
             banner.dismiss(animated: false)
         }
