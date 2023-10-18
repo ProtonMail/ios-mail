@@ -242,10 +242,7 @@ extension AppDelegate: UIApplicationDelegate {
         if let user = dependencies.usersManager.firstUser {
             dependencies.queueManager.enterForeground()
             user.refreshFeatureFlags()
-
-            if UserInfo.isBlockSenderEnabled {
-                user.blockedSenderCacheUpdater.requestUpdate()
-            }
+            user.blockedSenderCacheUpdater.requestUpdate()
         }
     }
 
