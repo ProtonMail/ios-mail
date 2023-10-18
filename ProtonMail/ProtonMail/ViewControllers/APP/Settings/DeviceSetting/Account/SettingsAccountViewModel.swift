@@ -179,12 +179,8 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
             mailboxItems.append(.nextMsgAfterMove)
         }
 
-        mailboxItems.append(.blockList)
+        mailboxItems.append(contentsOf: [.blockList, .autoDeleteSpamTrash])
 
-        if UserInfo.isAutoDeleteEnabled {
-            mailboxItems.append(.autoDeleteSpamTrash)
-        }
- 
         self.mailboxItems = mailboxItems
     }
 

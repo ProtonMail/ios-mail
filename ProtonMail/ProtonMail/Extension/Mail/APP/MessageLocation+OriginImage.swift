@@ -38,7 +38,7 @@ extension Message.Location {
         case .spam:
             return IconProvider.fire
         case .trash:
-            if UserInfo.isAutoDeleteEnabled && isAutoDeletingMessage {
+            if isAutoDeletingMessage {
                 return IconProvider.trashClock
             } else {
                 return IconProvider.trash

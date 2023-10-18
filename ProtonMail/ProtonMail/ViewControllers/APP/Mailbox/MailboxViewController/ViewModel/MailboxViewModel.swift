@@ -1164,10 +1164,6 @@ extension MailboxViewModel {
     }
 
     var headerBanner: BannerToDisplay? {
-        guard UserInfo.isAutoDeleteEnabled else {
-            return nil
-        }
-
         let infoBannerType: InfoBannerType
         if self.labelID == LabelLocation.spam.labelID {
             infoBannerType = .spam
