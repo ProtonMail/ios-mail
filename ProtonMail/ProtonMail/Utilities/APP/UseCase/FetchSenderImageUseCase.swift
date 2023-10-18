@@ -30,7 +30,6 @@ final class FetchSenderImage: FetchSenderImageUseCase {
 
     override func executionBlock(params: Params, callback: @escaping Callback) {
         guard
-            dependencies.localFeatureFlag,
             dependencies.featureFlagCache.isFeatureFlag(.senderImage, enabledForUserWithID: params.userID),
             !dependencies.mailSettings.hideSenderImages
         else {
@@ -79,7 +78,6 @@ extension FetchSenderImage {
         let featureFlagCache: FeatureFlagCache
         let senderImageService: SenderImageService
         let mailSettings: MailSettings
-        let localFeatureFlag: Bool = UserInfo.isSenderImageEnabled
 
         init(
             featureFlagCache: FeatureFlagCache,

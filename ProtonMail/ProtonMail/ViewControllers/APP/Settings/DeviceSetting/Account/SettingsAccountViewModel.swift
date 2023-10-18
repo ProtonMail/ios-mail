@@ -179,9 +179,7 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
             mailboxItems.append(.nextMsgAfterMove)
         }
 
-        if UserInfo.isBlockSenderEnabled {
-            mailboxItems.append(.blockList)
-        }
+        mailboxItems.append(.blockList)
 
         if UserInfo.isAutoDeleteEnabled {
             mailboxItems.append(.autoDeleteSpamTrash)

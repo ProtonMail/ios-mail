@@ -773,7 +773,7 @@ extension EventsService {
     }
 
     private func processEvents(incomingDefaults: [[String: Any]]?) {
-        guard UserInfo.isBlockSenderEnabled, let incomingDefaults = incomingDefaults else {
+        guard let incomingDefaults else {
             return
         }
                 for item in incomingDefaults {

@@ -68,15 +68,13 @@ extension PMActionSheet {
             addToContacts(action: action)
         ]
 
-        if UserInfo.isBlockSenderEnabled {
-            switch senderBlockStatus {
-            case .blocked:
-                items.append(unblockSender(action: action))
-            case .notBlocked:
-                items.append(blockSender(action: action))
-            case .notApplicable:
-                break
-            }
+        switch senderBlockStatus {
+        case .blocked:
+            items.append(unblockSender(action: action))
+        case .notBlocked:
+            items.append(blockSender(action: action))
+        case .notApplicable:
+            break
         }
 
         return PMActionSheet(headerView: header, itemGroups: [.init(items: items, style: .clickable)])

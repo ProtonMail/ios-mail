@@ -42,14 +42,6 @@ extension UserInfo {
         false
     }
 
-    static var isSenderImageEnabled: Bool {
-        return true
-    }
-
-    static var isBlockSenderEnabled: Bool {
-        true
-    }
-
     static var isAutoDeleteEnabled: Bool {
         #if DEBUG_ENTERPRISE
         true
