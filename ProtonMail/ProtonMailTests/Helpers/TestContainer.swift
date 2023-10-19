@@ -44,8 +44,8 @@ class TestContainer: GlobalContainer {
             return QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
         }
 
-        userCachedStatusFactory.register {
-            UserCachedStatus(userDefaults: UserDefaults(suiteName: "ch.protonmail.test.\(self.uuid)")!)
+        userDefaultsFactory.register {
+            .init(suiteName: "ch.protonmail.test.\(self.uuid)")!
         }
     }
 }

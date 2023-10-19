@@ -25,7 +25,6 @@ import XCTest
 final class WindowsCoordinatorAppAccessResolverTests: XCTestCase {
     private var sut: WindowsCoordinator!
     private var testContainer: TestContainer!
-    private var mockUsersManager: UsersManager!
     private var mockKeyMaker: MockKeyMakerProtocol!
     private var windowsCoordinatorDelegate: MockWindowsCoordinatorDelegate!
 
@@ -36,8 +35,6 @@ final class WindowsCoordinatorAppAccessResolverTests: XCTestCase {
         mockKeyMaker = .init()
 
         testContainer.keyMakerFactory.register { self.mockKeyMaker }
-        mockUsersManager = UsersManager(userDefaultCache: testContainer.userCachedStatus, dependencies: testContainer)
-        testContainer.usersManagerFactory.register { self.mockUsersManager }
 
         windowsCoordinatorDelegate = .init()
         sut = .init(dependencies: testContainer, showPlaceHolderViewOnly: false, isAppAccessResolverEnabled: true)
@@ -48,7 +45,6 @@ final class WindowsCoordinatorAppAccessResolverTests: XCTestCase {
         super.tearDown()
 
         testContainer = nil
-        mockUsersManager = nil
         mockKeyMaker = nil
         sut = nil
     }

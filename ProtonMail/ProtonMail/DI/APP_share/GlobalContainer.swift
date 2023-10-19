@@ -139,6 +139,12 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
+    var userDefaultsFactory: Factory<UserDefaults> {
+        self {
+            UserDefaults(suiteName: Constants.AppGroup)!
+        }
+    }
+
     var usersManagerFactory: Factory<UsersManager> {
         self {
             UsersManager(dependencies: self)
@@ -147,7 +153,7 @@ class GlobalContainer: ManagedContainer {
 
     var userCachedStatusFactory: Factory<UserCachedStatus> {
         self {
-            UserCachedStatus()
+            UserCachedStatus(userDefaults: self.userDefaults)
         }
     }
 

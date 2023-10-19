@@ -24,7 +24,6 @@ import XCTest
 
 final class AppAccessResolverTests: XCTestCase {
     private var sut: AppAccessResolver!
-    private var mockUsersManager: UsersManager!
     private var apiMock: APIServiceMock!
     private var mockKeyMaker: MockKeyMakerProtocol!
     private var lockPreventor: LockPreventor!
@@ -45,9 +44,6 @@ final class AppAccessResolverTests: XCTestCase {
         testContainer.keyMakerFactory.register { self.mockKeyMaker }
         testContainer.lockPreventorFactory.register { self.lockPreventor }
 
-        mockUsersManager = UsersManager(userDefaultCache: testContainer.userCachedStatus, dependencies: testContainer)
-        testContainer.usersManagerFactory.register { self.mockUsersManager }
-
         mockKeyMaker.mainKeyStub.bodyIs { _, _ in
             RandomPinProtection.generateRandomValue(length: 32)
         }
@@ -59,7 +55,6 @@ final class AppAccessResolverTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
-        mockUsersManager = nil
         apiMock = nil
         mockKeyMaker = nil
         lockPreventor = nil
@@ -70,7 +65,7 @@ final class AppAccessResolverTests: XCTestCase {
     // MARK: evaluateAppAccessAtLaunch
 
     func testEvaluateAppAccessAtLaunch_whenThereAreUsersAndAppIsUnlocked_returnsAccessGranted() {
-        mockUsersManager.add(newUser: .init(api: apiMock, userID: userID))
+        testContainer.usersManager.add(newUser: .init(api: apiMock, userID: userID))
         mockKeyMaker.isMainKeyInMemory = true
 
         let result = sut.evaluateAppAccessAtLaunch()
@@ -78,7 +73,7 @@ final class AppAccessResolverTests: XCTestCase {
     }
 
     func testEvaluateAppAccessAtLaunch_whenThereAreUsersAndAppIsLocked_returnsAccessDeniedLock() {
-        mockUsersManager.add(newUser: .init(api: apiMock, userID: userID))
+        testContainer.usersManager.add(newUser: .init(api: apiMock, userID: userID))
         mockKeyMaker.isMainKeyInMemory = false
 
         let result = sut.evaluateAppAccessAtLaunch()
@@ -129,7 +124,7 @@ final class AppAccessResolverTests: XCTestCase {
     }
 
     func testDeniedAccessPublisher_whenMainKeyNotification_andThereAreUsers_sendsDeniedAccess() {
-        mockUsersManager.add(newUser: .init(api: apiMock, userID: userID))
+        testContainer.usersManager.add(newUser: .init(api: apiMock, userID: userID))
 
         let expectation = expectation(description: "Receives denied access event")
 
@@ -147,7 +142,7 @@ final class AppAccessResolverTests: XCTestCase {
     }
 
     func testDeniedAccessPublisher_whenMainKeyNotificationUsingLockPreventor_andThereAreUsers_doesNotSendAnEvent() {
-        mockUsersManager.add(newUser: .init(api: apiMock, userID: userID))
+        testContainer.usersManager.add(newUser: .init(api: apiMock, userID: userID))
 
         let expectation = expectation(description: "Receives an event (inverted)")
         expectation.isInverted = true

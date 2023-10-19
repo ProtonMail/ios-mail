@@ -291,6 +291,22 @@ extension UserContainer: HasUnlockManager {
     }
 }
 
+protocol HasUserDefaults {
+    var userDefaults: UserDefaults { get }
+}
+
+extension GlobalContainer: HasUserDefaults {
+    var userDefaults: UserDefaults {
+        userDefaultsFactory()
+    }
+}
+
+extension UserContainer: HasUserDefaults {
+    var userDefaults: UserDefaults {
+        globalContainer.userDefaults
+    }
+}
+
 protocol HasUsersManager {
     var usersManager: UsersManager { get }
 }

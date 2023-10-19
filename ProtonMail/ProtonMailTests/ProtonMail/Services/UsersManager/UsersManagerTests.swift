@@ -27,8 +27,6 @@ class UsersManagerTests: XCTestCase {
     var apiMock: APIService!
     var sut: UsersManager!
     var cachedUserDataProviderMock: MockCachedUserDataProvider!
-    let suiteName = String.randomString(10)
-    var customCache: SharedCacheBase!
     private var globalContainer: TestContainer!
 
     private var customKeyChain: Keychain {
@@ -43,15 +41,11 @@ class UsersManagerTests: XCTestCase {
         try super.setUpWithError()
         self.cachedUserDataProviderMock = .init()
         self.apiMock = APIServiceMock()
-        self.customCache = .init(userDefaults: .init(suiteName: suiteName)!)
 
         globalContainer = .init()
         globalContainer.cachedUserDataProviderFactory.register { self.cachedUserDataProviderMock }
 
-        sut = UsersManager(
-            userDefaultCache: customCache,
-            dependencies: globalContainer
-        )
+        sut = UsersManager(dependencies: globalContainer)
     }
 
     override func tearDown() {
@@ -60,11 +54,10 @@ class UsersManagerTests: XCTestCase {
         apiMock = nil
         cachedUserDataProviderMock = nil
 
-        customCache.getShared().remove(forKey: UsersManager.CoderKey.authKeychainStore)
-        customCache.getShared().remove(forKey: UsersManager.CoderKey.userInfo)
-        customCache.getShared().remove(forKey: UsersManager.CoderKey.authKeychainStore)
-        customCache.getShared().remove(forKey: UsersManager.CoderKey.usersInfo)
-        self.customCache = nil
+        globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.authKeychainStore)
+        globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.userInfo)
+        globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.authKeychainStore)
+        globalContainer.userDefaults.remove(forKey: UsersManager.CoderKey.usersInfo)
         self.customKeyChain.removeEverything()
         globalContainer = nil
     }
@@ -337,11 +330,11 @@ class UsersManagerTests: XCTestCase {
         XCTAssertEqual(sut.firstUser?.userID.rawValue, userID)
 
         XCTAssertNil(customKeyChain.data(forKey: UsersManager.CoderKey.keychainStore))
-        let userInfoData = customCache.getShared().object(forKey: UsersManager.CoderKey.userInfo) as? Data
+        let userInfoData = globalContainer.userDefaults.object(forKey: UsersManager.CoderKey.userInfo) as? Data
         XCTAssertNil(userInfoData)
 
-        XCTAssertNotNil(customCache.getShared().object(forKey: UsersManager.CoderKey.authKeychainStore))
-        XCTAssertNotNil(customCache.getShared().object(forKey: UsersManager.CoderKey.usersInfo))
+        XCTAssertNotNil(globalContainer.userDefaults.object(forKey: UsersManager.CoderKey.authKeychainStore))
+        XCTAssertNotNil(globalContainer.userDefaults.object(forKey: UsersManager.CoderKey.usersInfo))
     }
 
     func testTryRestore_withNoMailSettingInCache_userHasDefaultMailSetting() throws {
@@ -408,9 +401,9 @@ class UsersManagerTests: XCTestCase {
         }
 
         let lockedAuth = try Locked<[AuthCredential]>(clearValue: auths, with: mainKey)
-        customCache.getShared().set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.authKeychainStore)
+        globalContainer.userDefaults.set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.authKeychainStore)
         let lockedUserInfo = try Locked<[UserInfo]>(clearValue: userInfos, with: mainKey)
-        customCache.getShared().set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
+        globalContainer.userDefaults.set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
     }
 
     private func prepareUserDataInCache(userID: String, hasMailSetting: Bool) throws {
@@ -419,14 +412,14 @@ class UsersManagerTests: XCTestCase {
         let userInfo = createUserInfo(userID: userID)
 
         let lockedAuth = try Locked<[AuthCredential]>(clearValue: [auth], with: mainKey)
-        customCache.getShared().set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.authKeychainStore)
+        globalContainer.userDefaults.set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.authKeychainStore)
         let lockedUserInfo = try Locked<[UserInfo]>(clearValue: [userInfo], with: mainKey)
-        customCache.getShared().set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
+        globalContainer.userDefaults.set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.usersInfo)
         if hasMailSetting {
             let mailSetting = MailSettings(nextMessageOnMove: .explicitlyEnabled)
             let value: [String: MailSettings] = [userID: mailSetting]
             let lockedMailSetting = try Locked<[String: MailSettings]>(clearValue: value, with: mainKey)
-            customCache.getShared().set(lockedMailSetting.encryptedValue, forKey: UsersManager.CoderKey.mailSettingsStore)
+            globalContainer.userDefaults.set(lockedMailSetting.encryptedValue, forKey: UsersManager.CoderKey.mailSettingsStore)
         }
     }
 
@@ -439,7 +432,7 @@ class UsersManagerTests: XCTestCase {
         customKeyChain.set(lockedAuth.encryptedValue, forKey: UsersManager.CoderKey.keychainStore)
 
         let lockedUserInfo = try Locked<UserInfo>(clearValue: userInfo, with: mainKey)
-        customCache.getShared().set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.userInfo)
+        globalContainer.userDefaults.set(lockedUserInfo.encryptedValue, forKey: UsersManager.CoderKey.userInfo)
     }
 
     private func createAuth(userID: String) -> AuthCredential {
@@ -488,6 +481,6 @@ class UsersManagerTests: XCTestCase {
                            authCredential: auth,
                            mailSettings: .init(),
                            parent: sut,
-                           globalContainer: .init())
+                           globalContainer: globalContainer)
     }
 }
