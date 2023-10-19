@@ -23,34 +23,39 @@ import XCTest
 
 final class WindowsCoordinatorTests: XCTestCase {
     private var sut: WindowsCoordinator!
-    private var globalContainer: TestContainer!
+    private var testContainer: TestContainer!
+    private var mockUsersManager: UsersManager!
     private var unlockManagerDelegateMock: MockUnlockManagerDelegate!
     private var cacheStatusStub: CacheStatusStub!
 
     override func setUp() async throws {
         try await super.setUp()
 
-        globalContainer = .init()
+        testContainer = .init()
         unlockManagerDelegateMock = .init()
         cacheStatusStub = .init()
+
+        mockUsersManager = UsersManager(userDefaultCache: testContainer.userCachedStatus, dependencies: testContainer)
+        testContainer.usersManagerFactory.register { self.mockUsersManager }
+        testContainer.lockCacheStatusFactory.register { self.cacheStatusStub }
+
         await setupDependencies()
-        await MainActor.run(body: {
-            sut = .init(dependencies: globalContainer)
-        })
     }
 
     override func tearDown() {
         super.tearDown()
 
-        globalContainer.keychain.removeEverything()
+        testContainer.keychain.removeEverything()
 
         sut = nil
-        globalContainer = nil
+        testContainer = nil
+        mockUsersManager = nil
         unlockManagerDelegateMock = nil
         cacheStatusStub = nil
     }
 
     func testInit_defaultWindowIsPlaceHolder() {
+        sut = .init(dependencies: testContainer)
         XCTAssertTrue(sut.appWindow.rootViewController is PlaceholderViewController)
     }
 
@@ -58,13 +63,13 @@ final class WindowsCoordinatorTests: XCTestCase {
         let e = expectation(
             forNotification: .didSignOutLastAccount,
             object: nil,
-            notificationCenter: globalContainer.notificationCenter
+            notificationCenter: testContainer.notificationCenter
         )
         e.isInverted = true
         unlockManagerDelegateMock.cleanAllStub.bodyIs { _, completion in
             completion()
         }
-        setupSUT(showPlaceHolderViewOnly: true)
+        instantiateNewSUT(showPlaceHolderViewOnly: true, isAppAccessResolverEnabled: false)
 
         sut.start()
 
@@ -75,12 +80,12 @@ final class WindowsCoordinatorTests: XCTestCase {
         expectation(
             forNotification: .didSignOutLastAccount,
             object: nil,
-            notificationCenter: globalContainer.notificationCenter
+            notificationCenter: testContainer.notificationCenter
         )
         unlockManagerDelegateMock.cleanAllStub.bodyIs { _, completion in
             completion()
         }
-        setupSUT(showPlaceHolderViewOnly: false)
+        instantiateNewSUT(showPlaceHolderViewOnly: false, isAppAccessResolverEnabled: false)
 
         sut.start()
 
@@ -88,15 +93,10 @@ final class WindowsCoordinatorTests: XCTestCase {
     }
 
     func testStart_withPinProtection_goToLockWindowAndShowPinCodeView() {
-        let e = expectation(description: "Closure is called")
-        globalContainer.usersManager.add(newUser: UserManager(api: APIServiceMock()))
-        globalContainer.keyMaker.activate(PinProtection(pin: String.randomString(10), keychain: globalContainer.keychain)) { activated in
-            XCTAssertTrue(activated)
-            e.fulfill()
-        }
-        waitForExpectations(timeout: 1)
+        testContainer.usersManager.add(newUser: UserManager(api: APIServiceMock()))
+
         cacheStatusStub.isPinCodeEnabledStub = true
-        setupSUT(showPlaceHolderViewOnly: false)
+        instantiateNewSUT(showPlaceHolderViewOnly: false, isAppAccessResolverEnabled: false)
 
         sut.start()
 
@@ -111,8 +111,8 @@ final class WindowsCoordinatorTests: XCTestCase {
         unlockManagerDelegateMock.isMailboxPasswordStoredStub.bodyIs { _, _ in
             false
         }
-        globalContainer.usersManager.add(newUser: UserManager(api: APIServiceMock()))
-        setupSUT(showPlaceHolderViewOnly: false)
+        testContainer.usersManager.add(newUser: UserManager(api: APIServiceMock()))
+        instantiateNewSUT(showPlaceHolderViewOnly: false, isAppAccessResolverEnabled: false)
 
         sut.start()
 
@@ -125,7 +125,7 @@ final class WindowsCoordinatorTests: XCTestCase {
         expectation(
             forNotification: .didUnlock,
             object: nil,
-            notificationCenter: globalContainer.notificationCenter
+            notificationCenter: testContainer.notificationCenter
         )
         unlockManagerDelegateMock.isUserStoredStub.bodyIs { _ in
             true
@@ -133,8 +133,8 @@ final class WindowsCoordinatorTests: XCTestCase {
         unlockManagerDelegateMock.isMailboxPasswordStoredStub.bodyIs { _, _ in
             true
         }
-        globalContainer.usersManager.add(newUser: UserManager(api: APIServiceMock()))
-        setupSUT(showPlaceHolderViewOnly: false)
+        testContainer.usersManager.add(newUser: UserManager(api: APIServiceMock()))
+        instantiateNewSUT(showPlaceHolderViewOnly: false, isAppAccessResolverEnabled: false)
 
         sut.start()
 
@@ -147,16 +147,19 @@ final class WindowsCoordinatorTests: XCTestCase {
 }
 
 private extension WindowsCoordinatorTests {
-    func setupSUT(showPlaceHolderViewOnly: Bool) {
-        sut = .init(dependencies: globalContainer, showPlaceHolderViewOnly: showPlaceHolderViewOnly)
+    func instantiateNewSUT(showPlaceHolderViewOnly: Bool, isAppAccessResolverEnabled: Bool) {
+        sut = .init(
+            dependencies: testContainer,
+            showPlaceHolderViewOnly: showPlaceHolderViewOnly,
+            isAppAccessResolverEnabled: isAppAccessResolverEnabled
+        )
     }
 
     func setupDependencies() async {
-        globalContainer.lockCacheStatusFactory.register { self.cacheStatusStub }
-        globalContainer.unlockManager.delegate = unlockManagerDelegateMock
+        testContainer.unlockManager.delegate = unlockManagerDelegateMock
 
         return await withCheckedContinuation { continuation in
-            globalContainer.keyMaker.activate(RandomPinProtection(pin: String.randomString(32), keychain: globalContainer.keychain)) { success in
+            testContainer.keyMaker.activate(RandomPinProtection(pin: String.randomString(32), keychain: testContainer.keychain)) { success in
                 continuation.resume()
             }
         }

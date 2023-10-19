@@ -20,20 +20,28 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
+import Combine
 import LifetimeTracker
-import MBProgressHUD
 import ProtonCoreDataModel
 import ProtonCoreKeymaker
-import ProtonCoreNetworking
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SafariServices
 
+// sourcery: mock
+protocol WindowsCoordinatorDelegate: AnyObject {
+    func setupCoreData() throws
+    func loadUserDataAfterUnlock()
+}
+
 final class WindowsCoordinator {
     typealias Dependencies = MenuCoordinator.Dependencies
     & LockCoordinator.Dependencies
+    & HasAppAccessResolver
     & HasDarkModeCacheProtocol
     & HasNotificationCenter
+
+    weak var delegate: WindowsCoordinatorDelegate?
 
     private lazy var snapshot = Snapshot()
     private var launchedByNotification = false
@@ -84,9 +92,16 @@ final class WindowsCoordinator {
     }
     private let dependencies: Dependencies
     private let showPlaceHolderViewOnly: Bool
+    private let isAppAccessResolverEnabled: Bool
+    private var cancellables = Set<AnyCancellable>()
 
-    init(dependencies: Dependencies, showPlaceHolderViewOnly: Bool = ProcessInfo.isRunningUnitTests) {
+    init(
+        dependencies: Dependencies,
+        showPlaceHolderViewOnly: Bool = ProcessInfo.isRunningUnitTests,
+        isAppAccessResolverEnabled: Bool = UserInfo.isAppAccessResolverEnabled
+    ) {
         self.showPlaceHolderViewOnly = showPlaceHolderViewOnly
+        self.isAppAccessResolverEnabled = isAppAccessResolverEnabled
         self.dependencies = dependencies
         setupNotifications()
         trackLifetime()
@@ -103,6 +118,19 @@ final class WindowsCoordinator {
             return
         }
 
+        SystemLogger.log(message: "isAppAccessResolverEnabled: \(isAppAccessResolverEnabled)", category: .appLock)
+        if isAppAccessResolverEnabled {
+
+            loadAppMainKeyAndSetupCoreData()
+            evaluateAccessAtLaunch()
+            subscribeToDeniedAccess()
+
+        } else {
+            legacyStart()
+        }
+    }
+
+    private func legacyStart() {
         // We should not trigger the touch id here. because it is also done in the sign in vc. If we need to check lock, we just go to lock screen first.
         // clean this up later.
 
@@ -114,9 +142,54 @@ final class WindowsCoordinator {
             DispatchQueue.main.async {
                 // initiate unlock process which will send .didUnlock or .requestMainKey eventually
                 self.dependencies.unlockManager.initiateUnlock(flow: flow,
-                                             requestPin: self.lock,
-                                             requestMailboxPassword: self.lock)
+                                                               requestPin: self.lock,
+                                                               requestMailboxPassword: self.lock)
             }
+        }
+    }
+
+    private func loadAppMainKeyAndSetupCoreData() {
+        _ = dependencies.keyMaker.mainKeyExists()
+        do {
+            try delegate?.setupCoreData()
+        } catch {
+            PMAssertionFailure(error)
+        }
+    }
+
+    private func evaluateAccessAtLaunch() {
+        let appAccessAtLaunch = dependencies.appAccessResolver.evaluateAppAccessAtLaunch()
+        SystemLogger.log(message: "App access at launch: \(appAccessAtLaunch)", category: .appLock)
+        switch appAccessAtLaunch {
+        case .accessGranted:
+            handleAppAccessGrantedAtLaunch()
+        case .accessDenied(let reason):
+            handleAppAccessDenied(deniedAccess: reason)
+        }
+    }
+
+    private func subscribeToDeniedAccess() {
+        dependencies
+            .appAccessResolver
+            .deniedAccessPublisher
+            .sink { reason in
+                SystemLogger.log(message: "Denied access: \(reason)", category: .appLock)
+                self.handleAppAccessDenied(deniedAccess: reason)
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handleAppAccessGrantedAtLaunch() {
+        delegate?.loadUserDataAfterUnlock()
+        go(dest: .appWindow)
+    }
+
+    private func handleAppAccessDenied(deniedAccess: DeniedAccessReason) {
+        switch deniedAccess {
+        case .lockProtectionRequired:
+            lock()
+        case .noAuthenticatedAccountFound:
+            go(dest: .signInWindow(.form))
         }
     }
 
@@ -351,21 +424,23 @@ final class WindowsCoordinator {
             object: nil
         )
 
-        // This will be triggered when the keymaker clear the mainkey from the memory.
-        // We will lock the app at this moment.
-        dependencies.notificationCenter.addObserver(
-            forName: Keymaker.Const.removedMainKeyFromMemory,
-            object: nil,
-            queue: .main) { _ in
-                self.lock()
-            }
-
+        if !isAppAccessResolverEnabled {
+            // This will be triggered when the keymaker clear the mainkey from the memory.
+            // We will lock the app at this moment.
             dependencies.notificationCenter.addObserver(
-                self,
-                selector: #selector(updateUserInterfaceStyle),
-                name: .shouldUpdateUserInterfaceStyle,
-                object: nil
-            )
+                forName: Keymaker.Const.removedMainKeyFromMemory,
+                object: nil,
+                queue: .main) { _ in
+                    self.lock()
+                }
+        }
+
+        dependencies.notificationCenter.addObserver(
+            self,
+            selector: #selector(updateUserInterfaceStyle),
+            name: .shouldUpdateUserInterfaceStyle,
+            object: nil
+        )
     }
 }
 
