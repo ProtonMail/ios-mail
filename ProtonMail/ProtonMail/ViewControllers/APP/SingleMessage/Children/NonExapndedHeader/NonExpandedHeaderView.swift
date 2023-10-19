@@ -33,6 +33,7 @@ class NonExpandedHeaderView: HeaderView {
     let contentStackView = UIStackView.stackView(axis: .vertical, spacing: 8)
     let recipientTitle = SubviewsFactory.recipientTitle
     let recipientLabel = SubviewsFactory.recipientLabel
+    let recipientChevron = SubviewsFactory.recipientChevron
     let tagsView = SingleRowTagsView()
     let trackerProtectionImageView = SubviewsFactory.trackerProtectionImageView
 
@@ -103,7 +104,8 @@ class NonExpandedHeaderView: HeaderView {
 
         recipientStack.addArrangedSubview(recipientTitle)
         recipientStack.addArrangedSubview(recipientLabel)
-        recipientStack.setCustomSpacing(80, after: recipientLabel)
+        recipientStack.addArrangedSubview(recipientChevron)
+        recipientStack.setCustomSpacing(80, after: recipientChevron)
         recipientStack.addArrangedSubview(UIView())
         contentStackView.addArrangedSubview(recipientStack)
         contentStackView.setCustomSpacing(4, after: recipientStack)
@@ -221,6 +223,13 @@ extension NonExpandedHeaderView {
             let label = UILabel(frame: .zero)
             label.set(text: nil, preferredFont: .footnote, textColor: ColorProvider.TextWeak)
             return label
+        }
+
+        static var recipientChevron: UIImageView {
+            let imageView = UIImageView(image: IconProvider.chevronDownFilled)
+            imageView.tintColor = ColorProvider.IconWeak
+            imageView.setContentCompressionResistancePriority(.required, for: .horizontal)
+            return imageView
         }
 
         static var trackerProtectionImageView: UIImageView {
