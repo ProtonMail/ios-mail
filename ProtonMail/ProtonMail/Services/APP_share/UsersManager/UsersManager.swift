@@ -283,7 +283,6 @@ class UsersManager: Service, UsersManagerProtocol {
         }
 
         let authList = self.users.compactMap { $0.authCredential }
-        userCachedStatus.isForcedLogout = false
         guard let lockedAuth = try? Locked<[AuthCredential]>(clearValue: authList, with: mainKey)
         else {
             return

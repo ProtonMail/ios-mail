@@ -1268,11 +1268,7 @@ extension ConversationViewController {
     }
 }
 
-extension ConversationViewController: MoveToActionSheetPresentProtocol {
-    var moveToActionHandler: MoveToActionSheetProtocol {
-        return viewModel
-    }
-
+extension ConversationViewController {
     func showMoveToActionSheet(dataSource: ActionSheetDataSource) {
         switch dataSource {
         case .conversation:
@@ -1322,7 +1318,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 
     private func didSelectFolderToMoveToForMessage(folder: MenuLabel, message: MessageEntity) {
         viewModel.sendSwipeNotificationIfNeeded(isInPageView: isInPageView)
-        moveToActionHandler.handleMoveToAction(messages: [message], to: folder)
+        viewModel.handleMoveToAction(messages: [message], to: folder)
 
         dismissActionSheet()
         if !isInPageView {
@@ -1375,7 +1371,7 @@ extension ConversationViewController: MoveToActionSheetPresentProtocol {
 
         let conversation = viewModel.conversation
         let continueAction: () -> Void = { [weak self] in
-            self?.moveToActionHandler.handleMoveToAction(
+            self?.viewModel.handleMoveToAction(
                 conversations: [conversation],
                 to: folder,
                 completion: nil

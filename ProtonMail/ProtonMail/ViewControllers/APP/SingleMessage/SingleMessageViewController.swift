@@ -577,11 +577,7 @@ extension SingleMessageViewController {
     }
 }
 
-extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
-    var moveToActionHandler: MoveToActionSheetProtocol {
-        return viewModel
-    }
-
+extension SingleMessageViewController {
     func showMoveToActionSheet() {
         let isEnableColor = viewModel.user.isEnableFolderColor
         let isInherit = viewModel.user.isInheritParentFolderColor
@@ -631,7 +627,7 @@ extension SingleMessageViewController: MoveToActionSheetPresentProtocol {
         let destinationId = folder.location.labelID
 
         let continueAction: () -> Void = { [weak self] in
-            self?.moveToActionHandler.handleMoveToAction(messages: [message], to: folder)
+            self?.viewModel.handleMoveToAction(messages: [message], to: folder)
         }
 
         if folder.location == .trash {

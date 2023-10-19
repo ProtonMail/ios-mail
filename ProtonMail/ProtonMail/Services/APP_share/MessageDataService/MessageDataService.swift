@@ -102,13 +102,11 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     let apiService: APIService
     let userID: UserID
     let labelDataService: LabelsDataService
-    let contactDataService: ContactDataService
     let localNotificationService: LocalNotificationService
     let contextProvider: CoreDataContextProviderProtocol
     let lastUpdatedStore: LastUpdatedStoreProtocol
     let cacheService: CacheService
     let messageDecrypter: MessageDecrypter
-    let contactCacheStatus: ContactCacheStatusProtocol
 
     private var userDataSource: UserDataSource? {
         parent
@@ -122,27 +120,23 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
         api: APIService,
         userID: UserID,
         labelDataService: LabelsDataService,
-        contactDataService: ContactDataService,
         localNotificationService: LocalNotificationService,
         queueManager: QueueManager?,
         contextProvider: CoreDataContextProviderProtocol,
         lastUpdatedStore: LastUpdatedStoreProtocol,
         user: UserManager,
         cacheService: CacheService,
-        contactCacheStatus: ContactCacheStatusProtocol,
         dependencies: Dependencies
     ) {
         self.apiService = api
         self.userID = userID
         self.labelDataService = labelDataService
-        self.contactDataService = contactDataService
         self.localNotificationService = localNotificationService
         self.contextProvider = contextProvider
         self.lastUpdatedStore = lastUpdatedStore
         self.parent = user
         self.cacheService = cacheService
         self.messageDecrypter = MessageDecrypter(userDataSource: user)
-        self.contactCacheStatus = contactCacheStatus
         self.dependencies = dependencies
 
         setupNotifications()

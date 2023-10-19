@@ -25,7 +25,6 @@ protocol UpdateMailboxSourceProtocol: AnyObject {
 }
 
 final class UpdateMailbox: UpdateMailboxUseCase {
-    typealias UpdateCompletion = () -> Void
     typealias ErrorHandler = (Error) -> Void
 
     private(set) var isFetching = false

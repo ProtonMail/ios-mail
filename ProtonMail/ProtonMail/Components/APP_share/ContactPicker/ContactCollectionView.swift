@@ -51,7 +51,6 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
     weak var contactDelegate: ContactCollectionViewDelegate?
 
     var prototypeCell: ContactCollectionViewContactCell!
-    var promptCell: ContactCollectionViewPromptCell?
     var isEntryCellRefreshing: Bool = false
 
     class func contactCollectionViewWithFrame(frame: CGRect) -> ContactCollectionView {
@@ -380,7 +379,6 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         if self.isCell(prompt: indexPath) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContactPromptCell", for: indexPath) as! ContactCollectionViewPromptCell
             cell.prompt = self._prompt
-            self.promptCell = cell
             return cell
         } else if self.isCell(entry: indexPath) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ContactEntryCell", for: indexPath) as! ContactCollectionViewEntryCell

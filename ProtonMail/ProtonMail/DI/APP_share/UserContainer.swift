@@ -185,14 +185,12 @@ final class UserContainer: ManagedContainer {
                 api: self.apiService,
                 userID: self.user.userID,
                 labelDataService: self.labelService,
-                contactDataService: self.contactService,
                 localNotificationService: self.localNotificationService,
                 queueManager: self.queueManager,
                 contextProvider: self.contextProvider,
                 lastUpdatedStore: self.lastUpdatedStore,
                 user: self.user,
                 cacheService: self.cacheService,
-                contactCacheStatus: self.userCachedStatus,
                 dependencies: .init(
                     moveMessageInCacheUseCase: MoveMessageInCache(
                         dependencies: .init(

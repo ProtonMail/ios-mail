@@ -22,14 +22,9 @@ import UIKit
 final class SnapshotPublisher<T: NSFetchRequestResult>: NSObject, NSFetchedResultsControllerDelegate where T: Hashable {
     private let fetchedResultsController: NSFetchedResultsController<T>
     private let didChangedContentSubject = PassthroughSubject<NSDiffableDataSourceSnapshotReference, Never>()
-    private let contextProvider: CoreDataContextProviderProtocol
 
     var contentDidChange: AnyPublisher<NSDiffableDataSourceSnapshotReference, Never> {
         didChangedContentSubject.eraseToAnyPublisher()
-    }
-
-    var sectionIndexedTitles: [String] {
-        fetchedResultsController.sectionIndexTitles
     }
 
     init(
@@ -39,7 +34,6 @@ final class SnapshotPublisher<T: NSFetchRequestResult>: NSObject, NSFetchedResul
         sectionNameKeyPath: String? = nil,
         contextProvider: CoreDataContextProviderProtocol
     ) {
-        self.contextProvider = contextProvider
         self.fetchedResultsController = contextProvider.createFetchedResultsController(
             entityName: entityName,
             predicate: predicate,

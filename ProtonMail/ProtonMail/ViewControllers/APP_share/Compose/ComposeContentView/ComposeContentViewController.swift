@@ -769,7 +769,6 @@ extension ComposeContentViewController {
 // MARK: - view extensions
 
 extension ComposeContentViewController: ComposeViewDelegate {
-    func composeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {}
     func composeViewWillPresentSubview() {}
     func composeViewWillDismissSubview() {}
 

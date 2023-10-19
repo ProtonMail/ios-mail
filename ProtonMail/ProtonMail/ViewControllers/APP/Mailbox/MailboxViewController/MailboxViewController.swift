@@ -1757,10 +1757,6 @@ extension MailboxViewController {
 }
 
 extension MailboxViewController {
-    var moveToActionHandler: MoveToActionSheetProtocol {
-        return viewModel
-    }
-
     func folderButtonTapped(isFromSwipeAction: Bool = false) {
         guard !self.viewModel.selectedIDs.isEmpty else {
             showNoEmailSelected(title: LocalString._apply_labels)
@@ -1792,7 +1788,7 @@ extension MailboxViewController {
         isInherit: Bool,
         isFromSwipeAction: Bool = false
     ) {
-        var menuLabels = moveToActionHandler.getFolderMenuItems()
+        var menuLabels = viewModel.getFolderMenuItems()
         if viewModel.messageLocation == .sent {
             menuLabels.removeAll(where: { $0.location == .inbox })
         }
@@ -1841,7 +1837,7 @@ extension MailboxViewController {
 
         var scheduledSendNum: Int?
         let continueAction: () -> Void = { [weak self] in
-            self?.moveToActionHandler.handleMoveToAction(messages: messages, to: folder)
+            self?.viewModel.handleMoveToAction(messages: messages, to: folder)
             if isSwipeAction {
                 let title: String
                 if let num = scheduledSendNum {
@@ -1877,7 +1873,7 @@ extension MailboxViewController {
         isFromSwipeAction: Bool = false
     ) {
         let moveToViewModel = MoveToActionSheetViewModelConversations(
-            menuLabels: moveToActionHandler.getFolderMenuItems(),
+            menuLabels: viewModel.getFolderMenuItems(),
             isEnableColor: isEnableColor,
             isInherit: isInherit
         )
@@ -1925,7 +1921,7 @@ extension MailboxViewController {
 
         var scheduledSendNum: Int?
         let continueAction: () -> Void = { [weak self] in
-            self?.moveToActionHandler.handleMoveToAction(
+            self?.viewModel.handleMoveToAction(
                 conversations: conversations,
                 to: folder,
                 completion: nil

@@ -58,7 +58,6 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         user: UserManager,
         targetMessageID: MessageID?,
         userIntroduction: UserIntroductionProgressProvider,
-        notificationCenter: NotificationCenter = NotificationCenter.default,
         goToDraft: @escaping ((MessageID, Date?) -> Void)
     ) {
         self.goToDraft = goToDraft
