@@ -50,33 +50,16 @@ protocol UserCachedStatusProvider: AnyObject {
 final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol, UserCachedStatusProvider {
     struct Key {
         // inuse
-//        static let lastCacheVersion = "last_cache_version" //user cache
-        static let isCheckSpaceDisabled = "isCheckSpaceDisabledKey" // Legacy -- remove it later
-        static let lastAuthCacheVersion = "last_auth_cache_version" // user cache
         static let cachedServerNotices = "cachedServerNotices" // user cache
         static let showServerNoticesNextTime = "showServerNoticesNextTime" // user cache
         static let isPM_MEWarningDisabled = "isPM_MEWarningDisabledKey" // user cache -- maybe could be global
 
-        // touch id 
-
-        static let autoLogoutTime = "autoLogoutTime" // global cache
-
-        static let askEnableTouchID = "askEnableTouchID" // global cache
-
         // pin code
 
         static let autoLockTime = "autoLockTime" /// user cache but could restore
-        static let lastLoggedInUser = "lastLoggedInUser" // user cache but could restore
         static let lastPinFailedTimes = "lastPinFailedTimes" // user cache can't restore
 
-        // wait
-        static let lastFetchMessageID = "last_fetch_message_id"
-        static let lastFetchMessageTime = "last_fetch_message_time"
-        static let lastUpdateTime = "last_update_time"
-        static let historyTimeStamp = "history_timestamp"
-
         // Global Cache
-        static let lastSplashVersion = "last_splash_viersion" // global cache
         static let lastTourVersion = "last_tour_viersion" // global cache
         static let UserWithLocalMobileSignature = "user_with_local_mobile_signature_mainKeyProtected"
         static let UserWithLocalMobileSignatureStatus = "user_with_local_mobile_signature_status"
@@ -96,7 +79,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let browser = "browser"
 
         static let dohFlag = "doh_flag"
-        static let dohWarningAsk = "doh_warning_ask"
 
         static let combineContactFlag = "combine_contact_flag"
 
@@ -266,28 +248,14 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         SharedCacheBase.getDefault()?.synchronize()
     }
 
-    func signOut() {
-        getShared().removeObject(forKey: Key.lastFetchMessageID)
-        getShared().removeObject(forKey: Key.lastFetchMessageTime)
-        getShared().removeObject(forKey: Key.lastUpdateTime)
-        getShared().removeObject(forKey: Key.historyTimeStamp)
-        getShared().removeObject(forKey: Key.isCheckSpaceDisabled)
+    func cleanAllData() {
         getShared().removeObject(forKey: Key.cachedServerNotices)
         getShared().removeObject(forKey: Key.showServerNoticesNextTime)
-        getShared().removeObject(forKey: Key.lastAuthCacheVersion)
         getShared().removeObject(forKey: Key.isPM_MEWarningDisabled)
         getShared().removeObject(forKey: Key.combineContactFlag)
         getShared().removeObject(forKey: Key.browser)
-
-        // pin code
         getShared().removeObject(forKey: Key.lastPinFailedTimes)
 
-        // for version <= 1.6.5 clean old stuff.
-        KeychainWrapper.keychain.remove(forKey: Key.lastLoggedInUser)
-        KeychainWrapper.keychain.remove(forKey: Key.autoLockTime)
-
-        // for newer version > 1.6.5
-        KeychainWrapper.keychain.remove(forKey: Key.lastLoggedInUser)
         KeychainWrapper.keychain.remove(forKey: Key.autoLockTime)
 
         // Clean the keys Anatoly added
@@ -299,24 +267,11 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         KeychainWrapper.keychain.remove(forKey: Key.metadataStripping)
         KeychainWrapper.keychain.remove(forKey: Key.browser)
-
-        getShared().removeObject(forKey: Key.dohWarningAsk)
-
         KeychainWrapper.keychain.remove(forKey: Key.randomPinForProtection)
 
         getShared().removeObject(forKey: Key.isContactsCached)
 
-        getShared().synchronize()
-    }
-
-    func cleanGlobal() {
         getShared().removeObject(forKey: Key.dohFlag)
-
-        getShared().removeObject(forKey: Key.lastSplashVersion)
-
-        // touch id
-        getShared().removeObject(forKey: Key.autoLogoutTime)
-        getShared().removeObject(forKey: Key.askEnableTouchID)
 
         getShared().removeObject(forKey: Key.leftToRightSwipeAction)
         getShared().removeObject(forKey: Key.rightToLeftSwipeAction)

@@ -442,8 +442,7 @@ extension UsersManager {
 
             self.currentVersion = self.latestVersion
 
-            userCachedStatus.signOut()
-            userCachedStatus.cleanGlobal()
+            userCachedStatus.cleanAllData()
 
             if !ProcessInfo.isRunningUnitTests {
                 self.coreKeyMaker.wipeMainKey()
