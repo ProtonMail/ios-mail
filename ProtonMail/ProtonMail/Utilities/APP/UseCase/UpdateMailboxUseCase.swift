@@ -230,6 +230,7 @@ extension UpdateMailbox {
         if let error = error {
             errorHandler(error)
         }
+        // TODO: verify if this temporary call is still necessary
         // temporary to check message status and fetch metadata
         self.dependencies.purgeOldMessages.execute(params: ()) { _ in }
     }

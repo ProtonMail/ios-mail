@@ -44,7 +44,6 @@ import UserNotifications
 class AppDelegate: UIResponder {
     lazy var coordinator: WindowsCoordinator = WindowsCoordinator(dependencies: dependencies)
     private var currentState: UIApplication.State = .active
-    private var purgeOldMessages: PurgeOldMessagesUseCase?
 
     // TODO: make private
     let dependencies = GlobalContainer()
@@ -208,13 +207,6 @@ extension AppDelegate: UIApplicationDelegate {
         }
 
         if let user = dependencies.usersManager.firstUser {
-            self.purgeOldMessages = PurgeOldMessages(user: user, coreDataService: dependencies.contextProvider)
-            self.purgeOldMessages?.execute(
-                params: (),
-                callback: { [weak self] _ in
-                    self?.purgeOldMessages = nil
-                }
-            )
             user.cacheService.cleanOldAttachment()
 
             dependencies.queueManager.backgroundFetch(remainingTime: {
