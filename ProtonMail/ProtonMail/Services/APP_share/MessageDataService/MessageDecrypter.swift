@@ -123,7 +123,7 @@ class MessageDecrypter {
                 )
             }
 
-            guard let filename = attachment.getFilename()?.clear else {
+            guard let filename = attachment.getFilename()?.cleaningFilename() else {
                 continue
             }
             let data = attachment.data

@@ -414,7 +414,7 @@ extension ComposerMessageHelper {
         dependencies.contextProvider.performOnRootSavingContext { context in
             file.contents.toAttachment(context,
                                        fileName: file.name,
-                                       type: file.ext,
+                                       type: file.mimeType,
                                        stripMetadata: shouldStripMetaData,
                                        isInline: false).done { attachment in
                 defer {

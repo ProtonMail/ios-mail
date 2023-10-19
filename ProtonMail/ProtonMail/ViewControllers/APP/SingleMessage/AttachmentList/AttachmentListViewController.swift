@@ -179,7 +179,7 @@ class AttachmentListViewController: UIViewController, UITableViewDelegate, UITab
             showPreviewer: { [weak self] in
                 guard let self = self else { return }
                 if self.isPKPass(attachment: attachment) { return }
-                self.openQuickLook(attachmentType: .general)
+                self.openQuickLook(attachmentType: .default)
             }, failed: { [weak self] error in
                 DispatchQueue.main.async {
                     guard let self = self else { return }
@@ -224,7 +224,7 @@ private extension AttachmentListViewController {
     }
 
     private func isPKPass(attachment: AttachmentInfo) -> Bool {
-        let fileName = attachment.fileName.clear
+        let fileName = attachment.fileName.cleaningFilename()
         let type = attachment.mimeType
         return type == "application/vnd.apple.pkpass" ||
             fileName.contains(check: ".pkpass") == true

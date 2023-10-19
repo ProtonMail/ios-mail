@@ -646,7 +646,7 @@ extension ComposeContainerViewController: AttachmentController {
                 self.dependencies.contextProvider.performOnRootSavingContext { context in
                     fileData.contents.toAttachment(
                         context, fileName: fileData.name,
-                        type: fileData.ext,
+                        type: fileData.mimeType,
                         stripMetadata: self.viewModel.shouldStripAttachmentMetadata,
                         isInline: false
                     ).done { attachment in

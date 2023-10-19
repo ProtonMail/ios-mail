@@ -775,7 +775,7 @@ class ConversationViewModelTests: XCTestCase {
         }
         let e = expectation(description: "Closure is called")
         let msg = MessageEntity.createSenderImageEligibleMessage()
-        let imageData = UIImage(named: "mail_attachment_audio")?.pngData()
+        let imageData = UIImage(named: "ic-file-type-audio")?.pngData()
         apiServiceMock.downloadStub.bodyIs { _, _, fileUrl, _, _, _, _, _, _, completion in
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
                 try? imageData?.write(to: fileUrl)

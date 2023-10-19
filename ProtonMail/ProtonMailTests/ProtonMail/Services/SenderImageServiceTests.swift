@@ -61,7 +61,7 @@ final class SenderImageServiceTests: XCTestCase {
     }
 
     func testFetchSenderImage() throws {
-        let imageData = UIImage(named: "mail_attachment_audio")?.pngData()
+        let imageData = UIImage(named: "ic-file-type-audio")?.pngData()
         apiServiceMock.downloadStub.bodyIs { _, _, fileUrl, _, _, _, _, _, _, completion in
             try? imageData?.write(to: fileUrl)
             let response = HTTPURLResponse(statusCode: 200)
@@ -114,7 +114,7 @@ final class SenderImageServiceTests: XCTestCase {
     }
 
     func testFetchSenderImage_triggerMultipleTimesInAShortTimeForSameURL_onlyOneAPIReuest() throws {
-        let imageData = UIImage(named: "mail_attachment_audio")?.pngData()
+        let imageData = UIImage(named: "ic-file-type-audio")?.pngData()
         apiServiceMock.downloadStub.bodyIs { _, _, fileUrl, _, _, _, _, _, _, completion in
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
                 try? imageData?.write(to: fileUrl)
@@ -144,7 +144,7 @@ final class SenderImageServiceTests: XCTestCase {
     }
 
     func testFetchSenderImage_lightModeSenderImageIsCached_turnOfflineAndSwitchToDarkMode_theLightModeImageIsReturned() {
-        let imageData = UIImage(named: "mail_attachment_audio")?.pngData()
+        let imageData = UIImage(named: "ic-file-type-audio")?.pngData()
         apiServiceMock.downloadStub.bodyIs { _, _, fileUrl, _, _, _, _, _, _, completion in
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
                 try? imageData?.write(to: fileUrl)

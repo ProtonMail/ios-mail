@@ -341,7 +341,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         XCTAssertEqual(sut.draft?.numAttachments, 1)
         let attachment = try XCTUnwrap(sut.draft?.attachments.first)
         XCTAssertEqual(attachment.name, fileName)
-        XCTAssertEqual(attachment.attachmentType, .general)
+        XCTAssertEqual(attachment.attachmentType, .default)
         XCTAssertEqual(attachment.rawMimeType, "application/pgp-keys")
 
         // Add same attachment twice
@@ -406,7 +406,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         sut.setNewMessage(objectID: testMessage.objectID)
         let data = String.randomString(50).data(using: .utf8)
         let name = String.randomString(10)
-        let file = ConcreteFileData(name: name, ext: "", contents: data!)
+        let file = ConcreteFileData(name: name, mimeType: "", contents: data!)
         let e = expectation(description: "Closure is called")
 
         sut.addAttachment(file,

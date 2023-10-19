@@ -46,9 +46,9 @@ extension ImageProcessor where Self: AttachmentProvider {
             self.controller?.error(NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil).description)
             return Promise()
         }
-        fileData = ConcreteFileData(name: fileName, ext: ext, contents: newUrl)
+        fileData = ConcreteFileData(name: fileName, mimeType: ext, contents: newUrl)
 #else
-        fileData = ConcreteFileData(name: fileName, ext: ext, contents: originalImage)
+        fileData = ConcreteFileData(name: fileName, mimeType: ext, contents: originalImage)
 #endif
 
         return self.controller?.fileSuccessfullyImported(as: fileData) ?? Promise()
@@ -65,7 +65,7 @@ extension ImageProcessor where Self: AttachmentProvider {
                 do {
                     let videoData = try Data(contentsOf: url)
                     let fileName = url.lastPathComponent
-                    let fileData = ConcreteFileData(name: fileName, ext: fileName.mimeType(), contents: videoData)
+                    let fileData = ConcreteFileData(name: fileName, mimeType: fileName.mimeType(), contents: videoData)
                     self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
                 } catch {
                     self.controller?.error(error.localizedDescription)
@@ -84,7 +84,7 @@ extension ImageProcessor where Self: AttachmentProvider {
                     self.controller?.error(LocalString._cant_open_the_file)
                     return
                 }
-                let fileData = ConcreteFileData(name: fileName, ext: fileName.mimeType(), contents: imageDataToSave)
+                let fileData = ConcreteFileData(name: fileName, mimeType: fileName.mimeType(), contents: imageDataToSave)
                 self.controller?.fileSuccessfullyImported(as: fileData).cauterize()
             }
         } else {

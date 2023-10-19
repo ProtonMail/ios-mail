@@ -101,12 +101,11 @@ final class MimeAttachment: AttachmentInfo {
     func toAttachment(context: NSManagedObjectContext,
                       stripMetadata: Bool) -> Guarantee<AttachmentEntity?> {
         if let url = localUrl, let data = try? Data(contentsOf: url) {
-            let ext = url.mimeType()
-            let fileData = ConcreteFileData(name: fileName, ext: ext, contents: data)
+            let fileData = ConcreteFileData(name: fileName, mimeType: url.mimeType(), contents: data)
             return fileData.contents.toAttachment(
                 context,
                 fileName: fileData.name,
-                type: fileData.ext,
+                type: fileData.mimeType,
                 stripMetadata: stripMetadata,
                 isInline: false
             )
