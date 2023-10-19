@@ -21,6 +21,12 @@ import ProtonCoreKeymaker
 class GlobalContainer: ManagedContainer {
     let manager = ContainerManager()
 
+    var appAccessResolverFactory: Factory<AppAccessResolver> {
+        self {
+            AppAccessResolver(dependencies: self)
+        }
+    }
+
     var attachmentMetadataStripStatusProviderFactory: Factory<AttachmentMetadataStrippingProtocol> {
         self {
             self.userCachedStatus

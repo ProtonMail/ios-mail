@@ -36,4 +36,8 @@ extension UserInfo {
     static var enableSelectAll: Bool {
         UIApplication.isDebugOrEnterprise
     }
+
+    static var isAppAccessResolverEnabled: Bool {
+        UIApplication.isDebugOrEnterprise
+    }
 }

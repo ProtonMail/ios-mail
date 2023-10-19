@@ -42,7 +42,11 @@ import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(dependencies: dependencies)
+    lazy var coordinator: WindowsCoordinator = {
+        let coordinator = WindowsCoordinator(dependencies: dependencies)
+        coordinator.delegate = self
+        return coordinator
+    }()
     private var currentState: UIApplication.State = .active
 
     // TODO: make private
@@ -285,7 +289,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 }
 
-extension AppDelegate: UnlockManagerDelegate {
+extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     func isUserStored() -> Bool {
         let users = dependencies.usersManager
         if users.hasUserName() || users.hasUsers() {

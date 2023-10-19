@@ -1423,3 +1423,16 @@ class MockViewModeUpdater: ViewModeUpdater {
 
 }
 
+class MockWindowsCoordinatorDelegate: WindowsCoordinatorDelegate {
+    @ThrowingFuncStub(MockWindowsCoordinatorDelegate.setupCoreData) var setupCoreDataStub
+    func setupCoreData() throws {
+        try setupCoreDataStub()
+    }
+
+    @FuncStub(MockWindowsCoordinatorDelegate.loadUserDataAfterUnlock) var loadUserDataAfterUnlockStub
+    func loadUserDataAfterUnlock() {
+        loadUserDataAfterUnlockStub()
+    }
+
+}
+

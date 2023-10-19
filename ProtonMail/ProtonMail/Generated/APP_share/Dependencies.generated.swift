@@ -3,6 +3,22 @@
 import ProtonCoreKeymaker
 import ProtonCoreServices
 
+protocol HasAppAccessResolver {
+    var appAccessResolver: AppAccessResolver { get }
+}
+
+extension GlobalContainer: HasAppAccessResolver {
+    var appAccessResolver: AppAccessResolver {
+        appAccessResolverFactory()
+    }
+}
+
+extension UserContainer: HasAppAccessResolver {
+    var appAccessResolver: AppAccessResolver {
+        globalContainer.appAccessResolver
+    }
+}
+
 protocol HasAttachmentMetadataStrippingProtocol {
     var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol { get }
 }
