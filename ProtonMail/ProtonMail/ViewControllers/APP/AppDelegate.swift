@@ -400,7 +400,10 @@ extension AppDelegate {
 
     private func configureCoreObservability() {
         ObservabilityEnv.current.setupWorld(
-            requestPerformer: PMAPIService.unauthorized(keyMaker: dependencies.keyMaker)
+            requestPerformer: PMAPIService.unauthorized(
+                keyMaker: dependencies.keyMaker,
+                userDefaults: dependencies.userDefaults
+            )
         )
     }
 

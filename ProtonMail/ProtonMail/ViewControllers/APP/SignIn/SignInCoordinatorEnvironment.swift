@@ -30,7 +30,12 @@ import ProtonCoreServices
 import UIKit
 
 struct SignInCoordinatorEnvironment {
-    typealias Dependencies = HasKeyMakerProtocol & HasSignInManager & HasUnlockManager & HasUsersManager
+    typealias Dependencies = HasKeyMakerProtocol
+    & HasSignInManager
+    & HasUnlockManager
+    & HasUserDefaults
+    & HasUsersManager
+
     typealias LoginCreationClosure =
         (String, AccountType, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
 
@@ -69,7 +74,10 @@ struct SignInCoordinatorEnvironment {
 extension SignInCoordinatorEnvironment {
     // swiftlint:disable function_body_length
     static func live(dependencies: Dependencies) -> SignInCoordinatorEnvironment {
-        let apiService = PMAPIService.unauthorized(keyMaker: dependencies.keyMaker)
+        let apiService = PMAPIService.unauthorized(
+            keyMaker: dependencies.keyMaker,
+            userDefaults: dependencies.userDefaults
+        )
         return .init(apiService: apiService,
                      mailboxPassword: dependencies.signInManager
                          .mailboxPassword(from:auth:),
