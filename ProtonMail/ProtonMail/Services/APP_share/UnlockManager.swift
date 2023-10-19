@@ -110,7 +110,7 @@ final class UnlockManager {
             completion(false)
             return
         }
-        keyMaker.obtainMainKey(with: PinProtection(pin: userInputPin), returnExistingKey: true) { key in
+        keyMaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
             guard self.validate(mainKey: key) else {
                 self.pinFailedCountCache.pinFailedCount += 1
                 completion(false)
@@ -152,7 +152,7 @@ final class UnlockManager {
 
         guard !isRequestingBiometricAuthentication else { return }
         isRequestingBiometricAuthentication = true
-        keyMaker.obtainMainKey(with: BioProtection(), returnExistingKey: true) { key in
+        keyMaker.obtainMainKey(with: BioProtection()) { key in
             defer {
                 self.isRequestingBiometricAuthentication = false
             }

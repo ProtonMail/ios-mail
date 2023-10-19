@@ -241,7 +241,6 @@ public class Keymaker: NSObject {
     }
     
     public func obtainMainKey(with protector: ProtectionStrategy,
-                              returnExistingKey: Bool,
                               handler: @escaping (MainKey?) -> Void)
     {
         // usually calling a method developers assume to get the callback on the same thread,
@@ -250,8 +249,7 @@ public class Keymaker: NSObject {
         let isMainThread = Thread.current.isMainThread
         
         self.controlThread.addOperation {
-            if self._mainKey != nil,
-               returnExistingKey {
+            guard self._mainKey == nil else {
                 isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
                 return
             }

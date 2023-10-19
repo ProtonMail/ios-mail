@@ -60,8 +60,8 @@ class MockKeyMakerProtocol: KeyMakerProtocol {
     }
 
     @FuncStub(MockKeyMakerProtocol.obtainMainKey) var obtainMainKeyStub
-    func obtainMainKey(with protector: ProtectionStrategy, returnExistingKey: Bool, handler: @escaping (MainKey?) -> Void) {
-        obtainMainKeyStub(protector, returnExistingKey, handler)
+    func obtainMainKey(with protector: ProtectionStrategy, handler: @escaping (MainKey?) -> Void) {
+        obtainMainKeyStub(protector, handler)
     }
 
     @FuncStub(MockKeyMakerProtocol.deactivate, initialReturn: Bool()) var deactivateStub
