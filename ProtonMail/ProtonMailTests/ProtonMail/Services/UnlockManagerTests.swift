@@ -122,7 +122,7 @@ final class UnlockManagerTests: XCTestCase {
     func testMatch_pinIsMatch_returnTrue() {
         let e = expectation(description: "Closure is called")
         pinFailedCountCacheMock.pinFailedCountStub.fixture = 0
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
             XCTAssertTrue(strategy is PinProtection)
             completion([])
         }
@@ -139,7 +139,7 @@ final class UnlockManagerTests: XCTestCase {
     func testMatch_pinIsNotMatch_returnFalse() {
         let e = expectation(description: "Closure is called")
         pinFailedCountCacheMock.pinFailedCountStub.fixture = 0
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
             XCTAssertTrue(strategy is PinProtection)
             completion(nil)
         }
@@ -158,7 +158,7 @@ final class UnlockManagerTests: XCTestCase {
         LAContextMock.canEvaluatePolicyStub.bodyIs { _, _, _ in
             return true
         }
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
             XCTAssertTrue(strategy is BioProtection)
             completion([])
         }
@@ -176,7 +176,7 @@ final class UnlockManagerTests: XCTestCase {
         LAContextMock.canEvaluatePolicyStub.bodyIs { _, _, _ in
             return true
         }
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
             XCTAssertTrue(strategy is BioProtection)
             completion(nil)
         }
@@ -383,7 +383,7 @@ final class UnlockManagerTests: XCTestCase {
         LAContextMock.canEvaluatePolicyStub.bodyIs { _, _, _ in
             return true
         }
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
             XCTAssertTrue(strategy is BioProtection)
             completion([])
         }
@@ -412,7 +412,7 @@ final class UnlockManagerTests: XCTestCase {
         LAContextMock.canEvaluatePolicyStub.bodyIs { _, _, _ in
             return true
         }
-        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, _, completion in
+        keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
             XCTAssertTrue(strategy is BioProtection)
             completion([])
         }

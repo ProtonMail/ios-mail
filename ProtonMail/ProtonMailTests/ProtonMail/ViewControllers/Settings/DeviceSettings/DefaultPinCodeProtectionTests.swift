@@ -63,18 +63,16 @@ final class DefaultPinCodeProtectionTests: XCTestCase {
         XCTAssertTrue(isActivated)
         wait(for: [lockNotificationExpectation, appKeyNotificationExpectation], timeout: 5)
 
-        let wrongPingExpectation = expectation(description: "Wrong pin")
-        keyMaker.obtainMainKey(with: PinProtection(pin: "1111", keychain: keyChain), returnExistingKey: false) { key in
-            XCTAssertNil(key)
-            wrongPingExpectation.fulfill()
+        do {
+            try await keyMaker.verify(protector: PinProtection(pin: "1111", keychain: keyChain))
+            XCTFail("verify wrong PIN should throw an exception")
+        } catch {}
+
+        do {
+            try await keyMaker.verify(protector: PinProtection(pin: newPinCode, keychain: keyChain))
+        } catch {
+            XCTFail("verify right PIN should not throw an exception")
         }
-        let rightPinExpectation = expectation(description: "Right pin")
-        let protection = PinProtection(pin: newPinCode, keychain: keyChain)
-        keyMaker.obtainMainKey(with: protection, returnExistingKey: false) { key in
-            XCTAssertNotNil(key)
-            rightPinExpectation.fulfill()
-        }
-        wait(for: [wrongPingExpectation, rightPinExpectation], timeout: 5)
     }
 
     func testDeactivate_itShouldDeleteRandomPinProtectionKeyAndDisablePinCode() async {
