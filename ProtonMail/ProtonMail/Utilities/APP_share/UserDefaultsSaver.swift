@@ -23,9 +23,6 @@
 import Foundation
 
 class UserDefaultsSaver<T>: Saver<T> where T: Codable {
-    convenience init(key: String) {
-        self.init(key: key, store: SharedCacheBase.getDefault())
-    }
 }
 
 extension UserDefaults: KeyValueStoreProvider {

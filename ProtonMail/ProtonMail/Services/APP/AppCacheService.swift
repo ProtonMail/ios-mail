@@ -20,9 +20,10 @@
 //  You should have received a copy of the GNU General Public License
 //  along with Proton Mail.  If not, see <https://www.gnu.org/licenses/>.
 
-import Foundation
+import ProtonCoreKeymaker
 
 class AppCacheService: Service {
+    typealias Dependencies = HasKeychain & HasUserDefaults
 
     enum Constants {
         enum SettingsBundleKeys {
@@ -31,11 +32,13 @@ class AppCacheService: Service {
             static var libVersion = "lib_version_preference"
         }
     }
-    private let userDefault = SharedCacheBase()
-    private let coreDataCache: CoreDataCache
 
-    init() {
-        self.coreDataCache = CoreDataCache()
+    private let coreDataCache: CoreDataCache
+    private let dependencies: Dependencies
+
+    init(dependencies: Dependencies) {
+        self.coreDataCache = CoreDataCache(userDefaults: dependencies.userDefaults)
+        self.dependencies = dependencies
     }
 
     func restoreCacheWhenAppStart() {
@@ -44,7 +47,7 @@ class AppCacheService: Service {
     }
 
     private func checkSettingsBundle() {
-        if UserDefaults.standard.bool(forKey: Constants.SettingsBundleKeys.clearAll) {
+        if dependencies.userDefaults.bool(forKey: Constants.SettingsBundleKeys.clearAll) {
             // core data
             CoreDataStore.deleteDataStore()
 
@@ -57,16 +60,13 @@ class AppCacheService: Service {
                 try? FileManager.default.removeItem(at: path)
             }
 
-            // user defaults
             if let domain = Bundle.main.bundleIdentifier {
-                UserDefaults.standard.removePersistentDomain(forName: domain)
-                self.userDefault.getShared().removePersistentDomain(forName: domain)
+                dependencies.userDefaults.removePersistentDomain(forName: domain)
             }
 
-            // keychain
-            KeychainWrapper.keychain.removeEverything()
+            dependencies.keychain.removeEverything()
         }
 
-        UserDefaults.standard.setValue(Bundle.main.appVersion, forKey: Constants.SettingsBundleKeys.appVersion)
+        dependencies.userDefaults.setValue(Bundle.main.appVersion, forKey: Constants.SettingsBundleKeys.appVersion)
     }
 }

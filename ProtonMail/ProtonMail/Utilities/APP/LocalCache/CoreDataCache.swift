@@ -24,6 +24,7 @@ import Foundation
 
 /// core data related cache versioning. when clean or rebuild. should also rebuild the counter and queue
 class CoreDataCache: Migrate {
+    private let userDefaults: UserDefaults
 
     /// latest version, pass in from outside. should be constants in global.
     internal var latestVersion: Int
@@ -45,9 +46,10 @@ class CoreDataCache: Migrate {
         case v2 = 2
     }
 
-    init() {
+    init(userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
         self.latestVersion = Version.CacheVersion
-        self.versionSaver = UserDefaultsSaver<Int>(key: Key.coreDataVersion)
+        self.versionSaver = UserDefaultsSaver<Int>(key: Key.coreDataVersion, store: userDefaults)
     }
 
     var currentVersion: Int {
@@ -73,7 +75,7 @@ class CoreDataCache: Migrate {
         CoreDataStore.deleteDataStore()
 
         if self.currentVersion <= Version.v2.rawValue {
-            let userVersion = UserDefaultsSaver<Int>(key: UsersManager.CoderKey.Version)
+            let userVersion = UserDefaultsSaver<Int>(key: UsersManager.CoderKey.Version, store: userDefaults)
             userVersion.set(newValue: 0)
             KeychainWrapper.keychain.remove(forKey: "BioProtection" + ".version")
             KeychainWrapper.keychain.remove(forKey: "PinProtection" + ".version")
