@@ -123,11 +123,11 @@ class NewMailboxMessageCell: SwipyCell, AccessibleCell {
     }
 
     private func setUpAvatarTapHandling() {
-        customView.leftContainer.addTarget(self, action: #selector(avatarTapped(_:)), for: .touchUpInside)
+        customView.leftContainer.addTarget(self, action: #selector(avatarTapped), for: .touchUpInside)
     }
 
     @objc
-    private func avatarTapped(_ sender: UIControl) {
+    private func avatarTapped() {
         cellDelegate?.didSelectButtonStatusChange(cell: self)
     }
 

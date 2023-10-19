@@ -105,12 +105,12 @@ final class SwitchToggleViewController: UITableViewController, AccessibleView {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title = viewModel.output.sectionHeader(of: section)
+        let title = viewModel.output.sectionHeader()
         return title == nil ? 36 : UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let text = viewModel.output.sectionHeader(of: section) else {
+        guard let text = viewModel.output.sectionHeader() else {
             return nil
         }
         let padding = viewModel.output.headerTopPadding
@@ -118,12 +118,12 @@ final class SwitchToggleViewController: UITableViewController, AccessibleView {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let desc = viewModel.output.sectionFooter(of: section)
+        let desc = viewModel.output.sectionFooter()
         return desc == nil ? 36 : UITableView.automaticDimension
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let footer = viewModel.output.sectionFooter(of: section) else {
+        guard let footer = viewModel.output.sectionFooter() else {
             return nil
         }
         let padding = viewModel.output.footerTopPadding

@@ -64,7 +64,7 @@ class ContactGroupSelectEmailViewController: UIViewController {
         self.doneButton.setTitleTextAttributes(attributes, for: .normal)
         self.navigationItem.rightBarButtonItem = self.doneButton
 
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.didTapCancelButton(_:)))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(self.didTapCancelButton))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -112,7 +112,7 @@ class ContactGroupSelectEmailViewController: UIViewController {
     }
 
     @objc
-    private func didTapCancelButton(_ sender: UIBarButtonItem) {
+    private func didTapCancelButton() {
         if viewModel.havingUnsavedChanges == true {
             let alertController = UIAlertController(title: LocalString._warning,
                                                     message: LocalString._changes_will_discarded, preferredStyle: .alert)

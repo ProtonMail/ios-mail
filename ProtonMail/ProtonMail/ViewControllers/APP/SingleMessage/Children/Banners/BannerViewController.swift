@@ -101,7 +101,7 @@ final class BannerViewController: UIViewController {
         }
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
     }
@@ -344,7 +344,7 @@ final class BannerViewController: UIViewController {
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         displayedBanners.forEach { key, view in
             switch key {
             case .imageProxyFailure:

@@ -106,7 +106,7 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
         setupLayout()
         NotificationCenter.default
             .addObserver(self,
-                         selector: #selector(preferredContentSizeChanged(_:)),
+                         selector: #selector(preferredContentSizeChanged),
                          name: UIContentSizeCategory.didChangeNotification,
                          object: nil)
     }
@@ -234,7 +234,7 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
     }
 
     @objc
-    private func preferredContentSizeChanged(_ notification: Notification) {
+    private func preferredContentSizeChanged() {
         textView.font = .adjustedFont(forTextStyle: .body, weight: .regular)
         setUpSendButtonAttribute()
     }

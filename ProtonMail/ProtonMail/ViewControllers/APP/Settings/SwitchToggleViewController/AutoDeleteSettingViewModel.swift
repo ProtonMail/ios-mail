@@ -76,11 +76,11 @@ extension AutoDeleteSettingViewModel: SwitchToggleVMOutput {
         (L11n.AutoDeleteSettings.rowTitle, autoDeleteSpamAndTrashDaysProvider.isAutoDeleteEnabled)
     }
 
-    func sectionHeader(of section: Int) -> String? {
+    func sectionHeader() -> String? {
         nil
     }
 
-    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
+    func sectionFooter() -> Either<String, NSAttributedString>? {
         Either.left(L11n.AutoDeleteSettings.rowFooterTitle)
     }
 }

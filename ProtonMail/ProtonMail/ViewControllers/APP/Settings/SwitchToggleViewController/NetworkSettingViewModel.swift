@@ -52,11 +52,11 @@ extension NetworkSettingViewModel: SwitchToggleVMOutput {
         (LocalString._allow_alternative_routing, dohSetting.status == .on)
     }
 
-    func sectionHeader(of section: Int) -> String? {
+    func sectionHeader() -> String? {
         LocalString._settings_alternative_routing_title
     }
 
-    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
+    func sectionFooter() -> Either<String, NSAttributedString>? {
         let footer = LocalString._settings_alternative_routing_footer
         let learnMore = LocalString._settings_alternative_routing_learn
         let full = String.localizedStringWithFormat(footer, learnMore)

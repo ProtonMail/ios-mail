@@ -43,11 +43,11 @@ final class NextMessageAfterMoveViewModel: SwitchToggleVMProtocol, SwitchToggleV
          nextMessageAfterMoveStatusProvider.shouldMoveToNextMessageAfterMove)
     }
 
-    func sectionHeader(of section: Int) -> String? {
+    func sectionHeader() -> String? {
         nil
     }
 
-    func sectionFooter(of section: Int) -> Either<String, NSAttributedString>? {
+    func sectionFooter() -> Either<String, NSAttributedString>? {
         .left(L11n.NextMsgAfterMove.rowFooterTitle)
     }
 }

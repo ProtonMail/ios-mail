@@ -51,7 +51,7 @@ final class ContactGroupSelectColorViewController: UIViewController {
         doneButton?.setTitleTextAttributes(attributes, for: .normal)
         navigationItem.rightBarButtonItem = doneButton
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(didTapCancelButton(_:)))
+        navigationItem.leftBarButtonItem = UIBarButtonItem.backBarButtonItem(target: self, action: #selector(didTapCancelButton))
     }
 
     private func setupCollectionView() {
@@ -71,7 +71,7 @@ final class ContactGroupSelectColorViewController: UIViewController {
     }
 
     @objc
-    private func didTapCancelButton(_ sender: UIBarButtonItem) {
+    private func didTapCancelButton() {
         if viewModel.havingUnsavedChanges {
             let alertController = UIAlertController(title: LocalString._warning,
                                                     message: LocalString._changes_will_discarded,

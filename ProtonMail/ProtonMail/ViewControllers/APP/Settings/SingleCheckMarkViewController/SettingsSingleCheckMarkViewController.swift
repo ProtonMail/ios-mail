@@ -76,7 +76,7 @@ final class SettingsSingleCheckMarkViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let text = self.viewModel.sectionHeader(of: section) else {
+        guard let text = self.viewModel.sectionHeader() else {
             return nil
         }
         let padding = self.viewModel.headerTopPadding
@@ -85,7 +85,7 @@ final class SettingsSingleCheckMarkViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let text = self.viewModel.sectionFooter(of: section) else {
+        guard let text = self.viewModel.sectionFooter() else {
             return nil
         }
         let padding = self.viewModel.footerTopPadding

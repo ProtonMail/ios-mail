@@ -107,7 +107,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, LifetimeTrack
         dismiss(animated: true)
     }
 
-    @objc private func updateNotificationStatus(_ notification: NSNotification) {
+    @objc private func updateNotificationStatus(_: NSNotification) {
         if let section = self.viewModel.sections.firstIndex(of: .general),
            let row = self.viewModel.generalSettings.firstIndex(of: .notification) {
             let indexPath = IndexPath(row: row, section: section)
