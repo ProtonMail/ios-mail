@@ -153,16 +153,6 @@ extension String {
     func mimeType() -> String {
         return (self as NSString).mimeType()
     }
-
-    var clear: String {
-        var invalidCharacters = CharacterSet(charactersIn: ":/")
-        invalidCharacters.formUnion(.newlines)
-        invalidCharacters.formUnion(.illegalCharacters)
-        invalidCharacters.formUnion(.controlCharacters)
-
-        let newFilename = self.components(separatedBy: invalidCharacters).joined(separator: "_")
-        return newFilename
-    }
 }
 
 extension AttachmentConvertible {

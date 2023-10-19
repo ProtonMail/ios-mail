@@ -585,7 +585,7 @@ extension ComposeViewModelTests {
         XCTAssertTrue(url.hasGPSData())
         return ConcreteFileData(
             name: fullFileName,
-            ext: "image/png",
+            mimeType: "image/png",
             contents: url
         )
     }

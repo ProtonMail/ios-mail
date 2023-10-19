@@ -84,7 +84,7 @@ final class AttachmentListViewModel {
                     attachmentKeyPacket: attachment.keyPacket,
                     userKeys: userKeys
                 )
-                let fileName = attachment.name.clear
+                let fileName = attachment.name.cleaningFilename()
                 let unencryptedFileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
 
                 try fileData.write(to: unencryptedFileUrl, options: [.atomic])

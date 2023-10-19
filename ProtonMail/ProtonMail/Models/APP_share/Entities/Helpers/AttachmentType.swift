@@ -25,15 +25,22 @@ import UIKit
 // The purpose of this type is to map incoming MIME types to icons
 enum AttachmentType: CaseIterable, Equatable {
     case audio
-    case doc
-    case general
+    case calendar
+    case code
+    case compressed
+    case `default`
+    case excel
+    case font
     case image
+    case key
+    case keynote
+    case numbers
+    case pages
     case pdf
-    case ppt
-    case txt
+    case powerpoint
+    case text
     case video
-    case xls
-    case zip
+    case word
 
     static let mimeTypeMap: [AttachmentType: [String]] = [
         .audio: [
@@ -46,28 +53,39 @@ enum AttachmentType: CaseIterable, Equatable {
             "audio/aac",
             "audio/x-hx-aac-adts"
         ],
-        .doc: [
-            "application/doc",
-            "application/ms-doc",
-            "application/msword",
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        .calendar: [],
+        .code: [],
+        .compressed: [
+            "application/zip"
         ],
+        .excel: [
+            "application/excel",
+            "application/vnd.ms-excel",
+            "application/x-excel",
+            "application/x-msexcel",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ],
+        .font: [],
         .image: [
             "image/jpg",
             "image/jpeg",
             "image/png"
         ],
+        .key: [],
+        .keynote: [],
+        .numbers: [],
+        .pages: [],
         .pdf: [
             "application/pdf"
         ],
-        .ppt: [
+        .powerpoint: [
             "application/mspowerpoint",
             "application/powerpoint",
             "application/vnd.ms-powerpoint",
             "application/x-mspowerpoint",
             "application/vnd.openxmlformats-officedocument.presentationml.presentation"
         ],
-        .txt: [
+        .text: [
             "text/plain"
         ],
         .video: [
@@ -81,46 +99,56 @@ enum AttachmentType: CaseIterable, Equatable {
             "video/mp4",
             "video/x-matroska"
         ],
-        .xls: [
-            "application/excel",
-            "application/vnd.ms-excel",
-            "application/x-excel",
-            "application/x-msexcel",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ],
-        .zip: [
-            "application/zip"
+        .word: [
+            "application/doc",
+            "application/ms-doc",
+            "application/msword",
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         ]
     ]
 
     init(mimeType: String) {
-        self = Self.mimeTypeMap.first { $1.contains(mimeType) }?.key ?? .general
+        self = Self.mimeTypeMap.first { $1.contains(mimeType) }?.key ?? .default
     }
 
     /// Icon for composer
     var icon: UIImage {
         let asset: ImageAsset
         switch self {
-        case .image:
-            asset = Asset.mailAttachmentJpeg
-        case .zip:
-            asset = Asset.mailAttachmentZip
-        case .pdf:
-            asset = Asset.mailAttachmentPdf
-        case .txt:
-            asset = Asset.mailAttachmentTxt
-        case .doc:
-            asset = Asset.mailAttachmentDoc
-        case .xls:
-            asset = Asset.mailAttachmentXls
-        case .ppt:
-            asset = Asset.mailAttachmentPpt
-        case .video:
-            asset = Asset.mailAttachmentVideo
         case .audio:
-            asset = Asset.mailAttachmentAudio
-        case .general:
-            asset = Asset.mailAttachmentGeneral
+            asset = Asset.icFileTypeIconAudio
+        case .calendar:
+            asset = Asset.icFileTypeIconCalendar
+        case .code:
+            asset = Asset.icFileTypeIconCode
+        case .compressed:
+            asset = Asset.icFileTypeIconCompressed
+        case .default:
+            asset = Asset.icFileTypeIconDefault
+        case .excel:
+            asset = Asset.icFileTypeIconExcel
+        case .font:
+            asset = Asset.icFileTypeIconFont
+        case .image:
+            asset = Asset.icFileTypeIconImage
+        case .key:
+            asset = Asset.icFileTypeIconKey
+        case .keynote:
+            asset = Asset.icFileTypeIconKeynote
+        case .numbers:
+            asset = Asset.icFileTypeIconNumbers
+        case .pages:
+            asset = Asset.icFileTypeIconPages
+        case .pdf:
+            asset = Asset.icFileTypeIconPdf
+        case .powerpoint:
+            asset = Asset.icFileTypeIconPowerpoint
+        case .text:
+            asset = Asset.icFileTypeIconText
+        case .video:
+            asset = Asset.icFileTypeIconVideo
+        case .word:
+            asset = Asset.icFileTypeIconWord
         }
         return asset.image
     }
@@ -128,31 +156,42 @@ enum AttachmentType: CaseIterable, Equatable {
     /// Icon for message detail
     var bigIcon: UIImage {
         let asset: ImageAsset
-
         switch self {
-        case .image:
-            asset = Asset.mailAttachmentJpeg
-        case .zip:
-            asset = Asset.mailAttachmentFileZip
-        case .pdf:
-            asset = Asset.mailAttachmentPdf
-        case .txt:
-            // There is no icon for txt, use general temporary
-            return Self.general.bigIcon
-        case .doc:
-            asset = Asset.mailAttachmentFileDoc
-        case .xls:
-            asset = Asset.mailAttachmentFileXls
-        case .ppt:
-            asset = Asset.mailAttachmentFilePpt
-        case .video:
-            asset = Asset.mailAttachmentFileVideo
         case .audio:
-            asset = Asset.mailAttachmentFileAudio
-        case .general:
-            asset = Asset.mailAttachmentFileGeneral
+            asset = Asset.icFileTypeAudio
+        case .calendar:
+            asset = Asset.icFileTypeCalendar
+        case .code:
+            asset = Asset.icFileTypeCode
+        case .compressed:
+            asset = Asset.icFileTypeCompressed
+        case .default:
+            asset = Asset.icFileTypeDefault
+        case .excel:
+            asset = Asset.icFileTypeExcel
+        case .font:
+            asset = Asset.icFileTypeFont
+        case .image:
+            asset = Asset.icFileTypeImage
+        case .key:
+            asset = Asset.icFileTypeKey
+        case .keynote:
+            asset = Asset.icFileTypeKeynote
+        case .numbers:
+            asset = Asset.icFileTypeNumbers
+        case .pages:
+            asset = Asset.icFileTypePages
+        case .pdf:
+            asset = Asset.icFileTypePdf
+        case .powerpoint:
+            asset = Asset.icFileTypePowerpoint
+        case .text:
+            asset = Asset.icFileTypeText
+        case .video:
+            asset = Asset.icFileTypeVideo
+        case .word:
+            asset = Asset.icFileTypeWord
         }
-
         return asset.image
     }
 }

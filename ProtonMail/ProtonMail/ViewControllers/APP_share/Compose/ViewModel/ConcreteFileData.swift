@@ -19,6 +19,6 @@ import Foundation
 
 struct ConcreteFileData: FileData {
     let name: String
-    let ext: String
+    let mimeType: String
     let contents: AttachmentConvertible
 }

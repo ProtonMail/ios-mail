@@ -26,12 +26,12 @@ import XCTest
 class MimeTypesTests: XCTestCase {
 
     func testClearFilename() {
-        XCTAssertEqual("ima/ge.png".clear, "ima_ge.png")
-        XCTAssertEqual("i:1#$ma/ge.png".clear, "i_1#$ma_ge.png")
-        XCTAssertEqual("233598025 (2004|10|29).html".clear, "233598025 (2004|10|29).html")
-        XCTAssertEqual("im?a/g<e.png".clear, "im?a_g<e.png")
-        XCTAssertEqual("i*\"ma/g>e.png".clear, "i*\"ma_g>e.png")
-        XCTAssertEqual("i{m}a/ge.png".clear, "i{m}a_ge.png")
+        XCTAssertEqual("ima/ge.png".cleaningFilename(), "ima_ge.png")
+        XCTAssertEqual("i:1#$ma/ge.png".cleaningFilename(), "i_1#$ma_ge.png")
+        XCTAssertEqual("233598025 (2004|10|29).html".cleaningFilename(), "233598025 (2004|10|29).html")
+        XCTAssertEqual("im?a/g<e.png".cleaningFilename(), "im?a_g<e.png")
+        XCTAssertEqual("i*\"ma/g>e.png".cleaningFilename(), "i*\"ma_g>e.png")
+        XCTAssertEqual("i{m}a/ge.png".cleaningFilename(), "i{m}a_ge.png")
     }
 
 }
