@@ -128,6 +128,13 @@ struct MessageEntity: Equatable, Hashable {
     let passwordHint: String
 
     let objectID: ObjectID
+
+    let attachmentsMetadata: [AttachmentsMetadata]
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(messageID)
+        hasher.combine(objectID)
+    }
 }
 
 extension MessageEntity {
@@ -200,6 +207,15 @@ extension MessageEntity {
         self.password = message.password
         self.passwordHint = message.passwordHint
         self.objectID = .init(rawValue: message.objectID)
+        let parsedAttachments: [AttachmentsMetadata]?
+        do {
+            parsedAttachments = try AttachmentsMetadata
+                .decodeListOfDictionaries(jsonString: message.attachmentsMetadata)
+        } catch {
+            parsedAttachments = nil
+            SystemLogger.log(error: error)
+        }
+        self.attachmentsMetadata = parsedAttachments ?? []
     }
 
     private static func parseUnsubscribeMethods(from jsonString: String?) -> UnsubscribeMethods? {

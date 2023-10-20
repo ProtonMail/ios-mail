@@ -585,4 +585,32 @@ extension MessageEntityTests {
 
         XCTAssertNil(sut.getSenderImageRequestInfo(isDarkMode: Bool.random()))
     }
+
+    func testAttachmentsMetadataIsProperlyParsed() {
+        let id = UUID().uuidString
+        let name = String.randomString(Int.random(in: 0..<100))
+        let size = Int.random(in: 0..<25_000_000)
+        let mimeTypeString = "image/png"
+        let disposition = Bool.random() ? "attachment" : "inline"
+        let rawAttachmentsMetadata = """
+        [
+            {
+                "ID": "\(id)",
+                "Name": "\(name)",
+                "Size": \(size),
+                "MIMEType": "\(mimeTypeString)",
+                "Disposition": "\(disposition)"
+            }
+        ]
+        """
+        let message = Message(context: testContext)
+        message.attachmentsMetadata = rawAttachmentsMetadata
+        let sut = MessageEntity(message)
+        XCTAssertEqual(sut.attachmentsMetadata[0].id, id)
+        XCTAssertEqual(sut.attachmentsMetadata[0].name, name)
+        XCTAssertEqual(sut.attachmentsMetadata[0].size, size)
+        XCTAssertEqual(sut.attachmentsMetadata[0].mimeType, mimeTypeString)
+        XCTAssertEqual(sut.attachmentsMetadata[0].disposition.rawValue, disposition)
+    }
+
 }
