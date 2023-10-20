@@ -19,15 +19,16 @@ import ProtonCoreServices
 
 enum FeatureFlagKey: String, CaseIterable {
     case appRating = "RatingIOSMail"
-    case sendRefactor = "SendMessageRefactor"
-    case protonUnreachableBanner = "ProtonUnreachableBanner"
+    case attachmentsPreview = "iOSAttachmentsPreviewIsEnabled"
+    case mailboxPrefetchSize = "iOSMailboxPrefetchSize"
     case modernizedCoreData = "ModernizedCoreData"
-    case scheduleSend = "ScheduledSendFreemium"
-    case senderImage = "ShowSenderImages"
+    case protonUnreachableBanner = "ProtonUnreachableBanner"
     case referralPrompt = "ReferralActionSheetShouldBePresentedIOS"
     case refetchEventsByTime = "iOSRefetchEventsByTime"
     case refetchEventsHourThreshold = "iOSRefetchEventsHourThreshold"
-    case mailboxPrefetchSize = "iOSMailboxPrefetchSize"
+    case scheduleSend = "ScheduledSendFreemium"
+    case senderImage = "ShowSenderImages"
+    case sendRefactor = "SendMessageRefactor"
 }
 
 // sourcery: mock

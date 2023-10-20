@@ -53,11 +53,15 @@ extension AttachmentConvertible {
     }
 }
 
-private struct MIMETypeBuilder {
+struct MIMEType {
+    static let icsMIMEType = "text/calendar"
+    static let keyMIMEType = "application/pgp-keys"
     static let defaultMimeType = "application/octet-stream"
+}
 
+private struct MIMETypeBuilder {
     static func mimeType(from fileExtension: String) -> String {
         let utType = UTType(filenameExtension: fileExtension)
-        return utType?.preferredMIMEType ?? defaultMimeType
+        return utType?.preferredMIMEType ?? MIMEType.defaultMimeType
     }
 }

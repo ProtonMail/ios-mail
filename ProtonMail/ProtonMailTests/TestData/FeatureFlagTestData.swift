@@ -101,6 +101,14 @@ enum FeatureFlagTestData {
                 "Global": true,
                 "Code": "iOSRefetchEventsHourThreshold",
                 "DefaultValue": 24
+            ],
+            [
+                "Writable": false,
+                "Type": "boolean",
+                "Value": true,
+                "Global": true,
+                "Code": "iOSAttachmentsPreviewIsEnabled",
+                "DefaultValue": false
             ]
         ] as [[String: Any]]
     ]

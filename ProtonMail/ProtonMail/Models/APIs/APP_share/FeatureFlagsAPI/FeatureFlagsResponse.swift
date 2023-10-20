@@ -79,6 +79,7 @@ class FeatureFlag<T>: FeatureFlags {
 
 class FeatureFlags {
     static let appRating = FeatureFlag<Bool>(code: .appRating, defaultValue: false)
+    static let attachmentsPreview = FeatureFlag<Bool>(code: .attachmentsPreview, defaultValue: false)
     static let mailboxPrefetchSize = FeatureFlag<Int>(code: .mailboxPrefetchSize, defaultValue: 0)
     static let modernizedCoreData = FeatureFlag<Bool>(code: .modernizedCoreData, defaultValue: false)
     static let protonUnreachableBanner = FeatureFlag<Bool>(code: .protonUnreachableBanner, defaultValue: false)

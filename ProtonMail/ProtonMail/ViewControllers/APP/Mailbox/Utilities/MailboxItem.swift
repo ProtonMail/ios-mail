@@ -57,7 +57,6 @@ enum MailboxItem: Hashable {
         }
     }
 
-
     func isUnread(labelID: LabelID) -> Bool {
         switch self {
         case .message(let message):
@@ -74,5 +73,32 @@ enum MailboxItem: Hashable {
         case .conversation(let conversation):
             return conversation.getTime(labelID: labelID)
         }
+    }
+}
+
+// MARK: Attachments Metadata for preview
+extension MailboxItem {
+
+    var attachmentsMetadata: [AttachmentsMetadata] {
+        switch self {
+        case .message(let message):
+            return message.attachmentsMetadata
+        case .conversation(let conversation):
+            return conversation.attachmentsMetadata
+        }
+    }
+
+    var isPreviewable: Bool {
+        attachmentsMetadata
+            .contains(where: { $0.disposition == .attachment })
+    }
+
+    var previewableAttachments: [AttachmentsMetadata] {
+        attachmentsMetadata
+            .filter {
+                $0.disposition == .attachment &&
+                $0.mimeType != MIMEType.icsMIMEType &&
+                $0.mimeType != MIMEType.keyMIMEType
+            }
     }
 }
