@@ -105,6 +105,11 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let toolbarCustomizeSpotlightShownUserIds = "toolbarCustomizeSpotlightShownUserIds"
     }
 
+    // Do not set values for these keys, they are only needed to check for data saved by older versions
+    struct LegacyKey {
+        static let defaultSignatureStatus = "defaultSignatureStatus"
+    }
+
     var keymakerRandomkey: String? {
         get {
             return KeychainWrapper.keychain.string(forKey: Key.randomPinForProtection)
