@@ -15,25 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import fusion
-import XCTest
+import Foundation
 
-extension XCTestCase {
-    func wait(
-        _ condition: @escaping @autoclosure () -> (Bool),
-        timeout: TimeInterval = 3
-    )
-    {
-        XCTAssertTrue(
-            waitUntil(timeout: timeout, condition: condition())
-        )
-    }
-
-    func sleep(milliseconds: UInt) async {
-        do {
-            try await Task.sleep(for: .milliseconds(milliseconds), clock: .suspending)
-        } catch {
-            XCTFail("\(error)")
-        }
+func sleep(milliseconds: UInt) async {
+    do {
+        try await Task.sleep(for: .milliseconds(milliseconds), clock: .suspending)
+    } catch {
+        fatalError("\(error)")
     }
 }

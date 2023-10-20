@@ -164,7 +164,7 @@ final class MessageInfoProviderTest: XCTestCase {
 
         sut.initialize()
 
-        waitForMessageToBePrepared()
+        await waitForMessageToBePrepared()
 
         XCTAssertEqual(delegateObject.providerHasChangedStub.callCounter, 1)
 
@@ -198,48 +198,48 @@ final class MessageInfoProviderTest: XCTestCase {
         XCTAssertEqual(messageDecrypter.decryptCallCount, 0)
 
         sut.initialize()
-        waitForMessageToBePrepared()
+        await waitForMessageToBePrepared()
         XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
 
         simulateMessageUpdateWithSameBodyAsBefore()
-        waitForMessageToBePrepared()
+        await waitForMessageToBePrepared()
         XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
 
         try simulateMessageUpdateWithBodyDifferentThanBefore()
-        waitForMessageToBePrepared()
+        await waitForMessageToBePrepared()
         XCTAssertEqual(messageDecrypter.decryptCallCount, 2)
     }
 
-    func testMessageDecrypter_whenSettingAreChanged_isNotCalled() async throws {
+    func testMessageDecrypter_whenSettingAreChanged_isNotCalled() async {
         sut.initialize()
-        waitForMessageToBePrepared()
+        await waitForMessageToBePrepared()
         XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
 
         XCTAssertNotEqual(sut.remoteContentPolicy, .allowed)
         sut.remoteContentPolicy = .allowed
-        waitForMessageToBePrepared()
+        await waitForMessageToBePrepared()
 
         XCTAssertNotEqual(sut.embeddedContentPolicy, .allowed)
         sut.embeddedContentPolicy = .allowed
-        waitForMessageToBePrepared()
+        await waitForMessageToBePrepared()
 
         XCTAssertNotEqual(sut.displayMode, .expanded)
         sut.displayMode = .expanded
-        waitForMessageToBePrepared()
+        await waitForMessageToBePrepared()
 
         XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
     }
 
-    func testImageProxy_whenSettingsOtherThanRemoteContentAreChanged_isNotCalled() async throws {
-        enableImageProxyAndRemoteContent()
+    func testImageProxy_whenSettingsOtherThanRemoteContentAreChanged_isNotCalled() async {
+        await enableImageProxyAndRemoteContent()
 
         XCTAssertNotEqual(sut.embeddedContentPolicy, .allowed)
         sut.embeddedContentPolicy = .allowed
-        waitForMessageToBePrepared()
+        await waitForMessageToBePrepared()
 
         XCTAssertNotEqual(sut.displayMode, .expanded)
         sut.displayMode = .expanded
-        waitForMessageToBePrepared()
+        await waitForMessageToBePrepared()
 
         XCTAssertEqual(messageDecrypter.decryptCallCount, 1)
     }
@@ -394,8 +394,8 @@ extension MessageInfoProviderTest {
     }
 
     /// This method is needed because most of the related code runs on a background queue
-    private func waitForMessageToBePrepared() {
-        Thread.sleep(forTimeInterval: 0.5)
+    private func waitForMessageToBePrepared() async {
+        await sleep(milliseconds: 250)
     }
 
     private func simulateMessageUpdateWithSameBodyAsBefore() {
@@ -412,10 +412,10 @@ extension MessageInfoProviderTest {
         sut.update(message: differentMessage)
     }
 
-    private func enableImageProxyAndRemoteContent() {
+    private func enableImageProxyAndRemoteContent() async {
         user.userInfo.imageProxy = .imageProxy
         sut.remoteContentPolicy = .allowed
-        waitForMessageToBePrepared()
+        await waitForMessageToBePrepared()
     }
 }
 

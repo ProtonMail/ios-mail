@@ -195,13 +195,19 @@ class FixtureAuthenticatedTestCase: BaseTestCase {
     override func setUp() {
         super.setUp()
     }
-    
+
     func runTestWithScenario(_ actualScenario: MailScenario, testBlock: () -> Void) {
         scenario = actualScenario
         createUserAndLogin()
         testBlock()
     }
-    
+
+    func runTestWithScenario(_ actualScenario: MailScenario, testBlock: () async -> Void) async {
+        scenario = actualScenario
+        createUserAndLogin()
+        await testBlock()
+    }
+
     func runTestWithScenarioDoNotLogin(_ actualScenario: MailScenario, testBlock: () -> Void) {
         scenario = actualScenario
         user = createUser()

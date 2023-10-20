@@ -319,9 +319,4 @@ iVBORw0KGgoAAAANSUhEUgAAANQAAAArCAAAAAAlcfkIAAAAHGlET1QAAAACAAAAAAAAABYAAAAoAAAA
             }
         XCTAssertEqual(failedRequests, expectedFailedRequests, file: file, line: line)
     }
-
-    /// This method is needed because most of the related code runs on a background queue
-    private func waitForProxyToFinishProcessing() {
-        Thread.sleep(forTimeInterval: 0.1)
-    }
 }
