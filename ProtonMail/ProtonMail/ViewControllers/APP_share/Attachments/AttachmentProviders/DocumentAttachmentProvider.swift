@@ -80,8 +80,9 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
             do {
 #if APP_EXTENSION
                 let newUrl = try self.copyItemToTempDirectory(from: url)
+                let mimeType = url.mimeType()
                 let fileName = url.lastPathComponent
-                fileData = ConcreteFileData(name: fileName, mimeType: url.mimeType(), contents: newUrl)
+                fileData = ConcreteFileData(name: fileName, mimeType: mimeType, contents: newUrl)
 #else
                 _ = url.startAccessingSecurityScopedResource()
                 let data = try Data(contentsOf: url)

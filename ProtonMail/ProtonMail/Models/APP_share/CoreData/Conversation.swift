@@ -41,6 +41,7 @@ final class Conversation: NSManagedObject {
         case isSoftDeleted = "isSoftDeleted"
         case size = "size"
         case subject = "subject"
+        case attachmentsMetadata = "attachmentsMetadata"
     }
 
     @NSManaged var conversationID: String
@@ -62,6 +63,8 @@ final class Conversation: NSManagedObject {
     @NSManaged var labels: NSSet
 
     @NSManaged var userID: String
+
+    @NSManaged var attachmentsMetadata: String
 }
 
 extension Conversation {

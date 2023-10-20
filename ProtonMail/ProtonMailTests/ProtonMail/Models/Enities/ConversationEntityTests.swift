@@ -241,10 +241,37 @@ class ConversationEntityTests: XCTestCase {
 
         XCTAssertNil(sut.getSenderImageRequestInfo(isDarkMode: Bool.random()))
     }
+
+    func testAttachmentsMetadataIsProperlyParsed() {
+        let id = UUID().uuidString
+        let name = String.randomString(Int.random(in: 0..<100))
+        let size = Int.random(in: 0..<25_000_000)
+        let mimeTypeString = "image/png"
+        let disposition = Bool.random() ? "attachment" : "inline"
+        let rawAttachmentsMetadata = """
+        [
+            {
+                "ID": "\(id)",
+                "Name": "\(name)",
+                "Size": \(size),
+                "MIMEType": "\(mimeTypeString)",
+                "Disposition": "\(disposition)"
+            }
+        ]
+        """
+        let testObject = Conversation(context: testContext)
+        testObject.attachmentsMetadata = rawAttachmentsMetadata
+        let sut = ConversationEntity(testObject)
+        XCTAssertEqual(sut.attachmentsMetadata[0].id, id)
+        XCTAssertEqual(sut.attachmentsMetadata[0].name, name)
+        XCTAssertEqual(sut.attachmentsMetadata[0].size, size)
+        XCTAssertEqual(sut.attachmentsMetadata[0].mimeType, mimeTypeString)
+        XCTAssertEqual(sut.attachmentsMetadata[0].disposition.rawValue, disposition)
+    }
 }
 
 extension ConversationEntityTests {
-    private func createRandomConversationEntity(with LabelIDs: [LabelID],
+    private func createRandomConversationEntity(with labelIDs: [LabelID],
                                                 unreadNum: Int = 0,
                                                 date: Date = Date()
     ) -> ConversationEntity {
@@ -261,7 +288,7 @@ extension ConversationEntityTests {
         testObject.subject = String.randomString(100)
         testObject.userID = String.randomString(20)
 
-        for label in LabelIDs {
+        for label in labelIDs {
             let testLabel = ContextLabel(context: testContext)
             testLabel.messageCount = NSNumber(value: 1)
             testLabel.unreadCount = NSNumber(value: unreadNum)

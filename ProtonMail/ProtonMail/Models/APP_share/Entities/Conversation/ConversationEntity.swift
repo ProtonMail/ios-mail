@@ -31,10 +31,16 @@ struct ConversationEntity: Equatable, Hashable {
     let subject: String
     let userID: UserID
     let contextLabelRelations: [ContextLabelEntity]
+    let attachmentsMetadata: [AttachmentsMetadata]
 
     /// Local use flag to mark this conversation is deleted
     /// (usually caused by empty trash/ spam action)
     let isSoftDeleted: Bool
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(conversationID)
+        hasher.combine(objectID)
+    }
 }
 
 extension ConversationEntity {
@@ -54,6 +60,15 @@ extension ConversationEntity {
         self.contextLabelRelations = ContextLabelEntity.convert(from: conversation)
 
         self.isSoftDeleted = conversation.isSoftDeleted
+        let parsedAttachments: [AttachmentsMetadata]?
+        do {
+            parsedAttachments = try AttachmentsMetadata
+                .decodeListOfDictionaries(jsonString: conversation.attachmentsMetadata)
+        } catch {
+            parsedAttachments = nil
+            SystemLogger.log(error: error)
+        }
+        self.attachmentsMetadata = parsedAttachments ?? []
     }
 
     var starred: Bool {

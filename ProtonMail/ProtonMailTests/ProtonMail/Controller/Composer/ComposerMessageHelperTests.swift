@@ -341,7 +341,7 @@ final class ComposerMessageHelperTests: XCTestCase {
         XCTAssertEqual(sut.draft?.numAttachments, 1)
         let attachment = try XCTUnwrap(sut.draft?.attachments.first)
         XCTAssertEqual(attachment.name, fileName)
-        XCTAssertEqual(attachment.attachmentType, .default)
+        XCTAssertEqual(attachment.attachmentType, .key)
         XCTAssertEqual(attachment.rawMimeType, "application/pgp-keys")
 
         // Add same attachment twice
