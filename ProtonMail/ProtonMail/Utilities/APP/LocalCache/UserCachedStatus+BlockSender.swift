@@ -20,10 +20,6 @@ extension UserCachedStatus.Key {
 }
 
 extension UserCachedStatus: BlockedSenderFetchStatusProviderProtocol {
-    private var userDefaults: UserDefaults {
-        SharedCacheBase.getDefault()
-    }
-
     func checkIfBlockedSendersAreFetched(userID: UserID) -> Bool {
         idsOfUsersThatSuccessfullyFetchedBlockedSenders().contains(userID.rawValue)
     }

@@ -187,7 +187,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     }
 
     func getDefaultSignaureSwitchStatus(uid: String) -> Bool? {
-        guard let switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithDefaultSignatureStatus),
+        guard let switchData = userDefaults.dictionary(forKey: Key.UserWithDefaultSignatureStatus),
         let switchStatus = switchData[uid] as? Bool else {
             return nil
         }
@@ -195,30 +195,30 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     }
 
     func setDefaultSignatureSwitchStatus(uid: String, value: Bool) {
-        guard var switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithDefaultSignatureStatus) else {
+        guard var switchData = userDefaults.dictionary(forKey: Key.UserWithDefaultSignatureStatus) else {
             var newDictiondary: [String: Bool] = [:]
             newDictiondary[uid] = value
-            SharedCacheBase.getDefault()?.set(newDictiondary, forKey: Key.UserWithDefaultSignatureStatus)
-            SharedCacheBase.getDefault()?.synchronize()
+            userDefaults.set(newDictiondary, forKey: Key.UserWithDefaultSignatureStatus)
+            userDefaults.synchronize()
             return
         }
         switchData[uid] = value
-        SharedCacheBase.getDefault()?.set(switchData, forKey: Key.UserWithDefaultSignatureStatus)
-        SharedCacheBase.getDefault()?.synchronize()
+        userDefaults.set(switchData, forKey: Key.UserWithDefaultSignatureStatus)
+        userDefaults.synchronize()
     }
 
     func removeDefaultSignatureSwitchStatus(uid: String) {
-        guard var switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithDefaultSignatureStatus) else {
+        guard var switchData = userDefaults.dictionary(forKey: Key.UserWithDefaultSignatureStatus) else {
             return
         }
 
         switchData.removeValue(forKey: uid)
-        SharedCacheBase.getDefault()?.set(switchData, forKey: Key.UserWithDefaultSignatureStatus)
-        SharedCacheBase.getDefault()?.synchronize()
+        userDefaults.set(switchData, forKey: Key.UserWithDefaultSignatureStatus)
+        userDefaults.synchronize()
     }
 
     func getIsCheckSpaceDisabledStatus(by uid: String) -> Bool? {
-        guard let switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithIsCheckSpaceDisabledStatus),
+        guard let switchData = userDefaults.dictionary(forKey: Key.UserWithIsCheckSpaceDisabledStatus),
         let switchStatus = switchData[uid] as? Bool else {
             return nil
         }
@@ -226,26 +226,26 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     }
 
     func setIsCheckSpaceDisabledStatus(uid: String, value: Bool) {
-        guard var switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithIsCheckSpaceDisabledStatus) else {
+        guard var switchData = userDefaults.dictionary(forKey: Key.UserWithIsCheckSpaceDisabledStatus) else {
             var newDictiondary: [String: Bool] = [:]
             newDictiondary[uid] = value
-            SharedCacheBase.getDefault()?.set(newDictiondary, forKey: Key.UserWithIsCheckSpaceDisabledStatus)
-            SharedCacheBase.getDefault()?.synchronize()
+            userDefaults.set(newDictiondary, forKey: Key.UserWithIsCheckSpaceDisabledStatus)
+            userDefaults.synchronize()
             return
         }
         switchData[uid] = value
-        SharedCacheBase.getDefault()?.set(switchData, forKey: Key.UserWithIsCheckSpaceDisabledStatus)
-        SharedCacheBase.getDefault()?.synchronize()
+        userDefaults.set(switchData, forKey: Key.UserWithIsCheckSpaceDisabledStatus)
+        userDefaults.synchronize()
     }
 
     func removeIsCheckSpaceDisabledStatus(uid: String) {
-        guard var switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithIsCheckSpaceDisabledStatus) else {
+        guard var switchData = userDefaults.dictionary(forKey: Key.UserWithIsCheckSpaceDisabledStatus) else {
             return
         }
 
         switchData.removeValue(forKey: uid)
-        SharedCacheBase.getDefault()?.set(switchData, forKey: Key.UserWithIsCheckSpaceDisabledStatus)
-        SharedCacheBase.getDefault()?.synchronize()
+        userDefaults.set(switchData, forKey: Key.UserWithIsCheckSpaceDisabledStatus)
+        userDefaults.synchronize()
     }
 
     func cleanAllData() {
@@ -487,11 +487,11 @@ extension UserCachedStatus: WelcomeCarrouselCacheProtocol {
 extension UserCachedStatus {
     var initialUserLoggedInVersion: String? {
         get {
-            return SharedCacheBase.getDefault().string(forKey: Key.initialUserLoggedInVersion)
+            userDefaults.string(forKey: Key.initialUserLoggedInVersion)
         }
         set {
-            SharedCacheBase.getDefault().set(newValue, forKey: Key.initialUserLoggedInVersion)
-            SharedCacheBase.getDefault()?.synchronize()
+            userDefaults.set(newValue, forKey: Key.initialUserLoggedInVersion)
+            userDefaults.synchronize()
         }
     }
 }
@@ -499,11 +499,11 @@ extension UserCachedStatus {
 extension UserCachedStatus: ToolbarCustomizationInfoBubbleViewStatusProvider {
     var shouldHideToolbarCustomizeInfoBubbleView: Bool {
         get {
-            return SharedCacheBase.getDefault().bool(forKey: Key.toolbarCustomizationInfoBubbleViewIsShown)
+            userDefaults.bool(forKey: Key.toolbarCustomizationInfoBubbleViewIsShown)
         }
         set {
-            SharedCacheBase.getDefault().setValue(newValue, forKey: Key.toolbarCustomizationInfoBubbleViewIsShown)
-            SharedCacheBase.getDefault().synchronize()
+            userDefaults.setValue(newValue, forKey: Key.toolbarCustomizationInfoBubbleViewIsShown)
+            userDefaults.synchronize()
         }
     }
 }
@@ -511,11 +511,11 @@ extension UserCachedStatus: ToolbarCustomizationInfoBubbleViewStatusProvider {
 extension UserCachedStatus: ToolbarCustomizeSpotlightStatusProvider {
     var toolbarCustomizeSpotlightShownUserIds: [String] {
         get {
-            return (SharedCacheBase.getDefault().array(forKey: Key.toolbarCustomizeSpotlightShownUserIds) as? [String]) ?? []
+            (userDefaults.array(forKey: Key.toolbarCustomizeSpotlightShownUserIds) as? [String]) ?? []
         }
         set {
-            SharedCacheBase.getDefault().setValue(newValue, forKey: Key.toolbarCustomizeSpotlightShownUserIds)
-            SharedCacheBase.getDefault().synchronize()
+            userDefaults.setValue(newValue, forKey: Key.toolbarCustomizeSpotlightShownUserIds)
+            userDefaults.synchronize()
         }
     }
 }
@@ -554,7 +554,7 @@ extension UserCachedStatus: SystemUpTimeProtocol {
 
 extension UserCachedStatus: MobileSignatureCacheProtocol {
     func getMobileSignatureSwitchStatus(by uid: String) -> Bool? {
-        guard let switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignatureStatus),
+        guard let switchData = userDefaults.dictionary(forKey: Key.UserWithLocalMobileSignatureStatus),
               let switchStatus = switchData[uid] as? Bool else {
             return nil
         }
@@ -562,26 +562,26 @@ extension UserCachedStatus: MobileSignatureCacheProtocol {
     }
 
     func setMobileSignatureSwitchStatus(uid: String, value: Bool) {
-        guard var switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignatureStatus) else {
+        guard var switchData = userDefaults.dictionary(forKey: Key.UserWithLocalMobileSignatureStatus) else {
             var newDictiondary: [String: Bool] = [:]
             newDictiondary[uid] = value
-            SharedCacheBase.getDefault()?.set(newDictiondary, forKey: Key.UserWithLocalMobileSignatureStatus)
-            SharedCacheBase.getDefault()?.synchronize()
+            userDefaults.set(newDictiondary, forKey: Key.UserWithLocalMobileSignatureStatus)
+            userDefaults.synchronize()
             return
         }
         switchData[uid] = value
-        SharedCacheBase.getDefault()?.set(switchData, forKey: Key.UserWithLocalMobileSignatureStatus)
-        SharedCacheBase.getDefault()?.synchronize()
+        userDefaults.set(switchData, forKey: Key.UserWithLocalMobileSignatureStatus)
+        userDefaults.synchronize()
     }
 
     func removeMobileSignatureSwitchStatus(uid: String) {
-        guard var switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignatureStatus) else {
+        guard var switchData = userDefaults.dictionary(forKey: Key.UserWithLocalMobileSignatureStatus) else {
             return
         }
 
         switchData.removeValue(forKey: uid)
-        SharedCacheBase.getDefault()?.set(switchData, forKey: Key.UserWithLocalMobileSignatureStatus)
-        SharedCacheBase.getDefault()?.synchronize()
+        userDefaults.set(switchData, forKey: Key.UserWithLocalMobileSignatureStatus)
+        userDefaults.synchronize()
     }
 
     func getEncryptedMobileSignature(userID: String) -> Data? {
