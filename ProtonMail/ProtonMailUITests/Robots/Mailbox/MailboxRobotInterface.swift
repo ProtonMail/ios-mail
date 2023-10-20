@@ -40,6 +40,7 @@ class MailboxRobotInterface: CoreElements {
     required init() {
         super.init()
         if XCUIApplication().exists {
+            activityIndicator().waitUntilGone()
             table(id.mailboxTableViewIdentifier).firstMatch().waitUntilExists(time: 20)
         }
     }
