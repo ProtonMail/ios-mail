@@ -1289,6 +1289,22 @@ extension MailboxViewModel {
             }
         }
     }
+
+    func isPreviewable(for indexPath: IndexPath) -> Bool {
+        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID),
+              let mailboxItem = mailboxItem(at: indexPath) else {
+            return false
+        }
+        return mailboxItem.isPreviewable
+    }
+
+    func previewableAttachments(for indexPath: IndexPath) -> [AttachmentsMetadata] {
+        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID),
+              let mailboxItem = mailboxItem(at: indexPath) else {
+            return []
+        }
+        return mailboxItem.previewableAttachments
+    }
 }
 
 // MARK: - Misc

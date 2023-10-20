@@ -133,4 +133,77 @@ class MailboxItemTests: XCTestCase {
         let sut = MailboxItem.conversation(entity)
         XCTAssertEqual(sut.time(labelID: inboxLabel), date)
     }
+
+    func testInlineAttachmenstDontMakeEntityPreviewable() {
+        let attachmentMetadata = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                     name: String.randomString(Int.random(in: 0..<10)),
+                                                     size: Int.random(in: 0..<10),
+                                                     mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                     disposition: .inline)
+        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadata])
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertFalse(sut.isPreviewable)
+    }
+
+    func testNonInlineAttachmenstDoMakeEntityPreviewable() {
+        let attachmentMetadata = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                     name: String.randomString(Int.random(in: 0..<10)),
+                                                     size: Int.random(in: 0..<10),
+                                                     mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                     disposition: .attachment)
+        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadata])
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertTrue(sut.isPreviewable)
+    }
+
+    func testPreviewableAttachmenstDoNotContainInlineAttachments() {
+        let attachmentMetadataInline = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                           name: String.randomString(Int.random(in: 0..<10)),
+                                                           size: Int.random(in: 0..<10),
+                                                           mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                           disposition: .inline)
+        let attachmentMetadataAttachment = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                               name: String.randomString(Int.random(in: 0..<10)),
+                                                               size: Int.random(in: 0..<10),
+                                                               mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                               disposition: .attachment)
+        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadataAttachment, attachmentMetadataInline])
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertEqual(sut.previewableAttachments.count, 1)
+        XCTAssertEqual(sut.previewableAttachments[0], attachmentMetadataAttachment)
+    }
+
+    func testPreviewableAttachmenstDoNotContainICSAttachments() {
+        let attachmentMetadataICS = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                               name: String.randomString(Int.random(in: 0..<10)),
+                                                               size: Int.random(in: 0..<10),
+                                                               mimeType: "text/calendar",
+                                                               disposition: .attachment)
+        let attachmentMetadataRandom = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                           name: String.randomString(Int.random(in: 0..<10)),
+                                                           size: Int.random(in: 0..<10),
+                                                           mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                           disposition: .attachment)
+        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadataICS, attachmentMetadataRandom])
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertEqual(sut.previewableAttachments.count, 1)
+        XCTAssertEqual(sut.previewableAttachments[0], attachmentMetadataRandom)
+    }
+
+    func testPreviewableAttachmenstDoNotContainKeyAttachments() {
+        let attachmentMetadataKey = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                        name: String.randomString(Int.random(in: 0..<10)),
+                                                        size: Int.random(in: 0..<10),
+                                                        mimeType: "application/pgp-keys",
+                                                        disposition: .attachment)
+        let attachmentMetadataRandom = AttachmentsMetadata(id: String.randomString(Int.random(in: 0..<10)),
+                                                           name: String.randomString(Int.random(in: 0..<10)),
+                                                           size: Int.random(in: 0..<10),
+                                                           mimeType: String.randomString(Int.random(in: 0..<10)),
+                                                           disposition: .attachment)
+        let entity = ConversationEntity.make(attachmentsMetadata: [attachmentMetadataKey, attachmentMetadataRandom])
+        let sut = MailboxItem.conversation(entity)
+        XCTAssertEqual(sut.previewableAttachments.count, 1)
+        XCTAssertEqual(sut.previewableAttachments[0], attachmentMetadataRandom)
+    }
 }
