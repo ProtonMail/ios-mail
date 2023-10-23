@@ -46,9 +46,10 @@ class ConversationStoredSizeHelper {
             isStoredHeightInfoEmpty ||
             headerStateHasChanged {
             storedSize[messageID] = newHeightInfo
+            return true
         }
 
-        return true
+        return false
     }
 }
 
