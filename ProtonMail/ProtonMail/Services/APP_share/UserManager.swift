@@ -77,10 +77,10 @@ class UserManager: Service, ObservableObject {
                 break
             }
             #endif
-                userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
-                userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
-                userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
-                userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
+                container.userCachedStatus.removeEncryptedMobileSignature(userID: self.userID.rawValue)
+                container.userCachedStatus.removeMobileSignatureSwitchStatus(uid: self.userID.rawValue)
+                container.userCachedStatus.removeDefaultSignatureSwitchStatus(uid: self.userID.rawValue)
+                container.userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: self.userID.rawValue)
                 self.authCredentialAccessQueue.async {
                     seal.fulfill_()
                 }
@@ -259,7 +259,7 @@ class UserManager: Service, ObservableObject {
         guard let firstUser = self.parentManager?.firstUser,
               firstUser.userID == self.userID else { return }
         self.activatePayments()
-        userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
+        container.userCachedStatus.initialSwipeActionIfNeeded(leftToRight: info.swipeRight, rightToLeft: info.swipeLeft)
         // When app launch, the app will show a skeleton view
         // After getting setting data, show inbox
         NotificationCenter.default.post(name: .didFetchSettingsForPrimaryUser, object: nil)
@@ -436,16 +436,16 @@ extension UserManager {
 
     var defaultSignatureStatus: Bool {
         get {
-            if let status = userCachedStatus.getDefaultSignaureSwitchStatus(uid: userID.rawValue) {
+            if let status = container.userCachedStatus.getDefaultSignaureSwitchStatus(uid: userID.rawValue) {
                 return status
             } else {
                 let oldStatus = userService.defaultSignatureStauts
-                userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: oldStatus)
+                container.userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: oldStatus)
                 return oldStatus
             }
         }
         set {
-            userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
+            container.userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
         }
     }
 
@@ -453,18 +453,18 @@ extension UserManager {
         get {
             let role = userInfo.role
             if role > 0 {
-                if let status = userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) {
+                if let status = container.userCachedStatus.getMobileSignatureSwitchStatus(by: userID.rawValue) {
                     return status
                 } else {
                     return false
                 }
             } else {
-                userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: true)
+                container.userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: true)
                 return true
             }
         }
         set {
-            userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
+            container.userCachedStatus.setMobileSignatureSwitchStatus(uid: userID.rawValue, value: newValue)
         }
     }
 
