@@ -20,16 +20,10 @@ import CoreData
 import LifetimeTracker
 
 final class ContactPublisher: DataPublisher<Contact> {
-    private let contextProvider: CoreDataContextProviderProtocol
-    private let contactID: ContactID
-
     init(
         contextProvider: CoreDataContextProviderProtocol,
         contactID: ContactID
     ) {
-        self.contextProvider = contextProvider
-        self.contactID = contactID
-
         let predicate = NSPredicate(
             format: "%K == %@",
             Contact.Attributes.contactID,

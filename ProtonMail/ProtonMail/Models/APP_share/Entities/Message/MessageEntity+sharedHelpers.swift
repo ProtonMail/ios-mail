@@ -21,22 +21,6 @@ import UIKit
 // MARK: Encrypted related variables
 
 extension MessageEntity {
-    var isInternal: Bool {
-        self.flag.contains(.internal) && self.flag.contains(.received)
-    }
-
-    var isExternal: Bool {
-        !self.flag.contains(.internal) && self.flag.contains(.received)
-    }
-
-    var isE2E: Bool {
-        self.flag.contains(.e2e)
-    }
-
-    var isSignedMime: Bool {
-        isMultipartMixed && isExternal && !isE2E
-    }
-
     var isPlainText: Bool {
         mimeType?.lowercased() == Message.MimeType.textPlain.rawValue
     }

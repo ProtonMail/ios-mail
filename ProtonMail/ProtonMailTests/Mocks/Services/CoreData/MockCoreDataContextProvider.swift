@@ -126,8 +126,7 @@ class MockCoreDataContextProvider: CoreDataContextProviderProtocol {
         predicate: NSPredicate,
         sortDescriptors: [NSSortDescriptor],
         fetchBatchSize: Int,
-        sectionNameKeyPath: String?,
-        onMainContext: Bool
+        sectionNameKeyPath: String?
     ) -> NSFetchedResultsController<T> {
         let fetchRequest: NSFetchRequest<T> = NSFetchRequest(entityName: entityName)
         fetchRequest.predicate = predicate

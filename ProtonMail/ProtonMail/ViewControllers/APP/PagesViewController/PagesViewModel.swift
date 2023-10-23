@@ -83,7 +83,6 @@ class PagesViewModel<IDType, EntityType, FetchResultType: NSFetchRequestResult>:
         let fetchedResultsController = messageService.fetchedResults(
             by: labelID,
             viewMode: viewMode,
-            onMainContext: true,
             isUnread: false,
             isAscending: isAscending
         ) as? NSFetchedResultsController<FetchResultType>
