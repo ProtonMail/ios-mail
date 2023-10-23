@@ -2046,8 +2046,11 @@
 /* The button text for edit profile picture */
 "Edit photo" = "編輯相片";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "全選";
+
 /* The title of PIN code disable view  */
-"Disable PIN code" = "Disable PIN code";
+"Disable PIN code" = "停用 PIN 碼";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "設定 PIN 碼";

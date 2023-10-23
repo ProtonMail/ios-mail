@@ -2044,6 +2044,9 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Fénykép szerkesztése";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Select all";
+
 /* The title of PIN code disable view  */
 "Disable PIN code" = "Disable PIN code";
 

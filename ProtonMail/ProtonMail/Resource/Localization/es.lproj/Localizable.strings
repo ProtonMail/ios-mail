@@ -1856,10 +1856,10 @@
 "Terms & conditions" = "Términos y condiciones";
 
 /* The content that is shared through the action: `Share the link` */
-"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "He estado utilizando Proton Mail y creo que puede gustarte. Es un servicio de correo electrónico seguro que protege tu privacidad. Regístrate a través de este enlace para obtener 1 mes de funciones prémium gratis:";
+"I’ve been using Proton Mail and thought you might like it. It’s a secure email service that protects your privacy. Sign up with this link to get 1 month of premium features for free:" = "He estado utilizando Proton Mail y creo que puede gustarte. Es un servicio de correo electrónico seguro que protege tu privacidad. Regístrate a través de este enlace para obtener 1 mes de funciones premium gratis:";
 
 /* The content of the referral prompt view. */
-"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Su privacidad estará mejor protegida si sus contactos también utilizan Proton Mail. Invite a sus amigos a Proton y ambos obtendrán beneficios prémium gratis.";
+"Your privacy is better protected if your contacts also use Proton Mail. Invite your friends to Proton, and you will each get premium benefits for free." = "Su privacidad estará mejor protegida si sus contactos también utilizan Proton Mail. Invite a sus amigos a Proton y ambos obtendrán beneficios premium gratis.";
 
 /* The title of the maybe later button in referral prompt view. */
 "Maybe later" = "Quizás más tarde";
@@ -2043,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Editar foto";
+
+/* The title of select all button for select all messages feature */
+"Select all" = "Seleccionar todo";
 
 /* The title of PIN code disable view  */
 "Disable PIN code" = "Deshabilitar el código PIN";

@@ -1170,7 +1170,7 @@
 "Addresses" = "Adresser";
 
 /* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "Skjut upp";
+"Snooze" = "Snooza";
 
 /* cell title in device settings */
 "Mailbox" = "Brevlåda";
@@ -1689,7 +1689,7 @@
 "End-to-end encrypted message from verified sender" = "End-to-end-krypterat meddelande från verifierad avsändare";
 
 /* The message after tapping the encryption icon of message received. */
-"End-to-end encrypted and signed message" = "End-to-end krypterat och signerat meddelande";
+"End-to-end encrypted and signed message" = "End-to-end-krypterat och signerat meddelande";
 
 /* The message after tapping the encryption icon of message received. */
 "PGP-encrypted message from verified sender" = "PGP-krypterat meddelande från verifierad avsändare";
@@ -1707,10 +1707,10 @@
 "PGP-signed message. Sender verification failed" = "PGP-signerat meddelande. Avsändarverifieringen misslyckades";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted to verified recipient" = "End-to-end krypterad till verifierad mottagare";
+"End-to-end encrypted to verified recipient" = "End-to-end-krypterat till verifierad mottagare";
 
 /* The message after tapping the encryption icon of recipient in composer. */
-"End-to-end encrypted" = "End-to-end krypterad";
+"End-to-end encrypted" = "End-to-end-krypterat";
 
 /* The message after tapping the encryption icon of recipient in composer. */
 "PGP-encrypted to verified recipient" = "PGP-krypterad till verifierad mottagare";
@@ -2043,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Redigera foto";
+
+/* The title of select all button for select all messages feature */
+"Select all" = "Välj alla";
 
 /* The title of PIN code disable view  */
 "Disable PIN code" = "Inaktivera PIN-kod";

@@ -3,7 +3,7 @@
 "You are about to launch the web browser and navigate to" = "Stai per avviare il browser web e navigare in";
 
 /* link opeining confirmation */
-"Request link confirmation" = "Richiedi link di conferma";
+"Request link confirmation" = "Richiedi conferma dei link";
 
 /* Title in settings */
 "Display Name" = "Nome visualizzato";
@@ -108,7 +108,7 @@
 "Refer a friend" = "Invita un amico";
 
 /* mail location title */
-"Scheduled" = "Programmato";
+"Scheduled" = "Programmata";
 
 /* Description after message have been sent */
 "Message sent" = "Messaggio inviato";
@@ -396,7 +396,7 @@
 "Cancel" = "Annulla";
 
 /* Got it action */
-"Got it" = "Capito";
+"Got it" = "Ho capito";
 
 /* Open action */
 "Open" = "Apri";
@@ -450,13 +450,13 @@
 "Send" = "Invia";
 
 /* Action */
-"Schedule send" = "Pianifica invio";
+"Schedule send" = "Programma l'invio";
 
 /* Alert title */
 "Message saved to Drafts" = "Messaggio salvato nelle Bozze";
 
 /* Alert message */
-"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Troppi messaggi sono in attesa di essere inviati.\nPer pianificare questo messaggio, attendi finché un altro non verrà inviato.";
+"Too many messages waiting to be sent.\nPlease wait until another message has been sent to schedule this one." = "Troppi messaggi sono in attesa di essere inviati.\nPer programmare questo messaggio, attendi finché un altro non verrà inviato.";
 
 /* Warning message */
 "The sending time needs to be at least 5 minutes in the future." = "Il tempo di invio deve essere di almeno 5 minuti nel futuro.";
@@ -609,7 +609,7 @@
 "Please input a valid email address." = "Per favore, inserisca un indirizzo email valido.";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Immetti il PIN per sbloccare la casella di posta.";
+"Enter your PIN to unlock your inbox." = "Inserisci il PIN per sbloccare la tua casella di posta.";
 
 /* Error */
 "Incorrect PIN." = "PIN errato.";
@@ -687,13 +687,13 @@
 "Skip" = "Salta";
 
 /* title of the next button */
-"Next" = "Successiva";
+"Next" = "Avanti";
 
 /* title of the next button */
-"Get Started" = "Inizia";
+"Get Started" = "Inizia ora";
 
 /* Description */
-"Unable to edit this message offline" = "Non è possibile modificare questo messaggio senza connessione";
+"Unable to edit this message offline" = "Impossibile modificare questo messaggio offline";
 
 /* like Date: 2017-10-10 */
 "Date: %@" = "Data: %@";
@@ -858,7 +858,7 @@
 "Message body" = "Corpo del messaggio";
 
 /* alert title */
-"Confirm phishing report" = "Conferma segnalazione di phishing";
+"Confirm phishing report" = "Conferma la segnalazione di phishing";
 
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Segnalare un messaggio come tentativo di phishing ci invierà il messaggio, così che potremo analizzarlo e migliorare i nostri filtri. Questo significa che potremo vedere i contenuti del messaggio per intero.";
@@ -1020,7 +1020,7 @@
 "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that App Store provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked payment cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the App Store's servers." = "Il nostro team di assistenza clienti proverà ad attivare manualmente il tuo piano di servizio se accetti di allegare i dati tecnici che App Store ha fornito all'app al momento dell'acquisto. Questi dati non includono alcun dettaglio sul tuo account iTunes, ID Apple, carte di credito collegate o qualsiasi altra informazione sull'utente. I dati tecnici ci aiutano solo a controllare e verificare che la transazione sia stata eseguita sui server dell'App Store.";
 
 /* Error message */
-"Yes, attach details of payment" = "Sì, allegare i dettagli del pagamento";
+"Yes, attach details of payment" = "Sì, allega i dettagli del pagamento";
 
 /* Error message */
 "No, not related to in-app purchase" = "No, non correlato all'acquisto in-app";
@@ -1053,10 +1053,10 @@
 "Please provide a group name" = "Fornisci un nome per il gruppo";
 
 /* The error message will be shown when the update of the contact group through API failed */
-"Can't update contact group through the API" = "Non è possibile aggiornare il gruppo di contatti tramite l'API";
+"Can't update contact group through the API" = "Impossibile aggiornare il gruppo di contatti tramite API";
 
 /* The error message will be shown when the deletionn of the contact group through API failed */
-"Can't delete contact group through API" = "Non è possibile eliminare il gruppo di contatto tramite API";
+"Can't delete contact group through API" = "Impossibile eliminare il gruppo di contatti tramite API";
 
 /* Internal type casting error */
 "Type casting error" = "Errore del tipo di trasmissione";
@@ -1179,7 +1179,7 @@
 "Privacy" = "Privacy";
 
 /* cell title in device settings */
-"Local storage limit" = "Limite di spazio locale";
+"Local storage limit" = "Limite di spazio di archiviazione locale";
 
 /* cell title in device setting */
 "Clear local cache" = "Cancella la cache locale";
@@ -1290,7 +1290,7 @@
 "On" = "Attivo";
 
 /* The title of Off setting options */
-"Off" = "Disattivo";
+"Off" = "Inattivo";
 
 /* The title of re auth alert */
 "Re-authenticate" = "Ri-autentica";
@@ -1431,7 +1431,7 @@
 "Print" = "Stampa";
 
 /* No comment provided by engineer. */
-"Save as PDF" = "Salva come formato PDF";
+"Save as PDF" = "Salva come PDF";
 
 /* No comment provided by engineer. */
 "View headers" = "Visualizza intestazioni";
@@ -1653,13 +1653,13 @@
 "Tomorrow, %@" = "Domani, %@";
 
 /* The title of the alert that will be shown when user tries to delete a scheduled message. */
-"Schedule will be removed" = "La pianificazione sarà rimossa";
+"Schedule will be removed" = "La programmazione verrà rimossa";
 
 /* The alert title of the user trying to send a message that was schedule-send. */
 "Send immediately?" = "Inviare immediatamente?";
 
 /* The message of the alert of the user trying to send a message that was schedule-send. */
-"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Questo messaggio non è più programmato per essere inviato in seguito. Se desideri comunque inviarlo in un secondo momento, puoi cliccare \"Programma invio\"";
+"This message is no longer scheduled to be sent later. If you still want to send it later, you can tap on \"Schedule send\"" = "Questo messaggio non è più programmato per essere inviato più tardi. Se vuoi inviarlo più tardi, puoi toccare \"Programma l'invio\"";
 
 /* The action title of the alert of the user trying to send a message that was schedule-send. */
 "Send immediately" = "Invia immediatamente";
@@ -1668,7 +1668,7 @@
 "You can now schedule your messages to be sent later" = "Ora puoi programmare i tuoi messaggi da inviare più tardi";
 
 /* The title of the banner that will be shown when you schedule a message. */
-"Scheduling message..." = "Pianificazione messaggio...";
+"Scheduling message..." = "Programmazione del messaggio...";
 
 /* The message after tapping the encryption icon. */
 "Sent by you with end-to-end encryption to verified recipient" = "Inviato da te con la crittografia end-to-end al destinatario verificato";
@@ -1826,7 +1826,7 @@
 "Email trackers can violate your privacy." = "I tracker nelle email possono violare la tua privacy.";
 
 /* The banner shown in case of proxy failure */
-"Some images could not be loaded with tracking protection." = "Non è possibile caricare alcune immagini con la protezione da tracciamento.";
+"Some images could not be loaded with tracking protection." = "Impossibile caricare alcune immagini con la protezione da tracciamento attiva.";
 
 /* Button inside the banner */
 "Load" = "Carica";
@@ -1892,10 +1892,10 @@
 "Set your own schedule" = "Imposta la tua programmazione";
 
 /* The content of the up sell content of the scheduled send. */
-"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Sblocca la pianificazione dei messaggi personalizzata e altri vantaggi quando effettui l'upgrade del tuo piano.";
+"Unlock custom message scheduling and other benefits when you upgrade your plan." = "Sblocca la programmazione dei messaggi personalizzata e altri vantaggi quando effettui l'upgrade del tuo piano.";
 
 /* The title of the upgrade button in the schedule send promotion view. */
-"Upgrade now" = "Effettua l'upgrade adesso";
+"Upgrade now" = "Effettua l'upgrade ora";
 
 /* The up sell bullet point in the schedule send promotion view. */
 "Schedule messages at any time" = "Programma l'invio dei messaggi in qualunque momento";
@@ -2043,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Modifica foto";
+
+/* The title of select all button for select all messages feature */
+"Select all" = "Seleziona tutti";
 
 /* The title of PIN code disable view  */
 "Disable PIN code" = "Disabilita codice PIN";

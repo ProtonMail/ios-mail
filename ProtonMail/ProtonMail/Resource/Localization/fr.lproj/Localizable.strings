@@ -207,7 +207,7 @@
 "Apply Password" = "Appliquer le mot de passe";
 
 /* Action */
-"Compose" = "Rédiger";
+"Compose" = "Objet du message";
 
 /* Composer expiration page title */
 "Message expiration" = "Délai d'expiration du message";
@@ -1632,7 +1632,7 @@
 "Warning: suspected fake website" = "Attention : site internet suspect/frauduleux";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Ce lien mène à un site web qui pourrait essayer de voler vos informations, comme des mots de passe et des informations de cartes bancaires.\n%@\n\nPour votre sécurité, ne continuez pas.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Ce lien mène à un site web qui pourrait essayer de voler vos informations, comme des mots de passe et des informations de cartes de paiement.\n%@\n\nPour votre sécurité, ne continuez pas.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorer l'avertissement et continuer";
@@ -1913,7 +1913,7 @@
 "Up to 3 custom email domains" = "Jusqu'à 3 domaines de messagerie personnalisés";
 
 /* The up sell bullet point in the schedule send promotion view. */
-"Hide My Email aliases" = "Alias « Hide My Email »";
+"Hide My Email aliases" = "Alias « hide-my-email »";
 
 /* One of schedule time options */
 "In the morning" = "Le matin";
@@ -2043,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Modifier la photo";
+
+/* The title of select all button for select all messages feature */
+"Select all" = "Tout sélectionner";
 
 /* The title of PIN code disable view  */
 "Disable PIN code" = "Désactiver le code PIN";

@@ -2044,8 +2044,11 @@
 /* The button text for edit profile picture */
 "Edit photo" = "写真を編集";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Select all";
+
 /* The title of PIN code disable view  */
-"Disable PIN code" = "Disable PIN code";
+"Disable PIN code" = "PINコードを無効にする";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "PIN コードの設定";
