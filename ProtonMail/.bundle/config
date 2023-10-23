@@ -1,2 +1,3 @@
 ---
+BUNDLE_BUILD__FFI: "--enable-libffi-alloc"
 BUNDLE_PATH: "../bundler-cache"
