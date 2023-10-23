@@ -187,12 +187,6 @@ class ComposeViewModel: NSObject {
         observeAddressStatusChangedEvent()
     }
 
-    func getAttachments() -> [AttachmentEntity] {
-        return composerMessageHelper.attachments
-            .filter { !$0.isSoftDeleted }
-            .sorted(by: { $0.order < $1.order })
-    }
-
     private func showToastIfNeeded(errorCode: Int) {
         if errorCode == PGPTypeErrorCode.recipientNotFound.rawValue {
             LocalString._address_in_group_not_found_error.alertToast()
@@ -358,24 +352,6 @@ class ComposeViewModel: NSObject {
         return supplementCSS
     }
 
-    func getNormalAttachmentNum() -> Int {
-        guard let draft = self.composerMessageHelper.draft else { return 0 }
-        let attachments = draft.attachments
-            .filter { !$0.isInline && !$0.isSoftDeleted }
-        return attachments.count
-    }
-
-    func needAttachRemindAlert(subject: String,
-                               body: String) -> Bool {
-        // If the message contains attachments
-        // It contains keywords or not doesn't important
-        if getNormalAttachmentNum() > 0 { return false }
-
-        let content = "\(subject) \(body.body(strippedFromQuotes: true))"
-        let language = LanguageManager().currentLanguageCode()
-        return AttachReminderHelper.hasAttachKeyword(content: content, language: language)
-    }
-
     func isEmptyDraft() -> Bool {
         if let draft = self.composerMessageHelper.draft,
            draft.title.isEmpty,
@@ -511,6 +487,66 @@ extension ComposeViewModel {
                                            expiration: expir,
                                            password: pwd,
                                            passwordHint: pwdHit)
+    }
+}
+
+// MARK: - Attachments
+extension ComposeViewModel {
+    func getAttachments() -> [AttachmentEntity] {
+        return composerMessageHelper.attachments
+            .filter { !$0.isSoftDeleted }
+            .sorted(by: { $0.order < $1.order })
+    }
+
+    func getNormalAttachmentNum() -> Int {
+        guard let draft = self.composerMessageHelper.draft else { return 0 }
+        let attachments = draft.attachments
+            .filter { !$0.isInline && !$0.isSoftDeleted }
+        return attachments.count
+    }
+
+    func needAttachRemindAlert(
+        subject: String,
+        body: String
+    ) -> Bool {
+        // If the message contains attachments
+        // It contains keywords or not doesn't important
+        if getNormalAttachmentNum() > 0 { return false }
+
+        let content = "\(subject) \(body.body(strippedFromQuotes: true))"
+        let language = LanguageManager().currentLanguageCode()
+        return AttachReminderHelper.hasAttachKeyword(content: content, language: language)
+    }
+
+    func validateAttachmentsSize(withNew data: Data) -> Bool {
+        return self.currentAttachmentsSize + data.dataSize < Constants.kDefaultAttachmentFileSize
+    }
+
+    func embedInlineAttachments(in htmlEditor: HtmlEditorBehaviour) {
+        let attachments = getAttachments()
+        let inlineAttachments = attachments
+            .filter({ attachment in
+                guard let contentId = attachment.contentId else { return false }
+                return !contentId.isEmpty && attachment.isInline
+            })
+        let userKeys = user.toUserKeys()
+
+        for att in inlineAttachments {
+            guard let contentId = att.contentId else { continue }
+            dependencies.fetchAttachment.callbackOn(.main).execute(
+                params: .init(
+                    attachmentID: att.id,
+                    attachmentKeyPacket: att.keyPacket,
+                    purpose: .decryptAndEncodeAttachment,
+                    userKeys: userKeys
+                )
+            ) { result in
+                guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else {
+                    return
+                }
+                htmlEditor.update(embedImage: "cid:\(contentId)", encoded:"data:\(att.rawMimeType);base64,\(base64Att)")
+            }
+        }
     }
 }
 
@@ -750,10 +786,6 @@ extension ComposeViewModel {
         if let body = mailToData.body {
             self.setBody(body)
         }
-    }
-
-    func validateAttachmentsSize(withNew data: Data) -> Bool {
-        return self.currentAttachmentsSize + data.dataSize < Constants.kDefaultAttachmentFileSize
     }
 
     private func using12hClockFormat() -> Bool {
@@ -1061,33 +1093,6 @@ extension ComposeViewModel {
                 } else {
                     complete?(nil, 0)
                 }
-            }
-        }
-    }
-
-    func embedInlineAttachments(in htmlEditor: HtmlEditorBehaviour) {
-        let attachments = getAttachments()
-        let inlineAttachments = attachments
-            .filter({ attachment in
-                guard let contentId = attachment.contentId else { return false }
-                return !contentId.isEmpty && attachment.isInline
-            })
-        let userKeys = user.toUserKeys()
-
-        for att in inlineAttachments {
-            guard let contentId = att.contentId else { continue }
-            dependencies.fetchAttachment.callbackOn(.main).execute(
-                params: .init(
-                    attachmentID: att.id,
-                    attachmentKeyPacket: att.keyPacket,
-                    purpose: .decryptAndEncodeAttachment,
-                    userKeys: userKeys
-                )
-            ) { result in
-                guard let base64Att = try? result.get().encoded, !base64Att.isEmpty else {
-                    return
-                }
-                htmlEditor.update(embedImage: "cid:\(contentId)", encoded:"data:\(att.rawMimeType);base64,\(base64Att)")
             }
         }
     }
