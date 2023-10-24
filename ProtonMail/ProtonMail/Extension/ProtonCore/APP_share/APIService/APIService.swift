@@ -34,13 +34,16 @@ extension PMAPIService {
     private static var _unauthorized: PMAPIService?
     private static var _authManagerForUnauthorizedAPIService: AuthManagerForUnauthorizedAPIService?
 
-    static func unauthorized(keyMaker: KeyMakerProtocol) -> PMAPIService {
+    static func unauthorized(keyMaker: KeyMakerProtocol, userDefaults: UserDefaults) -> PMAPIService {
         dispatchQueue.sync {
             if let _unauthorized {
                 return _unauthorized
             }
-            let authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService(coreKeyMaker: keyMaker)
-            
+            let authManagerForUnauthorizedAPIService = AuthManagerForUnauthorizedAPIService(
+                coreKeyMaker: keyMaker,
+                userDefaults: userDefaults
+            )
+
             let unauthorized: PMAPIService
             if let initialSessionUID = authManagerForUnauthorizedAPIService.initialSessionUID {
                 unauthorized = PMAPIService.createAPIService(
@@ -93,16 +96,18 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
 
     let authDelegateForUnauthorized: AuthHelper
     let coreKeyMaker: KeyMakerProtocol
+    private let userDefaults: UserDefaults
 
-    init(coreKeyMaker: KeyMakerProtocol) {
+    init(coreKeyMaker: KeyMakerProtocol, userDefaults: UserDefaults) {
         self.coreKeyMaker = coreKeyMaker
+        self.userDefaults = userDefaults
         defer {
             let dispatchQueue = DispatchQueue(label: "me.proton.mail.queue.unauth-session-auth-helper-delegate")
             authDelegateForUnauthorized.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: dispatchQueue))
         }
 
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
-              let data = SharedCacheBase.getDefault()?.data(forKey: key) else {
+              let data = userDefaults.data(forKey: key) else {
             self.authDelegateForUnauthorized = AuthHelper()
             self.initialSessionUID = nil
             return
@@ -112,7 +117,7 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
         let authUnlockedNSCoding = try? Locked<[AuthCredential]>(encryptedValue: data).unlock(with: mainKey).first
 
         guard let authCredential = authCredentialsCodable ?? authUnlockedNSCoding else {
-            SharedCacheBase.getDefault().remove(forKey: key)
+            userDefaults.remove(forKey: key)
             self.authDelegateForUnauthorized = AuthHelper()
             self.initialSessionUID = nil
             return
@@ -126,11 +131,11 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let lockedAuth = try? Locked<[AuthCredential]>(clearValue: [authCredential], with: mainKey) else { return }
         try? UserObjectsPersistence.shared.write(authCredential, key: mainKey)
-        SharedCacheBase.getDefault()?.setValue(lockedAuth.encryptedValue, forKey: key)
+        userDefaults.setValue(lockedAuth.encryptedValue, forKey: key)
     }
 
     func sessionWasInvalidated(for _: String, isAuthenticatedSession: Bool) {
-        SharedCacheBase.getDefault()?.remove(forKey: key)
+        userDefaults.remove(forKey: key)
     }
 }
 
