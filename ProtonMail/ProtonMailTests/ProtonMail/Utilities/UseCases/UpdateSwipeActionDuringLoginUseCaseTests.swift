@@ -15,41 +15,59 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCoreDataModel
 import ProtonCoreTestingToolkit
-@testable import ProtonMail
 import XCTest
+
+@testable import ProtonMail
 
 class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
     var sut: UpdateSwipeActionDuringLoginUseCase!
     var stubSwipeActionCache: SwipeActionCacheStub!
+
+    private var globalContainer: GlobalContainer!
+    private var mockApi: APIServiceMock!
+    private var activeUserInfo, newUserInfo: UserInfo!
+
     override func setUp() {
         super.setUp()
         stubSwipeActionCache = SwipeActionCacheStub()
-        let globalContainer = GlobalContainer()
+        globalContainer = .init()
         globalContainer.swipeActionCacheFactory.register { self.stubSwipeActionCache }
         sut = UpdateSwipeActionDuringLogin(dependencies: globalContainer)
+
+        mockApi = APIServiceMock()
+
+        activeUserInfo = .getDefault()
+        activeUserInfo.userId = "test"
+        activeUserInfo.swipeRight = 0
+        activeUserInfo.swipeLeft = 1
+
+        newUserInfo = .getDefault()
+        newUserInfo.userId = "test1"
+        newUserInfo.swipeRight = 0
+        newUserInfo.swipeLeft = 1
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
+        globalContainer = nil
         stubSwipeActionCache = nil
+        activeUserInfo = nil
+        newUserInfo = nil
+        mockApi = nil
     }
 
     func testUpdateSwipeAction_activeUserIsTheSameAsNewUser_saveSwipeActionToCache() throws {
-        let mockApi = APIServiceMock()
-        let user = UserManager(api: mockApi)
-        user.userInfo.userId = "test"
-        user.userInfo.swipeRight = 0
-        user.userInfo.swipeLeft = 1
         stubSwipeActionCache.leftToRightSwipeActionType = nil
         stubSwipeActionCache.rightToLeftSwipeActionType = nil
         let expectation1 = expectation(description: "Closure is called")
 
         sut.execute(
             params: .init(
-                activeUserInfo: user.userInfo,
-                newUserInfo: user.userInfo,
+                activeUserInfo: activeUserInfo,
+                newUserInfo: activeUserInfo,
                 newUserApiService: mockApi
             )) { _ in
                 expectation1.fulfill()
@@ -59,33 +77,23 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         XCTAssertTrue(mockApi.requestJSONStub.wasNotCalled)
         let leftToRight = try XCTUnwrap(stubSwipeActionCache.leftToRightSwipeActionType)
         XCTAssertEqual(leftToRight,
-                       SwipeActionSettingType.convertFromServer(rawValue: user.userInfo.swipeRight))
+                       SwipeActionSettingType.convertFromServer(rawValue: activeUserInfo.swipeRight))
 
         let rightToLeft = try XCTUnwrap(stubSwipeActionCache.rightToLeftSwipeActionType)
         XCTAssertEqual(rightToLeft,
-                       SwipeActionSettingType.convertFromServer(rawValue: user.userInfo.swipeLeft))
+                       SwipeActionSettingType.convertFromServer(rawValue: activeUserInfo.swipeLeft))
     }
 
     func testUpdateSwipeAction_activeUserHasSameActionAsNewUser_noAPIIsCalled() throws {
-        let activeUser = UserManager(api: APIServiceMock())
-        activeUser.userInfo.userId = "test"
-        activeUser.userInfo.swipeRight = 0
-        activeUser.userInfo.swipeLeft = 1
         stubSwipeActionCache.leftToRightSwipeActionType = .convertFromServer(rawValue: 0)
         stubSwipeActionCache.rightToLeftSwipeActionType = .convertFromServer(rawValue: 1)
-
-        let mockApi = APIServiceMock()
-        let newUser = UserManager(api: mockApi)
-        newUser.userInfo.userId = "test1"
-        newUser.userInfo.swipeRight = 0
-        newUser.userInfo.swipeLeft = 1
 
         let expectation1 = expectation(description: "Closure is called")
 
         sut.execute(
             params: .init(
-                activeUserInfo: activeUser.userInfo,
-                newUserInfo: newUser.userInfo,
+                activeUserInfo: activeUserInfo,
+                newUserInfo: newUserInfo,
                 newUserApiService: mockApi
             )
         ) { _ in
@@ -96,33 +104,26 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         XCTAssertTrue(mockApi.requestJSONStub.wasNotCalled)
         let leftToRight = try XCTUnwrap(stubSwipeActionCache.leftToRightSwipeActionType)
         XCTAssertEqual(leftToRight,
-                       SwipeActionSettingType.convertFromServer(rawValue: activeUser.userInfo.swipeRight))
+                       SwipeActionSettingType.convertFromServer(rawValue: activeUserInfo.swipeRight))
 
         let rightToLeft = try XCTUnwrap(stubSwipeActionCache.rightToLeftSwipeActionType)
         XCTAssertEqual(rightToLeft,
-                       SwipeActionSettingType.convertFromServer(rawValue: activeUser.userInfo.swipeLeft))
+                       SwipeActionSettingType.convertFromServer(rawValue: activeUserInfo.swipeLeft))
     }
 
     func testUpdateSwipeAction_activeUserHasNotSyncableAction_notAPIIsCalled() throws {
-        let activeUser = UserManager(api: APIServiceMock())
-        activeUser.userInfo.userId = "test"
-        activeUser.userInfo.swipeRight = 0
-        activeUser.userInfo.swipeLeft = 1
         stubSwipeActionCache.leftToRightSwipeActionType = .labelAs
         stubSwipeActionCache.rightToLeftSwipeActionType = .moveTo
 
-        let mockApi = APIServiceMock()
-        let newUser = UserManager(api: mockApi)
-        newUser.userInfo.userId = "test1"
-        newUser.userInfo.swipeRight = 2
-        newUser.userInfo.swipeLeft = 3
+        newUserInfo.swipeRight = 2
+        newUserInfo.swipeLeft = 3
 
         let expectation1 = expectation(description: "Closure is called")
 
         sut.execute(
             params: .init(
-                activeUserInfo: activeUser.userInfo,
-                newUserInfo: newUser.userInfo,
+                activeUserInfo: activeUserInfo,
+                newUserInfo: newUserInfo,
                 newUserApiService: mockApi
             )
         ) { _ in
@@ -137,10 +138,4 @@ class UpdateSwipeActionDuringLoginUseCaseTests: XCTestCase {
         let rightToLeft = try XCTUnwrap(stubSwipeActionCache.rightToLeftSwipeActionType)
         XCTAssertEqual(rightToLeft, .moveTo)
     }
-}
-
-class FakeQueueHandlerRegister: QueueHandlerRegister {
-    func registerHandler(_ handler: QueueHandler) {}
-
-    func unregisterHandler(for userID: ProtonMail.UserID, completion: (() -> Void)?) {}
 }

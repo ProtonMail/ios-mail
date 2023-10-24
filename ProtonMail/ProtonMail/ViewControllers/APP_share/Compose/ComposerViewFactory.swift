@@ -18,7 +18,8 @@
 import UIKit
 
 final class ComposerViewFactory {
-    typealias Dependencies = ComposeContainerViewModel.Dependencies
+    typealias Dependencies = AnyObject
+    & ComposeContainerViewModel.Dependencies
     & ComposeContainerViewController.Dependencies
     & HasUserManager
     & HasInternetConnectionStatusProviderProtocol
@@ -26,7 +27,7 @@ final class ComposerViewFactory {
     & HasUserCachedStatus
     & HasFetchAttachment
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies

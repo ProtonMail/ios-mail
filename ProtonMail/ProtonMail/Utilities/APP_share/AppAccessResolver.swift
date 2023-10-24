@@ -31,9 +31,13 @@ enum DeniedAccessReason {
 }
 
 final class AppAccessResolver {
-    typealias Dependencies = HasNotificationCenter & HasUsersManager & HasKeyMakerProtocol & HasLockPreventor
+    typealias Dependencies = AnyObject
+    & HasKeyMakerProtocol
+    & HasLockPreventor
+    & HasNotificationCenter
+    & HasUsersManager
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     /// Subscribe to this publisher to receive events when the user access to the app should be denied.
     var deniedAccessPublisher: AnyPublisher<DeniedAccessReason, Never> {

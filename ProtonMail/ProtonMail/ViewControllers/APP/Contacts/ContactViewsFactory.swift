@@ -18,13 +18,14 @@
 import ProtonCoreUtilities
 
 final class ContactViewsFactory {
-    typealias Dependencies = ContactEditViewController.Dependencies
+    typealias Dependencies = AnyObject
+    & ContactEditViewController.Dependencies
     & ContactGroupDetailViewController.Dependencies
     & HasInternetConnectionStatusProviderProtocol
     & ContactGroupSelectEmailViewModelImpl.Dependencies
     & ContactImportViewController.Dependencies
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies

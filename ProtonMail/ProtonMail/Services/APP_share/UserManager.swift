@@ -170,18 +170,20 @@ class UserManager: Service, ObservableObject {
         container.appRatingService
     }
 
+    var blockedSenderCacheUpdater: BlockedSenderCacheUpdater {
+        container.blockedSenderCacheUpdater
+    }
+
+    var payments: Payments {
+        container.payments
+    }
+
     var reportService: BugReportService {
         container.reportService
     }
 #endif
 
     // end of wrappers
-
-#if !APP_EXTENSION
-    // these are stateful dependencies and as such must be kept in memory for the lifetime of UserManager
-    private(set) var blockedSenderCacheUpdater: BlockedSenderCacheUpdater!
-    private(set) var payments: Payments!
-#endif
 
     weak var parentManager: UsersManager?
 
@@ -229,11 +231,6 @@ class UserManager: Service, ObservableObject {
         let queueManager = globalContainer.queueManager
         queueManager.registerHandler(handler)
         self.messageService.signin()
-
-#if !APP_EXTENSION
-        blockedSenderCacheUpdater = container.blockedSenderCacheUpdater
-        payments = container.payments
-#endif
     }
 
     private func acquireSessionIfNeeded() {

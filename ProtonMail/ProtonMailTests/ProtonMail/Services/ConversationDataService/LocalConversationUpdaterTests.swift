@@ -21,6 +21,7 @@ import XCTest
 final class LocalConversationUpdaterTests: XCTestCase {
 
     private var sut: LocalConversationUpdater!
+    private var globalContainer: GlobalContainer!
     private var userID: UserID!
     var msgID: MessageID!
     var conversationID: ConversationID!
@@ -35,7 +36,7 @@ final class LocalConversationUpdaterTests: XCTestCase {
         conversationID = .init(String.randomString(20))
         contextProvider = .init()
 
-        let globalContainer = GlobalContainer()
+        globalContainer = .init()
         globalContainer.contextProviderFactory.register { self.contextProvider }
 
         sut = LocalConversationUpdater(userID: userID.rawValue, dependencies: globalContainer)
@@ -44,6 +45,7 @@ final class LocalConversationUpdaterTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
+        globalContainer = nil
         contextProvider = nil
         userID = nil
     }

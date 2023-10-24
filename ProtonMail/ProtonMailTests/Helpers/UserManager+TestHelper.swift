@@ -52,7 +52,8 @@ extension UserManager {
 
     static func prepareUser(
         apiMock: APIServiceMock,
-        userID: UserID = .init(String.randomString(10))
+        userID: UserID = .init(String.randomString(10)),
+        globalContainer: GlobalContainer? = nil
     ) throws -> UserManager {
         let keyPair = try MailCrypto.generateRandomKeyPair()
         let key = Key(keyID: "1", privateKey: keyPair.privateKey)
@@ -72,7 +73,7 @@ extension UserManager {
             keys: [key]
         )
 
-        let user = UserManager(api: apiMock, role: .member)
+        let user = UserManager(api: apiMock, globalContainer: globalContainer)
         user.userInfo.userAddresses = [address]
         user.userInfo.userKeys = [key]
         user.userInfo.userId = userID.rawValue

@@ -15,39 +15,95 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import ProtonCorePayments
 import ProtonCoreTestingToolkit
 import XCTest
 @testable import ProtonMail
 
 final class UserContainerTests: XCTestCase {
-    func testDoesNotCreateRetainCycleWithEmbeddingUserManager() {
+    func testPropertiesThatNeedToBeStateful_whenAccessedButNotStoredElsewhere_arePersistentDuringTheLifetimeOfTheContainer() {
+        class MockDelegate: MockBlockedSenderCacheUpdaterDelegate & StoreKitManagerDelegate {
+            let tokenStorage: PaymentTokenStorage? = nil
+            let isUnlocked = false
+            let isSignedIn = false
+            let activeUsername: String? = nil
+            let userId: String? = nil
+        }
+
+        let user = UserManager(api: APIServiceMock())
+        let sut = user.container
+        let delegate = MockDelegate()
+
+        sut.blockedSenderCacheUpdater.delegate = delegate
+        sut.payments.storeKitManager.delegate = delegate
+
+        // If the properties weren't retained, they would have been recreated, losing the delegate property
+        XCTAssert(sut.blockedSenderCacheUpdater.delegate === delegate)
+        XCTAssert(sut.payments.storeKitManager.delegate === delegate)
+    }
+
+    func testRetainCyclesDoNotOccur() {
         let globalContainer = GlobalContainer()
 
-        var strongRefToUser: UserManager? = UserManager(api: APIServiceMock(), userID: "foo", globalContainer: globalContainer)
+        var strongRefToUser: UserManager? = UserManager(
+            api: APIServiceMock(),
+            userID: "foo",
+            globalContainer: globalContainer
+        )
         var strongRefToContainer: UserContainer? = strongRefToUser?.container
-        var strongRefToDependency: AnyObject? = strongRefToContainer?.settingsViewsFactory
 
-        let unregisterEX = expectation(description: "Unregister user")
+        weak var weakRefToUser = strongRefToUser
+        weak var weakRefToContainer = strongRefToContainer
+
         // undo a side-effect of UserManager.init
-        globalContainer.queueManager.unregisterHandler(for: "foo") {
-            unregisterEX.fulfill()
-        }
-        wait(for: [unregisterEX], timeout: 5)
+        globalContainer.queueManager.unregisterHandler(for: "foo", completion: nil)
+        _ = globalContainer.queueManager.queuedMessageIds()
 
-        weak var weakRefToUser: UserManager? = strongRefToUser
-        weak var weakRefToContainer: UserContainer? = strongRefToContainer
-        weak var weakRefToDependency: AnyObject? = strongRefToDependency
-
-        XCTAssertNotNil(weakRefToUser)
-        XCTAssertNotNil(weakRefToContainer)
-        XCTAssertNotNil(weakRefToDependency)
+        // sourcery:inline:UserContainerTests.InitializeAllDependencies
+        _ = strongRefToContainer?.apiService
+        _ = strongRefToContainer?.cacheService
+        _ = strongRefToContainer?.composerViewFactory
+        _ = strongRefToContainer?.contactService
+        _ = strongRefToContainer?.contactGroupService
+        _ = strongRefToContainer?.conversationService
+        _ = strongRefToContainer?.conversationStateService
+        _ = strongRefToContainer?.eventsService
+        _ = strongRefToContainer?.featureFlagsDownloadService
+        _ = strongRefToContainer?.fetchAndVerifyContacts
+        _ = strongRefToContainer?.fetchAttachment
+        _ = strongRefToContainer?.fetchMessageDetail
+        _ = strongRefToContainer?.fetchMessageMetaData
+        _ = strongRefToContainer?.imageProxy
+        _ = strongRefToContainer?.incomingDefaultService
+        _ = strongRefToContainer?.labelService
+        _ = strongRefToContainer?.localNotificationService
+        _ = strongRefToContainer?.messageService
+        _ = strongRefToContainer?.queueHandler
+        _ = strongRefToContainer?.undoActionManager
+        _ = strongRefToContainer?.userService
+        _ = strongRefToContainer?.user
+        _ = strongRefToContainer?.appRatingService
+        _ = strongRefToContainer?.blockedSenderCacheUpdater
+        _ = strongRefToContainer?.cleanUserLocalMessages
+        _ = strongRefToContainer?.reportService
+        _ = strongRefToContainer?.contactViewsFactory
+        _ = strongRefToContainer?.fetchSenderImage
+        _ = strongRefToContainer?.messageSearch
+        _ = strongRefToContainer?.nextMessageAfterMoveStatusProvider
+        _ = strongRefToContainer?.payments
+        _ = strongRefToContainer?.paymentsUIFactory
+        _ = strongRefToContainer?.settingsViewsFactory
+        _ = strongRefToContainer?.saveToolbarActionSettings
+        _ = strongRefToContainer?.sendBugReport
+        _ = strongRefToContainer?.toolbarActionProvider
+        _ = strongRefToContainer?.toolbarSettingViewFactory
+        _ = strongRefToContainer?.unblockSender
+        // sourcery:end
 
         strongRefToUser = nil
         strongRefToContainer = nil
-        strongRefToDependency = nil
 
         XCTAssertNil(weakRefToUser)
         XCTAssertNil(weakRefToContainer)
-        XCTAssertNil(weakRefToDependency)
     }
 }

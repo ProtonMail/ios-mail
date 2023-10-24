@@ -44,14 +44,15 @@ protocol CacheServiceProtocol: Service {
 }
 
 class CacheService: CacheServiceProtocol {
-    typealias Dependencies = HasCoreDataContextProviderProtocol
+    typealias Dependencies = AnyObject
+    & HasCoreDataContextProviderProtocol
     & HasLastUpdatedStoreProtocol
     & HasPushUpdater
 
     let userID: UserID
 
-    private let dependencies: Dependencies
-    
+    private unowned let dependencies: Dependencies
+
     private var lastUpdatedStore: LastUpdatedStoreProtocol {
         dependencies.lastUpdatedStore
     }

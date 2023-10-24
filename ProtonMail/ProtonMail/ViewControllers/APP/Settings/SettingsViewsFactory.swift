@@ -18,9 +18,11 @@
 import UIKit
 
 final class SettingsViewsFactory {
-    typealias Dependencies = SettingsDeviceViewModel.Dependencies & SettingsSwipeActionSelectViewModelImpl.Dependencies
+    typealias Dependencies = AnyObject
+    & SettingsDeviceViewModel.Dependencies
+    & SettingsSwipeActionSelectViewModelImpl.Dependencies
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies

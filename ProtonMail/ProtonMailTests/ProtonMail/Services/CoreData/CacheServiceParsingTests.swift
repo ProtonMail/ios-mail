@@ -24,6 +24,7 @@ import Groot
 import XCTest
 
 class CacheServiceParsingTests: XCTestCase {
+    private var globalContainer: GlobalContainer!
     var lastUpdatedStore: MockLastUpdatedStoreProtocol!
     var sut: CacheService!
     var testContext: NSManagedObjectContext!
@@ -34,7 +35,7 @@ class CacheServiceParsingTests: XCTestCase {
 
         lastUpdatedStore = MockLastUpdatedStoreProtocol()
 
-        let globalContainer = GlobalContainer()
+        globalContainer = .init()
         globalContainer.contextProviderFactory.register { coreDataService }
         globalContainer.lastUpdatedStoreFactory.register { self.lastUpdatedStore }
         
@@ -45,6 +46,7 @@ class CacheServiceParsingTests: XCTestCase {
         cleanData()
 
         sut = nil
+        globalContainer = nil
         testContext = nil
         lastUpdatedStore = nil
     }

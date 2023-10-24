@@ -45,9 +45,9 @@ enum UpdateSwipeActionError: Error, Equatable {
 }
 
 final class SaveSwipeActionSetting: SaveSwipeActionSettingForUsersUseCase {
-    typealias Dependencies = HasSwipeActionCacheProtocol & HasUsersManager
+    typealias Dependencies = AnyObject & HasSwipeActionCacheProtocol & HasUsersManager
 
-    private let dependencies: Dependencies
+    private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies

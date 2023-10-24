@@ -247,12 +247,13 @@ final class UserContainer: ManagedContainer {
         self {
             self.userManager
         }
+        .scope(.shared)
     }
 
     init(userManager: UserManager, globalContainer: GlobalContainer) {
         self.userManager = userManager
         self.globalContainer = globalContainer
 
-        manager.defaultScope = .shared
+        manager.defaultScope = .cached
     }
 }
