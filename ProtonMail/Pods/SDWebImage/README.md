@@ -37,16 +37,6 @@ Note: `SD` is the prefix for **Simple Design** (which is the team name in Daily 
 - [x] Modern Objective-C and better Swift support 
 - [x] Performances!
 
-## For Apple visionOS
-
-From 5.18.0, SDWebImage can be compiled for visionOS platform. However, it's still in beta and may contains issues unlike the stable iOS UIKit support. Welcome to have a try and [report issue](https://github.com/SDWebImage/SDWebImage/issues).
-
-To build on visionOS, currently we only support the standard Xcode integration.
-
-See `Installation with Swift Package Manager` and `Manual Installation Guide` below.
-
-Once the visionOS toolchain is stable, we will add the other package manager support later (include CocoaPods).
-
 ## Supported Image Formats
 
 - Image formats supported by Apple system (JPEG, PNG, TIFF, BMP, ...), including [GIF](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#gif-coder)/[APNG](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#apng-coder) animated image
@@ -289,31 +279,7 @@ let package = Package(
 
 ### Manual Installation Guide
 
-+ Check your command line Xcode version
-
-```
-sudo xcode-select -s /path/to/Xcode.app
-```
-
-or
-
-```
-export DEVELOPER_DIR=/path/to/Xcode.app/Contents/Developer
-```
-
-+ Run the script to build frameworks
-
-```
-./Scripts/build-frameworks.sh
-```
-
-+ Run the script to merge XCFramework
-
-```
-./Scripts/create-xcframework.sh
-```
-
-See more on wiki: [Manual install Guide](https://github.com/SDWebImage/SDWebImage/wiki/Installation-Guide#manual-installation-guide)
+See more on [Manual install Guide](https://github.com/SDWebImage/SDWebImage/wiki/Installation-Guide#manual-installation-guide)
 
 ### Import headers in your source files
 
@@ -335,14 +301,7 @@ At this point your workspace should build without error. If you are having probl
 community can help you solve it.
 
 ## Data Collection Practices
-
-From Xcode 15, we provide the new `PrivacyInfo.xcprivacy` file for privacy details, see [Describing data use in privacy manifests](https://developer.apple.com/documentation/bundleresources/privacy_manifest_files/describing_data_use_in_privacy_manifests?language=objc)
-
-You can exports the privacy report after archive your App by integrate SDWebImage via SwiftPM/XCFramework (Note: CocoaPods does not support currently).
-
-For old version, as required by the [App privacy details on the App Store](https://developer.apple.com/app-store/app-privacy-details/), here's SDWebImage's list of [Data Collection Practices](https://sdwebimage.github.io/DataCollection/index.html).
-
-
+As required by the [App privacy details on the App Store](https://developer.apple.com/app-store/app-privacy-details/), here's SDWebImage's list of [Data Collection Practices](https://sdwebimage.github.io/DataCollection/index.html).
 
 ## Author
 - [Olivier Poitrey](https://github.com/rs)

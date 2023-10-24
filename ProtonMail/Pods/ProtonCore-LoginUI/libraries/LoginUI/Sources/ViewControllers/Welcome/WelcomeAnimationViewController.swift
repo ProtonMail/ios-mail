@@ -54,10 +54,9 @@ public final class WelcomeAnimationViewController: UIViewController {
         ])
     }
     
-    private func createAnimationView(variant: WelcomeScreenVariant, finishHandler: (() -> Void)?) -> AnimationView {
-        let animationView = AnimationView()
-        animationView.animation = Animation.named(welcomeAnimationFile(variant: variant),
-                                                  bundle: LoginAndSignup.bundle)
+    private func createAnimationView(variant: WelcomeScreenVariant, finishHandler: (() -> Void)?) -> LottieAnimationView {
+        let animationView = LottieAnimationView()
+        animationView.animation = .named(welcomeAnimationFile(variant: variant), bundle: LoginAndSignup.bundle)
         animationView.loopMode = .playOnce
         animationView.backgroundBehavior = .pauseAndRestore
         animationView.play { _ in finishHandler?() }

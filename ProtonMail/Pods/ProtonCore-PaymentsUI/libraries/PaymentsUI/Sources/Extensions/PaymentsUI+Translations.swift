@@ -58,6 +58,7 @@ public enum PUITranslations: TranslationsExposing {
     case plan_details_high_speed
     case plan_details_highest_speed
     case plan_details_multi_user_support
+    case plan_details_free_price
     case plan_details_free_description
     case plan_details_plus_description
     case plan_limited_time_offer
@@ -174,6 +175,8 @@ public enum PUITranslations: TranslationsExposing {
             return localized(key: "Highest speed", comment: "Plan details highest speed message")
         case .plan_details_multi_user_support:
             return localized(key: "Multi-user support", comment: "Plan details multi-user support message")
+        case .plan_details_free_price:
+            return localized(key: "Free", comment: "Plan price when it's free")
         case .plan_details_free_description:
             return localized(key: "The basic for private and secure communications.", comment: "Plan details free description")
         case .plan_details_plus_description:

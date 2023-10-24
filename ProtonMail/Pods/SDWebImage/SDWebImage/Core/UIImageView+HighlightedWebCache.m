@@ -11,9 +11,10 @@
 #if SD_UIKIT
 
 #import "UIView+WebCacheOperation.h"
-#import "UIView+WebCacheState.h"
 #import "UIView+WebCache.h"
 #import "SDInternalMacros.h"
+
+static NSString * const SDHighlightedImageOperationKey = @"UIImageViewImageOperationHighlighted";
 
 @implementation UIImageView (HighlightedWebCache)
 
@@ -53,7 +54,7 @@
     } else {
         mutableContext = [NSMutableDictionary dictionary];
     }
-    mutableContext[SDWebImageContextSetImageOperationKey] = @keypath(self, highlightedImage);
+    mutableContext[SDWebImageContextSetImageOperationKey] = SDHighlightedImageOperationKey;
     [self sd_internalSetImageWithURL:url
                     placeholderImage:nil
                              options:options
@@ -68,16 +69,6 @@
                                    completedBlock(image, error, cacheType, imageURL);
                                }
                            }];
-}
-
-#pragma mark - Highlighted State
-
-- (NSURL *)sd_currentHighlightedImageURL {
-    return [self sd_imageLoadStateForKey:@keypath(self, highlightedImage)].url;
-}
-
-- (void)sd_cancelCurrentHighlightedImageLoad {
-    return [self sd_cancelImageLoadOperationWithKey:@keypath(self, highlightedImage)];
 }
 
 @end

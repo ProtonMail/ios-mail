@@ -7,9 +7,9 @@ import QuartzCore
 
 /// Context available when constructing an `AnimationLayer`
 struct LayerContext {
-  let animation: Animation
+  let animation: LottieAnimation
   let imageProvider: AnimationImageProvider
-  let textProvider: AnimationTextProvider
+  let textProvider: AnimationKeypathTextProvider
   let fontProvider: AnimationFontProvider
   let compatibilityTracker: CompatibilityTracker
   var layerName: String

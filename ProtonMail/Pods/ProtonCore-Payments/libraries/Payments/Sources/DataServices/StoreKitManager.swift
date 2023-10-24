@@ -564,9 +564,6 @@ extension StoreKitManager: SKProductsRequestDelegate {
         availableProducts = response.products
         updateAvailableProductsListCompletionBlock?(nil)
         updateAvailableProductsListCompletionBlock = nil
-    }
-
-    func requestDidFinish(_ request: SKRequest) {
         self.request = nil
         ObservabilityEnv.report(.paymentQuerySubscriptionsTotal(status: .successful))
     }
@@ -763,12 +760,14 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         case .right(let planDataSource):
             guard let details = planDataSource.detailsOfAvailablePlanCorrespondingToIAP(plan),
                   let instance = planDataSource.detailsOfAvailablePlanInstanceCorrespondingToIAP(plan),
-                  let price = instance.price.first(where: { $0.currency.lowercased() == plan.currency?.lowercased() })
+                  let price = instance.price.first(where: { $0.currency.lowercased() == plan.currency?.lowercased() }),
+                  let name = details.name,
+                  let id = details.ID
             else { throw Errors.alreadyPurchasedPlanDoesNotMatchBackend }
 
-            planName = details.name
+            planName = name
             planAmount = price.current
-            planIdentifier = details.ID
+            planIdentifier = id
         }
 
         let amountDue: Int

@@ -23,6 +23,8 @@
 import Foundation
 
 public protocol CryptoGoMethods {
+    var ConstantsAES256: String { get }
+    
     // initializers
     func CryptoKey(_ binKeys: Data?) -> CryptoKey?
     func CryptoKey(fromArmored armored: String?) -> CryptoKey?
@@ -78,6 +80,7 @@ public protocol CryptoGoMethods {
     func HelperGenerateKey(_ name: String?, _ email: String?, _ passphrase: Data?, _ keyType: String?, _ bits: Int, _ error: NSErrorPointer) -> String
     func HelperDecryptMessageArmored(_ privateKey: String?, _ passphrase: Data?, _ ciphertext: String?, _ error: NSErrorPointer) -> String
     func HelperDecryptSessionKey(_ privateKey: String?, _ passphrase: Data?, _ encryptedSessionKey: Data?, _ error: NSErrorPointer) -> CryptoSessionKey?
+    func HelperDecryptSessionKeyExplicitVerify(_ dataPacket: Data?, _ sessionKey: CryptoSessionKey?, _ publicKeyRing: CryptoKeyRing?, _ verifyTime: Int64, _ error: NSErrorPointer) -> HelperExplicitVerifyMessage?
     func HelperDecryptAttachment(_ keyPacket: Data?, _ dataPacket: Data?, _ keyRing: CryptoKeyRing?, _ error: NSErrorPointer) -> CryptoPlainMessage?
 
     func HelperDecryptExplicitVerify(_ pgpMessage: CryptoPGPMessage?, _ privateKeyRing: CryptoKeyRing?, _ publicKeyRing: CryptoKeyRing?, _ verifyTime: Int64, _ error: NSErrorPointer) -> HelperExplicitVerifyMessage?

@@ -24,7 +24,6 @@ ${BUILT_PRODUCTS_DIR}/ProtonCore-Observability/ProtonCoreObservability.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Payments/ProtonCorePayments.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-PaymentsUI/ProtonCorePaymentsUI.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Services/ProtonCoreServices.framework
-${BUILT_PRODUCTS_DIR}/ProtonCore-Subscriptions/ProtonCoreSubscriptions.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-TroubleShooting/ProtonCoreTroubleShooting.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-UIFoundations/ProtonCoreUIFoundations.framework
 ${BUILT_PRODUCTS_DIR}/ProtonCore-Utilities/ProtonCoreUtilities.framework

@@ -76,15 +76,15 @@ version: 0.0.1
 
 name: lottie-ios, nameSpecified: 
 body:                     …
-version: 3.4.3
+version: 4.3.3
 
 name: lottie-ios, nameSpecified: 
 body:                     …
-version: 3.4.3
+version: 4.3.3
 
 name: lottie-ios, nameSpecified: 
 body:                     …
-version: 3.4.3
+version: 4.3.3
 
 name: MBProgressHUD, nameSpecified: 
 body: Copyright © 2009-201…
@@ -102,13 +102,13 @@ name: OHHTTPStubs, nameSpecified:
 body: - MIT LICENSE -
 
 Cop…
-version: 9.0.0
+version: 9.1.0
 
 name: OHHTTPStubs, nameSpecified: 
 body: - MIT LICENSE -
 
 Cop…
-version: 9.0.0
+version: 9.1.0
 
 name: PromiseKit, nameSpecified: 
 body: Copyright 2016-prese…
@@ -554,18 +554,6 @@ name: ProtonCore-Services, nameSpecified:
 body:                     …
 version: 12.0.0
 
-name: ProtonCore-Subscriptions, nameSpecified: 
-body:                     …
-version: 12.0.0
-
-name: ProtonCore-Subscriptions, nameSpecified: 
-body:                     …
-version: 12.0.0
-
-name: ProtonCore-Subscriptions, nameSpecified: 
-body:                     …
-version: 12.0.0
-
 name: ProtonCore-TestingToolkit, nameSpecified: 
 body:                     …
 version: 12.0.0
@@ -648,15 +636,15 @@ version: 5.0.0
 
 name: SDWebImage, nameSpecified: 
 body: Copyright (c) 2009-2…
-version: 5.18.2
+version: 5.15.8
 
 name: SDWebImage, nameSpecified: 
 body: Copyright (c) 2009-2…
-version: 5.18.2
+version: 5.15.8
 
 name: SDWebImage, nameSpecified: 
 body: Copyright (c) 2009-2…
-version: 5.18.2
+version: 5.15.8
 
 name: Sentry, nameSpecified: 
 body: The MIT License (MIT…
@@ -702,19 +690,19 @@ name: SwiftSoup, nameSpecified:
 body: MIT License
 
 Copyrig…
-version: 2.4.3
+version: 2.6.0
 
 name: SwiftSoup, nameSpecified: 
 body: MIT License
 
 Copyrig…
-version: 2.4.3
+version: 2.6.0
 
 name: SwiftSoup, nameSpecified: 
 body: MIT License
 
 Copyrig…
-version: 2.4.3
+version: 2.6.0
 
 name: SwipyCell, nameSpecified: 
 body: The MIT License (MIT…
@@ -742,7 +730,7 @@ version: 2.0.0
 
 name: Yams, nameSpecified: 
 body: The MIT License (MIT…
-version: 5.0.5
+version: 5.0.6
 
 name: Difference, nameSpecified: Difference, owner: krzysztofzablocki, version: 1.0.2, source: https://github.com/krzysztofzablocki/Difference
 

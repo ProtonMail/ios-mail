@@ -42,12 +42,13 @@ final class ImageLayer: BaseCompositionLayer {
       let image = context.imageProvider.imageForAsset(asset: imageAsset)
     else {
       self.imageAsset = nil
-      contents = nil
+      contentsLayer.contents = nil
       return
     }
 
     self.imageAsset = imageAsset
-    contents = image
+    contentsLayer.contents = image
+    contentsLayer.contentsGravity = context.imageProvider.contentsGravity(for: imageAsset)
     setNeedsLayout()
   }
 

@@ -20,7 +20,7 @@ final class FillNodeProperties: NodePropertyMap, KeypathSearchable {
     opacity = NodeProperty(provider: KeyframeInterpolator(keyframes: fill.opacity.keyframes))
     type = fill.fillRule
     keypathProperties = [
-      "Opacity" : opacity,
+      PropertyName.opacity.rawValue : opacity,
       PropertyName.color.rawValue : color,
     ]
     properties = Array(keypathProperties.values)
@@ -30,8 +30,8 @@ final class FillNodeProperties: NodePropertyMap, KeypathSearchable {
 
   var keypathName: String
 
-  let opacity: NodeProperty<Vector1D>
-  let color: NodeProperty<Color>
+  let opacity: NodeProperty<LottieVector1D>
+  let color: NodeProperty<LottieColor>
   let type: FillRule
 
   let keypathProperties: [String: AnyNodeProperty]

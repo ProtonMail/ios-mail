@@ -27,8 +27,6 @@ static CGImageSourceRef (*SDCGImageGetImageSource)(CGImageRef);
 
 // Specify File Size for lossy format encoding, like JPEG
 static NSString * kSDCGImageDestinationRequestedFileSize = @"kCGImageDestinationRequestedFileSize";
-// Avoid ImageIO translate JFIF orientation to EXIF orientation which cause bug because returned CGImage already apply the orientation transform
-static NSString * kSDCGImageSourceSkipMetadata = @"kCGImageSourceSkipMetadata";
 
 // This strip the un-wanted CGImageProperty, like the internal CGImageSourceRef in iOS 15+
 // However, CGImageCreateCopy still keep those CGImageProperty, not suit for our use case
@@ -72,7 +70,6 @@ static CGImageRef __nullable SDCGImageCreateCopy(CGImageRef cg_nullable image) {
     BOOL _finished;
     BOOL _preserveAspectRatio;
     CGSize _thumbnailSize;
-    NSUInteger _limitBytes;
     BOOL _lazyDecode;
 }
 
@@ -234,7 +231,7 @@ static CGImageRef __nullable SDCGImageCreateCopy(CGImageRef cg_nullable image) {
         }
     }
     // Parse the image properties
-    NSDictionary *properties = (__bridge_transfer NSDictionary *)CGImageSourceCopyPropertiesAtIndex(source, index, (__bridge CFDictionaryRef)@{kSDCGImageSourceSkipMetadata : @(YES)});
+    NSDictionary *properties = (__bridge_transfer NSDictionary *)CGImageSourceCopyPropertiesAtIndex(source, index, NULL);
     CGFloat pixelWidth = [properties[(__bridge NSString *)kCGImagePropertyPixelWidth] doubleValue];
     CGFloat pixelHeight = [properties[(__bridge NSString *)kCGImagePropertyPixelHeight] doubleValue];
     CGImagePropertyOrientation exifOrientation = (CGImagePropertyOrientation)[properties[(__bridge NSString *)kCGImagePropertyOrientation] unsignedIntegerValue];
@@ -373,16 +370,10 @@ static CGImageRef __nullable SDCGImageCreateCopy(CGImageRef cg_nullable image) {
         lazyDecode = lazyDecodeValue.boolValue;
     }
     
-    NSUInteger limitBytes = 0;
-    NSNumber *limitBytesValue = options[SDImageCoderDecodeScaleDownLimitBytes];
-    if (limitBytesValue != nil) {
-        limitBytes = limitBytesValue.unsignedIntegerValue;
-    }
-    
 #if SD_MAC
     // If don't use thumbnail, prefers the built-in generation of frames (GIF/APNG)
     // Which decode frames in time and reduce memory usage
-    if (limitBytes == 0 && (thumbnailSize.width == 0 || thumbnailSize.height == 0)) {
+    if (thumbnailSize.width == 0 || thumbnailSize.height == 0) {
         SDAnimatedImageRep *imageRep = [[SDAnimatedImageRep alloc] initWithData:data];
         if (imageRep) {
             NSSize size = NSMakeSize(imageRep.pixelsWide / scale, imageRep.pixelsHigh / scale);
@@ -424,30 +415,16 @@ static CGImageRef __nullable SDCGImageCreateCopy(CGImageRef cg_nullable image) {
         return nil;
     }
     
-    size_t frameCount = CGImageSourceGetCount(source);
+    size_t count = CGImageSourceGetCount(source);
     UIImage *animatedImage;
     
-    // Parse the image properties
-    NSDictionary *properties = (__bridge_transfer NSDictionary *)CGImageSourceCopyPropertiesAtIndex(source, 0, NULL);
-    size_t width = [properties[(__bridge NSString *)kCGImagePropertyPixelWidth] doubleValue];
-    size_t height = [properties[(__bridge NSString *)kCGImagePropertyPixelHeight] doubleValue];
-    // Scale down to limit bytes if need
-    if (limitBytes > 0) {
-        // Hack since ImageIO public API (not CGImageDecompressor/CMPhoto) always return back RGBA8888 CGImage
-        CGSize imageSize = CGSizeMake(width, height);
-        CGSize framePixelSize = [SDImageCoderHelper scaledSizeWithImageSize:imageSize limitBytes:limitBytes bytesPerPixel:4 frameCount:frameCount];
-        // Override thumbnail size
-        thumbnailSize = framePixelSize;
-        preserveAspectRatio = YES;
-    }
-    
     BOOL decodeFirstFrame = [options[SDImageCoderDecodeFirstFrameOnly] boolValue];
-    if (decodeFirstFrame || frameCount <= 1) {
+    if (decodeFirstFrame || count <= 1) {
         animatedImage = [self.class createFrameAtIndex:0 source:source scale:scale preserveAspectRatio:preserveAspectRatio thumbnailSize:thumbnailSize lazyDecode:lazyDecode animatedImage:NO];
     } else {
-        NSMutableArray<SDImageFrame *> *frames = [NSMutableArray arrayWithCapacity:frameCount];
+        NSMutableArray<SDImageFrame *> *frames = [NSMutableArray arrayWithCapacity:count];
         
-        for (size_t i = 0; i < frameCount; i++) {
+        for (size_t i = 0; i < count; i++) {
             UIImage *image = [self.class createFrameAtIndex:i source:source scale:scale preserveAspectRatio:preserveAspectRatio thumbnailSize:thumbnailSize lazyDecode:lazyDecode animatedImage:NO];
             if (!image) {
                 continue;
@@ -504,12 +481,6 @@ static CGImageRef __nullable SDCGImageCreateCopy(CGImageRef cg_nullable image) {
             preserveAspectRatio = preserveAspectRatioValue.boolValue;
         }
         _preserveAspectRatio = preserveAspectRatio;
-        NSUInteger limitBytes = 0;
-        NSNumber *limitBytesValue = options[SDImageCoderDecodeScaleDownLimitBytes];
-        if (limitBytesValue != nil) {
-            limitBytes = limitBytesValue.unsignedIntegerValue;
-        }
-        _limitBytes = limitBytes;
         BOOL lazyDecode = NO; // Defaults NO for animated image coder
         NSNumber *lazyDecodeValue = options[SDImageCoderDecodeUseLazyDecoding];
         if (lazyDecodeValue != nil) {
@@ -553,16 +524,6 @@ static CGImageRef __nullable SDCGImageCreateCopy(CGImageRef cg_nullable image) {
     // For animated image progressive decoding because the frame count and duration may be changed.
     [self scanAndCheckFramesValidWithImageSource:_imageSource];
     SD_UNLOCK(_lock);
-    
-    // Scale down to limit bytes if need
-    if (_limitBytes > 0) {
-        // Hack since ImageIO public API (not CGImageDecompressor/CMPhoto) always return back RGBA8888 CGImage
-        CGSize imageSize = CGSizeMake(_width, _height);
-        CGSize framePixelSize = [SDImageCoderHelper scaledSizeWithImageSize:imageSize limitBytes:_limitBytes bytesPerPixel:4 frameCount:_frameCount];
-        // Override thumbnail size
-        _thumbnailSize = framePixelSize;
-        _preserveAspectRatio = YES;
-    }
 }
 
 - (UIImage *)incrementalDecodedImageWithOptions:(SDImageCoderOptions *)options {
@@ -749,25 +710,6 @@ static CGImageRef __nullable SDCGImageCreateCopy(CGImageRef cg_nullable image) {
             preserveAspectRatio = preserveAspectRatioValue.boolValue;
         }
         _preserveAspectRatio = preserveAspectRatio;
-        NSUInteger limitBytes = 0;
-        NSNumber *limitBytesValue = options[SDImageCoderDecodeScaleDownLimitBytes];
-        if (limitBytesValue != nil) {
-            limitBytes = limitBytesValue.unsignedIntegerValue;
-        }
-        _limitBytes = limitBytes;
-        // Parse the image properties
-        NSDictionary *properties = (__bridge_transfer NSDictionary *)CGImageSourceCopyPropertiesAtIndex(imageSource, 0, NULL);
-        _width = [properties[(__bridge NSString *)kCGImagePropertyPixelWidth] doubleValue];
-        _height = [properties[(__bridge NSString *)kCGImagePropertyPixelHeight] doubleValue];
-        // Scale down to limit bytes if need
-        if (_limitBytes > 0) {
-            // Hack since ImageIO public API (not CGImageDecompressor/CMPhoto) always return back RGBA8888 CGImage
-            CGSize imageSize = CGSizeMake(_width, _height);
-            CGSize framePixelSize = [SDImageCoderHelper scaledSizeWithImageSize:imageSize limitBytes:_limitBytes bytesPerPixel:4 frameCount:_frameCount];
-            // Override thumbnail size
-            _thumbnailSize = framePixelSize;
-            _preserveAspectRatio = YES;
-        }
         BOOL lazyDecode = NO; // Defaults NO for animated image coder
         NSNumber *lazyDecodeValue = options[SDImageCoderDecodeUseLazyDecoding];
         if (lazyDecodeValue != nil) {

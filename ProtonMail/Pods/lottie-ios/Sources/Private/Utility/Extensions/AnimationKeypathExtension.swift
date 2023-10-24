@@ -115,20 +115,58 @@ extension KeypathSearchable {
     return nil
   }
 
-  func logKeypaths(for keyPath: AnimationKeypath?, logger: LottieLogger) {
+  /// Searches this layer's keypaths to find the keypath for the given layer
+  func keypath(for layer: CALayer) -> AnimationKeypath? {
+    let allKeypaths = layerKeypaths()
+    return allKeypaths[layer]
+  }
+
+  /// Computes the list of animation keypaths that descend from this layer
+  func allKeypaths(for keyPath: AnimationKeypath? = nil) -> [String] {
+    var allKeypaths: [String] = []
+
     let newKeypath: AnimationKeypath
     if let previousKeypath = keyPath {
       newKeypath = previousKeypath.appendingKey(keypathName)
     } else {
       newKeypath = AnimationKeypath(keys: [keypathName])
     }
-    logger.info(newKeypath.fullPath)
+
+    allKeypaths.append(newKeypath.fullPath)
+
     for key in keypathProperties.keys {
-      logger.info(newKeypath.appendingKey(key).fullPath)
+      allKeypaths.append(newKeypath.appendingKey(key).fullPath)
     }
+
     for child in childKeypaths {
-      child.logKeypaths(for: newKeypath, logger: logger)
+      allKeypaths.append(contentsOf: child.allKeypaths(for: newKeypath))
     }
+
+    return allKeypaths
+  }
+
+  /// Computes the list of animation keypaths that descend from this layer
+  func layerKeypaths(for keyPath: AnimationKeypath? = nil) -> [CALayer: AnimationKeypath] {
+    var allKeypaths: [CALayer: AnimationKeypath] = [:]
+
+    let newKeypath: AnimationKeypath
+    if let previousKeypath = keyPath {
+      newKeypath = previousKeypath.appendingKey(keypathName)
+    } else {
+      newKeypath = AnimationKeypath(keys: [keypathName])
+    }
+
+    if let layer = self as? CALayer {
+      allKeypaths[layer] = newKeypath
+    }
+
+    for child in childKeypaths {
+      for (layer, keypath) in child.layerKeypaths(for: newKeypath) {
+        allKeypaths[layer] = keypath
+      }
+    }
+
+    return allKeypaths
   }
 }
 
@@ -165,8 +203,8 @@ extension AnimationKeypath {
     guard
       let currentKey = currentKey,
       currentKey.equalsKeypath(keyname),
-      keys.count > 1 else
-    {
+      keys.count > 1
+    else {
       // Current key either doesnt match or we are on the last key.
       return nil
     }
@@ -225,8 +263,8 @@ extension String {
     }
     if let index = firstIndex(of: "*") {
       // Wildcard search.
-      let prefix = String(self.prefix(upTo: index))
-      let suffix = String(self.suffix(from: self.index(after: index)))
+      let prefix = String(prefix(upTo: index))
+      let suffix = String(suffix(from: self.index(after: index)))
 
       if prefix.count > 0 {
         // Match prefix.

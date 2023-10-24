@@ -1,6 +1,0 @@
-framework module ProtonCoreSubscriptions {
-  umbrella header "ProtonCore-Subscriptions-umbrella.h"
-
-  export *
-  module * { export * }
-}

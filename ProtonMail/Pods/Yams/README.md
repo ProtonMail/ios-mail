@@ -38,7 +38,7 @@ cmake --build /path/to/build
 
 ### Swift Package Manager
 
-Add `.package(url: "https://github.com/jpsim/Yams.git", from: "5.0.5")` to your
+Add `.package(url: "https://github.com/jpsim/Yams.git", from: "5.0.6")` to your
 `Package.swift` file's `dependencies`.
 
 ### CocoaPods

@@ -13,9 +13,9 @@ final class Stroke: ShapeItem {
 
   required init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: Stroke.CodingKeys.self)
-    opacity = try container.decode(KeyframeGroup<Vector1D>.self, forKey: .opacity)
-    color = try container.decode(KeyframeGroup<Color>.self, forKey: .color)
-    width = try container.decode(KeyframeGroup<Vector1D>.self, forKey: .width)
+    opacity = try container.decode(KeyframeGroup<LottieVector1D>.self, forKey: .opacity)
+    color = try container.decode(KeyframeGroup<LottieColor>.self, forKey: .color)
+    width = try container.decode(KeyframeGroup<LottieVector1D>.self, forKey: .width)
     lineCap = try container.decodeIfPresent(LineCap.self, forKey: .lineCap) ?? .round
     lineJoin = try container.decodeIfPresent(LineJoin.self, forKey: .lineJoin) ?? .round
     miterLimit = try container.decodeIfPresent(Double.self, forKey: .miterLimit) ?? 4
@@ -25,11 +25,11 @@ final class Stroke: ShapeItem {
 
   required init(dictionary: [String: Any]) throws {
     let opacityDictionary: [String: Any] = try dictionary.value(for: CodingKeys.opacity)
-    opacity = try KeyframeGroup<Vector1D>(dictionary: opacityDictionary)
+    opacity = try KeyframeGroup<LottieVector1D>(dictionary: opacityDictionary)
     let colorDictionary: [String: Any] = try dictionary.value(for: CodingKeys.color)
-    color = try KeyframeGroup<Color>(dictionary: colorDictionary)
+    color = try KeyframeGroup<LottieColor>(dictionary: colorDictionary)
     let widthDictionary: [String: Any] = try dictionary.value(for: CodingKeys.width)
-    width = try KeyframeGroup<Vector1D>(dictionary: widthDictionary)
+    width = try KeyframeGroup<LottieVector1D>(dictionary: widthDictionary)
     if
       let lineCapRawValue = dictionary[CodingKeys.lineCap.rawValue] as? Int,
       let lineCap = LineCap(rawValue: lineCapRawValue)
@@ -48,20 +48,41 @@ final class Stroke: ShapeItem {
     }
     miterLimit = (try? dictionary.value(for: CodingKeys.miterLimit)) ?? 4
     let dashPatternDictionaries = dictionary[CodingKeys.dashPattern.rawValue] as? [[String: Any]]
-    dashPattern = try? dashPatternDictionaries?.map({ try DashElement(dictionary: $0) })
+    dashPattern = try? dashPatternDictionaries?.map { try DashElement(dictionary: $0) }
     try super.init(dictionary: dictionary)
+  }
+
+  init(
+    name: String,
+    hidden: Bool,
+    opacity: KeyframeGroup<LottieVector1D>,
+    color: KeyframeGroup<LottieColor>,
+    width: KeyframeGroup<LottieVector1D>,
+    lineCap: LineCap,
+    lineJoin: LineJoin,
+    miterLimit: Double,
+    dashPattern: [DashElement]?)
+  {
+    self.opacity = opacity
+    self.color = color
+    self.width = width
+    self.lineCap = lineCap
+    self.lineJoin = lineJoin
+    self.miterLimit = miterLimit
+    self.dashPattern = dashPattern
+    super.init(name: name, type: .stroke, hidden: hidden)
   }
 
   // MARK: Internal
 
   /// The opacity of the stroke
-  let opacity: KeyframeGroup<Vector1D>
+  let opacity: KeyframeGroup<LottieVector1D>
 
   /// The Color of the stroke
-  let color: KeyframeGroup<Color>
+  let color: KeyframeGroup<LottieColor>
 
   /// The width of the stroke
-  let width: KeyframeGroup<Vector1D>
+  let width: KeyframeGroup<LottieVector1D>
 
   /// Line Cap
   let lineCap: LineCap
@@ -74,6 +95,20 @@ final class Stroke: ShapeItem {
 
   /// The dash pattern of the stroke
   let dashPattern: [DashElement]?
+
+  /// Creates a copy of this Stroke with the given updated width keyframes
+  func copy(width newWidth: KeyframeGroup<LottieVector1D>) -> Stroke {
+    Stroke(
+      name: name,
+      hidden: hidden,
+      opacity: opacity,
+      color: color,
+      width: newWidth,
+      lineCap: lineCap,
+      lineJoin: lineJoin,
+      miterLimit: miterLimit,
+      dashPattern: dashPattern)
+  }
 
   override func encode(to encoder: Encoder) throws {
     try super.encode(to: encoder)

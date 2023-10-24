@@ -26,6 +26,7 @@ import ProtonCoreAuthentication
 import ProtonCoreCrypto
 import ProtonCoreDataModel
 import ProtonCoreNetworking
+import ProtonCoreFeatureSwitch
 #if !APP_EXTENSION
 import ProtonCorePayments
 #endif
@@ -290,7 +291,10 @@ class UserManager: Service, ObservableObject {
         #if !APP_EXTENSION
         self.payments.storeKitManager.delegate = container.storeKitManager
         self.payments.storeKitManager.subscribeToPaymentQueue()
-        self.payments.storeKitManager.updateAvailableProductsList { _ in }
+
+        if !FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            self.payments.storeKitManager.updateAvailableProductsList { _ in }
+        }
         #endif
     }
 

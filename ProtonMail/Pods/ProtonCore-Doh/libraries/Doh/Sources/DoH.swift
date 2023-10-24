@@ -243,6 +243,8 @@ open class DoH: DoHInterface {
     
     private func populateCache(for host: ProductionHosts, with dnsList: [DNS]) {
         let fetchTime = currentTimeProvider().timeIntervalSince1970
+        let dnsList = dnsList.filter { Self.hostIsPinned($0.host) }
+
         cacheQueue.sync {
             var dnsCaches: [DNSCache] = []
             for dns in dnsList.shuffled() {

@@ -11,3 +11,5 @@
 "A networking error has occured" = "A networking error has occured";
 
 "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked";
+
+"Troubleshoot" = "Troubleshoot";

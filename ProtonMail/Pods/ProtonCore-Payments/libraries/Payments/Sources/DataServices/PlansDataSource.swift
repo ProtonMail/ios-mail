@@ -43,23 +43,36 @@ public protocol PlansDataSourceProtocol {
 }
 
 class PlansDataSource: PlansDataSourceProtocol {
-    var isIAPAvailable = false
+    var isIAPAvailable: Bool {
+        guard paymentsBackendStatusAcceptsIAP else { return false }
+        return true
+    }
+    
+    var paymentsBackendStatusAcceptsIAP: Bool {
+        willSet { localStorage.paymentsBackendStatusAcceptsIAP = newValue }
+    }
+    
     var availablePlans: AvailablePlans?
     var currentPlan: CurrentPlan?
     var paymentMethods: [PaymentMethod]?
     
     private let apiService: APIService
     private let storeKitDataSource: StoreKitDataSourceProtocol
+    private let localStorage: ServicePlanDataStorage
     
-    init(apiService: APIService, storeKitDataSource: StoreKitDataSourceProtocol) {
+    init(apiService: APIService,
+         storeKitDataSource: StoreKitDataSourceProtocol,
+         localStorage: ServicePlanDataStorage) {
         self.apiService = apiService
         self.storeKitDataSource = storeKitDataSource
+        self.localStorage = localStorage
+        paymentsBackendStatusAcceptsIAP = localStorage.paymentsBackendStatusAcceptsIAP
     }
     
     func fetchIAPAvailability() async throws {
         let paymentStatusRequest = PaymentStatusRequest(api: apiService)
         let paymentStatusResponse = try await paymentStatusRequest.response(responseObject: PaymentStatusResponse())
-        isIAPAvailable = paymentStatusResponse.isAvailable ?? false
+        paymentsBackendStatusAcceptsIAP = paymentStatusResponse.isAvailable ?? false
     }
     
     func fetchAvailablePlans() async throws {

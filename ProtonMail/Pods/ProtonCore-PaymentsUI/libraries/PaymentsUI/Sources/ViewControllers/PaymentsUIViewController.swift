@@ -574,7 +574,7 @@ extension PaymentsUIViewController: CycleSelectorDelegate {
                 case .left:
                     return true
                 case .right(let availablePlansPresentation):
-                    return availablePlansPresentation.details.cycle == selectedCycle
+                    return availablePlansPresentation.details.cycle == selectedCycle || availablePlansPresentation.details.isFreePlan
                 }
             }
         } else {

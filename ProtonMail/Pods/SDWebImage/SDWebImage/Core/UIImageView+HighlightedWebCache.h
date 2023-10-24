@@ -17,13 +17,6 @@
  */
 @interface UIImageView (HighlightedWebCache)
 
-#pragma mark - Highlighted Image
-
-/**
- * Get the current highlighted image URL.
- */
-@property (nonatomic, strong, readonly, nullable) NSURL *sd_currentHighlightedImageURL;
-
 /**
  * Set the imageView `highlightedImage` with an `url`.
  *
@@ -130,12 +123,6 @@
                               context:(nullable SDWebImageContext *)context
                              progress:(nullable SDImageLoaderProgressBlock)progressBlock
                             completed:(nullable SDExternalCompletionBlock)completedBlock;
-
-/**
- * Cancel the current highlighted image load (for `UIImageView.highlighted`)
- * @note For normal image, use `sd_cancelCurrentImageLoad`
- */
-- (void)sd_cancelCurrentHighlightedImageLoad;
 
 @end
 

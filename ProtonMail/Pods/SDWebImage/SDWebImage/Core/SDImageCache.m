@@ -269,9 +269,9 @@ static NSString * _defaultDiskCacheDirectory;
                     format = [SDImageCoderHelper CGImageContainsAlpha:image.CGImage] ? SDImageFormatPNG : SDImageFormatJPEG;
                 }
             }
-            NSData *encodedData = [[SDImageCodersManager sharedManager] encodedDataWithImage:image format:format options:context[SDWebImageContextImageEncodeOptions]];
+            NSData *data = [[SDImageCodersManager sharedManager] encodedDataWithImage:image format:format options:context[SDWebImageContextImageEncodeOptions]];
             dispatch_async(self.ioQueue, ^{
-                [self _storeImageDataToDisk:encodedData forKey:key];
+                [self _storeImageDataToDisk:data forKey:key];
                 [self _archivedDataWithImage:image forKey:key];
                 if (completionBlock) {
                     [(queue ?: SDCallbackQueue.mainQueue) async:^{
@@ -883,8 +883,6 @@ static NSString * _defaultDiskCacheDirectory;
 }
 
 #pragma mark - Helper
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 + (SDWebImageOptions)imageOptionsFromCacheOptions:(SDImageCacheOptions)cacheOptions {
     SDWebImageOptions options = 0;
     if (cacheOptions & SDImageCacheScaleDownLargeImages) options |= SDWebImageScaleDownLargeImages;
@@ -895,7 +893,6 @@ static NSString * _defaultDiskCacheDirectory;
     
     return options;
 }
-#pragma clang diagnostic pop
 
 @end
 
@@ -907,8 +904,6 @@ static NSString * _defaultDiskCacheDirectory;
     return [self queryImageForKey:key options:options context:context cacheType:SDImageCacheTypeAll completion:completionBlock];
 }
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 - (id<SDWebImageOperation>)queryImageForKey:(NSString *)key options:(SDWebImageOptions)options context:(nullable SDWebImageContext *)context cacheType:(SDImageCacheType)cacheType completion:(nullable SDImageCacheQueryCompletionBlock)completionBlock {
     SDImageCacheOptions cacheOptions = 0;
     if (options & SDWebImageQueryMemoryData) cacheOptions |= SDImageCacheQueryMemoryData;
@@ -922,7 +917,6 @@ static NSString * _defaultDiskCacheDirectory;
     
     return [self queryCacheOperationForKey:key options:cacheOptions context:context cacheType:cacheType done:completionBlock];
 }
-#pragma clang diagnostic pop
 
 - (void)storeImage:(UIImage *)image imageData:(NSData *)imageData forKey:(nullable NSString *)key cacheType:(SDImageCacheType)cacheType completion:(nullable SDWebImageNoParamsBlock)completionBlock {
     [self storeImage:image imageData:imageData forKey:key options:0 context:nil cacheType:cacheType completion:completionBlock];

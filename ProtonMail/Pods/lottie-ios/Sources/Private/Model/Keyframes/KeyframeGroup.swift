@@ -14,26 +14,38 @@ import Foundation
 /// Keyframe data is wrapped in a dictionary { "k" : KeyframeData }.
 /// The keyframe data can either be an array of keyframes or, if no animation is present, the raw value.
 /// This helper object is needed to properly decode the json.
-
 final class KeyframeGroup<T> {
 
   // MARK: Lifecycle
 
-  init(keyframes: ContiguousArray<Keyframe<T>>) {
+  init(
+    keyframes: ContiguousArray<Keyframe<T>>,
+    unsupportedAfterEffectsExpression: String? = nil)
+  {
     self.keyframes = keyframes
+    self.unsupportedAfterEffectsExpression = unsupportedAfterEffectsExpression
   }
 
-  init(_ value: T) {
+  init(
+    _ value: T,
+    unsupportedAfterEffectsExpression: String? = nil)
+  {
     keyframes = [Keyframe(value)]
+    self.unsupportedAfterEffectsExpression = unsupportedAfterEffectsExpression
   }
 
   // MARK: Internal
 
   enum KeyframeWrapperKey: String, CodingKey {
     case keyframeData = "k"
+    case unsupportedAfterEffectsExpression = "x"
   }
 
   let keyframes: ContiguousArray<Keyframe<T>>
+
+  /// lottie-ios doesn't support After Effects expressions, but we parse them so we can log diagnostics.
+  /// More info: https://helpx.adobe.com/after-effects/using/expression-basics.html
+  let unsupportedAfterEffectsExpression: String?
 
 }
 
@@ -42,10 +54,13 @@ final class KeyframeGroup<T> {
 extension KeyframeGroup: Decodable where T: Decodable {
   convenience init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: KeyframeWrapperKey.self)
+    let unsupportedAfterEffectsExpression = try? container.decode(String.self, forKey: .unsupportedAfterEffectsExpression)
 
     if let keyframeData: T = try? container.decode(T.self, forKey: .keyframeData) {
       /// Try to decode raw value; No keyframe data.
-      self.init(keyframes: [Keyframe<T>(keyframeData)])
+      self.init(
+        keyframes: [Keyframe<T>(keyframeData)],
+        unsupportedAfterEffectsExpression: unsupportedAfterEffectsExpression)
     } else {
       // Decode and array of keyframes.
       //
@@ -70,8 +85,8 @@ extension KeyframeGroup: Decodable where T: Decodable {
 
         guard
           let value: T = keyframeData.startValue ?? previousKeyframeData?.endValue,
-          let time = keyframeData.time else
-        {
+          let time = keyframeData.time
+        else {
           /// Missing keyframe data. JSON must be corrupt.
           throw DecodingError.dataCorruptedError(
             forKey: KeyframeWrapperKey.keyframeData,
@@ -89,7 +104,9 @@ extension KeyframeGroup: Decodable where T: Decodable {
           spatialOutTangent: keyframeData.spatialOutTangent))
         previousKeyframeData = keyframeData
       }
-      self.init(keyframes: keyframes)
+      self.init(
+        keyframes: keyframes,
+        unsupportedAfterEffectsExpression: unsupportedAfterEffectsExpression)
     }
   }
 }
@@ -129,6 +146,7 @@ extension KeyframeGroup: Encodable where T: Encodable {
 extension KeyframeGroup: DictionaryInitializable where T: AnyInitializable {
   convenience init(dictionary: [String: Any]) throws {
     var keyframes = ContiguousArray<Keyframe<T>>()
+    let unsupportedAfterEffectsExpression = dictionary[KeyframeWrapperKey.unsupportedAfterEffectsExpression.rawValue] as? String
     if
       let rawValue = dictionary[KeyframeWrapperKey.keyframeData.rawValue],
       let value = try? T(value: rawValue)
@@ -146,8 +164,8 @@ extension KeyframeGroup: DictionaryInitializable where T: AnyInitializable {
         let data = try KeyframeData<T>(dictionary: frameDictionary)
         guard
           let value: T = data.startValue ?? previousKeyframeData?.endValue,
-          let time = data.time else
-        {
+          let time = data.time
+        else {
           throw InitializableError.invalidInput
         }
         keyframes.append(Keyframe<T>(
@@ -162,7 +180,9 @@ extension KeyframeGroup: DictionaryInitializable where T: AnyInitializable {
       }
     }
 
-    self.init(keyframes: keyframes)
+    self.init(
+      keyframes: keyframes,
+      unsupportedAfterEffectsExpression: unsupportedAfterEffectsExpression)
   }
 }
 
@@ -182,6 +202,10 @@ extension KeyframeGroup: Hashable where T: Hashable {
   }
 }
 
+// MARK: Sendable
+
+extension KeyframeGroup: Sendable where T: Sendable { }
+
 extension Keyframe {
   /// Creates a copy of this `Keyframe` with the same timing data, but a different value
   func withValue<Value>(_ newValue: Value) -> Keyframe<Value> {
@@ -199,9 +223,11 @@ extension Keyframe {
 extension KeyframeGroup {
   /// Maps the values of each individual keyframe in this group
   func map<NewValue>(_ transformation: (T) throws -> NewValue) rethrows -> KeyframeGroup<NewValue> {
-    KeyframeGroup<NewValue>(keyframes: ContiguousArray(try keyframes.map { keyframe in
-      keyframe.withValue(try transformation(keyframe.value))
-    }))
+    KeyframeGroup<NewValue>(
+      keyframes: ContiguousArray(try keyframes.map { keyframe in
+        keyframe.withValue(try transformation(keyframe.value))
+      }),
+      unsupportedAfterEffectsExpression: unsupportedAfterEffectsExpression)
   }
 }
 
@@ -209,14 +235,21 @@ extension KeyframeGroup {
 
 /// A type-erased wrapper for `KeyframeGroup`s
 protocol AnyKeyframeGroup {
+  /// An untyped copy of these keyframes
   var untyped: KeyframeGroup<Any> { get }
+
+  /// An untyped `KeyframeInterpolator` for these keyframes
+  var interpolator: AnyValueProvider { get }
 }
 
 // MARK: - KeyframeGroup + AnyKeyframeGroup
 
-extension KeyframeGroup: AnyKeyframeGroup {
-  /// An untyped copy of these keyframes
+extension KeyframeGroup: AnyKeyframeGroup where T: AnyInterpolatable {
   var untyped: KeyframeGroup<Any> {
     map { $0 as Any }
+  }
+
+  var interpolator: AnyValueProvider {
+    KeyframeInterpolator(keyframes: keyframes)
   }
 }

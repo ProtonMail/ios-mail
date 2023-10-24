@@ -61,10 +61,6 @@ public class Keymaker: NSObject {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-
-    public var isMainKeyInMemory: Bool {
-        _mainKey != nil
-    }
     
     // stored in-memory value
     private var _mainKey: MainKey? {
@@ -86,6 +82,10 @@ public class Keymaker: NSObject {
                 NotificationCenter.default.post(name: Const.removedMainKeyFromMemory, object: self)
             }
         }
+    }
+
+    public var isMainKeyInMemory: Bool {
+        _mainKey != nil
     }
     
     // accessor for stored value; if stored value is nill - calls provokeMainKeyObtention() method

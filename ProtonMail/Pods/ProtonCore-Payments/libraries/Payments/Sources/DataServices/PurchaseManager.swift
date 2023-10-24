@@ -130,13 +130,15 @@ final class PurchaseManager: PurchaseManagerProtocol {
             planId = id
 
         case .right(let planDataSource):
-            guard let availablePlan = planDataSource.detailsOfAvailablePlanCorrespondingToIAP(plan) else {
+            guard let availablePlan = planDataSource.detailsOfAvailablePlanCorrespondingToIAP(plan),
+                  let name = availablePlan.name,
+                  let id = availablePlan.ID else {
                 // the plan details, including its id, are unknown, preventing us from doing any further operation
                 assertionFailure("Programmer's error: buy plan method must be called when the plan details are available")
                 throw StoreKitManagerErrors.transactionFailedByUnknownReason
             }
-            planName = availablePlan.name
-            planId = availablePlan.ID
+            planName = name
+            planId = id
         }
 
         var amountDue = 0

@@ -9,7 +9,7 @@ import Foundation
 
 // MARK: - Font
 
-final class Font: Codable, DictionaryInitializable {
+final class Font: Codable, Sendable, DictionaryInitializable {
 
   // MARK: Lifecycle
 
@@ -41,13 +41,13 @@ final class Font: Codable, DictionaryInitializable {
 // MARK: - FontList
 
 /// A list of fonts
-final class FontList: Codable, DictionaryInitializable {
+final class FontList: Codable, Sendable, DictionaryInitializable {
 
   // MARK: Lifecycle
 
   init(dictionary: [String: Any]) throws {
     let fontDictionaries: [[String: Any]] = try dictionary.value(for: CodingKeys.fonts)
-    fonts = try fontDictionaries.map({ try Font(dictionary: $0) })
+    fonts = try fontDictionaries.map { try Font(dictionary: $0) }
   }
 
   // MARK: Internal

@@ -18,7 +18,7 @@ protocol AnimationLayer: CALayer {
 // Context describing the timing parameters of the current animation
 struct LayerAnimationContext {
   /// The animation being played
-  let animation: Animation
+  let animation: LottieAnimation
 
   /// The timing configuration that should be applied to `CAAnimation`s
   let timingConfiguration: CoreAnimationLayer.CAMediaTimingConfiguration
@@ -38,15 +38,18 @@ struct LayerAnimationContext {
   /// The logger that should be used for assertions and warnings
   let logger: LottieLogger
 
+  /// Mutable state related to log events, stored on the `CoreAnimationLayer`.
+  let loggingState: LoggingState
+
   /// The AnimationKeypath represented by the current layer
   var currentKeypath: AnimationKeypath
 
-  /// The `AnimationTextProvider`
-  var textProvider: AnimationTextProvider
+  /// The `AnimationKeypathTextProvider`
+  var textProvider: AnimationKeypathTextProvider
 
-  /// Whether or not to log `AnimationKeypath`s for all of the animation's layers
-  ///  - Used for `CoreAnimationLayer.logHierarchyKeypaths()`
-  var logHierarchyKeypaths: Bool
+  /// Records the given animation keypath so it can be logged or collected into a list
+  ///  - Used for `CoreAnimationLayer.logHierarchyKeypaths()` and `allHierarchyKeypaths()`
+  var recordHierarchyKeypath: ((String) -> Void)?
 
   /// A closure that remaps the given frame in the child layer's local time to a frame
   /// in the animation's overall global time
@@ -83,4 +86,20 @@ struct LayerAnimationContext {
     }
     return copy
   }
+}
+
+// MARK: - LoggingState
+
+/// Mutable state related to log events, stored on the `CoreAnimationLayer`.
+final class LoggingState {
+
+  // MARK: Lifecycle
+
+  init() { }
+
+  // MARK: Internal
+
+  /// Whether or not the warning about unsupported After Effects expressions
+  /// has been logged yet for this layer.
+  var hasLoggedAfterEffectsExpressionsWarning = false
 }

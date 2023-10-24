@@ -1,7 +1,7 @@
 {
   "name": "ProtonCore-PaymentsUI",
   "module_name": "ProtonCorePaymentsUI",
-  "version": "12.0.0",
+  "version": "14.0.0",
   "summary": "shared frameworks",
   "description": "ios shared frameworks for all client apps",
   "homepage": "https://github.com/ProtonMail",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "git@gitlab.protontech.ch:apple/shared/protoncore.git",
-    "tag": "12.0.0"
+    "tag": "14.0.0"
   },
   "platforms": {
     "ios": "14.0",
@@ -47,20 +47,23 @@
     }
   },
   "dependencies": {
+    "SDWebImage": [
+
+    ],
     "ProtonCore-Log": [
-      "12.0.0"
+      "14.0.0"
     ],
     "ProtonCore-Foundations": [
-      "12.0.0"
+      "14.0.0"
     ],
     "ProtonCore-UIFoundations": [
-      "12.0.0"
+      "14.0.0"
     ],
     "ProtonCore-Observability": [
-      "12.0.0"
+      "14.0.0"
     ],
     "ProtonCore-Payments": [
-      "12.0.0"
+      "14.0.0"
     ]
   },
   "source_files": "libraries/PaymentsUI/Sources/**/*.swift",
@@ -78,17 +81,14 @@
         "ProtonCore-Payments": [
 
         ],
-        "ProtonCore-Subscriptions": [
-
-        ],
         "ProtonCore-ObfuscatedConstants": [
-          "12.0.0"
+          "14.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Observability": [
-          "12.0.0"
+          "14.0.0"
         ],
         "ProtonCore-TestingToolkit/UnitTests/Payments": [
-          "12.0.0"
+          "14.0.0"
         ]
       },
       "source_files": "libraries/PaymentsUI/Tests/UnitTests/**/*.swift"

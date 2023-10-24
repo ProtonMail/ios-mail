@@ -50,7 +50,7 @@ class CompleteViewController: UIViewController, AccessibleView {
 
     // MARK: Outlets
 
-    @IBOutlet weak var animationView: AnimationView!
+    @IBOutlet weak var animationView: LottieAnimationView!
     @IBOutlet weak var completeTitleLabel: UILabel! {
         didSet {
             completeTitleLabel.text = LUITranslation.complete_view_title.l10n
@@ -95,8 +95,7 @@ class CompleteViewController: UIViewController, AccessibleView {
     private func setupUI() {
         view.backgroundColor = ColorProvider.BackgroundNorm
         navigationItem.setHidesBackButton(true, animated: false)
-        animationView.animation = Animation.named("sign-up-create-account",
-                                                  bundle: LoginAndSignup.bundle)
+        animationView.animation = .named("sign-up-create-account", bundle: LoginAndSignup.bundle)
         animationView.loopMode = .loop
         animationView.backgroundBehavior = .pauseAndRestore
         animationView.play()

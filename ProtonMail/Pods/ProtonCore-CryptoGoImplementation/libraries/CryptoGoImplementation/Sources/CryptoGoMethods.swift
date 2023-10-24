@@ -26,7 +26,8 @@ import ProtonCoreCryptoGoInterface
 
 public enum CryptoGoMethodsImplementation: CryptoGoMethods {
 
-
+    public var ConstantsAES256: String { GoLibs.ConstantsAES256 }
+    
     case instance
 
     // initializers for types
@@ -191,6 +192,10 @@ public enum CryptoGoMethodsImplementation: CryptoGoMethods {
         GoLibs.HelperDecryptSessionKey(privateKey, passphrase, encryptedSessionKey, error)
     }
 
+    public func HelperDecryptSessionKeyExplicitVerify(_ dataPacket: Data?, _ sessionKey: ProtonCoreCryptoGoInterface.CryptoSessionKey?, _ publicKeyRing: ProtonCoreCryptoGoInterface.CryptoKeyRing?, _ verifyTime: Int64, _ error: NSErrorPointer) -> ProtonCoreCryptoGoInterface.HelperExplicitVerifyMessage? {
+        GoLibs.HelperDecryptSessionKeyExplicitVerify(dataPacket, sessionKey?.toGoLibsType, publicKeyRing?.toGoLibsType, verifyTime, error)
+    }
+    
     public func HelperDecryptAttachment(_ keyPacket: Data?, _ dataPacket: Data?, _ keyRing: ProtonCoreCryptoGoInterface.CryptoKeyRing?, _ error: NSErrorPointer) -> ProtonCoreCryptoGoInterface.CryptoPlainMessage? {
         GoLibs.HelperDecryptAttachment(keyPacket, dataPacket, keyRing?.toGoLibsType, error)
     }
