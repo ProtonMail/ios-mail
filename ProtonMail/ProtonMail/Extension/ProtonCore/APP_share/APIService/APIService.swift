@@ -28,6 +28,7 @@ import ProtonCoreLog
 import ProtonCoreKeymaker
 import ProtonCoreNetworking
 import ProtonCoreServices
+import ProtonMailAnalytics
 
 extension PMAPIService {
     private static let dispatchQueue = DispatchQueue(label: "ch.protonmail.PMAPIService.unauthorized")
@@ -102,6 +103,8 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
         self.coreKeyMaker = coreKeyMaker
         self.userDefaults = userDefaults
         defer {
+            let redactedSessionID = initialSessionUID?.redacted ?? ""
+            Breadcrumbs.shared.add(message: "AuthManagerForUnauthorizedAPIService sessionID=\(redactedSessionID)", to: .randomLogout)
             let dispatchQueue = DispatchQueue(label: "me.proton.mail.queue.unauth-session-auth-helper-delegate")
             authDelegateForUnauthorized.setUpDelegate(self, callingItOn: .asyncExecutor(dispatchQueue: dispatchQueue))
         }

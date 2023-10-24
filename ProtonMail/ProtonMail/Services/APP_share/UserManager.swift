@@ -32,6 +32,7 @@ import ProtonCorePayments
 #endif
 import ProtonCoreServices
 import ProtonCoreKeymaker
+import ProtonMailAnalytics
 
 /// TODO:: this is temp
 protocol UserDataSource: AnyObject {
@@ -521,7 +522,13 @@ extension UserManager: UserAddressUpdaterProtocol {
 
 extension UserManager: AuthHelperDelegate {
     func credentialsWereUpdated(authCredential: AuthCredential, credential: Credential, for sessionUID: String) {
+        Breadcrumbs.shared.add(message: "UserManager.credentialsWereUpdated", to: .randomLogout)
         if authCredential.isForUnauthenticatedSession {
+            let credentialsForDifferentSessions = self.authCredential.sessionID != authCredential.sessionID
+            let data = "credentialsForDifferentSessions=\(credentialsForDifferentSessions) | receivedCredentialsSession = \(authCredential.sessionID.redacted)"
+            Breadcrumbs.shared.add(message: "ERROR: UserManager.credentialsWereUpdated for unauthenticated session: \(data)", to: .randomLogout)
+            Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
+
             assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
         }
         self.authCredential = authCredential
@@ -529,7 +536,9 @@ extension UserManager: AuthHelperDelegate {
     }
 
     func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
+        Breadcrumbs.shared.add(message: "UserManager.sessionWasInvalidated session=\(sessionUID.redacted)", to: .randomLogout)
         if !isAuthenticatedSession {
+            Breadcrumbs.shared.add(message: "ERROR: UserManager.sessionWasInvalidated for unauthenticated session", to: .randomLogout)
             assertionFailure("This should never happen — the UserManager should always operate within the authenticated session. Please investigate!")
         }
         self.eventsService.stop()

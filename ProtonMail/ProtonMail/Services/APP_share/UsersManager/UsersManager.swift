@@ -266,6 +266,7 @@ class UsersManager: Service, UsersManagerProtocol {
                 self.users.append(newUser)
             }
         }
+        Breadcrumbs.shared.add(message: "restored \(self.users.count) users", to: .randomLogout)
 
         if !ProcessInfo.isRunningUnitTests {
             users.forEach { user in Task { await user.fetchUserInfo() } }

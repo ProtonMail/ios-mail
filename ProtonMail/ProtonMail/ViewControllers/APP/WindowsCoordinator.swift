@@ -135,7 +135,6 @@ final class WindowsCoordinator {
         // clean this up later.
 
         let flow = dependencies.unlockManager.getUnlockFlow()
-        Breadcrumbs.shared.add(message: "WindowsCoordinator.start unlockFlow = \(flow)", to: .randomLogout)
         if dependencies.lockCacheStatus.isAppLockedAndAppKeyEnabled {
             self.lock()
         } else {
@@ -193,11 +192,6 @@ final class WindowsCoordinator {
         }
     }
 
-    private func navigateToSignInFormAndReport(reason: UserKickedOutReason) {
-        Analytics.shared.sendEvent(.userKickedOut(reason: reason), trace: Breadcrumbs.shared.trace(for: .randomLogout))
-        go(dest: .signInWindow(.form))
-    }
-
     func go(dest: Destination) {
         DispatchQueue.main.async { // cuz
             switch dest {
@@ -235,10 +229,10 @@ final class WindowsCoordinator {
                         )
                     case .alreadyLoggedIn, .loggedInFreeAccountsLimitReached, .errored:
                         // not sure what else I can do here instead of restarting the process
-                        self?.navigateToSignInFormAndReport(reason: .unexpected(description: "\(flowResult)"))
+                        self?.go(dest: .signInWindow(.form))
                     case .dismissed:
                         assertionFailure("this should never happen as the loginFlowForFirstAccount is not dismissable")
-                        self?.navigateToSignInFormAndReport(reason: .unexpected(description: "\(flowResult)"))
+                        self?.go(dest: .signInWindow(.form))
                     }
                 }
                 let newWindow = UIWindow(root: coordinator.actualViewController, scene: self.scene)
@@ -269,8 +263,8 @@ final class WindowsCoordinator {
                             self?.go(dest: .appWindow)
                         case .mailboxPassword:
                             self?.go(dest: .signInWindow(.mailboxPassword))
-                        case .signIn(let reason):
-                            self?.navigateToSignInFormAndReport(reason: .afterLockScreen(description: reason))
+                        case .signIn:
+                            self?.go(dest: .signInWindow(.form))
                         }
                     }
                 )
@@ -553,10 +547,8 @@ extension WindowsCoordinator {
 
     @objc
     private func lock() {
-        Breadcrumbs.shared.add(message: "WindowsCoordinator.lock called", to: .randomLogout)
         guard dependencies.usersManager.hasUsers() else {
-            Breadcrumbs.shared.add(message: "WindowsCoordinator.lock no users found", to: .randomLogout)
-            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: #function))
+            go(dest: .signInWindow(.form))
             return
         }
         // The mainkey could be removed while changing the protection of the app. We should check
@@ -576,12 +568,12 @@ extension WindowsCoordinator {
         self.lockWindow = nil
 
         guard dependencies.usersManager.hasUsers() else {
-            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
+            go(dest: .signInWindow(.form))
             return
         }
         if dependencies.usersManager.count <= 0 {
             _ = dependencies.usersManager.clean()
-            navigateToSignInFormAndReport(reason: .noUsersFoundInUsersManager(action: "\(#function) \(#line)"))
+            go(dest: .signInWindow(.form))
         } else {
             // To register again in case the registration on app launch didn't go through because the app was locked
             UNUserNotificationCenter.current().delegate = dependencies.pushService
