@@ -24,7 +24,6 @@ import XCTest
 final class WindowsCoordinatorTests: XCTestCase {
     private var sut: WindowsCoordinator!
     private var testContainer: TestContainer!
-    private var mockUsersManager: UsersManager!
     private var unlockManagerDelegateMock: MockUnlockManagerDelegate!
     private var cacheStatusStub: CacheStatusStub!
 
@@ -35,8 +34,6 @@ final class WindowsCoordinatorTests: XCTestCase {
         unlockManagerDelegateMock = .init()
         cacheStatusStub = .init()
 
-        mockUsersManager = UsersManager(userDefaultCache: testContainer.userCachedStatus, dependencies: testContainer)
-        testContainer.usersManagerFactory.register { self.mockUsersManager }
         testContainer.lockCacheStatusFactory.register { self.cacheStatusStub }
 
         await setupDependencies()
@@ -49,7 +46,6 @@ final class WindowsCoordinatorTests: XCTestCase {
 
         sut = nil
         testContainer = nil
-        mockUsersManager = nil
         unlockManagerDelegateMock = nil
         cacheStatusStub = nil
     }
