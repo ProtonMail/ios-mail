@@ -2044,8 +2044,11 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Editare imagine";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Selectare toate";
+
 /* The title of PIN code disable view  */
-"Disable PIN code" = "Disable PIN code";
+"Disable PIN code" = "Dezactivare cod PIN";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Setare cod PIN";

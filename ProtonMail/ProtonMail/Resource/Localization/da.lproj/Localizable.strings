@@ -1632,7 +1632,7 @@
 "Warning: suspected fake website" = "Advarsel: mistanke om falsk websted";
 
 /* The content of the link confirmation alert of spam email. */
-"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Dette link fører til en hjemmeside, der kan forsøge at stjæle dine oplysninger, såsom adgangskoder og kreditkortoplysninger.\n%@\n\nFor din egen sikkerheds skyld skal du ikke fortsætte.";
+"This link leads to a website that might be trying to steal your information, such as passwords and credit card details.\n%@\n\nFor your security, do not continue." = "Dette link fører til en hjemmeside, der kan forsøge at stjæle dine oplysninger, såsom adgangskoder og betalingskortoplysninger.\n%@\n\nFor din egen sikkerheds skyld skal du ikke fortsætte.";
 
 /* The title of the button to open the link in spam mail. */
 "Ignore warning and continue" = "Ignorer advarsel og fortsæt";
@@ -2043,6 +2043,9 @@
 
 /* The button text for edit profile picture */
 "Edit photo" = "Redigér foto";
+
+/* The title of select all button for select all messages feature */
+"Select all" = "Vælg alle";
 
 /* The title of PIN code disable view  */
 "Disable PIN code" = "Deaktivér pinkode";

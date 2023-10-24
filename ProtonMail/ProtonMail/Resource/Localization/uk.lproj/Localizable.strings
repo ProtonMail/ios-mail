@@ -159,7 +159,7 @@
 "At %@" = "%@";
 
 /* On {date}, e.g.: On Aug 14 */
-"On %@" = "В %@";
+"On %@" = "%@";
 
 /* On {date} at {time}, e.g.: On Sat, Aug 14, 2021 at 19:00 */
 "On %@ at %@" = "%1$@, %2$@";
@@ -474,7 +474,7 @@
 "The request timed out." = "Час очікування запиту завершився.";
 
 /* Message */
-"Proton servers are unreachable.\nVisit our status page for details." = "Сервери Proton недоступні.\nВідвідайте нашу сторінку статусу для подробиць.";
+"Proton servers are unreachable.\nVisit our status page for details." = "Сервери Proton недоступні.\nПерегляньте подробиці на нашій сторінці статусу.";
 
 /* Title */
 "No connectivity detected…" = "Не виявлено зʼєднання…";
@@ -783,7 +783,7 @@
 "You have used up all of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали весь обсяг свого сховища (%@). Перейдіть на тарифний план вищого рівня, щоб надсилати й отримувати електронні листи.";
 
 /* Content of space warning */
-"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали %1$d%% місця у сховищі (%2$@). Будь ласка, покращте свій тарифний план, щоб продовжити надсилати та отримувати листи.";
+"You have used %d%% of your storage space (%@). Please upgrade your plan to continue to send and receive emails." = "Ви використали %1$d%% обсягу свого сховища (%2$@). Перейдіть на тарифний план вищого рівня, щоб надсилати й отримувати електронні листи.";
 
 /* Alert title */
 "Storage full" = "Сховище заповнене";
@@ -921,7 +921,7 @@
 "Message expired" = "Термін дії повідомлення завершився";
 
 /* expiration time count down */
-"This message will expire in %dD %dH %dM" = "Термін дії цього повідомлення завершиться через %1$dД %2$dГ %3$dХв";
+"This message will expire in %dD %dH %dM" = "Термін дії цього повідомлення завершиться через %1$dД %2$dГ %3$dХВ";
 
 /* Action */
 "Sign Out" = "Вийти";
@@ -1113,7 +1113,7 @@
 "Insecure connection" = "Незахищене з'єднання";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Не вдалося засвідчити сертифікат TLS. Ваше з'єднання може відстежуватись, тому задля вашої безпеки програма тимчасово заблокована.\n\nНегайно перемкнути мережу.";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nSwitch networks immediately." = "Не вдалося засвідчити сертифікат TLS. Ваше з'єднання може відстежуватись, тому задля вашої безпеки програма тимчасово заблокована.\n\nНегайно змініть мережу.";
 
 /* Cert pinning failed alert message */
 "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety." = "Не вдалося засвідчити сертифікат TLS. Ваше з'єднання може відстежуватись, тому задля вашої безпеки програма тимчасово заблокована.";
@@ -1239,7 +1239,7 @@
 "Selected" = "Вибрані";
 
 /* The title of last update status of more than 1 hour */
-"Updated >1 hour ago" = "Оновлено >1 години тому";
+"Updated >1 hour ago" = "Оновлено понад годину тому";
 
 /* The title of last update status of updated just now */
 "Updated just now" = "Щойно оновлено";
@@ -1512,7 +1512,7 @@
 "Open account switcher" = "Відкрити перемикач облікових записів";
 
 /* text displayed in composer when attachments are uploading */
-"Sending will be available\nwhen attachments are uploaded" = "Надсилання буде можливе \nколи вивантажаться вкладення";
+"Sending will be available\nwhen attachments are uploaded" = "Надсилання буде можливе\nколи вивантажаться вкладення";
 
 /* Alert title when attachment upload failed */
 "Attachment failure" = "Помилка вкладення";
@@ -1782,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "Відтепер ви можете вибирати й переставляти дії на цій панелі";
 
 /* Button to block a sender */
-"Block messages from this sender" = "Блокувати повідомлення від цього відправника.";
+"Block messages from this sender" = "Заблокувати повідомлення від цього відправника";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "Блокувати";
@@ -1961,7 +1961,7 @@
 "Bug Report Place Holder" = "---Допоможіть нам усунути вашу проблему, надавши якомога більше подробиць---\n\nПідсумок:\n\nЧи траплялася проблема більше одного разу: так/ні \nКроки для відтворення проблеми: \nОчікуваний результат: \nФактичний результат: \nКоментарі:";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Включаючи журнали";
+"Include logs" = "Долучити журнали";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "Спробуйте інший пошуковий термін.";
@@ -1988,7 +1988,7 @@
 "Enable" = "Увімкнути";
 
 /* Text to advertise the auto delete feature to free users */
-"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Покращте підписку, щоб автоматично видаляти повідомлення, які перебували у смітнику або спамі понад 30 днів.";
+"Upgrade to automatically delete messages that have been in trash or spam for more than 30 days." = "Передплатіть тарифний план, щоб повідомлення, які перебувають у смітнику або спамі понад 30 днів, видалялися автоматично.";
 
 /* Text to prompt paid users to enable the auto delete feature */
 "Automatically delete messages that have been in trash for more than 30 days." = "Автоматично видаляти повідомлення, які перебувають у смітнику понад 30 днів.";
@@ -2006,19 +2006,19 @@
 "Empty trash" = "Очистити смітник";
 
 /* Title of the sheet to advertise the auto delete feature to free users */
-"Clear out the junk" = "Очистити небажану пошту";
+"Clear out the junk" = "Приберіть усе зайве";
 
 /* Text content of the sheet to advertise the auto delete feature to free users */
-"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Автоматично очищайте повідомлення, яким понад 30 днів, від сміття та спаму. Скористайтеся цією та іншими перевагами під час поліпшенням підписки.";
+"Automatically clear out messages older than 30 days from trash and spam. Enjoy this and other benefits when you upgrade." = "Автоматично очищуйте повідомлення зі спаму та смітника через 30 днів. Скористайтеся цими та іншими перевагами після передплати.";
 
 /* Text to advertise what upgrading will provide */
 "Up to 3 TB of storage" = "До 3 ТБ сховища";
 
 /* Text to advertise what upgrading will provide */
-"Custom email domains" = "Власні поштові домени";
+"Custom email domains" = "Власні домени електронної пошти";
 
 /* Alert title, shows when current sender address in the composer is invalid anymore. */
-"Sender changed" = "Відправника змінено";
+"Sender changed" = "Змінився відправник";
 
 /* Alert message, shows when current sender address in the composer is invalid anymore, the placeholder is a mail address. */
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "Початковий відправник цього повідомлення більше недійсний. Ваше повідомлення буде надіслано з типової адреси %@.";
@@ -2033,7 +2033,7 @@
 "Last name" = "Прізвище";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Поле ім'я не може бути порожнім";
+"Display name field cannot be empty" = "Потрібно заповнити поле з іменем";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
 "Contact name is too long" = "Ім'я контакту задовге";
@@ -2044,8 +2044,11 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Редагувати фото";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Select all";
+
 /* The title of PIN code disable view  */
-"Disable PIN code" = "Disable PIN code";
+"Disable PIN code" = "Вимкнути PIN-код";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Встановити PIN-код";
@@ -2081,4 +2084,4 @@
 "Unsubscribe?" = "Відписатися?";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Це скасує вашу підписку на список розсилки. Відправника буде сповіщено більше не надсилати електронні листи на цю адресу.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "Ви відмовитеся від цього списку розсилки. Відправник отримає сповіщення про вашу відмову від роозсилки за цією адресою.";

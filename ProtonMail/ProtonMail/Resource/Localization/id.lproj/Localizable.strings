@@ -2044,6 +2044,9 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Sunting foto";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Pilih semua";
+
 /* The title of PIN code disable view  */
 "Disable PIN code" = "Nonaktifkan kode PIN";
 

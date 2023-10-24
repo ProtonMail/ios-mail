@@ -2044,8 +2044,11 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Fotoğrafı düzenle";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Tümünü seç";
+
 /* The title of PIN code disable view  */
-"Disable PIN code" = "Disable PIN code";
+"Disable PIN code" = "PIN kodunu kullanımdan kaldır";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "PIN kodu ayarla";

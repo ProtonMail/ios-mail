@@ -1782,7 +1782,7 @@
 "You can now choose and rearrange the actions in this bar" = "现已支持选择并排列此栏中的操作";
 
 /* Button to block a sender */
-"Block messages from this sender" = "Block messages from this sender";
+"Block messages from this sender" = "阻止来自该发件人的邮件";
 
 /* Button to block a sender, keep it short to fit in the UI */
 "Block" = "屏蔽";
@@ -2024,19 +2024,19 @@
 "The original sender of this message is no longer valid. Your message will be sent from your default address %@." = "此邮件原先的发件地址已不再有效，邮件将由您的默认地址 %@ 发送。";
 
 /* The placeholder for the display name text field in contact edit view. */
-"Display name" = "Display name";
+"Display name" = "显示名称";
 
 /* The placeholder for the first name text field in contact edit view. */
-"First name" = "First name";
+"First name" = "名";
 
 /* The placeholder for the last name text field in contact edit view. */
-"Last name" = "Last name";
+"Last name" = "姓";
 
 /* The error message that is shown when no display name provided in contact edit view */
-"Display name field cannot be empty" = "Display name field cannot be empty";
+"Display name field cannot be empty" = "显示名称字段不能为空";
 
 /* The error message that is shown when display name is too long provided in contact edit view */
-"Contact name is too long" = "Contact name is too long";
+"Contact name is too long" = "联系人姓名太长";
 
 /* The button text for add profile picture */
 "Add photo" = "添加照片";
@@ -2044,8 +2044,11 @@
 /* The button text for edit profile picture */
 "Edit photo" = "编辑照片";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Select all";
+
 /* The title of PIN code disable view  */
-"Disable PIN code" = "Disable PIN code";
+"Disable PIN code" = "禁用 PIN 码";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "设置口令";
@@ -2078,7 +2081,7 @@
 "Unsubscribe from mailing list" = "取消订阅";
 
 /* The title of unsubscribe confirmation */
-"Unsubscribe?" = "Unsubscribe?";
+"Unsubscribe?" = "取消订阅？";
 
 /* Unsubscribe confirmation message */
-"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.";
+"This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." = "这将使您从邮件列表中取消订阅。发件人将收到通知，不再向该地址发送电子邮件。";

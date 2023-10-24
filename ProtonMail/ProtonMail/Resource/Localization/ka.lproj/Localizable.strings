@@ -2045,8 +2045,11 @@
 /* The button text for edit profile picture */
 "Edit photo" = "სურათის ჩასწორება";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "ყველაფრის მონიშვნა";
+
 /* The title of PIN code disable view  */
-"Disable PIN code" = "Disable PIN code";
+"Disable PIN code" = "PIN-კოდის გათიშვა";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "დააყენეთ PIN კოდი";

@@ -1554,7 +1554,7 @@
 "Collapse message" = "Згарнуць паведамленне";
 
 /* The title of section inside the dark mode setting page */
-"Appearance" = "Знешні выгляд";
+"Appearance" = "Вонкавы выгляд";
 
 /* The title of follow system option in dark mode setting */
 "Follow device setting" = "Згодна з наладамі прылады";
@@ -2044,8 +2044,11 @@
 /* The button text for edit profile picture */
 "Edit photo" = "Рэдагаваць фатаграфію";
 
+/* The title of select all button for select all messages feature */
+"Select all" = "Выбраць усе";
+
 /* The title of PIN code disable view  */
-"Disable PIN code" = "Disable PIN code";
+"Disable PIN code" = "Адключэнне PIN-кода";
 
 /* The title of PIN code setup1 view  */
 "Set PIN code" = "Задаць PIN-код";
