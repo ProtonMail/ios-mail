@@ -125,7 +125,7 @@ private extension MailAnalyticsEvent {
         let message: String
         switch self {
         case .userKickedOut:
-            message = "User kicked out"
+            message = "User unwanted log out"
         case .protonUnreachableBannerShown:
             message = "Proton unreachable banner shown"
         }
@@ -144,21 +144,12 @@ private extension MailAnalyticsEvent {
 
 public enum UserKickedOutReason {
     case apiAccessTokenInvalid
-    case afterLockScreen(description: String)
-    case noUsersFoundInUsersManager(action: String)
-    case unexpected(description: String)
 
     var description: String {
         let description: String
         switch self {
         case .apiAccessTokenInvalid:
             description = "user access token is not valid anymore"
-        case .afterLockScreen(let message):
-            description = "after lock screen (\(message))"
-        case .noUsersFoundInUsersManager(let action):
-            description = "no users found for action (\(action))"
-        case .unexpected(let message):
-            description = "unexpected (\(message))"
         }
         return description
     }

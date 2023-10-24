@@ -209,7 +209,6 @@ final class UnlockManager {
         unlockFailed: (() -> Void)? = nil,
         unlocked: (() -> Void)? = nil
     ) {
-        Breadcrumbs.shared.add(message: "UnlockManager.unlockIfRememberedCredentials called", to: .randomLogout)
         guard let delegate else {
             SystemLogger.log(message: "UnlockManager delegate is nil", category: .loginUnlockFailed, isError: true)
             unlockFailed?()
