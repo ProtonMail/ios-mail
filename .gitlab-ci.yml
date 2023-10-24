@@ -51,11 +51,6 @@ stages:
   - sh xcodeGenHelper.sh
   - cd ..
 
-.prepare_users_for_ui_tests: &prepare_users_for_ui_tests
-  - cd ProtonMail/ProtonMailUITests
-  - sh Tests/TestPlans/scripts/prepare_users.sh
-  - cd ../..
-
 .configure_sentry: &configure_sentry
   - curl -sL https://sentry.io/get-cli/ | bash || true
 
@@ -261,7 +256,6 @@ test:ui:feature:
     reports:
       junit: test_output/TestResults/report.xml
   before_script:
-    - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
     - *setup_project
   script:
     - cd ProtonMail
@@ -288,7 +282,6 @@ test:ui:regression:
     reports:
       junit: test_output/TestResults/report.xml
   before_script:
-    - bash <(curl -s https://raw.githubusercontent.com/TitouanVanBelle/XCTestHTMLReport/master/install.sh) '2.0.0'
     - *setup_project
   script:
     - cd ProtonMail
