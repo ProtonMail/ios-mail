@@ -191,6 +191,7 @@ extension InternetConnectionStatusProvider {
 
     private func invalidateTimer() {
         DispatchQueue.main.async {
+            guard self.doubleCheckTimer != nil else { return }
             self.log(message: "Invalid double check timer")
             self.doubleCheckTimer?.invalidate()
             self.doubleCheckTimer = nil
