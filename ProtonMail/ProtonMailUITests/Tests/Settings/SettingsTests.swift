@@ -21,8 +21,8 @@ class SettingsTests : FixtureAuthenticatedTestCase {
         }
     }
 
-    func testEditAutoLockTime() {
-        MenuRobot()
+    func testEditAutoLockTime() async {
+        await MenuRobot()
             .settings()
             .pin()
             .enablePin()
@@ -47,10 +47,10 @@ class SettingsTests : FixtureAuthenticatedTestCase {
     }
 
     @MainActor
-    func testEnableAndDisablePinForMultipleAccounts() throws {
+    func testEnableAndDisablePinForMultipleAccounts() async throws {
         let secondAccount = createUser(scenarioName: scenario.name, plan: UserPlan.mailpro2022, isEnableEarlyAccess: false)
 
-        MenuRobot()
+        await MenuRobot()
             .accountsList()
             .manageAccounts()
             .addAccount()

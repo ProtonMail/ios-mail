@@ -136,9 +136,9 @@ class MailboxRobotInterface: CoreElements {
     }
 
     
-    func backgroundApp() -> PinRobot {
+    func backgroundApp() async -> PinRobot {
         XCUIDevice.shared.press(.home)
-        sleep(3)    //It's always more stable when there is a small gap between background and foreground
+        await sleep(milliseconds: 3000)    //It's always more stable when there is a small gap between background and foreground
         return PinRobot()
     }
 

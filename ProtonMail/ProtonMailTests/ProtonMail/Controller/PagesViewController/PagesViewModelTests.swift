@@ -140,7 +140,7 @@ final class PagesViewModelTests: XCTestCase {
 //            context.delete(result[0])
 //            _ = context.saveUpstreamIfNeeded()
 //        }
-//        wait(for: [expectation1], timeout: 5)
+//        wait(for: [expectation1], timeout: 3)
 //    }
 
     func testNotPopUp_after_other_messageIsDeleted() {
@@ -168,7 +168,7 @@ final class PagesViewModelTests: XCTestCase {
             context.delete(result[0])
             _ = context.saveUpstreamIfNeeded()
         }
-        wait(for: [expectation1], timeout: 5)
+        wait(for: [expectation1], timeout: 3)
     }
 
     // Disable, due to unknown issue, won't receive delete event 
@@ -202,7 +202,7 @@ final class PagesViewModelTests: XCTestCase {
 //            }
 //            _ = context.saveUpstreamIfNeeded()
 //        }
-//        wait(for: [expectation1], timeout: 5)
+//        wait(for: [expectation1], timeout: 3)
 //    }
 
     func testNotPopUp_after_other_conversationIsDeleted() {
@@ -233,7 +233,7 @@ final class PagesViewModelTests: XCTestCase {
             }
             _ = context.saveUpstreamIfNeeded()
         }
-        wait(for: [expectation1], timeout: 5)
+        wait(for: [expectation1], timeout: 3)
     }
 }
 

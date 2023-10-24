@@ -55,13 +55,13 @@ class EncryptedCacheTests: XCTestCase {
         try super.tearDownWithError()
     }
 
-    func testValuesAreEncrypted() throws {
+    func testValuesAreEncrypted() async throws {
         let key = "foo"
         let value = Data("foo".utf8)
 
         try sut.encryptAndSaveData(value, forKey: key)
 
-        Thread.sleep(forTimeInterval: 0.2)
+        await sleep(milliseconds: 200)
 
         let storedData = try XCTUnwrap(internalCache.data(forKey: key))
 
@@ -73,7 +73,7 @@ class EncryptedCacheTests: XCTestCase {
         XCTAssertEqual(value, plaintext)
     }
 
-    func testRemove_removesTheValue() throws {
+    func testRemove_removesTheValue() async throws {
         let keys = ["foo", "bar"]
         let value = Data("foo".utf8)
 
@@ -83,14 +83,14 @@ class EncryptedCacheTests: XCTestCase {
 
         sut.purge()
 
-        Thread.sleep(forTimeInterval: 0.2)
+        await sleep(milliseconds: 200)
 
         for key in keys {
             XCTAssertNil(try sut.decryptedData(forKey: key))
         }
     }
 
-    func testPurge_removesAllValues() throws {
+    func testPurge_removesAllValues() async throws {
         let keys = ["foo", "bar"]
         let value = Data("foo".utf8)
 
@@ -100,7 +100,7 @@ class EncryptedCacheTests: XCTestCase {
 
         sut.removeData(forKey: keys[0])
 
-        Thread.sleep(forTimeInterval: 0.2)
+        await sleep(milliseconds: 200)
 
         XCTAssertNil(try sut.decryptedData(forKey: keys[0]))
         XCTAssertNotNil(try sut.decryptedData(forKey: keys[1]))
