@@ -28,7 +28,17 @@ import ProtonCorePayments
 import ProtonCoreUtilities
 import ProtonCoreFeatureSwitch
 
-enum FooterType {
+enum FooterType: Equatable {
+    static func == (lhs: FooterType, rhs: FooterType) -> Bool {
+        switch (lhs, rhs) {
+        case (.withPlansToBuy, .withPlansToBuy): return true
+        case (.withoutPlansToBuy, .withoutPlansToBuy): return true
+        case (.withExtendSubscriptionButton, .withExtendSubscriptionButton): return true
+        case (.disabled, .disabled): return true
+        default: return false
+        }
+    }
+    
     case withPlansToBuy
     case withoutPlansToBuy
     case withExtendSubscriptionButton(PlanPresentation)
@@ -175,7 +185,6 @@ class PaymentsUIViewModel {
     }
     
     func fetchPlans() async throws {
-        footerType = .withoutPlansToBuy
         try await fetchIAPAvailability()
         switch mode {
         case .signup:
@@ -187,6 +196,16 @@ class PaymentsUIViewModel {
         case .update:
             try await fetchAvailablePlans()
             try await fetchPaymentMethods()
+            footerType = .withPlansToBuy
+        }
+        setFooterType()
+    }
+    
+    private func setFooterType() {
+        if !(availablePlans?.isEmpty ?? true) {
+            footerType = .withPlansToBuy
+        } else {
+            footerType = .withoutPlansToBuy
         }
     }
     

@@ -98,6 +98,49 @@ public extension ServerConfig {
     }
 }
 
+extension DoH {
+    public struct PinningConfigurationEntry {
+        static let catchAllHost = "*"
+
+        let allowSubdomains: Bool
+        let allowIPs: Bool
+
+        public init(allowSubdomains: Bool, allowIPs: Bool) {
+            self.allowIPs = allowIPs
+            self.allowSubdomains = allowSubdomains
+        }
+
+        func allowsHost(_ host: String, for configuredHost: String) -> Bool {
+            let host = host.lowercased()
+            let configuredHost = configuredHost.lowercased().trimmingCharacters(in: .init(charactersIn: "."))
+
+            if host == configuredHost {
+                return true
+            } else if allowSubdomains && host.hasSuffix(".\(configuredHost)") {
+                return true
+            } else if configuredHost == Self.catchAllHost && allowIPs && host.isIp {
+                return true
+            }
+            return false
+        }
+    }
+
+    static internal var pinningConfiguration: [String: PinningConfigurationEntry] = [:]
+
+    public class func setPinningConfiguration(_ configuration: [String: PinningConfigurationEntry]) {
+        pinningConfiguration = configuration
+    }
+
+    public class func hostIsPinned(_ host: String) -> Bool {
+        for (pinnedHost, entry) in pinningConfiguration {
+            if entry.allowsHost(host, for: pinnedHost) {
+                return true
+            }
+        }
+        return false
+    }
+}
+
 public extension ServerConfig {
     @available(*, deprecated, message: "No longer needed not used, can be deleted")
     var apiHost: String { "" }
@@ -229,6 +272,16 @@ public extension DoHInterface {
         Task {
             await synchronizeCookies(with: response, requestHeaders: requestHeaders)
             completion()
+        }
+    }
+}
+
+fileprivate extension String {
+    var isIp: Bool {
+        return withCString { cStringPtr in
+            var addr = in6_addr()
+            return inet_pton(AF_INET, cStringPtr, &addr) == 1 ||
+                   inet_pton(AF_INET6, cStringPtr, &addr) == 1
         }
     }
 }

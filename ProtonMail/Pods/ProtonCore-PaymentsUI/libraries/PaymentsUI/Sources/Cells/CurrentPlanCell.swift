@@ -165,8 +165,8 @@ extension CurrentPlanCell {
         planNameLabel.text = currentPlan.details.title
         planDescriptionLabel.text = PUITranslations.current_plan_title.l10n
         
-        priceLabel.isHidden = false
-        priceDescriptionLabel.isHidden = false
+        priceLabel.isHidden = currentPlan.details.hidePriceDetails
+        priceDescriptionLabel.isHidden = currentPlan.details.hidePriceDetails
         priceLabel.text = currentPlan.details.price
         priceDescriptionLabel.text = currentPlan.details.cycleDescription
         

@@ -50,9 +50,17 @@ public final class Payments {
 
     lazy var storeKitDataSource: StoreKitDataSource = StoreKitDataSource()
 
+    private enum FeatureFlagError: Error {
+        case wrongConfiguration
+    }
+
     public internal(set) lazy var planService: Either<ServicePlanDataServiceProtocol, PlansDataSourceProtocol> = {
         if FeatureFactory.shared.isEnabled(.dynamicPlans) {
-            return .right(PlansDataSource(apiService: apiService, storeKitDataSource: storeKitDataSource))
+            return .right(PlansDataSource(
+                apiService: apiService,
+                storeKitDataSource: storeKitDataSource,
+                localStorage: localStorage
+            ))
         } else {
             return .left(
                 ServicePlanDataService(
@@ -132,6 +140,29 @@ public final class Payments {
         storeKitManager.refreshHandler = { _ in }
 
         storeKitManager.delegate = nil
+    }
+    
+    public func updateService(completion: @escaping (Result<(), Error>) -> Void) {
+        switch planService {
+        case .left(let planService):
+            storeKitManager.updateAvailableProductsList { error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+
+                planService.updateServicePlans(success: { completion(.success) }, failure: { error in completion(.failure(error)) })
+            }
+        case .right(let plansDataSource):
+            Task {
+                do {
+                    try await plansDataSource.fetchIAPAvailability()
+                    completion(.success)
+                } catch {
+                    completion(.failure(error))
+                }
+            }
+        }
     }
 }
 

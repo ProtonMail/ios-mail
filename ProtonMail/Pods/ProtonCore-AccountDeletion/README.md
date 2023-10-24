@@ -163,6 +163,17 @@ Variants:
 * `ProtonCore-Features/UsingCrypto`
 * `ProtonCore-Features/UsingCryptoVPN`
 
+### Feature Flags
+
+Common cross-app unleash feature flags. 
+It is exposed only as a swift package
+
+README: [Doc](libraries/FeatureFlags/README.md)
+
+Sources: [libraries/FeatureFlags](libraries/FeatureFlags/)
+
+Platforms supported: iOS, macOS
+
 
 ### ForceUpgrade
 

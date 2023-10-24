@@ -43,7 +43,9 @@ public enum ADTranslation: TranslationsExposing {
     case delete_account_success
     case delete_close_button
     case delete_network_error
+    case api_might_be_blocked_button
     case api_might_be_blocked_message
+
     
     public var l10n: String {
         switch self {
@@ -61,6 +63,8 @@ public enum ADTranslation: TranslationsExposing {
             return localized(key: "OK", comment: "Action")
         case .delete_network_error:
             return localized(key: "A networking error has occured", comment: "A generic error message when we have no better message from the backend")
+        case .api_might_be_blocked_button:
+            return localized(key: "Troubleshoot", comment: "Button for the error banner shown when we suspect that the Proton servers are blocked")
         case .api_might_be_blocked_message:
             return localized(key: "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked", comment: "Message shown when we suspect that the Proton servers are blocked")
         }

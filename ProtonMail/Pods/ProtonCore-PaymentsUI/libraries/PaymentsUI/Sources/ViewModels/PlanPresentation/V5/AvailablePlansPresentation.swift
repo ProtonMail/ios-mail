@@ -82,7 +82,8 @@ class AvailablePlansPresentation {
             defaultCycle: defaultCycle,
             plansDataSource: plansDataSource
         ) else { return nil }
-        return .init(availablePlan: nil, details: details)
+        let availablePlan: InAppPurchasePlan? = details.isFreePlan ? .freePlan : nil
+        return .init(availablePlan: availablePlan, details: details)
     }
 }
 

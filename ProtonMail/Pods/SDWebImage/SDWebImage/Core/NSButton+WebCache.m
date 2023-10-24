@@ -12,9 +12,10 @@
 
 #import "objc/runtime.h"
 #import "UIView+WebCacheOperation.h"
-#import "UIView+WebCacheState.h"
 #import "UIView+WebCache.h"
 #import "SDInternalMacros.h"
+
+static NSString * const SDAlternateImageOperationKey = @"NSButtonAlternateImageOperation";
 
 @implementation NSButton (WebCache)
 
@@ -58,6 +59,7 @@
                    context:(nullable SDWebImageContext *)context
                   progress:(nullable SDImageLoaderProgressBlock)progressBlock
                  completed:(nullable SDExternalCompletionBlock)completedBlock {
+    self.sd_currentImageURL = url;
     [self sd_internalSetImageWithURL:url
                     placeholderImage:placeholder
                              options:options
@@ -111,13 +113,15 @@
                             context:(nullable SDWebImageContext *)context
                            progress:(nullable SDImageLoaderProgressBlock)progressBlock
                           completed:(nullable SDExternalCompletionBlock)completedBlock {
+    self.sd_currentAlternateImageURL = url;
+    
     SDWebImageMutableContext *mutableContext;
     if (context) {
         mutableContext = [context mutableCopy];
     } else {
         mutableContext = [NSMutableDictionary dictionary];
     }
-    mutableContext[SDWebImageContextSetImageOperationKey] = @keypath(self, alternateImage);
+    mutableContext[SDWebImageContextSetImageOperationKey] = SDAlternateImageOperationKey;
     @weakify(self);
     [self sd_internalSetImageWithURL:url
                     placeholderImage:placeholder
@@ -138,23 +142,29 @@
 #pragma mark - Cancel
 
 - (void)sd_cancelCurrentImageLoad {
-    [self sd_cancelImageLoadOperationWithKey:nil];
+    [self sd_cancelImageLoadOperationWithKey:NSStringFromClass([self class])];
 }
 
 - (void)sd_cancelCurrentAlternateImageLoad {
-    [self sd_cancelImageLoadOperationWithKey:@keypath(self, alternateImage)];
+    [self sd_cancelImageLoadOperationWithKey:SDAlternateImageOperationKey];
 }
 
-#pragma mark - State
+#pragma mark - Private
 
 - (NSURL *)sd_currentImageURL {
-    return [self sd_imageLoadStateForKey:nil].url;
+    return objc_getAssociatedObject(self, @selector(sd_currentImageURL));
 }
 
-#pragma mark - Alternate State
+- (void)setSd_currentImageURL:(NSURL *)sd_currentImageURL {
+    objc_setAssociatedObject(self, @selector(sd_currentImageURL), sd_currentImageURL, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 - (NSURL *)sd_currentAlternateImageURL {
-    return [self sd_imageLoadStateForKey:@keypath(self, alternateImage)].url;
+    return objc_getAssociatedObject(self, @selector(sd_currentAlternateImageURL));
+}
+
+- (void)setSd_currentAlternateImageURL:(NSURL *)sd_currentAlternateImageURL {
+    objc_setAssociatedObject(self, @selector(sd_currentAlternateImageURL), sd_currentAlternateImageURL, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end

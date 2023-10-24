@@ -1,0 +1,128 @@
+{
+  "identifier" : "B66B972D",
+  "nonRenewingSubscriptions" : [
+    {
+      "displayPrice" : "59.99",
+      "familyShareable" : false,
+      "internalID" : "1611046486",
+      "localizations" : [
+        {
+          "description" : "1-year subscription to Mail Plus",
+          "displayName" : "Mail Plus (1 year)",
+          "locale" : "en_GB"
+        },
+        {
+          "description" : "1-year subscription to Mail Plus",
+          "displayName" : "Mail Plus (1 year)",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "iosmail_mail2022_12_usd_non_renewing",
+      "referenceName" : "Mail Plus 2022 (1 year) non renewing ",
+      "type" : "NonRenewingSubscription"
+    },
+    {
+      "displayPrice" : "149.99",
+      "familyShareable" : false,
+      "internalID" : "1611045755",
+      "localizations" : [
+        {
+          "description" : "1-year subscription to Proton Unlimited",
+          "displayName" : "Proton Unlimited",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "iosmail_bundle2022_12_usd_non_renewing",
+      "referenceName" : "Proton Bundle 2022 (1 year) non renewing",
+      "type" : "NonRenewingSubscription"
+    },
+    {
+      "displayPrice" : "59.99",
+      "familyShareable" : false,
+      "internalID" : "1435657539",
+      "localizations" : [
+        {
+          "description" : "A 1-year subscription to ProtonMail Plus.",
+          "displayName" : "ProtonMail Plus (1 year)",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "ios_plus_12_usd_non_renewing",
+      "referenceName" : "ProtonMail Plus (1 year) non renewing",
+      "type" : "NonRenewingSubscription"
+    }
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "979659905",
+    "_developerTeamID" : "2SB5Z68H26",
+    "_lastSynchronizedDate" : 719238177.830199
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "20858186",
+      "localizations" : [
+
+      ],
+      "name" : "Mail Plans",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "59.99",
+          "familyShareable" : false,
+          "groupNumber" : 4,
+          "internalID" : "1611046981",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Mail Plus 2022",
+              "displayName" : "Mail Plus 2022",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "iosmail_mail2022_12_usd_auto_renewing",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Mail Plus 2022 (1 year) auto-renewing",
+          "subscriptionGroupID" : "20858186",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "149.99",
+          "familyShareable" : false,
+          "groupNumber" : 3,
+          "internalID" : "1611046290",
+          "introductoryOffer" : null,
+          "localizations" : [
+            {
+              "description" : "Proton Bundle 2022",
+              "displayName" : "Proton Bundle 2022",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "iosmail_bundle2022_12_usd_auto_renewing",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Proton Bundle 2022 (1 year) auto-renewing",
+          "subscriptionGroupID" : "20858186",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 2,
+    "minor" : 0
+  }
+}

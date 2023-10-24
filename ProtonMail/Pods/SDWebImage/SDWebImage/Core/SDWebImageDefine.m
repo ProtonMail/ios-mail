@@ -23,7 +23,20 @@ inline CGFloat SDImageScaleFactorForKey(NSString * _Nullable key) {
     if (!key) {
         return scale;
     }
-    // Now all OS supports retina display scale system
+    // Check if target OS support scale
+#if SD_WATCH
+    if ([[WKInterfaceDevice currentDevice] respondsToSelector:@selector(screenScale)])
+#elif SD_UIKIT
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+#elif SD_MAC
+    NSScreen *mainScreen = nil;
+    if (@available(macOS 10.12, *)) {
+        mainScreen = [NSScreen mainScreen];
+    } else {
+        mainScreen = [NSScreen screens].firstObject;
+    }
+    if ([mainScreen respondsToSelector:@selector(backingScaleFactor)])
+#endif
     {
         // a@2x.png -> 8
         if (key.length >= 8) {
@@ -138,13 +151,11 @@ SDWebImageContextOption const SDWebImageContextImageCache = @"imageCache";
 SDWebImageContextOption const SDWebImageContextImageLoader = @"imageLoader";
 SDWebImageContextOption const SDWebImageContextImageCoder = @"imageCoder";
 SDWebImageContextOption const SDWebImageContextImageTransformer = @"imageTransformer";
-SDWebImageContextOption const SDWebImageContextImageForceDecodePolicy = @"imageForceDecodePolicy";
 SDWebImageContextOption const SDWebImageContextImageDecodeOptions = @"imageDecodeOptions";
 SDWebImageContextOption const SDWebImageContextImageScaleFactor = @"imageScaleFactor";
 SDWebImageContextOption const SDWebImageContextImagePreserveAspectRatio = @"imagePreserveAspectRatio";
 SDWebImageContextOption const SDWebImageContextImageThumbnailPixelSize = @"imageThumbnailPixelSize";
 SDWebImageContextOption const SDWebImageContextImageTypeIdentifierHint = @"imageTypeIdentifierHint";
-SDWebImageContextOption const SDWebImageContextImageScaleDownLimitBytes = @"imageScaleDownLimitBytes";
 SDWebImageContextOption const SDWebImageContextImageEncodeOptions = @"imageEncodeOptions";
 SDWebImageContextOption const SDWebImageContextQueryCacheType = @"queryCacheType";
 SDWebImageContextOption const SDWebImageContextStoreCacheType = @"storeCacheType";

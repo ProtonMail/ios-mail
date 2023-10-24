@@ -24,10 +24,10 @@ final class GradientFillProperties: NodePropertyMap, KeypathSearchable {
     numberOfColors = gradientfill.numberOfColors
     fillRule = gradientfill.fillRule
     keypathProperties = [
-      "Opacity" : opacity,
+      PropertyName.opacity.rawValue : opacity,
       "Start Point" : startPoint,
       "End Point" : endPoint,
-      "Colors" : colors,
+      PropertyName.gradientColors.rawValue : colors,
     ]
     properties = Array(keypathProperties.values)
   }
@@ -36,9 +36,9 @@ final class GradientFillProperties: NodePropertyMap, KeypathSearchable {
 
   var keypathName: String
 
-  let opacity: NodeProperty<Vector1D>
-  let startPoint: NodeProperty<Vector3D>
-  let endPoint: NodeProperty<Vector3D>
+  let opacity: NodeProperty<LottieVector1D>
+  let startPoint: NodeProperty<LottieVector3D>
+  let endPoint: NodeProperty<LottieVector3D>
   let colors: NodeProperty<[Double]>
 
   let gradientType: GradientType

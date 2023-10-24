@@ -54,15 +54,9 @@ static CGFloat SDImageScaleFromPath(NSString *string) {
 
 #if __has_include(<UIKit/UITraitCollection.h>)
 + (instancetype)imageNamed:(NSString *)name inBundle:(NSBundle *)bundle compatibleWithTraitCollection:(UITraitCollection *)traitCollection {
-#if SD_VISION
-    if (!traitCollection) {
-        traitCollection = UITraitCollection.currentTraitCollection;
-    }
-#else
     if (!traitCollection) {
         traitCollection = UIScreen.mainScreen.traitCollection;
     }
-#endif
     CGFloat scale = traitCollection.displayScale;
     return [self imageNamed:name inBundle:bundle scale:scale];
 }

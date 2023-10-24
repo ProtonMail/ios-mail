@@ -440,7 +440,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZOD-ob-rBK" customClass="AnimationView" customModule="Lottie">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZOD-ob-rBK" customClass="LottieAnimationView" customModule="Lottie">
                                 <rect key="frame" x="107.66666666666669" y="203" width="160" height="160"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>

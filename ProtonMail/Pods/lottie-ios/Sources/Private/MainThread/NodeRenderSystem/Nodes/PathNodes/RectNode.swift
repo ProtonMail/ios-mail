@@ -22,7 +22,7 @@ final class RectNodeProperties: NodePropertyMap, KeypathSearchable {
     cornerRadius = NodeProperty(provider: KeyframeInterpolator(keyframes: rectangle.cornerRadius.keyframes))
 
     keypathProperties = [
-      "Position" : position,
+      PropertyName.position.rawValue : position,
       "Size" : size,
       "Roundness" : cornerRadius,
     ]
@@ -38,9 +38,9 @@ final class RectNodeProperties: NodePropertyMap, KeypathSearchable {
   let properties: [AnyNodeProperty]
 
   let direction: PathDirection
-  let position: NodeProperty<Vector3D>
-  let size: NodeProperty<Vector3D>
-  let cornerRadius: NodeProperty<Vector1D>
+  let position: NodeProperty<LottieVector3D>
+  let size: NodeProperty<LottieVector3D>
+  let cornerRadius: NodeProperty<LottieVector1D>
 
 }
 

@@ -64,6 +64,19 @@ public struct CurrentPlan: Decodable, Equatable {
             public var iconName: String
             public var hint: String?
         }
+
+        public init(title: String, description: String, cycleDescription: String? = nil, cycle: Int? = nil, currency: String? = nil, amount: Int? = nil, periodEnd: Int? = nil, renew: Int? = nil, external: PaymentMethod? = nil, entitlements: [Entitlement]) {
+            self.title = title
+            self.description = description
+            self.cycleDescription = cycleDescription
+            self.cycle = cycle
+            self.currency = currency
+            self.amount = amount
+            self.periodEnd = periodEnd
+            self.renew = renew
+            self.external = external
+            self.entitlements = entitlements
+        }
     }
 
     public init(subscriptions: [CurrentPlan.Subscription]) {

@@ -34,7 +34,7 @@ inhibit_all_warnings!
 use_frameworks!
 
 def proton_core_version
-  '12.1.1'
+  '14.0.1'
 end
 
 def crypto_variant
@@ -79,7 +79,7 @@ end
 
 def app_pods
   app_share_pods
-  pod 'SDWebImage'
+  pod 'SDWebImage', '~> 5.15'
   pod 'OHHTTPStubs/Swift', :configurations => ['Debug', 'Enterprise Debug']
   pod "ProtonCore-AccountDeletion", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-AccountSwitcher', :git => proton_core_path, :tag => proton_core_version
@@ -91,7 +91,6 @@ def app_pods
   pod 'ProtonCore-Observability', :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-Payments", :git => proton_core_path, :tag => proton_core_version
   pod "ProtonCore-PaymentsUI", :git => proton_core_path, :tag => proton_core_version
-  pod "ProtonCore-Subscriptions", :git => proton_core_path, :tag => proton_core_version
   pod 'ProtonCore-TroubleShooting', :git => proton_core_path, :tag => proton_core_version
   pod 'SideMenuSwift', :git=> 'git@gitlab.protontech.ch:jchen/SideMenu.git', :tag=>'v2.0.9.autolayout'
   pod 'SwipyCell', :git=> 'git@gitlab.protontech.ch:jchen/SwipyCell.git', :commit => '923310a'
@@ -162,9 +161,9 @@ post_install do | installer |
       end
     end
   end
-
+  
   installer.pods_project.build_configurations.each do |config|
-    # -warn-long-function-bodies refers to compilation time, not actual length in lines
-    config.build_settings['OTHER_SWIFT_FLAGS'] = "#{config.build_settings['OTHER_SWIFT_FLAGS']} -Xfrontend -warn-long-function-bodies=100 -Xfrontend -warn-long-expression-type-checking=100"
-  end
+     # -warn-long-function-bodies refers to compilation time, not actual length in lines
+     config.build_settings['OTHER_SWIFT_FLAGS'] = "#{config.build_settings['OTHER_SWIFT_FLAGS']} -Xfrontend -warn-long-function-bodies=100 -Xfrontend -warn-long-expression-type-checking=100"
+   end
 end

@@ -29,17 +29,19 @@ public struct AvailablePlans: Decodable, Equatable {
     public var defaultCycle: Int?
     
     public struct AvailablePlan: Decodable, Equatable {
-        public var ID: String
-        public var name: String
+        public var ID: String?
+        public var type: Int?
+        public var name: String?
         public var title: String
         public var description: String?
         public var instances: [Instance]
         public var entitlements: [Entitlement]
         public var decorations: [Decoration]
 
-        public init(ID: String, name: String, title: String, description: String? = nil,
+        public init(ID: String?, type: Int?, name: String?, title: String, description: String? = nil,
                     instances: [Instance], entitlements: [Entitlement], decorations: [Decoration]) {
             self.ID = ID
+            self.type = type
             self.name = name
             self.title = title
             self.description = description
@@ -170,5 +172,11 @@ extension AvailablePlans.AvailablePlan.Decoration: Decodable {
         case .badge:
             self = .badge(try .init(from: decoder))
         }
+    }
+}
+
+extension AvailablePlans.AvailablePlan {
+    public var isFreePlan: Bool {
+        type == nil
     }
 }

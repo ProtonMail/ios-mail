@@ -8,7 +8,6 @@
 
 #import "SDDeviceHelper.h"
 #import <mach/mach.h>
-#import <sys/sysctl.h>
 
 @implementation SDDeviceHelper
 

@@ -26,7 +26,6 @@ import ProtonCoreLog
 import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreObservability
-import ProtonCoreSubscriptions
 
 /*
 

@@ -227,7 +227,6 @@ GEM
     jwt (2.7.1)
     mini_magick (4.12.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.2)
     minitest (5.20.0)
     molinillo (0.8.0)
     multi_json (1.15.0)
@@ -236,8 +235,9 @@ GEM
     nap (1.1.0)
     naturally (2.2.1)
     netrc (0.11.0)
-    nokogiri (1.15.2)
-      mini_portile2 (~> 2.8.2)
+    nokogiri (1.13.10-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.10-x86_64-darwin)
       racc (~> 1.4)
     optparse (0.1.1)
     os (1.1.4)
@@ -294,9 +294,10 @@ GEM
       rouge (~> 2.0.7)
     xcpretty-travis-formatter (1.0.1)
       xcpretty (~> 0.2, >= 0.0.7)
+    zeitwerk (2.6.12)
 
 PLATFORMS
-  ruby
+  universal-darwin-22
 
 DEPENDENCIES
   cocoapods

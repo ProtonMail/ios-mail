@@ -24,7 +24,6 @@ import StoreKit
 import ProtonCoreFeatureSwitch
 import ProtonCoreLog
 import ProtonCoreObservability
-import ProtonCoreSubscriptions
 import ProtonCoreUtilities
 
 /*

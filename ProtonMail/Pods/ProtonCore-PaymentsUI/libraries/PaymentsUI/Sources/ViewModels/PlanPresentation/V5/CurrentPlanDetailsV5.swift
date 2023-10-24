@@ -31,6 +31,7 @@ struct CurrentPlanDetailsV5 {
     let price: String // "$0"
     let endDate: NSAttributedString? // "Current plan will expire on 10.10.24"
     let entitlements: [Entitlement]
+    let hidePriceDetails: Bool
     
     enum Entitlement: Equatable {
         case progress(ProgressEntitlement)
@@ -72,11 +73,17 @@ struct CurrentPlanDetailsV5 {
             }
         }
         
+        var hidePriceDetails = false
         var price: String
-        if let amount = details.amount {
-            price = PriceFormatter.formatPlanPrice(price: Double(amount) / 100, locale: Locale(identifier: "en-US"))
+        if let amount = details.amount, amount != 0 {
+            if details.external == .apple {
+                hidePriceDetails = true
+                price = ""
+            } else {
+                price = PriceFormatter.formatPlanPrice(price: Double(amount) / 100, currencyCode: details.currency)
+            }   
         } else {
-            price = PriceFormatter.formatPlanPrice(price: 0, locale: Locale.current, maximumFractionDigits: 0)
+            price = PUITranslations.plan_details_free_price.l10n
         }
         
         return .init(
@@ -85,7 +92,8 @@ struct CurrentPlanDetailsV5 {
             cycleDescription: details.cycleDescription,
             price: price,
             endDate: endDateString(date: details.periodEnd, renew: details.willRenew ?? false),
-            entitlements: entitlements
+            entitlements: entitlements,
+            hidePriceDetails: hidePriceDetails
         )
     }
     

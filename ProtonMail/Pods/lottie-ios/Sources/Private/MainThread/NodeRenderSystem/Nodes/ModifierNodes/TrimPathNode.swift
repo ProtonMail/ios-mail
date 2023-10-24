@@ -34,9 +34,9 @@ final class TrimPathProperties: NodePropertyMap, KeypathSearchable {
   let properties: [AnyNodeProperty]
   let keypathName: String
 
-  let start: NodeProperty<Vector1D>
-  let end: NodeProperty<Vector1D>
-  let offset: NodeProperty<Vector1D>
+  let start: NodeProperty<LottieVector1D>
+  let end: NodeProperty<LottieVector1D>
+  let offset: NodeProperty<LottieVector1D>
   let type: TrimType
 }
 
@@ -133,7 +133,9 @@ final class TrimPathNode: AnimatorNode {
 
     /// First get the total length of all paths.
     var totalLength: CGFloat = 0
-    upstreamPaths.forEach({ totalLength = totalLength + $0.totalLength })
+    for upstreamPath in upstreamPaths {
+      totalLength = totalLength + upstreamPath.totalLength
+    }
 
     /// Now determine the start and end cut lengths
     let startLength = startPosition * totalLength

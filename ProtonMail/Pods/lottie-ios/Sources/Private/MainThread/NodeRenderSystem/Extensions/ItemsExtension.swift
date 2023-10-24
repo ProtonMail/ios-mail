@@ -68,6 +68,13 @@ extension Array where Element == ShapeItem {
         let node = TrimPathNode(parentNode: nodeTree.rootNode, trim: trim, upstreamPaths: nodeTree.paths)
         nodeTree.rootNode = node
         nodeTree.childrenNodes.append(node)
+      } else if let roundedCorners = item as? RoundedCorners {
+        let node = RoundedCornersNode(
+          parentNode: nodeTree.rootNode,
+          roundedCorners: roundedCorners,
+          upstreamPaths: nodeTree.paths)
+        nodeTree.rootNode = node
+        nodeTree.childrenNodes.append(node)
       } else if let xform = item as? ShapeTransform {
         nodeTree.transform = xform
         continue
@@ -80,7 +87,7 @@ extension Array where Element == ShapeItem {
         nodeTree.paths.append(contentsOf: tree.paths)
         nodeTree.renderContainers.append(node.container)
       } else if item is Repeater {
-        LottieLogger.shared.assertionFailure("""
+        LottieLogger.shared.warn("""
           The Main Thread rendering engine doesn't currently support repeaters.
           To play an animation with repeaters, you can use the Core Animation rendering engine instead.
           """)

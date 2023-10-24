@@ -18,6 +18,23 @@ public class YAMLDecoder {
         self.encoding = encoding
     }
 
+    /// Decode a `Decodable` type from a given `Node` and optional user info mapping.
+    ///
+    /// - parameter type:    `Decodable` type to decode.
+    /// - parameter node:     YAML Node to decode.
+    /// - parameter userInfo: Additional key/values which can be used when looking up keys to decode.
+    ///
+    /// - returns: Returns the decoded type `T`.
+    ///
+    /// - throws: `DecodingError` or `YamlError` if something went wrong while decoding.
+    public func decode<T>(_ type: T.Type = T.self,
+                          from node: Node,
+                          userInfo: [CodingUserInfoKey: Any] = [:]) throws -> T where T: Swift.Decodable {
+        let decoder = _Decoder(referencing: node, userInfo: userInfo)
+        let container = try decoder.singleValueContainer()
+        return try container.decode(type)
+    }
+
     /// Decode a `Decodable` type from a given `String` and optional user info mapping.
     ///
     /// - parameter type:    `Decodable` type to decode.
@@ -32,9 +49,7 @@ public class YAMLDecoder {
                           userInfo: [CodingUserInfoKey: Any] = [:]) throws -> T where T: Swift.Decodable {
         do {
             let node = try Parser(yaml: yaml, resolver: Resolver([.merge]), encoding: encoding).singleRoot() ?? ""
-            let decoder = _Decoder(referencing: node, userInfo: userInfo)
-            let container = try decoder.singleValueContainer()
-            return try container.decode(type)
+            return try self.decode(type, from: node, userInfo: userInfo)
         } catch let error as DecodingError {
             throw error
         } catch {
