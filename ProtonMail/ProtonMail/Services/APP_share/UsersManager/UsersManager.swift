@@ -121,7 +121,7 @@ class UsersManager: Service, UsersManagerProtocol {
         self.doh.status = dependencies.userCachedStatus.isDohOn ? .on : .off
         /// for migrate
         self.latestVersion = Version.version
-        self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
+        self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version, store: dependencies.userDefaults)
         keychain = dependencies.keychain
         coreKeyMaker = dependencies.keyMaker
         self.dependencies = dependencies

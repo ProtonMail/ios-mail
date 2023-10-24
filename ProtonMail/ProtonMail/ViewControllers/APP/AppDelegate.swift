@@ -94,7 +94,7 @@ extension AppDelegate: UIApplicationDelegate {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable) | \(appVersion)"
         SystemLogger.log(message: message, category: .appLifeCycle)
 
-        let appCache = AppCacheService()
+        let appCache = AppCacheService(dependencies: dependencies)
         appCache.restoreCacheWhenAppStart()
 
         sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
