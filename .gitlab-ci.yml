@@ -215,30 +215,6 @@ test:ui:sanity:
   tags:
     - iOS_UITEST
 
-report:slack:smoke:
-  dependencies:
-    - test:ui:smoke
-  image: $CI_REGISTRY/tpe/test-scripts
-  stage: report
-  except:
-    - schedules
-  only:
-    refs:
-      - master
-      - main
-      - develop
-      - /^release\/.*$/
-      - merge_requests
-  script:
-    - test_reporter.py
-      --path test_output/TestResults/
-      --platform ios
-      --job-name ui_tests_smoke
-      --slack-channel mail-ios-uitests
-  allow_failure: true
-  tags:
-    - shared-small
-
 test:ui:feature:
   dependencies:
     - deploy:review
