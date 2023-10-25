@@ -107,7 +107,7 @@ final class WindowsCoordinator {
         trackLifetime()
     }
 
-    func start(launchedByNotification: Bool = false) {
+    func start(launchedByNotification: Bool = false, completion: (() -> Void)? = nil) {
         self.launchedByNotification = launchedByNotification
         let placeholder = UIWindow(root: PlaceholderViewController(color: .white), scene: self.scene)
         self.currentWindow = placeholder
@@ -120,13 +120,19 @@ final class WindowsCoordinator {
 
         SystemLogger.log(message: "isAppAccessResolverEnabled: \(isAppAccessResolverEnabled)", category: .appLock)
         if isAppAccessResolverEnabled {
-
-            loadAppMainKeyAndSetupCoreData()
-            evaluateAccessAtLaunch()
-            subscribeToDeniedAccess()
-
+            start(completion: completion)
         } else {
             legacyStart()
+            completion?()
+        }
+    }
+
+    private func start(completion: (() -> Void)?) {
+        Task {
+            await loadAppMainKeyAndSetupCoreData()
+            evaluateAccessAtLaunch()
+            subscribeToDeniedAccess()
+            completion?()
         }
     }
 
@@ -147,12 +153,38 @@ final class WindowsCoordinator {
         }
     }
 
-    private func loadAppMainKeyAndSetupCoreData() {
+    private func loadAppMainKeyAndSetupCoreData() async {
         _ = dependencies.keyMaker.mainKeyExists()
         do {
             try delegate?.setupCoreData()
         } catch {
-            PMAssertionFailure(error)
+            SystemLogger.log(error: error)
+            Analytics.shared.sendError(
+                .assertionFailure(message: "\(error)", caller: #function, file: #file, line: #line)
+            )
+            await showCoreDataSetUpFailAlert(error: error)
+            fatalError("Core Data set up failed")
+        }
+    }
+
+    @MainActor
+    private func showCoreDataSetUpFailAlert(error: Error) async {
+        await withCheckedContinuation { continuation in
+            let title: String
+            let message: String
+            if error.isSqlLiteDiskFull {
+                title = L11n.Error.core_data_setup_insufficient_disk_title
+                message = L11n.Error.core_data_setup_insufficient_disk_messsage
+            } else {
+                title = LocalString._general_error_alert_title
+                message = String(format: L11n.Error.core_data_setup_generic_messsage, error.localizedDescription)
+            }
+
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default) { _ in
+                continuation.resume()
+            })
+            currentWindow?.topmostViewController()?.present(alert, animated: true)
         }
     }
 
@@ -733,5 +765,12 @@ extension WindowsCoordinator: MenuCoordinatorDelegate {
 extension WindowsCoordinator: LifetimeTrackable {
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
+    }
+}
+
+private extension Error {
+
+    var isSqlLiteDiskFull: Bool {
+        (self as NSError).userInfo["NSSQLiteErrorDomain"] as? Int == 13
     }
 }

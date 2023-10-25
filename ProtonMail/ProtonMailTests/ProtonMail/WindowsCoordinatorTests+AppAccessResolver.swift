@@ -56,14 +56,16 @@ final class WindowsCoordinatorAppAccessResolverTests: XCTestCase {
     func testStart_whenAppAccessIsGranted_itShouldTryToLoadTheMainKey() {
         setUpAppAccessGranted()
 
-        sut.start()
+        executeStartAndWaitCompletion()
+
         XCTAssertTrue(mockKeyMaker.mainKeyExistsStub.wasCalledExactlyOnce)
     }
 
     func testStart_whenAppAccessIsDenied_itShouldTryToLoadTheMainKey() {
         setUpAppAccessDeniedReasonAppLock()
 
-        sut.start()
+        executeStartAndWaitCompletion()
+
         XCTAssertTrue(mockKeyMaker.mainKeyExistsStub.wasCalledExactlyOnce)
     }
 
@@ -72,7 +74,8 @@ final class WindowsCoordinatorAppAccessResolverTests: XCTestCase {
     func testStart_whenAppAccessIsGranted_itShouldSetUpCoreDataAndLoadUsers() {
         setUpAppAccessGranted()
 
-        sut.start()
+        executeStartAndWaitCompletion()
+
         XCTAssertTrue(windowsCoordinatorDelegate.setupCoreDataStub.wasCalledExactlyOnce)
         XCTAssertTrue(windowsCoordinatorDelegate.loadUserDataAfterUnlockStub.wasCalledExactlyOnce)
     }
@@ -80,7 +83,8 @@ final class WindowsCoordinatorAppAccessResolverTests: XCTestCase {
     func testStart_whenAppAccessIsDenied_itShouldSetUpCoreDataButNotLoadUsers() {
         setUpAppAccessDeniedReasonAppLock()
 
-        sut.start()
+        executeStartAndWaitCompletion()
+
         XCTAssertTrue(windowsCoordinatorDelegate.setupCoreDataStub.wasCalledExactlyOnce)
         XCTAssertFalse(windowsCoordinatorDelegate.loadUserDataAfterUnlockStub.wasCalledExactlyOnce)
     }
@@ -90,39 +94,57 @@ final class WindowsCoordinatorAppAccessResolverTests: XCTestCase {
     func testStart_whenAppAccessIsGranted_itShouldSetAppWindow() {
         setUpAppAccessGranted()
 
-        sut.start()
-        wait(self.sut.appWindow != nil)
+        executeStartAndWaitCompletion()
+
+        XCTAssert(sut.appWindow != nil)
     }
 
     func testStart_whenAppAccessIsDeniedBecauseThereAreUsersButThereIsNoMainKey_itShouldSetLockWindow() {
         setUpAppAccessDeniedReasonAppLock()
 
-        sut.start()
-        wait(self.sut.lockWindow != nil)
+        executeStartAndWaitCompletion()
+
+        let expectation = expectation(description: "assertion in main thread")
+        DispatchQueue.main.async {
+            XCTAssert(self.sut.lockWindow != nil)
+            expectation.fulfill()
+        }
+        wait(for: [expectation])
     }
 
     func testStart_whenAppAccessIsDeniedBecauseThereAreNoUsers_itCurrentWindowChangesToShowSignIn() {
+        executeStartAndWaitCompletion()
 
-        sut.start()
-
-        wait(self.sut.lockWindow == nil)
-        wait(self.sut.appWindow == nil)
+        let expectation = expectation(description: "assertion in main thread")
+        DispatchQueue.main.async {
+            XCTAssert(self.sut.lockWindow == nil)
+            XCTAssert(self.sut.appWindow == nil)
+            expectation.fulfill()
+        }
+        wait(for: [expectation])
     }
 
     // access denied subscription
 
     func testStart_whenAccessGranted_andAccessDeniedReceived_itShouldSetLockWindow() {
         setUpAppAccessGranted()
-        sut.start()
-        wait(self.sut.appWindow != nil)
+        executeStartAndWaitCompletion()
 
         simulateAppLockedByUserAction()
 
-        wait(self.sut.lockWindow != nil)
+        wait(self.sut.lockWindow != nil, timeout: 5.0)
     }
 }
 
 extension WindowsCoordinatorAppAccessResolverTests {
+
+    private func executeStartAndWaitCompletion() {
+        let expectation = expectation(description: "start has completed")
+        sut.start() {
+            expectation.fulfill()
+        }
+        wait(for: [expectation])
+    }
 
     private func setUpAppAccessGranted() {
         addNewUser()
