@@ -38,6 +38,6 @@ extension UserInfo {
     }
 
     static var isAppAccessResolverEnabled: Bool {
-        UIApplication.isDebugOrEnterprise
+        false // UIApplication.isDebugOrEnterprise
     }
 }

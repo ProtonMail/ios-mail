@@ -336,6 +336,8 @@ class LocalizedString {
     lazy var _general_search_placeholder = NSLocalizedString("Search", comment: "Title")
     /// "Notice"
     lazy var _general_notice_alert_title = NSLocalizedString("Notice", comment: "Alert title")
+    /// "Error"
+    lazy var _general_error_alert_title = NSLocalizedString("Error", comment: "Alert title")
     /// "Don't remind me again"
     lazy var _general_dont_remind_action = NSLocalizedString("Don't remind me again", comment: "Action")
     /// "Send"
@@ -786,9 +788,6 @@ class LocalizedString {
 
     /// "Can't load share content!"
     lazy var _cant_load_share_content = NSLocalizedString("Failed to load content!\nPlease try again.", comment: "This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly")
-
-    /// "Share Alert"
-    lazy var _share_alert = NSLocalizedString("Error", comment: "Title of alert in share extension.")
 
     /// "Failed to determine type of file"
     lazy var _failed_to_determine_file_type = NSLocalizedString("Failed to determine type of file", comment: "Error message")
@@ -1380,6 +1379,9 @@ enum L11n {
 	}
 
     struct Error {
+        static let core_data_setup_generic_messsage = NSLocalizedString("An unexpected error occurred, please contact support.\nError: %@", comment: "Message for error when app set up at launch fails")
+        static let core_data_setup_insufficient_disk_title = NSLocalizedString("Insufficient disk space", comment: "Title for error when app set up at launch fails")
+        static let core_data_setup_insufficient_disk_messsage = NSLocalizedString("The application cannot open due to insufficient disk space. Please delete some data and try again", comment: "Message for error when app set up at launch fails")
         static let cant_open_message = NSLocalizedString("Couldn't open the message, try again.", comment: "Error message when open message failed")
         static let sign_in_message = NSLocalizedString("Please sign in to the Proton Mail app.", comment: "Error message when user open the share extension without account logged in.")
     }
