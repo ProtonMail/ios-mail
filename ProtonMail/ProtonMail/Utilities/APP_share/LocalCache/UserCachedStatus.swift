@@ -263,42 +263,16 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
     }
 
     func cleanAllData() {
-        getShared().removeObject(forKey: Key.cachedServerNotices)
-        getShared().removeObject(forKey: Key.showServerNoticesNextTime)
-        getShared().removeObject(forKey: Key.isPM_MEWarningDisabled)
-        getShared().removeObject(forKey: Key.combineContactFlag)
-        getShared().removeObject(forKey: Key.browser)
-        getShared().removeObject(forKey: Key.lastPinFailedTimes)
+        let protectedUserDefaultsKeys: [String] = [
+            Key.initialUserLoggedInVersion,
+            Key.lastTourVersion
+        ]
 
-        keychain.remove(forKey: Key.autoLockTime)
+        for key in userDefaults.dictionaryRepresentation().keys where !protectedUserDefaultsKeys.contains(key) {
+            userDefaults.remove(forKey: key)
+        }
 
-        // Clean the keys Anatoly added
-        getShared().removeObject(forKey: Key.snoozeConfiguration)
-        getShared().removeObject(forKey: Key.servicePlans)
-        getShared().removeObject(forKey: Key.currentSubscription)
-        getShared().removeObject(forKey: Key.defaultPlanDetails)
-        getShared().removeObject(forKey: Key.isIAPAvailableOnBE)
-
-        keychain.remove(forKey: Key.metadataStripping)
-        keychain.remove(forKey: Key.browser)
-        keychain.remove(forKey: Key.randomPinForProtection)
-
-        getShared().removeObject(forKey: Key.isContactsCached)
-
-        getShared().removeObject(forKey: Key.dohFlag)
-
-        getShared().removeObject(forKey: Key.leftToRightSwipeAction)
-        getShared().removeObject(forKey: Key.rightToLeftSwipeAction)
-
-        getShared().removeObject(forKey: Key.initialUserLoggedInVersion)
-        getShared().removeObject(forKey: Key.darkModeFlag)
-        getShared().removeObject(forKey: Key.toolbarCustomizeSpotlightShownUserIds)
-
-#if !APP_EXTENSION
-        getShared().removeObject(forKey: Key.usersThatFetchedTheirBlockedSenderLists)
-#endif
-
-        getShared().synchronize()
+        keychain.removeEverything()
     }
 
     func showStorageOverAlert() {
