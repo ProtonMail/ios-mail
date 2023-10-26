@@ -54,8 +54,6 @@ extension AttachmentConvertible {
 }
 
 struct MIMEType {
-    static let icsMIMEType = "text/calendar"
-    static let keyMIMEType = "application/pgp-keys"
     static let defaultMimeType = "application/octet-stream"
 }
 

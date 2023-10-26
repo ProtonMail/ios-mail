@@ -24,6 +24,15 @@ import UIKit
 
 extension MailboxViewController {
 
+    private func attachmentsPreviews(for mailboxItem: MailboxItem) -> [AttachmentPreviewViewModel] {
+        viewModel.previewableAttachments(for: mailboxItem).map {
+            AttachmentPreviewViewModel(
+                name: $0.name,
+                icon: AttachmentType(mimeType: $0.mimeType.lowercased()).icon
+            )
+        }
+    }
+
     func buildNewMailboxMessageViewModel(
         message: MessageEntity,
         customFolderLabels: [LabelEntity],
@@ -59,7 +68,9 @@ extension MailboxViewController {
             messageCount: 0,
             folderIcons: [],
             scheduledTime: message.contains(location: .scheduled) ? dateForScheduled(of: message) : nil,
-            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: message)
+            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: message),
+            attachmentsPreviewViewModels: attachmentsPreviews(for: .message(message)),
+            numberOfAttachments: message.numAttachments
         )
         if mailboxViewModel.displayOriginIcon {
             mailboxViewModel.folderIcons = message.getFolderIcons(customFolderLabels: customFolderLabels)
@@ -101,7 +112,10 @@ extension MailboxViewController {
             messageCount: messageCount > 0 ? messageCount : 0,
             folderIcons: [],
             scheduledTime: isHavingScheduled ? dateForScheduled(of: conversation) : nil,
-            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: conversation))
+            isScheduledTimeInNext10Mins: checkIsDateWillHappenInTheNext10Mins(of: conversation),
+            attachmentsPreviewViewModels: attachmentsPreviews(for: .conversation(conversation)),
+            numberOfAttachments: conversation.attachmentCount
+        )
         if mailboxViewModel.displayOriginIcon {
             mailboxViewModel.folderIcons = conversation.getFolderIcons(customFolderLabels: customFolderLabels)
         }

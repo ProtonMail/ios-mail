@@ -1217,7 +1217,6 @@ extension MailboxViewModel {
 }
 
 // MARK: - Prefetch
-
 extension MailboxViewModel {
     func itemsToPrefetch() -> [MailboxItem] {
         switch self.locationViewMode {
@@ -1289,18 +1288,19 @@ extension MailboxViewModel {
             }
         }
     }
+}
 
-    func isPreviewable(for indexPath: IndexPath) -> Bool {
-        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID),
-              let mailboxItem = mailboxItem(at: indexPath) else {
+// MARK: - Attachment Preview
+extension MailboxViewModel {
+    func isPreviewable(_ mailboxItem: MailboxItem) -> Bool {
+        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID) else {
             return false
         }
         return mailboxItem.isPreviewable
     }
 
-    func previewableAttachments(for indexPath: IndexPath) -> [AttachmentsMetadata] {
-        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID),
-              let mailboxItem = mailboxItem(at: indexPath) else {
+    func previewableAttachments(for mailboxItem: MailboxItem) -> [AttachmentsMetadata] {
+        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID) else {
             return []
         }
         return mailboxItem.previewableAttachments
