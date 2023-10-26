@@ -37,7 +37,7 @@ class AppCacheService: Service {
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
-        self.coreDataCache = CoreDataCache(userDefaults: dependencies.userDefaults)
+        self.coreDataCache = CoreDataCache(dependencies: dependencies)
         self.dependencies = dependencies
     }
 
