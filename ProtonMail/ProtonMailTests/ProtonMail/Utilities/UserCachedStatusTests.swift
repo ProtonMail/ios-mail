@@ -19,22 +19,24 @@
 import XCTest
 
 class UserCachedStatusTests: XCTestCase {
-    var userDefaults: UserDefaults!
+    private var testContainer: TestContainer!
     var sut: UserCachedStatus!
-    var suiteName = String.randomString(10)
+
+    private var userDefaults: UserDefaults {
+        testContainer.userDefaults
+    }
 
     override func setUp() {
         super.setUp()
 
-        userDefaults = .init(suiteName: suiteName)
-        sut = .init(userDefaults: userDefaults)
+        testContainer = .init()
+        sut = .init(userDefaults: userDefaults, keychain: testContainer.keychain)
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        userDefaults.removePersistentDomain(forName: suiteName)
-        userDefaults = nil
+        testContainer = nil
     }
 
     func testFetchValueOf_withBool_noValueExists_returnDefaultValue() {

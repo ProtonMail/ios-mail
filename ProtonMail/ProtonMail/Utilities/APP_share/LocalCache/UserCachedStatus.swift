@@ -26,7 +26,7 @@ import ProtonCoreKeymaker
 import ProtonCorePayments
 #endif
 
-let userCachedStatus = UserCachedStatus()
+let userCachedStatus = UserCachedStatus(keychain: KeychainWrapper.keychain)
 
 // sourcery: mock
 protocol UserCachedStatusProvider: AnyObject {
@@ -186,6 +186,20 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         }
     }
 
+    private let keychain: Keychain
+
+    init(keychain: Keychain) {
+        self.keychain = keychain
+
+        super.init()
+    }
+
+    init(userDefaults: UserDefaults, keychain: Keychain) {
+        self.keychain = keychain
+
+        super.init(userDefaults: userDefaults)
+    }
+
     func getDefaultSignaureSwitchStatus(uid: String) -> Bool? {
         guard let switchData = userDefaults.dictionary(forKey: Key.UserWithDefaultSignatureStatus),
         let switchStatus = switchData[uid] as? Bool else {
@@ -256,7 +270,7 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         getShared().removeObject(forKey: Key.browser)
         getShared().removeObject(forKey: Key.lastPinFailedTimes)
 
-        KeychainWrapper.keychain.remove(forKey: Key.autoLockTime)
+        keychain.remove(forKey: Key.autoLockTime)
 
         // Clean the keys Anatoly added
         getShared().removeObject(forKey: Key.snoozeConfiguration)
@@ -265,9 +279,9 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         getShared().removeObject(forKey: Key.defaultPlanDetails)
         getShared().removeObject(forKey: Key.isIAPAvailableOnBE)
 
-        KeychainWrapper.keychain.remove(forKey: Key.metadataStripping)
-        KeychainWrapper.keychain.remove(forKey: Key.browser)
-        KeychainWrapper.keychain.remove(forKey: Key.randomPinForProtection)
+        keychain.remove(forKey: Key.metadataStripping)
+        keychain.remove(forKey: Key.browser)
+        keychain.remove(forKey: Key.randomPinForProtection)
 
         getShared().removeObject(forKey: Key.isContactsCached)
 
@@ -295,14 +309,14 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 extension UserCachedStatus {
     var lockTime: AutolockTimeout { // historically, it was saved as String
         get {
-            guard let string = KeychainWrapper.keychain.string(forKey: Key.autoLockTime),
+            guard let string = keychain.string(forKey: Key.autoLockTime),
                 let number = Int(string) else {
                 return .always
             }
             return AutolockTimeout(rawValue: number)
         }
         set {
-            KeychainWrapper.keychain.set("\(newValue.rawValue)", forKey: Key.autoLockTime)
+            keychain.set("\(newValue.rawValue)", forKey: Key.autoLockTime)
         }
     }
 }
@@ -321,14 +335,14 @@ extension UserCachedStatus: PinFailedCountCache {
 extension UserCachedStatus: AttachmentMetadataStrippingProtocol {
     var metadataStripping: AttachmentMetadataStripping {
         get {
-            guard let string = KeychainWrapper.keychain.string(forKey: Key.metadataStripping),
+            guard let string = keychain.string(forKey: Key.metadataStripping),
                 let mode = AttachmentMetadataStripping(rawValue: string) else {
                 return .sendAsIs
             }
             return mode
         }
         set {
-            KeychainWrapper.keychain.set(newValue.rawValue, forKey: Key.metadataStripping)
+            keychain.set(newValue.rawValue, forKey: Key.metadataStripping)
         }
     }
 }
@@ -369,14 +383,14 @@ extension UserCachedStatus: ContactCacheStatusProtocol {
 extension UserCachedStatus {
     var browser: LinkOpener {
         get {
-            guard let raw = KeychainWrapper.keychain.string(forKey: Key.browser) ?? getShared().string(forKey: Key.browser) else {
+            guard let raw = keychain.string(forKey: Key.browser) ?? getShared().string(forKey: Key.browser) else {
                 return .safari
             }
             return LinkOpener(rawValue: raw) ?? .safari
         }
         set {
             getShared().setValue(newValue.rawValue, forKey: Key.browser)
-            KeychainWrapper.keychain.set(newValue.rawValue, forKey: Key.browser)
+            keychain.set(newValue.rawValue, forKey: Key.browser)
         }
     }
 }

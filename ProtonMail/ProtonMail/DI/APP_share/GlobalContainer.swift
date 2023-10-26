@@ -153,7 +153,7 @@ class GlobalContainer: ManagedContainer {
 
     var userCachedStatusFactory: Factory<UserCachedStatus> {
         self {
-            UserCachedStatus(userDefaults: self.userDefaults)
+            UserCachedStatus(userDefaults: self.userDefaults, keychain: self.keychain)
         }
     }
 

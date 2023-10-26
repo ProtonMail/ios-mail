@@ -113,7 +113,7 @@ class UsersManager: Service, UsersManagerProtocol {
 
     // Used to check if the account is already being deleted.
     private(set) var loggingOutUserIDs: Set<UserID> = Set()
-    private let keychain: Keychain
+    let keychain: Keychain
     private let coreKeyMaker: KeyMakerProtocol
     private unowned let dependencies: Dependencies
 
