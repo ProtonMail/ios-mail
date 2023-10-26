@@ -120,11 +120,16 @@ final class CoreDataStore {
         }
     }
 
+    @available(*, deprecated, message: "Remove this as soon as relevant reports show up in Sentry")
     private static func establishDataProtectionStatus() -> String {
 #if APP_EXTENSION
         return "n/a (extension)"
 #else
-        return UIApplication.shared.isProtectedDataAvailable ? "on": "off"
+        if Thread.isMainThread {
+            return UIApplication.shared.isProtectedDataAvailable ? "on": "off"
+        } else {
+            return "n/a (background thread)"
+        }
 #endif
     }
 

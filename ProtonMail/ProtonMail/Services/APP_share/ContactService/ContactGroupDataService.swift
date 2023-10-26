@@ -41,11 +41,6 @@ class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
             }
     }
 
-    static func cleanUpAll()  {
-        // FIXME: this will remove not only contactGroups but all other labels as well
-        return LabelsDataService.cleanUpAll()
-    }
-
     private let apiService: APIService
     private let labelDataService: LabelsDataService
     private let coreDataService: CoreDataContextProviderProtocol

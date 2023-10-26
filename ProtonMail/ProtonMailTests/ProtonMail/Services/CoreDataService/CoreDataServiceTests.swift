@@ -341,6 +341,61 @@ class CoreDataServiceTests: XCTestCase {
 
         XCTAssertEqual(updatedBody, "updated body")
     }
+
+    /*
+     The scenario is that if there's a long-running `write` in progress, and then we call `deleteAllData` from
+     somewhere else, the deletion needs to be queued as any other operation to ensure it also removes the data from that
+     `write`.
+
+     Otherwise the call to `context.save()` might restore everything that was there before, by dumping the contents of
+     memory (i.e. the context) to the persistent store.
+     */
+    func testDeleteAllData_ifCalledSimultaneouslyWithWrite_ensuresDataDoesntPersist() throws {
+        let sut = CoreDataStore.shared
+        try sut.initialize()
+        let coreDataService = CoreDataService(container: sut.container)
+
+        let deletionExecuted = expectation(description: "Deletion executed")
+        let deletionCompleted = expectation(description: "Deletion completed")
+        let writeHasCompleted = expectation(description: "Write has completed")
+
+        // Schedule a deletion to occur while the block below is in progress
+        Task {
+            try await Task.sleep(for: .milliseconds(150))
+            deletionExecuted.fulfill()
+
+            await coreDataService.deleteAllData()
+            deletionCompleted.fulfill()
+        }
+
+        /*
+         This block will start immediately, but will be executing over 0.3 seconds, so the deletion started above will
+         hit while this block is in progress.
+
+         It's important to note that the 2nd Message (bar) is scheduled to be created _after_ the sleep, so technically
+         after the deletion is called.
+
+         However, it will not be saved, as the deletion will be queued as a call to write would.
+         */
+        try coreDataService.write { context in
+            let fooMessage = Message(context: context)
+            fooMessage.messageID = "foo"
+
+            Thread.sleep(forTimeInterval: 0.3)
+
+            let barMessage = Message(context: context)
+            barMessage.messageID = "bar"
+            writeHasCompleted.fulfill()
+        }
+
+        wait(for: [deletionExecuted, writeHasCompleted, deletionCompleted], timeout: 1, enforceOrder: true)
+
+        let idsOfStoredMessages = try coreDataService.read { _ in
+            try Message.makeFetchRequest().execute().map(\.messageID)
+        }
+
+        XCTAssertEqual(idsOfStoredMessages, [])
+    }
 }
 
 private extension CoreDataService {

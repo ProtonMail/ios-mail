@@ -89,16 +89,6 @@ class UserManager: Service, ObservableObject {
         }
     }
 
-    static func cleanUpAll() async {
-        IncomingDefaultService.cleanUpAll()
-        LocalNotificationService.cleanUpAll()
-        await MessageDataService.cleanUpAll()
-        LabelsDataService.cleanUpAll()
-        ContactDataService.cleanUpAll()
-        ContactGroupsDataService.cleanUpAll()
-        LastUpdatedStore.cleanUpAll()
-    }
-
     var delegate: UserManagerSave?
 
     private(set) var apiService: APIService

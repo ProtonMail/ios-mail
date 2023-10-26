@@ -23,8 +23,14 @@
 import Foundation
 
 extension FileManager {
-    var appGroupsDirectoryURL: URL! {
-        return self.containerURL(forSecurityApplicationGroupIdentifier: Constants.AppGroup)
+    var appGroupsDirectoryURL: URL {
+        let groupIdentifier = Constants.AppGroup
+
+        guard let url = containerURL(forSecurityApplicationGroupIdentifier: groupIdentifier) else {
+            fatalError("Invalid group identifier: \(groupIdentifier)")
+        }
+
+        return url
     }
 
     var applicationSupportDirectoryURL: URL {
