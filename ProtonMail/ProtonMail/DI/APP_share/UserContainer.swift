@@ -231,15 +231,7 @@ final class UserContainer: ManagedContainer {
 
     var undoActionManagerFactory: Factory<UndoActionManagerProtocol> {
         self {
-            UndoActionManager(
-                dependencies: .init(contextProvider: self.contextProvider, apiService: self.apiService),
-                getEventFetching: { [weak self] in
-                    self?.eventsService
-                },
-                getUserManager: { [weak self] in
-                    self?.user
-                }
-            )
+            UndoActionManager(dependencies: self)
         }
     }
 
