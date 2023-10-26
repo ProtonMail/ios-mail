@@ -66,6 +66,7 @@ final class SearchViewModel: NSObject {
     & HasFetchSenderImage
     & HasUserManager
     & HasCoreDataContextProviderProtocol
+    & HasFeatureFlagCache
 
     typealias LocalObjectsIndexRow = [String: Any]
 
@@ -235,7 +236,9 @@ extension SearchViewModel: SearchVMProtocol {
             messageCount: 0,
             folderIcons: message.getFolderIcons(customFolderLabels: customFolderLabels),
             scheduledTime: dateForScheduled(of: message),
-            isScheduledTimeInNext10Mins: false
+            isScheduledTimeInNext10Mins: false,
+            attachmentsPreviewViewModels: attachmentsPreviews(for: .message(message)),
+            numberOfAttachments: message.numAttachments
         )
     }
 
@@ -608,5 +611,24 @@ extension SearchViewModel {
     private func date(of message: MessageEntity, weekStart: WeekStart) -> String {
         guard let date = message.time else { return .empty }
         return PMDateFormatter.shared.string(from: date, weekStart: weekStart)
+    }
+
+    private func isPreviewable(_ mailboxItem: MailboxItem) -> Bool {
+        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID) else {
+            return false
+        }
+        return mailboxItem.isPreviewable
+    }
+
+    private func attachmentsPreviews(for mailboxItem: MailboxItem) -> [AttachmentPreviewViewModel] {
+        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID) else {
+            return []
+        }
+        return mailboxItem.previewableAttachments.map {
+            AttachmentPreviewViewModel(
+                name: $0.name,
+                icon: AttachmentType(mimeType: $0.mimeType.lowercased()).icon
+            )
+        }
     }
 }
