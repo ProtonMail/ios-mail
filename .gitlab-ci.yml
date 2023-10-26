@@ -304,6 +304,7 @@ report:slack:feature:
       --path test_output/TestResults/
       --platform ios
       --job-name $TEST_PLAN
+      --slack-channel "$SLACK_CHANNEL"
   allow_failure: true
   tags:
     - shared-small
