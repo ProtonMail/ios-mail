@@ -36,11 +36,7 @@ class SharedCacheBase {
     func setValue(_ value: Any?, forKey key: String) {
         self.userDefaults.setValue(value, forKey: key)
         self.userDefaults.synchronize()
-    }
-
-    class func getDefault() -> UserDefaults! {
-        return UserDefaults(suiteName: Constants.AppGroup)
-    }    
+    } 
 }
 
 extension UserDefaults {

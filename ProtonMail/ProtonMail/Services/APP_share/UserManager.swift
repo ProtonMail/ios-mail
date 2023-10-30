@@ -431,7 +431,9 @@ extension UserManager {
             if let status = container.userCachedStatus.getDefaultSignaureSwitchStatus(uid: userID.rawValue) {
                 return status
             } else {
-                let oldStatus = userService.defaultSignatureStauts
+                let oldStatus = container.userCachedStatus.userDefaults.bool(
+                    forKey: UserCachedStatus.LegacyKey.defaultSignatureStatus
+                )
                 container.userCachedStatus.setDefaultSignatureSwitchStatus(uid: userID.rawValue, value: oldStatus)
                 return oldStatus
             }

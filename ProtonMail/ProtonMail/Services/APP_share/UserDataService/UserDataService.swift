@@ -36,17 +36,6 @@ class UserDataService: Service {
     private let coreKeyMaker: KeyMakerProtocol
     private let userDataServiceQueue = DispatchQueue.init(label: "UserDataServiceQueue", qos: .utility)
 
-    struct CoderKey {// Conflict with Key object
-        static let defaultSignatureStatus    = "defaultSignatureStatus"
-    }
-
-    var defaultSignatureStauts: Bool = SharedCacheBase.getDefault().bool(forKey: CoderKey.defaultSignatureStatus) {
-        didSet {
-            SharedCacheBase.getDefault().setValue(defaultSignatureStauts, forKey: CoderKey.defaultSignatureStatus)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
-
     // MARK: - methods
     init(apiService: APIService, coreKeyMaker: KeyMakerProtocol) {
         self.apiService = apiService
