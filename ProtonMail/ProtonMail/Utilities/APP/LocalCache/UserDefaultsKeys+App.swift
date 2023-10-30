@@ -18,7 +18,14 @@
 import Foundation
 
 extension UserDefaultsKeys {
+    static let firstRunDate = UserDefaultsKey<Date?>(name: "firstRunDate", defaultValue: nil)
+
     static let lastBugReport = UserDefaultsKey<String>(name: "BugReportCache_LastBugReport", defaultValue: "")
+
+    static let referralProgramPromptWasShown = UserDefaultsKey<Bool>(
+        name: "referralProgramPromptWasShown",
+        defaultValue: false
+)
 
     /// It is used to check if the spotlight view should be shown for the user that has a
     /// standard toolbar action setting.
