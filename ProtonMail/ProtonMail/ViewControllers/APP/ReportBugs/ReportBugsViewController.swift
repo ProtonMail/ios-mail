@@ -30,7 +30,7 @@ import ProtonCoreUIFoundations
 import SideMenuSwift
 
 final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackable {
-    typealias Dependencies = HasSendBugReport & HasUserManager
+    typealias Dependencies = HasSendBugReport & HasUserDefaults & HasUserManager
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -71,6 +71,15 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
     private let dependencies: Dependencies
     private let troubleShootingHelper: TroubleShootingHelper
 
+    private var cachedBugReport: String {
+        get {
+            dependencies.userDefaults[.lastBugReport]
+        }
+        set {
+            dependencies.userDefaults[.lastBugReport] = newValue
+        }
+    }
+
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
         troubleShootingHelper = TroubleShootingHelper(doh: doh)
@@ -94,10 +103,10 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
         setUpSendButtonAttribute()
         self.navigationItem.rightBarButtonItem = sendButton
 
-        if cachedBugReport.cachedBug.isEmpty {
+        if cachedBugReport.isEmpty {
             addPlaceholder()
         } else {
-            textView.set(text: cachedBugReport.cachedBug, preferredFont: .body)
+            textView.set(text: cachedBugReport, preferredFont: .body)
         }
         self.title = LocalString._menu_bugs_title
 
@@ -224,7 +233,7 @@ final class ReportBugsViewController: ProtonMailViewController, LifetimeTrackabl
 
     fileprivate func reset() {
         addPlaceholder()
-        cachedBugReport.cachedBug = ""
+        cachedBugReport = ""
         updateSendButtonForText(textView.text)
         addPlaceholder()
     }
@@ -354,7 +363,7 @@ extension ReportBugsViewController: UITextViewDelegate {
         let oldText = textView.text as NSString
         let changedText = oldText.replacingCharacters(in: range, with: text)
         updateSendButtonForText(changedText)
-        cachedBugReport.cachedBug = changedText
+        cachedBugReport = changedText
         return true
     }
 
