@@ -24,7 +24,6 @@ final class SingleMessageViewModelTests: XCTestCase {
     var sut: SingleMessageViewModel!
     var toolbarProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
-    var toolbarCustomizeSpotlightStatusProvider: MockToolbarCustomizeSpotlightStatusProvider!
     var userIntroductionProgressProviderMock: MockUserIntroductionProgressProvider!
     var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
     var coordinatorMock: SingleMessageCoordinator!
@@ -35,7 +34,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         toolbarProviderMock = MockToolbarActionProvider()
         contextProviderMock = MockCoreDataContextProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
-        toolbarCustomizeSpotlightStatusProvider = MockToolbarCustomizeSpotlightStatusProvider()
         userIntroductionProgressProviderMock = MockUserIntroductionProgressProvider()
         nextMessageAfterMoveStatusProviderMock = .init()
         notificationCenterMock = .init()
@@ -47,7 +45,6 @@ final class SingleMessageViewModelTests: XCTestCase {
         contextProviderMock = nil
         toolbarProviderMock = nil
         saveToolbarActionUseCaseMock = nil
-        toolbarCustomizeSpotlightStatusProvider = nil
         notificationCenterMock = nil
     }
 
@@ -266,7 +263,6 @@ final class SingleMessageViewModelTests: XCTestCase {
             userIntroductionProgressProvider: userIntroductionProgressProviderMock,
             saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
             toolbarActionProvider: toolbarProviderMock,
-            toolbarCustomizeSpotlightStatusProvider: toolbarCustomizeSpotlightStatusProvider,
             coordinator: coordinatorMock,
             nextMessageAfterMoveStatusProvider: nextMessageAfterMoveStatusProviderMock,
             contentViewModel: SingleMessageContentViewModelFactory(dependencies: userContainer).createViewModel(
@@ -276,7 +272,8 @@ final class SingleMessageViewModelTests: XCTestCase {
             ),
             contextProvider: contextProviderMock,
             highlightedKeywords: [],
-            notificationCenter: notificationCenterMock
+            notificationCenter: notificationCenterMock,
+            dependencies: fakeUser.container
         )
     }
 }

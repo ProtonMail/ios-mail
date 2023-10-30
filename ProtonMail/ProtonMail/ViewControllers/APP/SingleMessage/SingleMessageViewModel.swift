@@ -25,6 +25,7 @@ import ProtonCoreDataModel
 import ProtonCoreUIFoundations
 
 class SingleMessageViewModel {
+    typealias Dependencies = HasUserDefaults
 
     var message: MessageEntity {
         didSet {
@@ -54,11 +55,11 @@ class SingleMessageViewModel {
     private let userIntroductionProgressProvider: UserIntroductionProgressProvider
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
-    private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
     let highlightedKeywords: [String]
     private let nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider
 
     let coordinator: SingleMessageCoordinator
+    private let dependencies: Dependencies
     private let notificationCenter: NotificationCenter
 
     init(labelId: LabelID,
@@ -67,13 +68,13 @@ class SingleMessageViewModel {
          userIntroductionProgressProvider: UserIntroductionProgressProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          toolbarActionProvider: ToolbarActionProvider,
-         toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
          coordinator: SingleMessageCoordinator,
          nextMessageAfterMoveStatusProvider: NextMessageAfterMoveStatusProvider,
          contentViewModel: SingleMessageContentViewModel,
          contextProvider: CoreDataContextProviderProtocol,
          highlightedKeywords: [String],
-         notificationCenter: NotificationCenter = .default
+         notificationCenter: NotificationCenter = .default,
+         dependencies: Dependencies
     ) {
         self.labelId = labelId
         self.message = message
@@ -85,10 +86,10 @@ class SingleMessageViewModel {
         self.coordinator = coordinator
         self.userIntroductionProgressProvider = userIntroductionProgressProvider
         self.toolbarActionProvider = toolbarActionProvider
-        self.toolbarCustomizeSpotlightStatusProvider = toolbarCustomizeSpotlightStatusProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
         self.nextMessageAfterMoveStatusProvider = nextMessageAfterMoveStatusProvider
         self.notificationCenter = notificationCenter
+        self.dependencies = dependencies
     }
 
     var messageTitle: NSAttributedString {
@@ -230,8 +231,8 @@ class SingleMessageViewModel {
         //  If 1 of the logged accounts has a non-standard set of actions, Accounts with
         //  standard actions will see the feature spotlight once when
         //  first opening message details.
-        let ifCurrentUserAlreadySeenTheSpotlight = toolbarCustomizeSpotlightStatusProvider
-            .toolbarCustomizeSpotlightShownUserIds.contains(user.userID.rawValue)
+        let toolbarCustomizeSpotlightShownUserIds = dependencies.userDefaults[.toolbarCustomizeSpotlightShownUserIds]
+        let ifCurrentUserAlreadySeenTheSpotlight = toolbarCustomizeSpotlightShownUserIds.contains(user.userID.rawValue)
         if user.hasAtLeastOneNonStandardToolbarAction,
            user.toolbarActionsIsStandard,
            !ifCurrentUserAlreadySeenTheSpotlight {
@@ -246,9 +247,7 @@ class SingleMessageViewModel {
             asSeen: true,
             byUserWith: user.userID
         )
-        var ids = toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds
-        ids.append(user.userID.rawValue)
-        toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds = ids
+        dependencies.userDefaults[.toolbarCustomizeSpotlightShownUserIds].append(user.userID.rawValue)
     }
 
     private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {

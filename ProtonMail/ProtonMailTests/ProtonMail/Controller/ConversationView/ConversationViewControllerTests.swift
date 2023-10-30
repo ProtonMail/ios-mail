@@ -58,7 +58,6 @@ class ConversationViewControllerTests: XCTestCase {
                                                   targetID: nil,
                                                   toolbarActionProvider: MockToolbarActionProvider(),
                                                   saveToolbarActionUseCase: MockSaveToolbarActionSettingsForUsersUseCase(),
-                                                  toolbarCustomizeSpotlightStatusProvider: MockToolbarCustomizeSpotlightStatusProvider(),
                                                   highlightedKeywords: [],
                                                   goToDraft: { _, _  in },
                                                   dependencies: userContainer)
