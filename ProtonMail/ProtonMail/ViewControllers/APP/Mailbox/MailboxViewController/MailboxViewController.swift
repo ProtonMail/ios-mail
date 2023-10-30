@@ -105,7 +105,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             if shouldAnimateSkeletonLoading {
                 viewModel.diffableDataSource?.animateSkeletonLoading()
             } else {
-                reloadTableViewDataSource(animate: false)
+                reloadTableViewDataSource()
             }
         }
     }
@@ -130,7 +130,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                 contentChangeOccurredDuringLastSwipeGesture
             {
                 contentChangeOccurredDuringLastSwipeGesture = false
-                tableView.reloadData()
+                reloadTableViewDataSource()
             }
         }
     }
@@ -193,7 +193,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     func resetTableView() {
         self.viewModel.resetFetchedController()
         self.viewModel.setupFetchController(self, isUnread: self.unreadFilterButton.isSelected)
-        self.reloadTableViewDataSource(animate: false)
+        self.reloadTableViewDataSource()
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -676,7 +676,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                 }
             }
         self.viewModel.isCurrentUserSelectedUnreadFilterInInbox = isSelected
-        self.reloadTableViewDataSource(animate: false)
+        self.reloadTableViewDataSource()
         self.updateUnreadButton(count: viewModel.unreadCount)
     }
 
@@ -688,8 +688,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         viewModel.setupFetchController(self,
                                        isUnread: viewModel.isCurrentUserSelectedUnreadFilterInInbox)
-            self.loadDiffableDataSource()
-        self.reloadTableViewDataSource(animate: false)
+        self.loadDiffableDataSource()
+        self.reloadTableViewDataSource()
 
         if viewModel.countOfFetchedObjects == 0 {
             viewModel.fetchMessages(time: 0,
@@ -1210,7 +1210,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
             return
         }
 
-            reloadTableViewDataSource(animate: false)
+            reloadTableViewDataSource()
     }
 
     private func fetchEventInScheduledSend() {
@@ -2190,7 +2190,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             return
         }
         reloadTableViewDataSource(
-            animate: false,
             snapshot: remappedSnapshot
         )
         DispatchQueue.main.async {
@@ -2504,20 +2503,18 @@ extension MailboxViewController {
 
     @objc
     private func timeZoneDidChange() {
-        reloadTableViewDataSource(animate: false)
+        reloadTableViewDataSource()
     }
 }
 
 // MARK: Data Source Refresh
 extension MailboxViewController {
     private func reloadTableViewDataSource(
-        animate: Bool,
         snapshot: NSDiffableDataSourceSnapshot<Int, MailboxRow>? = nil,
         completion: (() -> Void)? = nil
     ) {
         viewModel.diffableDataSource?.reloadSnapshot(
             snapshot: snapshot,
-            animate: animate,
             completion: completion
         )
     }
