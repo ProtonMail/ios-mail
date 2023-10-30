@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "Примітка";
 
+/* Title of alert in share extension. */
+"Error" = "Помилка";
+
 /* Action */
 "Don't remind me again" = "Більше не нагадувати";
 
@@ -961,9 +964,6 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Не вдалося завантажити вміст!\nБудь ласка, спробуйте знову.";
-
-/* Title of alert in share extension. */
-"Error" = "Помилка";
 
 /* Error message */
 "Failed to determine type of file" = "Не вдалося визначити тип файлу";
@@ -1935,6 +1935,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Виконання дії переміщення повідомлення (наприклад, архівування) призведе до переходу до наступного повідомлення.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Insufficient disk space";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Не вдалося відкрити повідомлення, спробуйте ще раз.";

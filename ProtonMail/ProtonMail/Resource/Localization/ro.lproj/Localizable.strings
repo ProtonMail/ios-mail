@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "Notificare";
 
+/* Title of alert in share extension. */
+"Error" = "Eroare";
+
 /* Action */
 "Don't remind me again" = "Nu-mi mai reaminti";
 
@@ -962,9 +965,6 @@
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Eșuare încărcare conținut!\nMai reîncercați.";
 
-/* Title of alert in share extension. */
-"Error" = "Eroare";
-
 /* Error message */
 "Failed to determine type of file" = "Eșuare determinare tip fișier";
 
@@ -1320,7 +1320,7 @@
 "Recovery enabled" = "Recuperare activată";
 
 /* No comment provided by engineer. */
-"Please set a recovery / notification email" = "Stabiliți o adresă de e-mail de recuperare / notificare.";
+"Please set a recovery / notification email" = "Stabiliți o adresă de e-mail de recuperare/notificare.";
 
 /* No comment provided by engineer. */
 "Unread" = "Necitite";
@@ -1935,6 +1935,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "După efectuarea unei acțiuni de mutare a unui mesaj (ex. în arhivă) se va trece la următorul mesaj.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "A apărut o eroare neașteptată. Contactați serviciul de asistență.\nEroare: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Spațiu insuficient pe disc";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Aplicația nu se poate deschide din cauza spațiului insuficient pe disc. Ștergeți unele date și reîncercați.";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Nu s-a putut deschide mesajul. Mai reîncercați.";

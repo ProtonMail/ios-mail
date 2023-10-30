@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "通知";
 
+/* Title of alert in share extension. */
+"Error" = "失败";
+
 /* Action */
 "Don't remind me again" = "不再提示";
 
@@ -961,9 +964,6 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "加载内容失败！\n请重试。";
-
-/* Title of alert in share extension. */
-"Error" = "失败";
 
 /* Error message */
 "Failed to determine type of file" = "无法确定文件类型";
@@ -1936,6 +1936,15 @@
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "邮件移动（包括存档）后自动查看下一封邮件。";
 
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Insufficient disk space";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
+
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "无法打开该邮件。请重试。";
 
@@ -1961,7 +1970,7 @@
 "Bug Report Place Holder" = "---为了帮助我们更好地解决问题，请提供尽可能详尽的信息---\n\n简要描述问题：\n\n此问题是否反复出现：是/否\n复现问题的步骤：\n预期得到的结果：\n实际得到的结果：\n额外说明：";
 
 /* Checkbox to attach local application logs to the bug report. */
-"Include logs" = "Include logs";
+"Include logs" = "包含程序日志";
 
 /* The sub title of the search view if there is no result. */
 "Try a different search term." = "不妨试试其他关键词。";
@@ -2045,7 +2054,7 @@
 "Edit photo" = "编辑照片";
 
 /* The title of select all button for select all messages feature */
-"Select all" = "Select all";
+"Select all" = "全选";
 
 /* The title of PIN code disable view  */
 "Disable PIN code" = "禁用 PIN 码";
