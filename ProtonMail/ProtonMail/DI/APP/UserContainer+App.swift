@@ -26,7 +26,7 @@ extension UserContainer {
                     featureFlagService: self.featureFlagsDownloadService,
                     appRating: AppRatingManager(),
                     internetStatus: self.internetConnectionStatusProvider,
-                    appRatingPrompt: self.userCachedStatus
+                    appRatingStatusProvider: self.appRatingStatusProvider
                 )
             )
         }

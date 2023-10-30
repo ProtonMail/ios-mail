@@ -27,6 +27,12 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
+    var appRatingStatusProviderFactory: Factory<AppRatingStatusProvider> {
+        self {
+            UserDefaultsAppRatingStatusProvider(userDefaults: self.userDefaults)
+        }
+    }
+
     var attachmentMetadataStripStatusProviderFactory: Factory<AttachmentMetadataStrippingProtocol> {
         self {
             self.userCachedStatus

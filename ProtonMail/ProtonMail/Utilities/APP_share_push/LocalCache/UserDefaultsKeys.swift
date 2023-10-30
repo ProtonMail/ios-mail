@@ -17,14 +17,23 @@
 
 import Foundation
 
-// swiftlint:disable:all discouraged_optional_boolean
+// swiftlint:disable discouraged_optional_boolean
 class UserDefaultsKeys {
+    static let appRatingPromptedInVersion = UserDefaultsKey<String?>(
+        name: "appRatingPromptedInVersion",
+        defaultValue: nil
+    )
+
     static let primaryUserSessionId = UserDefaultsKey<String?>(name: "primary_user_session_id", defaultValue: nil)
+
     static let failedPushNotificationDecryption = UserDefaultsKey<Bool?>(
         name: "failedPushNotificationDecryption",
         defaultValue: nil
     )
+
+    static let isAppRatingEnabled = UserDefaultsKey<Bool>(name: "isAppRatingEnabled", defaultValue: false)
 }
+// swiftlint:enable discouraged_optional_boolean
 
 final class UserDefaultsKey<T>: UserDefaultsKeys {
     let name: String

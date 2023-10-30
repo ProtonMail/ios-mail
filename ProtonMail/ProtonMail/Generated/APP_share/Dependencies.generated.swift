@@ -19,6 +19,22 @@ extension UserContainer: HasAppAccessResolver {
     }
 }
 
+protocol HasAppRatingStatusProvider {
+    var appRatingStatusProvider: AppRatingStatusProvider { get }
+}
+
+extension GlobalContainer: HasAppRatingStatusProvider {
+    var appRatingStatusProvider: AppRatingStatusProvider {
+        appRatingStatusProviderFactory()
+    }
+}
+
+extension UserContainer: HasAppRatingStatusProvider {
+    var appRatingStatusProvider: AppRatingStatusProvider {
+        globalContainer.appRatingStatusProvider
+    }
+}
+
 protocol HasAttachmentMetadataStrippingProtocol {
     var attachmentMetadataStripStatusProvider: AttachmentMetadataStrippingProtocol { get }
 }
