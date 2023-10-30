@@ -1533,8 +1533,8 @@ final class MockCoreDataDelegateObject: NSObject, NSFetchedResultsControllerDele
         let remappedSnapshot = remapToNewSnapshot(controller: controller, snapshot: snapshot)
         viewModel.diffableDataSource?.reloadSnapshot(
             snapshot: remappedSnapshot,
-            animate: false,
-            completion: nil)
+            completion: nil
+        )
     }
 
     private func remapToNewSnapshot(controller: NSFetchedResultsController<NSFetchRequestResult>, snapshot: NSDiffableDataSourceSnapshotReference) -> NSDiffableDataSourceSnapshot<Int, MailboxRow> {
