@@ -179,7 +179,7 @@ extension PushNotificationHandler {
         init(
             decryptionKeysProvider: PushDecryptionKeysProvider = PushEncryptionKitSaver.shared,
             oldEncryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
-            cacheStatus: PushCacheStatus = PushCacheStatus(),
+            cacheStatus: PushCacheStatus = SharedUserDefaults.shared,
             failedPushDecryptionMarker: FailedPushDecryptionMarker = SharedUserDefaults.shared
         ) {
             self.decryptionKeysProvider = decryptionKeysProvider
@@ -188,23 +188,8 @@ extension PushNotificationHandler {
             self.failedPushDecryptionMarker = failedPushDecryptionMarker
         }
     }
+}
 
-    final class PushCacheStatus: SharedCacheBase {
-        // swiftlint:disable:next nesting
-        enum Key {
-            static let primaryUserSessionId = "primary_user_session_id"
-        }
-
-        var primaryUserSessionId: String? {
-            get {
-                if getShared().object(forKey: Key.primaryUserSessionId) == nil {
-                    return nil
-                }
-                return getShared().string(forKey: Key.primaryUserSessionId)
-            }
-            set {
-                setValue(newValue, forKey: Key.primaryUserSessionId)
-            }
-        }
-    }
+protocol PushCacheStatus {
+    var primaryUserSessionId: String? { get set }
 }

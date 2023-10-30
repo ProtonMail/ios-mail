@@ -17,36 +17,6 @@
 
 import Foundation
 
-class UserDefaultsKeys {
+extension UserDefaultsKeys {
     static let lastBugReport = UserDefaultsKey<String>(name: "BugReportCache_LastBugReport", defaultValue: "")
-}
-
-final class UserDefaultsKey<T>: UserDefaultsKeys {
-    let name: String
-    let defaultValue: T
-
-    init(name: String, defaultValue: T) {
-        self.name = name
-        self.defaultValue = defaultValue
-    }
-}
-
-extension UserDefaults {
-    subscript<T>(_ key: UserDefaultsKey<T>) -> T {
-        get {
-            guard let storedValue = object(forKey: key.name) else {
-                return key.defaultValue
-            }
-
-            return storedValue as? T ?? {
-                PMAssertionFailure(
-                    "Cannot read \(key.name) - invalid type \(type(of: storedValue)), expected \(T.self)"
-                )
-                return key.defaultValue
-            }()
-        }
-        set {
-            set(newValue, forKey: key.name)
-        }
-    }
 }
