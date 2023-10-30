@@ -20,19 +20,20 @@ stages:
   - bot
 
 .setup_basic_tools: &setup_basic_tools
-  - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --no-upgrade
+  - brew bundle --file="$CI_PROJECT_DIR/ProtonMail/Brewfile" --force
   - mint bootstrap
 
 .setup_ruby: &setup_ruby
   - cd ProtonMail
-  - bundle config --local build.ffi -- --enable-libffi-alloc
   - bundle install
   - cd ..
 
 .setup_project: &setup_project
   - *setup_basic_tools
   - *setup_ruby
+  - ./ProtonMail/xcodeGenHelper.sh
 
+.setup_project_for_ui_tests: &setup_project_for_ui_tests
   # Clean up TestData folder and git module information to always fetch latest TestData state
   - rm -rf .git/modules/ProtonMail/ProtonMailUITests/TestData
   - rm -rf ProtonMail/ProtonMailUITests/TestData
@@ -47,22 +48,15 @@ stages:
 
   - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
 
-  - cd ProtonMail
-  - sh xcodeGenHelper.sh
-  - cd ..
-
-.configure_sentry: &configure_sentry
-  - curl -sL https://sentry.io/get-cli/ | bash || true
+  - *setup_project
 
 .build_for_testflight: &build_for_testflight
   - cd ProtonMail
-  - *configure_sentry
   - base64 -D -o Certificates.p12 <<< $DISTRIBUTION_CERTIFICATE
   - bundle exec fastlane ios build
 
 .enterprise_config_setting: &enterprise_config_setting
   - cd ProtonMail
-  - *configure_sentry
   - base64 -D -o Certificates.p12 <<< $ENTERPRISE_DISTRIBUTION_CERTIFICATE
   - base64 -D -o Siri.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_SIRI_PROVISIONPROFILE
   - base64 -D -o Enterprise.mobileprovision <<< $ENTERPRISE_DISTRIBUTION_APP_PROVISIONPROFILE
@@ -175,7 +169,7 @@ test:ui:smoke:
       junit:
         - test_output/TestResults/report.xml
   before_script:
-    - *setup_project
+    - *setup_project_for_ui_tests
   script:
     - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
     - cd ProtonMail
@@ -195,7 +189,7 @@ test:ui:sanity:
       when: always
     - when: manual
   before_script:
-    - *setup_project
+    - *setup_project_for_ui_tests
     - echo DYNAMIC_DOMAIN="${DYNAMIC_DOMAIN}"
   script:
     - cd ProtonMail
@@ -232,7 +226,7 @@ test:ui:feature:
     reports:
       junit: test_output/TestResults/report.xml
   before_script:
-    - *setup_project
+    - *setup_project_for_ui_tests
   script:
     - cd ProtonMail
     - bundle exec fastlane ui_test testplan:$TEST_PLAN concurrent_workers:$NUMBER_OF_DEVICES
@@ -258,7 +252,7 @@ test:ui:regression:
     reports:
       junit: test_output/TestResults/report.xml
   before_script:
-    - *setup_project
+    - *setup_project_for_ui_tests
   script:
     - cd ProtonMail
     - bundle exec fastlane ui_test testplan:RegressionTests concurrent_workers:$NUMBER_OF_DEVICES
@@ -283,7 +277,7 @@ test:ui:monkey:
     reports:
       junit: test_output/TestResults/report.xml
   before_script:
-    - *setup_project
+    - *setup_project_for_ui_tests
   script:
     - cd ProtonMail
     - bundle exec fastlane ui_test testplan:MonkeyTests concurrent_workers:1

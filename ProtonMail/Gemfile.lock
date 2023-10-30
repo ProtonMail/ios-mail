@@ -172,7 +172,6 @@ GEM
       google-apis-firebaseappdistribution_v1 (~> 0.3.0)
     fastlane-plugin-sentry (1.15.0)
       os (~> 1.1, >= 1.1.4)
-    fastlane-plugin-xchtmlreport (0.1.1)
     ffi (1.16.2)
     fourflusher (2.3.1)
     fuzzy_match (2.0.4)
@@ -300,11 +299,11 @@ PLATFORMS
   universal-darwin-22
 
 DEPENDENCIES
+  activesupport (= 7.0.8)
   cocoapods
   fastlane
   fastlane-plugin-firebase_app_distribution
   fastlane-plugin-sentry
-  fastlane-plugin-xchtmlreport
   ffi
   slather!
 
