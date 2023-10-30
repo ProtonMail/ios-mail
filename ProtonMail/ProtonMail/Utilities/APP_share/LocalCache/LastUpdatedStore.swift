@@ -53,13 +53,12 @@ protocol LastUpdatedStoreProtocol: Service {
                                type: ViewMode)
 }
 
-final class LastUpdatedStore: SharedCacheBase, LastUpdatedStoreProtocol {
+final class LastUpdatedStore: LastUpdatedStoreProtocol {
 
     let contextProvider: CoreDataContextProviderProtocol
 
     init(contextProvider: CoreDataContextProviderProtocol) {
         self.contextProvider = contextProvider
-        super.init()
     }
 
     func cleanUp(userId: UserID) {
