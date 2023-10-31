@@ -352,6 +352,44 @@ final class ContactEditViewControllerTests: XCTestCase {
         XCTAssertEqual(notes.first?.getNote(), note)
     }
 
+    func testEditContact_removeAllNoteText_removeTheNoteField() throws {
+        let note = String.randomString(20)
+        let vCardSignedAndEncryptedData = "BEGIN:VCARD\nVERSION:4.0\nN:lastName;firstName\nNOTE:\(note)\nEND:VCARD"
+        let vCardSignedData = "BEGIN:VCARD\nVERSION:4.0\nFN:Name\nEND:VCARD"
+        let data = try XCTUnwrap(
+            try TestDataCreator.generateVCardTestData(
+                vCardSignAndEncrypt: vCardSignedAndEncryptedData,
+                vCardSign: vCardSignedData,
+                vCard: ""
+            )
+        )
+        viewModel = .init(
+            contactEntity: .make(name: "Name", cardData: data),
+            dependencies: .init(
+                user: mockUser,
+                contextProvider: fakeCoreDataService,
+                contactService: mockContactService
+            )
+        )
+        sut = .init(viewModel: viewModel, dependencies: userContainer)
+        sut.loadViewIfNeeded()
+
+        let noteCell = try XCTUnwrap(
+            sut.tableView(sut.customView.tableView, cellForRowAt: .init(row: 0, section: 6)) as? ContactEditTextViewCell
+        )
+        noteCell.textView.simulate(textInput: "")
+
+        clickDone()
+
+        wait(self.mockContactService.queueUpdateStub.wasCalled)
+
+        let parameters = try XCTUnwrap(mockContactService.queueUpdateStub.lastArguments)
+
+        let cardDatas = parameters.a2
+        let signedAndEncryptedVCardData = cardDatas[2]
+        let signedAndEncryptedVCard = try parseAndVerify(cardData: signedAndEncryptedVCardData)
+        XCTAssertNil(signedAndEncryptedVCard?.getNote())
+    }
 }
 
 extension ContactEditViewControllerTests {
