@@ -69,7 +69,7 @@ final class ContactEditViewModel {
     var gender: ContactEditInformation?
 
     var fields: [ContactEditField] = []
-    var notes: [ContactEditNote] = [.init(note: "", isNew: true)]
+    var notes: [ContactEditNote] = []
 
     var contactGroupData: [String: (name: String, color: String, count: Int)] = [:]
 
@@ -132,6 +132,9 @@ final class ContactEditViewModel {
     }
 
     func getNotes() -> [ContactEditNote] {
+        if notes.isEmpty {
+            notes.append(.init(note: "", isNew: true))
+        }
         return notes
     }
 
@@ -612,14 +615,20 @@ final class ContactEditViewModel {
             }
 
             if !notes.isEmpty {
-                notes
-                    .filter { !$0.newNote.isEmpty }
-                    .forEach { note in
-                        if let rawNote = PMNINote.createInstance("", note: note.newNote) {
-                            vcard3.add(rawNote)
-                            isCard3Set = true
+                let isNoteExist = notes.contains(where: { !$0.newNote.isEmpty })
+                if isNoteExist {
+                    notes
+                        .filter { !$0.newNote.isEmpty }
+                        .forEach { note in
+                            if let rawNote = PMNINote.createInstance("", note: note.newNote) {
+                                vcard3.add(rawNote)
+                                isCard3Set = true
+                            }
                         }
-                    }
+                } else {
+                    vcard3.clearNote()
+                    isCard3Set = true
+                }
             }
 
             for field in fields {
