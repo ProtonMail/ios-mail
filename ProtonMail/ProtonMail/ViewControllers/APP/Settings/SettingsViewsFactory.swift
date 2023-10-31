@@ -21,7 +21,7 @@ final class SettingsViewsFactory {
     typealias Dependencies = AnyObject
     & SettingsDeviceViewModel.Dependencies
     & SettingsSwipeActionSelectViewModelImpl.Dependencies
-    & HasUserDefaults
+    & HasUserCachedStatus
 
     private unowned let dependencies: Dependencies
 
@@ -35,7 +35,7 @@ final class SettingsViewsFactory {
     }
 
     func makeContactCombineView() -> SwitchToggleViewController {
-        let viewModel = ContactCombineViewModel(combineContactCache: dependencies.userCachedStatus)
+        let viewModel = ContactCombineViewModel(userDefaults: dependencies.userDefaults)
         return SwitchToggleViewController(viewModel: viewModel)
     }
 

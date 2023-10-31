@@ -26,6 +26,7 @@ final class ComposerViewFactory {
     & HasKeyMakerProtocol
     & HasUserCachedStatus
     & HasFetchAttachment
+    & HasUserDefaults
 
     private unowned let dependencies: Dependencies
 
@@ -130,7 +131,7 @@ final class ComposerViewFactory {
             ),
             darkModeCache: dependencies.userCachedStatus,
             attachmentMetadataStrippingCache: dependencies.attachmentMetadataStripStatusProvider,
-            userCachedStatusProvider: dependencies.userCachedStatus,
+            userDefaults: dependencies.userDefaults,
             notificationCenter: NotificationCenter.default
         )
     }

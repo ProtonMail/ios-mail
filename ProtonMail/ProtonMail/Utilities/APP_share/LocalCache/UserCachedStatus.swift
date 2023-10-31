@@ -31,7 +31,6 @@ let userCachedStatus = UserCachedStatus(keychain: KeychainWrapper.keychain)
 // sourcery: mock
 protocol UserCachedStatusProvider: AnyObject {
     var keymakerRandomkey: String? { get set }
-    var isCombineContactOn: Bool { get set }
     var lastDraftMessageID: String? { get set }
     var serverNotices: [String] { get set }
     var serverNoticesNextTime: String { get set }
@@ -44,7 +43,7 @@ protocol UserCachedStatusProvider: AnyObject {
     func removeIsCheckSpaceDisabledStatus(uid: String)
 }
 
-final class UserCachedStatus: SharedCacheBase, ContactCombinedCacheProtocol, UserCachedStatusProvider {
+final class UserCachedStatus: SharedCacheBase, UserCachedStatusProvider {
     struct Key {
         // inuse
         static let cachedServerNotices = "cachedServerNotices" // user cache
@@ -73,8 +72,6 @@ final class UserCachedStatus: SharedCacheBase, ContactCombinedCacheProtocol, Use
 
         static let metadataStripping = "metadataStripping"
         static let browser = "browser"
-
-        static let combineContactFlag = "combine_contact_flag"
 
         static let leftToRightSwipeAction = "leftToRightSwipeAction"
         static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
@@ -109,18 +106,6 @@ final class UserCachedStatus: SharedCacheBase, ContactCombinedCacheProtocol, Use
             } else {
                 KeychainWrapper.keychain.remove(forKey: Key.randomPinForProtection)
             }
-        }
-    }
-
-    var isCombineContactOn: Bool {
-        get {
-            if getShared().object(forKey: Key.combineContactFlag) == nil {
-                return false
-            }
-            return getShared().bool(forKey: Key.combineContactFlag)
-        }
-        set {
-            setValue(newValue, forKey: Key.combineContactFlag)
         }
     }
 

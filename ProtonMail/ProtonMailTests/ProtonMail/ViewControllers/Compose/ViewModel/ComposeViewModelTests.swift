@@ -32,12 +32,14 @@ final class ComposeViewModelTests: XCTestCase {
     private var dependencies: ComposeViewModel.Dependencies!
     private var attachmentMetadataStrippingCache: AttachmentMetadataStrippingMock!
     private var notificationCenter: NotificationCenter!
+    private var testContainer: TestContainer!
     private let userID: UserID = .init(String.randomString(20))
     private var mockUIDelegate: MockComposeUIProtocol!
-    private var mockUserCacheStatusProvider: MockUserCachedStatusProvider!
 
     override func setUp() {
         super.setUp()
+
+        testContainer = .init()
 
         self.mockCoreDataService = MockCoreDataContextProvider()
         self.apiMock = APIServiceMock()
@@ -55,7 +57,6 @@ final class ComposeViewModelTests: XCTestCase {
         }
 
         attachmentMetadataStrippingCache = .init()
-        mockUserCacheStatusProvider = .init()
         let helperDependencies = ComposerMessageHelper.Dependencies(
             messageDataService: fakeUserManager.messageService,
             cacheService: fakeUserManager.cacheService,
@@ -77,7 +78,7 @@ final class ComposeViewModelTests: XCTestCase {
             )),
             darkModeCache: MockDarkModeCacheProtocol(),
             attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
-            userCachedStatusProvider: mockUserCacheStatusProvider,
+            userDefaults: testContainer.userDefaults,
             notificationCenter: notificationCenter
         )
 
@@ -99,6 +100,7 @@ final class ComposeViewModelTests: XCTestCase {
         self.message = nil
         self.testContext = nil
         self.notificationCenter = nil
+        testContainer = nil
         self.mockUIDelegate = nil
         FileManager.default.cleanTemporaryDirectory()
 
@@ -469,7 +471,7 @@ final class ComposeViewModelTests: XCTestCase {
     }
 
     func testFetchContacts_newEmailAdded_withContactCombine_contactsWillHaveAllNewlyAddedEmail() throws {
-        mockUserCacheStatusProvider.isCombineContactOnStub.fixture = true
+        testContainer.userDefaults[.isCombineContactOn] = true
         sut = ComposeViewModel(
             msg: .init(message),
             action: .openDraft,

@@ -1284,16 +1284,6 @@ class MockUserCachedStatusProvider: UserCachedStatusProvider {
         }
     }
 
-    @PropertyStub(\MockUserCachedStatusProvider.isCombineContactOn, initialGet: Bool()) var isCombineContactOnStub
-    var isCombineContactOn: Bool {
-        get {
-            isCombineContactOnStub()
-        }
-        set {
-            isCombineContactOnStub(newValue)
-        }
-    }
-
     @PropertyStub(\MockUserCachedStatusProvider.lastDraftMessageID, initialGet: nil) var lastDraftMessageIDStub
     var lastDraftMessageID: String? {
         get {
