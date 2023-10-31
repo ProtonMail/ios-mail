@@ -118,7 +118,7 @@ class UsersManager: Service, UsersManagerProtocol {
     private unowned let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
-        self.doh.status = dependencies.userCachedStatus.isDohOn ? .on : .off
+        self.doh.status = dependencies.userDefaults[.isDohOn] ? .on : .off
         /// for migrate
         self.latestVersion = Version.version
         self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version, store: dependencies.userDefaults)

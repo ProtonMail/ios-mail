@@ -31,7 +31,6 @@ let userCachedStatus = UserCachedStatus(keychain: KeychainWrapper.keychain)
 // sourcery: mock
 protocol UserCachedStatusProvider: AnyObject {
     var keymakerRandomkey: String? { get set }
-    var isDohOn: Bool { get set }
     var isCombineContactOn: Bool { get set }
     var lastDraftMessageID: String? { get set }
     var serverNotices: [String] { get set }
@@ -45,7 +44,7 @@ protocol UserCachedStatusProvider: AnyObject {
     func removeIsCheckSpaceDisabledStatus(uid: String)
 }
 
-final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombinedCacheProtocol, UserCachedStatusProvider {
+final class UserCachedStatus: SharedCacheBase, ContactCombinedCacheProtocol, UserCachedStatusProvider {
     struct Key {
         // inuse
         static let cachedServerNotices = "cachedServerNotices" // user cache
@@ -74,8 +73,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         static let metadataStripping = "metadataStripping"
         static let browser = "browser"
-
-        static let dohFlag = "doh_flag"
 
         static let combineContactFlag = "combine_contact_flag"
 
@@ -112,18 +109,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
             } else {
                 KeychainWrapper.keychain.remove(forKey: Key.randomPinForProtection)
             }
-        }
-    }
-
-    var isDohOn: Bool {
-        get {
-            if getShared().object(forKey: Key.dohFlag) == nil {
-                return true
-            }
-            return getShared().bool(forKey: Key.dohFlag)
-        }
-        set {
-            setValue(newValue, forKey: Key.dohFlag)
         }
     }
 

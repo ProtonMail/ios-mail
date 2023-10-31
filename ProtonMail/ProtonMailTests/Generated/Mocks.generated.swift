@@ -1284,16 +1284,6 @@ class MockUserCachedStatusProvider: UserCachedStatusProvider {
         }
     }
 
-    @PropertyStub(\MockUserCachedStatusProvider.isDohOn, initialGet: Bool()) var isDohOnStub
-    var isDohOn: Bool {
-        get {
-            isDohOnStub()
-        }
-        set {
-            isDohOnStub(newValue)
-        }
-    }
-
     @PropertyStub(\MockUserCachedStatusProvider.isCombineContactOn, initialGet: Bool()) var isCombineContactOnStub
     var isCombineContactOn: Bool {
         get {
