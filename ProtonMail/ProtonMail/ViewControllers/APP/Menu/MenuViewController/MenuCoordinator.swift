@@ -376,7 +376,8 @@ extension MenuCoordinator {
                                 fetchMessageWithReset: fetchMessagesWithReset,
                                 fetchMessage: fetchMessages,
                                 fetchLatestEventID: fetchLatestEvent,
-                                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared)
+                                internetConnectionStatusProvider: InternetConnectionStatusProvider.shared,
+                                userDefaults: dependencies.userDefaults)
         )
         let mailboxVMDependencies = MailboxViewModel.Dependencies(
             fetchMessages: fetchMessages,

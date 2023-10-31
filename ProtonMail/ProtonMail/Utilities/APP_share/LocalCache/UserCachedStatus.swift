@@ -32,8 +32,6 @@ let userCachedStatus = UserCachedStatus(keychain: KeychainWrapper.keychain)
 protocol UserCachedStatusProvider: AnyObject {
     var keymakerRandomkey: String? { get set }
     var lastDraftMessageID: String? { get set }
-    var serverNotices: [String] { get set }
-    var serverNoticesNextTime: String { get set }
 
     func getDefaultSignaureSwitchStatus(uid: String) -> Bool?
     func setDefaultSignatureSwitchStatus(uid: String, value: Bool)
@@ -45,9 +43,6 @@ protocol UserCachedStatusProvider: AnyObject {
 
 final class UserCachedStatus: SharedCacheBase, UserCachedStatusProvider {
     struct Key {
-        // inuse
-        static let cachedServerNotices = "cachedServerNotices" // user cache
-        static let showServerNoticesNextTime = "showServerNoticesNextTime" // user cache
 
         // pin code
 
@@ -113,24 +108,6 @@ final class UserCachedStatus: SharedCacheBase, UserCachedStatusProvider {
 
     /// Record the last draft messageID, so the app can do delete / restore
     var lastDraftMessageID: String?
-
-    var serverNotices: [String] {
-        get {
-            return getShared().object(forKey: Key.cachedServerNotices) as? [String] ?? [String]()
-        }
-        set {
-            setValue(newValue, forKey: Key.cachedServerNotices)
-        }
-    }
-
-    var serverNoticesNextTime: String {
-        get {
-            return getShared().string(forKey: Key.showServerNoticesNextTime) ?? "0"
-        }
-        set {
-            setValue(newValue, forKey: Key.showServerNoticesNextTime)
-        }
-    }
 
     private let keychain: Keychain
 

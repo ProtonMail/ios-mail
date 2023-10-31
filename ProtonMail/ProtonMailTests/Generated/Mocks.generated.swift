@@ -1294,26 +1294,6 @@ class MockUserCachedStatusProvider: UserCachedStatusProvider {
         }
     }
 
-    @PropertyStub(\MockUserCachedStatusProvider.serverNotices, initialGet: [String]()) var serverNoticesStub
-    var serverNotices: [String] {
-        get {
-            serverNoticesStub()
-        }
-        set {
-            serverNoticesStub(newValue)
-        }
-    }
-
-    @PropertyStub(\MockUserCachedStatusProvider.serverNoticesNextTime, initialGet: String()) var serverNoticesNextTimeStub
-    var serverNoticesNextTime: String {
-        get {
-            serverNoticesNextTimeStub()
-        }
-        set {
-            serverNoticesNextTimeStub(newValue)
-        }
-    }
-
     @FuncStub(MockUserCachedStatusProvider.getDefaultSignaureSwitchStatus, initialReturn: nil) var getDefaultSignaureSwitchStatusStub
     func getDefaultSignaureSwitchStatus(uid: String) -> Bool? {
         getDefaultSignaureSwitchStatusStub(uid)

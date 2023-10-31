@@ -18,6 +18,8 @@
 import Foundation
 
 extension UserDefaultsKeys {
+    static let cachedServerNotices = UserDefaultsKey<[String]>(name: "cachedServerNotices", defaultValue: [])
+
     static let firstRunDate = UserDefaultsKey<Date?>(name: "firstRunDate", defaultValue: nil)
 
     static let lastBugReport = UserDefaultsKey<String>(name: "BugReportCache_LastBugReport", defaultValue: "")
@@ -25,7 +27,9 @@ extension UserDefaultsKeys {
     static let referralProgramPromptWasShown = UserDefaultsKey<Bool>(
         name: "referralProgramPromptWasShown",
         defaultValue: false
-)
+    )
+
+    static let showServerNoticesNextTime = UserDefaultsKey<String>(name: "showServerNoticesNextTime", defaultValue: "0")
 
     /// It is used to check if the spotlight view should be shown for the user that has a
     /// standard toolbar action setting.
