@@ -1279,16 +1279,6 @@ class MockUserCachedStatusProvider: UserCachedStatusProvider {
         }
     }
 
-    @PropertyStub(\MockUserCachedStatusProvider.primaryUserSessionId, initialGet: nil) var primaryUserSessionIdStub
-    var primaryUserSessionId: String? {
-        get {
-            primaryUserSessionIdStub()
-        }
-        set {
-            primaryUserSessionIdStub(newValue)
-        }
-    }
-
     @PropertyStub(\MockUserCachedStatusProvider.isDohOn, initialGet: Bool()) var isDohOnStub
     var isDohOn: Bool {
         get {

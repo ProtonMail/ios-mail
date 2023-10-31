@@ -103,7 +103,7 @@ class UsersManager: Service, UsersManagerProtocol {
 
     private(set) var users: [UserManager] = [] {
         didSet {
-            dependencies.userCachedStatus.primaryUserSessionId = users.first?.authCredential.sessionID
+            dependencies.userDefaults[.primaryUserSessionId] = users.first?.authCredential.sessionID
         }
     }
 
