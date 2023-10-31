@@ -58,8 +58,7 @@ extension Error {
              NSURLErrorCannotFindHost,
              310,
              -1200,
-             8 // No internet
-             :
+             8: // No internet
             return true
         default:
             return false

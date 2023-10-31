@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Επικοινωνήστε με την υποστήριξη πελατών";
+
+"Failed to get list of available products from App Store." = "Αποτυχία λήψης λίστας διαθέσιμων προϊόντων από το App Store.";
+
+"Purchase is not possible." = "Η αγορά δεν είναι δυνατή.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το πακέτο/πλάνο σας, αλλά λείπουν ορισμένα τεχνικά δεδομένα. Συμπληρώστε την φόρμα αναφοράς σφαλμάτων και η ομάδα υποστήριξης πελατών μας, θα επικοινωνήσει μαζί σας.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Η Apple μας ενημέρωσε ότι έχετε αναβαθμίσει το λογαριασμό σας / πλάνο, αλλά εντοπίσαμε ότι έχετε αποσυνδεθεί από το λογαριασμό σας, από τότε.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Δεν κατέστει εφικτό να ταιριάξει το προϊόν του App Store που αγοράσατε σε οποιοδήποτε προϊόν του διακομιστή μας. Συμπληρώστε την αναφορά σφάλματος και η ομάδα υποστήριξης πελατών μας θα επικοινωνήσει μαζί σας.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Παρακαλούμε εισέλθετε στον λογαριασμό Proton Mail που αναβαθμίζετε το πρόγραμμα της υπηρεσίας του, ώστε να μπορέσουμε να ολοκληρώσουμε την αγορά.";
+
+"Apple informed us they could not process the purchase." = "Η Apple μας ενημέρωσε ότι δεν μπόρεσε να επεξεργαστούν την αγορά.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Ενεργοποιήσαμε επιτυχώς τη συνδρομή σας. Κάντε επανεκκίνηση της εφαρμογής για να ξεκινήσετε να χρησιμοποιείτε το νέο σας πρόγραμμα υπηρεσιών.";
+
+"Please unlock the app to proceed with your service plan activation" = "Παρακαλώ ξεκλειδώστε την εφαρμογή για να προχωρήσετε στην ενεργοποίηση του πακέτου/πλάνου υπηρεσίας σας";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Παρακαλούμε εισέλθετε στον λογαριασμό Proton Mail που αναβαθμίζετε το πρόγραμμα της υπηρεσίας του, ώστε να μπορέσουμε να ολοκληρώσουμε την ενεργοποίηση του προγράμματός της.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Λάθος κατάσταση διακριτικού πληρωμής. Επανεκκινήστε την εφαρμογή. Εάν το σφάλμα παραμένει, επικοινωνήστε με την υποστήριξη.";
+
+"Do you want to activate the purchase for %@ address?" = "Θέλετε να ενεργοποιήσετε την αγορά για τη διεύθυνση %@;";
+
+"Yes, activate it for " = "Ναι, ενεργοποιήστε το για ";
+
+"No, for another Proton Mail account" = "Όχι, για άλλον λογαριασμό Proton Mail";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Δεν μπορέσαμε να αναβαθμίσουμε τον λογαριασμό σας στο πλάνο που επιλέξατε, επομένως προσθέσαμε την πληρωμή σας ως πίστωση στον λογαριασμό σας. Για περισσότερες πληροφορίες και για να ολοκληρώσετε την αναβάθμισή σας, παρακαλούμε επικοινωνήστε με την υποστήριξη.";
+
+"Contact Support" = "Επικοινωνία με την Υποστήριξη";
+
+"Dismiss" = "Παράβλεψη";
+
+"Payment failed" = "Η πληρωμή απέτυχε";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Έχετε εγγραφεί επιτυχώς, αλλά η πληρωμή σας δεν υποβλήθηκε σε επεξεργασία. Για να στείλετε ξανά τα στοιχεία πληρωμής σας, κάντε κλικ στο Επανάληψη. Θα χρεωθείτε μόνο μία φορά. Εάν το πρόβλημα παραμένει, επικοινωνήστε με την υποστήριξη πελατών.";
+
+"Retry" = "Δοκιμάστε ξανά";
+
+"OK" = "ΟΚ";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Οι διακομιστές Proton δεν είναι προσβάσιμοι. Αυτό μπορεί να προκληθεί από λανθασμένη διαμόρφωση δικτύου, λόγο ότι διακομιστές Proton που δεν λειτουργούν ή διακομιστές Proton μπλοκάρονται";

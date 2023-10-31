@@ -1,0 +1,50 @@
+
+"support form" = "destek formu";
+
+"email" = "e-posta";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Sorun giderme";
+
+"Allow alternative routing" = "Alternatif yöneltme kullanılabilsin";
+
+"No internet connection" = "İnternet bağlantısı yok";
+
+"Internet Service Provider (ISP) problem" = "İnternet hizmeti sağlayıcı (ISP) sorunu";
+
+"Government block" = "Hükümet engellemesi";
+
+"Antivirus interference" = "Antivirüs etkileşimi";
+
+"Proxy/Firewall interference" = "Vekil sunucu/güvenlik duvarı etkileşimi";
+
+"Proton is down" = "Proton çalışmıyor";
+
+"Still can't find a solution" = "Hala bir çözüm bulunamadı";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Bu seçenek ile, Proton sitelerinin engellenmiş olması durumunda, uygulama Proton ağına ulaşmak için alternatif ağ yöneltmesini dener. Güvenlik duvarlarını veya ağ sorunlarını aşmakta yararlı olabilir. Bağlantı güvenilirliğini artırmak için bu seçeneği açık tutmanız önerilir. %1$@";
+
+"Learn more" = "Ayrıntılı bilgi alın";
+
+"Please make sure that your internet connection is working." = "Lütfen İnternet bağlantınızın çalıştığından emin olun.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Farklı bir ağ kullanarak Proton bağlantısı kurmayı deneyin (ayrıca %1$@ ya da %2$@ kullanabilirsiniz).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ülkeniz Proton ağına erişimi engelliyor olabilir. Proton ağına erişmek için %1$@ (ya da başka bir VPN) ya da %2$@ kullanmayı deneyin.";
+
+"Temporarily disable or remove your antivirus software." = "Virüsten koruma uygulamanızı geçici olarak kapatın ya da kaldırın.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Vekil sunucuları veya güvenlik duvarlarını kapatın ya da ağ yöneticinizle görüşün.";
+
+"Check Proton Status for our system status." = "Sistemimizin durumunu görmek için Proton durumu sayfasına bakın.";
+
+"Proton Status" = "Proton durumu";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Bizimle doğrudan destek isteği formu, e-posta (support@protonmail.zendesk.com) ya da Twitter aracılığıyla görüşebilirsiniz.";
+
+"Subject..." = "Konu...";
+
+"Please share your problem." = "Lütfen sorununuzu paylaşın.";
+
+"Back" = "Geri";

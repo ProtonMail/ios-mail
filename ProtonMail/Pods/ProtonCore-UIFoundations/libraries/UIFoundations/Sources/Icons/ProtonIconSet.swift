@@ -154,6 +154,8 @@ public struct ProtonIconSet {
 
     public let cardIdentity = ProtonIcon(name: "ic-card-identity")
 
+    public let chartLine = ProtonIcon(name: "ic-chart-line")
+
     public let checkmarkCircleFilled = ProtonIcon(name: "ic-checkmark-circle-filled")
 
     public let checkmarkCircle = ProtonIcon(name: "ic-checkmark-circle")
@@ -219,6 +221,8 @@ public struct ProtonIconSet {
     public let earth = ProtonIcon(name: "ic-earth")
 
     public let emoji = ProtonIcon(name: "ic-emoji")
+
+    public let emptyCircle = ProtonIcon(name: "ic-empty-circle")
 
     public let envelopeArrowUpAndRight = ProtonIcon(name: "ic-envelope-arrow-up-and-right")
 
@@ -354,9 +358,15 @@ public struct ProtonIconSet {
 
     public let lockFilled = ProtonIcon(name: "ic-lock-filled")
 
+    public let lockLayers = ProtonIcon(name: "ic-lock-layers")
+
+    public let lockOpen = ProtonIcon(name: "ic-lock-open")
+
     public let lockOpenCheckFilled = ProtonIcon(name: "ic-lock-open-check-filled")
 
     public let lockOpenExclamationFilled = ProtonIcon(name: "ic-lock-open-exclamation-filled")
+
+    public let lockOpenFilled2 = ProtonIcon(name: "ic-lock-open-filled-2")
 
     public let lockOpenPenFilled = ProtonIcon(name: "ic-lock-open-pen-filled")
 
@@ -365,6 +375,8 @@ public struct ProtonIconSet {
     public let lock = ProtonIcon(name: "ic-lock")
 
     public let locks = ProtonIcon(name: "ic-locks")
+
+    public let locksFilled = ProtonIcon(name: "ic-locks-filled")
 
     public let lowDash = ProtonIcon(name: "ic-low-dash")
 
@@ -416,6 +428,10 @@ public struct ProtonIconSet {
 
     public let phone = ProtonIcon(name: "ic-phone")
 
+    public let pinFilled = ProtonIcon(name: "ic-pin-filled")
+
+    public let pinSlashFilled = ProtonIcon(name: "ic-pin-slash-filled")
+
     public let play = ProtonIcon(name: "ic-play")
 
     public let plusCircleFilled = ProtonIcon(name: "ic-plus-circle-filled")
@@ -444,11 +460,15 @@ public struct ProtonIconSet {
 
     public let servers = ProtonIcon(name: "ic-servers")
 
+    public let sliders = ProtonIcon(name: "ic-sliders")
+
     public let shieldFilled = ProtonIcon(name: "ic-shield-filled")
 
     public let shieldHalfFilled = ProtonIcon(name: "ic-shield-half-filled")
 
     public let shield = ProtonIcon(name: "ic-shield")
+
+    public let sidePanelLeft = ProtonIcon(name: "ic-side-panel-left")
 
     public let speechBubble = ProtonIcon(name: "ic-speech-bubble")
 

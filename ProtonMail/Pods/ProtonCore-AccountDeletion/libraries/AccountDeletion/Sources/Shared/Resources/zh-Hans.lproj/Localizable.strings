@@ -1,0 +1,16 @@
+
+"Delete account" = "删除账户";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "此操作将永久删除您的账户及其所有数据，无法恢复。";
+
+"Account deleted.\nLogging out..." = "账户已删除。\n正在退出...";
+
+"Close" = "关闭";
+
+"OK" = "确定";
+
+"A networking error has occured" = "发生网络错误";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "连接 Proton 服务器失败，原因可能是网络配置有误、Proton 服务器故障或遭到封锁";
+
+"Troubleshoot" = "排查故障";

@@ -1,0 +1,50 @@
+
+"support form" = "客服表單";
+
+"email" = "電子郵件";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "疑難排解";
+
+"Allow alternative routing" = "允許替代路由";
+
+"No internet connection" = "無網路連線";
+
+"Internet Service Provider (ISP) problem" = "網際網路服務提供商 (ISP) 問題";
+
+"Government block" = "政府封鎖";
+
+"Antivirus interference" = "防毒軟體干擾";
+
+"Proxy/Firewall interference" = "代理伺服器/防火牆干擾";
+
+"Proton is down" = "Proton 目前無法使用";
+
+"Still can't find a solution" = "問題仍未解決";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "若 Proton 網站遭到封鎖，該設定可讓應用程式嘗試使用替代路由來連線至 Proton，適用於繞過防火牆或網路問題。我們建議保持開啟本設定以獲得最佳可用性。%1$@";
+
+"Learn more" = "瞭解詳情";
+
+"Please make sure that your internet connection is working." = "請確認您的網際網路連線正常運作。";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "請嘗試改用另一個網路來連線到 Proton（或使用 %1$@ 或 %2$@）。";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "您所在的國家可能封鎖存取 Proton。請嘗試改用 %1$@ （或其它VPN）或 %2$@ 存取 Proton。";
+
+"Temporarily disable or remove your antivirus software." = "暫時停用或移除您的防毒軟體。";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "停用任何代理伺服器或防火牆，或聯絡您的網路管理員。";
+
+"Check Proton Status for our system status." = "在「Proton 狀態」中查看我們的系統狀態。";
+
+"Proton Status" = "Proton 狀態";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "直接通過客服表單、電郵 (support@protonmail.zendesk.com) 或 Twitter 聯絡我們。";
+
+"Subject..." = "主旨...";
+
+"Please share your problem." = "請詳述您遇到的問題。";
+
+"Back" = "返回";

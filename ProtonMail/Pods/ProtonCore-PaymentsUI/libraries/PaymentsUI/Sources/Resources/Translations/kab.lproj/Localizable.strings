@@ -1,0 +1,134 @@
+
+"OK" = "Ih";
+
+"Cancel" = "Sefsex";
+
+"Warning" = "Alɣu";
+
+"Select a plan" = "Fren aɣawas";
+
+"Current plan" = "Aɣawas amiran";
+
+"Subscription" = "Ajerred";
+
+"Upgrade your plan" = "Sali aɣawas-ik";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
+
+"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
+
+"Your plan will automatically renew on %@" = "Aɣawas-ik·im ad yettuɛawed s wudem awurman deg %@";
+
+"Current plan will expire on %@" = "Aɣawas amiran ad yemmet deg %@";
+
+"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
+
+"%@ storage" = "%@ n uḥraz";
+
+"%@ storage / user" = "%@ uḥraz / aseqdac";
+
+"for %@" = "i %@";
+
+"Custom email addresses" = "Tansiwin n yimayl tudmawanin";
+
+"Priority customer support" = "Tallelt n umsaɣ yezwaren";
+
+"Adblocker (NetShield)" = "Amsewḥel n udellel (NetShield)";
+
+"Streaming service support" = "Tallalt n umeẓlu n usuddem";
+
+"High speed" = "Arured ɛlayen";
+
+"Highest speed" = "Arured afellay maḍi";
+
+"Multi-user support" = "Tallelt n ddeqs n iseqdacen";
+
+"The basic for private and secure communications." = "Lsas i teywalt tbaḍnit, taɣelsant.";
+
+"Full-featured mailbox with advanced protection." = "Tanaka n tirawt tummidt s ummesten leqqayen.";
+
+"Limited time offer" = "Talast n wakud yettwamudden";
+
+"Complete payment?" = "Ad tkemmleḍ lexlaṣ?";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+
+"Complete payment" = "Ad tkemmleḍ lexlaṣ";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
+
+"One plan for all Proton services" = "Yiwen n uɣawas i meṛṛa imeẓla n Proton";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "The no-cost starter account designed to empower everyone with privacy by default.";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
+
+"Your privacy and security are our priority." = "Your privacy and security are our priority.";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "The storage-focused plan with 200 GB of cloud storage to keep your files private.";
+
+"The ultimate privacy pack with access to all premium Proton services." = "The ultimate privacy pack with access to all premium Proton services.";
+
+"Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
+
+"Unlimited folders, labels, and filters" = "Ikaramen, tibzimin, d yimsizedgen war tilas";
+
+"Up to %@ storage" = "Alamma d %@ n uḥraz";
+
+"Free VPN on a single device" = "VPN baṭel ɣef yibenk asuf";
+
+"Highest VPN speed" = "Arured afellay maḍi VPN";
+
+"Built-in ad-blocker (NetShield)" = "Amsewḥel n udellel usliɣ (NetShield)";
+
+"Access to streaming services globally" = "Access to streaming services globally";
+
+"Secure Core servers" = "Iqeddacen n Secure Core";
+
+"TOR over VPN" = "Tor ɣef VPN";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "Awi-d %@";
+
+"Get Proton for free" = "Awi Proton baṭel";
+
+"Extend subscription" = "Seɣzef amultaɣ";
+
+"%@ of %@" = "%@ n %@";
+
+"Connection issues" = "Uguren n tuqqna";
+
+"Check your internet connection" = "Senqed tuqqna internet";
+
+"Strict no-logs policy" = "Tasertit tuḥrist war aɣmis";
+
+"Plan successfully upgraded" = "Yettwaleqqem uɣawas akken iwata";
+
+"Integrated 2FA authenticator" = "Yerna usesteb s snat tarrayin 2FA";
+
+"Priority support" = "Tallalt yezwaren";
+
+"Unlimited devices" = "Ibenkan war talast";
+
+"%@ email aliases" = "%@ aliases n yimaylen";
+
+"Unlimited email aliases" = "Aliases n yimayl war tilas";
+
+"Unlimited logins and notes" = "Inekcam d tezmilin war tilas";
+
+"Up to %@ forwarding mailboxes" = "Alamma d %@ n uwelleh n tnakiwin n urmas";
+
+"Custom fields" = "Urtiyen udmawanen";
+
+"For next-level password management and identity protection." = "For next-level password management and identity protection.";
+
+"Pay monthly" = "Xelleṣ s waggur";
+
+"Pay annually" = "Axelleṣ s useggas";
+
+"Pay every two years" = "Pay every two years";
+
+"Free" = "Free";

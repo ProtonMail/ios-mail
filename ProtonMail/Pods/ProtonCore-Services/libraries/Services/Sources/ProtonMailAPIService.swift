@@ -353,12 +353,14 @@ public class PMAPIService: APIService {
                         error = NSError(
                             domain: ResponseErrorDomains.withResponseCode.rawValue,
                             code: responseCode,
+                            responseDictionary: dict,
                             localizedDescription: dict["Error"] as? String ?? ""
                         )
                     } else {
                         error = NSError(
                             domain: ResponseErrorDomains.withStatusCode.rawValue,
                             code: httpResponse.statusCode,
+                            responseDictionary: dict,
                             localizedDescription: dict["Error"] as? String ?? ""
                         )
                     }

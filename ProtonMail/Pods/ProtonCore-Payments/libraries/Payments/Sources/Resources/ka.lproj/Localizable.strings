@@ -1,0 +1,46 @@
+
+"Contact customer support" = "კონტაქტი მხარდაჭერის გუნდთან";
+
+"Failed to get list of available products from App Store." = "App Store-დან ხელმისაწვდომი პროდუქტების სიის მიღების პრობლემა.";
+
+"Purchase is not possible." = "შეძენა შეუძლებელია.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple-მა შეგვატყობინა, რომ თქვენ ასწიეთ სატარიფო გეგმა, მაგრამ აკლდა ზოგიერთი ტექნიკური მონაცემი. გთხოვთ გადმოგვიგზავნოთ შეცდომის ანგარიში და მხარდაჭერის გუნდი მალევე დაგიკავშირდებათ.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple-მა შეგვატყობინა, რომ თქვენ სატარიფო გეგმა ასწიეთ, მაგრამ ანგარიშიდან უკვე გახვედით.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "App Store-ზე შეძენილი პროდუქტები ჩვენს სერვერზე არსებულ არც ერთ პროდუქტს არ ემთხვევა. შეავსეთ შეცდომის ანგარიშის გადაგზავნის ფორმა და ჩვენი მხარდაჭერის გუნდი მალევე დაგიკავშირდებათ.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "შეძენის დასასრულებლად შედით Proton Mail-ის ანგარიშში, რომლის სერვისის ტარიფის განახლებასაც აპირებთ.";
+
+"Apple informed us they could not process the purchase." = "Apple-მა შეგვატყობინა, რომ თქვენს გადახდას ვერ დაამუშავებს.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "თქვენი გამოწერა წარმატებით გააქტიურდა. სერვისის ახალი გეგმის გამოყენების დასაწყებად აპი თავიდან გაუშვით.";
+
+"Please unlock the app to proceed with your service plan activation" = "სერვისი გეგმის აქტივაციისთვის აპის განბლოკვაა საჭირო";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "შედით Proton Mail-ის ანგარიშში, რომლის სატარიფო გეგმის აწევაც გსურთ.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "გადახდის კოდის არასწორი სტატუსი. სცადეთ თავიდან გაუშვათ აპი. თუ შეცდომა კიდევ გამოჩნდა, დაუკავშირდით მხარდაჭერის გუნდს.";
+
+"Do you want to activate the purchase for %@ address?" = "გნებავთ %@ მისამართის შეძენის აქტივაცია?";
+
+"Yes, activate it for " = "დიახ, გაააქტიურეთ ";
+
+"No, for another Proton Mail account" = "არა, Proton Mail-ის სხვა ანგარიშისთვის";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "ჩვენ ვერ ავწიეთ თქვენი ანგარიშის სატარიფო გეგმა იქამდე, სადამდეც თქვენ მიუთითეთ, ასე რომ გადახდილი თანხა თქვენს ანგარიშს კრედიტებს სახით დაემატა. მეტი ინფორმაციის მისაღებად და სატარიფო გეგმის ასაწევად მხარდაჭერის გუნდს დაუკავშირდით.";
+
+"Contact Support" = "კონტაქტი მხარდაჭერის გუნდთან";
+
+"Dismiss" = "მოცილება";
+
+"Payment failed" = "გადახდის შეცდომა";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "წარმატებით დარეგისტრირდით, მაგრამ თქვენი გადახდა არ დამუშავებულა. გადახდის ინფორმაციის თავიდან გადასაგზავნად დააწექით თავიდან ცდის ღილაკს. გადახდა, მხოლოდ, ერთხელ განხორციელდება. თუ პრობლემა კიდევ არ გაქრება, დაუკავშირდით მხარდაჭერის ჩვენს გუნდს.";
+
+"Retry" = "თავიდან";
+
+"OK" = "დიახ";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton-ის სერვერები ხელმიუწვდომელია. ეს შეიძლება, ქსელის არასწორი კონფიგურაციის, ან Proton-ის სერვერის ბრალი იყოს. ან Proton-ის სერვერები იბლოკება";

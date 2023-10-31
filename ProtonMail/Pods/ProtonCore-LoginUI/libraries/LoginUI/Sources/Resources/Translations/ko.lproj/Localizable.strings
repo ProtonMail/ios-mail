@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Privacy by default";
+
+"Proton address required" = "Proton 주소 필요";
+
+"Update required" = "업데이트가 필요합니다";
+
+"Please enter your Proton Account password." = "Proton 계정 비밀번호를 입력하세요.";
+
+"OK" = "확인";
+
+"Help" = "도움말";
+
+"Continue" = "계속";
+
+"Password" = "비밀번호";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton 서버에 연결할 수 없음. 잘못된 구성이거나, Proton 서버의 미작동 혹은 Proton 서버가 차단된 상태일 수 있습니다.";
+
+"Search country" = "국가 검색";
+
+"Code sent to %@" = "%@ 로 코드가 전송됨";
+
+"Request new code?" = "새로운 코드를 받아보시겠어요?";
+
+"Resend" = "재전송";
+
+"Get a replacement code sent to %@." = "대체 코드를 %@로 보내세요.";
+
+"Request new code" = "새로운 코드 받기";
+
+"Enter your Proton Account details." = "Proton 계정 상세 정보를 입력하십시오.";
+
+"Email or username" = "이메일 또는 사용자 이름";
+
+"Sign in" = "로그인";
+
+"Sign in with password" = "비밀번호로 로그인";
+
+"Sign in with SSO" = "SSO로 로그인";
+
+"Sign in to your organization" = "조직에 로그인";
+
+"Create an account" = "계정 만들기";
+
+"How can we help?" = "어떻게 도와드릴까요?";
+
+"Forgot username" = "사용자 이름을 잊으셨나요";
+
+"Forgot password" = "비밀번호를 잊어버리셨나요";
+
+"Other sign-in issues" = "다른 로그인 문제";
+
+"Customer support" = "고객 지원";
+
+"Still need help? Contact us directly." = "여전히 도움이 필요한가요? 저희에게 바로 연락주세요.";
+
+"Please enter your Proton Account email or username." = "Proton 계정 이메일 또는 사용자 이름을 입력하세요.";
+
+"Complete Setup" = "설정 완료";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "계정에 키가 없습니다. 필요한 키를 자동으로 생성하려면 웹에서 로그인하십시오. 웹에서 로그인한 후, 앱으로 돌아가서 로그인하세요.";
+
+"Account setup required" = "계정 설정 필요";
+
+"Incorrect mailbox password" = "틀린 메일함 비밀번호";
+
+"Your session has expired. Please log in again." = "세션이 만료되었습니다. 다시 로그인해 주세요.";
+
+"Proton address required" = "Proton 주소 필요";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Proton Mail과 Proton Calendar를 사용하려면 Proton 이메일 주소가 필요합니다.\n여전히 %@ 을(를) 사용하여 로그인하고 계정을 복구할 수 있습니다.";
+
+"Username" = "사용자 이름";
+
+"Please enter a username." = "사용자 이름을 입력하십시오.";
+
+"Unlock your mailbox" = "메일함 잠금해제";
+
+"Mailbox password" = "메일함 비밀번호";
+
+"Unlock" = "잠금 해제";
+
+"Forgot password" = "비밀번호를 잊어버리셨나요";
+
+"Two-factor authentication" = "2단계 인증";
+
+"Authenticate" = "인증";
+
+"Two-factor code" = "2단계 인증 코드";
+
+"Recovery code" = "복구 코드";
+
+"Use recovery code" = "복구 코드 사용";
+
+"Use two-factor code" = "2단계 인증 코드 사용";
+
+"Enter the 6-digit code." = "6자리 인증 코드를 입력하세요.";
+
+"Enter an 8-character recovery code." = "여덟 글자의 복구 코드를 입력하세요.";
+
+"Learn more" = "더 알아보기";
+
+"Change your password" = "비밀번호 변경";
+
+"Change password" = "비밀번호 변경";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Proton 앱을 조직의 구성원으로 사용하려면 먼저 브라우저를 통해 Proton에 로그인하여 비밀번호를 변경해야 합니다.";
+
+"Error occured" = "오류 발생";
+
+"Create your Proton Account" = "Proton 계정 만들기";
+
+"One account for all Proton services." = "모든 Proton 서비스를 위한 하나의 계정.";
+
+"Next" = "다음";
+
+"Use your current email instead" = "대신 현재 이메일 주소 사용하기";
+
+"Create a secure Proton Mail address instead" = "대신 보안 Proton Mail 주소 만들기";
+
+"Email" = "이메일";
+
+"Create your password" = "비밀번호 생성";
+
+"Password must contain at least 8 characters" = "비밀번호는 최소 8자 이상이어야 합니다.";
+
+"Repeat password" = "비밀번호 확인";
+
+"Domain" = "도메인";
+
+"Set recovery method" = "복구 방법 설정";
+
+"Set recovery method (optional)" = "복구 방법 설정 (선택 사항)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "계정이 잠기면 이 이메일 또는 전화번호로 복구 지침을 보내드리겠습니다.";
+
+"Email" = "이메일";
+
+"Phone" = "전화";
+
+"Recovery email" = "복구 이메일";
+
+"Recovery phone number" = "복구 전화번호";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "다음을 클릭하면, Proton의 이용 약관에 동의하는 것입니다";
+
+"Terms and Conditions" = "이용 약관";
+
+"Skip" = "건너뛰기";
+
+"Skip recovery method?" = "복구 방법 건너뛰기?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "복구 방법은 비밀번호를 잊어버렸거나 계정이 잠긴 경우 계정에 액세스하는 데 도움이 됩니다.";
+
+"Set recovery method" = "복구 방법 설정";
+
+"Your account is being created" = "사용자의 계정이 곧 생성됩니다";
+
+"This should take no more than a minute." = "1분 이상 걸리지 않습니다.";
+
+"Creating your account" = "계정을 생성하는 중";
+
+"Generating your address" = "당신의 주소 생성하기";
+
+"Securing your account" = "계정을 보호하는 중";
+
+"Verifying your payment" = "결제 수단을 인증 중입니다";
+
+"Account verification" = "계정 인증";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "사용자의 안전을 위해, 입력한 주소가 자신의 소유인 이메일인지 확인해야 합니다. %@으로 인증 코드를 전송하였습니다. 해당 코드를 입력해 주세요:";
+
+"Verification code" = "인증 코드";
+
+"Enter the 6-digit code." = "6자리 인증 코드를 입력하세요.";
+
+"Did not receive a code?" = "코드를 받지 못하셨나요?";
+
+"Terms and Conditions" = "이용 약관";
+
+"Invalid token request" = "유효하지 않는 토큰 요청";
+
+"Invalid token error" = "유효하지 않는 토큰 오류";
+
+"Create user failed" = "계정 생성 실패";
+
+"Invalid hashed password" = "잘못 해시된 비밀번호";
+
+"Password can not be empty.\nPlease try again." = "비밀번호는 비울 수 없습니다.\n다시 시도해 주세요.";
+
+"Password must contain at least %@ characters." = "비밀번호는 최소 %@자 이상이어야 합니다.";
+
+"Passwords do not match.\nPlease try again." = "비밀번호가 일치하지 않습니다.\n다시 시도해주세요.";
+
+"Email address already used." = "이 이메일 주소는 이미 사용되었습니다.";
+
+"Please ask your admin to configure your sub-user." = "하위 사용자를 설정하기 위해선 관리자에게 문의하십시오.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "새 인증 코드를 받거나 다른 인증 방법을 사용하시겠습니까?";
+
+"Change email address" = "이메일 주소 변경";
+
+"Congratulations" = "축하합니다";
+
+"Your Proton Free account was successfully created." = "무료 Proton 계정이 성공적으로 생성되었습니다.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "사용자의 결제 수단이 승인되었고 %@ 계정이 성공적으로 생성되었습니다.";
+
+"Your Proton account was successfully created." = "Proton 계정이 성공적으로 생성되었습니다.";
+
+"Enjoy the world of privacy." = "사생활의 세계를 즐기세요.";
+
+"Cancel" = "취소";
+
+"Sign in" = "로그인";
+
+"Troubleshoot" = "문제 해결";

@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Ιδιωτικότητα από προεπιλογή";
+
+"Proton address required" = "Απαιτείται διεύθυνση Proton";
+
+"Update required" = "Απαιτείται ενημέρωση";
+
+"Please enter your Proton Account password." = "Παρακαλώ εισάγετε τον κωδικό πρόσβασης του λογαριασμού Proton σας.";
+
+"OK" = "ΟΚ";
+
+"Help" = "Βοήθεια";
+
+"Continue" = "Συνέχεια";
+
+"Password" = "Κωδικός";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Οι διακομιστές Proton δεν είναι προσβάσιμοι. Αυτό μπορεί να προκληθεί από λανθασμένη διαμόρφωση δικτύου, λόγο ότι διακομιστές Proton που δεν λειτουργούν ή διακομιστές Proton μπλοκάρονται";
+
+"Search country" = "Αναζήτηση χώρας";
+
+"Code sent to %@" = "Ο κωδικός στάλθηκε στο %@";
+
+"Request new code?" = "Ζητήστε νέο κωδικό?";
+
+"Resend" = "Αποστολή ξανά";
+
+"Get a replacement code sent to %@." = "Παραλάβετε έναν ανταλλακτικό κωδικό στο %@.";
+
+"Request new code" = "Ζητήστε νέο κωδικό";
+
+"Enter your Proton Account details." = "Εισαγάγετε τα στοιχεία του Proton λογαριασμού σας.";
+
+"Email or username" = "Διεύθυνση ή όνομα χρήστη";
+
+"Sign in" = "Είσοδος";
+
+"Sign in with password" = "Σύνδεση με κωδικό";
+
+"Sign in with SSO" = "Συνδεθείτε με SSO";
+
+"Sign in to your organization" = "Συνδεθήτε στον οργανισμό σας";
+
+"Create an account" = "Δημιουργία λογαριασμού";
+
+"How can we help?" = "Πώς μπορούμε να βοηθήσουμε;";
+
+"Forgot username" = "Ξέχασα το όνομα χρήστη μου";
+
+"Forgot password" = "Ξέχασα τον κωδικό πρόσβασης";
+
+"Other sign-in issues" = "Άλλα προβλήματα εισόδου";
+
+"Customer support" = "Υποστήριξη πελατών";
+
+"Still need help? Contact us directly." = "Χρειάζεστε ακόμα βοήθεια; Επικοινωνήστε απευθείας με εμάς.";
+
+"Please enter your Proton Account email or username." = "Παρακαλούμε εισαγάγετε το email ή το όνομα χρήστη του λογαριασμού Proton σας.";
+
+"Complete Setup" = "Ολοκλήρωση Εγκατάστασης";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Τα κλειδιά λείπουν από το λογαριασμό σας, παρακαλούμε συνδεθείτε στον ιστό για να δημιουργήσετε αυτόματα τα απαιτούμενα κλειδιά. Αφού συνδεθείτε στον ιστό, επιστρέψτε στην εφαρμογή και συνδεθείτε.";
+
+"Account setup required" = "Απαιτείται ρύθμιση λογαριασμού";
+
+"Incorrect mailbox password" = "Εσφαλμένος κωδικός πρόσβασης γραμματοκιβωτίου";
+
+"Your session has expired. Please log in again." = "Η συνεδρία σας έχει λήξει. Παρακαλούμε συνδεθείτε ξανά.";
+
+"Proton address required" = "Απαιτείται διεύθυνση Proton";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Χρειάζεστε μια διεύθυνση ηλεκτρονικού ταχυδρομείου Proton για να χρησιμοποιήσετε το Proton Mail και το Proton Calendar.\nΘα εξακολουθείτε να μπορείτε να χρησιμοποιήσετε το %@ για να συνδεθείτε και να ανακτήσετε τον λογαριασμό σας.";
+
+"Username" = "Όνομα χρήστη";
+
+"Please enter a username." = "Παρακαλούμε εισάγετε ένα όνομα χρήστη.";
+
+"Unlock your mailbox" = "Ξεκλειδώστε τη θυρίδα σας";
+
+"Mailbox password" = "Κωδικός Θυρίδας";
+
+"Unlock" = "Ξεκλείδωμα";
+
+"Forgot password" = "Ξέχασα τον κωδικό πρόσβασης";
+
+"Two-factor authentication" = "Ταυτοποίηση δύο παραγόντων";
+
+"Authenticate" = "Ταυτοποίηση";
+
+"Two-factor code" = "Κωδικός Δύο Παραγόντων (2FA)";
+
+"Recovery code" = "Κωδικός ανάκτησης";
+
+"Use recovery code" = "Χρήση κωδικού ανάκτησης";
+
+"Use two-factor code" = "Χρησιμοποιήστε κωδικό Δύο Παραγόντων (2FA)";
+
+"Enter the 6-digit code." = "Εισάγετε τον 6-ψήφιο κωδικό.";
+
+"Enter an 8-character recovery code." = "Εισαγάγετε έναν κωδικό ανάκτησης 8 χαρακτήρων.";
+
+"Learn more" = "Μάθετε περισσότερα";
+
+"Change your password" = "Αλλάξτε τον κωδικό πρόσβασής σας";
+
+"Change password" = "Αλλαγή κωδικού πρόσβασης";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Για να χρησιμοποιήσετε την εφαρμογή Proton ως μέλος ενός οργανισμού, πρέπει πρώτα να αλλάξετε τον κωδικό πρόσβασης σας, χρησιμοποιώντας ένα πρόγραμμα περιήγησης για την είσοδο στο Proton.";
+
+"Error occured" = "Παρουσιάστηκε σφάλμα";
+
+"Create your Proton Account" = "Δημιουργήστε τον λογαριασμό σας Proton";
+
+"One account for all Proton services." = "Ένας λογαριασμός για όλες τις υπηρεσίες Proton.";
+
+"Next" = "Επόμενο";
+
+"Use your current email instead" = "Χρησιμοποιήστε την τρέχουσα διεύθυνση email σας";
+
+"Create a secure Proton Mail address instead" = "Εναλλακτικά, δημιουργήστε μια ασφαλή διεύθυνση Proton Mail";
+
+"Email" = "Ηλ. μήνυμα";
+
+"Create your password" = "Δημιουργήστε τον κωδικό πρόσβασής σας";
+
+"Password must contain at least 8 characters" = "Ο κωδικός πρόσβασης πρέπει να περιέχει τουλάχιστον 8 χαρακτήρες";
+
+"Repeat password" = "Επανάληψη κωδικού";
+
+"Domain" = "Τομέας";
+
+"Set recovery method" = "Ορισμός μεθόδου ανάκτησης";
+
+"Set recovery method (optional)" = "Ορισμός μεθόδου ανάκτησης (προαιρετικά)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Θα στείλουμε οδηγίες ανάκτησης σε αυτήν τη διεύθυνση ηλεκτρονικού ταχυδρομείου ή τηλέφωνο αν κλειδωθείτε έξω από τον λογαριασμό σας.";
+
+"Email" = "Ηλ. μήνυμα";
+
+"Phone" = "Τηλέφωνο";
+
+"Recovery email" = "Διεύθυνση ανάκτησης";
+
+"Recovery phone number" = "Τηλεφωνικός αριθμός ανάκτησης";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Με κλικ στο Επόμενο, συμφωνείτε με τους Όρους και Προϋποθέσεις της Proton";
+
+"Terms and Conditions" = "Όροι και Προϋποθέσεις";
+
+"Skip" = "Παράλειψη";
+
+"Skip recovery method?" = "Παράλειψη μεθόδου ανάκτησης;";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Μια μέθοδος ανάκτησης θα σας βοηθήσει να αποκτήσετε πρόσβαση στον λογαριασμό σας σε περίπτωση που ξεχάσετε τον κωδικό πρόσβασης σας ή κλειδωθείτε από τον λογαριασμό σας.";
+
+"Set recovery method" = "Ορισμός μεθόδου ανάκτησης";
+
+"Your account is being created" = "Ο λογαριασμός σας δημιουργείται";
+
+"This should take no more than a minute." = "Αυτό δεν πρέπει να πάρει πάνω από ένα λεπτό.";
+
+"Creating your account" = "Γίνεται δημιουργία του λογαριασμού σας";
+
+"Generating your address" = "Γίνεται δημιουργία της διεύθυνσής σας";
+
+"Securing your account" = "Γίνεται διασφάλιση του λογαριασμού σας";
+
+"Verifying your payment" = "Γίνεται επαλήθευση της πληρωμής σας";
+
+"Account verification" = "Επαλήθευση λογαριασμού";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Για την ασφάλειά σας, πρέπει να επαληθεύσουμε ότι η διεύθυνση που καταχωρίσατε ανήκει σε εσάς. Στείλαμε έναν κωδικό επαλήθευσης στο %@. Παρακαλούμε εισάγετε τον κωδικό παρακάτω:";
+
+"Verification code" = "Κωδικός επαλήθευσης";
+
+"Enter the 6-digit code." = "Εισάγετε τον 6-ψήφιο κωδικό.";
+
+"Did not receive a code?" = "Δεν λάβατε τον κωδικό;";
+
+"Terms and Conditions" = "Όροι και Προϋποθέσεις";
+
+"Invalid token request" = "Μη έγκυρο αίτημα διακριτικού";
+
+"Invalid token error" = "Σφάλμα μη έγκυρου διακριτικού";
+
+"Create user failed" = "Η δημιουργία χρήστη απέτυχε";
+
+"Invalid hashed password" = "Μη έγκυρος hashed κωδικός πρόσβασης";
+
+"Password can not be empty.\nPlease try again." = "Ο κωδικός πρόσβασης δεν μπορεί να είναι κενός.\nΠαρακαλούμε προσπαθήστε ξανά.";
+
+"Password must contain at least %@ characters." = "Ο κωδικός πρόσβασης πρέπει να περιέχει τουλάχιστον %@ χαρακτήρες.";
+
+"Passwords do not match.\nPlease try again." = "Οι κωδικοί πρόσβασης δεν ταιριάζουν.\nΠαρακαλούμε προσπαθήστε ξανά.";
+
+"Email address already used." = "Το e-mail χρησιμοποιείται ήδη.";
+
+"Please ask your admin to configure your sub-user." = "Παρακαλούμε ζητήστε από τον διαχειριστή σας να διαμορφώσει τον χρήστη σας.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Θέλετε να λάβετε έναν νέο κωδικό επαλήθευσης ή να χρησιμοποιήσετε μια εναλλακτική διεύθυνση email;";
+
+"Change email address" = "Αλλαγή διεύθυνσης email";
+
+"Congratulations" = "Συγχαρητήρια";
+
+"Your Proton Free account was successfully created." = "Ο λογαριασμός σας Proton Free δημιουργήθηκε επιτυχώς.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Η πληρωμή σας επιβεβαιώθηκε και ο λογαριασμός σας %@ δημιουργήθηκε επιτυχώς.";
+
+"Your Proton account was successfully created." = "Ο λογαριασμός σας Proton δημιουργήθηκε επιτυχώς.";
+
+"Enjoy the world of privacy." = "Απολαύστε τον κόσμο της ιδιωτικότητας.";
+
+"Cancel" = "Ακύρωση";
+
+"Sign in" = "Είσοδος";
+
+"Troubleshoot" = "Αντιμετώπιση προβλημάτων";

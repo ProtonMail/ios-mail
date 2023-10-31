@@ -1,0 +1,50 @@
+
+"support form" = "formulář podpory";
+
+"email" = "e-mail";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Řešení problémů";
+
+"Allow alternative routing" = "Povolit alternativní směrování";
+
+"No internet connection" = "Bez připojení k Internetu";
+
+"Internet Service Provider (ISP) problem" = "Problém s poskytovatelem internetových služeb (ISP)";
+
+"Government block" = "Vládní blokování";
+
+"Antivirus interference" = "Rušení antivirovým programem";
+
+"Proxy/Firewall interference" = "Rušení proxy/firewallem";
+
+"Proton is down" = "Proton je nedostupný";
+
+"Still can't find a solution" = "Stále nenacházím řešení";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "V případě, že jsou stránky Proton blokovány, toto nastavení umožňuje aplikaci vyzkoušet alternativní síťové směrování na Proton, což může být užitečné pro obejití bran firewall nebo problémům se sítí. Pro větší spolehlivost doporučujeme ponechat toto nastavení zapnuté. %1$@";
+
+"Learn more" = "Zjistěte více";
+
+"Please make sure that your internet connection is working." = "Ujistěte se prosím, že vaše připojení k internetu funguje.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Zkuste připojení k Protonu z jiné sítě (nebo použijte %1$@ nebo %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Vaše země možná blokuje přístup ke službě Proton. Zkuste pro přístup k Protonu použít %1$@ (nebo jinou VPN) nebo %2$@.";
+
+"Temporarily disable or remove your antivirus software." = "Dočasně zakažte nebo odstraňte Váš antivirový program.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Zakažte všechny proxy a brány firewallu, nebo se obraťte na správce sítě.";
+
+"Check Proton Status for our system status." = "Zkontrolujte Stav Protonu pro zjištění stavu našeho systému.";
+
+"Proton Status" = "Stav Protonu";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Kontaktujte nás přímo přes náš formulář podpory, e-mail (support@protonmail.zendesk.com), nebo Twitter.";
+
+"Subject..." = "Předmět...";
+
+"Please share your problem." = "Popište prosím váš problém.";
+
+"Back" = "Zpět";

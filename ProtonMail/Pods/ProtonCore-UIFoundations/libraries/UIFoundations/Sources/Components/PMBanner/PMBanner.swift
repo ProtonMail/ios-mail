@@ -597,7 +597,7 @@ extension PMBanner {
     }
 
     @objc private func bannerPan(ges: UIPanGestureRecognizer) {
-        if style.lockSwipeWhenButton, (buttonText != nil || buttonIcon != nil) { return }
+        if style.lockSwipeWhenButton, buttonText != nil || buttonIcon != nil { return }
         switch ges.state {
         case .began:
             self.invalidateTimer()

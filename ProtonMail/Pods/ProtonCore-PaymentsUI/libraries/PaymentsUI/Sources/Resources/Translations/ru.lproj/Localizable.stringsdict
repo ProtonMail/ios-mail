@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>%d users</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d пользователь</string>
+        <key>few</key>
+        <string>%d пользователя</string>
+        <key>many</key>
+        <string>%d пользователей</string>
+        <key>other</key>
+        <string>%d пользователей</string>
+      </dict>
+    </dict>
+    <key>%d email addresses</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d адрес электронной почты</string>
+        <key>few</key>
+        <string>%d адреса электронной почты</string>
+        <key>many</key>
+        <string>%d адресов электронной почты</string>
+        <key>other</key>
+        <string>%d адресов электронной почты</string>
+      </dict>
+    </dict>
+    <key>%d email addresses / user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d адрес электронной почты на пользователя</string>
+        <key>few</key>
+        <string>%d адреса электронной почты на пользователя</string>
+        <key>many</key>
+        <string>%d адресов электронной почты на пользователя</string>
+        <key>other</key>
+        <string>%d адресов электронной почты на пользователя</string>
+      </dict>
+    </dict>
+    <key>%d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d календарь</string>
+        <key>few</key>
+        <string>%d календаря</string>
+        <key>many</key>
+        <string>%d календарей</string>
+        <key>other</key>
+        <string>%d календаря</string>
+      </dict>
+    </dict>
+    <key>%d folders / labels</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d папка / ярлык</string>
+        <key>few</key>
+        <string>%d папки / ярлыка</string>
+        <key>many</key>
+        <string>%d папок / ярлыков</string>
+        <key>other</key>
+        <string>%d папок / ярлыков</string>
+      </dict>
+    </dict>
+    <key>%d countries</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d страна</string>
+        <key>few</key>
+        <string>%d стран</string>
+        <key>many</key>
+        <string>%d страны</string>
+        <key>other</key>
+        <string>%d стран</string>
+      </dict>
+    </dict>
+    <key>%d connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d подключение</string>
+        <key>few</key>
+        <string>%d подключений</string>
+        <key>many</key>
+        <string>%d подключения</string>
+        <key>other</key>
+        <string>%d подключения</string>
+      </dict>
+    </dict>
+    <key>%d VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d подключение к VPN</string>
+        <key>few</key>
+        <string>%d подключения к VPN</string>
+        <key>many</key>
+        <string>%d подключений к VPN</string>
+        <key>other</key>
+        <string>%d подключений к VPN</string>
+      </dict>
+    </dict>
+    <key>%d high-speed VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d высокоскоростное подключение к VPN</string>
+        <key>few</key>
+        <string>%d высокоскоростных подключения к VPN</string>
+        <key>many</key>
+        <string>%d высокоскоростных подключений к VPN</string>
+        <key>other</key>
+        <string>%d высокоскоростных поключений к VPN</string>
+      </dict>
+    </dict>
+    <key>%d custom domains</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d свой домен</string>
+        <key>few</key>
+        <string>%d своих домена</string>
+        <key>many</key>
+        <string>%d своих доменов</string>
+        <key>other</key>
+        <string>%d своих доменов</string>
+      </dict>
+    </dict>
+    <key>%d vaults</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d хранилище</string>
+        <key>few</key>
+        <string>%d хранилища</string>
+        <key>many</key>
+        <string>%d хранилищ</string>
+        <key>other</key>
+        <string>%d хранилищ</string>
+      </dict>
+    </dict>
+    <key>Support for %d custom email domains</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Поддержка %d пользовательского домена электронной почты</string>
+        <key>few</key>
+        <string>Поддержка %d пользовательских доменов электронной почты</string>
+        <key>many</key>
+        <string>Поддержка %d пользовательских доменов электронной почты</string>
+        <key>other</key>
+        <string>Поддержка %d пользовательских доменов электронной почты</string>
+      </dict>
+    </dict>
+    <key>%d folders and labels</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d папка и ярлык</string>
+        <key>few</key>
+        <string>%d папки и ярлыка</string>
+        <key>many</key>
+        <string>Папок и ярлыков: %d</string>
+        <key>other</key>
+        <string>Папок и ярлыков: %d</string>
+      </dict>
+    </dict>
+    <key>%d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d календарь</string>
+        <key>few</key>
+        <string>%d календаря</string>
+        <key>many</key>
+        <string>%d календарей</string>
+        <key>other</key>
+        <string>%d календаря</string>
+      </dict>
+    </dict>
+    <key>High-speed VPN on %d devices</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Высокоскоростной VPN на %d устройстве</string>
+        <key>few</key>
+        <string>Высокоскоростной VPN на %d устройствах</string>
+        <key>many</key>
+        <string>Высокоскоростной VPN на %d устройствах</string>
+        <key>other</key>
+        <string>Высокоскоростной VPN на %d устройствах</string>
+      </dict>
+    </dict>
+    <key>%d+ servers in %d countries</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@SERVERS@ в %#@COUNTRIES@</string>
+      <key>SERVERS</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d+ сервер</string>
+        <key>few</key>
+        <string>%d+ сервера</string>
+        <key>many</key>
+        <string>%d+ серверов</string>
+        <key>other</key>
+        <string>%d+ серверов</string>
+      </dict>
+      <key>COUNTRIES</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d страна</string>
+        <key>few</key>
+        <string>%d страны</string>
+        <key>many</key>
+        <string>%d страны</string>
+        <key>other</key>
+        <string>%d страны</string>
+      </dict>
+    </dict>
+    <key>%d servers in %d countries (US, NL, JP)</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@SERVERS@ в %#@COUNTRIES@</string>
+      <key>SERVERS</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d сервер</string>
+        <key>few</key>
+        <string>%d сервера</string>
+        <key>many</key>
+        <string>%d серверов</string>
+        <key>other</key>
+        <string>%d серверов</string>
+      </dict>
+      <key>COUNTRIES</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d страна (US, NL, JP)</string>
+        <key>few</key>
+        <string>%d страны (US, NL, JP)</string>
+        <key>many</key>
+        <string>%d стран (US, NL, JP)</string>
+        <key>other</key>
+        <string>%d стран (US, NL, JP)</string>
+      </dict>
+    </dict>
+    <key>%d of %d users</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ из %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>few</key>
+        <string>%d</string>
+        <key>many</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d пользователь</string>
+        <key>few</key>
+        <string>%d пользователей</string>
+        <key>many</key>
+        <string>%d пользователя</string>
+        <key>other</key>
+        <string>%d пользователя</string>
+      </dict>
+    </dict>
+    <key>%d of %d email addresses</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ из %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>few</key>
+        <string>%d</string>
+        <key>many</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d адрес электронной почты</string>
+        <key>few</key>
+        <string>%d адреса электронной почты</string>
+        <key>many</key>
+        <string>%d адресов электронной почты</string>
+        <key>other</key>
+        <string>%d адреса электронной почты</string>
+      </dict>
+    </dict>
+    <key>%d of %d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE1@ из %#@VARIABLE2@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>one</key>
+        <string>%d</string>
+        <key>few</key>
+        <string>%d</string>
+        <key>many</key>
+        <string>%d</string>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d календарь</string>
+        <key>few</key>
+        <string>%d календаря</string>
+        <key>many</key>
+        <string>%d календарей</string>
+        <key>other</key>
+        <string>%d календарей</string>
+      </dict>
+    </dict>
+    <key>%d addresses per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d адрес на пользователя</string>
+        <key>few</key>
+        <string>%d адреса на пользователя</string>
+        <key>many</key>
+        <string>%d адресов на пользователя</string>
+        <key>other</key>
+        <string>%d адресов на пользователя</string>
+      </dict>
+    </dict>
+    <key>%d calendars per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d календарь на пользователя</string>
+        <key>few</key>
+        <string>%d календаря на пользователя</string>
+        <key>many</key>
+        <string>%d календарей на пользователя</string>
+        <key>other</key>
+        <string>%d календарей на пользователя</string>
+      </dict>
+    </dict>
+    <key>%d VPN connections per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d подключение к VPN на пользователя</string>
+        <key>few</key>
+        <string>%d подключений к VPN на пользователя</string>
+        <key>many</key>
+        <string>%d подключений к VPN на пользователя</string>
+        <key>other</key>
+        <string>%d подключений к VPN на пользователя</string>
+      </dict>
+    </dict>
+    <key>Pay for %d months</key>
+    <dict>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>Pay for %d month</string>
+        <key>few</key>
+        <string>Pay for %d months</string>
+        <key>many</key>
+        <string>Pay for %d months</string>
+        <key>other</key>
+        <string>Pay for %d months</string>
+      </dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+    </dict>
+    <key>Medium VPN speed %d VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>one</key>
+        <string>%d подключение к VPN на средней скорости</string>
+        <key>few</key>
+        <string>%d подключений к VPN на средней скорости</string>
+        <key>many</key>
+        <string>%d подключения к VPN на средней скорости</string>
+        <key>other</key>
+        <string>%d подключения к VPN на средней скорости</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>

@@ -1,0 +1,134 @@
+
+"OK" = "ΟΚ";
+
+"Cancel" = "Ακύρωση";
+
+"Warning" = "Προειδοποίηση";
+
+"Select a plan" = "Επιλέξτε ένα πλάνο";
+
+"Current plan" = "Τρέχον πακέτο";
+
+"Subscription" = "Συνδρομή";
+
+"Upgrade your plan" = "Αναβαθμίστε το πλάνο σας";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Μόνο οι ετήσιες συνδρομές χωρίς αυτόματη ανανέωση είναι διαθέσιμες στην εφαρμογή για κινητά.";
+
+"You cannot manage subscriptions inside the mobile application." = "Η διαχείριση συνδρομών δεν είναι δυνατή εντός της εφαρμογής κινητού.";
+
+"Your plan will automatically renew on %@" = "Το πρόγραμμά σας θα ανανεωθεί αυτόματα στις %@";
+
+"Current plan will expire on %@" = "Το τρέχον πλάνο θα λήξει στις %@";
+
+"Contact an administrator to make changes to your Proton subscription." = "Επικοινωνήστε με έναν διαχειριστή για να κάνετε αλλαγές στη συνδρομή Proton.";
+
+"%@ storage" = "%@ αποθηκευτικού χώρου";
+
+"%@ storage / user" = "%@ αποθηκευτικός χώρος / χρήστη";
+
+"for %@" = "για %@";
+
+"Custom email addresses" = "Προσαρμοσμένες διευθύνσεις email";
+
+"Priority customer support" = "Προτεραιότητα στην υποστήριξη πελατών";
+
+"Adblocker (NetShield)" = "Φραγή Διαφημίσεων (NetShield)";
+
+"Streaming service support" = "Υποστήριξη υπηρεσίας μετάδοσης";
+
+"High speed" = "Υψηλή ταχύτητα";
+
+"Highest speed" = "Ύψιστη ταχύτητα";
+
+"Multi-user support" = "Υποστήριξη πολλαπλών χρηστών";
+
+"The basic for private and secure communications." = "Τα βασικά για ιδιωτική και ασφαλή επικοινωνία.";
+
+"Full-featured mailbox with advanced protection." = "Πλήρως εξοπλισμένο γραμματοκιβώτιο με προηγμένη προστασία.";
+
+"Limited time offer" = "Προσφορά για περιορισμένο διάστημα";
+
+"Complete payment?" = "Ολοκλήρωση πληρωμής;";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Μια αγορά για το πλάνο Proton Bundle έχει ήδη ξεκινήσει. Πατήστε συνέχεια για να ολοκληρώσετε την επεξεργασία πληρωμής και να δημιουργήσετε τον λογαριασμό σας";
+
+"Complete payment" = "Ολοκλήρωση πληρωμής";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "Δεν ήταν δυνατή η ολοκλήρωση της διαδικασίας ρύθμισης λογαριασμού λόγω μη αναμενόμενου σφάλματος.\nΠαρακαλούμε προσπαθήστε ξανά.";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Η διαδικασία αγοράς IAP ξεκίνησε. Παρακαλούμε ακολουθήστε τις οδηγίες της Apple για ολοκλήρωση ή ακύρωση της αγοράς.";
+
+"One plan for all Proton services" = "Ένα πρόγραμμα για όλες τις υπηρεσίες Proton";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "Ο αρχικός λογαριασμός χωρίς κόστος έχει σχεδιαστεί για να παρέχει σε όλους απόρρητο από προεπιλογή.";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "Η κατά προτεραιότητα απόρρητη λύση ταχυδρομείου και ημερολογίου για τις καθημερινές ανάγκες επικοινωνίας σας.";
+
+"Your privacy and security are our priority." = "Η ιδιωτικότητα και η ασφάλειά σας είναι η προτεραιότητά μας.";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Το πρόγραμμα που εστιάζει στον χώρο αποθήκευσης με 200 GB χώρου αποθήκευσης στο cloud για να διατηρείτε τα αρχεία σας ιδιωτικά.";
+
+"The ultimate privacy pack with access to all premium Proton services." = "Το απόλυτο πακέτο απορρήτου με πρόσβαση σε όλες τις premium υπηρεσίες Proton.";
+
+"Only non-renewing annual subscriptions are available via this app" = "Μόνο οι ετήσιες συνδρομές μη αυτόματης ανανέωσης είναι διαθέσιμες μέσω αυτής της εφαρμογής";
+
+"Unlimited folders, labels, and filters" = "Απεριόριστοι φάκελοι, ετικέτες, και φίλτρα";
+
+"Up to %@ storage" = "Έως και %@ αποθηκευτικού χώρου";
+
+"Free VPN on a single device" = "Δωρεάν VPN σε μία μόνο συσκευή";
+
+"Highest VPN speed" = "Ύψιστη ταχύτητα VPN";
+
+"Built-in ad-blocker (NetShield)" = "Ενσωματωμένη φραγή διαφημίσεων (NetShield)";
+
+"Access to streaming services globally" = "Πρόσβαση σε υπηρεσίες μετάδοσης (streaming) παγκοσμίως";
+
+"Secure Core servers" = "Διακομιστές Secure Core";
+
+"TOR over VPN" = "Tor μέσω VPN";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "Αποκτήστε %@";
+
+"Get Proton for free" = "Αποκτήστε το Proton δωρεάν";
+
+"Extend subscription" = "Επέκταση συνδρομής";
+
+"%@ of %@" = "%@ από %@";
+
+"Connection issues" = "Προβλήματα σύνδεσης";
+
+"Check your internet connection" = "Ελέγξτε τη σύνδεσή σας στο διαδίκτυο";
+
+"Strict no-logs policy" = "Αυστηρή πολιτική μη καταγραφής";
+
+"Plan successfully upgraded" = "Επιτυχημένη αναβάθμιση προγράμματος";
+
+"Integrated 2FA authenticator" = "Ενσωματωμένος ελεγκτής 2FA";
+
+"Priority support" = "Υποστήριξη με προτεραιότητα";
+
+"Unlimited devices" = "Απεριόριστες συσκευές";
+
+"%@ email aliases" = "%@ ψευδώνυμα email";
+
+"Unlimited email aliases" = "Απεριόριστα ψευδώνυμα email";
+
+"Unlimited logins and notes" = "Απεριόριστες συνδέσεις και σημειώσεις";
+
+"Up to %@ forwarding mailboxes" = "Έως και %@ προωθούμενα γραμματοκιβώτια";
+
+"Custom fields" = "Προσαρμοσμένα πεδία";
+
+"For next-level password management and identity protection." = "Για διαχείριση κωδικών πρόσβασης και προστασία ταυτότητας επόμενου επιπέδου.";
+
+"Pay monthly" = "Μηνιαία πληρωμή";
+
+"Pay annually" = "Ετήσια πληρωμή";
+
+"Pay every two years" = "Πληρωμή κάθε δύο χρόνια";
+
+"Free" = "Δωρεάν";

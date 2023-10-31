@@ -1,0 +1,28 @@
+
+"switch to" = "перейти к";
+
+"Manage accounts" = "Управление учётными записями";
+
+"Signed in to Proton Mail" = "Выполнен вход в Proton Mail";
+
+"Signed out of Proton Mail" = "Выполнен выход из Proton Mail";
+
+"Sign out" = "Выйти";
+
+"Remove account from this device" = "Удалить аккаунт с этого устройства";
+
+"Remove account" = "Удалить аккаунт";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "Вы выйдете, и все данные, связанные с этим аккаунтом, будут удалены с этого устройства.";
+
+"Remove" = "Удалить";
+
+"Are you sure you want to sign out %@?" = "Вы уверены, что хотите выйти из %@?";
+
+"Dismiss account switcher" = "Отключить переключатель аккаунтов";
+
+"Sign in to another account" = "Войти в другой аккаунт";
+
+"Cancel" = "Отменить";
+
+"Sign in" = "Войти";

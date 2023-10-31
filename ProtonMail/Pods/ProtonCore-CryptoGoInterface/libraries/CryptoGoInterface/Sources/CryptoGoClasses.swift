@@ -75,6 +75,7 @@ public protocol CryptoKeyRing {
     func decryptMIMEMessage(_ message: CryptoPGPMessage?, verifyKey: CryptoKeyRing?, callbacks: CryptoMIMECallbacksProtocol?, verifyTime: Int64)
     func decryptSessionKey(_ keyPacket: Data?) throws -> CryptoSessionKey
     func encrypt(_ message: CryptoPlainMessage?, privateKey: CryptoKeyRing?) throws -> CryptoPGPMessage
+    func encrypt(withCompression message: CryptoPlainMessage?, privateKey: CryptoKeyRing?) throws -> CryptoPGPMessage
     func encryptSessionKey(_ sk: CryptoSessionKey?) throws -> Data
     func encryptSplitStream(_ dataPacketWriter: CryptoWriterProtocol?, plainMessageMetadata: CryptoPlainMessageMetadata?, sign signKeyRing: CryptoKeyRing?) throws -> CryptoEncryptSplitResult
     func encrypt(withContext message: CryptoPlainMessage?, privateKey: CryptoKeyRing?, signingContext: CryptoSigningContext?) throws -> CryptoPGPMessage

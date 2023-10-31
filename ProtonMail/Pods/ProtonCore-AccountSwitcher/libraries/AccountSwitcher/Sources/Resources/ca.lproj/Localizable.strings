@@ -1,0 +1,28 @@
+
+"switch to" = "canviar a";
+
+"Manage accounts" = "Gestionar comptes";
+
+"Signed in to Proton Mail" = "Sessió iniciada a Proton Mail";
+
+"Signed out of Proton Mail" = "Sessió de Proton Mail tancada";
+
+"Sign out" = "Tanca la sessió";
+
+"Remove account from this device" = "Esborri el compte d'aquest dispositiu";
+
+"Remove account" = "Suprimir el compte";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "Es tancarà la sessió i totes les dades relacionades amb aquest compte s'esborraran d'aquest dispositiu.";
+
+"Remove" = "Suprimeix";
+
+"Are you sure you want to sign out %@?" = "Segur que voleu tancar la sessió de %@?";
+
+"Dismiss account switcher" = "Descartar el canvi de compte";
+
+"Sign in to another account" = "Iniciar sessió a un altre compte";
+
+"Cancel" = "Cancel·la";
+
+"Sign in" = "Inicia la sessió";

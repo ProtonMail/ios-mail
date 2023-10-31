@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Súkromie je prvoradé";
+
+"Proton address required" = "Vyžaduje sa adresa protonu";
+
+"Update required" = "Je potrebná aktualizácia";
+
+"Please enter your Proton Account password." = "Zadajte heslo svojho účtu Proton.";
+
+"OK" = "OK";
+
+"Help" = "Pomoc";
+
+"Continue" = "Pokračovať";
+
+"Password" = "Heslo";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Servery Proton sú nedostupné. Môže to byť spôsobené nesprávnou konfiguráciou siete, nefungovaním serverov Proton alebo blokovaním Proton serverov";
+
+"Search country" = "Hľadať krajinu";
+
+"Code sent to %@" = "Kód odoslaný na %@";
+
+"Request new code?" = "Vyžiadať nový kód?";
+
+"Resend" = "Odoslať znovu";
+
+"Get a replacement code sent to %@." = "Požiadať o zaslanie náhradného kódu na %@.";
+
+"Request new code" = "Vyžiadať nový kód";
+
+"Enter your Proton Account details." = "Zadajte podrobnosti o svojom účte Proton.";
+
+"Email or username" = "Email alebo používateľské meno";
+
+"Sign in" = "Prihlásiť sa";
+
+"Sign in with password" = "Prihláste sa pomocou hesla";
+
+"Sign in with SSO" = "Prihláste sa pomocou SSO";
+
+"Sign in to your organization" = "Prihláste sa do svojej organizácie";
+
+"Create an account" = "Vytvoriť účet";
+
+"How can we help?" = "Ako môžeme pomôcť?";
+
+"Forgot username" = "Zabudnuté používateľské meno";
+
+"Forgot password" = "Zabudnuté heslo";
+
+"Other sign-in issues" = "Iné prihlasovacie problémy";
+
+"Customer support" = "Zákaznícka podpora";
+
+"Still need help? Contact us directly." = "Stále potrebujete pomoc? Kontaktujte nás ihneď.";
+
+"Please enter your Proton Account email or username." = "Zadajte svoj Proton email alebo používateľské meno, prosím.";
+
+"Complete Setup" = "Dokončite nastavenie";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Vášmu účtu chýbajú kľúče. Prihláste sa na webe, aby sa automaticky vygenerovali požadované kľúče. Po prihlásení na webe sa vráťte do aplikácie a prihláste sa.";
+
+"Account setup required" = "Vyžaduje sa nastavenie účtu";
+
+"Incorrect mailbox password" = "Nesprávne heslo k poštovej schránke";
+
+"Your session has expired. Please log in again." = "Platnosť vašej relácie vypršala. Znovu sa prihláste.";
+
+"Proton address required" = "Vyžaduje sa adresa protonu";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Ak chcete používať Proton Mail a Proton Calendar, potrebujete e-mailovú adresu Proton.\nStále budete môcť použiť %@ na prihlásenie a obnovenie svojho účtu.";
+
+"Username" = "Používateľské meno";
+
+"Please enter a username." = "Zadajte používateľské meno, prosím.";
+
+"Unlock your mailbox" = "Odomknúť vašu poštovú schránku";
+
+"Mailbox password" = "Heslo k poštovej schránke";
+
+"Unlock" = "Odomknúť";
+
+"Forgot password" = "Zabudnuté heslo";
+
+"Two-factor authentication" = "Dvojstupňové overenie";
+
+"Authenticate" = "Overiť";
+
+"Two-factor code" = "Dvojstupňové overenie";
+
+"Recovery code" = "Kód pre obnovenie";
+
+"Use recovery code" = "Použiť kód pre obnovenie";
+
+"Use two-factor code" = "Použiť kód pre dvojstupňové overenie";
+
+"Enter the 6-digit code." = "Zadajte 6-miestny kód.";
+
+"Enter an 8-character recovery code." = "Zadajte 8-miestny obnovovací kód.";
+
+"Learn more" = "Dozvedieť sa viac";
+
+"Change your password" = "Zmeňte si heslo";
+
+"Change password" = "Zmeniť heslo";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Ak chcete používať aplikáciu Proton ako člen organizácie, musíte si najprv zmeniť heslo prihlásením sa do Protonu cez prehliadač.";
+
+"Error occured" = "Vyskytla sa chyba";
+
+"Create your Proton Account" = "Vytvorte si Váš Proton účet";
+
+"One account for all Proton services." = "Jeden účet pre všetky Proton služby.";
+
+"Next" = "Ďalší";
+
+"Use your current email instead" = "Namiesto toho použite svoj aktuálnu emailovú adresu";
+
+"Create a secure Proton Mail address instead" = "Namiesto toho si vytvorte zabezpečenú adresu Proton Mail";
+
+"Email" = "E-mail";
+
+"Create your password" = "Vytvorte si heslo";
+
+"Password must contain at least 8 characters" = "Heslo musí obsahovať aspoň 8 znakov";
+
+"Repeat password" = "Zopakovať heslo";
+
+"Domain" = "Doména";
+
+"Set recovery method" = "Nastaviť metódu obnovenia";
+
+"Set recovery method (optional)" = "Nastaviť spôsob obnovenia (voliteľné)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Na tento e-mail alebo telefónne číslo vám pošleme pokyny na obnovenie, ak stratíte prístup k svojmu účtu.";
+
+"Email" = "E-mail";
+
+"Phone" = "Telefón";
+
+"Recovery email" = "E-mail pre obnovenie";
+
+"Recovery phone number" = "Telefónne číslo pre obnovenie";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Kliknutím na tlačidlo Ďalej vyjadrujete súhlas so Zmluvnými podmienkami Protonu";
+
+"Terms and Conditions" = "Podmienky používania";
+
+"Skip" = "Preskočiť";
+
+"Skip recovery method?" = "Preskočiť metódu obnovy?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Metóda obnovenia vám pomôže získať prístup k vášmu účtu v prípade, že zabudnete heslo alebo si uzamknete účet.";
+
+"Set recovery method" = "Nastaviť metódu obnovenia";
+
+"Your account is being created" = "Váš účet sa vytvára";
+
+"This should take no more than a minute." = "Nemalo by to trvať dlhšie ako minútu.";
+
+"Creating your account" = "Vytvárame váš účet";
+
+"Generating your address" = "Generovanie vašej adresy";
+
+"Securing your account" = "Zabezpečovanie vášho účtu";
+
+"Verifying your payment" = "Overujeme vašu platbu";
+
+"Account verification" = "Overenie účtu";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Pre vašu bezpečnosť musíme overiť, že zadaná adresa patrí vám. Overovací kód sme odoslali na adresu %@. Zadajte kód nižšie:";
+
+"Verification code" = "Overovací kód";
+
+"Enter the 6-digit code." = "Zadajte 6-miestny kód.";
+
+"Did not receive a code?" = "Nedostali ste kód?";
+
+"Terms and Conditions" = "Podmienky používania";
+
+"Invalid token request" = "Neplatná žiadosť o token";
+
+"Invalid token error" = "Chyba neplatného tokenu";
+
+"Create user failed" = "Vytváranie používateľa zlyhalo";
+
+"Invalid hashed password" = "Neplatný hash hesla";
+
+"Password can not be empty.\nPlease try again." = "Heslo nemôže byť prázdne.\nSkúste to znova, prosím.";
+
+"Password must contain at least %@ characters." = "Heslo musí obsahovať aspoň %@ znakov.";
+
+"Passwords do not match.\nPlease try again." = "Heslá sa nezhodujú.\nSkúste to znova, prosím.";
+
+"Email address already used." = "Emailová adresa bola už použitá.";
+
+"Please ask your admin to configure your sub-user." = "Požiadajte svojho správcu o konfiguráciu vášho podužívateľa.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Chcete dostať nový overovací kód alebo použiť alternatívnu e-mailovú adresu?";
+
+"Change email address" = "Zmeniť emailovú adresu";
+
+"Congratulations" = "Gratulujeme";
+
+"Your Proton Free account was successfully created." = "Váš Proton Free účet bol úspešne vytvorený.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Vaša platba bola potvrdená a váš účet %@ bol úspešne vytvorený.";
+
+"Your Proton account was successfully created." = "Váš Proton účet bol úspešne vytvorený.";
+
+"Enjoy the world of privacy." = "Užívajte si svet súkromia.";
+
+"Cancel" = "Zrušiť";
+
+"Sign in" = "Prihlásiť sa";
+
+"Troubleshoot" = "Riešenie problémov";

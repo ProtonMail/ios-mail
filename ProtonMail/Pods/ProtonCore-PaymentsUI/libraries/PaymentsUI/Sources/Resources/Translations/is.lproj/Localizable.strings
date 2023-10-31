@@ -1,0 +1,134 @@
+
+"OK" = "Í lagi";
+
+"Cancel" = "Hætta við";
+
+"Warning" = "Aðvörun";
+
+"Select a plan" = "Veldu áskriftarleið";
+
+"Current plan" = "Núverandi áskriftarleið";
+
+"Subscription" = "Áskrift";
+
+"Upgrade your plan" = "Uppfærðu áskriftina þína";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "Only annual subscriptions without auto-renewal are available inside the mobile app.";
+
+"You cannot manage subscriptions inside the mobile application." = "You cannot manage subscriptions inside the mobile application.";
+
+"Your plan will automatically renew on %@" = "Your plan will automatically renew on %@";
+
+"Current plan will expire on %@" = "Current plan will expire on %@";
+
+"Contact an administrator to make changes to your Proton subscription." = "Contact an administrator to make changes to your Proton subscription.";
+
+"%@ storage" = "%@ geymslurými";
+
+"%@ storage / user" = "%@ storage / user";
+
+"for %@" = "Í %@";
+
+"Custom email addresses" = "Sérsniðin tölvupóstföng";
+
+"Priority customer support" = "Forgangsstuðningur viðskiptavina";
+
+"Adblocker (NetShield)" = "Auglýsingabani (NetShield)";
+
+"Streaming service support" = "Streaming service support";
+
+"High speed" = "Hár hraði";
+
+"Highest speed" = "Mesti hraði";
+
+"Multi-user support" = "Fjölnotendastuðningur";
+
+"The basic for private and secure communications." = "The basic for private and secure communications.";
+
+"Full-featured mailbox with advanced protection." = "Full-featured mailbox with advanced protection.";
+
+"Limited time offer" = "Limited time offer";
+
+"Complete payment?" = "Complete payment?";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account";
+
+"Complete payment" = "Complete payment";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "The account setup process could not be finalized due to an unexpected error.\nPlease try again.";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase.";
+
+"One plan for all Proton services" = "One plan for all Proton services";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "Kostnaðarlausi byrjendareikningurinn er hannaður til að veita öllum friðhelgi sjálfgefið.";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "The privacy-first email and calendar solution for your everyday communication needs.";
+
+"Your privacy and security are our priority." = "Your privacy and security are our priority.";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "The storage-focused plan with 200 GB of cloud storage to keep your files private.";
+
+"The ultimate privacy pack with access to all premium Proton services." = "The ultimate privacy pack with access to all premium Proton services.";
+
+"Only non-renewing annual subscriptions are available via this app" = "Only non-renewing annual subscriptions are available via this app";
+
+"Unlimited folders, labels, and filters" = "Ótakmarkaðar möppur, merkimiðar og síur";
+
+"Up to %@ storage" = "Up to %@ storage";
+
+"Free VPN on a single device" = "Frítt VPN á einu tæki";
+
+"Highest VPN speed" = "Hámarks VPN hraði";
+
+"Built-in ad-blocker (NetShield)" = "Innbyggður auglýsingabani (NetShield)";
+
+"Access to streaming services globally" = "Aðgangur að streymisþjónustu um allan heim";
+
+"Secure Core servers" = "Öruggir Core netþjónar";
+
+"TOR over VPN" = "Tor yfir VPN";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "Fáðu %@";
+
+"Get Proton for free" = "Fáðu Proton ókeypis";
+
+"Extend subscription" = "Extend subscription";
+
+"%@ of %@" = "%@ af %@";
+
+"Connection issues" = "Connection issues";
+
+"Check your internet connection" = "Check your internet connection";
+
+"Strict no-logs policy" = "Ströng stefna varðandi enga-atvikaskráningu";
+
+"Plan successfully upgraded" = "Plan successfully upgraded";
+
+"Integrated 2FA authenticator" = "Integrated 2FA authenticator";
+
+"Priority support" = "Forgangsstuðningur";
+
+"Unlimited devices" = "Unlimited devices";
+
+"%@ email aliases" = "%@ email aliases";
+
+"Unlimited email aliases" = "Unlimited email aliases";
+
+"Unlimited logins and notes" = "Unlimited logins and notes";
+
+"Up to %@ forwarding mailboxes" = "Up to %@ forwarding mailboxes";
+
+"Custom fields" = "Custom fields";
+
+"For next-level password management and identity protection." = "For next-level password management and identity protection.";
+
+"Pay monthly" = "Pay monthly";
+
+"Pay annually" = "Pay annually";
+
+"Pay every two years" = "Pay every two years";
+
+"Free" = "Free";

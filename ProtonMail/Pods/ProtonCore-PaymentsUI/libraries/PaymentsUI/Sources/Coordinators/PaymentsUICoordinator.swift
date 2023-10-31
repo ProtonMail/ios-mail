@@ -166,7 +166,7 @@ final class PaymentsUICoordinator {
                     paymentsUIViewController.reloadData()
                 }
             }
-        } catch (let error) {
+        } catch let error {
             await MainActor.run {
                 showError(error: error)
             }

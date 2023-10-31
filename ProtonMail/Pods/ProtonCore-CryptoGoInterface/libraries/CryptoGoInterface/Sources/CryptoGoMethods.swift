@@ -35,7 +35,7 @@ public protocol CryptoGoMethods {
     func CryptoPlainMessage(from text: String?) -> CryptoPlainMessage?
     func CryptoKeyRing(_ key: CryptoKey?) -> CryptoKeyRing?
     func CryptoPGPSignature(fromArmored armored: String?) -> CryptoPGPSignature?
-
+    func CryptoPGPSignature(_ data: Data?) -> CryptoPGPSignature?
     func HelperGo2IOSReader(_ reader: CryptoReaderProtocol?) -> HelperGo2IOSReader?
     func HelperMobileReadResult(_ n: Int, eof: Bool, data: Data?) -> HelperMobileReadResult?
     func HelperMobile2GoReader(_ reader: HelperMobileReaderProtocol?) -> HelperMobile2GoReader?

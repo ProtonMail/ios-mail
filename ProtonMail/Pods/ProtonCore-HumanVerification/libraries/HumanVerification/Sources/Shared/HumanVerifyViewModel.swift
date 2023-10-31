@@ -160,7 +160,7 @@ class HumanVerifyViewModel {
             
         case .notification:
             guard let messageNotification: MessageNotification = decode(json: json),
-                  (messageNotification.payload.type == .success || messageNotification.payload.type == .error)
+                  messageNotification.payload.type == .success || messageNotification.payload.type == .error
             else { return }
             notificationMessage?(messageNotification.payload.type, messageNotification.payload.text)
         case .loaded:

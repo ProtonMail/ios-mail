@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Contactar con Atención al Cliente";
+
+"Failed to get list of available products from App Store." = "No se ha podido obtener la lista de productos disponibles desde la App Store.";
+
+"Purchase is not possible." = "La compra no es posible.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nos ha informado de que has actualizado tu plan de servicio, pero faltan algunos datos técnicos. Envíanos un informe de errores y nuestro equipo se pondrá en contacto contigo.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nos ha informado que has actualizado tu plan de servicio, pero detectamos que has cerrado tu sesión desde entonces.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "No fue posible corresponder el producto comprado en la App Store con ningún producto de nuestro servidor. Rellena y envía un informe de errores y nuestro equipo se pondrá en contacto contigo.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Inicia sesión en la cuenta de Proton Mail del plan que estás actualizando para que podamos completar tu compra.";
+
+"Apple informed us they could not process the purchase." = "Apple nos ha informado de que no se pudo procesar la compra.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Hemos activado tu suscripción. Reinicia la aplicación para empezar a utilizar tu plan de servicio nuevo.";
+
+"Please unlock the app to proceed with your service plan activation" = "Desbloquea la aplicación para activar el plan de servicio.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Inicia sesión en la cuenta de Proton Mail del plan que estás actualizando para que podamos completar la activación del plan de servicio.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Estado incorrecto del token de pago. Vuelve a abrir la aplicación. Si el error persiste, ponte en contacto con atención al cliente.";
+
+"Do you want to activate the purchase for %@ address?" = "¿Quieres activar la compra para la dirección %@?";
+
+"Yes, activate it for " = "Sí, activarlo para ";
+
+"No, for another Proton Mail account" = "No, utilizar una cuenta distinta de Proton Mail";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "No se ha podido actualizar el plan de tu cuenta, así que tu pago ha sido añadido a tu cuenta como crédito. Para más información y para terminar la actualización, ponte en contacto con el soporte.";
+
+"Contact Support" = "Contactar con soporte";
+
+"Dismiss" = "Descartar";
+
+"Payment failed" = "Pago fallido";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Te has registrado pero tu pago no ha sido procesado. Para reenviar tu información de pago, haga clic en Reintentar. Solo se te cobrará una vez. Si el problema persiste, ponte en contacto con el servicio de atención al cliente.";
+
+"Retry" = "Reintentar";
+
+"OK" = "Aceptar";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Los servidores de Proton son inaccesibles. Puede deberse a una configuración de red incorrecta, a que los servidores de Proton no funcionan o a que los servidores de Proton estén bloqueados";

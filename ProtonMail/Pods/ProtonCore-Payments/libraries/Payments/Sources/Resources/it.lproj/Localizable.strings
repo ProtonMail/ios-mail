@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Contatta il supporto clienti";
+
+"Failed to get list of available products from App Store." = "Impossibile ottenere l'elenco dei prodotti disponibili dall'App Store.";
+
+"Purchase is not possible." = "L'acquisto non è possibile.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ci ha informati che hai effettuato l'upgrade del piano, ma alcuni dati tecnici erano mancanti. Per favore compila la segnalazione e il nostro team di assistenza clienti ti contatterà.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple ci ha informati che hai effettuato l'upgrade del piano, ma abbiamo rilevato che ti sei disconnesso da allora.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Non è stato possibile abbinare il prodotto App Store acquistato ai prodotti sul nostro server. Compila la segnalazione di bug e il nostro team di supporto clienti ti contatterà.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Per favore accedi all'account Proton Mail per il quale stai effettuando l'aggiornamento del piano in modo da poter completare l'acquisto.";
+
+"Apple informed us they could not process the purchase." = "Apple ci ha informati che non sono in grado di elaborare l'acquisto.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Abbiamo attivato con successo il tuo abbonamento. Riavvia l'app per iniziare a utilizzare il nuovo piano di servizio.";
+
+"Please unlock the app to proceed with your service plan activation" = "Sblocca l'app per procedere con l'attivazione del piano di servizio";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Per favore accedi all'account Proton Mail per il quale stai effettuando l'aggiornamento del piano in modo da poter completare l'attivazione del piano.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Stato del token di pagamento errato. Per favore riavvia l'app. Se l'errore persiste, contatta l'assistenza.";
+
+"Do you want to activate the purchase for %@ address?" = "Vuoi attivare l'acquisto per %@ indirizzo?";
+
+"Yes, activate it for " = "Sì, attivalo per ";
+
+"No, for another Proton Mail account" = "No, per un altro account Proton Mail";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Non siamo riusciti ad aggiornare il tuo account al piano che hai selezionato, quindi abbiamo aggiunto il tuo pagamento come crediti al tuo account. Per più informazioni e per completare l'upgrade, contatta l'assistenza.";
+
+"Contact Support" = "Contatta il Supporto";
+
+"Dismiss" = "Ignora";
+
+"Payment failed" = "Pagamento non riuscito";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Ti sei registrato correttamente ma il tuo pagamento non è stato elaborato. Per inviare nuovamente i dati di pagamento, fai clic su Riprova. Ti verrà addebitato solo una volta. Se il problema persiste, contatta l'assistenza clienti.";
+
+"Retry" = "Riprova";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "I server Proton sono irraggiungibili. Potrebbe essere causato da una configurazione di rete errata, da server Proton non funzionanti o da server Proton bloccati";

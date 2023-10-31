@@ -44,10 +44,6 @@ struct PaymentsAlertManager {
 
     var alertManager: AlertManagerProtocol
 
-    init (alertManager: AlertManagerProtocol) {
-        self.alertManager = alertManager
-    }
-
     func retryAlert(confirmAction: ActionCallback, cancelAction: ActionCallback) {
         alertManager.title = PSTranslation.error_apply_payment_on_registration_title.l10n
         alertManager.message = PSTranslation.error_apply_payment_on_registration_message.l10n

@@ -1,0 +1,134 @@
+
+"OK" = "დიახ";
+
+"Cancel" = "გაუქმება";
+
+"Warning" = "გაფრთხილება";
+
+"Select a plan" = "აირჩეთ გეგმა";
+
+"Current plan" = "მიმდინარე ტარიფი";
+
+"Subscription" = "გამოწერა";
+
+"Upgrade your plan" = "გააუმჯობესეთ თქვენი ტარიფი";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "მობილური აპლიკაციიდან წვდომადია, მხოლოდ, წლიური გამოწერები, ავტომატური განახლების გარეშე.";
+
+"You cannot manage subscriptions inside the mobile application." = "მობილური აპლიკაციიდან გამოწერებს ვერ მართავთ.";
+
+"Your plan will automatically renew on %@" = "თქვენი გეგმის ავტომატური განახლების თარიღი: %@";
+
+"Current plan will expire on %@" = "მიმდინარე ტარიფის ამოწურვის ვადაა %@";
+
+"Contact an administrator to make changes to your Proton subscription." = "Proton-ის გამოწერის შესაცვლელად დაუკავშირდით ადმინისტრატორს.";
+
+"%@ storage" = "%@ საცავი";
+
+"%@ storage / user" = "%@ საცავი / მომხმარებელზე";
+
+"for %@" = "%@-თვის";
+
+"Custom email addresses" = "მორგებული ელ-ფოსტის მისამართები";
+
+"Priority customer support" = "მომხმარებლის პრიორიტეტული მხარდაჭერა";
+
+"Adblocker (NetShield)" = "Adblocker (NetShield)";
+
+"Streaming service support" = "სტრიმინგის სერვერის მხარდაჭერა";
+
+"High speed" = "მაღალი სიჩქარე";
+
+"Highest speed" = "უმაღლესი სიჩქარე";
+
+"Multi-user support" = "მრავალმომხმარებლიანობის მხარდაჭერა";
+
+"The basic for private and secure communications." = "საბაზისო ფუნქციები კონფიდენციალური და დაცული ურთიერთობისთვის.";
+
+"Full-featured mailbox with advanced protection." = "საფოსტო ყუთი ყველა ფუნქციითა და დამატებითი უსაფრთხოებით.";
+
+"Limited time offer" = "დროში შეზღუდული შეთავაზება";
+
+"Complete payment?" = "დავასრულო შეძენა?";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Proton Bundle-ის ტარიფის გეგმის შეძენა უკვე დაწყებულია. დააწექით ღილაკს \"გაგრძელება\", რომ დაასრულოთ გადახდა და შექმნათ თქვენი ანგარიში";
+
+"Complete payment" = "შეძენის დასრულება";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "ანგარიშის მორგების პროცესის დასრულება შეუძლებელია გაუთვალისწინებელი შეცდომის გამო.\nთავიდან სცადეთ.";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "IAP შეძენის პროცესი დაწყებულია. შეძენის დასასრულებლად ან გასაუქმებლად Apple-ის ინსტრუქციებს მიჰყევით.";
+
+"One plan for all Proton services" = "ერთი სატარიფო გეგმა Proton-ის ყველა სერვისისთვის";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "დამწყების უფასო ანგარიში განკუთვნილია, მათთვის, ვისთვისაც კონფიდენციალობა მნიშვნელოვანია.";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "დაცული ელფოსტისა და კალენდრის გადაწყვეტილება თქვენი ყოველდღიური საჭიროებებისთვის.";
+
+"Your privacy and security are our priority." = "თქვენი კონფიდენციალობა და უსაფრთხოება ჩვენი პრიორიტეტია.";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "საცავზე-ფოკუსირებული ტარიფი 200გბ ღრუბლოვანი საცავით, თქვენი ფაილების კონფიდენციალურად შესანახად.";
+
+"The ultimate privacy pack with access to all premium Proton services." = "მაქსიმალური ნაკრები Proton-ის ყველა ფასიან ფუნქციასთან წვდომის საშუალებით.";
+
+"Only non-renewing annual subscriptions are available via this app" = "ამ აპიდან, მხოლოდ, არაგანმეორებადი წლიური გამოწერებია ხელმისაწვდომი";
+
+"Unlimited folders, labels, and filters" = "ულიმიტო საქაღალდეები, ჭდეები და ფილტრები";
+
+"Up to %@ storage" = "%@-მდე საცავი";
+
+"Free VPN on a single device" = "უფასო VPN-ი ერთ მოწყობილობაზე";
+
+"Highest VPN speed" = "უსწრაფესი VPN";
+
+"Built-in ad-blocker (NetShield)" = "ჩაშენებული Ad-blocker (NetShield)";
+
+"Access to streaming services globally" = "გლობალური წვდომა ვიდეოს გადაცემის სერვისებთან";
+
+"Secure Core servers" = "Secure Core-ის სერვერები";
+
+"TOR over VPN" = "Tor VPN-ის ზემოდან";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "%@-ის მიღება";
+
+"Get Proton for free" = "მიიღეთ Proton-ი უფასოდ";
+
+"Extend subscription" = "გამოწერის გაგრძელება";
+
+"%@ of %@" = "%@ %@-დან";
+
+"Connection issues" = "დაკავშირების პრობლემა";
+
+"Check your internet connection" = "შეამოწმეთ თქვენი შეერთება ინტერნეტთან";
+
+"Strict no-logs policy" = "ჩვენ არ ვინახავთ ჟურნალს";
+
+"Plan successfully upgraded" = "ტარიფი წარმატებით განახლდა";
+
+"Integrated 2FA authenticator" = "ჩაშენებული 2FA ავთენტიკატორი";
+
+"Priority support" = "პრიორიტეტული მხარდაჭერა";
+
+"Unlimited devices" = "მოწყობილობების უსაზღვრო რაოდენობა";
+
+"%@ email aliases" = "%@ ელფოსტის მისამართი";
+
+"Unlimited email aliases" = "განუსაზღვრელი რაოდენობის ელფოსტის მეტსახელები";
+
+"Unlimited logins and notes" = "მომხმარებლების და შენიშვნების უსაზღვრო რაოდენობა";
+
+"Up to %@ forwarding mailboxes" = "%@-მდე გადაგზავნადი საფოსტო ყუთი";
+
+"Custom fields" = "მორგებადი ველები";
+
+"For next-level password management and identity protection." = "პაროლების მართვისა და პირადი მონაცემების დაცვის შემდეგი დონე.";
+
+"Pay monthly" = "თვიურად გადახდა";
+
+"Pay annually" = "წლიურად გადახდა";
+
+"Pay every two years" = "გადახდა 2 წელიწადში ერთხელ";
+
+"Free" = "უფასო";

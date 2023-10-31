@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Privasi sebagai hal yang baku";
+
+"Proton address required" = "Alamat Proton dibutuhkan";
+
+"Update required" = "Pembaruan dibutuhkan";
+
+"Please enter your Proton Account password." = "Silakan masukkan kata sandi Akun Proton.";
+
+"OK" = "OK";
+
+"Help" = "Bantuan";
+
+"Continue" = "Lanjut";
+
+"Password" = "Kata Sandi";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Server Proton tidak dapat dijangkau. Hal ini dapat disebabkan antara lain oleh pengaturan jaringan yang tidak tepat, server Proton yang sedang offline, atau pemblokiran terhadap server Proton";
+
+"Search country" = "Cari negara";
+
+"Code sent to %@" = "Kode terkirim ke %@";
+
+"Request new code?" = "Minta kode baru?";
+
+"Resend" = "Kirim ulang";
+
+"Get a replacement code sent to %@." = "Dapatkan kode pengganti yang akan dikirim ke %@.";
+
+"Request new code" = "Minta kode baru";
+
+"Enter your Proton Account details." = "Masukkan rincian Akun Proton Anda.";
+
+"Email or username" = "Surel atau nama pengguna";
+
+"Sign in" = "Masuk";
+
+"Sign in with password" = "Masuk dengan kata sandi";
+
+"Sign in with SSO" = "Masuk dengan SSO";
+
+"Sign in to your organization" = "Masuk ke organisasi Anda";
+
+"Create an account" = "Buat akun";
+
+"How can we help?" = "Bagaimana kami dapat membantu Anda?";
+
+"Forgot username" = "Lupa nama pengguna";
+
+"Forgot password" = "Lupa kata sandi";
+
+"Other sign-in issues" = "Masalah masuk lainnya";
+
+"Customer support" = "Layanan dukungan";
+
+"Still need help? Contact us directly." = "Masih butuh bantuan lebih lanjut? Hubungi kami secara langsung.";
+
+"Please enter your Proton Account email or username." = "Silakan masukkan Akun surel Proton atau nama pengguna Anda.";
+
+"Complete Setup" = "Selesaikan Persiapan";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Akun Anda kehilangan kunci, silakan masuk ke web untuk membuat kunci yang diperlukan secara otomatis. Setelah Anda masuk ke web, silakan kembali ke app dan masuk ke akun Anda.";
+
+"Account setup required" = "Diperlukan persiapan akun";
+
+"Incorrect mailbox password" = "Kata sandi kotak surat salah";
+
+"Your session has expired. Please log in again." = "Sesi Anda telah kedaluwarsa. Mohon masuk lagi.";
+
+"Proton address required" = "Alamat Proton dibutuhkan";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Anda butuh alamat surel Proton untuk menggunakan Proton Mail dan Proton Calendar.\nAnda akan tetap dapat menggunakan %@ untuk masuk dan memulihkan akun Anda.";
+
+"Username" = "Nama pengguna";
+
+"Please enter a username." = "Silakan memasukkan nama pengguna.";
+
+"Unlock your mailbox" = "Buka kunci kotak surat Anda";
+
+"Mailbox password" = "Kata sandi kotak surat";
+
+"Unlock" = "Buka kunci";
+
+"Forgot password" = "Lupa kata sandi";
+
+"Two-factor authentication" = "Autentikasi dua-faktor";
+
+"Authenticate" = "Autentikasi";
+
+"Two-factor code" = "Kode dua-faktor";
+
+"Recovery code" = "Kode pemulihan";
+
+"Use recovery code" = "Gunakan kode pemulihan";
+
+"Use two-factor code" = "Gunakan kode dua-faktor";
+
+"Enter the 6-digit code." = "Masukkan kode 6 digit.";
+
+"Enter an 8-character recovery code." = "Masukkan kode pemulihan 8 karakter.";
+
+"Learn more" = "Pelajari lebih lanjut";
+
+"Change your password" = "Ubah kata sandi Anda";
+
+"Change password" = "Ubah kata sandi";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Untuk dapat menggunakan aplikasi Proton selaku anggota organisasi, Anda perlu mengubah kata sandi Anda dengan masuk ke Proton melalui browser terlebih dahulu.";
+
+"Error occured" = "Terjadi kesalahan";
+
+"Create your Proton Account" = "Buat Akun Proton Anda";
+
+"One account for all Proton services." = "Satu akun untuk semua layanan Proton.";
+
+"Next" = "Selanjutnya";
+
+"Use your current email instead" = "Gunakan surel Anda saat ini";
+
+"Create a secure Proton Mail address instead" = "Buat alamat Proton Mail yang aman";
+
+"Email" = "Surel";
+
+"Create your password" = "Buat kata sandi Anda";
+
+"Password must contain at least 8 characters" = "Kata sandi minimal 8 karakter";
+
+"Repeat password" = "Ulangi kata sandi";
+
+"Domain" = "Domain";
+
+"Set recovery method" = "Atur metode pemulihan";
+
+"Set recovery method (optional)" = "Atur metode pemulihan (opsional)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Kami akan mengirimkan instruksi pemulihan ke surel atau nomor telepon ini seandainya Anda terkunci dari akun Anda.";
+
+"Email" = "Surel";
+
+"Phone" = "Telepon";
+
+"Recovery email" = "Surel pemulihan";
+
+"Recovery phone number" = "Nomor telepon pemulihan";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Dengan mengklik Selanjutnya, Anda setuju dengan Syarat dan Ketentuan Proton";
+
+"Terms and Conditions" = "Syarat dan Ketentuan";
+
+"Skip" = "Lewati";
+
+"Skip recovery method?" = "Lewati metode pemulihan?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Metode pemulihan akan membantu Anda mengakses akun Anda seandainya lupa dengan kata sandi atau terkunci dari akun Anda.";
+
+"Set recovery method" = "Atur metode pemulihan";
+
+"Your account is being created" = "Akun Anda sedang dibuat";
+
+"This should take no more than a minute." = "Seharusnya tidak sampai satu menit.";
+
+"Creating your account" = "Membuat akun Anda";
+
+"Generating your address" = "Membuat alamat surel Anda";
+
+"Securing your account" = "Mengamankan akun Anda";
+
+"Verifying your payment" = "Memverifikasi pembayaran Anda";
+
+"Account verification" = "Verifikasi akun";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Demi keamanan Anda, kami perlu untuk memverifikasi apakah alamat yang Anda masukkan adalah benar milik Anda. Kami telah mengirimkan kode verifikasi ke %@. Silakan masukkan kode tersebut pada kolom di bawah ini:";
+
+"Verification code" = "Kode verifikasi";
+
+"Enter the 6-digit code." = "Masukkan kode 6 digit.";
+
+"Did not receive a code?" = "Tidak menerima kode?";
+
+"Terms and Conditions" = "Syarat dan Ketentuan";
+
+"Invalid token request" = "Permintaan token tidak valid";
+
+"Invalid token error" = "Kesalahan untuk token yang tidak valid";
+
+"Create user failed" = "Gagal membuat pengguna";
+
+"Invalid hashed password" = "Kata sandi hashed tidak valid";
+
+"Password can not be empty.\nPlease try again." = "Kata sandi tidak boleh kosong.\nSilakan coba lagi.";
+
+"Password must contain at least %@ characters." = "Kata sandi minimal %@ karakter.";
+
+"Passwords do not match.\nPlease try again." = "Kata sandi tidak cocok. \nSilakan coba lagi.";
+
+"Email address already used." = "Alamat surel sudah digunakan.";
+
+"Please ask your admin to configure your sub-user." = "Mohon minta admin Anda untuk menyesuaikan pengaturan sub-pengguna Anda.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Apakah Anda ingin menerima kode verifikasi baru atau menggunakan alamat surel alternatif?";
+
+"Change email address" = "Ubah alamat surel";
+
+"Congratulations" = "Selamat";
+
+"Your Proton Free account was successfully created." = "Akun Proton Free Anda berhasil dibuat.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Pembayaran Anda sudah dikonfirmasi dan akun %@ Anda berhasil dibuat.";
+
+"Your Proton account was successfully created." = "Akun Proton Anda berhasil dibuat.";
+
+"Enjoy the world of privacy." = "Nikmati dunia yang mengedepankan privasi.";
+
+"Cancel" = "Batal";
+
+"Sign in" = "Masuk";
+
+"Troubleshoot" = "Penyelesaian Masalah";
