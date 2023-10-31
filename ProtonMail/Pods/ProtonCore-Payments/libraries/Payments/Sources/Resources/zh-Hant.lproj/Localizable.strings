@@ -1,0 +1,49 @@
+
+"Contact customer support" = "連絡客服支援團隊";
+
+"Failed to get list of available products from App Store." = "無法從 App Store 取得可使用的產品清單。";
+
+"Purchase is not possible." = "無法在此購買。";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple 通報我們您已升等服務方案，但缺少部份技術資料。煩請儘速填寫錯誤回報，以利客服支援團隊及時與您聯繫。";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple 通報我們您已升等服務方案，但我們偵測到您同時亦登出帳號。";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我們無法將您購買的 AppStore 產品與我們伺服器上的產品連結。請填寫錯誤回報表, 我們的客戶支援小組將與您聯繫。";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "請登入至您要升級服務方案的 Proton Mail 帳號，我們隨後即可完成此次訂購。";
+
+"Apple informed us they could not process the purchase." = "Apple 通報表示無法處理訂購授權。";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "我們已成功啟動您的訂閱。請重新啟動應用程式以開始使用新的服務方案。";
+
+"Please unlock the app to proceed with your service plan activation" = "請解鎖應用程式以繼續啟用您的方案服務";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "請註冊至您要升級方案的 Proton Mail 帳號，我們隨後即可啟用新升級方案服務。";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "錯誤的付款權杖狀態。請重新啟動應用程式。如果錯誤持續，請聯絡客戶支援。";
+
+"Do you want to activate the purchase for %@ address?" = "是否要啟用訂購授權 %@ 的郵件位址？";
+
+"Yes, activate it for " = "是的, 啟用它 ";
+
+"No, for another Proton Mail account" = "不是，此為另一 Proton Mail 帳號";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "我們無法將您的帳號升級為您選取的方案，故您的付款資訊已加到您帳號的儲值中。若需更多資訊並完成您的升級，請聯絡客服支援團隊。";
+
+"Contact Support" = "聯絡客服支援團隊";
+
+"Dismiss" = "忽略";
+
+"Payment failed" = "付款失敗";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "您已成功註冊，但您的付款未被處理。
+欲重新傳送付款資訊，請按重試。
+您只會被收取一次款項。
+如果問題持續，請聯絡客服支援。";
+
+"Retry" = "重試";
+
+"OK" = "好";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "無法連線到 Proton 伺服器。可能是錯誤的網路組態設定、Proton 伺服器暫停服務，又或者 Proton 伺服器遭到攔截所導致";

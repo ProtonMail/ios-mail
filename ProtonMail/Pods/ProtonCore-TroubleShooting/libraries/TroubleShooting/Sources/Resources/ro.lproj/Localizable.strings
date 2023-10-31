@@ -1,0 +1,50 @@
+
+"support form" = "formular de suport";
+
+"email" = "e-mail";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Depanare";
+
+"Allow alternative routing" = "Permitere rută alternativă";
+
+"No internet connection" = "Nu există conexiune la internet";
+
+"Internet Service Provider (ISP) problem" = "Problemă cu furnizorul de servicii de internet (ISP)";
+
+"Government block" = "Blocare guvernamentală";
+
+"Antivirus interference" = "Interferență antivirus";
+
+"Proxy/Firewall interference" = "Interferență proxy/paravan de protecție";
+
+"Proton is down" = "Proton nu este disponibil";
+
+"Still can't find a solution" = "Încă nu există o soluție";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "În cazul în care serverele Proton sunt blocate, această setare permite aplicației să încerce accesarea printr-o rețea alternativă pentru a ajunge la Proton, ceea ce poate fi util pentru ocolirea paravanelor de protecție sau a problemelor de rețea. Se recomandă păstrarea acestei setări pentru o fiabilitate mai mare. %1$@";
+
+"Learn more" = "Detalii";
+
+"Please make sure that your internet connection is working." = "Asigurați-vă că aveți conexiune la internet.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Încercați să vă conectați la Proton dintr-o rețea diferită (sau folosiți %1$@ sau %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Țara dvs. ar putea bloca accesul la Proton. Încercați să folosiți %1$@ (sau orice alt VPN) sau %2$@ pentru a accesa Proton.";
+
+"Temporarily disable or remove your antivirus software." = "Dezactivați temporar sau eliminați antivirusul.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Dezactivați setările din proxy sau paravanul de protecție sau contactați administratorul de rețea.";
+
+"Check Proton Status for our system status." = "Consultați Starea Proton pentru starea sistemului nostru.";
+
+"Proton Status" = "Stare Proton";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contactați-ne direct prin formularul nostru de suport, e-mail (support@protonmail.zendesk.com) sau Twitter.";
+
+"Subject..." = "Subiect...";
+
+"Please share your problem." = "Spuneți-ne care este problema.";
+
+"Back" = "Înapoi";

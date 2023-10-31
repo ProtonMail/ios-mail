@@ -189,7 +189,6 @@ extension CurrentPlanCell {
                 planDetailsStackView.addArrangedSubview(detailView)
             }
         }
-
         
         if let endDate = currentPlan.details.endDate {
             enableTimeView(enabled: true)

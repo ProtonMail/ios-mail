@@ -1,0 +1,50 @@
+
+"support form" = "فرم پشتیبانی";
+
+"email" = "ایمیل";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "عیب یابی";
+
+"Allow alternative routing" = "اجازه مسیریابی جایگزین";
+
+"No internet connection" = "اتصال اینترنت برقرار نیست";
+
+"Internet Service Provider (ISP) problem" = "مشکل ارائه دهنده سرویس اینترنت (ISP)";
+
+"Government block" = "محدودیت حکومتی";
+
+"Antivirus interference" = "تداخل با آنتی ویروس";
+
+"Proxy/Firewall interference" = "تداخل با فایروال/پروکسی";
+
+"Proton is down" = "Proton از دسترس خارج است";
+
+"Still can't find a solution" = "هنوز راه حلی پیدا نشده است";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "درصورت مسدود شدن سایت‌های پروتون، این تنظیمات به برنامه اجازه می‌دهد تا مسیریابی شبکه دیگری را برای دستیابی به پروتون امتحان کند، که می‌تواند برای دور زدن دیوارهای آتش یا مشکلات شبکه مفید باشد. برای اطمینان بیشتر، توصیه می‌کنیم این تنظیم را روشن نگه دارید. %1$@";
+
+"Learn more" = "بیشتر بدانید";
+
+"Please make sure that your internet connection is working." = "لطفا مطمئن شوید که ارتباط اینترنت شما برقرار ایت.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "سعی کنید از یک شبکه دیگر به Proton متصل شوید (یا از %1$@ یا %2$@ استفاده کنید).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "کشور شما ممکن است Proton را فیلتر کرده باشد. جهت دسترسی به پروتون از %1$@ (یا هر VPN دیگری) یا %2$@ استفاده کنید.";
+
+"Temporarily disable or remove your antivirus software." = "نرم‌افزار ضد ویروس خود را بطور موقت غیرفعال کرده یا حذف کنید.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "پروکسی یا فایروال را غیرفعال کنید، یا با مدیر شبکه خود تماس بگیرید.";
+
+"Check Proton Status for our system status." = "وضعیت Proton را برای وضعیت سیستم ما بررسی کنید.";
+
+"Proton Status" = "وضعیت Proton";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "مستقیما از طریق فرم پشتیبانی، ایمیل (support@protonmail.zendesk.com) یا توییتر با ما تماس بگیرید.";
+
+"Subject..." = "موضوع...";
+
+"Please share your problem." = "لطفا مشکل خود را توضیح دهید.";
+
+"Back" = "بازگشت";

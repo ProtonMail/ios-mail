@@ -1,0 +1,28 @@
+
+"switch to" = "basculer vers";
+
+"Manage accounts" = "Gérer les comptes";
+
+"Signed in to Proton Mail" = "Connecté à Proton Mail";
+
+"Signed out of Proton Mail" = "Déconnecté de Proton Mail";
+
+"Sign out" = "Se déconnecter";
+
+"Remove account from this device" = "Supprimer le compte de cet appareil";
+
+"Remove account" = "Supprimer le compte";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "Vous serez déconnecté et toutes les données associées à ce compte seront supprimées de cet appareil.";
+
+"Remove" = "Supprimer";
+
+"Are you sure you want to sign out %@?" = "Voulez-vous vraiment vous déconnecter de %@ ?";
+
+"Dismiss account switcher" = "Annuler le changement de compte";
+
+"Sign in to another account" = "Se connecter à un autre compte";
+
+"Cancel" = "Annuler";
+
+"Sign in" = "Se connecter";

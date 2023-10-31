@@ -1,0 +1,50 @@
+
+"support form" = "talɣa n tallalt";
+
+"email" = "imayl";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Tifrat i wuguren";
+
+"Allow alternative routing" = "Rnu aseglu amlellay";
+
+"No internet connection" = "Ulac tuqqna internet";
+
+"Internet Service Provider (ISP) problem" = "Ugur n usaǧǧaw n umeẓlu n internet (ISP)";
+
+"Government block" = "Asewḥel n udabu";
+
+"Antivirus interference" = "Iguren akked umgal-avirus";
+
+"Proxy/Firewall interference" = "Uguren akked Apriksi/Aɣrab n tmes";
+
+"Proton is down" = "Proton yuɣ-it wugur";
+
+"Still can't find a solution" = "Urɛad d-nufi tifrat";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability.%1$@";
+
+"Learn more" = "Issin ugar";
+
+"Please make sure that your internet connection is working." = "Ttxil-k•m senqed d akken tuqqna-inek/m internet tetteddu akken iwata.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Ɛreḍ tuqqna ɣer Proton seg uzeṭṭa-nniḍen (neɣ seqdec %1$@ neɣ %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Ahat tamurt-ik/m isewḥel anekcum ɣer Proton. Ɛṛeḍ aseqdec n %1$@ (neɣ kra n VPN nniḍen) neɣ %2$@ akken ad tkecmeḍ ɣer Proton.";
+
+"Temporarily disable or remove your antivirus software." = "Sens kra n wakud aseɣẓan antivirus-inek/m neɣ kkes-it.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Sens akk ipṛuksiten neɣ iɣraben n tmes, neɣ nermes anedbal-nwen n uzeṭṭa.";
+
+"Check Proton Status for our system status." = "Senqed addad n Proton i waddad n unagraw-nneɣ.";
+
+"Proton Status" = "Addad n Proton";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Nermes-aɣ-d srid s tferkit-nneɣ n tallalt seg, yimayl (support@protonmail.zendesk.com), neɣ Twitter.";
+
+"Subject..." = "Asentel...";
+
+"Please share your problem." = "Ma ulac aɣilif, bḍu ugur-inek•inem.";
+
+"Back" = "Ɣer deffir";

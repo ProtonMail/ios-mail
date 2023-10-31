@@ -27,8 +27,4 @@ struct Metrics: Encodable {
     enum CodingKeys: String, CodingKey {
         case metrics = "Metrics"
     }
-    
-    init(metrics: [AggregableObservabilityEvent]) {
-        self.metrics = metrics
-    }
 }

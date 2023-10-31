@@ -45,7 +45,6 @@ public enum ADTranslation: TranslationsExposing {
     case delete_network_error
     case api_might_be_blocked_button
     case api_might_be_blocked_message
-
     
     public var l10n: String {
         switch self {

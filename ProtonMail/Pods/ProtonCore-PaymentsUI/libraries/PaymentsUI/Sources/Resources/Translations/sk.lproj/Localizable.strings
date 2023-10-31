@@ -1,0 +1,134 @@
+
+"OK" = "OK";
+
+"Cancel" = "Zrušiť";
+
+"Warning" = "Upozornenie";
+
+"Select a plan" = "Vyberte plán";
+
+"Current plan" = "Momentálne predplatné";
+
+"Subscription" = "Predplatné";
+
+"Upgrade your plan" = "Upgradovať svoj plán";
+
+"Only annual subscriptions without auto-renewal are available inside the mobile app." = "V mobilnej aplikácii je k dispozícii iba ročné predplatné bez automatického obnovenia.";
+
+"You cannot manage subscriptions inside the mobile application." = "V mobilnej aplikácii nemôžete spravovať predplatné.";
+
+"Your plan will automatically renew on %@" = "Váš plán sa automaticky obnoví %@";
+
+"Current plan will expire on %@" = "Váš plán vyprší dňa %@";
+
+"Contact an administrator to make changes to your Proton subscription." = "Ak chcete vykonať zmeny vo vašom predplatnom Proton, kontaktujte správcu.";
+
+"%@ storage" = "%@ úložisko";
+
+"%@ storage / user" = "%@ úložisko / používateľ";
+
+"for %@" = "pre %@";
+
+"Custom email addresses" = "Vlastné emailové adresy";
+
+"Priority customer support" = "Prioritná zákaznícka podpora";
+
+"Adblocker (NetShield)" = "Blokátor reklám (NetShield)";
+
+"Streaming service support" = "Podpora streamovacích služieb";
+
+"High speed" = "Vysoká rýchlosť";
+
+"Highest speed" = "Najvyššia rýchlosť";
+
+"Multi-user support" = "Podpora pre viac uživateľov";
+
+"The basic for private and secure communications." = "Základ pre súkromnú a bezpečnú komunikáciu.";
+
+"Full-featured mailbox with advanced protection." = "Plne vybavená schránka s pokročilou ochranou.";
+
+"Limited time offer" = "Časovo obmedzená ponuka";
+
+"Complete payment?" = "Dokončiť platbu?";
+
+"A purchase for a Proton Bundle plan has already been initiated. Press continue to complete the payment processing and create your account" = "Nákup plánu Proton Bundle už bol spustený. Stlačením Pokračovať dokončite spracovanie platby a vytvorte si účet";
+
+"Complete payment" = "Dokončiť platbu";
+
+"The account setup process could not be finalized due to an unexpected error.\nPlease try again." = "Proces nastavenia účtu nebolo možné dokončiť pre neočakávanú chybu.\nSkúste to znova.";
+
+"The IAP purchase process has started. Please follow Apple's instructions to either complete or cancel the purchase." = "Proces nákupu IAP sa začal. Dokončite alebo zrušte nákup podľa pokynov spoločnosti Apple.";
+
+"One plan for all Proton services" = "Jeden plán pre všetky Proton služby";
+
+"The no-cost starter account designed to empower everyone with privacy by default." = "Bezplatný štartovací účet je navrhnutý tak, aby v predvolenom nastavení každému umožnil súkromie.";
+
+"The privacy-first email and calendar solution for your everyday communication needs." = "Riešenie e-mailu a kalendára s dôrazom na ochranu osobných údajov pre vaše každodenné komunikačné potreby.";
+
+"Your privacy and security are our priority." = "Vaše súkromie a bezpečnosť sú našou prioritou.";
+
+"The storage-focused plan with 200 GB of cloud storage to keep your files private." = "Plán zameraný na úložisko s 200 GB cloudovej kapacity, aby zostali vaše súbory v súkromí.";
+
+"The ultimate privacy pack with access to all premium Proton services." = "Dokonalý balík ochrany osobných údajov s prístupom ku všetkým prémiovým službám Protonu.";
+
+"Only non-renewing annual subscriptions are available via this app" = "Prostredníctvom tejto aplikácie je k dispozícii iba neobnovujúce sa ročné predplatné";
+
+"Unlimited folders, labels, and filters" = "Neobmedzený počet priečinkov, štítkov a filtrov";
+
+"Up to %@ storage" = "Až do %@ úložtného priestoru";
+
+"Free VPN on a single device" = "Bezplatná sieť VPN na jednom zariadení";
+
+"Highest VPN speed" = "Najvyššia rýchlosť VPN";
+
+"Built-in ad-blocker (NetShield)" = "Vstavaný blokovač reklám (NetShield)";
+
+"Access to streaming services globally" = "Prístup k streamovacím službám na celom svete";
+
+"Secure Core servers" = "Servery Secure Core";
+
+"TOR over VPN" = "TOR cez VPN";
+
+"P2P/BitTorrent" = "P2P/BitTorrent";
+
+"Get %@" = "Získať %@";
+
+"Get Proton for free" = "Získajte Proton zadarmo";
+
+"Extend subscription" = "Predĺžiť predplatné";
+
+"%@ of %@" = "%@ z %@";
+
+"Connection issues" = "Problémy s pripojením";
+
+"Check your internet connection" = "Skontrolujte svoje internetové pripojenie";
+
+"Strict no-logs policy" = "Prísna politika neuchovávania záznamov";
+
+"Plan successfully upgraded" = "Plán bol úspešne inovovaný";
+
+"Integrated 2FA authenticator" = "Integrovaný 2FA autentifikátor";
+
+"Priority support" = "Prioritná podpora";
+
+"Unlimited devices" = "Neobmedzený počet zariadení";
+
+"%@ email aliases" = "%@ emailové aliasy";
+
+"Unlimited email aliases" = "Neobmedzený počet emailových aliasov";
+
+"Unlimited logins and notes" = "Neobmedzený počet prihlásení a poznámok";
+
+"Up to %@ forwarding mailboxes" = "Až %@ presmerovaných poštových schránok";
+
+"Custom fields" = "Vlastné polia";
+
+"For next-level password management and identity protection." = "Pre správu hesiel a ochranu identity ďalšej úrovne.";
+
+"Pay monthly" = "Mesačná platba";
+
+"Pay annually" = "Ročná platba";
+
+"Pay every two years" = "Platba každé dva roky";
+
+"Free" = "Zdarma";

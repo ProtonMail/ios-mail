@@ -1,0 +1,50 @@
+
+"support form" = "formulari de suport";
+
+"email" = "correu electrònic";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Resolució de problemes";
+
+"Allow alternative routing" = "Autoritza un enrutament alternatiu";
+
+"No internet connection" = "No hi ha connexió a Internet";
+
+"Internet Service Provider (ISP) problem" = "Hi ha un problema amb el proveïdor d'accés a internet (ISP)";
+
+"Government block" = "Bloqueig governamental";
+
+"Antivirus interference" = "Interferència de l'antivirus";
+
+"Proxy/Firewall interference" = "Interferència del proxy/tallafoc";
+
+"Proton is down" = "Proton està caigut";
+
+"Still can't find a solution" = "No s'ha pogut trobar una solució encara";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "En cas que es bloquegin els llocs de Proton, aquest paràmetre permet a l'aplicació provar l'encaminament de xarxa alternatiu per arribar a Proton, cosa que pot ser útil per evitar els tallafocs o problemes de xarxa. Recomanem mantenir aquesta configuració per a una major fiabilitat. %1$@";
+
+"Learn more" = "Més informació";
+
+"Please make sure that your internet connection is working." = "Assegureu-vos que la vostra connexió a internet funciona.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Intenteu connectar-vos a Proton des d'una xarxa diferent (o utilitzeu %1$@ o %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "És possible que el vostre país estigui bloquejant l’accés a Proton. Proveu d'utilitzar %1$@ (o qualsevol altra VPN) o %2$@ per accedir a Proton.";
+
+"Temporarily disable or remove your antivirus software." = "Desactiveu temporalment o suprimiu el vostre programari antivirus.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Deshabilita qualsevol proxy o tallafoc, o contacta amb el teu administrador de xarxa.";
+
+"Check Proton Status for our system status." = "Visiteu Proton Status per conèixer l'estat del nostre sistema.";
+
+"Proton Status" = "Estat de Proton";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contacteu amb nosaltres directament a través del formulari d’assistència, correu electrònic (support@protonmail.zendesk.com) o Twitter.";
+
+"Subject..." = "Assumpte...";
+
+"Please share your problem." = "Compartiu el problema.";
+
+"Back" = "Torna";

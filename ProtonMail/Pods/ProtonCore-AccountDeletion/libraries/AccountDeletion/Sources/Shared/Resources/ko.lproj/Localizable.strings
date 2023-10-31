@@ -1,0 +1,16 @@
+
+"Delete account" = "계정 삭제";
+
+"This will permanently delete your account and all of its data. You will not be able to reactivate this account." = "귀하의 계정 및 계정에 연결된 모든 정보가 영구 삭제되며, 이 계정의 복구가 불가능합니다.";
+
+"Account deleted.\nLogging out..." = "계정이 삭제되었습니다. \n로그아웃 중...";
+
+"Close" = "닫기";
+
+"OK" = "확인";
+
+"A networking error has occured" = "네트워킹 오류가 발생했습니다";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton 서버에 연결할 수 없음. 잘못된 구성이거나, Proton 서버의 미작동 혹은 Proton 서버가 차단된 상태일 수 있습니다.";
+
+"Troubleshoot" = "문제 해결";

@@ -1,0 +1,220 @@
+
+"Privacy by default" = "隐私优先";
+
+"Proton address required" = "需要使用 Proton 地址";
+
+"Update required" = "需要更新";
+
+"Please enter your Proton Account password." = "请输入您的 Proton 账户密码";
+
+"OK" = "确定";
+
+"Help" = "帮助";
+
+"Continue" = "继续";
+
+"Password" = "密码";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "连接 Proton 服务器失败，原因可能是网络配置有误、Proton 服务器故障或遭到封锁";
+
+"Search country" = "搜索国家";
+
+"Code sent to %@" = "验证码已发送到 %@";
+
+"Request new code?" = "请求新验证码?";
+
+"Resend" = "重新发送";
+
+"Get a replacement code sent to %@." = "获取发送到 %@ 的替换码";
+
+"Request new code" = "请求新验证码";
+
+"Enter your Proton Account details." = "请输入您的 Proton 账户详细信息";
+
+"Email or username" = "邮箱或用户名";
+
+"Sign in" = "登录";
+
+"Sign in with password" = "使用密码登录";
+
+"Sign in with SSO" = "使用SSO登录";
+
+"Sign in to your organization" = "登录到您的组织";
+
+"Create an account" = "创建账户";
+
+"How can we help?" = "我们能帮你什么吗？";
+
+"Forgot username" = "忘记用户名";
+
+"Forgot password" = "忘记密码";
+
+"Other sign-in issues" = "其他登录问题";
+
+"Customer support" = "客服支持";
+
+"Still need help? Contact us directly." = "仍需帮助？请直接联系我们";
+
+"Please enter your Proton Account email or username." = "请输入您的 Proton 账户邮箱或用户名";
+
+"Complete Setup" = "完成注册";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "您的账户缺少密钥，请登录网页自动生成所需密钥。一旦您已登录网页，请返回应用并登录";
+
+"Account setup required" = "需要设置账户";
+
+"Incorrect mailbox password" = "邮箱密码错误";
+
+"Your session has expired. Please log in again." = "Your session has expired. Please log in again.";
+
+"Proton address required" = "需要使用 Proton 地址";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "您需要创建一个 Proton 邮箱地址才能使用 Proton Mail 与 Proton Calendar 服务，\n但创建完成后 %@ 仍然可以用于登录与恢复账户。";
+
+"Username" = "用户名";
+
+"Please enter a username." = "请输入用户名";
+
+"Unlock your mailbox" = "解锁您的邮箱";
+
+"Mailbox password" = "邮箱密码";
+
+"Unlock" = "解锁​​​​";
+
+"Forgot password" = "忘记密码";
+
+"Two-factor authentication" = "双重验证";
+
+"Authenticate" = "认证账户";
+
+"Two-factor code" = "双重验证码";
+
+"Recovery code" = "恢复码";
+
+"Use recovery code" = "使用恢复码";
+
+"Use two-factor code" = "使用双重验证码";
+
+"Enter the 6-digit code." = "请输入 6 位验证码";
+
+"Enter an 8-character recovery code." = "请输入 8 位恢复码";
+
+"Learn more" = "了解详情";
+
+"Change your password" = "更改密码";
+
+"Change password" = "更改密码";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "要以组织成员的身份使用 Proton 应用，您首先需要通过浏览器登录 Proton 来更改密码";
+
+"Error occured" = "出错了";
+
+"Create your Proton Account" = "创建您的账户";
+
+"One account for all Proton services." = "一个账户即可通用所有 Proton 服务";
+
+"Next" = "继续";
+
+"Use your current email instead" = "使用您已有的邮箱地址";
+
+"Create a secure Proton Mail address instead" = "创建一个安全的 Proton Mail 邮箱地址";
+
+"Email" = "邮箱";
+
+"Create your password" = "创建密码";
+
+"Password must contain at least 8 characters" = "密码必须至少包含 8 个字符";
+
+"Repeat password" = "重复密码";
+
+"Domain" = "域名";
+
+"Set recovery method" = "设置恢复方法";
+
+"Set recovery method (optional)" = "设置恢复方式（非必需）";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "假如以后您忘记用户名或密码无法登录，我们将通过这个邮箱或电话号码帮助您恢复账户。";
+
+"Email" = "邮箱";
+
+"Phone" = "电话";
+
+"Recovery email" = "密保邮箱";
+
+"Recovery phone number" = "密保手机号";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "点击下一步即表示您同意 Proton 的条款和条件";
+
+"Terms and Conditions" = "条款和条件";
+
+"Skip" = "跳过";
+
+"Skip recovery method?" = "跳过设置恢复方法？";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "恢复方法将帮助您在忘记密码或账户被锁时访问您的账户";
+
+"Set recovery method" = "设置恢复方法";
+
+"Your account is being created" = "Your account is being created";
+
+"This should take no more than a minute." = "应该不会超过一分钟。";
+
+"Creating your account" = "正在为您创建账户";
+
+"Generating your address" = "正在为您生成地址";
+
+"Securing your account" = "确保账户安全";
+
+"Verifying your payment" = "确认支付";
+
+"Account verification" = "账户验证";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "为了您的安全，我们必须验证您输入的邮箱地址归属。我们已向 %@ 发送了验证码，请在下方输入验证码：";
+
+"Verification code" = "验证码";
+
+"Enter the 6-digit code." = "请输入 6 位验证码";
+
+"Did not receive a code?" = "未收到验证码？";
+
+"Terms and Conditions" = "条款和条件";
+
+"Invalid token request" = "无效令牌请求";
+
+"Invalid token error" = "无效令牌错误";
+
+"Create user failed" = "Create user failed";
+
+"Invalid hashed password" = "无效的哈希密码";
+
+"Password can not be empty.\nPlease try again." = "密码不能为空\n请重新输入";
+
+"Password must contain at least %@ characters." = "密码必须至少包含 %@ 个字符";
+
+"Passwords do not match.\nPlease try again." = "密码不匹配\n请重新输入";
+
+"Email address already used." = "邮箱地址已被使用";
+
+"Please ask your admin to configure your sub-user." = "请联系管理员配置您的子用户。";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "您想重新获取验证码还是更换邮箱地址？";
+
+"Change email address" = "更改邮箱地址";
+
+"Congratulations" = "Congratulations";
+
+"Your Proton Free account was successfully created." = "您已经成功创建Proton免费账号。";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "付款已确认，您的%@账号已成功创建。";
+
+"Your Proton account was successfully created." = "您已经成功创建Proton账号。";
+
+"Enjoy the world of privacy." = "享受隐私得到充分保护的世界吧。";
+
+"Cancel" = "取消";
+
+"Sign in" = "登录";
+
+"Troubleshoot" = "排查故障";

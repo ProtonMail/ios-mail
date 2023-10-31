@@ -1,0 +1,28 @@
+
+"switch to" = "切换至";
+
+"Manage accounts" = "管理账户";
+
+"Signed in to Proton Mail" = "已登录 Proton Mail";
+
+"Signed out of Proton Mail" = "已退出 Proton Mail 账户";
+
+"Sign out" = "退出";
+
+"Remove account from this device" = "从该设备中移除账户";
+
+"Remove account" = "注销账号";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "您即将退出账户，此账户的所有相关数据都将从此设备中清除。";
+
+"Remove" = "移除";
+
+"Are you sure you want to sign out %@?" = "您确定要退出登录 %@ 吗？";
+
+"Dismiss account switcher" = "忽略切换账户";
+
+"Sign in to another account" = "从其他账户登录";
+
+"Cancel" = "取消";
+
+"Sign in" = "登录";

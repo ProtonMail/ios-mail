@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Усталена приватність";
+
+"Proton address required" = "Адреса Proton обов'язкова";
+
+"Update required" = "Необхідне оновлення";
+
+"Please enter your Proton Account password." = "Введіть свій пароль облікового запису Proton.";
+
+"OK" = "Застосувати";
+
+"Help" = "Допомога";
+
+"Continue" = "Продовжити";
+
+"Password" = "Пароль";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Сервери Proton недоступні. Причиною може бути неправильна конфігурація мережі, сервери Proton не працюють або сервери Proton заблоковані";
+
+"Search country" = "Пошук країни";
+
+"Code sent to %@" = "Код надіслано на %@";
+
+"Request new code?" = "Запитати новий код?";
+
+"Resend" = "Надіслати повторно";
+
+"Get a replacement code sent to %@." = "Отримати новий код, надісланий на %@.";
+
+"Request new code" = "Запитати новий код";
+
+"Enter your Proton Account details." = "Введіть дані свого облікового запису Proton.";
+
+"Email or username" = "Е-пошта чи ім'я користувача";
+
+"Sign in" = "Увійти";
+
+"Sign in with password" = "Увійти за допомогою пароля";
+
+"Sign in with SSO" = "Увійти за допомогою SSO";
+
+"Sign in to your organization" = "Увійдіть до своєї організації";
+
+"Create an account" = "Зареєструватися";
+
+"How can we help?" = "Як ми можемо допомогти?";
+
+"Forgot username" = "Забули ім'я користувача";
+
+"Forgot password" = "Забули пароль";
+
+"Other sign-in issues" = "Інші проблеми з входом";
+
+"Customer support" = "Клієнтська підтримка";
+
+"Still need help? Contact us directly." = "Досі потребуєте допомоги? Зв'яжіться з нами безпосередньо.";
+
+"Please enter your Proton Account email or username." = "Введіть свою електронну адресу або ім'я користувача облікового запису Proton.";
+
+"Complete Setup" = "Завершити налаштування";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "У вашому обліковому записі немає ключів. Будь ласка, увійдіть через браузер для автоматичного генерування ключів. Після успішного входу в браузері, поверніться до програми та виконайте вхід.";
+
+"Account setup required" = "Налаштування облікового запису обов'язкове";
+
+"Incorrect mailbox password" = "Неправильний пароль поштової скриньки";
+
+"Your session has expired. Please log in again." = "Термін дії вашого сеансу завершився. Увійдіть знову.";
+
+"Proton address required" = "Адреса Proton обов'язкова";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Вам потрібна адреса електронної пошти Proton, щоб користуватися Proton Mail і Proton Calendar.\nВи зможете використовувати %@ для входу в систему та відновлення свого облікового запису.";
+
+"Username" = "Ім'я користувача";
+
+"Please enter a username." = "Введіть ім'я користувача.";
+
+"Unlock your mailbox" = "Відімкніть поштову скриньку";
+
+"Mailbox password" = "Пароль поштової скриньки";
+
+"Unlock" = "Відімкнути";
+
+"Forgot password" = "Забули пароль";
+
+"Two-factor authentication" = "Двоетапна перевірка";
+
+"Authenticate" = "Автентифікація";
+
+"Two-factor code" = "Код двоетапної перевірки";
+
+"Recovery code" = "Код відновлення";
+
+"Use recovery code" = "Використати код відновлення";
+
+"Use two-factor code" = "Використати код двоетапної перевірки";
+
+"Enter the 6-digit code." = "Введіть 6-значний код.";
+
+"Enter an 8-character recovery code." = "Введіть 8-значний код відновлення.";
+
+"Learn more" = "Докладніше";
+
+"Change your password" = "Змініть свій пароль";
+
+"Change password" = "Змінити пароль";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Щоб користуватися програмою Proton як учасник організації, спершу потрібно змінити пароль, увійшовши до Proton через браузер.";
+
+"Error occured" = "Сталася помилка";
+
+"Create your Proton Account" = "Створіть свій обліковий запис Proton";
+
+"One account for all Proton services." = "Один обліковий запис для всіх служб Proton.";
+
+"Next" = "Далі";
+
+"Use your current email instead" = "Використати натомість вашу поточну адресу е-пошти";
+
+"Create a secure Proton Mail address instead" = "Створити натомість захищену електронну адресу Proton";
+
+"Email" = "Е-пошта";
+
+"Create your password" = "Створіть пароль";
+
+"Password must contain at least 8 characters" = "Пароль повинен містити принаймні 8 символів";
+
+"Repeat password" = "Повторити пароль";
+
+"Domain" = "Домен";
+
+"Set recovery method" = "Додати спосіб відновлення";
+
+"Set recovery method (optional)" = "Налаштувати спосіб відновлення (необов'язково)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Ми надішлемо настанови щодо відновлення на цю електронну адресу або номер телефону, якщо ви втратите доступ до свого облікового запису.";
+
+"Email" = "Е-пошта";
+
+"Phone" = "Телефон";
+
+"Recovery email" = "Резервна е-пошта";
+
+"Recovery phone number" = "Номер телефону для відновлення";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Натискаючи Далі, ви погоджуєтеся з Умовами та положеннями Proton";
+
+"Terms and Conditions" = "Умови та положення";
+
+"Skip" = "Пропустити";
+
+"Skip recovery method?" = "Не додавати спосіб відновлення?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Спосіб відновлення допоможе вам отримати доступ до свого облікового запису у випадку втрати пароля чи виходу з облікового запису.";
+
+"Set recovery method" = "Додати спосіб відновлення";
+
+"Your account is being created" = "Створюємо ваш обліковий запис";
+
+"This should take no more than a minute." = "Це повинно тривати не довше хвилини.";
+
+"Creating your account" = "Створення облікового запису";
+
+"Generating your address" = "Генерування вашої адреси";
+
+"Securing your account" = "Захист вашого облікового запису";
+
+"Verifying your payment" = "Перевірка вашого платежу";
+
+"Account verification" = "Підтвердження облікового запису";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Задля вашої безпеки, ми повинні переконатися, що введена адреса належить вам. Ми надіслали код перевірки на %@. Будь ласка, введіть цей код внизу:";
+
+"Verification code" = "Код підтвердження";
+
+"Enter the 6-digit code." = "Введіть 6-значний код.";
+
+"Did not receive a code?" = "Не отримали код?";
+
+"Terms and Conditions" = "Умови та положення";
+
+"Invalid token request" = "Недійсний запит токена";
+
+"Invalid token error" = "Помилка недійсного токена";
+
+"Create user failed" = "Не вдалося створити користувача";
+
+"Invalid hashed password" = "Неправильний хешований пароль";
+
+"Password can not be empty.\nPlease try again." = "Потрібно ввести пароль.\nБудь ласка, спробуйте знову.";
+
+"Password must contain at least %@ characters." = "Пароль повинен містити принаймні %@ символів.";
+
+"Passwords do not match.\nPlease try again." = "Паролі відрізняються.\nПовторіть спробу.";
+
+"Email address already used." = "Ця адреса вже використовується.";
+
+"Please ask your admin to configure your sub-user." = "Попросіть свого адміністратора налаштувати підкористувача.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Бажаєте отримати новий код перевірки чи скористатися іншою електронною адресою?";
+
+"Change email address" = "Змінити адресу е-пошти";
+
+"Congratulations" = "Вітаємо";
+
+"Your Proton Free account was successfully created." = "Ваш обліковий запис Proton Free успішно створено.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Ваш платіж підтверджено та обліковий запис %@ успішно створено.";
+
+"Your Proton account was successfully created." = "Ваш обліковий запис Proton успішно створено.";
+
+"Enjoy the world of privacy." = "Оцініть переваги світу приватності.";
+
+"Cancel" = "Скасувати";
+
+"Sign in" = "Увійти";
+
+"Troubleshoot" = "Усунення проблем";

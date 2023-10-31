@@ -123,7 +123,6 @@ final class ProcessAuthenticated: ProcessProtocol {
                     } catch {
                         self?.finish(transaction: transaction, result: .errored(.noNewSubscriptionInSuccessfullResponse), completion: completion)
                     }
-
                     
                 }
             } else {

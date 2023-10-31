@@ -1,0 +1,50 @@
+
+"support form" = "aðstoðareyðublað";
+
+"email" = "tölvupóstur";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Troubleshooting";
+
+"Allow alternative routing" = "Leyfa varaleið beiningar";
+
+"No internet connection" = "Engin internettenging";
+
+"Internet Service Provider (ISP) problem" = "Vandamál hjá internetþjónustuaðila";
+
+"Government block" = "Lokun á vegum stjórnvalda";
+
+"Antivirus interference" = "Truflanir vegna vírusvarna";
+
+"Proxy/Firewall interference" = "Truflanir vegna milliþjóna/eldveggja";
+
+"Proton is down" = "Proton liggur niðri";
+
+"Still can't find a solution" = "Finn ekki ennþá neina lausn";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Sé lokað á Proton-vefsvæði, gerir þessi stilling forritinu kleift að reyna að nota aðra leið um netið til að tengjast Proton, sem aftur getur nýst til að komast fram hjá eldveggjum eða vandamálum varðandi netkerfið. Við mælum með því að hafa þessa stillingu virka til að auka áreiðanleika forritsins. %1$@";
+
+"Learn more" = "Kanna nánar";
+
+"Please make sure that your internet connection is working." = "Vinsamlega gakktu úr skugga um að nettengingin þín virki.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Reyndu að tengjast Proton frá öðru netkerfi (eða nota %1$@ eða %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Yfirvöld í landinu þínu gætu verið að hindra aðgang að Proton. Prófaðu að nota %1$@ (eða einhverja VPN-þjónustu) eða %2$@ til að tengjast Proton.";
+
+"Temporarily disable or remove your antivirus software." = "Gerðu vírusvarnaforritið þitt tímabundið óvirkt.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Gerðu alla eldveggi og milliþjóna (proxies) óvirka, eða hafðu samband við kerfisstjórann þinn.";
+
+"Check Proton Status for our system status." = "Athugaðu stöðu Proton til að sjá ástandið á kerfinu okkar.";
+
+"Proton Status" = "Staða Proton";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Hafðu beint samband við okkur í gegnum aðstoðarsíðuna okkar, með tölvupósti (support@protonmail.zendesk.com) eða á Twitter.";
+
+"Subject..." = "Efni...";
+
+"Please share your problem." = "Vinsamlegast deildu vandamálinu þínu.";
+
+"Back" = "Til baka";

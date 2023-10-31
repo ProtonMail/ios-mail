@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Gizlilik odaklı";
+
+"Proton address required" = "Proton adresi gereklidir";
+
+"Update required" = "Güncelleme gerekli";
+
+"Please enter your Proton Account password." = "Lütfen Proton hesabınızın parolasını yazın.";
+
+"OK" = "Tamam";
+
+"Help" = "Yardım";
+
+"Continue" = "İlerle";
+
+"Password" = "Parola";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton sunucularına erişilemiyor. Bu durum hatalı bir ağ yapılandırmasından, Proton sunucularının çalışmıyor olmasından ya da Proton sunucularına erişimin engelleniyor olmasından kaynaklanabilir";
+
+"Search country" = "Ülke ara";
+
+"Code sent to %@" = "Kod %@ alıcısına gönderildi";
+
+"Request new code?" = "Yeni kod istensin mi?";
+
+"Resend" = "Yeniden gönder";
+
+"Get a replacement code sent to %@." = "%@ adresine yeni bir kod gönder.";
+
+"Request new code" = "Yeni kod iste";
+
+"Enter your Proton Account details." = "Proton hesabınızın ayrıntılarını yazın.";
+
+"Email or username" = "E-posta adresi ya da kullanıcı adı";
+
+"Sign in" = "Oturum aç";
+
+"Sign in with password" = "Parola ile oturum açın";
+
+"Sign in with SSO" = "Tek oturum açma ile oturum açın";
+
+"Sign in to your organization" = "Kuruluşunuzda oturum açın";
+
+"Create an account" = "Hesap oluştur";
+
+"How can we help?" = "Nasıl yardımcı olabiliriz?";
+
+"Forgot username" = "Kullanıcı adımı unuttum";
+
+"Forgot password" = "Parolamı unuttum";
+
+"Other sign-in issues" = "Diğer oturum açma sorunları";
+
+"Customer support" = "Müşteri desteği";
+
+"Still need help? Contact us directly." = "Hala yardım gerekiyor mu? Doğrudan bizimle görüşün.";
+
+"Please enter your Proton Account email or username." = "Lütfen Proton hesabınızın e-posta adresini ya da kullanıcı adını yazın.";
+
+"Complete Setup" = "Kurulumu tamamla";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Hesabınızın anahtarları yok. Gerekli anahtarları otomatik olarak oluşturmak için lütfen İnternet sitesinde oturum açın. Oturum açtıktan sonra lütfen uygulamaya geri dönüp orada da oturum açın.";
+
+"Account setup required" = "Hesap kurulumu gerekli";
+
+"Incorrect mailbox password" = "Posta kutusu parolası yanlış";
+
+"Your session has expired. Please log in again." = "Oturumunuzun geçerlilik süresi dolmuş. Lütfen yeniden oturum açın.";
+
+"Proton address required" = "Proton adresi gereklidir";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Proton Mail ve Proton Calendar kullanabilmek için bir Proton e-posta adresiniz olmalıdır.\nOturum açmak ve hesabınızı kurtarmak için %@ adresini kullanmayı sürdürebileceksiniz.";
+
+"Username" = "Kullanıcı adı";
+
+"Please enter a username." = "Lütfen bir kullanıcı adı yazın.";
+
+"Unlock your mailbox" = "Posta kutunuzun kilidini açın";
+
+"Mailbox password" = "Posta kutusu parolası";
+
+"Unlock" = "Kilidi aç";
+
+"Forgot password" = "Parolamı unuttum";
+
+"Two-factor authentication" = "İki adımlı doğrulama";
+
+"Authenticate" = "Kimliği doğrula";
+
+"Two-factor code" = "İki adımlı doğrulama kodu";
+
+"Recovery code" = "Kurtarma kodu";
+
+"Use recovery code" = "Kurtarma kodunu kullan";
+
+"Use two-factor code" = "İki adımlı doğrulama kodu kullanılsın";
+
+"Enter the 6-digit code." = "6 rakamlı kodu yazın.";
+
+"Enter an 8-character recovery code." = "8 karakterli kurtarma kodunu yazın.";
+
+"Learn more" = "Ayrıntılı bilgi alın";
+
+"Change your password" = "Parolanızı değiştirin";
+
+"Change password" = "Parolayı değiştir";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Proton uygulamasını bir kuruluş üyesi olarak kullanmak için, öncelikle tarayıcı üzerinden Proton oturumu açıp parolanızı değiştirmelisiniz.";
+
+"Error occured" = "Sorun çıktı";
+
+"Create your Proton Account" = "Proton hesabınızı oluşturun";
+
+"One account for all Proton services." = "Tüm Proton hizmetleri için tek hesap.";
+
+"Next" = "İleri";
+
+"Use your current email instead" = "Bunun yerine var olan e-posta adresinizi kullanın";
+
+"Create a secure Proton Mail address instead" = "Bunun yerine güvenli bir Proton Mail adresi oluşturun";
+
+"Email" = "E-posta";
+
+"Create your password" = "Parolanızı oluşturun";
+
+"Password must contain at least 8 characters" = "Parola en az 8 karakter uzunluğunda olmalıdır";
+
+"Repeat password" = "Parola onayı";
+
+"Domain" = "Etki alanı";
+
+"Set recovery method" = "Kurtarma yöntemini ayarla";
+
+"Set recovery method (optional)" = "Kurtarma yöntemini ayarla (isteğe bağlı)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Hesabınıza oturum açamadığınızda, kurtarma yönergelerini bu e-posta adresine ya da telefon numarasına göndereceğiz.";
+
+"Email" = "E-posta";
+
+"Phone" = "Telefon";
+
+"Recovery email" = "Kurtarma e-posta adresi";
+
+"Recovery phone number" = "Kurtarma telefonu numarası";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Sonraki üzerine tıklayarak Proton Hüküm ve Koşullarını kabul etmiş olursunuz";
+
+"Terms and Conditions" = "Hüküm ve Koşullar";
+
+"Skip" = "Atla";
+
+"Skip recovery method?" = "Kurtarma yöntemi atlansın mı?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Kurtarma yöntemi, parolanızı unuttuğunuzda ya da oturum açamadığınızda hesabınıza erişmenizi sağlar.";
+
+"Set recovery method" = "Kurtarma yöntemini ayarla";
+
+"Your account is being created" = "Hesabınız oluşturuluyor";
+
+"This should take no more than a minute." = "Bu işlem bir dakikadan uzun sürmemeli.";
+
+"Creating your account" = "Hesabınız oluşturuluyor";
+
+"Generating your address" = "Adresiniz oluşturuluyor";
+
+"Securing your account" = "Hesabınız korunuyor";
+
+"Verifying your payment" = "Ödemeniz doğrulanıyor";
+
+"Account verification" = "Hesap doğrulama";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Güvenliğiniz için, yazdığınız adresin size ait olduğunu doğrulamamız gerekiyor. %@ adresine bir doğrulama kodu gönderdik. Lütfen kodu aşağıya yazın:";
+
+"Verification code" = "Doğrulama kodu";
+
+"Enter the 6-digit code." = "6 rakamlı kodu yazın.";
+
+"Did not receive a code?" = "Bir kod almadınız mı?";
+
+"Terms and Conditions" = "Hüküm ve Koşullar";
+
+"Invalid token request" = "Kod isteği geçersiz";
+
+"Invalid token error" = "Kod geçersiz sorunu";
+
+"Create user failed" = "Kullanıcı oluşturulamadı";
+
+"Invalid hashed password" = "Karılmış parola geçersiz";
+
+"Password can not be empty.\nPlease try again." = "Parola boş olamaz.\nLütfen yeniden deneyin.";
+
+"Password must contain at least %@ characters." = "Parola en az %@ karakter uzunluğunda olmalıdır.";
+
+"Passwords do not match.\nPlease try again." = "Parola ile onayı aynı değil.\nLütfen yeniden deneyin.";
+
+"Email address already used." = "E-posta adresi zaten kullanılıyor.";
+
+"Please ask your admin to configure your sub-user." = "Alt kullanıcınızı yapılandırmak için yöneticinizle görüşün.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Yeni bir doğrulama kodu almak ya da başka bir e-posta adresi kullanmak ister misiniz?";
+
+"Change email address" = "E-posta adresini değiştir";
+
+"Congratulations" = "Tebrikler";
+
+"Your Proton Free account was successfully created." = "Proton Free hesabınız oluşturuldu.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Ödemeniz onaylandı ve %@ hesabınız oluşturuldu.";
+
+"Your Proton account was successfully created." = "Proton hesabınız oluşturuldu.";
+
+"Enjoy the world of privacy." = "Gizliliğe saygı duyulan bir dünyanın tadını çıkarın.";
+
+"Cancel" = "İptal";
+
+"Sign in" = "Oturum aç";
+
+"Troubleshoot" = "Sorun gider";

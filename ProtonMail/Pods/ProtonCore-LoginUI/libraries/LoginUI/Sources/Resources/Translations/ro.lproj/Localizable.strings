@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Confidențialitate implicită";
+
+"Proton address required" = "Este necesară o adresă Proton";
+
+"Update required" = "Necesită actualizare";
+
+"Please enter your Proton Account password." = "Introduceți parola contului Proton.";
+
+"OK" = "OK";
+
+"Help" = "Ajutor";
+
+"Continue" = "Continuare";
+
+"Password" = "Parola";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Serverele Proton nu pot fi accesate. Cauza ar putea fi o configurare greșită a rețelei, serverele Proton nu funcționează sau sunt blocate.";
+
+"Search country" = "Căutare țară";
+
+"Code sent to %@" = "Cod trimis către %@";
+
+"Request new code?" = "Solicitare cod nou?";
+
+"Resend" = "Retrimitere";
+
+"Get a replacement code sent to %@." = "Obțineți un cod de înlocuire trimis la %@.";
+
+"Request new code" = "Solicitare cod nou";
+
+"Enter your Proton Account details." = "Introduceți detaliile contului Proton.";
+
+"Email or username" = "E-mail sau utilizator";
+
+"Sign in" = "Autentificare";
+
+"Sign in with password" = "Autentificare cu parolă";
+
+"Sign in with SSO" = "Autentificare cu SSO";
+
+"Sign in to your organization" = "Autentificare la organizație";
+
+"Create an account" = "Creare cont";
+
+"How can we help?" = "Cum vă putem ajuta?";
+
+"Forgot username" = "Am uitat numele de utilizator";
+
+"Forgot password" = "Am uitat parola";
+
+"Other sign-in issues" = "Alte probleme la conectare";
+
+"Customer support" = "Asistență clienți";
+
+"Still need help? Contact us directly." = "Încă aveți nevoie de ajutor? Contactați-ne direct.";
+
+"Please enter your Proton Account email or username." = "Introduceți adresa de e-mail a contului Proton sau numele de utilizator.";
+
+"Complete Setup" = "Finalizare configurare";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Lipsesc cheile contului. Conectați-vă pe web pentru a genera automat cheile necesare. După ce v-ați conectat pe web, reveniți la aplicație și conectați-vă.";
+
+"Account setup required" = "Este necesară setarea contului";
+
+"Incorrect mailbox password" = "Parolă mesaje incorectă";
+
+"Your session has expired. Please log in again." = "Sesiunea a expirat. Reconectați-vă.";
+
+"Proton address required" = "Este necesară o adresă Proton";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Pentru a folosi Proton Mail și Proton Calendar aveți nevoie de o adresă de e-mail Proton.\nÎncă veți putea folosi %@ pentru autentificare și recuperarea contului.";
+
+"Username" = "Nume utilizator";
+
+"Please enter a username." = "Introduceți un nume de utilizator.";
+
+"Unlock your mailbox" = "Deblocare mesaje";
+
+"Mailbox password" = "Parolă mesaje";
+
+"Unlock" = "Deblocare";
+
+"Forgot password" = "Am uitat parola";
+
+"Two-factor authentication" = "Autentificare cu doi factori";
+
+"Authenticate" = "Autentificare";
+
+"Two-factor code" = "Cod doi factori";
+
+"Recovery code" = "Cod de recuperare";
+
+"Use recovery code" = "Folosire cod de recuperare";
+
+"Use two-factor code" = "Folosire cod doi factori";
+
+"Enter the 6-digit code." = "Introduceți codul din 6 cifre.";
+
+"Enter an 8-character recovery code." = "Introduceți codul din 8 caractere pentru recuperare.";
+
+"Learn more" = "Detalii";
+
+"Change your password" = "Schimbare parolă";
+
+"Change password" = "Schimbare parolă";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Pentru a folosi aplicația Proton ca membru al unei organizații, trebuie mai întâi să vă schimbați parola conectându-vă la Proton cu un navigator web.";
+
+"Error occured" = "A apărut o eroare";
+
+"Create your Proton Account" = "Creare cont Proton";
+
+"One account for all Proton services." = "Un singur cont pentru toate serviciile Proton.";
+
+"Next" = "Înainte";
+
+"Use your current email instead" = "Folosire adresă de e-mail actuală";
+
+"Create a secure Proton Mail address instead" = "Creați în schimb o adresă sigură Proton Mail";
+
+"Email" = "E-mail";
+
+"Create your password" = "Creare parolă";
+
+"Password must contain at least 8 characters" = "Parola trebuie să conțină cel puțin 8 caractere.";
+
+"Repeat password" = "Repetare parolă";
+
+"Domain" = "Domeniu";
+
+"Set recovery method" = "Setare metodă de recuperare";
+
+"Set recovery method (optional)" = "Setare metodă de recuperare (opțional)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Vă vom trimite instrucțiunile de recuperare la acest e-mail sau număr de telefon dacă nu vă puteți conecta la cont.";
+
+"Email" = "E-mail";
+
+"Phone" = "Telefon";
+
+"Recovery email" = "E-mail de recuperare";
+
+"Recovery phone number" = "Număr de telefon pentru recuperare";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Apăsând pe «Înainte», sunteți de acord cu termenii și condițiile Proton.";
+
+"Terms and Conditions" = "Termeni și condiții";
+
+"Skip" = "Omitere";
+
+"Skip recovery method?" = "Omiteți metoda de recuperare?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "O metodă de recuperare vă ajută să accesați contul în cazul în care vă uitați parola și nu vă puteți conecta la cont.";
+
+"Set recovery method" = "Setare metodă de recuperare";
+
+"Your account is being created" = "Vi se creează contul";
+
+"This should take no more than a minute." = "De obicei nu durează mai mult de un minut.";
+
+"Creating your account" = "Se creează contul";
+
+"Generating your address" = "Vi se generează adresa";
+
+"Securing your account" = "Securizare cont";
+
+"Verifying your payment" = "Verificare plată";
+
+"Account verification" = "Verificare cont";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Pentru securitate, trebuie să verificăm dacă adresa introdusă vă aparține. Am trimis un cod de verificare la %@. Introduceți mai jos codul primit:";
+
+"Verification code" = "Cod de verificare";
+
+"Enter the 6-digit code." = "Introduceți codul din 6 cifre.";
+
+"Did not receive a code?" = "Nu ați primit codul?";
+
+"Terms and Conditions" = "Termeni și condiții";
+
+"Invalid token request" = "Token solicitare nevalid";
+
+"Invalid token error" = "Cod de autorizare nevalid";
+
+"Create user failed" = "Creare utilizator eșuată";
+
+"Invalid hashed password" = "Parolă generată nevalidă";
+
+"Password can not be empty.\nPlease try again." = "Parolele nu pot fi goale.\nMai reîncercați.";
+
+"Password must contain at least %@ characters." = "Parola trebuie să conțină cel puțin %@ caractere.";
+
+"Passwords do not match.\nPlease try again." = "Parolele nu coincid.\nMai reîncercați.";
+
+"Email address already used." = "Adresă de e-mail deja utilizată.";
+
+"Please ask your admin to configure your sub-user." = "Solicitați administratorului să vă configureze contul.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Doriți să primiți un cod nou de verificare sau să folosiți o adresă alternativă de e-mail?";
+
+"Change email address" = "Modificare adresă de e-mail";
+
+"Congratulations" = "Felicitări";
+
+"Your Proton Free account was successfully created." = "Contul Proton gratuit v-a fost creat cu succes.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Plata a fost confirmată și contul %@ v-a fost creat cu succes.";
+
+"Your Proton account was successfully created." = "Contul Proton v-a fost creat cu succes.";
+
+"Enjoy the world of privacy." = "Bucurați-vă de lumea vieții private.";
+
+"Cancel" = "Anulare";
+
+"Sign in" = "Autentificare";
+
+"Troubleshoot" = "Depanare";

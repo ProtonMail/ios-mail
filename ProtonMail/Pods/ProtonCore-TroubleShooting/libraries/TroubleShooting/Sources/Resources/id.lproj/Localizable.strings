@@ -1,0 +1,50 @@
+
+"support form" = "formulir dukungan";
+
+"email" = "surel";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Penyelesaian Masalah";
+
+"Allow alternative routing" = "Izinkan pengalihan lalu lintas alternatif";
+
+"No internet connection" = "Tidak ada koneksi internet";
+
+"Internet Service Provider (ISP) problem" = "Masalah Penyedia Layanan Internet (ISP)";
+
+"Government block" = "Pemblokiran pemerintah";
+
+"Antivirus interference" = "Gangguan antivirus";
+
+"Proxy/Firewall interference" = "Hadangan Proxy/Firewall";
+
+"Proton is down" = "Proton sedang offline";
+
+"Still can't find a solution" = "Masalah saya belum teratasi";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Apabila situs Proton diblokir, pengaturan ini akan memungkinkan aplikasi kami untuk dapat terhubung dengan Proton melalui lalu lintas jaringan alternatif, yang dapat berguna untuk melewati hadangan firewall atau masalah jaringan. Kami sarankan agar pengaturan ini selalu aktif untuk koneksi yang lebih andal. %1$@";
+
+"Learn more" = "Pelajari lebih lanjut";
+
+"Please make sure that your internet connection is working." = "Pastikan koneksi internet Anda tidak bermasalah.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Cobalah untuk terhubung ke Proton melalui jaringan yang berbeda (atau gunakan %1$@ atau %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Negara Anda mungkin memblokir akses ke Proton. Cobalah untuk menggunakan %1$@ (atau VPN lainnya) atau %2$@ untuk mengakses Proton.";
+
+"Temporarily disable or remove your antivirus software." = "Nonaktifkan atau hapus perangkat antivirus Anda untuk sementara waktu.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Nonaktifkan seluruh proxy atau firewall yang aktif, atau hubungi pengelola jaringan Anda.";
+
+"Check Proton Status for our system status." = "Periksa Proton Status untuk mengetahui status sistem kami.";
+
+"Proton Status" = "Status Proton";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Hubungin kami secara langsung melalui formulir layanan dukungan, surel (support@protonmail.zendesk.com), atau akun Twitter kami.";
+
+"Subject..." = "Subjek...";
+
+"Please share your problem." = "Mohon ceritakan masalah yang Anda hadapi.";
+
+"Back" = "Kembali";

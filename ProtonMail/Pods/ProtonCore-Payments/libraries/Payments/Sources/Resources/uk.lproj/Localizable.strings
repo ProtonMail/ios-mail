@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Зв'язатися зі службою підтримки";
+
+"Failed to get list of available products from App Store." = "Не вдалося отримати список доступних продуктів з App Store.";
+
+"Purchase is not possible." = "Купівля неможлива.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Компанія Apple повідомила нас про те, що ви оновили план послуг, але не вистачає деяких технічних даних. Будь ласка, заповніть дані звіту про помилку і наша служба підтримки зв'яжеться з вами.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Компанія Apple повідомила нас, що ви оновили план послуг, але ми виявили, що відтоді ви вийшли з облікового запису.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Не вдалося зіставити придбаний в App Store продукт з жодним продуктом на нашому сервері. Будь ласка, заповніть звіт про помилку і наша команда підтримки зв'яжеться з вами.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Увійдіть за допомогою облікового запису електронної пошти Proton, для якого ви оновлюєте тарифний план, щоб ми могли завершити купівлю.";
+
+"Apple informed us they could not process the purchase." = "Apple повідомила нам, що не може обробити купівлю.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Ми успішно активували вашу передплату. Перезапустіть програму, щоб почати користуватися новим тарифним планом.";
+
+"Please unlock the app to proceed with your service plan activation" = "Розблокуйте програму, щоб продовжити активацію плану послуг";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Увійдіть за допомогою облікового запису електронної пошти Proton, для якого ви оновлюєте тарифний план, щоб ми могли завершити активацію тарифного плану.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Неправильний стан платіжного токена. Будь ласка, перезапустіть програму. Якщо помилка не зникне, зв'яжіться зі службою підтримки.";
+
+"Do you want to activate the purchase for %@ address?" = "Ви хочете активувати покупку для адреси %@?";
+
+"Yes, activate it for " = "Так, увімкнути для ";
+
+"No, for another Proton Mail account" = "Ні, для іншого облікового запису електронної пошти Proton";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Ми не змогли покращити ваш обліковий запис до вибраного плану, тому ми зарахували ваші кошти у вигляді кредитів вашого облікового запису. Для отримання додаткової інформації та завершення оновлення, будь ласка, зв'яжіться з підтримкою.";
+
+"Contact Support" = "Зв'язатися з підтримкою";
+
+"Dismiss" = "Відхилити";
+
+"Payment failed" = "Не вдалося оплатити";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Ви успішно зареєструвалися, але ваш платіж не був оброблений. Щоб знову надіслати платіжну інформацію, натисніть Повторити. Оплату буде стягнуто тільки один раз. Якщо проблема не вирішиться, будь ласка, зв'яжіться зі службою підтримки.";
+
+"Retry" = "Повторити спробу";
+
+"OK" = "Застосувати";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Сервери Proton недоступні. Причиною може бути неправильна конфігурація мережі, сервери Proton не працюють або сервери Proton заблоковані";

@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Tabaḍnit s wudem amezwer";
+
+"Proton address required" = "Tettwasra tansa n Proton";
+
+"Update required" = "Ilaq uleqqem";
+
+"Please enter your Proton Account password." = "Ttxil-k sekcem imayl n umiḍan Proton.";
+
+"OK" = "Ih";
+
+"Help" = "Tallelt";
+
+"Continue" = "Kemmel";
+
+"Password" = "Awal uffir";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked";
+
+"Search country" = "Nadi tamurt";
+
+"Code sent to %@" = "Tangalt tettwazen ɣer %@";
+
+"Request new code?" = "Suter tangalt tamaynut?";
+
+"Resend" = "Ales tuzna";
+
+"Get a replacement code sent to %@." = "Awi tangalt deg ubdil tettwazen ɣer %@.";
+
+"Request new code" = "Suter tangalt tamaynut";
+
+"Enter your Proton Account details." = "Sekcem umlan n umiḍan-ik Proton.";
+
+"Email or username" = "Imayl neɣ isem n useqdac";
+
+"Sign in" = "Qqen";
+
+"Sign in with password" = "Qqen s wawal uffir";
+
+"Sign in with SSO" = "Qqen s SSO";
+
+"Sign in to your organization" = "Kcem ɣer tkebbanit-ik";
+
+"Create an account" = "Snulfud amiḍan";
+
+"How can we help?" = "Amek i nezmer ad k-nall?";
+
+"Forgot username" = "Tettuḍ isem n useqdac";
+
+"Forgot password" = "Tettud awal uffir";
+
+"Other sign-in issues" = "Uguren niḍen n tuqqna";
+
+"Customer support" = "Tallalt tudmawant";
+
+"Still need help? Contact us directly." = "Mazal tesriḍ tallalt? Nermes-aɣ-d srid";
+
+"Please enter your Proton Account email or username." = "Ttxil-k sekcem imayl n umiḍan Proton neɣ isem-ik n useqdac.";
+
+"Complete Setup" = "Kfu asbadu";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in.";
+
+"Account setup required" = "Asesteb n umiḍan yettwasra";
+
+"Incorrect mailbox password" = "Awal uffir n tnaka n urmas d arameɣtu";
+
+"Your session has expired. Please log in again." = "Tiɣimit-ik·im temmut. Ttxil-k·m ales anekcum.";
+
+"Proton address required" = "Tettwasra tansa n Proton";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account.";
+
+"Username" = "Isem n useqdac";
+
+"Please enter a username." = "Ttxil-k·m sekcem isem n useqdac.";
+
+"Unlock your mailbox" = "Kkes asekker i tbewwaḍt-ik·im n ymayl";
+
+"Mailbox password" = "Awal uffir n Tnaka n yimayl";
+
+"Unlock" = "Serreḥ";
+
+"Forgot password" = "Tettud awal uffir";
+
+"Two-factor authentication" = "Asesteb s snat n tarrayin";
+
+"Authenticate" = "Asesteb";
+
+"Two-factor code" = "Tangalt n snat n tarayin";
+
+"Recovery code" = "Tangalt n tririt";
+
+"Use recovery code" = "Seqdec tangalt n tririt";
+
+"Use two-factor code" = "Seqdec tangalt n snat n tarayin";
+
+"Enter the 6-digit code." = "Sekcem tangalt n 6 n yizwilen.";
+
+"Enter an 8-character recovery code." = "Sekcem tangalt n tririt n 8 yisekkilen.";
+
+"Learn more" = "Issin ugar";
+
+"Change your password" = "Senfel awal uffir";
+
+"Change password" = "Snifel awal uffir";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser.";
+
+"Error occured" = "Tella-d tuccḍa";
+
+"Create your Proton Account" = "Snulfu-d amiḍan-inek/m Proton";
+
+"One account for all Proton services." = "Yiwen n umiḍan i meṛṛa imeẓla n Proton.";
+
+"Next" = "Ɣer sdat";
+
+"Use your current email instead" = "Seqdec tansa-k•m tamirant deg umḍiq";
+
+"Create a secure Proton Mail address instead" = "Rnu tansa n Proton Mail taɣellsant deg ubdil";
+
+"Email" = "Imayl";
+
+"Create your password" = "Rnu awal uffir";
+
+"Password must contain at least 8 characters" = "Awal uffir ilaq ad isɛu ma drus 8 n yisekkilen";
+
+"Repeat password" = "Ales awal uffir";
+
+"Domain" = "Taɣult";
+
+"Set recovery method" = "Sbadu tarrayt n tririt";
+
+"Set recovery method (optional)" = "Sbadu tarrayt n tririt (d afrayan)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "We will send recovery instructions to this email or phone number if you get locked out of your account.";
+
+"Email" = "Imayl";
+
+"Phone" = "Teleɣri";
+
+"Recovery email" = "Imayl n tririt";
+
+"Recovery phone number" = "Uṭṭun n usawal n tririt";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "By clicking Next, you agree with Proton's Terms and Conditions";
+
+"Terms and Conditions" = "Tiwtilin n useqdec";
+
+"Skip" = "Zgel";
+
+"Skip recovery method?" = "Zgel tarrayt n tririt?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "A recovery method will help you access your account in case you forget your password or get locked out of your account.";
+
+"Set recovery method" = "Sbadu tarrayt n tririt";
+
+"Your account is being created" = "Amiḍan-ik la yettwerna";
+
+"This should take no more than a minute." = "Aya ad yeṭṭef ma aṭas tasdat.";
+
+"Creating your account" = "Timerna n umiḍan-ik·im";
+
+"Generating your address" = "Asirew n tansa-k";
+
+"Securing your account" = "Aseɣles n umiḍan-ik·im";
+
+"Verifying your payment" = "Asefqed n lexlaṣ-ik•im";
+
+"Account verification" = "Asenqed n umiḍan";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:";
+
+"Verification code" = "Tangalt n usenqed";
+
+"Enter the 6-digit code." = "Sekcem tangalt n 6 n yizwilen.";
+
+"Did not receive a code?" = "Ur d-teṭṭifeḍ ara tangalt?";
+
+"Terms and Conditions" = "Tiwtilin n useqdec";
+
+"Invalid token request" = "Assuter n ujiṭun ur d arameɣtu";
+
+"Invalid token error" = "Tuccḍa n ujiṭun ur d tarameɣtut";
+
+"Create user failed" = "Timerna n useqdac tecceḍ";
+
+"Invalid hashed password" = "Awal uffir n udway mačči d ameɣtu";
+
+"Password can not be empty.\nPlease try again." = "Awal uffir ur ilaq ara ad yili d ilem.\nTtxil-k ɛreḍ tikkelt niḍen.";
+
+"Password must contain at least %@ characters." = "Awal uffir ilaq ad isɛu ma drus %@ n yisekkilen.";
+
+"Passwords do not match.\nPlease try again." = "Awalen uffiren ur mṣadan ara.\nTtxil-k ɛreḍ tikkelt niḍen";
+
+"Email address already used." = "Tans-a n yimayl tettuseqdec yakan.";
+
+"Please ask your admin to configure your sub-user." = "Please ask your admin to configure your sub-user.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Tebɣiḍ ad d-teṭṭfeḍ tangalt n usenqed tamaynut neɣ ad tesqedceḍ tansa niḍen n yimayl?";
+
+"Change email address" = "Senfel tansa n yimayl";
+
+"Congratulations" = "Ayuz";
+
+"Your Proton Free account was successfully created." = "Amiḍan-ik Proton Free yettwarna akken iwata.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "Your payment was confirmed and your %@ account successfully created.";
+
+"Your Proton account was successfully created." = "Amiḍan-ik Proton yettwarna akken iwata.";
+
+"Enjoy the world of privacy." = "Faṛes seg umaḍal n uqader n tudert tabaḍnit.";
+
+"Cancel" = "Sefsex";
+
+"Sign in" = "Qqen";
+
+"Troubleshoot" = "Tifrat i wuguren";

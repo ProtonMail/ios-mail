@@ -1,0 +1,28 @@
+
+"switch to" = "váltás:";
+
+"Manage accounts" = "Fiókok kezelése";
+
+"Signed in to Proton Mail" = "Bejelentkezve a Proton Mailbe";
+
+"Signed out of Proton Mail" = "Kijelentkezve a Proton Mailből";
+
+"Sign out" = "Kijelentkezés";
+
+"Remove account from this device" = "Fiók eltávolítása erről az eszközről";
+
+"Remove account" = "Fiók törlése";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "Kijelentkezik a fiókból és a fiókhoz tartozó összes adat törlésre kerül erről az eszközről.";
+
+"Remove" = "Eltávolítás";
+
+"Are you sure you want to sign out %@?" = "Biztos, hogy ki szeretne jelentkezni %@?";
+
+"Dismiss account switcher" = "Fiókváltó elvetése";
+
+"Sign in to another account" = "Bejelentkezés másik fiókba";
+
+"Cancel" = "Mégsem";
+
+"Sign in" = "Bejelentkezés";

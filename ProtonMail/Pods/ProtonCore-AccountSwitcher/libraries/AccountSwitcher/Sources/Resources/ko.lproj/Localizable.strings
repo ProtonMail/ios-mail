@@ -1,0 +1,28 @@
+
+"switch to" = "로 전환";
+
+"Manage accounts" = "계정 관리";
+
+"Signed in to Proton Mail" = "Proton Mail에서 로그인됨";
+
+"Signed out of Proton Mail" = "Proton Mail에서 로그아웃됨";
+
+"Sign out" = "로그아웃";
+
+"Remove account from this device" = "이 기기의 계정 삭제";
+
+"Remove account" = "계정 제거";
+
+"You will be signed out and all the data associated with this account will be removed from this device." = "로그아웃하면 이 계정과 관련된 모든 데이터가 이 장치에서 제거됩니다.";
+
+"Remove" = "삭제";
+
+"Are you sure you want to sign out %@?" = "정말로 %@ 계정을 로그아웃 하시겠어요?";
+
+"Dismiss account switcher" = "계정 전환 무시";
+
+"Sign in to another account" = "다른 계정으로 로그인";
+
+"Cancel" = "취소";
+
+"Sign in" = "로그인";

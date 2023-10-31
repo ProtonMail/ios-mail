@@ -1,0 +1,220 @@
+
+"Privacy by default" = "ნაგულისხმები კონფიდენციალობა";
+
+"Proton address required" = "Proton-ის მისამართი აუცილებელია";
+
+"Update required" = "აუცილებელია განახლება";
+
+"Please enter your Proton Account password." = "შეიყვანეთ თქვენი Proton-ის ანგარიშის პაროლი.";
+
+"OK" = "დიახ";
+
+"Help" = "დახმარება";
+
+"Continue" = "გაგრძელება";
+
+"Password" = "პაროლი";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Proton-ის სერვერები ხელმიუწვდომელია. ეს შეიძლება, ქსელის არასწორი კონფიგურაციის, ან Proton-ის სერვერის ბრალი იყოს. ან Proton-ის სერვერები იბლოკება";
+
+"Search country" = "ქვეყნის ძებნა";
+
+"Code sent to %@" = "კოდი გაგზავნილია: %@";
+
+"Request new code?" = "გამოვითხოვო ახალი კოდი?";
+
+"Resend" = "თავიდან გაგზავნა";
+
+"Get a replacement code sent to %@." = "მიიღეთ %@-ზე გაგზავნილი შეცვლის კოდი.";
+
+"Request new code" = "ახალი კოდის გამოთხოვა";
+
+"Enter your Proton Account details." = "შეიყვანეთ თქვენი Proton-ის ანგარიშის დეტალები.";
+
+"Email or username" = "ელფოსტა ან მომხმარებლის სახელი";
+
+"Sign in" = "შესვლა";
+
+"Sign in with password" = "პაროლით შესვლა";
+
+"Sign in with SSO" = "SSO-ით შესვლა";
+
+"Sign in to your organization" = "შედით თქვენს ორგანიზაციაში";
+
+"Create an account" = "ანგარიშის შექმნა";
+
+"How can we help?" = "როგორ შეგვიძლია, დაგეხმაროთ?";
+
+"Forgot username" = "დაგავიწყდათ თქვენი მომხმარებლის სახელი";
+
+"Forgot password" = "დაგავიწყდათ პაროლი";
+
+"Other sign-in issues" = "შესვლის სხვა პრობლემები";
+
+"Customer support" = "მხარდაჭერის გუნდი";
+
+"Still need help? Contact us directly." = "ჯერ კიდევ გჭირდებათ დახმარება? პირდაპირ დაგვიკავშირდით.";
+
+"Please enter your Proton Account email or username." = "შეიყვანეთ თქვენი Proton-ის ანგარიშის ელფოსტის ან მომხმარებლის სახელი.";
+
+"Complete Setup" = "მორგების დასრულება";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "თქვენს ანგარიშს გასაღებები აკლია. გასაღებების ავტომატურად დასაგენერირებლად შედით ვებიდან. მას შემდეგ, რაც შეხვალთ ვებში, გთხოვთ, დაბრუნდეთ აპში და შეხვიდეთ.";
+
+"Account setup required" = "საჭიროა ანგარიშის მორგება";
+
+"Incorrect mailbox password" = "საფოსტო ყუთის პაროლი არასწორია";
+
+"Your session has expired. Please log in again." = "თქვენს სესიის ვადა ამოიწურა. თავიდან შედით.";
+
+"Proton address required" = "Proton-ის მისამართი აუცილებელია";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Proton Mail-ის და Proton Calendar-ის გამოსაყენებლად Proton-ის ელფოსტის მისამართი გჭირდებათ.\n%@-ის გამოყენება შესასვლელად და პაროლის აღსადგენად მაინც შეგიძლიათ.";
+
+"Username" = "მომხმარებლის სახელი";
+
+"Please enter a username." = "შეიყვანეთ მომხმარებლის სახელი.";
+
+"Unlock your mailbox" = "განბლოკეთ თქვენი საფოსტო ყუთი";
+
+"Mailbox password" = "საფოსტო ყუთის პაროლი";
+
+"Unlock" = "განბლოკვა";
+
+"Forgot password" = "დაგავიწყდათ პაროლი";
+
+"Two-factor authentication" = "2FA";
+
+"Authenticate" = "ავთენტიკაცია";
+
+"Two-factor code" = "2FA კოდი";
+
+"Recovery code" = "აღდგენის კოდი";
+
+"Use recovery code" = "აღდგენის კოდის გამოყენება";
+
+"Use two-factor code" = "2FA კოდის გამოყენება";
+
+"Enter the 6-digit code." = "შეიყვანეთ 6-ციფრიანი კოდი.";
+
+"Enter an 8-character recovery code." = "შეიყვანეთ აღდგენის 8-სიმბოლოიანი კოდი.";
+
+"Learn more" = "მეტის ნახვა";
+
+"Change your password" = "შეცვალეთ თქვენი პაროლი";
+
+"Change password" = "პაროლის შეცვლა";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Proton-ის აპის ორგანიზაციის წევრად გამოყენებისთვის ჯერ პაროლის შეცვლაა საჭირო. ამის გაკეთება Proton-ში ბრაუზერიდან შესვლით შეგიძლიათ.";
+
+"Error occured" = "შეცდომა";
+
+"Create your Proton Account" = "Proton-ის თქვენი ანგარიშის შექმნა";
+
+"One account for all Proton services." = "ერთი ანგარიში Proton-ის ყველა სერვისისთვის.";
+
+"Next" = "შემდეგი";
+
+"Use your current email instead" = "გამოიყენეთ თქვენი მიმდინარე ელ-ფოსტის მისამართი";
+
+"Create a secure Proton Mail address instead" = "სამაგიეროდ, შექმენით Proton Mail-ის დაცული მისამართი";
+
+"Email" = "ელფოსტა";
+
+"Create your password" = "შექმენით თქვენი პაროლი";
+
+"Password must contain at least 8 characters" = "პაროლი 8 სიმბოლოს მაინც უნდა შეიცავდეს";
+
+"Repeat password" = "გაიმეორეთ პაროლი";
+
+"Domain" = "დომენი";
+
+"Set recovery method" = "აღდგენის მეთოდის დაყენება";
+
+"Set recovery method (optional)" = "აღდგენის მეთოდის დაყენება (არასავალდებულო)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "თუ ეს ანგარიში დაგებლოკებათ, აღდგენის ინსტრუქციები ამ ელფოსტაზე ან ტელეფონის ნომერზე იქნება გაგზავნილი.";
+
+"Email" = "ელფოსტა";
+
+"Phone" = "ტელეფონი";
+
+"Recovery email" = "აღდგენის ელფოსტა";
+
+"Recovery phone number" = "აღდგენის ტელეფონის ნომერი";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "შემდეგ გვერდზე გადასვლით თქვენ ეთანხმებით Proton-ის წესებს და პირობებს";
+
+"Terms and Conditions" = "პირობები და წესები";
+
+"Skip" = "გამოტოვება";
+
+"Skip recovery method?" = "გამოვტოვო აღდგენის მეთოდი?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "აღდგენის მეთოდი, რომელიც დაგეხმარებათ თქვენს ანგარიშთან წვდომაში, თუ პაროლი დაგავიწყდათ ან ანგარიშის დაგებლოკათ.";
+
+"Set recovery method" = "აღდგენის მეთოდის დაყენება";
+
+"Your account is being created" = "მიმდინარეობს თქვენი ანგარიშის შექმნა";
+
+"This should take no more than a minute." = "წუთზე მეტი არ უნდა დასჭირდეს.";
+
+"Creating your account" = "თქვენი ანგარიშის შექმნა";
+
+"Generating your address" = "თქვენი მისამართის გენერაცია";
+
+"Securing your account" = "თქვენი ანგარიშის დაცვა";
+
+"Verifying your payment" = "თქვენი გადახდის შემოწმება";
+
+"Account verification" = "ანგარიშის შემოწმება";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "თქვენი უსაფრხოებისთვის უნდა გადავამოწმოთ, რომ მისამართი, რომელიც შეიყვანეთ, თქვენ გეკუთვნით. გადამოწმების კოდი გაგზავნილია %@-ზე. მიღებული კოდი შეიყვანეთ ქვემოთ:";
+
+"Verification code" = "შემოწმების კოდი";
+
+"Enter the 6-digit code." = "შეიყვანეთ 6-ციფრიანი კოდი.";
+
+"Did not receive a code?" = "კოდი არ მიგიღიათ?";
+
+"Terms and Conditions" = "პირობები და წესები";
+
+"Invalid token request" = "კოდის არასწორი მოთხოვნა";
+
+"Invalid token error" = "არასწორი კოდის სტატუსი";
+
+"Create user failed" = "მომხმარებლის შექმნა ჩავარდა";
+
+"Invalid hashed password" = "პაროლის ჰეში არასწორია";
+
+"Password can not be empty.\nPlease try again." = "პაროლი ცარიელი ვერ იქნება.\nთავიდან სცადეთ.";
+
+"Password must contain at least %@ characters." = "პაროლი %@ სიმბოლოს მაინც უნდა შეიცავდეს.";
+
+"Passwords do not match.\nPlease try again." = "პაროლები არ ემთხვევა.\nთავიდან სცადეთ.";
+
+"Email address already used." = "ელფოსტის მისამართი უკვე გამოიყენება.";
+
+"Please ask your admin to configure your sub-user." = "ქვემომხმრებლის კონფიგურაცია თქვენს ადმინისტრატორს უნდა სთხოვოთ.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "გნებავთ შემოწმების ახალი კოდის მიღება, თუ შემოწმების ალტერნატიულ ელფოსტას გამოიყენებთ?";
+
+"Change email address" = "ელფოსტის მისამართის შეცვლა";
+
+"Congratulations" = "გილოცავთ";
+
+"Your Proton Free account was successfully created." = "თქვენი Proton-ის უფასო ანგარიში წარმატებით შეიქმნა.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "გადახდა დადასტურდა და თქვენი %@ ანგარიში წარმატებით შეიქმნა.";
+
+"Your Proton account was successfully created." = "Proton-ის თქვენი ანგარიში წარმატებით შეიქმნა.";
+
+"Enjoy the world of privacy." = "ისიამოვნეთ კონფიდენციალურობის სამყაროთი.";
+
+"Cancel" = "გაუქმება";
+
+"Sign in" = "შესვლა";
+
+"Troubleshoot" = "შეცდომების გასწორება";

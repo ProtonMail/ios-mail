@@ -1,0 +1,30 @@
+
+"Human Verification" = "사람임을 인증";
+
+"Need help with human verification?" = "로봇이 아닙니까 인증에 도움이 필요한가요?";
+
+"Request an invite" = "가입 요청하기";
+
+"Visit our Help Center" = "지원 센터에 접속하세요";
+
+"If you are having trouble creating your account, please request an invitation and we will respond within 1 business day." = "계정을 생성하는데 문제가 있으시다면, 계정 생성 요청을 해주시면 영업일 기준 1일 이내에 답변해 드리겠습니다.";
+
+"Learn more about human verification and why we ask for it." = "로봇이 아닌가요과와 우리가 왜 이 인증을 요구하는지에 대해 더 알아보세요.";
+
+"A networking error has occured" = "네트워킹 오류가 발생했습니다";
+
+"SMS" = "SMS";
+
+"Email" = "이메일";
+
+"CAPTCHA" = "CAPTCHA";
+
+"Help" = "도움말";
+
+"OK" = "확인";
+
+"Get verification code" = "인증코드 받기";
+
+"Verification code" = "인증 코드";
+
+"Verify" = "인증";

@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Contactare asistență clienți";
+
+"Failed to get list of available products from App Store." = "Eșuare obținere listă de produse din App Store.";
+
+"Purchase is not possible." = "Achiziția nu este posibilă.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple ne-a informat că ați modernizat planul serviciului, dar lipsesc unele date tehnice. Completați raportul de erori și echipa de suport vă va contacta.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple ne-a informat că ați modernizat planul serviciului, dar am detectat că v-ați deconectat din cont de atunci.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nu am putut corela produsul din AppStore cumpărat cu vreunul din produsele de pe serverul nostru. Completați un raport de erori și echipa noastră de suport vă va contacta.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Conectați-vă la contul Proton Mail pentru care modificați tipul de abonament pentru a putea finaliza tranzacția.";
+
+"Apple informed us they could not process the purchase." = "Apple ne-a informat că nu poate procesa achiziția.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Abonamentul a fost activat. Reporniți aplicația pentru a începe să utilizați noul tip de abonament.";
+
+"Please unlock the app to proceed with your service plan activation" = "Deblocați aplicația pentru a continua activarea abonamentului";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Conectați-vă la contul Proton Mail pentru care modificați tipul de abonament pentru a putea finaliza activarea abonamentului.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Status token de plată greșit. Reporniți aplicația. Dacă eroarea persistă, contactați asistența.";
+
+"Do you want to activate the purchase for %@ address?" = "Doriți să activați achiziția pentru adresa %@?";
+
+"Yes, activate it for " = "Da, activare pentru ";
+
+"No, for another Proton Mail account" = "Nu, pentru alt cont Proton Mail";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Contul nu a putut fi modernizat la planul selectat, de aceea suma plătită a fost adăugată ca și credit în contul personal. Pentru mai multe informații și pentru a finaliza achiziția, vă rugăm să contactați asistența.";
+
+"Contact Support" = "Contactați asistența";
+
+"Dismiss" = "Renunțare";
+
+"Payment failed" = "Plată eșuată";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "V-ați înregistrat cu succes, dar plata nu a fost procesată. Pentru a retrimite informațiile de plată, faceți clic pe «Reîncercare». Veți fi taxat doar o singură dată. Dacă problema persistă, contactați asistența pentru clienți.";
+
+"Retry" = "Reîncercare";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Serverele Proton nu pot fi accesate. Cauza ar putea fi o configurare greșită a rețelei, serverele Proton nu funcționează sau sunt blocate.";

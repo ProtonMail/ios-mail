@@ -48,10 +48,12 @@ public final class TrustKitWrapper {
         }))
     }
 
-    public static func setUp(delegate: TrustKitDelegate? = nil, customConfiguration: Configuration? = nil) {
+    public static func setUp(delegate: TrustKitDelegate? = nil, 
+                             customConfiguration: Configuration? = nil,
+                             sharedContainerIdentifier: String? = nil) {
         let config = customConfiguration ?? configuration(hardfail: true)
         
-        let instance = TrustKit(configuration: config)
+        let instance = TrustKit(configuration: config, sharedContainerIdentifier: sharedContainerIdentifier)
         
         instance.pinningValidatorCallback = { [weak delegate] validatorResult, hostName, policy in
             if validatorResult.evaluationResult != .success,

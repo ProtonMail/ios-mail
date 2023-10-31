@@ -1,0 +1,220 @@
+
+"Privacy by default" = "Privadesa per defecte";
+
+"Proton address required" = "Es requereix l'adreça del Proton";
+
+"Update required" = "Actualització requerida";
+
+"Please enter your Proton Account password." = "Introduïu la contrasenya del vostre compte Proton.";
+
+"OK" = "OK";
+
+"Help" = "Ajuda";
+
+"Continue" = "Continua";
+
+"Password" = "Contrasenya";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "No es pot connectar als servidors del Proton. La causa podria ser una mala configuració de la xarxa, que els servidors del Proton estiguin essent blocats o que els servidors actualment no funcionin";
+
+"Search country" = "Cercar país";
+
+"Code sent to %@" = "Codi enviat a %@";
+
+"Request new code?" = "Demanar un codi nou?";
+
+"Resend" = "Tornar a enviar";
+
+"Get a replacement code sent to %@." = "Obteniu un codi de substitució a %@.";
+
+"Request new code" = "Demana un nou codi";
+
+"Enter your Proton Account details." = "Introduïu els detalls del vostre compte de Proton.";
+
+"Email or username" = "Correu electrònic o nom d'usuari";
+
+"Sign in" = "Inicia la sessió";
+
+"Sign in with password" = "Incicieu la sessió amb una contrasenya";
+
+"Sign in with SSO" = "Inicieu la sessió amb SSO";
+
+"Sign in to your organization" = "Inicieu la sessió a la vostra organització";
+
+"Create an account" = "Crear un compte";
+
+"How can we help?" = "Com us podem ajudar?";
+
+"Forgot username" = "Nom d'usuari oblidat";
+
+"Forgot password" = "Contrasenya oblidada";
+
+"Other sign-in issues" = "Altres problemes d'inici de sessió";
+
+"Customer support" = "Atenció al client";
+
+"Still need help? Contact us directly." = "Encara necessiteu ajuda? Contacteu-nos directament.";
+
+"Please enter your Proton Account email or username." = "Introduïu el vostre correu electrònic o nom d'usuari del compte Proton.";
+
+"Complete Setup" = "Completar configuració";
+
+"Your account is missing keys, please sign in on web to automatically generate required keys. Once you have signed in on web, please return to the app and sign in." = "El vostre compte no té claus; inicieu sessió a la versió web per generar automàticament les claus requerides. Quan hàgiu iniciat sessió a la versió web, torneu a l'aplicació i inicieu-hi la sessió.";
+
+"Account setup required" = "Configuració del compte requerida";
+
+"Incorrect mailbox password" = "Contrasenya de la bústia de correu incorrecta";
+
+"Your session has expired. Please log in again." = "La vostra sessió ha caducat. Torneu a iniciar sessió.";
+
+"Proton address required" = "Es requereix l'adreça del Proton";
+
+"You need a Proton email address to use Proton Mail and Proton Calendar.\nYou’ll still be able to use %@ to sign in, and to recover your account." = "Necessiteu un correu de Proton per fer servir Proton Mail i Proton Calendar.\nPodreu seguir fent servir %@ per iniciar sessió, i per recuperar el compte.";
+
+"Username" = "Nom d'usuari";
+
+"Please enter a username." = "Introduïu un nom d'usuari.";
+
+"Unlock your mailbox" = "Desbloquegeu la vostra bústia de correu";
+
+"Mailbox password" = "Contrasenya de la bústia de correu";
+
+"Unlock" = "Desbloquejar";
+
+"Forgot password" = "Contrasenya oblidada";
+
+"Two-factor authentication" = "Autenticació de dos factors";
+
+"Authenticate" = "Autentica";
+
+"Two-factor code" = "Codi de dos factors";
+
+"Recovery code" = "Codi de recuperació";
+
+"Use recovery code" = "Utilitza un codi de recuperació";
+
+"Use two-factor code" = "Utilitza un codi de dos factors";
+
+"Enter the 6-digit code." = "Introduïu el codi de 6 dígits.";
+
+"Enter an 8-character recovery code." = "Introduïu un codi de recuperació de 8 caràcters.";
+
+"Learn more" = "Més informació";
+
+"Change your password" = "Canvieu la vostra contrasenya";
+
+"Change password" = "Canvia la contrasenya";
+
+"To use the Proton app as a member of an organization, you first need to change your password by signing into Proton through a browser." = "Per utilitzar l'aplicació Proton com a membre d'una organització abans necessiteu canviar la vostra contrasenya iniciant sessió a Proton des d'un navegador.";
+
+"Error occured" = "S'ha produït un error";
+
+"Create your Proton Account" = "Creeu el vostre Compte Proton";
+
+"One account for all Proton services." = "Un compte per a tots els serveis de Proton.";
+
+"Next" = "Següent";
+
+"Use your current email instead" = "Utilitzeu el vostre correu electrònic actual.";
+
+"Create a secure Proton Mail address instead" = "Creeu una adreça Proton Mail segura";
+
+"Email" = "Correu electrònic";
+
+"Create your password" = "Creeu la vostra contrasenya";
+
+"Password must contain at least 8 characters" = "La contrasenya ha de tenir com a mínim 8 caràcters";
+
+"Repeat password" = "Repetir contrasenya";
+
+"Domain" = "Domini";
+
+"Set recovery method" = "Establir un mètode de recuperació";
+
+"Set recovery method (optional)" = "Establiu el mètode de recuperació (opcional)";
+
+"We will send recovery instructions to this email or phone number if you get locked out of your account." = "Enviarem instruccions de recuperació a aquest correu electrònic o número de telèfon si no podeu accedir al vostre compte.";
+
+"Email" = "Correu electrònic";
+
+"Phone" = "Telèfon";
+
+"Recovery email" = "Correu electrònic de recuperació";
+
+"Recovery phone number" = "Número de telèfon de recuperació";
+
+"By clicking Next, you agree with Proton's Terms and Conditions" = "Clicant a Següent accepteu els Termes i Condicions de Proton";
+
+"Terms and Conditions" = "Termes i Condicions";
+
+"Skip" = "Omet";
+
+"Skip recovery method?" = "Voleu ometre el mètode de recuperació?";
+
+"A recovery method will help you access your account in case you forget your password or get locked out of your account." = "Un mètode de recuperació us ajudarà a accedir al vostre compte si oblideu la contrasenya o no podeu entrar al compte.";
+
+"Set recovery method" = "Establir un mètode de recuperació";
+
+"Your account is being created" = "S'està creant el vostre compte.";
+
+"This should take no more than a minute." = "Això no hauria de durar més d'un minut.";
+
+"Creating your account" = "Creant el vostre compte";
+
+"Generating your address" = "Generant la vostra adreça";
+
+"Securing your account" = "Protegint el vostre compte";
+
+"Verifying your payment" = "S'està verificant el pagament.";
+
+"Account verification" = "Verificació del compte";
+
+"For your security, we must verify that the address you entered belongs to you. We sent a verification code to %@. Please enter the code below:" = "Per la vostra seguretat, hem de verificar que l'adreça que heu introduït us pertany. Hem enviat un codi de verificació a %@. Introduïu el codi a sota:";
+
+"Verification code" = "Codi de verificació";
+
+"Enter the 6-digit code." = "Introduïu el codi de 6 dígits.";
+
+"Did not receive a code?" = "No heu rebut un codi?";
+
+"Terms and Conditions" = "Termes i Condicions";
+
+"Invalid token request" = "Sol·licitud de token invàlida";
+
+"Invalid token error" = "Error de token invàlid";
+
+"Create user failed" = "No s'ha pogut crear l'usuari.";
+
+"Invalid hashed password" = "Contrasenya resumida invàlida";
+
+"Password can not be empty.\nPlease try again." = "La contrasenya no es pot deixar buida.\nTorneu-ho a provar.";
+
+"Password must contain at least %@ characters." = "La contrasenya ha de tenir com a mínim %@ caràcters.";
+
+"Passwords do not match.\nPlease try again." = "Les contrasenyes no coincideixen.\nTorneu-ho a provar.";
+
+"Email address already used." = "L'adreça de correu electrònic ja està en ús.";
+
+"Please ask your admin to configure your sub-user." = "Demaneu a l'administrador que us configurin el sub-usuari.";
+
+"Would you like to receive a new verification code or use an alternate email address?" = "Voleu rebre un codi de verificació nou o utilitzar una adreça de correu electrònic alternativa?";
+
+"Change email address" = "Canvia l'adreça de correu";
+
+"Congratulations" = "Felicitats";
+
+"Your Proton Free account was successfully created." = "S'ha creat correctament el vostre compte Proton Free.";
+
+"Proton Free" = "Proton Free";
+
+"Your payment was confirmed and your %@ account successfully created." = "S'ha confirmat el vostre pagament i el vostre compte %@ s'ha creat correctament.";
+
+"Your Proton account was successfully created." = "S'ha creat correctament el vostre compte Proton.";
+
+"Enjoy the world of privacy." = "Gaudiu del món de la privacitat.";
+
+"Cancel" = "Cancel·la";
+
+"Sign in" = "Inicia la sessió";
+
+"Troubleshoot" = "Resolució de problemes";

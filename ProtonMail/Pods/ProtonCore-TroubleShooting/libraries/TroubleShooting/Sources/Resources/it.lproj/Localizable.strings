@@ -1,0 +1,50 @@
+
+"support form" = "modulo di assistenza";
+
+"email" = "email";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Risoluzione problemi";
+
+"Allow alternative routing" = "Consenti percorso alternativo";
+
+"No internet connection" = "Nessuna connessione Internet";
+
+"Internet Service Provider (ISP) problem" = "Problema del provider Internet (ISP)";
+
+"Government block" = "Blocco di governo";
+
+"Antivirus interference" = "Interferenza antivirus";
+
+"Proxy/Firewall interference" = "Interferenza del Proxy/Firewall";
+
+"Proton is down" = "Proton è offline";
+
+"Still can't find a solution" = "Non è ancora possibile trovare una soluzione";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "Nel caso in cui i siti di Proton siano bloccati, questa impostazione consente all'app di provare l'indirizzamento di rete alternativo per raggiungere Proton, che potrebbe esser utile per evitare firewall o problemi di rete. Consigliamo di mantenere questa impostazione attiva per una maggiore affidabilità. %1$@";
+
+"Learn more" = "Per saperne di più";
+
+"Please make sure that your internet connection is working." = "Per favore assicurati che la connessione internet funzioni.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Prova a connetterti a Proton da una rete diversa (o usa %1$@ o %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Il tuo paese potrebbe bloccare l'accesso a Proton. Prova ad utilizzare %1$@ (o qualsiasi altra VPN) o %2$@ per accedere a Proton.";
+
+"Temporarily disable or remove your antivirus software." = "Disattivare o rimuovere temporaneamente il software antivirus.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Disabilita proxy o firewall, o contatta l'amministratore di rete.";
+
+"Check Proton Status for our system status." = "Controlla lo Stato di Proton per lo stato del nostro sistema.";
+
+"Proton Status" = "Stato Proton";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Contattaci attraverso il nostro modulo di supporto, email (support@protonmail.zendesk.com), o Twitter.";
+
+"Subject..." = "Oggetto...";
+
+"Please share your problem." = "Condividi il tuo problema.";
+
+"Back" = "Indietro";

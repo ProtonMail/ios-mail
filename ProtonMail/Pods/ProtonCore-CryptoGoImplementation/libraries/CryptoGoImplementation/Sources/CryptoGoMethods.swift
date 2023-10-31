@@ -73,6 +73,10 @@ public enum CryptoGoMethodsImplementation: CryptoGoMethods {
         GoLibs.CryptoPGPSignature(fromArmored: armored)
     }
 
+    public func CryptoPGPSignature(_ data: Data?) -> ProtonCoreCryptoGoInterface.CryptoPGPSignature? {
+        GoLibs.CryptoPGPSignature(data)
+    }
+
     public func HelperGo2IOSReader(_ reader: ProtonCoreCryptoGoInterface.CryptoReaderProtocol?) -> ProtonCoreCryptoGoInterface.HelperGo2IOSReader? {
         GoLibs.HelperGo2IOSReader(reader?.toGoLibsType)
     }

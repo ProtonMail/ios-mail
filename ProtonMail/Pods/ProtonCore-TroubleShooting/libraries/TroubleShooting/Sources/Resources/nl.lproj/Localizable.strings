@@ -1,0 +1,50 @@
+
+"support form" = "ondersteuningsformulier";
+
+"email" = "e-mail";
+
+"Twitter" = "Twitter";
+
+"TroubleShooting" = "Probleemoplossing";
+
+"Allow alternative routing" = "Alternatieve routing toestaan";
+
+"No internet connection" = "Geen internetverbinding";
+
+"Internet Service Provider (ISP) problem" = "Probleem met Internet Service Provider (ISP)";
+
+"Government block" = "Blokkade door overheid";
+
+"Antivirus interference" = "Interferentie antivirus";
+
+"Proxy/Firewall interference" = "Proxy/Firewall interferentie";
+
+"Proton is down" = "Proton is onbereikbaar";
+
+"Still can't find a solution" = "Kan nog steeds geen oplossing vinden";
+
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In het geval dat Proton-sites worden geblokkeerd, stelt deze instelling de app in staat om alternatieve netwerkroutering te proberen om Proton te bereiken, wat nuttig kan zijn voor het omzeilen van firewalls of netwerkproblemen. We raden aan deze instelling aan te houden voor een grotere betrouwbaarheid. %1$@";
+
+"Learn more" = "Meer informatie";
+
+"Please make sure that your internet connection is working." = "Zorg ervoor dat uw internetverbinding werkt.";
+
+"Try connecting to Proton from a different network (or use %1$@ or %2$@)." = "Probeer verbinding te maken met Proton vanuit een ander netwerk (of gebruik %1$@ of %2$@).";
+
+"Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton." = "Uw land blokkeert mogelijk de toegang tot Proton. Probeer %1$@ te gebruiken (of een andere VPN) of %2$@ om toegang te krijgen tot Proton.";
+
+"Temporarily disable or remove your antivirus software." = "Uw antivirus software tijdelijk uitschakelen of verwijderen.";
+
+"Disable any proxies or firewalls, or contact your network administrator." = "Schakel eventuele proxy's of firewalls uit of neem contact op met uw netwerkbeheerder.";
+
+"Check Proton Status for our system status." = "Controleer Proton Status voor onze systeemstatus.";
+
+"Proton Status" = "Proton Status";
+
+"Contact us directly through our support form, email (support@protonmail.zendesk.com), or Twitter." = "Neem rechtstreeks contact met ons op via ons ondersteuningsformulier, e-mail (support@protonmail.zendesk.com) of Twitter.";
+
+"Subject..." = "Onderwerp...";
+
+"Please share your problem." = "Deel uw probleem.";
+
+"Back" = "Terug";

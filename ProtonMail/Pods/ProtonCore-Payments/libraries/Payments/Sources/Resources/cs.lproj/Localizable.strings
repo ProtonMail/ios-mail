@@ -1,0 +1,46 @@
+
+"Contact customer support" = "Kontaktovat zákaznickou podporu";
+
+"Failed to get list of available products from App Store." = "Proces získání seznamu dostupných produktů z AppStore selhal.";
+
+"Purchase is not possible." = "Nákup není možný.";
+
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nás informoval, že jste navýšil(a) tarif služby, ale některé technické údaje chyběly. Prosím vyplňte zprávu o chybě a náš tým podpory zákazníků vás bude kontaktovat.";
+
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nás informoval, že jste navýšili tarif služby, ale zjistili jsme, že jste se od té doby z účtu odhlásili.";
+
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nepodařilo se nám spojit produkt z AppStore, který jste si zakoupili s produkty na našem serveru. Prosím vyplňte zprávu o chybě a náš tým podpory Vás bude kontaktovat.";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the purchase." = "Přihlaste se prosím do Proton Mail účtu, pro který chcete navýšit tarif služby, aby bylo možné dokončit nákup.";
+
+"Apple informed us they could not process the purchase." = "Apple nás informoval, že nemohli zpracovat nákup.";
+
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Úspěšně jsme aktivovali vaše předplatné. Prosíme spusťte aplikaci znovu, abyste mohli začít využívat vás nový tarif.";
+
+"Please unlock the app to proceed with your service plan activation" = "Prosím odblokujte aplikaci a pokračujte v aktivaci Vašeho plánu služeb";
+
+"Please log in to the Proton Mail account you're upgrading the service plan for so we can complete the service plan activation." = "Přihlaste se prosím do Proton Mail účtu, pro který chcete navýšit tarif služby, aby bylo možné dokončit aktivaci.";
+
+"Wrong payment token status. Please relaunch the app. If error persists, contact support." = "Chybný stav platebního tokenu. Restartujte aplikaci. Pokud chyba přetrvává, kontaktujte podporu.";
+
+"Do you want to activate the purchase for %@ address?" = "Chcete aktivovat zakoupený plán pro adresu %@?";
+
+"Yes, activate it for " = "Ano, aktivujte pro ";
+
+"No, for another Proton Mail account" = "Ne, pro další účet Proton Mail";
+
+"We were unable to upgrade your account to the plan you selected, so we added your payment as credits to your account. For more information and to complete your upgrade, please contact Support." = "Váš účet se nám nepodařilo navýšit na tarif, který jste si vybrali, a proto jsme vaši platbu připsali na váš účet jako kredit. Pro více informací a dokončení navýšení se obraťte na podporu.";
+
+"Contact Support" = "Kontaktovat podporu";
+
+"Dismiss" = "Zrušit";
+
+"Payment failed" = "Platba se nezdařila";
+
+"You have successfully registered but your payment was not processed. To resend your payment information, click Retry. You will only be charged once. If the problem persists, please contact customer support." = "Úspěšně jste se zaregistrovali, ale Vaše platba nebyla zpracována. Chcete-li znovu odeslat platební údaje, klepněte na tlačítko Zkusit znovu. Částka Vám bude účtována pouze jednou. Pokud problém přetrvává, obraťte se na zákaznickou podporu.";
+
+"Retry" = "Opakovat";
+
+"OK" = "OK";
+
+"The Proton servers are unreachable. It might be caused by wrong network configuration, Proton servers not working or Proton servers being blocked" = "Servery Proton jsou nedostupné. Může to být způsobeno špatnou konfigurací sítě, nefunkčností serverů Proton nebo zablokováním serverů Proton";

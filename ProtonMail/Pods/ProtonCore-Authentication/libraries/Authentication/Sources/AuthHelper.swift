@@ -196,3 +196,5 @@ public final class AuthHelper: AuthDelegate {
         }
     }
 }
+
+// swiftlint:enable identifier_name todo

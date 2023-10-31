@@ -125,7 +125,7 @@ extension DoH {
         }
     }
 
-    static internal var pinningConfiguration: [String: PinningConfigurationEntry] = [:]
+    internal static var pinningConfiguration: [String: PinningConfigurationEntry] = [:]
 
     public class func setPinningConfiguration(_ configuration: [String: PinningConfigurationEntry]) {
         pinningConfiguration = configuration

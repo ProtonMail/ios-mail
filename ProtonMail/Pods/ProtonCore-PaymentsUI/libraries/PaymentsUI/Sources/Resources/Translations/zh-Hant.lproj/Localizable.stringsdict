@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>%d users</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d個使用者</string>
+      </dict>
+    </dict>
+    <key>%d email addresses</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d電子郵件地址</string>
+      </dict>
+    </dict>
+    <key>%d email addresses / user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 組電郵位址/每位使用者</string>
+      </dict>
+    </dict>
+    <key>%d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d行事曆</string>
+      </dict>
+    </dict>
+    <key>%d folders / labels</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 個資料夾 / 標籤</string>
+      </dict>
+    </dict>
+    <key>%d countries</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 個國家</string>
+      </dict>
+    </dict>
+    <key>%d connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 個連線</string>
+      </dict>
+    </dict>
+    <key>%d VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 個VPN 連線</string>
+      </dict>
+    </dict>
+    <key>%d high-speed VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 個高速 VPN 連線</string>
+      </dict>
+    </dict>
+    <key>%d custom domains</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 個自訂網域</string>
+      </dict>
+    </dict>
+    <key>%d vaults</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d受保護的資料庫</string>
+      </dict>
+    </dict>
+    <key>Support for %d custom email domains</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>支援 %d 組自訂電子郵件網域</string>
+      </dict>
+    </dict>
+    <key>%d folders and labels</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 個資料夾和標籤</string>
+      </dict>
+    </dict>
+    <key>%d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d行事曆</string>
+      </dict>
+    </dict>
+    <key>High-speed VPN on %d devices</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>高速 VPN 於多達 %d 台裝置</string>
+      </dict>
+    </dict>
+    <key>%d+ servers in %d countries</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@SERVERS@ 在 %#@COUNTRIES@</string>
+      <key>SERVERS</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d＋ 台伺服器</string>
+      </dict>
+      <key>COUNTRIES</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 個國家</string>
+      </dict>
+    </dict>
+    <key>%d servers in %d countries (US, NL, JP)</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@SERVERS@ 在 %#@COUNTRIES@</string>
+      <key>SERVERS</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 台伺服器</string>
+      </dict>
+      <key>COUNTRIES</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d 個國家（美國、荷蘭、日本）</string>
+      </dict>
+    </dict>
+    <key>%d of %d users</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE2@ 的 %#@VARIABLE1@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d個使用者</string>
+      </dict>
+    </dict>
+    <key>%d of %d email addresses</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE2@ 的 %#@VARIABLE1@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d電子郵件地址</string>
+      </dict>
+    </dict>
+    <key>%d of %d calendars</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE2@ 的 %#@VARIABLE1@</string>
+      <key>VARIABLE1</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d</string>
+      </dict>
+      <key>VARIABLE2</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d個行事曆</string>
+      </dict>
+    </dict>
+    <key>%d addresses per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>每個使用者%d個地址</string>
+      </dict>
+    </dict>
+    <key>%d calendars per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>每位使用者%d個行事曆</string>
+      </dict>
+    </dict>
+    <key>%d VPN connections per user</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>每一位使用者%d個VPN連線</string>
+      </dict>
+    </dict>
+    <key>Pay for %d months</key>
+    <dict>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>%d月繳</string>
+      </dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+    </dict>
+    <key>Medium VPN speed %d VPN connections</key>
+    <dict>
+      <key>NSStringLocalizedFormatKey</key>
+      <string>%#@VARIABLE@</string>
+      <key>VARIABLE</key>
+      <dict>
+        <key>NSStringFormatSpecTypeKey</key>
+        <string>NSStringPluralRuleType</string>
+        <key>NSStringFormatValueTypeKey</key>
+        <string>d</string>
+        <key>other</key>
+        <string>一般 VPN 速率含 %d VPN 連線</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>
