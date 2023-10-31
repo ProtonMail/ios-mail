@@ -100,10 +100,9 @@ extension Date {
     }()
 
     static func getReferenceDate(connectionStatus: ConnectionStatus = InternetConnectionStatusProvider.shared.status,
-                                 processInfo: SystemUpTimeProtocol?,
+                                 processInfo: SystemUpTimeProtocol,
                                  deviceDate: Date = Date()) -> Date {
-        guard connectionStatus != .initialize,
-              let processInfo = processInfo else {
+        guard connectionStatus != .initialize else {
             return Date.getOfflineReferenceDate(processInfo: processInfo, deviceDate: deviceDate)
         }
 
@@ -116,11 +115,7 @@ extension Date {
         }
     }
 
-    private static func getOfflineReferenceDate(processInfo: SystemUpTimeProtocol?, deviceDate: Date) -> Date {
-        guard let processInfo = processInfo else {
-            return deviceDate
-        }
-
+    private static func getOfflineReferenceDate(processInfo: SystemUpTimeProtocol, deviceDate: Date) -> Date {
         let serverDate = Date(timeIntervalSince1970: processInfo.localServerTime)
         let localSystemUpTime = processInfo.localSystemUpTime
         let nonZeroLocalSystemUpTime = localSystemUpTime == 0 ? Date().timeIntervalSince1970 : localSystemUpTime
@@ -134,7 +129,7 @@ extension Date {
 
     func countExpirationTime(
         connectionStatus: ConnectionStatus = InternetConnectionStatusProvider.shared.status,
-        processInfo: SystemUpTimeProtocol?
+        processInfo: SystemUpTimeProtocol
     ) -> String {
         let unixTime = Date.getReferenceDate(connectionStatus: connectionStatus, processInfo: processInfo)
         return Self.expirationTimeFormatter.string(from: unixTime, to: self)!
