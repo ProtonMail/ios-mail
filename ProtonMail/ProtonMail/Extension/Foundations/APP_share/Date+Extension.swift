@@ -122,7 +122,9 @@ extension Date {
         }
 
         let serverDate = Date(timeIntervalSince1970: processInfo.localServerTime)
-        let diff = max(0, processInfo.systemUpTime - processInfo.localSystemUpTime)
+        let localSystemUpTime = processInfo.localSystemUpTime
+        let nonZeroLocalSystemUpTime = localSystemUpTime == 0 ? Date().timeIntervalSince1970 : localSystemUpTime
+        let diff = max(0, processInfo.systemUpTime - nonZeroLocalSystemUpTime)
         if diff > 0 {
             // The device doesn't reboot
             return serverDate.addingTimeInterval(diff)

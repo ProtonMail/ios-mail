@@ -528,8 +528,7 @@ extension UserCachedStatus: SystemUpTimeProtocol {
 
     var localSystemUpTime: TimeInterval {
         get {
-            let time = self.getShared().double(forKey: Key.localSystemUpTime)
-            return time == 0 ? Date().timeIntervalSince1970: TimeInterval(time)
+            getShared().double(forKey: Key.localSystemUpTime)
         }
         set {
             self.setValue(newValue, forKey: Key.localSystemUpTime)
@@ -538,10 +537,6 @@ extension UserCachedStatus: SystemUpTimeProtocol {
 
     var systemUpTime: TimeInterval {
         ProcessInfo.processInfo.systemUptime
-    }
-
-    func updateLocalSystemUpTime(time: TimeInterval = ProcessInfo.processInfo.systemUptime) {
-        self.localSystemUpTime = time
     }
 }
 
