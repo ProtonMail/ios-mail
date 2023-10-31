@@ -212,7 +212,7 @@ struct MessageFlag: OptionSet, Equatable, Hashable {
         if self.contains(.isExpirationTimeFrozen) {
             outFlags.append("FLAG_IS_EXPIRATION_TIME_FROZEN")
         }
-        
+
         return "Raw: \(rawValue), contains: \(outFlags.joined(separator: ", "))"
     }
 }

@@ -64,9 +64,7 @@ class CoreDataCache: Migrate {
     }
 
     var initalRun: Bool {
-        get {
-            return currentVersion == 0
-        }
+        return currentVersion == 0
     }
 
     internal func migrate(from verfrom: Int, to verto: Int) -> Bool {

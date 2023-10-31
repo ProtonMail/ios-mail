@@ -291,8 +291,12 @@ class UsersManager: Service, UsersManagerProtocol {
         do {
             try UserObjectsPersistence.shared.write(authList, key: mainKey)
         } catch {
-            Analytics.shared.sendError(.userObjectsCouldNotBeSavedError(error, 
-                                                                        Mirror(reflecting: authList.self).description))
+            Analytics.shared.sendError(
+                .userObjectsCouldNotBeSavedError(
+                    error,
+                    Mirror(reflecting: authList.self).description
+                )
+            )
         }
 
         let userList = self.users.compactMap { $0.userInfo }
@@ -316,8 +320,10 @@ class UsersManager: Service, UsersManagerProtocol {
         }
         if !mailSettingsList.isEmpty,
            let lockedMailSettings = try? Locked<[String: MailSettings]>(clearValue: mailSettingsList, with: mainKey) {
-            dependencies.userDefaults.set(lockedMailSettings.encryptedValue,
-                                             forKey: CoderKey.mailSettingsStore)
+            dependencies.userDefaults.set(
+                lockedMailSettings.encryptedValue,
+                forKey: CoderKey.mailSettingsStore
+            )
         } else {
             dependencies.userDefaults.remove(forKey: CoderKey.mailSettingsStore)
         }

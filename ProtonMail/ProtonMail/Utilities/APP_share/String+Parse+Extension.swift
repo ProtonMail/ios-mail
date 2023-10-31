@@ -30,7 +30,10 @@ extension String {
         }
         do {
             let data: Data! = self.data(using: String.Encoding.utf8)
-            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any]
+            let decoded = try JSONSerialization.jsonObject(
+                with: data,
+                options: .mutableContainers
+            ) as? [String: Any]
             return decoded
         } catch {
             print("Error: \(error)")

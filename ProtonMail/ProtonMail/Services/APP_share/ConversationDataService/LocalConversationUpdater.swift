@@ -146,7 +146,9 @@ final class LocalConversationUpdater {
                     // When we trash the conversation, make all unread messages as read.
                     if added == Message.Location.trash.labelID {
                         messages?.forEach { $0.unRead = false }
-                        self.dependencies.pushUpdater.remove(notificationIdentifiers: messages?.compactMap { $0.notificationId })
+                        self.dependencies.pushUpdater.remove(
+                            notificationIdentifiers: messages?.compactMap(\.notificationId)
+                        )
                         conversation.labels
                             .compactMap { $0 as? ContextLabel }
                             .filter { $0.unreadCount != NSNumber(value: 0) }

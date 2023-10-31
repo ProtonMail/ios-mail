@@ -27,7 +27,10 @@ final class ToolbarSettingViewFactory {
         self.dependencies = dependencies
     }
 
-    func makeCustomizeView<T: ToolbarAction>(currentActions: [T], allActions: [T]) -> ToolbarCustomizeViewController<T> {
+    func makeCustomizeView<T: ToolbarAction>(
+        currentActions: [T],
+        allActions: [T]
+    ) -> ToolbarCustomizeViewController<T> {
         let viewModel = ToolbarCustomizeViewModel(
             currentActions: currentActions,
             allActions: allActions,
