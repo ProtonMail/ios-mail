@@ -37,7 +37,7 @@ protocol ComposeContentViewControllerDelegate: AnyObject {
 
 // swiftlint:disable:next line_length type_body_length
 class ComposeContentViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
-    typealias Dependencies = HasImageProxy
+    typealias Dependencies = HasImageProxy & HasUserDefaults
 
     let viewModel: ComposeViewModel
     var openScheduleSendActionSheet: (() -> Void)?
@@ -701,7 +701,7 @@ extension ComposeContentViewController {
             originalAddress.addressID != currentSenderAddress.addressID,
             originalAddress.send == .inactive,
             originalAddress.isPMAlias,
-            viewModel.dependencies.userCachedStatusProvider.isPMMEWarningDisabled == false
+            !dependencies.userDefaults[.isPMMEWarningDisabled]
         else { return }
 
         showPaidFeatureAddressAlert(originalAddress: originalAddress, currentSenderAddress: currentSenderAddress)
@@ -720,7 +720,7 @@ extension ComposeContentViewController {
                 title: LocalString._general_dont_remind_action,
                 style: .destructive,
                 handler: { [weak self] _ in
-                    self?.viewModel.dependencies.userCachedStatusProvider.isPMMEWarningDisabled = true
+                    self?.dependencies.userDefaults[.isPMMEWarningDisabled] = true
                 }
             )
         )
