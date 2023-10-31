@@ -15,43 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ProtonMailAnalytics
-import UIKit
-
-func PMAssertionFailure(
-    _ message: String,
-    caller: StaticString = #function,
-    file: StaticString = #file,
-    line: UInt = #line
-) {
-#if !DEBUG
-    Analytics.shared.sendError(
-        .assertionFailure(message: message, caller: caller, file: file, line: line)
-    )
-#endif
-
-    SystemLogger.log(
-        message: message,
-        category: .assertionFailure,
-        isError: true,
-        file: file,
-        function: caller,
-        line: Int(line),
-        column: 0
-    )
-
-    // The `Swift.` is needed here since there is a compiler bug that will make it crash on release build.
-    Swift.assertionFailure(message, file: file, line: line)
-}
-
-func PMAssertionFailure(
-    _ error: Error,
-    caller: StaticString = #function,
-    file: StaticString = #file,
-    line: UInt = #line
-) {
-    PMAssertionFailure("\(error)", caller: caller, file: file, line: line)
-}
+import Foundation
 
 /// This will only call `PMAssertionFailure` if the backend is production.
 func PMAssertionFailureIfBackendIsProduction(
