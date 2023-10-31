@@ -140,13 +140,12 @@ final class UndoActionManager: UndoActionManagerProtocol {
             var atLeastOneRequestFailed = false
             requests.forEach { [unowned self] request in
                 group.enter()
-                self.dependencies.apiService
-                    .exec(route: request) { (result: Result<UndoActionResponse, ResponseError>) in
-                        if result.error != nil {
-                            atLeastOneRequestFailed = true
-                        }
-                        group.leave()
+                self.dependencies.apiService.perform(request: request) { _, result in
+                    if result.error != nil {
+                        atLeastOneRequestFailed = true
                     }
+                    group.leave()
+                }
             }
             group.wait()
 
@@ -186,7 +185,7 @@ extension UndoActionManager {
     // The undo send action is time sensitive, put in queue doesn't make sense
     func requestUndoSendAction(messageID: MessageID, completion: ((Bool) -> Void)?) {
         let request = UndoSendRequest(messageID: messageID)
-        dependencies.apiService.exec(route: request) { [weak self] (result: Result<UndoSendResponse, ResponseError>) in
+        dependencies.apiService.perform(request: request) { [weak self] _, result in
             switch result {
             case .success:
                 let labelID = Message.Location.allmail.labelID
@@ -194,8 +193,8 @@ extension UndoActionManager {
                     .fetchEvents(byLabel: labelID,
                                  notificationMessageID: nil,
                                  completion: { _ in
-                                     completion?(true)
-                                 })
+                        completion?(true)
+                    })
             case .failure:
                 completion?(false)
             }

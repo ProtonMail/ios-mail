@@ -38,7 +38,9 @@ final class MessageSenderPGPChecker {
         self.fetchVerificationKeys = FetchVerificationKeys(
             dependencies: .init(
                 fetchAndVerifyContacts: dependencies.fetchAndVerifyContacts,
-                fetchEmailsPublicKeys: FetchEmailAddressesPublicKey(dependencies: .init(apiService: dependencies.user.apiService))
+                fetchEmailsPublicKeys: FetchEmailAddressesPublicKey(
+                    dependencies: .init(apiService: dependencies.user.apiService)
+                )
             ),
             userAddresses: []
         )

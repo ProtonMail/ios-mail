@@ -209,7 +209,7 @@ public enum MailAnalyticsErrorEvent: Error {
             return "Asssertion failure: \(message)"
         case .userObjectsJsonDecodingError(_, let type):
             return "Error while decoding user object: \(type)"
-        case .userObjectsJsonEncodingError(_ , let type):
+        case .userObjectsJsonEncodingError(_, let type):
             return "Error while encoding user object: \(type)"
         case .userObjectsCouldNotBeSavedError(_, let type):
             return "Error while saving user object: \(type)"

@@ -47,7 +47,8 @@ class MailboxRobotInterface: CoreElements {
     
     @discardableResult
     func clickMessageBySubject(_ subject: String) -> MessageRobot {
-        clickMessageBySubject(subject, retriesLeft: 3)
+        activityIndicator().waitUntilGone()
+        return clickMessageBySubject(subject, retriesLeft: 3)
     }
 
     private func clickMessageBySubject(_ subject: String, retriesLeft: Int) -> MessageRobot {

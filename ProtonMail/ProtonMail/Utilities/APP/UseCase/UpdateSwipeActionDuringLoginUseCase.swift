@@ -79,7 +79,9 @@ final class UpdateSwipeActionDuringLogin: UpdateSwipeActionDuringLoginUseCase {
     ) {
         if let currentRightSwipeAction = dependencies.swipeActionCache.leftToRightSwipeActionType,
            currentRightSwipeAction != info.newUserRightSwipeAction {
-            dependencies.saveSwipeActionSetting.execute(params: .init(preference: .right(currentRightSwipeAction))) { _ in
+            dependencies.saveSwipeActionSetting.execute(
+                params: .init(preference: .right(currentRightSwipeAction))
+            ) { _ in
                 completion()
             }
         } else {

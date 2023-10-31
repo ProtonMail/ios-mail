@@ -260,10 +260,12 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.removeHintBanner(presentingVC: self.presentingViewController)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(ComposeContentViewController.willResignActiveNotification(_:)),
-                                               name: UIApplication.willResignActiveNotification,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(ComposeContentViewController.willResignActiveNotification(_:)),
+            name: UIApplication.willResignActiveNotification,
+            object: nil
+        )
         setupAutoSave()
     }
 
@@ -643,7 +645,10 @@ extension ComposeContentViewController {
         self.present(alertController, animated: true, completion: nil)
     }
 
-    private func showScheduleSendConfirmationAlertIfNeeded(isTriggeredFromScheduleButton: Bool, continueAction: @escaping () -> Void) {
+    private func showScheduleSendConfirmationAlertIfNeeded(
+        isTriggeredFromScheduleButton: Bool,
+        continueAction: @escaping () -> Void
+    ) {
         if viewModel.shouldShowScheduleSendConfirmationAlert() && !isTriggeredFromScheduleButton {
             showScheduleSendConfirmationAlert {
                 continueAction()
@@ -683,7 +688,7 @@ extension ComposeContentViewController {
                               continueAction()
                           })
         )
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        alertController.addCancelAction()
         present(alertController, animated: true, completion: nil)
     }
 
@@ -755,7 +760,11 @@ extension ComposeContentViewController {
             }
             message.append("\n")
         }
-        let alertController = UIAlertController(title: LocalString._expiration_not_supported, message: message, preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: LocalString._expiration_not_supported,
+            message: message,
+            preferredStyle: .alert
+        )
         let sendAnywayAction = UIAlertAction(title: LocalString._send_anyway, style: .destructive) { [weak self] _ in
             self?.startSendingMessage()
         }
@@ -854,7 +863,11 @@ extension ComposeContentViewController: ComposeViewDelegate {
         }
     }
 
-    func composeView(_ composeView: ComposeHeaderViewController, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker) {
+    func composeView(
+        _ composeView: ComposeHeaderViewController,
+        didAddContact contact: ContactPickerModelProtocol,
+        toPicker picker: ContactPicker
+    ) {
         if picker == self.headerView.toContactPicker {
             self.viewModel.toSelectedContacts.append(contact)
         } else if picker == headerView.ccContactPicker {
@@ -864,7 +877,11 @@ extension ComposeContentViewController: ComposeViewDelegate {
         }
     }
 
-    func composeView(_ composeView: ComposeHeaderViewController, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker) {
+    func composeView(
+        _ composeView: ComposeHeaderViewController,
+        didRemoveContact contact: ContactPickerModelProtocol,
+        fromPicker picker: ContactPicker
+    ) {
         // here each logic most same, need refactor later
         if picker == self.headerView.toContactPicker {
             var contactIndex = -1
@@ -898,7 +915,10 @@ extension ComposeContentViewController: ComposeViewDelegate {
 // MARK: compose data source
 
 extension ComposeContentViewController: ComposeViewDataSource {
-    func composeViewContactsModelForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol] {
+    func composeViewContactsModelForPicker(
+        _ composeView: ComposeHeaderViewController,
+        picker: ContactPicker
+    ) -> [ContactPickerModelProtocol] {
         return viewModel.contacts
     }
 
@@ -906,7 +926,10 @@ extension ComposeContentViewController: ComposeViewDataSource {
         return !self.viewModel.ccSelectedContacts.isEmpty || !self.viewModel.bccSelectedContacts.isEmpty
     }
 
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol] {
+    func composeViewSelectedContactsForPicker(
+        _ composeView: ComposeHeaderViewController,
+        picker: ContactPicker
+    ) -> [ContactPickerModelProtocol] {
         var selectedContacts: [ContactPickerModelProtocol] = []
         if picker == composeView.toContactPicker {
             selectedContacts = self.viewModel.toSelectedContacts

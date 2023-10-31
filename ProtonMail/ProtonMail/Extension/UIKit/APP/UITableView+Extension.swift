@@ -24,19 +24,21 @@ import ProtonCoreUIFoundations
 
 extension UITableView {
 
-    fileprivate struct Constant {
+    struct Constant {
         static let animationDuration: TimeInterval = 1
     }
 
     func hideLoadingFooter(replaceWithView view: UIView? = UIView(frame: CGRect.zero)) {
-        UIView.animate(withDuration: Constant.animationDuration, animations: { () -> Void in
-            self.tableFooterView?.alpha = 0
-            return
-        }, completion: { (finished) -> Void in
-            UIView.animate(withDuration: Constant.animationDuration, animations: { () -> Void in
-                self.tableFooterView = view
-            })
-        })
+        UIView.animate(
+            withDuration: Constant.animationDuration,
+            animations: {
+                self.tableFooterView?.alpha = 0
+            }, completion: { _ in
+                UIView.animate(withDuration: Constant.animationDuration, animations: {
+                    self.tableFooterView = view
+                })
+            }
+        )
     }
 
     func noSeparatorsAboveFirstCell() {

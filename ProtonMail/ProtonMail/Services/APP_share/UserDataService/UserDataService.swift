@@ -203,8 +203,8 @@ class UserDataService: Service {
         // currently Image Incorporator is not yet supported by any Proton product
         let flag: ProtonCoreDataModel.ImageProxy = .imageProxy
 
-        let api = UpdateImageProxy(flags: flag, action: action, authCredential: authCredential)
-        self.apiService.exec(route: api, responseObject: VoidResponse()) { task, response in
+        let request = UpdateImageProxy(flags: flag, action: action, authCredential: authCredential)
+        apiService.perform(request: request, response: VoidResponse()) { _, response in
             if response.error == nil {
                 var newStatus = userInfo.imageProxy
                 switch action {

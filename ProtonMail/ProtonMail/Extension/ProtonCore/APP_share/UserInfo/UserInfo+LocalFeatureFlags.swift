@@ -32,7 +32,6 @@ extension UserInfo {
         false
     }
 
-
     static var enableSelectAll: Bool {
         UIApplication.isDebugOrEnterprise
     }
