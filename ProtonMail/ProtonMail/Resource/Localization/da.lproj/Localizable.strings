@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "Notits";
 
+/* Title of alert in share extension. */
+"Error" = "Fejl";
+
 /* Action */
 "Don't remind me again" = "Påmind mig ikke igen";
 
@@ -961,9 +964,6 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "Kunne ikke hente indhold!\nPrøv venligst igen.";
-
-/* Title of alert in share extension. */
-"Error" = "Fejl";
 
 /* Error message */
 "Failed to determine type of file" = "Filtypebestemmelse mislykkedes";
@@ -1935,6 +1935,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Hvis du udfører en flyttehandling på en besked (f.eks. arkiverer), fortsættes der til den næste besked.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Insufficient disk space";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Kunne ikke åbne beskeden, forsøg igen.";

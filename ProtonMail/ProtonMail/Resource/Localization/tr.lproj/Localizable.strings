@@ -443,6 +443,9 @@
 /* Alert title */
 "Notice" = "Dikkat";
 
+/* Title of alert in share extension. */
+"Error" = "Hata";
+
 /* Action */
 "Don't remind me again" = "Bir daha hatırlatma";
 
@@ -961,9 +964,6 @@
 
 /* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Failed to load content!\nPlease try again." = "İçerik yüklenemedi!\nLütfen yeniden deneyin.";
-
-/* Title of alert in share extension. */
-"Error" = "Hata";
 
 /* Error message */
 "Failed to determine type of file" = "Dosya türü belirlenemedi";
@@ -1935,6 +1935,15 @@
 
 /* The footer title of the setting row of the next msg after move functions. */
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Bir ileti taşındığında (arşivleme gibi) bir sonraki iletiye geçilir.";
+
+/* Message for error when app set up at launch fails */
+"An unexpected error occurred, please contact support.\nError: %@" = "Beklenmeyen bir sorun çıktı. Lütfen destek ekibi ile görüşün.\nHata: %@";
+
+/* Title for error when app set up at launch fails */
+"Insufficient disk space" = "Disk alanı yetersiz";
+
+/* Message for error when app set up at launch fails */
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "Disk alanı yetersiz olduğundan uygulama açılamadı. Lütfen bazı verileri silip yeniden deneyin";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "İleti açılamadı. Yeniden deneyin.";
