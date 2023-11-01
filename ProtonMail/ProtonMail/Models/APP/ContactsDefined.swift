@@ -45,6 +45,7 @@ enum ContactEditSectionType: Int {
     case nickName
     case title
     case gender
+    case anniversary
     case addNewField
 }
 
