@@ -42,6 +42,16 @@ protocol LabelProviderProtocol: AnyObject {
     func fetchV4Labels(completion: ((Swift.Result<Void, NSError>) -> Void)?)
 }
 
+extension LabelsDataService {
+    enum LabelUpdateError: LocalizedError {
+        case httpFailure
+
+        var errorDescription: String? {
+            LocalString._general_error_alert_title
+        }
+    }
+}
+
 class LabelsDataService: Service {
     typealias Dependencies = AnyObject
     & LabelPublisher.Dependencies
@@ -134,7 +144,12 @@ class LabelsDataService: Service {
         async let labelsResponse = await dependencies.apiService.perform(request: labelReq, response: GetLabelsResponse())
         async let foldersResponse = await dependencies.apiService.perform(request: folderReq, response: GetLabelsResponse())
 
-        let userLabelAndFolders = await [labelsResponse, foldersResponse]
+        let response = await [labelsResponse, foldersResponse]
+        guard response.first(where: { $0.1.responseCode != 1000 }) == nil else {
+            throw LabelUpdateError.httpFailure
+        }
+
+        let userLabelAndFolders = response
             .map(\.1)
             .compactMap(\.labels)
             .joined()
