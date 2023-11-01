@@ -133,7 +133,6 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
     func credentialsWereUpdated(authCredential: AuthCredential, credential _: Credential, for _: String) {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let lockedAuth = try? Locked<[AuthCredential]>(clearValue: [authCredential], with: mainKey) else { return }
-        try? UserObjectsPersistence.shared.write(authCredential, key: mainKey)
         userDefaults.setValue(lockedAuth.encryptedValue, forKey: key)
     }
 
