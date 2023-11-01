@@ -1,6 +1,6 @@
 framework module VCard {
   umbrella header "VCard.h"
-
   export *
+
   module * { export * }
 }

@@ -36,7 +36,8 @@ final class ContactEditViewModel {
         .organization,
         .nickname,
         .title,
-        .gender
+        .gender,
+        .anniversary
     ]
 
     private(set) var sections: [ContactEditSectionType] = [
@@ -67,6 +68,7 @@ final class ContactEditViewModel {
     var nickNames: [ContactEditInformation] = []
     var contactTitles: [ContactEditInformation] = []
     var gender: ContactEditInformation?
+    var anniversary: ContactEditInformation?
 
     var fields: [ContactEditField] = []
     var notes: [ContactEditNote] = []
@@ -370,6 +372,9 @@ final class ContactEditViewModel {
         if gender != nil {
             sections.insert(.gender, at: indexOfAddNewField)
         }
+        if anniversary != nil {
+            sections.insert(.anniversary, at: indexOfAddNewField)
+        }
         if !urls.isEmpty {
             sections.insert(.url, at: indexOfAddNewField)
         }
@@ -600,6 +605,14 @@ final class ContactEditViewModel {
                 isCard3Set = true
             }
 
+            if let anniversary = anniversary,
+               let rawAnniversary = PMNIAnniversary.createInstance("", date: anniversary.newValue) {
+                vcard3.add(rawAnniversary)
+                isCard3Set = true
+            } else {
+                vcard3.clearAnniversaries()
+            }
+
             var newUrls: [PMNIUrl] = []
             for url in urls where !url.isEmpty() {
                 if let rawUrlObject = PMNIUrl.createInstance(url.newType.vcardType, value: url.newUrl) {
@@ -722,6 +735,9 @@ final class ContactEditViewModel {
         if gender != nil {
             result.removeAll(where: { $0 == .gender })
         }
+        if anniversary != nil {
+            result.removeAll(where: { $0 == .anniversary })
+        }
         return result
     }
 
@@ -758,7 +774,7 @@ final class ContactEditViewModel {
             contactTitles.append(.init(type: .title, value: "", isNew: true))
             section = sections.firstIndex(of: .title) ?? 0
             row = contactTitles.count - 1
-        case .anniversary, .birthday:
+        case .birthday:
             break
         case .gender:
             if !sections.contains(.gender) {
@@ -767,6 +783,14 @@ final class ContactEditViewModel {
             }
             gender = .init(type: .gender, value: "", isNew: true)
             section = sections.firstIndex(of: .gender) ?? 0
+            row = 0
+        case .anniversary:
+            if !sections.contains(.anniversary) {
+                sections.insert(.anniversary, at: indexOfAddNewField)
+                shouldInsertSection = true
+            }
+            anniversary = .init(type: .anniversary, value: "", isNew: true)
+            section = sections.firstIndex(of: .anniversary) ?? 0
             row = 0
         case .url:
             if !sections.contains(.url) {
@@ -848,6 +872,9 @@ final class ContactEditViewModel {
         }
 
         if structuredName?.needsUpdate() == true {
+            return true
+        }
+        if anniversary?.needsUpdate() == true {
             return true
         }
 
@@ -960,7 +987,9 @@ extension ContactEditViewModel: ContactParserResultDelegate {
                 gender = info
             case .nickname:
                 nickNames.append(info)
-            case .url, .anniversary:
+            case .anniversary:
+                anniversary = info
+            case .url:
                 fatalError("Should not reach here")
             }
         }

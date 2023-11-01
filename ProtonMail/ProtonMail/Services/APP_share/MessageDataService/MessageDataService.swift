@@ -326,9 +326,9 @@ class MessageDataService: MessageDataServiceProtocol, LocalMessageDataServicePro
     private func cachePropertiesForBackground(in message: Message) {
         // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
         // they are transient and will not be persisted in the db, only in managed object context
-        message.cachedPassphrase = userDataSource!.mailboxPassword
-        message.cachedAuthCredential = userDataSource!.authCredential
-        message.cachedUser = userDataSource!.userInfo
+        message.cachedPassphrase = userDataSource?.mailboxPassword
+        message.cachedAuthCredential = userDataSource?.authCredential
+        message.cachedUser = userDataSource?.userInfo
         if let addressID = message.addressID {
             message.cachedAddress = defaultUserAddress(of: AddressID(addressID)) // computed property depending on current user settings
         }
