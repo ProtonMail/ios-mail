@@ -126,4 +126,36 @@ final class LabelsDataServiceTests: XCTestCase {
 
         XCTAssertEqual(systemFolderIDs.sorted(), LabelsDataService.defaultFolderIDs.sorted())
     }
+
+    func testFetchV4Labels_whenAPIFailed_shouldNotWipeDBData() throws {
+        mockApiService.requestJSONStub.bodyIs { _, _, _, _, _, _, _, _, _, _, _, completion in
+            completion(nil, .failure(NSError(domain: "test.proton", code: 998)))
+        }
+
+        mockContextProvider.performAndWaitOnRootSavingContext { context in
+            let inboxFolder = Label(context: context)
+            inboxFolder.labelID = Message.Location.inbox.rawValue
+
+            XCTAssertNil(context.saveUpstreamIfNeeded())
+        }
+
+        let exp = expectation(description: "call has completed")
+
+        sut.fetchV4Labels { result in
+            XCTAssertNotNil(result.error)
+            exp.fulfill()
+        }
+
+        wait(for: [exp], timeout: 1)
+
+        let systemFolderFetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
+        systemFolderFetchRequest.predicate = NSPredicate(format: "type == 0")
+
+        let systemFolderIDs = try mockContextProvider.read { context in
+            let systemFolders = try context.fetch(systemFolderFetchRequest)
+            return systemFolders.map(\.labelID)
+        }
+
+        XCTAssertEqual(systemFolderIDs.sorted(), [Message.Location.inbox.rawValue])
+    }
 }
