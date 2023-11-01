@@ -139,7 +139,26 @@ final class ComposeViewModelTests: XCTestCase {
         }
         let lists = sut.getAddresses()
         XCTAssertEqual(lists.count, 5)
-        XCTAssertEqual(lists[0].email, alias)
+        XCTAssertEqual(lists[0].email, "\(parts[0])+abcd@\(parts[1])")
+        XCTAssertEqual(lists[0].addressID, addressID)
+        XCTAssertEqual(lists.filter { $0.addressID == addressID }.count, 2)
+    }
+
+    func testGetAddresses_whenToHeaderIsCaseInsensitive_andHasAlias_itReturnsUserAddressWithAlias() {
+        let addresses = generateAddress(number: 4)
+        fakeUserManager.userInfo.set(addresses: addresses)
+
+        let addressID = addresses[0].addressID
+        let email1 = addresses[0].email
+        let parts = email1.components(separatedBy: "@")
+        let alias = "\(parts[0].uppercased())+abcd@\(parts[1])"
+        testContext.performAndWait {
+            let obj = self.sut.composerMessageHelper.getRawMessageObject()
+            obj?.parsedHeaders = "{\"From\": \"Tester <\(alias)>\"}"
+        }
+        let lists = sut.getAddresses()
+        XCTAssertEqual(lists.count, 5)
+        XCTAssertEqual(lists[0].email, "\(parts[0])+abcd@\(parts[1])")
         XCTAssertEqual(lists[0].addressID, addressID)
         XCTAssertEqual(lists.filter { $0.addressID == addressID }.count, 2)
     }
