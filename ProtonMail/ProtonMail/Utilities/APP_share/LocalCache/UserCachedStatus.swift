@@ -47,7 +47,6 @@ final class UserCachedStatus: SharedCacheBase, UserCachedStatusProvider {
         // pin code
 
         static let autoLockTime = "autoLockTime" /// user cache but could restore
-        static let lastPinFailedTimes = "lastPinFailedTimes" // user cache can't restore
 
         // Global Cache
         static let UserWithLocalMobileSignature = "user_with_local_mobile_signature_mainKeyProtected"
@@ -211,17 +210,6 @@ extension UserCachedStatus {
         }
         set {
             keychain.set("\(newValue.rawValue)", forKey: Key.autoLockTime)
-        }
-    }
-}
-
-extension UserCachedStatus: PinFailedCountCache {
-    var pinFailedCount: Int {
-        get {
-            return getShared().integer(forKey: Key.lastPinFailedTimes)
-        }
-        set {
-            setValue(newValue, forKey: Key.lastPinFailedTimes)
         }
     }
 }

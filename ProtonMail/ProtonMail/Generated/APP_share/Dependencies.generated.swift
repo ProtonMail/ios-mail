@@ -243,22 +243,6 @@ extension UserContainer: HasPinCodeVerifier {
     }
 }
 
-protocol HasPinFailedCountCache {
-    var pinFailedCountCache: PinFailedCountCache { get }
-}
-
-extension GlobalContainer: HasPinFailedCountCache {
-    var pinFailedCountCache: PinFailedCountCache {
-        pinFailedCountCacheFactory()
-    }
-}
-
-extension UserContainer: HasPinFailedCountCache {
-    var pinFailedCountCache: PinFailedCountCache {
-        globalContainer.pinFailedCountCache
-    }
-}
-
 protocol HasPushUpdater {
     var pushUpdater: PushUpdater { get }
 }

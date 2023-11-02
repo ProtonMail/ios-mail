@@ -36,11 +36,6 @@ enum SignInUIFlow: Int {
 }
 
 // sourcery: mock
-protocol PinFailedCountCache {
-    var pinFailedCount: Int { get set }
-}
-
-// sourcery: mock
 protocol UnlockManagerDelegate: AnyObject {
     func cleanAll(completion: @escaping () -> Void)
     func isUserStored() -> Bool
@@ -68,21 +63,21 @@ final class UnlockManager {
     private let keyMaker: KeyMakerProtocol
     private let localAuthenticationContext: LAContextProtocol
     private let notificationCenter: NotificationCenter
-    private var pinFailedCountCache: PinFailedCountCache
+    private let userDefaults: UserDefaults
 
     init(
         cacheStatus: LockCacheStatus,
         keyMaker: KeyMakerProtocol,
-        pinFailedCountCache: PinFailedCountCache,
         localAuthenticationContext: LAContextProtocol = LAContext(),
+        userDefaults: UserDefaults,
         notificationCenter: NotificationCenter = .default
     ) {
         self.cacheStatus = cacheStatus
         self.keyMaker = keyMaker
-        self.pinFailedCountCache = pinFailedCountCache
 
         self.localAuthenticationContext = localAuthenticationContext
         self.notificationCenter = notificationCenter
+        self.userDefaults = userDefaults
 
         #if !APP_EXTENSION
         trackLifetime()
@@ -106,17 +101,17 @@ final class UnlockManager {
 
     func match(userInputPin: String, completion: @escaping (Bool) -> Void) {
         guard !userInputPin.isEmpty else {
-            pinFailedCountCache.pinFailedCount += 1
+            userDefaults[.pinFailedCount] += 1
             completion(false)
             return
         }
         keyMaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
             guard self.validate(mainKey: key) else {
-                self.pinFailedCountCache.pinFailedCount += 1
+                self.userDefaults[.pinFailedCount] += 1
                 completion(false)
                 return
             }
-            self.pinFailedCountCache.pinFailedCount = 0
+            self.userDefaults[.pinFailedCount] = 0
             completion(true)
         }
     }
@@ -248,7 +243,7 @@ final class UnlockManager {
             fatalError("\(error)")
         }
 
-        pinFailedCountCache.pinFailedCount = 0
+        userDefaults[.pinFailedCount] = 0
 
         delegate.loadUserDataAfterUnlock()
 

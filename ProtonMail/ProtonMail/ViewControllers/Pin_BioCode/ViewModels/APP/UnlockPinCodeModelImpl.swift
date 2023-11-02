@@ -24,7 +24,7 @@ import LifetimeTracker
 import ProtonCoreUIFoundations
 
 final class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
-    typealias Dependencies = HasPinFailedCountCache & HasPinCodeVerifier
+    typealias Dependencies = HasPinCodeVerifier & HasUserDefaults
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -76,11 +76,11 @@ final class UnlockPinCodeModelImpl: PinCodeViewModel, LifetimeTrackable {
     }
 
     override func getPinFailedRemainingCount() -> Int {
-        return max(10 - dependencies.pinFailedCountCache.pinFailedCount, 0)
+        return max(10 - dependencies.userDefaults[.pinFailedCount], 0)
     }
 
     override func getPinFailedError() -> String {
-        let c = 10 - dependencies.pinFailedCountCache.pinFailedCount
+        let c = 10 - dependencies.userDefaults[.pinFailedCount]
         if c < 4 {
             let error = String.localizedStringWithFormat(LocalString._attempt_remaining_until_secure_data_wipe, c)
             return error
