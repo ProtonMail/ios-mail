@@ -122,7 +122,7 @@ class GlobalContainer: ManagedContainer {
 
     var pushUpdaterFactory: Factory<PushUpdater> {
         self {
-            PushUpdater(userStatus: self.userCachedStatus)
+            PushUpdater(userDefaults: self.userDefaults)
         }
     }
 

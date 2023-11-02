@@ -31,7 +31,6 @@ let userCachedStatus = UserCachedStatus(keychain: KeychainWrapper.keychain)
 // sourcery: mock
 protocol UserCachedStatusProvider: AnyObject {
     var keymakerRandomkey: String? { get set }
-    var primaryUserSessionId: String? { get set }
     var isDohOn: Bool { get set }
     var isCombineContactOn: Bool { get set }
     var lastDraftMessageID: String? { get set }
@@ -80,8 +79,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
         static let combineContactFlag = "combine_contact_flag"
 
-        static let primaryUserSessionId = "primary_user_session_id"
-
         static let leftToRightSwipeAction = "leftToRightSwipeAction"
         static let rightToLeftSwipeAction = "rightToLeftSwipeAction"
 
@@ -116,18 +113,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
             } else {
                 KeychainWrapper.keychain.remove(forKey: Key.randomPinForProtection)
             }
-        }
-    }
-
-    var primaryUserSessionId: String? {
-        get {
-            if getShared().object(forKey: Key.primaryUserSessionId) == nil {
-                return nil
-            }
-            return getShared().string(forKey: Key.primaryUserSessionId)
-        }
-        set {
-            setValue(newValue, forKey: Key.primaryUserSessionId)
         }
     }
 
