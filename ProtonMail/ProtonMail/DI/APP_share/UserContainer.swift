@@ -102,7 +102,7 @@ final class UserContainer: ManagedContainer {
                 cache: self.userCachedStatus,
                 userID: self.user.userID,
                 apiService: self.apiService,
-                appRatingStatusProvider: self.userCachedStatus
+                appRatingStatusProvider: self.appRatingStatusProvider
             )
         }
     }

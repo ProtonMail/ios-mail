@@ -97,8 +97,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
         static let isContactsCached = "isContactsCached"
 
-        static let isAppRatingEnabled = "isAppRatingEnabled"
-        static let appRatingPromptedInVersion = "appRatingPromptedInVersion"
         static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"
         static let toolbarCustomizeSpotlightShownUserIds = "toolbarCustomizeSpotlightShownUserIds"
     }

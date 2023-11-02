@@ -40,7 +40,7 @@ final class AppRatingServiceTests: XCTestCase {
             featureFlagService: mockFeatureFlagsService,
             appRating: mockAppRatingWrapper,
             internetStatus: mockInternetStatus,
-            appRatingPrompt: mockAppRatingStatusProvider,
+            appRatingStatusProvider: mockAppRatingStatusProvider,
             notificationCenter: mockNotificationCenter
         )
         sut = AppRatingService(dependencies: dependencies)
