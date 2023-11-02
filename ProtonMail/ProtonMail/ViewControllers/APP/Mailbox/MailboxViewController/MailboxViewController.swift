@@ -34,7 +34,7 @@ import SwipyCell
 import UIKit
 
 class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, UserFeedbackSubmittableProtocol, ScheduledAlertPresenter, LifetimeTrackable {
-    typealias Dependencies = HasPaymentsUIFactory
+    typealias Dependencies = HasPaymentsUIFactory & ReferralProgramPromptPresenter.Dependencies
 
     class var lifetimeConfiguration: LifetimeConfiguration {
         .init(maxCount: 1)
@@ -520,7 +520,8 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
                 userID: self.viewModel.user.userID,
                 referralProgram: referralProgram,
                 featureFlagCache: userCachedStatus,
-                featureFlagService: viewModel.user.featureFlagsDownloadService
+                featureFlagService: viewModel.user.featureFlagsDownloadService, 
+                dependencies: dependencies
             )
         }
         self.referralProgramPresenter?.didShowMailbox()
