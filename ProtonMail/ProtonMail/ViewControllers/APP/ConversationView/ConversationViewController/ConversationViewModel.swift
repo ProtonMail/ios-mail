@@ -840,14 +840,14 @@ class ConversationViewModel {
 extension ConversationViewModel: ToolbarCustomizationActionHandler {
 
     func toolbarActionTypes() -> [MessageViewActionSheetAction] {
-        let locationIsInSpam = labelId == Message.Location.spam.labelID || areAllMessagesInThreadInSpam
+        let locationIsInSpam = labelId == Message.Location.spam.labelID
         let locationIsInTrash = labelId == Message.Location.trash.labelID
         let locationIsInArchive = labelId == Message.Location.archive.labelID
         let isConversationRead = !conversation.isUnread(labelID: labelId)
         let isConversationStarred = conversation.starred
         let isInArchive = areAllMessagesInThreadInTheArchive
         let isInTrash = areAllMessagesInThreadInTheTrash
-        let isInSpam = conversation.contains(of: .spam)
+        let isInSpam = areAllMessagesInThreadInSpam
 
         var actions = toolbarActionProvider.messageToolbarActions
             .addMoreActionToTheLastLocation()
