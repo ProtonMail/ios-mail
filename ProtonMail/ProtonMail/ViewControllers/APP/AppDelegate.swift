@@ -94,6 +94,7 @@ extension AppDelegate: UIApplicationDelegate {
         let message = "\(#function) data available: \(UIApplication.shared.isProtectedDataAvailable) | \(appVersion)"
         SystemLogger.log(message: message, category: .appLifeCycle)
 
+        cleanKeychainInCaseOfAppReinstall()
         let appCache = AppCacheService(dependencies: dependencies)
         appCache.restoreCacheWhenAppStart()
 
@@ -309,10 +310,6 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     }
 
     func cleanAll(completion: @escaping () -> Void) {
-        guard dependencies.usersManager.hasUsers() else {
-            completion()
-            return
-        }
         Breadcrumbs.shared.add(message: "AppDelegate.cleanAll called", to: .randomLogout)
         dependencies.usersManager.clean().ensure {
             completion()
@@ -447,6 +444,14 @@ extension AppDelegate {
                     self.dependencies.keyMaker.updateAutolockCountdownStart()
                 }
             }
+    }
+
+    /// If this is the first app launch, we clean the keychain to avoid state inconsistencies from a previous installation
+    private func cleanKeychainInCaseOfAppReinstall() {
+        let isFirstLaunch = dependencies.userCachedStatus.initialUserLoggedInVersion == nil
+        if isFirstLaunch {
+            dependencies.keychain.removeEverything()
+        }
     }
 }
 

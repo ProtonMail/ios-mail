@@ -129,6 +129,12 @@ class UsersManager: Service, UsersManagerProtocol {
         #if !APP_EXTENSION
         trackLifetime()
         #endif
+        if ProcessInfo.isRunningUnitTests {
+            sharedServices.add(CoreDataService.self, for: dependencies.contextProvider)
+            sharedServices.add(CoreDataContextProviderProtocol.self, for: dependencies.contextProvider)
+            sharedServices.add(LastUpdatedStore.self,
+                       for: LastUpdatedStore(contextProvider: sharedServices.get(by: CoreDataService.self)))
+        }
     }
 
     /**

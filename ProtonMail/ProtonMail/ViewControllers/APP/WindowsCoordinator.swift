@@ -64,7 +64,7 @@ final class WindowsCoordinator {
     private(set) var lockWindow: UIWindow?
     private var menuCoordinator: MenuCoordinator?
 
-    private var currentWindow: UIWindow? {
+    private(set) var currentWindow: UIWindow? {
         didSet {
             switch dependencies.darkModeCache.darkModeStatus {
             case .followSystem:
