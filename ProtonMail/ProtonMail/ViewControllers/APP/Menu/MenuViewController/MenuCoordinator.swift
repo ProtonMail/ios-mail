@@ -62,7 +62,6 @@ final class MenuCoordinator: CoordinatorDismissalObserver, MenuCoordinatorProtoc
     & HasFeatureFlagCache
     & HasLastUpdatedStoreProtocol
     & HasPushNotificationService
-    & HasUserCachedStatus
 
     private(set) var viewController: MenuViewController?
     private let viewModel: MenuVMProtocol
@@ -384,7 +383,8 @@ extension MenuCoordinator {
             updateMailbox: updateMailbox,
             fetchMessageDetail: user.container.fetchMessageDetail,
             fetchSenderImage: user.container.fetchSenderImage,
-            featureFlagCache: dependencies.featureFlagCache
+            featureFlagCache: dependencies.featureFlagCache,
+            userDefaults: dependencies.userDefaults
         )
         return mailboxVMDependencies
     }
@@ -409,7 +409,6 @@ extension MenuCoordinator {
             conversationProvider: userManager.conversationService,
             eventsService: userManager.eventsService,
             dependencies: mailboxVMDependencies,
-            welcomeCarrouselCache: dependencies.userCachedStatus,
             toolbarActionProvider: userManager,
             saveToolbarActionUseCase: SaveToolbarActionSettings(
                 dependencies: .init(user: userManager)

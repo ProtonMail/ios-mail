@@ -40,7 +40,6 @@ final class MailboxViewControllerTests: XCTestCase {
     var conversationProviderMock: MockConversationProvider!
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
-    var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var mockFetchMessageDetail: MockFetchMessageDetail!
@@ -99,7 +98,6 @@ final class MailboxViewControllerTests: XCTestCase {
         conversationProviderMock = MockConversationProvider()
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
-        welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         try loadTestMessage() // one message
@@ -434,7 +432,8 @@ extension MailboxViewControllerTests {
             updateMailbox: updateMailbox,
             fetchMessageDetail: mockFetchMessageDetail,
             fetchSenderImage: userContainer.fetchSenderImage,
-            featureFlagCache: featureFlagCache
+            featureFlagCache: featureFlagCache,
+            userDefaults: globalContainer.userDefaults
         )
         let label = LabelInfo(name: labelName ?? "")
         viewModel = MailboxViewModel(
@@ -451,7 +450,6 @@ extension MailboxViewControllerTests {
             conversationProvider: conversationProviderMock,
             eventsService: eventsServiceMock,
             dependencies: dependencies,
-            welcomeCarrouselCache: welcomeCarrouselCache,
             toolbarActionProvider: toolbarActionProviderMock,
             saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
             totalUserCountClosure: {

@@ -38,7 +38,6 @@ final class MailboxViewModelTests: XCTestCase {
     var internetConnectionProvider: MockInternetConnectionStatusProviderProtocol!
     var eventsServiceMock: EventsServiceMock!
     var mockFetchLatestEventId: MockFetchLatestEventId!
-    var welcomeCarrouselCache: WelcomeCarrouselCacheMock!
     var toolbarActionProviderMock: MockToolbarActionProvider!
     var saveToolbarActionUseCaseMock: MockSaveToolbarActionSettingsForUsersUseCase!
     var imageTempUrl: URL!
@@ -102,7 +101,6 @@ final class MailboxViewModelTests: XCTestCase {
         conversationProviderMock = MockConversationProvider()
         eventsServiceMock = EventsServiceMock()
         mockFetchLatestEventId = MockFetchLatestEventId()
-        welcomeCarrouselCache = WelcomeCarrouselCacheMock()
         toolbarActionProviderMock = MockToolbarActionProvider()
         saveToolbarActionUseCaseMock = MockSaveToolbarActionSettingsForUsersUseCase()
         mockLoadedMessage = try loadTestMessage() // one message
@@ -947,18 +945,18 @@ final class MailboxViewModelTests: XCTestCase {
 
     func testGetOnboardingDestination() {
         // Fresh install
-        self.welcomeCarrouselCache.lastTourVersion = nil
+        globalContainer.userDefaults[.lastTourVersion] = nil
         var destination = self.sut.getOnboardingDestination()
         XCTAssertEqual(destination, .onboardingForNew)
 
         // The last tour version is the same as defined TOUR_VERSION
         // Shouldn't show welcome carrousel
-        self.welcomeCarrouselCache.lastTourVersion = Constants.App.TourVersion
+        globalContainer.userDefaults[.lastTourVersion] = Constants.App.TourVersion
         destination = self.sut.getOnboardingDestination()
         XCTAssertNil(destination)
 
         // Update the app
-        self.welcomeCarrouselCache.lastTourVersion = 1
+        globalContainer.userDefaults[.lastTourVersion] = 1
         destination = self.sut.getOnboardingDestination()
         XCTAssertEqual(destination, .onboardingForUpdate)
     }
@@ -1452,7 +1450,8 @@ extension MailboxViewModelTests {
                     mailSettings: userManagerMock.mailSettings
                 )
             ),
-            featureFlagCache: featureFlagCache
+            featureFlagCache: featureFlagCache,
+            userDefaults: globalContainer.userDefaults
         )
         let label = LabelInfo(name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),
@@ -1468,7 +1467,6 @@ extension MailboxViewModelTests {
                                conversationProvider: conversationProviderMock,
                                eventsService: eventsServiceMock,
                                dependencies: dependencies,
-                               welcomeCarrouselCache: welcomeCarrouselCache,
                                toolbarActionProvider: toolbarActionProviderMock,
                                saveToolbarActionUseCase: saveToolbarActionUseCaseMock,
                                totalUserCountClosure: {

@@ -50,7 +50,6 @@ final class UserCachedStatus: SharedCacheBase, UserCachedStatusProvider {
         static let lastPinFailedTimes = "lastPinFailedTimes" // user cache can't restore
 
         // Global Cache
-        static let lastTourVersion = "last_tour_viersion" // global cache
         static let UserWithLocalMobileSignature = "user_with_local_mobile_signature_mainKeyProtected"
         static let UserWithLocalMobileSignatureStatus = "user_with_local_mobile_signature_status"
         static let UserWithDefaultSignatureStatus = "user_with_default_signature_status"
@@ -188,7 +187,7 @@ final class UserCachedStatus: SharedCacheBase, UserCachedStatusProvider {
     func cleanAllData() {
         let protectedUserDefaultsKeys: [String] = [
             Key.initialUserLoggedInVersion,
-            Key.lastTourVersion
+            UserDefaultsKeys.lastTourVersion.name
         ]
 
         for key in userDefaults.dictionaryRepresentation().keys where !protectedUserDefaultsKeys.contains(key) {
@@ -382,16 +381,6 @@ extension UserCachedStatus: SwipeActionCacheProtocol {
            let action = SwipeActionSettingType.convertFromServer(rawValue: rightToLeft) {
             self.rightToLeftSwipeActionType = action
         }
-    }
-}
-
-extension UserCachedStatus: WelcomeCarrouselCacheProtocol {
-    var lastTourVersion: Int? {
-        getShared().int(forKey: Key.lastTourVersion)
-    }
-
-    func resetTourValue() {
-        setValue(Constants.App.TourVersion, forKey: Key.lastTourVersion)
     }
 }
 

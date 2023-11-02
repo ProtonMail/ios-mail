@@ -76,7 +76,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     let labelProvider: LabelProviderProtocol
     private let contactProvider: ContactProviderProtocol
     let conversationProvider: ConversationProvider
-    private let welcomeCarrouselCache: WelcomeCarrouselCacheProtocol
 
     var viewModeIsChanged: (() -> Void)?
     var sendHapticFeedback:(() -> Void)?
@@ -136,7 +135,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
          conversationProvider: ConversationProvider,
          eventsService: EventsFetching,
          dependencies: Dependencies,
-         welcomeCarrouselCache: WelcomeCarrouselCacheProtocol,
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
          totalUserCountClosure: @escaping () -> Int
@@ -156,7 +154,6 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
         self.labelProvider = labelProvider
         self.conversationProvider = conversationProvider
         self.dependencies = dependencies
-        self.welcomeCarrouselCache = welcomeCarrouselCache
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
         super.init()
@@ -273,6 +270,10 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
 
     func fetchContacts() {
         contactProvider.fetchContacts(completion: nil)
+    }
+
+    func resetTourValue() {
+        dependencies.userDefaults[.lastTourVersion] = Constants.App.TourVersion
     }
 
     func tagUIModels(for conversation: ConversationEntity) -> [TagUIModel] {
@@ -658,7 +659,7 @@ class MailboxViewModel: NSObject, StorageLimit, UpdateMailboxSourceProtocol {
     }
 
     func getOnboardingDestination() -> MailboxCoordinator.Destination? {
-        guard let tourVersion = self.welcomeCarrouselCache.lastTourVersion else {
+        guard let tourVersion = dependencies.userDefaults[.lastTourVersion] else {
             return .onboardingForNew
         }
         if tourVersion == Constants.App.TourVersion {
@@ -1130,6 +1131,7 @@ extension MailboxViewModel {
         let fetchSenderImage: FetchSenderImageUseCase
         let checkProtonServerStatus: CheckProtonServerStatusUseCase
         let featureFlagCache: FeatureFlagCache
+        let userDefaults: UserDefaults
 
         init(
             fetchMessages: FetchMessagesUseCase,
@@ -1137,7 +1139,8 @@ extension MailboxViewModel {
             fetchMessageDetail: FetchMessageDetailUseCase,
             fetchSenderImage: FetchSenderImageUseCase,
             checkProtonServerStatus: CheckProtonServerStatusUseCase = CheckProtonServerStatus(),
-            featureFlagCache: FeatureFlagCache
+            featureFlagCache: FeatureFlagCache,
+            userDefaults: UserDefaults
         ) {
             self.fetchMessages = fetchMessages
             self.updateMailbox = updateMailbox
@@ -1145,6 +1148,7 @@ extension MailboxViewModel {
             self.fetchSenderImage = fetchSenderImage
             self.checkProtonServerStatus = checkProtonServerStatus
             self.featureFlagCache = featureFlagCache
+            self.userDefaults = userDefaults
         }
     }
 }
