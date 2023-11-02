@@ -52,15 +52,15 @@ class ConversationCountResponse: Response {
             return false
         }
 
-        guard (try? JSONDecoder().decode([ConversationCountData].self, from: data)) != nil else {
+        guard (try? JSONDecoder().decode([CountData].self, from: data)) != nil else {
             return false
         }
         return true
     }
 }
 
-struct ConversationCountData: Decodable {
-    let labelID: String
+struct CountData: Parsable {
+    let labelID: LabelID
     let total: Int
     let unread: Int
 

@@ -836,23 +836,23 @@ extension EventsService {
             return
         }
 
-        for (index, count) in (counts.enumerated()) {
-            if let labelID = count["LabelID"] as? String {
-                guard let unread = count["Unread"] as? Int else {
-                    continue
-                }
-                let isLast = index == counts.count - 1
-                let total = count["Total"] as? Int
-                dependencies.lastUpdatedStore.updateUnreadCount(
-                    by: LabelID(labelID),
-                    userID: userManager.userID,
-                    unread: unread,
-                    total: total,
-                    type: viewMode,
-                    shouldSave: isLast
-                )
-                self.updateBadgeIfNeeded(unread: unread, labelID: labelID, type: viewMode)
+        // parsing manually here to avoid modifying the rest of the class
+        // once EventCheckResponse is made Decodable, we'll be able to remove this
+        let parsedCounts: [CountData] = counts.compactMap {
+            do {
+                return try CountData.init(dict: $0)
+            } catch {
+                PMAssertionFailure(error)
+                return nil
             }
+        }
+
+        do {
+            try dependencies.lastUpdatedStore.batchUpdateUnreadCounts(
+                counts: parsedCounts, userID: userManager.userID, type: viewMode
+            )
+        } catch {
+            PMAssertionFailure(error)
         }
 
         guard let users = userManager.parentManager,
@@ -897,19 +897,6 @@ extension EventsService {
                 }
             }
         }
-    }
-
-    // TODO: moving this to a better place
-    private func updateBadgeIfNeeded(unread: Int, labelID: String, type: ViewMode) {
-        let users = dependencies.usersManager
-        guard let firstUser = users.firstUser else {
-            return
-        }
-        let isPrimary = firstUser.userID == self.userManager?.userID
-        guard labelID == Message.Location.inbox.rawValue,
-              isPrimary,
-              type == firstUser.conversationStateService.viewMode else { return }
-        UIApplication.setBadge(badge: unread)
     }
 
     private func assertProperExecution() {
