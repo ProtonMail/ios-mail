@@ -47,6 +47,7 @@ final class WindowsCoordinatorAppAccessResolverTests: XCTestCase {
         testContainer = nil
         mockKeyMaker = nil
         sut = nil
+        windowsCoordinatorDelegate = nil
     }
 
     // MARK: start method
@@ -64,8 +65,11 @@ final class WindowsCoordinatorAppAccessResolverTests: XCTestCase {
     func testStart_whenAppAccessIsDenied_itShouldTryToLoadTheMainKey() {
         setUpAppAccessDeniedReasonAppLock()
 
+        mockKeyMaker.isTouchIDEnabledStub.fixture = true
         executeStartAndWaitCompletion()
 
+        // To wait navigate(from:...) closure
+        wait(self.sut.currentWindow?.rootViewController?.presentedViewController != nil, timeout: 5)
         XCTAssertTrue(mockKeyMaker.mainKeyExistsStub.wasCalledExactlyOnce)
     }
 
@@ -83,8 +87,11 @@ final class WindowsCoordinatorAppAccessResolverTests: XCTestCase {
     func testStart_whenAppAccessIsDenied_itShouldSetUpCoreDataButNotLoadUsers() {
         setUpAppAccessDeniedReasonAppLock()
 
+        mockKeyMaker.isTouchIDEnabledStub.fixture = true
         executeStartAndWaitCompletion()
 
+        // To wait navigate(from:...) closure
+        wait(self.sut.currentWindow?.rootViewController?.presentedViewController != nil, timeout: 5)
         XCTAssertTrue(windowsCoordinatorDelegate.setupCoreDataStub.wasCalledExactlyOnce)
         XCTAssertFalse(windowsCoordinatorDelegate.loadUserDataAfterUnlockStub.wasCalledExactlyOnce)
     }
@@ -130,9 +137,11 @@ final class WindowsCoordinatorAppAccessResolverTests: XCTestCase {
         setUpAppAccessGranted()
         executeStartAndWaitCompletion()
 
+        mockKeyMaker.isTouchIDEnabledStub.fixture = true
         simulateAppLockedByUserAction()
 
-        wait(self.sut.lockWindow != nil, timeout: 5.0)
+        // To wait navigate(from:...) closure 
+        wait(self.sut.currentWindow?.rootViewController?.presentedViewController != nil, timeout: 5)
     }
 }
 
