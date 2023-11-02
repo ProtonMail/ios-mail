@@ -18,5 +18,7 @@
 import Foundation
 
 extension UserDefaultsKeys {
+    static let isDohOn = UserDefaultsKey<Bool>(name: "doh_flag", defaultValue: true)
+
     static let isPMMEWarningDisabled = UserDefaultsKey<Bool>(name: "isPM_MEWarningDisabledKey", defaultValue: false)
 }

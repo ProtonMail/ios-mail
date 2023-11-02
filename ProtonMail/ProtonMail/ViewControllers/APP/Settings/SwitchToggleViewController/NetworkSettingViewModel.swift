@@ -23,11 +23,11 @@ final class NetworkSettingViewModel: SwitchToggleVMProtocol {
     var input: SwitchToggleVMInput { self }
     var output: SwitchToggleVMOutput { self }
 
-    private var userCache: DohCacheProtocol
+    private var userDefaults: UserDefaults
     private var dohSetting: DoHInterface
 
-    init(userCache: DohCacheProtocol, dohSetting: DoHInterface) {
-        self.userCache = userCache
+    init(userDefaults: UserDefaults, dohSetting: DoHInterface) {
+        self.userDefaults = userDefaults
         self.dohSetting = dohSetting
     }
 }
@@ -36,7 +36,7 @@ extension NetworkSettingViewModel: SwitchToggleVMInput {
     func toggle(for indexPath: IndexPath, to newStatus: Bool, completion: @escaping ToggleCompletion) {
         guard indexPath.row < output.rowNumber else { return }
         dohSetting.status = newStatus ? .on : .off
-        userCache.isDohOn = newStatus
+        userDefaults[.isDohOn] = newStatus
         completion(nil)
     }
 }

@@ -21,6 +21,7 @@ final class SettingsViewsFactory {
     typealias Dependencies = AnyObject
     & SettingsDeviceViewModel.Dependencies
     & SettingsSwipeActionSelectViewModelImpl.Dependencies
+    & HasUserDefaults
 
     private unowned let dependencies: Dependencies
 
@@ -40,7 +41,7 @@ final class SettingsViewsFactory {
 
     func makeNetworkSettingView() -> SwitchToggleViewController {
         let viewModel = NetworkSettingViewModel(
-            userCache: dependencies.userCachedStatus,
+            userDefaults: dependencies.userDefaults,
             dohSetting: BackendConfiguration.shared.doh
         )
         return SwitchToggleViewController(viewModel: viewModel)

@@ -29,22 +29,22 @@ import ProtonCoreTestingToolkit
 final class NetworkSettingViewModelTests: XCTestCase {
 
     var sut: NetworkSettingViewModel!
-    var dohLocalCacheStub: DohStub!
+    var userDefaults: UserDefaults!
     var dohSettingStub: DohInterfaceMock!
 
     override func setUp() {
         super.setUp()
 
-        dohLocalCacheStub = DohStub()
+        userDefaults = TestContainer().userDefaults
         dohSettingStub = DohInterfaceMock()
-        sut = NetworkSettingViewModel(userCache: dohLocalCacheStub, dohSetting: dohSettingStub)
+        sut = NetworkSettingViewModel(userDefaults: userDefaults, dohSetting: dohSettingStub)
     }
 
     override func tearDown() {
         super.tearDown()
 
         sut = nil
-        dohLocalCacheStub = nil
+        userDefaults = nil
         dohSettingStub = nil
     }
 
@@ -62,7 +62,7 @@ final class NetworkSettingViewModelTests: XCTestCase {
     }
 
     func testSetDohStatus() {
-        dohLocalCacheStub.isDohOn = false
+        userDefaults[.isDohOn] = false
 
         let ex = expectation(description: "Closure is called")
         sut.input.toggle(for: IndexPath(row: 0, section: 0), to: true) { error in
@@ -70,7 +70,7 @@ final class NetworkSettingViewModelTests: XCTestCase {
             ex.fulfill()
         }
         wait(for: [ex], timeout: 1)
-        XCTAssertTrue(dohLocalCacheStub.isDohOn)
+        XCTAssertTrue(userDefaults[.isDohOn])
         XCTAssertEqual(dohSettingStub.statusStub.setCallCounter, 1)
         XCTAssertEqual(dohSettingStub.statusStub.setLastArguments?.value, .on)
     }
