@@ -99,7 +99,7 @@ final class SettingsDeviceViewModel {
     & HasCleanCache
     & HasBiometricStatusProvider
     & HasLockCacheStatus
-    & HasUserCachedStatus
+    & HasUserDefaults
 
     let sections: [SettingDeviceSection] = {
         var standardSections: [SettingDeviceSection] = [.account, .app, .general, .clearCache]
@@ -131,7 +131,7 @@ final class SettingsDeviceViewModel {
     }
 
     var combineContactOn: Bool {
-        dependencies.userCachedStatus.isCombineContactOn
+        dependencies.userDefaults[.isCombineContactOn]
     }
 
     var email: String {

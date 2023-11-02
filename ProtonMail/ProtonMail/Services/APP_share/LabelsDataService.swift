@@ -59,6 +59,7 @@ class LabelsDataService: Service {
     & HasCacheService
     & HasConversationStateService
     & HasLastUpdatedStoreProtocol
+    & HasUserDefaults
 
     private let userID: UserID
     private unowned let dependencies: Dependencies
@@ -225,7 +226,7 @@ class LabelsDataService: Service {
     func getAllLabels(of type: LabelFetchType, context: NSManagedObjectContext) -> [Label] {
         let fetchRequest = NSFetchRequest<Label>(entityName: Label.Attributes.entityName)
 
-        if type == .contactGroup, userCachedStatus.isCombineContactOn {
+        if type == .contactGroup, dependencies.userDefaults[.isCombineContactOn] {
             // in contact group searching, predicate must be consistent with this one
             fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
         } else {

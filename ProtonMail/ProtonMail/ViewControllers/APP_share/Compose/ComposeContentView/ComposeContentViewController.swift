@@ -37,7 +37,7 @@ protocol ComposeContentViewControllerDelegate: AnyObject {
 
 // swiftlint:disable:next line_length type_body_length
 class ComposeContentViewController: HorizontallyScrollableWebViewContainer, AccessibleView, HtmlEditorBehaviourDelegate {
-    typealias Dependencies = HasImageProxy & HasUserDefaults
+    typealias Dependencies = HasImageProxy & HasUserCachedStatus & HasUserDefaults
 
     let viewModel: ComposeViewModel
     var openScheduleSendActionSheet: (() -> Void)?
@@ -168,7 +168,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
         guard let messageID = viewModel.composerMessageHelper.draft?.messageID else {
             return nil
         }
-        viewModel.dependencies.userCachedStatusProvider.lastDraftMessageID = messageID.rawValue
+        dependencies.userCachedStatus.lastDraftMessageID = messageID.rawValue
 
         var contentVC: UIViewController?
         var navigationController: UINavigationController?
@@ -219,7 +219,7 @@ class ComposeContentViewController: HorizontallyScrollableWebViewContainer, Acce
             }
         } else {
             if self.viewModel.isEmptyDraft() { return }
-            topVC.showDraftSaveHintBanner(cache: viewModel.dependencies.userCachedStatusProvider,
+            topVC.showDraftSaveHintBanner(cache: dependencies.userCachedStatus,
                                           messageService: messageService,
                                           coreDataContextProvider: coreDataContextProvider)
         }

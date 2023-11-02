@@ -1123,7 +1123,7 @@ extension ComposeViewModel {
     func fetchContacts() {
         emailPublisher = .init(
             userID: user.userID,
-            isContactCombine: dependencies.userCachedStatusProvider.isCombineContactOn,
+            isContactCombine: dependencies.userDefaults[.isCombineContactOn],
             contextProvider: dependencies.coreDataContextProvider
         )
         cancellable = emailPublisher?.contentDidChange.map { $0.map { email in
@@ -1179,7 +1179,7 @@ extension ComposeViewModel {
         let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
         let darkModeCache: DarkModeCacheProtocol
         let attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol
-        let userCachedStatusProvider: UserCachedStatusProvider
+        let userDefaults: UserDefaults
         let notificationCenter: NotificationCenter
     }
 
