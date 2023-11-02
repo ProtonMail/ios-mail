@@ -592,6 +592,7 @@ extension WindowsCoordinator {
                 .userKickedOut(reason: .apiAccessTokenInvalid),
                 trace: Breadcrumbs.shared.trace(for: .randomLogout)
             )
+            SystemLogger.log(message: "apiAccessTokenInvalid for uid:\(uid.redacted)", isError: true)
 
             dependencies.queueManager.unregisterHandler(for: user.userID, completion: nil)
             dependencies.usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
