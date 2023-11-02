@@ -588,7 +588,10 @@ extension WindowsCoordinator {
            !dependencies.usersManager.loggingOutUserIDs.contains(user.userID) {
             let shouldShowBadTokenAlert = dependencies.usersManager.count == 1
 
-            Analytics.shared.sendEvent(.userKickedOut(reason: .apiAccessTokenInvalid))
+            Analytics.shared.sendEvent(
+                .userKickedOut(reason: .apiAccessTokenInvalid),
+                trace: Breadcrumbs.shared.trace(for: .randomLogout)
+            )
 
             dependencies.queueManager.unregisterHandler(for: user.userID, completion: nil)
             dependencies.usersManager.logout(user: user, shouldShowAccountSwitchAlert: true) { [weak self] in
