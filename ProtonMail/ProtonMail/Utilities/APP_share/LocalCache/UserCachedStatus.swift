@@ -95,7 +95,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         static let isContactsCached = "isContactsCached"
 
         static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"
-        static let toolbarCustomizeSpotlightShownUserIds = "toolbarCustomizeSpotlightShownUserIds"
     }
 
     // Do not set values for these keys, they are only needed to check for data saved by older versions
@@ -468,18 +467,6 @@ extension UserCachedStatus: ToolbarCustomizationInfoBubbleViewStatusProvider {
         }
         set {
             userDefaults.setValue(newValue, forKey: Key.toolbarCustomizationInfoBubbleViewIsShown)
-            userDefaults.synchronize()
-        }
-    }
-}
-
-extension UserCachedStatus: ToolbarCustomizeSpotlightStatusProvider {
-    var toolbarCustomizeSpotlightShownUserIds: [String] {
-        get {
-            (userDefaults.array(forKey: Key.toolbarCustomizeSpotlightShownUserIds) as? [String]) ?? []
-        }
-        set {
-            userDefaults.setValue(newValue, forKey: Key.toolbarCustomizeSpotlightShownUserIds)
             userDefaults.synchronize()
         }
     }

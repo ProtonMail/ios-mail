@@ -16,6 +16,7 @@ class ConversationViewModel {
     & HasFetchMessageDetail
     & HasNextMessageAfterMoveStatusProvider
     & HasNotificationCenter
+    & HasUserDefaults
     & HasUserIntroductionProgressProvider
 
     var headerSectionDataSource: [ConversationViewItemType] = []
@@ -143,7 +144,6 @@ class ConversationViewModel {
     let labelProvider: LabelProviderProtocol
     private let toolbarActionProvider: ToolbarActionProvider
     private let saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase
-    private let toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider
     let highlightedKeywords: [String]
     private let dependencies: Dependencies
     private var isApplicationActive: (() -> Bool)?
@@ -157,7 +157,6 @@ class ConversationViewModel {
          targetID: MessageID?,
          toolbarActionProvider: ToolbarActionProvider,
          saveToolbarActionUseCase: SaveToolbarActionSettingsForUsersUseCase,
-         toolbarCustomizeSpotlightStatusProvider: ToolbarCustomizeSpotlightStatusProvider,
          highlightedKeywords: [String],
          goToDraft: @escaping (MessageID, Date?) -> Void,
          dependencies: Dependencies) {
@@ -189,7 +188,6 @@ class ConversationViewModel {
         recordNumOfMessages = conversation.messageCount
         self.toolbarActionProvider = toolbarActionProvider
         self.saveToolbarActionUseCase = saveToolbarActionUseCase
-        self.toolbarCustomizeSpotlightStatusProvider = toolbarCustomizeSpotlightStatusProvider
         self.coordinator = coordinator
         self.displayRule = self.isTrashFolder ? .showTrashedOnly : .showNonTrashedOnly
         self.conversationStateProvider.add(delegate: self)
@@ -362,8 +360,8 @@ class ConversationViewModel {
         //  If 1 of the logged accounts has a non-standard set of actions, Accounts with
         //  standard actions will see the feature spotlight once when
         //  first opening message details.
-        let ifCurrentUserAlreadySeenTheSpotlight = toolbarCustomizeSpotlightStatusProvider
-            .toolbarCustomizeSpotlightShownUserIds.contains(user.userID.rawValue)
+        let toolbarCustomizeSpotlightShownUserIds = dependencies.userDefaults[.toolbarCustomizeSpotlightShownUserIds]
+        let ifCurrentUserAlreadySeenTheSpotlight = toolbarCustomizeSpotlightShownUserIds.contains(user.userID.rawValue)
         if user.hasAtLeastOneNonStandardToolbarAction,
            user.toolbarActionsIsStandard,
            !ifCurrentUserAlreadySeenTheSpotlight {
@@ -378,9 +376,7 @@ class ConversationViewModel {
             asSeen: true,
             byUserWith: user.userID
         )
-        var ids = toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds
-        ids.append(user.userID.rawValue)
-        toolbarCustomizeSpotlightStatusProvider.toolbarCustomizeSpotlightShownUserIds = ids
+        dependencies.userDefaults[.toolbarCustomizeSpotlightShownUserIds].append(user.userID.rawValue)
     }
 
     func headerCellVisibility(at index: Int) -> CellVisibility {

@@ -62,7 +62,7 @@ class SingleMessageContentViewModelFactory {
 }
 
 class SingleMessageViewModelFactory {
-    typealias Dependencies = SingleMessageContentViewModelFactory.Dependencies
+    typealias Dependencies = SingleMessageContentViewModelFactory.Dependencies & HasUserDefaults
 
     private let dependencies: Dependencies
 
@@ -90,7 +90,6 @@ class SingleMessageViewModelFactory {
                 dependencies: .init(user: user)
             ),
             toolbarActionProvider: user,
-            toolbarCustomizeSpotlightStatusProvider: userCachedStatus,
             coordinator: coordinator,
             nextMessageAfterMoveStatusProvider: user,
             contentViewModel: SingleMessageContentViewModelFactory(dependencies: dependencies).createViewModel(
@@ -99,7 +98,8 @@ class SingleMessageViewModelFactory {
                 goToDraft: goToDraft
             ),
             contextProvider: dependencies.contextProvider,
-            highlightedKeywords: highlightedKeywords
+            highlightedKeywords: highlightedKeywords,
+            dependencies: dependencies
         )
     }
 

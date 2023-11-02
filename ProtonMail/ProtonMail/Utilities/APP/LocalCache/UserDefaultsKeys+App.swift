@@ -19,4 +19,11 @@ import Foundation
 
 extension UserDefaultsKeys {
     static let lastBugReport = UserDefaultsKey<String>(name: "BugReportCache_LastBugReport", defaultValue: "")
+
+    /// It is used to check if the spotlight view should be shown for the user that has a
+    /// standard toolbar action setting.
+    static let toolbarCustomizeSpotlightShownUserIds = UserDefaultsKey<[String]>(
+        name: "toolbarCustomizeSpotlightShownUserIds",
+        defaultValue: []
+    )
 }
