@@ -134,9 +134,11 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
         guard let mainKey = coreKeyMaker.mainKey(by: RandomPinProtection.randomPin),
               let lockedAuth = try? Locked<[AuthCredential]>(clearValue: [authCredential], with: mainKey) else { return }
         userDefaults.setValue(lockedAuth.encryptedValue, forKey: key)
+        SystemLogger.log(message: "unauthorized session was updated.", category: .unauthorizedSession)
     }
 
     func sessionWasInvalidated(for _: String, isAuthenticatedSession: Bool) {
+        SystemLogger.log(message: "unauthorized session was invalidated.", category: .unauthorizedSession)
         userDefaults.remove(forKey: key)
     }
 }
