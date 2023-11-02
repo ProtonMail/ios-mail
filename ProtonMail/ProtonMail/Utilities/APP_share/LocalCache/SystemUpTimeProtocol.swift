@@ -24,6 +24,4 @@ protocol SystemUpTimeProtocol {
     var localSystemUpTime: TimeInterval { get set }
     /// System up time from ProcessInfo
     var systemUpTime: TimeInterval { get }
-
-    func updateLocalSystemUpTime(time: TimeInterval)
 }

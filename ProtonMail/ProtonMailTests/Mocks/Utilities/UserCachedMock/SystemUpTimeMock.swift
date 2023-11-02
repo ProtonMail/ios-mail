@@ -21,11 +21,7 @@ import Foundation
 final class SystemUpTimeMock: SystemUpTimeProtocol {
     var localServerTime: TimeInterval
     var localSystemUpTime: TimeInterval
-    var systemUpTime: TimeInterval
-
-    func updateLocalSystemUpTime(time: TimeInterval) {
-        self.localSystemUpTime = time
-    }
+    let systemUpTime: TimeInterval
 
     init(localServerTime: TimeInterval,
          localSystemUpTime: TimeInterval,
