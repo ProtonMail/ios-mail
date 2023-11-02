@@ -194,22 +194,6 @@ extension UserContainer: HasSwipeActionCacheProtocol {
     }
 }
 
-protocol HasToolbarCustomizationInfoBubbleViewStatusProvider {
-    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider { get }
-}
-
-extension GlobalContainer: HasToolbarCustomizationInfoBubbleViewStatusProvider {
-    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
-        toolbarCustomizationInfoBubbleViewStatusProviderFactory()
-    }
-}
-
-extension UserContainer: HasToolbarCustomizationInfoBubbleViewStatusProvider {
-    var toolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
-        globalContainer.toolbarCustomizationInfoBubbleViewStatusProvider
-    }
-}
-
 protocol HasAppRatingService {
     var appRatingService: AppRatingService { get }
 }

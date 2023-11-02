@@ -69,7 +69,6 @@ final class GlobalContainerTests: XCTestCase {
         _ = strongRefToContainer?.signInManager
         _ = strongRefToContainer?.storeKitManager
         _ = strongRefToContainer?.swipeActionCache
-        _ = strongRefToContainer?.toolbarCustomizationInfoBubbleViewStatusProvider
         // sourcery:end
 
         strongRefToContainer = nil

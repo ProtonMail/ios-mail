@@ -81,8 +81,6 @@ final class UserCachedStatus: SharedCacheBase, UserCachedStatusProvider {
 
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
         static let isContactsCached = "isContactsCached"
-
-        static let toolbarCustomizationInfoBubbleViewIsShown = "toolbarCustomizationInfoBubbleViewIsShown"
     }
 
     // Do not set values for these keys, they are only needed to check for data saved by older versions
@@ -391,18 +389,6 @@ extension UserCachedStatus {
         }
         set {
             userDefaults.set(newValue, forKey: Key.initialUserLoggedInVersion)
-            userDefaults.synchronize()
-        }
-    }
-}
-
-extension UserCachedStatus: ToolbarCustomizationInfoBubbleViewStatusProvider {
-    var shouldHideToolbarCustomizeInfoBubbleView: Bool {
-        get {
-            userDefaults.bool(forKey: Key.toolbarCustomizationInfoBubbleViewIsShown)
-        }
-        set {
-            userDefaults.setValue(newValue, forKey: Key.toolbarCustomizationInfoBubbleViewIsShown)
             userDefaults.synchronize()
         }
     }
