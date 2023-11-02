@@ -1319,16 +1319,6 @@ class MockUserCachedStatusProvider: UserCachedStatusProvider {
         }
     }
 
-    @PropertyStub(\MockUserCachedStatusProvider.isPMMEWarningDisabled, initialGet: Bool()) var isPMMEWarningDisabledStub
-    var isPMMEWarningDisabled: Bool {
-        get {
-            isPMMEWarningDisabledStub()
-        }
-        set {
-            isPMMEWarningDisabledStub(newValue)
-        }
-    }
-
     @PropertyStub(\MockUserCachedStatusProvider.serverNotices, initialGet: [String]()) var serverNoticesStub
     var serverNotices: [String] {
         get {

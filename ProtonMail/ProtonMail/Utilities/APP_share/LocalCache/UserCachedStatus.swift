@@ -35,7 +35,6 @@ protocol UserCachedStatusProvider: AnyObject {
     var isDohOn: Bool { get set }
     var isCombineContactOn: Bool { get set }
     var lastDraftMessageID: String? { get set }
-    var isPMMEWarningDisabled: Bool { get set }
     var serverNotices: [String] { get set }
     var serverNoticesNextTime: String { get set }
 
@@ -52,7 +51,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
         // inuse
         static let cachedServerNotices = "cachedServerNotices" // user cache
         static let showServerNoticesNextTime = "showServerNoticesNextTime" // user cache
-        static let isPM_MEWarningDisabled = "isPM_MEWarningDisabledKey" // user cache -- maybe could be global
 
         // pin code
 
@@ -163,15 +161,6 @@ final class UserCachedStatus: SharedCacheBase, DohCacheProtocol, ContactCombined
 
     /// Record the last draft messageID, so the app can do delete / restore
     var lastDraftMessageID: String?
-
-    var isPMMEWarningDisabled: Bool {
-        get {
-            return getShared().bool(forKey: Key.isPM_MEWarningDisabled)
-        }
-        set {
-            setValue(newValue, forKey: Key.isPM_MEWarningDisabled)
-        }
-    }
 
     var serverNotices: [String] {
         get {
