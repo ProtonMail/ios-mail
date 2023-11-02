@@ -243,11 +243,11 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 
         #if DEBUG
         if CommandLine.arguments.contains("-skipTour") {
-            userCachedStatus.resetTourValue()
+            viewModel.resetTourValue()
         }
         #endif
         if let destination = self.viewModel.getOnboardingDestination() {
-            userCachedStatus.resetTourValue()
+            viewModel.resetTourValue()
             self.coordinator?.go(to: destination, sender: nil)
         }
 
