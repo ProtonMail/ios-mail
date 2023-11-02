@@ -24,7 +24,6 @@ import XCTest
 final class SignInManagerTests: XCTestCase {
     private var usersManager: UsersManager!
     private var apiMock: APIServiceMock!
-    private var contactCacheStatusMock: MockContactCacheStatusProtocol!
     private var updateSwipeActionUseCaseMock: MockUpdateSwipeActionDuringLoginUseCase!
     private var globalContainer: TestContainer!
 
@@ -39,14 +38,16 @@ final class SignInManagerTests: XCTestCase {
 
         globalContainer = .init()
         usersManager = globalContainer.usersManager
-        contactCacheStatusMock = .init()
         updateSwipeActionUseCaseMock = .init()
         let queueHandlerRegisterMock = MockQueueHandlerRegister()
         sut = .init(
             usersManager: usersManager,
-            contactCacheStatus: contactCacheStatusMock,
             queueHandlerRegister: queueHandlerRegisterMock,
-            updateSwipeActionUseCase: updateSwipeActionUseCaseMock
+            updateSwipeActionUseCase: updateSwipeActionUseCaseMock,
+            dependencies: .init(
+                notificationCenter: globalContainer.notificationCenter,
+                userDefaults: globalContainer.userDefaults
+            )
         )
     }
 
@@ -54,7 +55,6 @@ final class SignInManagerTests: XCTestCase {
         super.tearDown()
         sut = nil
         updateSwipeActionUseCaseMock = nil
-        contactCacheStatusMock = nil
         usersManager = nil
         apiMock = nil
         globalContainer = nil
@@ -65,10 +65,7 @@ final class SignInManagerTests: XCTestCase {
 
         XCTAssertEqual(sut.saveLoginData(loginData: userData), .success)
 
-        XCTAssertEqual(
-            contactCacheStatusMock.contactsCachedStub.setLastArguments?.value,
-            0
-        )
+        XCTAssertEqual(globalContainer.userDefaults[.areContactsCached], 0)
         XCTAssertTrue(usersManager.hasUsers())
         XCTAssertEqual(usersManager.users.count, 1)
     }

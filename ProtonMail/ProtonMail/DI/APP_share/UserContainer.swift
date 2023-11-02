@@ -48,9 +48,9 @@ final class UserContainer: ManagedContainer {
                 labelDataService: self.labelService,
                 userInfo: self.user.userInfo,
                 coreDataService: self.contextProvider,
-                contactCacheStatus: self.userCachedStatus,
                 cacheService: self.cacheService,
-                queueManager: self.queueManager
+                queueManager: self.queueManager,
+                userDefaults: self.userDefaults
             )
         }
     }
@@ -77,8 +77,8 @@ final class UserContainer: ManagedContainer {
                 messageDataService: self.messageService,
                 eventsService: self.eventsService,
                 undoActionManager: self.undoActionManager,
-                queueManager: self.queueManager,
-                contactCacheStatus: self.userCachedStatus,
+                queueManager: self.queueManager, 
+                userDefaults: self.userDefaults,
                 localConversationUpdater: .init(userID: self.user.userID.rawValue, dependencies: self)
             )
         }

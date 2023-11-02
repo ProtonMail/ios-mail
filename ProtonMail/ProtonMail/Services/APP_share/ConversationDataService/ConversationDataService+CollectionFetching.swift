@@ -71,7 +71,7 @@ extension ConversationDataService {
                 if shouldReset {
                     self.cleanAll()
                     self.lastUpdatedStore.removeUpdateTimeExceptUnread(by: self.userID)
-                    self.contactCacheStatus.contactsCached = 0
+                    self.userDefaults[.areContactsCached] = 0
                 }
                 let totalMessageCount = responseDict["Total"] as? Int ?? 0
                 var conversationsDict = response.conversationsDict

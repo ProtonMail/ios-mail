@@ -74,9 +74,9 @@ final class EventsService: Service, EventsFetching {
     & HasLastUpdatedStoreProtocol
     & HasNotificationCenter
     & HasQueueManager
-    & HasUserCachedStatus
     & HasUsersManager
     & HasNotificationCenter
+    & HasUserDefaults
 
     private static let defaultPollingInterval: TimeInterval = 30
 
@@ -286,7 +286,7 @@ extension EventsService {
                 case .failure(let error):
                     completion?(.failure(error))
                 case .success(let responseDict):
-                    self.dependencies.userCachedStatus.contactsCached = 0
+                    self.dependencies.userDefaults[.areContactsCached] = 0
                     self.dependencies.lastUpdatedStore.updateEventID(by: userManager.userID, eventID: IDRes.eventID)
                     completion?(.success(responseDict))
                 }
