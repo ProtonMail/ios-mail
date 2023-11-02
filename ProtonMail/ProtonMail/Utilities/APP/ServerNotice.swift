@@ -22,14 +22,17 @@
 
 import UIKit
 
-let serverNotice = ServerNotice()
+final class ServerNotice {
+    private let userDefaults: UserDefaults
 
-class ServerNotice {
+    init(userDefaults: UserDefaults) {
+        self.userDefaults = userDefaults
+    }
 
     fileprivate func setTime(_ diff: Int) {
         var new_current_time: Int = Int(Date().timeIntervalSince1970)
         new_current_time = new_current_time + diff
-        userCachedStatus.serverNoticesNextTime = String(new_current_time)
+        userDefaults[.showServerNoticesNextTime] = String(new_current_time)
     }
 
     // MARK: - Public methods
@@ -37,8 +40,8 @@ class ServerNotice {
         guard messages.count > 0 else {
             return
         }
-        let cachedMessgaes = userCachedStatus.serverNotices
-        let nextTime = Int(userCachedStatus.serverNoticesNextTime) ?? 0
+        let cachedMessgaes = userDefaults[.cachedServerNotices]
+        let nextTime = Int(userDefaults[.showServerNoticesNextTime]) ?? 0
         let currentTime: Int = Int(Date().timeIntervalSince1970)
 
         var need_show = [String]()
@@ -71,7 +74,7 @@ class ServerNotice {
             string_show += "\n\(s)"
         }
 
-        userCachedStatus.serverNotices = messages
+        userDefaults[.cachedServerNotices] = messages
         self.setTime(1800)
         let message = string_show
         let alertController = UIAlertController(title: LocalString._protonmail,

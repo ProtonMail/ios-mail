@@ -1430,7 +1430,8 @@ extension MailboxViewModelTests {
             fetchMessageWithReset: MockFetchMessagesWithReset(),
             fetchMessage: fetchMessage,
             fetchLatestEventID: mockFetchLatestEventId,
-            internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol()
+            internetConnectionStatusProvider: MockInternetConnectionStatusProviderProtocol(),
+            userDefaults: globalContainer.userDefaults
         ))
         self.mockFetchMessageDetail = MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse()))
 

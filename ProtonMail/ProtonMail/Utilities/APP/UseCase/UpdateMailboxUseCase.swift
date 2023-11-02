@@ -29,10 +29,12 @@ final class UpdateMailbox: UpdateMailboxUseCase {
 
     private(set) var isFetching = false
     private let dependencies: Dependencies
+    private let serverNotice: ServerNotice
     private weak var sourceDelegate: UpdateMailboxSourceProtocol?
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
+        serverNotice = .init(userDefaults: dependencies.userDefaults)
     }
 
     func setup(source: UpdateMailboxSourceProtocol) {
@@ -323,5 +325,6 @@ extension UpdateMailbox {
         let fetchMessage: FetchMessagesUseCase
         let fetchLatestEventID: FetchLatestEventIdUseCase
         let internetConnectionStatusProvider: InternetConnectionStatusProviderProtocol
+        let userDefaults: UserDefaults
     }
 }
