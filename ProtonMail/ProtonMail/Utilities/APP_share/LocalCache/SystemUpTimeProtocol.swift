@@ -17,7 +17,7 @@
 
 import Foundation
 
-protocol SystemUpTimeProtocol {
+protocol SystemUpTimeProtocol: AnyObject {
     /// Local cached server time
     var localServerTime: TimeInterval { get set }
     /// Local cached system up time
