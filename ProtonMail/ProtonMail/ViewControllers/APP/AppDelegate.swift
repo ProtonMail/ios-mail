@@ -136,7 +136,7 @@ extension AppDelegate: UIApplicationDelegate {
             LifetimeTracker.setup(onUpdate: lifetimeTrackerIntegration.refreshUI)
         }
         
-        FeatureFactory.shared.enable(&.dynamicPlans)
+        FeatureFactory.shared.disable(&.dynamicPlans)
 #endif
 
         SecureTemporaryFile.cleanUpResidualFiles()
