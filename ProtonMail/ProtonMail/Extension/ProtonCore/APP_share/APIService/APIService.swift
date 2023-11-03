@@ -116,10 +116,9 @@ final private class AuthManagerForUnauthorizedAPIService: AuthHelperDelegate {
             return
         }
 
-        let authCredentialsCodable = try? UserObjectsPersistence.shared.read(AuthCredential.self, key: mainKey)
         let authUnlockedNSCoding = try? Locked<[AuthCredential]>(encryptedValue: data).unlock(with: mainKey).first
 
-        guard let authCredential = authCredentialsCodable ?? authUnlockedNSCoding else {
+        guard let authCredential = authUnlockedNSCoding else {
             userDefaults.remove(forKey: key)
             self.authDelegateForUnauthorized = AuthHelper()
             self.initialSessionUID = nil
