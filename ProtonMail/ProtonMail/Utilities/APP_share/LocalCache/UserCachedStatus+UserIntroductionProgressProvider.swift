@@ -46,10 +46,10 @@ extension UserCachedStatus: UserIntroductionProgressProvider {
 
     private var spotlightsShownPerUser: [UserID: Set<String>] {
         get {
-            getShared().decodableValue(forKey: Key.spotlightsShownPerUser) ?? [:]
+            userDefaults.decodableValue(forKey: Key.spotlightsShownPerUser) ?? [:]
         }
         set {
-            getShared().setEncodableValue(newValue, forKey: Key.spotlightsShownPerUser)
+            userDefaults.setEncodableValue(newValue, forKey: Key.spotlightsShownPerUser)
         }
     }
 }
