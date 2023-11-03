@@ -324,8 +324,10 @@ extension PaymentsUICoordinator: PaymentsUIViewControllerDelegate {
         // Plan data should not be refreshed on first appear because at that time data are freshly loaded. Here must be covered situations when
         // app goes from background for example.
         guard !isFirstAppearance else { return }
-        Task {
-            await refreshPlans()
+        if FeatureFactory.shared.isEnabled(.dynamicPlans) {
+            Task {
+                await refreshPlans()
+            }
         }
     }
 
