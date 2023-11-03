@@ -26,21 +26,22 @@ final class UnlockManagerTests: XCTestCase {
     var keyMakerMock: MockKeyMakerProtocol!
     var LAContextMock: MockLAContextProtocol!
     var notificationCenter: NotificationCenter!
-    var pinFailedCountCacheMock: MockPinFailedCountCache!
+    private var testContainer: TestContainer!
 
     override func setUp() {
         super.setUp()
+
+        testContainer = .init()
         delegateMock = .init()
         cacheMock = .init()
         keyMakerMock = .init()
         LAContextMock = .init()
         notificationCenter = .init()
-        pinFailedCountCacheMock = .init()
         sut = .init(
             cacheStatus: cacheMock,
             keyMaker: keyMakerMock,
-            pinFailedCountCache: pinFailedCountCacheMock,
             localAuthenticationContext: LAContextMock,
+            userDefaults: testContainer.userDefaults,
             notificationCenter: notificationCenter
         )
         sut.delegate = delegateMock
@@ -49,12 +50,12 @@ final class UnlockManagerTests: XCTestCase {
     override func tearDown() {
         super.tearDown()
         sut = nil
+        testContainer = nil
         delegateMock = nil
         cacheMock = nil
         keyMakerMock = nil
         LAContextMock = nil
         notificationCenter = nil
-        pinFailedCountCacheMock = nil
     }
 
     func testIsUnlocked_mainKeyIsNil_returnFalse() {
@@ -108,7 +109,7 @@ final class UnlockManagerTests: XCTestCase {
 
     func testMatch_pinIsEmpty_returnFalse() {
         let e = expectation(description: "Closure is called")
-        pinFailedCountCacheMock.pinFailedCountStub.fixture = 0
+        testContainer.userDefaults[.pinFailedCount] = 0
 
         sut.match(userInputPin: .empty) { result in
             XCTAssertFalse(result)
@@ -116,12 +117,12 @@ final class UnlockManagerTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1)
-        XCTAssertEqual(pinFailedCountCacheMock.pinFailedCountStub.setLastArguments?.value, 1)
+        XCTAssertEqual(testContainer.userDefaults[.pinFailedCount], 1)
     }
 
     func testMatch_pinIsMatch_returnTrue() {
         let e = expectation(description: "Closure is called")
-        pinFailedCountCacheMock.pinFailedCountStub.fixture = 0
+        testContainer.userDefaults[.pinFailedCount] = 0
         keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
             XCTAssertTrue(strategy is PinProtection)
             completion([])
@@ -133,12 +134,12 @@ final class UnlockManagerTests: XCTestCase {
         }
 
         waitForExpectations(timeout: 1)
-        XCTAssertEqual(pinFailedCountCacheMock.pinFailedCountStub.setLastArguments?.value, 0)
+        XCTAssertEqual(testContainer.userDefaults[.pinFailedCount], 0)
     }
 
     func testMatch_pinIsNotMatch_returnFalse() {
         let e = expectation(description: "Closure is called")
-        pinFailedCountCacheMock.pinFailedCountStub.fixture = 0
+        testContainer.userDefaults[.pinFailedCount] = 0
         keyMakerMock.obtainMainKeyStub.bodyIs { _, strategy, completion in
             XCTAssertTrue(strategy is PinProtection)
             completion(nil)
@@ -286,7 +287,7 @@ final class UnlockManagerTests: XCTestCase {
         waitForExpectations(timeout: 1)
 
         XCTAssertTrue(delegateMock.setupCoreDataStub.wasCalledExactlyOnce)
-        XCTAssertEqual(pinFailedCountCacheMock.pinFailedCountStub.setLastArguments?.value, 0)
+        XCTAssertEqual(testContainer.userDefaults[.pinFailedCount], 0)
         XCTAssertTrue(delegateMock.loadUserDataAfterUnlockStub.wasCalledExactlyOnce)
     }
 
@@ -312,7 +313,7 @@ final class UnlockManagerTests: XCTestCase {
         waitForExpectations(timeout: 1)
 
         XCTAssertTrue(delegateMock.setupCoreDataStub.wasCalledExactlyOnce)
-        XCTAssertEqual(pinFailedCountCacheMock.pinFailedCountStub.setLastArguments?.value, 0)
+        XCTAssertEqual(testContainer.userDefaults[.pinFailedCount], 0)
         XCTAssertTrue(delegateMock.loadUserDataAfterUnlockStub.wasCalledExactlyOnce)
     }
 
@@ -338,7 +339,7 @@ final class UnlockManagerTests: XCTestCase {
         waitForExpectations(timeout: 1)
 
         XCTAssertTrue(delegateMock.setupCoreDataStub.wasCalledExactlyOnce)
-        XCTAssertEqual(pinFailedCountCacheMock.pinFailedCountStub.setLastArguments?.value, 0)
+        XCTAssertEqual(testContainer.userDefaults[.pinFailedCount], 0)
         XCTAssertTrue(delegateMock.loadUserDataAfterUnlockStub.wasCalledExactlyOnce)
     }
 

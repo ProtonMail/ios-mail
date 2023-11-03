@@ -1006,19 +1006,6 @@ class MockPinCodeSetupRouterProtocol: PinCodeSetupRouterProtocol {
 
 }
 
-class MockPinFailedCountCache: PinFailedCountCache {
-    @PropertyStub(\MockPinFailedCountCache.pinFailedCount, initialGet: Int()) var pinFailedCountStub
-    var pinFailedCount: Int {
-        get {
-            pinFailedCountStub()
-        }
-        set {
-            pinFailedCountStub(newValue)
-        }
-    }
-
-}
-
 class MockPushDecryptionKeysProvider: PushDecryptionKeysProvider {
     @PropertyStub(\MockPushDecryptionKeysProvider.pushNotificationsDecryptionKeys, initialGet: [DecryptionKey]()) var pushNotificationsDecryptionKeysStub
     var pushNotificationsDecryptionKeys: [DecryptionKey] {

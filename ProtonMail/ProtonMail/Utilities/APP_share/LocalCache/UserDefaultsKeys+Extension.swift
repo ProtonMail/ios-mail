@@ -25,4 +25,6 @@ extension UserDefaultsKeys {
     static let isPMMEWarningDisabled = UserDefaultsKey<Bool>(name: "isPM_MEWarningDisabledKey", defaultValue: false)
 
     static let lastTourVersion = UserDefaultsKey<Int?>(name: "last_tour_viersion", defaultValue: nil)
+
+    static let pinFailedCount = UserDefaultsKey<Int>(name: "lastPinFailedTimes", defaultValue: 0)
 }

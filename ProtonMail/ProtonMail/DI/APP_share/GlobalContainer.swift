@@ -114,12 +114,6 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
-    var pinFailedCountCacheFactory: Factory<PinFailedCountCache> {
-        self {
-            self.userCachedStatus
-        }
-    }
-
     var pushUpdaterFactory: Factory<PushUpdater> {
         self {
             PushUpdater(userDefaults: self.userDefaults)
@@ -139,7 +133,7 @@ class GlobalContainer: ManagedContainer {
             UnlockManager(
                 cacheStatus: self.lockCacheStatus,
                 keyMaker: self.keyMaker,
-                pinFailedCountCache: self.userCachedStatus,
+                userDefaults: self.userDefaults,
                 notificationCenter: self.notificationCenter
             )
         }

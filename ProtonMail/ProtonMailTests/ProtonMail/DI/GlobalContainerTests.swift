@@ -49,7 +49,6 @@ final class GlobalContainerTests: XCTestCase {
         _ = strongRefToContainer?.notificationCenter
         _ = strongRefToContainer?.pinCodeProtection
         _ = strongRefToContainer?.pinCodeVerifier
-        _ = strongRefToContainer?.pinFailedCountCache
         _ = strongRefToContainer?.pushUpdater
         _ = strongRefToContainer?.queueManager
         _ = strongRefToContainer?.unlockManager
