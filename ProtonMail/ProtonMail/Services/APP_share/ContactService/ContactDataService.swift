@@ -62,30 +62,30 @@ class ContactDataService: Service {
     private let coreDataService: CoreDataContextProviderProtocol
     private let apiService: APIService
     private let userInfo: UserInfo
-    private let contactCacheStatus: ContactCacheStatusProtocol
     private let cacheService: CacheService
     private weak var queueManager: QueueManager?
+    private let userDefaults: UserDefaults
 
     private var userID: UserID {
         UserID(userInfo.userId)
     }
 
-    init(api: APIService, labelDataService: LabelsDataService, userInfo: UserInfo, coreDataService: CoreDataContextProviderProtocol, contactCacheStatus: ContactCacheStatusProtocol, cacheService: CacheService, queueManager: QueueManager) {
+    init(api: APIService, labelDataService: LabelsDataService, userInfo: UserInfo, coreDataService: CoreDataContextProviderProtocol, cacheService: CacheService, queueManager: QueueManager, userDefaults: UserDefaults) {
         self.userInfo = userInfo
         self.apiService = api
         self.addressBookService = AddressBookService()
         self.labelDataService = labelDataService
         self.coreDataService = coreDataService
-        self.contactCacheStatus = contactCacheStatus
         self.cacheService = cacheService
         self.queueManager = queueManager
+        self.userDefaults = userDefaults
     }
 
     /**
      clean contact local cache
      **/
     func cleanUp() {
-            self.contactCacheStatus.contactsCached = 0
+            userDefaults[.areContactsCached] = 0
             let userID = userID.rawValue
 
             self.coreDataService.performAndWaitOnRootSavingContext { context in
@@ -253,13 +253,13 @@ class ContactDataService: Service {
     fileprivate var isFetching: Bool = false
     fileprivate var retries: Int = 0
     func fetchContacts(completion: ContactFetchComplete?) {
-        if contactCacheStatus.contactsCached == 1 || isFetching {
+        if userDefaults[.areContactsCached] == 1 || isFetching {
             completion?(nil)
             return
         }
 
         if self.retries > 3 {
-            contactCacheStatus.contactsCached = 0
+            userDefaults[.areContactsCached] = 0
             self.isFetching = false
             self.retries = 0
             completion?(nil)
@@ -346,14 +346,14 @@ class ContactDataService: Service {
                         group.wait()
                     }
                 }
-                self.contactCacheStatus.contactsCached = 1
+                self.userDefaults[.areContactsCached] = 1
                 self.isFetching = false
                 self.retries = 0
 
                 completion?(nil)
 
             } catch let ex as NSError {
-                self.contactCacheStatus.contactsCached = 0
+                self.userDefaults[.areContactsCached] = 0
                 self.isFetching = false; {
                     completion?(ex)
                 } ~> .main

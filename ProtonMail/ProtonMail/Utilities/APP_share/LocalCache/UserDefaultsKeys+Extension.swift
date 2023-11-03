@@ -18,6 +18,8 @@
 import Foundation
 
 extension UserDefaultsKeys {
+    static let areContactsCached = UserDefaultsKey<Int>(name: "isContactsCached", defaultValue: 0)
+
     static let isCombineContactOn = UserDefaultsKey<Bool>(name: "combine_contact_flag", defaultValue: false)
 
     static let isDohOn = UserDefaultsKey<Bool>(name: "doh_flag", defaultValue: true)

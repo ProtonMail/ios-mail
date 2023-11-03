@@ -74,7 +74,7 @@ final class ConversationDataService: Service, ConversationProvider {
     private(set) weak var eventsService: EventsServiceProtocol?
     let undoActionManager: UndoActionManagerProtocol
     let serialQueue = DispatchQueue(label: "com.protonmail.ConversationDataService")
-    let contactCacheStatus: ContactCacheStatusProtocol
+    let userDefaults: UserDefaults
 
     init(api: APIService,
          userID: UserID,
@@ -83,7 +83,7 @@ final class ConversationDataService: Service, ConversationProvider {
          messageDataService: MessageDataServiceProtocol,
          eventsService: EventsServiceProtocol,
          undoActionManager: UndoActionManagerProtocol,
-         contactCacheStatus: ContactCacheStatusProtocol) {
+         userDefaults: UserDefaults) {
         self.apiService = api
         self.userID = userID
         self.contextProvider = contextProvider
@@ -91,7 +91,7 @@ final class ConversationDataService: Service, ConversationProvider {
         self.messageDataService = messageDataService
         self.eventsService = eventsService
         self.undoActionManager = undoActionManager
-        self.contactCacheStatus = contactCacheStatus
+        self.userDefaults = userDefaults
     }
 }
 

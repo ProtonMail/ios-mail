@@ -101,9 +101,9 @@ extension GlobalContainer {
             let updateSwipeActionUseCase = UpdateSwipeActionDuringLogin(dependencies: self)
             return SignInManager(
                 usersManager: self.usersManager,
-                contactCacheStatus: self.userCachedStatus,
                 queueHandlerRegister: self.queueManager,
-                updateSwipeActionUseCase: updateSwipeActionUseCase
+                updateSwipeActionUseCase: updateSwipeActionUseCase,
+                dependencies: .init(notificationCenter: self.notificationCenter, userDefaults: self.userDefaults)
             )
         }
     }

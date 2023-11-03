@@ -52,7 +52,6 @@ extension UserContainer {
     var cleanUserLocalMessagesFactory: Factory<CleanUserLocalMessages> {
         self {
             CleanUserLocalMessages(
-                contactCacheStatus: self.userCachedStatus,
                 fetchInboxMessages: FetchMessages(
                     dependencies: .init(
                         messageDataService: self.messageService,

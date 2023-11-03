@@ -244,19 +244,6 @@ class MockConnectionStatusReceiver: ConnectionStatusReceiver {
 
 }
 
-class MockContactCacheStatusProtocol: ContactCacheStatusProtocol {
-    @PropertyStub(\MockContactCacheStatusProtocol.contactsCached, initialGet: Int()) var contactsCachedStub
-    var contactsCached: Int {
-        get {
-            contactsCachedStub()
-        }
-        set {
-            contactsCachedStub(newValue)
-        }
-    }
-
-}
-
 class MockContactDataServiceProtocol: ContactDataServiceProtocol {
     @FuncStub(MockContactDataServiceProtocol.queueUpdate) var queueUpdateStub
     func queueUpdate(objectID: NSManagedObjectID, cardDatas: [CardData], newName: String, emails: [ContactEditEmail], completion: ContactUpdateComplete?) {

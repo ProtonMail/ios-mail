@@ -79,7 +79,6 @@ final class UserCachedStatus: SharedCacheBase, UserCachedStatusProvider {
         static let paymentMethods = "paymentMethods"
 
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
-        static let isContactsCached = "isContactsCached"
     }
 
     // Do not set values for these keys, they are only needed to check for data saved by older versions
@@ -245,18 +244,6 @@ extension UserCachedStatus: DarkModeCacheProtocol {
         }
         set {
             setValue(newValue.rawValue, forKey: Key.darkModeFlag)
-        }
-    }
-}
-
-extension UserCachedStatus: ContactCacheStatusProtocol {
-    var contactsCached: Int {
-        get {
-            return getShared().integer(forKey: Key.isContactsCached)
-        }
-        set {
-            getShared().setValue(newValue, forKey: Key.isContactsCached)
-            getShared().synchronize()
         }
     }
 }
