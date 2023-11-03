@@ -37,4 +37,9 @@ extension UserDefaultsKeys {
         name: "toolbarCustomizeSpotlightShownUserIds",
         defaultValue: []
     )
+
+    static let toolbarCustomizationInfoBubbleViewIsShown = UserDefaultsKey<Bool>(
+        name: "toolbarCustomizationInfoBubbleViewIsShown",
+        defaultValue: false
+    )
 }

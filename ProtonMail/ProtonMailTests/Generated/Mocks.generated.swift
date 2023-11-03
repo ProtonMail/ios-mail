@@ -1190,19 +1190,6 @@ class MockSwipeActionInfo: SwipeActionInfo {
 
 }
 
-class MockToolbarCustomizationInfoBubbleViewStatusProvider: ToolbarCustomizationInfoBubbleViewStatusProvider {
-    @PropertyStub(\MockToolbarCustomizationInfoBubbleViewStatusProvider.shouldHideToolbarCustomizeInfoBubbleView, initialGet: Bool()) var shouldHideToolbarCustomizeInfoBubbleViewStub
-    var shouldHideToolbarCustomizeInfoBubbleView: Bool {
-        get {
-            shouldHideToolbarCustomizeInfoBubbleViewStub()
-        }
-        set {
-            shouldHideToolbarCustomizeInfoBubbleViewStub(newValue)
-        }
-    }
-
-}
-
 class MockURLSessionDataTaskProtocol: URLSessionDataTaskProtocol {
     @FuncStub(MockURLSessionDataTaskProtocol.resume) var resumeStub
     func resume() {

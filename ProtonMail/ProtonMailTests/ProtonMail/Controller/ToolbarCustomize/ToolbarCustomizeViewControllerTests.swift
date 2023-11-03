@@ -23,10 +23,7 @@ final class ToolbarCustomizeViewControllerTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        let globalContainer = GlobalContainer()
-        globalContainer.toolbarCustomizationInfoBubbleViewStatusProviderFactory.register {
-            MockToolbarCustomizationInfoBubbleViewStatusProvider()
-        }
+        let globalContainer = TestContainer()
 
         let viewModel = ToolbarCustomizeViewModel<MessageViewActionSheetAction>(
             currentActions: [],
