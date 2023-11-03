@@ -32,7 +32,6 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonMailAnalytics
 
-
 // sourcery: mock
 protocol UsersManagerProtocol: AnyObject {
     var users: [UserManager] { get }
@@ -289,20 +288,7 @@ class UsersManager: Service, UsersManagerProtocol {
         }
         dependencies.userDefaults.setValue(lockedAuth.encryptedValue, forKey: CoderKey.authKeychainStore)
 
-        do {
-            try UserObjectsPersistence.shared.write(authList, key: mainKey)
-        } catch {
-            Analytics.shared.sendError(.userObjectsCouldNotBeSavedError(error, 
-                                                                        Mirror(reflecting: authList.self).description))
-        }
-
         let userList = self.users.compactMap { $0.userInfo }
-        do {
-            try UserObjectsPersistence.shared.write(userList, key: mainKey)
-        } catch {
-            Analytics.shared.sendError(.userObjectsCouldNotBeSavedError(error,
-                                                                        Mirror(reflecting: userList.self).description))
-        }
         guard let lockedUsers = try? Locked<[UserInfo]>(clearValue: userList, with: mainKey) else {
             return
         }
@@ -318,7 +304,7 @@ class UsersManager: Service, UsersManagerProtocol {
         if !mailSettingsList.isEmpty,
            let lockedMailSettings = try? Locked<[String: MailSettings]>(clearValue: mailSettingsList, with: mainKey) {
             dependencies.userDefaults.set(lockedMailSettings.encryptedValue,
-                                             forKey: CoderKey.mailSettingsStore)
+                                          forKey: CoderKey.mailSettingsStore)
         } else {
             dependencies.userDefaults.remove(forKey: CoderKey.mailSettingsStore)
         }
@@ -522,16 +508,9 @@ extension UsersManager {
         }
         let lockedAuthData = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
 
-        let authCredentialsFromCodable = try? UserObjectsPersistence.shared.read([AuthCredential].self, key: mainKey)
         let authCredentialsFromNSCoding = try? lockedAuthData.unlock(with: mainKey)
 
-        if authCredentialsFromCodable != nil,
-           authCredentialsFromCodable?.count != authCredentialsFromNSCoding?.count {
-            let message = "AuthCredential counts are not matched. Codable:\(authCredentialsFromCodable?.count ?? 0) NScoding: \(authCredentialsFromNSCoding?.count ?? 0)"
-            SystemLogger.log(message: message, category: .restoreUserData, isError: true)
-        }
-
-        guard let authCredentials: [AuthCredential] = authCredentialsFromCodable ?? authCredentialsFromNSCoding else {
+        guard let authCredentials: [AuthCredential] = authCredentialsFromNSCoding else {
             dependencies.userDefaults.remove(forKey: CoderKey.authKeychainStore)
             keychain.remove(forKey: CoderKey.authKeychainStore)
             SystemLogger.log(message: "Can not found authCredentials", category: .restoreUserData, isError: true)
@@ -542,21 +521,16 @@ extension UsersManager {
             SystemLogger.log(message: "Can not found encryptedUserData", category: .restoreUserData, isError: true)
             return nil
         }
-        let userInfoFromCodable = try? UserObjectsPersistence.shared.read([UserInfo].self, key: mainKey)
         let userInfoFromNSCoding = try? Locked<[UserInfo]>(encryptedValue: encryptedUserData).unlock(with: mainKey)
 
-        if userInfoFromCodable != nil,
-           userInfoFromCodable?.count != userInfoFromNSCoding?.count {
-            let message = "UserInfo counts are not matched. Codable:\(userInfoFromCodable?.count ?? 0) NScoding: \(userInfoFromNSCoding?.count ?? 0)"
-            SystemLogger.log(message: message, category: .restoreUserData, isError: true)
-        }
-
-        guard let userInfos = userInfoFromCodable ?? userInfoFromNSCoding  else {
+        guard let userInfos = userInfoFromNSCoding  else {
             SystemLogger.log(message: "Can not found userInfos", category: .restoreUserData, isError: true)
             return nil
         }
         guard userInfos.count == authCredentials.count else {
-            SystemLogger.log(message: "Data count is not match between userInfos and authCredentials", category: .restoreUserData, isError: true)
+            SystemLogger.log(message: "Data count is not match between userInfos and authCredentials",
+                             category: .restoreUserData,
+                             isError: true)
             return nil
         }
 
