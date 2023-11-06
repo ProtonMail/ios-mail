@@ -837,6 +837,7 @@ extension ConversationViewController {
 
     @objc
     private func unreadReadAction() {
+        guard viewModel.messagesAreLoaded else { return }
         viewModel.handleToolBarAction(.markUnread)
         navigationController?.popViewController(animated: true)
     }

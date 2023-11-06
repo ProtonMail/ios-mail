@@ -62,22 +62,25 @@ final class ConversationDataServiceProxy: ConversationProvider {
 private extension ConversationDataServiceProxy {
     // this is a workaround for the fact that just updating the ContextLabel won't trigger MailboxViewController's controllerDidChangeContent
     func updateContextLabelsInViewContext(for conversationIDs: [ConversationID], completion: @escaping () -> Void) {
-        _ = contextProvider.read(block: { context in
-            let conversations = self.fetchLocalConversations(
-                withIDs: NSMutableSet(array: conversationIDs.map(\.rawValue)),
-                in: context
-            )
+        do {
+            contextProvider.performAndWaitOnRootSavingContext { context in
+                let conversations = self.fetchLocalConversations(
+                    withIDs: NSMutableSet(array: conversationIDs.map(\.rawValue)),
+                    in: context
+                )
 
-            conversations.forEach { conversation in
-                (conversation.labels as? Set<ContextLabel>)?
-                    .forEach {
-                        context.refresh($0, mergeChanges: true)
-                    }
-                context.refresh(conversation, mergeChanges: true)
+                conversations.forEach { conversation in
+                    (conversation.labels as? Set<ContextLabel>)?
+                        .forEach {
+                            context.refresh($0, mergeChanges: true)
+                        }
+                    context.refresh(conversation, mergeChanges: true)
+                }
+                completion()
             }
-
+        } catch {
             completion()
-        })
+        }
     }
 }
 

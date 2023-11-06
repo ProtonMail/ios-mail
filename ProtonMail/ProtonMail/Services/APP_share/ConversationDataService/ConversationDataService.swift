@@ -117,7 +117,13 @@ extension ConversationDataService {
 extension ConversationDataService {
     func fetchLocalConversations(withIDs selected: NSMutableSet, in context: NSManagedObjectContext) -> [Conversation] {
         let fetchRequest = NSFetchRequest<Conversation>(entityName: Conversation.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "%K in %@", Conversation.Attributes.conversationID.rawValue, selected)
+        fetchRequest.predicate = NSPredicate(
+            format: "%K in %@ AND %K == %@",
+            Conversation.Attributes.conversationID.rawValue,
+            selected,
+            Conversation.Attributes.userID.rawValue,
+            userID.rawValue
+        )
         do {
             return try context.fetch(fetchRequest)
         } catch {

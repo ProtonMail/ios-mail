@@ -939,27 +939,15 @@ extension MailboxViewModel {
                 conversationProvider.markAsUnread(
                     conversationIDs: filteredConversationIDs,
                     labelID: labelID
-                ) { [weak self] result in
-                    defer {
-                        completion?()
-                    }
-                    guard let self = self else { return }
-                    if let _ = try? result.get() {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
+                ) { _ in
+                    completion?()
                 }
             } else {
                 conversationProvider.markAsRead(
                     conversationIDs: filteredConversationIDs,
                     labelID: labelId
-                ) { [weak self] result in
-                    defer {
-                        completion?()
-                    }
-                    guard let self = self else { return }
-                    if let _ = try? result.get() {
-                        self.eventsService.fetchEvents(labelID: self.labelId)
-                    }
+                ) { _ in
+                    completion?()
                 }
             }
         }

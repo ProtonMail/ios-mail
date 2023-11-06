@@ -608,8 +608,6 @@ final class MailboxViewModelTests: XCTestCase {
             XCTAssertTrue(argument?.first.contains("2") ?? false)
             XCTAssertEqual(argument?.a2, "0")
 
-            XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
-            XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)
@@ -665,8 +663,6 @@ final class MailboxViewModelTests: XCTestCase {
             XCTAssertFalse(argument?.first.contains("2") ?? false)
             XCTAssertEqual(argument?.a2, "0")
 
-            XCTAssertEqual(self.eventsServiceMock.callFetchEventsByLabelID.lastArguments?.value, self.sut.labelID)
-            XCTAssertTrue(self.eventsServiceMock.callFetchEventsByLabelID.wasCalledExactlyOnce)
             expectation1.fulfill()
         }
         waitForExpectations(timeout: 1, handler: nil)

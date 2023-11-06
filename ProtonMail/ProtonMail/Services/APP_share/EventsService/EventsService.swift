@@ -526,6 +526,7 @@ extension EventsService {
                                 }
 
                                 conversationData["ID"] = conDict["ID"] as? String
+                                conversationData["UserID"] = userManager.userID.rawValue
 
                                 if var labels = conversationData["Labels"] as? [[String: Any]] {
                                     for (index, _) in labels.enumerated() {
