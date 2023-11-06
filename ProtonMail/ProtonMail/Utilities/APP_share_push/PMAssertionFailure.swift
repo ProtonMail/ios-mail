@@ -29,6 +29,9 @@ func PMAssertionFailure(
         .assertionFailure(message: message, caller: caller, file: file, line: line)
     )
 #endif
+    Analytics.shared.sendError(
+        .assertionFailure(message: message, caller: caller, file: file, line: line)
+    )
 
     SystemLogger.log(
         message: message,

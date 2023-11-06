@@ -148,6 +148,8 @@ class ConversationViewModel {
     private let dependencies: Dependencies
     private var isApplicationActive: (() -> Bool)?
     private var reloadWhenAppIsActive: (() -> Void)?
+    private var blockMarkReadIfNeeded = false
+    private(set) var messagesAreLoaded = false
 
     init(labelId: LabelID,
          conversation: ConversationEntity,
@@ -262,6 +264,7 @@ class ConversationViewModel {
             self?.markMessagesReadIfNeeded()
             self?.checkTrashedHintBanner()
             self?.reloadTableView?()
+            self?.messagesAreLoaded = true
         }
     }
 
@@ -477,7 +480,9 @@ class ConversationViewModel {
                 if model.message.unRead {
                     messageIDsOfMarkedAsRead.append(model.message.messageID)
                 }
-                model.markReadIfNeeded()
+                if !blockMarkReadIfNeeded {
+                    model.markReadIfNeeded()
+                }
             }
     }
 
@@ -702,6 +707,7 @@ class ConversationViewModel {
     }
 
     func handleToolBarAction(_ action: MessageViewActionSheetAction) {
+        guard messagesAreLoaded else { return }
         switch action {
         case .delete:
             conversationService.deleteConversations(with: [conversation.conversationID],
@@ -722,8 +728,12 @@ class ConversationViewModel {
                 }
             }
         case .markUnread:
+            blockMarkReadIfNeeded = true
             conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
                                              labelID: labelId) { [weak self] result in
+                defer {
+                    self?.blockMarkReadIfNeeded = false
+                }
                 guard let self = self else { return }
                 if (try? result.get()) != nil {
                     self.eventsService.fetchEvents(labelID: self.labelId)

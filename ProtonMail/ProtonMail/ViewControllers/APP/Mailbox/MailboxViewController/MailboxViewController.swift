@@ -2179,11 +2179,12 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         reloadTableViewDataSource(
             animate: false,
             snapshot: remappedSnapshot
-        )
-        DispatchQueue.main.async {
-            self.refreshActionBarItems()
-            self.showNewMessageCount(self.newMessageCount)
-            self.showNoResultLabelIfNeeded()
+        ) {
+            DispatchQueue.main.async {
+                self.refreshActionBarItems()
+                self.showNewMessageCount(self.newMessageCount)
+                self.showNoResultLabelIfNeeded()
+            }
         }
     }
 
