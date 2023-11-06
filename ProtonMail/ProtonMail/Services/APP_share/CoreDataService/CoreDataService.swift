@@ -31,17 +31,7 @@ class CoreDataService: Service, CoreDataContextProviderProtocol {
     static let shared = CoreDataService(container: CoreDataStore.shared.container)
 
     static var useNewApproach: Bool {
-        let isFeatureFlagOn: Bool = {
-            let usersManager = sharedServices.get(by: UsersManager.self)
-
-            guard let activeUser = usersManager.firstUser else {
-                return false
-            }
-
-            return userCachedStatus.featureFlags(for: activeUser.userID)[.modernizedCoreData]
-        }()
-
-        return UIApplication.isDebugOrEnterprise || isFeatureFlagOn
+        return true
     }
 
     private let container: NSPersistentContainer
