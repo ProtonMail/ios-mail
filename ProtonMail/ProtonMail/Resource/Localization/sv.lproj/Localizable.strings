@@ -1680,10 +1680,10 @@
 "Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
 
 /* The message after tapping the encryption icon. */
-"Sent by Proton Mail with zero-access encryption" = "Skickat av Proton Mail med nollåtkomst-kryptering";
+"Sent by Proton Mail with zero-access encryption" = "Skickat med Proton Mail med kryptering med noll åtkomst";
 
 /* The message after tapping the encryption icon. */
-"Stored with zero-access encryption" = "Lagras med nollåtkomst-kryptering";
+"Stored with zero-access encryption" = "Lagrad med kryptering med noll åtkomst";
 
 /* The message after tapping the encryption icon of message received. */
 "End-to-end encrypted message from verified sender" = "End-to-end-krypterat meddelande från verifierad avsändare";

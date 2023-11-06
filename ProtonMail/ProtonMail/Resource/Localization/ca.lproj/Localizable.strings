@@ -1940,7 +1940,7 @@
 "An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
 
 /* Title for error when app set up at launch fails */
-"Insufficient disk space" = "Insufficient disk space";
+"Insufficient disk space" = "Espai de disc insuficient";
 
 /* Message for error when app set up at launch fails */
 "The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";

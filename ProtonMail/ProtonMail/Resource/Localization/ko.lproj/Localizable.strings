@@ -1008,7 +1008,7 @@
 "Notifications" = "알림";
 
 /* VoiceOver: email belongs to folders */
-"Folders" = "폴더함";
+"Folders" = "폴더";
 
 /* VoiceOver: email has lables */
 "Labels" = "라벨";

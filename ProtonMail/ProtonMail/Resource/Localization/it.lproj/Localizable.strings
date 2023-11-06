@@ -483,7 +483,7 @@
 "No connectivity detected…" = "Nessuna connettività rilevata…";
 
 /* Title */
-"Proton Mail is currently offline…" = "Proton Mail è correntemente offline…";
+"Proton Mail is currently offline…" = "Proton Mail è attualmente offline…";
 
 /* Title */
 "Save" = "Salva";
@@ -522,7 +522,7 @@
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." = "Quest'email non ha superato i requisiti d'autenticazione del suo dominio. Potrebbe esser falsificata o inoltrata impropriamente.";
 
 /* spam score warning */
-"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Questo messaggio potrebbe essere un tentativo di phishing. Per favore controlla il mittente e il contenuto per assicurarti che essi siano legittimi.";
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Questo messaggio potrebbe essere un tentativo di phishing. Controlla il mittente e il contenuto per verificare che siano legittimi.";
 
 /* Description */
 "Sending Message" = "Invio del messaggio";
@@ -630,7 +630,7 @@
 "Unknown Error" = "Errore sconosciuto";
 
 /* Action */
-"Load remote content" = "Carica il contenuto remoto";
+"Load remote content" = "Carica i contenuti remoti";
 
 /* settings general section title */
 "Change password" = "Cambia la password";
@@ -714,13 +714,13 @@
 "Edit Contact" = "Modifica contatto";
 
 /* Action */
-"Discard changes" = "Annulla modifiche";
+"Discard changes" = "Annulla le modifiche";
 
 /* Action */
-"Discard" = "Elimina";
+"Discard" = "Scarta";
 
 /* Message shown to user after discarding action is done */
-"Discarded" = "Rimosso";
+"Discarded" = "Scartato";
 
 /* action */
 "Add new URL" = "Aggiungi nuovo URL";
@@ -732,7 +732,7 @@
 "Change mailbox password" = "Cambia la password della casella di posta";
 
 /* settings general section title */
-"Auto-load remote content" = "Carica automaticamente il contenuto remoto";
+"Auto-load remote content" = "Carica automaticamente i contenuti remoti";
 
 /* settings general section title */
 "Auto-load embedded images" = "Carica automaticamente le immagini incorporate";
@@ -864,7 +864,7 @@
 "Confirm phishing report" = "Conferma la segnalazione di phishing";
 
 /* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Segnalare un messaggio come tentativo di phishing ci invierà il messaggio, così che potremo analizzarlo e migliorare i nostri filtri. Questo significa che potremo vedere i contenuti del messaggio per intero.";
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Segnalare un messaggio come tentativo di phishing invierà il messaggio a noi, così che potremo analizzarlo e migliorare i nostri filtri. Questo significa che potremo vedere tutti i contenuti del messaggio.";
 
 /* error title */
 "Verification error" = "Errore di verifica";
@@ -1071,7 +1071,7 @@
 "Importing" = "Importazione";
 
 /* Drag and drop zone for attachments */
-"Importing attachment, that can take a while" = "Importazione allegato, che può richiedere un po' di tempo";
+"Importing attachment, that can take a while" = "Importazione dell'allegato. Può richiedere un po' di tempo.";
 
 /* Drag and drop zone for attachments */
 "Attachment imported" = "Allegato importato";
@@ -1251,7 +1251,7 @@
 "Encrypted by Proton" = "Crittografato da Proton";
 
 /* The text shown on the mailbox when the primary user changed */
-"Signed in as %@" = "Accesso eseguito come %@";
+"Signed in as %@" = "Accesso effettuato come %@";
 
 /* The title of the star action in action sheet */
 "Star" = "Aggiungi alla posta preferita";
@@ -1314,7 +1314,7 @@
 "Delete %d Messages" = "Elimina %d Messaggi";
 
 /* No comment provided by engineer. */
-"Current Recovery Email" = "Email di Recupero Corrente";
+"Current Recovery Email" = "Email di recupero attuale";
 
 /* No comment provided by engineer. */
 "Recovery enabled" = "Recupero abilitato";
@@ -1374,7 +1374,7 @@
 "This action cannot be undone." = "Quest'azione non è annullabile.";
 
 /* Alert message when user tries to discard unsaved changes */
-"Any unsaved changes will be lost." = "Ogni modifica non salvata sarà persa.";
+"Any unsaved changes will be lost." = "Qualsiasi modifica non salvata andrà persa.";
 
 /* A label message */
 "Inherited from parent folder" = "Ereditato dalla cartella principale";
@@ -1437,7 +1437,7 @@
 "View headers" = "Visualizza intestazioni";
 
 /* No comment provided by engineer. */
-"View HTML" = "Mostra HTML";
+"View HTML" = "Visualizza HTML";
 
 /* No comment provided by engineer. */
 "Report phishing" = "Segnala phishing";
@@ -1449,10 +1449,10 @@
 "Move to" = "Sposta in";
 
 /* No comment provided by engineer. */
-"Do you want to discard your changes?" = "Vuoi scartare le tue modifiche?";
+"Do you want to discard your changes?" = "Vuoi annullare le tue modifiche?";
 
 /* No comment provided by engineer. */
-"Your changes will be discarded" = "Le tue modifiche saranno scartate";
+"Your changes will be discarded" = "Le tue modifiche saranno annullate";
 
 /* No comment provided by engineer. */
 "Label as" = "Etichetta come";
@@ -1476,13 +1476,13 @@
 "This message was automatically generated" = "Questo messaggio è stato generato automaticamente";
 
 /* Warning message */
-"Do you want to discard the changes?" = "Vuoi scartare le modifiche?";
+"Do you want to discard the changes?" = "Vuoi annullare le modifiche?";
 
 /* No comment provided by engineer. */
 "Group emails from the same conversation together." = "Raggruppa le email della stessa conversazione insieme.";
 
 /* No comment provided by engineer. */
-"Conversation grouping" = "Raggruppamento conversazioni";
+"Conversation grouping" = "Raggruppamento delle conversazioni";
 
 /* No comment provided by engineer. */
 "Conversation mode" = "Modalità conversazione";
