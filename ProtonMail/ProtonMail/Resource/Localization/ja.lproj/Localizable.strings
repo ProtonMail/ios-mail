@@ -1937,13 +1937,13 @@
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "メッセージを (アーカイブなどに) 移動した際に、次のメッセージを表示します。";
 
 /* Message for error when app set up at launch fails */
-"An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
+"An unexpected error occurred, please contact support.\nError: %@" = "予期しないエラーが発生しました。サポートにお問い合わせください。\nエラー: %@";
 
 /* Title for error when app set up at launch fails */
-"Insufficient disk space" = "Insufficient disk space";
+"Insufficient disk space" = "ディスク容量不足";
 
 /* Message for error when app set up at launch fails */
-"The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "ディスク容量が不足しているため、アプリケーションを開けません。 一部のデータを削除して再試行してください";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "メッセージを開けませんでした。もう一度やり直してください。";

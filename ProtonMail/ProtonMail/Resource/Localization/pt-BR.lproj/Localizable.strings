@@ -1937,13 +1937,13 @@
 "Performing a move action on a message (e.g. archive) will navigate to the next message." = "Executar uma ação de mover em uma mensagem (por exemplo, arquivar) navegará para a próxima mensagem.";
 
 /* Message for error when app set up at launch fails */
-"An unexpected error occurred, please contact support.\nError: %@" = "An unexpected error occurred, please contact support.\nError: %@";
+"An unexpected error occurred, please contact support.\nError: %@" = "Ocorreu um erro inesperado, entre em contato com o suporte.\nErro: %@";
 
 /* Title for error when app set up at launch fails */
 "Insufficient disk space" = "Espaço em disco insuficiente";
 
 /* Message for error when app set up at launch fails */
-"The application cannot open due to insufficient disk space. Please delete some data and try again" = "The application cannot open due to insufficient disk space. Please delete some data and try again";
+"The application cannot open due to insufficient disk space. Please delete some data and try again" = "O aplicativo não pode ser aberto devido a espaço insuficiente em disco. Exclua alguns dados e tente novamente";
 
 /* Error message when open message failed */
 "Couldn't open the message, try again." = "Não foi possível abrir a mensagem, tente novamente.";
