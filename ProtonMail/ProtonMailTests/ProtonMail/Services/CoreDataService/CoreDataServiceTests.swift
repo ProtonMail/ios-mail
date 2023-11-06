@@ -52,33 +52,6 @@ class CoreDataServiceTests: XCTestCase {
         XCTAssertEqual(newMessageBody, "initial body")
     }
 
-    // this test can be deleted once/if we remove all access beside `read` and `write` methods
-    func testWrite_changesAreImmediatelyReflectedInOtherBackgroundContextsFromTheSamePersistentContainer() throws {
-        try sut.createNewMessage()
-
-        let backgroundContext = persistentContainer.newBackgroundContext()
-        backgroundContext.automaticallyMergesChangesFromParent = true
-
-        let messageSeenInBackgroundContext = try backgroundContext.performAndWait {
-            try XCTUnwrap(
-                backgroundContext.managedObjectWithEntityName(
-                    Message.Attributes.entityName,
-                    matching: [:]
-                ) as? Message
-            )
-        }
-
-        backgroundContext.performAndWait {
-            XCTAssertEqual(messageSeenInBackgroundContext.body, "initial body")
-        }
-
-        try sut.modifyMessage(with: messageSeenInBackgroundContext.objectID)
-
-        backgroundContext.performAndWait {
-            XCTAssertEqual(messageSeenInBackgroundContext.body, "updated body")
-        }
-    }
-
     // this test can be deleted once/if we remove all NSFetchedResultsControllers
     func testRead_contextCanBeStoredInFetchedResultsControllerAndIsStillUpdated() throws {
         try sut.createNewMessage()
@@ -106,39 +79,6 @@ class CoreDataServiceTests: XCTestCase {
         try sut.modifyMessage(with: fetchedMessage.objectID)
 
         fetchedResultsController.managedObjectContext.performAndWait {
-            XCTAssertEqual(fetchedMessage.body, "updated body")
-        }
-    }
-
-    // delete this test once we remove mainContext completely
-    func testWrite_changesArePropagatedToMainContext() async throws {
-        let mainContext = sut.mainContext
-
-        try sut.createNewMessage()
-
-        let fetchRequest = NSFetchRequest<Message>(entityName: Message.Attributes.entityName)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: true)]
-
-        let fetchedResultsController = NSFetchedResultsController(
-            fetchRequest: fetchRequest,
-            managedObjectContext: mainContext,
-            sectionNameKeyPath: nil,
-            cacheName: nil
-        )
-
-        try fetchedResultsController.performFetch()
-
-        let fetchedMessage = fetchedResultsController.object(at: IndexPath(row: 0, section: 0))
-
-        mainContext.performAndWait {
-            XCTAssertEqual(fetchedMessage.body, "initial body")
-        }
-
-        try sut.modifyMessage(with: fetchedMessage.objectID)
-
-        await waitUntilChangesAreMergedIntoMainContext()
-
-        mainContext.performAndWait {
             XCTAssertEqual(fetchedMessage.body, "updated body")
         }
     }
@@ -236,7 +176,7 @@ class CoreDataServiceTests: XCTestCase {
         )
     }
 
-    func testNestedRead_canAccessPenCinghangesBeforeWriteSavesContext() throws {
+    func testNestedRead_canAccessPendingChangesBeforeWriteSavesContext() throws {
         try sut.write { writeContext in
             let messageInWriteContext = Message(context: writeContext)
             messageInWriteContext.messageID = "1"
@@ -303,43 +243,6 @@ class CoreDataServiceTests: XCTestCase {
         try fetchedResultsController.performFetch()
 
         return (fetchedResultsController, delegate)
-    }
-
-    // delete this test once we remove rootSavingContext completely
-    func testRead_changesSavedToRootSavingContextAreDetected() throws {
-        try sut.createNewMessage()
-
-        let (createdMessage, retainedContext): (Message, NSManagedObjectContext) = try sut.read { context in
-            let message = try XCTUnwrap(
-                context.managedObjectWithEntityName(Message.Attributes.entityName, matching: [:]) as? Message
-            )
-            return (message, context)
-        }
-
-        sut.performAndWaitOnRootSavingContext { context in
-            do {
-                let editableMessage = try XCTUnwrap(
-                    context.managedObjectWithEntityName(
-                        Message.Attributes.entityName,
-                        matching: [:]
-                    ) as? Message
-                )
-
-                editableMessage.body = "updated body"
-
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
-                }
-            } catch {
-                XCTFail("\(error)")
-            }
-        }
-
-        let updatedBody = retainedContext.performAndWait {
-            createdMessage.body
-        }
-
-        XCTAssertEqual(updatedBody, "updated body")
     }
 
     /*

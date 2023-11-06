@@ -116,19 +116,16 @@ class ContactGroupsDataService: Service, ContactGroupsProviderProtocol {
                 } else {
                     if response.returnedCode != nil {
                         // successfully deleted on the server
-                        self.coreDataService.enqueueOnRootSavingContext { context in
-                            let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
-                            if let label = label {
-                                context.delete(label)
-                            }
-                            do {
-                                try context.save()
+                        do {
+                            try self.coreDataService.write { context in
+                                let label = Label.labelForLabelID(groupID, inManagedObjectContext: context)
+                                if let label = label {
+                                    context.delete(label)
+                                }
                                 seal.fulfill(())
-                                return
-                            } catch {
-                                seal.reject(error)
-                                return
                             }
+                        } catch {
+                            seal.reject(error)
                         }
                     } else {
                         seal.reject(NSError.unableToParseResponse(response))
