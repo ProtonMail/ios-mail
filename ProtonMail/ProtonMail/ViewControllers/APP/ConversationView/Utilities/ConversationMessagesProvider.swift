@@ -53,6 +53,7 @@ class ConversationMessagesProvider: NSObject, NSFetchedResultsControllerDelegate
 
     func stopObserve() {
         fetchedController.delegate = nil
+        conversationUpdate = nil
     }
 
     func listenToCoreDataUpdates() {
