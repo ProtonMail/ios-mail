@@ -731,9 +731,6 @@ class ConversationViewModel {
             blockMarkReadIfNeeded = true
             conversationService.markAsUnread(conversationIDs: [conversation.conversationID],
                                              labelID: labelId) { [weak self] result in
-                defer {
-                    self?.blockMarkReadIfNeeded = false
-                }
                 guard let self = self else { return }
                 if (try? result.get()) != nil {
                     self.eventsService.fetchEvents(labelID: self.labelId)
