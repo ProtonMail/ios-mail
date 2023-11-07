@@ -83,12 +83,6 @@ final class AppleContactParser: AppleContactParserProtocol {
                 self.delegate?.dismissImportPopup()
                 return
             }
-            if !CoreDataService.useNewApproach {
-                CoreDataService.shouldIgnoreContactUpdateInMainContext = true
-            }
-            defer {
-                CoreDataService.shouldIgnoreContactUpdateInMainContext = false
-            }
             self.delegate?.disableCancel()
             self.upload(parsedResults: parsedResults)
         }
