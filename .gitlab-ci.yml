@@ -7,6 +7,7 @@ variables:
   ATLAS_LINK_APP: mail
   ATLAS_DEPLOY_ENV: "true"
   TEST_DATA_URL: "https://$GIT_CI_USERNAME:$PRIVATE_TOKEN_GITLAB_API_PROTON_CI@$GITLAB_HTTPS"
+  GIT_SUBMODULE_STRATEGY: recursive
 
 stages:
   - i18n

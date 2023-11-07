@@ -19,6 +19,9 @@
                   "Resource/Localization",
                   "Siri/IntentHandler.swift",
                   "Siri/Intents.intentdefinition"
+               ],
+               "excludes": [
+                  "Resource/APP_share/DOMPurify"
                ]
             },
             {
@@ -29,6 +32,12 @@
                   "**/*.md",
                   "debug/SettingsEnvironment.bundle",
                   "enterprise/SettingsEnvironment.bundle"
+               ]
+            },
+            {
+               "path": "ProtonMail/Resource/APP_share/DOMPurify/dist",
+               "includes": [
+                  "purify.min.js"
                ]
             }
          ],
