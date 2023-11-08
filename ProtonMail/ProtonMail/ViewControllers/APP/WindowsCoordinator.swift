@@ -28,20 +28,13 @@ import ProtonCoreUIFoundations
 import ProtonMailAnalytics
 import SafariServices
 
-// sourcery: mock
-protocol WindowsCoordinatorDelegate: AnyObject {
-    func setupCoreData() throws
-    func loadUserDataAfterUnlock()
-}
-
 final class WindowsCoordinator {
     typealias Dependencies = MenuCoordinator.Dependencies
     & LockCoordinator.Dependencies
+    & HasLaunchService
     & HasAppAccessResolver
     & HasDarkModeCacheProtocol
     & HasNotificationCenter
-
-    weak var delegate: WindowsCoordinatorDelegate?
 
     private lazy var snapshot = Snapshot()
     private var launchedByNotification = false
@@ -129,7 +122,7 @@ final class WindowsCoordinator {
 
     private func start(completion: (() -> Void)?) {
         Task {
-            await loadAppMainKeyAndSetupCoreData()
+            await startLaunch()
             evaluateAccessAtLaunch()
             subscribeToDeniedAccess()
             completion?()
@@ -153,15 +146,10 @@ final class WindowsCoordinator {
         }
     }
 
-    private func loadAppMainKeyAndSetupCoreData() async {
-        _ = dependencies.keyMaker.mainKeyExists()
+    private func startLaunch() async {
         do {
-            try delegate?.setupCoreData()
+            try dependencies.launchService.start()
         } catch {
-            SystemLogger.log(error: error)
-            Analytics.shared.sendError(
-                .assertionFailure(message: "\(error)", caller: #function, file: #file, line: #line)
-            )
             await showCoreDataSetUpFailAlert(error: error)
             fatalError("Core Data set up failed")
         }
@@ -211,7 +199,6 @@ final class WindowsCoordinator {
     }
 
     private func handleAppAccessGrantedAtLaunch() {
-        delegate?.loadUserDataAfterUnlock()
         go(dest: .appWindow)
     }
 

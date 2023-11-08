@@ -46,11 +46,13 @@ final class GlobalContainerTests: XCTestCase {
         _ = strongRefToContainer?.lastUpdatedStore
         _ = strongRefToContainer?.lockCacheStatus
         _ = strongRefToContainer?.lockPreventor
+        _ = strongRefToContainer?.launchService
         _ = strongRefToContainer?.notificationCenter
         _ = strongRefToContainer?.pinCodeProtection
         _ = strongRefToContainer?.pinCodeVerifier
         _ = strongRefToContainer?.pushUpdater
         _ = strongRefToContainer?.queueManager
+        _ = strongRefToContainer?.setupCoreDataService
         _ = strongRefToContainer?.unlockManager
         _ = strongRefToContainer?.userDefaults
         _ = strongRefToContainer?.usersManager

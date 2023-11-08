@@ -23,7 +23,9 @@
 import UIKit
 
 final class ShareUnlockCoordinator {
-    typealias Dependencies = ShareUnlockViewController.Dependencies  & ShareUnlockPinCodeModelImpl.Dependencies
+    typealias Dependencies = ShareUnlockViewController.Dependencies
+    & ShareUnlockPinCodeModelImpl.Dependencies
+    & HasUsersManager
 
     private var viewController: ShareUnlockViewController?
     private var nextCoordinator: SharePinUnlockCoordinator?

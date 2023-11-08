@@ -96,6 +96,12 @@ class GlobalContainer: ManagedContainer {
         }
     }
 
+    var launchServiceFactory: Factory<LaunchService> {
+        self {
+            Launch(dependencies: self)
+        }
+    }
+
     var notificationCenterFactory: Factory<NotificationCenter> {
         self {
             .default
@@ -125,6 +131,12 @@ class GlobalContainer: ManagedContainer {
             let messageQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.name)
             let miscQueue = PMPersistentQueue(queueName: PMPersistentQueue.Constant.miscName)
             return QueueManager(messageQueue: messageQueue, miscQueue: miscQueue)
+        }
+    }
+
+    var setupCoreDataServiceFactory: Factory<SetupCoreDataService> {
+        self {
+            SetupCoreData(dependencies: self)
         }
     }
 

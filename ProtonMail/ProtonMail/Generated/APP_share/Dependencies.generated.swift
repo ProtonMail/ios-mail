@@ -195,6 +195,22 @@ extension UserContainer: HasLockPreventor {
     }
 }
 
+protocol HasLaunchService {
+    var launchService: LaunchService { get }
+}
+
+extension GlobalContainer: HasLaunchService {
+    var launchService: LaunchService {
+        launchServiceFactory()
+    }
+}
+
+extension UserContainer: HasLaunchService {
+    var launchService: LaunchService {
+        globalContainer.launchService
+    }
+}
+
 protocol HasNotificationCenter {
     var notificationCenter: NotificationCenter { get }
 }
@@ -272,6 +288,22 @@ extension GlobalContainer: HasQueueManager {
 extension UserContainer: HasQueueManager {
     var queueManager: QueueManager {
         globalContainer.queueManager
+    }
+}
+
+protocol HasSetupCoreDataService {
+    var setupCoreDataService: SetupCoreDataService { get }
+}
+
+extension GlobalContainer: HasSetupCoreDataService {
+    var setupCoreDataService: SetupCoreDataService {
+        setupCoreDataServiceFactory()
+    }
+}
+
+extension UserContainer: HasSetupCoreDataService {
+    var setupCoreDataService: SetupCoreDataService {
+        globalContainer.setupCoreDataService
     }
 }
 
