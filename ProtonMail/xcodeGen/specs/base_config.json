@@ -33,6 +33,9 @@
       "LifetimeTracker": {
          "url": "https://github.com/krzysztofzablocki/LifetimeTracker.git",
          "version": "1.8.1"
+      },
+      "ProtonCoreEventsLoop": {
+         "path": "ProtonCoreEventsLoop"
       }
    },
    "configFiles": {

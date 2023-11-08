@@ -1,32 +1,34 @@
 {
-  "pins" : [
-    {
-      "identity" : "difference",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzysztofzablocki/Difference.git",
-      "state" : {
-        "revision" : "f627d00718033c3d7888acd5f4e3524a843db1cf",
-        "version" : "1.0.2"
+  "object": {
+    "pins": [
+      {
+        "package": "Difference",
+        "repositoryURL": "https://github.com/krzysztofzablocki/Difference.git",
+        "state": {
+          "branch": null,
+          "revision": "f627d00718033c3d7888acd5f4e3524a843db1cf",
+          "version": "1.0.2"
+        }
+      },
+      {
+        "package": "Factory",
+        "repositoryURL": "https://github.com/hmlongco/Factory.git",
+        "state": {
+          "branch": null,
+          "revision": "061b3afe0358a0da7ce568f8272c847910be3dd7",
+          "version": "2.2.0"
+        }
+      },
+      {
+        "package": "LifetimeTracker",
+        "repositoryURL": "https://github.com/krzysztofzablocki/LifetimeTracker.git",
+        "state": {
+          "branch": null,
+          "revision": "9dcdd75511e82c59977466960833a6478a2de278",
+          "version": "1.8.1"
+        }
       }
-    },
-    {
-      "identity" : "factory",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/hmlongco/Factory.git",
-      "state" : {
-        "revision" : "061b3afe0358a0da7ce568f8272c847910be3dd7",
-        "version" : "2.2.0"
-      }
-    },
-    {
-      "identity" : "lifetimetracker",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/krzysztofzablocki/LifetimeTracker.git",
-      "state" : {
-        "revision" : "9dcdd75511e82c59977466960833a6478a2de278",
-        "version" : "1.8.1"
-      }
-    }
-  ],
-  "version" : 2
+    ]
+  },
+  "version": 1
 }

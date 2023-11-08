@@ -45,6 +45,9 @@
             },
             {
                "package": "Factory"
+            },
+            {
+               "package": "ProtonCoreEventsLoop"
             }
          ],
          "preBuildScripts": [

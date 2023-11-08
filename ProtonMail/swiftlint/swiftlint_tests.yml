@@ -52,3 +52,4 @@ excluded:
   - ${PWD}/PushService
   - ${PWD}/Share
   - ${PWD}/Siri
+  - ${PWD}/ProtonCoreEventsLoop
