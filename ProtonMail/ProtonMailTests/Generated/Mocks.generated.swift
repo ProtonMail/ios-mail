@@ -705,6 +705,19 @@ class MockLastUpdatedStoreProtocol: LastUpdatedStoreProtocol {
 
 }
 
+class MockLaunchService: LaunchService {
+    @ThrowingFuncStub(MockLaunchService.start) var startStub
+    func start() throws {
+        try startStub()
+    }
+
+    @FuncStub(MockLaunchService.loadUserDataAfterUnlock) var loadUserDataAfterUnlockStub
+    func loadUserDataAfterUnlock() {
+        loadUserDataAfterUnlockStub()
+    }
+
+}
+
 class MockLocalMessageDataServiceProtocol: LocalMessageDataServiceProtocol {
     @FuncStub(MockLocalMessageDataServiceProtocol.cleanMessage) var cleanMessageStub
     func cleanMessage(removeAllDraft: Bool, cleanBadgeAndNotifications: Bool) {
@@ -1123,6 +1136,14 @@ class MockSettingsLockUIProtocol: SettingsLockUIProtocol {
 
 }
 
+class MockSetupCoreDataService: SetupCoreDataService {
+    @ThrowingFuncStub(MockSetupCoreDataService.setup) var setupStub
+    func setup() throws {
+        try setupStub()
+    }
+
+}
+
 class MockSideMenuProtocol: SideMenuProtocol {
     @PropertyStub(\MockSideMenuProtocol.menuViewController, initialGet: nil) var menuViewControllerStub
     var menuViewController: UIViewController! {
@@ -1325,19 +1346,6 @@ class MockViewModeUpdater: ViewModeUpdater {
     @FuncStub(MockViewModeUpdater.update) var updateStub
     func update(viewMode: ViewMode, completion: ((Swift.Result<ViewMode?, Error>) -> Void)?) {
         updateStub(viewMode, completion)
-    }
-
-}
-
-class MockWindowsCoordinatorDelegate: WindowsCoordinatorDelegate {
-    @ThrowingFuncStub(MockWindowsCoordinatorDelegate.setupCoreData) var setupCoreDataStub
-    func setupCoreData() throws {
-        try setupCoreDataStub()
-    }
-
-    @FuncStub(MockWindowsCoordinatorDelegate.loadUserDataAfterUnlock) var loadUserDataAfterUnlockStub
-    func loadUserDataAfterUnlock() {
-        loadUserDataAfterUnlockStub()
     }
 
 }

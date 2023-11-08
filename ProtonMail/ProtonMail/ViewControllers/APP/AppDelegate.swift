@@ -43,9 +43,7 @@ import UserNotifications
 @UIApplicationMain
 class AppDelegate: UIResponder {
     lazy var coordinator: WindowsCoordinator = {
-        let coordinator = WindowsCoordinator(dependencies: dependencies)
-        coordinator.delegate = self
-        return coordinator
+        WindowsCoordinator(dependencies: dependencies)
     }()
     private var currentState: UIApplication.State = .active
 
@@ -292,7 +290,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
 }
 
-extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
+extension AppDelegate: UnlockManagerDelegate {
     func isUserStored() -> Bool {
         let users = dependencies.usersManager
         if users.hasUserName() || users.hasUsers() {
@@ -327,19 +325,7 @@ extension AppDelegate: UnlockManagerDelegate, WindowsCoordinatorDelegate {
     }
 
     func loadUserDataAfterUnlock() {
-        let usersManager = dependencies.usersManager
-        usersManager.run()
-        usersManager.tryRestore()
-
-        DispatchQueue.global().async {
-            usersManager.users.forEach {
-                $0.messageService.injectTransientValuesIntoMessages()
-            }
-        }
-
-        if let primaryUser = usersManager.firstUser {
-            primaryUser.payments.storeKitManager.retryProcessingAllPendingTransactions(finishHandler: nil)
-        }
+        dependencies.launchService.loadUserDataAfterUnlock()
     }
 }
 

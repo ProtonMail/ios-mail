@@ -62,13 +62,7 @@ final class ShareAppCoordinator {
 
 extension ShareAppCoordinator: UnlockManagerDelegate {
     func setupCoreData() throws {
-        try CoreDataStore.shared.initialize()
-
-        sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
-        sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        let lastUpdatedStore = dependencies.lastUpdatedStore
-        sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
-        sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
+        // this is done in LaunchService
     }
 
     func isUserStored() -> Bool {
@@ -99,8 +93,6 @@ extension ShareAppCoordinator: UnlockManagerDelegate {
     }
 
     func loadUserDataAfterUnlock() {
-        let usersManager = dependencies.usersManager
-        usersManager.run()
-        usersManager.tryRestore()
+        dependencies.launchService.loadUserDataAfterUnlock()
     }
 }
