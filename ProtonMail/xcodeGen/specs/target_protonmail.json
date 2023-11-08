@@ -71,6 +71,9 @@
             },
             {
                "package": "LifetimeTracker"
+            },
+            {
+               "package": "ProtonCoreEventsLoop"
             }
          ],
          "preBuildScripts": [
