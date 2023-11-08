@@ -41,7 +41,7 @@ protocol UserCachedStatusProvider: AnyObject {
     func removeIsCheckSpaceDisabledStatus(uid: String)
 }
 
-final class UserCachedStatus: SharedCacheBase, UserCachedStatusProvider {
+final class UserCachedStatus: UserCachedStatusProvider {
     struct Key {
 
         // pin code
@@ -104,18 +104,16 @@ final class UserCachedStatus: SharedCacheBase, UserCachedStatusProvider {
     /// Record the last draft messageID, so the app can do delete / restore
     var lastDraftMessageID: String?
 
-    private let keychain: Keychain
+    private let keychain: Keychain    
+    let userDefaults: UserDefaults
 
-    init(keychain: Keychain) {
-        self.keychain = keychain
-
-        super.init()
+    convenience init(keychain: Keychain) {
+        self.init(userDefaults: UserDefaults(suiteName: Constants.AppGroup)!, keychain: keychain)
     }
 
     init(userDefaults: UserDefaults, keychain: Keychain) {
         self.keychain = keychain
-
-        super.init(userDefaults: userDefaults)
+        self.userDefaults = userDefaults
     }
 
     func getDefaultSignaureSwitchStatus(uid: String) -> Bool? {
@@ -231,19 +229,19 @@ extension UserCachedStatus: AttachmentMetadataStrippingProtocol {
 extension UserCachedStatus: DarkModeCacheProtocol {
     var darkModeStatus: DarkModeStatus {
         get {
-            if getShared().object(forKey: Key.darkModeFlag) == nil {
+            if userDefaults.object(forKey: Key.darkModeFlag) == nil {
                 return .followSystem
             }
-            let raw = getShared().integer(forKey: Key.darkModeFlag)
+            let raw = userDefaults.integer(forKey: Key.darkModeFlag)
             if let status = DarkModeStatus(rawValue: raw) {
                 return status
             } else {
-                getShared().removeObject(forKey: Key.darkModeFlag)
+                userDefaults.removeObject(forKey: Key.darkModeFlag)
                 return .followSystem
             }
         }
         set {
-            setValue(newValue.rawValue, forKey: Key.darkModeFlag)
+            userDefaults.set(newValue.rawValue, forKey: Key.darkModeFlag)
         }
     }
 }
@@ -252,13 +250,13 @@ extension UserCachedStatus: DarkModeCacheProtocol {
 extension UserCachedStatus {
     var browser: LinkOpener {
         get {
-            guard let raw = keychain.string(forKey: Key.browser) ?? getShared().string(forKey: Key.browser) else {
+            guard let raw = keychain.string(forKey: Key.browser) ?? userDefaults.string(forKey: Key.browser) else {
                 return .safari
             }
             return LinkOpener(rawValue: raw) ?? .safari
         }
         set {
-            getShared().setValue(newValue.rawValue, forKey: Key.browser)
+            userDefaults.setValue(newValue.rawValue, forKey: Key.browser)
             keychain.set(newValue.rawValue, forKey: Key.browser)
         }
     }
@@ -267,10 +265,10 @@ extension UserCachedStatus {
 extension UserCachedStatus: ServicePlanDataStorage {
     var paymentMethods: [PaymentMethod]? {
         get {
-            getShared().decodableValue(forKey: Key.paymentMethods)
+            userDefaults.decodableValue(forKey: Key.paymentMethods)
         }
         set {
-            getShared().setEncodableValue(newValue, forKey: Key.paymentMethods)
+            userDefaults.setEncodableValue(newValue, forKey: Key.paymentMethods)
         }
     }
     /* TODO NOTE: this should be updated alongside Payments integration */
@@ -281,37 +279,37 @@ extension UserCachedStatus: ServicePlanDataStorage {
 
     var servicePlansDetails: [Plan]? {
         get {
-            getShared().decodableValue(forKey: Key.servicePlans)
+            userDefaults.decodableValue(forKey: Key.servicePlans)
         }
         set {
-            getShared().setEncodableValue(newValue, forKey: Key.servicePlans)
+            userDefaults.setEncodableValue(newValue, forKey: Key.servicePlans)
         }
     }
 
     var defaultPlanDetails: Plan? {
         get {
-            getShared().decodableValue(forKey: Key.defaultPlanDetails)
+            userDefaults.decodableValue(forKey: Key.defaultPlanDetails)
         }
         set {
-            getShared().setEncodableValue(newValue, forKey: Key.defaultPlanDetails)
+            userDefaults.setEncodableValue(newValue, forKey: Key.defaultPlanDetails)
         }
     }
 
     var currentSubscription: Subscription? {
         get {
-            getShared().decodableValue(forKey: Key.currentSubscription)
+            userDefaults.decodableValue(forKey: Key.currentSubscription)
         }
         set {
-            getShared().setEncodableValue(newValue, forKey: Key.currentSubscription)
+            userDefaults.setEncodableValue(newValue, forKey: Key.currentSubscription)
         }
     }
     
     var paymentsBackendStatusAcceptsIAP: Bool {
         get {
-            return self.getShared().bool(forKey: Key.isIAPAvailableOnBE)
+            return self.userDefaults.bool(forKey: Key.isIAPAvailableOnBE)
         }
         set {
-            self.setValue(newValue, forKey: Key.isIAPAvailableOnBE)
+            userDefaults.set(newValue, forKey: Key.isIAPAvailableOnBE)
         }
     }
 
@@ -320,37 +318,37 @@ extension UserCachedStatus: ServicePlanDataStorage {
 extension UserCachedStatus: SwipeActionCacheProtocol {
     var leftToRightSwipeActionType: SwipeActionSettingType? {
         get {
-            if let value = self.getShared().int(forKey: Key.leftToRightSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
+            if let value = self.userDefaults.int(forKey: Key.leftToRightSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
                 return action
             } else {
                 return nil
             }
         }
         set {
-            self.setValue(newValue?.rawValue, forKey: Key.leftToRightSwipeAction)
+            userDefaults.set(newValue?.rawValue, forKey: Key.leftToRightSwipeAction)
         }
     }
 
     var rightToLeftSwipeActionType: SwipeActionSettingType? {
         get {
-            if let value = self.getShared().int(forKey: Key.rightToLeftSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
+            if let value = self.userDefaults.int(forKey: Key.rightToLeftSwipeAction), let action = SwipeActionSettingType(rawValue: value) {
                 return action
             } else {
                 return nil
             }
         }
         set {
-            self.setValue(newValue?.rawValue, forKey: Key.rightToLeftSwipeAction)
+            userDefaults.set(newValue?.rawValue, forKey: Key.rightToLeftSwipeAction)
         }
     }
 
     func initialSwipeActionIfNeeded(leftToRight: Int, rightToLeft: Int) {
-        if self.getShared().int(forKey: Key.leftToRightSwipeAction) == nil,
+        if self.userDefaults.int(forKey: Key.leftToRightSwipeAction) == nil,
            let action = SwipeActionSettingType.convertFromServer(rawValue: leftToRight) {
             self.leftToRightSwipeActionType = action
         }
 
-        if self.getShared().int(forKey: Key.rightToLeftSwipeAction) == nil,
+        if self.userDefaults.int(forKey: Key.rightToLeftSwipeAction) == nil,
            let action = SwipeActionSettingType.convertFromServer(rawValue: rightToLeft) {
             self.rightToLeftSwipeActionType = action
         }
@@ -375,19 +373,19 @@ extension UserCachedStatus: SystemUpTimeProtocol {
 
     var localServerTime: TimeInterval {
         get {
-            return TimeInterval(self.getShared().double(forKey: Key.localServerTime))
+            userDefaults.double(forKey: Key.localServerTime)
         }
         set {
-            self.setValue(newValue, forKey: Key.localServerTime)
+            userDefaults.set(newValue, forKey: Key.localServerTime)
         }
     }
 
     var localSystemUpTime: TimeInterval {
         get {
-            getShared().double(forKey: Key.localSystemUpTime)
+            userDefaults.double(forKey: Key.localSystemUpTime)
         }
         set {
-            self.setValue(newValue, forKey: Key.localSystemUpTime)
+            userDefaults.set(newValue, forKey: Key.localSystemUpTime)
         }
     }
 
@@ -429,25 +427,25 @@ extension UserCachedStatus: MobileSignatureCacheProtocol {
     }
 
     func getEncryptedMobileSignature(userID: String) -> Data? {
-        let rawData = getShared().dictionary(forKey: Key.UserWithLocalMobileSignature)
+        let rawData = userDefaults.dictionary(forKey: Key.UserWithLocalMobileSignature)
         return rawData?[userID] as? Data
     }
 
     func setEncryptedMobileSignature(userID: String, signatureData: Data) {
         var dataToSave: [String: Any] = [:]
-        if var rawData = getShared().dictionary(forKey: Key.UserWithLocalMobileSignature) {
+        if var rawData = userDefaults.dictionary(forKey: Key.UserWithLocalMobileSignature) {
             rawData[userID] = signatureData
             dataToSave = rawData
         } else {
             dataToSave[userID] = signatureData
         }
-        getShared().set(dataToSave, forKey: Key.UserWithLocalMobileSignature)
+        userDefaults.set(dataToSave, forKey: Key.UserWithLocalMobileSignature)
     }
 
     func removeEncryptedMobileSignature(userID: String) {
-        if var signatureData = getShared().dictionary(forKey: Key.UserWithLocalMobileSignature) {
+        if var signatureData = userDefaults.dictionary(forKey: Key.UserWithLocalMobileSignature) {
             signatureData.removeValue(forKey: userID)
-            getShared().set(signatureData, forKey: Key.UserWithLocalMobileSignature)
+            userDefaults.set(signatureData, forKey: Key.UserWithLocalMobileSignature)
         }
     }
 }
