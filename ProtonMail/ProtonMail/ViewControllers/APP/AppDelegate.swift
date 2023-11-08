@@ -96,11 +96,7 @@ extension AppDelegate: UIApplicationDelegate {
         let appCache = AppCacheService(dependencies: dependencies)
         appCache.restoreCacheWhenAppStart()
 
-        sharedServices.add(UserCachedStatus.self, for: userCachedStatus)
-
         let coreKeyMaker = dependencies.keyMaker
-        sharedServices.add(Keymaker.self, for: coreKeyMaker)
-        sharedServices.add(KeyMakerProtocol.self, for: coreKeyMaker)
 
         if ProcessInfo.isRunningUnitTests {
             // swiftlint:disable:next force_try
@@ -111,23 +107,13 @@ extension AppDelegate: UIApplicationDelegate {
         }
 
         let usersManager = dependencies.usersManager
-        let queueManager = dependencies.queueManager
-        sharedServices.add(QueueManager.self, for: queueManager)
-
         let unlockManager = dependencies.unlockManager
         unlockManager.delegate = self
 
         springboardShortcutsService = .init(dependencies: dependencies)
 
-        sharedServices.add(UsersManager.self, for: usersManager)
-        sharedServices.add(PushNotificationService.self, for: dependencies.pushService)
-        sharedServices.add(NotificationCenter.self, for: NotificationCenter.default)
-
 #if DEBUG
-        if ProcessInfo.isRunningUnitTests {
-            sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
-            sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        } else {
+        if !ProcessInfo.isRunningUnitTests {
             let lifetimeTrackerIntegration = LifetimeTrackerDashboardIntegration(
                 visibility: .visibleWithIssuesDetected,
                 style: .circular
@@ -316,12 +302,6 @@ extension AppDelegate: UnlockManagerDelegate {
 
     func setupCoreData() throws {
         try CoreDataStore.shared.initialize()
-
-        sharedServices.add(CoreDataContextProviderProtocol.self, for: CoreDataService.shared)
-        sharedServices.add(CoreDataService.self, for: CoreDataService.shared)
-        let lastUpdatedStore = dependencies.lastUpdatedStore
-        sharedServices.add(LastUpdatedStore.self, for: lastUpdatedStore)
-        sharedServices.add(LastUpdatedStoreProtocol.self, for: lastUpdatedStore)
     }
 
     func loadUserDataAfterUnlock() {

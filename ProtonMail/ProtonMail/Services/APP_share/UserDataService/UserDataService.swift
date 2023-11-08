@@ -31,7 +31,7 @@ import ProtonCoreServices
 import ProtonCoreKeymaker
 
 /// Stores information related to the user
-class UserDataService: Service {
+class UserDataService {
     private let apiService: APIService
     private let coreKeyMaker: KeyMakerProtocol
     private let userDataServiceQueue = DispatchQueue.init(label: "UserDataServiceQueue", qos: .utility)

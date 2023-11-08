@@ -56,7 +56,6 @@ final class MailboxViewModelTests: XCTestCase {
         try super.setUpWithError()
 
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        sharedServices.add(CoreDataService.self, for: coreDataService)
 
         globalContainer = .init()
         globalContainer.contextProviderFactory.register { self.coreDataService }

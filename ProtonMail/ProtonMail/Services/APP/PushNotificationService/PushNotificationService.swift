@@ -24,7 +24,7 @@ import Foundation
 import ProtonCoreServices
 import UserNotifications
 
-final class PushNotificationService: NSObject, Service, PushNotificationServiceProtocol {
+final class PushNotificationService: NSObject, PushNotificationServiceProtocol {
     /// Pending actions because the app has been just launched and can't make a request yet
     private var deviceTokenRegistrationPendingUnlock: String?
     private var notificationActionPendingUnlock: PendingNotificationAction?

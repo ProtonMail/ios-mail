@@ -56,7 +56,6 @@ final class MailboxViewControllerTests: XCTestCase {
 
         userID = .init(String.randomString(20))
         coreDataService = CoreDataService(container: MockCoreDataStore.testPersistentContainer)
-        sharedServices.add(CoreDataService.self, for: coreDataService)
 
         globalContainer = .init()
         globalContainer.contextProviderFactory.register { self.coreDataService }

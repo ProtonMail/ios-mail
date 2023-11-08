@@ -27,7 +27,7 @@ import UIKit
 import LifetimeTracker
 #endif
 
-class CoreDataService: Service, CoreDataContextProviderProtocol {
+class CoreDataService: CoreDataContextProviderProtocol {
     static let shared = CoreDataService(container: CoreDataStore.shared.container)
 
     private let container: NSPersistentContainer

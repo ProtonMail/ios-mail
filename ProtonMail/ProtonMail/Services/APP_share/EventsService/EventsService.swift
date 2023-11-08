@@ -34,7 +34,7 @@ enum EventsFetchingStatus {
     case running
 }
 
-protocol EventsFetching: EventsServiceProtocol, Service {
+protocol EventsFetching: EventsServiceProtocol {
     var status: EventsFetchingStatus { get }
     func start()
     func pause()
@@ -65,7 +65,7 @@ protocol EventsServiceProtocol: AnyObject {
     func processEvents(conversationCounts: [[String: Any]]?)
 }
 
-final class EventsService: Service, EventsFetching {
+final class EventsService: EventsFetching {
     typealias Dependencies = AnyObject
     & HasCoreDataContextProviderProtocol
     & HasFeatureFlagCache

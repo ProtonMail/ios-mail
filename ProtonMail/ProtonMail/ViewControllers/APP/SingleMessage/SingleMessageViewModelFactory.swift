@@ -112,6 +112,7 @@ class SingleMessageComponentsFactory {
     & HasFetchMessageDetail
     & HasQueueManager
     & HasUnblockSender
+    & HasUserCachedStatus
 
     private let dependencies: Dependencies
 
@@ -140,7 +141,7 @@ class SingleMessageComponentsFactory {
 
         let messageInfoProvider = MessageInfoProvider(
             message: context.message,
-            systemUpTime: sharedServices.userCachedStatus,
+            systemUpTime: dependencies.userCachedStatus,
             labelID: context.labelId,
             dependencies: dependencies,
             highlightedKeywords: highlightedKeywords

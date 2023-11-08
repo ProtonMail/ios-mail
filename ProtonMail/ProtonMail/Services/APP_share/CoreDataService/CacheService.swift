@@ -25,7 +25,7 @@ import Groot
 import ProtonCoreDataModel
 
 // sourcery: mock
-protocol CacheServiceProtocol: Service {
+protocol CacheServiceProtocol {
     func addNewLabel(serverResponse: [String: Any], objectID: String?, completion: (() -> Void)?)
     func updateLabel(serverReponse: [String: Any], completion: (() -> Void)?)
     func deleteLabels(objectIDs: [NSManagedObjectID], completion: (() -> Void)?)
