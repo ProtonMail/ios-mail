@@ -18,7 +18,7 @@
 import ProtonCoreNetworking
 
 struct DeviceAPI {
-    static let path = "/devices"
+    static let path = "/core/v4/devices"
 
     /// Describes the environment in which push notifications
     /// have to be sent so the backend knows what certificate to use.

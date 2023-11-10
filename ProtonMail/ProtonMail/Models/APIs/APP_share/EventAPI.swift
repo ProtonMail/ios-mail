@@ -25,7 +25,7 @@ import ProtonCoreNetworking
 
 struct EventAPI {
     /// base event api path
-    static let path: String = "/events"
+    static let path: String = "/core/v4/events"
 }
 
 final class EventCheckRequest: Request {
@@ -36,7 +36,7 @@ final class EventCheckRequest: Request {
     }
 
     var path: String {
-        let url = "/core/v4\(EventAPI.path)/\(eventID)"
+        let url = "\(EventAPI.path)/\(eventID)"
         var urlComponents = URLComponents(string: url)
         urlComponents?.queryItems = [
             URLQueryItem(name: "ConversationCounts", value: "1"),
