@@ -87,10 +87,9 @@ final class LocalConversationUpdater {
         conversationIDs: [ConversationID],
         labelToRemove: LabelID?,
         labelToAdd: LabelID?,
-        isFolder: Bool,
-        completion: ((Result<Void, Error>) -> Void)?
-    ) {
-        dependencies.contextProvider.performAndWaitOnRootSavingContext { context in
+        isFolder: Bool
+    ) throws {
+        try dependencies.contextProvider.write { context in
             for conversationID in conversationIDs {
                 guard let conversation = Conversation
                     .conversationForConversationID(conversationID.rawValue, inManagedObjectContext: context) else {
@@ -171,7 +170,6 @@ final class LocalConversationUpdater {
                     }
                 }
             }
-            self.save(context: context, completion: completion)
         }
     }
 

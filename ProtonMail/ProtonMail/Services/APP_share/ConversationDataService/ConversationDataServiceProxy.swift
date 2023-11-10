@@ -169,7 +169,7 @@ extension ConversationDataServiceProxy {
 
     func label(conversationIDs: [ConversationID],
                as labelID: LabelID,
-               completion: ((Result<Void, Error>) -> Void)?) {
+               completion: (@Sendable (Result<Void, Error>) -> Void)?) {
         editLabels(
             conversationIDs: conversationIDs,
             actionToQueue: .label(
@@ -187,7 +187,7 @@ extension ConversationDataServiceProxy {
 
     func unlabel(conversationIDs: [ConversationID],
                  as labelID: LabelID,
-                 completion: ((Result<Void, Error>) -> Void)?) {
+                 completion: (@Sendable (Result<Void, Error>) -> Void)?) {
         editLabels(
             conversationIDs: conversationIDs,
             actionToQueue: .unlabel(
@@ -209,20 +209,35 @@ extension ConversationDataServiceProxy {
         labelToRemove: LabelID?,
         labelToAdd: LabelID?,
         isFolder: Bool,
-        completion: ((Result<Void, Error>) -> Void)?
+        completion: (@Sendable (Result<Void, Error>) -> Void)?
     ) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
         self.queue(actionToQueue, isConversation: true)
-        localConversationUpdater.editLabels(conversationIDs: conversationIDs,
-                                            labelToRemove: labelToRemove,
-                                            labelToAdd: labelToAdd,
-                                            isFolder: isFolder) { [weak self] result in
-            guard let self = self else { return }
-            self.refreshContextLabels(for: conversationIDs)
-            completion?(result)
+
+        Task.detached {
+            let result: Swift.Result<Void, Error>
+            do {
+                try self.localConversationUpdater.editLabels(
+                    conversationIDs: conversationIDs,
+                    labelToRemove: labelToRemove,
+                    labelToAdd: labelToAdd,
+                    isFolder: isFolder
+                )
+                self.refreshContextLabels(for: conversationIDs)
+
+                result = .success(())
+            } catch {
+                result = .failure(error)
+            }
+
+            if let completion {
+                DispatchQueue.main.async {
+                    completion(result)
+                }
+            }
         }
     }
 
@@ -230,7 +245,7 @@ extension ConversationDataServiceProxy {
               from previousFolderLabel: LabelID,
               to nextFolderLabel: LabelID,
               callOrigin: String?,
-              completion: ((Result<Void, Error>) -> Void)?) {
+              completion: (@Sendable (Result<Void, Error>) -> Void)?) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
