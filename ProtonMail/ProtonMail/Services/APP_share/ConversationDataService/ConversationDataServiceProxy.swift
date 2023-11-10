@@ -61,9 +61,9 @@ final class ConversationDataServiceProxy: ConversationProvider {
 
 private extension ConversationDataServiceProxy {
     // this is a workaround for the fact that just updating the ContextLabel won't trigger MailboxViewController's controllerDidChangeContent
-    func updateContextLabelsInViewContext(for conversationIDs: [ConversationID], completion: @escaping () -> Void) {
+    func refreshContextLabels(for conversationIDs: [ConversationID]) {
         do {
-            contextProvider.performAndWaitOnRootSavingContext { context in
+            try contextProvider.write { context in
                 let conversations = self.fetchLocalConversations(
                     withIDs: NSMutableSet(array: conversationIDs.map(\.rawValue)),
                     in: context
@@ -76,10 +76,9 @@ private extension ConversationDataServiceProxy {
                         }
                     context.refresh(conversation, mergeChanges: true)
                 }
-                completion()
             }
         } catch {
-            completion()
+            PMAssertionFailure(error)
         }
     }
 }
@@ -130,9 +129,8 @@ extension ConversationDataServiceProxy {
                    isConversation: true)
         localConversationUpdater.delete(conversationIDs: conversationIDs) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
-            }
+            self.refreshContextLabels(for: conversationIDs)
+            completion?(result)
         }
     }
 
@@ -146,9 +144,8 @@ extension ConversationDataServiceProxy {
                                       asUnread: false,
                                       labelID: labelID) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
-            }
+            self.refreshContextLabels(for: conversationIDs)
+            completion?(result)
         }
     }
 
@@ -165,9 +162,8 @@ extension ConversationDataServiceProxy {
                                       asUnread: true,
                                       labelID: labelID) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
-            }
+            self.refreshContextLabels(for: conversationIDs)
+            completion?(result)
         }
     }
 
@@ -188,9 +184,8 @@ extension ConversationDataServiceProxy {
                                             labelToAdd: labelID,
                                             isFolder: false) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
-            }
+            self.refreshContextLabels(for: conversationIDs)
+            completion?(result)
         }
     }
 
@@ -211,9 +206,8 @@ extension ConversationDataServiceProxy {
                                             labelToAdd: nil,
                                             isFolder: false) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
-            }
+            self.refreshContextLabels(for: conversationIDs)
+            completion?(result)
         }
     }
 
@@ -245,9 +239,8 @@ extension ConversationDataServiceProxy {
                                             labelToAdd: nextFolderLabel,
                                             isFolder: true) { [weak self] result in
             guard let self = self else { return }
-            self.updateContextLabelsInViewContext(for: conversationIDs) {
-                completion?(result)
-            }
+            self.refreshContextLabels(for: conversationIDs)
+            completion?(result)
         }
     }
 
