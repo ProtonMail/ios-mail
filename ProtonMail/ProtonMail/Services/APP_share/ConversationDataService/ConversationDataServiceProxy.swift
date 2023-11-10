@@ -170,41 +170,56 @@ extension ConversationDataServiceProxy {
     func label(conversationIDs: [ConversationID],
                as labelID: LabelID,
                completion: ((Result<Void, Error>) -> Void)?) {
-        guard !conversationIDs.isEmpty else {
-            completion?(.failure(ConversationError.emptyConversationIDS))
-            return
-        }
-        self.queue(.label(currentLabelID: labelID.rawValue,
-                          shouldFetch: nil,
-                          itemIDs: conversationIDs.map(\.rawValue),
-                          objectIDs: []),
-                   isConversation: true)
-        localConversationUpdater.editLabels(conversationIDs: conversationIDs,
-                                            labelToRemove: nil,
-                                            labelToAdd: labelID,
-                                            isFolder: false) { [weak self] result in
-            guard let self = self else { return }
-            self.refreshContextLabels(for: conversationIDs)
-            completion?(result)
-        }
+        editLabels(
+            conversationIDs: conversationIDs,
+            actionToQueue: .label(
+                currentLabelID: labelID.rawValue,
+                shouldFetch: nil,
+                itemIDs: conversationIDs.map(\.rawValue),
+                objectIDs: []
+            ),
+            labelToRemove: nil,
+            labelToAdd: labelID,
+            isFolder: false,
+            completion: completion
+        )
     }
 
     func unlabel(conversationIDs: [ConversationID],
                  as labelID: LabelID,
                  completion: ((Result<Void, Error>) -> Void)?) {
+        editLabels(
+            conversationIDs: conversationIDs,
+            actionToQueue: .unlabel(
+                currentLabelID: labelID.rawValue,
+                shouldFetch: nil,
+                itemIDs: conversationIDs.map(\.rawValue),
+                objectIDs: []
+            ),
+            labelToRemove: labelID,
+            labelToAdd: nil,
+            isFolder: false,
+            completion: completion
+        )
+    }
+
+    private func editLabels(
+        conversationIDs: [ConversationID],
+        actionToQueue: MessageAction,
+        labelToRemove: LabelID?,
+        labelToAdd: LabelID?,
+        isFolder: Bool,
+        completion: ((Result<Void, Error>) -> Void)?
+    ) {
         guard !conversationIDs.isEmpty else {
             completion?(.failure(ConversationError.emptyConversationIDS))
             return
         }
-        self.queue(.unlabel(currentLabelID: labelID.rawValue,
-                            shouldFetch: nil,
-                            itemIDs: conversationIDs.map(\.rawValue),
-                            objectIDs: []),
-                   isConversation: true)
+        self.queue(actionToQueue, isConversation: true)
         localConversationUpdater.editLabels(conversationIDs: conversationIDs,
-                                            labelToRemove: labelID,
-                                            labelToAdd: nil,
-                                            isFolder: false) { [weak self] result in
+                                            labelToRemove: labelToRemove,
+                                            labelToAdd: labelToAdd,
+                                            isFolder: isFolder) { [weak self] result in
             guard let self = self else { return }
             self.refreshContextLabels(for: conversationIDs)
             completion?(result)
@@ -229,19 +244,19 @@ extension ConversationDataServiceProxy {
             return
         }
 
-        self.queue(.folder(nextLabelID: nextFolderLabel.rawValue,
-                           shouldFetch: true,
-                           itemIDs: filteredConversationIDs.map(\.rawValue),
-                           objectIDs: []),
-                   isConversation: true)
-        localConversationUpdater.editLabels(conversationIDs: filteredConversationIDs,
-                                            labelToRemove: previousFolderLabel,
-                                            labelToAdd: nextFolderLabel,
-                                            isFolder: true) { [weak self] result in
-            guard let self = self else { return }
-            self.refreshContextLabels(for: conversationIDs)
-            completion?(result)
-        }
+        editLabels(
+            conversationIDs: filteredConversationIDs,
+            actionToQueue: .folder(
+                nextLabelID: nextFolderLabel.rawValue,
+                shouldFetch: true,
+                itemIDs: filteredConversationIDs.map(\.rawValue),
+                objectIDs: []
+            ),
+            labelToRemove: previousFolderLabel,
+            labelToAdd: nextFolderLabel,
+            isFolder: true,
+            completion: completion
+        )
     }
 
     func cleanAll() {
