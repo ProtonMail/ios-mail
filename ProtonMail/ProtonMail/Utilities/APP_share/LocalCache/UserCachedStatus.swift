@@ -179,9 +179,11 @@ final class UserCachedStatus: UserCachedStatusProvider {
     }
 
     func cleanAllData() {
+        SystemLogger.log(message: "deleting user defaults and keychain")
         let protectedUserDefaultsKeys: [String] = [
             Key.initialUserLoggedInVersion,
-            UserDefaultsKeys.lastTourVersion.name
+            UserDefaultsKeys.lastTourVersion.name,
+            "latest_core_data_cache" // CoreDataCache.Key.coreDataVersion
         ]
 
         for key in userDefaults.dictionaryRepresentation().keys where !protectedUserDefaultsKeys.contains(key) {
