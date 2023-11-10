@@ -206,7 +206,7 @@ public enum MailAnalyticsErrorEvent: Error {
         case .conversationViewEndUpdatesCrash:
             return "Conversation view endUpdates() crash"
         case let .assertionFailure(message, _, _, _):
-            return "Asssertion failure: \(message)"
+            return "Assertion failure: \(message)"
         case .userObjectsJsonDecodingError(_, let type):
             return "Error while decoding user object: \(type)"
         case .userObjectsJsonEncodingError(_, let type):

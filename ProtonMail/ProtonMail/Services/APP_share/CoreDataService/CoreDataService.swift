@@ -174,10 +174,13 @@ class CoreDataService: CoreDataContextProviderProtocol {
     private func checkForOverlyLongExecutionIfOnMainThread(startTime: Date, caller: StaticString = #function) {
         let elapsedTime = Date().timeIntervalSince(startTime)
         if Thread.isMainThread && elapsedTime > 0.2 {
-            SystemLogger.log(
-                message: "\(self).\(caller) took too long on the main thread",
-                category: .coreData,
-                isError: true
+            Analytics.shared.sendError(
+                .assertionFailure(
+                    message: "\(self).\(caller) took too long on the main thread", 
+                    caller: caller, 
+                    file: #file,
+                    line: #line
+                )
             )
         }
     }
