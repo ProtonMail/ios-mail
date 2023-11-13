@@ -42,6 +42,10 @@ class MailboxRobotInterface: CoreElements {
         if XCUIApplication().exists {
             table(id.mailboxTableViewIdentifier).firstMatch().waitUntilExists(time: 20)
             activityIndicator().waitUntilGone()
+
+            // the spinner might still be visible (and blocking the UI) when a cell that we want to tap appears
+            // TODO: find if there's a better way to wait until the cell can be tapped
+            sleep(3)
         }
     }
     
