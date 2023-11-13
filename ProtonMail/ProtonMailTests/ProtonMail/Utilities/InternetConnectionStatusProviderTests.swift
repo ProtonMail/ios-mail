@@ -84,7 +84,7 @@ class InternetConnectionStatusProviderTests: XCTestCase {
         XCTAssertEqual(connectionStatusReceiver.connectionStatusHasChangedStub.callCounter, 3)
     }
 
-    func testHasConnection_whenConnectedViaVPN_andPingFails_itShouldReturnNotConnected() {
+    func testHasConnection_whenConnectedViaVPN_andBothPingTargetsAreFailed_itShouldReturnNotConnected() {
         sut.register(receiver: connectionStatusReceiver, fireWhenRegister: false)
 
         let expectation1 = expectation(description: "status updated")
@@ -98,22 +98,25 @@ class InternetConnectionStatusProviderTests: XCTestCase {
             let expected: [NWInterface.InterfaceType] = [.wifi, .other]
             return expected.contains(interface)
         }
-        session.dataTaskStub.bodyIs { _, request, handler in
+        session.dataStub.bodyIs { call, request in
+            let error = NSError(domain: "pm.test", code: -999)
             guard let link = request.url?.absoluteString else {
                 XCTFail("Link shouldn't be nil")
-                return MockURLSessionDataTaskProtocol()
+                throw error
             }
-            XCTAssertEqual(link, "https://status.proton.me")
-            let error = NSError(domain: "pm.test", code: -999)
-            handler(nil, nil, error)
-            return MockURLSessionDataTaskProtocol()
+            if call == 1 {
+                XCTAssertEqual(link, "https://mail-api.proton.me/core/v4/tests/ping")
+            } else {
+                XCTAssertEqual(link, "https://status.proton.me")
+            }
+            throw error
         }
 
         updateConnection(isConnected: true, interfaces: [.other])
         wait(for: [expectation1], timeout: 5)
     }
 
-    func testHasConnection_whenConnectedViaVPN_andPingSucceeds_itShouldReturnConnected() {
+    func testHasConnection_whenConnectedViaVPN_andServerPingSucceeds_itShouldReturnConnected() {
         sut.register(receiver: connectionStatusReceiver, fireWhenRegister: false)
         let expectation1 = expectation(description: "status updated")
         connectionStatusReceiver.connectionStatusHasChangedStub.bodyIs { _, newStatus in
@@ -126,17 +129,77 @@ class InternetConnectionStatusProviderTests: XCTestCase {
             let expected: [NWInterface.InterfaceType] = [.wifi, .other]
             return expected.contains(interface)
         }
-        session.dataTaskStub.bodyIs { _, request, handler in
+        session.dataStub.bodyIs { call, request in
             guard let link = request.url?.absoluteString else {
                 XCTFail("Link shouldn't be nil")
-                return MockURLSessionDataTaskProtocol()
+                throw NSError(domain: "pm.test", code: -999)
             }
-            XCTAssertEqual(link, "https://status.proton.me")
-            handler(nil, nil, nil)
-            return MockURLSessionDataTaskProtocol()
+            XCTAssertEqual(link, "https://mail-api.proton.me/core/v4/tests/ping")
+            return (Data(), URLResponse())
         }
 
         updateConnection(isConnected: true, interfaces: [.other, .wifi])
+        wait(for: [expectation1], timeout: 5)
+    }
+
+    func testHasConnection_whenConnectedViaVPN_serverPingFailedButStatusPageSuccess_itShouldReturnConnected() {
+        sut.register(receiver: connectionStatusReceiver, fireWhenRegister: false)
+
+        let expectation1 = expectation(description: "status updated")
+        connectionStatusReceiver.connectionStatusHasChangedStub.bodyIs { _, newStatus in
+            XCTAssertEqual(newStatus, .connected)
+            expectation1.fulfill()
+        }
+
+        mockNWPath.pathStatusStub.fixture = .satisfied
+        mockNWPath.usesInterfaceTypeStub.bodyIs { _, interface in
+            let expected: [NWInterface.InterfaceType] = [.wifi, .other]
+            return expected.contains(interface)
+        }
+        session.dataStub.bodyIs { call, request in
+            let error = NSError(domain: "pm.test", code: -999)
+            guard let link = request.url?.absoluteString else {
+                XCTFail("Link shouldn't be nil")
+                throw error
+            }
+            if call == 1 {
+                XCTAssertEqual(link, "https://mail-api.proton.me/core/v4/tests/ping")
+                throw error
+            } else {
+                XCTAssertEqual(link, "https://status.proton.me")
+                return (Data(), URLResponse())
+            }
+        }
+
+        updateConnection(isConnected: true, interfaces: [.other])
+        wait(for: [expectation1], timeout: 5)
+    }
+
+    func testHasConnection_whenConnectedViaVPN_receiveTooManyRedirection_itShouldReturnConnected() {
+        sut.register(receiver: connectionStatusReceiver, fireWhenRegister: false)
+
+        let expectation1 = expectation(description: "status updated")
+        connectionStatusReceiver.connectionStatusHasChangedStub.bodyIs { _, newStatus in
+            XCTAssertEqual(newStatus, .connected)
+            expectation1.fulfill()
+        }
+
+        mockNWPath.pathStatusStub.fixture = .satisfied
+        mockNWPath.usesInterfaceTypeStub.bodyIs { _, interface in
+            let expected: [NWInterface.InterfaceType] = [.wifi, .other]
+            return expected.contains(interface)
+        }
+        session.dataStub.bodyIs { call, request in
+            let error = NSError(domain: "pm.test", code: -1007)
+            guard let link = request.url?.absoluteString else {
+                XCTFail("Link shouldn't be nil")
+                throw error
+            }
+            XCTAssertEqual(link, "https://mail-api.proton.me/core/v4/tests/ping")
+            throw error
+        }
+
+        updateConnection(isConnected: true, interfaces: [.other])
         wait(for: [expectation1], timeout: 5)
     }
 }

@@ -51,6 +51,7 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
     private let pathMonitor: ConnectionMonitor
     private let session: URLSessionProtocol
     private let notificationCenter: NotificationCenter
+    private let doh: DoHInterface
     private let monitorQueue = DispatchQueue(label: "me.proton.mail.connection.status.monitor", qos: .userInitiated)
 
     private let delegatesStore: NSHashTable<AnyObject> = NSHashTable.weakObjects()
@@ -80,11 +81,13 @@ final class InternetConnectionStatusProvider: InternetConnectionStatusProviderPr
     init(
         connectionMonitor: ConnectionMonitor = NWPathMonitor(),
         session: URLSessionProtocol = URLSession.shared,
-        notificationCenter: NotificationCenter = NotificationCenter.default
+        notificationCenter: NotificationCenter = NotificationCenter.default,
+        doh: DoHInterface = BackendConfiguration.shared.doh
     ) {
         self.pathMonitor = connectionMonitor
         self.notificationCenter = notificationCenter
         self.session = session
+        self.doh = doh
         startObservation()
     }
 
@@ -150,7 +153,7 @@ extension InternetConnectionStatusProvider {
             // The reliable way to detect connection status is calling API
             DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
                 self.log(message: "Check connection when vpn is enabled")
-                self.status = self.hasConnectionWhenVPNISEnabled() ? .connected : .notConnected
+                self.checkConnectionWhenVPNIsEnabled()
             }
             return
         } else if path.usesInterfaceType(.wifi) {
@@ -230,26 +233,58 @@ extension InternetConnectionStatusProvider {
         pathMonitor.cancel()
     }
 
-    private func hasConnectionWhenVPNISEnabled() -> Bool {
-        guard let url = URL(string: "https://status.proton.me") else {
-            PMAssertionFailure("wrong url")
-            return false
+    private func checkConnectionWhenVPNIsEnabled() {
+        Task {
+            let hasConnection: Bool
+
+            defer {
+                monitorQueue.async {
+                    self.status = hasConnection ? .connected : .notConnected
+                }
+            }
+            guard
+                let serverPingURL = URL(string: "\(doh.getCurrentlyUsedHostUrl())/core/v4/tests/ping"),
+                let statusPageURL = URL(string: "https://status.proton.me")
+            else {
+                PMAssertionFailure("wrong url")
+                hasConnection = false
+                return
+            }
+
+            let tooManyRedirection = -1_007
+            do {
+                _ = try await session.data(for: makeHeadRequestFor(url: serverPingURL))
+                log(message: "Ping proton server success", isError: false)
+                hasConnection = true
+                return
+            } catch {
+                log(message: "Ping proton server failed: \(error)", isError: true)
+                if error.bestShotAtReasonableErrorCode == tooManyRedirection {
+                    hasConnection = true
+                    return
+                }
+            }
+
+            do {
+                _ = try await session.data(for: makeHeadRequestFor(url: statusPageURL))
+                log(message: "Ping proton status page success", isError: false)
+                hasConnection = true
+                return
+            } catch {
+                log(message: "Ping proton status page failed: \(error)", isError: true)
+                if error.bestShotAtReasonableErrorCode == tooManyRedirection {
+                    hasConnection = true
+                    return
+                }
+            }
+            hasConnection = false
         }
+    }
+
+    private func makeHeadRequestFor(url: URL) -> URLRequest {
         var request = URLRequest(url: url, timeoutInterval: 40)
         request.httpMethod = "HEAD"
-        let semaphore = DispatchSemaphore(value: 0)
-        var isSuccess = true
-        session.dataTask(withRequest: request) { [weak self] _, _, error in
-            if let error = error {
-                self?.log(message: "Ping API failed, \(error)", isError: true)
-                isSuccess = false
-            } else {
-                self?.log(message: "Ping API success")
-            }
-            semaphore.signal()
-        }.resume()
-        _ = semaphore.wait(timeout: DispatchTime.distantFuture)
-        return isSuccess
+        return request
     }
 
     #if DEBUG
