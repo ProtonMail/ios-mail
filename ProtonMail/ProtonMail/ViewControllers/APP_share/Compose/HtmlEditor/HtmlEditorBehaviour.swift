@@ -347,12 +347,10 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
 
         case .moveCaret:
             guard let coursorPositionX = userInfo["cursorX"] as? Double,
-                let coursorPositionY = userInfo["cursorY"] as? Double,
-                let newHeight = userInfo["height"] as? Double else {
+                let coursorPositionY = userInfo["cursorY"] as? Double else {
                 assert(false, "Broken message: lack important data")
                 return
             }
-            self.contentHeight = CGFloat(newHeight)
             self.delegate?.caretMovedTo(CGPoint(x: coursorPositionX, y: coursorPositionY))
 
         case .removeImage:
