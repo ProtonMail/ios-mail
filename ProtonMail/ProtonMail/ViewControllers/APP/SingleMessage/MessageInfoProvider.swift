@@ -41,9 +41,9 @@ private enum EmbeddedDownloadStatus {
 // swiftlint:disable:next type_body_length
 final class MessageInfoProvider {
     typealias Dependencies = MessageSenderPGPChecker.Dependencies
-    & HasDarkModeCacheProtocol
     & HasFetchSenderImage
     & HasImageProxy
+    & HasUserDefaults
 
     private(set) var message: MessageEntity {
         willSet {
@@ -332,7 +332,7 @@ final class MessageInfoProvider {
     }
 
     var shouldDisplayRenderModeOptions: Bool {
-            if dependencies.darkModeCache.darkModeStatus == .forceOff {
+            if dependencies.userDefaults[.darkModeStatus] == .forceOff {
                 return false
             }
             let keywords = ["color-scheme", "supported-color-schemes", #"color-scheme:\s?\S{0,}\s?dark"#]
@@ -622,7 +622,7 @@ extension MessageInfoProvider {
             contentLoadingType = .none
         }
 
-        let css = bodyParts?.darkModeCSS(darkModeCache: dependencies.darkModeCache)
+        let css = bodyParts?.darkModeCSS(darkModeStatus: dependencies.userDefaults[.darkModeStatus])
         contents = WebContents(
             body: body.keywordHighlighting.usingCSS(keywords: highlightedKeywords),
             remoteContentMode: remoteContentPolicy,

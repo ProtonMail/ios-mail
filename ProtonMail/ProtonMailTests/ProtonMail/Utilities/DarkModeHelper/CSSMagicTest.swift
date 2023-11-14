@@ -19,21 +19,16 @@ import SwiftSoup
 import XCTest
 @testable import ProtonMail
 
-
-
 final class CSSMagicTest: XCTestCase {
 
     func testCanSupportDarkStyle() {
-        let cache = MockDarkModeCacheProtocol()
         let document = CSSMagic.parse(htmlString: "")
-        var level = CSSMagic.darkStyleSupportLevel(document: document, darkModeCache: cache)
+        var level = CSSMagic.darkStyleSupportLevel(document: document, darkModeStatus: .followSystem)
         XCTAssertEqual(level, DarkStyleSupportLevel.protonSupport)
 
-        cache.darkModeStatusStub.fixture = .forceOff
-        level = CSSMagic.darkStyleSupportLevel(document: document, darkModeCache: cache)
+        level = CSSMagic.darkStyleSupportLevel(document: document, darkModeStatus: .forceOff)
         XCTAssertEqual(level, DarkStyleSupportLevel.notSupport)
 
-        cache.darkModeStatusStub.fixture = .followSystem
         var htmls = [
             #"<html><head> <meta name="supported-color-schemes" content="[light? || dark? || <ident>?]* || only?"></head><body></body></html>"#,
             #"<html><head> <meta name="color-scheme" content="[light? || dark? || <ident>?]* || only?"></head><body></body></html>"#,
@@ -41,7 +36,7 @@ final class CSSMagicTest: XCTestCase {
         ]
         for html in htmls {
             let document = CSSMagic.parse(htmlString: html)
-            let level = CSSMagic.darkStyleSupportLevel(document: document, darkModeCache: cache)
+            let level = CSSMagic.darkStyleSupportLevel(document: document, darkModeStatus: .followSystem)
             XCTAssertEqual(level, DarkStyleSupportLevel.nativeSupport)
         }
         htmls = [
@@ -51,7 +46,7 @@ final class CSSMagicTest: XCTestCase {
         ]
         for html in htmls {
             let document = CSSMagic.parse(htmlString: html)
-            let level = CSSMagic.darkStyleSupportLevel(document: document, darkModeCache: cache)
+            let level = CSSMagic.darkStyleSupportLevel(document: document, darkModeStatus: .followSystem)
             XCTAssertEqual(level, DarkStyleSupportLevel.protonSupport)
         }
     }

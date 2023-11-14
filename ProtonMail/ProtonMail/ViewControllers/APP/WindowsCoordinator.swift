@@ -33,7 +33,6 @@ final class WindowsCoordinator {
     & LockCoordinator.Dependencies
     & HasLaunchService
     & HasAppAccessResolver
-    & HasDarkModeCacheProtocol
     & HasNotificationCenter
 
     private lazy var snapshot = Snapshot()
@@ -59,7 +58,7 @@ final class WindowsCoordinator {
 
     private(set) var currentWindow: UIWindow? {
         didSet {
-            switch dependencies.darkModeCache.darkModeStatus {
+            switch dependencies.userDefaults[.darkModeStatus] {
             case .followSystem:
                 self.currentWindow?.overrideUserInterfaceStyle = .unspecified
             case .forceOn:
@@ -635,7 +634,7 @@ extension WindowsCoordinator {
 
     @objc
     private func updateUserInterfaceStyle() {
-        switch dependencies.darkModeCache.darkModeStatus {
+        switch dependencies.userDefaults[.darkModeStatus] {
         case .followSystem:
             currentWindow?.overrideUserInterfaceStyle = .unspecified
         case .forceOff:

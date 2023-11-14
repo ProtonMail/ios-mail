@@ -18,15 +18,17 @@
 import Foundation
 
 extension UserDefaultsKeys {
-    static let areContactsCached = UserDefaultsKey<Int>(name: "isContactsCached", defaultValue: 0)
+    static let areContactsCached = plainKey<Int>(named: "isContactsCached", defaultValue: 0)
 
-    static let isCombineContactOn = UserDefaultsKey<Bool>(name: "combine_contact_flag", defaultValue: false)
+    static let darkModeStatus = rawRepresentableKey(named: "dark_mode_flag", defaultValue: DarkModeStatus.followSystem)
 
-    static let isDohOn = UserDefaultsKey<Bool>(name: "doh_flag", defaultValue: true)
+    static let isCombineContactOn = plainKey<Bool>(named: "combine_contact_flag", defaultValue: false)
 
-    static let isPMMEWarningDisabled = UserDefaultsKey<Bool>(name: "isPM_MEWarningDisabledKey", defaultValue: false)
+    static let isDohOn = plainKey(named: "doh_flag", defaultValue: true)
 
-    static let lastTourVersion = UserDefaultsKey<Int?>(name: "last_tour_viersion", defaultValue: nil)
+    static let isPMMEWarningDisabled = plainKey(named: "isPM_MEWarningDisabledKey", defaultValue: false)
 
-    static let pinFailedCount = UserDefaultsKey<Int>(name: "lastPinFailedTimes", defaultValue: 0)
+    static let lastTourVersion = plainKey(named: "last_tour_viersion", ofType: Int.self)
+
+    static let pinFailedCount = plainKey(named: "lastPinFailedTimes", defaultValue: 0)
 }

@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,19 +17,11 @@
 
 import Foundation
 
-enum DarkModeStatus: Int, CaseIterable {
-    case followSystem
-    case forceOn
-    case forceOff
+protocol OptionalUserDefaultsKey {
+    associatedtype ValueType
 
-    var titleOfSetting: String {
-        switch self {
-        case .followSystem:
-            return LocalString._settings_dark_mode_title_follow_system
-        case .forceOn:
-            return LocalString._settings_dark_mode_title_force_on
-        case .forceOff:
-            return LocalString._settings_dark_mode_title_force_off
-        }
-    }
+    init(name: String)
+
+    func readValue(from userDefaults: UserDefaults) -> ValueType?
+    func writeValue(_ value: ValueType?, to userDefaults: UserDefaults)
 }

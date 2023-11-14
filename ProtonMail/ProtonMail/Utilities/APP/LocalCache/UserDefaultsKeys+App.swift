@@ -15,31 +15,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCorePayments
 
 extension UserDefaultsKeys {
-    static let cachedServerNotices = UserDefaultsKey<[String]>(name: "cachedServerNotices", defaultValue: [])
+    static let cachedServerNotices = plainKey(named: "cachedServerNotices", defaultValue: [String]())
 
-    static let firstRunDate = UserDefaultsKey<Date?>(name: "firstRunDate", defaultValue: nil)
+    static let firstRunDate = plainKey(named: "firstRunDate", ofType: Date.self)
 
-    static let lastBugReport = UserDefaultsKey<String>(name: "BugReportCache_LastBugReport", defaultValue: "")
+    static let lastBugReport = plainKey(named: "BugReportCache_LastBugReport", defaultValue: "")
 
-    static let referralProgramPromptWasShown = UserDefaultsKey<Bool>(
-        name: "referralProgramPromptWasShown",
-        defaultValue: false
-    )
+    static let referralProgramPromptWasShown = plainKey(named: "referralProgramPromptWasShown", defaultValue: false)
 
-    static let showServerNoticesNextTime = UserDefaultsKey<String>(name: "showServerNoticesNextTime", defaultValue: "0")
+    static let showServerNoticesNextTime = plainKey(named: "showServerNoticesNextTime", defaultValue: "0")
 
     /// It is used to check if the spotlight view should be shown for the user that has a
     /// standard toolbar action setting.
-    static let toolbarCustomizeSpotlightShownUserIds = UserDefaultsKey<[String]>(
-        name: "toolbarCustomizeSpotlightShownUserIds",
-        defaultValue: []
+    static let toolbarCustomizeSpotlightShownUserIds = plainKey(
+        named: "toolbarCustomizeSpotlightShownUserIds",
+        defaultValue: [String]()
     )
 
-    static let toolbarCustomizationInfoBubbleViewIsShown = UserDefaultsKey<Bool>(
-        name: "toolbarCustomizationInfoBubbleViewIsShown",
+    static let toolbarCustomizationInfoBubbleViewIsShown = plainKey(
+        named: "toolbarCustomizationInfoBubbleViewIsShown",
         defaultValue: false
     )
+
+    // MARK: payments
+
+    static let currentSubscription = codableKey(named: "currentSubscription", ofType: Subscription.self)
+    static let defaultPlanDetails = codableKey(named: "defaultPlanDetails", ofType: Plan.self)
+    static let isIAPAvailableOnBE = plainKey(named: "isIAPAvailableOnBE", defaultValue: false)
+    static let paymentMethods = codableKey(named: "paymentMethods", ofType: [PaymentMethod].self)
+    static let servicePlans = codableKey(named: "servicePlans", ofType: [Plan].self)
 }

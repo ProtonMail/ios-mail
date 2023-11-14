@@ -22,9 +22,6 @@
 
 import Foundation
 import ProtonCoreKeymaker
-#if !APP_EXTENSION
-import ProtonCorePayments
-#endif
 
 let userCachedStatus = UserCachedStatus(keychain: KeychainWrapper.keychain)
 
@@ -58,10 +55,6 @@ final class UserCachedStatus: UserCachedStatusProvider {
         static let snoozeConfiguration = "snoozeConfiguration"
 
         // FIX ME: double check if the value belongs to user. move it into user object. 2.0
-        static let servicePlans = "servicePlans"
-        static let currentSubscription = "currentSubscription"
-        static let defaultPlanDetails = "defaultPlanDetails"
-        static let isIAPAvailableOnBE = "isIAPAvailable"
 
         static let metadataStripping = "metadataStripping"
         static let browser = "browser"
@@ -76,7 +69,6 @@ final class UserCachedStatus: UserCachedStatusProvider {
         // Random pin protection
         static let randomPinForProtection = "randomPinForProtection"
 
-        static let paymentMethods = "paymentMethods"
 
         static let initialUserLoggedInVersion = "initialUserLoggedInVersion"
     }
@@ -228,26 +220,6 @@ extension UserCachedStatus: AttachmentMetadataStrippingProtocol {
     }
 }
 
-extension UserCachedStatus: DarkModeCacheProtocol {
-    var darkModeStatus: DarkModeStatus {
-        get {
-            if userDefaults.object(forKey: Key.darkModeFlag) == nil {
-                return .followSystem
-            }
-            let raw = userDefaults.integer(forKey: Key.darkModeFlag)
-            if let status = DarkModeStatus(rawValue: raw) {
-                return status
-            } else {
-                userDefaults.removeObject(forKey: Key.darkModeFlag)
-                return .followSystem
-            }
-        }
-        set {
-            userDefaults.set(newValue.rawValue, forKey: Key.darkModeFlag)
-        }
-    }
-}
-
 #if !APP_EXTENSION
 extension UserCachedStatus {
     var browser: LinkOpener {
@@ -262,59 +234,6 @@ extension UserCachedStatus {
             keychain.set(newValue.rawValue, forKey: Key.browser)
         }
     }
-}
-
-extension UserCachedStatus: ServicePlanDataStorage {
-    var paymentMethods: [PaymentMethod]? {
-        get {
-            userDefaults.decodableValue(forKey: Key.paymentMethods)
-        }
-        set {
-            userDefaults.setEncodableValue(newValue, forKey: Key.paymentMethods)
-        }
-    }
-    /* TODO NOTE: this should be updated alongside Payments integration */
-    var credits: Credits? {
-        get { nil }
-        set { }
-    }
-
-    var servicePlansDetails: [Plan]? {
-        get {
-            userDefaults.decodableValue(forKey: Key.servicePlans)
-        }
-        set {
-            userDefaults.setEncodableValue(newValue, forKey: Key.servicePlans)
-        }
-    }
-
-    var defaultPlanDetails: Plan? {
-        get {
-            userDefaults.decodableValue(forKey: Key.defaultPlanDetails)
-        }
-        set {
-            userDefaults.setEncodableValue(newValue, forKey: Key.defaultPlanDetails)
-        }
-    }
-
-    var currentSubscription: Subscription? {
-        get {
-            userDefaults.decodableValue(forKey: Key.currentSubscription)
-        }
-        set {
-            userDefaults.setEncodableValue(newValue, forKey: Key.currentSubscription)
-        }
-    }
-    
-    var paymentsBackendStatusAcceptsIAP: Bool {
-        get {
-            return self.userDefaults.bool(forKey: Key.isIAPAvailableOnBE)
-        }
-        set {
-            userDefaults.set(newValue, forKey: Key.isIAPAvailableOnBE)
-        }
-    }
-
 }
 
 extension UserCachedStatus: SwipeActionCacheProtocol {
