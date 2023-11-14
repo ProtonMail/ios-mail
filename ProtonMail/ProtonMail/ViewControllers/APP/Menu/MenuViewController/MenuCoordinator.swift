@@ -378,13 +378,18 @@ extension MenuCoordinator {
                                 internetConnectionStatusProvider: InternetConnectionStatusProvider.shared,
                                 userDefaults: dependencies.userDefaults)
         )
+
+        let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
+        let fetchAttachmentMetadata = FetchAttachmentMetadata(dependencies: .init(apiService: user.apiService))
         let mailboxVMDependencies = MailboxViewModel.Dependencies(
             fetchMessages: fetchMessages,
             updateMailbox: updateMailbox,
             fetchMessageDetail: user.container.fetchMessageDetail,
             fetchSenderImage: user.container.fetchSenderImage,
             featureFlagCache: dependencies.featureFlagCache,
-            userDefaults: dependencies.userDefaults
+            userDefaults: dependencies.userDefaults,
+            fetchAttachmentUseCase: fetchAttachment,
+            fetchAttachmentMetadataUseCase: fetchAttachmentMetadata
         )
         return mailboxVMDependencies
     }

@@ -56,8 +56,10 @@ class MailboxCoordinatorTests: XCTestCase {
             updateMailbox: MockUpdateMailbox(),
             fetchMessageDetail: MockFetchMessageDetail(stubbedResult: .failure(NSError.badResponse())),
             fetchSenderImage: dummyUser.container.fetchSenderImage,
-            featureFlagCache: featureFlagCache, 
-            userDefaults: testContainer.userDefaults
+            featureFlagCache: featureFlagCache,
+            userDefaults: testContainer.userDefaults,
+            fetchAttachmentUseCase: MockFetchAttachment(),
+            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata()
         )
         viewModelMock = MockMailBoxViewModel(labelID: "",
                                              label: nil,

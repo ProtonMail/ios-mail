@@ -71,6 +71,7 @@ final class UserContainerTests: XCTestCase {
         _ = strongRefToContainer?.featureFlagsDownloadService
         _ = strongRefToContainer?.fetchAndVerifyContacts
         _ = strongRefToContainer?.fetchAttachment
+        _ = strongRefToContainer?.fetchAttachmentMetadata
         _ = strongRefToContainer?.fetchMessageDetail
         _ = strongRefToContainer?.fetchMessageMetaData
         _ = strongRefToContainer?.imageProxy

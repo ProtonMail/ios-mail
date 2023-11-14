@@ -2379,6 +2379,23 @@ extension MailboxViewController: NewMailboxMessageCellDelegate {
             tableView(self.tableView, didSelectRowAt: indexPath)
         }
     }
+
+    func didSelectAttachment(cell: NewMailboxMessageCell, index: Int) {
+        guard let indexPath = tableView.indexPath(for: cell) else {
+            // TODO: (Mustapha) Handle error
+            fatalError()
+        }
+        viewModel.requestPreviewOfAttachment(at: indexPath, index: index) { url in
+            // TODO: (Mustapha) Open file in QuickLook
+        }
+        // TODO: (Mustapha) Show progress
+    }
+}
+
+extension MailboxViewController {
+    func showAttachment(_ id: AttachmentID, at url: URL) {
+        // TODO: (Mustapha) Manage showing/dismissing of QuickLook and cleanup file after dismissal
+    }
 }
 
 extension MailboxViewController {

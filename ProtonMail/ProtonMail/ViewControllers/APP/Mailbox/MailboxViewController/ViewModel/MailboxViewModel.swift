@@ -1120,6 +1120,8 @@ extension MailboxViewModel {
         let checkProtonServerStatus: CheckProtonServerStatusUseCase
         let featureFlagCache: FeatureFlagCache
         let userDefaults: UserDefaults
+        let fetchAttachmentUseCase: FetchAttachmentUseCase
+        let fetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase
 
         init(
             fetchMessages: FetchMessagesUseCase,
@@ -1128,7 +1130,9 @@ extension MailboxViewModel {
             fetchSenderImage: FetchSenderImageUseCase,
             checkProtonServerStatus: CheckProtonServerStatusUseCase = CheckProtonServerStatus(),
             featureFlagCache: FeatureFlagCache,
-            userDefaults: UserDefaults
+            userDefaults: UserDefaults,
+            fetchAttachmentUseCase: FetchAttachmentUseCase,
+            fetchAttachmentMetadataUseCase: FetchAttachmentMetadataUseCase
         ) {
             self.fetchMessages = fetchMessages
             self.updateMailbox = updateMailbox
@@ -1137,6 +1141,8 @@ extension MailboxViewModel {
             self.checkProtonServerStatus = checkProtonServerStatus
             self.featureFlagCache = featureFlagCache
             self.userDefaults = userDefaults
+            self.fetchAttachmentUseCase = fetchAttachmentUseCase
+            self.fetchAttachmentMetadataUseCase = fetchAttachmentMetadataUseCase
         }
     }
 }
@@ -1284,18 +1290,64 @@ extension MailboxViewModel {
 
 // MARK: - Attachment Preview
 extension MailboxViewModel {
-    func isPreviewable(_ mailboxItem: MailboxItem) -> Bool {
-        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID) else {
-            return false
-        }
-        return mailboxItem.isPreviewable
-    }
-
     func previewableAttachments(for mailboxItem: MailboxItem) -> [AttachmentsMetadata] {
-        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID) else {
+        let isSpam = switch mailboxItem {
+            case .message(let message):
+                message.isSpam
+            case .conversation(let conversation):
+                conversation.contextLabelRelations.contains(where: { $0.labelID == Message.Location.spam.labelID })
+        }
+        guard dependencies.featureFlagCache.isFeatureFlag(.attachmentsPreview, enabledForUserWithID: user.userID),
+              !isSpam else {
             return []
         }
         return mailboxItem.previewableAttachments
+    }
+
+    func requestPreviewOfAttachment(at indexPath: IndexPath, index: Int, completion: @escaping ((URL) -> Void)) {
+        guard let mailboxItem = mailboxItem(at: indexPath),
+              let attachmentMetadata = mailboxItem.attachmentsMetadata[safe: index] else {
+            // TODO: (Mustapha) Handle error
+            fatalError()
+        }
+
+        let attId = AttachmentID(attachmentMetadata.id)
+        let userKeys = user.toUserKeys()
+        
+        dependencies.fetchAttachmentMetadataUseCase.execute(params: .init(attachmentID: attId)) 
+        { [weak self] metadataResult in
+            switch metadataResult {
+            case .success(let metadata):
+                self?.dependencies.fetchAttachmentUseCase.execute(params: .init(
+                    attachmentID: attId,
+                    attachmentKeyPacket: nil,
+                    purpose: .onlyDownload,
+                    userKeys: userKeys
+                )) { result in
+                    do {
+                        let attachmentFile = try result.get()
+                        let fileData = try AttachmentDecrypter.decrypt(
+                            fileUrl: attachmentFile.fileUrl,
+                            attachmentKeyPacket: metadata.keyPacket,
+                            userKeys: userKeys
+                        )
+                        let fileName = attachmentMetadata.name.cleaningFilename()
+                        let unencryptedFileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
+                        
+                        try fileData.write(to: unencryptedFileUrl, options: [.atomic])
+                        DispatchQueue.main.async {
+                            completion(unencryptedFileUrl)
+                        }
+                    } catch {
+                        // TODO: (Mustapha) Show error to user (unable to download/decrypt)
+                        SystemLogger.log(error: error)
+                    }
+                }
+            case .failure(let error):
+                // TODO: (Mustapha) Show error to user (unable to fetch metadata for attachment)
+                SystemLogger.log(error: error)
+            }
+        }
     }
 }
 

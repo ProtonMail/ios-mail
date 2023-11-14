@@ -119,6 +119,12 @@ final class UserContainer: ManagedContainer {
         }
     }
 
+    var fetchAttachmentMetadataFactory: Factory<FetchAttachmentMetadata> {
+        self {
+            FetchAttachmentMetadata(dependencies: .init(apiService: self.user.apiService))
+        }
+    }
+
     var fetchMessageDetailFactory: Factory<FetchMessageDetail> {
         self {
             FetchMessageDetail(
