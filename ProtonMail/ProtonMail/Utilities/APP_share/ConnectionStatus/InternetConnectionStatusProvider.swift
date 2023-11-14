@@ -243,19 +243,10 @@ extension InternetConnectionStatusProvider {
                     self.status = hasConnection ? .connected : .notConnected
                 }
             }
-            let serverLink = "\(doh.getCurrentlyUsedHostUrl())/core/v4/tests/ping"
-            guard
-                let serverPingURL = URL(string: serverLink),
-                let statusPageURL = URL(string: Link.protonStatusPage)
-            else {
-                PMAssertionFailure("wrong url, either \(serverLink) or \(Link.protonStatusPage)")
-                hasConnection = false
-                return
-            }
-
             let tooManyRedirectionsError = -1_007
             do {
-                _ = try await session.data(for: makeHeadRequestFor(url: serverPingURL))
+
+                _ = try await session.data(for: PingRequestHelper.protonServer.urlRequest(timeout: 40, doh: doh))
                 hasConnection = true
                 return
             } catch {
@@ -267,7 +258,7 @@ extension InternetConnectionStatusProvider {
             }
 
             do {
-                _ = try await session.data(for: makeHeadRequestFor(url: statusPageURL))
+                _ = try await session.data(for: PingRequestHelper.protonStatus.urlRequest(timeout: 40, doh: doh))
                 hasConnection = true
                 return
             } catch {
@@ -279,12 +270,6 @@ extension InternetConnectionStatusProvider {
             }
             hasConnection = false
         }
-    }
-
-    private func makeHeadRequestFor(url: URL) -> URLRequest {
-        var request = URLRequest(url: url, timeoutInterval: 40)
-        request.httpMethod = "HEAD"
-        return request
     }
 
     #if DEBUG
