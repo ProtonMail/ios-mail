@@ -239,27 +239,28 @@ extension InternetConnectionStatusProvider {
 
             defer {
                 monitorQueue.async {
+                    self.log(message: "Update status according to ping result", isError: false)
                     self.status = hasConnection ? .connected : .notConnected
                 }
             }
+            let serverLink = "\(doh.getCurrentlyUsedHostUrl())/core/v4/tests/ping"
             guard
-                let serverPingURL = URL(string: "\(doh.getCurrentlyUsedHostUrl())/core/v4/tests/ping"),
-                let statusPageURL = URL(string: "https://status.proton.me")
+                let serverPingURL = URL(string: serverLink),
+                let statusPageURL = URL(string: Link.protonStatusPage)
             else {
-                PMAssertionFailure("wrong url")
+                PMAssertionFailure("wrong url, either \(serverLink) or \(Link.protonStatusPage)")
                 hasConnection = false
                 return
             }
 
-            let tooManyRedirection = -1_007
+            let tooManyRedirectionsError = -1_007
             do {
                 _ = try await session.data(for: makeHeadRequestFor(url: serverPingURL))
-                log(message: "Ping proton server success", isError: false)
                 hasConnection = true
                 return
             } catch {
                 log(message: "Ping proton server failed: \(error)", isError: true)
-                if error.bestShotAtReasonableErrorCode == tooManyRedirection {
+                if error.bestShotAtReasonableErrorCode == tooManyRedirectionsError {
                     hasConnection = true
                     return
                 }
@@ -267,12 +268,11 @@ extension InternetConnectionStatusProvider {
 
             do {
                 _ = try await session.data(for: makeHeadRequestFor(url: statusPageURL))
-                log(message: "Ping proton status page success", isError: false)
                 hasConnection = true
                 return
             } catch {
                 log(message: "Ping proton status page failed: \(error)", isError: true)
-                if error.bestShotAtReasonableErrorCode == tooManyRedirection {
+                if error.bestShotAtReasonableErrorCode == tooManyRedirectionsError {
                     hasConnection = true
                     return
                 }
