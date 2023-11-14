@@ -259,7 +259,7 @@ extension IncomingDefaultService {
 
         switch query {
         case .email(let email):
-            return incomingDefaults.filter { $0.email == email }
+            return incomingDefaults.filter { $0.email.localizedCaseInsensitiveCompare(email) == .orderedSame }
         default:
             return incomingDefaults
         }

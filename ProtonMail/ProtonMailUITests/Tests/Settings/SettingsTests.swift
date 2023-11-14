@@ -110,9 +110,8 @@ class SettingsTests : FixtureAuthenticatedTestCase {
             .selectAccount(user.email)
             .blockList()
             .pullDownToRefresh()
-            .verify
-            .expectedTitleIsShown()
-            .emptyListPlaceholderIsShown()
+            .verify.expectedTitleIsShown()
+            .verify.emptyListPlaceholderIsShown()
     }
     
     func testDefaultSwipeActions() {
