@@ -49,12 +49,6 @@ extension GlobalContainer {
         }
     }
 
-    var darkModeCacheFactory: Factory<DarkModeCacheProtocol> {
-        self {
-            self.userCachedStatus
-        }
-    }
-
     var imageProxyCacheFactory: Factory<ImageProxyCacheProtocol> {
         self {
             ImageProxyCache(coreKeyMaker: self.keyMaker)

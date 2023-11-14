@@ -345,7 +345,7 @@ class ComposeViewModel: NSObject {
         let document = CSSMagic.parse(htmlString: html)
         if CSSMagic.darkStyleSupportLevel(
             document: document,
-            darkModeCache: dependencies.darkModeCache
+            darkModeStatus: dependencies.userDefaults[.darkModeStatus]
         ) == .protonSupport {
             supplementCSS = CSSMagic.generateCSSForDarkMode(document: document)
         }
@@ -1177,7 +1177,6 @@ extension ComposeViewModel {
         let contactProvider: ContactProviderProtocol
         let helperDependencies: ComposerMessageHelper.Dependencies
         let fetchMobileSignatureUseCase: FetchMobileSignatureUseCase
-        let darkModeCache: DarkModeCacheProtocol
         let attachmentMetadataStrippingCache: AttachmentMetadataStrippingProtocol
         let userDefaults: UserDefaults
         let notificationCenter: NotificationCenter

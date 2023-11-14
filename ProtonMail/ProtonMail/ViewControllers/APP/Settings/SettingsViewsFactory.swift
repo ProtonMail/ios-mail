@@ -64,7 +64,7 @@ final class SettingsViewsFactory {
     }
 
     func makeDarkModeSettingView() -> SettingsSingleCheckMarkViewController {
-        let viewModel = DarkModeSettingViewModel(darkModeCache: dependencies.userCachedStatus)
+        let viewModel = DarkModeSettingViewModel(userDefaults: dependencies.userDefaults)
         return SettingsSingleCheckMarkViewController(viewModel: viewModel)
     }
 

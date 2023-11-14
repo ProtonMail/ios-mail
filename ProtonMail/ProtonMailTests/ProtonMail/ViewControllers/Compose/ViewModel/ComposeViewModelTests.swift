@@ -76,7 +76,6 @@ final class ComposeViewModelTests: XCTestCase {
                 coreKeyMaker: MockKeyMakerProtocol(),
                 cache: MockMobileSignatureCacheProtocol()
             )),
-            darkModeCache: MockDarkModeCacheProtocol(),
             attachmentMetadataStrippingCache: attachmentMetadataStrippingCache,
             userDefaults: testContainer.userDefaults,
             notificationCenter: notificationCenter

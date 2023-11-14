@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,19 +17,26 @@
 
 import Foundation
 
-enum DarkModeStatus: Int, CaseIterable {
-    case followSystem
-    case forceOn
-    case forceOff
+protocol UserDefaultsStorable {
+}
 
-    var titleOfSetting: String {
-        switch self {
-        case .followSystem:
-            return LocalString._settings_dark_mode_title_follow_system
-        case .forceOn:
-            return LocalString._settings_dark_mode_title_force_on
-        case .forceOff:
-            return LocalString._settings_dark_mode_title_force_off
-        }
-    }
+extension Bool: UserDefaultsStorable {
+}
+
+extension Data: UserDefaultsStorable {
+}
+
+extension Date: UserDefaultsStorable {
+}
+
+extension Double: UserDefaultsStorable {
+}
+
+extension Int: UserDefaultsStorable {
+}
+
+extension String: UserDefaultsStorable {
+}
+
+extension Array: UserDefaultsStorable where Element: UserDefaultsStorable {
 }

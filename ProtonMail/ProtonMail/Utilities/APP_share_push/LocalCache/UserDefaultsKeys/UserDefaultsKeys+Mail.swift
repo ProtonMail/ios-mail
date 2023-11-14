@@ -1,4 +1,4 @@
-// Copyright (c) 2021 Proton AG
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,19 +17,12 @@
 
 import Foundation
 
-enum DarkModeStatus: Int, CaseIterable {
-    case followSystem
-    case forceOn
-    case forceOff
+extension UserDefaultsKeys {
+    static let appRatingPromptedInVersion = plainKey(named: "appRatingPromptedInVersion", ofType: String.self)
 
-    var titleOfSetting: String {
-        switch self {
-        case .followSystem:
-            return LocalString._settings_dark_mode_title_follow_system
-        case .forceOn:
-            return LocalString._settings_dark_mode_title_force_on
-        case .forceOff:
-            return LocalString._settings_dark_mode_title_force_off
-        }
-    }
+    static let failedPushNotificationDecryption = plainKey(named: "failedPushNotificationDecryption", ofType: Bool.self)
+
+    static let isAppRatingEnabled = plainKey(named: "isAppRatingEnabled", defaultValue: false)
+
+    static let primaryUserSessionId = plainKey(named: "primary_user_session_id", ofType: String.self)
 }

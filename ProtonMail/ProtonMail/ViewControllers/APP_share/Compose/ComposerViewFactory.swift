@@ -129,7 +129,6 @@ final class ComposerViewFactory {
                     cache: dependencies.userCachedStatus
                 )
             ),
-            darkModeCache: dependencies.userCachedStatus,
             attachmentMetadataStrippingCache: dependencies.attachmentMetadataStripStatusProvider,
             userDefaults: dependencies.userDefaults,
             notificationCenter: NotificationCenter.default

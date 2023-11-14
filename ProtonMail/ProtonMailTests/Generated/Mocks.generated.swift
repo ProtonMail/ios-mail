@@ -377,19 +377,6 @@ class MockCopyMessageUseCase: CopyMessageUseCase {
 
 }
 
-class MockDarkModeCacheProtocol: DarkModeCacheProtocol {
-    @PropertyStub(\MockDarkModeCacheProtocol.darkModeStatus, initialGet: .followSystem) var darkModeStatusStub
-    var darkModeStatus: DarkModeStatus {
-        get {
-            darkModeStatusStub()
-        }
-        set {
-            darkModeStatusStub(newValue)
-        }
-    }
-
-}
-
 class MockDeviceRegistrationUseCase: DeviceRegistrationUseCase {
     @FuncStub(MockDeviceRegistrationUseCase.execute, initialReturn: [DeviceRegistrationResult]()) var executeStub
     func execute(sessionIDs: [String], deviceToken: String, publicKey: String) -> [DeviceRegistrationResult] {

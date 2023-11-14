@@ -123,7 +123,7 @@ extension UserContainer {
             Payments(
                 inAppPurchaseIdentifiers: Constants.mailPlanIDs,
                 apiService: self.apiService,
-                localStorage: self.userCachedStatus,
+                localStorage: ServicePlanDataStorageImpl(userDefaults: self.userDefaults),
                 canExtendSubscription: true,
                 reportBugAlertHandler: { _ in
                     let link = DeepLink("toBugPop", sender: nil)

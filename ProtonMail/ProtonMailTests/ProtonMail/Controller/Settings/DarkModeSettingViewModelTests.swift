@@ -21,18 +21,18 @@ import XCTest
 class DarkModeSettingViewModelTests: XCTestCase {
 
     var sut: DarkModeSettingViewModel!
-    var stub: MockDarkModeCacheProtocol!
+    private var testContainer: TestContainer!
 
     override func setUp() {
         super.setUp()
-        stub = MockDarkModeCacheProtocol()
-        sut = DarkModeSettingViewModel(darkModeCache: stub)
+        testContainer = .init()
+        sut = DarkModeSettingViewModel(userDefaults: testContainer.userDefaults)
     }
 
     override func tearDown() {
         super.tearDown()
         sut = nil
-        stub = nil
+        testContainer = nil
     }
 
     func testUpdateDarkModeStatus_getNotificationAndSetStatusToFollowSystem() {
@@ -40,13 +40,13 @@ class DarkModeSettingViewModelTests: XCTestCase {
         let expectation1 = XCTNSNotificationExpectation(name: .shouldUpdateUserInterfaceStyle)
         sut.selectItem(indexPath: IndexPath(row: 1, section: 0))
         sut.selectItem(indexPath: IndexPath(row: 1, section: 0))
-        XCTAssertEqual(stub.darkModeStatusStub.setLastArguments?.a1, DarkModeStatus.forceOn)
+        XCTAssertEqual(testContainer.userDefaults[.darkModeStatus], .forceOn)
 
         wait(for: [expectation1], timeout: 1)
     }
 
     func testGetCellShouldShowSelection_followSystem_onlyRow0ReturnTrue() {
-        stub.darkModeStatusStub.fixture = .followSystem
+        testContainer.userDefaults[.darkModeStatus] = .followSystem
 
         XCTAssertTrue(sut.cellShouldShowSelection(of: IndexPath(row: 0, section: 0)))
 
@@ -58,7 +58,7 @@ class DarkModeSettingViewModelTests: XCTestCase {
     }
 
     func testGetCellShouldShowSelection_forceOn_onlyRow1ReturnTrue() {
-        stub.darkModeStatusStub.fixture = .forceOn
+        testContainer.userDefaults[.darkModeStatus] = .forceOn
 
         XCTAssertTrue(sut.cellShouldShowSelection(of: IndexPath(row: 1, section: 0)))
 
@@ -70,7 +70,7 @@ class DarkModeSettingViewModelTests: XCTestCase {
     }
 
     func testGetCellShouldShowSelection_followSystem_onlyRow2ReturnTrue() {
-        stub.darkModeStatusStub.fixture = .forceOff
+        testContainer.userDefaults[.darkModeStatus] = .forceOff
 
         XCTAssertTrue(sut.cellShouldShowSelection(of: IndexPath(row: 2, section: 0)))
 

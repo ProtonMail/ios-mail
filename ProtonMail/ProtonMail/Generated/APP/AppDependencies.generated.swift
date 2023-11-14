@@ -66,22 +66,6 @@ extension UserContainer: HasCleanCache {
     }
 }
 
-protocol HasDarkModeCacheProtocol {
-    var darkModeCache: DarkModeCacheProtocol { get }
-}
-
-extension GlobalContainer: HasDarkModeCacheProtocol {
-    var darkModeCache: DarkModeCacheProtocol {
-        darkModeCacheFactory()
-    }
-}
-
-extension UserContainer: HasDarkModeCacheProtocol {
-    var darkModeCache: DarkModeCacheProtocol {
-        globalContainer.darkModeCache
-    }
-}
-
 protocol HasImageProxyCacheProtocol {
     var imageProxyCache: ImageProxyCacheProtocol { get }
 }
