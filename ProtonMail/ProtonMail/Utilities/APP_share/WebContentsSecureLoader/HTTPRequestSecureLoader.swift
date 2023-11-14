@@ -193,7 +193,30 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
         let css = generateCSS(from: contents)
         let contentLoadingCodeBlock = generateContentSanitizationJSCode(from: contents)
 
+        var removeCSSImportantByJS = ""
+        if !(contents.supplementCSS?.isEmpty ?? true) {
+            removeCSSImportantByJS = """
+                // Remove color related `!important`
+                let styles = document.head.querySelectorAll('style')
+                for (var i = 0, max = styles.length; i < max; i++) {
+                    let style = styles[i]
+                    if (!style.textContent.includes('!important')) { continue }
+                    let css = style.textContent.replace(/((color|bgcolor|background-color|background|border):.*?)\\s{0,}(!important)?;/g, "$1;")
+                    document.head.querySelectorAll('style')[i].textContent = css;
+                }
+
+                let targetDOMs = document.querySelectorAll('*:not(html):not(head):not(body):not(script):not(meta):not(title)')
+                for (var i = 0, max = targetDOMs.length; i < max; i++) {
+                    let dom = targetDOMs[i]
+                    if (!dom.style.cssText.includes('!important')) { continue }
+                    let css = dom.getAttribute('style').replace(/((color|bgcolor|background-color|background|border):.*?)\\s{0,}(!important)?;/g, "$1;")
+                    dom.setAttribute('style', css);
+                }
+            """
+        }
+
         let sanitizeContentJSCode = """
+        \(removeCSSImportantByJS)
         \(contentLoadingCodeBlock)
         var style = document.createElement('style');
         style.type = 'text/css';
@@ -201,7 +224,7 @@ final class HTTPRequestSecureLoader: NSObject, WKScriptMessageHandler {
 
         let wrapper = document.createElement('div');
         wrapper.innerHTML = messageHead;
-        wrapper.insertBefore(style, wrapper.firstChild);
+        wrapper.appendChild(style);
         Array.from(wrapper.children).forEach(item => document.getElementsByTagName('head')[0].appendChild(item))
 
         var metaWidth = document.createElement('meta');
