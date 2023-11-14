@@ -432,7 +432,9 @@ extension MailboxViewControllerTests {
             fetchMessageDetail: mockFetchMessageDetail,
             fetchSenderImage: userContainer.fetchSenderImage,
             featureFlagCache: featureFlagCache,
-            userDefaults: globalContainer.userDefaults
+            userDefaults: globalContainer.userDefaults,
+            fetchAttachmentUseCase: MockFetchAttachment(),
+            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata()
         )
         let label = LabelInfo(name: labelName ?? "")
         viewModel = MailboxViewModel(

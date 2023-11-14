@@ -1446,7 +1446,9 @@ extension MailboxViewModelTests {
                 )
             ),
             featureFlagCache: featureFlagCache,
-            userDefaults: globalContainer.userDefaults
+            userDefaults: globalContainer.userDefaults,
+            fetchAttachmentUseCase: MockFetchAttachment(),
+            fetchAttachmentMetadataUseCase: MockFetchAttachmentMetadata()
         )
         let label = LabelInfo(name: labelName ?? "")
         sut = MailboxViewModel(labelID: LabelID(labelID),

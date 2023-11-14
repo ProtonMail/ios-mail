@@ -762,6 +762,10 @@ extension SearchViewController: NewMailboxMessageCellDelegate {
             tableView(customView.tableView, didSelectRowAt: indexPath)
         }
     }
+
+    func didSelectAttachment(cell: NewMailboxMessageCell, index: Int) {
+        
+    }
 }
 
 // MARK: - UITextFieldDelegate
