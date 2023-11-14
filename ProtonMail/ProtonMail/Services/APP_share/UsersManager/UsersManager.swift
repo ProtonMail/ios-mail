@@ -878,7 +878,7 @@ extension UsersManager {
             if let randomProtection = RandomPinProtection.randomPin {
                 coreKeyMaker.deactivate(randomProtection)
             }
-            dependencies.userCachedStatus.keymakerRandomkey = nil
+            KeychainWrapper.keychain[.keymakerRandomKey] = nil
             RandomPinProtection.removeCyphertext(from: keychain)
             return
         }

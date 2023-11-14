@@ -142,7 +142,7 @@ class SettingsLockViewModelTests: XCTestCase {
         // RandomPinProtection is not easy to mock to be able to assert AppKey functionality
         XCTAssert(mockKeymaker.deactivateStub.capturedArguments[0].a1 is PinProtection)
         XCTAssert(mockKeymaker.activateStub.capturedArguments[0].a1 is BioProtection)
-        XCTAssert(mockLockPreferences.setKeymakerRandomkeyStub.capturedArguments[0].a1 != nil)
+        XCTAssertNotEqual(KeychainWrapper.keychain[.keymakerRandomKey], nil)
         waitForExpectations(timeout: waitTimeout)
     }
 

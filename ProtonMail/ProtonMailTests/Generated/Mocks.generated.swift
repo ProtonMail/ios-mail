@@ -760,11 +760,6 @@ class MockLockCacheStatus: LockCacheStatus {
 }
 
 class MockLockPreferences: LockPreferences {
-    @FuncStub(MockLockPreferences.setKeymakerRandomkey) var setKeymakerRandomkeyStub
-    func setKeymakerRandomkey(key: String?) {
-        setKeymakerRandomkeyStub(key)
-    }
-
     @FuncStub(MockLockPreferences.setLockTime) var setLockTimeStub
     func setLockTime(value: AutolockTimeout) {
         setLockTimeStub(value)
@@ -1261,16 +1256,6 @@ class MockUnsubscribeActionHandler: UnsubscribeActionHandler {
 }
 
 class MockUserCachedStatusProvider: UserCachedStatusProvider {
-    @PropertyStub(\MockUserCachedStatusProvider.keymakerRandomkey, initialGet: nil) var keymakerRandomkeyStub
-    var keymakerRandomkey: String? {
-        get {
-            keymakerRandomkeyStub()
-        }
-        set {
-            keymakerRandomkeyStub(newValue)
-        }
-    }
-
     @PropertyStub(\MockUserCachedStatusProvider.lastDraftMessageID, initialGet: nil) var lastDraftMessageIDStub
     var lastDraftMessageID: String? {
         get {
