@@ -53,13 +53,14 @@ extension AttachmentConvertible {
     }
 }
 
-struct MIMEType {
-    static let defaultMimeType = "application/octet-stream"
+enum MIMEType: String {
+    case ics = "text/calendar"
+    case `default` = "application/octet-stream"
 }
 
 private struct MIMETypeBuilder {
     static func mimeType(from fileExtension: String) -> String {
         let utType = UTType(filenameExtension: fileExtension)
-        return utType?.preferredMIMEType ?? MIMEType.defaultMimeType
+        return utType?.preferredMIMEType ?? MIMEType.default.rawValue
     }
 }
