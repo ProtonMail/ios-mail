@@ -38,12 +38,14 @@ class ComposeAttachmentsAreUploadingTitleView: UIView {
         label.textAlignment = .right
         label.attributedText = LocalString._attachmets_are_uploading_info
             .apply(style: FontManager.Caption.alignment(.right))
+        label.adjustsFontSizeToFitWidth = true
     }
 
     private func setUpLayout() {
         [
             label.topAnchor.constraint(equalTo: topAnchor),
             label.trailingAnchor.constraint(equalTo: trailingAnchor),
+            label.leadingAnchor.constraint(equalTo: leadingAnchor),
             label.bottomAnchor.constraint(equalTo: bottomAnchor)
         ].activate()
     }
