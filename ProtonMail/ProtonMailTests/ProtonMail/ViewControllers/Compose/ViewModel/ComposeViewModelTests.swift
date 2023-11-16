@@ -40,6 +40,7 @@ final class ComposeViewModelTests: XCTestCase {
         super.setUp()
 
         testContainer = .init()
+        LocaleEnvironment.locale = { .enGB }
 
         self.mockCoreDataService = MockCoreDataContextProvider()
         self.apiMock = APIServiceMock()
@@ -102,7 +103,7 @@ final class ComposeViewModelTests: XCTestCase {
         testContainer = nil
         self.mockUIDelegate = nil
         FileManager.default.cleanTemporaryDirectory()
-
+        LocaleEnvironment.restore()
         super.tearDown()
     }
 
@@ -510,6 +511,28 @@ final class ComposeViewModelTests: XCTestCase {
         XCTAssertEqual(newEmail2.displayName, name2)
         XCTAssertEqual(newEmail2.displayEmail, address2)
     }
+
+    // TODO: fix it
+//    func testGetHtmlBody_replyAction_checkTheQuotedDataIsCorrect() {
+//        message.sender = "{\"BimiSelector\":null,\"IsSimpleLogin\":0,\"IsProton\":0,\"Address\":\"oldSender@pm.test\",\"Name\":\"old sender\",\"DisplaySenderImage\":0}"
+//        message.orginalTime = Date(timeIntervalSince1970: 1699509498)
+//        sut.initialize(message: .init(message), action: .reply)
+//        let content = sut.getHtmlBody()
+//        let body = content.body
+//        let expected = " <html><head></head><body>  <div><br></div><div><br></div> <div id=\"protonmail_mobile_signature_block\"><div>Sent from <a href=\"https://proton.me/mail/home\">Proton Mail</a> for iOS</div></div> <div><br></div><div><br></div>On Thu, Nov 9, 2023 at 1:58 PM, old sender &lt;<a href=\"mailto:On Thu, Nov 9, 2023 at 1:58 PM, old sender &lt;<a href=\"mailto:old sender\" class=\"\">oldSender@pm.test</a>&gt; wrote:</div><blockquote class=\"protonmail_quote\" type=\"cite\">  <div><pre></pre></div></blockquote></body></html>"
+//        XCTAssertEqual(body, expected)
+//    }
+
+//    func testGetHtmlBody_forwardAction_checkTheQuotedDataIsCorrect() {
+//        message.title = "I am a subject"
+//        message.orginalTime = Date(timeIntervalSince1970: 1699509498)
+//        message.sender = "{\"BimiSelector\":null,\"IsSimpleLogin\":0,\"IsProton\":0,\"Address\":\"oldSender@pm.test\",\"Name\":\"old sender\",\"DisplaySenderImage\":0}"
+//        sut.initialize(message: .init(message), action: .forward)
+//        let content = sut.getHtmlBody()
+//        let body = content.body
+//        let expected = "<html><head></head><body> <div><br></div><div><br></div> <div id=\"protonmail_mobile_signature_block\"><div>Sent from <a href=\"https://proton.me/mail/home\">Proton Mail</a> for iOS</div></div><div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">---------- Forwarded message ----------<br>From: old sender &lt;<a href=\"mailto:oldSender@pm.test\" class=\"\">oldSender@pm.test</a>&gt;<br>Date: On Thu, Nov 9, 2023 at 1:58 PM<br>Subject: Fw: I am a subject<br></div> <div><pre></pre></div></body></html>"
+//        XCTAssertEqual(body, expected)
+//    }
 }
 
 extension ComposeViewModelTests {
