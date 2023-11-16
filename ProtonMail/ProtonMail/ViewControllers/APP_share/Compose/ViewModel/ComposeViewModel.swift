@@ -65,6 +65,7 @@ class ComposeViewModel: NSObject {
     var body: String = .empty
     var deliveryTime: Date?
     weak var uiDelegate: ComposeUIProtocol?
+    private var originalSender: ContactVO?
 
     var toSelectedContacts: [ContactPickerModelProtocol] = [] {
         didSet { self.contactsChange += 1 }
@@ -183,6 +184,7 @@ class ComposeViewModel: NSObject {
         // get original message if from sent
         let fromSent: Bool = msg?.isSent ?? false
         self.updateContacts(fromSent)
+        originalSender = composerMessageHelper.draft?.senderVO
         initializeSenderAddress()
         observeAddressStatusChangedEvent()
     }
@@ -254,8 +256,8 @@ class ComposeViewModel: NSObject {
             let clockFormat: String = using12hClockFormat() ? Constants.k12HourMinuteFormat : Constants.k24HourMinuteFormat
             let timeFormat = String.localizedStringWithFormat(LocalString._reply_time_desc, clockFormat)
             let timeDesc: String = msg.originalTime?.formattedWith(timeFormat) ?? ""
-            let senderName: String = msg.senderVO?.name ?? "unknown"
-            let senderEmail: String = msg.senderVO?.email ?? "unknown"
+            let senderName: String = originalSender?.name ?? "unknown"
+            let senderEmail: String = originalSender?.email ?? "unknown"
 
             var replyHeader = "\(timeDesc), \(senderName)"
             replyHeader.append(contentsOf: " &lt;<a href=\"mailto:")
@@ -284,11 +286,11 @@ class ComposeViewModel: NSObject {
             let sj = LocalString._composer_subject_field
             let t = "\(LocalString._general_to_label):"
             let c = "\(LocalString._general_cc_label):"
-            let senderName: String = msg.senderVO?.name ?? .empty
-            let senderEmail: String = msg.senderVO?.email ?? .empty
+            let senderName: String = originalSender?.name ?? .empty
+            let senderEmail: String = originalSender?.email ?? .empty
 
             var forwardHeader =
-                "---------- \(fwdm) ----------<br>\(from) \(senderName)&lt;<a href=\"mailto:\(senderEmail)\" class=\"\">\(senderEmail)"
+                "---------- \(fwdm) ----------<br>\(from) \(senderName) &lt;<a href=\"mailto:\(senderEmail)\" class=\"\">\(senderEmail)"
             forwardHeader.append(contentsOf: "</a>&gt;<br>\(dt) \(timeDesc)<br>\(sj) \(msg.title)<br>")
 
             if !msg.recipientList.isEmpty {
