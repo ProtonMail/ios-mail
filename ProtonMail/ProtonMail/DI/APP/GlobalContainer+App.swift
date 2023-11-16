@@ -49,6 +49,12 @@ extension GlobalContainer {
         }
     }
 
+    var deviceContactsFactory: Factory<DeviceContactsProvider> {
+        self {
+            DeviceContacts()
+        }
+    }
+
     var imageProxyCacheFactory: Factory<ImageProxyCacheProtocol> {
         self {
             ImageProxyCache(coreKeyMaker: self.keyMaker)

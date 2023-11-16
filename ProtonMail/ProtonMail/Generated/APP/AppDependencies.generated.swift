@@ -66,6 +66,22 @@ extension UserContainer: HasCleanCache {
     }
 }
 
+protocol HasDeviceContactsProvider {
+    var deviceContacts: DeviceContactsProvider { get }
+}
+
+extension GlobalContainer: HasDeviceContactsProvider {
+    var deviceContacts: DeviceContactsProvider {
+        deviceContactsFactory()
+    }
+}
+
+extension UserContainer: HasDeviceContactsProvider {
+    var deviceContacts: DeviceContactsProvider {
+        globalContainer.deviceContacts
+    }
+}
+
 protocol HasImageProxyCacheProtocol {
     var imageProxyCache: ImageProxyCacheProtocol { get }
 }
