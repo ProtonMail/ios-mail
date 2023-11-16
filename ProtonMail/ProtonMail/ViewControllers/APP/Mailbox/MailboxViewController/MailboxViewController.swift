@@ -29,6 +29,7 @@ import ProtonCorePaymentsUI
 import ProtonCoreServices
 import ProtonCoreUIFoundations
 import ProtonMailAnalytics
+import QuickLook
 import SkeletonView
 import SwipyCell
 import UIKit
@@ -148,6 +149,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
     let connectionStatusProvider = InternetConnectionStatusProvider.shared
 
     private let hapticFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+    private var attachmentPreviewPresenter: QuickLookPresenter?
 
     init(viewModel: MailboxViewModel, dependencies: Dependencies) {
         self.viewModel = viewModel
@@ -2416,19 +2418,40 @@ extension MailboxViewController: NewMailboxMessageCellDelegate {
 
     func didSelectAttachment(cell: NewMailboxMessageCell, index: Int) {
         guard let indexPath = tableView.indexPath(for: cell) else {
-            // TODO: (Mustapha) Handle error
-            fatalError()
+            PMAssertionFailure("IndexPath should match MailboxItem")
+            return
         }
-        viewModel.requestPreviewOfAttachment(at: indexPath, index: index) { url in
-            // TODO: (Mustapha) Open file in QuickLook
+        showProgressHud()
+        viewModel.requestPreviewOfAttachment(at: indexPath, index: index) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.hideProgressHud()
+                guard let self else { return }
+                switch result {
+                case .success(let att):
+                    self.showAttachment(at: att)
+                case .failure(let error):
+                    error.alert(at: self.view)
+                }
+            }
         }
-        // TODO: (Mustapha) Show progress
     }
 }
 
 extension MailboxViewController {
-    func showAttachment(_ id: AttachmentID, at url: URL) {
-        // TODO: (Mustapha) Manage showing/dismissing of QuickLook and cleanup file after dismissal
+    func showAttachment(at url: URL) {
+        guard QuickLookPresenter.canPreviewItem(at: url), let navigationController else {
+            L11n.AttachmentPreview.cannotPreviewMessage.alertToastBottom()
+            return
+        }
+
+        attachmentPreviewPresenter = QuickLookPresenter(url: url, delegate: self)
+        attachmentPreviewPresenter?.present(from: navigationController)
+    }
+}
+
+extension MailboxViewController: QuickLookPresenterDelegate {
+    func previewControllerDidDismiss(_ presenter: QuickLookPresenter, itemURL: URL) {
+        try? FileManager.default.removeItem(at: itemURL)
     }
 }
 

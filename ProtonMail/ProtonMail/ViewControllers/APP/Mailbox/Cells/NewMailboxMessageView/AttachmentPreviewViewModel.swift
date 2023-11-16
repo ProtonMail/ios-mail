@@ -21,3 +21,7 @@ struct AttachmentPreviewViewModel {
     let name: String
     let icon: UIImage
 }
+
+enum AttachmentPreviewError: Error {
+    case indexPathDidNotMatch
+}

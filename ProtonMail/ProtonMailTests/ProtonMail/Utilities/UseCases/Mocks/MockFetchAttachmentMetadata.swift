@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import ProtonCoreTestingToolkit
 @testable import ProtonMail
 
 final class MockFetchAttachmentMetadata: FetchAttachmentMetadataUseCase {
@@ -24,11 +24,11 @@ final class MockFetchAttachmentMetadata: FetchAttachmentMetadataUseCase {
     var result: Result<AttachmentMetadata, Error> = .success(.init(id: AttachmentID(String.randomString(100)),
                                                                    keyPacket: String.randomString(100)))
 
-    override func execute(params: FetchAttachmentMetadata.Params, 
-                          callback: @escaping UseCase<AttachmentMetadata, FetchAttachmentMetadata.Params>.Callback) {
+    init() {
+        super.init(dependencies: .init(apiService: APIServiceMock()))
+    }
+    override func execution(params: Params) async throws -> AttachmentMetadata {
         executeWasCalled = true
-        DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + 0.3) {
-            callback(self.result)
-        }
+        return try self.result.get()
     }
 }

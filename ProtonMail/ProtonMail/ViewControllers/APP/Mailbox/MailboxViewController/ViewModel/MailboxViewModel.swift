@@ -1331,47 +1331,56 @@ extension MailboxViewModel {
         return mailboxItem.previewableAttachments
     }
 
-    func requestPreviewOfAttachment(at indexPath: IndexPath, index: Int, completion: @escaping ((URL) -> Void)) {
+    func requestPreviewOfAttachment(
+        at indexPath: IndexPath,
+        index: Int,
+        completion: @escaping ((Result<URL, Error>) -> Void)
+    ) {
         guard let mailboxItem = mailboxItem(at: indexPath),
               let attachmentMetadata = mailboxItem.attachmentsMetadata[safe: index] else {
-            // TODO: (Mustapha) Handle error
-            fatalError()
+            PMAssertionFailure("IndexPath should match MailboxItem")
+            completion(.failure(AttachmentPreviewError.indexPathDidNotMatch))
+            return
         }
 
         let attId = AttachmentID(attachmentMetadata.id)
         let userKeys = user.toUserKeys()
-        
-        dependencies.fetchAttachmentMetadataUseCase.execute(params: .init(attachmentID: attId)) 
-        { [weak self] metadataResult in
-            switch metadataResult {
-            case .success(let metadata):
-                self?.dependencies.fetchAttachmentUseCase.execute(params: .init(
-                    attachmentID: attId,
-                    attachmentKeyPacket: nil,
-                    purpose: .onlyDownload,
-                    userKeys: userKeys
-                )) { result in
-                    do {
-                        let attachmentFile = try result.get()
-                        let fileData = try AttachmentDecrypter.decrypt(
-                            fileUrl: attachmentFile.fileUrl,
-                            attachmentKeyPacket: metadata.keyPacket,
-                            userKeys: userKeys
-                        )
-                        let fileName = attachmentMetadata.name.cleaningFilename()
-                        let unencryptedFileUrl = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-                        
-                        try fileData.write(to: unencryptedFileUrl, options: [.atomic])
-                        DispatchQueue.main.async {
-                            completion(unencryptedFileUrl)
+
+        Task  {
+            do {
+                let metadata = try await dependencies.fetchAttachmentMetadataUseCase.execution(
+                    params: .init(attachmentID: attId)
+                )
+                self.dependencies.fetchAttachmentUseCase
+                    .execute(params: .init(
+                        attachmentID: attId,
+                        attachmentKeyPacket: nil,
+                        purpose: .onlyDownload,
+                        userKeys: userKeys
+                    )) { result in
+                    switch result {
+                    case .success(let attFile):
+                        do {
+                            let fileData = try AttachmentDecrypter.decrypt(
+                                fileUrl: attFile.fileUrl,
+                                attachmentKeyPacket: metadata.keyPacket,
+                                userKeys: userKeys
+                            )
+                            let fileName = attachmentMetadata.name.cleaningFilename()
+                            let secureTempFile = SecureTemporaryFile(data: fileData, name: fileName)
+                            completion(.success(secureTempFile.url))
+                        } catch {
+                            completion(.failure(error))
                         }
-                    } catch {
-                        // TODO: (Mustapha) Show error to user (unable to download/decrypt)
-                        SystemLogger.log(error: error)
+                        
+                    case .failure(let error):
+                        completion(.failure(error))
                     }
                 }
-            case .failure(let error):
-                // TODO: (Mustapha) Show error to user (unable to fetch metadata for attachment)
+            } catch {
+                await MainActor.run {
+                    completion(.failure(error))
+                }
                 SystemLogger.log(error: error)
             }
         }

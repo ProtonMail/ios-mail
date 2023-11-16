@@ -50,6 +50,7 @@ final class AttachmentPreviewView: UIView {
 
     private func configureViews() {
         addSubviews(iconImageView, filenameLabel)
+        backgroundColor = ColorProvider.BackgroundNorm
         iconImageView.image = attachmentPreview.icon
         let style = FontManager.Caption.foregroundColor(ColorProvider.TextNorm)
         filenameLabel.attributedText = attachmentPreview.name.apply(style: style)
@@ -70,7 +71,18 @@ final class AttachmentPreviewView: UIView {
     }
 
     @objc
-    func handleTap() {
+    private func handleTap() {
+        self.isUserInteractionEnabled = false
         attachmentSelected?()
+        UIView.animate(withDuration: 0.15) {
+            self.backgroundColor = ColorProvider.BackgroundSecondary
+        } completion: { _ in
+            UIView.animate(withDuration: 0.15) {
+                self.backgroundColor = ColorProvider.BackgroundNorm
+            }
+            completion: { _ in
+                self.isUserInteractionEnabled = true
+            }
+        }
     }
 }
