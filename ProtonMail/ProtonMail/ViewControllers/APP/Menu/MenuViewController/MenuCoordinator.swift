@@ -380,7 +380,7 @@ extension MenuCoordinator {
         )
 
         let fetchAttachment = FetchAttachment(dependencies: .init(apiService: user.apiService))
-        let fetchAttachmentMetadata = FetchAttachmentMetadata(dependencies: .init(apiService: user.apiService))
+        let fetchAttachmentMetadata = FetchAttachmentMetadataUseCase(dependencies: .init(apiService: user.apiService))
         let mailboxVMDependencies = MailboxViewModel.Dependencies(
             fetchMessages: fetchMessages,
             updateMailbox: updateMailbox,

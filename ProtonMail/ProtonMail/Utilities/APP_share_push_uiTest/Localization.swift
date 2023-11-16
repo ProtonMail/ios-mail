@@ -1487,4 +1487,8 @@ enum L11n {
         static let confirmationTitle = NSLocalizedString("Unsubscribe?", comment: "The title of unsubscribe confirmation")
         static let confirmationMessage = NSLocalizedString("This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.", comment: "Unsubscribe confirmation message")
     }
+
+    struct AttachmentPreview {
+        static let cannotPreviewMessage = NSLocalizedString("Unable to preview this attachment", comment: "Alert telling the user that we are unable to preview this attachment")
+    }
 }

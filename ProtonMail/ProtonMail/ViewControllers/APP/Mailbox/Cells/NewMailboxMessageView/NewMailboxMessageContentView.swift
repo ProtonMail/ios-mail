@@ -132,6 +132,7 @@ class NewMailboxMessageContentView: BaseMessageView {
 
         contentStackView.setCustomSpacing(2, after: firstLineStackView)
         contentStackView.setCustomSpacing(12, after: secondLineStackView)
+        contentStackView.setCustomSpacing(4, after: attachmentsPreviewLine)
         secondLineStackView.setCustomSpacing(8, after: sendersStackView)
     }
 

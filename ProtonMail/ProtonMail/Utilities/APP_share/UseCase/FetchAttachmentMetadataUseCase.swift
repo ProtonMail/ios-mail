@@ -20,35 +20,25 @@ import protocol ProtonCoreDoh.DoHInterface
 import protocol ProtonCoreServices.APIService
 import ProtonCoreNetworking
 
-typealias FetchAttachmentMetadataUseCase = UseCase<AttachmentMetadata, FetchAttachmentMetadata.Params>
-
-final class FetchAttachmentMetadata: FetchAttachmentMetadataUseCase {
+class FetchAttachmentMetadataUseCase {
     private let dependencies: Dependencies
 
     init(dependencies: Dependencies) {
         self.dependencies = dependencies
     }
 
-    override func executionBlock(params: Params, callback: @escaping Callback) {
-        dependencies
-            .apiService
-            .perform(request: AttachmentMetadataRequest(attID: params.attachmentID.rawValue),
-                     response: AttachmentMetadataResponse(),
-                     responseCompletion: { _, response in
-                self.executionQueue.async {
-                    if let keyPacket = response.keyPacket {
-                        callback(.success(AttachmentMetadata(id: params.attachmentID, keyPacket: keyPacket)))
-                    } else {
-                        callback(
-                            .failure(FetchAttachmentMetadataError(attachmentID: params.attachmentID))
-                        )
-                    }
-                }
-            })
+    func execution(params: Params) async throws -> AttachmentMetadata {
+        let request = AttachmentMetadataRequest(attID: params.attachmentID.rawValue)
+        let response = await dependencies.apiService.perform(request: request, response: AttachmentMetadataResponse())
+        if let keyPacket = response.1.keyPacket {
+            return AttachmentMetadata(id: params.attachmentID, keyPacket: keyPacket)
+        } else {
+            throw FetchAttachmentMetadataError(attachmentID: params.attachmentID)
+        }
     }
 }
 
-extension FetchAttachmentMetadata {
+extension FetchAttachmentMetadataUseCase {
     struct Params {
         let attachmentID: AttachmentID
     }

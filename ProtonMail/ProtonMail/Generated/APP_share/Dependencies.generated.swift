@@ -497,12 +497,12 @@ extension UserContainer: HasFetchAttachment {
     }
 }
 
-protocol HasFetchAttachmentMetadata {
-    var fetchAttachmentMetadata: FetchAttachmentMetadata { get }
+protocol HasFetchAttachmentMetadataUseCase {
+    var fetchAttachmentMetadata: FetchAttachmentMetadataUseCase { get }
 }
 
-extension UserContainer: HasFetchAttachmentMetadata {
-    var fetchAttachmentMetadata: FetchAttachmentMetadata {
+extension UserContainer: HasFetchAttachmentMetadataUseCase {
+    var fetchAttachmentMetadata: FetchAttachmentMetadataUseCase {
         fetchAttachmentMetadataFactory()
     }
 }
