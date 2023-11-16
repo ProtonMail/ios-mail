@@ -171,11 +171,11 @@ class SettingsAccountViewModelImpl: SettingsAccountViewModel {
 
     var reloadTable: (() -> Void)?
 
-    init(user: UserManager) {
+    init(user: UserManager, isMessageSwipeNavigationEnabled: Bool) {
         self.userManager = user
 
         var mailboxItems: [SettingsMailboxItem] = [.privacy, .undoSend, .conversation, .labels, .folders]
-        if UserInfo.isConversationSwipeEnabled {
+        if isMessageSwipeNavigationEnabled {
             mailboxItems.append(.nextMsgAfterMove)
         }
 

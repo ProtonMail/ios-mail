@@ -29,7 +29,7 @@ class SettingsAccountViewControllerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         apiServiceMock = .init()
-        viewModel = .init(user: .init(api: apiServiceMock))
+        viewModel = .init(user: .init(api: apiServiceMock), isMessageSwipeNavigationEnabled: true)
         coordinatorMock = .init()
         sut = .init(viewModel: viewModel, coordinator: coordinatorMock)
     }

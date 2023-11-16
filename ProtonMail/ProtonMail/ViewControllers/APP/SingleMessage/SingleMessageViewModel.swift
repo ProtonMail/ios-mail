@@ -25,7 +25,7 @@ import ProtonCoreDataModel
 import ProtonCoreUIFoundations
 
 class SingleMessageViewModel {
-    typealias Dependencies = HasUserDefaults
+    typealias Dependencies = HasUserDefaults & HasFeatureFlagCache
 
     var message: MessageEntity {
         didSet {
@@ -41,6 +41,9 @@ class SingleMessageViewModel {
     let labelId: LabelID
     private let messageObserver: MessageObserver
 
+    var isMessageSwipeNavigationEnabled: Bool {
+        dependencies.featureFlagCache.valueOfFeatureFlag(.messageNavigation, for: user.userID)
+    }
     var refreshView: (() -> Void)?
 
     var selectedLabelAsLabels: Set<LabelLocation> = Set()
