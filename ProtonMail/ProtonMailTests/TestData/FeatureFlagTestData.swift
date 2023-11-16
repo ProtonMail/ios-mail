@@ -104,6 +104,13 @@ enum FeatureFlagTestData {
             ],
             [
                 "Writable": false,
+                "Type": "integer",
+                "Value": 100,
+                "Global": true,
+                "Code": "iOSMailboxSelectionLimitation",
+                "DefaultValue": 100
+            ],
+            [
                 "Type": "boolean",
                 "Value": true,
                 "Global": true,

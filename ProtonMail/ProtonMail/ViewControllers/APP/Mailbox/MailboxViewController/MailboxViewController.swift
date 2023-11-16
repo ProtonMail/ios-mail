@@ -1232,6 +1232,7 @@ class MailboxViewController: ProtonMailViewController, ComposeSaveHintProtocol, 
 extension MailboxViewController {
     private func enterListEditingMode(indexPath: IndexPath) {
         self.viewModel.listEditing = true
+        updateSelectAllButton()
         updateTopBarItemDisplay()
 
         guard let visibleRowsIndexPaths = self.tableView.indexPathsForVisibleRows else { return }
@@ -1279,37 +1280,39 @@ extension MailboxViewController {
     @objc
     private func tapSelectAllButton(gesture: UITapGestureRecognizer) {
         let state = gesture.state
-        switch state {
-        case .began, .changed:
-            selectAllButton.backgroundColor = ColorProvider.BackgroundSecondary
-        case .ended:
-            selectAllButton.backgroundColor = .clear
-            selectAllMessages()
-        default:
-            break
+        selectAllButton.backgroundColor = ColorProvider.BackgroundSecondary
+        UIView.animate(withDuration: 0.25) {
+            self.selectAllButton.backgroundColor = .clear
         }
+        selectAllMessages()
     }
 
     private func selectAllMessages() {
         let indexPaths = Array(0..<viewModel.rowCount(section: 0))
             .map { IndexPath(row: $0, section: 0) }
         let loadedIDs = indexPaths
-            .compactMap { index -> String? in
+            .compactMap { index -> (String, IndexPath)? in
                 switch viewModel.locationViewMode {
                 case .singleMessage:
                     guard let item = viewModel.item(index: index) else { return nil }
-                    return item.messageID.rawValue
+                    return (item.messageID.rawValue, index)
                 case .conversation:
                     guard let item = viewModel.itemOfConversation(index: index) else { return nil }
-                    return item.conversationID.rawValue
+                    return (item.conversationID.rawValue, index)
                 }
             }
-        loadedIDs.forEach(viewModel.select(id:))
+        var pathsShouldBeUpdated: [IndexPath] = []
+        for dataSet in loadedIDs {
+            guard viewModel.select(id: dataSet.0) else { break }
+            pathsShouldBeUpdated.append(dataSet.1)
+            guard viewModel.canSelectMore() else { break }
+        }
 
+        updateSelectAllButton()
         hapticFeedbackGenerator.impactOccurred()
 
         // update checkbox state
-        for indexPath in indexPaths {
+        for indexPath in pathsShouldBeUpdated {
             guard let cell = tableView.cellForRow(at: indexPath) as? NewMailboxMessageCell else { continue }
             messageCellPresenter.presentSelectionStyle(
                 style: .selection(isSelected: true),
@@ -1321,6 +1324,31 @@ extension MailboxViewController {
         PMBanner.dismissAll(on: self)
         refreshActionBarItems()
         showActionBar()
+    }
+
+    private func updateSelectAllButton() {
+        updateSelectAllButtonAvailability()
+        updateSelectAllIcon()
+    }
+
+    private func updateSelectAllButtonAvailability() {
+        if viewModel.canSelectMore() {
+            selectAllIcon.tintColor = ColorProvider.IconAccent
+            selectAllLabel.textColor = ColorProvider.TextAccent
+            selectAllButton.isUserInteractionEnabled = true
+        } else {
+            selectAllIcon.tintColor = ColorProvider.IconDisabled
+            selectAllLabel.textColor = ColorProvider.TextDisabled
+            selectAllButton.isUserInteractionEnabled = false
+        }
+    }
+
+    /// Update icon depends on if all loaded messages are selected
+    private func updateSelectAllIcon() {
+        let isAllLoadedMessagesSelected = viewModel.selectedItems.count == viewModel.rowCount(section: 0)
+        // TODO use ImageProvider when core library contains these 2 images
+        let image: UIImage = isAllLoadedMessagesSelected ? Asset.icSquareChecked.image : Asset.icSquare.image
+        selectAllIcon.image = image
     }
 }
 
@@ -2176,11 +2204,13 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             contentChangeOccurredDuringLastSwipeGesture = true
             return
         }
+
         reloadTableViewDataSource(
             animate: false,
             snapshot: remappedSnapshot
         ) {
             DispatchQueue.main.async {
+                self.updateSelectAllButton()
                 self.refreshActionBarItems()
                 self.showNewMessageCount(self.newMessageCount)
                 self.showNoResultLabelIfNeeded()
@@ -2341,8 +2371,12 @@ extension MailboxViewController: UITableViewDelegate {
 
     private func handleEditingDataSelection(of id: String, indexPath: IndexPath) {
         let itemAlreadySelected = viewModel.selectionContains(id: id)
-        let selectionAction = itemAlreadySelected ? viewModel.removeSelected : viewModel.select
-        selectionAction(id)
+        if itemAlreadySelected {
+            viewModel.removeSelected(id: id)
+        } else {
+            let isAllowed = viewModel.select(id: id)
+            guard isAllowed else { return }
+        }
 
         hapticFeedbackGenerator.impactOccurred()
 
@@ -2427,7 +2461,8 @@ extension MailboxViewController {
 
     private func configureSelectAllButton() {
         selectAllIcon.tintColor = ColorProvider.IconAccent
-        selectAllIcon.image = IconProvider.checkmark
+        // TODO use ImageProvider when core library contains this image
+        selectAllIcon.image = Asset.icSquare.image
         selectAllLabel.set(text: L11n.MailBox.selectAll, preferredFont: .subheadline, textColor: ColorProvider.TextAccent)
 
         selectAllButton.roundCorner(12)
@@ -2743,6 +2778,14 @@ extension MailboxViewController: MailboxViewModelUIProtocol {
         let width = titleWidth + 16 + (isInUnreadFilter ? 16 : 0)
         unreadFilterButtonWidth.constant = width
         self.unreadFilterButton.layer.cornerRadius = self.unreadFilterButton.frame.height / 2
+    }
+
+    func selectionDidChange() {
+        updateSelectAllButton()
+
+        if !viewModel.canSelectMore() {
+            L11n.MailBox.maximumSelectionReached.alertToastBottom()
+        }
     }
 }
 

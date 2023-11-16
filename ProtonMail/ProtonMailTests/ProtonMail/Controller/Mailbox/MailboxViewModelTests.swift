@@ -45,6 +45,7 @@ final class MailboxViewModelTests: XCTestCase {
     var mockLoadedMessage: Message!
     var fakeTableView: UITableView!
     var delegateMock: MockCoreDataDelegateObject!
+    private let selectionLimitation = 5
 
     private var globalContainer: GlobalContainer!
 
@@ -92,6 +93,11 @@ final class MailboxViewModelTests: XCTestCase {
                                       parent: nil,
                                       globalContainer: globalContainer)
         featureFlagCache = .init()
+        featureFlagCache.featureFlagsStub.bodyIs { _, _ in
+            SupportedFeatureFlags(rawValues: [
+                FeatureFlagKey.mailboxSelectionLimitation.rawValue: self.selectionLimitation
+            ])
+        }
         userManagerMock.conversationStateService.userInfoHasChanged(viewMode: .singleMessage)
         conversationStateProviderMock = MockConversationStateProviderProtocol()
         contactGroupProviderMock = MockContactGroupsProviderProtocol()
@@ -181,15 +187,26 @@ final class MailboxViewModelTests: XCTestCase {
         XCTAssertNil(sut.item(index:IndexPath(row: 0, section: 1)))
     }
 
-    func testSelectByID() {
+    func testSelectByID_withSelectionLimitation() {
         XCTAssertTrue(sut.selectedIDs.isEmpty)
-        sut.select(id: "1")
-        XCTAssertTrue(sut.selectedIDs.contains("1"))
+        let ids = Array(0...selectionLimitation).map { "\($0)"}
+        for (index, id) in ids.enumerated() {
+            let isAllowed = sut.select(id: id)
+            if index < selectionLimitation {
+                XCTAssertTrue(isAllowed)
+            } else {
+                XCTAssertFalse(isAllowed)
+            }
+        }
+        for id in ids.prefix(selectionLimitation) {
+            XCTAssertTrue(sut.selectedIDs.contains(id))
+        }
+        XCTAssertEqual(sut.selectedIDs.count, selectionLimitation)
     }
 
     func testRemoveSelectByID() {
-        sut.select(id: "1")
-        sut.select(id: "2")
+        _ = sut.select(id: "1")
+        _ = sut.select(id: "2")
         XCTAssertTrue(sut.selectedIDs.contains("1"))
         XCTAssertTrue(sut.selectedIDs.contains("2"))
         XCTAssertEqual(sut.selectedIDs.count, 2)
@@ -201,8 +218,8 @@ final class MailboxViewModelTests: XCTestCase {
 
     func testRemoveAllSelectID() {
         XCTAssertTrue(sut.selectedIDs.isEmpty)
-        sut.select(id: "1")
-        sut.select(id: "2")
+        _ = sut.select(id: "1")
+        _ = sut.select(id: "2")
         XCTAssertEqual(sut.selectedIDs.count, 2)
         sut.removeAllSelectedIDs()
         XCTAssertTrue(sut.selectedIDs.isEmpty)
@@ -210,7 +227,7 @@ final class MailboxViewModelTests: XCTestCase {
 
     func testSelectionContains() {
         XCTAssertTrue(sut.selectedIDs.isEmpty)
-        sut.select(id: "1")
+        _ = sut.select(id: "1")
         XCTAssertTrue(sut.selectionContains(id: "1"))
         XCTAssertFalse(sut.selectionContains(id: "2"))
         XCTAssertFalse(sut.selectionContains(id: "3"))
@@ -481,7 +498,7 @@ final class MailboxViewModelTests: XCTestCase {
                   labelType: .folder,
                   isCustom: false,
                   labelName: nil)
-        sut.select(id: "id")
+        _ = sut.select(id: "id")
         XCTAssertEqual(sut.selectedIDs.count, 1)
         let model2 = sut.actionSheetViewModel
         XCTAssertEqual(model2.title, .localizedStringWithFormat(LocalString._general_conversation, 1))
@@ -544,7 +561,7 @@ final class MailboxViewModelTests: XCTestCase {
         wait(self.sut.diffableDataSource?.snapshot().numberOfItems == 3)
 
         for id in conversationIDs {
-            sut.select(id: id)
+            _ = sut.select(id: id)
         }
 
         sut.handleActionSheetAction(.trash)
@@ -597,8 +614,8 @@ final class MailboxViewModelTests: XCTestCase {
 
         let expectation1 = expectation(description: "Closure called")
         let ids = Set<String>(["1", "2"])
-        sut.select(id: "1")
-        sut.select(id: "2")
+        _ = sut.select(id: "1")
+        _ = sut.select(id: "2")
         sut.mark(IDs: ids, unread: false) {
             XCTAssertTrue(self.conversationProviderMock.markAsReadStub.wasCalledExactlyOnce)
             let argument = self.conversationProviderMock.markAsReadStub.lastArguments
@@ -652,8 +669,8 @@ final class MailboxViewModelTests: XCTestCase {
 
         let expectation1 = expectation(description: "Closure called")
         let ids = Set<String>(["1", "2"])
-        sut.select(id: "1")
-        sut.select(id: "2")
+        _ = sut.select(id: "1")
+        _ = sut.select(id: "2")
         sut.mark(IDs: ids, unread: true) {
             XCTAssertTrue(self.conversationProviderMock.markAsUnreadStub.wasCalledExactlyOnce)
             let argument = self.conversationProviderMock.markAsUnreadStub.lastArguments
@@ -729,7 +746,7 @@ final class MailboxViewModelTests: XCTestCase {
         wait(self.sut.diffableDataSource?.snapshot().numberOfItems == 3)
 
         for id in conversationIDs {
-            sut.select(id: id)
+            _ = sut.select(id: id)
         }
 
         sut.deleteSelectedIDs()
@@ -1080,7 +1097,7 @@ final class MailboxViewModelTests: XCTestCase {
         let selectedConversationIDs = ["foo", "bar"]
 
         for conversationID in selectedConversationIDs {
-            sut.select(id: conversationID)
+            _ = sut.select(id: conversationID)
         }
 
         sut.handleSwipeAction(.trash, on: .conversation(.make(conversationID: ConversationID("xyz"))))
@@ -1246,8 +1263,8 @@ final class MailboxViewModelTests: XCTestCase {
                   labelName: nil)
         wait(self.sut.diffableDataSource?.snapshot().numberOfItems == 3)
 
-        sut.select(id: readMsgIds)
-        sut.select(id: unreadMsgIds)
+        _ = sut.select(id: readMsgIds)
+        _ = sut.select(id: unreadMsgIds)
         let e = expectation(description: "Closure is called")
 
 
@@ -1276,7 +1293,7 @@ final class MailboxViewModelTests: XCTestCase {
     }
 
     func testListEditing_setItToFalse_theSelectedIDsWillBeRemoved() {
-        sut.select(id: String.randomString(20))
+        _ = sut.select(id: String.randomString(20))
         XCTAssertFalse(sut.selectedIDs.isEmpty)
 
         sut.listEditing = false
@@ -1285,7 +1302,7 @@ final class MailboxViewModelTests: XCTestCase {
     }
 
     func testListEditing_setItToTrue_theSelectedIDsWillNotBeRemoved() {
-        sut.select(id: String.randomString(20))
+        _ = sut.select(id: String.randomString(20))
         XCTAssertFalse(sut.selectedIDs.isEmpty)
 
         sut.listEditing = true

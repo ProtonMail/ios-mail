@@ -81,6 +81,7 @@ class FeatureFlags {
     static let appRating = FeatureFlag<Bool>(code: .appRating, defaultValue: false)
     static let attachmentsPreview = FeatureFlag<Bool>(code: .attachmentsPreview, defaultValue: false)
     static let mailboxPrefetchSize = FeatureFlag<Int>(code: .mailboxPrefetchSize, defaultValue: 0)
+    static let mailboxSelectionLimitation = FeatureFlag<Int>(code: .mailboxSelectionLimitation, defaultValue: 100)
     static let messageNavigation = FeatureFlag<Bool>(code: .messageNavigation, defaultValue: false)
     static let protonUnreachableBanner = FeatureFlag<Bool>(code: .protonUnreachableBanner, defaultValue: false)
     static let referralPrompt = FeatureFlag<Bool>(code: .referralPrompt, defaultValue: false)
