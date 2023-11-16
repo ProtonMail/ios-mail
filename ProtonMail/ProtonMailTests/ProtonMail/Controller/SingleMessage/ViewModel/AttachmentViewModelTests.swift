@@ -34,7 +34,7 @@ class AttachmentViewModelTests: XCTestCase {
         }
 
         sut = AttachmentViewModel()
-        sut.attachmentHasChanged(attachmentCount: testAttachments.count, nonInlineAttachments: testAttachments, inlineAttachments: [], mimeAttachments: [])
+        sut.attachmentHasChanged(nonInlineAttachments: testAttachments, mimeAttachments: [])
 
         XCTAssertEqual(sut.attachments.count, testAttachments.count)
         XCTAssertEqual(sut.numberOfAttachments, testAttachments.count)
@@ -46,7 +46,7 @@ class AttachmentViewModelTests: XCTestCase {
         }
 
         sut = AttachmentViewModel()
-        sut.attachmentHasChanged(attachmentCount: testAttachments.count, nonInlineAttachments: testAttachments, inlineAttachments: [], mimeAttachments: [])
+        sut.attachmentHasChanged(nonInlineAttachments: testAttachments, mimeAttachments: [])
 
         let expected = testAttachments.reduce(into: 0, { $0 = $0 + $1.size })
         XCTAssertEqual(sut.totalSizeOfAllAttachments, expected)
@@ -61,7 +61,7 @@ class AttachmentViewModelTests: XCTestCase {
             expectation1.fulfill()
         }
 
-        sut.attachmentHasChanged(attachmentCount: 1, nonInlineAttachments: [], inlineAttachments: [], mimeAttachments: [attachment])
+        sut.attachmentHasChanged(nonInlineAttachments: [], mimeAttachments: [attachment])
         waitForExpectations(timeout: 1, handler: nil)
         XCTAssertEqual(sut.numberOfAttachments, 1)
     }
@@ -75,7 +75,7 @@ class AttachmentViewModelTests: XCTestCase {
             expectation1.fulfill()
         }
 
-        sut.attachmentHasChanged(attachmentCount: 2 , nonInlineAttachments: [], inlineAttachments: [], mimeAttachments: [attachment, attachment])
+        sut.attachmentHasChanged(nonInlineAttachments: [], mimeAttachments: [attachment, attachment])
         waitForExpectations(timeout: 1, handler: nil)
         XCTAssertEqual(sut.numberOfAttachments, 1)
     }
@@ -86,10 +86,10 @@ class AttachmentViewModelTests: XCTestCase {
         }
 
         sut = AttachmentViewModel()
-        sut.attachmentHasChanged(attachmentCount: 8, nonInlineAttachments: testAttachments, inlineAttachments: nil, mimeAttachments: [])
+        sut.attachmentHasChanged(nonInlineAttachments: testAttachments, mimeAttachments: [])
 
         XCTAssertEqual(sut.attachments.count, testAttachments.count)
-        XCTAssertEqual(sut.numberOfAttachments, 8)
+        XCTAssertEqual(sut.numberOfAttachments, 10)
     }
 
     private func makeAttachment(isInline: Bool) -> AttachmentInfo {
