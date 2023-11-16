@@ -373,9 +373,7 @@ extension SingleMessageContentViewModel: MessageInfoProviderDelegate {
     func updateAttachments() {
         DispatchQueue.main.async {
             self.attachmentViewModel.attachmentHasChanged(
-                attachmentCount: self.messageInfoProvider.message.numAttachments,
                 nonInlineAttachments: self.messageInfoProvider.nonInlineAttachments.map(AttachmentNormal.init),
-                inlineAttachments: self.messageInfoProvider.inlineAttachments,
                 mimeAttachments: self.messageInfoProvider.mimeAttachments
             )
             self.uiDelegate?.updateAttachmentBannerIfNeeded()
