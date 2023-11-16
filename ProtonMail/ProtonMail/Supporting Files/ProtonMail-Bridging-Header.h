@@ -32,4 +32,7 @@
 //localization
 #import "NSBundle+Language.h"
 
+// Extension to expose objc api methods to swift
+#import "ContactStore+HistoryEvents.h"
+
 #endif

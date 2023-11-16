@@ -148,6 +148,7 @@ extension SystemLogger {
         case artificialSlowdown = "Artificial slowdown"
         case assertionFailure = "AssertionFailure"
         case connectionStatus = "ConnectionStatus"
+        case contacts = "Contacts"
         case sendMessage = "SendMessage"
         case pushNotification = "PushNotification"
         case encryption = "Encryption"

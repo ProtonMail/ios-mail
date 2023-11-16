@@ -377,6 +377,24 @@ class MockCopyMessageUseCase: CopyMessageUseCase {
 
 }
 
+class MockDeviceContactsProvider: DeviceContactsProvider {
+    @ThrowingFuncStub(MockDeviceContactsProvider.fetchAllContactIdentifiers, initialReturn: [String]()) var fetchAllContactIdentifiersStub
+    func fetchAllContactIdentifiers() throws -> [String] {
+        try fetchAllContactIdentifiersStub()
+    }
+
+    @ThrowingFuncStub(MockDeviceContactsProvider.fetchContactBatch, initialReturn: [DeviceContact]()) var fetchContactBatchStub
+    func fetchContactBatch(with identifiers: [String]) throws -> [DeviceContact] {
+        try fetchContactBatchStub(identifiers)
+    }
+
+    @ThrowingFuncStub(MockDeviceContactsProvider.fetchHistoryEvents, initialReturn: .crash) var fetchHistoryEventsStub
+    func fetchHistoryEvents(historyToken: Data?) throws -> (historyToken: Data, events: [DeviceContactEvent]) {
+        try fetchHistoryEventsStub(historyToken)
+    }
+
+}
+
 class MockDeviceRegistrationUseCase: DeviceRegistrationUseCase {
     @FuncStub(MockDeviceRegistrationUseCase.execute, initialReturn: [DeviceRegistrationResult]()) var executeStub
     func execute(sessionIDs: [String], deviceToken: String, publicKey: String) -> [DeviceRegistrationResult] {
