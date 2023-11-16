@@ -37,11 +37,11 @@ protocol MailboxCoordinatorProtocol: AnyObject {
 }
 
 class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserver {
-    typealias Dependencies = HasInternetConnectionStatusProviderProtocol
+    typealias Dependencies = HasFeatureFlagCache
+    & HasInternetConnectionStatusProviderProtocol
     & SearchViewController.Dependencies
     & SearchViewModel.Dependencies
     & SingleMessageCoordinator.Dependencies
-    & HasToolbarSettingViewFactory
 
     let viewModel: MailboxViewModel
     private let contextProvider: CoreDataContextProviderProtocol
@@ -49,6 +49,9 @@ class MailboxCoordinator: MailboxCoordinatorProtocol, CoordinatorDismissalObserv
     weak var viewController: MailboxViewController?
     private(set) weak var navigation: UINavigationController?
     private weak var sideMenu: SideMenuController?
+    private var isMessageSwipeNavigationEnabled: Bool {
+        dependencies.featureFlagCache.valueOfFeatureFlag(.messageNavigation, for: viewModel.user.userID)
+    }
     var pendingActionAfterDismissal: (() -> Void)?
     private let getApplicationState: () -> UIApplication.State
     private var timeOfLastNavigationToMessageDetails: Date?
@@ -359,20 +362,22 @@ extension MailboxCoordinator {
         switch viewModel.locationViewMode {
         case .singleMessage:
             messageToShow(isNotification: false, node: nil) { [weak self] message in
-                guard let message = message else { return }
-                if UserInfo.isConversationSwipeEnabled {
-                    self?.presentPageViewsFor(message: message)
+                guard let self = self,
+                      let message = message else { return }
+                if self.isMessageSwipeNavigationEnabled {
+                    self.presentPageViewsFor(message: message)
                 } else {
-                    self?.present(message: message)
+                    self.present(message: message)
                 }
             }
         case .conversation:
             conversationToShow(isNotification: false, message: nil) { [weak self] conversation in
-                guard let conversation = conversation else { return }
-                if UserInfo.isConversationSwipeEnabled {
-                    self?.presentPageViewsFor(conversation: conversation, targetID: nil)
+                guard let self = self,
+                      let conversation = conversation else { return }
+                if self.isMessageSwipeNavigationEnabled {
+                    self.presentPageViewsFor(conversation: conversation, targetID: nil)
                 } else {
-                    self?.present(conversation: conversation, targetID: nil)
+                    self.present(conversation: conversation, targetID: nil)
                 }
             }
         }
@@ -401,7 +406,7 @@ extension MailboxCoordinator {
             let messageID = message.messageID
             switch self.viewModel.locationViewMode {
             case .singleMessage:
-                if UserInfo.isConversationSwipeEnabled {
+                if self.isMessageSwipeNavigationEnabled {
                     self.presentPageViewsFor(message: message)
                 } else {
                     self.present(message: message)
@@ -414,7 +419,7 @@ extension MailboxCoordinator {
                         return
                     }
 
-                    if UserInfo.isConversationSwipeEnabled {
+                    if self?.isMessageSwipeNavigationEnabled ?? false {
                         self?.presentPageViewsFor(conversation: conversation, targetID: messageID)
                     } else {
                         self?.present(conversation: conversation, targetID: messageID)

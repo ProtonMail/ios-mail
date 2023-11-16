@@ -32,10 +32,11 @@ protocol SettingsAccountCoordinatorProtocol: AnyObject {
 }
 
 class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
-    typealias Dependencies = HasKeyMakerProtocol
+    typealias Dependencies = BlockedSendersViewModel.Dependencies
+    & HasFeatureFlagCache
+    & HasKeyMakerProtocol
     & HasPaymentsUIFactory
     & HasUsersManager
-    & BlockedSendersViewModel.Dependencies
 
     private let viewModel: SettingsAccountViewModel
     private let users: UsersManager
@@ -71,7 +72,15 @@ class SettingsAccountCoordinator: SettingsAccountCoordinatorProtocol {
         self.navigationController = navigationController
         self.dependencies = dependencies
         users = dependencies.usersManager
-        viewModel = SettingsAccountViewModelImpl(user: users.firstUser!)
+        let firstUser = users.firstUser!
+        let isMessageSwipeNavigationEnabled = dependencies.featureFlagCache.valueOfFeatureFlag(
+            .messageNavigation,
+            for: firstUser.userID
+        )
+        viewModel = SettingsAccountViewModelImpl(
+            user: firstUser,
+            isMessageSwipeNavigationEnabled: isMessageSwipeNavigationEnabled
+        )
     }
 
     func start(animated: Bool = false) {

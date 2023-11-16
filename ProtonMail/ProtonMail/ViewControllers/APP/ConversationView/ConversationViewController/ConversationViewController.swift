@@ -119,7 +119,7 @@ final class ConversationViewController: UIViewController, ComposeSaveHintProtoco
         if let targetID = self.viewModel.targetID {
             self.cellTapped(messageId: targetID)
         }
-        if !UserInfo.isConversationSwipeEnabled {
+        if !viewModel.isMessageSwipeNavigationEnabled {
             showToolbarCustomizeSpotlightIfNeeded()
         }
 
@@ -737,7 +737,7 @@ private extension ConversationViewController {
     }
 
     private func showMessageMoved(title: String, undoActionType: UndoAction? = nil) {
-        guard UserInfo.isConversationSwipeEnabled,
+        guard viewModel.isMessageSwipeNavigationEnabled,
               !viewModel.user.shouldMoveToNextMessageAfterMove else {
             return
         }

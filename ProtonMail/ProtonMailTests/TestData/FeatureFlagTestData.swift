@@ -109,6 +109,14 @@ enum FeatureFlagTestData {
                 "Global": true,
                 "Code": "iOSAttachmentsPreviewIsEnabled",
                 "DefaultValue": false
+            ],
+            [
+                "Writable": false,
+                "Type": "boolean",
+                "Value": true,
+                "Global": true,
+                "Code": "iOSMessageNavigation",
+                "DefaultValue": true
             ]
         ] as [[String: Any]]
     ]

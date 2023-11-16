@@ -29,6 +29,7 @@ class ConversationViewControllerTests: XCTestCase {
     var nextMessageAfterMoveStatusProviderMock: MockNextMessageAfterMoveStatusProvider!
     var notificationCenterMock: NotificationCenter!
     var contextProvider: MockCoreDataContextProvider!
+    private var mockFeatureFlagCache: MockFeatureFlagCache!
 
     override func setUp() {
         super.setUp()
@@ -49,6 +50,11 @@ class ConversationViewControllerTests: XCTestCase {
 
         let userContainer = UserContainer(userManager: fakeUser, globalContainer: globalContainer)
         userContainer.nextMessageAfterMoveStatusProviderFactory.register { self.nextMessageAfterMoveStatusProviderMock }
+        mockFeatureFlagCache = MockFeatureFlagCache()
+        mockFeatureFlagCache.featureFlagsStub.bodyIs { _, userID in
+            SupportedFeatureFlags(rawValues: [FeatureFlagKey.messageNavigation.rawValue: true])
+        }
+        globalContainer.featureFlagCacheFactory.register { self.mockFeatureFlagCache }
 
         viewModelMock = MockConversationViewModel(labelId: "",
                                                   conversation: fakeConversation,

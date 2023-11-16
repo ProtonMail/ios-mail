@@ -21,6 +21,7 @@ enum FeatureFlagKey: String, CaseIterable {
     case appRating = "RatingIOSMail"
     case attachmentsPreview = "iOSAttachmentsPreviewIsEnabled"
     case mailboxPrefetchSize = "iOSMailboxPrefetchSize"
+    case messageNavigation = "iOSMessageNavigation"
     case protonUnreachableBanner = "ProtonUnreachableBanner"
     case referralPrompt = "ReferralActionSheetShouldBePresentedIOS"
     case refetchEventsByTime = "iOSRefetchEventsByTime"

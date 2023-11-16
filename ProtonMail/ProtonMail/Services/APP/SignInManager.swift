@@ -178,7 +178,7 @@ private extension SpotlightableFeatureKey {
         case .scheduledSend, .toolbarCustomization:
             return true
         case .messageSwipeNavigation:
-            return UserInfo.isConversationSwipeEnabled
+            return false
         }
     }
 }
