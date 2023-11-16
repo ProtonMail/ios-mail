@@ -44,13 +44,13 @@ final class BackgroundTaskHelper: BackgroundTaskHelperProtocol {
                           self.dependencies.usersManager.hasUsers(),
                           let activeUser = self.dependencies.usersManager.firstUser else {
                         task.setTaskCompleted(success: true)
-                        SystemLogger.log(message: "Background task can not continue: \(task.identifier)")
+                        Self.log(message: "Background task can not continue: \(task.identifier)")
                         return
                     }
                     self.currentBackgroundTask = task
                     task.expirationHandler = {
                         // Stop fetch event loop
-                        SystemLogger.log(message: "Background task expired: \(task.identifier)")
+                        Self.log(message: "Background task expired: \(task.identifier)")
                         self.currentBackgroundTask = nil
                     }
                     self.fetchEvents(user: activeUser)
@@ -84,7 +84,7 @@ final class BackgroundTaskHelper: BackgroundTaskHelperProtocol {
             forTaskWithIdentifier: task.identifier,
             using: nil
         ) { task in
-            SystemLogger.log(message: "Background task starts: \(task.identifier)")
+            Self.log(message: "Background task starts: \(task.identifier)")
             handler(task)
         }
     }
@@ -96,12 +96,11 @@ final class BackgroundTaskHelper: BackgroundTaskHelperProtocol {
         let request = makeRequest(for: task)
         do {
             try scheduler.submit(request)
-            SystemLogger.log(message: "Background task is scheduled: \(task.identifier)", category: .backgroundTask)
+            Self.log(message: "Background task is scheduled: \(task.identifier)")
             return true
         } catch {
-            SystemLogger.log(
+            Self.log(
                 message: "Background task is failed to be scheduled: \(task.identifier), error: \(error)",
-                category: .backgroundTask,
                 isError: true
             )
             return false
@@ -112,7 +111,7 @@ final class BackgroundTaskHelper: BackgroundTaskHelperProtocol {
         switch task {
         case .eventLoop:
             let request = BGAppRefreshTaskRequest(identifier: task.identifier)
-            SystemLogger.log(message: "Make background refresh task: \(task.identifier)", category: .backgroundTask)
+            Self.log(message: "Make background refresh task: \(task.identifier)")
             return request
         }
     }
@@ -122,6 +121,10 @@ final class BackgroundTaskHelper: BackgroundTaskHelperProtocol {
         task: Task
     ) {
         scheduler.cancel(taskRequestWithIdentifier: task.identifier)
+    }
+
+    private class func log(message: String, isError: Bool = false) {
+        SystemLogger.log(message: message, category: .backgroundTask, isError: isError)
     }
 }
 
